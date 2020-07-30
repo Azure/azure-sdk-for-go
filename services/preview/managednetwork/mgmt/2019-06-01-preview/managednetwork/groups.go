@@ -326,6 +326,9 @@ func (client GroupsClient) ListByManagedNetwork(ctx context.Context, resourceGro
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.GroupsClient", "ListByManagedNetwork", resp, "Failure responding to request")
 	}
+	if result.glr.hasNextLink() && result.glr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

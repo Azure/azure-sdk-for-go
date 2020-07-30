@@ -99,8 +99,11 @@ const (
 type DataSourceType = original.DataSourceType
 
 const (
+	Alerts      DataSourceType = original.Alerts
 	AzureWatson DataSourceType = original.AzureWatson
 	CustomLogs  DataSourceType = original.CustomLogs
+	Ingestion   DataSourceType = original.Ingestion
+	Query       DataSourceType = original.Query
 )
 
 type IdentityType = original.IdentityType

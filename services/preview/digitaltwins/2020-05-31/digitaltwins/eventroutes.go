@@ -315,6 +315,9 @@ func (client EventRoutesClient) List(ctx context.Context, maxItemCount *int32) (
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.EventRoutesClient", "List", resp, "Failure responding to request")
 	}
+	if result.erc.hasNextLink() && result.erc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

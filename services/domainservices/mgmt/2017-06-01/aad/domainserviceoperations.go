@@ -72,6 +72,9 @@ func (client DomainServiceOperationsClient) List(ctx context.Context) (result Op
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServiceOperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.oelr.hasNextLink() && result.oelr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -299,6 +299,9 @@ func (client SapMonitorsClient) List(ctx context.Context) (result SapMonitorList
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsClient", "List", resp, "Failure responding to request")
 	}
+	if result.smlr.hasNextLink() && result.smlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

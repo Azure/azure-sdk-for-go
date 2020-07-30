@@ -333,6 +333,9 @@ func (client WebApplicationFirewallPoliciesClient) List(ctx context.Context, res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WebApplicationFirewallPoliciesClient", "List", resp, "Failure responding to request")
 	}
+	if result.wafplr.hasNextLink() && result.wafplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -441,6 +444,9 @@ func (client WebApplicationFirewallPoliciesClient) ListAll(ctx context.Context) 
 	result.wafplr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.WebApplicationFirewallPoliciesClient", "ListAll", resp, "Failure responding to request")
+	}
+	if result.wafplr.hasNextLink() && result.wafplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

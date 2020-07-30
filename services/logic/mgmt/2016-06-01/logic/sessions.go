@@ -316,6 +316,9 @@ func (client SessionsClient) ListByIntegrationAccounts(ctx context.Context, reso
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SessionsClient", "ListByIntegrationAccounts", resp, "Failure responding to request")
 	}
+	if result.iaslr.hasNextLink() && result.iaslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

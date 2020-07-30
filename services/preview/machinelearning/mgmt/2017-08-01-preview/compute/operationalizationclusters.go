@@ -474,6 +474,9 @@ func (client OperationalizationClustersClient) ListByResourceGroup(ctx context.C
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.pocl.hasNextLink() && result.pocl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -587,6 +590,9 @@ func (client OperationalizationClustersClient) ListBySubscriptionID(ctx context.
 	result.pocl, err = client.ListBySubscriptionIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "ListBySubscriptionID", resp, "Failure responding to request")
+	}
+	if result.pocl.hasNextLink() && result.pocl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

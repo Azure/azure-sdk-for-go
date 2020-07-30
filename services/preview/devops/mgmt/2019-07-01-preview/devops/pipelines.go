@@ -322,6 +322,9 @@ func (client PipelinesClient) ListByResourceGroup(ctx context.Context, resourceG
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devops.PipelinesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.plr.hasNextLink() && result.plr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -430,6 +433,9 @@ func (client PipelinesClient) ListBySubscription(ctx context.Context) (result Pi
 	result.plr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devops.PipelinesClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.plr.hasNextLink() && result.plr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

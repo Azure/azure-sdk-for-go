@@ -30,251 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/scheduler/mgmt/2014-08-01-preview/scheduler"
 
-// DayOfWeek enumerates the values for day of week.
-type DayOfWeek string
-
-const (
-	// Friday ...
-	Friday DayOfWeek = "Friday"
-	// Monday ...
-	Monday DayOfWeek = "Monday"
-	// Saturday ...
-	Saturday DayOfWeek = "Saturday"
-	// Sunday ...
-	Sunday DayOfWeek = "Sunday"
-	// Thursday ...
-	Thursday DayOfWeek = "Thursday"
-	// Tuesday ...
-	Tuesday DayOfWeek = "Tuesday"
-	// Wednesday ...
-	Wednesday DayOfWeek = "Wednesday"
-)
-
-// PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
-func PossibleDayOfWeekValues() []DayOfWeek {
-	return []DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
-}
-
-// HTTPAuthenticationType enumerates the values for http authentication type.
-type HTTPAuthenticationType string
-
-const (
-	// ActiveDirectoryOAuth ...
-	ActiveDirectoryOAuth HTTPAuthenticationType = "ActiveDirectoryOAuth"
-	// Basic ...
-	Basic HTTPAuthenticationType = "Basic"
-	// ClientCertificate ...
-	ClientCertificate HTTPAuthenticationType = "ClientCertificate"
-	// NotSpecified ...
-	NotSpecified HTTPAuthenticationType = "NotSpecified"
-)
-
-// PossibleHTTPAuthenticationTypeValues returns an array of possible values for the HTTPAuthenticationType const type.
-func PossibleHTTPAuthenticationTypeValues() []HTTPAuthenticationType {
-	return []HTTPAuthenticationType{ActiveDirectoryOAuth, Basic, ClientCertificate, NotSpecified}
-}
-
-// JobActionType enumerates the values for job action type.
-type JobActionType string
-
-const (
-	// HTTP ...
-	HTTP JobActionType = "Http"
-	// HTTPS ...
-	HTTPS JobActionType = "Https"
-	// ServiceBusQueue ...
-	ServiceBusQueue JobActionType = "ServiceBusQueue"
-	// ServiceBusTopic ...
-	ServiceBusTopic JobActionType = "ServiceBusTopic"
-	// StorageQueue ...
-	StorageQueue JobActionType = "StorageQueue"
-)
-
-// PossibleJobActionTypeValues returns an array of possible values for the JobActionType const type.
-func PossibleJobActionTypeValues() []JobActionType {
-	return []JobActionType{HTTP, HTTPS, ServiceBusQueue, ServiceBusTopic, StorageQueue}
-}
-
-// JobCollectionState enumerates the values for job collection state.
-type JobCollectionState string
-
-const (
-	// Deleted ...
-	Deleted JobCollectionState = "Deleted"
-	// Disabled ...
-	Disabled JobCollectionState = "Disabled"
-	// Enabled ...
-	Enabled JobCollectionState = "Enabled"
-	// Suspended ...
-	Suspended JobCollectionState = "Suspended"
-)
-
-// PossibleJobCollectionStateValues returns an array of possible values for the JobCollectionState const type.
-func PossibleJobCollectionStateValues() []JobCollectionState {
-	return []JobCollectionState{Deleted, Disabled, Enabled, Suspended}
-}
-
-// JobExecutionStatus enumerates the values for job execution status.
-type JobExecutionStatus string
-
-const (
-	// Completed ...
-	Completed JobExecutionStatus = "Completed"
-	// Failed ...
-	Failed JobExecutionStatus = "Failed"
-	// Postponed ...
-	Postponed JobExecutionStatus = "Postponed"
-)
-
-// PossibleJobExecutionStatusValues returns an array of possible values for the JobExecutionStatus const type.
-func PossibleJobExecutionStatusValues() []JobExecutionStatus {
-	return []JobExecutionStatus{Completed, Failed, Postponed}
-}
-
-// JobHistoryActionName enumerates the values for job history action name.
-type JobHistoryActionName string
-
-const (
-	// ErrorAction ...
-	ErrorAction JobHistoryActionName = "ErrorAction"
-	// MainAction ...
-	MainAction JobHistoryActionName = "MainAction"
-)
-
-// PossibleJobHistoryActionNameValues returns an array of possible values for the JobHistoryActionName const type.
-func PossibleJobHistoryActionNameValues() []JobHistoryActionName {
-	return []JobHistoryActionName{ErrorAction, MainAction}
-}
-
-// JobScheduleDay enumerates the values for job schedule day.
-type JobScheduleDay string
-
-const (
-	// JobScheduleDayFriday ...
-	JobScheduleDayFriday JobScheduleDay = "Friday"
-	// JobScheduleDayMonday ...
-	JobScheduleDayMonday JobScheduleDay = "Monday"
-	// JobScheduleDaySaturday ...
-	JobScheduleDaySaturday JobScheduleDay = "Saturday"
-	// JobScheduleDaySunday ...
-	JobScheduleDaySunday JobScheduleDay = "Sunday"
-	// JobScheduleDayThursday ...
-	JobScheduleDayThursday JobScheduleDay = "Thursday"
-	// JobScheduleDayTuesday ...
-	JobScheduleDayTuesday JobScheduleDay = "Tuesday"
-	// JobScheduleDayWednesday ...
-	JobScheduleDayWednesday JobScheduleDay = "Wednesday"
-)
-
-// PossibleJobScheduleDayValues returns an array of possible values for the JobScheduleDay const type.
-func PossibleJobScheduleDayValues() []JobScheduleDay {
-	return []JobScheduleDay{JobScheduleDayFriday, JobScheduleDayMonday, JobScheduleDaySaturday, JobScheduleDaySunday, JobScheduleDayThursday, JobScheduleDayTuesday, JobScheduleDayWednesday}
-}
-
-// JobState enumerates the values for job state.
-type JobState string
-
-const (
-	// JobStateCompleted ...
-	JobStateCompleted JobState = "Completed"
-	// JobStateDisabled ...
-	JobStateDisabled JobState = "Disabled"
-	// JobStateEnabled ...
-	JobStateEnabled JobState = "Enabled"
-	// JobStateFaulted ...
-	JobStateFaulted JobState = "Faulted"
-)
-
-// PossibleJobStateValues returns an array of possible values for the JobState const type.
-func PossibleJobStateValues() []JobState {
-	return []JobState{JobStateCompleted, JobStateDisabled, JobStateEnabled, JobStateFaulted}
-}
-
-// RecurrenceFrequency enumerates the values for recurrence frequency.
-type RecurrenceFrequency string
-
-const (
-	// Day ...
-	Day RecurrenceFrequency = "Day"
-	// Hour ...
-	Hour RecurrenceFrequency = "Hour"
-	// Minute ...
-	Minute RecurrenceFrequency = "Minute"
-	// Month ...
-	Month RecurrenceFrequency = "Month"
-	// Week ...
-	Week RecurrenceFrequency = "Week"
-)
-
-// PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
-func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
-	return []RecurrenceFrequency{Day, Hour, Minute, Month, Week}
-}
-
-// RetryType enumerates the values for retry type.
-type RetryType string
-
-const (
-	// Fixed ...
-	Fixed RetryType = "Fixed"
-	// None ...
-	None RetryType = "None"
-)
-
-// PossibleRetryTypeValues returns an array of possible values for the RetryType const type.
-func PossibleRetryTypeValues() []RetryType {
-	return []RetryType{Fixed, None}
-}
-
-// ServiceBusAuthenticationType enumerates the values for service bus authentication type.
-type ServiceBusAuthenticationType string
-
-const (
-	// ServiceBusAuthenticationTypeNotSpecified ...
-	ServiceBusAuthenticationTypeNotSpecified ServiceBusAuthenticationType = "NotSpecified"
-	// ServiceBusAuthenticationTypeSharedAccessKey ...
-	ServiceBusAuthenticationTypeSharedAccessKey ServiceBusAuthenticationType = "SharedAccessKey"
-)
-
-// PossibleServiceBusAuthenticationTypeValues returns an array of possible values for the ServiceBusAuthenticationType const type.
-func PossibleServiceBusAuthenticationTypeValues() []ServiceBusAuthenticationType {
-	return []ServiceBusAuthenticationType{ServiceBusAuthenticationTypeNotSpecified, ServiceBusAuthenticationTypeSharedAccessKey}
-}
-
-// ServiceBusTransportType enumerates the values for service bus transport type.
-type ServiceBusTransportType string
-
-const (
-	// ServiceBusTransportTypeAMQP ...
-	ServiceBusTransportTypeAMQP ServiceBusTransportType = "AMQP"
-	// ServiceBusTransportTypeNetMessaging ...
-	ServiceBusTransportTypeNetMessaging ServiceBusTransportType = "NetMessaging"
-	// ServiceBusTransportTypeNotSpecified ...
-	ServiceBusTransportTypeNotSpecified ServiceBusTransportType = "NotSpecified"
-)
-
-// PossibleServiceBusTransportTypeValues returns an array of possible values for the ServiceBusTransportType const type.
-func PossibleServiceBusTransportTypeValues() []ServiceBusTransportType {
-	return []ServiceBusTransportType{ServiceBusTransportTypeAMQP, ServiceBusTransportTypeNetMessaging, ServiceBusTransportTypeNotSpecified}
-}
-
-// SkuDefinition enumerates the values for sku definition.
-type SkuDefinition string
-
-const (
-	// Free ...
-	Free SkuDefinition = "Free"
-	// Premium ...
-	Premium SkuDefinition = "Premium"
-	// Standard ...
-	Standard SkuDefinition = "Standard"
-)
-
-// PossibleSkuDefinitionValues returns an array of possible values for the SkuDefinition const type.
-func PossibleSkuDefinitionValues() []SkuDefinition {
-	return []SkuDefinition{Free, Premium, Standard}
-}
-
 // BasicAuthentication ...
 type BasicAuthentication struct {
 	// Username - Gets or sets the username.
@@ -404,6 +159,15 @@ type JobCollectionListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobCollectionListResult.
+func (jclr JobCollectionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if jclr.NextLink != nil {
+		objectMap["nextLink"] = jclr.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
 // JobCollectionListResultIterator provides access to a complete listing of JobCollectionDefinition values.
 type JobCollectionListResultIterator struct {
 	i    int
@@ -472,10 +236,15 @@ func (jclr JobCollectionListResult) IsEmpty() bool {
 	return jclr.Value == nil || len(*jclr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (jclr JobCollectionListResult) hasNextLink() bool {
+	return jclr.NextLink != nil && len(*jclr.NextLink) != 0
+}
+
 // jobCollectionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (jclr JobCollectionListResult) jobCollectionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if jclr.NextLink == nil || len(to.String(jclr.NextLink)) < 1 {
+	if !jclr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -503,11 +272,16 @@ func (page *JobCollectionListResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.jclr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.jclr)
+		if err != nil {
+			return err
+		}
+		page.jclr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.jclr = next
 	return nil
 }
 
@@ -572,6 +346,15 @@ type JobDefinition struct {
 	Name *string `json:"name,omitempty"`
 	// Properties - Gets or sets the job properties.
 	Properties *JobProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobDefinition.
+func (jd JobDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if jd.Properties != nil {
+		objectMap["properties"] = jd.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // JobErrorAction ...
@@ -705,10 +488,15 @@ func (jhlr JobHistoryListResult) IsEmpty() bool {
 	return jhlr.Value == nil || len(*jhlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (jhlr JobHistoryListResult) hasNextLink() bool {
+	return jhlr.NextLink != nil && len(*jhlr.NextLink) != 0
+}
+
 // jobHistoryListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (jhlr JobHistoryListResult) jobHistoryListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if jhlr.NextLink == nil || len(to.String(jhlr.NextLink)) < 1 {
+	if !jhlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -736,11 +524,16 @@ func (page *JobHistoryListResultPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.jhlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.jhlr)
+		if err != nil {
+			return err
+		}
+		page.jhlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.jhlr = next
 	return nil
 }
 
@@ -851,10 +644,15 @@ func (jlr JobListResult) IsEmpty() bool {
 	return jlr.Value == nil || len(*jlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (jlr JobListResult) hasNextLink() bool {
+	return jlr.NextLink != nil && len(*jlr.NextLink) != 0
+}
+
 // jobListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (jlr JobListResult) jobListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if jlr.NextLink == nil || len(to.String(jlr.NextLink)) < 1 {
+	if !jlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -882,11 +680,16 @@ func (page *JobListResultPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.jlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.jlr)
+		if err != nil {
+			return err
+		}
+		page.jlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.jlr = next
 	return nil
 }
 
@@ -940,6 +743,24 @@ type JobProperties struct {
 	State JobState `json:"state,omitempty"`
 	// Status - READ-ONLY; Gets the job status.
 	Status *JobStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobProperties.
+func (jp JobProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if jp.StartTime != nil {
+		objectMap["startTime"] = jp.StartTime
+	}
+	if jp.Action != nil {
+		objectMap["action"] = jp.Action
+	}
+	if jp.Recurrence != nil {
+		objectMap["recurrence"] = jp.Recurrence
+	}
+	if jp.State != "" {
+		objectMap["state"] = jp.State
+	}
+	return json.Marshal(objectMap)
 }
 
 // JobRecurrence ...

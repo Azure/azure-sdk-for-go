@@ -317,6 +317,9 @@ func (client PartnersClient) ListByIntegrationAccounts(ctx context.Context, reso
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.PartnersClient", "ListByIntegrationAccounts", resp, "Failure responding to request")
 	}
+	if result.iaplr.hasNextLink() && result.iaplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

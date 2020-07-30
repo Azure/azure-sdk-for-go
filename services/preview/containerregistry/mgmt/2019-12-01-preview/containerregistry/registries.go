@@ -687,6 +687,9 @@ func (client RegistriesClient) List(ctx context.Context) (result RegistryListRes
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "List", resp, "Failure responding to request")
 	}
+	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -802,6 +805,9 @@ func (client RegistriesClient) ListByResourceGroup(ctx context.Context, resource
 	result.rlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -1009,6 +1015,9 @@ func (client RegistriesClient) ListPrivateLinkResources(ctx context.Context, res
 	result.plrlr, err = client.ListPrivateLinkResourcesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ListPrivateLinkResources", resp, "Failure responding to request")
+	}
+	if result.plrlr.hasNextLink() && result.plrlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

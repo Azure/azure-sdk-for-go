@@ -30,166 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure"
 
-// HanaHardwareTypeNamesEnum enumerates the values for hana hardware type names enum.
-type HanaHardwareTypeNamesEnum string
-
-const (
-	// CiscoUCS ...
-	CiscoUCS HanaHardwareTypeNamesEnum = "Cisco_UCS"
-	// HPE ...
-	HPE HanaHardwareTypeNamesEnum = "HPE"
-)
-
-// PossibleHanaHardwareTypeNamesEnumValues returns an array of possible values for the HanaHardwareTypeNamesEnum const type.
-func PossibleHanaHardwareTypeNamesEnumValues() []HanaHardwareTypeNamesEnum {
-	return []HanaHardwareTypeNamesEnum{CiscoUCS, HPE}
-}
-
-// HanaInstancePowerStateEnum enumerates the values for hana instance power state enum.
-type HanaInstancePowerStateEnum string
-
-const (
-	// Restarting ...
-	Restarting HanaInstancePowerStateEnum = "restarting"
-	// Started ...
-	Started HanaInstancePowerStateEnum = "started"
-	// Starting ...
-	Starting HanaInstancePowerStateEnum = "starting"
-	// Stopped ...
-	Stopped HanaInstancePowerStateEnum = "stopped"
-	// Stopping ...
-	Stopping HanaInstancePowerStateEnum = "stopping"
-	// Unknown ...
-	Unknown HanaInstancePowerStateEnum = "unknown"
-)
-
-// PossibleHanaInstancePowerStateEnumValues returns an array of possible values for the HanaInstancePowerStateEnum const type.
-func PossibleHanaInstancePowerStateEnumValues() []HanaInstancePowerStateEnum {
-	return []HanaInstancePowerStateEnum{Restarting, Started, Starting, Stopped, Stopping, Unknown}
-}
-
-// HanaInstanceSizeNamesEnum enumerates the values for hana instance size names enum.
-type HanaInstanceSizeNamesEnum string
-
-const (
-	// S112 ...
-	S112 HanaInstanceSizeNamesEnum = "S112"
-	// S144 ...
-	S144 HanaInstanceSizeNamesEnum = "S144"
-	// S144m ...
-	S144m HanaInstanceSizeNamesEnum = "S144m"
-	// S192 ...
-	S192 HanaInstanceSizeNamesEnum = "S192"
-	// S192m ...
-	S192m HanaInstanceSizeNamesEnum = "S192m"
-	// S192xm ...
-	S192xm HanaInstanceSizeNamesEnum = "S192xm"
-	// S224 ...
-	S224 HanaInstanceSizeNamesEnum = "S224"
-	// S224m ...
-	S224m HanaInstanceSizeNamesEnum = "S224m"
-	// S224om ...
-	S224om HanaInstanceSizeNamesEnum = "S224om"
-	// S224oo ...
-	S224oo HanaInstanceSizeNamesEnum = "S224oo"
-	// S224oom ...
-	S224oom HanaInstanceSizeNamesEnum = "S224oom"
-	// S224ooo ...
-	S224ooo HanaInstanceSizeNamesEnum = "S224ooo"
-	// S384 ...
-	S384 HanaInstanceSizeNamesEnum = "S384"
-	// S384m ...
-	S384m HanaInstanceSizeNamesEnum = "S384m"
-	// S384xm ...
-	S384xm HanaInstanceSizeNamesEnum = "S384xm"
-	// S384xxm ...
-	S384xxm HanaInstanceSizeNamesEnum = "S384xxm"
-	// S448 ...
-	S448 HanaInstanceSizeNamesEnum = "S448"
-	// S448m ...
-	S448m HanaInstanceSizeNamesEnum = "S448m"
-	// S448om ...
-	S448om HanaInstanceSizeNamesEnum = "S448om"
-	// S448oo ...
-	S448oo HanaInstanceSizeNamesEnum = "S448oo"
-	// S448oom ...
-	S448oom HanaInstanceSizeNamesEnum = "S448oom"
-	// S448ooo ...
-	S448ooo HanaInstanceSizeNamesEnum = "S448ooo"
-	// S576m ...
-	S576m HanaInstanceSizeNamesEnum = "S576m"
-	// S576xm ...
-	S576xm HanaInstanceSizeNamesEnum = "S576xm"
-	// S672 ...
-	S672 HanaInstanceSizeNamesEnum = "S672"
-	// S672m ...
-	S672m HanaInstanceSizeNamesEnum = "S672m"
-	// S672om ...
-	S672om HanaInstanceSizeNamesEnum = "S672om"
-	// S672oo ...
-	S672oo HanaInstanceSizeNamesEnum = "S672oo"
-	// S672oom ...
-	S672oom HanaInstanceSizeNamesEnum = "S672oom"
-	// S672ooo ...
-	S672ooo HanaInstanceSizeNamesEnum = "S672ooo"
-	// S72 ...
-	S72 HanaInstanceSizeNamesEnum = "S72"
-	// S72m ...
-	S72m HanaInstanceSizeNamesEnum = "S72m"
-	// S768 ...
-	S768 HanaInstanceSizeNamesEnum = "S768"
-	// S768m ...
-	S768m HanaInstanceSizeNamesEnum = "S768m"
-	// S768xm ...
-	S768xm HanaInstanceSizeNamesEnum = "S768xm"
-	// S896 ...
-	S896 HanaInstanceSizeNamesEnum = "S896"
-	// S896m ...
-	S896m HanaInstanceSizeNamesEnum = "S896m"
-	// S896om ...
-	S896om HanaInstanceSizeNamesEnum = "S896om"
-	// S896oo ...
-	S896oo HanaInstanceSizeNamesEnum = "S896oo"
-	// S896oom ...
-	S896oom HanaInstanceSizeNamesEnum = "S896oom"
-	// S896ooo ...
-	S896ooo HanaInstanceSizeNamesEnum = "S896ooo"
-	// S96 ...
-	S96 HanaInstanceSizeNamesEnum = "S96"
-	// S960m ...
-	S960m HanaInstanceSizeNamesEnum = "S960m"
-)
-
-// PossibleHanaInstanceSizeNamesEnumValues returns an array of possible values for the HanaInstanceSizeNamesEnum const type.
-func PossibleHanaInstanceSizeNamesEnumValues() []HanaInstanceSizeNamesEnum {
-	return []HanaInstanceSizeNamesEnum{S112, S144, S144m, S192, S192m, S192xm, S224, S224m, S224om, S224oo, S224oom, S224ooo, S384, S384m, S384xm, S384xxm, S448, S448m, S448om, S448oo, S448oom, S448ooo, S576m, S576xm, S672, S672m, S672om, S672oo, S672oom, S672ooo, S72, S72m, S768, S768m, S768xm, S896, S896m, S896om, S896oo, S896oom, S896ooo, S96, S960m}
-}
-
-// HanaProvisioningStatesEnum enumerates the values for hana provisioning states enum.
-type HanaProvisioningStatesEnum string
-
-const (
-	// Accepted ...
-	Accepted HanaProvisioningStatesEnum = "Accepted"
-	// Creating ...
-	Creating HanaProvisioningStatesEnum = "Creating"
-	// Deleting ...
-	Deleting HanaProvisioningStatesEnum = "Deleting"
-	// Failed ...
-	Failed HanaProvisioningStatesEnum = "Failed"
-	// Migrating ...
-	Migrating HanaProvisioningStatesEnum = "Migrating"
-	// Succeeded ...
-	Succeeded HanaProvisioningStatesEnum = "Succeeded"
-	// Updating ...
-	Updating HanaProvisioningStatesEnum = "Updating"
-)
-
-// PossibleHanaProvisioningStatesEnumValues returns an array of possible values for the HanaProvisioningStatesEnum const type.
-func PossibleHanaProvisioningStatesEnumValues() []HanaProvisioningStatesEnum {
-	return []HanaProvisioningStatesEnum{Accepted, Creating, Deleting, Failed, Migrating, Succeeded, Updating}
-}
-
 // Disk specifies the disk information fo the HANA instance
 type Disk struct {
 	// Name - The disk name.
@@ -198,6 +38,18 @@ type Disk struct {
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
 	// Lun - READ-ONLY; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
 	Lun *int32 `json:"lun,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Disk.
+func (d Disk) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if d.Name != nil {
+		objectMap["name"] = d.Name
+	}
+	if d.DiskSizeGB != nil {
+		objectMap["diskSizeGB"] = d.DiskSizeGB
+	}
+	return json.Marshal(objectMap)
 }
 
 // Display detailed HANA operation information
@@ -344,6 +196,27 @@ type HanaInstanceProperties struct {
 	ProvisioningState HanaProvisioningStatesEnum `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HanaInstanceProperties.
+func (hip HanaInstanceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hip.HardwareProfile != nil {
+		objectMap["hardwareProfile"] = hip.HardwareProfile
+	}
+	if hip.StorageProfile != nil {
+		objectMap["storageProfile"] = hip.StorageProfile
+	}
+	if hip.OsProfile != nil {
+		objectMap["osProfile"] = hip.OsProfile
+	}
+	if hip.NetworkProfile != nil {
+		objectMap["networkProfile"] = hip.NetworkProfile
+	}
+	if hip.PartnerNodeID != nil {
+		objectMap["partnerNodeId"] = hip.PartnerNodeID
+	}
+	return json.Marshal(objectMap)
+}
+
 // HanaInstancesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type HanaInstancesCreateFuture struct {
@@ -473,10 +346,15 @@ func (hilr HanaInstancesListResult) IsEmpty() bool {
 	return hilr.Value == nil || len(*hilr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (hilr HanaInstancesListResult) hasNextLink() bool {
+	return hilr.NextLink != nil && len(*hilr.NextLink) != 0
+}
+
 // hanaInstancesListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (hilr HanaInstancesListResult) hanaInstancesListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if hilr.NextLink == nil || len(to.String(hilr.NextLink)) < 1 {
+	if !hilr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -504,11 +382,16 @@ func (page *HanaInstancesListResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.hilr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.hilr)
+		if err != nil {
+			return err
+		}
+		page.hilr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.hilr = next
 	return nil
 }
 
@@ -649,12 +532,30 @@ type NetworkProfile struct {
 	CircuitID *string `json:"circuitId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NetworkProfile.
+func (np NetworkProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if np.NetworkInterfaces != nil {
+		objectMap["networkInterfaces"] = np.NetworkInterfaces
+	}
+	return json.Marshal(objectMap)
+}
+
 // Operation HANA operation information
 type Operation struct {
 	// Name - READ-ONLY; The name of the operation being performed on this particular object. This name should match the action name that appears in RBAC / the event service.
 	Name *string `json:"name,omitempty"`
 	// Display - Displayed HANA operation information
 	Display *Display `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationList list of HANA operations
@@ -674,6 +575,18 @@ type OSProfile struct {
 	Version *string `json:"version,omitempty"`
 	// SSHPublicKey - Specifies the SSH public key used to access the operating system.
 	SSHPublicKey *string `json:"sshPublicKey,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OSProfile.
+func (op OSProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if op.ComputerName != nil {
+		objectMap["computerName"] = op.ComputerName
+	}
+	if op.SSHPublicKey != nil {
+		objectMap["sshPublicKey"] = op.SSHPublicKey
+	}
+	return json.Marshal(objectMap)
 }
 
 // Resource the resource model definition.
@@ -874,10 +787,15 @@ func (smlr SapMonitorListResult) IsEmpty() bool {
 	return smlr.Value == nil || len(*smlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (smlr SapMonitorListResult) hasNextLink() bool {
+	return smlr.NextLink != nil && len(*smlr.NextLink) != 0
+}
+
 // sapMonitorListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (smlr SapMonitorListResult) sapMonitorListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if smlr.NextLink == nil || len(to.String(smlr.NextLink)) < 1 {
+	if !smlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -905,11 +823,16 @@ func (page *SapMonitorListResultPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.smlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.smlr)
+		if err != nil {
+			return err
+		}
+		page.smlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.smlr = next
 	return nil
 }
 
@@ -977,6 +900,51 @@ type SapMonitorProperties struct {
 	LogAnalyticsWorkspaceSharedKey *string `json:"logAnalyticsWorkspaceSharedKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SapMonitorProperties.
+func (smp SapMonitorProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if smp.HanaSubnet != nil {
+		objectMap["hanaSubnet"] = smp.HanaSubnet
+	}
+	if smp.HanaHostname != nil {
+		objectMap["hanaHostname"] = smp.HanaHostname
+	}
+	if smp.HanaDbName != nil {
+		objectMap["hanaDbName"] = smp.HanaDbName
+	}
+	if smp.HanaDbSQLPort != nil {
+		objectMap["hanaDbSqlPort"] = smp.HanaDbSQLPort
+	}
+	if smp.HanaDbUsername != nil {
+		objectMap["hanaDbUsername"] = smp.HanaDbUsername
+	}
+	if smp.HanaDbPassword != nil {
+		objectMap["hanaDbPassword"] = smp.HanaDbPassword
+	}
+	if smp.HanaDbPasswordKeyVaultURL != nil {
+		objectMap["hanaDbPasswordKeyVaultUrl"] = smp.HanaDbPasswordKeyVaultURL
+	}
+	if smp.HanaDbCredentialsMsiID != nil {
+		objectMap["hanaDbCredentialsMsiId"] = smp.HanaDbCredentialsMsiID
+	}
+	if smp.KeyVaultID != nil {
+		objectMap["keyVaultId"] = smp.KeyVaultID
+	}
+	if smp.LogAnalyticsWorkspaceArmID != nil {
+		objectMap["logAnalyticsWorkspaceArmId"] = smp.LogAnalyticsWorkspaceArmID
+	}
+	if smp.EnableCustomerAnalytics != nil {
+		objectMap["enableCustomerAnalytics"] = smp.EnableCustomerAnalytics
+	}
+	if smp.LogAnalyticsWorkspaceID != nil {
+		objectMap["logAnalyticsWorkspaceId"] = smp.LogAnalyticsWorkspaceID
+	}
+	if smp.LogAnalyticsWorkspaceSharedKey != nil {
+		objectMap["logAnalyticsWorkspaceSharedKey"] = smp.LogAnalyticsWorkspaceSharedKey
+	}
+	return json.Marshal(objectMap)
+}
+
 // SapMonitorsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type SapMonitorsCreateFuture struct {
@@ -1035,6 +1003,15 @@ type StorageProfile struct {
 	NfsIPAddress *string `json:"nfsIpAddress,omitempty"`
 	// OsDisks - Specifies information about the operating system disk used by the hana instance.
 	OsDisks *[]Disk `json:"osDisks,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StorageProfile.
+func (sp StorageProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.OsDisks != nil {
+		objectMap["osDisks"] = sp.OsDisks
+	}
+	return json.Marshal(objectMap)
 }
 
 // Tags tags field of the HANA instance.

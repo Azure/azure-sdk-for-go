@@ -32,90 +32,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/labservices/mgmt/2018-10-15/labservices"
 
-// AddRemove enumerates the values for add remove.
-type AddRemove string
-
-const (
-	// Add Indicates that a user is adding a favorite lab
-	Add AddRemove = "Add"
-	// Remove Indicates that a user is removing a favorite lab
-	Remove AddRemove = "Remove"
-)
-
-// PossibleAddRemoveValues returns an array of possible values for the AddRemove const type.
-func PossibleAddRemoveValues() []AddRemove {
-	return []AddRemove{Add, Remove}
-}
-
-// ConfigurationState enumerates the values for configuration state.
-type ConfigurationState string
-
-const (
-	// Completed User is finished modifying the template.
-	Completed ConfigurationState = "Completed"
-	// NotApplicable User either hasn't started configuring their template
-	// or they haven't started the configuration process.
-	NotApplicable ConfigurationState = "NotApplicable"
-)
-
-// PossibleConfigurationStateValues returns an array of possible values for the ConfigurationState const type.
-func PossibleConfigurationStateValues() []ConfigurationState {
-	return []ConfigurationState{Completed, NotApplicable}
-}
-
-// LabUserAccessMode enumerates the values for lab user access mode.
-type LabUserAccessMode string
-
-const (
-	// Open Any user can register with the lab and access its VMs.
-	Open LabUserAccessMode = "Open"
-	// Restricted Only users registered with the lab can access VMs.
-	Restricted LabUserAccessMode = "Restricted"
-)
-
-// PossibleLabUserAccessModeValues returns an array of possible values for the LabUserAccessMode const type.
-func PossibleLabUserAccessModeValues() []LabUserAccessMode {
-	return []LabUserAccessMode{Open, Restricted}
-}
-
-// ManagedLabVMSize enumerates the values for managed lab vm size.
-type ManagedLabVMSize string
-
-const (
-	// Basic The base VM size
-	Basic ManagedLabVMSize = "Basic"
-	// Performance The most performant VM size
-	Performance ManagedLabVMSize = "Performance"
-	// Standard The standard or default VM size
-	Standard ManagedLabVMSize = "Standard"
-)
-
-// PossibleManagedLabVMSizeValues returns an array of possible values for the ManagedLabVMSize const type.
-func PossibleManagedLabVMSizeValues() []ManagedLabVMSize {
-	return []ManagedLabVMSize{Basic, Performance, Standard}
-}
-
-// PublishingState enumerates the values for publishing state.
-type PublishingState string
-
-const (
-	// Draft Initial state of an environment setting.
-	Draft PublishingState = "Draft"
-	// Published All resources are currently provisioned.
-	Published PublishingState = "Published"
-	// PublishFailed Failed to provision all the necessary resources.
-	PublishFailed PublishingState = "PublishFailed"
-	// Publishing Currently provisioning resources.
-	Publishing PublishingState = "Publishing"
-	// Scaling Currently provisioning resources without recreating VM image.
-	Scaling PublishingState = "Scaling"
-)
-
-// PossiblePublishingStateValues returns an array of possible values for the PublishingState const type.
-func PossiblePublishingStateValues() []PublishingState {
-	return []PublishingState{Draft, Published, PublishFailed, Publishing, Scaling}
-}
-
 // AddUsersPayload payload for Add Users operation on a Lab.
 type AddUsersPayload struct {
 	// EmailAddresses - List of user emails addresses to add to the lab.
@@ -429,6 +345,21 @@ type EnvironmentProperties struct {
 	LatestOperationResult *LatestOperationResult `json:"latestOperationResult,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EnvironmentProperties.
+func (ep EnvironmentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ep.ResourceSets != nil {
+		objectMap["resourceSets"] = ep.ResourceSets
+	}
+	if ep.ProvisioningState != nil {
+		objectMap["provisioningState"] = ep.ProvisioningState
+	}
+	if ep.UniqueIdentifier != nil {
+		objectMap["uniqueIdentifier"] = ep.UniqueIdentifier
+	}
+	return json.Marshal(objectMap)
+}
+
 // EnvironmentPropertiesFragment properties of an environment
 type EnvironmentPropertiesFragment struct {
 	// ResourceSets - The set of a VM and the setting id it was created for
@@ -462,8 +393,7 @@ func (future *EnvironmentsDeleteFuture) Result(client EnvironmentsClient) (ar au
 	return
 }
 
-// EnvironmentSetting represents settings of an environment, from which environment instances would be
-// created
+// EnvironmentSetting represents settings of an environment, from which environment instances would be created
 type EnvironmentSetting struct {
 	autorest.Response `json:"-"`
 	// EnvironmentSettingProperties - The properties of the Environment Setting resource
@@ -570,8 +500,8 @@ type EnvironmentSettingCreationParameters struct {
 	ResourceSettingCreationParameters *ResourceSettingCreationParameters `json:"resourceSettingCreationParameters,omitempty"`
 }
 
-// EnvironmentSettingFragment represents settings of an environment, from which environment instances would
-// be created
+// EnvironmentSettingFragment represents settings of an environment, from which environment instances would be
+// created
 type EnvironmentSettingFragment struct {
 	// EnvironmentSettingPropertiesFragment - The properties of the Environment Setting resource
 	*EnvironmentSettingPropertiesFragment `json:"properties,omitempty"`
@@ -695,6 +625,30 @@ type EnvironmentSettingProperties struct {
 	LatestOperationResult *LatestOperationResult `json:"latestOperationResult,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EnvironmentSettingProperties.
+func (esp EnvironmentSettingProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if esp.ConfigurationState != "" {
+		objectMap["configurationState"] = esp.ConfigurationState
+	}
+	if esp.Description != nil {
+		objectMap["description"] = esp.Description
+	}
+	if esp.Title != nil {
+		objectMap["title"] = esp.Title
+	}
+	if esp.ResourceSettings != nil {
+		objectMap["resourceSettings"] = esp.ResourceSettings
+	}
+	if esp.ProvisioningState != nil {
+		objectMap["provisioningState"] = esp.ProvisioningState
+	}
+	if esp.UniqueIdentifier != nil {
+		objectMap["uniqueIdentifier"] = esp.UniqueIdentifier
+	}
+	return json.Marshal(objectMap)
+}
+
 // EnvironmentSettingPropertiesFragment properties of an environment setting
 type EnvironmentSettingPropertiesFragment struct {
 	// ConfigurationState - Describes the user's progress in configuring their environment setting. Possible values include: 'NotApplicable', 'Completed'
@@ -740,8 +694,8 @@ func (future *EnvironmentSettingsCreateOrUpdateFuture) Result(client Environment
 	return
 }
 
-// EnvironmentSettingsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// EnvironmentSettingsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EnvironmentSettingsDeleteFuture struct {
 	azure.Future
 }
@@ -763,8 +717,8 @@ func (future *EnvironmentSettingsDeleteFuture) Result(client EnvironmentSettings
 	return
 }
 
-// EnvironmentSettingsStartFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// EnvironmentSettingsStartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EnvironmentSettingsStartFuture struct {
 	azure.Future
 }
@@ -823,8 +777,19 @@ type EnvironmentSize struct {
 	MinMemory *float64 `json:"minMemory,omitempty"`
 }
 
-// EnvironmentSizeFragment represents a size category supported by this Lab Account (small, medium or
-// large)
+// MarshalJSON is the custom marshaler for EnvironmentSize.
+func (es EnvironmentSize) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if es.Name != "" {
+		objectMap["name"] = es.Name
+	}
+	if es.VMSizes != nil {
+		objectMap["vmSizes"] = es.VMSizes
+	}
+	return json.Marshal(objectMap)
+}
+
+// EnvironmentSizeFragment represents a size category supported by this Lab Account (small, medium or large)
 type EnvironmentSizeFragment struct {
 	// Name - The size category. Possible values include: 'Basic', 'Standard', 'Performance'
 	Name ManagedLabVMSize `json:"name,omitempty"`
@@ -832,8 +797,8 @@ type EnvironmentSizeFragment struct {
 	VMSizes *[]SizeInfoFragment `json:"vmSizes,omitempty"`
 }
 
-// EnvironmentsResetPasswordFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// EnvironmentsResetPasswordFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EnvironmentsResetPasswordFuture struct {
 	azure.Future
 }
@@ -878,8 +843,7 @@ func (future *EnvironmentsStartFuture) Result(client EnvironmentsClient) (ar aut
 	return
 }
 
-// EnvironmentsStopFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EnvironmentsStopFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type EnvironmentsStopFuture struct {
 	azure.Future
 }
@@ -1130,6 +1094,27 @@ type GalleryImageProperties struct {
 	LatestOperationResult *LatestOperationResult `json:"latestOperationResult,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GalleryImageProperties.
+func (gip GalleryImageProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gip.IsEnabled != nil {
+		objectMap["isEnabled"] = gip.IsEnabled
+	}
+	if gip.IsOverride != nil {
+		objectMap["isOverride"] = gip.IsOverride
+	}
+	if gip.IsPlanAuthorized != nil {
+		objectMap["isPlanAuthorized"] = gip.IsPlanAuthorized
+	}
+	if gip.ProvisioningState != nil {
+		objectMap["provisioningState"] = gip.ProvisioningState
+	}
+	if gip.UniqueIdentifier != nil {
+		objectMap["uniqueIdentifier"] = gip.UniqueIdentifier
+	}
+	return json.Marshal(objectMap)
+}
+
 // GalleryImagePropertiesFragment the gallery image properties
 type GalleryImagePropertiesFragment struct {
 	// IsEnabled - Indicates whether this gallery image is enabled.
@@ -1195,8 +1180,8 @@ type GetRegionalAvailabilityResponse struct {
 	RegionalAvailability *[]RegionalAvailability `json:"regionalAvailability,omitempty"`
 }
 
-// GlobalUsersResetPasswordFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// GlobalUsersResetPasswordFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type GlobalUsersResetPasswordFuture struct {
 	azure.Future
 }
@@ -1218,8 +1203,8 @@ func (future *GlobalUsersResetPasswordFuture) Result(client GlobalUsersClient) (
 	return
 }
 
-// GlobalUsersStartEnvironmentFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// GlobalUsersStartEnvironmentFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type GlobalUsersStartEnvironmentFuture struct {
 	azure.Future
 }
@@ -1241,8 +1226,8 @@ func (future *GlobalUsersStartEnvironmentFuture) Result(client GlobalUsersClient
 	return
 }
 
-// GlobalUsersStopEnvironmentFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// GlobalUsersStopEnvironmentFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type GlobalUsersStopEnvironmentFuture struct {
 	azure.Future
 }
@@ -1580,6 +1565,21 @@ type LabAccountProperties struct {
 	LatestOperationResult *LatestOperationResult `json:"latestOperationResult,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LabAccountProperties.
+func (lap LabAccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lap.EnabledRegionSelection != nil {
+		objectMap["enabledRegionSelection"] = lap.EnabledRegionSelection
+	}
+	if lap.ProvisioningState != nil {
+		objectMap["provisioningState"] = lap.ProvisioningState
+	}
+	if lap.UniqueIdentifier != nil {
+		objectMap["uniqueIdentifier"] = lap.UniqueIdentifier
+	}
+	return json.Marshal(objectMap)
+}
+
 // LabAccountPropertiesFragment properties of a Lab Account.
 type LabAccountPropertiesFragment struct {
 	// EnabledRegionSelection - Represents if region selection is enabled
@@ -1629,6 +1629,21 @@ type LabDetails struct {
 	ID *string `json:"id,omitempty"`
 	// UsageQuota - READ-ONLY; The maximum duration a user can use a VM in this lab.
 	UsageQuota *string `json:"usageQuota,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LabDetails.
+func (ld LabDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ld.Name != nil {
+		objectMap["name"] = ld.Name
+	}
+	if ld.ProvisioningState != nil {
+		objectMap["provisioningState"] = ld.ProvisioningState
+	}
+	if ld.ID != nil {
+		objectMap["id"] = ld.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // LabFragment represents a lab.
@@ -1755,6 +1770,27 @@ type LabProperties struct {
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 	// LatestOperationResult - READ-ONLY; The details of the latest operation. ex: status, error
 	LatestOperationResult *LatestOperationResult `json:"latestOperationResult,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LabProperties.
+func (lp LabProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lp.MaxUsersInLab != nil {
+		objectMap["maxUsersInLab"] = lp.MaxUsersInLab
+	}
+	if lp.UsageQuota != nil {
+		objectMap["usageQuota"] = lp.UsageQuota
+	}
+	if lp.UserAccessMode != "" {
+		objectMap["userAccessMode"] = lp.UserAccessMode
+	}
+	if lp.ProvisioningState != nil {
+		objectMap["provisioningState"] = lp.ProvisioningState
+	}
+	if lp.UniqueIdentifier != nil {
+		objectMap["uniqueIdentifier"] = lp.UniqueIdentifier
+	}
+	return json.Marshal(objectMap)
 }
 
 // LabPropertiesFragment properties of a Lab.
@@ -1932,6 +1968,15 @@ type ProviderOperationResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProviderOperationResult.
+func (por ProviderOperationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if por.Value != nil {
+		objectMap["value"] = por.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProviderOperationResultIterator provides access to a complete listing of OperationMetadata values.
 type ProviderOperationResultIterator struct {
 	i    int
@@ -2000,10 +2045,15 @@ func (por ProviderOperationResult) IsEmpty() bool {
 	return por.Value == nil || len(*por.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (por ProviderOperationResult) hasNextLink() bool {
+	return por.NextLink != nil && len(*por.NextLink) != 0
+}
+
 // providerOperationResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (por ProviderOperationResult) providerOperationResultPreparer(ctx context.Context) (*http.Request, error) {
-	if por.NextLink == nil || len(to.String(por.NextLink)) < 1 {
+	if !por.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2031,11 +2081,16 @@ func (page *ProviderOperationResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.por)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.por)
+		if err != nil {
+			return err
+		}
+		page.por = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.por = next
 	return nil
 }
 
@@ -2085,6 +2140,18 @@ type ReferenceVM struct {
 	VMStateDetails *VMStateDetails `json:"vmStateDetails,omitempty"`
 	// VMResourceID - READ-ONLY; VM resource Id for the environment
 	VMResourceID *string `json:"vmResourceId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReferenceVM.
+func (rv ReferenceVM) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rv.UserName != nil {
+		objectMap["userName"] = rv.UserName
+	}
+	if rv.Password != nil {
+		objectMap["password"] = rv.Password
+	}
+	return json.Marshal(objectMap)
 }
 
 // ReferenceVMCreationParameters creation parameters for Reference Vm
@@ -2199,6 +2266,21 @@ type ResourceSettings struct {
 	ReferenceVM *ReferenceVM `json:"referenceVm,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceSettings.
+func (rs ResourceSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rs.GalleryImageResourceID != nil {
+		objectMap["galleryImageResourceId"] = rs.GalleryImageResourceID
+	}
+	if rs.Size != "" {
+		objectMap["size"] = rs.Size
+	}
+	if rs.ReferenceVM != nil {
+		objectMap["referenceVm"] = rs.ReferenceVM
+	}
+	return json.Marshal(objectMap)
+}
+
 // ResourceSettingsFragment represents resource specific settings
 type ResourceSettingsFragment struct {
 	// GalleryImageResourceID - The resource id of the gallery image used for creating the virtual machine
@@ -2286,10 +2368,15 @@ func (rwcE ResponseWithContinuationEnvironment) IsEmpty() bool {
 	return rwcE.Value == nil || len(*rwcE.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcE ResponseWithContinuationEnvironment) hasNextLink() bool {
+	return rwcE.NextLink != nil && len(*rwcE.NextLink) != 0
+}
+
 // responseWithContinuationEnvironmentPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcE ResponseWithContinuationEnvironment) responseWithContinuationEnvironmentPreparer(ctx context.Context) (*http.Request, error) {
-	if rwcE.NextLink == nil || len(to.String(rwcE.NextLink)) < 1 {
+	if !rwcE.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2317,11 +2404,16 @@ func (page *ResponseWithContinuationEnvironmentPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwce)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwce)
+		if err != nil {
+			return err
+		}
+		page.rwce = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwce = next
 	return nil
 }
 
@@ -2433,10 +2525,15 @@ func (rwcEs ResponseWithContinuationEnvironmentSetting) IsEmpty() bool {
 	return rwcEs.Value == nil || len(*rwcEs.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcEs ResponseWithContinuationEnvironmentSetting) hasNextLink() bool {
+	return rwcEs.NextLink != nil && len(*rwcEs.NextLink) != 0
+}
+
 // responseWithContinuationEnvironmentSettingPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcEs ResponseWithContinuationEnvironmentSetting) responseWithContinuationEnvironmentSettingPreparer(ctx context.Context) (*http.Request, error) {
-	if rwcEs.NextLink == nil || len(to.String(rwcEs.NextLink)) < 1 {
+	if !rwcEs.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2464,11 +2561,16 @@ func (page *ResponseWithContinuationEnvironmentSettingPage) NextWithContext(ctx 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwces)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwces)
+		if err != nil {
+			return err
+		}
+		page.rwces = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwces = next
 	return nil
 }
 
@@ -2511,8 +2613,7 @@ type ResponseWithContinuationGalleryImage struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ResponseWithContinuationGalleryImageIterator provides access to a complete listing of GalleryImage
-// values.
+// ResponseWithContinuationGalleryImageIterator provides access to a complete listing of GalleryImage values.
 type ResponseWithContinuationGalleryImageIterator struct {
 	i    int
 	page ResponseWithContinuationGalleryImagePage
@@ -2580,10 +2681,15 @@ func (rwcGi ResponseWithContinuationGalleryImage) IsEmpty() bool {
 	return rwcGi.Value == nil || len(*rwcGi.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcGi ResponseWithContinuationGalleryImage) hasNextLink() bool {
+	return rwcGi.NextLink != nil && len(*rwcGi.NextLink) != 0
+}
+
 // responseWithContinuationGalleryImagePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcGi ResponseWithContinuationGalleryImage) responseWithContinuationGalleryImagePreparer(ctx context.Context) (*http.Request, error) {
-	if rwcGi.NextLink == nil || len(to.String(rwcGi.NextLink)) < 1 {
+	if !rwcGi.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2611,11 +2717,16 @@ func (page *ResponseWithContinuationGalleryImagePage) NextWithContext(ctx contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwcgi)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwcgi)
+		if err != nil {
+			return err
+		}
+		page.rwcgi = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwcgi = next
 	return nil
 }
 
@@ -2735,10 +2846,15 @@ func (rwcLa ResponseWithContinuationLabAccount) IsEmpty() bool {
 	return rwcLa.Value == nil || len(*rwcLa.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcLa ResponseWithContinuationLabAccount) hasNextLink() bool {
+	return rwcLa.NextLink != nil && len(*rwcLa.NextLink) != 0
+}
+
 // responseWithContinuationLabAccountPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcLa ResponseWithContinuationLabAccount) responseWithContinuationLabAccountPreparer(ctx context.Context) (*http.Request, error) {
-	if rwcLa.NextLink == nil || len(to.String(rwcLa.NextLink)) < 1 {
+	if !rwcLa.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2766,11 +2882,16 @@ func (page *ResponseWithContinuationLabAccountPage) NextWithContext(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwcla)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwcla)
+		if err != nil {
+			return err
+		}
+		page.rwcla = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwcla = next
 	return nil
 }
 
@@ -2872,10 +2993,15 @@ func (rwcL ResponseWithContinuationLab) IsEmpty() bool {
 	return rwcL.Value == nil || len(*rwcL.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcL ResponseWithContinuationLab) hasNextLink() bool {
+	return rwcL.NextLink != nil && len(*rwcL.NextLink) != 0
+}
+
 // responseWithContinuationLabPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcL ResponseWithContinuationLab) responseWithContinuationLabPreparer(ctx context.Context) (*http.Request, error) {
-	if rwcL.NextLink == nil || len(to.String(rwcL.NextLink)) < 1 {
+	if !rwcL.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2903,11 +3029,16 @@ func (page *ResponseWithContinuationLabPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwcl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwcl)
+		if err != nil {
+			return err
+		}
+		page.rwcl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwcl = next
 	return nil
 }
 
@@ -3018,10 +3149,15 @@ func (rwcU ResponseWithContinuationUser) IsEmpty() bool {
 	return rwcU.Value == nil || len(*rwcU.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcU ResponseWithContinuationUser) hasNextLink() bool {
+	return rwcU.NextLink != nil && len(*rwcU.NextLink) != 0
+}
+
 // responseWithContinuationUserPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcU ResponseWithContinuationUser) responseWithContinuationUserPreparer(ctx context.Context) (*http.Request, error) {
-	if rwcU.NextLink == nil || len(to.String(rwcU.NextLink)) < 1 {
+	if !rwcU.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3049,11 +3185,16 @@ func (page *ResponseWithContinuationUserPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwcu)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwcu)
+		if err != nil {
+			return err
+		}
+		page.rwcu = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwcu = next
 	return nil
 }
 
@@ -3350,6 +3491,18 @@ type UserProperties struct {
 	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty"`
 	// LatestOperationResult - READ-ONLY; The details of the latest operation. ex: status, error
 	LatestOperationResult *LatestOperationResult `json:"latestOperationResult,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UserProperties.
+func (up UserProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if up.ProvisioningState != nil {
+		objectMap["provisioningState"] = up.ProvisioningState
+	}
+	if up.UniqueIdentifier != nil {
+		objectMap["uniqueIdentifier"] = up.UniqueIdentifier
+	}
+	return json.Marshal(objectMap)
 }
 
 // UserPropertiesFragment lab User properties

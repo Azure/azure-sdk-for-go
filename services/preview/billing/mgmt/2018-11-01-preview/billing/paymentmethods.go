@@ -73,6 +73,9 @@ func (client PaymentMethodsClient) ListByBillingAccountName(ctx context.Context,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PaymentMethodsClient", "ListByBillingAccountName", resp, "Failure responding to request")
 	}
+	if result.pmlr.hasNextLink() && result.pmlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -183,6 +186,9 @@ func (client PaymentMethodsClient) ListByBillingProfileName(ctx context.Context,
 	result.pmlr, err = client.ListByBillingProfileNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PaymentMethodsClient", "ListByBillingProfileName", resp, "Failure responding to request")
+	}
+	if result.pmlr.hasNextLink() && result.pmlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

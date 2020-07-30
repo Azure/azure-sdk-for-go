@@ -401,6 +401,9 @@ func (client LabsClient) List(ctx context.Context, resourceGroupName string, lab
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabsClient", "List", resp, "Failure responding to request")
 	}
+	if result.rwcl.hasNextLink() && result.rwcl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

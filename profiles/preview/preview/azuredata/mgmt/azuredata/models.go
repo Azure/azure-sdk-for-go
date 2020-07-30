@@ -29,11 +29,20 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type IdentityType = original.IdentityType
+
+const (
+	Application     IdentityType = original.Application
+	Key             IdentityType = original.Key
+	ManagedIdentity IdentityType = original.ManagedIdentity
+	User            IdentityType = original.User
+)
+
 type OperationOrigin = original.OperationOrigin
 
 const (
-	System OperationOrigin = original.System
-	User   OperationOrigin = original.User
+	OperationOriginSystem OperationOrigin = original.OperationOriginSystem
+	OperationOriginUser   OperationOrigin = original.OperationOriginUser
 )
 
 type RequestType = original.RequestType
@@ -72,19 +81,13 @@ type AzureResource = original.AzureResource
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
-type DataController = original.DataController
 type DataControllerProperties = original.DataControllerProperties
 type DataControllerResource = original.DataControllerResource
 type DataControllersClient = original.DataControllersClient
 type HandshakeResponse = original.HandshakeResponse
-type HybridDataManager = original.HybridDataManager
-type HybridDataManagerListResult = original.HybridDataManagerListResult
-type HybridDataManagerListResultIterator = original.HybridDataManagerListResultIterator
-type HybridDataManagerListResultPage = original.HybridDataManagerListResultPage
-type HybridDataManagerUpdate = original.HybridDataManagerUpdate
-type HybridDataManagersClient = original.HybridDataManagersClient
 type Identity = original.Identity
 type ODataError = original.ODataError
+type OnPremiseProperty = original.OnPremiseProperty
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -109,13 +112,6 @@ type ResourceModelWithAllowedPropertySetIdentity = original.ResourceModelWithAll
 type ResourceModelWithAllowedPropertySetPlan = original.ResourceModelWithAllowedPropertySetPlan
 type ResourceModelWithAllowedPropertySetSku = original.ResourceModelWithAllowedPropertySetSku
 type ResourceSku = original.ResourceSku
-type SQLInstance = original.SQLInstance
-type SQLInstanceListResult = original.SQLInstanceListResult
-type SQLInstanceListResultIterator = original.SQLInstanceListResultIterator
-type SQLInstanceListResultPage = original.SQLInstanceListResultPage
-type SQLInstanceProperties = original.SQLInstanceProperties
-type SQLInstanceUpdate = original.SQLInstanceUpdate
-type SQLInstancesClient = original.SQLInstancesClient
 type SQLManagedInstance = original.SQLManagedInstance
 type SQLManagedInstanceListResult = original.SQLManagedInstanceListResult
 type SQLManagedInstanceListResultIterator = original.SQLManagedInstanceListResultIterator
@@ -144,6 +140,7 @@ type SQLServerRegistrationUpdate = original.SQLServerRegistrationUpdate
 type SQLServerRegistrationsClient = original.SQLServerRegistrationsClient
 type SQLServersClient = original.SQLServersClient
 type Sku = original.Sku
+type SystemData = original.SystemData
 type TrackedResource = original.TrackedResource
 type UsageRecord = original.UsageRecord
 type UsageUploadRequest = original.UsageUploadRequest
@@ -157,18 +154,6 @@ func NewDataControllersClient(subscriptionID string, subscriptionID1 string) Dat
 }
 func NewDataControllersClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) DataControllersClient {
 	return original.NewDataControllersClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
-}
-func NewHybridDataManagerListResultIterator(page HybridDataManagerListResultPage) HybridDataManagerListResultIterator {
-	return original.NewHybridDataManagerListResultIterator(page)
-}
-func NewHybridDataManagerListResultPage(getNextPage func(context.Context, HybridDataManagerListResult) (HybridDataManagerListResult, error)) HybridDataManagerListResultPage {
-	return original.NewHybridDataManagerListResultPage(getNextPage)
-}
-func NewHybridDataManagersClient(subscriptionID string, subscriptionID1 string) HybridDataManagersClient {
-	return original.NewHybridDataManagersClient(subscriptionID, subscriptionID1)
-}
-func NewHybridDataManagersClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) HybridDataManagersClient {
-	return original.NewHybridDataManagersClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -199,18 +184,6 @@ func NewPostgresInstancesClient(subscriptionID string, subscriptionID1 string) P
 }
 func NewPostgresInstancesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PostgresInstancesClient {
 	return original.NewPostgresInstancesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
-}
-func NewSQLInstanceListResultIterator(page SQLInstanceListResultPage) SQLInstanceListResultIterator {
-	return original.NewSQLInstanceListResultIterator(page)
-}
-func NewSQLInstanceListResultPage(getNextPage func(context.Context, SQLInstanceListResult) (SQLInstanceListResult, error)) SQLInstanceListResultPage {
-	return original.NewSQLInstanceListResultPage(getNextPage)
-}
-func NewSQLInstancesClient(subscriptionID string, subscriptionID1 string) SQLInstancesClient {
-	return original.NewSQLInstancesClient(subscriptionID, subscriptionID1)
-}
-func NewSQLInstancesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) SQLInstancesClient {
-	return original.NewSQLInstancesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewSQLManagedInstanceListResultIterator(page SQLManagedInstanceListResultPage) SQLManagedInstanceListResultIterator {
 	return original.NewSQLManagedInstanceListResultIterator(page)
@@ -262,6 +235,9 @@ func NewSQLServersClientWithBaseURI(baseURI string, subscriptionID string, subsc
 }
 func NewWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+}
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
 }
 func PossibleOperationOriginValues() []OperationOrigin {
 	return original.PossibleOperationOriginValues()

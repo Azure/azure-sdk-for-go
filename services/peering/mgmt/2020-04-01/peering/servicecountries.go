@@ -72,6 +72,9 @@ func (client ServiceCountriesClient) List(ctx context.Context) (result ServiceCo
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.ServiceCountriesClient", "List", resp, "Failure responding to request")
 	}
+	if result.sclr.hasNextLink() && result.sclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

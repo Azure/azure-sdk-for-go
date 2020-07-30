@@ -32,14 +32,14 @@ type ProfilesClient struct {
 }
 
 // NewProfilesClient creates an instance of the ProfilesClient client.
-func NewProfilesClient(subscriptionID string, subscriptionID1 string) ProfilesClient {
-	return NewProfilesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewProfilesClient(subscriptionID string) ProfilesClient {
+	return NewProfilesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewProfilesClientWithBaseURI creates an instance of the ProfilesClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ProfilesClient {
-	return ProfilesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
+	return ProfilesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new CDN profile with a profile name under the specified subscription and resource group.
@@ -412,6 +412,9 @@ func (client ProfilesClient) List(ctx context.Context) (result ProfileListResult
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "List", resp, "Failure responding to request")
 	}
+	if result.plr.hasNextLink() && result.plr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -529,6 +532,9 @@ func (client ProfilesClient) ListByResourceGroup(ctx context.Context, resourceGr
 	result.plr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.plr.hasNextLink() && result.plr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -649,6 +655,9 @@ func (client ProfilesClient) ListResourceUsage(ctx context.Context, resourceGrou
 	result.rulr, err = client.ListResourceUsageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "ListResourceUsage", resp, "Failure responding to request")
+	}
+	if result.rulr.hasNextLink() && result.rulr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

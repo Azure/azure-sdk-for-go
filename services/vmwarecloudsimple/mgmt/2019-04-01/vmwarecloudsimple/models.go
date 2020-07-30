@@ -32,294 +32,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/vmwarecloudsimple/mgmt/2019-04-01/vmwarecloudsimple"
 
-// AggregationType enumerates the values for aggregation type.
-type AggregationType string
-
-const (
-	// Average ...
-	Average AggregationType = "Average"
-	// Total ...
-	Total AggregationType = "Total"
-)
-
-// PossibleAggregationTypeValues returns an array of possible values for the AggregationType const type.
-func PossibleAggregationTypeValues() []AggregationType {
-	return []AggregationType{Average, Total}
-}
-
-// Allocation enumerates the values for allocation.
-type Allocation string
-
-const (
-	// Dynamic ...
-	Dynamic Allocation = "dynamic"
-	// Static ...
-	Static Allocation = "static"
-)
-
-// PossibleAllocationValues returns an array of possible values for the Allocation const type.
-func PossibleAllocationValues() []Allocation {
-	return []Allocation{Dynamic, Static}
-}
-
-// DiskIndependenceMode enumerates the values for disk independence mode.
-type DiskIndependenceMode string
-
-const (
-	// IndependentNonpersistent ...
-	IndependentNonpersistent DiskIndependenceMode = "independent_nonpersistent"
-	// IndependentPersistent ...
-	IndependentPersistent DiskIndependenceMode = "independent_persistent"
-	// Persistent ...
-	Persistent DiskIndependenceMode = "persistent"
-)
-
-// PossibleDiskIndependenceModeValues returns an array of possible values for the DiskIndependenceMode const type.
-func PossibleDiskIndependenceModeValues() []DiskIndependenceMode {
-	return []DiskIndependenceMode{IndependentNonpersistent, IndependentPersistent, Persistent}
-}
-
-// GuestOSType enumerates the values for guest os type.
-type GuestOSType string
-
-const (
-	// Linux ...
-	Linux GuestOSType = "linux"
-	// Other ...
-	Other GuestOSType = "other"
-	// Windows ...
-	Windows GuestOSType = "windows"
-)
-
-// PossibleGuestOSTypeValues returns an array of possible values for the GuestOSType const type.
-func PossibleGuestOSTypeValues() []GuestOSType {
-	return []GuestOSType{Linux, Other, Windows}
-}
-
-// NICType enumerates the values for nic type.
-type NICType string
-
-const (
-	// E1000 ...
-	E1000 NICType = "E1000"
-	// E1000E ...
-	E1000E NICType = "E1000E"
-	// PCNET32 ...
-	PCNET32 NICType = "PCNET32"
-	// VMXNET ...
-	VMXNET NICType = "VMXNET"
-	// VMXNET2 ...
-	VMXNET2 NICType = "VMXNET2"
-	// VMXNET3 ...
-	VMXNET3 NICType = "VMXNET3"
-)
-
-// PossibleNICTypeValues returns an array of possible values for the NICType const type.
-func PossibleNICTypeValues() []NICType {
-	return []NICType{E1000, E1000E, PCNET32, VMXNET, VMXNET2, VMXNET3}
-}
-
-// NodeStatus enumerates the values for node status.
-type NodeStatus string
-
-const (
-	// Unused ...
-	Unused NodeStatus = "unused"
-	// Used ...
-	Used NodeStatus = "used"
-)
-
-// PossibleNodeStatusValues returns an array of possible values for the NodeStatus const type.
-func PossibleNodeStatusValues() []NodeStatus {
-	return []NodeStatus{Unused, Used}
-}
-
-// OnboardingStatus enumerates the values for onboarding status.
-type OnboardingStatus string
-
-const (
-	// NotOnBoarded ...
-	NotOnBoarded OnboardingStatus = "notOnBoarded"
-	// OnBoarded ...
-	OnBoarded OnboardingStatus = "onBoarded"
-	// OnBoarding ...
-	OnBoarding OnboardingStatus = "onBoarding"
-	// OnBoardingFailed ...
-	OnBoardingFailed OnboardingStatus = "onBoardingFailed"
-)
-
-// PossibleOnboardingStatusValues returns an array of possible values for the OnboardingStatus const type.
-func PossibleOnboardingStatusValues() []OnboardingStatus {
-	return []OnboardingStatus{NotOnBoarded, OnBoarded, OnBoarding, OnBoardingFailed}
-}
-
-// OperationOrigin enumerates the values for operation origin.
-type OperationOrigin string
-
-const (
-	// System ...
-	System OperationOrigin = "system"
-	// User ...
-	User OperationOrigin = "user"
-	// Usersystem ...
-	Usersystem OperationOrigin = "user,system"
-)
-
-// PossibleOperationOriginValues returns an array of possible values for the OperationOrigin const type.
-func PossibleOperationOriginValues() []OperationOrigin {
-	return []OperationOrigin{System, User, Usersystem}
-}
-
-// PrivateCloudResourceType enumerates the values for private cloud resource type.
-type PrivateCloudResourceType string
-
-const (
-	// MicrosoftVMwareCloudSimpleprivateClouds ...
-	MicrosoftVMwareCloudSimpleprivateClouds PrivateCloudResourceType = "Microsoft.VMwareCloudSimple/privateClouds"
-)
-
-// PossiblePrivateCloudResourceTypeValues returns an array of possible values for the PrivateCloudResourceType const type.
-func PossiblePrivateCloudResourceTypeValues() []PrivateCloudResourceType {
-	return []PrivateCloudResourceType{MicrosoftVMwareCloudSimpleprivateClouds}
-}
-
-// StopMode enumerates the values for stop mode.
-type StopMode string
-
-const (
-	// Poweroff ...
-	Poweroff StopMode = "poweroff"
-	// Reboot ...
-	Reboot StopMode = "reboot"
-	// Shutdown ...
-	Shutdown StopMode = "shutdown"
-	// Suspend ...
-	Suspend StopMode = "suspend"
-)
-
-// PossibleStopModeValues returns an array of possible values for the StopMode const type.
-func PossibleStopModeValues() []StopMode {
-	return []StopMode{Poweroff, Reboot, Shutdown, Suspend}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// CUSTOMNAME ...
-	CUSTOMNAME Type = "CUSTOM_NAME"
-	// FIXED ...
-	FIXED Type = "FIXED"
-	// PREFIXBASED ...
-	PREFIXBASED Type = "PREFIX_BASED"
-	// USERDEFINED ...
-	USERDEFINED Type = "USER_DEFINED"
-	// VIRTUALMACHINENAME ...
-	VIRTUALMACHINENAME Type = "VIRTUAL_MACHINE_NAME"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{CUSTOMNAME, FIXED, PREFIXBASED, USERDEFINED, VIRTUALMACHINENAME}
-}
-
-// Type1 enumerates the values for type 1.
-type Type1 string
-
-const (
-	// Type1CUSTOM ...
-	Type1CUSTOM Type1 = "CUSTOM"
-	// Type1DHCPIP ...
-	Type1DHCPIP Type1 = "DHCP_IP"
-	// Type1FIXEDIP ...
-	Type1FIXEDIP Type1 = "FIXED_IP"
-	// Type1USERDEFINED ...
-	Type1USERDEFINED Type1 = "USER_DEFINED"
-)
-
-// PossibleType1Values returns an array of possible values for the Type1 const type.
-func PossibleType1Values() []Type1 {
-	return []Type1{Type1CUSTOM, Type1DHCPIP, Type1FIXEDIP, Type1USERDEFINED}
-}
-
-// Type2 enumerates the values for type 2.
-type Type2 string
-
-const (
-	// LINUX ...
-	LINUX Type2 = "LINUX"
-	// WINDOWS ...
-	WINDOWS Type2 = "WINDOWS"
-	// WINDOWSTEXT ...
-	WINDOWSTEXT Type2 = "WINDOWS_TEXT"
-)
-
-// PossibleType2Values returns an array of possible values for the Type2 const type.
-func PossibleType2Values() []Type2 {
-	return []Type2{LINUX, WINDOWS, WINDOWSTEXT}
-}
-
-// Type3 enumerates the values for type 3.
-type Type3 string
-
-const (
-	// Type3LINUX ...
-	Type3LINUX Type3 = "LINUX"
-	// Type3WINDOWS ...
-	Type3WINDOWS Type3 = "WINDOWS"
-)
-
-// PossibleType3Values returns an array of possible values for the Type3 const type.
-func PossibleType3Values() []Type3 {
-	return []Type3{Type3LINUX, Type3WINDOWS}
-}
-
-// UsageCount enumerates the values for usage count.
-type UsageCount string
-
-const (
-	// Bytes ...
-	Bytes UsageCount = "Bytes"
-	// BytesPerSecond ...
-	BytesPerSecond UsageCount = "BytesPerSecond"
-	// Count ...
-	Count UsageCount = "Count"
-	// CountPerSecond ...
-	CountPerSecond UsageCount = "CountPerSecond"
-	// Percent ...
-	Percent UsageCount = "Percent"
-	// Seconds ...
-	Seconds UsageCount = "Seconds"
-)
-
-// PossibleUsageCountValues returns an array of possible values for the UsageCount const type.
-func PossibleUsageCountValues() []UsageCount {
-	return []UsageCount{Bytes, BytesPerSecond, Count, CountPerSecond, Percent, Seconds}
-}
-
-// VirtualMachineStatus enumerates the values for virtual machine status.
-type VirtualMachineStatus string
-
-const (
-	// Deallocating ...
-	Deallocating VirtualMachineStatus = "deallocating"
-	// Deleting ...
-	Deleting VirtualMachineStatus = "deleting"
-	// Poweredoff ...
-	Poweredoff VirtualMachineStatus = "poweredoff"
-	// Running ...
-	Running VirtualMachineStatus = "running"
-	// Suspended ...
-	Suspended VirtualMachineStatus = "suspended"
-	// Updating ...
-	Updating VirtualMachineStatus = "updating"
-)
-
-// PossibleVirtualMachineStatusValues returns an array of possible values for the VirtualMachineStatus const type.
-func PossibleVirtualMachineStatusValues() []VirtualMachineStatus {
-	return []VirtualMachineStatus{Deallocating, Deleting, Poweredoff, Running, Suspended, Updating}
-}
-
 // AvailableOperation resource provider available operation model
 type AvailableOperation struct {
 	// Display - The list of operations
@@ -465,8 +177,7 @@ type AvailableOperationsListResponse struct {
 	Value *[]AvailableOperation `json:"value,omitempty"`
 }
 
-// AvailableOperationsListResponseIterator provides access to a complete listing of AvailableOperation
-// values.
+// AvailableOperationsListResponseIterator provides access to a complete listing of AvailableOperation values.
 type AvailableOperationsListResponseIterator struct {
 	i    int
 	page AvailableOperationsListResponsePage
@@ -534,10 +245,15 @@ func (aolr AvailableOperationsListResponse) IsEmpty() bool {
 	return aolr.Value == nil || len(*aolr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (aolr AvailableOperationsListResponse) hasNextLink() bool {
+	return aolr.NextLink != nil && len(*aolr.NextLink) != 0
+}
+
 // availableOperationsListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (aolr AvailableOperationsListResponse) availableOperationsListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if aolr.NextLink == nil || len(to.String(aolr.NextLink)) < 1 {
+	if !aolr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -565,11 +281,16 @@ func (page *AvailableOperationsListResponsePage) NextWithContext(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.aolr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.aolr)
+		if err != nil {
+			return err
+		}
+		page.aolr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.aolr = next
 	return nil
 }
 
@@ -619,6 +340,15 @@ type CSRPErrorBody struct {
 	Message *string `json:"message,omitempty"`
 	// Target - Error's target
 	Target *string `json:"target,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CSRPErrorBody.
+func (ceb CSRPErrorBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ceb.Target != nil {
+		objectMap["target"] = ceb.Target
+	}
+	return json.Marshal(objectMap)
 }
 
 // CustomizationHostName host name model
@@ -753,10 +483,15 @@ func (cplr CustomizationPoliciesListResponse) IsEmpty() bool {
 	return cplr.Value == nil || len(*cplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cplr CustomizationPoliciesListResponse) hasNextLink() bool {
+	return cplr.NextLink != nil && len(*cplr.NextLink) != 0
+}
+
 // customizationPoliciesListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cplr CustomizationPoliciesListResponse) customizationPoliciesListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if cplr.NextLink == nil || len(to.String(cplr.NextLink)) < 1 {
+	if !cplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -784,11 +519,16 @@ func (page *CustomizationPoliciesListResponsePage) NextWithContext(ctx context.C
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cplr)
+		if err != nil {
+			return err
+		}
+		page.cplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cplr = next
 	return nil
 }
 
@@ -1058,8 +798,7 @@ type DedicatedCloudNodeListResponse struct {
 	Value *[]DedicatedCloudNode `json:"value,omitempty"`
 }
 
-// DedicatedCloudNodeListResponseIterator provides access to a complete listing of DedicatedCloudNode
-// values.
+// DedicatedCloudNodeListResponseIterator provides access to a complete listing of DedicatedCloudNode values.
 type DedicatedCloudNodeListResponseIterator struct {
 	i    int
 	page DedicatedCloudNodeListResponsePage
@@ -1127,10 +866,15 @@ func (dcnlr DedicatedCloudNodeListResponse) IsEmpty() bool {
 	return dcnlr.Value == nil || len(*dcnlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dcnlr DedicatedCloudNodeListResponse) hasNextLink() bool {
+	return dcnlr.NextLink != nil && len(*dcnlr.NextLink) != 0
+}
+
 // dedicatedCloudNodeListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dcnlr DedicatedCloudNodeListResponse) dedicatedCloudNodeListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if dcnlr.NextLink == nil || len(to.String(dcnlr.NextLink)) < 1 {
+	if !dcnlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1158,11 +902,16 @@ func (page *DedicatedCloudNodeListResponsePage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dcnlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dcnlr)
+		if err != nil {
+			return err
+		}
+		page.dcnlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dcnlr = next
 	return nil
 }
 
@@ -1598,10 +1347,15 @@ func (dcslr DedicatedCloudServiceListResponse) IsEmpty() bool {
 	return dcslr.Value == nil || len(*dcslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dcslr DedicatedCloudServiceListResponse) hasNextLink() bool {
+	return dcslr.NextLink != nil && len(*dcslr.NextLink) != 0
+}
+
 // dedicatedCloudServiceListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dcslr DedicatedCloudServiceListResponse) dedicatedCloudServiceListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if dcslr.NextLink == nil || len(to.String(dcslr.NextLink)) < 1 {
+	if !dcslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1629,11 +1383,16 @@ func (page *DedicatedCloudServiceListResponsePage) NextWithContext(ctx context.C
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dcslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dcslr)
+		if err != nil {
+			return err
+		}
+		page.dcslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dcslr = next
 	return nil
 }
 
@@ -1677,6 +1436,15 @@ type DedicatedCloudServiceProperties struct {
 	Nodes *int32 `json:"nodes,omitempty"`
 	// ServiceURL - READ-ONLY; link to a service management web portal
 	ServiceURL *string `json:"serviceURL,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DedicatedCloudServiceProperties.
+func (dcsp DedicatedCloudServiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dcsp.GatewaySubnet != nil {
+		objectMap["gatewaySubnet"] = dcsp.GatewaySubnet
+	}
+	return json.Marshal(objectMap)
 }
 
 // DedicatedCloudServicesDeleteFuture an abstraction for monitoring and retrieving the results of a
@@ -1757,6 +1525,15 @@ type OperationResource struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// Status - READ-ONLY; Operation status
 	Status *string `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationResource.
+func (or OperationResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if or.Error != nil {
+		objectMap["error"] = or.Error
+	}
+	return json.Marshal(objectMap)
 }
 
 // PatchPayload general patch payload modal
@@ -1947,10 +1724,15 @@ func (pcl PrivateCloudList) IsEmpty() bool {
 	return pcl.Value == nil || len(*pcl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pcl PrivateCloudList) hasNextLink() bool {
+	return pcl.NextLink != nil && len(*pcl.NextLink) != 0
+}
+
 // privateCloudListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pcl PrivateCloudList) privateCloudListPreparer(ctx context.Context) (*http.Request, error) {
-	if pcl.NextLink == nil || len(to.String(pcl.NextLink)) < 1 {
+	if !pcl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1978,11 +1760,16 @@ func (page *PrivateCloudListPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pcl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pcl)
+		if err != nil {
+			return err
+		}
+		page.pcl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pcl = next
 	return nil
 }
 
@@ -2249,10 +2036,15 @@ func (rplr ResourcePoolsListResponse) IsEmpty() bool {
 	return rplr.Value == nil || len(*rplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rplr ResourcePoolsListResponse) hasNextLink() bool {
+	return rplr.NextLink != nil && len(*rplr.NextLink) != 0
+}
+
 // resourcePoolsListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rplr ResourcePoolsListResponse) resourcePoolsListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if rplr.NextLink == nil || len(to.String(rplr.NextLink)) < 1 {
+	if !rplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2280,11 +2072,16 @@ func (page *ResourcePoolsListResponsePage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rplr)
+		if err != nil {
+			return err
+		}
+		page.rplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rplr = next
 	return nil
 }
 
@@ -2429,10 +2226,15 @@ func (salr SkuAvailabilityListResponse) IsEmpty() bool {
 	return salr.Value == nil || len(*salr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (salr SkuAvailabilityListResponse) hasNextLink() bool {
+	return salr.NextLink != nil && len(*salr.NextLink) != 0
+}
+
 // skuAvailabilityListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (salr SkuAvailabilityListResponse) skuAvailabilityListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if salr.NextLink == nil || len(to.String(salr.NextLink)) < 1 {
+	if !salr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2460,11 +2262,16 @@ func (page *SkuAvailabilityListResponsePage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.salr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.salr)
+		if err != nil {
+			return err
+		}
+		page.salr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.salr = next
 	return nil
 }
 
@@ -2525,6 +2332,15 @@ type UsageListResponse struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; The list of usages
 	Value *[]Usage `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageListResponse.
+func (ulr UsageListResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ulr.NextLink != nil {
+		objectMap["nextLink"] = ulr.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // UsageListResponseIterator provides access to a complete listing of Usage values.
@@ -2595,10 +2411,15 @@ func (ulr UsageListResponse) IsEmpty() bool {
 	return ulr.Value == nil || len(*ulr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ulr UsageListResponse) hasNextLink() bool {
+	return ulr.NextLink != nil && len(*ulr.NextLink) != 0
+}
+
 // usageListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ulr UsageListResponse) usageListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if ulr.NextLink == nil || len(to.String(ulr.NextLink)) < 1 {
+	if !ulr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2626,11 +2447,16 @@ func (page *UsageListResponsePage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ulr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ulr)
+		if err != nil {
+			return err
+		}
+		page.ulr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ulr = next
 	return nil
 }
 
@@ -2684,6 +2510,24 @@ type VirtualDisk struct {
 	VirtualDiskID *string `json:"virtualDiskId,omitempty"`
 	// VirtualDiskName - READ-ONLY; Disk's display name
 	VirtualDiskName *string `json:"virtualDiskName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualDisk.
+func (vd VirtualDisk) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vd.ControllerID != nil {
+		objectMap["controllerId"] = vd.ControllerID
+	}
+	if vd.IndependenceMode != "" {
+		objectMap["independenceMode"] = vd.IndependenceMode
+	}
+	if vd.TotalSize != nil {
+		objectMap["totalSize"] = vd.TotalSize
+	}
+	if vd.VirtualDiskID != nil {
+		objectMap["virtualDiskId"] = vd.VirtualDiskID
+	}
+	return json.Marshal(objectMap)
 }
 
 // VirtualDiskController virtual disk controller model
@@ -2876,10 +2720,15 @@ func (vmlr VirtualMachineListResponse) IsEmpty() bool {
 	return vmlr.Value == nil || len(*vmlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (vmlr VirtualMachineListResponse) hasNextLink() bool {
+	return vmlr.NextLink != nil && len(*vmlr.NextLink) != 0
+}
+
 // virtualMachineListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (vmlr VirtualMachineListResponse) virtualMachineListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if vmlr.NextLink == nil || len(to.String(vmlr.NextLink)) < 1 {
+	if !vmlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2907,11 +2756,16 @@ func (page *VirtualMachineListResponsePage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.vmlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.vmlr)
+		if err != nil {
+			return err
+		}
+		page.vmlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.vmlr = next
 	return nil
 }
 
@@ -2991,6 +2845,48 @@ type VirtualMachineProperties struct {
 	VMID *string `json:"vmId,omitempty"`
 	// Vmwaretools - READ-ONLY; VMware tools version
 	Vmwaretools *string `json:"vmwaretools,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineProperties.
+func (vmp VirtualMachineProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vmp.AmountOfRAM != nil {
+		objectMap["amountOfRam"] = vmp.AmountOfRAM
+	}
+	if vmp.Customization != nil {
+		objectMap["customization"] = vmp.Customization
+	}
+	if vmp.Disks != nil {
+		objectMap["disks"] = vmp.Disks
+	}
+	if vmp.ExposeToGuestVM != nil {
+		objectMap["exposeToGuestVM"] = vmp.ExposeToGuestVM
+	}
+	if vmp.Nics != nil {
+		objectMap["nics"] = vmp.Nics
+	}
+	if vmp.NumberOfCores != nil {
+		objectMap["numberOfCores"] = vmp.NumberOfCores
+	}
+	if vmp.Password != nil {
+		objectMap["password"] = vmp.Password
+	}
+	if vmp.PrivateCloudID != nil {
+		objectMap["privateCloudId"] = vmp.PrivateCloudID
+	}
+	if vmp.ResourcePool != nil {
+		objectMap["resourcePool"] = vmp.ResourcePool
+	}
+	if vmp.TemplateID != nil {
+		objectMap["templateId"] = vmp.TemplateID
+	}
+	if vmp.Username != nil {
+		objectMap["username"] = vmp.Username
+	}
+	if vmp.VSphereNetworks != nil {
+		objectMap["vSphereNetworks"] = vmp.VSphereNetworks
+	}
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachinesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -3222,8 +3118,8 @@ type VirtualMachineTemplateListResponse struct {
 	Value *[]VirtualMachineTemplate `json:"value,omitempty"`
 }
 
-// VirtualMachineTemplateListResponseIterator provides access to a complete listing of
-// VirtualMachineTemplate values.
+// VirtualMachineTemplateListResponseIterator provides access to a complete listing of VirtualMachineTemplate
+// values.
 type VirtualMachineTemplateListResponseIterator struct {
 	i    int
 	page VirtualMachineTemplateListResponsePage
@@ -3291,10 +3187,15 @@ func (vmtlr VirtualMachineTemplateListResponse) IsEmpty() bool {
 	return vmtlr.Value == nil || len(*vmtlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (vmtlr VirtualMachineTemplateListResponse) hasNextLink() bool {
+	return vmtlr.NextLink != nil && len(*vmtlr.NextLink) != 0
+}
+
 // virtualMachineTemplateListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (vmtlr VirtualMachineTemplateListResponse) virtualMachineTemplateListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if vmtlr.NextLink == nil || len(to.String(vmtlr.NextLink)) < 1 {
+	if !vmtlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3322,11 +3223,16 @@ func (page *VirtualMachineTemplateListResponsePage) NextWithContext(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.vmtlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.vmtlr)
+		if err != nil {
+			return err
+		}
+		page.vmtlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.vmtlr = next
 	return nil
 }
 
@@ -3390,6 +3296,45 @@ type VirtualMachineTemplateProperties struct {
 	VSphereTags *[]string `json:"vSphereTags,omitempty"`
 	// Vmwaretools - READ-ONLY; The VMware tools version
 	Vmwaretools *string `json:"vmwaretools,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineTemplateProperties.
+func (vmtp VirtualMachineTemplateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vmtp.AmountOfRAM != nil {
+		objectMap["amountOfRam"] = vmtp.AmountOfRAM
+	}
+	if vmtp.Controllers != nil {
+		objectMap["controllers"] = vmtp.Controllers
+	}
+	if vmtp.Description != nil {
+		objectMap["description"] = vmtp.Description
+	}
+	if vmtp.Disks != nil {
+		objectMap["disks"] = vmtp.Disks
+	}
+	if vmtp.ExposeToGuestVM != nil {
+		objectMap["exposeToGuestVM"] = vmtp.ExposeToGuestVM
+	}
+	if vmtp.Nics != nil {
+		objectMap["nics"] = vmtp.Nics
+	}
+	if vmtp.NumberOfCores != nil {
+		objectMap["numberOfCores"] = vmtp.NumberOfCores
+	}
+	if vmtp.Path != nil {
+		objectMap["path"] = vmtp.Path
+	}
+	if vmtp.PrivateCloudID != nil {
+		objectMap["privateCloudId"] = vmtp.PrivateCloudID
+	}
+	if vmtp.VSphereNetworks != nil {
+		objectMap["vSphereNetworks"] = vmtp.VSphereNetworks
+	}
+	if vmtp.VSphereTags != nil {
+		objectMap["vSphereTags"] = vmtp.VSphereTags
+	}
+	return json.Marshal(objectMap)
 }
 
 // VirtualNetwork virtual network model
@@ -3567,10 +3512,15 @@ func (vnlr VirtualNetworkListResponse) IsEmpty() bool {
 	return vnlr.Value == nil || len(*vnlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (vnlr VirtualNetworkListResponse) hasNextLink() bool {
+	return vnlr.NextLink != nil && len(*vnlr.NextLink) != 0
+}
+
 // virtualNetworkListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (vnlr VirtualNetworkListResponse) virtualNetworkListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if vnlr.NextLink == nil || len(to.String(vnlr.NextLink)) < 1 {
+	if !vnlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3598,11 +3548,16 @@ func (page *VirtualNetworkListResponsePage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.vnlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.vnlr)
+		if err != nil {
+			return err
+		}
+		page.vnlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.vnlr = next
 	return nil
 }
 
@@ -3660,4 +3615,31 @@ type VirtualNic struct {
 	VirtualNicID *string `json:"virtualNicId,omitempty"`
 	// VirtualNicName - READ-ONLY; NIC name
 	VirtualNicName *string `json:"virtualNicName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualNic.
+func (vn VirtualNic) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vn.Customization != nil {
+		objectMap["customization"] = vn.Customization
+	}
+	if vn.IPAddresses != nil {
+		objectMap["ipAddresses"] = vn.IPAddresses
+	}
+	if vn.MacAddress != nil {
+		objectMap["macAddress"] = vn.MacAddress
+	}
+	if vn.Network != nil {
+		objectMap["network"] = vn.Network
+	}
+	if vn.NicType != "" {
+		objectMap["nicType"] = vn.NicType
+	}
+	if vn.PowerOnBoot != nil {
+		objectMap["powerOnBoot"] = vn.PowerOnBoot
+	}
+	if vn.VirtualNicID != nil {
+		objectMap["virtualNicId"] = vn.VirtualNicID
+	}
+	return json.Marshal(objectMap)
 }

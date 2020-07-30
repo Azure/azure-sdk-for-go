@@ -194,6 +194,9 @@ func (client ComponentsClient) ListByResource(ctx context.Context, resourceGroup
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.ComponentsClient", "ListByResource", resp, "Failure responding to request")
 	}
+	if result.cc.hasNextLink() && result.cc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

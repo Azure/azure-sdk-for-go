@@ -105,6 +105,9 @@ func (client ProductSubscriptionsClient) ListByProduct(ctx context.Context, reso
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductSubscriptionsClient", "ListByProduct", resp, "Failure responding to request")
 	}
+	if result.sc.hasNextLink() && result.sc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -400,6 +400,9 @@ func (client ServiceTasksClient) List(ctx context.Context, groupName string, ser
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "List", resp, "Failure responding to request")
 	}
+	if result.tl.hasNextLink() && result.tl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -537,6 +537,9 @@ func (client AlertsClient) List(ctx context.Context, filter string, skiptoken st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "List", resp, "Failure responding to request")
 	}
+	if result.alr.hasNextLink() && result.alr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -672,6 +675,9 @@ func (client AlertsClient) ListByAccount(ctx context.Context, billingAccountID s
 	result.alr, err = client.ListByAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByAccount", resp, "Failure responding to request")
+	}
+	if result.alr.hasNextLink() && result.alr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -810,6 +816,9 @@ func (client AlertsClient) ListByDepartment(ctx context.Context, billingAccountI
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByDepartment", resp, "Failure responding to request")
 	}
+	if result.alr.hasNextLink() && result.alr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -946,6 +955,9 @@ func (client AlertsClient) ListByEnrollment(ctx context.Context, billingAccountI
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByEnrollment", resp, "Failure responding to request")
 	}
+	if result.alr.hasNextLink() && result.alr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1081,6 +1093,9 @@ func (client AlertsClient) ListByManagementGroups(ctx context.Context, managemen
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByManagementGroups", resp, "Failure responding to request")
 	}
+	if result.alr.hasNextLink() && result.alr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1215,6 +1230,9 @@ func (client AlertsClient) ListByResourceGroupName(ctx context.Context, resource
 	result.alr, err = client.ListByResourceGroupNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "costmanagement.AlertsClient", "ListByResourceGroupName", resp, "Failure responding to request")
+	}
+	if result.alr.hasNextLink() && result.alr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

@@ -152,6 +152,9 @@ func (client CostInsightClient) List(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CostInsightClient", "List", resp, "Failure responding to request")
 	}
+	if result.rwcci.hasNextLink() && result.rwcci.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

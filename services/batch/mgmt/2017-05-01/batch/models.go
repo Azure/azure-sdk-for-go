@@ -31,91 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2017-05-01/batch"
 
-// AccountKeyType enumerates the values for account key type.
-type AccountKeyType string
-
-const (
-	// Primary ...
-	Primary AccountKeyType = "Primary"
-	// Secondary ...
-	Secondary AccountKeyType = "Secondary"
-)
-
-// PossibleAccountKeyTypeValues returns an array of possible values for the AccountKeyType const type.
-func PossibleAccountKeyTypeValues() []AccountKeyType {
-	return []AccountKeyType{Primary, Secondary}
-}
-
-// NameAvailabilityReason enumerates the values for name availability reason.
-type NameAvailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists NameAvailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid NameAvailabilityReason = "Invalid"
-)
-
-// PossibleNameAvailabilityReasonValues returns an array of possible values for the NameAvailabilityReason const type.
-func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
-	return []NameAvailabilityReason{AlreadyExists, Invalid}
-}
-
-// PackageState enumerates the values for package state.
-type PackageState string
-
-const (
-	// Active ...
-	Active PackageState = "active"
-	// Pending ...
-	Pending PackageState = "pending"
-	// Unmapped ...
-	Unmapped PackageState = "unmapped"
-)
-
-// PossiblePackageStateValues returns an array of possible values for the PackageState const type.
-func PossiblePackageStateValues() []PackageState {
-	return []PackageState{Active, Pending, Unmapped}
-}
-
-// PoolAllocationMode enumerates the values for pool allocation mode.
-type PoolAllocationMode string
-
-const (
-	// BatchService ...
-	BatchService PoolAllocationMode = "BatchService"
-	// UserSubscription ...
-	UserSubscription PoolAllocationMode = "UserSubscription"
-)
-
-// PossiblePoolAllocationModeValues returns an array of possible values for the PoolAllocationMode const type.
-func PossiblePoolAllocationModeValues() []PoolAllocationMode {
-	return []PoolAllocationMode{BatchService, UserSubscription}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// ProvisioningStateCancelled ...
-	ProvisioningStateCancelled ProvisioningState = "Cancelled"
-	// ProvisioningStateCreating ...
-	ProvisioningStateCreating ProvisioningState = "Creating"
-	// ProvisioningStateDeleting ...
-	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed ...
-	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateInvalid ...
-	ProvisioningStateInvalid ProvisioningState = "Invalid"
-	// ProvisioningStateSucceeded ...
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateCancelled, ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateInvalid, ProvisioningStateSucceeded}
-}
-
 // Account contains information about an Azure Batch account.
 type Account struct {
 	autorest.Response `json:"-"`
@@ -211,8 +126,7 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AccountCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AccountCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountCreateFuture struct {
 	azure.Future
 }
@@ -317,8 +231,7 @@ type AccountCreateProperties struct {
 	KeyVaultReference *KeyVaultReference `json:"keyVaultReference,omitempty"`
 }
 
-// AccountDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AccountDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountDeleteFuture struct {
 	azure.Future
 }
@@ -428,10 +341,15 @@ func (alr AccountListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (alr AccountListResult) hasNextLink() bool {
+	return alr.NextLink != nil && len(*alr.NextLink) != 0
+}
+
 // accountListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (alr AccountListResult) accountListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
+	if !alr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -459,11 +377,16 @@ func (page *AccountListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.alr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.alr)
+		if err != nil {
+			return err
+		}
+		page.alr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.alr = next
 	return nil
 }
 
@@ -648,8 +571,7 @@ type AutoStorageBaseProperties struct {
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
 }
 
-// AutoStorageProperties contains information about the auto-storage account associated with a Batch
-// account.
+// AutoStorageProperties contains information about the auto-storage account associated with a Batch account.
 type AutoStorageProperties struct {
 	// LastKeySync - The UTC time at which storage keys were last synchronized with the Batch account.
 	LastKeySync *date.Time `json:"lastKeySync,omitempty"`
@@ -778,10 +700,15 @@ func (lar ListApplicationsResult) IsEmpty() bool {
 	return lar.Value == nil || len(*lar.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lar ListApplicationsResult) hasNextLink() bool {
+	return lar.NextLink != nil && len(*lar.NextLink) != 0
+}
+
 // listApplicationsResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lar ListApplicationsResult) listApplicationsResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lar.NextLink == nil || len(to.String(lar.NextLink)) < 1 {
+	if !lar.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -809,11 +736,16 @@ func (page *ListApplicationsResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lar)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lar)
+		if err != nil {
+			return err
+		}
+		page.lar = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lar = next
 	return nil
 }
 
@@ -947,10 +879,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -978,11 +915,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 

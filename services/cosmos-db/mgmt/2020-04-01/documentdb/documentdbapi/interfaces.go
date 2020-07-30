@@ -161,6 +161,10 @@ type SQLResourcesClientAPI interface {
 	ListSQLStoredProcedures(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string) (result documentdb.SQLStoredProcedureListResult, err error)
 	ListSQLTriggers(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string) (result documentdb.SQLTriggerListResult, err error)
 	ListSQLUserDefinedFunctions(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string) (result documentdb.SQLUserDefinedFunctionListResult, err error)
+	MigrateSQLContainerToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string) (result documentdb.SQLResourcesMigrateSQLContainerToAutoscaleFuture, err error)
+	MigrateSQLContainerToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string) (result documentdb.SQLResourcesMigrateSQLContainerToManualThroughputFuture, err error)
+	MigrateSQLDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.SQLResourcesMigrateSQLDatabaseToAutoscaleFuture, err error)
+	MigrateSQLDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.SQLResourcesMigrateSQLDatabaseToManualThroughputFuture, err error)
 	UpdateSQLContainerThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters documentdb.ThroughputSettingsUpdateParameters) (result documentdb.SQLResourcesUpdateSQLContainerThroughputFuture, err error)
 	UpdateSQLDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters documentdb.ThroughputSettingsUpdateParameters) (result documentdb.SQLResourcesUpdateSQLDatabaseThroughputFuture, err error)
 }
@@ -179,6 +183,10 @@ type MongoDBResourcesClientAPI interface {
 	GetMongoDBDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.ThroughputSettingsGetResults, err error)
 	ListMongoDBCollections(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.MongoDBCollectionListResult, err error)
 	ListMongoDBDatabases(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.MongoDBDatabaseListResult, err error)
+	MigrateMongoDBCollectionToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (result documentdb.MongoDBResourcesMigrateMongoDBCollectionToAutoscaleFuture, err error)
+	MigrateMongoDBCollectionToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string) (result documentdb.MongoDBResourcesMigrateMongoDBCollectionToManualThroughputFuture, err error)
+	MigrateMongoDBDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleFuture, err error)
+	MigrateMongoDBDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputFuture, err error)
 	UpdateMongoDBCollectionThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, updateThroughputParameters documentdb.ThroughputSettingsUpdateParameters) (result documentdb.MongoDBResourcesUpdateMongoDBCollectionThroughputFuture, err error)
 	UpdateMongoDBDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters documentdb.ThroughputSettingsUpdateParameters) (result documentdb.MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture, err error)
 }
@@ -192,6 +200,8 @@ type TableResourcesClientAPI interface {
 	GetTable(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result documentdb.TableGetResults, err error)
 	GetTableThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result documentdb.ThroughputSettingsGetResults, err error)
 	ListTables(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.TableListResult, err error)
+	MigrateTableToAutoscale(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result documentdb.TableResourcesMigrateTableToAutoscaleFuture, err error)
+	MigrateTableToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string) (result documentdb.TableResourcesMigrateTableToManualThroughputFuture, err error)
 	UpdateTableThroughput(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters documentdb.ThroughputSettingsUpdateParameters) (result documentdb.TableResourcesUpdateTableThroughputFuture, err error)
 }
 
@@ -209,6 +219,10 @@ type CassandraResourcesClientAPI interface {
 	GetCassandraTableThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string) (result documentdb.ThroughputSettingsGetResults, err error)
 	ListCassandraKeyspaces(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.CassandraKeyspaceListResult, err error)
 	ListCassandraTables(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string) (result documentdb.CassandraTableListResult, err error)
+	MigrateCassandraKeyspaceToAutoscale(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string) (result documentdb.CassandraResourcesMigrateCassandraKeyspaceToAutoscaleFuture, err error)
+	MigrateCassandraKeyspaceToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string) (result documentdb.CassandraResourcesMigrateCassandraKeyspaceToManualThroughputFuture, err error)
+	MigrateCassandraTableToAutoscale(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string) (result documentdb.CassandraResourcesMigrateCassandraTableToAutoscaleFuture, err error)
+	MigrateCassandraTableToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string) (result documentdb.CassandraResourcesMigrateCassandraTableToManualThroughputFuture, err error)
 	UpdateCassandraKeyspaceThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, updateThroughputParameters documentdb.ThroughputSettingsUpdateParameters) (result documentdb.CassandraResourcesUpdateCassandraKeyspaceThroughputFuture, err error)
 	UpdateCassandraTableThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, updateThroughputParameters documentdb.ThroughputSettingsUpdateParameters) (result documentdb.CassandraResourcesUpdateCassandraTableThroughputFuture, err error)
 }
@@ -227,6 +241,10 @@ type GremlinResourcesClientAPI interface {
 	GetGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (result documentdb.ThroughputSettingsGetResults, err error)
 	ListGremlinDatabases(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.GremlinDatabaseListResult, err error)
 	ListGremlinGraphs(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.GremlinGraphListResult, err error)
+	MigrateGremlinDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.GremlinResourcesMigrateGremlinDatabaseToAutoscaleFuture, err error)
+	MigrateGremlinDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string) (result documentdb.GremlinResourcesMigrateGremlinDatabaseToManualThroughputFuture, err error)
+	MigrateGremlinGraphToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (result documentdb.GremlinResourcesMigrateGremlinGraphToAutoscaleFuture, err error)
+	MigrateGremlinGraphToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string) (result documentdb.GremlinResourcesMigrateGremlinGraphToManualThroughputFuture, err error)
 	UpdateGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters documentdb.ThroughputSettingsUpdateParameters) (result documentdb.GremlinResourcesUpdateGremlinDatabaseThroughputFuture, err error)
 	UpdateGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters documentdb.ThroughputSettingsUpdateParameters) (result documentdb.GremlinResourcesUpdateGremlinGraphThroughputFuture, err error)
 }

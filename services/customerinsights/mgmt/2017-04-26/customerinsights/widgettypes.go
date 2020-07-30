@@ -153,6 +153,9 @@ func (client WidgetTypesClient) ListByHub(ctx context.Context, resourceGroupName
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.WidgetTypesClient", "ListByHub", resp, "Failure responding to request")
 	}
+	if result.wtlr.hasNextLink() && result.wtlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

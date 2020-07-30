@@ -85,6 +85,7 @@ var _ TriggerClientAPI = (*artifacts.TriggerClient)(nil)
 
 // TriggerRunClientAPI contains the set of methods on the TriggerRunClient type.
 type TriggerRunClientAPI interface {
+	CancelTriggerInstance(ctx context.Context, triggerName string, runID string) (result autorest.Response, err error)
 	QueryTriggerRunsByWorkspace(ctx context.Context, filterParameters artifacts.RunFilterParameters) (result artifacts.TriggerRunsQueryResponse, err error)
 	RerunTriggerInstance(ctx context.Context, triggerName string, runID string) (result autorest.Response, err error)
 }

@@ -278,6 +278,9 @@ func (client BackupsClient) ListByDevice(ctx context.Context, deviceName string,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "ListByDevice", resp, "Failure responding to request")
 	}
+	if result.bl.hasNextLink() && result.bl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -405,6 +408,9 @@ func (client BackupsClient) ListByManager(ctx context.Context, resourceGroupName
 	result.bl, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "ListByManager", resp, "Failure responding to request")
+	}
+	if result.bl.hasNextLink() && result.bl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

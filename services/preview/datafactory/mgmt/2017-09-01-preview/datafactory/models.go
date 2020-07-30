@@ -32,1500 +32,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/datafactory/mgmt/2017-09-01-preview/datafactory"
 
-// AuthenticationType enumerates the values for authentication type.
-type AuthenticationType string
-
-const (
-	// AuthenticationTypeAnonymous ...
-	AuthenticationTypeAnonymous AuthenticationType = "Anonymous"
-	// AuthenticationTypeBasic ...
-	AuthenticationTypeBasic AuthenticationType = "Basic"
-	// AuthenticationTypeClientCertificate ...
-	AuthenticationTypeClientCertificate AuthenticationType = "ClientCertificate"
-	// AuthenticationTypeWebLinkedServiceTypeProperties ...
-	AuthenticationTypeWebLinkedServiceTypeProperties AuthenticationType = "WebLinkedServiceTypeProperties"
-)
-
-// PossibleAuthenticationTypeValues returns an array of possible values for the AuthenticationType const type.
-func PossibleAuthenticationTypeValues() []AuthenticationType {
-	return []AuthenticationType{AuthenticationTypeAnonymous, AuthenticationTypeBasic, AuthenticationTypeClientCertificate, AuthenticationTypeWebLinkedServiceTypeProperties}
-}
-
-// AuthorizationType enumerates the values for authorization type.
-type AuthorizationType string
-
-const (
-	// AuthorizationTypeKey ...
-	AuthorizationTypeKey AuthorizationType = "Key"
-	// AuthorizationTypeLinkedIntegrationRuntimeProperties ...
-	AuthorizationTypeLinkedIntegrationRuntimeProperties AuthorizationType = "LinkedIntegrationRuntimeProperties"
-	// AuthorizationTypeRBAC ...
-	AuthorizationTypeRBAC AuthorizationType = "RBAC"
-)
-
-// PossibleAuthorizationTypeValues returns an array of possible values for the AuthorizationType const type.
-func PossibleAuthorizationTypeValues() []AuthorizationType {
-	return []AuthorizationType{AuthorizationTypeKey, AuthorizationTypeLinkedIntegrationRuntimeProperties, AuthorizationTypeRBAC}
-}
-
-// BlobEventTypes enumerates the values for blob event types.
-type BlobEventTypes string
-
-const (
-	// MicrosoftStorageBlobCreated ...
-	MicrosoftStorageBlobCreated BlobEventTypes = "Microsoft.Storage.BlobCreated"
-	// MicrosoftStorageBlobDeleted ...
-	MicrosoftStorageBlobDeleted BlobEventTypes = "Microsoft.Storage.BlobDeleted"
-)
-
-// PossibleBlobEventTypesValues returns an array of possible values for the BlobEventTypes const type.
-func PossibleBlobEventTypesValues() []BlobEventTypes {
-	return []BlobEventTypes{MicrosoftStorageBlobCreated, MicrosoftStorageBlobDeleted}
-}
-
-// DayOfWeek enumerates the values for day of week.
-type DayOfWeek string
-
-const (
-	// Friday ...
-	Friday DayOfWeek = "Friday"
-	// Monday ...
-	Monday DayOfWeek = "Monday"
-	// Saturday ...
-	Saturday DayOfWeek = "Saturday"
-	// Sunday ...
-	Sunday DayOfWeek = "Sunday"
-	// Thursday ...
-	Thursday DayOfWeek = "Thursday"
-	// Tuesday ...
-	Tuesday DayOfWeek = "Tuesday"
-	// Wednesday ...
-	Wednesday DayOfWeek = "Wednesday"
-)
-
-// PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
-func PossibleDayOfWeekValues() []DayOfWeek {
-	return []DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
-}
-
-// DaysOfWeek enumerates the values for days of week.
-type DaysOfWeek string
-
-const (
-	// DaysOfWeekFriday ...
-	DaysOfWeekFriday DaysOfWeek = "Friday"
-	// DaysOfWeekMonday ...
-	DaysOfWeekMonday DaysOfWeek = "Monday"
-	// DaysOfWeekSaturday ...
-	DaysOfWeekSaturday DaysOfWeek = "Saturday"
-	// DaysOfWeekSunday ...
-	DaysOfWeekSunday DaysOfWeek = "Sunday"
-	// DaysOfWeekThursday ...
-	DaysOfWeekThursday DaysOfWeek = "Thursday"
-	// DaysOfWeekTuesday ...
-	DaysOfWeekTuesday DaysOfWeek = "Tuesday"
-	// DaysOfWeekWednesday ...
-	DaysOfWeekWednesday DaysOfWeek = "Wednesday"
-)
-
-// PossibleDaysOfWeekValues returns an array of possible values for the DaysOfWeek const type.
-func PossibleDaysOfWeekValues() []DaysOfWeek {
-	return []DaysOfWeek{DaysOfWeekFriday, DaysOfWeekMonday, DaysOfWeekSaturday, DaysOfWeekSunday, DaysOfWeekThursday, DaysOfWeekTuesday, DaysOfWeekWednesday}
-}
-
-// Db2AuthenticationType enumerates the values for db 2 authentication type.
-type Db2AuthenticationType string
-
-const (
-	// Basic ...
-	Basic Db2AuthenticationType = "Basic"
-)
-
-// PossibleDb2AuthenticationTypeValues returns an array of possible values for the Db2AuthenticationType const type.
-func PossibleDb2AuthenticationTypeValues() []Db2AuthenticationType {
-	return []Db2AuthenticationType{Basic}
-}
-
-// DependencyCondition enumerates the values for dependency condition.
-type DependencyCondition string
-
-const (
-	// Completed ...
-	Completed DependencyCondition = "Completed"
-	// Failed ...
-	Failed DependencyCondition = "Failed"
-	// Skipped ...
-	Skipped DependencyCondition = "Skipped"
-	// Succeeded ...
-	Succeeded DependencyCondition = "Succeeded"
-)
-
-// PossibleDependencyConditionValues returns an array of possible values for the DependencyCondition const type.
-func PossibleDependencyConditionValues() []DependencyCondition {
-	return []DependencyCondition{Completed, Failed, Skipped, Succeeded}
-}
-
-// FtpAuthenticationType enumerates the values for ftp authentication type.
-type FtpAuthenticationType string
-
-const (
-	// FtpAuthenticationTypeAnonymous ...
-	FtpAuthenticationTypeAnonymous FtpAuthenticationType = "Anonymous"
-	// FtpAuthenticationTypeBasic ...
-	FtpAuthenticationTypeBasic FtpAuthenticationType = "Basic"
-)
-
-// PossibleFtpAuthenticationTypeValues returns an array of possible values for the FtpAuthenticationType const type.
-func PossibleFtpAuthenticationTypeValues() []FtpAuthenticationType {
-	return []FtpAuthenticationType{FtpAuthenticationTypeAnonymous, FtpAuthenticationTypeBasic}
-}
-
-// GoogleBigQueryAuthenticationType enumerates the values for google big query authentication type.
-type GoogleBigQueryAuthenticationType string
-
-const (
-	// ServiceAuthentication ...
-	ServiceAuthentication GoogleBigQueryAuthenticationType = "ServiceAuthentication"
-	// UserAuthentication ...
-	UserAuthentication GoogleBigQueryAuthenticationType = "UserAuthentication"
-)
-
-// PossibleGoogleBigQueryAuthenticationTypeValues returns an array of possible values for the GoogleBigQueryAuthenticationType const type.
-func PossibleGoogleBigQueryAuthenticationTypeValues() []GoogleBigQueryAuthenticationType {
-	return []GoogleBigQueryAuthenticationType{ServiceAuthentication, UserAuthentication}
-}
-
-// HBaseAuthenticationType enumerates the values for h base authentication type.
-type HBaseAuthenticationType string
-
-const (
-	// HBaseAuthenticationTypeAnonymous ...
-	HBaseAuthenticationTypeAnonymous HBaseAuthenticationType = "Anonymous"
-	// HBaseAuthenticationTypeBasic ...
-	HBaseAuthenticationTypeBasic HBaseAuthenticationType = "Basic"
-)
-
-// PossibleHBaseAuthenticationTypeValues returns an array of possible values for the HBaseAuthenticationType const type.
-func PossibleHBaseAuthenticationTypeValues() []HBaseAuthenticationType {
-	return []HBaseAuthenticationType{HBaseAuthenticationTypeAnonymous, HBaseAuthenticationTypeBasic}
-}
-
-// HDInsightActivityDebugInfoOption enumerates the values for hd insight activity debug info option.
-type HDInsightActivityDebugInfoOption string
-
-const (
-	// Always ...
-	Always HDInsightActivityDebugInfoOption = "Always"
-	// Failure ...
-	Failure HDInsightActivityDebugInfoOption = "Failure"
-	// None ...
-	None HDInsightActivityDebugInfoOption = "None"
-)
-
-// PossibleHDInsightActivityDebugInfoOptionValues returns an array of possible values for the HDInsightActivityDebugInfoOption const type.
-func PossibleHDInsightActivityDebugInfoOptionValues() []HDInsightActivityDebugInfoOption {
-	return []HDInsightActivityDebugInfoOption{Always, Failure, None}
-}
-
-// HiveAuthenticationType enumerates the values for hive authentication type.
-type HiveAuthenticationType string
-
-const (
-	// Anonymous ...
-	Anonymous HiveAuthenticationType = "Anonymous"
-	// Username ...
-	Username HiveAuthenticationType = "Username"
-	// UsernameAndPassword ...
-	UsernameAndPassword HiveAuthenticationType = "UsernameAndPassword"
-	// WindowsAzureHDInsightService ...
-	WindowsAzureHDInsightService HiveAuthenticationType = "WindowsAzureHDInsightService"
-)
-
-// PossibleHiveAuthenticationTypeValues returns an array of possible values for the HiveAuthenticationType const type.
-func PossibleHiveAuthenticationTypeValues() []HiveAuthenticationType {
-	return []HiveAuthenticationType{Anonymous, Username, UsernameAndPassword, WindowsAzureHDInsightService}
-}
-
-// HiveServerType enumerates the values for hive server type.
-type HiveServerType string
-
-const (
-	// HiveServer1 ...
-	HiveServer1 HiveServerType = "HiveServer1"
-	// HiveServer2 ...
-	HiveServer2 HiveServerType = "HiveServer2"
-	// HiveThriftServer ...
-	HiveThriftServer HiveServerType = "HiveThriftServer"
-)
-
-// PossibleHiveServerTypeValues returns an array of possible values for the HiveServerType const type.
-func PossibleHiveServerTypeValues() []HiveServerType {
-	return []HiveServerType{HiveServer1, HiveServer2, HiveThriftServer}
-}
-
-// HiveThriftTransportProtocol enumerates the values for hive thrift transport protocol.
-type HiveThriftTransportProtocol string
-
-const (
-	// Binary ...
-	Binary HiveThriftTransportProtocol = "Binary"
-	// HTTP ...
-	HTTP HiveThriftTransportProtocol = "HTTP "
-	// SASL ...
-	SASL HiveThriftTransportProtocol = "SASL"
-)
-
-// PossibleHiveThriftTransportProtocolValues returns an array of possible values for the HiveThriftTransportProtocol const type.
-func PossibleHiveThriftTransportProtocolValues() []HiveThriftTransportProtocol {
-	return []HiveThriftTransportProtocol{Binary, HTTP, SASL}
-}
-
-// HTTPAuthenticationType enumerates the values for http authentication type.
-type HTTPAuthenticationType string
-
-const (
-	// HTTPAuthenticationTypeAnonymous ...
-	HTTPAuthenticationTypeAnonymous HTTPAuthenticationType = "Anonymous"
-	// HTTPAuthenticationTypeBasic ...
-	HTTPAuthenticationTypeBasic HTTPAuthenticationType = "Basic"
-	// HTTPAuthenticationTypeClientCertificate ...
-	HTTPAuthenticationTypeClientCertificate HTTPAuthenticationType = "ClientCertificate"
-	// HTTPAuthenticationTypeDigest ...
-	HTTPAuthenticationTypeDigest HTTPAuthenticationType = "Digest"
-	// HTTPAuthenticationTypeWindows ...
-	HTTPAuthenticationTypeWindows HTTPAuthenticationType = "Windows"
-)
-
-// PossibleHTTPAuthenticationTypeValues returns an array of possible values for the HTTPAuthenticationType const type.
-func PossibleHTTPAuthenticationTypeValues() []HTTPAuthenticationType {
-	return []HTTPAuthenticationType{HTTPAuthenticationTypeAnonymous, HTTPAuthenticationTypeBasic, HTTPAuthenticationTypeClientCertificate, HTTPAuthenticationTypeDigest, HTTPAuthenticationTypeWindows}
-}
-
-// ImpalaAuthenticationType enumerates the values for impala authentication type.
-type ImpalaAuthenticationType string
-
-const (
-	// ImpalaAuthenticationTypeAnonymous ...
-	ImpalaAuthenticationTypeAnonymous ImpalaAuthenticationType = "Anonymous"
-	// ImpalaAuthenticationTypeSASLUsername ...
-	ImpalaAuthenticationTypeSASLUsername ImpalaAuthenticationType = "SASLUsername"
-	// ImpalaAuthenticationTypeUsernameAndPassword ...
-	ImpalaAuthenticationTypeUsernameAndPassword ImpalaAuthenticationType = "UsernameAndPassword"
-)
-
-// PossibleImpalaAuthenticationTypeValues returns an array of possible values for the ImpalaAuthenticationType const type.
-func PossibleImpalaAuthenticationTypeValues() []ImpalaAuthenticationType {
-	return []ImpalaAuthenticationType{ImpalaAuthenticationTypeAnonymous, ImpalaAuthenticationTypeSASLUsername, ImpalaAuthenticationTypeUsernameAndPassword}
-}
-
-// IntegrationRuntimeAuthKeyName enumerates the values for integration runtime auth key name.
-type IntegrationRuntimeAuthKeyName string
-
-const (
-	// AuthKey1 ...
-	AuthKey1 IntegrationRuntimeAuthKeyName = "authKey1"
-	// AuthKey2 ...
-	AuthKey2 IntegrationRuntimeAuthKeyName = "authKey2"
-)
-
-// PossibleIntegrationRuntimeAuthKeyNameValues returns an array of possible values for the IntegrationRuntimeAuthKeyName const type.
-func PossibleIntegrationRuntimeAuthKeyNameValues() []IntegrationRuntimeAuthKeyName {
-	return []IntegrationRuntimeAuthKeyName{AuthKey1, AuthKey2}
-}
-
-// IntegrationRuntimeAutoUpdate enumerates the values for integration runtime auto update.
-type IntegrationRuntimeAutoUpdate string
-
-const (
-	// Off ...
-	Off IntegrationRuntimeAutoUpdate = "Off"
-	// On ...
-	On IntegrationRuntimeAutoUpdate = "On"
-)
-
-// PossibleIntegrationRuntimeAutoUpdateValues returns an array of possible values for the IntegrationRuntimeAutoUpdate const type.
-func PossibleIntegrationRuntimeAutoUpdateValues() []IntegrationRuntimeAutoUpdate {
-	return []IntegrationRuntimeAutoUpdate{Off, On}
-}
-
-// IntegrationRuntimeEdition enumerates the values for integration runtime edition.
-type IntegrationRuntimeEdition string
-
-const (
-	// Enterprise ...
-	Enterprise IntegrationRuntimeEdition = "Enterprise"
-	// Standard ...
-	Standard IntegrationRuntimeEdition = "Standard"
-)
-
-// PossibleIntegrationRuntimeEditionValues returns an array of possible values for the IntegrationRuntimeEdition const type.
-func PossibleIntegrationRuntimeEditionValues() []IntegrationRuntimeEdition {
-	return []IntegrationRuntimeEdition{Enterprise, Standard}
-}
-
-// IntegrationRuntimeEntityReferenceType enumerates the values for integration runtime entity reference type.
-type IntegrationRuntimeEntityReferenceType string
-
-const (
-	// IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference ...
-	IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference IntegrationRuntimeEntityReferenceType = "IntegrationRuntimeReference"
-	// IntegrationRuntimeEntityReferenceTypeLinkedServiceReference ...
-	IntegrationRuntimeEntityReferenceTypeLinkedServiceReference IntegrationRuntimeEntityReferenceType = "LinkedServiceReference"
-)
-
-// PossibleIntegrationRuntimeEntityReferenceTypeValues returns an array of possible values for the IntegrationRuntimeEntityReferenceType const type.
-func PossibleIntegrationRuntimeEntityReferenceTypeValues() []IntegrationRuntimeEntityReferenceType {
-	return []IntegrationRuntimeEntityReferenceType{IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference, IntegrationRuntimeEntityReferenceTypeLinkedServiceReference}
-}
-
-// IntegrationRuntimeInternalChannelEncryptionMode enumerates the values for integration runtime internal
-// channel encryption mode.
-type IntegrationRuntimeInternalChannelEncryptionMode string
-
-const (
-	// NotEncrypted ...
-	NotEncrypted IntegrationRuntimeInternalChannelEncryptionMode = "NotEncrypted"
-	// NotSet ...
-	NotSet IntegrationRuntimeInternalChannelEncryptionMode = "NotSet"
-	// SslEncrypted ...
-	SslEncrypted IntegrationRuntimeInternalChannelEncryptionMode = "SslEncrypted"
-)
-
-// PossibleIntegrationRuntimeInternalChannelEncryptionModeValues returns an array of possible values for the IntegrationRuntimeInternalChannelEncryptionMode const type.
-func PossibleIntegrationRuntimeInternalChannelEncryptionModeValues() []IntegrationRuntimeInternalChannelEncryptionMode {
-	return []IntegrationRuntimeInternalChannelEncryptionMode{NotEncrypted, NotSet, SslEncrypted}
-}
-
-// IntegrationRuntimeLicenseType enumerates the values for integration runtime license type.
-type IntegrationRuntimeLicenseType string
-
-const (
-	// BasePrice ...
-	BasePrice IntegrationRuntimeLicenseType = "BasePrice"
-	// LicenseIncluded ...
-	LicenseIncluded IntegrationRuntimeLicenseType = "LicenseIncluded"
-)
-
-// PossibleIntegrationRuntimeLicenseTypeValues returns an array of possible values for the IntegrationRuntimeLicenseType const type.
-func PossibleIntegrationRuntimeLicenseTypeValues() []IntegrationRuntimeLicenseType {
-	return []IntegrationRuntimeLicenseType{BasePrice, LicenseIncluded}
-}
-
-// IntegrationRuntimeState enumerates the values for integration runtime state.
-type IntegrationRuntimeState string
-
-const (
-	// Initial ...
-	Initial IntegrationRuntimeState = "Initial"
-	// Limited ...
-	Limited IntegrationRuntimeState = "Limited"
-	// NeedRegistration ...
-	NeedRegistration IntegrationRuntimeState = "NeedRegistration"
-	// Offline ...
-	Offline IntegrationRuntimeState = "Offline"
-	// Online ...
-	Online IntegrationRuntimeState = "Online"
-	// Started ...
-	Started IntegrationRuntimeState = "Started"
-	// Starting ...
-	Starting IntegrationRuntimeState = "Starting"
-	// Stopped ...
-	Stopped IntegrationRuntimeState = "Stopped"
-	// Stopping ...
-	Stopping IntegrationRuntimeState = "Stopping"
-)
-
-// PossibleIntegrationRuntimeStateValues returns an array of possible values for the IntegrationRuntimeState const type.
-func PossibleIntegrationRuntimeStateValues() []IntegrationRuntimeState {
-	return []IntegrationRuntimeState{Initial, Limited, NeedRegistration, Offline, Online, Started, Starting, Stopped, Stopping}
-}
-
-// IntegrationRuntimeType enumerates the values for integration runtime type.
-type IntegrationRuntimeType string
-
-const (
-	// Managed ...
-	Managed IntegrationRuntimeType = "Managed"
-	// SelfHosted ...
-	SelfHosted IntegrationRuntimeType = "SelfHosted"
-)
-
-// PossibleIntegrationRuntimeTypeValues returns an array of possible values for the IntegrationRuntimeType const type.
-func PossibleIntegrationRuntimeTypeValues() []IntegrationRuntimeType {
-	return []IntegrationRuntimeType{Managed, SelfHosted}
-}
-
-// IntegrationRuntimeUpdateResult enumerates the values for integration runtime update result.
-type IntegrationRuntimeUpdateResult string
-
-const (
-	// Fail ...
-	Fail IntegrationRuntimeUpdateResult = "Fail"
-	// Succeed ...
-	Succeed IntegrationRuntimeUpdateResult = "Succeed"
-)
-
-// PossibleIntegrationRuntimeUpdateResultValues returns an array of possible values for the IntegrationRuntimeUpdateResult const type.
-func PossibleIntegrationRuntimeUpdateResultValues() []IntegrationRuntimeUpdateResult {
-	return []IntegrationRuntimeUpdateResult{Fail, Succeed}
-}
-
-// JSONFormatFilePattern enumerates the values for json format file pattern.
-type JSONFormatFilePattern string
-
-const (
-	// ArrayOfObjects ...
-	ArrayOfObjects JSONFormatFilePattern = "arrayOfObjects"
-	// SetOfObjects ...
-	SetOfObjects JSONFormatFilePattern = "setOfObjects"
-)
-
-// PossibleJSONFormatFilePatternValues returns an array of possible values for the JSONFormatFilePattern const type.
-func PossibleJSONFormatFilePatternValues() []JSONFormatFilePattern {
-	return []JSONFormatFilePattern{ArrayOfObjects, SetOfObjects}
-}
-
-// ManagedIntegrationRuntimeNodeStatus enumerates the values for managed integration runtime node status.
-type ManagedIntegrationRuntimeNodeStatus string
-
-const (
-	// ManagedIntegrationRuntimeNodeStatusAvailable ...
-	ManagedIntegrationRuntimeNodeStatusAvailable ManagedIntegrationRuntimeNodeStatus = "Available"
-	// ManagedIntegrationRuntimeNodeStatusRecycling ...
-	ManagedIntegrationRuntimeNodeStatusRecycling ManagedIntegrationRuntimeNodeStatus = "Recycling"
-	// ManagedIntegrationRuntimeNodeStatusStarting ...
-	ManagedIntegrationRuntimeNodeStatusStarting ManagedIntegrationRuntimeNodeStatus = "Starting"
-	// ManagedIntegrationRuntimeNodeStatusUnavailable ...
-	ManagedIntegrationRuntimeNodeStatusUnavailable ManagedIntegrationRuntimeNodeStatus = "Unavailable"
-)
-
-// PossibleManagedIntegrationRuntimeNodeStatusValues returns an array of possible values for the ManagedIntegrationRuntimeNodeStatus const type.
-func PossibleManagedIntegrationRuntimeNodeStatusValues() []ManagedIntegrationRuntimeNodeStatus {
-	return []ManagedIntegrationRuntimeNodeStatus{ManagedIntegrationRuntimeNodeStatusAvailable, ManagedIntegrationRuntimeNodeStatusRecycling, ManagedIntegrationRuntimeNodeStatusStarting, ManagedIntegrationRuntimeNodeStatusUnavailable}
-}
-
-// MongoDbAuthenticationType enumerates the values for mongo db authentication type.
-type MongoDbAuthenticationType string
-
-const (
-	// MongoDbAuthenticationTypeAnonymous ...
-	MongoDbAuthenticationTypeAnonymous MongoDbAuthenticationType = "Anonymous"
-	// MongoDbAuthenticationTypeBasic ...
-	MongoDbAuthenticationTypeBasic MongoDbAuthenticationType = "Basic"
-)
-
-// PossibleMongoDbAuthenticationTypeValues returns an array of possible values for the MongoDbAuthenticationType const type.
-func PossibleMongoDbAuthenticationTypeValues() []MongoDbAuthenticationType {
-	return []MongoDbAuthenticationType{MongoDbAuthenticationTypeAnonymous, MongoDbAuthenticationTypeBasic}
-}
-
-// ODataAuthenticationType enumerates the values for o data authentication type.
-type ODataAuthenticationType string
-
-const (
-	// ODataAuthenticationTypeAnonymous ...
-	ODataAuthenticationTypeAnonymous ODataAuthenticationType = "Anonymous"
-	// ODataAuthenticationTypeBasic ...
-	ODataAuthenticationTypeBasic ODataAuthenticationType = "Basic"
-)
-
-// PossibleODataAuthenticationTypeValues returns an array of possible values for the ODataAuthenticationType const type.
-func PossibleODataAuthenticationTypeValues() []ODataAuthenticationType {
-	return []ODataAuthenticationType{ODataAuthenticationTypeAnonymous, ODataAuthenticationTypeBasic}
-}
-
-// ParameterType enumerates the values for parameter type.
-type ParameterType string
-
-const (
-	// ParameterTypeArray ...
-	ParameterTypeArray ParameterType = "Array"
-	// ParameterTypeBool ...
-	ParameterTypeBool ParameterType = "Bool"
-	// ParameterTypeFloat ...
-	ParameterTypeFloat ParameterType = "Float"
-	// ParameterTypeInt ...
-	ParameterTypeInt ParameterType = "Int"
-	// ParameterTypeObject ...
-	ParameterTypeObject ParameterType = "Object"
-	// ParameterTypeSecureString ...
-	ParameterTypeSecureString ParameterType = "SecureString"
-	// ParameterTypeString ...
-	ParameterTypeString ParameterType = "String"
-)
-
-// PossibleParameterTypeValues returns an array of possible values for the ParameterType const type.
-func PossibleParameterTypeValues() []ParameterType {
-	return []ParameterType{ParameterTypeArray, ParameterTypeBool, ParameterTypeFloat, ParameterTypeInt, ParameterTypeObject, ParameterTypeSecureString, ParameterTypeString}
-}
-
-// PhoenixAuthenticationType enumerates the values for phoenix authentication type.
-type PhoenixAuthenticationType string
-
-const (
-	// PhoenixAuthenticationTypeAnonymous ...
-	PhoenixAuthenticationTypeAnonymous PhoenixAuthenticationType = "Anonymous"
-	// PhoenixAuthenticationTypeUsernameAndPassword ...
-	PhoenixAuthenticationTypeUsernameAndPassword PhoenixAuthenticationType = "UsernameAndPassword"
-	// PhoenixAuthenticationTypeWindowsAzureHDInsightService ...
-	PhoenixAuthenticationTypeWindowsAzureHDInsightService PhoenixAuthenticationType = "WindowsAzureHDInsightService"
-)
-
-// PossiblePhoenixAuthenticationTypeValues returns an array of possible values for the PhoenixAuthenticationType const type.
-func PossiblePhoenixAuthenticationTypeValues() []PhoenixAuthenticationType {
-	return []PhoenixAuthenticationType{PhoenixAuthenticationTypeAnonymous, PhoenixAuthenticationTypeUsernameAndPassword, PhoenixAuthenticationTypeWindowsAzureHDInsightService}
-}
-
-// PipelineRunQueryFilterOperand enumerates the values for pipeline run query filter operand.
-type PipelineRunQueryFilterOperand string
-
-const (
-	// PipelineName ...
-	PipelineName PipelineRunQueryFilterOperand = "PipelineName"
-	// RunEnd ...
-	RunEnd PipelineRunQueryFilterOperand = "RunEnd"
-	// RunStart ...
-	RunStart PipelineRunQueryFilterOperand = "RunStart"
-	// Status ...
-	Status PipelineRunQueryFilterOperand = "Status"
-)
-
-// PossiblePipelineRunQueryFilterOperandValues returns an array of possible values for the PipelineRunQueryFilterOperand const type.
-func PossiblePipelineRunQueryFilterOperandValues() []PipelineRunQueryFilterOperand {
-	return []PipelineRunQueryFilterOperand{PipelineName, RunEnd, RunStart, Status}
-}
-
-// PipelineRunQueryFilterOperator enumerates the values for pipeline run query filter operator.
-type PipelineRunQueryFilterOperator string
-
-const (
-	// Equals ...
-	Equals PipelineRunQueryFilterOperator = "Equals"
-	// In ...
-	In PipelineRunQueryFilterOperator = "In"
-	// NotEquals ...
-	NotEquals PipelineRunQueryFilterOperator = "NotEquals"
-	// NotIn ...
-	NotIn PipelineRunQueryFilterOperator = "NotIn"
-)
-
-// PossiblePipelineRunQueryFilterOperatorValues returns an array of possible values for the PipelineRunQueryFilterOperator const type.
-func PossiblePipelineRunQueryFilterOperatorValues() []PipelineRunQueryFilterOperator {
-	return []PipelineRunQueryFilterOperator{Equals, In, NotEquals, NotIn}
-}
-
-// PipelineRunQueryOrder enumerates the values for pipeline run query order.
-type PipelineRunQueryOrder string
-
-const (
-	// ASC ...
-	ASC PipelineRunQueryOrder = "ASC"
-	// DESC ...
-	DESC PipelineRunQueryOrder = "DESC"
-)
-
-// PossiblePipelineRunQueryOrderValues returns an array of possible values for the PipelineRunQueryOrder const type.
-func PossiblePipelineRunQueryOrderValues() []PipelineRunQueryOrder {
-	return []PipelineRunQueryOrder{ASC, DESC}
-}
-
-// PipelineRunQueryOrderByField enumerates the values for pipeline run query order by field.
-type PipelineRunQueryOrderByField string
-
-const (
-	// PipelineRunQueryOrderByFieldRunEnd ...
-	PipelineRunQueryOrderByFieldRunEnd PipelineRunQueryOrderByField = "RunEnd"
-	// PipelineRunQueryOrderByFieldRunStart ...
-	PipelineRunQueryOrderByFieldRunStart PipelineRunQueryOrderByField = "RunStart"
-)
-
-// PossiblePipelineRunQueryOrderByFieldValues returns an array of possible values for the PipelineRunQueryOrderByField const type.
-func PossiblePipelineRunQueryOrderByFieldValues() []PipelineRunQueryOrderByField {
-	return []PipelineRunQueryOrderByField{PipelineRunQueryOrderByFieldRunEnd, PipelineRunQueryOrderByFieldRunStart}
-}
-
-// PrestoAuthenticationType enumerates the values for presto authentication type.
-type PrestoAuthenticationType string
-
-const (
-	// PrestoAuthenticationTypeAnonymous ...
-	PrestoAuthenticationTypeAnonymous PrestoAuthenticationType = "Anonymous"
-	// PrestoAuthenticationTypeLDAP ...
-	PrestoAuthenticationTypeLDAP PrestoAuthenticationType = "LDAP"
-)
-
-// PossiblePrestoAuthenticationTypeValues returns an array of possible values for the PrestoAuthenticationType const type.
-func PossiblePrestoAuthenticationTypeValues() []PrestoAuthenticationType {
-	return []PrestoAuthenticationType{PrestoAuthenticationTypeAnonymous, PrestoAuthenticationTypeLDAP}
-}
-
-// RecurrenceFrequency enumerates the values for recurrence frequency.
-type RecurrenceFrequency string
-
-const (
-	// Day ...
-	Day RecurrenceFrequency = "Day"
-	// Hour ...
-	Hour RecurrenceFrequency = "Hour"
-	// Minute ...
-	Minute RecurrenceFrequency = "Minute"
-	// Month ...
-	Month RecurrenceFrequency = "Month"
-	// NotSpecified ...
-	NotSpecified RecurrenceFrequency = "NotSpecified"
-	// Week ...
-	Week RecurrenceFrequency = "Week"
-	// Year ...
-	Year RecurrenceFrequency = "Year"
-)
-
-// PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
-func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
-	return []RecurrenceFrequency{Day, Hour, Minute, Month, NotSpecified, Week, Year}
-}
-
-// SapHanaAuthenticationType enumerates the values for sap hana authentication type.
-type SapHanaAuthenticationType string
-
-const (
-	// SapHanaAuthenticationTypeBasic ...
-	SapHanaAuthenticationTypeBasic SapHanaAuthenticationType = "Basic"
-	// SapHanaAuthenticationTypeWindows ...
-	SapHanaAuthenticationTypeWindows SapHanaAuthenticationType = "Windows"
-)
-
-// PossibleSapHanaAuthenticationTypeValues returns an array of possible values for the SapHanaAuthenticationType const type.
-func PossibleSapHanaAuthenticationTypeValues() []SapHanaAuthenticationType {
-	return []SapHanaAuthenticationType{SapHanaAuthenticationTypeBasic, SapHanaAuthenticationTypeWindows}
-}
-
-// SelfHostedIntegrationRuntimeNodeStatus enumerates the values for self hosted integration runtime node
-// status.
-type SelfHostedIntegrationRuntimeNodeStatus string
-
-const (
-	// SelfHostedIntegrationRuntimeNodeStatusInitializeFailed ...
-	SelfHostedIntegrationRuntimeNodeStatusInitializeFailed SelfHostedIntegrationRuntimeNodeStatus = "InitializeFailed"
-	// SelfHostedIntegrationRuntimeNodeStatusInitializing ...
-	SelfHostedIntegrationRuntimeNodeStatusInitializing SelfHostedIntegrationRuntimeNodeStatus = "Initializing"
-	// SelfHostedIntegrationRuntimeNodeStatusLimited ...
-	SelfHostedIntegrationRuntimeNodeStatusLimited SelfHostedIntegrationRuntimeNodeStatus = "Limited"
-	// SelfHostedIntegrationRuntimeNodeStatusNeedRegistration ...
-	SelfHostedIntegrationRuntimeNodeStatusNeedRegistration SelfHostedIntegrationRuntimeNodeStatus = "NeedRegistration"
-	// SelfHostedIntegrationRuntimeNodeStatusOffline ...
-	SelfHostedIntegrationRuntimeNodeStatusOffline SelfHostedIntegrationRuntimeNodeStatus = "Offline"
-	// SelfHostedIntegrationRuntimeNodeStatusOnline ...
-	SelfHostedIntegrationRuntimeNodeStatusOnline SelfHostedIntegrationRuntimeNodeStatus = "Online"
-	// SelfHostedIntegrationRuntimeNodeStatusUpgrading ...
-	SelfHostedIntegrationRuntimeNodeStatusUpgrading SelfHostedIntegrationRuntimeNodeStatus = "Upgrading"
-)
-
-// PossibleSelfHostedIntegrationRuntimeNodeStatusValues returns an array of possible values for the SelfHostedIntegrationRuntimeNodeStatus const type.
-func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrationRuntimeNodeStatus {
-	return []SelfHostedIntegrationRuntimeNodeStatus{SelfHostedIntegrationRuntimeNodeStatusInitializeFailed, SelfHostedIntegrationRuntimeNodeStatusInitializing, SelfHostedIntegrationRuntimeNodeStatusLimited, SelfHostedIntegrationRuntimeNodeStatusNeedRegistration, SelfHostedIntegrationRuntimeNodeStatusOffline, SelfHostedIntegrationRuntimeNodeStatusOnline, SelfHostedIntegrationRuntimeNodeStatusUpgrading}
-}
-
-// ServiceNowAuthenticationType enumerates the values for service now authentication type.
-type ServiceNowAuthenticationType string
-
-const (
-	// ServiceNowAuthenticationTypeBasic ...
-	ServiceNowAuthenticationTypeBasic ServiceNowAuthenticationType = "Basic"
-	// ServiceNowAuthenticationTypeOAuth2 ...
-	ServiceNowAuthenticationTypeOAuth2 ServiceNowAuthenticationType = "OAuth2"
-)
-
-// PossibleServiceNowAuthenticationTypeValues returns an array of possible values for the ServiceNowAuthenticationType const type.
-func PossibleServiceNowAuthenticationTypeValues() []ServiceNowAuthenticationType {
-	return []ServiceNowAuthenticationType{ServiceNowAuthenticationTypeBasic, ServiceNowAuthenticationTypeOAuth2}
-}
-
-// SftpAuthenticationType enumerates the values for sftp authentication type.
-type SftpAuthenticationType string
-
-const (
-	// SftpAuthenticationTypeBasic ...
-	SftpAuthenticationTypeBasic SftpAuthenticationType = "Basic"
-	// SftpAuthenticationTypeSSHPublicKey ...
-	SftpAuthenticationTypeSSHPublicKey SftpAuthenticationType = "SshPublicKey"
-)
-
-// PossibleSftpAuthenticationTypeValues returns an array of possible values for the SftpAuthenticationType const type.
-func PossibleSftpAuthenticationTypeValues() []SftpAuthenticationType {
-	return []SftpAuthenticationType{SftpAuthenticationTypeBasic, SftpAuthenticationTypeSSHPublicKey}
-}
-
-// SparkAuthenticationType enumerates the values for spark authentication type.
-type SparkAuthenticationType string
-
-const (
-	// SparkAuthenticationTypeAnonymous ...
-	SparkAuthenticationTypeAnonymous SparkAuthenticationType = "Anonymous"
-	// SparkAuthenticationTypeUsername ...
-	SparkAuthenticationTypeUsername SparkAuthenticationType = "Username"
-	// SparkAuthenticationTypeUsernameAndPassword ...
-	SparkAuthenticationTypeUsernameAndPassword SparkAuthenticationType = "UsernameAndPassword"
-	// SparkAuthenticationTypeWindowsAzureHDInsightService ...
-	SparkAuthenticationTypeWindowsAzureHDInsightService SparkAuthenticationType = "WindowsAzureHDInsightService"
-)
-
-// PossibleSparkAuthenticationTypeValues returns an array of possible values for the SparkAuthenticationType const type.
-func PossibleSparkAuthenticationTypeValues() []SparkAuthenticationType {
-	return []SparkAuthenticationType{SparkAuthenticationTypeAnonymous, SparkAuthenticationTypeUsername, SparkAuthenticationTypeUsernameAndPassword, SparkAuthenticationTypeWindowsAzureHDInsightService}
-}
-
-// SparkServerType enumerates the values for spark server type.
-type SparkServerType string
-
-const (
-	// SharkServer ...
-	SharkServer SparkServerType = "SharkServer"
-	// SharkServer2 ...
-	SharkServer2 SparkServerType = "SharkServer2"
-	// SparkThriftServer ...
-	SparkThriftServer SparkServerType = "SparkThriftServer"
-)
-
-// PossibleSparkServerTypeValues returns an array of possible values for the SparkServerType const type.
-func PossibleSparkServerTypeValues() []SparkServerType {
-	return []SparkServerType{SharkServer, SharkServer2, SparkThriftServer}
-}
-
-// SparkThriftTransportProtocol enumerates the values for spark thrift transport protocol.
-type SparkThriftTransportProtocol string
-
-const (
-	// SparkThriftTransportProtocolBinary ...
-	SparkThriftTransportProtocolBinary SparkThriftTransportProtocol = "Binary"
-	// SparkThriftTransportProtocolHTTP ...
-	SparkThriftTransportProtocolHTTP SparkThriftTransportProtocol = "HTTP "
-	// SparkThriftTransportProtocolSASL ...
-	SparkThriftTransportProtocolSASL SparkThriftTransportProtocol = "SASL"
-)
-
-// PossibleSparkThriftTransportProtocolValues returns an array of possible values for the SparkThriftTransportProtocol const type.
-func PossibleSparkThriftTransportProtocolValues() []SparkThriftTransportProtocol {
-	return []SparkThriftTransportProtocol{SparkThriftTransportProtocolBinary, SparkThriftTransportProtocolHTTP, SparkThriftTransportProtocolSASL}
-}
-
-// SsisPackageLocationType enumerates the values for ssis package location type.
-type SsisPackageLocationType string
-
-const (
-	// File ...
-	File SsisPackageLocationType = "File"
-	// SSISDB ...
-	SSISDB SsisPackageLocationType = "SSISDB"
-)
-
-// PossibleSsisPackageLocationTypeValues returns an array of possible values for the SsisPackageLocationType const type.
-func PossibleSsisPackageLocationTypeValues() []SsisPackageLocationType {
-	return []SsisPackageLocationType{File, SSISDB}
-}
-
-// SybaseAuthenticationType enumerates the values for sybase authentication type.
-type SybaseAuthenticationType string
-
-const (
-	// SybaseAuthenticationTypeBasic ...
-	SybaseAuthenticationTypeBasic SybaseAuthenticationType = "Basic"
-	// SybaseAuthenticationTypeWindows ...
-	SybaseAuthenticationTypeWindows SybaseAuthenticationType = "Windows"
-)
-
-// PossibleSybaseAuthenticationTypeValues returns an array of possible values for the SybaseAuthenticationType const type.
-func PossibleSybaseAuthenticationTypeValues() []SybaseAuthenticationType {
-	return []SybaseAuthenticationType{SybaseAuthenticationTypeBasic, SybaseAuthenticationTypeWindows}
-}
-
-// TeradataAuthenticationType enumerates the values for teradata authentication type.
-type TeradataAuthenticationType string
-
-const (
-	// TeradataAuthenticationTypeBasic ...
-	TeradataAuthenticationTypeBasic TeradataAuthenticationType = "Basic"
-	// TeradataAuthenticationTypeWindows ...
-	TeradataAuthenticationTypeWindows TeradataAuthenticationType = "Windows"
-)
-
-// PossibleTeradataAuthenticationTypeValues returns an array of possible values for the TeradataAuthenticationType const type.
-func PossibleTeradataAuthenticationTypeValues() []TeradataAuthenticationType {
-	return []TeradataAuthenticationType{TeradataAuthenticationTypeBasic, TeradataAuthenticationTypeWindows}
-}
-
-// TriggerRunStatus enumerates the values for trigger run status.
-type TriggerRunStatus string
-
-const (
-	// TriggerRunStatusFailed ...
-	TriggerRunStatusFailed TriggerRunStatus = "Failed"
-	// TriggerRunStatusInprogress ...
-	TriggerRunStatusInprogress TriggerRunStatus = "Inprogress"
-	// TriggerRunStatusSucceeded ...
-	TriggerRunStatusSucceeded TriggerRunStatus = "Succeeded"
-)
-
-// PossibleTriggerRunStatusValues returns an array of possible values for the TriggerRunStatus const type.
-func PossibleTriggerRunStatusValues() []TriggerRunStatus {
-	return []TriggerRunStatus{TriggerRunStatusFailed, TriggerRunStatusInprogress, TriggerRunStatusSucceeded}
-}
-
-// TriggerRuntimeState enumerates the values for trigger runtime state.
-type TriggerRuntimeState string
-
-const (
-	// TriggerRuntimeStateDisabled ...
-	TriggerRuntimeStateDisabled TriggerRuntimeState = "Disabled"
-	// TriggerRuntimeStateStarted ...
-	TriggerRuntimeStateStarted TriggerRuntimeState = "Started"
-	// TriggerRuntimeStateStopped ...
-	TriggerRuntimeStateStopped TriggerRuntimeState = "Stopped"
-)
-
-// PossibleTriggerRuntimeStateValues returns an array of possible values for the TriggerRuntimeState const type.
-func PossibleTriggerRuntimeStateValues() []TriggerRuntimeState {
-	return []TriggerRuntimeState{TriggerRuntimeStateDisabled, TriggerRuntimeStateStarted, TriggerRuntimeStateStopped}
-}
-
-// TumblingWindowFrequency enumerates the values for tumbling window frequency.
-type TumblingWindowFrequency string
-
-const (
-	// TumblingWindowFrequencyHour ...
-	TumblingWindowFrequencyHour TumblingWindowFrequency = "Hour"
-	// TumblingWindowFrequencyMinute ...
-	TumblingWindowFrequencyMinute TumblingWindowFrequency = "Minute"
-)
-
-// PossibleTumblingWindowFrequencyValues returns an array of possible values for the TumblingWindowFrequency const type.
-func PossibleTumblingWindowFrequencyValues() []TumblingWindowFrequency {
-	return []TumblingWindowFrequency{TumblingWindowFrequencyHour, TumblingWindowFrequencyMinute}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeAzureKeyVaultSecret ...
-	TypeAzureKeyVaultSecret Type = "AzureKeyVaultSecret"
-	// TypeSecretBase ...
-	TypeSecretBase Type = "SecretBase"
-	// TypeSecureString ...
-	TypeSecureString Type = "SecureString"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeAzureKeyVaultSecret, TypeSecretBase, TypeSecureString}
-}
-
-// TypeBasicActivity enumerates the values for type basic activity.
-type TypeBasicActivity string
-
-const (
-	// TypeActivity ...
-	TypeActivity TypeBasicActivity = "Activity"
-	// TypeAzureMLBatchExecution ...
-	TypeAzureMLBatchExecution TypeBasicActivity = "AzureMLBatchExecution"
-	// TypeAzureMLUpdateResource ...
-	TypeAzureMLUpdateResource TypeBasicActivity = "AzureMLUpdateResource"
-	// TypeContainer ...
-	TypeContainer TypeBasicActivity = "Container"
-	// TypeCopy ...
-	TypeCopy TypeBasicActivity = "Copy"
-	// TypeCustom ...
-	TypeCustom TypeBasicActivity = "Custom"
-	// TypeDatabricksNotebook ...
-	TypeDatabricksNotebook TypeBasicActivity = "DatabricksNotebook"
-	// TypeDataLakeAnalyticsUSQL ...
-	TypeDataLakeAnalyticsUSQL TypeBasicActivity = "DataLakeAnalyticsU-SQL"
-	// TypeExecutePipeline ...
-	TypeExecutePipeline TypeBasicActivity = "ExecutePipeline"
-	// TypeExecuteSSISPackage ...
-	TypeExecuteSSISPackage TypeBasicActivity = "ExecuteSSISPackage"
-	// TypeExecution ...
-	TypeExecution TypeBasicActivity = "Execution"
-	// TypeFilter ...
-	TypeFilter TypeBasicActivity = "Filter"
-	// TypeForEach ...
-	TypeForEach TypeBasicActivity = "ForEach"
-	// TypeGetMetadata ...
-	TypeGetMetadata TypeBasicActivity = "GetMetadata"
-	// TypeHDInsightHive ...
-	TypeHDInsightHive TypeBasicActivity = "HDInsightHive"
-	// TypeHDInsightMapReduce ...
-	TypeHDInsightMapReduce TypeBasicActivity = "HDInsightMapReduce"
-	// TypeHDInsightPig ...
-	TypeHDInsightPig TypeBasicActivity = "HDInsightPig"
-	// TypeHDInsightSpark ...
-	TypeHDInsightSpark TypeBasicActivity = "HDInsightSpark"
-	// TypeHDInsightStreaming ...
-	TypeHDInsightStreaming TypeBasicActivity = "HDInsightStreaming"
-	// TypeIfCondition ...
-	TypeIfCondition TypeBasicActivity = "IfCondition"
-	// TypeLookup ...
-	TypeLookup TypeBasicActivity = "Lookup"
-	// TypeSQLServerStoredProcedure ...
-	TypeSQLServerStoredProcedure TypeBasicActivity = "SqlServerStoredProcedure"
-	// TypeUntil ...
-	TypeUntil TypeBasicActivity = "Until"
-	// TypeWait ...
-	TypeWait TypeBasicActivity = "Wait"
-	// TypeWebActivity ...
-	TypeWebActivity TypeBasicActivity = "WebActivity"
-)
-
-// PossibleTypeBasicActivityValues returns an array of possible values for the TypeBasicActivity const type.
-func PossibleTypeBasicActivityValues() []TypeBasicActivity {
-	return []TypeBasicActivity{TypeActivity, TypeAzureMLBatchExecution, TypeAzureMLUpdateResource, TypeContainer, TypeCopy, TypeCustom, TypeDatabricksNotebook, TypeDataLakeAnalyticsUSQL, TypeExecutePipeline, TypeExecuteSSISPackage, TypeExecution, TypeFilter, TypeForEach, TypeGetMetadata, TypeHDInsightHive, TypeHDInsightMapReduce, TypeHDInsightPig, TypeHDInsightSpark, TypeHDInsightStreaming, TypeIfCondition, TypeLookup, TypeSQLServerStoredProcedure, TypeUntil, TypeWait, TypeWebActivity}
-}
-
-// TypeBasicCopySink enumerates the values for type basic copy sink.
-type TypeBasicCopySink string
-
-const (
-	// TypeAzureDataLakeStoreSink ...
-	TypeAzureDataLakeStoreSink TypeBasicCopySink = "AzureDataLakeStoreSink"
-	// TypeAzureQueueSink ...
-	TypeAzureQueueSink TypeBasicCopySink = "AzureQueueSink"
-	// TypeAzureSearchIndexSink ...
-	TypeAzureSearchIndexSink TypeBasicCopySink = "AzureSearchIndexSink"
-	// TypeAzureTableSink ...
-	TypeAzureTableSink TypeBasicCopySink = "AzureTableSink"
-	// TypeBlobSink ...
-	TypeBlobSink TypeBasicCopySink = "BlobSink"
-	// TypeCopySink ...
-	TypeCopySink TypeBasicCopySink = "CopySink"
-	// TypeDocumentDbCollectionSink ...
-	TypeDocumentDbCollectionSink TypeBasicCopySink = "DocumentDbCollectionSink"
-	// TypeDynamicsSink ...
-	TypeDynamicsSink TypeBasicCopySink = "DynamicsSink"
-	// TypeFileSystemSink ...
-	TypeFileSystemSink TypeBasicCopySink = "FileSystemSink"
-	// TypeOdbcSink ...
-	TypeOdbcSink TypeBasicCopySink = "OdbcSink"
-	// TypeOracleSink ...
-	TypeOracleSink TypeBasicCopySink = "OracleSink"
-	// TypeSalesforceSink ...
-	TypeSalesforceSink TypeBasicCopySink = "SalesforceSink"
-	// TypeSapCloudForCustomerSink ...
-	TypeSapCloudForCustomerSink TypeBasicCopySink = "SapCloudForCustomerSink"
-	// TypeSQLDWSink ...
-	TypeSQLDWSink TypeBasicCopySink = "SqlDWSink"
-	// TypeSQLSink ...
-	TypeSQLSink TypeBasicCopySink = "SqlSink"
-)
-
-// PossibleTypeBasicCopySinkValues returns an array of possible values for the TypeBasicCopySink const type.
-func PossibleTypeBasicCopySinkValues() []TypeBasicCopySink {
-	return []TypeBasicCopySink{TypeAzureDataLakeStoreSink, TypeAzureQueueSink, TypeAzureSearchIndexSink, TypeAzureTableSink, TypeBlobSink, TypeCopySink, TypeDocumentDbCollectionSink, TypeDynamicsSink, TypeFileSystemSink, TypeOdbcSink, TypeOracleSink, TypeSalesforceSink, TypeSapCloudForCustomerSink, TypeSQLDWSink, TypeSQLSink}
-}
-
-// TypeBasicCopySource enumerates the values for type basic copy source.
-type TypeBasicCopySource string
-
-const (
-	// TypeAmazonMWSSource ...
-	TypeAmazonMWSSource TypeBasicCopySource = "AmazonMWSSource"
-	// TypeAmazonRedshiftSource ...
-	TypeAmazonRedshiftSource TypeBasicCopySource = "AmazonRedshiftSource"
-	// TypeAzureDataLakeStoreSource ...
-	TypeAzureDataLakeStoreSource TypeBasicCopySource = "AzureDataLakeStoreSource"
-	// TypeAzureMySQLSource ...
-	TypeAzureMySQLSource TypeBasicCopySource = "AzureMySqlSource"
-	// TypeAzurePostgreSQLSource ...
-	TypeAzurePostgreSQLSource TypeBasicCopySource = "AzurePostgreSqlSource"
-	// TypeAzureTableSource ...
-	TypeAzureTableSource TypeBasicCopySource = "AzureTableSource"
-	// TypeBlobSource ...
-	TypeBlobSource TypeBasicCopySource = "BlobSource"
-	// TypeCassandraSource ...
-	TypeCassandraSource TypeBasicCopySource = "CassandraSource"
-	// TypeConcurSource ...
-	TypeConcurSource TypeBasicCopySource = "ConcurSource"
-	// TypeCopySource ...
-	TypeCopySource TypeBasicCopySource = "CopySource"
-	// TypeCouchbaseSource ...
-	TypeCouchbaseSource TypeBasicCopySource = "CouchbaseSource"
-	// TypeDocumentDbCollectionSource ...
-	TypeDocumentDbCollectionSource TypeBasicCopySource = "DocumentDbCollectionSource"
-	// TypeDrillSource ...
-	TypeDrillSource TypeBasicCopySource = "DrillSource"
-	// TypeDynamicsSource ...
-	TypeDynamicsSource TypeBasicCopySource = "DynamicsSource"
-	// TypeEloquaSource ...
-	TypeEloquaSource TypeBasicCopySource = "EloquaSource"
-	// TypeFileSystemSource ...
-	TypeFileSystemSource TypeBasicCopySource = "FileSystemSource"
-	// TypeGoogleBigQuerySource ...
-	TypeGoogleBigQuerySource TypeBasicCopySource = "GoogleBigQuerySource"
-	// TypeGreenplumSource ...
-	TypeGreenplumSource TypeBasicCopySource = "GreenplumSource"
-	// TypeHBaseSource ...
-	TypeHBaseSource TypeBasicCopySource = "HBaseSource"
-	// TypeHdfsSource ...
-	TypeHdfsSource TypeBasicCopySource = "HdfsSource"
-	// TypeHiveSource ...
-	TypeHiveSource TypeBasicCopySource = "HiveSource"
-	// TypeHTTPSource ...
-	TypeHTTPSource TypeBasicCopySource = "HttpSource"
-	// TypeHubspotSource ...
-	TypeHubspotSource TypeBasicCopySource = "HubspotSource"
-	// TypeImpalaSource ...
-	TypeImpalaSource TypeBasicCopySource = "ImpalaSource"
-	// TypeJiraSource ...
-	TypeJiraSource TypeBasicCopySource = "JiraSource"
-	// TypeMagentoSource ...
-	TypeMagentoSource TypeBasicCopySource = "MagentoSource"
-	// TypeMariaDBSource ...
-	TypeMariaDBSource TypeBasicCopySource = "MariaDBSource"
-	// TypeMarketoSource ...
-	TypeMarketoSource TypeBasicCopySource = "MarketoSource"
-	// TypeMongoDbSource ...
-	TypeMongoDbSource TypeBasicCopySource = "MongoDbSource"
-	// TypeNetezzaSource ...
-	TypeNetezzaSource TypeBasicCopySource = "NetezzaSource"
-	// TypeOracleSource ...
-	TypeOracleSource TypeBasicCopySource = "OracleSource"
-	// TypePaypalSource ...
-	TypePaypalSource TypeBasicCopySource = "PaypalSource"
-	// TypePhoenixSource ...
-	TypePhoenixSource TypeBasicCopySource = "PhoenixSource"
-	// TypePrestoSource ...
-	TypePrestoSource TypeBasicCopySource = "PrestoSource"
-	// TypeQuickBooksSource ...
-	TypeQuickBooksSource TypeBasicCopySource = "QuickBooksSource"
-	// TypeRelationalSource ...
-	TypeRelationalSource TypeBasicCopySource = "RelationalSource"
-	// TypeResponsysSource ...
-	TypeResponsysSource TypeBasicCopySource = "ResponsysSource"
-	// TypeSalesforceMarketingCloudSource ...
-	TypeSalesforceMarketingCloudSource TypeBasicCopySource = "SalesforceMarketingCloudSource"
-	// TypeSalesforceSource ...
-	TypeSalesforceSource TypeBasicCopySource = "SalesforceSource"
-	// TypeSapCloudForCustomerSource ...
-	TypeSapCloudForCustomerSource TypeBasicCopySource = "SapCloudForCustomerSource"
-	// TypeSapEccSource ...
-	TypeSapEccSource TypeBasicCopySource = "SapEccSource"
-	// TypeServiceNowSource ...
-	TypeServiceNowSource TypeBasicCopySource = "ServiceNowSource"
-	// TypeShopifySource ...
-	TypeShopifySource TypeBasicCopySource = "ShopifySource"
-	// TypeSparkSource ...
-	TypeSparkSource TypeBasicCopySource = "SparkSource"
-	// TypeSQLDWSource ...
-	TypeSQLDWSource TypeBasicCopySource = "SqlDWSource"
-	// TypeSQLSource ...
-	TypeSQLSource TypeBasicCopySource = "SqlSource"
-	// TypeSquareSource ...
-	TypeSquareSource TypeBasicCopySource = "SquareSource"
-	// TypeVerticaSource ...
-	TypeVerticaSource TypeBasicCopySource = "VerticaSource"
-	// TypeWebSource ...
-	TypeWebSource TypeBasicCopySource = "WebSource"
-	// TypeXeroSource ...
-	TypeXeroSource TypeBasicCopySource = "XeroSource"
-	// TypeZohoSource ...
-	TypeZohoSource TypeBasicCopySource = "ZohoSource"
-)
-
-// PossibleTypeBasicCopySourceValues returns an array of possible values for the TypeBasicCopySource const type.
-func PossibleTypeBasicCopySourceValues() []TypeBasicCopySource {
-	return []TypeBasicCopySource{TypeAmazonMWSSource, TypeAmazonRedshiftSource, TypeAzureDataLakeStoreSource, TypeAzureMySQLSource, TypeAzurePostgreSQLSource, TypeAzureTableSource, TypeBlobSource, TypeCassandraSource, TypeConcurSource, TypeCopySource, TypeCouchbaseSource, TypeDocumentDbCollectionSource, TypeDrillSource, TypeDynamicsSource, TypeEloquaSource, TypeFileSystemSource, TypeGoogleBigQuerySource, TypeGreenplumSource, TypeHBaseSource, TypeHdfsSource, TypeHiveSource, TypeHTTPSource, TypeHubspotSource, TypeImpalaSource, TypeJiraSource, TypeMagentoSource, TypeMariaDBSource, TypeMarketoSource, TypeMongoDbSource, TypeNetezzaSource, TypeOracleSource, TypePaypalSource, TypePhoenixSource, TypePrestoSource, TypeQuickBooksSource, TypeRelationalSource, TypeResponsysSource, TypeSalesforceMarketingCloudSource, TypeSalesforceSource, TypeSapCloudForCustomerSource, TypeSapEccSource, TypeServiceNowSource, TypeShopifySource, TypeSparkSource, TypeSQLDWSource, TypeSQLSource, TypeSquareSource, TypeVerticaSource, TypeWebSource, TypeXeroSource, TypeZohoSource}
-}
-
-// TypeBasicDataset enumerates the values for type basic dataset.
-type TypeBasicDataset string
-
-const (
-	// TypeAmazonMWSObject ...
-	TypeAmazonMWSObject TypeBasicDataset = "AmazonMWSObject"
-	// TypeAmazonS3Object ...
-	TypeAmazonS3Object TypeBasicDataset = "AmazonS3Object"
-	// TypeAzureBlob ...
-	TypeAzureBlob TypeBasicDataset = "AzureBlob"
-	// TypeAzureDataLakeStoreFile ...
-	TypeAzureDataLakeStoreFile TypeBasicDataset = "AzureDataLakeStoreFile"
-	// TypeAzureMySQLTable ...
-	TypeAzureMySQLTable TypeBasicDataset = "AzureMySqlTable"
-	// TypeAzurePostgreSQLTable ...
-	TypeAzurePostgreSQLTable TypeBasicDataset = "AzurePostgreSqlTable"
-	// TypeAzureSearchIndex ...
-	TypeAzureSearchIndex TypeBasicDataset = "AzureSearchIndex"
-	// TypeAzureSQLDWTable ...
-	TypeAzureSQLDWTable TypeBasicDataset = "AzureSqlDWTable"
-	// TypeAzureSQLTable ...
-	TypeAzureSQLTable TypeBasicDataset = "AzureSqlTable"
-	// TypeAzureTable ...
-	TypeAzureTable TypeBasicDataset = "AzureTable"
-	// TypeCassandraTable ...
-	TypeCassandraTable TypeBasicDataset = "CassandraTable"
-	// TypeConcurObject ...
-	TypeConcurObject TypeBasicDataset = "ConcurObject"
-	// TypeCouchbaseTable ...
-	TypeCouchbaseTable TypeBasicDataset = "CouchbaseTable"
-	// TypeCustomDataset ...
-	TypeCustomDataset TypeBasicDataset = "CustomDataset"
-	// TypeDataset ...
-	TypeDataset TypeBasicDataset = "Dataset"
-	// TypeDocumentDbCollection ...
-	TypeDocumentDbCollection TypeBasicDataset = "DocumentDbCollection"
-	// TypeDrillTable ...
-	TypeDrillTable TypeBasicDataset = "DrillTable"
-	// TypeDynamicsEntity ...
-	TypeDynamicsEntity TypeBasicDataset = "DynamicsEntity"
-	// TypeEloquaObject ...
-	TypeEloquaObject TypeBasicDataset = "EloquaObject"
-	// TypeFileShare ...
-	TypeFileShare TypeBasicDataset = "FileShare"
-	// TypeGoogleBigQueryObject ...
-	TypeGoogleBigQueryObject TypeBasicDataset = "GoogleBigQueryObject"
-	// TypeGreenplumTable ...
-	TypeGreenplumTable TypeBasicDataset = "GreenplumTable"
-	// TypeHBaseObject ...
-	TypeHBaseObject TypeBasicDataset = "HBaseObject"
-	// TypeHiveObject ...
-	TypeHiveObject TypeBasicDataset = "HiveObject"
-	// TypeHTTPFile ...
-	TypeHTTPFile TypeBasicDataset = "HttpFile"
-	// TypeHubspotObject ...
-	TypeHubspotObject TypeBasicDataset = "HubspotObject"
-	// TypeImpalaObject ...
-	TypeImpalaObject TypeBasicDataset = "ImpalaObject"
-	// TypeJiraObject ...
-	TypeJiraObject TypeBasicDataset = "JiraObject"
-	// TypeMagentoObject ...
-	TypeMagentoObject TypeBasicDataset = "MagentoObject"
-	// TypeMariaDBTable ...
-	TypeMariaDBTable TypeBasicDataset = "MariaDBTable"
-	// TypeMarketoObject ...
-	TypeMarketoObject TypeBasicDataset = "MarketoObject"
-	// TypeMongoDbCollection ...
-	TypeMongoDbCollection TypeBasicDataset = "MongoDbCollection"
-	// TypeNetezzaTable ...
-	TypeNetezzaTable TypeBasicDataset = "NetezzaTable"
-	// TypeODataResource ...
-	TypeODataResource TypeBasicDataset = "ODataResource"
-	// TypeOracleTable ...
-	TypeOracleTable TypeBasicDataset = "OracleTable"
-	// TypePaypalObject ...
-	TypePaypalObject TypeBasicDataset = "PaypalObject"
-	// TypePhoenixObject ...
-	TypePhoenixObject TypeBasicDataset = "PhoenixObject"
-	// TypePrestoObject ...
-	TypePrestoObject TypeBasicDataset = "PrestoObject"
-	// TypeQuickBooksObject ...
-	TypeQuickBooksObject TypeBasicDataset = "QuickBooksObject"
-	// TypeRelationalTable ...
-	TypeRelationalTable TypeBasicDataset = "RelationalTable"
-	// TypeResponsysObject ...
-	TypeResponsysObject TypeBasicDataset = "ResponsysObject"
-	// TypeSalesforceMarketingCloudObject ...
-	TypeSalesforceMarketingCloudObject TypeBasicDataset = "SalesforceMarketingCloudObject"
-	// TypeSalesforceObject ...
-	TypeSalesforceObject TypeBasicDataset = "SalesforceObject"
-	// TypeSapCloudForCustomerResource ...
-	TypeSapCloudForCustomerResource TypeBasicDataset = "SapCloudForCustomerResource"
-	// TypeSapEccResource ...
-	TypeSapEccResource TypeBasicDataset = "SapEccResource"
-	// TypeServiceNowObject ...
-	TypeServiceNowObject TypeBasicDataset = "ServiceNowObject"
-	// TypeShopifyObject ...
-	TypeShopifyObject TypeBasicDataset = "ShopifyObject"
-	// TypeSparkObject ...
-	TypeSparkObject TypeBasicDataset = "SparkObject"
-	// TypeSQLServerTable ...
-	TypeSQLServerTable TypeBasicDataset = "SqlServerTable"
-	// TypeSquareObject ...
-	TypeSquareObject TypeBasicDataset = "SquareObject"
-	// TypeVerticaTable ...
-	TypeVerticaTable TypeBasicDataset = "VerticaTable"
-	// TypeWebTable ...
-	TypeWebTable TypeBasicDataset = "WebTable"
-	// TypeXeroObject ...
-	TypeXeroObject TypeBasicDataset = "XeroObject"
-	// TypeZohoObject ...
-	TypeZohoObject TypeBasicDataset = "ZohoObject"
-)
-
-// PossibleTypeBasicDatasetValues returns an array of possible values for the TypeBasicDataset const type.
-func PossibleTypeBasicDatasetValues() []TypeBasicDataset {
-	return []TypeBasicDataset{TypeAmazonMWSObject, TypeAmazonS3Object, TypeAzureBlob, TypeAzureDataLakeStoreFile, TypeAzureMySQLTable, TypeAzurePostgreSQLTable, TypeAzureSearchIndex, TypeAzureSQLDWTable, TypeAzureSQLTable, TypeAzureTable, TypeCassandraTable, TypeConcurObject, TypeCouchbaseTable, TypeCustomDataset, TypeDataset, TypeDocumentDbCollection, TypeDrillTable, TypeDynamicsEntity, TypeEloquaObject, TypeFileShare, TypeGoogleBigQueryObject, TypeGreenplumTable, TypeHBaseObject, TypeHiveObject, TypeHTTPFile, TypeHubspotObject, TypeImpalaObject, TypeJiraObject, TypeMagentoObject, TypeMariaDBTable, TypeMarketoObject, TypeMongoDbCollection, TypeNetezzaTable, TypeODataResource, TypeOracleTable, TypePaypalObject, TypePhoenixObject, TypePrestoObject, TypeQuickBooksObject, TypeRelationalTable, TypeResponsysObject, TypeSalesforceMarketingCloudObject, TypeSalesforceObject, TypeSapCloudForCustomerResource, TypeSapEccResource, TypeServiceNowObject, TypeShopifyObject, TypeSparkObject, TypeSQLServerTable, TypeSquareObject, TypeVerticaTable, TypeWebTable, TypeXeroObject, TypeZohoObject}
-}
-
-// TypeBasicDatasetCompression enumerates the values for type basic dataset compression.
-type TypeBasicDatasetCompression string
-
-const (
-	// TypeBZip2 ...
-	TypeBZip2 TypeBasicDatasetCompression = "BZip2"
-	// TypeDatasetCompression ...
-	TypeDatasetCompression TypeBasicDatasetCompression = "DatasetCompression"
-	// TypeDeflate ...
-	TypeDeflate TypeBasicDatasetCompression = "Deflate"
-	// TypeGZip ...
-	TypeGZip TypeBasicDatasetCompression = "GZip"
-	// TypeZipDeflate ...
-	TypeZipDeflate TypeBasicDatasetCompression = "ZipDeflate"
-)
-
-// PossibleTypeBasicDatasetCompressionValues returns an array of possible values for the TypeBasicDatasetCompression const type.
-func PossibleTypeBasicDatasetCompressionValues() []TypeBasicDatasetCompression {
-	return []TypeBasicDatasetCompression{TypeBZip2, TypeDatasetCompression, TypeDeflate, TypeGZip, TypeZipDeflate}
-}
-
-// TypeBasicDatasetStorageFormat enumerates the values for type basic dataset storage format.
-type TypeBasicDatasetStorageFormat string
-
-const (
-	// TypeAvroFormat ...
-	TypeAvroFormat TypeBasicDatasetStorageFormat = "AvroFormat"
-	// TypeDatasetStorageFormat ...
-	TypeDatasetStorageFormat TypeBasicDatasetStorageFormat = "DatasetStorageFormat"
-	// TypeJSONFormat ...
-	TypeJSONFormat TypeBasicDatasetStorageFormat = "JsonFormat"
-	// TypeOrcFormat ...
-	TypeOrcFormat TypeBasicDatasetStorageFormat = "OrcFormat"
-	// TypeParquetFormat ...
-	TypeParquetFormat TypeBasicDatasetStorageFormat = "ParquetFormat"
-	// TypeTextFormat ...
-	TypeTextFormat TypeBasicDatasetStorageFormat = "TextFormat"
-)
-
-// PossibleTypeBasicDatasetStorageFormatValues returns an array of possible values for the TypeBasicDatasetStorageFormat const type.
-func PossibleTypeBasicDatasetStorageFormatValues() []TypeBasicDatasetStorageFormat {
-	return []TypeBasicDatasetStorageFormat{TypeAvroFormat, TypeDatasetStorageFormat, TypeJSONFormat, TypeOrcFormat, TypeParquetFormat, TypeTextFormat}
-}
-
-// TypeBasicIntegrationRuntime enumerates the values for type basic integration runtime.
-type TypeBasicIntegrationRuntime string
-
-const (
-	// TypeIntegrationRuntime ...
-	TypeIntegrationRuntime TypeBasicIntegrationRuntime = "IntegrationRuntime"
-	// TypeManaged ...
-	TypeManaged TypeBasicIntegrationRuntime = "Managed"
-	// TypeSelfHosted ...
-	TypeSelfHosted TypeBasicIntegrationRuntime = "SelfHosted"
-)
-
-// PossibleTypeBasicIntegrationRuntimeValues returns an array of possible values for the TypeBasicIntegrationRuntime const type.
-func PossibleTypeBasicIntegrationRuntimeValues() []TypeBasicIntegrationRuntime {
-	return []TypeBasicIntegrationRuntime{TypeIntegrationRuntime, TypeManaged, TypeSelfHosted}
-}
-
-// TypeBasicIntegrationRuntimeStatus enumerates the values for type basic integration runtime status.
-type TypeBasicIntegrationRuntimeStatus string
-
-const (
-	// TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus ...
-	TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus TypeBasicIntegrationRuntimeStatus = "IntegrationRuntimeStatus"
-	// TypeBasicIntegrationRuntimeStatusTypeManaged ...
-	TypeBasicIntegrationRuntimeStatusTypeManaged TypeBasicIntegrationRuntimeStatus = "Managed"
-	// TypeBasicIntegrationRuntimeStatusTypeSelfHosted ...
-	TypeBasicIntegrationRuntimeStatusTypeSelfHosted TypeBasicIntegrationRuntimeStatus = "SelfHosted"
-)
-
-// PossibleTypeBasicIntegrationRuntimeStatusValues returns an array of possible values for the TypeBasicIntegrationRuntimeStatus const type.
-func PossibleTypeBasicIntegrationRuntimeStatusValues() []TypeBasicIntegrationRuntimeStatus {
-	return []TypeBasicIntegrationRuntimeStatus{TypeBasicIntegrationRuntimeStatusTypeIntegrationRuntimeStatus, TypeBasicIntegrationRuntimeStatusTypeManaged, TypeBasicIntegrationRuntimeStatusTypeSelfHosted}
-}
-
-// TypeBasicLinkedService enumerates the values for type basic linked service.
-type TypeBasicLinkedService string
-
-const (
-	// TypeAmazonMWS ...
-	TypeAmazonMWS TypeBasicLinkedService = "AmazonMWS"
-	// TypeAmazonRedshift ...
-	TypeAmazonRedshift TypeBasicLinkedService = "AmazonRedshift"
-	// TypeAmazonS3 ...
-	TypeAmazonS3 TypeBasicLinkedService = "AmazonS3"
-	// TypeAzureBatch ...
-	TypeAzureBatch TypeBasicLinkedService = "AzureBatch"
-	// TypeAzureDatabricks ...
-	TypeAzureDatabricks TypeBasicLinkedService = "AzureDatabricks"
-	// TypeAzureDataLakeAnalytics ...
-	TypeAzureDataLakeAnalytics TypeBasicLinkedService = "AzureDataLakeAnalytics"
-	// TypeAzureDataLakeStore ...
-	TypeAzureDataLakeStore TypeBasicLinkedService = "AzureDataLakeStore"
-	// TypeAzureKeyVault ...
-	TypeAzureKeyVault TypeBasicLinkedService = "AzureKeyVault"
-	// TypeAzureML ...
-	TypeAzureML TypeBasicLinkedService = "AzureML"
-	// TypeAzureMySQL ...
-	TypeAzureMySQL TypeBasicLinkedService = "AzureMySql"
-	// TypeAzurePostgreSQL ...
-	TypeAzurePostgreSQL TypeBasicLinkedService = "AzurePostgreSql"
-	// TypeAzureSearch ...
-	TypeAzureSearch TypeBasicLinkedService = "AzureSearch"
-	// TypeAzureSQLDatabase ...
-	TypeAzureSQLDatabase TypeBasicLinkedService = "AzureSqlDatabase"
-	// TypeAzureSQLDW ...
-	TypeAzureSQLDW TypeBasicLinkedService = "AzureSqlDW"
-	// TypeAzureStorage ...
-	TypeAzureStorage TypeBasicLinkedService = "AzureStorage"
-	// TypeCassandra ...
-	TypeCassandra TypeBasicLinkedService = "Cassandra"
-	// TypeConcur ...
-	TypeConcur TypeBasicLinkedService = "Concur"
-	// TypeCosmosDb ...
-	TypeCosmosDb TypeBasicLinkedService = "CosmosDb"
-	// TypeCouchbase ...
-	TypeCouchbase TypeBasicLinkedService = "Couchbase"
-	// TypeCustomDataSource ...
-	TypeCustomDataSource TypeBasicLinkedService = "CustomDataSource"
-	// TypeDb2 ...
-	TypeDb2 TypeBasicLinkedService = "Db2"
-	// TypeDrill ...
-	TypeDrill TypeBasicLinkedService = "Drill"
-	// TypeDynamics ...
-	TypeDynamics TypeBasicLinkedService = "Dynamics"
-	// TypeEloqua ...
-	TypeEloqua TypeBasicLinkedService = "Eloqua"
-	// TypeFileServer ...
-	TypeFileServer TypeBasicLinkedService = "FileServer"
-	// TypeFtpServer ...
-	TypeFtpServer TypeBasicLinkedService = "FtpServer"
-	// TypeGoogleBigQuery ...
-	TypeGoogleBigQuery TypeBasicLinkedService = "GoogleBigQuery"
-	// TypeGreenplum ...
-	TypeGreenplum TypeBasicLinkedService = "Greenplum"
-	// TypeHBase ...
-	TypeHBase TypeBasicLinkedService = "HBase"
-	// TypeHdfs ...
-	TypeHdfs TypeBasicLinkedService = "Hdfs"
-	// TypeHDInsight ...
-	TypeHDInsight TypeBasicLinkedService = "HDInsight"
-	// TypeHDInsightOnDemand ...
-	TypeHDInsightOnDemand TypeBasicLinkedService = "HDInsightOnDemand"
-	// TypeHive ...
-	TypeHive TypeBasicLinkedService = "Hive"
-	// TypeHTTPServer ...
-	TypeHTTPServer TypeBasicLinkedService = "HttpServer"
-	// TypeHubspot ...
-	TypeHubspot TypeBasicLinkedService = "Hubspot"
-	// TypeImpala ...
-	TypeImpala TypeBasicLinkedService = "Impala"
-	// TypeJira ...
-	TypeJira TypeBasicLinkedService = "Jira"
-	// TypeLinkedService ...
-	TypeLinkedService TypeBasicLinkedService = "LinkedService"
-	// TypeMagento ...
-	TypeMagento TypeBasicLinkedService = "Magento"
-	// TypeMariaDB ...
-	TypeMariaDB TypeBasicLinkedService = "MariaDB"
-	// TypeMarketo ...
-	TypeMarketo TypeBasicLinkedService = "Marketo"
-	// TypeMongoDb ...
-	TypeMongoDb TypeBasicLinkedService = "MongoDb"
-	// TypeMySQL ...
-	TypeMySQL TypeBasicLinkedService = "MySql"
-	// TypeNetezza ...
-	TypeNetezza TypeBasicLinkedService = "Netezza"
-	// TypeOData ...
-	TypeOData TypeBasicLinkedService = "OData"
-	// TypeOdbc ...
-	TypeOdbc TypeBasicLinkedService = "Odbc"
-	// TypeOracle ...
-	TypeOracle TypeBasicLinkedService = "Oracle"
-	// TypePaypal ...
-	TypePaypal TypeBasicLinkedService = "Paypal"
-	// TypePhoenix ...
-	TypePhoenix TypeBasicLinkedService = "Phoenix"
-	// TypePostgreSQL ...
-	TypePostgreSQL TypeBasicLinkedService = "PostgreSql"
-	// TypePresto ...
-	TypePresto TypeBasicLinkedService = "Presto"
-	// TypeQuickBooks ...
-	TypeQuickBooks TypeBasicLinkedService = "QuickBooks"
-	// TypeResponsys ...
-	TypeResponsys TypeBasicLinkedService = "Responsys"
-	// TypeSalesforce ...
-	TypeSalesforce TypeBasicLinkedService = "Salesforce"
-	// TypeSalesforceMarketingCloud ...
-	TypeSalesforceMarketingCloud TypeBasicLinkedService = "SalesforceMarketingCloud"
-	// TypeSapBW ...
-	TypeSapBW TypeBasicLinkedService = "SapBW"
-	// TypeSapCloudForCustomer ...
-	TypeSapCloudForCustomer TypeBasicLinkedService = "SapCloudForCustomer"
-	// TypeSapEcc ...
-	TypeSapEcc TypeBasicLinkedService = "SapEcc"
-	// TypeSapHana ...
-	TypeSapHana TypeBasicLinkedService = "SapHana"
-	// TypeServiceNow ...
-	TypeServiceNow TypeBasicLinkedService = "ServiceNow"
-	// TypeSftp ...
-	TypeSftp TypeBasicLinkedService = "Sftp"
-	// TypeShopify ...
-	TypeShopify TypeBasicLinkedService = "Shopify"
-	// TypeSpark ...
-	TypeSpark TypeBasicLinkedService = "Spark"
-	// TypeSQLServer ...
-	TypeSQLServer TypeBasicLinkedService = "SqlServer"
-	// TypeSquare ...
-	TypeSquare TypeBasicLinkedService = "Square"
-	// TypeSybase ...
-	TypeSybase TypeBasicLinkedService = "Sybase"
-	// TypeTeradata ...
-	TypeTeradata TypeBasicLinkedService = "Teradata"
-	// TypeVertica ...
-	TypeVertica TypeBasicLinkedService = "Vertica"
-	// TypeWeb ...
-	TypeWeb TypeBasicLinkedService = "Web"
-	// TypeXero ...
-	TypeXero TypeBasicLinkedService = "Xero"
-	// TypeZoho ...
-	TypeZoho TypeBasicLinkedService = "Zoho"
-)
-
-// PossibleTypeBasicLinkedServiceValues returns an array of possible values for the TypeBasicLinkedService const type.
-func PossibleTypeBasicLinkedServiceValues() []TypeBasicLinkedService {
-	return []TypeBasicLinkedService{TypeAmazonMWS, TypeAmazonRedshift, TypeAmazonS3, TypeAzureBatch, TypeAzureDatabricks, TypeAzureDataLakeAnalytics, TypeAzureDataLakeStore, TypeAzureKeyVault, TypeAzureML, TypeAzureMySQL, TypeAzurePostgreSQL, TypeAzureSearch, TypeAzureSQLDatabase, TypeAzureSQLDW, TypeAzureStorage, TypeCassandra, TypeConcur, TypeCosmosDb, TypeCouchbase, TypeCustomDataSource, TypeDb2, TypeDrill, TypeDynamics, TypeEloqua, TypeFileServer, TypeFtpServer, TypeGoogleBigQuery, TypeGreenplum, TypeHBase, TypeHdfs, TypeHDInsight, TypeHDInsightOnDemand, TypeHive, TypeHTTPServer, TypeHubspot, TypeImpala, TypeJira, TypeLinkedService, TypeMagento, TypeMariaDB, TypeMarketo, TypeMongoDb, TypeMySQL, TypeNetezza, TypeOData, TypeOdbc, TypeOracle, TypePaypal, TypePhoenix, TypePostgreSQL, TypePresto, TypeQuickBooks, TypeResponsys, TypeSalesforce, TypeSalesforceMarketingCloud, TypeSapBW, TypeSapCloudForCustomer, TypeSapEcc, TypeSapHana, TypeServiceNow, TypeSftp, TypeShopify, TypeSpark, TypeSQLServer, TypeSquare, TypeSybase, TypeTeradata, TypeVertica, TypeWeb, TypeXero, TypeZoho}
-}
-
-// TypeBasicTrigger enumerates the values for type basic trigger.
-type TypeBasicTrigger string
-
-const (
-	// TypeBlobEventsTrigger ...
-	TypeBlobEventsTrigger TypeBasicTrigger = "BlobEventsTrigger"
-	// TypeBlobTrigger ...
-	TypeBlobTrigger TypeBasicTrigger = "BlobTrigger"
-	// TypeMultiplePipelineTrigger ...
-	TypeMultiplePipelineTrigger TypeBasicTrigger = "MultiplePipelineTrigger"
-	// TypeScheduleTrigger ...
-	TypeScheduleTrigger TypeBasicTrigger = "ScheduleTrigger"
-	// TypeTrigger ...
-	TypeTrigger TypeBasicTrigger = "Trigger"
-	// TypeTumblingWindowTrigger ...
-	TypeTumblingWindowTrigger TypeBasicTrigger = "TumblingWindowTrigger"
-)
-
-// PossibleTypeBasicTriggerValues returns an array of possible values for the TypeBasicTrigger const type.
-func PossibleTypeBasicTriggerValues() []TypeBasicTrigger {
-	return []TypeBasicTrigger{TypeBlobEventsTrigger, TypeBlobTrigger, TypeMultiplePipelineTrigger, TypeScheduleTrigger, TypeTrigger, TypeTumblingWindowTrigger}
-}
-
-// WebActivityMethod enumerates the values for web activity method.
-type WebActivityMethod string
-
-const (
-	// DELETE ...
-	DELETE WebActivityMethod = "DELETE"
-	// GET ...
-	GET WebActivityMethod = "GET"
-	// POST ...
-	POST WebActivityMethod = "POST"
-	// PUT ...
-	PUT WebActivityMethod = "PUT"
-)
-
-// PossibleWebActivityMethodValues returns an array of possible values for the WebActivityMethod const type.
-func PossibleWebActivityMethodValues() []WebActivityMethod {
-	return []WebActivityMethod{DELETE, GET, POST, PUT}
-}
-
 // BasicActivity a pipeline activity.
 type BasicActivity interface {
 	AsDatabricksNotebookActivity() (*DatabricksNotebookActivity, bool)
@@ -2355,10 +861,15 @@ func (arlr ActivityRunsListResponse) IsEmpty() bool {
 	return arlr.Value == nil || len(*arlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (arlr ActivityRunsListResponse) hasNextLink() bool {
+	return arlr.NextLink != nil && len(*arlr.NextLink) != 0
+}
+
 // activityRunsListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (arlr ActivityRunsListResponse) activityRunsListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if arlr.NextLink == nil || len(to.String(arlr.NextLink)) < 1 {
+	if !arlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2386,11 +897,16 @@ func (page *ActivityRunsListResponsePage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.arlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.arlr)
+		if err != nil {
+			return err
+		}
+		page.arlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.arlr = next
 	return nil
 }
 
@@ -29144,10 +27660,15 @@ func (dlr DatasetListResponse) IsEmpty() bool {
 	return dlr.Value == nil || len(*dlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dlr DatasetListResponse) hasNextLink() bool {
+	return dlr.NextLink != nil && len(*dlr.NextLink) != 0
+}
+
 // datasetListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dlr DatasetListResponse) datasetListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if dlr.NextLink == nil || len(to.String(dlr.NextLink)) < 1 {
+	if !dlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -29175,11 +27696,16 @@ func (page *DatasetListResponsePage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dlr)
+		if err != nil {
+			return err
+		}
+		page.dlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dlr = next
 	return nil
 }
 
@@ -29251,6 +27777,13 @@ type DatasetResource struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - READ-ONLY; Etag identifies change in the resource.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatasetResource.
+func (dr DatasetResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["properties"] = dr.Properties
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for DatasetResource struct.
@@ -36568,6 +35101,15 @@ type FactoryIdentity struct {
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FactoryIdentity.
+func (fi FactoryIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fi.Type != nil {
+		objectMap["type"] = fi.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // FactoryListResponse a list of factory resources.
 type FactoryListResponse struct {
 	autorest.Response `json:"-"`
@@ -36645,10 +35187,15 @@ func (flr FactoryListResponse) IsEmpty() bool {
 	return flr.Value == nil || len(*flr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (flr FactoryListResponse) hasNextLink() bool {
+	return flr.NextLink != nil && len(*flr.NextLink) != 0
+}
+
 // factoryListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (flr FactoryListResponse) factoryListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if flr.NextLink == nil || len(to.String(flr.NextLink)) < 1 {
+	if !flr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -36676,11 +35223,16 @@ func (page *FactoryListResponsePage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.flr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.flr)
+		if err != nil {
+			return err
+		}
+		page.flr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.flr = next
 	return nil
 }
 
@@ -36724,6 +35276,15 @@ type FactoryProperties struct {
 	Version *string `json:"version,omitempty"`
 	// VstsConfiguration - VSTS repo information of the factory.
 	VstsConfiguration *FactoryVSTSConfiguration `json:"vstsConfiguration,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FactoryProperties.
+func (fp FactoryProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fp.VstsConfiguration != nil {
+		objectMap["vstsConfiguration"] = fp.VstsConfiguration
+	}
+	return json.Marshal(objectMap)
 }
 
 // FactoryRepoUpdate factory's VSTS repo information.
@@ -52124,9 +50685,8 @@ func (hs *HubspotSource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// IfConditionActivity this activity evaluates a boolean expression and executes either the activities
-// under the ifTrueActivities property or the ifFalseActivities property depending on the result of the
-// expression.
+// IfConditionActivity this activity evaluates a boolean expression and executes either the activities under
+// the ifTrueActivities property or the ifFalseActivities property depending on the result of the expression.
 type IfConditionActivity struct {
 	// IfConditionActivityTypeProperties - IfCondition activity properties.
 	*IfConditionActivityTypeProperties `json:"typeProperties,omitempty"`
@@ -54214,8 +52774,8 @@ type IntegrationRuntimeListResponse struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// IntegrationRuntimeListResponseIterator provides access to a complete listing of
-// IntegrationRuntimeResource values.
+// IntegrationRuntimeListResponseIterator provides access to a complete listing of IntegrationRuntimeResource
+// values.
 type IntegrationRuntimeListResponseIterator struct {
 	i    int
 	page IntegrationRuntimeListResponsePage
@@ -54283,10 +52843,15 @@ func (irlr IntegrationRuntimeListResponse) IsEmpty() bool {
 	return irlr.Value == nil || len(*irlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (irlr IntegrationRuntimeListResponse) hasNextLink() bool {
+	return irlr.NextLink != nil && len(*irlr.NextLink) != 0
+}
+
 // integrationRuntimeListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (irlr IntegrationRuntimeListResponse) integrationRuntimeListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if irlr.NextLink == nil || len(to.String(irlr.NextLink)) < 1 {
+	if !irlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -54314,11 +52879,16 @@ func (page *IntegrationRuntimeListResponsePage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.irlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.irlr)
+		if err != nil {
+			return err
+		}
+		page.irlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.irlr = next
 	return nil
 }
 
@@ -54600,6 +53170,13 @@ type IntegrationRuntimeResource struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IntegrationRuntimeResource.
+func (irr IntegrationRuntimeResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["properties"] = irr.Properties
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for IntegrationRuntimeResource struct.
 func (irr *IntegrationRuntimeResource) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -54869,8 +53446,8 @@ func (irsp *IntegrationRuntimeSsisProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// IntegrationRuntimesStartFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// IntegrationRuntimesStartFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type IntegrationRuntimesStartFuture struct {
 	azure.Future
 }
@@ -55083,6 +53660,13 @@ type IntegrationRuntimeStatusResponse struct {
 	Name *string `json:"name,omitempty"`
 	// Properties - Integration runtime properties.
 	Properties BasicIntegrationRuntimeStatus `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationRuntimeStatusResponse.
+func (irsr IntegrationRuntimeStatusResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["properties"] = irsr.Properties
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for IntegrationRuntimeStatusResponse struct.
@@ -57879,10 +56463,15 @@ func (lslr LinkedServiceListResponse) IsEmpty() bool {
 	return lslr.Value == nil || len(*lslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lslr LinkedServiceListResponse) hasNextLink() bool {
+	return lslr.NextLink != nil && len(*lslr.NextLink) != 0
+}
+
 // linkedServiceListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lslr LinkedServiceListResponse) linkedServiceListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if lslr.NextLink == nil || len(to.String(lslr.NextLink)) < 1 {
+	if !lslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -57910,11 +56499,16 @@ func (page *LinkedServiceListResponsePage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lslr)
+		if err != nil {
+			return err
+		}
+		page.lslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lslr = next
 	return nil
 }
 
@@ -57986,6 +56580,13 @@ type LinkedServiceResource struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - READ-ONLY; Etag identifies change in the resource.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LinkedServiceResource.
+func (lsr LinkedServiceResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["properties"] = lsr.Properties
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for LinkedServiceResource struct.
@@ -59848,6 +58449,15 @@ type ManagedIntegrationRuntimeNode struct {
 	Status ManagedIntegrationRuntimeNodeStatus `json:"status,omitempty"`
 	// Errors - The errors that occurred on this integration runtime node.
 	Errors *[]ManagedIntegrationRuntimeError `json:"errors,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedIntegrationRuntimeNode.
+func (mirn ManagedIntegrationRuntimeNode) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mirn.Errors != nil {
+		objectMap["errors"] = mirn.Errors
+	}
+	return json.Marshal(objectMap)
 }
 
 // ManagedIntegrationRuntimeOperationResult properties of managed integration runtime operation result.
@@ -72538,10 +71148,15 @@ func (plr PipelineListResponse) IsEmpty() bool {
 	return plr.Value == nil || len(*plr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (plr PipelineListResponse) hasNextLink() bool {
+	return plr.NextLink != nil && len(*plr.NextLink) != 0
+}
+
 // pipelineListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (plr PipelineListResponse) pipelineListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if plr.NextLink == nil || len(to.String(plr.NextLink)) < 1 {
+	if !plr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -72569,11 +71184,16 @@ func (page *PipelineListResponsePage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.plr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.plr)
+		if err != nil {
+			return err
+		}
+		page.plr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.plr = next
 	return nil
 }
 
@@ -76570,8 +75190,8 @@ func (rirs *RedirectIncompatibleRowSettings) UnmarshalJSON(body []byte) error {
 }
 
 // RedshiftUnloadSettings the Amazon S3 settings needed for the interim Amazon S3 when copying from Amazon
-// Redshift with unload. With this, data from Amazon Redshift source will be unloaded into S3 first and
-// then copied into the targeted sink from the interim S3.
+// Redshift with unload. With this, data from Amazon Redshift source will be unloaded into S3 first and then
+// copied into the targeted sink from the interim S3.
 type RedshiftUnloadSettings struct {
 	// S3LinkedServiceName - The name of the Amazon S3 linked service which will be used for the unload operation when copying from the Amazon Redshift source.
 	S3LinkedServiceName *LinkedServiceReference `json:"s3LinkedServiceName,omitempty"`
@@ -79783,8 +78403,7 @@ func (smcls *SalesforceMarketingCloudLinkedService) UnmarshalJSON(body []byte) e
 	return nil
 }
 
-// SalesforceMarketingCloudLinkedServiceTypeProperties salesforce Marketing Cloud linked service
-// properties.
+// SalesforceMarketingCloudLinkedServiceTypeProperties salesforce Marketing Cloud linked service properties.
 type SalesforceMarketingCloudLinkedServiceTypeProperties struct {
 	// ClientID - The client ID associated with the Salesforce Marketing Cloud application. Type: string (or Expression with resultType string).
 	ClientID interface{} `json:"clientId,omitempty"`
@@ -83195,8 +81814,7 @@ func (scfcrd *SapCloudForCustomerResourceDataset) UnmarshalJSON(body []byte) err
 	return nil
 }
 
-// SapCloudForCustomerResourceDatasetTypeProperties sap Cloud For Customer OData resource dataset
-// properties.
+// SapCloudForCustomerResourceDatasetTypeProperties sap Cloud For Customer OData resource dataset properties.
 type SapCloudForCustomerResourceDatasetTypeProperties struct {
 	// Path - The path of the SAP Cloud for Customer OData entity. Type: string (or Expression with resultType string).
 	Path interface{} `json:"path,omitempty"`
@@ -86024,8 +84642,8 @@ func (sb SecretBase) AsBasicSecretBase() (BasicSecretBase, bool) {
 	return &sb, true
 }
 
-// SecureString azure Data Factory secure string definition. The string value will be masked with asterisks
-// '*' during Get or List API calls.
+// SecureString azure Data Factory secure string definition. The string value will be masked with asterisks '*'
+// during Get or List API calls.
 type SecureString struct {
 	// Value - Value of secure string.
 	Value *string `json:"value,omitempty"`
@@ -97031,10 +95649,15 @@ func (tlr TriggerListResponse) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tlr TriggerListResponse) hasNextLink() bool {
+	return tlr.NextLink != nil && len(*tlr.NextLink) != 0
+}
+
 // triggerListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tlr TriggerListResponse) triggerListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if tlr.NextLink == nil || len(to.String(tlr.NextLink)) < 1 {
+	if !tlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -97062,11 +95685,16 @@ func (page *TriggerListResponsePage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tlr)
+		if err != nil {
+			return err
+		}
+		page.tlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tlr = next
 	return nil
 }
 
@@ -97133,6 +95761,13 @@ type TriggerResource struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - READ-ONLY; Etag identifies change in the resource.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TriggerResource.
+func (tr TriggerResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["properties"] = tr.Properties
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for TriggerResource struct.
@@ -97401,10 +96036,15 @@ func (trlr TriggerRunListResponse) IsEmpty() bool {
 	return trlr.Value == nil || len(*trlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (trlr TriggerRunListResponse) hasNextLink() bool {
+	return trlr.NextLink != nil && len(*trlr.NextLink) != 0
+}
+
 // triggerRunListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (trlr TriggerRunListResponse) triggerRunListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if trlr.NextLink == nil || len(to.String(trlr.NextLink)) < 1 {
+	if !trlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -97432,11 +96072,16 @@ func (page *TriggerRunListResponsePage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.trlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.trlr)
+		if err != nil {
+			return err
+		}
+		page.trlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.trlr = next
 	return nil
 }
 
@@ -97470,8 +96115,7 @@ func NewTriggerRunListResponsePage(getNextPage func(context.Context, TriggerRunL
 	return TriggerRunListResponsePage{fn: getNextPage}
 }
 
-// TriggersStartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// TriggersStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type TriggersStartFuture struct {
 	azure.Future
 }
@@ -97515,8 +96159,8 @@ func (future *TriggersStopFuture) Result(client TriggersClient) (ar autorest.Res
 	return
 }
 
-// TumblingWindowTrigger trigger that schedules pipeline runs for all fixed time interval windows from a
-// start time without gaps and also supports backfill scenarios (when start time is in the past).
+// TumblingWindowTrigger trigger that schedules pipeline runs for all fixed time interval windows from a start
+// time without gaps and also supports backfill scenarios (when start time is in the past).
 type TumblingWindowTrigger struct {
 	// Pipeline - Pipeline for which runs are created when an event is fired for trigger window that is ready.
 	Pipeline *TriggerPipelineReference `json:"pipeline,omitempty"`
@@ -97684,8 +96328,8 @@ type TumblingWindowTriggerTypeProperties struct {
 	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
 }
 
-// UntilActivity this activity executes inner activities until the specified boolean expression results to
-// true or timeout is reached, whichever is earlier.
+// UntilActivity this activity executes inner activities until the specified boolean expression results to true
+// or timeout is reached, whichever is earlier.
 type UntilActivity struct {
 	// UntilActivityTypeProperties - Until activity properties.
 	*UntilActivityTypeProperties `json:"typeProperties,omitempty"`
@@ -99831,8 +98475,8 @@ type WebActivityTypeProperties struct {
 	LinkedServices *[]LinkedServiceReference `json:"linkedServices,omitempty"`
 }
 
-// WebAnonymousAuthentication a WebLinkedService that uses anonymous authentication to communicate with an
-// HTTP endpoint.
+// WebAnonymousAuthentication a WebLinkedService that uses anonymous authentication to communicate with an HTTP
+// endpoint.
 type WebAnonymousAuthentication struct {
 	// URL - The URL of the web service endpoint, e.g. http://www.microsoft.com . Type: string (or Expression with resultType string).
 	URL interface{} `json:"url,omitempty"`
@@ -99983,9 +98627,9 @@ func (wba *WebBasicAuthentication) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// WebClientCertificateAuthentication a WebLinkedService that uses client certificate based authentication
-// to communicate with an HTTP endpoint. This scheme follows mutual authentication; the server must also
-// provide valid credentials to the client.
+// WebClientCertificateAuthentication a WebLinkedService that uses client certificate based authentication to
+// communicate with an HTTP endpoint. This scheme follows mutual authentication; the server must also provide
+// valid credentials to the client.
 type WebClientCertificateAuthentication struct {
 	// Pfx - Base64-encoded contents of a PFX file.
 	Pfx BasicSecretBase `json:"pfx,omitempty"`

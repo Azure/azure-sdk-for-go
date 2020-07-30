@@ -382,6 +382,9 @@ func (client MachineGroupsClient) ListByWorkspace(ctx context.Context, resourceG
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachineGroupsClient", "ListByWorkspace", resp, "Failure responding to request")
 	}
+	if result.mgc.hasNextLink() && result.mgc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -30,38 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner"
 
-// Code enumerates the values for code.
-type Code string
-
-const (
-	// BadRequest ...
-	BadRequest Code = "BadRequest"
-	// Conflict ...
-	Conflict Code = "Conflict"
-	// NotFound ...
-	NotFound Code = "NotFound"
-)
-
-// PossibleCodeValues returns an array of possible values for the Code const type.
-func PossibleCodeValues() []Code {
-	return []Code{BadRequest, Conflict, NotFound}
-}
-
-// State enumerates the values for state.
-type State string
-
-const (
-	// Active ...
-	Active State = "Active"
-	// Deleted ...
-	Deleted State = "Deleted"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{Active, Deleted}
-}
-
 // Error this is the management partner operations error
 type Error struct {
 	// Error - this is the ExtendedErrorInfo property
@@ -165,10 +133,15 @@ func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OperationList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // operationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OperationList) operationListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -196,11 +169,16 @@ func (page *OperationListPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 

@@ -311,6 +311,9 @@ func (client WorkflowAccessKeysClient) List(ctx context.Context, resourceGroupNa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.WorkflowAccessKeysClient", "List", resp, "Failure responding to request")
 	}
+	if result.waklr.hasNextLink() && result.waklr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

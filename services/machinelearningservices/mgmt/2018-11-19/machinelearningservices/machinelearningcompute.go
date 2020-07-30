@@ -315,6 +315,9 @@ func (client MachineLearningComputeClient) ListByWorkspace(ctx context.Context, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "ListByWorkspace", resp, "Failure responding to request")
 	}
+	if result.pcrl.hasNextLink() && result.pcrl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -508,6 +511,9 @@ func (client MachineLearningComputeClient) ListNodes(ctx context.Context, resour
 	result.acni, err = client.ListNodesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.MachineLearningComputeClient", "ListNodes", resp, "Failure responding to request")
+	}
+	if result.acni.hasNextLink() && result.acni.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

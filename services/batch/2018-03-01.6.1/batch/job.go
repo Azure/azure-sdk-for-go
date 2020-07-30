@@ -986,6 +986,9 @@ func (client JobClient) List(ctx context.Context, filter string, selectParameter
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "List", resp, "Failure responding to request")
 	}
+	if result.cjlr.hasNextLink() && result.cjlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1146,6 +1149,9 @@ func (client JobClient) ListFromJobSchedule(ctx context.Context, jobScheduleID s
 	result.cjlr, err = client.ListFromJobScheduleResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "ListFromJobSchedule", resp, "Failure responding to request")
+	}
+	if result.cjlr.hasNextLink() && result.cjlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -1313,6 +1319,9 @@ func (client JobClient) ListPreparationAndReleaseTaskStatus(ctx context.Context,
 	result.cjlpartsr, err = client.ListPreparationAndReleaseTaskStatusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobClient", "ListPreparationAndReleaseTaskStatus", resp, "Failure responding to request")
+	}
+	if result.cjlpartsr.hasNextLink() && result.cjlpartsr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

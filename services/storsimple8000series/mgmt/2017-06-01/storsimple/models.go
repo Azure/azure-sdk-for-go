@@ -31,870 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/storsimple8000series/mgmt/2017-06-01/storsimple"
 
-// AlertEmailNotificationStatus enumerates the values for alert email notification status.
-type AlertEmailNotificationStatus string
-
-const (
-	// Disabled ...
-	Disabled AlertEmailNotificationStatus = "Disabled"
-	// Enabled ...
-	Enabled AlertEmailNotificationStatus = "Enabled"
-)
-
-// PossibleAlertEmailNotificationStatusValues returns an array of possible values for the AlertEmailNotificationStatus const type.
-func PossibleAlertEmailNotificationStatusValues() []AlertEmailNotificationStatus {
-	return []AlertEmailNotificationStatus{Disabled, Enabled}
-}
-
-// AlertScope enumerates the values for alert scope.
-type AlertScope string
-
-const (
-	// AlertScopeDevice ...
-	AlertScopeDevice AlertScope = "Device"
-	// AlertScopeResource ...
-	AlertScopeResource AlertScope = "Resource"
-)
-
-// PossibleAlertScopeValues returns an array of possible values for the AlertScope const type.
-func PossibleAlertScopeValues() []AlertScope {
-	return []AlertScope{AlertScopeDevice, AlertScopeResource}
-}
-
-// AlertSeverity enumerates the values for alert severity.
-type AlertSeverity string
-
-const (
-	// Critical ...
-	Critical AlertSeverity = "Critical"
-	// Informational ...
-	Informational AlertSeverity = "Informational"
-	// Warning ...
-	Warning AlertSeverity = "Warning"
-)
-
-// PossibleAlertSeverityValues returns an array of possible values for the AlertSeverity const type.
-func PossibleAlertSeverityValues() []AlertSeverity {
-	return []AlertSeverity{Critical, Informational, Warning}
-}
-
-// AlertSourceType enumerates the values for alert source type.
-type AlertSourceType string
-
-const (
-	// AlertSourceTypeDevice ...
-	AlertSourceTypeDevice AlertSourceType = "Device"
-	// AlertSourceTypeResource ...
-	AlertSourceTypeResource AlertSourceType = "Resource"
-)
-
-// PossibleAlertSourceTypeValues returns an array of possible values for the AlertSourceType const type.
-func PossibleAlertSourceTypeValues() []AlertSourceType {
-	return []AlertSourceType{AlertSourceTypeDevice, AlertSourceTypeResource}
-}
-
-// AlertStatus enumerates the values for alert status.
-type AlertStatus string
-
-const (
-	// Active ...
-	Active AlertStatus = "Active"
-	// Cleared ...
-	Cleared AlertStatus = "Cleared"
-)
-
-// PossibleAlertStatusValues returns an array of possible values for the AlertStatus const type.
-func PossibleAlertStatusValues() []AlertStatus {
-	return []AlertStatus{Active, Cleared}
-}
-
-// AuthenticationType enumerates the values for authentication type.
-type AuthenticationType string
-
-const (
-	// Basic ...
-	Basic AuthenticationType = "Basic"
-	// Invalid ...
-	Invalid AuthenticationType = "Invalid"
-	// None ...
-	None AuthenticationType = "None"
-	// NTLM ...
-	NTLM AuthenticationType = "NTLM"
-)
-
-// PossibleAuthenticationTypeValues returns an array of possible values for the AuthenticationType const type.
-func PossibleAuthenticationTypeValues() []AuthenticationType {
-	return []AuthenticationType{Basic, Invalid, None, NTLM}
-}
-
-// AuthorizationEligibility enumerates the values for authorization eligibility.
-type AuthorizationEligibility string
-
-const (
-	// Eligible ...
-	Eligible AuthorizationEligibility = "Eligible"
-	// InEligible ...
-	InEligible AuthorizationEligibility = "InEligible"
-)
-
-// PossibleAuthorizationEligibilityValues returns an array of possible values for the AuthorizationEligibility const type.
-func PossibleAuthorizationEligibilityValues() []AuthorizationEligibility {
-	return []AuthorizationEligibility{Eligible, InEligible}
-}
-
-// AuthorizationStatus enumerates the values for authorization status.
-type AuthorizationStatus string
-
-const (
-	// AuthorizationStatusDisabled ...
-	AuthorizationStatusDisabled AuthorizationStatus = "Disabled"
-	// AuthorizationStatusEnabled ...
-	AuthorizationStatusEnabled AuthorizationStatus = "Enabled"
-)
-
-// PossibleAuthorizationStatusValues returns an array of possible values for the AuthorizationStatus const type.
-func PossibleAuthorizationStatusValues() []AuthorizationStatus {
-	return []AuthorizationStatus{AuthorizationStatusDisabled, AuthorizationStatusEnabled}
-}
-
-// BackupJobCreationType enumerates the values for backup job creation type.
-type BackupJobCreationType string
-
-const (
-	// Adhoc ...
-	Adhoc BackupJobCreationType = "Adhoc"
-	// BySchedule ...
-	BySchedule BackupJobCreationType = "BySchedule"
-	// BySSM ...
-	BySSM BackupJobCreationType = "BySSM"
-)
-
-// PossibleBackupJobCreationTypeValues returns an array of possible values for the BackupJobCreationType const type.
-func PossibleBackupJobCreationTypeValues() []BackupJobCreationType {
-	return []BackupJobCreationType{Adhoc, BySchedule, BySSM}
-}
-
-// BackupPolicyCreationType enumerates the values for backup policy creation type.
-type BackupPolicyCreationType string
-
-const (
-	// BackupPolicyCreationTypeBySaaS ...
-	BackupPolicyCreationTypeBySaaS BackupPolicyCreationType = "BySaaS"
-	// BackupPolicyCreationTypeBySSM ...
-	BackupPolicyCreationTypeBySSM BackupPolicyCreationType = "BySSM"
-)
-
-// PossibleBackupPolicyCreationTypeValues returns an array of possible values for the BackupPolicyCreationType const type.
-func PossibleBackupPolicyCreationTypeValues() []BackupPolicyCreationType {
-	return []BackupPolicyCreationType{BackupPolicyCreationTypeBySaaS, BackupPolicyCreationTypeBySSM}
-}
-
-// BackupStatus enumerates the values for backup status.
-type BackupStatus string
-
-const (
-	// BackupStatusDisabled ...
-	BackupStatusDisabled BackupStatus = "Disabled"
-	// BackupStatusEnabled ...
-	BackupStatusEnabled BackupStatus = "Enabled"
-)
-
-// PossibleBackupStatusValues returns an array of possible values for the BackupStatus const type.
-func PossibleBackupStatusValues() []BackupStatus {
-	return []BackupStatus{BackupStatusDisabled, BackupStatusEnabled}
-}
-
-// BackupType enumerates the values for backup type.
-type BackupType string
-
-const (
-	// CloudSnapshot ...
-	CloudSnapshot BackupType = "CloudSnapshot"
-	// LocalSnapshot ...
-	LocalSnapshot BackupType = "LocalSnapshot"
-)
-
-// PossibleBackupTypeValues returns an array of possible values for the BackupType const type.
-func PossibleBackupTypeValues() []BackupType {
-	return []BackupType{CloudSnapshot, LocalSnapshot}
-}
-
-// ControllerID enumerates the values for controller id.
-type ControllerID string
-
-const (
-	// ControllerIDController0 ...
-	ControllerIDController0 ControllerID = "Controller0"
-	// ControllerIDController1 ...
-	ControllerIDController1 ControllerID = "Controller1"
-	// ControllerIDNone ...
-	ControllerIDNone ControllerID = "None"
-	// ControllerIDUnknown ...
-	ControllerIDUnknown ControllerID = "Unknown"
-)
-
-// PossibleControllerIDValues returns an array of possible values for the ControllerID const type.
-func PossibleControllerIDValues() []ControllerID {
-	return []ControllerID{ControllerIDController0, ControllerIDController1, ControllerIDNone, ControllerIDUnknown}
-}
-
-// ControllerPowerStateAction enumerates the values for controller power state action.
-type ControllerPowerStateAction string
-
-const (
-	// Restart ...
-	Restart ControllerPowerStateAction = "Restart"
-	// Shutdown ...
-	Shutdown ControllerPowerStateAction = "Shutdown"
-	// Start ...
-	Start ControllerPowerStateAction = "Start"
-)
-
-// PossibleControllerPowerStateActionValues returns an array of possible values for the ControllerPowerStateAction const type.
-func PossibleControllerPowerStateActionValues() []ControllerPowerStateAction {
-	return []ControllerPowerStateAction{Restart, Shutdown, Start}
-}
-
-// ControllerStatus enumerates the values for controller status.
-type ControllerStatus string
-
-const (
-	// ControllerStatusFailure ...
-	ControllerStatusFailure ControllerStatus = "Failure"
-	// ControllerStatusNotPresent ...
-	ControllerStatusNotPresent ControllerStatus = "NotPresent"
-	// ControllerStatusOk ...
-	ControllerStatusOk ControllerStatus = "Ok"
-	// ControllerStatusPoweredOff ...
-	ControllerStatusPoweredOff ControllerStatus = "PoweredOff"
-	// ControllerStatusRecovering ...
-	ControllerStatusRecovering ControllerStatus = "Recovering"
-	// ControllerStatusWarning ...
-	ControllerStatusWarning ControllerStatus = "Warning"
-)
-
-// PossibleControllerStatusValues returns an array of possible values for the ControllerStatus const type.
-func PossibleControllerStatusValues() []ControllerStatus {
-	return []ControllerStatus{ControllerStatusFailure, ControllerStatusNotPresent, ControllerStatusOk, ControllerStatusPoweredOff, ControllerStatusRecovering, ControllerStatusWarning}
-}
-
-// DayOfWeek enumerates the values for day of week.
-type DayOfWeek string
-
-const (
-	// Friday ...
-	Friday DayOfWeek = "Friday"
-	// Monday ...
-	Monday DayOfWeek = "Monday"
-	// Saturday ...
-	Saturday DayOfWeek = "Saturday"
-	// Sunday ...
-	Sunday DayOfWeek = "Sunday"
-	// Thursday ...
-	Thursday DayOfWeek = "Thursday"
-	// Tuesday ...
-	Tuesday DayOfWeek = "Tuesday"
-	// Wednesday ...
-	Wednesday DayOfWeek = "Wednesday"
-)
-
-// PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
-func PossibleDayOfWeekValues() []DayOfWeek {
-	return []DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
-}
-
-// DeviceConfigurationStatus enumerates the values for device configuration status.
-type DeviceConfigurationStatus string
-
-const (
-	// Complete ...
-	Complete DeviceConfigurationStatus = "Complete"
-	// Pending ...
-	Pending DeviceConfigurationStatus = "Pending"
-)
-
-// PossibleDeviceConfigurationStatusValues returns an array of possible values for the DeviceConfigurationStatus const type.
-func PossibleDeviceConfigurationStatusValues() []DeviceConfigurationStatus {
-	return []DeviceConfigurationStatus{Complete, Pending}
-}
-
-// DeviceStatus enumerates the values for device status.
-type DeviceStatus string
-
-const (
-	// Creating ...
-	Creating DeviceStatus = "Creating"
-	// Deactivated ...
-	Deactivated DeviceStatus = "Deactivated"
-	// Deactivating ...
-	Deactivating DeviceStatus = "Deactivating"
-	// Deleted ...
-	Deleted DeviceStatus = "Deleted"
-	// MaintenanceMode ...
-	MaintenanceMode DeviceStatus = "MaintenanceMode"
-	// Offline ...
-	Offline DeviceStatus = "Offline"
-	// Online ...
-	Online DeviceStatus = "Online"
-	// Provisioning ...
-	Provisioning DeviceStatus = "Provisioning"
-	// ReadyToSetup ...
-	ReadyToSetup DeviceStatus = "ReadyToSetup"
-	// RequiresAttention ...
-	RequiresAttention DeviceStatus = "RequiresAttention"
-	// Unknown ...
-	Unknown DeviceStatus = "Unknown"
-)
-
-// PossibleDeviceStatusValues returns an array of possible values for the DeviceStatus const type.
-func PossibleDeviceStatusValues() []DeviceStatus {
-	return []DeviceStatus{Creating, Deactivated, Deactivating, Deleted, MaintenanceMode, Offline, Online, Provisioning, ReadyToSetup, RequiresAttention, Unknown}
-}
-
-// DeviceType enumerates the values for device type.
-type DeviceType string
-
-const (
-	// DeviceTypeInvalid ...
-	DeviceTypeInvalid DeviceType = "Invalid"
-	// DeviceTypeSeries8000PhysicalAppliance ...
-	DeviceTypeSeries8000PhysicalAppliance DeviceType = "Series8000PhysicalAppliance"
-	// DeviceTypeSeries8000VirtualAppliance ...
-	DeviceTypeSeries8000VirtualAppliance DeviceType = "Series8000VirtualAppliance"
-)
-
-// PossibleDeviceTypeValues returns an array of possible values for the DeviceType const type.
-func PossibleDeviceTypeValues() []DeviceType {
-	return []DeviceType{DeviceTypeInvalid, DeviceTypeSeries8000PhysicalAppliance, DeviceTypeSeries8000VirtualAppliance}
-}
-
-// EncryptionAlgorithm enumerates the values for encryption algorithm.
-type EncryptionAlgorithm string
-
-const (
-	// EncryptionAlgorithmAES256 ...
-	EncryptionAlgorithmAES256 EncryptionAlgorithm = "AES256"
-	// EncryptionAlgorithmNone ...
-	EncryptionAlgorithmNone EncryptionAlgorithm = "None"
-	// EncryptionAlgorithmRSAESPKCS1V15 ...
-	EncryptionAlgorithmRSAESPKCS1V15 EncryptionAlgorithm = "RSAES_PKCS1_v_1_5"
-)
-
-// PossibleEncryptionAlgorithmValues returns an array of possible values for the EncryptionAlgorithm const type.
-func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
-	return []EncryptionAlgorithm{EncryptionAlgorithmAES256, EncryptionAlgorithmNone, EncryptionAlgorithmRSAESPKCS1V15}
-}
-
-// EncryptionStatus enumerates the values for encryption status.
-type EncryptionStatus string
-
-const (
-	// EncryptionStatusDisabled ...
-	EncryptionStatusDisabled EncryptionStatus = "Disabled"
-	// EncryptionStatusEnabled ...
-	EncryptionStatusEnabled EncryptionStatus = "Enabled"
-)
-
-// PossibleEncryptionStatusValues returns an array of possible values for the EncryptionStatus const type.
-func PossibleEncryptionStatusValues() []EncryptionStatus {
-	return []EncryptionStatus{EncryptionStatusDisabled, EncryptionStatusEnabled}
-}
-
-// FeatureSupportStatus enumerates the values for feature support status.
-type FeatureSupportStatus string
-
-const (
-	// NotAvailable ...
-	NotAvailable FeatureSupportStatus = "NotAvailable"
-	// Supported ...
-	Supported FeatureSupportStatus = "Supported"
-	// UnsupportedDeviceVersion ...
-	UnsupportedDeviceVersion FeatureSupportStatus = "UnsupportedDeviceVersion"
-)
-
-// PossibleFeatureSupportStatusValues returns an array of possible values for the FeatureSupportStatus const type.
-func PossibleFeatureSupportStatusValues() []FeatureSupportStatus {
-	return []FeatureSupportStatus{NotAvailable, Supported, UnsupportedDeviceVersion}
-}
-
-// HardwareComponentStatus enumerates the values for hardware component status.
-type HardwareComponentStatus string
-
-const (
-	// HardwareComponentStatusFailure ...
-	HardwareComponentStatusFailure HardwareComponentStatus = "Failure"
-	// HardwareComponentStatusNotPresent ...
-	HardwareComponentStatusNotPresent HardwareComponentStatus = "NotPresent"
-	// HardwareComponentStatusOk ...
-	HardwareComponentStatusOk HardwareComponentStatus = "Ok"
-	// HardwareComponentStatusPoweredOff ...
-	HardwareComponentStatusPoweredOff HardwareComponentStatus = "PoweredOff"
-	// HardwareComponentStatusRecovering ...
-	HardwareComponentStatusRecovering HardwareComponentStatus = "Recovering"
-	// HardwareComponentStatusUnknown ...
-	HardwareComponentStatusUnknown HardwareComponentStatus = "Unknown"
-	// HardwareComponentStatusWarning ...
-	HardwareComponentStatusWarning HardwareComponentStatus = "Warning"
-)
-
-// PossibleHardwareComponentStatusValues returns an array of possible values for the HardwareComponentStatus const type.
-func PossibleHardwareComponentStatusValues() []HardwareComponentStatus {
-	return []HardwareComponentStatus{HardwareComponentStatusFailure, HardwareComponentStatusNotPresent, HardwareComponentStatusOk, HardwareComponentStatusPoweredOff, HardwareComponentStatusRecovering, HardwareComponentStatusUnknown, HardwareComponentStatusWarning}
-}
-
-// InEligibilityCategory enumerates the values for in eligibility category.
-type InEligibilityCategory string
-
-const (
-	// DeviceNotOnline ...
-	DeviceNotOnline InEligibilityCategory = "DeviceNotOnline"
-	// NotSupportedAppliance ...
-	NotSupportedAppliance InEligibilityCategory = "NotSupportedAppliance"
-	// RolloverPending ...
-	RolloverPending InEligibilityCategory = "RolloverPending"
-)
-
-// PossibleInEligibilityCategoryValues returns an array of possible values for the InEligibilityCategory const type.
-func PossibleInEligibilityCategoryValues() []InEligibilityCategory {
-	return []InEligibilityCategory{DeviceNotOnline, NotSupportedAppliance, RolloverPending}
-}
-
-// ISCSIAndCloudStatus enumerates the values for iscsi and cloud status.
-type ISCSIAndCloudStatus string
-
-const (
-	// ISCSIAndCloudStatusCloudEnabled ...
-	ISCSIAndCloudStatusCloudEnabled ISCSIAndCloudStatus = "CloudEnabled"
-	// ISCSIAndCloudStatusDisabled ...
-	ISCSIAndCloudStatusDisabled ISCSIAndCloudStatus = "Disabled"
-	// ISCSIAndCloudStatusIscsiAndCloudEnabled ...
-	ISCSIAndCloudStatusIscsiAndCloudEnabled ISCSIAndCloudStatus = "IscsiAndCloudEnabled"
-	// ISCSIAndCloudStatusIscsiEnabled ...
-	ISCSIAndCloudStatusIscsiEnabled ISCSIAndCloudStatus = "IscsiEnabled"
-)
-
-// PossibleISCSIAndCloudStatusValues returns an array of possible values for the ISCSIAndCloudStatus const type.
-func PossibleISCSIAndCloudStatusValues() []ISCSIAndCloudStatus {
-	return []ISCSIAndCloudStatus{ISCSIAndCloudStatusCloudEnabled, ISCSIAndCloudStatusDisabled, ISCSIAndCloudStatusIscsiAndCloudEnabled, ISCSIAndCloudStatusIscsiEnabled}
-}
-
-// JobStatus enumerates the values for job status.
-type JobStatus string
-
-const (
-	// Canceled ...
-	Canceled JobStatus = "Canceled"
-	// Failed ...
-	Failed JobStatus = "Failed"
-	// Running ...
-	Running JobStatus = "Running"
-	// Succeeded ...
-	Succeeded JobStatus = "Succeeded"
-)
-
-// PossibleJobStatusValues returns an array of possible values for the JobStatus const type.
-func PossibleJobStatusValues() []JobStatus {
-	return []JobStatus{Canceled, Failed, Running, Succeeded}
-}
-
-// JobType enumerates the values for job type.
-type JobType string
-
-const (
-	// CloneVolume ...
-	CloneVolume JobType = "CloneVolume"
-	// CreateCloudAppliance ...
-	CreateCloudAppliance JobType = "CreateCloudAppliance"
-	// CreateLocallyPinnedVolume ...
-	CreateLocallyPinnedVolume JobType = "CreateLocallyPinnedVolume"
-	// FailoverVolumeContainers ...
-	FailoverVolumeContainers JobType = "FailoverVolumeContainers"
-	// InstallUpdates ...
-	InstallUpdates JobType = "InstallUpdates"
-	// ManualBackup ...
-	ManualBackup JobType = "ManualBackup"
-	// ModifyVolume ...
-	ModifyVolume JobType = "ModifyVolume"
-	// RestoreBackup ...
-	RestoreBackup JobType = "RestoreBackup"
-	// ScheduledBackup ...
-	ScheduledBackup JobType = "ScheduledBackup"
-	// SupportPackageLogs ...
-	SupportPackageLogs JobType = "SupportPackageLogs"
-)
-
-// PossibleJobTypeValues returns an array of possible values for the JobType const type.
-func PossibleJobTypeValues() []JobType {
-	return []JobType{CloneVolume, CreateCloudAppliance, CreateLocallyPinnedVolume, FailoverVolumeContainers, InstallUpdates, ManualBackup, ModifyVolume, RestoreBackup, ScheduledBackup, SupportPackageLogs}
-}
-
-// KeyRolloverStatus enumerates the values for key rollover status.
-type KeyRolloverStatus string
-
-const (
-	// NotRequired ...
-	NotRequired KeyRolloverStatus = "NotRequired"
-	// Required ...
-	Required KeyRolloverStatus = "Required"
-)
-
-// PossibleKeyRolloverStatusValues returns an array of possible values for the KeyRolloverStatus const type.
-func PossibleKeyRolloverStatusValues() []KeyRolloverStatus {
-	return []KeyRolloverStatus{NotRequired, Required}
-}
-
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// Series8000 ...
-	Series8000 Kind = "Series8000"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{Series8000}
-}
-
-// ManagerType enumerates the values for manager type.
-type ManagerType string
-
-const (
-	// GardaV1 ...
-	GardaV1 ManagerType = "GardaV1"
-	// HelsinkiV1 ...
-	HelsinkiV1 ManagerType = "HelsinkiV1"
-)
-
-// PossibleManagerTypeValues returns an array of possible values for the ManagerType const type.
-func PossibleManagerTypeValues() []ManagerType {
-	return []ManagerType{GardaV1, HelsinkiV1}
-}
-
-// MetricAggregationType enumerates the values for metric aggregation type.
-type MetricAggregationType string
-
-const (
-	// MetricAggregationTypeAverage ...
-	MetricAggregationTypeAverage MetricAggregationType = "Average"
-	// MetricAggregationTypeLast ...
-	MetricAggregationTypeLast MetricAggregationType = "Last"
-	// MetricAggregationTypeMaximum ...
-	MetricAggregationTypeMaximum MetricAggregationType = "Maximum"
-	// MetricAggregationTypeMinimum ...
-	MetricAggregationTypeMinimum MetricAggregationType = "Minimum"
-	// MetricAggregationTypeNone ...
-	MetricAggregationTypeNone MetricAggregationType = "None"
-	// MetricAggregationTypeTotal ...
-	MetricAggregationTypeTotal MetricAggregationType = "Total"
-)
-
-// PossibleMetricAggregationTypeValues returns an array of possible values for the MetricAggregationType const type.
-func PossibleMetricAggregationTypeValues() []MetricAggregationType {
-	return []MetricAggregationType{MetricAggregationTypeAverage, MetricAggregationTypeLast, MetricAggregationTypeMaximum, MetricAggregationTypeMinimum, MetricAggregationTypeNone, MetricAggregationTypeTotal}
-}
-
-// MetricUnit enumerates the values for metric unit.
-type MetricUnit string
-
-const (
-	// Bytes ...
-	Bytes MetricUnit = "Bytes"
-	// BytesPerSecond ...
-	BytesPerSecond MetricUnit = "BytesPerSecond"
-	// Count ...
-	Count MetricUnit = "Count"
-	// CountPerSecond ...
-	CountPerSecond MetricUnit = "CountPerSecond"
-	// Percent ...
-	Percent MetricUnit = "Percent"
-	// Seconds ...
-	Seconds MetricUnit = "Seconds"
-)
-
-// PossibleMetricUnitValues returns an array of possible values for the MetricUnit const type.
-func PossibleMetricUnitValues() []MetricUnit {
-	return []MetricUnit{Bytes, BytesPerSecond, Count, CountPerSecond, Percent, Seconds}
-}
-
-// MonitoringStatus enumerates the values for monitoring status.
-type MonitoringStatus string
-
-const (
-	// MonitoringStatusDisabled ...
-	MonitoringStatusDisabled MonitoringStatus = "Disabled"
-	// MonitoringStatusEnabled ...
-	MonitoringStatusEnabled MonitoringStatus = "Enabled"
-)
-
-// PossibleMonitoringStatusValues returns an array of possible values for the MonitoringStatus const type.
-func PossibleMonitoringStatusValues() []MonitoringStatus {
-	return []MonitoringStatus{MonitoringStatusDisabled, MonitoringStatusEnabled}
-}
-
-// NetInterfaceID enumerates the values for net interface id.
-type NetInterfaceID string
-
-const (
-	// NetInterfaceIDData0 ...
-	NetInterfaceIDData0 NetInterfaceID = "Data0"
-	// NetInterfaceIDData1 ...
-	NetInterfaceIDData1 NetInterfaceID = "Data1"
-	// NetInterfaceIDData2 ...
-	NetInterfaceIDData2 NetInterfaceID = "Data2"
-	// NetInterfaceIDData3 ...
-	NetInterfaceIDData3 NetInterfaceID = "Data3"
-	// NetInterfaceIDData4 ...
-	NetInterfaceIDData4 NetInterfaceID = "Data4"
-	// NetInterfaceIDData5 ...
-	NetInterfaceIDData5 NetInterfaceID = "Data5"
-	// NetInterfaceIDInvalid ...
-	NetInterfaceIDInvalid NetInterfaceID = "Invalid"
-)
-
-// PossibleNetInterfaceIDValues returns an array of possible values for the NetInterfaceID const type.
-func PossibleNetInterfaceIDValues() []NetInterfaceID {
-	return []NetInterfaceID{NetInterfaceIDData0, NetInterfaceIDData1, NetInterfaceIDData2, NetInterfaceIDData3, NetInterfaceIDData4, NetInterfaceIDData5, NetInterfaceIDInvalid}
-}
-
-// NetInterfaceStatus enumerates the values for net interface status.
-type NetInterfaceStatus string
-
-const (
-	// NetInterfaceStatusDisabled ...
-	NetInterfaceStatusDisabled NetInterfaceStatus = "Disabled"
-	// NetInterfaceStatusEnabled ...
-	NetInterfaceStatusEnabled NetInterfaceStatus = "Enabled"
-)
-
-// PossibleNetInterfaceStatusValues returns an array of possible values for the NetInterfaceStatus const type.
-func PossibleNetInterfaceStatusValues() []NetInterfaceStatus {
-	return []NetInterfaceStatus{NetInterfaceStatusDisabled, NetInterfaceStatusEnabled}
-}
-
-// NetworkMode enumerates the values for network mode.
-type NetworkMode string
-
-const (
-	// NetworkModeBOTH ...
-	NetworkModeBOTH NetworkMode = "BOTH"
-	// NetworkModeInvalid ...
-	NetworkModeInvalid NetworkMode = "Invalid"
-	// NetworkModeIPV4 ...
-	NetworkModeIPV4 NetworkMode = "IPV4"
-	// NetworkModeIPV6 ...
-	NetworkModeIPV6 NetworkMode = "IPV6"
-)
-
-// PossibleNetworkModeValues returns an array of possible values for the NetworkMode const type.
-func PossibleNetworkModeValues() []NetworkMode {
-	return []NetworkMode{NetworkModeBOTH, NetworkModeInvalid, NetworkModeIPV4, NetworkModeIPV6}
-}
-
-// OperationStatus enumerates the values for operation status.
-type OperationStatus string
-
-const (
-	// OperationStatusDeleting ...
-	OperationStatusDeleting OperationStatus = "Deleting"
-	// OperationStatusNone ...
-	OperationStatusNone OperationStatus = "None"
-	// OperationStatusRestoring ...
-	OperationStatusRestoring OperationStatus = "Restoring"
-	// OperationStatusUpdating ...
-	OperationStatusUpdating OperationStatus = "Updating"
-)
-
-// PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
-func PossibleOperationStatusValues() []OperationStatus {
-	return []OperationStatus{OperationStatusDeleting, OperationStatusNone, OperationStatusRestoring, OperationStatusUpdating}
-}
-
-// OwnerShipStatus enumerates the values for owner ship status.
-type OwnerShipStatus string
-
-const (
-	// NotOwned ...
-	NotOwned OwnerShipStatus = "NotOwned"
-	// Owned ...
-	Owned OwnerShipStatus = "Owned"
-)
-
-// PossibleOwnerShipStatusValues returns an array of possible values for the OwnerShipStatus const type.
-func PossibleOwnerShipStatusValues() []OwnerShipStatus {
-	return []OwnerShipStatus{NotOwned, Owned}
-}
-
-// RecurrenceType enumerates the values for recurrence type.
-type RecurrenceType string
-
-const (
-	// Daily ...
-	Daily RecurrenceType = "Daily"
-	// Hourly ...
-	Hourly RecurrenceType = "Hourly"
-	// Minutes ...
-	Minutes RecurrenceType = "Minutes"
-	// Weekly ...
-	Weekly RecurrenceType = "Weekly"
-)
-
-// PossibleRecurrenceTypeValues returns an array of possible values for the RecurrenceType const type.
-func PossibleRecurrenceTypeValues() []RecurrenceType {
-	return []RecurrenceType{Daily, Hourly, Minutes, Weekly}
-}
-
-// RemoteManagementModeConfiguration enumerates the values for remote management mode configuration.
-type RemoteManagementModeConfiguration string
-
-const (
-	// RemoteManagementModeConfigurationDisabled ...
-	RemoteManagementModeConfigurationDisabled RemoteManagementModeConfiguration = "Disabled"
-	// RemoteManagementModeConfigurationHTTPSAndHTTPEnabled ...
-	RemoteManagementModeConfigurationHTTPSAndHTTPEnabled RemoteManagementModeConfiguration = "HttpsAndHttpEnabled"
-	// RemoteManagementModeConfigurationHTTPSEnabled ...
-	RemoteManagementModeConfigurationHTTPSEnabled RemoteManagementModeConfiguration = "HttpsEnabled"
-	// RemoteManagementModeConfigurationUnknown ...
-	RemoteManagementModeConfigurationUnknown RemoteManagementModeConfiguration = "Unknown"
-)
-
-// PossibleRemoteManagementModeConfigurationValues returns an array of possible values for the RemoteManagementModeConfiguration const type.
-func PossibleRemoteManagementModeConfigurationValues() []RemoteManagementModeConfiguration {
-	return []RemoteManagementModeConfiguration{RemoteManagementModeConfigurationDisabled, RemoteManagementModeConfigurationHTTPSAndHTTPEnabled, RemoteManagementModeConfigurationHTTPSEnabled, RemoteManagementModeConfigurationUnknown}
-}
-
-// ScheduledBackupStatus enumerates the values for scheduled backup status.
-type ScheduledBackupStatus string
-
-const (
-	// ScheduledBackupStatusDisabled ...
-	ScheduledBackupStatusDisabled ScheduledBackupStatus = "Disabled"
-	// ScheduledBackupStatusEnabled ...
-	ScheduledBackupStatusEnabled ScheduledBackupStatus = "Enabled"
-)
-
-// PossibleScheduledBackupStatusValues returns an array of possible values for the ScheduledBackupStatus const type.
-func PossibleScheduledBackupStatusValues() []ScheduledBackupStatus {
-	return []ScheduledBackupStatus{ScheduledBackupStatusDisabled, ScheduledBackupStatusEnabled}
-}
-
-// ScheduleStatus enumerates the values for schedule status.
-type ScheduleStatus string
-
-const (
-	// ScheduleStatusDisabled ...
-	ScheduleStatusDisabled ScheduleStatus = "Disabled"
-	// ScheduleStatusEnabled ...
-	ScheduleStatusEnabled ScheduleStatus = "Enabled"
-)
-
-// PossibleScheduleStatusValues returns an array of possible values for the ScheduleStatus const type.
-func PossibleScheduleStatusValues() []ScheduleStatus {
-	return []ScheduleStatus{ScheduleStatusDisabled, ScheduleStatusEnabled}
-}
-
-// SslStatus enumerates the values for ssl status.
-type SslStatus string
-
-const (
-	// SslStatusDisabled ...
-	SslStatusDisabled SslStatus = "Disabled"
-	// SslStatusEnabled ...
-	SslStatusEnabled SslStatus = "Enabled"
-)
-
-// PossibleSslStatusValues returns an array of possible values for the SslStatus const type.
-func PossibleSslStatusValues() []SslStatus {
-	return []SslStatus{SslStatusDisabled, SslStatusEnabled}
-}
-
-// TargetEligibilityResultCode enumerates the values for target eligibility result code.
-type TargetEligibilityResultCode string
-
-const (
-	// LocalToTieredVolumesConversionWarning ...
-	LocalToTieredVolumesConversionWarning TargetEligibilityResultCode = "LocalToTieredVolumesConversionWarning"
-	// TargetAndSourceCannotBeSameError ...
-	TargetAndSourceCannotBeSameError TargetEligibilityResultCode = "TargetAndSourceCannotBeSameError"
-	// TargetInsufficientCapacityError ...
-	TargetInsufficientCapacityError TargetEligibilityResultCode = "TargetInsufficientCapacityError"
-	// TargetInsufficientLocalVolumeMemoryError ...
-	TargetInsufficientLocalVolumeMemoryError TargetEligibilityResultCode = "TargetInsufficientLocalVolumeMemoryError"
-	// TargetInsufficientTieredVolumeMemoryError ...
-	TargetInsufficientTieredVolumeMemoryError TargetEligibilityResultCode = "TargetInsufficientTieredVolumeMemoryError"
-	// TargetIsNotOnlineError ...
-	TargetIsNotOnlineError TargetEligibilityResultCode = "TargetIsNotOnlineError"
-	// TargetSourceIncompatibleVersionError ...
-	TargetSourceIncompatibleVersionError TargetEligibilityResultCode = "TargetSourceIncompatibleVersionError"
-)
-
-// PossibleTargetEligibilityResultCodeValues returns an array of possible values for the TargetEligibilityResultCode const type.
-func PossibleTargetEligibilityResultCodeValues() []TargetEligibilityResultCode {
-	return []TargetEligibilityResultCode{LocalToTieredVolumesConversionWarning, TargetAndSourceCannotBeSameError, TargetInsufficientCapacityError, TargetInsufficientLocalVolumeMemoryError, TargetInsufficientTieredVolumeMemoryError, TargetIsNotOnlineError, TargetSourceIncompatibleVersionError}
-}
-
-// TargetEligibilityStatus enumerates the values for target eligibility status.
-type TargetEligibilityStatus string
-
-const (
-	// TargetEligibilityStatusEligible ...
-	TargetEligibilityStatusEligible TargetEligibilityStatus = "Eligible"
-	// TargetEligibilityStatusNotEligible ...
-	TargetEligibilityStatusNotEligible TargetEligibilityStatus = "NotEligible"
-)
-
-// PossibleTargetEligibilityStatusValues returns an array of possible values for the TargetEligibilityStatus const type.
-func PossibleTargetEligibilityStatusValues() []TargetEligibilityStatus {
-	return []TargetEligibilityStatus{TargetEligibilityStatusEligible, TargetEligibilityStatusNotEligible}
-}
-
-// VirtualMachineAPIType enumerates the values for virtual machine api type.
-type VirtualMachineAPIType string
-
-const (
-	// Arm ...
-	Arm VirtualMachineAPIType = "Arm"
-	// Classic ...
-	Classic VirtualMachineAPIType = "Classic"
-)
-
-// PossibleVirtualMachineAPITypeValues returns an array of possible values for the VirtualMachineAPIType const type.
-func PossibleVirtualMachineAPITypeValues() []VirtualMachineAPIType {
-	return []VirtualMachineAPIType{Arm, Classic}
-}
-
-// VolumeStatus enumerates the values for volume status.
-type VolumeStatus string
-
-const (
-	// VolumeStatusOffline ...
-	VolumeStatusOffline VolumeStatus = "Offline"
-	// VolumeStatusOnline ...
-	VolumeStatusOnline VolumeStatus = "Online"
-)
-
-// PossibleVolumeStatusValues returns an array of possible values for the VolumeStatus const type.
-func PossibleVolumeStatusValues() []VolumeStatus {
-	return []VolumeStatus{VolumeStatusOffline, VolumeStatusOnline}
-}
-
-// VolumeType enumerates the values for volume type.
-type VolumeType string
-
-const (
-	// Archival ...
-	Archival VolumeType = "Archival"
-	// LocallyPinned ...
-	LocallyPinned VolumeType = "LocallyPinned"
-	// Tiered ...
-	Tiered VolumeType = "Tiered"
-)
-
-// PossibleVolumeTypeValues returns an array of possible values for the VolumeType const type.
-func PossibleVolumeTypeValues() []VolumeType {
-	return []VolumeType{Archival, LocallyPinned, Tiered}
-}
-
 // AccessControlRecord the access control record.
 type AccessControlRecord struct {
 	autorest.Response `json:"-"`
@@ -997,6 +133,15 @@ type AccessControlRecordProperties struct {
 	VolumeCount *int32 `json:"volumeCount,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccessControlRecordProperties.
+func (acrp AccessControlRecordProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if acrp.InitiatorName != nil {
+		objectMap["initiatorName"] = acrp.InitiatorName
+	}
+	return json.Marshal(objectMap)
+}
+
 // AccessControlRecordsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AccessControlRecordsCreateOrUpdateFuture struct {
@@ -1026,8 +171,8 @@ func (future *AccessControlRecordsCreateOrUpdateFuture) Result(client AccessCont
 	return
 }
 
-// AccessControlRecordsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// AccessControlRecordsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccessControlRecordsDeleteFuture struct {
 	azure.Future
 }
@@ -1246,10 +391,15 @@ func (al AlertList) IsEmpty() bool {
 	return al.Value == nil || len(*al.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (al AlertList) hasNextLink() bool {
+	return al.NextLink != nil && len(*al.NextLink) != 0
+}
+
 // alertListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (al AlertList) alertListPreparer(ctx context.Context) (*http.Request, error) {
-	if al.NextLink == nil || len(to.String(al.NextLink)) < 1 {
+	if !al.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1277,11 +427,16 @@ func (page *AlertListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.al)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.al)
+		if err != nil {
+			return err
+		}
+		page.al = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.al = next
 	return nil
 }
 
@@ -1527,8 +682,8 @@ type AvailableProviderOperation struct {
 }
 
 // AvailableProviderOperationDisplay contains the localized display information for this particular
-// operation/action. These value will be used by several clients for (a) custom role definitions for RBAC,
-// (b) complex query filters for the event service and (c) audit history/records for management operations.
+// operation/action. These value will be used by several clients for (a) custom role definitions for RBAC, (b)
+// complex query filters for the event service and (c) audit history/records for management operations.
 type AvailableProviderOperationDisplay struct {
 	// Provider - The localized friendly form of the resource provider name - it is expected to also include the publisher/company responsible. It should use Title Casing and begin with 'Microsoft' for 1st party services.
 	Provider *string `json:"provider,omitempty"`
@@ -1549,8 +704,8 @@ type AvailableProviderOperationList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// AvailableProviderOperationListIterator provides access to a complete listing of
-// AvailableProviderOperation values.
+// AvailableProviderOperationListIterator provides access to a complete listing of AvailableProviderOperation
+// values.
 type AvailableProviderOperationListIterator struct {
 	i    int
 	page AvailableProviderOperationListPage
@@ -1618,10 +773,15 @@ func (apol AvailableProviderOperationList) IsEmpty() bool {
 	return apol.Value == nil || len(*apol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (apol AvailableProviderOperationList) hasNextLink() bool {
+	return apol.NextLink != nil && len(*apol.NextLink) != 0
+}
+
 // availableProviderOperationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (apol AvailableProviderOperationList) availableProviderOperationListPreparer(ctx context.Context) (*http.Request, error) {
-	if apol.NextLink == nil || len(to.String(apol.NextLink)) < 1 {
+	if !apol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1649,11 +809,16 @@ func (page *AvailableProviderOperationListPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.apol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.apol)
+		if err != nil {
+			return err
+		}
+		page.apol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.apol = next
 	return nil
 }
 
@@ -1878,10 +1043,15 @@ func (bl BackupList) IsEmpty() bool {
 	return bl.Value == nil || len(*bl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (bl BackupList) hasNextLink() bool {
+	return bl.NextLink != nil && len(*bl.NextLink) != 0
+}
+
 // backupListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (bl BackupList) backupListPreparer(ctx context.Context) (*http.Request, error) {
-	if bl.NextLink == nil || len(to.String(bl.NextLink)) < 1 {
+	if !bl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1909,11 +1079,16 @@ func (page *BackupListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.bl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.bl)
+		if err != nil {
+			return err
+		}
+		page.bl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.bl = next
 	return nil
 }
 
@@ -2134,6 +1309,15 @@ type BackupPolicyProperties struct {
 	SsmHostName *string `json:"ssmHostName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for BackupPolicyProperties.
+func (bpp BackupPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bpp.VolumeIds != nil {
+		objectMap["volumeIds"] = bpp.VolumeIds
+	}
+	return json.Marshal(objectMap)
+}
+
 // BackupProperties the properties of the backup.
 type BackupProperties struct {
 	// CreatedOn - The time when the backup was created.
@@ -2262,6 +1446,27 @@ type BackupScheduleProperties struct {
 	LastSuccessfulRun *date.Time `json:"lastSuccessfulRun,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for BackupScheduleProperties.
+func (bsp BackupScheduleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bsp.ScheduleRecurrence != nil {
+		objectMap["scheduleRecurrence"] = bsp.ScheduleRecurrence
+	}
+	if bsp.BackupType != "" {
+		objectMap["backupType"] = bsp.BackupType
+	}
+	if bsp.RetentionCount != nil {
+		objectMap["retentionCount"] = bsp.RetentionCount
+	}
+	if bsp.StartTime != nil {
+		objectMap["startTime"] = bsp.StartTime
+	}
+	if bsp.ScheduleStatus != "" {
+		objectMap["scheduleStatus"] = bsp.ScheduleStatus
+	}
+	return json.Marshal(objectMap)
+}
+
 // BackupSchedulesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type BackupSchedulesCreateOrUpdateFuture struct {
@@ -2336,8 +1541,7 @@ func (future *BackupsCloneFuture) Result(client BackupsClient) (ar autorest.Resp
 	return
 }
 
-// BackupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// BackupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type BackupsDeleteFuture struct {
 	azure.Future
 }
@@ -2359,8 +1563,7 @@ func (future *BackupsDeleteFuture) Result(client BackupsClient) (ar autorest.Res
 	return
 }
 
-// BackupsRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// BackupsRestoreFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type BackupsRestoreFuture struct {
 	azure.Future
 }
@@ -2388,6 +1591,15 @@ type BandwidthRateSettingProperties struct {
 	Schedules *[]BandwidthSchedule `json:"schedules,omitempty"`
 	// VolumeCount - READ-ONLY; The number of volumes that uses the bandwidth setting.
 	VolumeCount *int32 `json:"volumeCount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BandwidthRateSettingProperties.
+func (brsp BandwidthRateSettingProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if brsp.Schedules != nil {
+		objectMap["schedules"] = brsp.Schedules
+	}
+	return json.Marshal(objectMap)
 }
 
 // BandwidthSchedule the schedule for bandwidth setting.
@@ -2558,6 +1770,15 @@ type BaseModel struct {
 	Type *string `json:"type,omitempty"`
 	// Kind - The Kind of the object. Currently only Series8000 is supported. Possible values include: 'Series8000'
 	Kind Kind `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BaseModel.
+func (bm BaseModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bm.Kind != "" {
+		objectMap["kind"] = bm.Kind
+	}
+	return json.Marshal(objectMap)
 }
 
 // ChapSettings the Challenge-Handshake Authentication Protocol (CHAP) settings.
@@ -2737,8 +1958,8 @@ type CloudApplianceSettings struct {
 	ChannelIntegrityKey *AsymmetricEncryptedSecret `json:"channelIntegrityKey,omitempty"`
 }
 
-// CloudAppliancesProvisionFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// CloudAppliancesProvisionFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CloudAppliancesProvisionFuture struct {
 	azure.Future
 }
@@ -2958,8 +2179,8 @@ type ControllerPowerStateChangeRequestProperties struct {
 	Controller1State ControllerStatus `json:"controller1State,omitempty"`
 }
 
-// DataStatistics the additional details related to the data related statistics of a job. Currently
-// applicable only for Backup, Clone and Restore jobs.
+// DataStatistics the additional details related to the data related statistics of a job. Currently applicable
+// only for Backup, Clone and Restore jobs.
 type DataStatistics struct {
 	// TotalData - The total bytes of data to be processed, as part of the job.
 	TotalData *int64 `json:"totalData,omitempty"`
@@ -3176,6 +2397,90 @@ type DeviceProperties struct {
 	RolloverDetails *DeviceRolloverDetails `json:"rolloverDetails,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DeviceProperties.
+func (dp DeviceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dp.FriendlyName != nil {
+		objectMap["friendlyName"] = dp.FriendlyName
+	}
+	if dp.ActivationTime != nil {
+		objectMap["activationTime"] = dp.ActivationTime
+	}
+	if dp.Culture != nil {
+		objectMap["culture"] = dp.Culture
+	}
+	if dp.DeviceDescription != nil {
+		objectMap["deviceDescription"] = dp.DeviceDescription
+	}
+	if dp.DeviceSoftwareVersion != nil {
+		objectMap["deviceSoftwareVersion"] = dp.DeviceSoftwareVersion
+	}
+	if dp.FriendlySoftwareName != nil {
+		objectMap["friendlySoftwareName"] = dp.FriendlySoftwareName
+	}
+	if dp.DeviceConfigurationStatus != "" {
+		objectMap["deviceConfigurationStatus"] = dp.DeviceConfigurationStatus
+	}
+	if dp.TargetIqn != nil {
+		objectMap["targetIqn"] = dp.TargetIqn
+	}
+	if dp.ModelDescription != nil {
+		objectMap["modelDescription"] = dp.ModelDescription
+	}
+	if dp.Status != "" {
+		objectMap["status"] = dp.Status
+	}
+	if dp.SerialNumber != nil {
+		objectMap["serialNumber"] = dp.SerialNumber
+	}
+	if dp.DeviceType != "" {
+		objectMap["deviceType"] = dp.DeviceType
+	}
+	if dp.ActiveController != "" {
+		objectMap["activeController"] = dp.ActiveController
+	}
+	if dp.FriendlySoftwareVersion != nil {
+		objectMap["friendlySoftwareVersion"] = dp.FriendlySoftwareVersion
+	}
+	if dp.AvailableLocalStorageInBytes != nil {
+		objectMap["availableLocalStorageInBytes"] = dp.AvailableLocalStorageInBytes
+	}
+	if dp.AvailableTieredStorageInBytes != nil {
+		objectMap["availableTieredStorageInBytes"] = dp.AvailableTieredStorageInBytes
+	}
+	if dp.ProvisionedTieredStorageInBytes != nil {
+		objectMap["provisionedTieredStorageInBytes"] = dp.ProvisionedTieredStorageInBytes
+	}
+	if dp.ProvisionedLocalStorageInBytes != nil {
+		objectMap["provisionedLocalStorageInBytes"] = dp.ProvisionedLocalStorageInBytes
+	}
+	if dp.ProvisionedVolumeSizeInBytes != nil {
+		objectMap["provisionedVolumeSizeInBytes"] = dp.ProvisionedVolumeSizeInBytes
+	}
+	if dp.UsingStorageInBytes != nil {
+		objectMap["usingStorageInBytes"] = dp.UsingStorageInBytes
+	}
+	if dp.TotalTieredStorageInBytes != nil {
+		objectMap["totalTieredStorageInBytes"] = dp.TotalTieredStorageInBytes
+	}
+	if dp.AgentGroupVersion != nil {
+		objectMap["agentGroupVersion"] = dp.AgentGroupVersion
+	}
+	if dp.NetworkInterfaceCardCount != nil {
+		objectMap["networkInterfaceCardCount"] = dp.NetworkInterfaceCardCount
+	}
+	if dp.DeviceLocation != nil {
+		objectMap["deviceLocation"] = dp.DeviceLocation
+	}
+	if dp.Details != nil {
+		objectMap["details"] = dp.Details
+	}
+	if dp.RolloverDetails != nil {
+		objectMap["rolloverDetails"] = dp.RolloverDetails
+	}
+	return json.Marshal(objectMap)
+}
+
 // DeviceRolloverDetails the additional device details for the service data encryption key rollover.
 type DeviceRolloverDetails struct {
 	// AuthorizationEligibility - The eligibility status of device for service data encryption key rollover. Possible values include: 'InEligible', 'Eligible'
@@ -3186,8 +2491,7 @@ type DeviceRolloverDetails struct {
 	InEligibilityReason InEligibilityCategory `json:"inEligibilityReason,omitempty"`
 }
 
-// DevicesConfigureFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DevicesConfigureFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DevicesConfigureFuture struct {
 	azure.Future
 }
@@ -3232,8 +2536,7 @@ func (future *DevicesDeactivateFuture) Result(client DevicesClient) (ar autorest
 	return
 }
 
-// DevicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DevicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DevicesDeleteFuture struct {
 	azure.Future
 }
@@ -3255,8 +2558,8 @@ func (future *DevicesDeleteFuture) Result(client DevicesClient) (ar autorest.Res
 	return
 }
 
-// DeviceSettingsCreateOrUpdateAlertSettingsFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// DeviceSettingsCreateOrUpdateAlertSettingsFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type DeviceSettingsCreateOrUpdateAlertSettingsFuture struct {
 	azure.Future
 }
@@ -3284,8 +2587,8 @@ func (future *DeviceSettingsCreateOrUpdateAlertSettingsFuture) Result(client Dev
 	return
 }
 
-// DeviceSettingsCreateOrUpdateTimeSettingsFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// DeviceSettingsCreateOrUpdateTimeSettingsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DeviceSettingsCreateOrUpdateTimeSettingsFuture struct {
 	azure.Future
 }
@@ -3313,8 +2616,8 @@ func (future *DeviceSettingsCreateOrUpdateTimeSettingsFuture) Result(client Devi
 	return
 }
 
-// DeviceSettingsSyncRemotemanagementCertificateFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// DeviceSettingsSyncRemotemanagementCertificateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type DeviceSettingsSyncRemotemanagementCertificateFuture struct {
 	azure.Future
 }
@@ -3394,8 +2697,7 @@ func (future *DeviceSettingsUpdateSecuritySettingsFuture) Result(client DeviceSe
 	return
 }
 
-// DevicesFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DevicesFailoverFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DevicesFailoverFuture struct {
 	azure.Future
 }
@@ -3578,8 +2880,8 @@ type EncryptionSettingsProperties struct {
 	KeyRolloverStatus KeyRolloverStatus `json:"keyRolloverStatus,omitempty"`
 }
 
-// FailoverRequest the request object for triggering a failover of volume containers, from a source device
-// to a target device.
+// FailoverRequest the request object for triggering a failover of volume containers, from a source device to a
+// target device.
 type FailoverRequest struct {
 	// TargetDeviceID - The ARM path ID of the device which will act as the failover target.
 	TargetDeviceID *string `json:"targetDeviceId,omitempty"`
@@ -3636,8 +2938,8 @@ type FailoverTarget struct {
 	EligibilityResult *TargetEligibilityResult `json:"eligibilityResult,omitempty"`
 }
 
-// FailoverTargetsList the list of all devices in a resource and their eligibility status as a failover
-// target device.
+// FailoverTargetsList the list of all devices in a resource and their eligibility status as a failover target
+// device.
 type FailoverTargetsList struct {
 	autorest.Response `json:"-"`
 	// Value - The list of all the failover targets.
@@ -4067,10 +3369,15 @@ func (jl JobList) IsEmpty() bool {
 	return jl.Value == nil || len(*jl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (jl JobList) hasNextLink() bool {
+	return jl.NextLink != nil && len(*jl.NextLink) != 0
+}
+
 // jobListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (jl JobList) jobListPreparer(ctx context.Context) (*http.Request, error) {
-	if jl.NextLink == nil || len(to.String(jl.NextLink)) < 1 {
+	if !jl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4098,11 +3405,16 @@ func (page *JobListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.jl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.jl)
+		if err != nil {
+			return err
+		}
+		page.jl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.jl = next
 	return nil
 }
 
@@ -4201,8 +3513,8 @@ type Key struct {
 	ActivationKey *string `json:"activationKey,omitempty"`
 }
 
-// ListFailoverTargetsRequest the request object for fetching the list of failover targets (eligible
-// devices for failover).
+// ListFailoverTargetsRequest the request object for fetching the list of failover targets (eligible devices
+// for failover).
 type ListFailoverTargetsRequest struct {
 	// VolumeContainers - The list of path IDs of the volume containers that needs to be failed-over, for which we want to fetch the eligible targets.
 	VolumeContainers *[]string `json:"volumeContainers,omitempty"`
@@ -5133,8 +4445,23 @@ type StorageAccountCredentialProperties struct {
 	VolumesCount *int32 `json:"volumesCount,omitempty"`
 }
 
-// StorageAccountCredentialsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// MarshalJSON is the custom marshaler for StorageAccountCredentialProperties.
+func (sacp StorageAccountCredentialProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sacp.EndPoint != nil {
+		objectMap["endPoint"] = sacp.EndPoint
+	}
+	if sacp.SslStatus != "" {
+		objectMap["sslStatus"] = sacp.SslStatus
+	}
+	if sacp.AccessKey != nil {
+		objectMap["accessKey"] = sacp.AccessKey
+	}
+	return json.Marshal(objectMap)
+}
+
+// StorageAccountCredentialsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type StorageAccountCredentialsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -5196,8 +4523,8 @@ type SymmetricEncryptedSecret struct {
 	EncryptionAlgorithm EncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
 }
 
-// TargetEligibilityErrorMessage the error/warning message due to which the device is ineligible as a
-// failover target device.
+// TargetEligibilityErrorMessage the error/warning message due to which the device is ineligible as a failover
+// target device.
 type TargetEligibilityErrorMessage struct {
 	// Message - The localized error message stating the reason why the device is not eligible as a target device.
 	Message *string `json:"message,omitempty"`
@@ -5609,8 +4936,8 @@ func (vc *VolumeContainer) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// VolumeContainerFailoverMetadata the metadata of the volume container, that is being considered as part
-// of a failover set.
+// VolumeContainerFailoverMetadata the metadata of the volume container, that is being considered as part of a
+// failover set.
 type VolumeContainerFailoverMetadata struct {
 	// VolumeContainerID - The path ID of the volume container.
 	VolumeContainerID *string `json:"volumeContainerId,omitempty"`
@@ -5643,6 +4970,24 @@ type VolumeContainerProperties struct {
 	BandwidthSettingID *string `json:"bandwidthSettingId,omitempty"`
 	// TotalCloudStorageUsageInBytes - READ-ONLY; The total cloud storage for the volume container.
 	TotalCloudStorageUsageInBytes *int64 `json:"totalCloudStorageUsageInBytes,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VolumeContainerProperties.
+func (vcp VolumeContainerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vcp.EncryptionKey != nil {
+		objectMap["encryptionKey"] = vcp.EncryptionKey
+	}
+	if vcp.StorageAccountCredentialID != nil {
+		objectMap["storageAccountCredentialId"] = vcp.StorageAccountCredentialID
+	}
+	if vcp.BandWidthRateInMbps != nil {
+		objectMap["bandWidthRateInMbps"] = vcp.BandWidthRateInMbps
+	}
+	if vcp.BandwidthSettingID != nil {
+		objectMap["bandwidthSettingId"] = vcp.BandwidthSettingID
+	}
+	return json.Marshal(objectMap)
 }
 
 // VolumeContainersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -5744,6 +5089,27 @@ type VolumeProperties struct {
 	BackupPolicyIds *[]string `json:"backupPolicyIds,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VolumeProperties.
+func (vp VolumeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vp.SizeInBytes != nil {
+		objectMap["sizeInBytes"] = vp.SizeInBytes
+	}
+	if vp.VolumeType != "" {
+		objectMap["volumeType"] = vp.VolumeType
+	}
+	if vp.AccessControlRecordIds != nil {
+		objectMap["accessControlRecordIds"] = vp.AccessControlRecordIds
+	}
+	if vp.VolumeStatus != "" {
+		objectMap["volumeStatus"] = vp.VolumeStatus
+	}
+	if vp.MonitoringStatus != "" {
+		objectMap["monitoringStatus"] = vp.MonitoringStatus
+	}
+	return json.Marshal(objectMap)
+}
+
 // VolumesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type VolumesCreateOrUpdateFuture struct {
@@ -5773,8 +5139,7 @@ func (future *VolumesCreateOrUpdateFuture) Result(client VolumesClient) (vVar Vo
 	return
 }
 
-// VolumesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// VolumesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type VolumesDeleteFuture struct {
 	azure.Future
 }

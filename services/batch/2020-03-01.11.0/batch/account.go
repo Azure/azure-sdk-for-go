@@ -88,6 +88,9 @@ func (client AccountClient) ListPoolNodeCounts(ctx context.Context, filter strin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListPoolNodeCounts", resp, "Failure responding to request")
 	}
+	if result.pnclr.hasNextLink() && result.pnclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -244,6 +247,9 @@ func (client AccountClient) ListSupportedImages(ctx context.Context, filter stri
 	result.alsir, err = client.ListSupportedImagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListSupportedImages", resp, "Failure responding to request")
+	}
+	if result.alsir.hasNextLink() && result.alsir.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

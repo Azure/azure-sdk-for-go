@@ -315,6 +315,9 @@ func (client UsersClient) List(ctx context.Context, resourceGroupName string, la
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.UsersClient", "List", resp, "Failure responding to request")
 	}
+	if result.ul.hasNextLink() && result.ul.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

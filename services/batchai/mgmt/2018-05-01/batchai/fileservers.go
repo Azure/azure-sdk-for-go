@@ -390,6 +390,9 @@ func (client FileServersClient) ListByWorkspace(ctx context.Context, resourceGro
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "ListByWorkspace", resp, "Failure responding to request")
 	}
+	if result.fslr.hasNextLink() && result.fslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

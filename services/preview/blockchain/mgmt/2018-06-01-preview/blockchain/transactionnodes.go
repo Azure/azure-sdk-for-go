@@ -315,6 +315,9 @@ func (client TransactionNodesClient) List(ctx context.Context, blockchainMemberN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "List", resp, "Failure responding to request")
 	}
+	if result.tnc.hasNextLink() && result.tnc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

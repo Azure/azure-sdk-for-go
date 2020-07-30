@@ -31,82 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/digitaltwins/mgmt/2020-03-01-preview/digitaltwins"
 
-// EndpointProvisioningState enumerates the values for endpoint provisioning state.
-type EndpointProvisioningState string
-
-const (
-	// Canceled ...
-	Canceled EndpointProvisioningState = "Canceled"
-	// Deleting ...
-	Deleting EndpointProvisioningState = "Deleting"
-	// Failed ...
-	Failed EndpointProvisioningState = "Failed"
-	// Provisioning ...
-	Provisioning EndpointProvisioningState = "Provisioning"
-	// Succeeded ...
-	Succeeded EndpointProvisioningState = "Succeeded"
-)
-
-// PossibleEndpointProvisioningStateValues returns an array of possible values for the EndpointProvisioningState const type.
-func PossibleEndpointProvisioningStateValues() []EndpointProvisioningState {
-	return []EndpointProvisioningState{Canceled, Deleting, Failed, Provisioning, Succeeded}
-}
-
-// EndpointType enumerates the values for endpoint type.
-type EndpointType string
-
-const (
-	// EndpointTypeDigitalTwinsEndpointResourceProperties ...
-	EndpointTypeDigitalTwinsEndpointResourceProperties EndpointType = "DigitalTwinsEndpointResourceProperties"
-	// EndpointTypeEventGrid ...
-	EndpointTypeEventGrid EndpointType = "EventGrid"
-	// EndpointTypeEventHub ...
-	EndpointTypeEventHub EndpointType = "EventHub"
-	// EndpointTypeServiceBus ...
-	EndpointTypeServiceBus EndpointType = "ServiceBus"
-)
-
-// PossibleEndpointTypeValues returns an array of possible values for the EndpointType const type.
-func PossibleEndpointTypeValues() []EndpointType {
-	return []EndpointType{EndpointTypeDigitalTwinsEndpointResourceProperties, EndpointTypeEventGrid, EndpointTypeEventHub, EndpointTypeServiceBus}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// ProvisioningStateCanceled ...
-	ProvisioningStateCanceled ProvisioningState = "Canceled"
-	// ProvisioningStateDeleting ...
-	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed ...
-	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateProvisioning ...
-	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
-	// ProvisioningStateSucceeded ...
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateCanceled, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateProvisioning, ProvisioningStateSucceeded}
-}
-
-// Reason enumerates the values for reason.
-type Reason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists Reason = "AlreadyExists"
-	// Invalid ...
-	Invalid Reason = "Invalid"
-)
-
-// PossibleReasonValues returns an array of possible values for the Reason const type.
-func PossibleReasonValues() []Reason {
-	return []Reason{AlreadyExists, Invalid}
-}
-
 // CheckNameRequest the result returned from a database check name availability request.
 type CheckNameRequest struct {
 	// Name - Resource name.
@@ -128,8 +52,7 @@ type CheckNameResult struct {
 	Reason Reason `json:"reason,omitempty"`
 }
 
-// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -377,10 +300,15 @@ func (dlr DescriptionListResult) IsEmpty() bool {
 	return dlr.Value == nil || len(*dlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dlr DescriptionListResult) hasNextLink() bool {
+	return dlr.NextLink != nil && len(*dlr.NextLink) != 0
+}
+
 // descriptionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dlr DescriptionListResult) descriptionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dlr.NextLink == nil || len(to.String(dlr.NextLink)) < 1 {
+	if !dlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -408,11 +336,16 @@ func (page *DescriptionListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dlr)
+		if err != nil {
+			return err
+		}
+		page.dlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dlr = next
 	return nil
 }
 
@@ -475,8 +408,7 @@ func (future *EndpointCreateOrUpdateFuture) Result(client EndpointClient) (er En
 	return
 }
 
-// EndpointDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EndpointDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type EndpointDeleteFuture struct {
 	azure.Future
 }
@@ -515,6 +447,13 @@ type EndpointResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EndpointResource.
+func (er EndpointResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["properties"] = er.Properties
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for EndpointResource struct.
@@ -644,10 +583,15 @@ func (erlr EndpointResourceListResult) IsEmpty() bool {
 	return erlr.Value == nil || len(*erlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (erlr EndpointResourceListResult) hasNextLink() bool {
+	return erlr.NextLink != nil && len(*erlr.NextLink) != 0
+}
+
 // endpointResourceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (erlr EndpointResourceListResult) endpointResourceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if erlr.NextLink == nil || len(to.String(erlr.NextLink)) < 1 {
+	if !erlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -675,11 +619,16 @@ func (page *EndpointResourceListResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.erlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.erlr)
+		if err != nil {
+			return err
+		}
+		page.erlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.erlr = next
 	return nil
 }
 
@@ -975,6 +924,15 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
 	// Provider - READ-ONLY; Service provider: Microsoft DigitalTwins
@@ -987,14 +945,23 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult a list of DigitalTwins service operations. It contains a list of operations and a
-// URL link to get the next set of results.
+// OperationListResult a list of DigitalTwins service operations. It contains a list of operations and a URL
+// link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// NextLink - The link used to get the next page of DigitalTwins description objects.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; A list of DigitalTwins operations supported by the Microsoft.DigitalTwins resource provider.
 	Value *[]Operation `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if olr.NextLink != nil {
+		objectMap["nextLink"] = olr.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -1065,10 +1032,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1096,11 +1068,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 

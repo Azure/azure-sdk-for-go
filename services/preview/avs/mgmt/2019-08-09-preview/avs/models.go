@@ -30,110 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2019-08-09-preview/avs"
 
-// ClusterProvisioningState enumerates the values for cluster provisioning state.
-type ClusterProvisioningState string
-
-const (
-	// Cancelled ...
-	Cancelled ClusterProvisioningState = "Cancelled"
-	// Failed ...
-	Failed ClusterProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ClusterProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ClusterProvisioningState = "Updating"
-)
-
-// PossibleClusterProvisioningStateValues returns an array of possible values for the ClusterProvisioningState const type.
-func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
-	return []ClusterProvisioningState{Cancelled, Failed, Succeeded, Updating}
-}
-
-// InternetEnum enumerates the values for internet enum.
-type InternetEnum string
-
-const (
-	// Disabled ...
-	Disabled InternetEnum = "Disabled"
-	// Enabled ...
-	Enabled InternetEnum = "Enabled"
-)
-
-// PossibleInternetEnumValues returns an array of possible values for the InternetEnum const type.
-func PossibleInternetEnumValues() []InternetEnum {
-	return []InternetEnum{Disabled, Enabled}
-}
-
-// PrivateCloudProvisioningState enumerates the values for private cloud provisioning state.
-type PrivateCloudProvisioningState string
-
-const (
-	// PrivateCloudProvisioningStateBuilding ...
-	PrivateCloudProvisioningStateBuilding PrivateCloudProvisioningState = "Building"
-	// PrivateCloudProvisioningStateCancelled ...
-	PrivateCloudProvisioningStateCancelled PrivateCloudProvisioningState = "Cancelled"
-	// PrivateCloudProvisioningStateFailed ...
-	PrivateCloudProvisioningStateFailed PrivateCloudProvisioningState = "Failed"
-	// PrivateCloudProvisioningStatePending ...
-	PrivateCloudProvisioningStatePending PrivateCloudProvisioningState = "Pending"
-	// PrivateCloudProvisioningStateSucceeded ...
-	PrivateCloudProvisioningStateSucceeded PrivateCloudProvisioningState = "Succeeded"
-	// PrivateCloudProvisioningStateUpdating ...
-	PrivateCloudProvisioningStateUpdating PrivateCloudProvisioningState = "Updating"
-)
-
-// PossiblePrivateCloudProvisioningStateValues returns an array of possible values for the PrivateCloudProvisioningState const type.
-func PossiblePrivateCloudProvisioningStateValues() []PrivateCloudProvisioningState {
-	return []PrivateCloudProvisioningState{PrivateCloudProvisioningStateBuilding, PrivateCloudProvisioningStateCancelled, PrivateCloudProvisioningStateFailed, PrivateCloudProvisioningStatePending, PrivateCloudProvisioningStateSucceeded, PrivateCloudProvisioningStateUpdating}
-}
-
-// QuotaEnabled enumerates the values for quota enabled.
-type QuotaEnabled string
-
-const (
-	// QuotaEnabledDisabled ...
-	QuotaEnabledDisabled QuotaEnabled = "Disabled"
-	// QuotaEnabledEnabled ...
-	QuotaEnabledEnabled QuotaEnabled = "Enabled"
-)
-
-// PossibleQuotaEnabledValues returns an array of possible values for the QuotaEnabled const type.
-func PossibleQuotaEnabledValues() []QuotaEnabled {
-	return []QuotaEnabled{QuotaEnabledDisabled, QuotaEnabledEnabled}
-}
-
-// SslEnum enumerates the values for ssl enum.
-type SslEnum string
-
-const (
-	// SslEnumDisabled ...
-	SslEnumDisabled SslEnum = "Disabled"
-	// SslEnumEnabled ...
-	SslEnumEnabled SslEnum = "Enabled"
-)
-
-// PossibleSslEnumValues returns an array of possible values for the SslEnum const type.
-func PossibleSslEnumValues() []SslEnum {
-	return []SslEnum{SslEnumDisabled, SslEnumEnabled}
-}
-
-// Status enumerates the values for status.
-type Status string
-
-const (
-	// TrialAvailable ...
-	TrialAvailable Status = "TrialAvailable"
-	// TrialDisabled ...
-	TrialDisabled Status = "TrialDisabled"
-	// TrialUsed ...
-	TrialUsed Status = "TrialUsed"
-)
-
-// PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{TrialAvailable, TrialDisabled, TrialUsed}
-}
-
 // AdminCredentials administrative credentials for accessing vCenter and NSX-T
 type AdminCredentials struct {
 	autorest.Response `json:"-"`
@@ -175,6 +71,15 @@ type Circuit struct {
 	ExpressRoutePrivatePeeringID *string `json:"expressRoutePrivatePeeringID,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Circuit.
+func (c Circuit) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.Authorizations != nil {
+		objectMap["authorizations"] = c.Authorizations
+	}
+	return json.Marshal(objectMap)
+}
+
 // Cluster a cluster resource
 type Cluster struct {
 	autorest.Response `json:"-"`
@@ -186,6 +91,15 @@ type Cluster struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Cluster.
+func (c Cluster) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.Properties != nil {
+		objectMap["properties"] = c.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // ClusterList a paged list of clusters
@@ -265,10 +179,15 @@ func (cl ClusterList) IsEmpty() bool {
 	return cl.Value == nil || len(*cl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cl ClusterList) hasNextLink() bool {
+	return cl.NextLink != nil && len(*cl.NextLink) != 0
+}
+
 // clusterListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cl ClusterList) clusterListPreparer(ctx context.Context) (*http.Request, error) {
-	if cl.NextLink == nil || len(to.String(cl.NextLink)) < 1 {
+	if !cl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -296,11 +215,16 @@ func (page *ClusterListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cl)
+		if err != nil {
+			return err
+		}
+		page.cl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cl = next
 	return nil
 }
 
@@ -346,6 +270,15 @@ type ClusterProperties struct {
 	Hosts *[]string `json:"hosts,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ClusterProperties.
+func (cp ClusterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.ClusterSize != nil {
+		objectMap["clusterSize"] = cp.ClusterSize
+	}
+	return json.Marshal(objectMap)
+}
+
 // ClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ClustersCreateOrUpdateFuture struct {
@@ -375,8 +308,7 @@ func (future *ClustersCreateOrUpdateFuture) Result(client ClustersClient) (c Clu
 	return
 }
 
-// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ClustersDeleteFuture struct {
 	azure.Future
 }
@@ -398,8 +330,7 @@ func (future *ClustersDeleteFuture) Result(client ClustersClient) (ar autorest.R
 	return
 }
 
-// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ClustersUpdateFuture struct {
 	azure.Future
 }
@@ -437,6 +368,15 @@ type DefaultClusterProperties struct {
 	Hosts *[]string `json:"hosts,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DefaultClusterProperties.
+func (dcp DefaultClusterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dcp.ClusterSize != nil {
+		objectMap["clusterSize"] = dcp.ClusterSize
+	}
+	return json.Marshal(objectMap)
+}
+
 // Endpoints endpoint addresses
 type Endpoints struct {
 	// NsxtManager - READ-ONLY; Endpoint for the NSX-T Data Center manager
@@ -453,6 +393,15 @@ type ExpressRouteAuthorization struct {
 	ID *string `json:"id,omitempty"`
 	// Key - READ-ONLY; The key of the ExpressRoute
 	Key *string `json:"key,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExpressRouteAuthorization.
+func (era ExpressRouteAuthorization) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if era.Name != nil {
+		objectMap["name"] = era.Name
+	}
+	return json.Marshal(objectMap)
 }
 
 // IdentitySource vCenter Single Sign On Identity Source
@@ -576,10 +525,15 @@ func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OperationList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // operationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OperationList) operationListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -607,11 +561,16 @@ func (page *OperationListPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 
@@ -759,10 +718,15 @@ func (pcl PrivateCloudList) IsEmpty() bool {
 	return pcl.Value == nil || len(*pcl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pcl PrivateCloudList) hasNextLink() bool {
+	return pcl.NextLink != nil && len(*pcl.NextLink) != 0
+}
+
 // privateCloudListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pcl PrivateCloudList) privateCloudListPreparer(ctx context.Context) (*http.Request, error) {
-	if pcl.NextLink == nil || len(to.String(pcl.NextLink)) < 1 {
+	if !pcl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -790,11 +754,16 @@ func (page *PrivateCloudListPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pcl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pcl)
+		if err != nil {
+			return err
+		}
+		page.pcl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pcl = next
 	return nil
 }
 
@@ -862,8 +831,35 @@ type PrivateCloudProperties struct {
 	NsxtCertificateThumbprint *string `json:"nsxtCertificateThumbprint,omitempty"`
 }
 
-// PrivateCloudsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// MarshalJSON is the custom marshaler for PrivateCloudProperties.
+func (pcp PrivateCloudProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pcp.Circuit != nil {
+		objectMap["circuit"] = pcp.Circuit
+	}
+	if pcp.Cluster != nil {
+		objectMap["cluster"] = pcp.Cluster
+	}
+	if pcp.Internet != "" {
+		objectMap["internet"] = pcp.Internet
+	}
+	if pcp.IdentitySources != nil {
+		objectMap["identitySources"] = pcp.IdentitySources
+	}
+	if pcp.NetworkBlock != nil {
+		objectMap["networkBlock"] = pcp.NetworkBlock
+	}
+	if pcp.VcenterPassword != nil {
+		objectMap["vcenterPassword"] = pcp.VcenterPassword
+	}
+	if pcp.NsxtPassword != nil {
+		objectMap["nsxtPassword"] = pcp.NsxtPassword
+	}
+	return json.Marshal(objectMap)
+}
+
+// PrivateCloudsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type PrivateCloudsCreateOrUpdateFuture struct {
 	azure.Future
 }

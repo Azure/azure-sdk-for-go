@@ -76,6 +76,9 @@ func (client HyperVJobsClient) GetAllJobsInSite(ctx context.Context, subscriptio
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVJobsClient", "GetAllJobsInSite", resp, "Failure responding to request")
 	}
+	if result.hvjc.hasNextLink() && result.hvjc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

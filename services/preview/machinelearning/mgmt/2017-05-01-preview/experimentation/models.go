@@ -30,27 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2017-05-01-preview/experimentation"
 
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Creating, Deleting, Failed, Succeeded, Updating}
-}
-
 // Account an object that represents a machine learning team account.
 type Account struct {
 	autorest.Response `json:"-"`
@@ -229,10 +208,15 @@ func (alr AccountListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (alr AccountListResult) hasNextLink() bool {
+	return alr.NextLink != nil && len(*alr.NextLink) != 0
+}
+
 // accountListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (alr AccountListResult) accountListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
+	if !alr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -260,11 +244,16 @@ func (page *AccountListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.alr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.alr)
+		if err != nil {
+			return err
+		}
+		page.alr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.alr = next
 	return nil
 }
 
@@ -320,6 +309,30 @@ type AccountProperties struct {
 	StorageAccount *StorageAccountProperties `json:"storageAccount,omitempty"`
 	// ProvisioningState - READ-ONLY; The current deployment state of team account resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'Creating', 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountProperties.
+func (ap AccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.VsoAccountID != nil {
+		objectMap["vsoAccountId"] = ap.VsoAccountID
+	}
+	if ap.Description != nil {
+		objectMap["description"] = ap.Description
+	}
+	if ap.FriendlyName != nil {
+		objectMap["friendlyName"] = ap.FriendlyName
+	}
+	if ap.KeyVaultID != nil {
+		objectMap["keyVaultId"] = ap.KeyVaultID
+	}
+	if ap.Seats != nil {
+		objectMap["seats"] = ap.Seats
+	}
+	if ap.StorageAccount != nil {
+		objectMap["storageAccount"] = ap.StorageAccount
+	}
+	return json.Marshal(objectMap)
 }
 
 // AccountPropertiesUpdateParameters the parameters for updating the properties of a machine learning team
@@ -601,10 +614,15 @@ func (plr ProjectListResult) IsEmpty() bool {
 	return plr.Value == nil || len(*plr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (plr ProjectListResult) hasNextLink() bool {
+	return plr.NextLink != nil && len(*plr.NextLink) != 0
+}
+
 // projectListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (plr ProjectListResult) projectListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if plr.NextLink == nil || len(to.String(plr.NextLink)) < 1 {
+	if !plr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -632,11 +650,16 @@ func (page *ProjectListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.plr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.plr)
+		if err != nil {
+			return err
+		}
+		page.plr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.plr = next
 	return nil
 }
 
@@ -688,6 +711,21 @@ type ProjectProperties struct {
 	CreationDate *date.Time `json:"creationDate,omitempty"`
 	// ProvisioningState - READ-ONLY; The current deployment state of project resource. The provisioningState is to indicate states for resource provisioning. Possible values include: 'Creating', 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProjectProperties.
+func (pp ProjectProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pp.Description != nil {
+		objectMap["description"] = pp.Description
+	}
+	if pp.Gitrepo != nil {
+		objectMap["gitrepo"] = pp.Gitrepo
+	}
+	if pp.FriendlyName != nil {
+		objectMap["friendlyName"] = pp.FriendlyName
+	}
+	return json.Marshal(objectMap)
 }
 
 // ProjectPropertiesUpdateParameters the parameters for updating the properties of a project.
@@ -965,10 +1003,15 @@ func (wlr WorkspaceListResult) IsEmpty() bool {
 	return wlr.Value == nil || len(*wlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wlr WorkspaceListResult) hasNextLink() bool {
+	return wlr.NextLink != nil && len(*wlr.NextLink) != 0
+}
+
 // workspaceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wlr WorkspaceListResult) workspaceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wlr.NextLink == nil || len(to.String(wlr.NextLink)) < 1 {
+	if !wlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -996,11 +1039,16 @@ func (page *WorkspaceListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wlr)
+		if err != nil {
+			return err
+		}
+		page.wlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wlr = next
 	return nil
 }
 
@@ -1050,8 +1098,20 @@ type WorkspaceProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
-// WorkspacePropertiesUpdateParameters the parameters for updating the properties of a machine learning
-// team account workspace.
+// MarshalJSON is the custom marshaler for WorkspaceProperties.
+func (wp WorkspaceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wp.Description != nil {
+		objectMap["description"] = wp.Description
+	}
+	if wp.FriendlyName != nil {
+		objectMap["friendlyName"] = wp.FriendlyName
+	}
+	return json.Marshal(objectMap)
+}
+
+// WorkspacePropertiesUpdateParameters the parameters for updating the properties of a machine learning team
+// account workspace.
 type WorkspacePropertiesUpdateParameters struct {
 	// FriendlyName - Friendly name of this workspace.
 	FriendlyName *string `json:"friendlyName,omitempty"`

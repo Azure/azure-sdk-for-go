@@ -31,89 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/azuredata/mgmt/2019-07-24-preview/azuredata"
 
-// OperationOrigin enumerates the values for operation origin.
-type OperationOrigin string
-
-const (
-	// System ...
-	System OperationOrigin = "system"
-	// User ...
-	User OperationOrigin = "user"
-)
-
-// PossibleOperationOriginValues returns an array of possible values for the OperationOrigin const type.
-func PossibleOperationOriginValues() []OperationOrigin {
-	return []OperationOrigin{System, User}
-}
-
-// RequestType enumerates the values for request type.
-type RequestType string
-
-const (
-	// Handshake ...
-	Handshake RequestType = "Handshake"
-	// Unknown ...
-	Unknown RequestType = "Unknown"
-	// UsageUpload ...
-	UsageUpload RequestType = "UsageUpload"
-)
-
-// PossibleRequestTypeValues returns an array of possible values for the RequestType const type.
-func PossibleRequestTypeValues() []RequestType {
-	return []RequestType{Handshake, Unknown, UsageUpload}
-}
-
-// ResourceIdentityType enumerates the values for resource identity type.
-type ResourceIdentityType string
-
-const (
-	// SystemAssigned ...
-	SystemAssigned ResourceIdentityType = "SystemAssigned"
-)
-
-// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{SystemAssigned}
-}
-
-// SkuTier enumerates the values for sku tier.
-type SkuTier string
-
-const (
-	// Basic ...
-	Basic SkuTier = "Basic"
-	// Free ...
-	Free SkuTier = "Free"
-	// Premium ...
-	Premium SkuTier = "Premium"
-	// Standard ...
-	Standard SkuTier = "Standard"
-)
-
-// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() []SkuTier {
-	return []SkuTier{Basic, Free, Premium, Standard}
-}
-
-// UsageUploadStatus enumerates the values for usage upload status.
-type UsageUploadStatus string
-
-const (
-	// UsageUploadStatusCompleted ...
-	UsageUploadStatusCompleted UsageUploadStatus = "Completed"
-	// UsageUploadStatusFailed ...
-	UsageUploadStatusFailed UsageUploadStatus = "Failed"
-	// UsageUploadStatusPartialSuccess ...
-	UsageUploadStatusPartialSuccess UsageUploadStatus = "PartialSuccess"
-	// UsageUploadStatusUnknown ...
-	UsageUploadStatusUnknown UsageUploadStatus = "Unknown"
-)
-
-// PossibleUsageUploadStatusValues returns an array of possible values for the UsageUploadStatus const type.
-func PossibleUsageUploadStatusValues() []UsageUploadStatus {
-	return []UsageUploadStatus{UsageUploadStatusCompleted, UsageUploadStatusFailed, UsageUploadStatusPartialSuccess, UsageUploadStatusUnknown}
-}
-
 // AzureResource ...
 type AzureResource struct {
 	Etag     *string            `json:"etag,omitempty"`
@@ -174,19 +91,9 @@ type CloudErrorBody struct {
 	Details *[]CloudErrorBody `json:"details,omitempty"`
 }
 
-// DataController ...
-type DataController struct {
-	ID                *uuid.UUID `json:"id,omitempty"`
-	Name              *string    `json:"name,omitempty"`
-	AzureResourceType *string    `json:"azureResourceType,omitempty"`
-	Subscription      *uuid.UUID `json:"subscription,omitempty"`
-	ResourceGroup     *string    `json:"resourceGroup,omitempty"`
-	Location          *string    `json:"location,omitempty"`
-}
-
-// DataControllerProperties ...
+// DataControllerProperties the data controller properties.
 type DataControllerProperties struct {
-	DataController *DataController `json:"dataController,omitempty"`
+	OnPremiseProperty *OnPremiseProperty `json:"onPremiseProperty,omitempty"`
 	// RequestType - Possible values include: 'Unknown', 'Handshake', 'UsageUpload'
 	RequestType       RequestType          `json:"requestType,omitempty"`
 	UploadRequest     *UsageUploadRequest  `json:"uploadRequest,omitempty"`
@@ -204,6 +111,8 @@ type DataControllerResource struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
+	// SystemData - READ-ONLY
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -263,6 +172,15 @@ func (dcr *DataControllerResource) UnmarshalJSON(body []byte) error {
 				}
 				dcr.Location = &location
 			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				dcr.SystemData = &systemData
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -302,199 +220,6 @@ type HandshakeResponse struct {
 	UsageResultURL *string `json:"usageResultUrl,omitempty"`
 }
 
-// HybridDataManager hybrid data manager resource
-type HybridDataManager struct {
-	autorest.Response `json:"-"`
-	// Properties - null
-	Properties interface{} `json:"properties,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// Location - The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for HybridDataManager.
-func (hdm HybridDataManager) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if hdm.Properties != nil {
-		objectMap["properties"] = hdm.Properties
-	}
-	if hdm.Tags != nil {
-		objectMap["tags"] = hdm.Tags
-	}
-	if hdm.Location != nil {
-		objectMap["location"] = hdm.Location
-	}
-	return json.Marshal(objectMap)
-}
-
-// HybridDataManagerListResult a list of HybridDataManager.
-type HybridDataManagerListResult struct {
-	autorest.Response `json:"-"`
-	// Value - READ-ONLY; Array of results.
-	Value *[]HybridDataManager `json:"value,omitempty"`
-	// NextLink - READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// HybridDataManagerListResultIterator provides access to a complete listing of HybridDataManager values.
-type HybridDataManagerListResultIterator struct {
-	i    int
-	page HybridDataManagerListResultPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *HybridDataManagerListResultIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/HybridDataManagerListResultIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *HybridDataManagerListResultIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter HybridDataManagerListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter HybridDataManagerListResultIterator) Response() HybridDataManagerListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter HybridDataManagerListResultIterator) Value() HybridDataManager {
-	if !iter.page.NotDone() {
-		return HybridDataManager{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the HybridDataManagerListResultIterator type.
-func NewHybridDataManagerListResultIterator(page HybridDataManagerListResultPage) HybridDataManagerListResultIterator {
-	return HybridDataManagerListResultIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (hdmlr HybridDataManagerListResult) IsEmpty() bool {
-	return hdmlr.Value == nil || len(*hdmlr.Value) == 0
-}
-
-// hybridDataManagerListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (hdmlr HybridDataManagerListResult) hybridDataManagerListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if hdmlr.NextLink == nil || len(to.String(hdmlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(hdmlr.NextLink)))
-}
-
-// HybridDataManagerListResultPage contains a page of HybridDataManager values.
-type HybridDataManagerListResultPage struct {
-	fn    func(context.Context, HybridDataManagerListResult) (HybridDataManagerListResult, error)
-	hdmlr HybridDataManagerListResult
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *HybridDataManagerListResultPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/HybridDataManagerListResultPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.hdmlr)
-	if err != nil {
-		return err
-	}
-	page.hdmlr = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *HybridDataManagerListResultPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page HybridDataManagerListResultPage) NotDone() bool {
-	return !page.hdmlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page HybridDataManagerListResultPage) Response() HybridDataManagerListResult {
-	return page.hdmlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page HybridDataManagerListResultPage) Values() []HybridDataManager {
-	if page.hdmlr.IsEmpty() {
-		return nil
-	}
-	return *page.hdmlr.Value
-}
-
-// Creates a new instance of the HybridDataManagerListResultPage type.
-func NewHybridDataManagerListResultPage(getNextPage func(context.Context, HybridDataManagerListResult) (HybridDataManagerListResult, error)) HybridDataManagerListResultPage {
-	return HybridDataManagerListResultPage{fn: getNextPage}
-}
-
-// HybridDataManagerUpdate an update to a HybridDataManager.
-type HybridDataManagerUpdate struct {
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for HybridDataManagerUpdate.
-func (hdmu HybridDataManagerUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if hdmu.Tags != nil {
-		objectMap["tags"] = hdmu.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
 // Identity identity for the resource.
 type Identity struct {
 	// PrincipalID - READ-ONLY; The principal ID of resource identity.
@@ -503,6 +228,15 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The identity type. Possible values include: 'SystemAssigned'
 	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // ODataError information about an error.
@@ -517,13 +251,23 @@ type ODataError struct {
 	Details *[]ODataError `json:"details,omitempty"`
 }
 
+// OnPremiseProperty properties from the on premise data controller
+type OnPremiseProperty struct {
+	// ID - A globally unique ID identifying the associated on premise cluster
+	ID *uuid.UUID `json:"id,omitempty"`
+	// PublicSigningKey - Certificate that contains the on premise cluster public key used to verify signing
+	PublicSigningKey *string `json:"publicSigningKey,omitempty"`
+	// SigningCertificateThumbprint - Unique thumbprint returned to customer to verify the certificate being uploaded
+	SigningCertificateThumbprint *string `json:"signingCertificateThumbprint,omitempty"`
+}
+
 // Operation SQL REST API operation definition.
 type Operation struct {
 	// Name - READ-ONLY; The name of the operation being performed on this particular object.
 	Name *string `json:"name,omitempty"`
 	// Display - READ-ONLY; The localized display information for this particular operation / action.
 	Display *OperationDisplay `json:"display,omitempty"`
-	// Origin - READ-ONLY; The intended executor of the operation. Possible values include: 'User', 'System'
+	// Origin - READ-ONLY; The intended executor of the operation. Possible values include: 'OperationOriginUser', 'OperationOriginSystem'
 	Origin OperationOrigin `json:"origin,omitempty"`
 	// Properties - READ-ONLY; Additional descriptions for the operation.
 	Properties map[string]interface{} `json:"properties"`
@@ -624,10 +368,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -655,11 +404,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -701,8 +455,7 @@ type PageOfDataControllerResource struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// PageOfDataControllerResourceIterator provides access to a complete listing of DataControllerResource
-// values.
+// PageOfDataControllerResourceIterator provides access to a complete listing of DataControllerResource values.
 type PageOfDataControllerResourceIterator struct {
 	i    int
 	page PageOfDataControllerResourcePage
@@ -770,10 +523,15 @@ func (podcr PageOfDataControllerResource) IsEmpty() bool {
 	return podcr.Value == nil || len(*podcr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (podcr PageOfDataControllerResource) hasNextLink() bool {
+	return podcr.NextLink != nil && len(*podcr.NextLink) != 0
+}
+
 // pageOfDataControllerResourcePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (podcr PageOfDataControllerResource) pageOfDataControllerResourcePreparer(ctx context.Context) (*http.Request, error) {
-	if podcr.NextLink == nil || len(to.String(podcr.NextLink)) < 1 {
+	if !podcr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -801,11 +559,16 @@ func (page *PageOfDataControllerResourcePage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.podcr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.podcr)
+		if err != nil {
+			return err
+		}
+		page.podcr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.podcr = next
 	return nil
 }
 
@@ -862,6 +625,8 @@ type PostgresInstance struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
+	// SystemData - READ-ONLY
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -920,6 +685,15 @@ func (pi *PostgresInstance) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				pi.Location = &location
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				pi.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -1031,10 +805,15 @@ func (pilr PostgresInstanceListResult) IsEmpty() bool {
 	return pilr.Value == nil || len(*pilr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pilr PostgresInstanceListResult) hasNextLink() bool {
+	return pilr.NextLink != nil && len(*pilr.NextLink) != 0
+}
+
 // postgresInstanceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pilr PostgresInstanceListResult) postgresInstanceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if pilr.NextLink == nil || len(to.String(pilr.NextLink)) < 1 {
+	if !pilr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1062,11 +841,16 @@ func (page *PostgresInstanceListResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pilr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pilr)
+		if err != nil {
+			return err
+		}
+		page.pilr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pilr = next
 	return nil
 }
 
@@ -1148,8 +932,7 @@ type Resource struct {
 }
 
 // ResourceModelWithAllowedPropertySet the resource model definition containing the full set of allowed
-// properties for a resource. Except properties bag, there cannot be a top level property outside of this
-// set.
+// properties for a resource. Except properties bag, there cannot be a top level property outside of this set.
 type ResourceModelWithAllowedPropertySet struct {
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -1209,6 +992,15 @@ type ResourceModelWithAllowedPropertySetIdentity struct {
 	Type ResourceIdentityType `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceModelWithAllowedPropertySetIdentity.
+func (rmwaps ResourceModelWithAllowedPropertySetIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rmwaps.Type != "" {
+		objectMap["type"] = rmwaps.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // ResourceModelWithAllowedPropertySetPlan ...
 type ResourceModelWithAllowedPropertySetPlan struct {
 	// Name - A user defined name of the 3rd Party Artifact that is being procured.
@@ -1260,274 +1052,6 @@ type Sku struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
-// SQLInstance a SqlInstance.
-type SQLInstance struct {
-	autorest.Response `json:"-"`
-	// SQLInstanceProperties - null
-	*SQLInstanceProperties `json:"properties,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// Location - The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for SQLInstance.
-func (si SQLInstance) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if si.SQLInstanceProperties != nil {
-		objectMap["properties"] = si.SQLInstanceProperties
-	}
-	if si.Tags != nil {
-		objectMap["tags"] = si.Tags
-	}
-	if si.Location != nil {
-		objectMap["location"] = si.Location
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for SQLInstance struct.
-func (si *SQLInstance) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var SQLInstanceProperties SQLInstanceProperties
-				err = json.Unmarshal(*v, &SQLInstanceProperties)
-				if err != nil {
-					return err
-				}
-				si.SQLInstanceProperties = &SQLInstanceProperties
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				si.Tags = tags
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				si.Location = &location
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				si.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				si.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				si.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// SQLInstanceListResult a list of SqlInstance.
-type SQLInstanceListResult struct {
-	autorest.Response `json:"-"`
-	// Value - READ-ONLY; Array of results.
-	Value *[]SQLInstance `json:"value,omitempty"`
-	// NextLink - READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// SQLInstanceListResultIterator provides access to a complete listing of SQLInstance values.
-type SQLInstanceListResultIterator struct {
-	i    int
-	page SQLInstanceListResultPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *SQLInstanceListResultIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SQLInstanceListResultIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *SQLInstanceListResultIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter SQLInstanceListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter SQLInstanceListResultIterator) Response() SQLInstanceListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter SQLInstanceListResultIterator) Value() SQLInstance {
-	if !iter.page.NotDone() {
-		return SQLInstance{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the SQLInstanceListResultIterator type.
-func NewSQLInstanceListResultIterator(page SQLInstanceListResultPage) SQLInstanceListResultIterator {
-	return SQLInstanceListResultIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (silr SQLInstanceListResult) IsEmpty() bool {
-	return silr.Value == nil || len(*silr.Value) == 0
-}
-
-// sQLInstanceListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (silr SQLInstanceListResult) sQLInstanceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if silr.NextLink == nil || len(to.String(silr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(silr.NextLink)))
-}
-
-// SQLInstanceListResultPage contains a page of SQLInstance values.
-type SQLInstanceListResultPage struct {
-	fn   func(context.Context, SQLInstanceListResult) (SQLInstanceListResult, error)
-	silr SQLInstanceListResult
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *SQLInstanceListResultPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SQLInstanceListResultPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.silr)
-	if err != nil {
-		return err
-	}
-	page.silr = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *SQLInstanceListResultPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page SQLInstanceListResultPage) NotDone() bool {
-	return !page.silr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page SQLInstanceListResultPage) Response() SQLInstanceListResult {
-	return page.silr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page SQLInstanceListResultPage) Values() []SQLInstance {
-	if page.silr.IsEmpty() {
-		return nil
-	}
-	return *page.silr.Value
-}
-
-// Creates a new instance of the SQLInstanceListResultPage type.
-func NewSQLInstanceListResultPage(getNextPage func(context.Context, SQLInstanceListResult) (SQLInstanceListResult, error)) SQLInstanceListResultPage {
-	return SQLInstanceListResultPage{fn: getNextPage}
-}
-
-// SQLInstanceProperties properties of PostgresInstance.
-type SQLInstanceProperties struct {
-	// HybridDataManagerID - null
-	HybridDataManagerID *string `json:"hybridDataManagerId,omitempty"`
-}
-
-// SQLInstanceUpdate an update to a SQL Instance.
-type SQLInstanceUpdate struct {
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-}
-
-// MarshalJSON is the custom marshaler for SQLInstanceUpdate.
-func (siu SQLInstanceUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if siu.Tags != nil {
-		objectMap["tags"] = siu.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
 // SQLManagedInstance a SqlManagedInstance.
 type SQLManagedInstance struct {
 	autorest.Response `json:"-"`
@@ -1537,6 +1061,8 @@ type SQLManagedInstance struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
+	// SystemData - READ-ONLY
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -1595,6 +1121,15 @@ func (smi *SQLManagedInstance) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				smi.Location = &location
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				smi.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -1706,10 +1241,15 @@ func (smilr SQLManagedInstanceListResult) IsEmpty() bool {
 	return smilr.Value == nil || len(*smilr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (smilr SQLManagedInstanceListResult) hasNextLink() bool {
+	return smilr.NextLink != nil && len(*smilr.NextLink) != 0
+}
+
 // sQLManagedInstanceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (smilr SQLManagedInstanceListResult) sQLManagedInstanceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if smilr.NextLink == nil || len(to.String(smilr.NextLink)) < 1 {
+	if !smilr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1737,11 +1277,16 @@ func (page *SQLManagedInstanceListResultPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.smilr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.smilr)
+		if err != nil {
+			return err
+		}
+		page.smilr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.smilr = next
 	return nil
 }
 
@@ -1878,6 +1423,8 @@ type SQLServerInstance struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
+	// SystemData - READ-ONLY
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -1936,6 +1483,15 @@ func (ssi *SQLServerInstance) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ssi.Location = &location
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				ssi.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -2047,10 +1603,15 @@ func (ssilr SQLServerInstanceListResult) IsEmpty() bool {
 	return ssilr.Value == nil || len(*ssilr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ssilr SQLServerInstanceListResult) hasNextLink() bool {
+	return ssilr.NextLink != nil && len(*ssilr.NextLink) != 0
+}
+
 // sQLServerInstanceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ssilr SQLServerInstanceListResult) sQLServerInstanceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ssilr.NextLink == nil || len(to.String(ssilr.NextLink)) < 1 {
+	if !ssilr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2078,11 +1639,16 @@ func (page *SQLServerInstanceListResultPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ssilr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ssilr)
+		if err != nil {
+			return err
+		}
+		page.ssilr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ssilr = next
 	return nil
 }
 
@@ -2132,6 +1698,27 @@ type SQLServerInstanceProperties struct {
 	VCore *string `json:"vCore,omitempty"`
 	// Status - The cloud connectivity status.
 	Status *string `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLServerInstanceProperties.
+func (ssip SQLServerInstanceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ssip.Version != nil {
+		objectMap["version"] = ssip.Version
+	}
+	if ssip.Edition != nil {
+		objectMap["edition"] = ssip.Edition
+	}
+	if ssip.ContainerResourceID != nil {
+		objectMap["containerResourceId"] = ssip.ContainerResourceID
+	}
+	if ssip.VCore != nil {
+		objectMap["vCore"] = ssip.VCore
+	}
+	if ssip.Status != nil {
+		objectMap["status"] = ssip.Status
+	}
+	return json.Marshal(objectMap)
 }
 
 // SQLServerInstanceUpdate an update to a SQL Server Instance.
@@ -2226,10 +1813,15 @@ func (sslr SQLServerListResult) IsEmpty() bool {
 	return sslr.Value == nil || len(*sslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sslr SQLServerListResult) hasNextLink() bool {
+	return sslr.NextLink != nil && len(*sslr.NextLink) != 0
+}
+
 // sQLServerListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sslr SQLServerListResult) sQLServerListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if sslr.NextLink == nil || len(to.String(sslr.NextLink)) < 1 {
+	if !sslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2257,11 +1849,16 @@ func (page *SQLServerListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sslr)
+		if err != nil {
+			return err
+		}
+		page.sslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sslr = next
 	return nil
 }
 
@@ -2318,6 +1915,8 @@ type SQLServerRegistration struct {
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
+	// SystemData - READ-ONLY
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -2376,6 +1975,15 @@ func (ssr *SQLServerRegistration) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ssr.Location = &location
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				ssr.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -2488,10 +2096,15 @@ func (ssrlr SQLServerRegistrationListResult) IsEmpty() bool {
 	return ssrlr.Value == nil || len(*ssrlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ssrlr SQLServerRegistrationListResult) hasNextLink() bool {
+	return ssrlr.NextLink != nil && len(*ssrlr.NextLink) != 0
+}
+
 // sQLServerRegistrationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ssrlr SQLServerRegistrationListResult) sQLServerRegistrationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ssrlr.NextLink == nil || len(to.String(ssrlr.NextLink)) < 1 {
+	if !ssrlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2519,11 +2132,16 @@ func (page *SQLServerRegistrationListResultPage) NextWithContext(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ssrlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ssrlr)
+		if err != nil {
+			return err
+		}
+		page.ssrlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ssrlr = next
 	return nil
 }
 
@@ -2582,12 +2200,30 @@ func (ssru SQLServerRegistrationUpdate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// SystemData read only system data
+type SystemData struct {
+	// CreatedBy - An identifier for the identity that created the resource
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType IdentityType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC)
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - An identifier for the identity that last modified the resource
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType IdentityType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
+}
+
 // TrackedResource the resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
+	// SystemData - READ-ONLY
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource

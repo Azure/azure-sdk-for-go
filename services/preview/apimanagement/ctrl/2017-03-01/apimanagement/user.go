@@ -556,6 +556,9 @@ func (client UserClient) List(ctx context.Context, apimBaseURL string, filter st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserClient", "List", resp, "Failure responding to request")
 	}
+	if result.uc.hasNextLink() && result.uc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

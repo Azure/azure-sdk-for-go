@@ -29,130 +29,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/deploymentmanager/mgmt/2019-11-01-preview/deploymentmanager"
 
-// DeploymentMode enumerates the values for deployment mode.
-type DeploymentMode string
-
-const (
-	// Complete ...
-	Complete DeploymentMode = "Complete"
-	// Incremental ...
-	Incremental DeploymentMode = "Incremental"
-)
-
-// PossibleDeploymentModeValues returns an array of possible values for the DeploymentMode const type.
-func PossibleDeploymentModeValues() []DeploymentMode {
-	return []DeploymentMode{Complete, Incremental}
-}
-
-// RestAuthLocation enumerates the values for rest auth location.
-type RestAuthLocation string
-
-const (
-	// Header ...
-	Header RestAuthLocation = "Header"
-	// Query ...
-	Query RestAuthLocation = "Query"
-)
-
-// PossibleRestAuthLocationValues returns an array of possible values for the RestAuthLocation const type.
-func PossibleRestAuthLocationValues() []RestAuthLocation {
-	return []RestAuthLocation{Header, Query}
-}
-
-// RestMatchQuantifier enumerates the values for rest match quantifier.
-type RestMatchQuantifier string
-
-const (
-	// All ...
-	All RestMatchQuantifier = "All"
-	// Any ...
-	Any RestMatchQuantifier = "Any"
-)
-
-// PossibleRestMatchQuantifierValues returns an array of possible values for the RestMatchQuantifier const type.
-func PossibleRestMatchQuantifierValues() []RestMatchQuantifier {
-	return []RestMatchQuantifier{All, Any}
-}
-
-// RestRequestMethod enumerates the values for rest request method.
-type RestRequestMethod string
-
-const (
-	// GET ...
-	GET RestRequestMethod = "GET"
-	// POST ...
-	POST RestRequestMethod = "POST"
-)
-
-// PossibleRestRequestMethodValues returns an array of possible values for the RestRequestMethod const type.
-func PossibleRestRequestMethodValues() []RestRequestMethod {
-	return []RestRequestMethod{GET, POST}
-}
-
-// StepType enumerates the values for step type.
-type StepType string
-
-const (
-	// StepTypeHealthCheck ...
-	StepTypeHealthCheck StepType = "HealthCheck"
-	// StepTypeStepProperties ...
-	StepTypeStepProperties StepType = "StepProperties"
-	// StepTypeWait ...
-	StepTypeWait StepType = "Wait"
-)
-
-// PossibleStepTypeValues returns an array of possible values for the StepType const type.
-func PossibleStepTypeValues() []StepType {
-	return []StepType{StepTypeHealthCheck, StepTypeStepProperties, StepTypeWait}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeAuthentication ...
-	TypeAuthentication Type = "Authentication"
-	// TypeSas ...
-	TypeSas Type = "Sas"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeAuthentication, TypeSas}
-}
-
-// TypeBasicHealthCheckStepAttributes enumerates the values for type basic health check step attributes.
-type TypeBasicHealthCheckStepAttributes string
-
-const (
-	// TypeHealthCheckStepAttributes ...
-	TypeHealthCheckStepAttributes TypeBasicHealthCheckStepAttributes = "HealthCheckStepAttributes"
-	// TypeREST ...
-	TypeREST TypeBasicHealthCheckStepAttributes = "REST"
-)
-
-// PossibleTypeBasicHealthCheckStepAttributesValues returns an array of possible values for the TypeBasicHealthCheckStepAttributes const type.
-func PossibleTypeBasicHealthCheckStepAttributesValues() []TypeBasicHealthCheckStepAttributes {
-	return []TypeBasicHealthCheckStepAttributes{TypeHealthCheckStepAttributes, TypeREST}
-}
-
-// TypeBasicRestRequestAuthentication enumerates the values for type basic rest request authentication.
-type TypeBasicRestRequestAuthentication string
-
-const (
-	// TypeAPIKey ...
-	TypeAPIKey TypeBasicRestRequestAuthentication = "ApiKey"
-	// TypeRestRequestAuthentication ...
-	TypeRestRequestAuthentication TypeBasicRestRequestAuthentication = "RestRequestAuthentication"
-	// TypeRolloutIdentity ...
-	TypeRolloutIdentity TypeBasicRestRequestAuthentication = "RolloutIdentity"
-)
-
-// PossibleTypeBasicRestRequestAuthenticationValues returns an array of possible values for the TypeBasicRestRequestAuthentication const type.
-func PossibleTypeBasicRestRequestAuthenticationValues() []TypeBasicRestRequestAuthentication {
-	return []TypeBasicRestRequestAuthentication{TypeAPIKey, TypeRestRequestAuthentication, TypeRolloutIdentity}
-}
-
 // APIKeyAuthentication apiKey authentication gives a name and a value that can be included in either the
 // request header or query parameters.
 type APIKeyAuthentication struct {
@@ -513,6 +389,18 @@ type CloudErrorBody struct {
 	Details *[]CloudErrorBody `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CloudErrorBody.
+func (ceb CloudErrorBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ceb.Target != nil {
+		objectMap["target"] = ceb.Target
+	}
+	if ceb.Details != nil {
+		objectMap["details"] = ceb.Details
+	}
+	return json.Marshal(objectMap)
+}
+
 // BasicHealthCheckStepAttributes the attributes for the health check step.
 type BasicHealthCheckStepAttributes interface {
 	AsRestHealthCheckStepAttributes() (*RestHealthCheckStepAttributes, bool)
@@ -797,6 +685,18 @@ type ResourceOperation struct {
 	StatusMessage *string `json:"statusMessage,omitempty"`
 	// StatusCode - READ-ONLY; Http status code of the operation.
 	StatusCode *string `json:"statusCode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceOperation.
+func (ro ResourceOperation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ro.ResourceName != nil {
+		objectMap["resourceName"] = ro.ResourceName
+	}
+	if ro.ResourceType != nil {
+		objectMap["resourceType"] = ro.ResourceType
+	}
+	return json.Marshal(objectMap)
 }
 
 // RestHealthCheck a REST based health check
@@ -1194,8 +1094,8 @@ func (r *Rollout) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RolloutIdentityAuthentication rolloutIdentity uses the user-assigned managed identity authentication
-// context specified in the Identity property during rollout creation.
+// RolloutIdentityAuthentication rolloutIdentity uses the user-assigned managed identity authentication context
+// specified in the Identity property during rollout creation.
 type RolloutIdentityAuthentication struct {
 	// Type - Possible values include: 'TypeRestRequestAuthentication', 'TypeRolloutIdentity', 'TypeAPIKey'
 	Type TypeBasicRestRequestAuthentication `json:"type,omitempty"`
@@ -1263,6 +1163,24 @@ type RolloutProperties struct {
 	OperationInfo *RolloutOperationInfo `json:"operationInfo,omitempty"`
 	// Services - READ-ONLY; The detailed information on the services being deployed.
 	Services *[]Service `json:"services,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RolloutProperties.
+func (r RolloutProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.BuildVersion != nil {
+		objectMap["buildVersion"] = r.BuildVersion
+	}
+	if r.ArtifactSourceID != nil {
+		objectMap["artifactSourceId"] = r.ArtifactSourceID
+	}
+	if r.TargetServiceTopologyID != nil {
+		objectMap["targetServiceTopologyId"] = r.TargetServiceTopologyID
+	}
+	if r.StepGroups != nil {
+		objectMap["stepGroups"] = r.StepGroups
+	}
+	return json.Marshal(objectMap)
 }
 
 // RolloutPropertiesModel defines the properties of a rollout.
@@ -1447,6 +1365,18 @@ type RolloutStep struct {
 	ResourceOperations *[]ResourceOperation `json:"resourceOperations,omitempty"`
 	// Messages - READ-ONLY; Supplementary informative messages during rollout.
 	Messages *[]Message `json:"messages,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RolloutStep.
+func (rs RolloutStep) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rs.Name != nil {
+		objectMap["name"] = rs.Name
+	}
+	if rs.StepGroup != nil {
+		objectMap["stepGroup"] = rs.StepGroup
+	}
+	return json.Marshal(objectMap)
 }
 
 // SasAuthentication defines the properties to access the artifacts using an Azure Storage SAS URI.
@@ -1913,8 +1843,8 @@ type ServiceUnitResourceProperties struct {
 	Artifacts *ServiceUnitArtifacts `json:"artifacts,omitempty"`
 }
 
-// ServiceUnitsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ServiceUnitsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServiceUnitsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1970,6 +1900,15 @@ type StepOperationInfo struct {
 	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
 	// Error - The errors, if any, for the action.
 	Error *CloudErrorBody `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StepOperationInfo.
+func (soi StepOperationInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if soi.Error != nil {
+		objectMap["error"] = soi.Error
+	}
+	return json.Marshal(objectMap)
 }
 
 // BasicStepProperties the properties of a step resource.

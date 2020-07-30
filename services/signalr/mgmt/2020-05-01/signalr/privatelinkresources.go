@@ -76,6 +76,9 @@ func (client PrivateLinkResourcesClient) List(ctx context.Context, resourceGroup
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "signalr.PrivateLinkResourcesClient", "List", resp, "Failure responding to request")
 	}
+	if result.plrl.hasNextLink() && result.plrl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

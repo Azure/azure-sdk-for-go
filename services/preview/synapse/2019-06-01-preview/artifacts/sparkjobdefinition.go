@@ -496,6 +496,9 @@ func (client SparkJobDefinitionClient) GetSparkJobDefinitionsByWorkspace(ctx con
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "GetSparkJobDefinitionsByWorkspace", resp, "Failure responding to request")
 	}
+	if result.sjdlr.hasNextLink() && result.sjdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -31,328 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2017-09-01/batch"
 
-// AccountKeyType enumerates the values for account key type.
-type AccountKeyType string
-
-const (
-	// Primary ...
-	Primary AccountKeyType = "Primary"
-	// Secondary ...
-	Secondary AccountKeyType = "Secondary"
-)
-
-// PossibleAccountKeyTypeValues returns an array of possible values for the AccountKeyType const type.
-func PossibleAccountKeyTypeValues() []AccountKeyType {
-	return []AccountKeyType{Primary, Secondary}
-}
-
-// AllocationState enumerates the values for allocation state.
-type AllocationState string
-
-const (
-	// Resizing ...
-	Resizing AllocationState = "Resizing"
-	// Steady ...
-	Steady AllocationState = "Steady"
-	// Stopping ...
-	Stopping AllocationState = "Stopping"
-)
-
-// PossibleAllocationStateValues returns an array of possible values for the AllocationState const type.
-func PossibleAllocationStateValues() []AllocationState {
-	return []AllocationState{Resizing, Steady, Stopping}
-}
-
-// AutoUserScope enumerates the values for auto user scope.
-type AutoUserScope string
-
-const (
-	// AutoUserScopePool ...
-	AutoUserScopePool AutoUserScope = "Pool"
-	// AutoUserScopeTask ...
-	AutoUserScopeTask AutoUserScope = "Task"
-)
-
-// PossibleAutoUserScopeValues returns an array of possible values for the AutoUserScope const type.
-func PossibleAutoUserScopeValues() []AutoUserScope {
-	return []AutoUserScope{AutoUserScopePool, AutoUserScopeTask}
-}
-
-// CachingType enumerates the values for caching type.
-type CachingType string
-
-const (
-	// None ...
-	None CachingType = "None"
-	// ReadOnly ...
-	ReadOnly CachingType = "ReadOnly"
-	// ReadWrite ...
-	ReadWrite CachingType = "ReadWrite"
-)
-
-// PossibleCachingTypeValues returns an array of possible values for the CachingType const type.
-func PossibleCachingTypeValues() []CachingType {
-	return []CachingType{None, ReadOnly, ReadWrite}
-}
-
-// CertificateFormat enumerates the values for certificate format.
-type CertificateFormat string
-
-const (
-	// Cer ...
-	Cer CertificateFormat = "Cer"
-	// Pfx ...
-	Pfx CertificateFormat = "Pfx"
-)
-
-// PossibleCertificateFormatValues returns an array of possible values for the CertificateFormat const type.
-func PossibleCertificateFormatValues() []CertificateFormat {
-	return []CertificateFormat{Cer, Pfx}
-}
-
-// CertificateProvisioningState enumerates the values for certificate provisioning state.
-type CertificateProvisioningState string
-
-const (
-	// Deleting ...
-	Deleting CertificateProvisioningState = "Deleting"
-	// Failed ...
-	Failed CertificateProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded CertificateProvisioningState = "Succeeded"
-)
-
-// PossibleCertificateProvisioningStateValues returns an array of possible values for the CertificateProvisioningState const type.
-func PossibleCertificateProvisioningStateValues() []CertificateProvisioningState {
-	return []CertificateProvisioningState{Deleting, Failed, Succeeded}
-}
-
-// CertificateStoreLocation enumerates the values for certificate store location.
-type CertificateStoreLocation string
-
-const (
-	// CurrentUser ...
-	CurrentUser CertificateStoreLocation = "CurrentUser"
-	// LocalMachine ...
-	LocalMachine CertificateStoreLocation = "LocalMachine"
-)
-
-// PossibleCertificateStoreLocationValues returns an array of possible values for the CertificateStoreLocation const type.
-func PossibleCertificateStoreLocationValues() []CertificateStoreLocation {
-	return []CertificateStoreLocation{CurrentUser, LocalMachine}
-}
-
-// CertificateVisibility enumerates the values for certificate visibility.
-type CertificateVisibility string
-
-const (
-	// CertificateVisibilityRemoteUser ...
-	CertificateVisibilityRemoteUser CertificateVisibility = "RemoteUser"
-	// CertificateVisibilityStartTask ...
-	CertificateVisibilityStartTask CertificateVisibility = "StartTask"
-	// CertificateVisibilityTask ...
-	CertificateVisibilityTask CertificateVisibility = "Task"
-)
-
-// PossibleCertificateVisibilityValues returns an array of possible values for the CertificateVisibility const type.
-func PossibleCertificateVisibilityValues() []CertificateVisibility {
-	return []CertificateVisibility{CertificateVisibilityRemoteUser, CertificateVisibilityStartTask, CertificateVisibilityTask}
-}
-
-// ComputeNodeDeallocationOption enumerates the values for compute node deallocation option.
-type ComputeNodeDeallocationOption string
-
-const (
-	// Requeue ...
-	Requeue ComputeNodeDeallocationOption = "Requeue"
-	// RetainedData ...
-	RetainedData ComputeNodeDeallocationOption = "RetainedData"
-	// TaskCompletion ...
-	TaskCompletion ComputeNodeDeallocationOption = "TaskCompletion"
-	// Terminate ...
-	Terminate ComputeNodeDeallocationOption = "Terminate"
-)
-
-// PossibleComputeNodeDeallocationOptionValues returns an array of possible values for the ComputeNodeDeallocationOption const type.
-func PossibleComputeNodeDeallocationOptionValues() []ComputeNodeDeallocationOption {
-	return []ComputeNodeDeallocationOption{Requeue, RetainedData, TaskCompletion, Terminate}
-}
-
-// ComputeNodeFillType enumerates the values for compute node fill type.
-type ComputeNodeFillType string
-
-const (
-	// Pack ...
-	Pack ComputeNodeFillType = "Pack"
-	// Spread ...
-	Spread ComputeNodeFillType = "Spread"
-)
-
-// PossibleComputeNodeFillTypeValues returns an array of possible values for the ComputeNodeFillType const type.
-func PossibleComputeNodeFillTypeValues() []ComputeNodeFillType {
-	return []ComputeNodeFillType{Pack, Spread}
-}
-
-// ElevationLevel enumerates the values for elevation level.
-type ElevationLevel string
-
-const (
-	// Admin ...
-	Admin ElevationLevel = "Admin"
-	// NonAdmin ...
-	NonAdmin ElevationLevel = "NonAdmin"
-)
-
-// PossibleElevationLevelValues returns an array of possible values for the ElevationLevel const type.
-func PossibleElevationLevelValues() []ElevationLevel {
-	return []ElevationLevel{Admin, NonAdmin}
-}
-
-// InboundEndpointProtocol enumerates the values for inbound endpoint protocol.
-type InboundEndpointProtocol string
-
-const (
-	// TCP ...
-	TCP InboundEndpointProtocol = "TCP"
-	// UDP ...
-	UDP InboundEndpointProtocol = "UDP"
-)
-
-// PossibleInboundEndpointProtocolValues returns an array of possible values for the InboundEndpointProtocol const type.
-func PossibleInboundEndpointProtocolValues() []InboundEndpointProtocol {
-	return []InboundEndpointProtocol{TCP, UDP}
-}
-
-// InterNodeCommunicationState enumerates the values for inter node communication state.
-type InterNodeCommunicationState string
-
-const (
-	// Disabled ...
-	Disabled InterNodeCommunicationState = "Disabled"
-	// Enabled ...
-	Enabled InterNodeCommunicationState = "Enabled"
-)
-
-// PossibleInterNodeCommunicationStateValues returns an array of possible values for the InterNodeCommunicationState const type.
-func PossibleInterNodeCommunicationStateValues() []InterNodeCommunicationState {
-	return []InterNodeCommunicationState{Disabled, Enabled}
-}
-
-// NameAvailabilityReason enumerates the values for name availability reason.
-type NameAvailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists NameAvailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid NameAvailabilityReason = "Invalid"
-)
-
-// PossibleNameAvailabilityReasonValues returns an array of possible values for the NameAvailabilityReason const type.
-func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
-	return []NameAvailabilityReason{AlreadyExists, Invalid}
-}
-
-// NetworkSecurityGroupRuleAccess enumerates the values for network security group rule access.
-type NetworkSecurityGroupRuleAccess string
-
-const (
-	// Allow ...
-	Allow NetworkSecurityGroupRuleAccess = "Allow"
-	// Deny ...
-	Deny NetworkSecurityGroupRuleAccess = "Deny"
-)
-
-// PossibleNetworkSecurityGroupRuleAccessValues returns an array of possible values for the NetworkSecurityGroupRuleAccess const type.
-func PossibleNetworkSecurityGroupRuleAccessValues() []NetworkSecurityGroupRuleAccess {
-	return []NetworkSecurityGroupRuleAccess{Allow, Deny}
-}
-
-// PackageState enumerates the values for package state.
-type PackageState string
-
-const (
-	// Active ...
-	Active PackageState = "Active"
-	// Pending ...
-	Pending PackageState = "Pending"
-	// Unmapped ...
-	Unmapped PackageState = "Unmapped"
-)
-
-// PossiblePackageStateValues returns an array of possible values for the PackageState const type.
-func PossiblePackageStateValues() []PackageState {
-	return []PackageState{Active, Pending, Unmapped}
-}
-
-// PoolAllocationMode enumerates the values for pool allocation mode.
-type PoolAllocationMode string
-
-const (
-	// BatchService ...
-	BatchService PoolAllocationMode = "BatchService"
-	// UserSubscription ...
-	UserSubscription PoolAllocationMode = "UserSubscription"
-)
-
-// PossiblePoolAllocationModeValues returns an array of possible values for the PoolAllocationMode const type.
-func PossiblePoolAllocationModeValues() []PoolAllocationMode {
-	return []PoolAllocationMode{BatchService, UserSubscription}
-}
-
-// PoolProvisioningState enumerates the values for pool provisioning state.
-type PoolProvisioningState string
-
-const (
-	// PoolProvisioningStateDeleting ...
-	PoolProvisioningStateDeleting PoolProvisioningState = "Deleting"
-	// PoolProvisioningStateSucceeded ...
-	PoolProvisioningStateSucceeded PoolProvisioningState = "Succeeded"
-)
-
-// PossiblePoolProvisioningStateValues returns an array of possible values for the PoolProvisioningState const type.
-func PossiblePoolProvisioningStateValues() []PoolProvisioningState {
-	return []PoolProvisioningState{PoolProvisioningStateDeleting, PoolProvisioningStateSucceeded}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// ProvisioningStateCancelled ...
-	ProvisioningStateCancelled ProvisioningState = "Cancelled"
-	// ProvisioningStateCreating ...
-	ProvisioningStateCreating ProvisioningState = "Creating"
-	// ProvisioningStateDeleting ...
-	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed ...
-	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateInvalid ...
-	ProvisioningStateInvalid ProvisioningState = "Invalid"
-	// ProvisioningStateSucceeded ...
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateCancelled, ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateInvalid, ProvisioningStateSucceeded}
-}
-
-// StorageAccountType enumerates the values for storage account type.
-type StorageAccountType string
-
-const (
-	// PremiumLRS ...
-	PremiumLRS StorageAccountType = "Premium_LRS"
-	// StandardLRS ...
-	StandardLRS StorageAccountType = "Standard_LRS"
-)
-
-// PossibleStorageAccountTypeValues returns an array of possible values for the StorageAccountType const type.
-func PossibleStorageAccountTypeValues() []StorageAccountType {
-	return []StorageAccountType{PremiumLRS, StandardLRS}
-}
-
 // Account contains information about an Azure Batch account.
 type Account struct {
 	autorest.Response `json:"-"`
@@ -448,8 +126,7 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AccountCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AccountCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountCreateFuture struct {
 	azure.Future
 }
@@ -554,8 +231,7 @@ type AccountCreateProperties struct {
 	KeyVaultReference *KeyVaultReference `json:"keyVaultReference,omitempty"`
 }
 
-// AccountDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AccountDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountDeleteFuture struct {
 	azure.Future
 }
@@ -665,10 +341,15 @@ func (alr AccountListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (alr AccountListResult) hasNextLink() bool {
+	return alr.NextLink != nil && len(*alr.NextLink) != 0
+}
+
 // accountListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (alr AccountListResult) accountListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
+	if !alr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -696,11 +377,16 @@ func (page *AccountListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.alr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.alr)
+		if err != nil {
+			return err
+		}
+		page.alr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.alr = next
 	return nil
 }
 
@@ -916,8 +602,7 @@ type AutoStorageBaseProperties struct {
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
 }
 
-// AutoStorageProperties contains information about the auto-storage account associated with a Batch
-// account.
+// AutoStorageProperties contains information about the auto-storage account associated with a Batch account.
 type AutoStorageProperties struct {
 	// LastKeySync - The UTC time at which storage keys were last synchronized with the Batch account.
 	LastKeySync *date.Time `json:"lastKeySync,omitempty"`
@@ -1201,6 +886,21 @@ type CertificateProperties struct {
 	Format CertificateFormat `json:"format,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CertificateProperties.
+func (cp CertificateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.ThumbprintAlgorithm != nil {
+		objectMap["thumbprintAlgorithm"] = cp.ThumbprintAlgorithm
+	}
+	if cp.Thumbprint != nil {
+		objectMap["thumbprint"] = cp.Thumbprint
+	}
+	if cp.Format != "" {
+		objectMap["format"] = cp.Format
+	}
+	return json.Marshal(objectMap)
+}
+
 // CertificateReference ...
 type CertificateReference struct {
 	ID *string `json:"id,omitempty"`
@@ -1262,8 +962,7 @@ type CloudServiceConfiguration struct {
 	CurrentOSVersion *string `json:"currentOSVersion,omitempty"`
 }
 
-// DataDisk data Disk settings which will be used by the data disks associated to Compute Nodes in the
-// pool.
+// DataDisk data Disk settings which will be used by the data disks associated to Compute Nodes in the pool.
 type DataDisk struct {
 	// Lun - The lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct lun.
 	Lun *int32 `json:"lun,omitempty"`
@@ -1443,10 +1142,15 @@ func (lar ListApplicationsResult) IsEmpty() bool {
 	return lar.Value == nil || len(*lar.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lar ListApplicationsResult) hasNextLink() bool {
+	return lar.NextLink != nil && len(*lar.NextLink) != 0
+}
+
 // listApplicationsResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lar ListApplicationsResult) listApplicationsResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lar.NextLink == nil || len(to.String(lar.NextLink)) < 1 {
+	if !lar.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1474,11 +1178,16 @@ func (page *ListApplicationsResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lar)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lar)
+		if err != nil {
+			return err
+		}
+		page.lar = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lar = next
 	return nil
 }
 
@@ -1589,10 +1298,15 @@ func (lcr ListCertificatesResult) IsEmpty() bool {
 	return lcr.Value == nil || len(*lcr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lcr ListCertificatesResult) hasNextLink() bool {
+	return lcr.NextLink != nil && len(*lcr.NextLink) != 0
+}
+
 // listCertificatesResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lcr ListCertificatesResult) listCertificatesResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lcr.NextLink == nil || len(to.String(lcr.NextLink)) < 1 {
+	if !lcr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1620,11 +1334,16 @@ func (page *ListCertificatesResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lcr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lcr)
+		if err != nil {
+			return err
+		}
+		page.lcr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lcr = next
 	return nil
 }
 
@@ -1735,10 +1454,15 @@ func (lpr ListPoolsResult) IsEmpty() bool {
 	return lpr.Value == nil || len(*lpr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lpr ListPoolsResult) hasNextLink() bool {
+	return lpr.NextLink != nil && len(*lpr.NextLink) != 0
+}
+
 // listPoolsResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lpr ListPoolsResult) listPoolsResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lpr.NextLink == nil || len(to.String(lpr.NextLink)) < 1 {
+	if !lpr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1766,11 +1490,16 @@ func (page *ListPoolsResultPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lpr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lpr)
+		if err != nil {
+			return err
+		}
+		page.lpr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lpr = next
 	return nil
 }
 
@@ -1929,10 +1658,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1960,11 +1694,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -2196,6 +1935,54 @@ type PoolProperties struct {
 	ResizeOperationStatus *ResizeOperationStatus `json:"resizeOperationStatus,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PoolProperties.
+func (pp PoolProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pp.DisplayName != nil {
+		objectMap["displayName"] = pp.DisplayName
+	}
+	if pp.VMSize != nil {
+		objectMap["vmSize"] = pp.VMSize
+	}
+	if pp.DeploymentConfiguration != nil {
+		objectMap["deploymentConfiguration"] = pp.DeploymentConfiguration
+	}
+	if pp.ScaleSettings != nil {
+		objectMap["scaleSettings"] = pp.ScaleSettings
+	}
+	if pp.InterNodeCommunication != "" {
+		objectMap["interNodeCommunication"] = pp.InterNodeCommunication
+	}
+	if pp.NetworkConfiguration != nil {
+		objectMap["networkConfiguration"] = pp.NetworkConfiguration
+	}
+	if pp.MaxTasksPerNode != nil {
+		objectMap["maxTasksPerNode"] = pp.MaxTasksPerNode
+	}
+	if pp.TaskSchedulingPolicy != nil {
+		objectMap["taskSchedulingPolicy"] = pp.TaskSchedulingPolicy
+	}
+	if pp.UserAccounts != nil {
+		objectMap["userAccounts"] = pp.UserAccounts
+	}
+	if pp.Metadata != nil {
+		objectMap["metadata"] = pp.Metadata
+	}
+	if pp.StartTask != nil {
+		objectMap["startTask"] = pp.StartTask
+	}
+	if pp.Certificates != nil {
+		objectMap["certificates"] = pp.Certificates
+	}
+	if pp.ApplicationPackages != nil {
+		objectMap["applicationPackages"] = pp.ApplicationPackages
+	}
+	if pp.ApplicationLicenses != nil {
+		objectMap["applicationLicenses"] = pp.ApplicationLicenses
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProxyResource a definition of an Azure resource.
 type ProxyResource struct {
 	// ID - READ-ONLY; The ID of the resource.
@@ -2217,8 +2004,8 @@ type ResizeError struct {
 	Details *[]ResizeError `json:"details,omitempty"`
 }
 
-// ResizeOperationStatus describes either the current operation (if the pool AllocationState is Resizing)
-// or the previously completed operation (if the AllocationState is Steady).
+// ResizeOperationStatus describes either the current operation (if the pool AllocationState is Resizing) or
+// the previously completed operation (if the AllocationState is Steady).
 type ResizeOperationStatus struct {
 	TargetDedicatedNodes   *int32 `json:"targetDedicatedNodes,omitempty"`
 	TargetLowPriorityNodes *int32 `json:"targetLowPriorityNodes,omitempty"`
@@ -2261,9 +2048,8 @@ type ResourceFile struct {
 }
 
 // ScaleSettings defines the desired size of the pool. This can either be 'fixedScale' where the requested
-// targetDedicatedNodes is specified, or 'autoScale' which defines a formula which is periodically
-// reevaluated. If this property is not specified, the pool will have a fixed scale with 0
-// targetDedicatedNodes.
+// targetDedicatedNodes is specified, or 'autoScale' which defines a formula which is periodically reevaluated.
+// If this property is not specified, the pool will have a fixed scale with 0 targetDedicatedNodes.
 type ScaleSettings struct {
 	// FixedScale - This property and autoScale are mutually exclusive and one of the properties must be specified.
 	FixedScale *FixedScaleSettings `json:"fixedScale,omitempty"`

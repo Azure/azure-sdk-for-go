@@ -32,14 +32,14 @@ type OriginsClient struct {
 }
 
 // NewOriginsClient creates an instance of the OriginsClient client.
-func NewOriginsClient(subscriptionID string, subscriptionID1 string) OriginsClient {
-	return NewOriginsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewOriginsClient(subscriptionID string) OriginsClient {
+	return NewOriginsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewOriginsClientWithBaseURI creates an instance of the OriginsClient client using a custom endpoint.  Use this when
 // interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OriginsClient {
-	return OriginsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsClient {
+	return OriginsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new origin within the specified endpoint.
@@ -346,6 +346,9 @@ func (client OriginsClient) ListByEndpoint(ctx context.Context, resourceGroupNam
 	result.olr, err = client.ListByEndpointResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "ListByEndpoint", resp, "Failure responding to request")
+	}
+	if result.olr.hasNextLink() && result.olr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

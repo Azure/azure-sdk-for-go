@@ -146,6 +146,9 @@ func (client GlobalDomainRegistrationClient) GetAllDomains(ctx context.Context) 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "GetAllDomains", resp, "Failure responding to request")
 	}
+	if result.dc.hasNextLink() && result.dc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -325,6 +328,9 @@ func (client GlobalDomainRegistrationClient) ListDomainRecommendations(ctx conte
 	result.nic, err = client.ListDomainRecommendationsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalDomainRegistrationClient", "ListDomainRecommendations", resp, "Failure responding to request")
+	}
+	if result.nic.hasNextLink() && result.nic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

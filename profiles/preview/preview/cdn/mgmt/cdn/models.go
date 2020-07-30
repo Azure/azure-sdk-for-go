@@ -224,6 +224,12 @@ const (
 	NameURLRewrite           NameBasicDeliveryRuleAction = original.NameURLRewrite
 )
 
+type OdataType = original.OdataType
+
+const (
+	MicrosoftAzureCdnModelsDeliveryRuleURLSigningActionParameters OdataType = original.MicrosoftAzureCdnModelsDeliveryRuleURLSigningActionParameters
+)
+
 type Operator = original.Operator
 
 const (
@@ -720,8 +726,8 @@ type WebApplicationFirewallPolicyListPage = original.WebApplicationFirewallPolic
 type WebApplicationFirewallPolicyPatchParameters = original.WebApplicationFirewallPolicyPatchParameters
 type WebApplicationFirewallPolicyProperties = original.WebApplicationFirewallPolicyProperties
 
-func New(subscriptionID string, subscriptionID1 string) BaseClient {
-	return original.New(subscriptionID, subscriptionID1)
+func New(subscriptionID string) BaseClient {
+	return original.New(subscriptionID)
 }
 func NewCustomDomainListResultIterator(page CustomDomainListResultPage) CustomDomainListResultIterator {
 	return original.NewCustomDomainListResultIterator(page)
@@ -729,17 +735,17 @@ func NewCustomDomainListResultIterator(page CustomDomainListResultPage) CustomDo
 func NewCustomDomainListResultPage(getNextPage func(context.Context, CustomDomainListResult) (CustomDomainListResult, error)) CustomDomainListResultPage {
 	return original.NewCustomDomainListResultPage(getNextPage)
 }
-func NewCustomDomainsClient(subscriptionID string, subscriptionID1 string) CustomDomainsClient {
-	return original.NewCustomDomainsClient(subscriptionID, subscriptionID1)
+func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
+	return original.NewCustomDomainsClient(subscriptionID)
 }
-func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CustomDomainsClient {
-	return original.NewCustomDomainsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) CustomDomainsClient {
+	return original.NewCustomDomainsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewEdgeNodesClient(subscriptionID string, subscriptionID1 string) EdgeNodesClient {
-	return original.NewEdgeNodesClient(subscriptionID, subscriptionID1)
+func NewEdgeNodesClient(subscriptionID string) EdgeNodesClient {
+	return original.NewEdgeNodesClient(subscriptionID)
 }
-func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) EdgeNodesClient {
-	return original.NewEdgeNodesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewEdgeNodesClientWithBaseURI(baseURI string, subscriptionID string) EdgeNodesClient {
+	return original.NewEdgeNodesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewEdgenodeResultIterator(page EdgenodeResultPage) EdgenodeResultIterator {
 	return original.NewEdgenodeResultIterator(page)
@@ -753,11 +759,11 @@ func NewEndpointListResultIterator(page EndpointListResultPage) EndpointListResu
 func NewEndpointListResultPage(getNextPage func(context.Context, EndpointListResult) (EndpointListResult, error)) EndpointListResultPage {
 	return original.NewEndpointListResultPage(getNextPage)
 }
-func NewEndpointsClient(subscriptionID string, subscriptionID1 string) EndpointsClient {
-	return original.NewEndpointsClient(subscriptionID, subscriptionID1)
+func NewEndpointsClient(subscriptionID string) EndpointsClient {
+	return original.NewEndpointsClient(subscriptionID)
 }
-func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) EndpointsClient {
-	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
+	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewManagedRuleSetDefinitionListIterator(page ManagedRuleSetDefinitionListPage) ManagedRuleSetDefinitionListIterator {
 	return original.NewManagedRuleSetDefinitionListIterator(page)
@@ -765,17 +771,17 @@ func NewManagedRuleSetDefinitionListIterator(page ManagedRuleSetDefinitionListPa
 func NewManagedRuleSetDefinitionListPage(getNextPage func(context.Context, ManagedRuleSetDefinitionList) (ManagedRuleSetDefinitionList, error)) ManagedRuleSetDefinitionListPage {
 	return original.NewManagedRuleSetDefinitionListPage(getNextPage)
 }
-func NewManagedRuleSetsClient(subscriptionID string, subscriptionID1 string) ManagedRuleSetsClient {
-	return original.NewManagedRuleSetsClient(subscriptionID, subscriptionID1)
+func NewManagedRuleSetsClient(subscriptionID string) ManagedRuleSetsClient {
+	return original.NewManagedRuleSetsClient(subscriptionID)
 }
-func NewManagedRuleSetsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ManagedRuleSetsClient {
-	return original.NewManagedRuleSetsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewManagedRuleSetsClientWithBaseURI(baseURI string, subscriptionID string) ManagedRuleSetsClient {
+	return original.NewManagedRuleSetsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewOperationsClient(subscriptionID string, subscriptionID1 string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID, subscriptionID1)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsListResultIterator(page OperationsListResultPage) OperationsListResultIterator {
 	return original.NewOperationsListResultIterator(page)
@@ -789,11 +795,11 @@ func NewOriginGroupListResultIterator(page OriginGroupListResultPage) OriginGrou
 func NewOriginGroupListResultPage(getNextPage func(context.Context, OriginGroupListResult) (OriginGroupListResult, error)) OriginGroupListResultPage {
 	return original.NewOriginGroupListResultPage(getNextPage)
 }
-func NewOriginGroupsClient(subscriptionID string, subscriptionID1 string) OriginGroupsClient {
-	return original.NewOriginGroupsClient(subscriptionID, subscriptionID1)
+func NewOriginGroupsClient(subscriptionID string) OriginGroupsClient {
+	return original.NewOriginGroupsClient(subscriptionID)
 }
-func NewOriginGroupsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OriginGroupsClient {
-	return original.NewOriginGroupsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewOriginGroupsClientWithBaseURI(baseURI string, subscriptionID string) OriginGroupsClient {
+	return original.NewOriginGroupsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOriginListResultIterator(page OriginListResultPage) OriginListResultIterator {
 	return original.NewOriginListResultIterator(page)
@@ -801,17 +807,17 @@ func NewOriginListResultIterator(page OriginListResultPage) OriginListResultIter
 func NewOriginListResultPage(getNextPage func(context.Context, OriginListResult) (OriginListResult, error)) OriginListResultPage {
 	return original.NewOriginListResultPage(getNextPage)
 }
-func NewOriginsClient(subscriptionID string, subscriptionID1 string) OriginsClient {
-	return original.NewOriginsClient(subscriptionID, subscriptionID1)
+func NewOriginsClient(subscriptionID string) OriginsClient {
+	return original.NewOriginsClient(subscriptionID)
 }
-func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OriginsClient {
-	return original.NewOriginsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsClient {
+	return original.NewOriginsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewPoliciesClient(subscriptionID string, subscriptionID1 string) PoliciesClient {
-	return original.NewPoliciesClient(subscriptionID, subscriptionID1)
+func NewPoliciesClient(subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClient(subscriptionID)
 }
-func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PoliciesClient {
-	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProfileListResultIterator(page ProfileListResultPage) ProfileListResultIterator {
 	return original.NewProfileListResultIterator(page)
@@ -819,17 +825,17 @@ func NewProfileListResultIterator(page ProfileListResultPage) ProfileListResultI
 func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
 	return original.NewProfileListResultPage(getNextPage)
 }
-func NewProfilesClient(subscriptionID string, subscriptionID1 string) ProfilesClient {
-	return original.NewProfilesClient(subscriptionID, subscriptionID1)
+func NewProfilesClient(subscriptionID string) ProfilesClient {
+	return original.NewProfilesClient(subscriptionID)
 }
-func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ProfilesClient {
-	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
+	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewResourceUsageClient(subscriptionID string, subscriptionID1 string) ResourceUsageClient {
-	return original.NewResourceUsageClient(subscriptionID, subscriptionID1)
+func NewResourceUsageClient(subscriptionID string) ResourceUsageClient {
+	return original.NewResourceUsageClient(subscriptionID)
 }
-func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ResourceUsageClient {
-	return original.NewResourceUsageClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewResourceUsageClientWithBaseURI(baseURI string, subscriptionID string) ResourceUsageClient {
+	return original.NewResourceUsageClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewResourceUsageListResultIterator(page ResourceUsageListResultPage) ResourceUsageListResultIterator {
 	return original.NewResourceUsageListResultIterator(page)
@@ -843,8 +849,8 @@ func NewWebApplicationFirewallPolicyListIterator(page WebApplicationFirewallPoli
 func NewWebApplicationFirewallPolicyListPage(getNextPage func(context.Context, WebApplicationFirewallPolicyList) (WebApplicationFirewallPolicyList, error)) WebApplicationFirewallPolicyListPage {
 	return original.NewWebApplicationFirewallPolicyListPage(getNextPage)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleActionTypeValues() []ActionType {
 	return original.PossibleActionTypeValues()
@@ -905,6 +911,9 @@ func PossibleNameBasicDeliveryRuleActionValues() []NameBasicDeliveryRuleAction {
 }
 func PossibleNameValues() []Name {
 	return original.PossibleNameValues()
+}
+func PossibleOdataTypeValues() []OdataType {
+	return original.PossibleOdataTypeValues()
 }
 func PossibleOperatorValues() []Operator {
 	return original.PossibleOperatorValues()

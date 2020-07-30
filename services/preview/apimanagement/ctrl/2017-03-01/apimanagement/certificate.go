@@ -362,6 +362,9 @@ func (client CertificateClient) List(ctx context.Context, apimBaseURL string, fi
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.CertificateClient", "List", resp, "Failure responding to request")
 	}
+	if result.cc.hasNextLink() && result.cc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

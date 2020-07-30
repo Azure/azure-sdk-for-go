@@ -331,6 +331,9 @@ func (client CommunicationsClient) List(ctx context.Context, supportTicketName s
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.CommunicationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.clr.hasNextLink() && result.clr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

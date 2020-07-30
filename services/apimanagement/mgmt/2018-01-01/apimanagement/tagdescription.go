@@ -500,6 +500,9 @@ func (client TagDescriptionClient) ListByAPI(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagDescriptionClient", "ListByAPI", resp, "Failure responding to request")
 	}
+	if result.tdc.hasNextLink() && result.tdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

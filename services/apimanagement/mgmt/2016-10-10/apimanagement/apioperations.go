@@ -405,6 +405,9 @@ func (client APIOperationsClient) ListByApis(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationsClient", "ListByApis", resp, "Failure responding to request")
 	}
+	if result.oc.hasNextLink() && result.oc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

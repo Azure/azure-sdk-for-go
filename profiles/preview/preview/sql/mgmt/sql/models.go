@@ -144,6 +144,17 @@ const (
 	Recommended SensitivityLabelSource = original.Recommended
 )
 
+type Status = original.Status
+
+const (
+	StatusCanceled   Status = original.StatusCanceled
+	StatusCompleted  Status = original.StatusCompleted
+	StatusFailed     Status = original.StatusFailed
+	StatusInProgress Status = original.StatusInProgress
+	StatusNotStarted Status = original.StatusNotStarted
+	StatusSlowedDown Status = original.StatusSlowedDown
+)
+
 type AdministratorListResult = original.AdministratorListResult
 type AdministratorListResultIterator = original.AdministratorListResultIterator
 type AdministratorListResultPage = original.AdministratorListResultPage
@@ -207,7 +218,9 @@ type ManagedInstanceOperation = original.ManagedInstanceOperation
 type ManagedInstanceOperationListResult = original.ManagedInstanceOperationListResult
 type ManagedInstanceOperationListResultIterator = original.ManagedInstanceOperationListResultIterator
 type ManagedInstanceOperationListResultPage = original.ManagedInstanceOperationListResultPage
+type ManagedInstanceOperationParametersPair = original.ManagedInstanceOperationParametersPair
 type ManagedInstanceOperationProperties = original.ManagedInstanceOperationProperties
+type ManagedInstanceOperationSteps = original.ManagedInstanceOperationSteps
 type ManagedInstanceOperationsClient = original.ManagedInstanceOperationsClient
 type ManagedInstanceProperties = original.ManagedInstanceProperties
 type ManagedInstanceUpdate = original.ManagedInstanceUpdate
@@ -253,6 +266,8 @@ type ServerVulnerabilityAssessmentProperties = original.ServerVulnerabilityAsses
 type ServerVulnerabilityAssessmentsClient = original.ServerVulnerabilityAssessmentsClient
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
+type UpsertManagedServerOperationParameters = original.UpsertManagedServerOperationParameters
+type UpsertManagedServerOperationStep = original.UpsertManagedServerOperationStep
 type Usage = original.Usage
 type UsageListResult = original.UsageListResult
 type UsageListResultIterator = original.UsageListResultIterator
@@ -481,6 +496,9 @@ func PossibleSensitivityLabelRankValues() []SensitivityLabelRank {
 }
 func PossibleSensitivityLabelSourceValues() []SensitivityLabelSource {
 	return original.PossibleSensitivityLabelSourceValues()
+}
+func PossibleStatusValues() []Status {
+	return original.PossibleStatusValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

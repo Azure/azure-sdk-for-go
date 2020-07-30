@@ -31,309 +31,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric"
 
-// ClusterState enumerates the values for cluster state.
-type ClusterState string
-
-const (
-	// AutoScale ...
-	AutoScale ClusterState = "AutoScale"
-	// BaselineUpgrade ...
-	BaselineUpgrade ClusterState = "BaselineUpgrade"
-	// Deploying ...
-	Deploying ClusterState = "Deploying"
-	// EnforcingClusterVersion ...
-	EnforcingClusterVersion ClusterState = "EnforcingClusterVersion"
-	// Ready ...
-	Ready ClusterState = "Ready"
-	// UpdatingInfrastructure ...
-	UpdatingInfrastructure ClusterState = "UpdatingInfrastructure"
-	// UpdatingUserCertificate ...
-	UpdatingUserCertificate ClusterState = "UpdatingUserCertificate"
-	// UpdatingUserConfiguration ...
-	UpdatingUserConfiguration ClusterState = "UpdatingUserConfiguration"
-	// UpgradeServiceUnreachable ...
-	UpgradeServiceUnreachable ClusterState = "UpgradeServiceUnreachable"
-	// WaitingForNodes ...
-	WaitingForNodes ClusterState = "WaitingForNodes"
-)
-
-// PossibleClusterStateValues returns an array of possible values for the ClusterState const type.
-func PossibleClusterStateValues() []ClusterState {
-	return []ClusterState{AutoScale, BaselineUpgrade, Deploying, EnforcingClusterVersion, Ready, UpdatingInfrastructure, UpdatingUserCertificate, UpdatingUserConfiguration, UpgradeServiceUnreachable, WaitingForNodes}
-}
-
-// DefaultMoveCost enumerates the values for default move cost.
-type DefaultMoveCost string
-
-const (
-	// High ...
-	High DefaultMoveCost = "High"
-	// Low ...
-	Low DefaultMoveCost = "Low"
-	// Medium ...
-	Medium DefaultMoveCost = "Medium"
-	// Zero ...
-	Zero DefaultMoveCost = "Zero"
-)
-
-// PossibleDefaultMoveCostValues returns an array of possible values for the DefaultMoveCost const type.
-func PossibleDefaultMoveCostValues() []DefaultMoveCost {
-	return []DefaultMoveCost{High, Low, Medium, Zero}
-}
-
-// DurabilityLevel enumerates the values for durability level.
-type DurabilityLevel string
-
-const (
-	// Bronze ...
-	Bronze DurabilityLevel = "Bronze"
-	// Gold ...
-	Gold DurabilityLevel = "Gold"
-	// Silver ...
-	Silver DurabilityLevel = "Silver"
-)
-
-// PossibleDurabilityLevelValues returns an array of possible values for the DurabilityLevel const type.
-func PossibleDurabilityLevelValues() []DurabilityLevel {
-	return []DurabilityLevel{Bronze, Gold, Silver}
-}
-
-// Environment enumerates the values for environment.
-type Environment string
-
-const (
-	// Linux ...
-	Linux Environment = "Linux"
-	// Windows ...
-	Windows Environment = "Windows"
-)
-
-// PossibleEnvironmentValues returns an array of possible values for the Environment const type.
-func PossibleEnvironmentValues() []Environment {
-	return []Environment{Linux, Windows}
-}
-
-// PartitionScheme enumerates the values for partition scheme.
-type PartitionScheme string
-
-const (
-	// PartitionSchemeNamed ...
-	PartitionSchemeNamed PartitionScheme = "Named"
-	// PartitionSchemePartitionSchemeDescription ...
-	PartitionSchemePartitionSchemeDescription PartitionScheme = "PartitionSchemeDescription"
-	// PartitionSchemeSingleton ...
-	PartitionSchemeSingleton PartitionScheme = "Singleton"
-	// PartitionSchemeUniformInt64Range ...
-	PartitionSchemeUniformInt64Range PartitionScheme = "UniformInt64Range"
-)
-
-// PossiblePartitionSchemeValues returns an array of possible values for the PartitionScheme const type.
-func PossiblePartitionSchemeValues() []PartitionScheme {
-	return []PartitionScheme{PartitionSchemeNamed, PartitionSchemePartitionSchemeDescription, PartitionSchemeSingleton, PartitionSchemeUniformInt64Range}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Canceled, Failed, Succeeded, Updating}
-}
-
-// ReliabilityLevel enumerates the values for reliability level.
-type ReliabilityLevel string
-
-const (
-	// ReliabilityLevelBronze ...
-	ReliabilityLevelBronze ReliabilityLevel = "Bronze"
-	// ReliabilityLevelGold ...
-	ReliabilityLevelGold ReliabilityLevel = "Gold"
-	// ReliabilityLevelNone ...
-	ReliabilityLevelNone ReliabilityLevel = "None"
-	// ReliabilityLevelPlatinum ...
-	ReliabilityLevelPlatinum ReliabilityLevel = "Platinum"
-	// ReliabilityLevelSilver ...
-	ReliabilityLevelSilver ReliabilityLevel = "Silver"
-)
-
-// PossibleReliabilityLevelValues returns an array of possible values for the ReliabilityLevel const type.
-func PossibleReliabilityLevelValues() []ReliabilityLevel {
-	return []ReliabilityLevel{ReliabilityLevelBronze, ReliabilityLevelGold, ReliabilityLevelNone, ReliabilityLevelPlatinum, ReliabilityLevelSilver}
-}
-
-// ReliabilityLevel1 enumerates the values for reliability level 1.
-type ReliabilityLevel1 string
-
-const (
-	// ReliabilityLevel1Bronze ...
-	ReliabilityLevel1Bronze ReliabilityLevel1 = "Bronze"
-	// ReliabilityLevel1Gold ...
-	ReliabilityLevel1Gold ReliabilityLevel1 = "Gold"
-	// ReliabilityLevel1Silver ...
-	ReliabilityLevel1Silver ReliabilityLevel1 = "Silver"
-)
-
-// PossibleReliabilityLevel1Values returns an array of possible values for the ReliabilityLevel1 const type.
-func PossibleReliabilityLevel1Values() []ReliabilityLevel1 {
-	return []ReliabilityLevel1{ReliabilityLevel1Bronze, ReliabilityLevel1Gold, ReliabilityLevel1Silver}
-}
-
-// Scheme enumerates the values for scheme.
-type Scheme string
-
-const (
-	// Affinity ...
-	Affinity Scheme = "Affinity"
-	// AlignedAffinity ...
-	AlignedAffinity Scheme = "AlignedAffinity"
-	// Invalid ...
-	Invalid Scheme = "Invalid"
-	// NonAlignedAffinity ...
-	NonAlignedAffinity Scheme = "NonAlignedAffinity"
-)
-
-// PossibleSchemeValues returns an array of possible values for the Scheme const type.
-func PossibleSchemeValues() []Scheme {
-	return []Scheme{Affinity, AlignedAffinity, Invalid, NonAlignedAffinity}
-}
-
-// ServiceKind enumerates the values for service kind.
-type ServiceKind string
-
-const (
-	// ServiceKindServiceProperties ...
-	ServiceKindServiceProperties ServiceKind = "ServiceProperties"
-	// ServiceKindStateful ...
-	ServiceKindStateful ServiceKind = "Stateful"
-	// ServiceKindStateless ...
-	ServiceKindStateless ServiceKind = "Stateless"
-)
-
-// PossibleServiceKindValues returns an array of possible values for the ServiceKind const type.
-func PossibleServiceKindValues() []ServiceKind {
-	return []ServiceKind{ServiceKindServiceProperties, ServiceKindStateful, ServiceKindStateless}
-}
-
-// ServiceKindBasicServiceUpdateProperties enumerates the values for service kind basic service update
-// properties.
-type ServiceKindBasicServiceUpdateProperties string
-
-const (
-	// ServiceKindBasicServiceUpdatePropertiesServiceKindServiceUpdateProperties ...
-	ServiceKindBasicServiceUpdatePropertiesServiceKindServiceUpdateProperties ServiceKindBasicServiceUpdateProperties = "ServiceUpdateProperties"
-	// ServiceKindBasicServiceUpdatePropertiesServiceKindStateful ...
-	ServiceKindBasicServiceUpdatePropertiesServiceKindStateful ServiceKindBasicServiceUpdateProperties = "Stateful"
-	// ServiceKindBasicServiceUpdatePropertiesServiceKindStateless ...
-	ServiceKindBasicServiceUpdatePropertiesServiceKindStateless ServiceKindBasicServiceUpdateProperties = "Stateless"
-)
-
-// PossibleServiceKindBasicServiceUpdatePropertiesValues returns an array of possible values for the ServiceKindBasicServiceUpdateProperties const type.
-func PossibleServiceKindBasicServiceUpdatePropertiesValues() []ServiceKindBasicServiceUpdateProperties {
-	return []ServiceKindBasicServiceUpdateProperties{ServiceKindBasicServiceUpdatePropertiesServiceKindServiceUpdateProperties, ServiceKindBasicServiceUpdatePropertiesServiceKindStateful, ServiceKindBasicServiceUpdatePropertiesServiceKindStateless}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeServicePlacementPolicyDescription ...
-	TypeServicePlacementPolicyDescription Type = "ServicePlacementPolicyDescription"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeServicePlacementPolicyDescription}
-}
-
-// UpgradeMode enumerates the values for upgrade mode.
-type UpgradeMode string
-
-const (
-	// Automatic ...
-	Automatic UpgradeMode = "Automatic"
-	// Manual ...
-	Manual UpgradeMode = "Manual"
-)
-
-// PossibleUpgradeModeValues returns an array of possible values for the UpgradeMode const type.
-func PossibleUpgradeModeValues() []UpgradeMode {
-	return []UpgradeMode{Automatic, Manual}
-}
-
-// UpgradeMode1 enumerates the values for upgrade mode 1.
-type UpgradeMode1 string
-
-const (
-	// UpgradeMode1Automatic ...
-	UpgradeMode1Automatic UpgradeMode1 = "Automatic"
-	// UpgradeMode1Manual ...
-	UpgradeMode1Manual UpgradeMode1 = "Manual"
-)
-
-// PossibleUpgradeMode1Values returns an array of possible values for the UpgradeMode1 const type.
-func PossibleUpgradeMode1Values() []UpgradeMode1 {
-	return []UpgradeMode1{UpgradeMode1Automatic, UpgradeMode1Manual}
-}
-
-// Weight enumerates the values for weight.
-type Weight string
-
-const (
-	// WeightHigh ...
-	WeightHigh Weight = "High"
-	// WeightLow ...
-	WeightLow Weight = "Low"
-	// WeightMedium ...
-	WeightMedium Weight = "Medium"
-	// WeightZero ...
-	WeightZero Weight = "Zero"
-)
-
-// PossibleWeightValues returns an array of possible values for the Weight const type.
-func PossibleWeightValues() []Weight {
-	return []Weight{WeightHigh, WeightLow, WeightMedium, WeightZero}
-}
-
-// X509StoreName enumerates the values for x509 store name.
-type X509StoreName string
-
-const (
-	// AddressBook ...
-	AddressBook X509StoreName = "AddressBook"
-	// AuthRoot ...
-	AuthRoot X509StoreName = "AuthRoot"
-	// CertificateAuthority ...
-	CertificateAuthority X509StoreName = "CertificateAuthority"
-	// Disallowed ...
-	Disallowed X509StoreName = "Disallowed"
-	// My ...
-	My X509StoreName = "My"
-	// Root ...
-	Root X509StoreName = "Root"
-	// TrustedPeople ...
-	TrustedPeople X509StoreName = "TrustedPeople"
-	// TrustedPublisher ...
-	TrustedPublisher X509StoreName = "TrustedPublisher"
-)
-
-// PossibleX509StoreNameValues returns an array of possible values for the X509StoreName const type.
-func PossibleX509StoreNameValues() []X509StoreName {
-	return []X509StoreName{AddressBook, AuthRoot, CertificateAuthority, Disallowed, My, Root, TrustedPeople, TrustedPublisher}
-}
-
-// ApplicationHealthPolicy defines a health policy used to evaluate the health of an application or one of
-// its children entities.
+// ApplicationHealthPolicy defines a health policy used to evaluate the health of an application or one of its
+// children entities.
 type ApplicationHealthPolicy struct {
 	// ConsiderWarningAsError - Indicates whether warnings are treated with the same severity as errors.
 	ConsiderWarningAsError *bool `json:"ConsiderWarningAsError,omitempty"`
@@ -346,8 +45,8 @@ type ApplicationHealthPolicy struct {
 	ServiceTypeHealthPolicyMap              *[]ServiceTypeHealthPolicyMapItem `json:"ServiceTypeHealthPolicyMap,omitempty"`
 }
 
-// ApplicationMetricDescription describes capacity information for a custom resource balancing metric. This
-// can be used to limit the total consumption of this metric by the services of this application.
+// ApplicationMetricDescription describes capacity information for a custom resource balancing metric. This can
+// be used to limit the total consumption of this metric by the services of this application.
 type ApplicationMetricDescription struct {
 	// Name - The name of the metric.
 	Name *string `json:"Name,omitempty"`
@@ -369,8 +68,8 @@ type ApplicationMetricDescription struct {
 	TotalApplicationCapacity *int64 `json:"TotalApplicationCapacity,omitempty"`
 }
 
-// ApplicationParameter describes an application parameter override to be applied when creating or
-// upgrading an application.
+// ApplicationParameter describes an application parameter override to be applied when creating or upgrading an
+// application.
 type ApplicationParameter struct {
 	// Key - The name of the parameter.
 	Key *string `json:"Key,omitempty"`
@@ -393,6 +92,36 @@ type ApplicationProperties struct {
 	// RemoveApplicationCapacity - The version of the application type
 	RemoveApplicationCapacity *bool                           `json:"removeApplicationCapacity,omitempty"`
 	Metrics                   *[]ApplicationMetricDescription `json:"metrics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationProperties.
+func (ap ApplicationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.TypeName != nil {
+		objectMap["typeName"] = ap.TypeName
+	}
+	if ap.TypeVersion != nil {
+		objectMap["typeVersion"] = ap.TypeVersion
+	}
+	if ap.Parameters != nil {
+		objectMap["parameters"] = ap.Parameters
+	}
+	if ap.UpgradePolicy != nil {
+		objectMap["upgradePolicy"] = ap.UpgradePolicy
+	}
+	if ap.MinimumNodes != nil {
+		objectMap["minimumNodes"] = ap.MinimumNodes
+	}
+	if ap.MaximumNodes != nil {
+		objectMap["maximumNodes"] = ap.MaximumNodes
+	}
+	if ap.RemoveApplicationCapacity != nil {
+		objectMap["removeApplicationCapacity"] = ap.RemoveApplicationCapacity
+	}
+	if ap.Metrics != nil {
+		objectMap["metrics"] = ap.Metrics
+	}
+	return json.Marshal(objectMap)
 }
 
 // ApplicationResource the application resource.
@@ -927,8 +656,7 @@ func (ccvr *ClusterCodeVersionsResult) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster
-// node.
+// ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster node.
 type ClusterHealthPolicy struct {
 	// MaxPercentUnhealthyNodes - The maximum allowed percentage of unhealthy nodes before reporting an error. For example, to allow 10% of nodes to be unhealthy, this value would be 10.
 	MaxPercentUnhealthyNodes *int32 `json:"maxPercentUnhealthyNodes,omitempty"`
@@ -988,8 +716,65 @@ type ClusterProperties struct {
 	AddOnFeatures *[]string `json:"addOnFeatures,omitempty"`
 }
 
-// ClusterPropertiesUpdateParameters describes the cluster resource properties that can be updated during
-// PATCH operation.
+// MarshalJSON is the custom marshaler for ClusterProperties.
+func (cp ClusterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.AvailableClusterVersions != nil {
+		objectMap["availableClusterVersions"] = cp.AvailableClusterVersions
+	}
+	if cp.ClusterState != "" {
+		objectMap["clusterState"] = cp.ClusterState
+	}
+	if cp.ClusterCodeVersion != nil {
+		objectMap["clusterCodeVersion"] = cp.ClusterCodeVersion
+	}
+	if cp.Certificate != nil {
+		objectMap["certificate"] = cp.Certificate
+	}
+	if cp.ReliabilityLevel != "" {
+		objectMap["reliabilityLevel"] = cp.ReliabilityLevel
+	}
+	if cp.UpgradeMode != "" {
+		objectMap["upgradeMode"] = cp.UpgradeMode
+	}
+	if cp.ClientCertificateThumbprints != nil {
+		objectMap["clientCertificateThumbprints"] = cp.ClientCertificateThumbprints
+	}
+	if cp.ClientCertificateCommonNames != nil {
+		objectMap["clientCertificateCommonNames"] = cp.ClientCertificateCommonNames
+	}
+	if cp.FabricSettings != nil {
+		objectMap["fabricSettings"] = cp.FabricSettings
+	}
+	if cp.ReverseProxyCertificate != nil {
+		objectMap["reverseProxyCertificate"] = cp.ReverseProxyCertificate
+	}
+	if cp.ManagementEndpoint != nil {
+		objectMap["managementEndpoint"] = cp.ManagementEndpoint
+	}
+	if cp.NodeTypes != nil {
+		objectMap["nodeTypes"] = cp.NodeTypes
+	}
+	if cp.AzureActiveDirectory != nil {
+		objectMap["azureActiveDirectory"] = cp.AzureActiveDirectory
+	}
+	if cp.VMImage != nil {
+		objectMap["vmImage"] = cp.VMImage
+	}
+	if cp.DiagnosticsStorageAccountConfig != nil {
+		objectMap["diagnosticsStorageAccountConfig"] = cp.DiagnosticsStorageAccountConfig
+	}
+	if cp.UpgradeDescription != nil {
+		objectMap["upgradeDescription"] = cp.UpgradeDescription
+	}
+	if cp.AddOnFeatures != nil {
+		objectMap["addOnFeatures"] = cp.AddOnFeatures
+	}
+	return json.Marshal(objectMap)
+}
+
+// ClusterPropertiesUpdateParameters describes the cluster resource properties that can be updated during PATCH
+// operation.
 type ClusterPropertiesUpdateParameters struct {
 	// ReliabilityLevel - The reliability level sets the replica set size of system services. Learn about [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity). Possible values include: 'ReliabilityLevel1Bronze', 'ReliabilityLevel1Silver', 'ReliabilityLevel1Gold'
 	ReliabilityLevel ReliabilityLevel1 `json:"reliabilityLevel,omitempty"`
@@ -1015,8 +800,7 @@ type ClusterPropertiesUpdateParameters struct {
 	AddOnFeatures *[]string `json:"addOnFeatures,omitempty"`
 }
 
-// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ClustersCreateFuture struct {
 	azure.Future
 }
@@ -1044,8 +828,7 @@ func (future *ClustersCreateFuture) Result(client ClustersClient) (c Cluster, er
 	return
 }
 
-// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ClustersUpdateFuture struct {
 	azure.Future
 }
@@ -1167,8 +950,7 @@ type ClusterVersionDetails struct {
 	Environment Environment `json:"environment,omitempty"`
 }
 
-// DiagnosticsStorageAccountConfig the storage account information for storing Service Fabric diagnostic
-// logs.
+// DiagnosticsStorageAccountConfig the storage account information for storing Service Fabric diagnostic logs.
 type DiagnosticsStorageAccountConfig struct {
 	// StorageAccountName - The Azure storage account name.
 	StorageAccountName *string `json:"storageAccountName,omitempty"`
@@ -1249,8 +1031,8 @@ func (npsd NamedPartitionSchemeDescription) AsBasicPartitionSchemeDescription() 
 	return &npsd, true
 }
 
-// NodeTypeDescription describes a node type in the cluster, each node type represents sub set of nodes in
-// the cluster.
+// NodeTypeDescription describes a node type in the cluster, each node type represents sub set of nodes in the
+// cluster.
 type NodeTypeDescription struct {
 	// Name - The name of the node type.
 	Name *string `json:"name,omitempty"`
@@ -1324,6 +1106,15 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if olr.Value != nil {
+		objectMap["value"] = olr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationListResultIterator provides access to a complete listing of OperationResult values.
 type OperationListResultIterator struct {
 	i    int
@@ -1392,10 +1183,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1423,11 +1219,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -1577,6 +1378,15 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pr.Location != nil {
+		objectMap["location"] = pr.Location
+	}
+	return json.Marshal(objectMap)
 }
 
 // Resource the resource model definition.
@@ -2153,8 +1963,8 @@ type ServiceTypeDeltaHealthPolicy struct {
 	MaxPercentDeltaUnhealthyServices *int32 `json:"maxPercentDeltaUnhealthyServices,omitempty"`
 }
 
-// ServiceTypeHealthPolicy represents the health policy used to evaluate the health of services belonging
-// to a service type.
+// ServiceTypeHealthPolicy represents the health policy used to evaluate the health of services belonging to a
+// service type.
 type ServiceTypeHealthPolicy struct {
 	// MaxPercentUnhealthyPartitionsPerService - The maximum allowed percentage of unhealthy partitions per service. Allowed values are Byte values from zero to 100
 	// The percentage represents the maximum tolerated percentage of partitions that can be unhealthy before the service is considered in error.
@@ -3238,6 +3048,15 @@ type VersionProperties struct {
 	AppPackageURL *string `json:"appPackageUrl,omitempty"`
 	// DefaultParameterList - READ-ONLY
 	DefaultParameterList *[]ApplicationParameter `json:"defaultParameterList,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VersionProperties.
+func (vp VersionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vp.AppPackageURL != nil {
+		objectMap["appPackageUrl"] = vp.AppPackageURL
+	}
+	return json.Marshal(objectMap)
 }
 
 // VersionResource a version resource for the specified application type name.

@@ -404,11 +404,19 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	ProvisioningStateCanceled       ProvisioningState = original.ProvisioningStateCanceled
-	ProvisioningStateDeprovisioning ProvisioningState = original.ProvisioningStateDeprovisioning
-	ProvisioningStateFailed         ProvisioningState = original.ProvisioningStateFailed
-	ProvisioningStateProvisioning   ProvisioningState = original.ProvisioningStateProvisioning
-	ProvisioningStateSucceeded      ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
+)
+
+type ProvisioningState1 = original.ProvisioningState1
+
+const (
+	ProvisioningState1Canceled       ProvisioningState1 = original.ProvisioningState1Canceled
+	ProvisioningState1Deprovisioning ProvisioningState1 = original.ProvisioningState1Deprovisioning
+	ProvisioningState1Failed         ProvisioningState1 = original.ProvisioningState1Failed
+	ProvisioningState1Provisioning   ProvisioningState1 = original.ProvisioningState1Provisioning
+	ProvisioningState1Succeeded      ProvisioningState1 = original.ProvisioningState1Succeeded
 )
 
 type Rank = original.Rank
@@ -442,6 +450,18 @@ type RecommendationConfigStatus = original.RecommendationConfigStatus
 const (
 	Disabled RecommendationConfigStatus = original.Disabled
 	Enabled  RecommendationConfigStatus = original.Enabled
+)
+
+type RecommendationSeverity = original.RecommendationSeverity
+
+const (
+	RecommendationSeverityHealthy       RecommendationSeverity = original.RecommendationSeverityHealthy
+	RecommendationSeverityHigh          RecommendationSeverity = original.RecommendationSeverityHigh
+	RecommendationSeverityLow           RecommendationSeverity = original.RecommendationSeverityLow
+	RecommendationSeverityMedium        RecommendationSeverity = original.RecommendationSeverityMedium
+	RecommendationSeverityNotApplicable RecommendationSeverity = original.RecommendationSeverityNotApplicable
+	RecommendationSeverityOffByPolicy   RecommendationSeverity = original.RecommendationSeverityOffByPolicy
+	RecommendationSeverityUnknown       RecommendationSeverity = original.RecommendationSeverityUnknown
 )
 
 type RecommendationStatus = original.RecommendationStatus
@@ -558,6 +578,7 @@ type Source = original.Source
 const (
 	SourceAzure           Source = original.SourceAzure
 	SourceOnPremise       Source = original.SourceOnPremise
+	SourceOnPremiseSQL    Source = original.SourceOnPremiseSQL
 	SourceResourceDetails Source = original.SourceResourceDetails
 )
 
@@ -660,6 +681,10 @@ type AadConnectivityState1 = original.AadConnectivityState1
 type AadExternalSecuritySolution = original.AadExternalSecuritySolution
 type AadSolutionProperties = original.AadSolutionProperties
 type ActiveConnectionsNotInAllowedRange = original.ActiveConnectionsNotInAllowedRange
+type AdaptiveApplicationControlGroup = original.AdaptiveApplicationControlGroup
+type AdaptiveApplicationControlGroupData = original.AdaptiveApplicationControlGroupData
+type AdaptiveApplicationControlGroups = original.AdaptiveApplicationControlGroups
+type AdaptiveApplicationControlIssueSummary = original.AdaptiveApplicationControlIssueSummary
 type AdaptiveApplicationControlsClient = original.AdaptiveApplicationControlsClient
 type AdaptiveNetworkHardening = original.AdaptiveNetworkHardening
 type AdaptiveNetworkHardeningEnforceRequest = original.AdaptiveNetworkHardeningEnforceRequest
@@ -697,10 +722,6 @@ type AllowlistCustomAlertRule = original.AllowlistCustomAlertRule
 type AmqpC2DMessagesNotInAllowedRange = original.AmqpC2DMessagesNotInAllowedRange
 type AmqpC2DRejectedMessagesNotInAllowedRange = original.AmqpC2DRejectedMessagesNotInAllowedRange
 type AmqpD2CMessagesNotInAllowedRange = original.AmqpD2CMessagesNotInAllowedRange
-type AppWhitelistingGroup = original.AppWhitelistingGroup
-type AppWhitelistingGroupData = original.AppWhitelistingGroupData
-type AppWhitelistingGroups = original.AppWhitelistingGroups
-type AppWhitelistingIssueSummary = original.AppWhitelistingIssueSummary
 type AscLocation = original.AscLocation
 type AscLocationList = original.AscLocationList
 type AscLocationListIterator = original.AscLocationListIterator
@@ -757,6 +778,7 @@ type BasicAutomationAction = original.BasicAutomationAction
 type BasicCustomAlertRule = original.BasicCustomAlertRule
 type BasicExternalSecuritySolution = original.BasicExternalSecuritySolution
 type BasicListCustomAlertRule = original.BasicListCustomAlertRule
+type BasicOnPremiseResourceDetails = original.BasicOnPremiseResourceDetails
 type BasicResourceDetails = original.BasicResourceDetails
 type BasicSetting = original.BasicSetting
 type BasicSettingResource = original.BasicSettingResource
@@ -874,6 +896,16 @@ type IotAlertTypeList = original.IotAlertTypeList
 type IotAlertTypeProperties = original.IotAlertTypeProperties
 type IotAlertTypesClient = original.IotAlertTypesClient
 type IotAlertsClient = original.IotAlertsClient
+type IotRecommendation = original.IotRecommendation
+type IotRecommendationList = original.IotRecommendationList
+type IotRecommendationListIterator = original.IotRecommendationListIterator
+type IotRecommendationListPage = original.IotRecommendationListPage
+type IotRecommendationProperties = original.IotRecommendationProperties
+type IotRecommendationType = original.IotRecommendationType
+type IotRecommendationTypeList = original.IotRecommendationTypeList
+type IotRecommendationTypeProperties = original.IotRecommendationTypeProperties
+type IotRecommendationTypesClient = original.IotRecommendationTypesClient
+type IotRecommendationsClient = original.IotRecommendationsClient
 type IotSecuritySolutionAnalyticsClient = original.IotSecuritySolutionAnalyticsClient
 type IotSecuritySolutionClient = original.IotSecuritySolutionClient
 type IotSecuritySolutionsAnalyticsAggregatedAlertClient = original.IotSecuritySolutionsAnalyticsAggregatedAlertClient
@@ -901,6 +933,7 @@ type MqttC2DMessagesNotInAllowedRange = original.MqttC2DMessagesNotInAllowedRang
 type MqttC2DRejectedMessagesNotInAllowedRange = original.MqttC2DRejectedMessagesNotInAllowedRange
 type MqttD2CMessagesNotInAllowedRange = original.MqttD2CMessagesNotInAllowedRange
 type OnPremiseResourceDetails = original.OnPremiseResourceDetails
+type OnPremiseSQLResourceDetails = original.OnPremiseSQLResourceDetails
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
@@ -975,6 +1008,16 @@ type SettingsClient = original.SettingsClient
 type SettingsList = original.SettingsList
 type SettingsListIterator = original.SettingsListIterator
 type SettingsListPage = original.SettingsListPage
+type Solution = original.Solution
+type SolutionList = original.SolutionList
+type SolutionListIterator = original.SolutionListIterator
+type SolutionListPage = original.SolutionListPage
+type SolutionProperties = original.SolutionProperties
+type SolutionsClient = original.SolutionsClient
+type SolutionsReferenceData = original.SolutionsReferenceData
+type SolutionsReferenceDataClient = original.SolutionsReferenceDataClient
+type SolutionsReferenceDataList = original.SolutionsReferenceDataList
+type SolutionsReferenceDataProperties = original.SolutionsReferenceDataProperties
 type SubAssessment = original.SubAssessment
 type SubAssessmentList = original.SubAssessmentList
 type SubAssessmentListIterator = original.SubAssessmentListIterator
@@ -1268,6 +1311,24 @@ func NewIotAlertsClient(subscriptionID string, ascLocation string) IotAlertsClie
 func NewIotAlertsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotAlertsClient {
 	return original.NewIotAlertsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
+func NewIotRecommendationListIterator(page IotRecommendationListPage) IotRecommendationListIterator {
+	return original.NewIotRecommendationListIterator(page)
+}
+func NewIotRecommendationListPage(getNextPage func(context.Context, IotRecommendationList) (IotRecommendationList, error)) IotRecommendationListPage {
+	return original.NewIotRecommendationListPage(getNextPage)
+}
+func NewIotRecommendationTypesClient(subscriptionID string, ascLocation string) IotRecommendationTypesClient {
+	return original.NewIotRecommendationTypesClient(subscriptionID, ascLocation)
+}
+func NewIotRecommendationTypesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotRecommendationTypesClient {
+	return original.NewIotRecommendationTypesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewIotRecommendationsClient(subscriptionID string, ascLocation string) IotRecommendationsClient {
+	return original.NewIotRecommendationsClient(subscriptionID, ascLocation)
+}
+func NewIotRecommendationsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotRecommendationsClient {
+	return original.NewIotRecommendationsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewIotSecuritySolutionAnalyticsClient(subscriptionID string, ascLocation string) IotSecuritySolutionAnalyticsClient {
 	return original.NewIotSecuritySolutionAnalyticsClient(subscriptionID, ascLocation)
 }
@@ -1417,6 +1478,24 @@ func NewSettingsListIterator(page SettingsListPage) SettingsListIterator {
 }
 func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
 	return original.NewSettingsListPage(getNextPage)
+}
+func NewSolutionListIterator(page SolutionListPage) SolutionListIterator {
+	return original.NewSolutionListIterator(page)
+}
+func NewSolutionListPage(getNextPage func(context.Context, SolutionList) (SolutionList, error)) SolutionListPage {
+	return original.NewSolutionListPage(getNextPage)
+}
+func NewSolutionsClient(subscriptionID string, ascLocation string) SolutionsClient {
+	return original.NewSolutionsClient(subscriptionID, ascLocation)
+}
+func NewSolutionsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SolutionsClient {
+	return original.NewSolutionsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewSolutionsReferenceDataClient(subscriptionID string, ascLocation string) SolutionsReferenceDataClient {
+	return original.NewSolutionsReferenceDataClient(subscriptionID, ascLocation)
+}
+func NewSolutionsReferenceDataClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SolutionsReferenceDataClient {
+	return original.NewSolutionsReferenceDataClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewSubAssessmentListIterator(page SubAssessmentListPage) SubAssessmentListIterator {
 	return original.NewSubAssessmentListIterator(page)
@@ -1598,6 +1677,9 @@ func PossiblePropertyTypeValues() []PropertyType {
 func PossibleProtocolValues() []Protocol {
 	return original.PossibleProtocolValues()
 }
+func PossibleProvisioningState1Values() []ProvisioningState1 {
+	return original.PossibleProvisioningState1Values()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
@@ -1612,6 +1694,9 @@ func PossibleRecommendationActionValues() []RecommendationAction {
 }
 func PossibleRecommendationConfigStatusValues() []RecommendationConfigStatus {
 	return original.PossibleRecommendationConfigStatusValues()
+}
+func PossibleRecommendationSeverityValues() []RecommendationSeverity {
+	return original.PossibleRecommendationSeverityValues()
 }
 func PossibleRecommendationStatusValues() []RecommendationStatus {
 	return original.PossibleRecommendationStatusValues()

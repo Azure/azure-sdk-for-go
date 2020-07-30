@@ -31,120 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/machinelearningservices/mgmt/2018-03-01-preview/machinelearningservices"
 
-// ComputeType enumerates the values for compute type.
-type ComputeType string
-
-const (
-	// ComputeTypeAKS ...
-	ComputeTypeAKS ComputeType = "AKS"
-	// ComputeTypeBatchAI ...
-	ComputeTypeBatchAI ComputeType = "BatchAI"
-	// ComputeTypeDataFactory ...
-	ComputeTypeDataFactory ComputeType = "DataFactory"
-	// ComputeTypeHDInsight ...
-	ComputeTypeHDInsight ComputeType = "HDInsight"
-	// ComputeTypeVirtualMachine ...
-	ComputeTypeVirtualMachine ComputeType = "VirtualMachine"
-)
-
-// PossibleComputeTypeValues returns an array of possible values for the ComputeType const type.
-func PossibleComputeTypeValues() []ComputeType {
-	return []ComputeType{ComputeTypeAKS, ComputeTypeBatchAI, ComputeTypeDataFactory, ComputeTypeHDInsight, ComputeTypeVirtualMachine}
-}
-
-// ComputeTypeBasicCompute enumerates the values for compute type basic compute.
-type ComputeTypeBasicCompute string
-
-const (
-	// ComputeTypeAKS1 ...
-	ComputeTypeAKS1 ComputeTypeBasicCompute = "AKS"
-	// ComputeTypeBatchAI1 ...
-	ComputeTypeBatchAI1 ComputeTypeBasicCompute = "BatchAI"
-	// ComputeTypeCompute ...
-	ComputeTypeCompute ComputeTypeBasicCompute = "Compute"
-	// ComputeTypeDataFactory1 ...
-	ComputeTypeDataFactory1 ComputeTypeBasicCompute = "DataFactory"
-	// ComputeTypeHDInsight1 ...
-	ComputeTypeHDInsight1 ComputeTypeBasicCompute = "HDInsight"
-	// ComputeTypeVirtualMachine1 ...
-	ComputeTypeVirtualMachine1 ComputeTypeBasicCompute = "VirtualMachine"
-)
-
-// PossibleComputeTypeBasicComputeValues returns an array of possible values for the ComputeTypeBasicCompute const type.
-func PossibleComputeTypeBasicComputeValues() []ComputeTypeBasicCompute {
-	return []ComputeTypeBasicCompute{ComputeTypeAKS1, ComputeTypeBatchAI1, ComputeTypeCompute, ComputeTypeDataFactory1, ComputeTypeHDInsight1, ComputeTypeVirtualMachine1}
-}
-
-// ComputeTypeBasicComputeSecrets enumerates the values for compute type basic compute secrets.
-type ComputeTypeBasicComputeSecrets string
-
-const (
-	// ComputeTypeBasicComputeSecretsComputeTypeAKS ...
-	ComputeTypeBasicComputeSecretsComputeTypeAKS ComputeTypeBasicComputeSecrets = "AKS"
-	// ComputeTypeBasicComputeSecretsComputeTypeComputeSecrets ...
-	ComputeTypeBasicComputeSecretsComputeTypeComputeSecrets ComputeTypeBasicComputeSecrets = "ComputeSecrets"
-	// ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine ...
-	ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine ComputeTypeBasicComputeSecrets = "VirtualMachine"
-)
-
-// PossibleComputeTypeBasicComputeSecretsValues returns an array of possible values for the ComputeTypeBasicComputeSecrets const type.
-func PossibleComputeTypeBasicComputeSecretsValues() []ComputeTypeBasicComputeSecrets {
-	return []ComputeTypeBasicComputeSecrets{ComputeTypeBasicComputeSecretsComputeTypeAKS, ComputeTypeBasicComputeSecretsComputeTypeComputeSecrets, ComputeTypeBasicComputeSecretsComputeTypeVirtualMachine}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Unknown ...
-	Unknown ProvisioningState = "Unknown"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Canceled, Creating, Deleting, Failed, Succeeded, Unknown, Updating}
-}
-
-// ResourceIdentityType enumerates the values for resource identity type.
-type ResourceIdentityType string
-
-const (
-	// SystemAssigned ...
-	SystemAssigned ResourceIdentityType = "SystemAssigned"
-)
-
-// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{SystemAssigned}
-}
-
-// Status enumerates the values for status.
-type Status string
-
-const (
-	// Disabled ...
-	Disabled Status = "Disabled"
-	// Enabled ...
-	Enabled Status = "Enabled"
-)
-
-// PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{Disabled, Enabled}
-}
-
 // AKS a Machine Learning compute based on AKS.
 type AKS struct {
 	// Properties - AKS properties
@@ -925,6 +811,15 @@ type Identity struct {
 	Type ResourceIdentityType `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // ListWorkspaceKeysResult ...
 type ListWorkspaceKeysResult struct {
 	autorest.Response `json:"-"`
@@ -1118,10 +1013,15 @@ func (pcrl PaginatedComputeResourcesList) IsEmpty() bool {
 	return pcrl.Value == nil || len(*pcrl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pcrl PaginatedComputeResourcesList) hasNextLink() bool {
+	return pcrl.NextLink != nil && len(*pcrl.NextLink) != 0
+}
+
 // paginatedComputeResourcesListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pcrl PaginatedComputeResourcesList) paginatedComputeResourcesListPreparer(ctx context.Context) (*http.Request, error) {
-	if pcrl.NextLink == nil || len(to.String(pcrl.NextLink)) < 1 {
+	if !pcrl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1149,11 +1049,16 @@ func (page *PaginatedComputeResourcesListPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pcrl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pcrl)
+		if err != nil {
+			return err
+		}
+		page.pcrl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pcrl = next
 	return nil
 }
 
@@ -1202,6 +1107,15 @@ type RegistryListCredentialsResult struct {
 	// Username - READ-ONLY
 	Username  *string     `json:"username,omitempty"`
 	Passwords *[]Password `json:"passwords,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RegistryListCredentialsResult.
+func (rlcr RegistryListCredentialsResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rlcr.Passwords != nil {
+		objectMap["passwords"] = rlcr.Passwords
+	}
+	return json.Marshal(objectMap)
 }
 
 // Resource azure Resource Manager resource envelope.
@@ -1610,10 +1524,15 @@ func (wlr WorkspaceListResult) IsEmpty() bool {
 	return wlr.Value == nil || len(*wlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wlr WorkspaceListResult) hasNextLink() bool {
+	return wlr.NextLink != nil && len(*wlr.NextLink) != 0
+}
+
 // workspaceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wlr WorkspaceListResult) workspaceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wlr.NextLink == nil || len(to.String(wlr.NextLink)) < 1 {
+	if !wlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1641,11 +1560,16 @@ func (page *WorkspaceListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wlr)
+		if err != nil {
+			return err
+		}
+		page.wlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wlr = next
 	return nil
 }
 
@@ -1705,6 +1629,36 @@ type WorkspaceProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for WorkspaceProperties.
+func (wp WorkspaceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wp.Description != nil {
+		objectMap["description"] = wp.Description
+	}
+	if wp.FriendlyName != nil {
+		objectMap["friendlyName"] = wp.FriendlyName
+	}
+	if wp.BatchaiWorkspace != nil {
+		objectMap["batchaiWorkspace"] = wp.BatchaiWorkspace
+	}
+	if wp.KeyVault != nil {
+		objectMap["keyVault"] = wp.KeyVault
+	}
+	if wp.ApplicationInsights != nil {
+		objectMap["applicationInsights"] = wp.ApplicationInsights
+	}
+	if wp.ContainerRegistry != nil {
+		objectMap["containerRegistry"] = wp.ContainerRegistry
+	}
+	if wp.StorageAccount != nil {
+		objectMap["storageAccount"] = wp.StorageAccount
+	}
+	if wp.DiscoveryURL != nil {
+		objectMap["discoveryUrl"] = wp.DiscoveryURL
+	}
+	return json.Marshal(objectMap)
+}
+
 // WorkspacePropertiesUpdateParameters the parameters for updating the properties of a machine learning
 // workspace.
 type WorkspacePropertiesUpdateParameters struct {
@@ -1714,8 +1668,7 @@ type WorkspacePropertiesUpdateParameters struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 }
 
-// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type WorkspacesDeleteFuture struct {
 	azure.Future
 }

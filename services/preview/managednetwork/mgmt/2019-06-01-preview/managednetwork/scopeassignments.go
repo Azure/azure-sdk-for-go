@@ -304,6 +304,9 @@ func (client ScopeAssignmentsClient) List(ctx context.Context, scope string) (re
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.ScopeAssignmentsClient", "List", resp, "Failure responding to request")
 	}
+	if result.salr.hasNextLink() && result.salr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

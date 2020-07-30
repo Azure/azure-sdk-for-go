@@ -754,6 +754,9 @@ func (client ResourcesClient) List(ctx context.Context, filter string, expand st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourcesClient", "List", resp, "Failure responding to request")
 	}
+	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -894,6 +897,9 @@ func (client ResourcesClient) ListByResourceGroup(ctx context.Context, resourceG
 	result.rlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourcesClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

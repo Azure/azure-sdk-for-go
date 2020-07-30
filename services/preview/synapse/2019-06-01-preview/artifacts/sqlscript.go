@@ -320,6 +320,9 @@ func (client SQLScriptClient) GetSQLScriptsByWorkspace(ctx context.Context) (res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.SQLScriptClient", "GetSQLScriptsByWorkspace", resp, "Failure responding to request")
 	}
+	if result.sslr.hasNextLink() && result.sslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

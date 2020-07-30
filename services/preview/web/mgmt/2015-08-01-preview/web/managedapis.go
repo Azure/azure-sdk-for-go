@@ -152,6 +152,9 @@ func (client ManagedApisClient) List(ctx context.Context, location string) (resu
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ManagedApisClient", "List", resp, "Failure responding to request")
 	}
+	if result.ac.hasNextLink() && result.ac.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

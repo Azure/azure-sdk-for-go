@@ -363,6 +363,9 @@ func (client ScopeMapsClient) List(ctx context.Context, resourceGroupName string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ScopeMapsClient", "List", resp, "Failure responding to request")
 	}
+	if result.smlr.hasNextLink() && result.smlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

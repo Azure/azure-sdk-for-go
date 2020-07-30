@@ -71,6 +71,9 @@ func (client ManagedRuleSetsClient) List(ctx context.Context) (result ManagedRul
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.ManagedRuleSetsClient", "List", resp, "Failure responding to request")
 	}
+	if result.mrsdl.hasNextLink() && result.mrsdl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -81,7 +84,7 @@ func (client ManagedRuleSetsClient) ListPreparer(ctx context.Context) (*http.Req
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-05-01"
+	const APIVersion = "2020-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

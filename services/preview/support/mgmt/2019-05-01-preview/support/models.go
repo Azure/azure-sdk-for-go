@@ -31,83 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/support/mgmt/2019-05-01-preview/support"
 
-// CommunicationDirection enumerates the values for communication direction.
-type CommunicationDirection string
-
-const (
-	// Inbound ...
-	Inbound CommunicationDirection = "inbound"
-	// Outbound ...
-	Outbound CommunicationDirection = "outbound"
-)
-
-// PossibleCommunicationDirectionValues returns an array of possible values for the CommunicationDirection const type.
-func PossibleCommunicationDirectionValues() []CommunicationDirection {
-	return []CommunicationDirection{Inbound, Outbound}
-}
-
-// CommunicationType enumerates the values for communication type.
-type CommunicationType string
-
-const (
-	// Phone ...
-	Phone CommunicationType = "phone"
-	// Web ...
-	Web CommunicationType = "web"
-)
-
-// PossibleCommunicationTypeValues returns an array of possible values for the CommunicationType const type.
-func PossibleCommunicationTypeValues() []CommunicationType {
-	return []CommunicationType{Phone, Web}
-}
-
-// PreferredContactMethod enumerates the values for preferred contact method.
-type PreferredContactMethod string
-
-const (
-	// PreferredContactMethodEmail ...
-	PreferredContactMethodEmail PreferredContactMethod = "email"
-	// PreferredContactMethodPhone ...
-	PreferredContactMethodPhone PreferredContactMethod = "phone"
-)
-
-// PossiblePreferredContactMethodValues returns an array of possible values for the PreferredContactMethod const type.
-func PossiblePreferredContactMethodValues() []PreferredContactMethod {
-	return []PreferredContactMethod{PreferredContactMethodEmail, PreferredContactMethodPhone}
-}
-
-// SeverityLevel enumerates the values for severity level.
-type SeverityLevel string
-
-const (
-	// Critical ...
-	Critical SeverityLevel = "critical"
-	// Minimal ...
-	Minimal SeverityLevel = "minimal"
-	// Moderate ...
-	Moderate SeverityLevel = "moderate"
-)
-
-// PossibleSeverityLevelValues returns an array of possible values for the SeverityLevel const type.
-func PossibleSeverityLevelValues() []SeverityLevel {
-	return []SeverityLevel{Critical, Minimal, Moderate}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// MicrosoftSupportcommunications ...
-	MicrosoftSupportcommunications Type = "Microsoft.Support/communications"
-	// MicrosoftSupportsupportTickets ...
-	MicrosoftSupportsupportTickets Type = "Microsoft.Support/supportTickets"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{MicrosoftSupportcommunications, MicrosoftSupportsupportTickets}
-}
-
 // CheckNameAvailabilityInput input of CheckNameAvailability API.
 type CheckNameAvailabilityInput struct {
 	// Name - The resource name to validate
@@ -216,6 +139,21 @@ type CommunicationDetailsProperties struct {
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CommunicationDetailsProperties.
+func (cdp CommunicationDetailsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cdp.Sender != nil {
+		objectMap["sender"] = cdp.Sender
+	}
+	if cdp.Subject != nil {
+		objectMap["subject"] = cdp.Subject
+	}
+	if cdp.Body != nil {
+		objectMap["body"] = cdp.Body
+	}
+	return json.Marshal(objectMap)
+}
+
 // CommunicationsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type CommunicationsCreateFuture struct {
@@ -322,10 +260,15 @@ func (clr CommunicationsListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (clr CommunicationsListResult) hasNextLink() bool {
+	return clr.NextLink != nil && len(*clr.NextLink) != 0
+}
+
 // communicationsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (clr CommunicationsListResult) communicationsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if clr.NextLink == nil || len(to.String(clr.NextLink)) < 1 {
+	if !clr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -353,11 +296,16 @@ func (page *CommunicationsListResultPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.clr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.clr)
+		if err != nil {
+			return err
+		}
+		page.clr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.clr = next
 	return nil
 }
 
@@ -431,6 +379,15 @@ type Operation struct {
 	Name *string `json:"name,omitempty"`
 	// Display - The object that describes the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the object that describes the operation.
@@ -548,8 +505,7 @@ type QuotaChangeRequest struct {
 
 // QuotaTicketDetails additional set of information required for quota increase support ticket for certain
 // quota types, e.g.: Virtual machine cores. Get complete details about Quota payload support request along
-// with examples at <a target='' href='https://aka.ms/supportrpquotarequestpayload'>Support quota
-// request</a>.
+// with examples at <a target='' href='https://aka.ms/supportrpquotarequestpayload'>Support quota request</a>.
 type QuotaTicketDetails struct {
 	// QuotaChangeRequestSubType - Required for certain quota types when there is a sub type that you are requesting quota increase for. Example: Batch
 	QuotaChangeRequestSubType *string `json:"quotaChangeRequestSubType,omitempty"`
@@ -644,6 +600,21 @@ type ServiceError struct {
 	Details *[]ServiceErrorDetail `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServiceError.
+func (se ServiceError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if se.Code != nil {
+		objectMap["code"] = se.Code
+	}
+	if se.Message != nil {
+		objectMap["message"] = se.Message
+	}
+	if se.Target != nil {
+		objectMap["target"] = se.Target
+	}
+	return json.Marshal(objectMap)
+}
+
 // ServiceErrorDetail the error details.
 type ServiceErrorDetail struct {
 	// Code - READ-ONLY; The error code.
@@ -652,6 +623,15 @@ type ServiceErrorDetail struct {
 	Message *string `json:"message,omitempty"`
 	// Target - The target of the error.
 	Target *string `json:"target,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceErrorDetail.
+func (sed ServiceErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sed.Target != nil {
+		objectMap["target"] = sed.Target
+	}
+	return json.Marshal(objectMap)
 }
 
 // ServiceLevelAgreement service Level Agreement details for a support ticket.
@@ -802,8 +782,52 @@ type TicketDetailsProperties struct {
 	QuotaTicketDetails *QuotaTicketDetails `json:"quotaTicketDetails,omitempty"`
 }
 
-// TicketsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// MarshalJSON is the custom marshaler for TicketDetailsProperties.
+func (tdp TicketDetailsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tdp.SupportTicketID != nil {
+		objectMap["supportTicketId"] = tdp.SupportTicketID
+	}
+	if tdp.Description != nil {
+		objectMap["description"] = tdp.Description
+	}
+	if tdp.ProblemClassificationID != nil {
+		objectMap["problemClassificationId"] = tdp.ProblemClassificationID
+	}
+	if tdp.Severity != "" {
+		objectMap["severity"] = tdp.Severity
+	}
+	if tdp.Require24X7Response != nil {
+		objectMap["require24X7Response"] = tdp.Require24X7Response
+	}
+	if tdp.ContactDetails != nil {
+		objectMap["contactDetails"] = tdp.ContactDetails
+	}
+	if tdp.ServiceLevelAgreement != nil {
+		objectMap["serviceLevelAgreement"] = tdp.ServiceLevelAgreement
+	}
+	if tdp.SupportEngineer != nil {
+		objectMap["supportEngineer"] = tdp.SupportEngineer
+	}
+	if tdp.Title != nil {
+		objectMap["title"] = tdp.Title
+	}
+	if tdp.ProblemStartTime != nil {
+		objectMap["problemStartTime"] = tdp.ProblemStartTime
+	}
+	if tdp.ServiceID != nil {
+		objectMap["serviceId"] = tdp.ServiceID
+	}
+	if tdp.TechnicalTicketDetails != nil {
+		objectMap["technicalTicketDetails"] = tdp.TechnicalTicketDetails
+	}
+	if tdp.QuotaTicketDetails != nil {
+		objectMap["quotaTicketDetails"] = tdp.QuotaTicketDetails
+	}
+	return json.Marshal(objectMap)
+}
+
+// TicketsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type TicketsCreateFuture struct {
 	azure.Future
 }
@@ -908,10 +932,15 @@ func (tlr TicketsListResult) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tlr TicketsListResult) hasNextLink() bool {
+	return tlr.NextLink != nil && len(*tlr.NextLink) != 0
+}
+
 // ticketsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tlr TicketsListResult) ticketsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if tlr.NextLink == nil || len(to.String(tlr.NextLink)) < 1 {
+	if !tlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -939,11 +968,16 @@ func (page *TicketsListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tlr)
+		if err != nil {
+			return err
+		}
+		page.tlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tlr = next
 	return nil
 }
 

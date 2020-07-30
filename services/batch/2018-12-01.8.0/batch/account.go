@@ -89,6 +89,9 @@ func (client AccountClient) ListNodeAgentSkus(ctx context.Context, filter string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListNodeAgentSkus", resp, "Failure responding to request")
 	}
+	if result.alnasr.hasNextLink() && result.alnasr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -244,6 +247,9 @@ func (client AccountClient) ListPoolNodeCounts(ctx context.Context, filter strin
 	result.pnclr, err = client.ListPoolNodeCountsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListPoolNodeCounts", resp, "Failure responding to request")
+	}
+	if result.pnclr.hasNextLink() && result.pnclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

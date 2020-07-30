@@ -549,6 +549,9 @@ func (client IotDpsResourceClient) ListByResourceGroup(ctx context.Context, reso
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.psdlr.hasNextLink() && result.psdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -657,6 +660,9 @@ func (client IotDpsResourceClient) ListBySubscription(ctx context.Context) (resu
 	result.psdlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.psdlr.hasNextLink() && result.psdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -768,6 +774,9 @@ func (client IotDpsResourceClient) ListKeys(ctx context.Context, provisioningSer
 	result.sasarlr, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "ListKeys", resp, "Failure responding to request")
+	}
+	if result.sasarlr.hasNextLink() && result.sasarlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -881,6 +890,9 @@ func (client IotDpsResourceClient) ListValidSkus(ctx context.Context, provisioni
 	result.idsdlr, err = client.ListValidSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "ListValidSkus", resp, "Failure responding to request")
+	}
+	if result.idsdlr.hasNextLink() && result.idsdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

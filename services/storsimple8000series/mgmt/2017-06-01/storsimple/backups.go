@@ -271,6 +271,9 @@ func (client BackupsClient) ListByDevice(ctx context.Context, deviceName string,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "ListByDevice", resp, "Failure responding to request")
 	}
+	if result.bl.hasNextLink() && result.bl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

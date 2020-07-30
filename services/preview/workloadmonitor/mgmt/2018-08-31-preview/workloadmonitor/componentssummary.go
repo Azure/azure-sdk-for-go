@@ -87,6 +87,9 @@ func (client ComponentsSummaryClient) List(ctx context.Context, selectParameter 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.ComponentsSummaryClient", "List", resp, "Failure responding to request")
 	}
+	if result.cc.hasNextLink() && result.cc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

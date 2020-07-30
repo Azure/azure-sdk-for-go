@@ -39,6 +39,15 @@ const (
 	CreateModeServerPropertiesForCreate CreateMode = original.CreateModeServerPropertiesForCreate
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
+)
+
 type GeoRedundantBackup = original.GeoRedundantBackup
 
 const (
@@ -71,9 +80,9 @@ const (
 type OperationOrigin = original.OperationOrigin
 
 const (
-	NotSpecified OperationOrigin = original.NotSpecified
-	System       OperationOrigin = original.System
-	User         OperationOrigin = original.User
+	OperationOriginNotSpecified OperationOrigin = original.OperationOriginNotSpecified
+	OperationOriginSystem       OperationOrigin = original.OperationOriginSystem
+	OperationOriginUser         OperationOrigin = original.OperationOriginUser
 )
 
 type PrivateEndpointProvisioningState = original.PrivateEndpointProvisioningState
@@ -201,6 +210,9 @@ type LogFile = original.LogFile
 type LogFileListResult = original.LogFileListResult
 type LogFileProperties = original.LogFileProperties
 type LogFilesClient = original.LogFilesClient
+type LogicalServerSecurityAlertPolicyListResult = original.LogicalServerSecurityAlertPolicyListResult
+type LogicalServerSecurityAlertPolicyListResultIterator = original.LogicalServerSecurityAlertPolicyListResultIterator
+type LogicalServerSecurityAlertPolicyListResultPage = original.LogicalServerSecurityAlertPolicyListResultPage
 type NameAvailability = original.NameAvailability
 type NameAvailabilityRequest = original.NameAvailabilityRequest
 type Operation = original.Operation
@@ -246,7 +258,7 @@ type RecommendedActionsClient = original.RecommendedActionsClient
 type ReplicasClient = original.ReplicasClient
 type Resource = original.Resource
 type ResourceIdentity = original.ResourceIdentity
-type SecurityAlertPolicyProperties = original.SecurityAlertPolicyProperties
+type SecurityAlertsPolicyProperties = original.SecurityAlertsPolicyProperties
 type Server = original.Server
 type ServerAdministratorProperties = original.ServerAdministratorProperties
 type ServerAdministratorResource = original.ServerAdministratorResource
@@ -282,9 +294,12 @@ type ServersClient = original.ServersClient
 type ServersCreateFuture = original.ServersCreateFuture
 type ServersDeleteFuture = original.ServersDeleteFuture
 type ServersRestartFuture = original.ServersRestartFuture
+type ServersStartFuture = original.ServersStartFuture
+type ServersStopFuture = original.ServersStopFuture
 type ServersUpdateFuture = original.ServersUpdateFuture
 type Sku = original.Sku
 type StorageProfile = original.StorageProfile
+type SystemData = original.SystemData
 type TagsObject = original.TagsObject
 type TopQueryStatisticsClient = original.TopQueryStatisticsClient
 type TopQueryStatisticsInput = original.TopQueryStatisticsInput
@@ -372,6 +387,12 @@ func NewLogFilesClient(subscriptionID string) LogFilesClient {
 }
 func NewLogFilesClientWithBaseURI(baseURI string, subscriptionID string) LogFilesClient {
 	return original.NewLogFilesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLogicalServerSecurityAlertPolicyListResultIterator(page LogicalServerSecurityAlertPolicyListResultPage) LogicalServerSecurityAlertPolicyListResultIterator {
+	return original.NewLogicalServerSecurityAlertPolicyListResultIterator(page)
+}
+func NewLogicalServerSecurityAlertPolicyListResultPage(getNextPage func(context.Context, LogicalServerSecurityAlertPolicyListResult) (LogicalServerSecurityAlertPolicyListResult, error)) LogicalServerSecurityAlertPolicyListResultPage {
+	return original.NewLogicalServerSecurityAlertPolicyListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -504,6 +525,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleCreateModeValues() []CreateMode {
 	return original.PossibleCreateModeValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleGeoRedundantBackupValues() []GeoRedundantBackup {
 	return original.PossibleGeoRedundantBackupValues()

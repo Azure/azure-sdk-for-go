@@ -26,40 +26,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/maps/mgmt/2020-02-01-preview/maps"
 
-// CreatedByType enumerates the values for created by type.
-type CreatedByType string
-
-const (
-	// Application ...
-	Application CreatedByType = "Application"
-	// Key ...
-	Key CreatedByType = "Key"
-	// ManagedIdentity ...
-	ManagedIdentity CreatedByType = "ManagedIdentity"
-	// User ...
-	User CreatedByType = "User"
-)
-
-// PossibleCreatedByTypeValues returns an array of possible values for the CreatedByType const type.
-func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{Application, Key, ManagedIdentity, User}
-}
-
-// KeyType enumerates the values for key type.
-type KeyType string
-
-const (
-	// Primary ...
-	Primary KeyType = "primary"
-	// Secondary ...
-	Secondary KeyType = "secondary"
-)
-
-// PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
-func PossibleKeyTypeValues() []KeyType {
-	return []KeyType{Primary, Secondary}
-}
-
 // Account an Azure resource which represents access to a suite of Maps REST APIs.
 type Account struct {
 	autorest.Response `json:"-"`
@@ -118,8 +84,8 @@ func (acp AccountCreateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AccountKeys the set of keys which can be used to access the Maps REST APIs. Two keys are provided for
-// key rotation without interruption.
+// AccountKeys the set of keys which can be used to access the Maps REST APIs. Two keys are provided for key
+// rotation without interruption.
 type AccountKeys struct {
 	autorest.Response `json:"-"`
 	// ID - READ-ONLY; The full Azure resource identifier of the Maps Account.
@@ -220,6 +186,15 @@ type OperationsValueItem struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationsValueItem.
+func (oI OperationsValueItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if oI.Display != nil {
+		objectMap["display"] = oI.Display
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationsValueItemDisplay the human-readable description of the operation.
 type OperationsValueItemDisplay struct {
 	// Provider - READ-ONLY; Service provider: Microsoft Maps.
@@ -232,8 +207,8 @@ type OperationsValueItemDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// PrivateAtlas an Azure resource which represents which will provision the ability to create private
-// location data.
+// PrivateAtlas an Azure resource which represents which will provision the ability to create private location
+// data.
 type PrivateAtlas struct {
 	autorest.Response `json:"-"`
 	// Properties - The Private Atlas resource properties.
@@ -340,6 +315,15 @@ type Sku struct {
 	Name *string `json:"name,omitempty"`
 	// Tier - READ-ONLY; Gets the sku tier. This is based on the SKU name.
 	Tier *string `json:"tier,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Sku.
+func (s Sku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.Name != nil {
+		objectMap["name"] = s.Name
+	}
+	return json.Marshal(objectMap)
 }
 
 // SystemData metadata pertaining to creation and last modification of the resource.

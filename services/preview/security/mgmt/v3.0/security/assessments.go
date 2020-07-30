@@ -325,6 +325,9 @@ func (client AssessmentsClient) List(ctx context.Context, scope string) (result 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AssessmentsClient", "List", resp, "Failure responding to request")
 	}
+	if result.al.hasNextLink() && result.al.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

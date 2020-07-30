@@ -31,63 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/managementgroups"
 
-// ChildType enumerates the values for child type.
-type ChildType string
-
-const (
-	// Account ...
-	Account ChildType = "Account"
-	// Department ...
-	Department ChildType = "Department"
-	// Enrollment ...
-	Enrollment ChildType = "Enrollment"
-	// Subscription ...
-	Subscription ChildType = "Subscription"
-)
-
-// PossibleChildTypeValues returns an array of possible values for the ChildType const type.
-func PossibleChildTypeValues() []ChildType {
-	return []ChildType{Account, Department, Enrollment, Subscription}
-}
-
-// ChildType1 enumerates the values for child type 1.
-type ChildType1 string
-
-const (
-	// ChildType1Account ...
-	ChildType1Account ChildType1 = "Account"
-	// ChildType1Department ...
-	ChildType1Department ChildType1 = "Department"
-	// ChildType1Enrollment ...
-	ChildType1Enrollment ChildType1 = "Enrollment"
-	// ChildType1Subscription ...
-	ChildType1Subscription ChildType1 = "Subscription"
-)
-
-// PossibleChildType1Values returns an array of possible values for the ChildType1 const type.
-func PossibleChildType1Values() []ChildType1 {
-	return []ChildType1{ChildType1Account, ChildType1Department, ChildType1Enrollment, ChildType1Subscription}
-}
-
-// ManagementGroupType enumerates the values for management group type.
-type ManagementGroupType string
-
-const (
-	// ManagementGroupTypeAccount ...
-	ManagementGroupTypeAccount ManagementGroupType = "Account"
-	// ManagementGroupTypeDepartment ...
-	ManagementGroupTypeDepartment ManagementGroupType = "Department"
-	// ManagementGroupTypeEnrollment ...
-	ManagementGroupTypeEnrollment ManagementGroupType = "Enrollment"
-	// ManagementGroupTypeSubscription ...
-	ManagementGroupTypeSubscription ManagementGroupType = "Subscription"
-)
-
-// PossibleManagementGroupTypeValues returns an array of possible values for the ManagementGroupType const type.
-func PossibleManagementGroupTypeValues() []ManagementGroupType {
-	return []ManagementGroupType{ManagementGroupTypeAccount, ManagementGroupTypeDepartment, ManagementGroupTypeEnrollment, ManagementGroupTypeSubscription}
-}
-
 // ChildInfo the unique identifier (ID) of a management group.
 type ChildInfo struct {
 	// ChildType - Possible values include: 'Enrollment', 'Department', 'Account', 'Subscription'
@@ -216,6 +159,15 @@ type ListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ListResult.
+func (lr ListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lr.Value != nil {
+		objectMap["value"] = lr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // ListResultIterator provides access to a complete listing of Info values.
 type ListResultIterator struct {
 	i    int
@@ -284,10 +236,15 @@ func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -315,11 +272,16 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lr = next
 	return nil
 }
 
@@ -432,6 +394,15 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
 	// Provider - READ-ONLY; Service provider: Microsoft.Management.
@@ -442,8 +413,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result listing  operations. It contains a list of operations and a URL link to get
-// the next set of results.
+// OperationListResult result listing  operations. It contains a list of operations and a URL link to get the
+// next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of management operations supported by the Microsoft.Management resource provider.
@@ -520,10 +491,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -551,11 +527,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 

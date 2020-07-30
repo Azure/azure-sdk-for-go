@@ -345,6 +345,9 @@ func (client PropertyClient) List(ctx context.Context, apimBaseURL string, filte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.PropertyClient", "List", resp, "Failure responding to request")
 	}
+	if result.pc.hasNextLink() && result.pc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -31,227 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/devtestlabs/mgmt/2015-05-21-preview/dtl"
 
-// CostPropertyType enumerates the values for cost property type.
-type CostPropertyType string
-
-const (
-	// Projected ...
-	Projected CostPropertyType = "Projected"
-	// Reported ...
-	Reported CostPropertyType = "Reported"
-	// Unavailable ...
-	Unavailable CostPropertyType = "Unavailable"
-)
-
-// PossibleCostPropertyTypeValues returns an array of possible values for the CostPropertyType const type.
-func PossibleCostPropertyTypeValues() []CostPropertyType {
-	return []CostPropertyType{Projected, Reported, Unavailable}
-}
-
-// CustomImageOsType enumerates the values for custom image os type.
-type CustomImageOsType string
-
-const (
-	// Linux ...
-	Linux CustomImageOsType = "Linux"
-	// None ...
-	None CustomImageOsType = "None"
-	// Windows ...
-	Windows CustomImageOsType = "Windows"
-)
-
-// PossibleCustomImageOsTypeValues returns an array of possible values for the CustomImageOsType const type.
-func PossibleCustomImageOsTypeValues() []CustomImageOsType {
-	return []CustomImageOsType{Linux, None, Windows}
-}
-
-// EnableStatus enumerates the values for enable status.
-type EnableStatus string
-
-const (
-	// Disabled ...
-	Disabled EnableStatus = "Disabled"
-	// Enabled ...
-	Enabled EnableStatus = "Enabled"
-)
-
-// PossibleEnableStatusValues returns an array of possible values for the EnableStatus const type.
-func PossibleEnableStatusValues() []EnableStatus {
-	return []EnableStatus{Disabled, Enabled}
-}
-
-// LabStorageType enumerates the values for lab storage type.
-type LabStorageType string
-
-const (
-	// Premium ...
-	Premium LabStorageType = "Premium"
-	// Standard ...
-	Standard LabStorageType = "Standard"
-)
-
-// PossibleLabStorageTypeValues returns an array of possible values for the LabStorageType const type.
-func PossibleLabStorageTypeValues() []LabStorageType {
-	return []LabStorageType{Premium, Standard}
-}
-
-// LinuxOsState enumerates the values for linux os state.
-type LinuxOsState string
-
-const (
-	// DeprovisionApplied ...
-	DeprovisionApplied LinuxOsState = "DeprovisionApplied"
-	// DeprovisionRequested ...
-	DeprovisionRequested LinuxOsState = "DeprovisionRequested"
-	// NonDeprovisioned ...
-	NonDeprovisioned LinuxOsState = "NonDeprovisioned"
-)
-
-// PossibleLinuxOsStateValues returns an array of possible values for the LinuxOsState const type.
-func PossibleLinuxOsStateValues() []LinuxOsState {
-	return []LinuxOsState{DeprovisionApplied, DeprovisionRequested, NonDeprovisioned}
-}
-
-// PolicyEvaluatorType enumerates the values for policy evaluator type.
-type PolicyEvaluatorType string
-
-const (
-	// AllowedValuesPolicy ...
-	AllowedValuesPolicy PolicyEvaluatorType = "AllowedValuesPolicy"
-	// MaxValuePolicy ...
-	MaxValuePolicy PolicyEvaluatorType = "MaxValuePolicy"
-)
-
-// PossiblePolicyEvaluatorTypeValues returns an array of possible values for the PolicyEvaluatorType const type.
-func PossiblePolicyEvaluatorTypeValues() []PolicyEvaluatorType {
-	return []PolicyEvaluatorType{AllowedValuesPolicy, MaxValuePolicy}
-}
-
-// PolicyFactName enumerates the values for policy fact name.
-type PolicyFactName string
-
-const (
-	// PolicyFactNameGalleryImage ...
-	PolicyFactNameGalleryImage PolicyFactName = "GalleryImage"
-	// PolicyFactNameLabVMCount ...
-	PolicyFactNameLabVMCount PolicyFactName = "LabVmCount"
-	// PolicyFactNameLabVMSize ...
-	PolicyFactNameLabVMSize PolicyFactName = "LabVmSize"
-	// PolicyFactNameUserOwnedLabVMCount ...
-	PolicyFactNameUserOwnedLabVMCount PolicyFactName = "UserOwnedLabVmCount"
-	// PolicyFactNameUserOwnedLabVMCountInSubnet ...
-	PolicyFactNameUserOwnedLabVMCountInSubnet PolicyFactName = "UserOwnedLabVmCountInSubnet"
-)
-
-// PossiblePolicyFactNameValues returns an array of possible values for the PolicyFactName const type.
-func PossiblePolicyFactNameValues() []PolicyFactName {
-	return []PolicyFactName{PolicyFactNameGalleryImage, PolicyFactNameLabVMCount, PolicyFactNameLabVMSize, PolicyFactNameUserOwnedLabVMCount, PolicyFactNameUserOwnedLabVMCountInSubnet}
-}
-
-// PolicyStatus enumerates the values for policy status.
-type PolicyStatus string
-
-const (
-	// PolicyStatusDisabled ...
-	PolicyStatusDisabled PolicyStatus = "Disabled"
-	// PolicyStatusEnabled ...
-	PolicyStatusEnabled PolicyStatus = "Enabled"
-)
-
-// PossiblePolicyStatusValues returns an array of possible values for the PolicyStatus const type.
-func PossiblePolicyStatusValues() []PolicyStatus {
-	return []PolicyStatus{PolicyStatusDisabled, PolicyStatusEnabled}
-}
-
-// SourceControlType enumerates the values for source control type.
-type SourceControlType string
-
-const (
-	// GitHub ...
-	GitHub SourceControlType = "GitHub"
-	// VsoGit ...
-	VsoGit SourceControlType = "VsoGit"
-)
-
-// PossibleSourceControlTypeValues returns an array of possible values for the SourceControlType const type.
-func PossibleSourceControlTypeValues() []SourceControlType {
-	return []SourceControlType{GitHub, VsoGit}
-}
-
-// SubscriptionNotificationState enumerates the values for subscription notification state.
-type SubscriptionNotificationState string
-
-const (
-	// Deleted ...
-	Deleted SubscriptionNotificationState = "Deleted"
-	// NotDefined ...
-	NotDefined SubscriptionNotificationState = "NotDefined"
-	// Registered ...
-	Registered SubscriptionNotificationState = "Registered"
-	// Suspended ...
-	Suspended SubscriptionNotificationState = "Suspended"
-	// Unregistered ...
-	Unregistered SubscriptionNotificationState = "Unregistered"
-	// Warned ...
-	Warned SubscriptionNotificationState = "Warned"
-)
-
-// PossibleSubscriptionNotificationStateValues returns an array of possible values for the SubscriptionNotificationState const type.
-func PossibleSubscriptionNotificationStateValues() []SubscriptionNotificationState {
-	return []SubscriptionNotificationState{Deleted, NotDefined, Registered, Suspended, Unregistered, Warned}
-}
-
-// TaskType enumerates the values for task type.
-type TaskType string
-
-const (
-	// LabBillingTask ...
-	LabBillingTask TaskType = "LabBillingTask"
-	// LabVmsShutdownTask ...
-	LabVmsShutdownTask TaskType = "LabVmsShutdownTask"
-	// LabVmsStartupTask ...
-	LabVmsStartupTask TaskType = "LabVmsStartupTask"
-)
-
-// PossibleTaskTypeValues returns an array of possible values for the TaskType const type.
-func PossibleTaskTypeValues() []TaskType {
-	return []TaskType{LabBillingTask, LabVmsShutdownTask, LabVmsStartupTask}
-}
-
-// UsagePermissionType enumerates the values for usage permission type.
-type UsagePermissionType string
-
-const (
-	// Allow ...
-	Allow UsagePermissionType = "Allow"
-	// Default ...
-	Default UsagePermissionType = "Default"
-	// Deny ...
-	Deny UsagePermissionType = "Deny"
-)
-
-// PossibleUsagePermissionTypeValues returns an array of possible values for the UsagePermissionType const type.
-func PossibleUsagePermissionTypeValues() []UsagePermissionType {
-	return []UsagePermissionType{Allow, Default, Deny}
-}
-
-// WindowsOsState enumerates the values for windows os state.
-type WindowsOsState string
-
-const (
-	// NonSysprepped ...
-	NonSysprepped WindowsOsState = "NonSysprepped"
-	// SysprepApplied ...
-	SysprepApplied WindowsOsState = "SysprepApplied"
-	// SysprepRequested ...
-	SysprepRequested WindowsOsState = "SysprepRequested"
-)
-
-// PossibleWindowsOsStateValues returns an array of possible values for the WindowsOsState const type.
-func PossibleWindowsOsStateValues() []WindowsOsState {
-	return []WindowsOsState{NonSysprepped, SysprepApplied, SysprepRequested}
-}
-
 // ApplyArtifactsRequest request body for applying artifacts to a virtual machine.
 type ApplyArtifactsRequest struct {
 	// Artifacts - The list of artifacts to apply.
@@ -831,8 +610,7 @@ type CostProperties struct {
 	Costs *[]CostPerDayProperties `json:"costs,omitempty"`
 }
 
-// CostRefreshDataFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// CostRefreshDataFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CostRefreshDataFuture struct {
 	azure.Future
 }
@@ -993,8 +771,8 @@ func (future *CustomImageCreateOrUpdateResourceFuture) Result(client CustomImage
 	return
 }
 
-// CustomImageDeleteResourceFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// CustomImageDeleteResourceFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CustomImageDeleteResourceFuture struct {
 	azure.Future
 }
@@ -1545,8 +1323,8 @@ func (future *LabCreateEnvironmentFuture) Result(client LabClient) (ar autorest.
 	return
 }
 
-// LabCreateOrUpdateResourceFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// LabCreateOrUpdateResourceFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type LabCreateOrUpdateResourceFuture struct {
 	azure.Future
 }
@@ -2010,10 +1788,15 @@ func (rwcA ResponseWithContinuationArtifact) IsEmpty() bool {
 	return rwcA.Value == nil || len(*rwcA.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcA ResponseWithContinuationArtifact) hasNextLink() bool {
+	return rwcA.NextLink != nil && len(*rwcA.NextLink) != 0
+}
+
 // responseWithContinuationArtifactPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcA ResponseWithContinuationArtifact) responseWithContinuationArtifactPreparer(ctx context.Context) (*http.Request, error) {
-	if rwcA.NextLink == nil || len(to.String(rwcA.NextLink)) < 1 {
+	if !rwcA.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2041,11 +1824,16 @@ func (page *ResponseWithContinuationArtifactPage) NextWithContext(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwca)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwca)
+		if err != nil {
+			return err
+		}
+		page.rwca = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwca = next
 	return nil
 }
 
@@ -2157,10 +1945,15 @@ func (rwcAs ResponseWithContinuationArtifactSource) IsEmpty() bool {
 	return rwcAs.Value == nil || len(*rwcAs.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcAs ResponseWithContinuationArtifactSource) hasNextLink() bool {
+	return rwcAs.NextLink != nil && len(*rwcAs.NextLink) != 0
+}
+
 // responseWithContinuationArtifactSourcePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcAs ResponseWithContinuationArtifactSource) responseWithContinuationArtifactSourcePreparer(ctx context.Context) (*http.Request, error) {
-	if rwcAs.NextLink == nil || len(to.String(rwcAs.NextLink)) < 1 {
+	if !rwcAs.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2188,11 +1981,16 @@ func (page *ResponseWithContinuationArtifactSourcePage) NextWithContext(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwcas)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwcas)
+		if err != nil {
+			return err
+		}
+		page.rwcas = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwcas = next
 	return nil
 }
 
@@ -2312,10 +2110,15 @@ func (rwcCi ResponseWithContinuationCostInsight) IsEmpty() bool {
 	return rwcCi.Value == nil || len(*rwcCi.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcCi ResponseWithContinuationCostInsight) hasNextLink() bool {
+	return rwcCi.NextLink != nil && len(*rwcCi.NextLink) != 0
+}
+
 // responseWithContinuationCostInsightPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcCi ResponseWithContinuationCostInsight) responseWithContinuationCostInsightPreparer(ctx context.Context) (*http.Request, error) {
-	if rwcCi.NextLink == nil || len(to.String(rwcCi.NextLink)) < 1 {
+	if !rwcCi.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2343,11 +2146,16 @@ func (page *ResponseWithContinuationCostInsightPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwcci)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwcci)
+		if err != nil {
+			return err
+		}
+		page.rwcci = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwcci = next
 	return nil
 }
 
@@ -2449,10 +2257,15 @@ func (rwcC ResponseWithContinuationCost) IsEmpty() bool {
 	return rwcC.Value == nil || len(*rwcC.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcC ResponseWithContinuationCost) hasNextLink() bool {
+	return rwcC.NextLink != nil && len(*rwcC.NextLink) != 0
+}
+
 // responseWithContinuationCostPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcC ResponseWithContinuationCost) responseWithContinuationCostPreparer(ctx context.Context) (*http.Request, error) {
-	if rwcC.NextLink == nil || len(to.String(rwcC.NextLink)) < 1 {
+	if !rwcC.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2480,11 +2293,16 @@ func (page *ResponseWithContinuationCostPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwcc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwcc)
+		if err != nil {
+			return err
+		}
+		page.rwcc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwcc = next
 	return nil
 }
 
@@ -2595,10 +2413,15 @@ func (rwcCi ResponseWithContinuationCustomImage) IsEmpty() bool {
 	return rwcCi.Value == nil || len(*rwcCi.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcCi ResponseWithContinuationCustomImage) hasNextLink() bool {
+	return rwcCi.NextLink != nil && len(*rwcCi.NextLink) != 0
+}
+
 // responseWithContinuationCustomImagePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcCi ResponseWithContinuationCustomImage) responseWithContinuationCustomImagePreparer(ctx context.Context) (*http.Request, error) {
-	if rwcCi.NextLink == nil || len(to.String(rwcCi.NextLink)) < 1 {
+	if !rwcCi.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2626,11 +2449,16 @@ func (page *ResponseWithContinuationCustomImagePage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwcci)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwcci)
+		if err != nil {
+			return err
+		}
+		page.rwcci = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwcci = next
 	return nil
 }
 
@@ -2741,10 +2569,15 @@ func (rwcF ResponseWithContinuationFormula) IsEmpty() bool {
 	return rwcF.Value == nil || len(*rwcF.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcF ResponseWithContinuationFormula) hasNextLink() bool {
+	return rwcF.NextLink != nil && len(*rwcF.NextLink) != 0
+}
+
 // responseWithContinuationFormulaPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcF ResponseWithContinuationFormula) responseWithContinuationFormulaPreparer(ctx context.Context) (*http.Request, error) {
-	if rwcF.NextLink == nil || len(to.String(rwcF.NextLink)) < 1 {
+	if !rwcF.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2772,11 +2605,16 @@ func (page *ResponseWithContinuationFormulaPage) NextWithContext(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwcf)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwcf)
+		if err != nil {
+			return err
+		}
+		page.rwcf = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwcf = next
 	return nil
 }
 
@@ -2819,8 +2657,7 @@ type ResponseWithContinuationGalleryImage struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ResponseWithContinuationGalleryImageIterator provides access to a complete listing of GalleryImage
-// values.
+// ResponseWithContinuationGalleryImageIterator provides access to a complete listing of GalleryImage values.
 type ResponseWithContinuationGalleryImageIterator struct {
 	i    int
 	page ResponseWithContinuationGalleryImagePage
@@ -2888,10 +2725,15 @@ func (rwcGi ResponseWithContinuationGalleryImage) IsEmpty() bool {
 	return rwcGi.Value == nil || len(*rwcGi.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcGi ResponseWithContinuationGalleryImage) hasNextLink() bool {
+	return rwcGi.NextLink != nil && len(*rwcGi.NextLink) != 0
+}
+
 // responseWithContinuationGalleryImagePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcGi ResponseWithContinuationGalleryImage) responseWithContinuationGalleryImagePreparer(ctx context.Context) (*http.Request, error) {
-	if rwcGi.NextLink == nil || len(to.String(rwcGi.NextLink)) < 1 {
+	if !rwcGi.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2919,11 +2761,16 @@ func (page *ResponseWithContinuationGalleryImagePage) NextWithContext(ctx contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwcgi)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwcgi)
+		if err != nil {
+			return err
+		}
+		page.rwcgi = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwcgi = next
 	return nil
 }
 
@@ -3034,10 +2881,15 @@ func (rwcL ResponseWithContinuationLab) IsEmpty() bool {
 	return rwcL.Value == nil || len(*rwcL.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcL ResponseWithContinuationLab) hasNextLink() bool {
+	return rwcL.NextLink != nil && len(*rwcL.NextLink) != 0
+}
+
 // responseWithContinuationLabPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcL ResponseWithContinuationLab) responseWithContinuationLabPreparer(ctx context.Context) (*http.Request, error) {
-	if rwcL.NextLink == nil || len(to.String(rwcL.NextLink)) < 1 {
+	if !rwcL.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3065,11 +2917,16 @@ func (page *ResponseWithContinuationLabPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwcl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwcl)
+		if err != nil {
+			return err
+		}
+		page.rwcl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwcl = next
 	return nil
 }
 
@@ -3180,10 +3037,15 @@ func (rwcLv ResponseWithContinuationLabVhd) IsEmpty() bool {
 	return rwcLv.Value == nil || len(*rwcLv.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcLv ResponseWithContinuationLabVhd) hasNextLink() bool {
+	return rwcLv.NextLink != nil && len(*rwcLv.NextLink) != 0
+}
+
 // responseWithContinuationLabVhdPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcLv ResponseWithContinuationLabVhd) responseWithContinuationLabVhdPreparer(ctx context.Context) (*http.Request, error) {
-	if rwcLv.NextLink == nil || len(to.String(rwcLv.NextLink)) < 1 {
+	if !rwcLv.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3211,11 +3073,16 @@ func (page *ResponseWithContinuationLabVhdPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwclv)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwclv)
+		if err != nil {
+			return err
+		}
+		page.rwclv = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwclv = next
 	return nil
 }
 
@@ -3258,8 +3125,8 @@ type ResponseWithContinuationLabVirtualMachine struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ResponseWithContinuationLabVirtualMachineIterator provides access to a complete listing of
-// LabVirtualMachine values.
+// ResponseWithContinuationLabVirtualMachineIterator provides access to a complete listing of LabVirtualMachine
+// values.
 type ResponseWithContinuationLabVirtualMachineIterator struct {
 	i    int
 	page ResponseWithContinuationLabVirtualMachinePage
@@ -3327,10 +3194,15 @@ func (rwcLvm ResponseWithContinuationLabVirtualMachine) IsEmpty() bool {
 	return rwcLvm.Value == nil || len(*rwcLvm.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcLvm ResponseWithContinuationLabVirtualMachine) hasNextLink() bool {
+	return rwcLvm.NextLink != nil && len(*rwcLvm.NextLink) != 0
+}
+
 // responseWithContinuationLabVirtualMachinePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcLvm ResponseWithContinuationLabVirtualMachine) responseWithContinuationLabVirtualMachinePreparer(ctx context.Context) (*http.Request, error) {
-	if rwcLvm.NextLink == nil || len(to.String(rwcLvm.NextLink)) < 1 {
+	if !rwcLvm.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3358,11 +3230,16 @@ func (page *ResponseWithContinuationLabVirtualMachinePage) NextWithContext(ctx c
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwclvm)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwclvm)
+		if err != nil {
+			return err
+		}
+		page.rwclvm = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwclvm = next
 	return nil
 }
 
@@ -3473,10 +3350,15 @@ func (rwcP ResponseWithContinuationPolicy) IsEmpty() bool {
 	return rwcP.Value == nil || len(*rwcP.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcP ResponseWithContinuationPolicy) hasNextLink() bool {
+	return rwcP.NextLink != nil && len(*rwcP.NextLink) != 0
+}
+
 // responseWithContinuationPolicyPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcP ResponseWithContinuationPolicy) responseWithContinuationPolicyPreparer(ctx context.Context) (*http.Request, error) {
-	if rwcP.NextLink == nil || len(to.String(rwcP.NextLink)) < 1 {
+	if !rwcP.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3504,11 +3386,16 @@ func (page *ResponseWithContinuationPolicyPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwcp)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwcp)
+		if err != nil {
+			return err
+		}
+		page.rwcp = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwcp = next
 	return nil
 }
 
@@ -3619,10 +3506,15 @@ func (rwcS ResponseWithContinuationSchedule) IsEmpty() bool {
 	return rwcS.Value == nil || len(*rwcS.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcS ResponseWithContinuationSchedule) hasNextLink() bool {
+	return rwcS.NextLink != nil && len(*rwcS.NextLink) != 0
+}
+
 // responseWithContinuationSchedulePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcS ResponseWithContinuationSchedule) responseWithContinuationSchedulePreparer(ctx context.Context) (*http.Request, error) {
-	if rwcS.NextLink == nil || len(to.String(rwcS.NextLink)) < 1 {
+	if !rwcS.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3650,11 +3542,16 @@ func (page *ResponseWithContinuationSchedulePage) NextWithContext(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwcs)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwcs)
+		if err != nil {
+			return err
+		}
+		page.rwcs = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwcs = next
 	return nil
 }
 
@@ -3766,10 +3663,15 @@ func (rwcVn ResponseWithContinuationVirtualNetwork) IsEmpty() bool {
 	return rwcVn.Value == nil || len(*rwcVn.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rwcVn ResponseWithContinuationVirtualNetwork) hasNextLink() bool {
+	return rwcVn.NextLink != nil && len(*rwcVn.NextLink) != 0
+}
+
 // responseWithContinuationVirtualNetworkPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rwcVn ResponseWithContinuationVirtualNetwork) responseWithContinuationVirtualNetworkPreparer(ctx context.Context) (*http.Request, error) {
-	if rwcVn.NextLink == nil || len(to.String(rwcVn.NextLink)) < 1 {
+	if !rwcVn.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3797,11 +3699,16 @@ func (page *ResponseWithContinuationVirtualNetworkPage) NextWithContext(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rwcvn)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rwcvn)
+		if err != nil {
+			return err
+		}
+		page.rwcvn = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rwcvn = next
 	return nil
 }
 
@@ -3997,8 +3904,7 @@ func (future *ScheduleDeleteResourceFuture) Result(client ScheduleClient) (ar au
 	return
 }
 
-// ScheduleExecuteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ScheduleExecuteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ScheduleExecuteFuture struct {
 	azure.Future
 }

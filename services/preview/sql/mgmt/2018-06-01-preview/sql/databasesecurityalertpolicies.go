@@ -240,6 +240,9 @@ func (client DatabaseSecurityAlertPoliciesClient) ListByDatabase(ctx context.Con
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.DatabaseSecurityAlertPoliciesClient", "ListByDatabase", resp, "Failure responding to request")
 	}
+	if result.dsalr.hasNextLink() && result.dsalr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

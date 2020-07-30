@@ -1656,6 +1656,9 @@ func (client TagClient) ListByAPI(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "ListByAPI", resp, "Failure responding to request")
 	}
+	if result.tc.hasNextLink() && result.tc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1813,6 +1816,9 @@ func (client TagClient) ListByOperation(ctx context.Context, resourceGroupName s
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "ListByOperation", resp, "Failure responding to request")
 	}
+	if result.tc.hasNextLink() && result.tc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1962,6 +1968,9 @@ func (client TagClient) ListByProduct(ctx context.Context, resourceGroupName str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "ListByProduct", resp, "Failure responding to request")
 	}
+	if result.tc.hasNextLink() && result.tc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2104,6 +2113,9 @@ func (client TagClient) ListByService(ctx context.Context, resourceGroupName str
 	result.tc, err = client.ListByServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "ListByService", resp, "Failure responding to request")
+	}
+	if result.tc.hasNextLink() && result.tc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

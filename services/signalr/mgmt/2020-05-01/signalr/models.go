@@ -30,160 +30,13 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2020-05-01/signalr"
 
-// ACLAction enumerates the values for acl action.
-type ACLAction string
-
-const (
-	// Allow ...
-	Allow ACLAction = "Allow"
-	// Deny ...
-	Deny ACLAction = "Deny"
-)
-
-// PossibleACLActionValues returns an array of possible values for the ACLAction const type.
-func PossibleACLActionValues() []ACLAction {
-	return []ACLAction{Allow, Deny}
-}
-
-// FeatureFlags enumerates the values for feature flags.
-type FeatureFlags string
-
-const (
-	// EnableConnectivityLogs ...
-	EnableConnectivityLogs FeatureFlags = "EnableConnectivityLogs"
-	// EnableMessagingLogs ...
-	EnableMessagingLogs FeatureFlags = "EnableMessagingLogs"
-	// ServiceMode ...
-	ServiceMode FeatureFlags = "ServiceMode"
-)
-
-// PossibleFeatureFlagsValues returns an array of possible values for the FeatureFlags const type.
-func PossibleFeatureFlagsValues() []FeatureFlags {
-	return []FeatureFlags{EnableConnectivityLogs, EnableMessagingLogs, ServiceMode}
-}
-
-// KeyType enumerates the values for key type.
-type KeyType string
-
-const (
-	// Primary ...
-	Primary KeyType = "Primary"
-	// Secondary ...
-	Secondary KeyType = "Secondary"
-)
-
-// PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
-func PossibleKeyTypeValues() []KeyType {
-	return []KeyType{Primary, Secondary}
-}
-
-// PrivateLinkServiceConnectionStatus enumerates the values for private link service connection status.
-type PrivateLinkServiceConnectionStatus string
-
-const (
-	// Approved ...
-	Approved PrivateLinkServiceConnectionStatus = "Approved"
-	// Disconnected ...
-	Disconnected PrivateLinkServiceConnectionStatus = "Disconnected"
-	// Pending ...
-	Pending PrivateLinkServiceConnectionStatus = "Pending"
-	// Rejected ...
-	Rejected PrivateLinkServiceConnectionStatus = "Rejected"
-)
-
-// PossiblePrivateLinkServiceConnectionStatusValues returns an array of possible values for the PrivateLinkServiceConnectionStatus const type.
-func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
-	return []PrivateLinkServiceConnectionStatus{Approved, Disconnected, Pending, Rejected}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Moving ...
-	Moving ProvisioningState = "Moving"
-	// Running ...
-	Running ProvisioningState = "Running"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Unknown ...
-	Unknown ProvisioningState = "Unknown"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Canceled, Creating, Deleting, Failed, Moving, Running, Succeeded, Unknown, Updating}
-}
-
-// RequestType enumerates the values for request type.
-type RequestType string
-
-const (
-	// ClientConnection ...
-	ClientConnection RequestType = "ClientConnection"
-	// RESTAPI ...
-	RESTAPI RequestType = "RESTAPI"
-	// ServerConnection ...
-	ServerConnection RequestType = "ServerConnection"
-)
-
-// PossibleRequestTypeValues returns an array of possible values for the RequestType const type.
-func PossibleRequestTypeValues() []RequestType {
-	return []RequestType{ClientConnection, RESTAPI, ServerConnection}
-}
-
-// ServiceKind enumerates the values for service kind.
-type ServiceKind string
-
-const (
-	// RawWebSockets ...
-	RawWebSockets ServiceKind = "RawWebSockets"
-	// SignalR ...
-	SignalR ServiceKind = "SignalR"
-)
-
-// PossibleServiceKindValues returns an array of possible values for the ServiceKind const type.
-func PossibleServiceKindValues() []ServiceKind {
-	return []ServiceKind{RawWebSockets, SignalR}
-}
-
-// SkuTier enumerates the values for sku tier.
-type SkuTier string
-
-const (
-	// Basic ...
-	Basic SkuTier = "Basic"
-	// Free ...
-	Free SkuTier = "Free"
-	// Premium ...
-	Premium SkuTier = "Premium"
-	// Standard ...
-	Standard SkuTier = "Standard"
-)
-
-// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() []SkuTier {
-	return []SkuTier{Basic, Free, Premium, Standard}
-}
-
 // CorsSettings cross-Origin Resource Sharing (CORS) settings.
 type CorsSettings struct {
 	// AllowedOrigins - Gets or sets the list of origins that should be allowed to make cross-origin calls (for example: http://example.com:12345). Use "*" to allow all. If omitted, allow all by default.
 	AllowedOrigins *[]string `json:"allowedOrigins,omitempty"`
 }
 
-// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -354,8 +207,8 @@ type MetricSpecification struct {
 	Dimensions *[]Dimension `json:"dimensions,omitempty"`
 }
 
-// NameAvailability result of the request to check name availability. It contains a flag and possible
-// reason of failure.
+// NameAvailability result of the request to check name availability. It contains a flag and possible reason of
+// failure.
 type NameAvailability struct {
 	autorest.Response `json:"-"`
 	// NameAvailable - Indicates whether the name is available or not.
@@ -496,10 +349,15 @@ func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OperationList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // operationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OperationList) operationListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -527,11 +385,16 @@ func (page *OperationListPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 
@@ -670,6 +533,18 @@ type PrivateEndpointConnectionProperties struct {
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PrivateEndpointConnectionProperties.
+func (pecp PrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pecp.PrivateEndpoint != nil {
+		objectMap["privateEndpoint"] = pecp.PrivateEndpoint
+	}
+	if pecp.PrivateLinkServiceConnectionState != nil {
+		objectMap["privateLinkServiceConnectionState"] = pecp.PrivateLinkServiceConnectionState
+	}
+	return json.Marshal(objectMap)
+}
+
 // PrivateEndpointConnectionsDeleteFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type PrivateEndpointConnectionsDeleteFuture struct {
@@ -765,8 +640,8 @@ func (plr *PrivateLinkResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PrivateLinkResourceList contains a list of AzSignalR.Models.Response.PrivateLink.PrivateLinkResource and
-// a possible link to query more results
+// PrivateLinkResourceList contains a list of AzSignalR.Models.Response.PrivateLink.PrivateLinkResource and a
+// possible link to query more results
 type PrivateLinkResourceList struct {
 	autorest.Response `json:"-"`
 	// Value - List of PrivateLinkResource
@@ -844,10 +719,15 @@ func (plrl PrivateLinkResourceList) IsEmpty() bool {
 	return plrl.Value == nil || len(*plrl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (plrl PrivateLinkResourceList) hasNextLink() bool {
+	return plrl.NextLink != nil && len(*plrl.NextLink) != 0
+}
+
 // privateLinkResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (plrl PrivateLinkResourceList) privateLinkResourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if plrl.NextLink == nil || len(to.String(plrl.NextLink)) < 1 {
+	if !plrl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -875,11 +755,16 @@ func (page *PrivateLinkResourceListPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.plrl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.plrl)
+		if err != nil {
+			return err
+		}
+		page.plrl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.plrl = next
 	return nil
 }
 
@@ -933,8 +818,8 @@ type PrivateLinkServiceConnectionState struct {
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
 }
 
-// Properties a class that describes the properties of the SignalR service that should contain more
-// read-only properties than AzSignalR.Models.SignalRCreateOrUpdateProperties
+// Properties a class that describes the properties of the SignalR service that should contain more read-only
+// properties than AzSignalR.Models.SignalRCreateOrUpdateProperties
 type Properties struct {
 	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
@@ -968,6 +853,27 @@ type Properties struct {
 	NetworkACLs *NetworkACLs `json:"networkACLs,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Properties.
+func (p Properties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.HostNamePrefix != nil {
+		objectMap["hostNamePrefix"] = p.HostNamePrefix
+	}
+	if p.Features != nil {
+		objectMap["features"] = p.Features
+	}
+	if p.Cors != nil {
+		objectMap["cors"] = p.Cors
+	}
+	if p.Upstream != nil {
+		objectMap["upstream"] = p.Upstream
+	}
+	if p.NetworkACLs != nil {
+		objectMap["networkACLs"] = p.NetworkACLs
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
 // required location and tags
 type ProxyResource struct {
@@ -979,8 +885,7 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// RegenerateKeyFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// RegenerateKeyFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type RegenerateKeyFuture struct {
 	azure.Future
 }
@@ -1102,10 +1007,15 @@ func (rl ResourceList) IsEmpty() bool {
 	return rl.Value == nil || len(*rl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rl ResourceList) hasNextLink() bool {
+	return rl.NextLink != nil && len(*rl.NextLink) != 0
+}
+
 // resourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rl ResourceList) resourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if rl.NextLink == nil || len(to.String(rl.NextLink)) < 1 {
+	if !rl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1133,11 +1043,16 @@ func (page *ResourceListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rl)
+		if err != nil {
+			return err
+		}
+		page.rl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rl = next
 	return nil
 }
 
@@ -1413,8 +1328,8 @@ func (future *UpdateFuture) Result(client Client) (rt ResourceType, err error) {
 }
 
 // UpstreamTemplate upstream template item settings. It defines the Upstream URL of the incoming requests.
-// The template defines the pattern of the event, the hub or the category of the incoming request that
-// matches current URL template.
+// The template defines the pattern of the event, the hub or the category of the incoming request that matches
+// current URL template.
 type UpstreamTemplate struct {
 	// HubPattern - Gets or sets the matching pattern for hub names. If not set, it matches any hub.
 	// There are 3 kind of patterns supported:
@@ -1531,10 +1446,15 @@ func (ul UsageList) IsEmpty() bool {
 	return ul.Value == nil || len(*ul.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ul UsageList) hasNextLink() bool {
+	return ul.NextLink != nil && len(*ul.NextLink) != 0
+}
+
 // usageListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ul UsageList) usageListPreparer(ctx context.Context) (*http.Request, error) {
-	if ul.NextLink == nil || len(to.String(ul.NextLink)) < 1 {
+	if !ul.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1562,11 +1482,16 @@ func (page *UsageListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ul)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ul)
+		if err != nil {
+			return err
+		}
+		page.ul = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ul = next
 	return nil
 }
 

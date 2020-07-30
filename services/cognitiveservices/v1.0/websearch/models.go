@@ -25,214 +25,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/websearch"
 
-// AnswerType enumerates the values for answer type.
-type AnswerType string
-
-const (
-	// AnswerTypeComputation ...
-	AnswerTypeComputation AnswerType = "Computation"
-	// AnswerTypeImages ...
-	AnswerTypeImages AnswerType = "Images"
-	// AnswerTypeNews ...
-	AnswerTypeNews AnswerType = "News"
-	// AnswerTypeRelatedSearches ...
-	AnswerTypeRelatedSearches AnswerType = "RelatedSearches"
-	// AnswerTypeSpellSuggestions ...
-	AnswerTypeSpellSuggestions AnswerType = "SpellSuggestions"
-	// AnswerTypeTimeZone ...
-	AnswerTypeTimeZone AnswerType = "TimeZone"
-	// AnswerTypeVideos ...
-	AnswerTypeVideos AnswerType = "Videos"
-	// AnswerTypeWebPages ...
-	AnswerTypeWebPages AnswerType = "WebPages"
-)
-
-// PossibleAnswerTypeValues returns an array of possible values for the AnswerType const type.
-func PossibleAnswerTypeValues() []AnswerType {
-	return []AnswerType{AnswerTypeComputation, AnswerTypeImages, AnswerTypeNews, AnswerTypeRelatedSearches, AnswerTypeSpellSuggestions, AnswerTypeTimeZone, AnswerTypeVideos, AnswerTypeWebPages}
-}
-
-// ErrorCode enumerates the values for error code.
-type ErrorCode string
-
-const (
-	// InsufficientAuthorization ...
-	InsufficientAuthorization ErrorCode = "InsufficientAuthorization"
-	// InvalidAuthorization ...
-	InvalidAuthorization ErrorCode = "InvalidAuthorization"
-	// InvalidRequest ...
-	InvalidRequest ErrorCode = "InvalidRequest"
-	// None ...
-	None ErrorCode = "None"
-	// RateLimitExceeded ...
-	RateLimitExceeded ErrorCode = "RateLimitExceeded"
-	// ServerError ...
-	ServerError ErrorCode = "ServerError"
-)
-
-// PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
-func PossibleErrorCodeValues() []ErrorCode {
-	return []ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
-}
-
-// ErrorSubCode enumerates the values for error sub code.
-type ErrorSubCode string
-
-const (
-	// AuthorizationDisabled ...
-	AuthorizationDisabled ErrorSubCode = "AuthorizationDisabled"
-	// AuthorizationExpired ...
-	AuthorizationExpired ErrorSubCode = "AuthorizationExpired"
-	// AuthorizationMissing ...
-	AuthorizationMissing ErrorSubCode = "AuthorizationMissing"
-	// AuthorizationRedundancy ...
-	AuthorizationRedundancy ErrorSubCode = "AuthorizationRedundancy"
-	// Blocked ...
-	Blocked ErrorSubCode = "Blocked"
-	// HTTPNotAllowed ...
-	HTTPNotAllowed ErrorSubCode = "HttpNotAllowed"
-	// NotImplemented ...
-	NotImplemented ErrorSubCode = "NotImplemented"
-	// ParameterInvalidValue ...
-	ParameterInvalidValue ErrorSubCode = "ParameterInvalidValue"
-	// ParameterMissing ...
-	ParameterMissing ErrorSubCode = "ParameterMissing"
-	// ResourceError ...
-	ResourceError ErrorSubCode = "ResourceError"
-	// UnexpectedError ...
-	UnexpectedError ErrorSubCode = "UnexpectedError"
-)
-
-// PossibleErrorSubCodeValues returns an array of possible values for the ErrorSubCode const type.
-func PossibleErrorSubCodeValues() []ErrorSubCode {
-	return []ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
-}
-
-// Freshness enumerates the values for freshness.
-type Freshness string
-
-const (
-	// Day ...
-	Day Freshness = "Day"
-	// Month ...
-	Month Freshness = "Month"
-	// Week ...
-	Week Freshness = "Week"
-)
-
-// PossibleFreshnessValues returns an array of possible values for the Freshness const type.
-func PossibleFreshnessValues() []Freshness {
-	return []Freshness{Day, Month, Week}
-}
-
-// SafeSearch enumerates the values for safe search.
-type SafeSearch string
-
-const (
-	// Moderate ...
-	Moderate SafeSearch = "Moderate"
-	// Off ...
-	Off SafeSearch = "Off"
-	// Strict ...
-	Strict SafeSearch = "Strict"
-)
-
-// PossibleSafeSearchValues returns an array of possible values for the SafeSearch const type.
-func PossibleSafeSearchValues() []SafeSearch {
-	return []SafeSearch{Moderate, Off, Strict}
-}
-
-// TextFormat enumerates the values for text format.
-type TextFormat string
-
-const (
-	// HTML ...
-	HTML TextFormat = "Html"
-	// Raw ...
-	Raw TextFormat = "Raw"
-)
-
-// PossibleTextFormatValues returns an array of possible values for the TextFormat const type.
-func PossibleTextFormatValues() []TextFormat {
-	return []TextFormat{HTML, Raw}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeWebWebGrouping ...
-	TypeWebWebGrouping Type = "Web/WebGrouping"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeWebWebGrouping}
-}
-
-// TypeBasicResponseBase enumerates the values for type basic response base.
-type TypeBasicResponseBase string
-
-const (
-	// TypeAnswer ...
-	TypeAnswer TypeBasicResponseBase = "Answer"
-	// TypeArticle ...
-	TypeArticle TypeBasicResponseBase = "Article"
-	// TypeComputation ...
-	TypeComputation TypeBasicResponseBase = "Computation"
-	// TypeCreativeWork ...
-	TypeCreativeWork TypeBasicResponseBase = "CreativeWork"
-	// TypeErrorResponse ...
-	TypeErrorResponse TypeBasicResponseBase = "ErrorResponse"
-	// TypeIdentifiable ...
-	TypeIdentifiable TypeBasicResponseBase = "Identifiable"
-	// TypeImageObject ...
-	TypeImageObject TypeBasicResponseBase = "ImageObject"
-	// TypeImages ...
-	TypeImages TypeBasicResponseBase = "Images"
-	// TypeIntangible ...
-	TypeIntangible TypeBasicResponseBase = "Intangible"
-	// TypeMediaObject ...
-	TypeMediaObject TypeBasicResponseBase = "MediaObject"
-	// TypeNews ...
-	TypeNews TypeBasicResponseBase = "News"
-	// TypeNewsArticle ...
-	TypeNewsArticle TypeBasicResponseBase = "NewsArticle"
-	// TypePlaces ...
-	TypePlaces TypeBasicResponseBase = "Places"
-	// TypeRelatedSearchesRelatedSearchAnswer ...
-	TypeRelatedSearchesRelatedSearchAnswer TypeBasicResponseBase = "RelatedSearches/RelatedSearchAnswer"
-	// TypeResponse ...
-	TypeResponse TypeBasicResponseBase = "Response"
-	// TypeResponseBase ...
-	TypeResponseBase TypeBasicResponseBase = "ResponseBase"
-	// TypeSearchResponse ...
-	TypeSearchResponse TypeBasicResponseBase = "SearchResponse"
-	// TypeSearchResultsAnswer ...
-	TypeSearchResultsAnswer TypeBasicResponseBase = "SearchResultsAnswer"
-	// TypeSpellSuggestions ...
-	TypeSpellSuggestions TypeBasicResponseBase = "SpellSuggestions"
-	// TypeStructuredValue ...
-	TypeStructuredValue TypeBasicResponseBase = "StructuredValue"
-	// TypeThing ...
-	TypeThing TypeBasicResponseBase = "Thing"
-	// TypeTimeZone ...
-	TypeTimeZone TypeBasicResponseBase = "TimeZone"
-	// TypeVideoObject ...
-	TypeVideoObject TypeBasicResponseBase = "VideoObject"
-	// TypeVideos ...
-	TypeVideos TypeBasicResponseBase = "Videos"
-	// TypeWebPage ...
-	TypeWebPage TypeBasicResponseBase = "WebPage"
-	// TypeWebWebAnswer ...
-	TypeWebWebAnswer TypeBasicResponseBase = "Web/WebAnswer"
-)
-
-// PossibleTypeBasicResponseBaseValues returns an array of possible values for the TypeBasicResponseBase const type.
-func PossibleTypeBasicResponseBaseValues() []TypeBasicResponseBase {
-	return []TypeBasicResponseBase{TypeAnswer, TypeArticle, TypeComputation, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeImageObject, TypeImages, TypeIntangible, TypeMediaObject, TypeNews, TypeNewsArticle, TypePlaces, TypeRelatedSearchesRelatedSearchAnswer, TypeResponse, TypeResponseBase, TypeSearchResponse, TypeSearchResultsAnswer, TypeSpellSuggestions, TypeStructuredValue, TypeThing, TypeTimeZone, TypeVideoObject, TypeVideos, TypeWebPage, TypeWebWebAnswer}
-}
-
 // BasicAnswer ...
 type BasicAnswer interface {
 	AsWebWebAnswer() (*WebWebAnswer, bool)
@@ -1532,6 +1324,18 @@ type Error struct {
 	Parameter *string `json:"parameter,omitempty"`
 	// Value - READ-ONLY; The parameter's value in the request that was not valid.
 	Value *string `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if e.Code != "" {
+		objectMap["code"] = e.Code
+	}
+	if e.Message != nil {
+		objectMap["message"] = e.Message
+	}
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse the top-level response that represents a failed request.
@@ -4250,6 +4054,15 @@ type Query struct {
 	Thumbnail *ImageObject `json:"thumbnail,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Query.
+func (q Query) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if q.Text != nil {
+		objectMap["text"] = q.Text
+	}
+	return json.Marshal(objectMap)
+}
+
 // QueryContext defines the query context that Bing used for the request.
 type QueryContext struct {
 	// OriginalQuery - The query string as specified in the request.
@@ -4264,6 +4077,15 @@ type QueryContext struct {
 	AskUserForLocation *bool `json:"askUserForLocation,omitempty"`
 	// IsTransactional - READ-ONLY
 	IsTransactional *bool `json:"isTransactional,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryContext.
+func (qc QueryContext) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if qc.OriginalQuery != nil {
+		objectMap["originalQuery"] = qc.OriginalQuery
+	}
+	return json.Marshal(objectMap)
 }
 
 // RankingRankingGroup defines a search results group, such as mainline.
@@ -4286,6 +4108,15 @@ type RankingRankingItem struct {
 	TextualIndex *int32 `json:"textualIndex,omitempty"`
 	// ScreenshotIndex - READ-ONLY
 	ScreenshotIndex *int32 `json:"screenshotIndex,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RankingRankingItem.
+func (rri RankingRankingItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rri.AnswerType != "" {
+		objectMap["answerType"] = rri.AnswerType
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for RankingRankingItem struct.
@@ -4356,8 +4187,7 @@ func (rri *RankingRankingItem) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RankingRankingResponse defines where on the search results page content should be placed and in what
-// order.
+// RankingRankingResponse defines where on the search results page content should be placed and in what order.
 type RankingRankingResponse struct {
 	// Pole - READ-ONLY; The search results that should be afforded the most visible treatment (for example, displayed above the mainline and sidebar).
 	Pole *RankingRankingGroup `json:"pole,omitempty"`

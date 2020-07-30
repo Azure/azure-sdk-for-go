@@ -316,6 +316,9 @@ func (client ResourceLinksClient) ListAtSourceScope(ctx context.Context, scope s
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "ListAtSourceScope", resp, "Failure responding to request")
 	}
+	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -429,6 +432,9 @@ func (client ResourceLinksClient) ListAtSubscription(ctx context.Context, filter
 	result.rlr, err = client.ListAtSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "links.ResourceLinksClient", "ListAtSubscription", resp, "Failure responding to request")
+	}
+	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

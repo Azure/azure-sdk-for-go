@@ -30,279 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/alertsmanagement/mgmt/2019-03-01/alertsmanagement"
 
-// AlertModificationEvent enumerates the values for alert modification event.
-type AlertModificationEvent string
-
-const (
-	// AlertCreated ...
-	AlertCreated AlertModificationEvent = "AlertCreated"
-	// MonitorConditionChange ...
-	MonitorConditionChange AlertModificationEvent = "MonitorConditionChange"
-	// StateChange ...
-	StateChange AlertModificationEvent = "StateChange"
-)
-
-// PossibleAlertModificationEventValues returns an array of possible values for the AlertModificationEvent const type.
-func PossibleAlertModificationEventValues() []AlertModificationEvent {
-	return []AlertModificationEvent{AlertCreated, MonitorConditionChange, StateChange}
-}
-
-// AlertRuleState enumerates the values for alert rule state.
-type AlertRuleState string
-
-const (
-	// Disabled ...
-	Disabled AlertRuleState = "Disabled"
-	// Enabled ...
-	Enabled AlertRuleState = "Enabled"
-)
-
-// PossibleAlertRuleStateValues returns an array of possible values for the AlertRuleState const type.
-func PossibleAlertRuleStateValues() []AlertRuleState {
-	return []AlertRuleState{Disabled, Enabled}
-}
-
-// AlertsSortByFields enumerates the values for alerts sort by fields.
-type AlertsSortByFields string
-
-const (
-	// AlertsSortByFieldsAlertState ...
-	AlertsSortByFieldsAlertState AlertsSortByFields = "alertState"
-	// AlertsSortByFieldsLastModifiedDateTime ...
-	AlertsSortByFieldsLastModifiedDateTime AlertsSortByFields = "lastModifiedDateTime"
-	// AlertsSortByFieldsMonitorCondition ...
-	AlertsSortByFieldsMonitorCondition AlertsSortByFields = "monitorCondition"
-	// AlertsSortByFieldsName ...
-	AlertsSortByFieldsName AlertsSortByFields = "name"
-	// AlertsSortByFieldsSeverity ...
-	AlertsSortByFieldsSeverity AlertsSortByFields = "severity"
-	// AlertsSortByFieldsStartDateTime ...
-	AlertsSortByFieldsStartDateTime AlertsSortByFields = "startDateTime"
-	// AlertsSortByFieldsTargetResource ...
-	AlertsSortByFieldsTargetResource AlertsSortByFields = "targetResource"
-	// AlertsSortByFieldsTargetResourceGroup ...
-	AlertsSortByFieldsTargetResourceGroup AlertsSortByFields = "targetResourceGroup"
-	// AlertsSortByFieldsTargetResourceName ...
-	AlertsSortByFieldsTargetResourceName AlertsSortByFields = "targetResourceName"
-	// AlertsSortByFieldsTargetResourceType ...
-	AlertsSortByFieldsTargetResourceType AlertsSortByFields = "targetResourceType"
-)
-
-// PossibleAlertsSortByFieldsValues returns an array of possible values for the AlertsSortByFields const type.
-func PossibleAlertsSortByFieldsValues() []AlertsSortByFields {
-	return []AlertsSortByFields{AlertsSortByFieldsAlertState, AlertsSortByFieldsLastModifiedDateTime, AlertsSortByFieldsMonitorCondition, AlertsSortByFieldsName, AlertsSortByFieldsSeverity, AlertsSortByFieldsStartDateTime, AlertsSortByFieldsTargetResource, AlertsSortByFieldsTargetResourceGroup, AlertsSortByFieldsTargetResourceName, AlertsSortByFieldsTargetResourceType}
-}
-
-// AlertsSummaryGroupByFields enumerates the values for alerts summary group by fields.
-type AlertsSummaryGroupByFields string
-
-const (
-	// AlertsSummaryGroupByFieldsAlertRule ...
-	AlertsSummaryGroupByFieldsAlertRule AlertsSummaryGroupByFields = "alertRule"
-	// AlertsSummaryGroupByFieldsAlertState ...
-	AlertsSummaryGroupByFieldsAlertState AlertsSummaryGroupByFields = "alertState"
-	// AlertsSummaryGroupByFieldsMonitorCondition ...
-	AlertsSummaryGroupByFieldsMonitorCondition AlertsSummaryGroupByFields = "monitorCondition"
-	// AlertsSummaryGroupByFieldsMonitorService ...
-	AlertsSummaryGroupByFieldsMonitorService AlertsSummaryGroupByFields = "monitorService"
-	// AlertsSummaryGroupByFieldsSeverity ...
-	AlertsSummaryGroupByFieldsSeverity AlertsSummaryGroupByFields = "severity"
-	// AlertsSummaryGroupByFieldsSignalType ...
-	AlertsSummaryGroupByFieldsSignalType AlertsSummaryGroupByFields = "signalType"
-)
-
-// PossibleAlertsSummaryGroupByFieldsValues returns an array of possible values for the AlertsSummaryGroupByFields const type.
-func PossibleAlertsSummaryGroupByFieldsValues() []AlertsSummaryGroupByFields {
-	return []AlertsSummaryGroupByFields{AlertsSummaryGroupByFieldsAlertRule, AlertsSummaryGroupByFieldsAlertState, AlertsSummaryGroupByFieldsMonitorCondition, AlertsSummaryGroupByFieldsMonitorService, AlertsSummaryGroupByFieldsSeverity, AlertsSummaryGroupByFieldsSignalType}
-}
-
-// AlertState enumerates the values for alert state.
-type AlertState string
-
-const (
-	// AlertStateAcknowledged ...
-	AlertStateAcknowledged AlertState = "Acknowledged"
-	// AlertStateClosed ...
-	AlertStateClosed AlertState = "Closed"
-	// AlertStateNew ...
-	AlertStateNew AlertState = "New"
-)
-
-// PossibleAlertStateValues returns an array of possible values for the AlertState const type.
-func PossibleAlertStateValues() []AlertState {
-	return []AlertState{AlertStateAcknowledged, AlertStateClosed, AlertStateNew}
-}
-
-// MonitorCondition enumerates the values for monitor condition.
-type MonitorCondition string
-
-const (
-	// Fired ...
-	Fired MonitorCondition = "Fired"
-	// Resolved ...
-	Resolved MonitorCondition = "Resolved"
-)
-
-// PossibleMonitorConditionValues returns an array of possible values for the MonitorCondition const type.
-func PossibleMonitorConditionValues() []MonitorCondition {
-	return []MonitorCondition{Fired, Resolved}
-}
-
-// MonitorService enumerates the values for monitor service.
-type MonitorService string
-
-const (
-	// ActivityLogAdministrative ...
-	ActivityLogAdministrative MonitorService = "ActivityLog Administrative"
-	// ActivityLogAutoscale ...
-	ActivityLogAutoscale MonitorService = "ActivityLog Autoscale"
-	// ActivityLogPolicy ...
-	ActivityLogPolicy MonitorService = "ActivityLog Policy"
-	// ActivityLogRecommendation ...
-	ActivityLogRecommendation MonitorService = "ActivityLog Recommendation"
-	// ActivityLogSecurity ...
-	ActivityLogSecurity MonitorService = "ActivityLog Security"
-	// ApplicationInsights ...
-	ApplicationInsights MonitorService = "Application Insights"
-	// LogAnalytics ...
-	LogAnalytics MonitorService = "Log Analytics"
-	// Nagios ...
-	Nagios MonitorService = "Nagios"
-	// Platform ...
-	Platform MonitorService = "Platform"
-	// ResourceHealth ...
-	ResourceHealth MonitorService = "Resource Health"
-	// SCOM ...
-	SCOM MonitorService = "SCOM"
-	// ServiceHealth ...
-	ServiceHealth MonitorService = "ServiceHealth"
-	// SmartDetector ...
-	SmartDetector MonitorService = "SmartDetector"
-	// VMInsights ...
-	VMInsights MonitorService = "VM Insights"
-	// Zabbix ...
-	Zabbix MonitorService = "Zabbix"
-)
-
-// PossibleMonitorServiceValues returns an array of possible values for the MonitorService const type.
-func PossibleMonitorServiceValues() []MonitorService {
-	return []MonitorService{ActivityLogAdministrative, ActivityLogAutoscale, ActivityLogPolicy, ActivityLogRecommendation, ActivityLogSecurity, ApplicationInsights, LogAnalytics, Nagios, Platform, ResourceHealth, SCOM, ServiceHealth, SmartDetector, VMInsights, Zabbix}
-}
-
-// Severity enumerates the values for severity.
-type Severity string
-
-const (
-	// Sev0 ...
-	Sev0 Severity = "Sev0"
-	// Sev1 ...
-	Sev1 Severity = "Sev1"
-	// Sev2 ...
-	Sev2 Severity = "Sev2"
-	// Sev3 ...
-	Sev3 Severity = "Sev3"
-	// Sev4 ...
-	Sev4 Severity = "Sev4"
-)
-
-// PossibleSeverityValues returns an array of possible values for the Severity const type.
-func PossibleSeverityValues() []Severity {
-	return []Severity{Sev0, Sev1, Sev2, Sev3, Sev4}
-}
-
-// SignalType enumerates the values for signal type.
-type SignalType string
-
-const (
-	// Log ...
-	Log SignalType = "Log"
-	// Metric ...
-	Metric SignalType = "Metric"
-	// Unknown ...
-	Unknown SignalType = "Unknown"
-)
-
-// PossibleSignalTypeValues returns an array of possible values for the SignalType const type.
-func PossibleSignalTypeValues() []SignalType {
-	return []SignalType{Log, Metric, Unknown}
-}
-
-// SmartGroupModificationEvent enumerates the values for smart group modification event.
-type SmartGroupModificationEvent string
-
-const (
-	// SmartGroupModificationEventAlertAdded ...
-	SmartGroupModificationEventAlertAdded SmartGroupModificationEvent = "AlertAdded"
-	// SmartGroupModificationEventAlertRemoved ...
-	SmartGroupModificationEventAlertRemoved SmartGroupModificationEvent = "AlertRemoved"
-	// SmartGroupModificationEventSmartGroupCreated ...
-	SmartGroupModificationEventSmartGroupCreated SmartGroupModificationEvent = "SmartGroupCreated"
-	// SmartGroupModificationEventStateChange ...
-	SmartGroupModificationEventStateChange SmartGroupModificationEvent = "StateChange"
-)
-
-// PossibleSmartGroupModificationEventValues returns an array of possible values for the SmartGroupModificationEvent const type.
-func PossibleSmartGroupModificationEventValues() []SmartGroupModificationEvent {
-	return []SmartGroupModificationEvent{SmartGroupModificationEventAlertAdded, SmartGroupModificationEventAlertRemoved, SmartGroupModificationEventSmartGroupCreated, SmartGroupModificationEventStateChange}
-}
-
-// SmartGroupsSortByFields enumerates the values for smart groups sort by fields.
-type SmartGroupsSortByFields string
-
-const (
-	// SmartGroupsSortByFieldsAlertsCount ...
-	SmartGroupsSortByFieldsAlertsCount SmartGroupsSortByFields = "alertsCount"
-	// SmartGroupsSortByFieldsLastModifiedDateTime ...
-	SmartGroupsSortByFieldsLastModifiedDateTime SmartGroupsSortByFields = "lastModifiedDateTime"
-	// SmartGroupsSortByFieldsSeverity ...
-	SmartGroupsSortByFieldsSeverity SmartGroupsSortByFields = "severity"
-	// SmartGroupsSortByFieldsStartDateTime ...
-	SmartGroupsSortByFieldsStartDateTime SmartGroupsSortByFields = "startDateTime"
-	// SmartGroupsSortByFieldsState ...
-	SmartGroupsSortByFieldsState SmartGroupsSortByFields = "state"
-)
-
-// PossibleSmartGroupsSortByFieldsValues returns an array of possible values for the SmartGroupsSortByFields const type.
-func PossibleSmartGroupsSortByFieldsValues() []SmartGroupsSortByFields {
-	return []SmartGroupsSortByFields{SmartGroupsSortByFieldsAlertsCount, SmartGroupsSortByFieldsLastModifiedDateTime, SmartGroupsSortByFieldsSeverity, SmartGroupsSortByFieldsStartDateTime, SmartGroupsSortByFieldsState}
-}
-
-// State enumerates the values for state.
-type State string
-
-const (
-	// StateAcknowledged ...
-	StateAcknowledged State = "Acknowledged"
-	// StateClosed ...
-	StateClosed State = "Closed"
-	// StateNew ...
-	StateNew State = "New"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{StateAcknowledged, StateClosed, StateNew}
-}
-
-// TimeRange enumerates the values for time range.
-type TimeRange string
-
-const (
-	// Oned ...
-	Oned TimeRange = "1d"
-	// Oneh ...
-	Oneh TimeRange = "1h"
-	// Sevend ...
-	Sevend TimeRange = "7d"
-	// ThreeZerod ...
-	ThreeZerod TimeRange = "30d"
-)
-
-// PossibleTimeRangeValues returns an array of possible values for the TimeRange const type.
-func PossibleTimeRangeValues() []TimeRange {
-	return []TimeRange{Oned, Oneh, Sevend, ThreeZerod}
-}
-
 // ActionGroupsInformation the Action Groups information, used by the alert rule.
 type ActionGroupsInformation struct {
 	// CustomEmailSubject - An optional custom email subject to use in email notifications.
@@ -325,6 +52,15 @@ type Alert struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Alert.
+func (a Alert) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if a.Properties != nil {
+		objectMap["properties"] = a.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // AlertModification alert Modification details
 type AlertModification struct {
 	autorest.Response `json:"-"`
@@ -335,6 +71,15 @@ type AlertModification struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AlertModification.
+func (am AlertModification) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if am.Properties != nil {
+		objectMap["properties"] = am.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // AlertModificationItem alert modification item.
@@ -361,6 +106,15 @@ type AlertModificationProperties struct {
 	AlertID *string `json:"alertId,omitempty"`
 	// Modifications - Modification details
 	Modifications *[]AlertModificationItem `json:"modifications,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AlertModificationProperties.
+func (amp AlertModificationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if amp.Modifications != nil {
+		objectMap["modifications"] = amp.Modifications
+	}
+	return json.Marshal(objectMap)
 }
 
 // AlertProperties alert property bag
@@ -540,10 +294,15 @@ func (arl AlertRulesList) IsEmpty() bool {
 	return arl.Value == nil || len(*arl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (arl AlertRulesList) hasNextLink() bool {
+	return arl.NextLink != nil && len(*arl.NextLink) != 0
+}
+
 // alertRulesListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (arl AlertRulesList) alertRulesListPreparer(ctx context.Context) (*http.Request, error) {
-	if arl.NextLink == nil || len(to.String(arl.NextLink)) < 1 {
+	if !arl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -571,11 +330,16 @@ func (page *AlertRulesListPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.arl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.arl)
+		if err != nil {
+			return err
+		}
+		page.arl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.arl = next
 	return nil
 }
 
@@ -686,10 +450,15 @@ func (al AlertsList) IsEmpty() bool {
 	return al.Value == nil || len(*al.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (al AlertsList) hasNextLink() bool {
+	return al.NextLink != nil && len(*al.NextLink) != 0
+}
+
 // alertsListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (al AlertsList) alertsListPreparer(ctx context.Context) (*http.Request, error) {
-	if al.NextLink == nil || len(to.String(al.NextLink)) < 1 {
+	if !al.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -717,11 +486,16 @@ func (page *AlertsListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.al)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.al)
+		if err != nil {
+			return err
+		}
+		page.al = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.al = next
 	return nil
 }
 
@@ -767,6 +541,15 @@ type AlertsSummary struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AlertsSummary.
+func (as AlertsSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if as.Properties != nil {
+		objectMap["properties"] = as.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // AlertsSummaryGroup group the result set.
 type AlertsSummaryGroup struct {
 	// Total - Total count of the result set.
@@ -801,8 +584,7 @@ type AzureResource struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// Detector the detector information. By default this is not populated, unless it's specified in
-// expandDetector
+// Detector the detector information. By default this is not populated, unless it's specified in expandDetector
 type Detector struct {
 	// ID - The detector id.
 	ID *string `json:"id,omitempty"`
@@ -895,6 +677,24 @@ type Essentials struct {
 	MonitorConditionResolvedDateTime *date.Time `json:"monitorConditionResolvedDateTime,omitempty"`
 	// LastModifiedUserName - READ-ONLY; User who last modified the alert, in case of monitor service updates user would be 'system', otherwise name of the user.
 	LastModifiedUserName *string `json:"lastModifiedUserName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Essentials.
+func (e Essentials) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if e.TargetResource != nil {
+		objectMap["targetResource"] = e.TargetResource
+	}
+	if e.TargetResourceName != nil {
+		objectMap["targetResourceName"] = e.TargetResourceName
+	}
+	if e.TargetResourceGroup != nil {
+		objectMap["targetResourceGroup"] = e.TargetResourceGroup
+	}
+	if e.TargetResourceType != nil {
+		objectMap["targetResourceType"] = e.TargetResourceType
+	}
+	return json.Marshal(objectMap)
 }
 
 // Operation operation provided by provider
@@ -994,10 +794,15 @@ func (ol OperationsList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OperationsList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // operationsListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OperationsList) operationsListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1025,11 +830,16 @@ func (page *OperationsListPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 
@@ -1173,6 +983,15 @@ type SmartGroupModification struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SmartGroupModification.
+func (sgm SmartGroupModification) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sgm.Properties != nil {
+		objectMap["properties"] = sgm.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // SmartGroupModificationItem smartGroup modification item.
 type SmartGroupModificationItem struct {
 	// ModificationEvent - Reason for the modification. Possible values include: 'SmartGroupModificationEventSmartGroupCreated', 'SmartGroupModificationEventStateChange', 'SmartGroupModificationEventAlertAdded', 'SmartGroupModificationEventAlertRemoved'
@@ -1199,6 +1018,18 @@ type SmartGroupModificationProperties struct {
 	Modifications *[]SmartGroupModificationItem `json:"modifications,omitempty"`
 	// NextLink - URL to fetch the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SmartGroupModificationProperties.
+func (sgmp SmartGroupModificationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sgmp.Modifications != nil {
+		objectMap["modifications"] = sgmp.Modifications
+	}
+	if sgmp.NextLink != nil {
+		objectMap["nextLink"] = sgmp.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // SmartGroupProperties properties of smart group.
@@ -1231,6 +1062,39 @@ type SmartGroupProperties struct {
 	AlertSeverities *[]SmartGroupAggregatedProperty `json:"alertSeverities,omitempty"`
 	// NextLink - The URI to fetch the next page of alerts. Call ListNext() with this URI to fetch the next page alerts.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SmartGroupProperties.
+func (sgp SmartGroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sgp.AlertsCount != nil {
+		objectMap["alertsCount"] = sgp.AlertsCount
+	}
+	if sgp.Resources != nil {
+		objectMap["resources"] = sgp.Resources
+	}
+	if sgp.ResourceTypes != nil {
+		objectMap["resourceTypes"] = sgp.ResourceTypes
+	}
+	if sgp.ResourceGroups != nil {
+		objectMap["resourceGroups"] = sgp.ResourceGroups
+	}
+	if sgp.MonitorServices != nil {
+		objectMap["monitorServices"] = sgp.MonitorServices
+	}
+	if sgp.MonitorConditions != nil {
+		objectMap["monitorConditions"] = sgp.MonitorConditions
+	}
+	if sgp.AlertStates != nil {
+		objectMap["alertStates"] = sgp.AlertStates
+	}
+	if sgp.AlertSeverities != nil {
+		objectMap["alertSeverities"] = sgp.AlertSeverities
+	}
+	if sgp.NextLink != nil {
+		objectMap["nextLink"] = sgp.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // SmartGroupsList list the alerts.

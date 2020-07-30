@@ -454,6 +454,9 @@ func (client CertificatesClient) GetCertificates(ctx context.Context, resourceGr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificatesClient", "GetCertificates", resp, "Failure responding to request")
 	}
+	if result.cc.hasNextLink() && result.cc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

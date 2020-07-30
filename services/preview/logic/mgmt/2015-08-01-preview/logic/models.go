@@ -30,330 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-08-01-preview/logic"
 
-// AgreementType enumerates the values for agreement type.
-type AgreementType string
-
-const (
-	// AS2 ...
-	AS2 AgreementType = "AS2"
-	// Edifact ...
-	Edifact AgreementType = "Edifact"
-	// NotSpecified ...
-	NotSpecified AgreementType = "NotSpecified"
-	// X12 ...
-	X12 AgreementType = "X12"
-)
-
-// PossibleAgreementTypeValues returns an array of possible values for the AgreementType const type.
-func PossibleAgreementTypeValues() []AgreementType {
-	return []AgreementType{AS2, Edifact, NotSpecified, X12}
-}
-
-// EdifactCharacterSet enumerates the values for edifact character set.
-type EdifactCharacterSet string
-
-const (
-	// EdifactCharacterSetKECA ...
-	EdifactCharacterSetKECA EdifactCharacterSet = "KECA"
-	// EdifactCharacterSetNotSpecified ...
-	EdifactCharacterSetNotSpecified EdifactCharacterSet = "NotSpecified"
-	// EdifactCharacterSetUNOA ...
-	EdifactCharacterSetUNOA EdifactCharacterSet = "UNOA"
-	// EdifactCharacterSetUNOB ...
-	EdifactCharacterSetUNOB EdifactCharacterSet = "UNOB"
-	// EdifactCharacterSetUNOC ...
-	EdifactCharacterSetUNOC EdifactCharacterSet = "UNOC"
-	// EdifactCharacterSetUNOD ...
-	EdifactCharacterSetUNOD EdifactCharacterSet = "UNOD"
-	// EdifactCharacterSetUNOE ...
-	EdifactCharacterSetUNOE EdifactCharacterSet = "UNOE"
-	// EdifactCharacterSetUNOF ...
-	EdifactCharacterSetUNOF EdifactCharacterSet = "UNOF"
-	// EdifactCharacterSetUNOG ...
-	EdifactCharacterSetUNOG EdifactCharacterSet = "UNOG"
-	// EdifactCharacterSetUNOH ...
-	EdifactCharacterSetUNOH EdifactCharacterSet = "UNOH"
-	// EdifactCharacterSetUNOI ...
-	EdifactCharacterSetUNOI EdifactCharacterSet = "UNOI"
-	// EdifactCharacterSetUNOJ ...
-	EdifactCharacterSetUNOJ EdifactCharacterSet = "UNOJ"
-	// EdifactCharacterSetUNOK ...
-	EdifactCharacterSetUNOK EdifactCharacterSet = "UNOK"
-	// EdifactCharacterSetUNOX ...
-	EdifactCharacterSetUNOX EdifactCharacterSet = "UNOX"
-	// EdifactCharacterSetUNOY ...
-	EdifactCharacterSetUNOY EdifactCharacterSet = "UNOY"
-)
-
-// PossibleEdifactCharacterSetValues returns an array of possible values for the EdifactCharacterSet const type.
-func PossibleEdifactCharacterSetValues() []EdifactCharacterSet {
-	return []EdifactCharacterSet{EdifactCharacterSetKECA, EdifactCharacterSetNotSpecified, EdifactCharacterSetUNOA, EdifactCharacterSetUNOB, EdifactCharacterSetUNOC, EdifactCharacterSetUNOD, EdifactCharacterSetUNOE, EdifactCharacterSetUNOF, EdifactCharacterSetUNOG, EdifactCharacterSetUNOH, EdifactCharacterSetUNOI, EdifactCharacterSetUNOJ, EdifactCharacterSetUNOK, EdifactCharacterSetUNOX, EdifactCharacterSetUNOY}
-}
-
-// EdifactDecimalIndicator enumerates the values for edifact decimal indicator.
-type EdifactDecimalIndicator string
-
-const (
-	// EdifactDecimalIndicatorComma ...
-	EdifactDecimalIndicatorComma EdifactDecimalIndicator = "Comma"
-	// EdifactDecimalIndicatorDecimal ...
-	EdifactDecimalIndicatorDecimal EdifactDecimalIndicator = "Decimal"
-	// EdifactDecimalIndicatorNotSpecified ...
-	EdifactDecimalIndicatorNotSpecified EdifactDecimalIndicator = "NotSpecified"
-)
-
-// PossibleEdifactDecimalIndicatorValues returns an array of possible values for the EdifactDecimalIndicator const type.
-func PossibleEdifactDecimalIndicatorValues() []EdifactDecimalIndicator {
-	return []EdifactDecimalIndicator{EdifactDecimalIndicatorComma, EdifactDecimalIndicatorDecimal, EdifactDecimalIndicatorNotSpecified}
-}
-
-// EncryptionAlgorithm enumerates the values for encryption algorithm.
-type EncryptionAlgorithm string
-
-const (
-	// EncryptionAlgorithmAES128 ...
-	EncryptionAlgorithmAES128 EncryptionAlgorithm = "AES128"
-	// EncryptionAlgorithmAES192 ...
-	EncryptionAlgorithmAES192 EncryptionAlgorithm = "AES192"
-	// EncryptionAlgorithmAES256 ...
-	EncryptionAlgorithmAES256 EncryptionAlgorithm = "AES256"
-	// EncryptionAlgorithmDES3 ...
-	EncryptionAlgorithmDES3 EncryptionAlgorithm = "DES3"
-	// EncryptionAlgorithmNone ...
-	EncryptionAlgorithmNone EncryptionAlgorithm = "None"
-	// EncryptionAlgorithmNotSpecified ...
-	EncryptionAlgorithmNotSpecified EncryptionAlgorithm = "NotSpecified"
-	// EncryptionAlgorithmRC2 ...
-	EncryptionAlgorithmRC2 EncryptionAlgorithm = "RC2"
-)
-
-// PossibleEncryptionAlgorithmValues returns an array of possible values for the EncryptionAlgorithm const type.
-func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
-	return []EncryptionAlgorithm{EncryptionAlgorithmAES128, EncryptionAlgorithmAES192, EncryptionAlgorithmAES256, EncryptionAlgorithmDES3, EncryptionAlgorithmNone, EncryptionAlgorithmNotSpecified, EncryptionAlgorithmRC2}
-}
-
-// HashingAlgorithm enumerates the values for hashing algorithm.
-type HashingAlgorithm string
-
-const (
-	// HashingAlgorithmNone ...
-	HashingAlgorithmNone HashingAlgorithm = "None"
-	// HashingAlgorithmNotSpecified ...
-	HashingAlgorithmNotSpecified HashingAlgorithm = "NotSpecified"
-	// HashingAlgorithmSHA2256 ...
-	HashingAlgorithmSHA2256 HashingAlgorithm = "SHA2256"
-	// HashingAlgorithmSHA2384 ...
-	HashingAlgorithmSHA2384 HashingAlgorithm = "SHA2384"
-	// HashingAlgorithmSHA2512 ...
-	HashingAlgorithmSHA2512 HashingAlgorithm = "SHA2512"
-)
-
-// PossibleHashingAlgorithmValues returns an array of possible values for the HashingAlgorithm const type.
-func PossibleHashingAlgorithmValues() []HashingAlgorithm {
-	return []HashingAlgorithm{HashingAlgorithmNone, HashingAlgorithmNotSpecified, HashingAlgorithmSHA2256, HashingAlgorithmSHA2384, HashingAlgorithmSHA2512}
-}
-
-// MapType enumerates the values for map type.
-type MapType string
-
-const (
-	// MapTypeNotSpecified ...
-	MapTypeNotSpecified MapType = "NotSpecified"
-	// MapTypeXslt ...
-	MapTypeXslt MapType = "Xslt"
-)
-
-// PossibleMapTypeValues returns an array of possible values for the MapType const type.
-func PossibleMapTypeValues() []MapType {
-	return []MapType{MapTypeNotSpecified, MapTypeXslt}
-}
-
-// MessageFilterType enumerates the values for message filter type.
-type MessageFilterType string
-
-const (
-	// MessageFilterTypeExclude ...
-	MessageFilterTypeExclude MessageFilterType = "Exclude"
-	// MessageFilterTypeInclude ...
-	MessageFilterTypeInclude MessageFilterType = "Include"
-	// MessageFilterTypeNotSpecified ...
-	MessageFilterTypeNotSpecified MessageFilterType = "NotSpecified"
-)
-
-// PossibleMessageFilterTypeValues returns an array of possible values for the MessageFilterType const type.
-func PossibleMessageFilterTypeValues() []MessageFilterType {
-	return []MessageFilterType{MessageFilterTypeExclude, MessageFilterTypeInclude, MessageFilterTypeNotSpecified}
-}
-
-// PartnerType enumerates the values for partner type.
-type PartnerType string
-
-const (
-	// PartnerTypeB2B ...
-	PartnerTypeB2B PartnerType = "B2B"
-	// PartnerTypeNotSpecified ...
-	PartnerTypeNotSpecified PartnerType = "NotSpecified"
-)
-
-// PossiblePartnerTypeValues returns an array of possible values for the PartnerType const type.
-func PossiblePartnerTypeValues() []PartnerType {
-	return []PartnerType{PartnerTypeB2B, PartnerTypeNotSpecified}
-}
-
-// SchemaType enumerates the values for schema type.
-type SchemaType string
-
-const (
-	// SchemaTypeNotSpecified ...
-	SchemaTypeNotSpecified SchemaType = "NotSpecified"
-	// SchemaTypeXML ...
-	SchemaTypeXML SchemaType = "Xml"
-)
-
-// PossibleSchemaTypeValues returns an array of possible values for the SchemaType const type.
-func PossibleSchemaTypeValues() []SchemaType {
-	return []SchemaType{SchemaTypeNotSpecified, SchemaTypeXML}
-}
-
-// SegmentTerminatorSuffix enumerates the values for segment terminator suffix.
-type SegmentTerminatorSuffix string
-
-const (
-	// SegmentTerminatorSuffixCR ...
-	SegmentTerminatorSuffixCR SegmentTerminatorSuffix = "CR"
-	// SegmentTerminatorSuffixCRLF ...
-	SegmentTerminatorSuffixCRLF SegmentTerminatorSuffix = "CRLF"
-	// SegmentTerminatorSuffixLF ...
-	SegmentTerminatorSuffixLF SegmentTerminatorSuffix = "LF"
-	// SegmentTerminatorSuffixNone ...
-	SegmentTerminatorSuffixNone SegmentTerminatorSuffix = "None"
-	// SegmentTerminatorSuffixNotSpecified ...
-	SegmentTerminatorSuffixNotSpecified SegmentTerminatorSuffix = "NotSpecified"
-)
-
-// PossibleSegmentTerminatorSuffixValues returns an array of possible values for the SegmentTerminatorSuffix const type.
-func PossibleSegmentTerminatorSuffixValues() []SegmentTerminatorSuffix {
-	return []SegmentTerminatorSuffix{SegmentTerminatorSuffixCR, SegmentTerminatorSuffixCRLF, SegmentTerminatorSuffixLF, SegmentTerminatorSuffixNone, SegmentTerminatorSuffixNotSpecified}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// SkuNameBasic ...
-	SkuNameBasic SkuName = "Basic"
-	// SkuNameFree ...
-	SkuNameFree SkuName = "Free"
-	// SkuNameNotSpecified ...
-	SkuNameNotSpecified SkuName = "NotSpecified"
-	// SkuNamePremium ...
-	SkuNamePremium SkuName = "Premium"
-	// SkuNameShared ...
-	SkuNameShared SkuName = "Shared"
-	// SkuNameStandard ...
-	SkuNameStandard SkuName = "Standard"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{SkuNameBasic, SkuNameFree, SkuNameNotSpecified, SkuNamePremium, SkuNameShared, SkuNameStandard}
-}
-
-// TrailingSeparatorPolicy enumerates the values for trailing separator policy.
-type TrailingSeparatorPolicy string
-
-const (
-	// TrailingSeparatorPolicyMandatory ...
-	TrailingSeparatorPolicyMandatory TrailingSeparatorPolicy = "Mandatory"
-	// TrailingSeparatorPolicyNotAllowed ...
-	TrailingSeparatorPolicyNotAllowed TrailingSeparatorPolicy = "NotAllowed"
-	// TrailingSeparatorPolicyNotSpecified ...
-	TrailingSeparatorPolicyNotSpecified TrailingSeparatorPolicy = "NotSpecified"
-	// TrailingSeparatorPolicyOptional ...
-	TrailingSeparatorPolicyOptional TrailingSeparatorPolicy = "Optional"
-)
-
-// PossibleTrailingSeparatorPolicyValues returns an array of possible values for the TrailingSeparatorPolicy const type.
-func PossibleTrailingSeparatorPolicyValues() []TrailingSeparatorPolicy {
-	return []TrailingSeparatorPolicy{TrailingSeparatorPolicyMandatory, TrailingSeparatorPolicyNotAllowed, TrailingSeparatorPolicyNotSpecified, TrailingSeparatorPolicyOptional}
-}
-
-// UsageIndicator enumerates the values for usage indicator.
-type UsageIndicator string
-
-const (
-	// UsageIndicatorInformation ...
-	UsageIndicatorInformation UsageIndicator = "Information"
-	// UsageIndicatorNotSpecified ...
-	UsageIndicatorNotSpecified UsageIndicator = "NotSpecified"
-	// UsageIndicatorProduction ...
-	UsageIndicatorProduction UsageIndicator = "Production"
-	// UsageIndicatorTest ...
-	UsageIndicatorTest UsageIndicator = "Test"
-)
-
-// PossibleUsageIndicatorValues returns an array of possible values for the UsageIndicator const type.
-func PossibleUsageIndicatorValues() []UsageIndicator {
-	return []UsageIndicator{UsageIndicatorInformation, UsageIndicatorNotSpecified, UsageIndicatorProduction, UsageIndicatorTest}
-}
-
-// X12CharacterSet enumerates the values for x12 character set.
-type X12CharacterSet string
-
-const (
-	// X12CharacterSetBasic ...
-	X12CharacterSetBasic X12CharacterSet = "Basic"
-	// X12CharacterSetExtended ...
-	X12CharacterSetExtended X12CharacterSet = "Extended"
-	// X12CharacterSetNotSpecified ...
-	X12CharacterSetNotSpecified X12CharacterSet = "NotSpecified"
-	// X12CharacterSetUTF8 ...
-	X12CharacterSetUTF8 X12CharacterSet = "UTF8"
-)
-
-// PossibleX12CharacterSetValues returns an array of possible values for the X12CharacterSet const type.
-func PossibleX12CharacterSetValues() []X12CharacterSet {
-	return []X12CharacterSet{X12CharacterSetBasic, X12CharacterSetExtended, X12CharacterSetNotSpecified, X12CharacterSetUTF8}
-}
-
-// X12DateFormat enumerates the values for x12 date format.
-type X12DateFormat string
-
-const (
-	// X12DateFormatCCYYMMDD ...
-	X12DateFormatCCYYMMDD X12DateFormat = "CCYYMMDD"
-	// X12DateFormatNotSpecified ...
-	X12DateFormatNotSpecified X12DateFormat = "NotSpecified"
-	// X12DateFormatYYMMDD ...
-	X12DateFormatYYMMDD X12DateFormat = "YYMMDD"
-)
-
-// PossibleX12DateFormatValues returns an array of possible values for the X12DateFormat const type.
-func PossibleX12DateFormatValues() []X12DateFormat {
-	return []X12DateFormat{X12DateFormatCCYYMMDD, X12DateFormatNotSpecified, X12DateFormatYYMMDD}
-}
-
-// X12TimeFormat enumerates the values for x12 time format.
-type X12TimeFormat string
-
-const (
-	// X12TimeFormatHHMM ...
-	X12TimeFormatHHMM X12TimeFormat = "HHMM"
-	// X12TimeFormatHHMMSS ...
-	X12TimeFormatHHMMSS X12TimeFormat = "HHMMSS"
-	// X12TimeFormatHHMMSSd ...
-	X12TimeFormatHHMMSSd X12TimeFormat = "HHMMSSd"
-	// X12TimeFormatHHMMSSdd ...
-	X12TimeFormatHHMMSSdd X12TimeFormat = "HHMMSSdd"
-	// X12TimeFormatNotSpecified ...
-	X12TimeFormatNotSpecified X12TimeFormat = "NotSpecified"
-)
-
-// PossibleX12TimeFormatValues returns an array of possible values for the X12TimeFormat const type.
-func PossibleX12TimeFormatValues() []X12TimeFormat {
-	return []X12TimeFormat{X12TimeFormatHHMM, X12TimeFormatHHMMSS, X12TimeFormatHHMMSSd, X12TimeFormatHHMMSSdd, X12TimeFormatNotSpecified}
-}
-
 // AgreementContent ...
 type AgreementContent struct {
 	// AS2 - The AS2 agreement content.
@@ -1103,10 +779,15 @@ func (iaalr IntegrationAccountAgreementListResult) IsEmpty() bool {
 	return iaalr.Value == nil || len(*iaalr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (iaalr IntegrationAccountAgreementListResult) hasNextLink() bool {
+	return iaalr.NextLink != nil && len(*iaalr.NextLink) != 0
+}
+
 // integrationAccountAgreementListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (iaalr IntegrationAccountAgreementListResult) integrationAccountAgreementListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if iaalr.NextLink == nil || len(to.String(iaalr.NextLink)) < 1 {
+	if !iaalr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1134,11 +815,16 @@ func (page *IntegrationAccountAgreementListResultPage) NextWithContext(ctx conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.iaalr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.iaalr)
+		if err != nil {
+			return err
+		}
+		page.iaalr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.iaalr = next
 	return nil
 }
 
@@ -1192,6 +878,33 @@ type IntegrationAccountAgreementProperties struct {
 	GuestIdentity *BusinessIdentity `json:"guestIdentity,omitempty"`
 	// Content - The agreement content.
 	Content *AgreementContent `json:"content,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationAccountAgreementProperties.
+func (iaap IntegrationAccountAgreementProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iaap.Metadata != nil {
+		objectMap["metadata"] = iaap.Metadata
+	}
+	if iaap.AgreementType != "" {
+		objectMap["agreementType"] = iaap.AgreementType
+	}
+	if iaap.HostPartner != nil {
+		objectMap["hostPartner"] = iaap.HostPartner
+	}
+	if iaap.GuestPartner != nil {
+		objectMap["guestPartner"] = iaap.GuestPartner
+	}
+	if iaap.HostIdentity != nil {
+		objectMap["hostIdentity"] = iaap.HostIdentity
+	}
+	if iaap.GuestIdentity != nil {
+		objectMap["guestIdentity"] = iaap.GuestIdentity
+	}
+	if iaap.Content != nil {
+		objectMap["content"] = iaap.Content
+	}
+	return json.Marshal(objectMap)
 }
 
 // IntegrationAccountCertificate ...
@@ -1382,10 +1095,15 @@ func (iaclr IntegrationAccountCertificateListResult) IsEmpty() bool {
 	return iaclr.Value == nil || len(*iaclr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (iaclr IntegrationAccountCertificateListResult) hasNextLink() bool {
+	return iaclr.NextLink != nil && len(*iaclr.NextLink) != 0
+}
+
 // integrationAccountCertificateListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (iaclr IntegrationAccountCertificateListResult) integrationAccountCertificateListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if iaclr.NextLink == nil || len(to.String(iaclr.NextLink)) < 1 {
+	if !iaclr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1413,11 +1131,16 @@ func (page *IntegrationAccountCertificateListResultPage) NextWithContext(ctx con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.iaclr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.iaclr)
+		if err != nil {
+			return err
+		}
+		page.iaclr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.iaclr = next
 	return nil
 }
 
@@ -1463,6 +1186,21 @@ type IntegrationAccountCertificateProperties struct {
 	Key *KeyVaultKeyReference `json:"key,omitempty"`
 	// PublicCertificate - The public certificate.
 	PublicCertificate *string `json:"publicCertificate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationAccountCertificateProperties.
+func (iacp IntegrationAccountCertificateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iacp.Metadata != nil {
+		objectMap["metadata"] = iacp.Metadata
+	}
+	if iacp.Key != nil {
+		objectMap["key"] = iacp.Key
+	}
+	if iacp.PublicCertificate != nil {
+		objectMap["publicCertificate"] = iacp.PublicCertificate
+	}
+	return json.Marshal(objectMap)
 }
 
 // IntegrationAccountContentHash ...
@@ -1564,10 +1302,15 @@ func (ialr IntegrationAccountListResult) IsEmpty() bool {
 	return ialr.Value == nil || len(*ialr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ialr IntegrationAccountListResult) hasNextLink() bool {
+	return ialr.NextLink != nil && len(*ialr.NextLink) != 0
+}
+
 // integrationAccountListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ialr IntegrationAccountListResult) integrationAccountListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ialr.NextLink == nil || len(to.String(ialr.NextLink)) < 1 {
+	if !ialr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1595,11 +1338,16 @@ func (page *IntegrationAccountListResultPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ialr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ialr)
+		if err != nil {
+			return err
+		}
+		page.ialr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ialr = next
 	return nil
 }
 
@@ -1827,10 +1575,15 @@ func (iamlr IntegrationAccountMapListResult) IsEmpty() bool {
 	return iamlr.Value == nil || len(*iamlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (iamlr IntegrationAccountMapListResult) hasNextLink() bool {
+	return iamlr.NextLink != nil && len(*iamlr.NextLink) != 0
+}
+
 // integrationAccountMapListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (iamlr IntegrationAccountMapListResult) integrationAccountMapListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if iamlr.NextLink == nil || len(to.String(iamlr.NextLink)) < 1 {
+	if !iamlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1858,11 +1611,16 @@ func (page *IntegrationAccountMapListResultPage) NextWithContext(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.iamlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.iamlr)
+		if err != nil {
+			return err
+		}
+		page.iamlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.iamlr = next
 	return nil
 }
 
@@ -1912,6 +1670,24 @@ type IntegrationAccountMapProperties struct {
 	ContentLink *IntegrationAccountContentLink `json:"contentLink,omitempty"`
 	// Metadata - The metadata.
 	Metadata interface{} `json:"metadata,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationAccountMapProperties.
+func (iamp IntegrationAccountMapProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iamp.MapType != "" {
+		objectMap["mapType"] = iamp.MapType
+	}
+	if iamp.Content != nil {
+		objectMap["content"] = iamp.Content
+	}
+	if iamp.ContentType != nil {
+		objectMap["contentType"] = iamp.ContentType
+	}
+	if iamp.Metadata != nil {
+		objectMap["metadata"] = iamp.Metadata
+	}
+	return json.Marshal(objectMap)
 }
 
 // IntegrationAccountPartner ...
@@ -2108,10 +1884,15 @@ func (iaplr IntegrationAccountPartnerListResult) IsEmpty() bool {
 	return iaplr.Value == nil || len(*iaplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (iaplr IntegrationAccountPartnerListResult) hasNextLink() bool {
+	return iaplr.NextLink != nil && len(*iaplr.NextLink) != 0
+}
+
 // integrationAccountPartnerListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (iaplr IntegrationAccountPartnerListResult) integrationAccountPartnerListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if iaplr.NextLink == nil || len(to.String(iaplr.NextLink)) < 1 {
+	if !iaplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2139,11 +1920,16 @@ func (page *IntegrationAccountPartnerListResultPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.iaplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.iaplr)
+		if err != nil {
+			return err
+		}
+		page.iaplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.iaplr = next
 	return nil
 }
 
@@ -2189,6 +1975,21 @@ type IntegrationAccountPartnerProperties struct {
 	Metadata interface{} `json:"metadata,omitempty"`
 	// Content - The partner content.
 	Content *PartnerContent `json:"content,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationAccountPartnerProperties.
+func (iapp IntegrationAccountPartnerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iapp.PartnerType != "" {
+		objectMap["partnerType"] = iapp.PartnerType
+	}
+	if iapp.Metadata != nil {
+		objectMap["metadata"] = iapp.Metadata
+	}
+	if iapp.Content != nil {
+		objectMap["content"] = iapp.Content
+	}
+	return json.Marshal(objectMap)
 }
 
 // IntegrationAccountResource ...
@@ -2351,8 +2152,8 @@ type IntegrationAccountSchemaListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// IntegrationAccountSchemaListResultIterator provides access to a complete listing of
-// IntegrationAccountSchema values.
+// IntegrationAccountSchemaListResultIterator provides access to a complete listing of IntegrationAccountSchema
+// values.
 type IntegrationAccountSchemaListResultIterator struct {
 	i    int
 	page IntegrationAccountSchemaListResultPage
@@ -2420,10 +2221,15 @@ func (iaslr IntegrationAccountSchemaListResult) IsEmpty() bool {
 	return iaslr.Value == nil || len(*iaslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (iaslr IntegrationAccountSchemaListResult) hasNextLink() bool {
+	return iaslr.NextLink != nil && len(*iaslr.NextLink) != 0
+}
+
 // integrationAccountSchemaListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (iaslr IntegrationAccountSchemaListResult) integrationAccountSchemaListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if iaslr.NextLink == nil || len(to.String(iaslr.NextLink)) < 1 {
+	if !iaslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2451,11 +2257,16 @@ func (page *IntegrationAccountSchemaListResultPage) NextWithContext(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.iaslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.iaslr)
+		if err != nil {
+			return err
+		}
+		page.iaslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.iaslr = next
 	return nil
 }
 
@@ -2509,6 +2320,27 @@ type IntegrationAccountSchemaProperties struct {
 	Metadata interface{} `json:"metadata,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IntegrationAccountSchemaProperties.
+func (iasp IntegrationAccountSchemaProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iasp.SchemaType != "" {
+		objectMap["schemaType"] = iasp.SchemaType
+	}
+	if iasp.TargetNamespace != nil {
+		objectMap["targetNamespace"] = iasp.TargetNamespace
+	}
+	if iasp.Content != nil {
+		objectMap["content"] = iasp.Content
+	}
+	if iasp.ContentType != nil {
+		objectMap["contentType"] = iasp.ContentType
+	}
+	if iasp.Metadata != nil {
+		objectMap["metadata"] = iasp.Metadata
+	}
+	return json.Marshal(objectMap)
+}
+
 // IntegrationAccountSku ...
 type IntegrationAccountSku struct {
 	// Name - The sku name. Possible values include: 'SkuNameNotSpecified', 'SkuNameFree', 'SkuNameShared', 'SkuNameBasic', 'SkuNameStandard', 'SkuNamePremium'
@@ -2533,6 +2365,15 @@ type KeyVaultKeyReferenceKeyVault struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for KeyVaultKeyReferenceKeyVault.
+func (kvkrV KeyVaultKeyReferenceKeyVault) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if kvkrV.ID != nil {
+		objectMap["id"] = kvkrV.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // ListCallbackURLParameters ...

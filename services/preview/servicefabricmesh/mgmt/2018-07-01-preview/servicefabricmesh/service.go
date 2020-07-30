@@ -152,6 +152,9 @@ func (client ServiceClient) ListByApplicationName(ctx context.Context, resourceG
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.ServiceClient", "ListByApplicationName", resp, "Failure responding to request")
 	}
+	if result.sl.hasNextLink() && result.sl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

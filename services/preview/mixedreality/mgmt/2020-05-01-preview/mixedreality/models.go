@@ -29,68 +29,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/mixedreality/mgmt/2020-05-01-preview/mixedreality"
 
-// NameAvailability enumerates the values for name availability.
-type NameAvailability string
-
-const (
-	// False ...
-	False NameAvailability = "false"
-	// True ...
-	True NameAvailability = "true"
-)
-
-// PossibleNameAvailabilityValues returns an array of possible values for the NameAvailability const type.
-func PossibleNameAvailabilityValues() []NameAvailability {
-	return []NameAvailability{False, True}
-}
-
-// NameUnavailableReason enumerates the values for name unavailable reason.
-type NameUnavailableReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists NameUnavailableReason = "AlreadyExists"
-	// Invalid ...
-	Invalid NameUnavailableReason = "Invalid"
-)
-
-// PossibleNameUnavailableReasonValues returns an array of possible values for the NameUnavailableReason const type.
-func PossibleNameUnavailableReasonValues() []NameUnavailableReason {
-	return []NameUnavailableReason{AlreadyExists, Invalid}
-}
-
-// ResourceIdentityType enumerates the values for resource identity type.
-type ResourceIdentityType string
-
-const (
-	// SystemAssigned ...
-	SystemAssigned ResourceIdentityType = "SystemAssigned"
-)
-
-// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{SystemAssigned}
-}
-
-// SkuTier enumerates the values for sku tier.
-type SkuTier string
-
-const (
-	// Basic ...
-	Basic SkuTier = "Basic"
-	// Free ...
-	Free SkuTier = "Free"
-	// Premium ...
-	Premium SkuTier = "Premium"
-	// Standard ...
-	Standard SkuTier = "Standard"
-)
-
-// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() []SkuTier {
-	return []SkuTier{Basic, Free, Premium, Standard}
-}
-
 // AccountKeyRegenerateRequest request for account key regeneration
 type AccountKeyRegenerateRequest struct {
 	// Serial - serial of key to be regenerated
@@ -172,6 +110,15 @@ type Identity struct {
 	Type ResourceIdentityType `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // Operation REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
@@ -192,8 +139,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationPage result of the request to list Resource Provider operations. It contains a list of
-// operations and a URL link to get the next set of results.
+// OperationPage result of the request to list Resource Provider operations. It contains a list of operations
+// and a URL link to get the next set of results.
 type OperationPage struct {
 	autorest.Response `json:"-"`
 	// Value - List of operations supported by the Resource Provider.
@@ -270,10 +217,15 @@ func (op OperationPage) IsEmpty() bool {
 	return op.Value == nil || len(*op.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (op OperationPage) hasNextLink() bool {
+	return op.NextLink != nil && len(*op.NextLink) != 0
+}
+
 // operationPagePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (op OperationPage) operationPagePreparer(ctx context.Context) (*http.Request, error) {
-	if op.NextLink == nil || len(to.String(op.NextLink)) < 1 {
+	if !op.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -301,11 +253,16 @@ func (page *OperationPagePage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.op)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.op)
+		if err != nil {
+			return err
+		}
+		page.op = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.op = next
 	return nil
 }
 
@@ -488,8 +445,17 @@ type RemoteRenderingAccountIdentity struct {
 	Type ResourceIdentityType `json:"type,omitempty"`
 }
 
-// RemoteRenderingAccountPage result of the request to get resource collection. It contains a list of
-// resources and a URL link to get the next set of results.
+// MarshalJSON is the custom marshaler for RemoteRenderingAccountIdentity.
+func (rra RemoteRenderingAccountIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rra.Type != "" {
+		objectMap["type"] = rra.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// RemoteRenderingAccountPage result of the request to get resource collection. It contains a list of resources
+// and a URL link to get the next set of results.
 type RemoteRenderingAccountPage struct {
 	autorest.Response `json:"-"`
 	// Value - List of resources supported by the Resource Provider.
@@ -498,8 +464,7 @@ type RemoteRenderingAccountPage struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// RemoteRenderingAccountPageIterator provides access to a complete listing of RemoteRenderingAccount
-// values.
+// RemoteRenderingAccountPageIterator provides access to a complete listing of RemoteRenderingAccount values.
 type RemoteRenderingAccountPageIterator struct {
 	i    int
 	page RemoteRenderingAccountPagePage
@@ -567,10 +532,15 @@ func (rrap RemoteRenderingAccountPage) IsEmpty() bool {
 	return rrap.Value == nil || len(*rrap.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rrap RemoteRenderingAccountPage) hasNextLink() bool {
+	return rrap.NextLink != nil && len(*rrap.NextLink) != 0
+}
+
 // remoteRenderingAccountPagePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rrap RemoteRenderingAccountPage) remoteRenderingAccountPagePreparer(ctx context.Context) (*http.Request, error) {
-	if rrap.NextLink == nil || len(to.String(rrap.NextLink)) < 1 {
+	if !rrap.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -598,11 +568,16 @@ func (page *RemoteRenderingAccountPagePage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rrap)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rrap)
+		if err != nil {
+			return err
+		}
+		page.rrap = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rrap = next
 	return nil
 }
 
@@ -647,8 +622,7 @@ type Resource struct {
 }
 
 // ResourceModelWithAllowedPropertySet the resource model definition containing the full set of allowed
-// properties for a resource. Except properties bag, there cannot be a top level property outside of this
-// set.
+// properties for a resource. Except properties bag, there cannot be a top level property outside of this set.
 type ResourceModelWithAllowedPropertySet struct {
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -706,6 +680,15 @@ type ResourceModelWithAllowedPropertySetIdentity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The identity type. Possible values include: 'SystemAssigned'
 	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceModelWithAllowedPropertySetIdentity.
+func (rmwaps ResourceModelWithAllowedPropertySetIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rmwaps.Type != "" {
+		objectMap["type"] = rmwaps.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // ResourceModelWithAllowedPropertySetPlan ...
@@ -851,8 +834,8 @@ func (saa *SpatialAnchorsAccount) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SpatialAnchorsAccountPage result of the request to get resource collection. It contains a list of
-// resources and a URL link to get the next set of results.
+// SpatialAnchorsAccountPage result of the request to get resource collection. It contains a list of resources
+// and a URL link to get the next set of results.
 type SpatialAnchorsAccountPage struct {
 	autorest.Response `json:"-"`
 	// Value - List of resources supported by the Resource Provider.
@@ -929,10 +912,15 @@ func (saap SpatialAnchorsAccountPage) IsEmpty() bool {
 	return saap.Value == nil || len(*saap.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (saap SpatialAnchorsAccountPage) hasNextLink() bool {
+	return saap.NextLink != nil && len(*saap.NextLink) != 0
+}
+
 // spatialAnchorsAccountPagePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (saap SpatialAnchorsAccountPage) spatialAnchorsAccountPagePreparer(ctx context.Context) (*http.Request, error) {
-	if saap.NextLink == nil || len(to.String(saap.NextLink)) < 1 {
+	if !saap.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -960,11 +948,16 @@ func (page *SpatialAnchorsAccountPagePage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.saap)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.saap)
+		if err != nil {
+			return err
+		}
+		page.saap = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.saap = next
 	return nil
 }
 

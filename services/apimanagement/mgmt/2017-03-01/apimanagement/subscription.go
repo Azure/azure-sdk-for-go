@@ -136,8 +136,7 @@ func (client SubscriptionClient) CreateOrUpdatePreparer(ctx context.Context, res
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -145,7 +144,6 @@ func (client SubscriptionClient) CreateOrUpdateSender(req *http.Request) (*http.
 func (client SubscriptionClient) CreateOrUpdateResponder(resp *http.Response) (result SubscriptionContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -230,8 +228,7 @@ func (client SubscriptionClient) DeletePreparer(ctx context.Context, resourceGro
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -239,7 +236,6 @@ func (client SubscriptionClient) DeleteSender(req *http.Request) (*http.Response
 func (client SubscriptionClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -320,8 +316,7 @@ func (client SubscriptionClient) GetPreparer(ctx context.Context, resourceGroupN
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -329,7 +324,6 @@ func (client SubscriptionClient) GetSender(req *http.Request) (*http.Response, e
 func (client SubscriptionClient) GetResponder(resp *http.Response) (result SubscriptionContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -411,8 +405,7 @@ func (client SubscriptionClient) GetEntityTagPreparer(ctx context.Context, resou
 // GetEntityTagSender sends the GetEntityTag request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) GetEntityTagSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetEntityTagResponder handles the response to the GetEntityTag request. The method always
@@ -420,7 +413,6 @@ func (client SubscriptionClient) GetEntityTagSender(req *http.Request) (*http.Re
 func (client SubscriptionClient) GetEntityTagResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -484,6 +476,9 @@ func (client SubscriptionClient) List(ctx context.Context, resourceGroupName str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionClient", "List", resp, "Failure responding to request")
 	}
+	if result.sc.hasNextLink() && result.sc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -521,8 +516,7 @@ func (client SubscriptionClient) ListPreparer(ctx context.Context, resourceGroup
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) ListSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
@@ -530,7 +524,6 @@ func (client SubscriptionClient) ListSender(req *http.Request) (*http.Response, 
 func (client SubscriptionClient) ListResponder(resp *http.Response) (result SubscriptionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -649,8 +642,7 @@ func (client SubscriptionClient) RegeneratePrimaryKeyPreparer(ctx context.Contex
 // RegeneratePrimaryKeySender sends the RegeneratePrimaryKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) RegeneratePrimaryKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RegeneratePrimaryKeyResponder handles the response to the RegeneratePrimaryKey request. The method always
@@ -658,7 +650,6 @@ func (client SubscriptionClient) RegeneratePrimaryKeySender(req *http.Request) (
 func (client SubscriptionClient) RegeneratePrimaryKeyResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -739,8 +730,7 @@ func (client SubscriptionClient) RegenerateSecondaryKeyPreparer(ctx context.Cont
 // RegenerateSecondaryKeySender sends the RegenerateSecondaryKey request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) RegenerateSecondaryKeySender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RegenerateSecondaryKeyResponder handles the response to the RegenerateSecondaryKey request. The method always
@@ -748,7 +738,6 @@ func (client SubscriptionClient) RegenerateSecondaryKeySender(req *http.Request)
 func (client SubscriptionClient) RegenerateSecondaryKeyResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -835,8 +824,7 @@ func (client SubscriptionClient) UpdatePreparer(ctx context.Context, resourceGro
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client SubscriptionClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
@@ -844,7 +832,6 @@ func (client SubscriptionClient) UpdateSender(req *http.Request) (*http.Response
 func (client SubscriptionClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

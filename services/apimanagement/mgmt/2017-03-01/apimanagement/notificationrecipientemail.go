@@ -115,8 +115,7 @@ func (client NotificationRecipientEmailClient) CreateOrUpdatePreparer(ctx contex
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client NotificationRecipientEmailClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -124,7 +123,6 @@ func (client NotificationRecipientEmailClient) CreateOrUpdateSender(req *http.Re
 func (client NotificationRecipientEmailClient) CreateOrUpdateResponder(resp *http.Response) (result RecipientEmailContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -204,8 +202,7 @@ func (client NotificationRecipientEmailClient) DeletePreparer(ctx context.Contex
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client NotificationRecipientEmailClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -213,7 +210,6 @@ func (client NotificationRecipientEmailClient) DeleteSender(req *http.Request) (
 func (client NotificationRecipientEmailClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -292,8 +288,7 @@ func (client NotificationRecipientEmailClient) GetPreparer(ctx context.Context, 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client NotificationRecipientEmailClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -301,7 +296,6 @@ func (client NotificationRecipientEmailClient) GetSender(req *http.Request) (*ht
 func (client NotificationRecipientEmailClient) GetResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -378,8 +372,7 @@ func (client NotificationRecipientEmailClient) ListByNotificationPreparer(ctx co
 // ListByNotificationSender sends the ListByNotification request. The method will close the
 // http.Response Body if it receives an error.
 func (client NotificationRecipientEmailClient) ListByNotificationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByNotificationResponder handles the response to the ListByNotification request. The method always
@@ -387,7 +380,6 @@ func (client NotificationRecipientEmailClient) ListByNotificationSender(req *htt
 func (client NotificationRecipientEmailClient) ListByNotificationResponder(resp *http.Response) (result RecipientEmailCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

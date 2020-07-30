@@ -128,8 +128,7 @@ func (client TagClient) AssignToAPIPreparer(ctx context.Context, resourceGroupNa
 // AssignToAPISender sends the AssignToAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) AssignToAPISender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // AssignToAPIResponder handles the response to the AssignToAPI request. The method always
@@ -137,7 +136,6 @@ func (client TagClient) AssignToAPISender(req *http.Request) (*http.Response, er
 func (client TagClient) AssignToAPIResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -238,8 +236,7 @@ func (client TagClient) AssignToOperationPreparer(ctx context.Context, resourceG
 // AssignToOperationSender sends the AssignToOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) AssignToOperationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // AssignToOperationResponder handles the response to the AssignToOperation request. The method always
@@ -247,7 +244,6 @@ func (client TagClient) AssignToOperationSender(req *http.Request) (*http.Respon
 func (client TagClient) AssignToOperationResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -341,8 +337,7 @@ func (client TagClient) AssignToProductPreparer(ctx context.Context, resourceGro
 // AssignToProductSender sends the AssignToProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) AssignToProductSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // AssignToProductResponder handles the response to the AssignToProduct request. The method always
@@ -350,7 +345,6 @@ func (client TagClient) AssignToProductSender(req *http.Request) (*http.Response
 func (client TagClient) AssignToProductResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -442,8 +436,7 @@ func (client TagClient) CreateOrUpdatePreparer(ctx context.Context, resourceGrou
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -451,7 +444,6 @@ func (client TagClient) CreateOrUpdateSender(req *http.Request) (*http.Response,
 func (client TagClient) CreateOrUpdateResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -536,8 +528,7 @@ func (client TagClient) DeletePreparer(ctx context.Context, resourceGroupName st
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -545,7 +536,6 @@ func (client TagClient) DeleteSender(req *http.Request) (*http.Response, error) 
 func (client TagClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -635,8 +625,7 @@ func (client TagClient) DetachFromAPIPreparer(ctx context.Context, resourceGroup
 // DetachFromAPISender sends the DetachFromAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) DetachFromAPISender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DetachFromAPIResponder handles the response to the DetachFromAPI request. The method always
@@ -644,7 +633,6 @@ func (client TagClient) DetachFromAPISender(req *http.Request) (*http.Response, 
 func (client TagClient) DetachFromAPIResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -741,8 +729,7 @@ func (client TagClient) DetachFromOperationPreparer(ctx context.Context, resourc
 // DetachFromOperationSender sends the DetachFromOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) DetachFromOperationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DetachFromOperationResponder handles the response to the DetachFromOperation request. The method always
@@ -750,7 +737,6 @@ func (client TagClient) DetachFromOperationSender(req *http.Request) (*http.Resp
 func (client TagClient) DetachFromOperationResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -840,8 +826,7 @@ func (client TagClient) DetachFromProductPreparer(ctx context.Context, resourceG
 // DetachFromProductSender sends the DetachFromProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) DetachFromProductSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DetachFromProductResponder handles the response to the DetachFromProduct request. The method always
@@ -849,7 +834,6 @@ func (client TagClient) DetachFromProductSender(req *http.Request) (*http.Respon
 func (client TagClient) DetachFromProductResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -930,8 +914,7 @@ func (client TagClient) GetPreparer(ctx context.Context, resourceGroupName strin
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -939,7 +922,6 @@ func (client TagClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client TagClient) GetResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1027,8 +1009,7 @@ func (client TagClient) GetByAPIPreparer(ctx context.Context, resourceGroupName 
 // GetByAPISender sends the GetByAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetByAPISender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetByAPIResponder handles the response to the GetByAPI request. The method always
@@ -1036,7 +1017,6 @@ func (client TagClient) GetByAPISender(req *http.Request) (*http.Response, error
 func (client TagClient) GetByAPIResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1131,8 +1111,7 @@ func (client TagClient) GetByOperationPreparer(ctx context.Context, resourceGrou
 // GetByOperationSender sends the GetByOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetByOperationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetByOperationResponder handles the response to the GetByOperation request. The method always
@@ -1140,7 +1119,6 @@ func (client TagClient) GetByOperationSender(req *http.Request) (*http.Response,
 func (client TagClient) GetByOperationResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1228,8 +1206,7 @@ func (client TagClient) GetByProductPreparer(ctx context.Context, resourceGroupN
 // GetByProductSender sends the GetByProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetByProductSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetByProductResponder handles the response to the GetByProduct request. The method always
@@ -1237,7 +1214,6 @@ func (client TagClient) GetByProductSender(req *http.Request) (*http.Response, e
 func (client TagClient) GetByProductResponder(resp *http.Response) (result TagContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1319,8 +1295,7 @@ func (client TagClient) GetEntityStatePreparer(ctx context.Context, resourceGrou
 // GetEntityStateSender sends the GetEntityState request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetEntityStateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetEntityStateResponder handles the response to the GetEntityState request. The method always
@@ -1328,7 +1303,6 @@ func (client TagClient) GetEntityStateSender(req *http.Request) (*http.Response,
 func (client TagClient) GetEntityStateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1415,8 +1389,7 @@ func (client TagClient) GetEntityStateByAPIPreparer(ctx context.Context, resourc
 // GetEntityStateByAPISender sends the GetEntityStateByAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetEntityStateByAPISender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetEntityStateByAPIResponder handles the response to the GetEntityStateByAPI request. The method always
@@ -1424,7 +1397,6 @@ func (client TagClient) GetEntityStateByAPISender(req *http.Request) (*http.Resp
 func (client TagClient) GetEntityStateByAPIResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1518,8 +1490,7 @@ func (client TagClient) GetEntityStateByOperationPreparer(ctx context.Context, r
 // GetEntityStateByOperationSender sends the GetEntityStateByOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetEntityStateByOperationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetEntityStateByOperationResponder handles the response to the GetEntityStateByOperation request. The method always
@@ -1527,7 +1498,6 @@ func (client TagClient) GetEntityStateByOperationSender(req *http.Request) (*htt
 func (client TagClient) GetEntityStateByOperationResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1614,8 +1584,7 @@ func (client TagClient) GetEntityStateByProductPreparer(ctx context.Context, res
 // GetEntityStateByProductSender sends the GetEntityStateByProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) GetEntityStateByProductSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetEntityStateByProductResponder handles the response to the GetEntityStateByProduct request. The method always
@@ -1623,7 +1592,6 @@ func (client TagClient) GetEntityStateByProductSender(req *http.Request) (*http.
 func (client TagClient) GetEntityStateByProductResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1688,6 +1656,9 @@ func (client TagClient) ListByAPI(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "ListByAPI", resp, "Failure responding to request")
 	}
+	if result.tc.hasNextLink() && result.tc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1726,8 +1697,7 @@ func (client TagClient) ListByAPIPreparer(ctx context.Context, resourceGroupName
 // ListByAPISender sends the ListByAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) ListByAPISender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByAPIResponder handles the response to the ListByAPI request. The method always
@@ -1735,7 +1705,6 @@ func (client TagClient) ListByAPISender(req *http.Request) (*http.Response, erro
 func (client TagClient) ListByAPIResponder(resp *http.Response) (result TagCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1847,6 +1816,9 @@ func (client TagClient) ListByOperation(ctx context.Context, resourceGroupName s
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "ListByOperation", resp, "Failure responding to request")
 	}
+	if result.tc.hasNextLink() && result.tc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1886,8 +1858,7 @@ func (client TagClient) ListByOperationPreparer(ctx context.Context, resourceGro
 // ListByOperationSender sends the ListByOperation request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) ListByOperationSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByOperationResponder handles the response to the ListByOperation request. The method always
@@ -1895,7 +1866,6 @@ func (client TagClient) ListByOperationSender(req *http.Request) (*http.Response
 func (client TagClient) ListByOperationResponder(resp *http.Response) (result TagCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1998,6 +1968,9 @@ func (client TagClient) ListByProduct(ctx context.Context, resourceGroupName str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "ListByProduct", resp, "Failure responding to request")
 	}
+	if result.tc.hasNextLink() && result.tc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2036,8 +2009,7 @@ func (client TagClient) ListByProductPreparer(ctx context.Context, resourceGroup
 // ListByProductSender sends the ListByProduct request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) ListByProductSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByProductResponder handles the response to the ListByProduct request. The method always
@@ -2045,7 +2017,6 @@ func (client TagClient) ListByProductSender(req *http.Request) (*http.Response, 
 func (client TagClient) ListByProductResponder(resp *http.Response) (result TagCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2143,6 +2114,9 @@ func (client TagClient) ListByService(ctx context.Context, resourceGroupName str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.TagClient", "ListByService", resp, "Failure responding to request")
 	}
+	if result.tc.hasNextLink() && result.tc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2180,8 +2154,7 @@ func (client TagClient) ListByServicePreparer(ctx context.Context, resourceGroup
 // ListByServiceSender sends the ListByService request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) ListByServiceSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByServiceResponder handles the response to the ListByService request. The method always
@@ -2189,7 +2162,6 @@ func (client TagClient) ListByServiceSender(req *http.Request) (*http.Response, 
 func (client TagClient) ListByServiceResponder(resp *http.Response) (result TagCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2314,8 +2286,7 @@ func (client TagClient) UpdatePreparer(ctx context.Context, resourceGroupName st
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client TagClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
@@ -2323,7 +2294,6 @@ func (client TagClient) UpdateSender(req *http.Request) (*http.Response, error) 
 func (client TagClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

@@ -96,8 +96,7 @@ func (client SignInSettingsClient) CreateOrUpdatePreparer(ctx context.Context, a
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
 func (client SignInSettingsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -105,7 +104,6 @@ func (client SignInSettingsClient) CreateOrUpdateSender(req *http.Request) (*htt
 func (client SignInSettingsClient) CreateOrUpdateResponder(resp *http.Response) (result PortalSigninSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -171,8 +169,7 @@ func (client SignInSettingsClient) GetPreparer(ctx context.Context, apimBaseURL 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
 func (client SignInSettingsClient) GetSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // GetResponder handles the response to the Get request. The method always
@@ -180,7 +177,6 @@ func (client SignInSettingsClient) GetSender(req *http.Request) (*http.Response,
 func (client SignInSettingsClient) GetResponder(resp *http.Response) (result PortalSigninSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -252,8 +248,7 @@ func (client SignInSettingsClient) UpdatePreparer(ctx context.Context, apimBaseU
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
 func (client SignInSettingsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 }
 
 // UpdateResponder handles the response to the Update request. The method always
@@ -261,7 +256,6 @@ func (client SignInSettingsClient) UpdateSender(req *http.Request) (*http.Respon
 func (client SignInSettingsClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

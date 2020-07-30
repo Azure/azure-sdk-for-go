@@ -28,42 +28,30 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/subscriptions"
 
-// SpendingLimit enumerates the values for spending limit.
-type SpendingLimit string
-
-const (
-	// CurrentPeriodOff ...
-	CurrentPeriodOff SpendingLimit = "CurrentPeriodOff"
-	// Off ...
-	Off SpendingLimit = "Off"
-	// On ...
-	On SpendingLimit = "On"
-)
-
-// PossibleSpendingLimitValues returns an array of possible values for the SpendingLimit const type.
-func PossibleSpendingLimitValues() []SpendingLimit {
-	return []SpendingLimit{CurrentPeriodOff, Off, On}
+// CheckResourceNameResult resource Name valid if not a reserved word, does not contain a reserved word and
+// does not start with a reserved word
+type CheckResourceNameResult struct {
+	autorest.Response `json:"-"`
+	// Name - Name of Resource
+	Name *string `json:"name,omitempty"`
+	// Type - Type of Resource
+	Type *string `json:"type,omitempty"`
+	// Status - Is the resource name Allowed or Reserved. Possible values include: 'Allowed', 'Reserved'
+	Status ResourceNameStatus `json:"status,omitempty"`
 }
 
-// State enumerates the values for state.
-type State string
+// ErrorDefinition error description and code explaining why resource name is invalid.
+type ErrorDefinition struct {
+	// Message - Description of the error.
+	Message *string `json:"message,omitempty"`
+	// Code - Code of the error.
+	Code *string `json:"code,omitempty"`
+}
 
-const (
-	// Deleted ...
-	Deleted State = "Deleted"
-	// Disabled ...
-	Disabled State = "Disabled"
-	// Enabled ...
-	Enabled State = "Enabled"
-	// PastDue ...
-	PastDue State = "PastDue"
-	// Warned ...
-	Warned State = "Warned"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{Deleted, Disabled, Enabled, PastDue, Warned}
+// ErrorResponse error response.
+type ErrorResponse struct {
+	// Error - The error details.
+	Error *ErrorDefinition `json:"error,omitempty"`
 }
 
 // ListResult subscription list operation response.
@@ -143,10 +131,15 @@ func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -174,11 +167,16 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lr = next
 	return nil
 }
 
@@ -226,6 +224,12 @@ type Location struct {
 	Latitude *string `json:"latitude,omitempty"`
 	// Longitude - READ-ONLY; The longitude of the location.
 	Longitude *string `json:"longitude,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Location.
+func (l Location) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // LocationListResult location list operation response.
@@ -333,10 +337,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -364,11 +373,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -412,6 +426,20 @@ type Policies struct {
 	SpendingLimit SpendingLimit `json:"spendingLimit,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Policies.
+func (p Policies) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ResourceName name and Type of the Resource
+type ResourceName struct {
+	// Name - Name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the resource
+	Type *string `json:"type,omitempty"`
+}
+
 // Subscription subscription information.
 type Subscription struct {
 	autorest.Response `json:"-"`
@@ -431,6 +459,18 @@ type Subscription struct {
 	AuthorizationSource *string `json:"authorizationSource,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Subscription.
+func (s Subscription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.SubscriptionPolicies != nil {
+		objectMap["subscriptionPolicies"] = s.SubscriptionPolicies
+	}
+	if s.AuthorizationSource != nil {
+		objectMap["authorizationSource"] = s.AuthorizationSource
+	}
+	return json.Marshal(objectMap)
+}
+
 // TenantIDDescription tenant Id information.
 type TenantIDDescription struct {
 	// ID - READ-ONLY; The fully qualified ID of the tenant. For example, /tenants/00000000-0000-0000-0000-000000000000.
@@ -445,6 +485,12 @@ type TenantIDDescription struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// Domains - READ-ONLY; The list of domains for the tenant.
 	Domains *[]string `json:"domains,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TenantIDDescription.
+func (tid TenantIDDescription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TenantListResult tenant Ids information.
@@ -524,10 +570,15 @@ func (tlr TenantListResult) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tlr TenantListResult) hasNextLink() bool {
+	return tlr.NextLink != nil && len(*tlr.NextLink) != 0
+}
+
 // tenantListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tlr TenantListResult) tenantListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if tlr.NextLink == nil || len(to.String(tlr.NextLink)) < 1 {
+	if !tlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -555,11 +606,16 @@ func (page *TenantListResultPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tlr)
+		if err != nil {
+			return err
+		}
+		page.tlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tlr = next
 	return nil
 }
 

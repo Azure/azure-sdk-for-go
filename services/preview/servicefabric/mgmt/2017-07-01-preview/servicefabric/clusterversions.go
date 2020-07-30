@@ -110,7 +110,6 @@ func (client ClusterVersionsClient) GetSender(req *http.Request) (*http.Response
 func (client ClusterVersionsClient) GetResponder(resp *http.Response) (result ClusterCodeVersionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -189,7 +188,6 @@ func (client ClusterVersionsClient) GetByEnvironmentSender(req *http.Request) (*
 func (client ClusterVersionsClient) GetByEnvironmentResponder(resp *http.Response) (result ClusterCodeVersionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -264,7 +262,6 @@ func (client ClusterVersionsClient) ListSender(req *http.Request) (*http.Respons
 func (client ClusterVersionsClient) ListResponder(resp *http.Response) (result ClusterCodeVersionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -341,7 +338,6 @@ func (client ClusterVersionsClient) ListByEnvironmentSender(req *http.Request) (
 func (client ClusterVersionsClient) ListByEnvironmentResponder(resp *http.Response) (result ClusterCodeVersionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

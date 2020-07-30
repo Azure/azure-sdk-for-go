@@ -99,6 +99,9 @@ func (client APIProductsClient) ListByAPI(ctx context.Context, resourceGroupName
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIProductsClient", "ListByAPI", resp, "Failure responding to request")
 	}
+	if result.pc.hasNextLink() && result.pc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -137,8 +140,7 @@ func (client APIProductsClient) ListByAPIPreparer(ctx context.Context, resourceG
 // ListByAPISender sends the ListByAPI request. The method will close the
 // http.Response Body if it receives an error.
 func (client APIProductsClient) ListByAPISender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByAPIResponder handles the response to the ListByAPI request. The method always
@@ -146,7 +148,6 @@ func (client APIProductsClient) ListByAPISender(req *http.Request) (*http.Respon
 func (client APIProductsClient) ListByAPIResponder(resp *http.Response) (result ProductCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

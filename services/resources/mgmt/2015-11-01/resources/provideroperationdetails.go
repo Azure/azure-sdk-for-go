@@ -74,6 +74,9 @@ func (client ProviderOperationDetailsClient) List(ctx context.Context, resourceP
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.ProviderOperationDetailsClient", "List", resp, "Failure responding to request")
 	}
+	if result.podlr.hasNextLink() && result.podlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -107,7 +110,6 @@ func (client ProviderOperationDetailsClient) ListSender(req *http.Request) (*htt
 func (client ProviderOperationDetailsClient) ListResponder(resp *http.Response) (result ProviderOperationDetailListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

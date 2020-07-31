@@ -34,9 +34,9 @@ const (
 var pollingCodes = [...]int{http.StatusNoContent, http.StatusAccepted, http.StatusCreated, http.StatusOK}
 
 // CreatePollingTracker creates a polling tracker based on the verb of the original request and returns
-// the polling tracker implementation based on the method verb of the initial request.
+// the polling tracker implementation for the method verb or an error.
+// NOTE: this is only meant for internal use in generated code.
 func CreatePollingTracker(pollerType string, finalState string, resp *azcore.Response, errorHandler methodErrorHandler) (Poller, error) {
-	// var pt pollingTracker
 	switch strings.ToUpper(resp.Request.Method) {
 	case http.MethodDelete:
 		pt := &pollingTrackerDelete{pollingTrackerBase: pollingTrackerBase{PollerType: pollerType, FinalStateVia: finalState, OriginalURI: resp.Request.URL.String(), resp: resp, errorHandler: errorHandler}}
@@ -80,6 +80,7 @@ func CreatePollingTracker(pollerType string, finalState string, resp *azcore.Res
 }
 
 // ResumePollingTracker creates a polling tracker from a resume token string.
+// NOTE: this is only meant for internal use in generated code.
 func ResumePollingTracker(pollerType string, token string, errorHandler methodErrorHandler) (Poller, error) {
 	// unmarshal into JSON object to determine the tracker type
 	obj := map[string]interface{}{}
@@ -132,7 +133,8 @@ func ResumePollingTracker(pollerType string, token string, errorHandler methodEr
 	}
 }
 
-// Poller is the internal interface only meant to be called from generated code.
+// Poller defines the methods that will be called internally in the generated code for long-running operations.
+// NOTE: this is only meant for internal use in generated code.
 type Poller interface {
 	// Done signals if the polling operation has reached a terminal state.
 	Done() bool
@@ -146,7 +148,7 @@ type Poller interface {
 	PollUntilDone(ctx context.Context, frequency time.Duration, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error)
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
+// Done returns true if there was an error or polling has reached a terminal state.
 func (p *pollingTrackerBase) Done() bool {
 	return p.hasTerminated()
 }

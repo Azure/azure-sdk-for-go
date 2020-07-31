@@ -33,10 +33,10 @@ const (
 
 var pollingCodes = [...]int{http.StatusNoContent, http.StatusAccepted, http.StatusCreated, http.StatusOK}
 
-// CreatePollingTracker creates a polling tracker based on the verb of the original request and returns
+// CreatePoller creates a polling tracker based on the verb of the original request and returns
 // the polling tracker implementation for the method verb or an error.
 // NOTE: this is only meant for internal use in generated code.
-func CreatePollingTracker(pollerType string, finalState string, resp *azcore.Response, errorHandler methodErrorHandler) (Poller, error) {
+func CreatePoller(pollerType string, finalState string, resp *azcore.Response, errorHandler methodErrorHandler) (Poller, error) {
 	switch strings.ToUpper(resp.Request.Method) {
 	case http.MethodDelete:
 		pt := &pollingTrackerDelete{pollingTrackerBase: pollingTrackerBase{PollerType: pollerType, FinalStateVia: finalState, OriginalURI: resp.Request.URL.String(), resp: resp, errorHandler: errorHandler}}
@@ -79,9 +79,9 @@ func CreatePollingTracker(pollerType string, finalState string, resp *azcore.Res
 	}
 }
 
-// ResumePollingTracker creates a polling tracker from a resume token string.
+// ResumePoller creates a polling tracker from a resume token string.
 // NOTE: this is only meant for internal use in generated code.
-func ResumePollingTracker(pollerType string, token string, errorHandler methodErrorHandler) (Poller, error) {
+func ResumePoller(pollerType string, token string, errorHandler methodErrorHandler) (Poller, error) {
 	// unmarshal into JSON object to determine the tracker type
 	obj := map[string]interface{}{}
 	err := json.Unmarshal([]byte(token), &obj)
@@ -140,11 +140,11 @@ type Poller interface {
 	Done() bool
 	// Poll sends a polling request to the service endpoint and returns the http.Response received from the endpoint or an error.
 	Poll(ctx context.Context, p azcore.Pipeline) (*http.Response, error)
-	// FinalResponse will perform a final GET and return the final response for the polling operation.
+	// FinalResponse will perform a final GET and return the final http response for the polling operation and unmarshal the content of the payload into the respType interface that is provided.
 	FinalResponse(ctx context.Context, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error)
 	// ResumeToken returns a token string that can be used to resume polling on a poller that has not yet reached a terminal state.
 	ResumeToken() (string, error)
-	// PollUntilDone will handle the entire span of the polling operation until a terminal state is reached.
+	// PollUntilDone will handle the entire span of the polling operation until a terminal state is reached, then return the final http response for the polling operation and unmarshal the content of the payload into the respType interface that is provided.
 	PollUntilDone(ctx context.Context, frequency time.Duration, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error)
 }
 
@@ -605,7 +605,8 @@ func (p *pollingTrackerDelete) Poll(ctx context.Context, pipeline azcore.Pipelin
 }
 
 // PollUntilDone will handle the entire span of the polling operation until a terminal state is reached.
-// It will return the final http.Response received or an error.
+// It will return the final http.Response received or an error, it will also unmarshal the response payload
+// in the respType interface that is passed into the function.
 func (p *pollingTrackerDelete) PollUntilDone(ctx context.Context, frequency time.Duration, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error) {
 	// initial check for a retry-after header existing on the initial response
 	if retryAfter := azcore.RetryAfter(p.latestResponse().Response); retryAfter > 0 {
@@ -705,7 +706,8 @@ func (p *pollingTrackerPatch) Poll(ctx context.Context, pipeline azcore.Pipeline
 }
 
 // PollUntilDone will handle the entire span of the polling operation until a terminal state is reached.
-// It will return the final http.Response received or an error.
+// It will return the final http.Response received or an error, it will also unmarshal the response payload
+// in the respType interface that is passed into the function.
 func (p *pollingTrackerPatch) PollUntilDone(ctx context.Context, frequency time.Duration, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error) {
 	// initial check for a retry-after header existing on the initial response
 	if retryAfter := azcore.RetryAfter(p.latestResponse().Response); retryAfter > 0 {
@@ -806,7 +808,8 @@ func (p *pollingTrackerPost) Poll(ctx context.Context, pipeline azcore.Pipeline)
 }
 
 // PollUntilDone will handle the entire span of the polling operation until a terminal state is reached.
-// It will return the final http.Response received or an error.
+// It will return the final http.Response received or an error, it will also unmarshal the response payload
+// in the respType interface that is passed into the function.
 func (p *pollingTrackerPost) PollUntilDone(ctx context.Context, frequency time.Duration, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error) {
 	// initial check for a retry-after header existing on the initial response
 	if retryAfter := azcore.RetryAfter(p.latestResponse().Response); retryAfter > 0 {
@@ -906,7 +909,8 @@ func (p *pollingTrackerPut) Poll(ctx context.Context, pipeline azcore.Pipeline) 
 }
 
 // PollUntilDone will handle the entire span of the polling operation until a terminal state is reached.
-// It will return the final http.Response received or an error.
+// It will return the final http.Response received or an error, it will also unmarshal the response payload
+// in the respType interface that is passed into the function.
 func (p *pollingTrackerPut) PollUntilDone(ctx context.Context, frequency time.Duration, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error) {
 	// p.resp should only be nil when calling PollUntilDone from a poller that was instantiated from a resume token string
 	if p.resp != nil {

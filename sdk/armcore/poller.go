@@ -13,6 +13,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"reflect"
 	"strings"
 	"time"
 
@@ -89,10 +90,10 @@ func ResumePoller(pollerType string, token string, errorHandler methodErrorHandl
 		return nil, err
 	}
 	if obj["pollerType"] != pollerType {
-		return nil, fmt.Errorf("cannot resume from this poller type")
+		return nil, fmt.Errorf("Cannot resume from this poller type. Expected: %s, Received: %s", pollerType, obj["pollerType"])
 	}
 	if obj["method"] == nil {
-		return nil, fmt.Errorf("token is missing 'method' property")
+		return nil, fmt.Errorf("Token is missing 'method' property")
 	}
 	method := obj["method"].(string)
 	switch strings.ToUpper(method) {
@@ -163,7 +164,7 @@ func (p *pollingTrackerBase) FinalResponse(ctx context.Context, pipeline azcore.
 		if err != nil {
 			return nil, err
 		}
-		if res != nil { // TODO && res.ProductArray != nil {
+		if res != nil && !reflect.Indirect(reflect.ValueOf(respType)).IsZero() {
 			return res, nil
 		}
 	}

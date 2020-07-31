@@ -21,7 +21,7 @@ const (
 )
 
 type mockType struct {
-	Field string `json:"field,omitempty"`
+	Field *string `json:"field,omitempty"`
 }
 
 func getPipeline(srv *mock.Server) azcore.Pipeline {
@@ -112,8 +112,40 @@ func TestPollUntilDone(t *testing.T) {
 	if pollerResp.StatusCode != http.StatusOK {
 		t.Fatal("Unexpected response status code")
 	}
-	if m.Field != "success" {
-		t.Fatalf("Unexpected value for MockType.Field: %s", m.Field)
+	if *m.Field != "success" {
+		t.Fatalf("Unexpected value for MockType.Field: %s", *m.Field)
+	}
+}
+
+func TestPutFinalResponseCheck(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
+	srv.AppendResponse(mock.WithBody([]byte(`{"other": "other"}`)))
+	srv.AppendResponse(mock.WithBody([]byte(mockSuccessResp)))
+	p := getPipeline(srv)
+	req := azcore.NewRequest(http.MethodPut, srv.URL())
+	resp, err := p.Do(context.Background(), req)
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	poller, err := CreatePoller("testPoller", "", resp, handleError)
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	m := &mockType{}
+	pollerResp, err := poller.PollUntilDone(context.Background(), 1*time.Millisecond, p, m)
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if pollerResp == nil {
+		t.Fatal("Unexpected nil response")
+	}
+	if pollerResp.StatusCode != http.StatusOK {
+		t.Fatal("Unexpected response status code")
+	}
+	if *m.Field != "success" {
+		t.Fatalf("Unexpected value for MockType.Field: %s", *m.Field)
 	}
 }
 
@@ -151,7 +183,7 @@ func TestResumePollerTracker(t *testing.T) {
 	if pollerResp.StatusCode != http.StatusOK {
 		t.Fatal("Unexpected response status code")
 	}
-	if m.Field != "success" {
-		t.Fatalf("Unexpected value for MockType.Field: %s", m.Field)
+	if *m.Field != "success" {
+		t.Fatalf("Unexpected value for MockType.Field: %s", *m.Field)
 	}
 }

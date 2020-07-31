@@ -162,13 +162,13 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 			return
 		}
 
-		// drain before retrying so nothing is leaked
-		resp.Drain()
-
 		if try == options.MaxRetries+1 {
 			// max number of tries has been reached, don't sleep again
 			return
 		}
+
+		// drain before retrying so nothing is leaked
+		resp.Drain()
 
 		// use the delay from retry-after if available
 		delay := resp.retryAfter()

@@ -19,7 +19,7 @@ package timeseriesinsightsapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/stable/timeseriesinsights/mgmt/2020-05-15timeseriesinsights"
+	"github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2020-05-15/timeseriesinsights"
 	"github.com/Azure/go-autorest/autorest"
 )
 

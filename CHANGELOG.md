@@ -189,6 +189,12 @@
 | sql | v3.0 |
 | storagecache | 2019-11-01 |
 
+### NOTE
+
+- All the enums in a package will be in a separated `enums.go` file.
+- Paginated result will automatically skip empty pages.
+- All models that have READ-ONLY fields will have their own custom marshaler.
+
 ## `v44.2.0`
 
 ### New Packages

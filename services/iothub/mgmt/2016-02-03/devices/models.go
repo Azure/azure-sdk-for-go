@@ -31,216 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2016-02-03/devices"
 
-// AccessRights enumerates the values for access rights.
-type AccessRights string
-
-const (
-	// DeviceConnect ...
-	DeviceConnect AccessRights = "DeviceConnect"
-	// RegistryRead ...
-	RegistryRead AccessRights = "RegistryRead"
-	// RegistryReadDeviceConnect ...
-	RegistryReadDeviceConnect AccessRights = "RegistryRead, DeviceConnect"
-	// RegistryReadRegistryWrite ...
-	RegistryReadRegistryWrite AccessRights = "RegistryRead, RegistryWrite"
-	// RegistryReadRegistryWriteDeviceConnect ...
-	RegistryReadRegistryWriteDeviceConnect AccessRights = "RegistryRead, RegistryWrite, DeviceConnect"
-	// RegistryReadRegistryWriteServiceConnect ...
-	RegistryReadRegistryWriteServiceConnect AccessRights = "RegistryRead, RegistryWrite, ServiceConnect"
-	// RegistryReadRegistryWriteServiceConnectDeviceConnect ...
-	RegistryReadRegistryWriteServiceConnectDeviceConnect AccessRights = "RegistryRead, RegistryWrite, ServiceConnect, DeviceConnect"
-	// RegistryReadServiceConnect ...
-	RegistryReadServiceConnect AccessRights = "RegistryRead, ServiceConnect"
-	// RegistryReadServiceConnectDeviceConnect ...
-	RegistryReadServiceConnectDeviceConnect AccessRights = "RegistryRead, ServiceConnect, DeviceConnect"
-	// RegistryWrite ...
-	RegistryWrite AccessRights = "RegistryWrite"
-	// RegistryWriteDeviceConnect ...
-	RegistryWriteDeviceConnect AccessRights = "RegistryWrite, DeviceConnect"
-	// RegistryWriteServiceConnect ...
-	RegistryWriteServiceConnect AccessRights = "RegistryWrite, ServiceConnect"
-	// RegistryWriteServiceConnectDeviceConnect ...
-	RegistryWriteServiceConnectDeviceConnect AccessRights = "RegistryWrite, ServiceConnect, DeviceConnect"
-	// ServiceConnect ...
-	ServiceConnect AccessRights = "ServiceConnect"
-	// ServiceConnectDeviceConnect ...
-	ServiceConnectDeviceConnect AccessRights = "ServiceConnect, DeviceConnect"
-)
-
-// PossibleAccessRightsValues returns an array of possible values for the AccessRights const type.
-func PossibleAccessRightsValues() []AccessRights {
-	return []AccessRights{DeviceConnect, RegistryRead, RegistryReadDeviceConnect, RegistryReadRegistryWrite, RegistryReadRegistryWriteDeviceConnect, RegistryReadRegistryWriteServiceConnect, RegistryReadRegistryWriteServiceConnectDeviceConnect, RegistryReadServiceConnect, RegistryReadServiceConnectDeviceConnect, RegistryWrite, RegistryWriteDeviceConnect, RegistryWriteServiceConnect, RegistryWriteServiceConnectDeviceConnect, ServiceConnect, ServiceConnectDeviceConnect}
-}
-
-// Capabilities enumerates the values for capabilities.
-type Capabilities string
-
-const (
-	// DeviceManagement ...
-	DeviceManagement Capabilities = "DeviceManagement"
-	// None ...
-	None Capabilities = "None"
-)
-
-// PossibleCapabilitiesValues returns an array of possible values for the Capabilities const type.
-func PossibleCapabilitiesValues() []Capabilities {
-	return []Capabilities{DeviceManagement, None}
-}
-
-// IotHubNameUnavailabilityReason enumerates the values for iot hub name unavailability reason.
-type IotHubNameUnavailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists IotHubNameUnavailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid IotHubNameUnavailabilityReason = "Invalid"
-)
-
-// PossibleIotHubNameUnavailabilityReasonValues returns an array of possible values for the IotHubNameUnavailabilityReason const type.
-func PossibleIotHubNameUnavailabilityReasonValues() []IotHubNameUnavailabilityReason {
-	return []IotHubNameUnavailabilityReason{AlreadyExists, Invalid}
-}
-
-// IotHubScaleType enumerates the values for iot hub scale type.
-type IotHubScaleType string
-
-const (
-	// IotHubScaleTypeAutomatic ...
-	IotHubScaleTypeAutomatic IotHubScaleType = "Automatic"
-	// IotHubScaleTypeManual ...
-	IotHubScaleTypeManual IotHubScaleType = "Manual"
-	// IotHubScaleTypeNone ...
-	IotHubScaleTypeNone IotHubScaleType = "None"
-)
-
-// PossibleIotHubScaleTypeValues returns an array of possible values for the IotHubScaleType const type.
-func PossibleIotHubScaleTypeValues() []IotHubScaleType {
-	return []IotHubScaleType{IotHubScaleTypeAutomatic, IotHubScaleTypeManual, IotHubScaleTypeNone}
-}
-
-// IotHubSku enumerates the values for iot hub sku.
-type IotHubSku string
-
-const (
-	// F1 ...
-	F1 IotHubSku = "F1"
-	// S1 ...
-	S1 IotHubSku = "S1"
-	// S2 ...
-	S2 IotHubSku = "S2"
-	// S3 ...
-	S3 IotHubSku = "S3"
-)
-
-// PossibleIotHubSkuValues returns an array of possible values for the IotHubSku const type.
-func PossibleIotHubSkuValues() []IotHubSku {
-	return []IotHubSku{F1, S1, S2, S3}
-}
-
-// IotHubSkuTier enumerates the values for iot hub sku tier.
-type IotHubSkuTier string
-
-const (
-	// Free ...
-	Free IotHubSkuTier = "Free"
-	// Standard ...
-	Standard IotHubSkuTier = "Standard"
-)
-
-// PossibleIotHubSkuTierValues returns an array of possible values for the IotHubSkuTier const type.
-func PossibleIotHubSkuTierValues() []IotHubSkuTier {
-	return []IotHubSkuTier{Free, Standard}
-}
-
-// IPFilterActionType enumerates the values for ip filter action type.
-type IPFilterActionType string
-
-const (
-	// Accept ...
-	Accept IPFilterActionType = "Accept"
-	// Reject ...
-	Reject IPFilterActionType = "Reject"
-)
-
-// PossibleIPFilterActionTypeValues returns an array of possible values for the IPFilterActionType const type.
-func PossibleIPFilterActionTypeValues() []IPFilterActionType {
-	return []IPFilterActionType{Accept, Reject}
-}
-
-// JobStatus enumerates the values for job status.
-type JobStatus string
-
-const (
-	// Cancelled ...
-	Cancelled JobStatus = "cancelled"
-	// Completed ...
-	Completed JobStatus = "completed"
-	// Enqueued ...
-	Enqueued JobStatus = "enqueued"
-	// Failed ...
-	Failed JobStatus = "failed"
-	// Running ...
-	Running JobStatus = "running"
-	// Unknown ...
-	Unknown JobStatus = "unknown"
-)
-
-// PossibleJobStatusValues returns an array of possible values for the JobStatus const type.
-func PossibleJobStatusValues() []JobStatus {
-	return []JobStatus{Cancelled, Completed, Enqueued, Failed, Running, Unknown}
-}
-
-// JobType enumerates the values for job type.
-type JobType string
-
-const (
-	// JobTypeBackup ...
-	JobTypeBackup JobType = "backup"
-	// JobTypeExport ...
-	JobTypeExport JobType = "export"
-	// JobTypeFactoryResetDevice ...
-	JobTypeFactoryResetDevice JobType = "factoryResetDevice"
-	// JobTypeFirmwareUpdate ...
-	JobTypeFirmwareUpdate JobType = "firmwareUpdate"
-	// JobTypeImport ...
-	JobTypeImport JobType = "import"
-	// JobTypeReadDeviceProperties ...
-	JobTypeReadDeviceProperties JobType = "readDeviceProperties"
-	// JobTypeRebootDevice ...
-	JobTypeRebootDevice JobType = "rebootDevice"
-	// JobTypeUnknown ...
-	JobTypeUnknown JobType = "unknown"
-	// JobTypeUpdateDeviceConfiguration ...
-	JobTypeUpdateDeviceConfiguration JobType = "updateDeviceConfiguration"
-	// JobTypeWriteDeviceProperties ...
-	JobTypeWriteDeviceProperties JobType = "writeDeviceProperties"
-)
-
-// PossibleJobTypeValues returns an array of possible values for the JobType const type.
-func PossibleJobTypeValues() []JobType {
-	return []JobType{JobTypeBackup, JobTypeExport, JobTypeFactoryResetDevice, JobTypeFirmwareUpdate, JobTypeImport, JobTypeReadDeviceProperties, JobTypeRebootDevice, JobTypeUnknown, JobTypeUpdateDeviceConfiguration, JobTypeWriteDeviceProperties}
-}
-
-// OperationMonitoringLevel enumerates the values for operation monitoring level.
-type OperationMonitoringLevel string
-
-const (
-	// OperationMonitoringLevelError ...
-	OperationMonitoringLevelError OperationMonitoringLevel = "Error"
-	// OperationMonitoringLevelErrorInformation ...
-	OperationMonitoringLevelErrorInformation OperationMonitoringLevel = "Error, Information"
-	// OperationMonitoringLevelInformation ...
-	OperationMonitoringLevelInformation OperationMonitoringLevel = "Information"
-	// OperationMonitoringLevelNone ...
-	OperationMonitoringLevelNone OperationMonitoringLevel = "None"
-)
-
-// PossibleOperationMonitoringLevelValues returns an array of possible values for the OperationMonitoringLevel const type.
-func PossibleOperationMonitoringLevelValues() []OperationMonitoringLevel {
-	return []OperationMonitoringLevel{OperationMonitoringLevelError, OperationMonitoringLevelErrorInformation, OperationMonitoringLevelInformation, OperationMonitoringLevelNone}
-}
-
 // CloudToDeviceProperties the IoT hub cloud-to-device messaging properties.
 type CloudToDeviceProperties struct {
 	// MaxDeliveryCount - The max delivery count for cloud-to-device messages in the device queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
@@ -288,14 +78,23 @@ func (ehcgi EventHubConsumerGroupInfo) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// EventHubConsumerGroupsListResult the JSON-serialized array of Event Hub-compatible consumer group names
-// with a next link.
+// EventHubConsumerGroupsListResult the JSON-serialized array of Event Hub-compatible consumer group names with
+// a next link.
 type EventHubConsumerGroupsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The array of Event Hub-compatible consumer group names.
 	Value *[]string `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The next link.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EventHubConsumerGroupsListResult.
+func (ehcglr EventHubConsumerGroupsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ehcglr.Value != nil {
+		objectMap["value"] = ehcglr.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // EventHubConsumerGroupsListResultIterator provides access to a complete listing of string values.
@@ -366,10 +165,15 @@ func (ehcglr EventHubConsumerGroupsListResult) IsEmpty() bool {
 	return ehcglr.Value == nil || len(*ehcglr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ehcglr EventHubConsumerGroupsListResult) hasNextLink() bool {
+	return ehcglr.NextLink != nil && len(*ehcglr.NextLink) != 0
+}
+
 // eventHubConsumerGroupsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ehcglr EventHubConsumerGroupsListResult) eventHubConsumerGroupsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ehcglr.NextLink == nil || len(to.String(ehcglr.NextLink)) < 1 {
+	if !ehcglr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -397,11 +201,16 @@ func (page *EventHubConsumerGroupsListResultPage) NextWithContext(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ehcglr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ehcglr)
+		if err != nil {
+			return err
+		}
+		page.ehcglr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ehcglr = next
 	return nil
 }
 
@@ -447,6 +256,18 @@ type EventHubProperties struct {
 	Path *string `json:"path,omitempty"`
 	// Endpoint - READ-ONLY; The Event Hub-compatible endpoint.
 	Endpoint *string `json:"endpoint,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EventHubProperties.
+func (ehp EventHubProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ehp.RetentionTimeInDays != nil {
+		objectMap["retentionTimeInDays"] = ehp.RetentionTimeInDays
+	}
+	if ehp.PartitionCount != nil {
+		objectMap["partitionCount"] = ehp.PartitionCount
+	}
+	return json.Marshal(objectMap)
 }
 
 // ExportDevicesRequest use to provide parameters when requesting an export of all devices in the IoT hub.
@@ -546,6 +367,15 @@ type IotHubDescriptionListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IotHubDescriptionListResult.
+func (ihdlr IotHubDescriptionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ihdlr.Value != nil {
+		objectMap["value"] = ihdlr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // IotHubDescriptionListResultIterator provides access to a complete listing of IotHubDescription values.
 type IotHubDescriptionListResultIterator struct {
 	i    int
@@ -614,10 +444,15 @@ func (ihdlr IotHubDescriptionListResult) IsEmpty() bool {
 	return ihdlr.Value == nil || len(*ihdlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ihdlr IotHubDescriptionListResult) hasNextLink() bool {
+	return ihdlr.NextLink != nil && len(*ihdlr.NextLink) != 0
+}
+
 // iotHubDescriptionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ihdlr IotHubDescriptionListResult) iotHubDescriptionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ihdlr.NextLink == nil || len(to.String(ihdlr.NextLink)) < 1 {
+	if !ihdlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -645,11 +480,16 @@ func (page *IotHubDescriptionListResultPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ihdlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ihdlr)
+		if err != nil {
+			return err
+		}
+		page.ihdlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ihdlr = next
 	return nil
 }
 
@@ -692,6 +532,15 @@ type IotHubNameAvailabilityInfo struct {
 	Reason IotHubNameUnavailabilityReason `json:"reason,omitempty"`
 	// Message - The detailed reason message.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IotHubNameAvailabilityInfo.
+func (ihnai IotHubNameAvailabilityInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ihnai.Message != nil {
+		objectMap["message"] = ihnai.Message
+	}
+	return json.Marshal(objectMap)
 }
 
 // IotHubProperties the properties of an IoT hub.
@@ -766,14 +615,22 @@ type IotHubQuotaMetricInfo struct {
 	MaxValue *int64 `json:"MaxValue,omitempty"`
 }
 
-// IotHubQuotaMetricInfoListResult the JSON-serialized array of IotHubQuotaMetricInfo objects with a next
-// link.
+// IotHubQuotaMetricInfoListResult the JSON-serialized array of IotHubQuotaMetricInfo objects with a next link.
 type IotHubQuotaMetricInfoListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The array of quota metrics objects.
 	Value *[]IotHubQuotaMetricInfo `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The next link.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IotHubQuotaMetricInfoListResult.
+func (ihqmilr IotHubQuotaMetricInfoListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ihqmilr.Value != nil {
+		objectMap["value"] = ihqmilr.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // IotHubQuotaMetricInfoListResultIterator provides access to a complete listing of IotHubQuotaMetricInfo
@@ -845,10 +702,15 @@ func (ihqmilr IotHubQuotaMetricInfoListResult) IsEmpty() bool {
 	return ihqmilr.Value == nil || len(*ihqmilr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ihqmilr IotHubQuotaMetricInfoListResult) hasNextLink() bool {
+	return ihqmilr.NextLink != nil && len(*ihqmilr.NextLink) != 0
+}
+
 // iotHubQuotaMetricInfoListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ihqmilr IotHubQuotaMetricInfoListResult) iotHubQuotaMetricInfoListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ihqmilr.NextLink == nil || len(to.String(ihqmilr.NextLink)) < 1 {
+	if !ihqmilr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -876,11 +738,16 @@ func (page *IotHubQuotaMetricInfoListResultPage) NextWithContext(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ihqmilr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ihqmilr)
+		if err != nil {
+			return err
+		}
+		page.ihqmilr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ihqmilr = next
 	return nil
 }
 
@@ -980,8 +847,19 @@ type IotHubSkuDescription struct {
 	Capacity     *IotHubCapacity `json:"capacity,omitempty"`
 }
 
-// IotHubSkuDescriptionListResult the JSON-serialized array of IotHubSkuDescription objects with a next
-// link.
+// MarshalJSON is the custom marshaler for IotHubSkuDescription.
+func (ihsd IotHubSkuDescription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ihsd.Sku != nil {
+		objectMap["sku"] = ihsd.Sku
+	}
+	if ihsd.Capacity != nil {
+		objectMap["capacity"] = ihsd.Capacity
+	}
+	return json.Marshal(objectMap)
+}
+
+// IotHubSkuDescriptionListResult the JSON-serialized array of IotHubSkuDescription objects with a next link.
 type IotHubSkuDescriptionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The array of IotHubSkuDescription.
@@ -990,8 +868,16 @@ type IotHubSkuDescriptionListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// IotHubSkuDescriptionListResultIterator provides access to a complete listing of IotHubSkuDescription
-// values.
+// MarshalJSON is the custom marshaler for IotHubSkuDescriptionListResult.
+func (ihsdlr IotHubSkuDescriptionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ihsdlr.Value != nil {
+		objectMap["value"] = ihsdlr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// IotHubSkuDescriptionListResultIterator provides access to a complete listing of IotHubSkuDescription values.
 type IotHubSkuDescriptionListResultIterator struct {
 	i    int
 	page IotHubSkuDescriptionListResultPage
@@ -1059,10 +945,15 @@ func (ihsdlr IotHubSkuDescriptionListResult) IsEmpty() bool {
 	return ihsdlr.Value == nil || len(*ihsdlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ihsdlr IotHubSkuDescriptionListResult) hasNextLink() bool {
+	return ihsdlr.NextLink != nil && len(*ihsdlr.NextLink) != 0
+}
+
 // iotHubSkuDescriptionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ihsdlr IotHubSkuDescriptionListResult) iotHubSkuDescriptionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ihsdlr.NextLink == nil || len(to.String(ihsdlr.NextLink)) < 1 {
+	if !ihsdlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1090,11 +981,16 @@ func (page *IotHubSkuDescriptionListResultPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ihsdlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ihsdlr)
+		if err != nil {
+			return err
+		}
+		page.ihsdlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ihsdlr = next
 	return nil
 }
 
@@ -1138,6 +1034,18 @@ type IotHubSkuInfo struct {
 	Capacity *int64 `json:"capacity,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IotHubSkuInfo.
+func (ihsi IotHubSkuInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ihsi.Name != "" {
+		objectMap["name"] = ihsi.Name
+	}
+	if ihsi.Capacity != nil {
+		objectMap["capacity"] = ihsi.Capacity
+	}
+	return json.Marshal(objectMap)
+}
+
 // IPFilterRule the IP filter rules for the IoT hub.
 type IPFilterRule struct {
 	// FilterName - The name of the IP filter rule.
@@ -1176,6 +1084,15 @@ type JobResponseListResult struct {
 	Value *[]JobResponse `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The next link.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobResponseListResult.
+func (jrlr JobResponseListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if jrlr.Value != nil {
+		objectMap["value"] = jrlr.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // JobResponseListResultIterator provides access to a complete listing of JobResponse values.
@@ -1246,10 +1163,15 @@ func (jrlr JobResponseListResult) IsEmpty() bool {
 	return jrlr.Value == nil || len(*jrlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (jrlr JobResponseListResult) hasNextLink() bool {
+	return jrlr.NextLink != nil && len(*jrlr.NextLink) != 0
+}
+
 // jobResponseListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (jrlr JobResponseListResult) jobResponseListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if jrlr.NextLink == nil || len(to.String(jrlr.NextLink)) < 1 {
+	if !jrlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1277,11 +1199,16 @@ func (page *JobResponseListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.jrlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.jrlr)
+		if err != nil {
+			return err
+		}
+		page.jrlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.jrlr = next
 	return nil
 }
 
@@ -1331,8 +1258,8 @@ type OperationInputs struct {
 	Name *string `json:"Name,omitempty"`
 }
 
-// OperationsMonitoringProperties the operations monitoring properties for the IoT hub. The possible keys
-// to the dictionary are Connections, DeviceTelemetry, C2DCommands, DeviceIdentityOperations,
+// OperationsMonitoringProperties the operations monitoring properties for the IoT hub. The possible keys to
+// the dictionary are Connections, DeviceTelemetry, C2DCommands, DeviceIdentityOperations,
 // FileUploadOperations.
 type OperationsMonitoringProperties struct {
 	Events map[string]*OperationMonitoringLevel `json:"events"`
@@ -1412,6 +1339,15 @@ type SharedAccessSignatureAuthorizationRuleListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SharedAccessSignatureAuthorizationRuleListResult.
+func (sasarlr SharedAccessSignatureAuthorizationRuleListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sasarlr.Value != nil {
+		objectMap["value"] = sasarlr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // SharedAccessSignatureAuthorizationRuleListResultIterator provides access to a complete listing of
 // SharedAccessSignatureAuthorizationRule values.
 type SharedAccessSignatureAuthorizationRuleListResultIterator struct {
@@ -1481,10 +1417,15 @@ func (sasarlr SharedAccessSignatureAuthorizationRuleListResult) IsEmpty() bool {
 	return sasarlr.Value == nil || len(*sasarlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sasarlr SharedAccessSignatureAuthorizationRuleListResult) hasNextLink() bool {
+	return sasarlr.NextLink != nil && len(*sasarlr.NextLink) != 0
+}
+
 // sharedAccessSignatureAuthorizationRuleListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sasarlr SharedAccessSignatureAuthorizationRuleListResult) sharedAccessSignatureAuthorizationRuleListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if sasarlr.NextLink == nil || len(to.String(sasarlr.NextLink)) < 1 {
+	if !sasarlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1513,11 +1454,16 @@ func (page *SharedAccessSignatureAuthorizationRuleListResultPage) NextWithContex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sasarlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sasarlr)
+		if err != nil {
+			return err
+		}
+		page.sasarlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sasarlr = next
 	return nil
 }
 

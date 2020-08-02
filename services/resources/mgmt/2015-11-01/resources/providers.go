@@ -107,7 +107,6 @@ func (client ProvidersClient) GetSender(req *http.Request) (*http.Response, erro
 func (client ProvidersClient) GetResponder(resp *http.Response) (result Provider, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -147,6 +146,9 @@ func (client ProvidersClient) List(ctx context.Context, top *int32) (result Prov
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.ProvidersClient", "List", resp, "Failure responding to request")
 	}
+	if result.plr.hasNextLink() && result.plr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -184,7 +186,6 @@ func (client ProvidersClient) ListSender(req *http.Request) (*http.Response, err
 func (client ProvidersClient) ListResponder(resp *http.Response) (result ProviderListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -295,7 +296,6 @@ func (client ProvidersClient) RegisterSender(req *http.Request) (*http.Response,
 func (client ProvidersClient) RegisterResponder(resp *http.Response) (result Provider, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -369,7 +369,6 @@ func (client ProvidersClient) UnregisterSender(req *http.Request) (*http.Respons
 func (client ProvidersClient) UnregisterResponder(resp *http.Response) (result Provider, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

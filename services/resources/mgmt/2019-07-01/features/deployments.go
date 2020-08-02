@@ -105,7 +105,6 @@ func (client DeploymentsClient) CalculateTemplateHashSender(req *http.Request) (
 func (client DeploymentsClient) CalculateTemplateHashResponder(resp *http.Response) (result TemplateHashResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -195,7 +194,6 @@ func (client DeploymentsClient) CancelSender(req *http.Request) (*http.Response,
 func (client DeploymentsClient) CancelResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -282,7 +280,6 @@ func (client DeploymentsClient) CancelAtManagementGroupScopeSender(req *http.Req
 func (client DeploymentsClient) CancelAtManagementGroupScopeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -366,7 +363,6 @@ func (client DeploymentsClient) CancelAtScopeSender(req *http.Request) (*http.Re
 func (client DeploymentsClient) CancelAtScopeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -449,7 +445,6 @@ func (client DeploymentsClient) CancelAtSubscriptionScopeSender(req *http.Reques
 func (client DeploymentsClient) CancelAtSubscriptionScopeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -531,7 +526,6 @@ func (client DeploymentsClient) CancelAtTenantScopeSender(req *http.Request) (*h
 func (client DeploymentsClient) CancelAtTenantScopeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -619,7 +613,6 @@ func (client DeploymentsClient) CheckExistenceSender(req *http.Request) (*http.R
 func (client DeploymentsClient) CheckExistenceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
@@ -704,7 +697,6 @@ func (client DeploymentsClient) CheckExistenceAtManagementGroupScopeSender(req *
 func (client DeploymentsClient) CheckExistenceAtManagementGroupScopeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
@@ -786,7 +778,6 @@ func (client DeploymentsClient) CheckExistenceAtScopeSender(req *http.Request) (
 func (client DeploymentsClient) CheckExistenceAtScopeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
@@ -867,7 +858,6 @@ func (client DeploymentsClient) CheckExistenceAtSubscriptionScopeSender(req *htt
 func (client DeploymentsClient) CheckExistenceAtSubscriptionScopeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
@@ -947,7 +937,6 @@ func (client DeploymentsClient) CheckExistenceAtTenantScopeSender(req *http.Requ
 func (client DeploymentsClient) CheckExistenceAtTenantScopeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1045,7 +1034,6 @@ func (client DeploymentsClient) CreateOrUpdateSender(req *http.Request) (future 
 func (client DeploymentsClient) CreateOrUpdateResponder(resp *http.Response) (result DeploymentExtended, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1142,7 +1130,6 @@ func (client DeploymentsClient) CreateOrUpdateAtManagementGroupScopeSender(req *
 func (client DeploymentsClient) CreateOrUpdateAtManagementGroupScopeResponder(resp *http.Response) (result DeploymentExtended, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1235,7 +1222,6 @@ func (client DeploymentsClient) CreateOrUpdateAtScopeSender(req *http.Request) (
 func (client DeploymentsClient) CreateOrUpdateAtScopeResponder(resp *http.Response) (result DeploymentExtended, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1328,7 +1314,6 @@ func (client DeploymentsClient) CreateOrUpdateAtSubscriptionScopeSender(req *htt
 func (client DeploymentsClient) CreateOrUpdateAtSubscriptionScopeResponder(resp *http.Response) (result DeploymentExtended, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1420,7 +1405,6 @@ func (client DeploymentsClient) CreateOrUpdateAtTenantScopeSender(req *http.Requ
 func (client DeploymentsClient) CreateOrUpdateAtTenantScopeResponder(resp *http.Response) (result DeploymentExtended, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1515,7 +1499,6 @@ func (client DeploymentsClient) DeleteSender(req *http.Request) (future Deployme
 func (client DeploymentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1605,7 +1588,6 @@ func (client DeploymentsClient) DeleteAtManagementGroupScopeSender(req *http.Req
 func (client DeploymentsClient) DeleteAtManagementGroupScopeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1692,7 +1674,6 @@ func (client DeploymentsClient) DeleteAtScopeSender(req *http.Request) (future D
 func (client DeploymentsClient) DeleteAtScopeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1778,7 +1759,6 @@ func (client DeploymentsClient) DeleteAtSubscriptionScopeSender(req *http.Reques
 func (client DeploymentsClient) DeleteAtSubscriptionScopeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1863,7 +1843,6 @@ func (client DeploymentsClient) DeleteAtTenantScopeSender(req *http.Request) (fu
 func (client DeploymentsClient) DeleteAtTenantScopeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1950,7 +1929,6 @@ func (client DeploymentsClient) ExportTemplateSender(req *http.Request) (*http.R
 func (client DeploymentsClient) ExportTemplateResponder(resp *http.Response) (result DeploymentExportResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2036,7 +2014,6 @@ func (client DeploymentsClient) ExportTemplateAtManagementGroupScopeSender(req *
 func (client DeploymentsClient) ExportTemplateAtManagementGroupScopeResponder(resp *http.Response) (result DeploymentExportResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2119,7 +2096,6 @@ func (client DeploymentsClient) ExportTemplateAtScopeSender(req *http.Request) (
 func (client DeploymentsClient) ExportTemplateAtScopeResponder(resp *http.Response) (result DeploymentExportResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2201,7 +2177,6 @@ func (client DeploymentsClient) ExportTemplateAtSubscriptionScopeSender(req *htt
 func (client DeploymentsClient) ExportTemplateAtSubscriptionScopeResponder(resp *http.Response) (result DeploymentExportResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2282,7 +2257,6 @@ func (client DeploymentsClient) ExportTemplateAtTenantScopeSender(req *http.Requ
 func (client DeploymentsClient) ExportTemplateAtTenantScopeResponder(resp *http.Response) (result DeploymentExportResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2370,7 +2344,6 @@ func (client DeploymentsClient) GetSender(req *http.Request) (*http.Response, er
 func (client DeploymentsClient) GetResponder(resp *http.Response) (result DeploymentExtended, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2456,7 +2429,6 @@ func (client DeploymentsClient) GetAtManagementGroupScopeSender(req *http.Reques
 func (client DeploymentsClient) GetAtManagementGroupScopeResponder(resp *http.Response) (result DeploymentExtended, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2539,7 +2511,6 @@ func (client DeploymentsClient) GetAtScopeSender(req *http.Request) (*http.Respo
 func (client DeploymentsClient) GetAtScopeResponder(resp *http.Response) (result DeploymentExtended, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2621,7 +2592,6 @@ func (client DeploymentsClient) GetAtSubscriptionScopeSender(req *http.Request) 
 func (client DeploymentsClient) GetAtSubscriptionScopeResponder(resp *http.Response) (result DeploymentExtended, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2702,7 +2672,6 @@ func (client DeploymentsClient) GetAtTenantScopeSender(req *http.Request) (*http
 func (client DeploymentsClient) GetAtTenantScopeResponder(resp *http.Response) (result DeploymentExtended, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2752,6 +2721,9 @@ func (client DeploymentsClient) ListAtManagementGroupScope(ctx context.Context, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.DeploymentsClient", "ListAtManagementGroupScope", resp, "Failure responding to request")
 	}
+	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2792,7 +2764,6 @@ func (client DeploymentsClient) ListAtManagementGroupScopeSender(req *http.Reque
 func (client DeploymentsClient) ListAtManagementGroupScopeResponder(resp *http.Response) (result DeploymentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2872,6 +2843,9 @@ func (client DeploymentsClient) ListAtScope(ctx context.Context, scope string, f
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.DeploymentsClient", "ListAtScope", resp, "Failure responding to request")
 	}
+	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2912,7 +2886,6 @@ func (client DeploymentsClient) ListAtScopeSender(req *http.Request) (*http.Resp
 func (client DeploymentsClient) ListAtScopeResponder(resp *http.Response) (result DeploymentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2991,6 +2964,9 @@ func (client DeploymentsClient) ListAtSubscriptionScope(ctx context.Context, fil
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.DeploymentsClient", "ListAtSubscriptionScope", resp, "Failure responding to request")
 	}
+	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3031,7 +3007,6 @@ func (client DeploymentsClient) ListAtSubscriptionScopeSender(req *http.Request)
 func (client DeploymentsClient) ListAtSubscriptionScopeResponder(resp *http.Response) (result DeploymentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3110,6 +3085,9 @@ func (client DeploymentsClient) ListAtTenantScope(ctx context.Context, filter st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.DeploymentsClient", "ListAtTenantScope", resp, "Failure responding to request")
 	}
+	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3146,7 +3124,6 @@ func (client DeploymentsClient) ListAtTenantScopeSender(req *http.Request) (*htt
 func (client DeploymentsClient) ListAtTenantScopeResponder(resp *http.Response) (result DeploymentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3235,6 +3212,9 @@ func (client DeploymentsClient) ListByResourceGroup(ctx context.Context, resourc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.DeploymentsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3276,7 +3256,6 @@ func (client DeploymentsClient) ListByResourceGroupSender(req *http.Request) (*h
 func (client DeploymentsClient) ListByResourceGroupResponder(resp *http.Response) (result DeploymentListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3413,7 +3392,6 @@ func (client DeploymentsClient) ValidateSender(req *http.Request) (*http.Respons
 func (client DeploymentsClient) ValidateResponder(resp *http.Response) (result DeploymentValidateResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3510,7 +3488,6 @@ func (client DeploymentsClient) ValidateAtManagementGroupScopeSender(req *http.R
 func (client DeploymentsClient) ValidateAtManagementGroupScopeResponder(resp *http.Response) (result DeploymentValidateResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3604,7 +3581,6 @@ func (client DeploymentsClient) ValidateAtScopeSender(req *http.Request) (*http.
 func (client DeploymentsClient) ValidateAtScopeResponder(resp *http.Response) (result DeploymentValidateResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3697,7 +3673,6 @@ func (client DeploymentsClient) ValidateAtSubscriptionScopeSender(req *http.Requ
 func (client DeploymentsClient) ValidateAtSubscriptionScopeResponder(resp *http.Response) (result DeploymentValidateResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3789,7 +3764,6 @@ func (client DeploymentsClient) ValidateAtTenantScopeSender(req *http.Request) (
 func (client DeploymentsClient) ValidateAtTenantScopeResponder(resp *http.Response) (result DeploymentValidateResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3883,7 +3857,6 @@ func (client DeploymentsClient) WhatIfSender(req *http.Request) (future Deployme
 func (client DeploymentsClient) WhatIfResponder(resp *http.Response) (result WhatIfOperationResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3971,7 +3944,6 @@ func (client DeploymentsClient) WhatIfAtSubscriptionScopeSender(req *http.Reques
 func (client DeploymentsClient) WhatIfAtSubscriptionScopeResponder(resp *http.Response) (result WhatIfOperationResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -125,7 +125,6 @@ func (client DeploymentOperationsClient) GetSender(req *http.Request) (*http.Res
 func (client DeploymentOperationsClient) GetResponder(resp *http.Response) (result DeploymentOperation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -213,7 +212,6 @@ func (client DeploymentOperationsClient) GetAtManagementGroupScopeSender(req *ht
 func (client DeploymentOperationsClient) GetAtManagementGroupScopeResponder(resp *http.Response) (result DeploymentOperation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -298,7 +296,6 @@ func (client DeploymentOperationsClient) GetAtScopeSender(req *http.Request) (*h
 func (client DeploymentOperationsClient) GetAtScopeResponder(resp *http.Response) (result DeploymentOperation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -382,7 +379,6 @@ func (client DeploymentOperationsClient) GetAtSubscriptionScopeSender(req *http.
 func (client DeploymentOperationsClient) GetAtSubscriptionScopeResponder(resp *http.Response) (result DeploymentOperation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -465,7 +461,6 @@ func (client DeploymentOperationsClient) GetAtTenantScopeSender(req *http.Reques
 func (client DeploymentOperationsClient) GetAtTenantScopeResponder(resp *http.Response) (result DeploymentOperation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -519,6 +514,9 @@ func (client DeploymentOperationsClient) List(ctx context.Context, resourceGroup
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.DeploymentOperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.dolr.hasNextLink() && result.dolr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -558,7 +556,6 @@ func (client DeploymentOperationsClient) ListSender(req *http.Request) (*http.Re
 func (client DeploymentOperationsClient) ListResponder(resp *http.Response) (result DeploymentOperationsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -648,6 +645,9 @@ func (client DeploymentOperationsClient) ListAtManagementGroupScope(ctx context.
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.DeploymentOperationsClient", "ListAtManagementGroupScope", resp, "Failure responding to request")
 	}
+	if result.dolr.hasNextLink() && result.dolr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -686,7 +686,6 @@ func (client DeploymentOperationsClient) ListAtManagementGroupScopeSender(req *h
 func (client DeploymentOperationsClient) ListAtManagementGroupScopeResponder(resp *http.Response) (result DeploymentOperationsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -773,6 +772,9 @@ func (client DeploymentOperationsClient) ListAtScope(ctx context.Context, scope 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.DeploymentOperationsClient", "ListAtScope", resp, "Failure responding to request")
 	}
+	if result.dolr.hasNextLink() && result.dolr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -811,7 +813,6 @@ func (client DeploymentOperationsClient) ListAtScopeSender(req *http.Request) (*
 func (client DeploymentOperationsClient) ListAtScopeResponder(resp *http.Response) (result DeploymentOperationsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -897,6 +898,9 @@ func (client DeploymentOperationsClient) ListAtSubscriptionScope(ctx context.Con
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.DeploymentOperationsClient", "ListAtSubscriptionScope", resp, "Failure responding to request")
 	}
+	if result.dolr.hasNextLink() && result.dolr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -935,7 +939,6 @@ func (client DeploymentOperationsClient) ListAtSubscriptionScopeSender(req *http
 func (client DeploymentOperationsClient) ListAtSubscriptionScopeResponder(resp *http.Response) (result DeploymentOperationsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1021,6 +1024,9 @@ func (client DeploymentOperationsClient) ListAtTenantScope(ctx context.Context, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.DeploymentOperationsClient", "ListAtTenantScope", resp, "Failure responding to request")
 	}
+	if result.dolr.hasNextLink() && result.dolr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1058,7 +1064,6 @@ func (client DeploymentOperationsClient) ListAtTenantScopeSender(req *http.Reque
 func (client DeploymentOperationsClient) ListAtTenantScopeResponder(resp *http.Response) (result DeploymentOperationsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -75,6 +75,9 @@ func (client UsagesClient) List(ctx context.Context, regionID string, filter str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesClient", "List", resp, "Failure responding to request")
 	}
+	if result.ulr.hasNextLink() && result.ulr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

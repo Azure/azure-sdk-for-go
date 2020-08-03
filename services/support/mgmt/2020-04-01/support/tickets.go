@@ -348,6 +348,9 @@ func (client TicketsClient) List(ctx context.Context, top *int32, filter string)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "support.TicketsClient", "List", resp, "Failure responding to request")
 	}
+	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

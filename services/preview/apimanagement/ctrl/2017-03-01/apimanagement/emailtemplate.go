@@ -334,6 +334,9 @@ func (client EmailTemplateClient) List(ctx context.Context, apimBaseURL string, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.EmailTemplateClient", "List", resp, "Failure responding to request")
 	}
+	if result.etc.hasNextLink() && result.etc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

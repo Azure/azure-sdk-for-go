@@ -32,343 +32,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/customerinsights/mgmt/2017-01-01/customerinsights"
 
-// CalculationWindowTypes enumerates the values for calculation window types.
-type CalculationWindowTypes string
-
-const (
-	// Day ...
-	Day CalculationWindowTypes = "Day"
-	// Hour ...
-	Hour CalculationWindowTypes = "Hour"
-	// Lifetime ...
-	Lifetime CalculationWindowTypes = "Lifetime"
-	// Month ...
-	Month CalculationWindowTypes = "Month"
-	// Week ...
-	Week CalculationWindowTypes = "Week"
-)
-
-// PossibleCalculationWindowTypesValues returns an array of possible values for the CalculationWindowTypes const type.
-func PossibleCalculationWindowTypesValues() []CalculationWindowTypes {
-	return []CalculationWindowTypes{Day, Hour, Lifetime, Month, Week}
-}
-
-// CardinalityTypes enumerates the values for cardinality types.
-type CardinalityTypes string
-
-const (
-	// ManyToMany ...
-	ManyToMany CardinalityTypes = "ManyToMany"
-	// OneToMany ...
-	OneToMany CardinalityTypes = "OneToMany"
-	// OneToOne ...
-	OneToOne CardinalityTypes = "OneToOne"
-)
-
-// PossibleCardinalityTypesValues returns an array of possible values for the CardinalityTypes const type.
-func PossibleCardinalityTypesValues() []CardinalityTypes {
-	return []CardinalityTypes{ManyToMany, OneToMany, OneToOne}
-}
-
-// CompletionOperationTypes enumerates the values for completion operation types.
-type CompletionOperationTypes string
-
-const (
-	// DeleteFile ...
-	DeleteFile CompletionOperationTypes = "DeleteFile"
-	// DoNothing ...
-	DoNothing CompletionOperationTypes = "DoNothing"
-	// MoveFile ...
-	MoveFile CompletionOperationTypes = "MoveFile"
-)
-
-// PossibleCompletionOperationTypesValues returns an array of possible values for the CompletionOperationTypes const type.
-func PossibleCompletionOperationTypesValues() []CompletionOperationTypes {
-	return []CompletionOperationTypes{DeleteFile, DoNothing, MoveFile}
-}
-
-// ConnectorMappingStates enumerates the values for connector mapping states.
-type ConnectorMappingStates string
-
-const (
-	// Created ...
-	Created ConnectorMappingStates = "Created"
-	// Creating ...
-	Creating ConnectorMappingStates = "Creating"
-	// Expiring ...
-	Expiring ConnectorMappingStates = "Expiring"
-	// Failed ...
-	Failed ConnectorMappingStates = "Failed"
-	// Ready ...
-	Ready ConnectorMappingStates = "Ready"
-	// Running ...
-	Running ConnectorMappingStates = "Running"
-	// Stopped ...
-	Stopped ConnectorMappingStates = "Stopped"
-)
-
-// PossibleConnectorMappingStatesValues returns an array of possible values for the ConnectorMappingStates const type.
-func PossibleConnectorMappingStatesValues() []ConnectorMappingStates {
-	return []ConnectorMappingStates{Created, Creating, Expiring, Failed, Ready, Running, Stopped}
-}
-
-// ConnectorStates enumerates the values for connector states.
-type ConnectorStates string
-
-const (
-	// ConnectorStatesCreated ...
-	ConnectorStatesCreated ConnectorStates = "Created"
-	// ConnectorStatesCreating ...
-	ConnectorStatesCreating ConnectorStates = "Creating"
-	// ConnectorStatesDeleting ...
-	ConnectorStatesDeleting ConnectorStates = "Deleting"
-	// ConnectorStatesExpiring ...
-	ConnectorStatesExpiring ConnectorStates = "Expiring"
-	// ConnectorStatesFailed ...
-	ConnectorStatesFailed ConnectorStates = "Failed"
-	// ConnectorStatesReady ...
-	ConnectorStatesReady ConnectorStates = "Ready"
-)
-
-// PossibleConnectorStatesValues returns an array of possible values for the ConnectorStates const type.
-func PossibleConnectorStatesValues() []ConnectorStates {
-	return []ConnectorStates{ConnectorStatesCreated, ConnectorStatesCreating, ConnectorStatesDeleting, ConnectorStatesExpiring, ConnectorStatesFailed, ConnectorStatesReady}
-}
-
-// ConnectorTypes enumerates the values for connector types.
-type ConnectorTypes string
-
-const (
-	// AzureBlob ...
-	AzureBlob ConnectorTypes = "AzureBlob"
-	// CRM ...
-	CRM ConnectorTypes = "CRM"
-	// ExchangeOnline ...
-	ExchangeOnline ConnectorTypes = "ExchangeOnline"
-	// None ...
-	None ConnectorTypes = "None"
-	// Outbound ...
-	Outbound ConnectorTypes = "Outbound"
-	// Salesforce ...
-	Salesforce ConnectorTypes = "Salesforce"
-)
-
-// PossibleConnectorTypesValues returns an array of possible values for the ConnectorTypes const type.
-func PossibleConnectorTypesValues() []ConnectorTypes {
-	return []ConnectorTypes{AzureBlob, CRM, ExchangeOnline, None, Outbound, Salesforce}
-}
-
-// DataSourceType enumerates the values for data source type.
-type DataSourceType string
-
-const (
-	// DataSourceTypeConnector ...
-	DataSourceTypeConnector DataSourceType = "Connector"
-	// DataSourceTypeLinkInteraction ...
-	DataSourceTypeLinkInteraction DataSourceType = "LinkInteraction"
-	// DataSourceTypeSystemDefault ...
-	DataSourceTypeSystemDefault DataSourceType = "SystemDefault"
-)
-
-// PossibleDataSourceTypeValues returns an array of possible values for the DataSourceType const type.
-func PossibleDataSourceTypeValues() []DataSourceType {
-	return []DataSourceType{DataSourceTypeConnector, DataSourceTypeLinkInteraction, DataSourceTypeSystemDefault}
-}
-
-// EntityTypes enumerates the values for entity types.
-type EntityTypes string
-
-const (
-	// EntityTypesInteraction ...
-	EntityTypesInteraction EntityTypes = "Interaction"
-	// EntityTypesNone ...
-	EntityTypesNone EntityTypes = "None"
-	// EntityTypesProfile ...
-	EntityTypesProfile EntityTypes = "Profile"
-	// EntityTypesRelationship ...
-	EntityTypesRelationship EntityTypes = "Relationship"
-)
-
-// PossibleEntityTypesValues returns an array of possible values for the EntityTypes const type.
-func PossibleEntityTypesValues() []EntityTypes {
-	return []EntityTypes{EntityTypesInteraction, EntityTypesNone, EntityTypesProfile, EntityTypesRelationship}
-}
-
-// ErrorManagementTypes enumerates the values for error management types.
-type ErrorManagementTypes string
-
-const (
-	// RejectAndContinue ...
-	RejectAndContinue ErrorManagementTypes = "RejectAndContinue"
-	// RejectUntilLimit ...
-	RejectUntilLimit ErrorManagementTypes = "RejectUntilLimit"
-	// StopImport ...
-	StopImport ErrorManagementTypes = "StopImport"
-)
-
-// PossibleErrorManagementTypesValues returns an array of possible values for the ErrorManagementTypes const type.
-func PossibleErrorManagementTypesValues() []ErrorManagementTypes {
-	return []ErrorManagementTypes{RejectAndContinue, RejectUntilLimit, StopImport}
-}
-
-// FrequencyTypes enumerates the values for frequency types.
-type FrequencyTypes string
-
-const (
-	// FrequencyTypesDay ...
-	FrequencyTypesDay FrequencyTypes = "Day"
-	// FrequencyTypesHour ...
-	FrequencyTypesHour FrequencyTypes = "Hour"
-	// FrequencyTypesMinute ...
-	FrequencyTypesMinute FrequencyTypes = "Minute"
-	// FrequencyTypesMonth ...
-	FrequencyTypesMonth FrequencyTypes = "Month"
-	// FrequencyTypesWeek ...
-	FrequencyTypesWeek FrequencyTypes = "Week"
-)
-
-// PossibleFrequencyTypesValues returns an array of possible values for the FrequencyTypes const type.
-func PossibleFrequencyTypesValues() []FrequencyTypes {
-	return []FrequencyTypes{FrequencyTypesDay, FrequencyTypesHour, FrequencyTypesMinute, FrequencyTypesMonth, FrequencyTypesWeek}
-}
-
-// InstanceOperationType enumerates the values for instance operation type.
-type InstanceOperationType string
-
-const (
-	// Delete ...
-	Delete InstanceOperationType = "Delete"
-	// Upsert ...
-	Upsert InstanceOperationType = "Upsert"
-)
-
-// PossibleInstanceOperationTypeValues returns an array of possible values for the InstanceOperationType const type.
-func PossibleInstanceOperationTypeValues() []InstanceOperationType {
-	return []InstanceOperationType{Delete, Upsert}
-}
-
-// KpiFunctions enumerates the values for kpi functions.
-type KpiFunctions string
-
-const (
-	// KpiFunctionsAvg ...
-	KpiFunctionsAvg KpiFunctions = "Avg"
-	// KpiFunctionsCount ...
-	KpiFunctionsCount KpiFunctions = "Count"
-	// KpiFunctionsCountDistinct ...
-	KpiFunctionsCountDistinct KpiFunctions = "CountDistinct"
-	// KpiFunctionsLast ...
-	KpiFunctionsLast KpiFunctions = "Last"
-	// KpiFunctionsMax ...
-	KpiFunctionsMax KpiFunctions = "Max"
-	// KpiFunctionsMin ...
-	KpiFunctionsMin KpiFunctions = "Min"
-	// KpiFunctionsNone ...
-	KpiFunctionsNone KpiFunctions = "None"
-	// KpiFunctionsSum ...
-	KpiFunctionsSum KpiFunctions = "Sum"
-)
-
-// PossibleKpiFunctionsValues returns an array of possible values for the KpiFunctions const type.
-func PossibleKpiFunctionsValues() []KpiFunctions {
-	return []KpiFunctions{KpiFunctionsAvg, KpiFunctionsCount, KpiFunctionsCountDistinct, KpiFunctionsLast, KpiFunctionsMax, KpiFunctionsMin, KpiFunctionsNone, KpiFunctionsSum}
-}
-
-// LinkTypes enumerates the values for link types.
-type LinkTypes string
-
-const (
-	// CopyIfNull ...
-	CopyIfNull LinkTypes = "CopyIfNull"
-	// UpdateAlways ...
-	UpdateAlways LinkTypes = "UpdateAlways"
-)
-
-// PossibleLinkTypesValues returns an array of possible values for the LinkTypes const type.
-func PossibleLinkTypesValues() []LinkTypes {
-	return []LinkTypes{CopyIfNull, UpdateAlways}
-}
-
-// PermissionTypes enumerates the values for permission types.
-type PermissionTypes string
-
-const (
-	// Manage ...
-	Manage PermissionTypes = "Manage"
-	// Read ...
-	Read PermissionTypes = "Read"
-	// Write ...
-	Write PermissionTypes = "Write"
-)
-
-// PossiblePermissionTypesValues returns an array of possible values for the PermissionTypes const type.
-func PossiblePermissionTypesValues() []PermissionTypes {
-	return []PermissionTypes{Manage, Read, Write}
-}
-
-// ProvisioningStates enumerates the values for provisioning states.
-type ProvisioningStates string
-
-const (
-	// ProvisioningStatesDeleting ...
-	ProvisioningStatesDeleting ProvisioningStates = "Deleting"
-	// ProvisioningStatesExpiring ...
-	ProvisioningStatesExpiring ProvisioningStates = "Expiring"
-	// ProvisioningStatesFailed ...
-	ProvisioningStatesFailed ProvisioningStates = "Failed"
-	// ProvisioningStatesHumanIntervention ...
-	ProvisioningStatesHumanIntervention ProvisioningStates = "HumanIntervention"
-	// ProvisioningStatesProvisioning ...
-	ProvisioningStatesProvisioning ProvisioningStates = "Provisioning"
-	// ProvisioningStatesSucceeded ...
-	ProvisioningStatesSucceeded ProvisioningStates = "Succeeded"
-)
-
-// PossibleProvisioningStatesValues returns an array of possible values for the ProvisioningStates const type.
-func PossibleProvisioningStatesValues() []ProvisioningStates {
-	return []ProvisioningStates{ProvisioningStatesDeleting, ProvisioningStatesExpiring, ProvisioningStatesFailed, ProvisioningStatesHumanIntervention, ProvisioningStatesProvisioning, ProvisioningStatesSucceeded}
-}
-
-// RoleTypes enumerates the values for role types.
-type RoleTypes string
-
-const (
-	// Admin ...
-	Admin RoleTypes = "Admin"
-	// DataAdmin ...
-	DataAdmin RoleTypes = "DataAdmin"
-	// DataReader ...
-	DataReader RoleTypes = "DataReader"
-	// ManageAdmin ...
-	ManageAdmin RoleTypes = "ManageAdmin"
-	// ManageReader ...
-	ManageReader RoleTypes = "ManageReader"
-	// Reader ...
-	Reader RoleTypes = "Reader"
-)
-
-// PossibleRoleTypesValues returns an array of possible values for the RoleTypes const type.
-func PossibleRoleTypesValues() []RoleTypes {
-	return []RoleTypes{Admin, DataAdmin, DataReader, ManageAdmin, ManageReader, Reader}
-}
-
-// Status enumerates the values for status.
-type Status string
-
-const (
-	// StatusActive ...
-	StatusActive Status = "Active"
-	// StatusDeleted ...
-	StatusDeleted Status = "Deleted"
-	// StatusNone ...
-	StatusNone Status = "None"
-)
-
-// PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{StatusActive, StatusDeleted, StatusNone}
-}
-
 // AssignmentPrincipal the AssignmentPrincipal
 type AssignmentPrincipal struct {
 	// PrincipalID - The principal id being assigned to.
@@ -405,6 +68,21 @@ type AuthorizationPolicy struct {
 	PrimaryKey *string `json:"primaryKey,omitempty"`
 	// SecondaryKey - Secondary key associated with the policy.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AuthorizationPolicy.
+func (ap AuthorizationPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.Permissions != nil {
+		objectMap["permissions"] = ap.Permissions
+	}
+	if ap.PrimaryKey != nil {
+		objectMap["primaryKey"] = ap.PrimaryKey
+	}
+	if ap.SecondaryKey != nil {
+		objectMap["secondaryKey"] = ap.SecondaryKey
+	}
+	return json.Marshal(objectMap)
 }
 
 // AuthorizationPolicyListResult the response of list authorization policy operation.
@@ -485,10 +163,15 @@ func (aplr AuthorizationPolicyListResult) IsEmpty() bool {
 	return aplr.Value == nil || len(*aplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (aplr AuthorizationPolicyListResult) hasNextLink() bool {
+	return aplr.NextLink != nil && len(*aplr.NextLink) != 0
+}
+
 // authorizationPolicyListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (aplr AuthorizationPolicyListResult) authorizationPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if aplr.NextLink == nil || len(to.String(aplr.NextLink)) < 1 {
+	if !aplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -516,11 +199,16 @@ func (page *AuthorizationPolicyListResultPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.aplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.aplr)
+		if err != nil {
+			return err
+		}
+		page.aplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.aplr = next
 	return nil
 }
 
@@ -759,10 +447,15 @@ func (clr ConnectorListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (clr ConnectorListResult) hasNextLink() bool {
+	return clr.NextLink != nil && len(*clr.NextLink) != 0
+}
+
 // connectorListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (clr ConnectorListResult) connectorListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if clr.NextLink == nil || len(to.String(clr.NextLink)) < 1 {
+	if !clr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -790,11 +483,16 @@ func (page *ConnectorListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.clr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.clr)
+		if err != nil {
+			return err
+		}
+		page.clr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.clr = next
 	return nil
 }
 
@@ -862,6 +560,30 @@ type ConnectorMapping struct {
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ConnectorMapping.
+func (cm ConnectorMapping) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cm.ConnectorType != "" {
+		objectMap["connectorType"] = cm.ConnectorType
+	}
+	if cm.EntityType != "" {
+		objectMap["entityType"] = cm.EntityType
+	}
+	if cm.EntityTypeName != nil {
+		objectMap["entityTypeName"] = cm.EntityTypeName
+	}
+	if cm.DisplayName != nil {
+		objectMap["displayName"] = cm.DisplayName
+	}
+	if cm.Description != nil {
+		objectMap["description"] = cm.Description
+	}
+	if cm.MappingProperties != nil {
+		objectMap["mappingProperties"] = cm.MappingProperties
+	}
+	return json.Marshal(objectMap)
+}
+
 // ConnectorMappingAvailability connector mapping property availability.
 type ConnectorMappingAvailability struct {
 	// Frequency - The frequency to update. Possible values include: 'FrequencyTypesMinute', 'FrequencyTypesHour', 'FrequencyTypesDay', 'FrequencyTypesWeek', 'FrequencyTypesMonth'
@@ -911,8 +633,8 @@ type ConnectorMappingListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ConnectorMappingListResultIterator provides access to a complete listing of
-// ConnectorMappingResourceFormat values.
+// ConnectorMappingListResultIterator provides access to a complete listing of ConnectorMappingResourceFormat
+// values.
 type ConnectorMappingListResultIterator struct {
 	i    int
 	page ConnectorMappingListResultPage
@@ -980,10 +702,15 @@ func (cmlr ConnectorMappingListResult) IsEmpty() bool {
 	return cmlr.Value == nil || len(*cmlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cmlr ConnectorMappingListResult) hasNextLink() bool {
+	return cmlr.NextLink != nil && len(*cmlr.NextLink) != 0
+}
+
 // connectorMappingListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cmlr ConnectorMappingListResult) connectorMappingListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cmlr.NextLink == nil || len(to.String(cmlr.NextLink)) < 1 {
+	if !cmlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1011,11 +738,16 @@ func (page *ConnectorMappingListResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cmlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cmlr)
+		if err != nil {
+			return err
+		}
+		page.cmlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cmlr = next
 	return nil
 }
 
@@ -1225,8 +957,8 @@ func (crf *ConnectorResourceFormat) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ConnectorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ConnectorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ConnectorsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1254,8 +986,7 @@ func (future *ConnectorsCreateOrUpdateFuture) Result(client ConnectorsClient) (c
 	return
 }
 
-// ConnectorsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ConnectorsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ConnectorsDeleteFuture struct {
 	azure.Future
 }
@@ -1301,8 +1032,8 @@ type CrmConnectorProperties struct {
 	AccessToken *string `json:"accessToken,omitempty"`
 }
 
-// DataSource data Source is a way for us to know the source of instances. A single type can have data
-// coming in from multiple places. In activities we use this to determine precedence rules.
+// DataSource data Source is a way for us to know the source of instances. A single type can have data coming
+// in from multiple places. In activities we use this to determine precedence rules.
 type DataSource struct {
 	// Name - READ-ONLY; The data source name
 	Name *string `json:"name,omitempty"`
@@ -1741,10 +1472,15 @@ func (hlr HubListResult) IsEmpty() bool {
 	return hlr.Value == nil || len(*hlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (hlr HubListResult) hasNextLink() bool {
+	return hlr.NextLink != nil && len(*hlr.NextLink) != 0
+}
+
 // hubListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (hlr HubListResult) hubListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if hlr.NextLink == nil || len(to.String(hlr.NextLink)) < 1 {
+	if !hlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1772,11 +1508,16 @@ func (page *HubListResultPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.hlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.hlr)
+		if err != nil {
+			return err
+		}
+		page.hlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.hlr = next
 	return nil
 }
 
@@ -1822,6 +1563,18 @@ type HubPropertiesFormat struct {
 	TenantFeatures *int32 `json:"tenantFeatures,omitempty"`
 	// HubBillingInfo - Billing settings of the hub.
 	HubBillingInfo *HubBillingInfoFormat `json:"hubBillingInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HubPropertiesFormat.
+func (hpf HubPropertiesFormat) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hpf.TenantFeatures != nil {
+		objectMap["tenantFeatures"] = hpf.TenantFeatures
+	}
+	if hpf.HubBillingInfo != nil {
+		objectMap["hubBillingInfo"] = hpf.HubBillingInfo
+	}
+	return json.Marshal(objectMap)
 }
 
 // HubsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -1934,10 +1687,15 @@ func (ilr InteractionListResult) IsEmpty() bool {
 	return ilr.Value == nil || len(*ilr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ilr InteractionListResult) hasNextLink() bool {
+	return ilr.NextLink != nil && len(*ilr.NextLink) != 0
+}
+
 // interactionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ilr InteractionListResult) interactionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ilr.NextLink == nil || len(to.String(ilr.NextLink)) < 1 {
+	if !ilr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1965,11 +1723,16 @@ func (page *InteractionListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ilr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ilr)
+		if err != nil {
+			return err
+		}
+		page.ilr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ilr = next
 	return nil
 }
 
@@ -2075,8 +1838,8 @@ func (irf *InteractionResourceFormat) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// InteractionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// InteractionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type InteractionsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2698,10 +2461,15 @@ func (klr KpiListResult) IsEmpty() bool {
 	return klr.Value == nil || len(*klr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (klr KpiListResult) hasNextLink() bool {
+	return klr.NextLink != nil && len(*klr.NextLink) != 0
+}
+
 // kpiListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (klr KpiListResult) kpiListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if klr.NextLink == nil || len(to.String(klr.NextLink)) < 1 {
+	if !klr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2729,11 +2497,16 @@ func (page *KpiListResultPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.klr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.klr)
+		if err != nil {
+			return err
+		}
+		page.klr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.klr = next
 	return nil
 }
 
@@ -2988,10 +2761,15 @@ func (llr LinkListResult) IsEmpty() bool {
 	return llr.Value == nil || len(*llr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (llr LinkListResult) hasNextLink() bool {
+	return llr.NextLink != nil && len(*llr.NextLink) != 0
+}
+
 // linkListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (llr LinkListResult) linkListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if llr.NextLink == nil || len(to.String(llr.NextLink)) < 1 {
+	if !llr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3019,11 +2797,16 @@ func (page *LinkListResultPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.llr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.llr)
+		if err != nil {
+			return err
+		}
+		page.llr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.llr = next
 	return nil
 }
 
@@ -3217,6 +3000,15 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
 	// Provider - READ-ONLY; Service provider: Microsoft.CustomerInsights
@@ -3305,10 +3097,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3336,11 +3133,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -3519,10 +3321,15 @@ func (plr ProfileListResult) IsEmpty() bool {
 	return plr.Value == nil || len(*plr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (plr ProfileListResult) hasNextLink() bool {
+	return plr.NextLink != nil && len(*plr.NextLink) != 0
+}
+
 // profileListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (plr ProfileListResult) profileListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if plr.NextLink == nil || len(to.String(plr.NextLink)) < 1 {
+	if !plr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3550,11 +3357,16 @@ func (page *ProfileListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.plr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.plr)
+		if err != nil {
+			return err
+		}
+		page.plr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.plr = next
 	return nil
 }
 
@@ -3689,8 +3501,7 @@ func (future *ProfilesCreateOrUpdateFuture) Result(client ProfilesClient) (prf P
 	return
 }
 
-// ProfilesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ProfilesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ProfilesDeleteFuture struct {
 	azure.Future
 }
@@ -3839,6 +3650,57 @@ type PropertyDefinition struct {
 	DataSourcePrecedenceRules *[]DataSourcePrecedence `json:"dataSourcePrecedenceRules,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PropertyDefinition.
+func (pd PropertyDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pd.ArrayValueSeparator != nil {
+		objectMap["arrayValueSeparator"] = pd.ArrayValueSeparator
+	}
+	if pd.EnumValidValues != nil {
+		objectMap["enumValidValues"] = pd.EnumValidValues
+	}
+	if pd.FieldName != nil {
+		objectMap["fieldName"] = pd.FieldName
+	}
+	if pd.FieldType != nil {
+		objectMap["fieldType"] = pd.FieldType
+	}
+	if pd.IsArray != nil {
+		objectMap["isArray"] = pd.IsArray
+	}
+	if pd.IsEnum != nil {
+		objectMap["isEnum"] = pd.IsEnum
+	}
+	if pd.IsFlagEnum != nil {
+		objectMap["isFlagEnum"] = pd.IsFlagEnum
+	}
+	if pd.IsImage != nil {
+		objectMap["isImage"] = pd.IsImage
+	}
+	if pd.IsLocalizedString != nil {
+		objectMap["isLocalizedString"] = pd.IsLocalizedString
+	}
+	if pd.IsName != nil {
+		objectMap["isName"] = pd.IsName
+	}
+	if pd.IsRequired != nil {
+		objectMap["isRequired"] = pd.IsRequired
+	}
+	if pd.PropertyID != nil {
+		objectMap["propertyId"] = pd.PropertyID
+	}
+	if pd.SchemaItemPropLink != nil {
+		objectMap["schemaItemPropLink"] = pd.SchemaItemPropLink
+	}
+	if pd.MaxLength != nil {
+		objectMap["maxLength"] = pd.MaxLength
+	}
+	if pd.IsAvailableInGraph != nil {
+		objectMap["isAvailableInGraph"] = pd.IsAvailableInGraph
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProxyResource common properties of proxy resource.
 type ProxyResource struct {
 	// ID - READ-ONLY; Resource ID.
@@ -3979,8 +3841,8 @@ type RelationshipLinkListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// RelationshipLinkListResultIterator provides access to a complete listing of
-// RelationshipLinkResourceFormat values.
+// RelationshipLinkListResultIterator provides access to a complete listing of RelationshipLinkResourceFormat
+// values.
 type RelationshipLinkListResultIterator struct {
 	i    int
 	page RelationshipLinkListResultPage
@@ -4048,10 +3910,15 @@ func (rllr RelationshipLinkListResult) IsEmpty() bool {
 	return rllr.Value == nil || len(*rllr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rllr RelationshipLinkListResult) hasNextLink() bool {
+	return rllr.NextLink != nil && len(*rllr.NextLink) != 0
+}
+
 // relationshipLinkListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rllr RelationshipLinkListResult) relationshipLinkListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rllr.NextLink == nil || len(to.String(rllr.NextLink)) < 1 {
+	if !rllr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4079,11 +3946,16 @@ func (page *RelationshipLinkListResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rllr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rllr)
+		if err != nil {
+			return err
+		}
+		page.rllr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rllr = next
 	return nil
 }
 
@@ -4250,8 +4122,7 @@ type RelationshipListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// RelationshipListResultIterator provides access to a complete listing of RelationshipResourceFormat
-// values.
+// RelationshipListResultIterator provides access to a complete listing of RelationshipResourceFormat values.
 type RelationshipListResultIterator struct {
 	i    int
 	page RelationshipListResultPage
@@ -4319,10 +4190,15 @@ func (rlr RelationshipListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rlr RelationshipListResult) hasNextLink() bool {
+	return rlr.NextLink != nil && len(*rlr.NextLink) != 0
+}
+
 // relationshipListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rlr RelationshipListResult) relationshipListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
+	if !rlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4350,11 +4226,16 @@ func (page *RelationshipListResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rlr)
+		if err != nil {
+			return err
+		}
+		page.rlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rlr = next
 	return nil
 }
 
@@ -4460,8 +4341,8 @@ func (rrf *RelationshipResourceFormat) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RelationshipsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// RelationshipsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type RelationshipsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -4761,10 +4642,15 @@ func (ralr RoleAssignmentListResult) IsEmpty() bool {
 	return ralr.Value == nil || len(*ralr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ralr RoleAssignmentListResult) hasNextLink() bool {
+	return ralr.NextLink != nil && len(*ralr.NextLink) != 0
+}
+
 // roleAssignmentListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ralr RoleAssignmentListResult) roleAssignmentListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ralr.NextLink == nil || len(to.String(ralr.NextLink)) < 1 {
+	if !ralr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4792,11 +4678,16 @@ func (page *RoleAssignmentListResultPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ralr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ralr)
+		if err != nil {
+			return err
+		}
+		page.ralr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ralr = next
 	return nil
 }
 
@@ -5008,10 +4899,15 @@ func (rlr RoleListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rlr RoleListResult) hasNextLink() bool {
+	return rlr.NextLink != nil && len(*rlr.NextLink) != 0
+}
+
 // roleListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rlr RoleListResult) roleListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
+	if !rlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5039,11 +4935,16 @@ func (page *RoleListResultPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rlr)
+		if err != nil {
+			return err
+		}
+		page.rlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rlr = next
 	return nil
 }
 
@@ -5337,10 +5238,15 @@ func (vlr ViewListResult) IsEmpty() bool {
 	return vlr.Value == nil || len(*vlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (vlr ViewListResult) hasNextLink() bool {
+	return vlr.NextLink != nil && len(*vlr.NextLink) != 0
+}
+
 // viewListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (vlr ViewListResult) viewListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if vlr.NextLink == nil || len(to.String(vlr.NextLink)) < 1 {
+	if !vlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5368,11 +5274,16 @@ func (page *ViewListResultPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.vlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.vlr)
+		if err != nil {
+			return err
+		}
+		page.vlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.vlr = next
 	return nil
 }
 
@@ -5598,10 +5509,15 @@ func (wtlr WidgetTypeListResult) IsEmpty() bool {
 	return wtlr.Value == nil || len(*wtlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wtlr WidgetTypeListResult) hasNextLink() bool {
+	return wtlr.NextLink != nil && len(*wtlr.NextLink) != 0
+}
+
 // widgetTypeListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wtlr WidgetTypeListResult) widgetTypeListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wtlr.NextLink == nil || len(to.String(wtlr.NextLink)) < 1 {
+	if !wtlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5629,11 +5545,16 @@ func (page *WidgetTypeListResultPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wtlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wtlr)
+		if err != nil {
+			return err
+		}
+		page.wtlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wtlr = next
 	return nil
 }
 

@@ -72,6 +72,9 @@ func (client OperationsClient) List(ctx context.Context) (result OperationEntity
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "enterpriseknowledgegraphservice.OperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.oelr.hasNextLink() && result.oelr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -31,61 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2015-12-01/batch"
 
-// AccountKeyType enumerates the values for account key type.
-type AccountKeyType string
-
-const (
-	// Primary ...
-	Primary AccountKeyType = "Primary"
-	// Secondary ...
-	Secondary AccountKeyType = "Secondary"
-)
-
-// PossibleAccountKeyTypeValues returns an array of possible values for the AccountKeyType const type.
-func PossibleAccountKeyTypeValues() []AccountKeyType {
-	return []AccountKeyType{Primary, Secondary}
-}
-
-// PackageState enumerates the values for package state.
-type PackageState string
-
-const (
-	// Active ...
-	Active PackageState = "active"
-	// Pending ...
-	Pending PackageState = "pending"
-	// Unmapped ...
-	Unmapped PackageState = "unmapped"
-)
-
-// PossiblePackageStateValues returns an array of possible values for the PackageState const type.
-func PossiblePackageStateValues() []PackageState {
-	return []PackageState{Active, Pending, Unmapped}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Cancelled ...
-	Cancelled ProvisioningState = "Cancelled"
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Invalid ...
-	Invalid ProvisioningState = "Invalid"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Cancelled, Creating, Deleting, Failed, Invalid, Succeeded}
-}
-
 // Account contains information about an Azure Batch account.
 type Account struct {
 	autorest.Response `json:"-"`
@@ -193,8 +138,7 @@ type AccountBaseProperties struct {
 	AutoStorage *AutoStorageBaseProperties `json:"autoStorage,omitempty"`
 }
 
-// AccountCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AccountCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountCreateFuture struct {
 	azure.Future
 }
@@ -289,8 +233,7 @@ func (acp *AccountCreateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AccountDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AccountDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountDeleteFuture struct {
 	azure.Future
 }
@@ -398,10 +341,15 @@ func (alr AccountListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (alr AccountListResult) hasNextLink() bool {
+	return alr.NextLink != nil && len(*alr.NextLink) != 0
+}
+
 // accountListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (alr AccountListResult) accountListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
+	if !alr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -429,11 +377,16 @@ func (page *AccountListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.alr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.alr)
+		if err != nil {
+			return err
+		}
+		page.alr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.alr = next
 	return nil
 }
 
@@ -481,6 +434,27 @@ type AccountProperties struct {
 	PoolQuota *int32 `json:"poolQuota,omitempty"`
 	// ActiveJobAndJobScheduleQuota - The active job and job schedule quota for this Batch account.
 	ActiveJobAndJobScheduleQuota *int32 `json:"activeJobAndJobScheduleQuota,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountProperties.
+func (ap AccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.ProvisioningState != "" {
+		objectMap["provisioningState"] = ap.ProvisioningState
+	}
+	if ap.AutoStorage != nil {
+		objectMap["autoStorage"] = ap.AutoStorage
+	}
+	if ap.CoreQuota != nil {
+		objectMap["coreQuota"] = ap.CoreQuota
+	}
+	if ap.PoolQuota != nil {
+		objectMap["poolQuota"] = ap.PoolQuota
+	}
+	if ap.ActiveJobAndJobScheduleQuota != nil {
+		objectMap["activeJobAndJobScheduleQuota"] = ap.ActiveJobAndJobScheduleQuota
+	}
+	return json.Marshal(objectMap)
 }
 
 // AccountRegenerateKeyParameters parameters supplied to the RegenerateKey operation.
@@ -597,8 +571,7 @@ type AutoStorageBaseProperties struct {
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
 }
 
-// AutoStorageProperties contains information about the auto storage account associated with a Batch
-// account.
+// AutoStorageProperties contains information about the auto storage account associated with a Batch account.
 type AutoStorageProperties struct {
 	// StorageAccountID - The resource ID of the storage account to be used for auto storage account.
 	StorageAccountID *string `json:"storageAccountId,omitempty"`
@@ -695,10 +668,15 @@ func (lar ListApplicationsResult) IsEmpty() bool {
 	return lar.Value == nil || len(*lar.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lar ListApplicationsResult) hasNextLink() bool {
+	return lar.NextLink != nil && len(*lar.NextLink) != 0
+}
+
 // listApplicationsResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lar ListApplicationsResult) listApplicationsResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lar.NextLink == nil || len(to.String(lar.NextLink)) < 1 {
+	if !lar.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -726,11 +704,16 @@ func (page *ListApplicationsResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lar)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lar)
+		if err != nil {
+			return err
+		}
+		page.lar = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lar = next
 	return nil
 }
 

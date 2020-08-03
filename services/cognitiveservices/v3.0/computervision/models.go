@@ -26,204 +26,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.0/computervision"
 
-// DescriptionExclude enumerates the values for description exclude.
-type DescriptionExclude string
-
-const (
-	// Celebrities ...
-	Celebrities DescriptionExclude = "Celebrities"
-	// Landmarks ...
-	Landmarks DescriptionExclude = "Landmarks"
-)
-
-// PossibleDescriptionExcludeValues returns an array of possible values for the DescriptionExclude const type.
-func PossibleDescriptionExcludeValues() []DescriptionExclude {
-	return []DescriptionExclude{Celebrities, Landmarks}
-}
-
-// Details enumerates the values for details.
-type Details string
-
-const (
-	// DetailsCelebrities ...
-	DetailsCelebrities Details = "Celebrities"
-	// DetailsLandmarks ...
-	DetailsLandmarks Details = "Landmarks"
-)
-
-// PossibleDetailsValues returns an array of possible values for the Details const type.
-func PossibleDetailsValues() []Details {
-	return []Details{DetailsCelebrities, DetailsLandmarks}
-}
-
-// Gender enumerates the values for gender.
-type Gender string
-
-const (
-	// Female ...
-	Female Gender = "Female"
-	// Male ...
-	Male Gender = "Male"
-)
-
-// PossibleGenderValues returns an array of possible values for the Gender const type.
-func PossibleGenderValues() []Gender {
-	return []Gender{Female, Male}
-}
-
-// OcrDetectionLanguage enumerates the values for ocr detection language.
-type OcrDetectionLanguage string
-
-const (
-	// De ...
-	De OcrDetectionLanguage = "de"
-	// En ...
-	En OcrDetectionLanguage = "en"
-	// Es ...
-	Es OcrDetectionLanguage = "es"
-	// Fr ...
-	Fr OcrDetectionLanguage = "fr"
-	// It ...
-	It OcrDetectionLanguage = "it"
-	// Nl ...
-	Nl OcrDetectionLanguage = "nl"
-	// Pt ...
-	Pt OcrDetectionLanguage = "pt"
-)
-
-// PossibleOcrDetectionLanguageValues returns an array of possible values for the OcrDetectionLanguage const type.
-func PossibleOcrDetectionLanguageValues() []OcrDetectionLanguage {
-	return []OcrDetectionLanguage{De, En, Es, Fr, It, Nl, Pt}
-}
-
-// OcrLanguages enumerates the values for ocr languages.
-type OcrLanguages string
-
-const (
-	// OcrLanguagesAr ...
-	OcrLanguagesAr OcrLanguages = "ar"
-	// OcrLanguagesCs ...
-	OcrLanguagesCs OcrLanguages = "cs"
-	// OcrLanguagesDa ...
-	OcrLanguagesDa OcrLanguages = "da"
-	// OcrLanguagesDe ...
-	OcrLanguagesDe OcrLanguages = "de"
-	// OcrLanguagesEl ...
-	OcrLanguagesEl OcrLanguages = "el"
-	// OcrLanguagesEn ...
-	OcrLanguagesEn OcrLanguages = "en"
-	// OcrLanguagesEs ...
-	OcrLanguagesEs OcrLanguages = "es"
-	// OcrLanguagesFi ...
-	OcrLanguagesFi OcrLanguages = "fi"
-	// OcrLanguagesFr ...
-	OcrLanguagesFr OcrLanguages = "fr"
-	// OcrLanguagesHu ...
-	OcrLanguagesHu OcrLanguages = "hu"
-	// OcrLanguagesIt ...
-	OcrLanguagesIt OcrLanguages = "it"
-	// OcrLanguagesJa ...
-	OcrLanguagesJa OcrLanguages = "ja"
-	// OcrLanguagesKo ...
-	OcrLanguagesKo OcrLanguages = "ko"
-	// OcrLanguagesNb ...
-	OcrLanguagesNb OcrLanguages = "nb"
-	// OcrLanguagesNl ...
-	OcrLanguagesNl OcrLanguages = "nl"
-	// OcrLanguagesPl ...
-	OcrLanguagesPl OcrLanguages = "pl"
-	// OcrLanguagesPt ...
-	OcrLanguagesPt OcrLanguages = "pt"
-	// OcrLanguagesRo ...
-	OcrLanguagesRo OcrLanguages = "ro"
-	// OcrLanguagesRu ...
-	OcrLanguagesRu OcrLanguages = "ru"
-	// OcrLanguagesSk ...
-	OcrLanguagesSk OcrLanguages = "sk"
-	// OcrLanguagesSrCyrl ...
-	OcrLanguagesSrCyrl OcrLanguages = "sr-Cyrl"
-	// OcrLanguagesSrLatn ...
-	OcrLanguagesSrLatn OcrLanguages = "sr-Latn"
-	// OcrLanguagesSv ...
-	OcrLanguagesSv OcrLanguages = "sv"
-	// OcrLanguagesTr ...
-	OcrLanguagesTr OcrLanguages = "tr"
-	// OcrLanguagesUnk ...
-	OcrLanguagesUnk OcrLanguages = "unk"
-	// OcrLanguagesZhHans ...
-	OcrLanguagesZhHans OcrLanguages = "zh-Hans"
-	// OcrLanguagesZhHant ...
-	OcrLanguagesZhHant OcrLanguages = "zh-Hant"
-)
-
-// PossibleOcrLanguagesValues returns an array of possible values for the OcrLanguages const type.
-func PossibleOcrLanguagesValues() []OcrLanguages {
-	return []OcrLanguages{OcrLanguagesAr, OcrLanguagesCs, OcrLanguagesDa, OcrLanguagesDe, OcrLanguagesEl, OcrLanguagesEn, OcrLanguagesEs, OcrLanguagesFi, OcrLanguagesFr, OcrLanguagesHu, OcrLanguagesIt, OcrLanguagesJa, OcrLanguagesKo, OcrLanguagesNb, OcrLanguagesNl, OcrLanguagesPl, OcrLanguagesPt, OcrLanguagesRo, OcrLanguagesRu, OcrLanguagesSk, OcrLanguagesSrCyrl, OcrLanguagesSrLatn, OcrLanguagesSv, OcrLanguagesTr, OcrLanguagesUnk, OcrLanguagesZhHans, OcrLanguagesZhHant}
-}
-
-// OperationStatusCodes enumerates the values for operation status codes.
-type OperationStatusCodes string
-
-const (
-	// Failed ...
-	Failed OperationStatusCodes = "failed"
-	// NotStarted ...
-	NotStarted OperationStatusCodes = "notStarted"
-	// Running ...
-	Running OperationStatusCodes = "running"
-	// Succeeded ...
-	Succeeded OperationStatusCodes = "succeeded"
-)
-
-// PossibleOperationStatusCodesValues returns an array of possible values for the OperationStatusCodes const type.
-func PossibleOperationStatusCodesValues() []OperationStatusCodes {
-	return []OperationStatusCodes{Failed, NotStarted, Running, Succeeded}
-}
-
-// TextRecognitionResultDimensionUnit enumerates the values for text recognition result dimension unit.
-type TextRecognitionResultDimensionUnit string
-
-const (
-	// Inch ...
-	Inch TextRecognitionResultDimensionUnit = "inch"
-	// Pixel ...
-	Pixel TextRecognitionResultDimensionUnit = "pixel"
-)
-
-// PossibleTextRecognitionResultDimensionUnitValues returns an array of possible values for the TextRecognitionResultDimensionUnit const type.
-func PossibleTextRecognitionResultDimensionUnitValues() []TextRecognitionResultDimensionUnit {
-	return []TextRecognitionResultDimensionUnit{Inch, Pixel}
-}
-
-// VisualFeatureTypes enumerates the values for visual feature types.
-type VisualFeatureTypes string
-
-const (
-	// VisualFeatureTypesAdult ...
-	VisualFeatureTypesAdult VisualFeatureTypes = "Adult"
-	// VisualFeatureTypesBrands ...
-	VisualFeatureTypesBrands VisualFeatureTypes = "Brands"
-	// VisualFeatureTypesCategories ...
-	VisualFeatureTypesCategories VisualFeatureTypes = "Categories"
-	// VisualFeatureTypesColor ...
-	VisualFeatureTypesColor VisualFeatureTypes = "Color"
-	// VisualFeatureTypesDescription ...
-	VisualFeatureTypesDescription VisualFeatureTypes = "Description"
-	// VisualFeatureTypesFaces ...
-	VisualFeatureTypesFaces VisualFeatureTypes = "Faces"
-	// VisualFeatureTypesImageType ...
-	VisualFeatureTypesImageType VisualFeatureTypes = "ImageType"
-	// VisualFeatureTypesObjects ...
-	VisualFeatureTypesObjects VisualFeatureTypes = "Objects"
-	// VisualFeatureTypesTags ...
-	VisualFeatureTypesTags VisualFeatureTypes = "Tags"
-)
-
-// PossibleVisualFeatureTypesValues returns an array of possible values for the VisualFeatureTypes const type.
-func PossibleVisualFeatureTypesValues() []VisualFeatureTypes {
-	return []VisualFeatureTypes{VisualFeatureTypesAdult, VisualFeatureTypesBrands, VisualFeatureTypesCategories, VisualFeatureTypesColor, VisualFeatureTypesDescription, VisualFeatureTypesFaces, VisualFeatureTypesImageType, VisualFeatureTypesObjects, VisualFeatureTypesTags}
-}
-
 // AdultInfo an object describing whether the image contains adult-oriented content and/or is racy.
 type AdultInfo struct {
 	// IsAdultContent - A value indicating if the image contains adult-oriented content.
@@ -256,6 +58,18 @@ type AreaOfInterestResult struct {
 	// RequestID - Id of the REST API request.
 	RequestID *string        `json:"requestId,omitempty"`
 	Metadata  *ImageMetadata `json:"metadata,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AreaOfInterestResult.
+func (aoir AreaOfInterestResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aoir.RequestID != nil {
+		objectMap["requestId"] = aoir.RequestID
+	}
+	if aoir.Metadata != nil {
+		objectMap["metadata"] = aoir.Metadata
+	}
+	return json.Marshal(objectMap)
 }
 
 // BoundingRect a bounding box for an area inside an image.
@@ -344,6 +158,21 @@ type DetectedObject struct {
 	Parent *ObjectHierarchy `json:"parent,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DetectedObject.
+func (do DetectedObject) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if do.Object != nil {
+		objectMap["object"] = do.Object
+	}
+	if do.Confidence != nil {
+		objectMap["confidence"] = do.Confidence
+	}
+	if do.Parent != nil {
+		objectMap["parent"] = do.Parent
+	}
+	return json.Marshal(objectMap)
+}
+
 // DetectResult result of a DetectImage call.
 type DetectResult struct {
 	autorest.Response `json:"-"`
@@ -352,6 +181,18 @@ type DetectResult struct {
 	// RequestID - Id of the REST API request.
 	RequestID *string        `json:"requestId,omitempty"`
 	Metadata  *ImageMetadata `json:"metadata,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DetectResult.
+func (dr DetectResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dr.RequestID != nil {
+		objectMap["requestId"] = dr.RequestID
+	}
+	if dr.Metadata != nil {
+		objectMap["metadata"] = dr.Metadata
+	}
+	return json.Marshal(objectMap)
 }
 
 // DomainModelResults result of image analysis using a specific domain model including additional metadata.
@@ -430,8 +271,8 @@ type ImageCaption struct {
 	Confidence *float64 `json:"confidence,omitempty"`
 }
 
-// ImageDescription a collection of content tags, along with a list of captions sorted by confidence level,
-// and image metadata.
+// ImageDescription a collection of content tags, along with a list of captions sorted by confidence level, and
+// image metadata.
 type ImageDescription struct {
 	autorest.Response `json:"-"`
 	// ImageDescriptionDetails - A collection of content tags, along with a list of captions sorted by confidence level, and image metadata.

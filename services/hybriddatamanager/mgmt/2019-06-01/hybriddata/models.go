@@ -31,164 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/hybriddatamanager/mgmt/2019-06-01/hybriddata"
 
-// IsJobCancellable enumerates the values for is job cancellable.
-type IsJobCancellable string
-
-const (
-	// Cancellable ...
-	Cancellable IsJobCancellable = "Cancellable"
-	// NotCancellable ...
-	NotCancellable IsJobCancellable = "NotCancellable"
-)
-
-// PossibleIsJobCancellableValues returns an array of possible values for the IsJobCancellable const type.
-func PossibleIsJobCancellableValues() []IsJobCancellable {
-	return []IsJobCancellable{Cancellable, NotCancellable}
-}
-
-// JobStatus enumerates the values for job status.
-type JobStatus string
-
-const (
-	// Cancelled ...
-	Cancelled JobStatus = "Cancelled"
-	// Cancelling ...
-	Cancelling JobStatus = "Cancelling"
-	// Failed ...
-	Failed JobStatus = "Failed"
-	// InProgress ...
-	InProgress JobStatus = "InProgress"
-	// None ...
-	None JobStatus = "None"
-	// PartiallySucceeded ...
-	PartiallySucceeded JobStatus = "PartiallySucceeded"
-	// Succeeded ...
-	Succeeded JobStatus = "Succeeded"
-	// WaitingForAction ...
-	WaitingForAction JobStatus = "WaitingForAction"
-)
-
-// PossibleJobStatusValues returns an array of possible values for the JobStatus const type.
-func PossibleJobStatusValues() []JobStatus {
-	return []JobStatus{Cancelled, Cancelling, Failed, InProgress, None, PartiallySucceeded, Succeeded, WaitingForAction}
-}
-
-// RunLocation enumerates the values for run location.
-type RunLocation string
-
-const (
-	// RunLocationAustraliaeast ...
-	RunLocationAustraliaeast RunLocation = "australiaeast"
-	// RunLocationAustraliasoutheast ...
-	RunLocationAustraliasoutheast RunLocation = "australiasoutheast"
-	// RunLocationBrazilsouth ...
-	RunLocationBrazilsouth RunLocation = "brazilsouth"
-	// RunLocationCanadacentral ...
-	RunLocationCanadacentral RunLocation = "canadacentral"
-	// RunLocationCanadaeast ...
-	RunLocationCanadaeast RunLocation = "canadaeast"
-	// RunLocationCentralindia ...
-	RunLocationCentralindia RunLocation = "centralindia"
-	// RunLocationCentralus ...
-	RunLocationCentralus RunLocation = "centralus"
-	// RunLocationEastasia ...
-	RunLocationEastasia RunLocation = "eastasia"
-	// RunLocationEastus ...
-	RunLocationEastus RunLocation = "eastus"
-	// RunLocationEastus2 ...
-	RunLocationEastus2 RunLocation = "eastus2"
-	// RunLocationJapaneast ...
-	RunLocationJapaneast RunLocation = "japaneast"
-	// RunLocationJapanwest ...
-	RunLocationJapanwest RunLocation = "japanwest"
-	// RunLocationKoreacentral ...
-	RunLocationKoreacentral RunLocation = "koreacentral"
-	// RunLocationKoreasouth ...
-	RunLocationKoreasouth RunLocation = "koreasouth"
-	// RunLocationNone ...
-	RunLocationNone RunLocation = "none"
-	// RunLocationNorthcentralus ...
-	RunLocationNorthcentralus RunLocation = "northcentralus"
-	// RunLocationNortheurope ...
-	RunLocationNortheurope RunLocation = "northeurope"
-	// RunLocationSouthcentralus ...
-	RunLocationSouthcentralus RunLocation = "southcentralus"
-	// RunLocationSoutheastasia ...
-	RunLocationSoutheastasia RunLocation = "southeastasia"
-	// RunLocationSouthindia ...
-	RunLocationSouthindia RunLocation = "southindia"
-	// RunLocationUksouth ...
-	RunLocationUksouth RunLocation = "uksouth"
-	// RunLocationUkwest ...
-	RunLocationUkwest RunLocation = "ukwest"
-	// RunLocationWestcentralus ...
-	RunLocationWestcentralus RunLocation = "westcentralus"
-	// RunLocationWesteurope ...
-	RunLocationWesteurope RunLocation = "westeurope"
-	// RunLocationWestindia ...
-	RunLocationWestindia RunLocation = "westindia"
-	// RunLocationWestus ...
-	RunLocationWestus RunLocation = "westus"
-	// RunLocationWestus2 ...
-	RunLocationWestus2 RunLocation = "westus2"
-)
-
-// PossibleRunLocationValues returns an array of possible values for the RunLocation const type.
-func PossibleRunLocationValues() []RunLocation {
-	return []RunLocation{RunLocationAustraliaeast, RunLocationAustraliasoutheast, RunLocationBrazilsouth, RunLocationCanadacentral, RunLocationCanadaeast, RunLocationCentralindia, RunLocationCentralus, RunLocationEastasia, RunLocationEastus, RunLocationEastus2, RunLocationJapaneast, RunLocationJapanwest, RunLocationKoreacentral, RunLocationKoreasouth, RunLocationNone, RunLocationNorthcentralus, RunLocationNortheurope, RunLocationSouthcentralus, RunLocationSoutheastasia, RunLocationSouthindia, RunLocationUksouth, RunLocationUkwest, RunLocationWestcentralus, RunLocationWesteurope, RunLocationWestindia, RunLocationWestus, RunLocationWestus2}
-}
-
-// State enumerates the values for state.
-type State string
-
-const (
-	// Disabled ...
-	Disabled State = "Disabled"
-	// Enabled ...
-	Enabled State = "Enabled"
-	// Supported ...
-	Supported State = "Supported"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{Disabled, Enabled, Supported}
-}
-
-// SupportedAlgorithm enumerates the values for supported algorithm.
-type SupportedAlgorithm string
-
-const (
-	// SupportedAlgorithmNone ...
-	SupportedAlgorithmNone SupportedAlgorithm = "None"
-	// SupportedAlgorithmPlainText ...
-	SupportedAlgorithmPlainText SupportedAlgorithm = "PlainText"
-	// SupportedAlgorithmRSA15 ...
-	SupportedAlgorithmRSA15 SupportedAlgorithm = "RSA1_5"
-	// SupportedAlgorithmRSAOAEP ...
-	SupportedAlgorithmRSAOAEP SupportedAlgorithm = "RSA_OAEP"
-)
-
-// PossibleSupportedAlgorithmValues returns an array of possible values for the SupportedAlgorithm const type.
-func PossibleSupportedAlgorithmValues() []SupportedAlgorithm {
-	return []SupportedAlgorithm{SupportedAlgorithmNone, SupportedAlgorithmPlainText, SupportedAlgorithmRSA15, SupportedAlgorithmRSAOAEP}
-}
-
-// UserConfirmation enumerates the values for user confirmation.
-type UserConfirmation string
-
-const (
-	// NotRequired ...
-	NotRequired UserConfirmation = "NotRequired"
-	// Required ...
-	Required UserConfirmation = "Required"
-)
-
-// PossibleUserConfirmationValues returns an array of possible values for the UserConfirmation const type.
-func PossibleUserConfirmationValues() []UserConfirmation {
-	return []UserConfirmation{NotRequired, Required}
-}
-
 // AvailableProviderOperation class represents provider operation
 type AvailableProviderOperation struct {
 	// Name - Gets or Sets Name of the operations
@@ -205,12 +47,11 @@ type AvailableProviderOperation struct {
 	Properties interface{} `json:"properties,omitempty"`
 }
 
-// AvailableProviderOperationDisplay contains the localized display information for this particular
-// operation / action.
+// AvailableProviderOperationDisplay contains the localized display information for this particular operation /
+// action.
 // These value will be used by several clients for
 // (1) custom role definitions for RBAC;
-// (2) complex query filters for the event service; and (3) audit history / records for management
-// operations.
+// (2) complex query filters for the event service; and (3) audit history / records for management operations.
 type AvailableProviderOperationDisplay struct {
 	// Provider - Gets or sets Provider
 	// The localized friendly form of the resource provider name – it is expected to also include the publisher/company responsible.
@@ -230,8 +71,7 @@ type AvailableProviderOperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// AvailableProviderOperations class for set of operations used for discovery of available provider
-// operations.
+// AvailableProviderOperations class for set of operations used for discovery of available provider operations.
 type AvailableProviderOperations struct {
 	autorest.Response `json:"-"`
 	// Value - List of operations.
@@ -309,10 +149,15 @@ func (apo AvailableProviderOperations) IsEmpty() bool {
 	return apo.Value == nil || len(*apo.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (apo AvailableProviderOperations) hasNextLink() bool {
+	return apo.NextLink != nil && len(*apo.NextLink) != 0
+}
+
 // availableProviderOperationsPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (apo AvailableProviderOperations) availableProviderOperationsPreparer(ctx context.Context) (*http.Request, error) {
-	if apo.NextLink == nil || len(to.String(apo.NextLink)) < 1 {
+	if !apo.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -340,11 +185,16 @@ func (page *AvailableProviderOperationsPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.apo)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.apo)
+		if err != nil {
+			return err
+		}
+		page.apo = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.apo = next
 	return nil
 }
 
@@ -689,10 +539,15 @@ func (dsl DataServiceList) IsEmpty() bool {
 	return dsl.Value == nil || len(*dsl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dsl DataServiceList) hasNextLink() bool {
+	return dsl.NextLink != nil && len(*dsl.NextLink) != 0
+}
+
 // dataServiceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dsl DataServiceList) dataServiceListPreparer(ctx context.Context) (*http.Request, error) {
-	if dsl.NextLink == nil || len(to.String(dsl.NextLink)) < 1 {
+	if !dsl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -720,11 +575,16 @@ func (page *DataServiceListPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dsl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dsl)
+		if err != nil {
+			return err
+		}
+		page.dsl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dsl = next
 	return nil
 }
 
@@ -924,10 +784,15 @@ func (dsl DataStoreList) IsEmpty() bool {
 	return dsl.Value == nil || len(*dsl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dsl DataStoreList) hasNextLink() bool {
+	return dsl.NextLink != nil && len(*dsl.NextLink) != 0
+}
+
 // dataStoreListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dsl DataStoreList) dataStoreListPreparer(ctx context.Context) (*http.Request, error) {
-	if dsl.NextLink == nil || len(to.String(dsl.NextLink)) < 1 {
+	if !dsl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -955,11 +820,16 @@ func (page *DataStoreListPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dsl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dsl)
+		if err != nil {
+			return err
+		}
+		page.dsl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dsl = next
 	return nil
 }
 
@@ -1007,8 +877,8 @@ type DataStoreProperties struct {
 	CustomerSecrets *[]CustomerSecret `json:"customerSecrets,omitempty"`
 }
 
-// DataStoresCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DataStoresCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DataStoresCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1036,8 +906,7 @@ func (future *DataStoresCreateOrUpdateFuture) Result(client DataStoresClient) (d
 	return
 }
 
-// DataStoresDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DataStoresDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DataStoresDeleteFuture struct {
 	azure.Future
 }
@@ -1209,10 +1078,15 @@ func (dstl DataStoreTypeList) IsEmpty() bool {
 	return dstl.Value == nil || len(*dstl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dstl DataStoreTypeList) hasNextLink() bool {
+	return dstl.NextLink != nil && len(*dstl.NextLink) != 0
+}
+
 // dataStoreTypeListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dstl DataStoreTypeList) dataStoreTypeListPreparer(ctx context.Context) (*http.Request, error) {
-	if dstl.NextLink == nil || len(to.String(dstl.NextLink)) < 1 {
+	if !dstl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1240,11 +1114,16 @@ func (page *DataStoreTypeListPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dstl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dstl)
+		if err != nil {
+			return err
+		}
+		page.dstl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dstl = next
 	return nil
 }
 
@@ -1609,10 +1488,15 @@ func (jdl JobDefinitionList) IsEmpty() bool {
 	return jdl.Value == nil || len(*jdl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (jdl JobDefinitionList) hasNextLink() bool {
+	return jdl.NextLink != nil && len(*jdl.NextLink) != 0
+}
+
 // jobDefinitionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (jdl JobDefinitionList) jobDefinitionListPreparer(ctx context.Context) (*http.Request, error) {
-	if jdl.NextLink == nil || len(to.String(jdl.NextLink)) < 1 {
+	if !jdl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1640,11 +1524,16 @@ func (page *JobDefinitionListPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.jdl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.jdl)
+		if err != nil {
+			return err
+		}
+		page.jdl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.jdl = next
 	return nil
 }
 
@@ -1872,10 +1761,15 @@ func (jl JobList) IsEmpty() bool {
 	return jl.Value == nil || len(*jl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (jl JobList) hasNextLink() bool {
+	return jl.NextLink != nil && len(*jl.NextLink) != 0
+}
+
 // jobListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (jl JobList) jobListPreparer(ctx context.Context) (*http.Request, error) {
-	if jl.NextLink == nil || len(to.String(jl.NextLink)) < 1 {
+	if !jl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1903,11 +1797,16 @@ func (page *JobListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.jl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.jl)
+		if err != nil {
+			return err
+		}
+		page.jl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.jl = next
 	return nil
 }
 
@@ -2177,10 +2076,15 @@ func (pkl PublicKeyList) IsEmpty() bool {
 	return pkl.Value == nil || len(*pkl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pkl PublicKeyList) hasNextLink() bool {
+	return pkl.NextLink != nil && len(*pkl.NextLink) != 0
+}
+
 // publicKeyListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pkl PublicKeyList) publicKeyListPreparer(ctx context.Context) (*http.Request, error) {
-	if pkl.NextLink == nil || len(to.String(pkl.NextLink)) < 1 {
+	if !pkl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2208,11 +2112,16 @@ func (page *PublicKeyListPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pkl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pkl)
+		if err != nil {
+			return err
+		}
+		page.pkl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pkl = next
 	return nil
 }
 

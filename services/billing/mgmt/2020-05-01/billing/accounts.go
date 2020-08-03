@@ -31,14 +31,14 @@ type AccountsClient struct {
 }
 
 // NewAccountsClient creates an instance of the AccountsClient client.
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return NewAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewAccountsClient(subscriptionID string, subscriptionID1 string) AccountsClient {
+	return NewAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewAccountsClientWithBaseURI creates an instance of the AccountsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return AccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) AccountsClient {
+	return AccountsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // Get gets a billing account by its ID.
@@ -148,6 +148,9 @@ func (client AccountsClient) List(ctx context.Context, expand string) (result Ac
 	result.alr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "List", resp, "Failure responding to request")
+	}
+	if result.alr.hasNextLink() && result.alr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -259,6 +262,9 @@ func (client AccountsClient) ListInvoiceSectionsByCreateSubscriptionPermission(c
 	result.islwcspr, err = client.ListInvoiceSectionsByCreateSubscriptionPermissionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "ListInvoiceSectionsByCreateSubscriptionPermission", resp, "Failure responding to request")
+	}
+	if result.islwcspr.hasNextLink() && result.islwcspr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

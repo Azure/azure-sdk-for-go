@@ -30,46 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hybridkubernetes/mgmt/2020-01-01-preview/hybridkubernetes"
 
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Accepted ...
-	Accepted ProvisioningState = "Accepted"
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Provisioning ...
-	Provisioning ProvisioningState = "Provisioning"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Accepted, Canceled, Deleting, Failed, Provisioning, Succeeded, Updating}
-}
-
-// ResourceIdentityType enumerates the values for resource identity type.
-type ResourceIdentityType string
-
-const (
-	// None ...
-	None ResourceIdentityType = "None"
-	// SystemAssigned ...
-	SystemAssigned ResourceIdentityType = "SystemAssigned"
-)
-
-// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{None, SystemAssigned}
-}
-
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
@@ -269,6 +229,15 @@ type ConnectedClusterIdentity struct {
 	Type ResourceIdentityType `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ConnectedClusterIdentity.
+func (cci ConnectedClusterIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cci.Type != "" {
+		objectMap["type"] = cci.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // ConnectedClusterList the paginated list of connected Clusters
 type ConnectedClusterList struct {
 	autorest.Response `json:"-"`
@@ -346,10 +315,15 @@ func (ccl ConnectedClusterList) IsEmpty() bool {
 	return ccl.Value == nil || len(*ccl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ccl ConnectedClusterList) hasNextLink() bool {
+	return ccl.NextLink != nil && len(*ccl.NextLink) != 0
+}
+
 // connectedClusterListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ccl ConnectedClusterList) connectedClusterListPreparer(ctx context.Context) (*http.Request, error) {
-	if ccl.NextLink == nil || len(to.String(ccl.NextLink)) < 1 {
+	if !ccl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -377,11 +351,16 @@ func (page *ConnectedClusterListPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ccl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ccl)
+		if err != nil {
+			return err
+		}
+		page.ccl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ccl = next
 	return nil
 }
 
@@ -489,6 +468,21 @@ type ConnectedClusterProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ConnectedClusterProperties.
+func (ccp ConnectedClusterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ccp.AgentPublicKeyCertificate != nil {
+		objectMap["agentPublicKeyCertificate"] = ccp.AgentPublicKeyCertificate
+	}
+	if ccp.AadProfile != nil {
+		objectMap["aadProfile"] = ccp.AadProfile
+	}
+	if ccp.ProvisioningState != "" {
+		objectMap["provisioningState"] = ccp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
 // CredentialResult the credential result response.
 type CredentialResult struct {
 	// Name - READ-ONLY; The name of the credential.
@@ -544,6 +538,15 @@ type OperationList struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - The link to fetch the next page of connected cluster API operations.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationList.
+func (ol OperationList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ol.NextLink != nil {
+		objectMap["nextLink"] = ol.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationListIterator provides access to a complete listing of Operation values.
@@ -614,10 +617,15 @@ func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OperationList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // operationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OperationList) operationListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -645,11 +653,16 @@ func (page *OperationListPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 

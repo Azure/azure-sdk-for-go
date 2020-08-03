@@ -369,6 +369,9 @@ func (client PipelineRunsClient) List(ctx context.Context, resourceGroupName str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.PipelineRunsClient", "List", resp, "Failure responding to request")
 	}
+	if result.prlr.hasNextLink() && result.prlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

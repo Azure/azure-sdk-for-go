@@ -25,130 +25,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/spellcheck"
 
-// ActionType enumerates the values for action type.
-type ActionType string
-
-const (
-	// Edit ...
-	Edit ActionType = "Edit"
-	// Load ...
-	Load ActionType = "Load"
-)
-
-// PossibleActionTypeValues returns an array of possible values for the ActionType const type.
-func PossibleActionTypeValues() []ActionType {
-	return []ActionType{Edit, Load}
-}
-
-// ErrorCode enumerates the values for error code.
-type ErrorCode string
-
-const (
-	// InsufficientAuthorization ...
-	InsufficientAuthorization ErrorCode = "InsufficientAuthorization"
-	// InvalidAuthorization ...
-	InvalidAuthorization ErrorCode = "InvalidAuthorization"
-	// InvalidRequest ...
-	InvalidRequest ErrorCode = "InvalidRequest"
-	// None ...
-	None ErrorCode = "None"
-	// RateLimitExceeded ...
-	RateLimitExceeded ErrorCode = "RateLimitExceeded"
-	// ServerError ...
-	ServerError ErrorCode = "ServerError"
-)
-
-// PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
-func PossibleErrorCodeValues() []ErrorCode {
-	return []ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
-}
-
-// ErrorSubCode enumerates the values for error sub code.
-type ErrorSubCode string
-
-const (
-	// AuthorizationDisabled ...
-	AuthorizationDisabled ErrorSubCode = "AuthorizationDisabled"
-	// AuthorizationExpired ...
-	AuthorizationExpired ErrorSubCode = "AuthorizationExpired"
-	// AuthorizationMissing ...
-	AuthorizationMissing ErrorSubCode = "AuthorizationMissing"
-	// AuthorizationRedundancy ...
-	AuthorizationRedundancy ErrorSubCode = "AuthorizationRedundancy"
-	// Blocked ...
-	Blocked ErrorSubCode = "Blocked"
-	// HTTPNotAllowed ...
-	HTTPNotAllowed ErrorSubCode = "HttpNotAllowed"
-	// NotImplemented ...
-	NotImplemented ErrorSubCode = "NotImplemented"
-	// ParameterInvalidValue ...
-	ParameterInvalidValue ErrorSubCode = "ParameterInvalidValue"
-	// ParameterMissing ...
-	ParameterMissing ErrorSubCode = "ParameterMissing"
-	// ResourceError ...
-	ResourceError ErrorSubCode = "ResourceError"
-	// UnexpectedError ...
-	UnexpectedError ErrorSubCode = "UnexpectedError"
-)
-
-// PossibleErrorSubCodeValues returns an array of possible values for the ErrorSubCode const type.
-func PossibleErrorSubCodeValues() []ErrorSubCode {
-	return []ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
-}
-
-// ErrorType enumerates the values for error type.
-type ErrorType string
-
-const (
-	// RepeatedToken ...
-	RepeatedToken ErrorType = "RepeatedToken"
-	// UnknownToken ...
-	UnknownToken ErrorType = "UnknownToken"
-)
-
-// PossibleErrorTypeValues returns an array of possible values for the ErrorType const type.
-func PossibleErrorTypeValues() []ErrorType {
-	return []ErrorType{RepeatedToken, UnknownToken}
-}
-
-// Mode enumerates the values for mode.
-type Mode string
-
-const (
-	// Proof ...
-	Proof Mode = "proof"
-	// Spell ...
-	Spell Mode = "spell"
-)
-
-// PossibleModeValues returns an array of possible values for the Mode const type.
-func PossibleModeValues() []Mode {
-	return []Mode{Proof, Spell}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeAnswer ...
-	TypeAnswer Type = "Answer"
-	// TypeErrorResponse ...
-	TypeErrorResponse Type = "ErrorResponse"
-	// TypeIdentifiable ...
-	TypeIdentifiable Type = "Identifiable"
-	// TypeResponse ...
-	TypeResponse Type = "Response"
-	// TypeResponseBase ...
-	TypeResponseBase Type = "ResponseBase"
-	// TypeSpellCheck ...
-	TypeSpellCheck Type = "SpellCheck"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeAnswer, TypeErrorResponse, TypeIdentifiable, TypeResponse, TypeResponseBase, TypeSpellCheck}
-}
-
 // BasicAnswer ...
 type BasicAnswer interface {
 	AsSpellCheck() (*SpellCheck, bool)
@@ -274,6 +150,18 @@ type Error struct {
 	Parameter *string `json:"parameter,omitempty"`
 	// Value - READ-ONLY; The parameter's value in the request that was not valid.
 	Value *string `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if e.Code != "" {
+		objectMap["code"] = e.Code
+	}
+	if e.Message != nil {
+		objectMap["message"] = e.Message
+	}
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse the top-level response that represents a failed request.
@@ -818,6 +706,21 @@ type SpellingFlaggedToken struct {
 	PingURLSuffix *string `json:"pingUrlSuffix,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SpellingFlaggedToken.
+func (sft SpellingFlaggedToken) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sft.Offset != nil {
+		objectMap["offset"] = sft.Offset
+	}
+	if sft.Token != nil {
+		objectMap["token"] = sft.Token
+	}
+	if sft.Type != "" {
+		objectMap["type"] = sft.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // SpellingTokenSuggestion ...
 type SpellingTokenSuggestion struct {
 	Suggestion *string `json:"suggestion,omitempty"`
@@ -825,4 +728,13 @@ type SpellingTokenSuggestion struct {
 	Score *float64 `json:"score,omitempty"`
 	// PingURLSuffix - READ-ONLY
 	PingURLSuffix *string `json:"pingUrlSuffix,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SpellingTokenSuggestion.
+func (sts SpellingTokenSuggestion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sts.Suggestion != nil {
+		objectMap["suggestion"] = sts.Suggestion
+	}
+	return json.Marshal(objectMap)
 }

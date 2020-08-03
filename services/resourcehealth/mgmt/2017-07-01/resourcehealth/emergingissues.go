@@ -141,6 +141,9 @@ func (client EmergingIssuesClient) List(ctx context.Context) (result EmergingIss
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.EmergingIssuesClient", "List", resp, "Failure responding to request")
 	}
+	if result.eilr.hasNextLink() && result.eilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

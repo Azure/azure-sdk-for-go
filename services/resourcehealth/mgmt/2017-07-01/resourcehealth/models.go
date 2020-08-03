@@ -30,72 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/2017-07-01/resourcehealth"
 
-// AvailabilityStateValues enumerates the values for availability state values.
-type AvailabilityStateValues string
-
-const (
-	// Available ...
-	Available AvailabilityStateValues = "Available"
-	// Unavailable ...
-	Unavailable AvailabilityStateValues = "Unavailable"
-	// Unknown ...
-	Unknown AvailabilityStateValues = "Unknown"
-)
-
-// PossibleAvailabilityStateValuesValues returns an array of possible values for the AvailabilityStateValues const type.
-func PossibleAvailabilityStateValuesValues() []AvailabilityStateValues {
-	return []AvailabilityStateValues{Available, Unavailable, Unknown}
-}
-
-// ReasonChronicityTypes enumerates the values for reason chronicity types.
-type ReasonChronicityTypes string
-
-const (
-	// Persistent ...
-	Persistent ReasonChronicityTypes = "Persistent"
-	// Transient ...
-	Transient ReasonChronicityTypes = "Transient"
-)
-
-// PossibleReasonChronicityTypesValues returns an array of possible values for the ReasonChronicityTypes const type.
-func PossibleReasonChronicityTypesValues() []ReasonChronicityTypes {
-	return []ReasonChronicityTypes{Persistent, Transient}
-}
-
-// SeverityValues enumerates the values for severity values.
-type SeverityValues string
-
-const (
-	// Error ...
-	Error SeverityValues = "Error"
-	// Information ...
-	Information SeverityValues = "Information"
-	// Warning ...
-	Warning SeverityValues = "Warning"
-)
-
-// PossibleSeverityValuesValues returns an array of possible values for the SeverityValues const type.
-func PossibleSeverityValuesValues() []SeverityValues {
-	return []SeverityValues{Error, Information, Warning}
-}
-
-// StageValues enumerates the values for stage values.
-type StageValues string
-
-const (
-	// Active ...
-	Active StageValues = "Active"
-	// Archived ...
-	Archived StageValues = "Archived"
-	// Resolve ...
-	Resolve StageValues = "Resolve"
-)
-
-// PossibleStageValuesValues returns an array of possible values for the StageValues const type.
-func PossibleStageValuesValues() []StageValues {
-	return []StageValues{Active, Archived, Resolve}
-}
-
 // AvailabilityStatus availabilityStatus of a resource.
 type AvailabilityStatus struct {
 	autorest.Response `json:"-"`
@@ -188,10 +122,15 @@ func (aslr AvailabilityStatusListResult) IsEmpty() bool {
 	return aslr.Value == nil || len(*aslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (aslr AvailabilityStatusListResult) hasNextLink() bool {
+	return aslr.NextLink != nil && len(*aslr.NextLink) != 0
+}
+
 // availabilityStatusListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (aslr AvailabilityStatusListResult) availabilityStatusListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if aslr.NextLink == nil || len(to.String(aslr.NextLink)) < 1 {
+	if !aslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -219,11 +158,16 @@ func (page *AvailabilityStatusListResultPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.aslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.aslr)
+		if err != nil {
+			return err
+		}
+		page.aslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.aslr = next
 	return nil
 }
 
@@ -293,8 +237,8 @@ type AvailabilityStatusProperties struct {
 	ServiceImpactingEvents *[]ServiceImpactingEvent `json:"serviceImpactingEvents,omitempty"`
 }
 
-// AvailabilityStatusPropertiesRecentlyResolvedState an annotation describing a change in the
-// availabilityState to Available from Unavailable with a reasonType of type Unplanned
+// AvailabilityStatusPropertiesRecentlyResolvedState an annotation describing a change in the availabilityState
+// to Available from Unavailable with a reasonType of type Unplanned
 type AvailabilityStatusPropertiesRecentlyResolvedState struct {
 	// UnavailableOccurredTime - Timestamp for when the availabilityState changed to Unavailable
 	UnavailableOccurredTime *date.Time `json:"unavailableOccurredTime,omitempty"`
@@ -413,10 +357,15 @@ func (eilr EmergingIssueListResult) IsEmpty() bool {
 	return eilr.Value == nil || len(*eilr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (eilr EmergingIssueListResult) hasNextLink() bool {
+	return eilr.NextLink != nil && len(*eilr.NextLink) != 0
+}
+
 // emergingIssueListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (eilr EmergingIssueListResult) emergingIssueListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if eilr.NextLink == nil || len(to.String(eilr.NextLink)) < 1 {
+	if !eilr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -444,11 +393,16 @@ func (page *EmergingIssueListResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.eilr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.eilr)
+		if err != nil {
+			return err
+		}
+		page.eilr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.eilr = next
 	return nil
 }
 
@@ -611,8 +565,7 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// RecommendedAction lists actions the user can take based on the current availabilityState of the
-// resource.
+// RecommendedAction lists actions the user can take based on the current availabilityState of the resource.
 type RecommendedAction struct {
 	// Action - Recommended action.
 	Action *string `json:"action,omitempty"`
@@ -632,8 +585,7 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// ServiceImpactingEvent lists the service impacting events that may be affecting the health of the
-// resource.
+// ServiceImpactingEvent lists the service impacting events that may be affecting the health of the resource.
 type ServiceImpactingEvent struct {
 	// EventStartTime - Timestamp for when the event started.
 	EventStartTime *date.Time `json:"eventStartTime,omitempty"`

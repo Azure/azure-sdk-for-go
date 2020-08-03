@@ -360,6 +360,9 @@ func (client ZonesClient) ListZonesInResourceGroup(ctx context.Context, resource
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInResourceGroup", resp, "Failure responding to request")
 	}
+	if result.zlr.hasNextLink() && result.zlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -483,6 +486,9 @@ func (client ZonesClient) ListZonesInSubscription(ctx context.Context, top strin
 	result.zlr, err = client.ListZonesInSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInSubscription", resp, "Failure responding to request")
+	}
+	if result.zlr.hasNextLink() && result.zlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

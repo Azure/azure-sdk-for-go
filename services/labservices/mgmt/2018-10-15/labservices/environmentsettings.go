@@ -414,6 +414,9 @@ func (client EnvironmentSettingsClient) List(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.EnvironmentSettingsClient", "List", resp, "Failure responding to request")
 	}
+	if result.rwces.hasNextLink() && result.rwces.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

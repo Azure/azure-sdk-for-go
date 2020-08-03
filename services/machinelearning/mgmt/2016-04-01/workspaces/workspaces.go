@@ -309,6 +309,9 @@ func (client Client) List(ctx context.Context) (result ListResultPage, err error
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workspaces.Client", "List", resp, "Failure responding to request")
 	}
+	if result.lr.hasNextLink() && result.lr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -418,6 +421,9 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	result.lr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workspaces.Client", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.lr.hasNextLink() && result.lr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

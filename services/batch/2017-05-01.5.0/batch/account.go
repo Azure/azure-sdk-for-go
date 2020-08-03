@@ -94,6 +94,9 @@ func (client AccountClient) ListNodeAgentSkus(ctx context.Context, filter string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListNodeAgentSkus", resp, "Failure responding to request")
 	}
+	if result.alnasr.hasNextLink() && result.alnasr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

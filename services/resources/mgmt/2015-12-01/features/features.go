@@ -151,6 +151,9 @@ func (client Client) List(ctx context.Context, resourceProviderNamespace string)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "List", resp, "Failure responding to request")
 	}
+	if result.olr.hasNextLink() && result.olr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -259,6 +262,9 @@ func (client Client) ListAll(ctx context.Context) (result OperationsListResultPa
 	result.olr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "ListAll", resp, "Failure responding to request")
+	}
+	if result.olr.hasNextLink() && result.olr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

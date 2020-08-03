@@ -172,6 +172,9 @@ func (client QuotaRequestStatusClient) List(ctx context.Context, subscriptionID 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.QuotaRequestStatusClient", "List", resp, "Failure responding to request")
 	}
+	if result.qrdl.hasNextLink() && result.qrdl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

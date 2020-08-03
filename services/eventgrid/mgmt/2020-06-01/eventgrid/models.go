@@ -31,337 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2020-06-01/eventgrid"
 
-// DomainProvisioningState enumerates the values for domain provisioning state.
-type DomainProvisioningState string
-
-const (
-	// Canceled ...
-	Canceled DomainProvisioningState = "Canceled"
-	// Creating ...
-	Creating DomainProvisioningState = "Creating"
-	// Deleting ...
-	Deleting DomainProvisioningState = "Deleting"
-	// Failed ...
-	Failed DomainProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded DomainProvisioningState = "Succeeded"
-	// Updating ...
-	Updating DomainProvisioningState = "Updating"
-)
-
-// PossibleDomainProvisioningStateValues returns an array of possible values for the DomainProvisioningState const type.
-func PossibleDomainProvisioningStateValues() []DomainProvisioningState {
-	return []DomainProvisioningState{Canceled, Creating, Deleting, Failed, Succeeded, Updating}
-}
-
-// DomainTopicProvisioningState enumerates the values for domain topic provisioning state.
-type DomainTopicProvisioningState string
-
-const (
-	// DomainTopicProvisioningStateCanceled ...
-	DomainTopicProvisioningStateCanceled DomainTopicProvisioningState = "Canceled"
-	// DomainTopicProvisioningStateCreating ...
-	DomainTopicProvisioningStateCreating DomainTopicProvisioningState = "Creating"
-	// DomainTopicProvisioningStateDeleting ...
-	DomainTopicProvisioningStateDeleting DomainTopicProvisioningState = "Deleting"
-	// DomainTopicProvisioningStateFailed ...
-	DomainTopicProvisioningStateFailed DomainTopicProvisioningState = "Failed"
-	// DomainTopicProvisioningStateSucceeded ...
-	DomainTopicProvisioningStateSucceeded DomainTopicProvisioningState = "Succeeded"
-	// DomainTopicProvisioningStateUpdating ...
-	DomainTopicProvisioningStateUpdating DomainTopicProvisioningState = "Updating"
-)
-
-// PossibleDomainTopicProvisioningStateValues returns an array of possible values for the DomainTopicProvisioningState const type.
-func PossibleDomainTopicProvisioningStateValues() []DomainTopicProvisioningState {
-	return []DomainTopicProvisioningState{DomainTopicProvisioningStateCanceled, DomainTopicProvisioningStateCreating, DomainTopicProvisioningStateDeleting, DomainTopicProvisioningStateFailed, DomainTopicProvisioningStateSucceeded, DomainTopicProvisioningStateUpdating}
-}
-
-// EndpointType enumerates the values for endpoint type.
-type EndpointType string
-
-const (
-	// EndpointTypeAzureFunction ...
-	EndpointTypeAzureFunction EndpointType = "AzureFunction"
-	// EndpointTypeEventHub ...
-	EndpointTypeEventHub EndpointType = "EventHub"
-	// EndpointTypeEventSubscriptionDestination ...
-	EndpointTypeEventSubscriptionDestination EndpointType = "EventSubscriptionDestination"
-	// EndpointTypeHybridConnection ...
-	EndpointTypeHybridConnection EndpointType = "HybridConnection"
-	// EndpointTypeServiceBusQueue ...
-	EndpointTypeServiceBusQueue EndpointType = "ServiceBusQueue"
-	// EndpointTypeServiceBusTopic ...
-	EndpointTypeServiceBusTopic EndpointType = "ServiceBusTopic"
-	// EndpointTypeStorageQueue ...
-	EndpointTypeStorageQueue EndpointType = "StorageQueue"
-	// EndpointTypeWebHook ...
-	EndpointTypeWebHook EndpointType = "WebHook"
-)
-
-// PossibleEndpointTypeValues returns an array of possible values for the EndpointType const type.
-func PossibleEndpointTypeValues() []EndpointType {
-	return []EndpointType{EndpointTypeAzureFunction, EndpointTypeEventHub, EndpointTypeEventSubscriptionDestination, EndpointTypeHybridConnection, EndpointTypeServiceBusQueue, EndpointTypeServiceBusTopic, EndpointTypeStorageQueue, EndpointTypeWebHook}
-}
-
-// EndpointTypeBasicDeadLetterDestination enumerates the values for endpoint type basic dead letter
-// destination.
-type EndpointTypeBasicDeadLetterDestination string
-
-const (
-	// EndpointTypeDeadLetterDestination ...
-	EndpointTypeDeadLetterDestination EndpointTypeBasicDeadLetterDestination = "DeadLetterDestination"
-	// EndpointTypeStorageBlob ...
-	EndpointTypeStorageBlob EndpointTypeBasicDeadLetterDestination = "StorageBlob"
-)
-
-// PossibleEndpointTypeBasicDeadLetterDestinationValues returns an array of possible values for the EndpointTypeBasicDeadLetterDestination const type.
-func PossibleEndpointTypeBasicDeadLetterDestinationValues() []EndpointTypeBasicDeadLetterDestination {
-	return []EndpointTypeBasicDeadLetterDestination{EndpointTypeDeadLetterDestination, EndpointTypeStorageBlob}
-}
-
-// EventDeliverySchema enumerates the values for event delivery schema.
-type EventDeliverySchema string
-
-const (
-	// CloudEventSchemaV10 ...
-	CloudEventSchemaV10 EventDeliverySchema = "CloudEventSchemaV1_0"
-	// CustomInputSchema ...
-	CustomInputSchema EventDeliverySchema = "CustomInputSchema"
-	// EventGridSchema ...
-	EventGridSchema EventDeliverySchema = "EventGridSchema"
-)
-
-// PossibleEventDeliverySchemaValues returns an array of possible values for the EventDeliverySchema const type.
-func PossibleEventDeliverySchemaValues() []EventDeliverySchema {
-	return []EventDeliverySchema{CloudEventSchemaV10, CustomInputSchema, EventGridSchema}
-}
-
-// EventSubscriptionProvisioningState enumerates the values for event subscription provisioning state.
-type EventSubscriptionProvisioningState string
-
-const (
-	// EventSubscriptionProvisioningStateAwaitingManualAction ...
-	EventSubscriptionProvisioningStateAwaitingManualAction EventSubscriptionProvisioningState = "AwaitingManualAction"
-	// EventSubscriptionProvisioningStateCanceled ...
-	EventSubscriptionProvisioningStateCanceled EventSubscriptionProvisioningState = "Canceled"
-	// EventSubscriptionProvisioningStateCreating ...
-	EventSubscriptionProvisioningStateCreating EventSubscriptionProvisioningState = "Creating"
-	// EventSubscriptionProvisioningStateDeleting ...
-	EventSubscriptionProvisioningStateDeleting EventSubscriptionProvisioningState = "Deleting"
-	// EventSubscriptionProvisioningStateFailed ...
-	EventSubscriptionProvisioningStateFailed EventSubscriptionProvisioningState = "Failed"
-	// EventSubscriptionProvisioningStateSucceeded ...
-	EventSubscriptionProvisioningStateSucceeded EventSubscriptionProvisioningState = "Succeeded"
-	// EventSubscriptionProvisioningStateUpdating ...
-	EventSubscriptionProvisioningStateUpdating EventSubscriptionProvisioningState = "Updating"
-)
-
-// PossibleEventSubscriptionProvisioningStateValues returns an array of possible values for the EventSubscriptionProvisioningState const type.
-func PossibleEventSubscriptionProvisioningStateValues() []EventSubscriptionProvisioningState {
-	return []EventSubscriptionProvisioningState{EventSubscriptionProvisioningStateAwaitingManualAction, EventSubscriptionProvisioningStateCanceled, EventSubscriptionProvisioningStateCreating, EventSubscriptionProvisioningStateDeleting, EventSubscriptionProvisioningStateFailed, EventSubscriptionProvisioningStateSucceeded, EventSubscriptionProvisioningStateUpdating}
-}
-
-// InputSchema enumerates the values for input schema.
-type InputSchema string
-
-const (
-	// InputSchemaCloudEventSchemaV10 ...
-	InputSchemaCloudEventSchemaV10 InputSchema = "CloudEventSchemaV1_0"
-	// InputSchemaCustomEventSchema ...
-	InputSchemaCustomEventSchema InputSchema = "CustomEventSchema"
-	// InputSchemaEventGridSchema ...
-	InputSchemaEventGridSchema InputSchema = "EventGridSchema"
-)
-
-// PossibleInputSchemaValues returns an array of possible values for the InputSchema const type.
-func PossibleInputSchemaValues() []InputSchema {
-	return []InputSchema{InputSchemaCloudEventSchemaV10, InputSchemaCustomEventSchema, InputSchemaEventGridSchema}
-}
-
-// InputSchemaMappingType enumerates the values for input schema mapping type.
-type InputSchemaMappingType string
-
-const (
-	// InputSchemaMappingTypeInputSchemaMapping ...
-	InputSchemaMappingTypeInputSchemaMapping InputSchemaMappingType = "InputSchemaMapping"
-	// InputSchemaMappingTypeJSON ...
-	InputSchemaMappingTypeJSON InputSchemaMappingType = "Json"
-)
-
-// PossibleInputSchemaMappingTypeValues returns an array of possible values for the InputSchemaMappingType const type.
-func PossibleInputSchemaMappingTypeValues() []InputSchemaMappingType {
-	return []InputSchemaMappingType{InputSchemaMappingTypeInputSchemaMapping, InputSchemaMappingTypeJSON}
-}
-
-// IPActionType enumerates the values for ip action type.
-type IPActionType string
-
-const (
-	// Allow ...
-	Allow IPActionType = "Allow"
-)
-
-// PossibleIPActionTypeValues returns an array of possible values for the IPActionType const type.
-func PossibleIPActionTypeValues() []IPActionType {
-	return []IPActionType{Allow}
-}
-
-// OperatorType enumerates the values for operator type.
-type OperatorType string
-
-const (
-	// OperatorTypeAdvancedFilter ...
-	OperatorTypeAdvancedFilter OperatorType = "AdvancedFilter"
-	// OperatorTypeBoolEquals ...
-	OperatorTypeBoolEquals OperatorType = "BoolEquals"
-	// OperatorTypeNumberGreaterThan ...
-	OperatorTypeNumberGreaterThan OperatorType = "NumberGreaterThan"
-	// OperatorTypeNumberGreaterThanOrEquals ...
-	OperatorTypeNumberGreaterThanOrEquals OperatorType = "NumberGreaterThanOrEquals"
-	// OperatorTypeNumberIn ...
-	OperatorTypeNumberIn OperatorType = "NumberIn"
-	// OperatorTypeNumberLessThan ...
-	OperatorTypeNumberLessThan OperatorType = "NumberLessThan"
-	// OperatorTypeNumberLessThanOrEquals ...
-	OperatorTypeNumberLessThanOrEquals OperatorType = "NumberLessThanOrEquals"
-	// OperatorTypeNumberNotIn ...
-	OperatorTypeNumberNotIn OperatorType = "NumberNotIn"
-	// OperatorTypeStringBeginsWith ...
-	OperatorTypeStringBeginsWith OperatorType = "StringBeginsWith"
-	// OperatorTypeStringContains ...
-	OperatorTypeStringContains OperatorType = "StringContains"
-	// OperatorTypeStringEndsWith ...
-	OperatorTypeStringEndsWith OperatorType = "StringEndsWith"
-	// OperatorTypeStringIn ...
-	OperatorTypeStringIn OperatorType = "StringIn"
-	// OperatorTypeStringNotIn ...
-	OperatorTypeStringNotIn OperatorType = "StringNotIn"
-)
-
-// PossibleOperatorTypeValues returns an array of possible values for the OperatorType const type.
-func PossibleOperatorTypeValues() []OperatorType {
-	return []OperatorType{OperatorTypeAdvancedFilter, OperatorTypeBoolEquals, OperatorTypeNumberGreaterThan, OperatorTypeNumberGreaterThanOrEquals, OperatorTypeNumberIn, OperatorTypeNumberLessThan, OperatorTypeNumberLessThanOrEquals, OperatorTypeNumberNotIn, OperatorTypeStringBeginsWith, OperatorTypeStringContains, OperatorTypeStringEndsWith, OperatorTypeStringIn, OperatorTypeStringNotIn}
-}
-
-// PersistedConnectionStatus enumerates the values for persisted connection status.
-type PersistedConnectionStatus string
-
-const (
-	// Approved ...
-	Approved PersistedConnectionStatus = "Approved"
-	// Disconnected ...
-	Disconnected PersistedConnectionStatus = "Disconnected"
-	// Pending ...
-	Pending PersistedConnectionStatus = "Pending"
-	// Rejected ...
-	Rejected PersistedConnectionStatus = "Rejected"
-)
-
-// PossiblePersistedConnectionStatusValues returns an array of possible values for the PersistedConnectionStatus const type.
-func PossiblePersistedConnectionStatusValues() []PersistedConnectionStatus {
-	return []PersistedConnectionStatus{Approved, Disconnected, Pending, Rejected}
-}
-
-// PublicNetworkAccess enumerates the values for public network access.
-type PublicNetworkAccess string
-
-const (
-	// Disabled ...
-	Disabled PublicNetworkAccess = "Disabled"
-	// Enabled ...
-	Enabled PublicNetworkAccess = "Enabled"
-)
-
-// PossiblePublicNetworkAccessValues returns an array of possible values for the PublicNetworkAccess const type.
-func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{Disabled, Enabled}
-}
-
-// ResourceProvisioningState enumerates the values for resource provisioning state.
-type ResourceProvisioningState string
-
-const (
-	// ResourceProvisioningStateCanceled ...
-	ResourceProvisioningStateCanceled ResourceProvisioningState = "Canceled"
-	// ResourceProvisioningStateCreating ...
-	ResourceProvisioningStateCreating ResourceProvisioningState = "Creating"
-	// ResourceProvisioningStateDeleting ...
-	ResourceProvisioningStateDeleting ResourceProvisioningState = "Deleting"
-	// ResourceProvisioningStateFailed ...
-	ResourceProvisioningStateFailed ResourceProvisioningState = "Failed"
-	// ResourceProvisioningStateSucceeded ...
-	ResourceProvisioningStateSucceeded ResourceProvisioningState = "Succeeded"
-	// ResourceProvisioningStateUpdating ...
-	ResourceProvisioningStateUpdating ResourceProvisioningState = "Updating"
-)
-
-// PossibleResourceProvisioningStateValues returns an array of possible values for the ResourceProvisioningState const type.
-func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
-	return []ResourceProvisioningState{ResourceProvisioningStateCanceled, ResourceProvisioningStateCreating, ResourceProvisioningStateDeleting, ResourceProvisioningStateFailed, ResourceProvisioningStateSucceeded, ResourceProvisioningStateUpdating}
-}
-
-// ResourceRegionType enumerates the values for resource region type.
-type ResourceRegionType string
-
-const (
-	// GlobalResource ...
-	GlobalResource ResourceRegionType = "GlobalResource"
-	// RegionalResource ...
-	RegionalResource ResourceRegionType = "RegionalResource"
-)
-
-// PossibleResourceRegionTypeValues returns an array of possible values for the ResourceRegionType const type.
-func PossibleResourceRegionTypeValues() []ResourceRegionType {
-	return []ResourceRegionType{GlobalResource, RegionalResource}
-}
-
-// TopicProvisioningState enumerates the values for topic provisioning state.
-type TopicProvisioningState string
-
-const (
-	// TopicProvisioningStateCanceled ...
-	TopicProvisioningStateCanceled TopicProvisioningState = "Canceled"
-	// TopicProvisioningStateCreating ...
-	TopicProvisioningStateCreating TopicProvisioningState = "Creating"
-	// TopicProvisioningStateDeleting ...
-	TopicProvisioningStateDeleting TopicProvisioningState = "Deleting"
-	// TopicProvisioningStateFailed ...
-	TopicProvisioningStateFailed TopicProvisioningState = "Failed"
-	// TopicProvisioningStateSucceeded ...
-	TopicProvisioningStateSucceeded TopicProvisioningState = "Succeeded"
-	// TopicProvisioningStateUpdating ...
-	TopicProvisioningStateUpdating TopicProvisioningState = "Updating"
-)
-
-// PossibleTopicProvisioningStateValues returns an array of possible values for the TopicProvisioningState const type.
-func PossibleTopicProvisioningStateValues() []TopicProvisioningState {
-	return []TopicProvisioningState{TopicProvisioningStateCanceled, TopicProvisioningStateCreating, TopicProvisioningStateDeleting, TopicProvisioningStateFailed, TopicProvisioningStateSucceeded, TopicProvisioningStateUpdating}
-}
-
-// TopicTypeProvisioningState enumerates the values for topic type provisioning state.
-type TopicTypeProvisioningState string
-
-const (
-	// TopicTypeProvisioningStateCanceled ...
-	TopicTypeProvisioningStateCanceled TopicTypeProvisioningState = "Canceled"
-	// TopicTypeProvisioningStateCreating ...
-	TopicTypeProvisioningStateCreating TopicTypeProvisioningState = "Creating"
-	// TopicTypeProvisioningStateDeleting ...
-	TopicTypeProvisioningStateDeleting TopicTypeProvisioningState = "Deleting"
-	// TopicTypeProvisioningStateFailed ...
-	TopicTypeProvisioningStateFailed TopicTypeProvisioningState = "Failed"
-	// TopicTypeProvisioningStateSucceeded ...
-	TopicTypeProvisioningStateSucceeded TopicTypeProvisioningState = "Succeeded"
-	// TopicTypeProvisioningStateUpdating ...
-	TopicTypeProvisioningStateUpdating TopicTypeProvisioningState = "Updating"
-)
-
-// PossibleTopicTypeProvisioningStateValues returns an array of possible values for the TopicTypeProvisioningState const type.
-func PossibleTopicTypeProvisioningStateValues() []TopicTypeProvisioningState {
-	return []TopicTypeProvisioningState{TopicTypeProvisioningStateCanceled, TopicTypeProvisioningStateCreating, TopicTypeProvisioningStateDeleting, TopicTypeProvisioningStateFailed, TopicTypeProvisioningStateSucceeded, TopicTypeProvisioningStateUpdating}
-}
-
 // BasicAdvancedFilter this is the base type that represents an advanced filter. To configure an advanced filter, do
 // not directly instantiate an object of this class. Instead, instantiate an object of a derived class such as
 // BoolEqualsAdvancedFilter, NumberInAdvancedFilter, StringEqualsAdvancedFilter etc. depending on the type of the key
@@ -975,6 +644,25 @@ type DomainProperties struct {
 	InboundIPRules *[]InboundIPRule `json:"inboundIpRules,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DomainProperties.
+func (dp DomainProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dp.PrivateEndpointConnections != nil {
+		objectMap["privateEndpointConnections"] = dp.PrivateEndpointConnections
+	}
+	if dp.InputSchema != "" {
+		objectMap["inputSchema"] = dp.InputSchema
+	}
+	objectMap["inputSchemaMapping"] = dp.InputSchemaMapping
+	if dp.PublicNetworkAccess != "" {
+		objectMap["publicNetworkAccess"] = dp.PublicNetworkAccess
+	}
+	if dp.InboundIPRules != nil {
+		objectMap["inboundIpRules"] = dp.InboundIPRules
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for DomainProperties struct.
 func (dp *DomainProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1096,8 +784,7 @@ func (future *DomainsCreateOrUpdateFuture) Result(client DomainsClient) (d Domai
 	return
 }
 
-// DomainsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DomainsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DomainsDeleteFuture struct {
 	azure.Future
 }
@@ -1205,10 +892,15 @@ func (dlr DomainsListResult) IsEmpty() bool {
 	return dlr.Value == nil || len(*dlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dlr DomainsListResult) hasNextLink() bool {
+	return dlr.NextLink != nil && len(*dlr.NextLink) != 0
+}
+
 // domainsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dlr DomainsListResult) domainsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dlr.NextLink == nil || len(to.String(dlr.NextLink)) < 1 {
+	if !dlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1236,11 +928,16 @@ func (page *DomainsListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dlr)
+		if err != nil {
+			return err
+		}
+		page.dlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dlr = next
 	return nil
 }
 
@@ -1274,8 +971,7 @@ func NewDomainsListResultPage(getNextPage func(context.Context, DomainsListResul
 	return DomainsListResultPage{fn: getNextPage}
 }
 
-// DomainsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DomainsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DomainsUpdateFuture struct {
 	azure.Future
 }
@@ -1382,8 +1078,8 @@ type DomainTopicProperties struct {
 	ProvisioningState DomainTopicProvisioningState `json:"provisioningState,omitempty"`
 }
 
-// DomainTopicsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DomainTopicsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DomainTopicsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1511,10 +1207,15 @@ func (dtlr DomainTopicsListResult) IsEmpty() bool {
 	return dtlr.Value == nil || len(*dtlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dtlr DomainTopicsListResult) hasNextLink() bool {
+	return dtlr.NextLink != nil && len(*dtlr.NextLink) != 0
+}
+
 // domainTopicsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dtlr DomainTopicsListResult) domainTopicsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dtlr.NextLink == nil || len(to.String(dtlr.NextLink)) < 1 {
+	if !dtlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1542,11 +1243,16 @@ func (page *DomainTopicsListResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dtlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dtlr)
+		if err != nil {
+			return err
+		}
+		page.dtlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dtlr = next
 	return nil
 }
 
@@ -1642,8 +1348,7 @@ func (dup *DomainUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// EventHubEventSubscriptionDestination information about the event hub destination for an event
-// subscription.
+// EventHubEventSubscriptionDestination information about the event hub destination for an event subscription.
 type EventHubEventSubscriptionDestination struct {
 	// EventHubEventSubscriptionDestinationProperties - Event Hub Properties of the event subscription destination.
 	*EventHubEventSubscriptionDestinationProperties `json:"properties,omitempty"`
@@ -2061,6 +1766,29 @@ type EventSubscriptionProperties struct {
 	DeadLetterDestination BasicDeadLetterDestination `json:"deadLetterDestination,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EventSubscriptionProperties.
+func (esp EventSubscriptionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["destination"] = esp.Destination
+	if esp.Filter != nil {
+		objectMap["filter"] = esp.Filter
+	}
+	if esp.Labels != nil {
+		objectMap["labels"] = esp.Labels
+	}
+	if esp.ExpirationTimeUtc != nil {
+		objectMap["expirationTimeUtc"] = esp.ExpirationTimeUtc
+	}
+	if esp.EventDeliverySchema != "" {
+		objectMap["eventDeliverySchema"] = esp.EventDeliverySchema
+	}
+	if esp.RetryPolicy != nil {
+		objectMap["retryPolicy"] = esp.RetryPolicy
+	}
+	objectMap["deadLetterDestination"] = esp.DeadLetterDestination
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for EventSubscriptionProperties struct.
 func (esp *EventSubscriptionProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -2184,8 +1912,8 @@ func (future *EventSubscriptionsCreateOrUpdateFuture) Result(client EventSubscri
 	return
 }
 
-// EventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// EventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EventSubscriptionsDeleteFuture struct {
 	azure.Future
 }
@@ -2284,10 +2012,15 @@ func (eslr EventSubscriptionsListResult) IsEmpty() bool {
 	return eslr.Value == nil || len(*eslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (eslr EventSubscriptionsListResult) hasNextLink() bool {
+	return eslr.NextLink != nil && len(*eslr.NextLink) != 0
+}
+
 // eventSubscriptionsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (eslr EventSubscriptionsListResult) eventSubscriptionsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if eslr.NextLink == nil || len(to.String(eslr.NextLink)) < 1 {
+	if !eslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2315,11 +2048,16 @@ func (page *EventSubscriptionsListResultPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.eslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.eslr)
+		if err != nil {
+			return err
+		}
+		page.eslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.eslr = next
 	return nil
 }
 
@@ -2353,8 +2091,8 @@ func NewEventSubscriptionsListResultPage(getNextPage func(context.Context, Event
 	return EventSubscriptionsListResultPage{fn: getNextPage}
 }
 
-// EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EventSubscriptionsUpdateFuture struct {
 	azure.Future
 }
@@ -2567,8 +2305,8 @@ type EventTypesListResult struct {
 	Value *[]EventType `json:"value,omitempty"`
 }
 
-// HybridConnectionEventSubscriptionDestination information about the HybridConnection destination for an
-// event subscription.
+// HybridConnectionEventSubscriptionDestination information about the HybridConnection destination for an event
+// subscription.
 type HybridConnectionEventSubscriptionDestination struct {
 	// HybridConnectionEventSubscriptionDestinationProperties - Hybrid connection Properties of the event subscription destination.
 	*HybridConnectionEventSubscriptionDestinationProperties `json:"properties,omitempty"`
@@ -2667,8 +2405,7 @@ func (hcesd *HybridConnectionEventSubscriptionDestination) UnmarshalJSON(body []
 	return nil
 }
 
-// HybridConnectionEventSubscriptionDestinationProperties the properties for a hybrid connection
-// destination.
+// HybridConnectionEventSubscriptionDestinationProperties the properties for a hybrid connection destination.
 type HybridConnectionEventSubscriptionDestinationProperties struct {
 	// ResourceID - The Azure Resource ID of an hybrid connection that is the destination of an event subscription.
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -2768,8 +2505,7 @@ type JSONField struct {
 	SourceField *string `json:"sourceField,omitempty"`
 }
 
-// JSONFieldWithDefault this is used to express the source of an input schema mapping for a single target
-// field
+// JSONFieldWithDefault this is used to express the source of an input schema mapping for a single target field
 // in the Event Grid Event schema. This is currently used in the mappings for the 'subject',
 // 'eventtype' and 'dataversion' properties. This represents a field in the input event schema
 // along with a default value to be used, and at least one of these two properties should be provided.
@@ -2780,8 +2516,8 @@ type JSONFieldWithDefault struct {
 	DefaultValue *string `json:"defaultValue,omitempty"`
 }
 
-// JSONInputSchemaMapping this enables publishing to Event Grid using a custom input schema. This can be
-// used to map properties from a custom input JSON schema to the Event Grid event schema.
+// JSONInputSchemaMapping this enables publishing to Event Grid using a custom input schema. This can be used
+// to map properties from a custom input JSON schema to the Event Grid event schema.
 type JSONInputSchemaMapping struct {
 	// JSONInputSchemaMappingProperties - JSON Properties of the input schema mapping
 	*JSONInputSchemaMappingProperties `json:"properties,omitempty"`
@@ -2850,8 +2586,8 @@ func (jism *JSONInputSchemaMapping) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// JSONInputSchemaMappingProperties this can be used to map properties of a source schema (or default
-// values, for certain supported properties) to properties of the EventGridEvent schema.
+// JSONInputSchemaMappingProperties this can be used to map properties of a source schema (or default values,
+// for certain supported properties) to properties of the EventGridEvent schema.
 type JSONInputSchemaMappingProperties struct {
 	// ID - The mapping information for the Id property of the Event Grid Event.
 	ID *JSONField `json:"id,omitempty"`
@@ -3631,10 +3367,15 @@ func (peclr PrivateEndpointConnectionListResult) IsEmpty() bool {
 	return peclr.Value == nil || len(*peclr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (peclr PrivateEndpointConnectionListResult) hasNextLink() bool {
+	return peclr.NextLink != nil && len(*peclr.NextLink) != 0
+}
+
 // privateEndpointConnectionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (peclr PrivateEndpointConnectionListResult) privateEndpointConnectionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if peclr.NextLink == nil || len(to.String(peclr.NextLink)) < 1 {
+	if !peclr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3662,11 +3403,16 @@ func (page *PrivateEndpointConnectionListResultPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.peclr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.peclr)
+		if err != nil {
+			return err
+		}
+		page.peclr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.peclr = next
 	return nil
 }
 
@@ -3863,8 +3609,7 @@ type PrivateLinkResourcesListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// PrivateLinkResourcesListResultIterator provides access to a complete listing of PrivateLinkResource
-// values.
+// PrivateLinkResourcesListResultIterator provides access to a complete listing of PrivateLinkResource values.
 type PrivateLinkResourcesListResultIterator struct {
 	i    int
 	page PrivateLinkResourcesListResultPage
@@ -3932,10 +3677,15 @@ func (plrlr PrivateLinkResourcesListResult) IsEmpty() bool {
 	return plrlr.Value == nil || len(*plrlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (plrlr PrivateLinkResourcesListResult) hasNextLink() bool {
+	return plrlr.NextLink != nil && len(*plrlr.NextLink) != 0
+}
+
 // privateLinkResourcesListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (plrlr PrivateLinkResourcesListResult) privateLinkResourcesListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if plrlr.NextLink == nil || len(to.String(plrlr.NextLink)) < 1 {
+	if !plrlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3963,11 +3713,16 @@ func (page *PrivateLinkResourcesListResultPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.plrlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.plrlr)
+		if err != nil {
+			return err
+		}
+		page.plrlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.plrlr = next
 	return nil
 }
 
@@ -4126,8 +3881,8 @@ type ServiceBusQueueEventSubscriptionDestinationProperties struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// ServiceBusTopicEventSubscriptionDestination information about the service bus topic destination for an
-// event subscription.
+// ServiceBusTopicEventSubscriptionDestination information about the service bus topic destination for an event
+// subscription.
 type ServiceBusTopicEventSubscriptionDestination struct {
 	// ServiceBusTopicEventSubscriptionDestinationProperties - Service Bus Topic Properties of the event subscription destination.
 	*ServiceBusTopicEventSubscriptionDestinationProperties `json:"properties,omitempty"`
@@ -4226,8 +3981,8 @@ func (sbtesd *ServiceBusTopicEventSubscriptionDestination) UnmarshalJSON(body []
 	return nil
 }
 
-// ServiceBusTopicEventSubscriptionDestinationProperties the properties that represent the Service Bus
-// Topic destination of an event subscription.
+// ServiceBusTopicEventSubscriptionDestinationProperties the properties that represent the Service Bus Topic
+// destination of an event subscription.
 type ServiceBusTopicEventSubscriptionDestinationProperties struct {
 	// ResourceID - The Azure Resource Id that represents the endpoint of the Service Bus Topic destination of an event subscription.
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -5019,6 +4774,25 @@ type TopicProperties struct {
 	InboundIPRules *[]InboundIPRule `json:"inboundIpRules,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TopicProperties.
+func (tp TopicProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tp.PrivateEndpointConnections != nil {
+		objectMap["privateEndpointConnections"] = tp.PrivateEndpointConnections
+	}
+	if tp.InputSchema != "" {
+		objectMap["inputSchema"] = tp.InputSchema
+	}
+	objectMap["inputSchemaMapping"] = tp.InputSchemaMapping
+	if tp.PublicNetworkAccess != "" {
+		objectMap["publicNetworkAccess"] = tp.PublicNetworkAccess
+	}
+	if tp.InboundIPRules != nil {
+		objectMap["inboundIpRules"] = tp.InboundIPRules
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for TopicProperties struct.
 func (tp *TopicProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5248,10 +5022,15 @@ func (tlr TopicsListResult) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tlr TopicsListResult) hasNextLink() bool {
+	return tlr.NextLink != nil && len(*tlr.NextLink) != 0
+}
+
 // topicsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tlr TopicsListResult) topicsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if tlr.NextLink == nil || len(to.String(tlr.NextLink)) < 1 {
+	if !tlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5279,11 +5058,16 @@ func (page *TopicsListResultPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tlr)
+		if err != nil {
+			return err
+		}
+		page.tlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tlr = next
 	return nil
 }
 
@@ -5630,8 +5414,8 @@ func (whesd *WebHookEventSubscriptionDestination) UnmarshalJSON(body []byte) err
 	return nil
 }
 
-// WebHookEventSubscriptionDestinationProperties information about the webhook destination properties for
-// an event subscription.
+// WebHookEventSubscriptionDestinationProperties information about the webhook destination properties for an
+// event subscription.
 type WebHookEventSubscriptionDestinationProperties struct {
 	// EndpointURL - The URL that represents the endpoint of the destination of an event subscription.
 	EndpointURL *string `json:"endpointUrl,omitempty"`
@@ -5645,4 +5429,25 @@ type WebHookEventSubscriptionDestinationProperties struct {
 	AzureActiveDirectoryTenantID *string `json:"azureActiveDirectoryTenantId,omitempty"`
 	// AzureActiveDirectoryApplicationIDOrURI - The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer token in delivery requests.
 	AzureActiveDirectoryApplicationIDOrURI *string `json:"azureActiveDirectoryApplicationIdOrUri,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WebHookEventSubscriptionDestinationProperties.
+func (whesdp WebHookEventSubscriptionDestinationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if whesdp.EndpointURL != nil {
+		objectMap["endpointUrl"] = whesdp.EndpointURL
+	}
+	if whesdp.MaxEventsPerBatch != nil {
+		objectMap["maxEventsPerBatch"] = whesdp.MaxEventsPerBatch
+	}
+	if whesdp.PreferredBatchSizeInKilobytes != nil {
+		objectMap["preferredBatchSizeInKilobytes"] = whesdp.PreferredBatchSizeInKilobytes
+	}
+	if whesdp.AzureActiveDirectoryTenantID != nil {
+		objectMap["azureActiveDirectoryTenantId"] = whesdp.AzureActiveDirectoryTenantID
+	}
+	if whesdp.AzureActiveDirectoryApplicationIDOrURI != nil {
+		objectMap["azureActiveDirectoryApplicationIdOrUri"] = whesdp.AzureActiveDirectoryApplicationIDOrURI
+	}
+	return json.Marshal(objectMap)
 }

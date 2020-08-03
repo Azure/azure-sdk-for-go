@@ -152,6 +152,9 @@ func (client VirtualNetworksClient) List(ctx context.Context, regionID string, p
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualNetworksClient", "List", resp, "Failure responding to request")
 	}
+	if result.vnlr.hasNextLink() && result.vnlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

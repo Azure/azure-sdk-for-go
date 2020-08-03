@@ -149,6 +149,9 @@ func (client AccountsClient) List(ctx context.Context, expand string) (result Ac
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.AccountsClient", "List", resp, "Failure responding to request")
 	}
+	if result.alr.hasNextLink() && result.alr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

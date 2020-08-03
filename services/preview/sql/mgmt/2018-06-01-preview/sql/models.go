@@ -32,250 +32,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2018-06-01-preview/sql"
 
-// CatalogCollationType enumerates the values for catalog collation type.
-type CatalogCollationType string
-
-const (
-	// DATABASEDEFAULT ...
-	DATABASEDEFAULT CatalogCollationType = "DATABASE_DEFAULT"
-	// SQLLatin1GeneralCP1CIAS ...
-	SQLLatin1GeneralCP1CIAS CatalogCollationType = "SQL_Latin1_General_CP1_CI_AS"
-)
-
-// PossibleCatalogCollationTypeValues returns an array of possible values for the CatalogCollationType const type.
-func PossibleCatalogCollationTypeValues() []CatalogCollationType {
-	return []CatalogCollationType{DATABASEDEFAULT, SQLLatin1GeneralCP1CIAS}
-}
-
-// DatabaseState enumerates the values for database state.
-type DatabaseState string
-
-const (
-	// All ...
-	All DatabaseState = "All"
-	// Deleted ...
-	Deleted DatabaseState = "Deleted"
-	// Live ...
-	Live DatabaseState = "Live"
-)
-
-// PossibleDatabaseStateValues returns an array of possible values for the DatabaseState const type.
-func PossibleDatabaseStateValues() []DatabaseState {
-	return []DatabaseState{All, Deleted, Live}
-}
-
-// IdentityType enumerates the values for identity type.
-type IdentityType string
-
-const (
-	// SystemAssigned ...
-	SystemAssigned IdentityType = "SystemAssigned"
-)
-
-// PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
-func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{SystemAssigned}
-}
-
-// InstancePoolLicenseType enumerates the values for instance pool license type.
-type InstancePoolLicenseType string
-
-const (
-	// BasePrice ...
-	BasePrice InstancePoolLicenseType = "BasePrice"
-	// LicenseIncluded ...
-	LicenseIncluded InstancePoolLicenseType = "LicenseIncluded"
-)
-
-// PossibleInstancePoolLicenseTypeValues returns an array of possible values for the InstancePoolLicenseType const type.
-func PossibleInstancePoolLicenseTypeValues() []InstancePoolLicenseType {
-	return []InstancePoolLicenseType{BasePrice, LicenseIncluded}
-}
-
-// ManagedDatabaseCreateMode enumerates the values for managed database create mode.
-type ManagedDatabaseCreateMode string
-
-const (
-	// Default ...
-	Default ManagedDatabaseCreateMode = "Default"
-	// PointInTimeRestore ...
-	PointInTimeRestore ManagedDatabaseCreateMode = "PointInTimeRestore"
-	// Recovery ...
-	Recovery ManagedDatabaseCreateMode = "Recovery"
-	// RestoreExternalBackup ...
-	RestoreExternalBackup ManagedDatabaseCreateMode = "RestoreExternalBackup"
-	// RestoreLongTermRetentionBackup ...
-	RestoreLongTermRetentionBackup ManagedDatabaseCreateMode = "RestoreLongTermRetentionBackup"
-)
-
-// PossibleManagedDatabaseCreateModeValues returns an array of possible values for the ManagedDatabaseCreateMode const type.
-func PossibleManagedDatabaseCreateModeValues() []ManagedDatabaseCreateMode {
-	return []ManagedDatabaseCreateMode{Default, PointInTimeRestore, Recovery, RestoreExternalBackup, RestoreLongTermRetentionBackup}
-}
-
-// ManagedDatabaseStatus enumerates the values for managed database status.
-type ManagedDatabaseStatus string
-
-const (
-	// Creating ...
-	Creating ManagedDatabaseStatus = "Creating"
-	// Inaccessible ...
-	Inaccessible ManagedDatabaseStatus = "Inaccessible"
-	// Offline ...
-	Offline ManagedDatabaseStatus = "Offline"
-	// Online ...
-	Online ManagedDatabaseStatus = "Online"
-	// Restoring ...
-	Restoring ManagedDatabaseStatus = "Restoring"
-	// Shutdown ...
-	Shutdown ManagedDatabaseStatus = "Shutdown"
-	// Updating ...
-	Updating ManagedDatabaseStatus = "Updating"
-)
-
-// PossibleManagedDatabaseStatusValues returns an array of possible values for the ManagedDatabaseStatus const type.
-func PossibleManagedDatabaseStatusValues() []ManagedDatabaseStatus {
-	return []ManagedDatabaseStatus{Creating, Inaccessible, Offline, Online, Restoring, Shutdown, Updating}
-}
-
-// ManagedInstanceLicenseType enumerates the values for managed instance license type.
-type ManagedInstanceLicenseType string
-
-const (
-	// ManagedInstanceLicenseTypeBasePrice ...
-	ManagedInstanceLicenseTypeBasePrice ManagedInstanceLicenseType = "BasePrice"
-	// ManagedInstanceLicenseTypeLicenseIncluded ...
-	ManagedInstanceLicenseTypeLicenseIncluded ManagedInstanceLicenseType = "LicenseIncluded"
-)
-
-// PossibleManagedInstanceLicenseTypeValues returns an array of possible values for the ManagedInstanceLicenseType const type.
-func PossibleManagedInstanceLicenseTypeValues() []ManagedInstanceLicenseType {
-	return []ManagedInstanceLicenseType{ManagedInstanceLicenseTypeBasePrice, ManagedInstanceLicenseTypeLicenseIncluded}
-}
-
-// ManagedInstanceProxyOverride enumerates the values for managed instance proxy override.
-type ManagedInstanceProxyOverride string
-
-const (
-	// ManagedInstanceProxyOverrideDefault ...
-	ManagedInstanceProxyOverrideDefault ManagedInstanceProxyOverride = "Default"
-	// ManagedInstanceProxyOverrideProxy ...
-	ManagedInstanceProxyOverrideProxy ManagedInstanceProxyOverride = "Proxy"
-	// ManagedInstanceProxyOverrideRedirect ...
-	ManagedInstanceProxyOverrideRedirect ManagedInstanceProxyOverride = "Redirect"
-)
-
-// PossibleManagedInstanceProxyOverrideValues returns an array of possible values for the ManagedInstanceProxyOverride const type.
-func PossibleManagedInstanceProxyOverrideValues() []ManagedInstanceProxyOverride {
-	return []ManagedInstanceProxyOverride{ManagedInstanceProxyOverrideDefault, ManagedInstanceProxyOverrideProxy, ManagedInstanceProxyOverrideRedirect}
-}
-
-// ManagedServerCreateMode enumerates the values for managed server create mode.
-type ManagedServerCreateMode string
-
-const (
-	// ManagedServerCreateModeDefault ...
-	ManagedServerCreateModeDefault ManagedServerCreateMode = "Default"
-	// ManagedServerCreateModePointInTimeRestore ...
-	ManagedServerCreateModePointInTimeRestore ManagedServerCreateMode = "PointInTimeRestore"
-)
-
-// PossibleManagedServerCreateModeValues returns an array of possible values for the ManagedServerCreateMode const type.
-func PossibleManagedServerCreateModeValues() []ManagedServerCreateMode {
-	return []ManagedServerCreateMode{ManagedServerCreateModeDefault, ManagedServerCreateModePointInTimeRestore}
-}
-
-// ManagementOperationState enumerates the values for management operation state.
-type ManagementOperationState string
-
-const (
-	// CancelInProgress ...
-	CancelInProgress ManagementOperationState = "CancelInProgress"
-	// Cancelled ...
-	Cancelled ManagementOperationState = "Cancelled"
-	// Failed ...
-	Failed ManagementOperationState = "Failed"
-	// InProgress ...
-	InProgress ManagementOperationState = "InProgress"
-	// Pending ...
-	Pending ManagementOperationState = "Pending"
-	// Succeeded ...
-	Succeeded ManagementOperationState = "Succeeded"
-)
-
-// PossibleManagementOperationStateValues returns an array of possible values for the ManagementOperationState const type.
-func PossibleManagementOperationStateValues() []ManagementOperationState {
-	return []ManagementOperationState{CancelInProgress, Cancelled, Failed, InProgress, Pending, Succeeded}
-}
-
-// ReplicaType enumerates the values for replica type.
-type ReplicaType string
-
-const (
-	// Primary ...
-	Primary ReplicaType = "Primary"
-	// ReadableSecondary ...
-	ReadableSecondary ReplicaType = "ReadableSecondary"
-)
-
-// PossibleReplicaTypeValues returns an array of possible values for the ReplicaType const type.
-func PossibleReplicaTypeValues() []ReplicaType {
-	return []ReplicaType{Primary, ReadableSecondary}
-}
-
-// SecurityAlertPolicyState enumerates the values for security alert policy state.
-type SecurityAlertPolicyState string
-
-const (
-	// SecurityAlertPolicyStateDisabled ...
-	SecurityAlertPolicyStateDisabled SecurityAlertPolicyState = "Disabled"
-	// SecurityAlertPolicyStateEnabled ...
-	SecurityAlertPolicyStateEnabled SecurityAlertPolicyState = "Enabled"
-	// SecurityAlertPolicyStateNew ...
-	SecurityAlertPolicyStateNew SecurityAlertPolicyState = "New"
-)
-
-// PossibleSecurityAlertPolicyStateValues returns an array of possible values for the SecurityAlertPolicyState const type.
-func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
-	return []SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled, SecurityAlertPolicyStateNew}
-}
-
-// SensitivityLabelRank enumerates the values for sensitivity label rank.
-type SensitivityLabelRank string
-
-const (
-	// Critical ...
-	Critical SensitivityLabelRank = "Critical"
-	// High ...
-	High SensitivityLabelRank = "High"
-	// Low ...
-	Low SensitivityLabelRank = "Low"
-	// Medium ...
-	Medium SensitivityLabelRank = "Medium"
-	// None ...
-	None SensitivityLabelRank = "None"
-)
-
-// PossibleSensitivityLabelRankValues returns an array of possible values for the SensitivityLabelRank const type.
-func PossibleSensitivityLabelRankValues() []SensitivityLabelRank {
-	return []SensitivityLabelRank{Critical, High, Low, Medium, None}
-}
-
-// SensitivityLabelSource enumerates the values for sensitivity label source.
-type SensitivityLabelSource string
-
-const (
-	// Current ...
-	Current SensitivityLabelSource = "current"
-	// Recommended ...
-	Recommended SensitivityLabelSource = "recommended"
-)
-
-// PossibleSensitivityLabelSourceValues returns an array of possible values for the SensitivityLabelSource const type.
-func PossibleSensitivityLabelSourceValues() []SensitivityLabelSource {
-	return []SensitivityLabelSource{Current, Recommended}
-}
-
 // AdministratorListResult a list of active directory administrators.
 type AdministratorListResult struct {
 	autorest.Response `json:"-"`
@@ -285,8 +41,7 @@ type AdministratorListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// AdministratorListResultIterator provides access to a complete listing of ServerAzureADAdministrator
-// values.
+// AdministratorListResultIterator provides access to a complete listing of ServerAzureADAdministrator values.
 type AdministratorListResultIterator struct {
 	i    int
 	page AdministratorListResultPage
@@ -354,10 +109,15 @@ func (alr AdministratorListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (alr AdministratorListResult) hasNextLink() bool {
+	return alr.NextLink != nil && len(*alr.NextLink) != 0
+}
+
 // administratorListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (alr AdministratorListResult) administratorListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
+	if !alr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -385,11 +145,16 @@ func (page *AdministratorListResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.alr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.alr)
+		if err != nil {
+			return err
+		}
+		page.alr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.alr = next
 	return nil
 }
 
@@ -447,8 +212,8 @@ type BaseLongTermRetentionPolicyProperties struct {
 	WeekOfYear *int32 `json:"weekOfYear,omitempty"`
 }
 
-// CompleteDatabaseRestoreDefinition contains the information necessary to perform a complete database
-// restore operation.
+// CompleteDatabaseRestoreDefinition contains the information necessary to perform a complete database restore
+// operation.
 type CompleteDatabaseRestoreDefinition struct {
 	// LastBackupName - The last backup name to apply
 	LastBackupName *string `json:"lastBackupName,omitempty"`
@@ -463,8 +228,8 @@ type DatabaseSecurityAlertListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// DatabaseSecurityAlertListResultIterator provides access to a complete listing of
-// DatabaseSecurityAlertPolicy values.
+// DatabaseSecurityAlertListResultIterator provides access to a complete listing of DatabaseSecurityAlertPolicy
+// values.
 type DatabaseSecurityAlertListResultIterator struct {
 	i    int
 	page DatabaseSecurityAlertListResultPage
@@ -532,10 +297,15 @@ func (dsalr DatabaseSecurityAlertListResult) IsEmpty() bool {
 	return dsalr.Value == nil || len(*dsalr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dsalr DatabaseSecurityAlertListResult) hasNextLink() bool {
+	return dsalr.NextLink != nil && len(*dsalr.NextLink) != 0
+}
+
 // databaseSecurityAlertListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dsalr DatabaseSecurityAlertListResult) databaseSecurityAlertListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dsalr.NextLink == nil || len(to.String(dsalr.NextLink)) < 1 {
+	if !dsalr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -563,11 +333,16 @@ func (page *DatabaseSecurityAlertListResultPage) NextWithContext(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dsalr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dsalr)
+		if err != nil {
+			return err
+		}
+		page.dsalr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dsalr = next
 	return nil
 }
 
@@ -912,10 +687,15 @@ func (iplr InstancePoolListResult) IsEmpty() bool {
 	return iplr.Value == nil || len(*iplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (iplr InstancePoolListResult) hasNextLink() bool {
+	return iplr.NextLink != nil && len(*iplr.NextLink) != 0
+}
+
 // instancePoolListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (iplr InstancePoolListResult) instancePoolListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if iplr.NextLink == nil || len(to.String(iplr.NextLink)) < 1 {
+	if !iplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -943,11 +723,16 @@ func (page *InstancePoolListResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.iplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.iplr)
+		if err != nil {
+			return err
+		}
+		page.iplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.iplr = next
 	return nil
 }
 
@@ -991,8 +776,8 @@ type InstancePoolProperties struct {
 	LicenseType InstancePoolLicenseType `json:"licenseType,omitempty"`
 }
 
-// InstancePoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// InstancePoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type InstancePoolsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1110,8 +895,8 @@ func (future *LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture
 	return
 }
 
-// LongTermRetentionManagedInstanceBackupsDeleteFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// LongTermRetentionManagedInstanceBackupsDeleteFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type LongTermRetentionManagedInstanceBackupsDeleteFuture struct {
 	azure.Future
 }
@@ -1311,10 +1096,15 @@ func (mdlr ManagedDatabaseListResult) IsEmpty() bool {
 	return mdlr.Value == nil || len(*mdlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mdlr ManagedDatabaseListResult) hasNextLink() bool {
+	return mdlr.NextLink != nil && len(*mdlr.NextLink) != 0
+}
+
 // managedDatabaseListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mdlr ManagedDatabaseListResult) managedDatabaseListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if mdlr.NextLink == nil || len(to.String(mdlr.NextLink)) < 1 {
+	if !mdlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1342,11 +1132,16 @@ func (page *ManagedDatabaseListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mdlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mdlr)
+		if err != nil {
+			return err
+		}
+		page.mdlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mdlr = next
 	return nil
 }
 
@@ -1412,6 +1207,42 @@ type ManagedDatabaseProperties struct {
 	RecoverableDatabaseID *string `json:"recoverableDatabaseId,omitempty"`
 	// LongTermRetentionBackupResourceID - The name of the Long Term Retention backup to be used for restore of this managed database.
 	LongTermRetentionBackupResourceID *string `json:"longTermRetentionBackupResourceId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedDatabaseProperties.
+func (mdp ManagedDatabaseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mdp.Collation != nil {
+		objectMap["collation"] = mdp.Collation
+	}
+	if mdp.RestorePointInTime != nil {
+		objectMap["restorePointInTime"] = mdp.RestorePointInTime
+	}
+	if mdp.CatalogCollation != "" {
+		objectMap["catalogCollation"] = mdp.CatalogCollation
+	}
+	if mdp.CreateMode != "" {
+		objectMap["createMode"] = mdp.CreateMode
+	}
+	if mdp.StorageContainerURI != nil {
+		objectMap["storageContainerUri"] = mdp.StorageContainerURI
+	}
+	if mdp.SourceDatabaseID != nil {
+		objectMap["sourceDatabaseId"] = mdp.SourceDatabaseID
+	}
+	if mdp.RestorableDroppedDatabaseID != nil {
+		objectMap["restorableDroppedDatabaseId"] = mdp.RestorableDroppedDatabaseID
+	}
+	if mdp.StorageContainerSasToken != nil {
+		objectMap["storageContainerSasToken"] = mdp.StorageContainerSasToken
+	}
+	if mdp.RecoverableDatabaseID != nil {
+		objectMap["recoverableDatabaseId"] = mdp.RecoverableDatabaseID
+	}
+	if mdp.LongTermRetentionBackupResourceID != nil {
+		objectMap["longTermRetentionBackupResourceId"] = mdp.LongTermRetentionBackupResourceID
+	}
+	return json.Marshal(objectMap)
 }
 
 // ManagedDatabaseRestoreDetailsProperties the managed database's restore details properties.
@@ -1874,10 +1705,15 @@ func (milr ManagedInstanceListResult) IsEmpty() bool {
 	return milr.Value == nil || len(*milr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (milr ManagedInstanceListResult) hasNextLink() bool {
+	return milr.NextLink != nil && len(*milr.NextLink) != 0
+}
+
 // managedInstanceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (milr ManagedInstanceListResult) managedInstanceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if milr.NextLink == nil || len(to.String(milr.NextLink)) < 1 {
+	if !milr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1905,11 +1741,16 @@ func (page *ManagedInstanceListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.milr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.milr)
+		if err != nil {
+			return err
+		}
+		page.milr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.milr = next
 	return nil
 }
 
@@ -2095,10 +1936,15 @@ func (miltrblr ManagedInstanceLongTermRetentionBackupListResult) IsEmpty() bool 
 	return miltrblr.Value == nil || len(*miltrblr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (miltrblr ManagedInstanceLongTermRetentionBackupListResult) hasNextLink() bool {
+	return miltrblr.NextLink != nil && len(*miltrblr.NextLink) != 0
+}
+
 // managedInstanceLongTermRetentionBackupListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (miltrblr ManagedInstanceLongTermRetentionBackupListResult) managedInstanceLongTermRetentionBackupListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if miltrblr.NextLink == nil || len(to.String(miltrblr.NextLink)) < 1 {
+	if !miltrblr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2127,11 +1973,16 @@ func (page *ManagedInstanceLongTermRetentionBackupListResultPage) NextWithContex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.miltrblr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.miltrblr)
+		if err != nil {
+			return err
+		}
+		page.miltrblr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.miltrblr = next
 	return nil
 }
 
@@ -2181,8 +2032,8 @@ type ManagedInstanceLongTermRetentionBackupProperties struct {
 	BackupExpirationTime *date.Time `json:"backupExpirationTime,omitempty"`
 }
 
-// ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and
-// retrieving the results of a long-running operation.
+// ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving
+// the results of a long-running operation.
 type ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2361,10 +2212,15 @@ func (miltrplr ManagedInstanceLongTermRetentionPolicyListResult) IsEmpty() bool 
 	return miltrplr.Value == nil || len(*miltrplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (miltrplr ManagedInstanceLongTermRetentionPolicyListResult) hasNextLink() bool {
+	return miltrplr.NextLink != nil && len(*miltrplr.NextLink) != 0
+}
+
 // managedInstanceLongTermRetentionPolicyListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (miltrplr ManagedInstanceLongTermRetentionPolicyListResult) managedInstanceLongTermRetentionPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if miltrplr.NextLink == nil || len(to.String(miltrplr.NextLink)) < 1 {
+	if !miltrplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2393,11 +2249,16 @@ func (page *ManagedInstanceLongTermRetentionPolicyListResultPage) NextWithContex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.miltrplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.miltrplr)
+		if err != nil {
+			return err
+		}
+		page.miltrplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.miltrplr = next
 	return nil
 }
 
@@ -2513,8 +2374,8 @@ type ManagedInstanceOperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ManagedInstanceOperationListResultIterator provides access to a complete listing of
-// ManagedInstanceOperation values.
+// ManagedInstanceOperationListResultIterator provides access to a complete listing of ManagedInstanceOperation
+// values.
 type ManagedInstanceOperationListResultIterator struct {
 	i    int
 	page ManagedInstanceOperationListResultPage
@@ -2582,10 +2443,15 @@ func (miolr ManagedInstanceOperationListResult) IsEmpty() bool {
 	return miolr.Value == nil || len(*miolr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (miolr ManagedInstanceOperationListResult) hasNextLink() bool {
+	return miolr.NextLink != nil && len(*miolr.NextLink) != 0
+}
+
 // managedInstanceOperationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (miolr ManagedInstanceOperationListResult) managedInstanceOperationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if miolr.NextLink == nil || len(to.String(miolr.NextLink)) < 1 {
+	if !miolr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2613,11 +2479,16 @@ func (page *ManagedInstanceOperationListResultPage) NextWithContext(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.miolr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.miolr)
+		if err != nil {
+			return err
+		}
+		page.miolr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.miolr = next
 	return nil
 }
 
@@ -2651,6 +2522,14 @@ func NewManagedInstanceOperationListResultPage(getNextPage func(context.Context,
 	return ManagedInstanceOperationListResultPage{fn: getNextPage}
 }
 
+// ManagedInstanceOperationParametersPair the parameters of a managed instance operation.
+type ManagedInstanceOperationParametersPair struct {
+	// CurrentParameters - READ-ONLY; The current parameters.
+	CurrentParameters *UpsertManagedServerOperationParameters `json:"currentParameters,omitempty"`
+	// RequestedParameters - READ-ONLY; The requested parameters.
+	RequestedParameters *UpsertManagedServerOperationParameters `json:"requestedParameters,omitempty"`
+}
+
 // ManagedInstanceOperationProperties the properties of a managed instance operation.
 type ManagedInstanceOperationProperties struct {
 	// ManagedInstanceName - READ-ONLY; The name of the managed instance the operation is being performed on.
@@ -2679,6 +2558,20 @@ type ManagedInstanceOperationProperties struct {
 	Description *string `json:"description,omitempty"`
 	// IsCancellable - READ-ONLY; Whether the operation can be cancelled.
 	IsCancellable *bool `json:"isCancellable,omitempty"`
+	// OperationParameters - READ-ONLY; The operation parameters.
+	OperationParameters *ManagedInstanceOperationParametersPair `json:"operationParameters,omitempty"`
+	// OperationSteps - READ-ONLY; The operation steps.
+	OperationSteps *ManagedInstanceOperationSteps `json:"operationSteps,omitempty"`
+}
+
+// ManagedInstanceOperationSteps the steps of a managed instance operation.
+type ManagedInstanceOperationSteps struct {
+	// TotalSteps - READ-ONLY; The total number of operation steps.
+	TotalSteps *string `json:"totalSteps,omitempty"`
+	// CurrentStep - READ-ONLY; The number of current operation steps.
+	CurrentStep *int32 `json:"currentStep,omitempty"`
+	// StepsList - READ-ONLY; The operation steps list.
+	StepsList *[]UpsertManagedServerOperationStep `json:"stepsList,omitempty"`
 }
 
 // ManagedInstanceProperties the properties of a managed instance.
@@ -2732,6 +2625,63 @@ type ManagedInstanceProperties struct {
 	MaintenanceConfigurationID *string `json:"maintenanceConfigurationId,omitempty"`
 	// MinimalTLSVersion - Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
 	MinimalTLSVersion *string `json:"minimalTlsVersion,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedInstanceProperties.
+func (mip ManagedInstanceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mip.ManagedInstanceCreateMode != "" {
+		objectMap["managedInstanceCreateMode"] = mip.ManagedInstanceCreateMode
+	}
+	if mip.AdministratorLogin != nil {
+		objectMap["administratorLogin"] = mip.AdministratorLogin
+	}
+	if mip.AdministratorLoginPassword != nil {
+		objectMap["administratorLoginPassword"] = mip.AdministratorLoginPassword
+	}
+	if mip.SubnetID != nil {
+		objectMap["subnetId"] = mip.SubnetID
+	}
+	if mip.LicenseType != "" {
+		objectMap["licenseType"] = mip.LicenseType
+	}
+	if mip.VCores != nil {
+		objectMap["vCores"] = mip.VCores
+	}
+	if mip.StorageSizeInGB != nil {
+		objectMap["storageSizeInGB"] = mip.StorageSizeInGB
+	}
+	if mip.Collation != nil {
+		objectMap["collation"] = mip.Collation
+	}
+	if mip.DNSZonePartner != nil {
+		objectMap["dnsZonePartner"] = mip.DNSZonePartner
+	}
+	if mip.PublicDataEndpointEnabled != nil {
+		objectMap["publicDataEndpointEnabled"] = mip.PublicDataEndpointEnabled
+	}
+	if mip.SourceManagedInstanceID != nil {
+		objectMap["sourceManagedInstanceId"] = mip.SourceManagedInstanceID
+	}
+	if mip.RestorePointInTime != nil {
+		objectMap["restorePointInTime"] = mip.RestorePointInTime
+	}
+	if mip.ProxyOverride != "" {
+		objectMap["proxyOverride"] = mip.ProxyOverride
+	}
+	if mip.TimezoneID != nil {
+		objectMap["timezoneId"] = mip.TimezoneID
+	}
+	if mip.InstancePoolID != nil {
+		objectMap["instancePoolId"] = mip.InstancePoolID
+	}
+	if mip.MaintenanceConfigurationID != nil {
+		objectMap["maintenanceConfigurationId"] = mip.MaintenanceConfigurationID
+	}
+	if mip.MinimalTLSVersion != nil {
+		objectMap["minimalTlsVersion"] = mip.MinimalTLSVersion
+	}
+	return json.Marshal(objectMap)
 }
 
 // ManagedInstancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -2955,8 +2905,7 @@ func (miva *ManagedInstanceVulnerabilityAssessment) UnmarshalJSON(body []byte) e
 	return nil
 }
 
-// ManagedInstanceVulnerabilityAssessmentListResult a list of the ManagedInstance's vulnerability
-// assessments.
+// ManagedInstanceVulnerabilityAssessmentListResult a list of the ManagedInstance's vulnerability assessments.
 type ManagedInstanceVulnerabilityAssessmentListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Array of results.
@@ -3034,10 +2983,15 @@ func (mivalr ManagedInstanceVulnerabilityAssessmentListResult) IsEmpty() bool {
 	return mivalr.Value == nil || len(*mivalr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mivalr ManagedInstanceVulnerabilityAssessmentListResult) hasNextLink() bool {
+	return mivalr.NextLink != nil && len(*mivalr.NextLink) != 0
+}
+
 // managedInstanceVulnerabilityAssessmentListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mivalr ManagedInstanceVulnerabilityAssessmentListResult) managedInstanceVulnerabilityAssessmentListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if mivalr.NextLink == nil || len(to.String(mivalr.NextLink)) < 1 {
+	if !mivalr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3066,11 +3020,16 @@ func (page *ManagedInstanceVulnerabilityAssessmentListResultPage) NextWithContex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mivalr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mivalr)
+		if err != nil {
+			return err
+		}
+		page.mivalr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mivalr = next
 	return nil
 }
 
@@ -3104,8 +3063,7 @@ func NewManagedInstanceVulnerabilityAssessmentListResultPage(getNextPage func(co
 	return ManagedInstanceVulnerabilityAssessmentListResultPage{fn: getNextPage}
 }
 
-// ManagedInstanceVulnerabilityAssessmentProperties properties of a managed instance vulnerability
-// assessment.
+// ManagedInstanceVulnerabilityAssessmentProperties properties of a managed instance vulnerability assessment.
 type ManagedInstanceVulnerabilityAssessmentProperties struct {
 	// StorageContainerPath - A blob storage container path to hold the scan results (e.g. https://myStorage.blob.core.windows.net/VaScans/).
 	StorageContainerPath *string `json:"storageContainerPath,omitempty"`
@@ -3276,10 +3234,15 @@ func (peclr PrivateEndpointConnectionListResult) IsEmpty() bool {
 	return peclr.Value == nil || len(*peclr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (peclr PrivateEndpointConnectionListResult) hasNextLink() bool {
+	return peclr.NextLink != nil && len(*peclr.NextLink) != 0
+}
+
 // privateEndpointConnectionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (peclr PrivateEndpointConnectionListResult) privateEndpointConnectionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if peclr.NextLink == nil || len(to.String(peclr.NextLink)) < 1 {
+	if !peclr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3307,11 +3270,16 @@ func (page *PrivateEndpointConnectionListResultPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.peclr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.peclr)
+		if err != nil {
+			return err
+		}
+		page.peclr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.peclr = next
 	return nil
 }
 
@@ -3355,8 +3323,20 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// MarshalJSON is the custom marshaler for PrivateEndpointConnectionProperties.
+func (pecp PrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pecp.PrivateEndpoint != nil {
+		objectMap["privateEndpoint"] = pecp.PrivateEndpoint
+	}
+	if pecp.PrivateLinkServiceConnectionState != nil {
+		objectMap["privateLinkServiceConnectionState"] = pecp.PrivateLinkServiceConnectionState
+	}
+	return json.Marshal(objectMap)
+}
+
+// PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type PrivateEndpointConnectionsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -3423,6 +3403,18 @@ type PrivateLinkServiceConnectionStateProperty struct {
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PrivateLinkServiceConnectionStateProperty.
+func (plscsp PrivateLinkServiceConnectionStateProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if plscsp.Status != nil {
+		objectMap["status"] = plscsp.Status
+	}
+	if plscsp.Description != nil {
+		objectMap["description"] = plscsp.Description
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProxyResource ARM proxy resource.
 type ProxyResource struct {
 	// ID - READ-ONLY; Resource ID.
@@ -3453,6 +3445,15 @@ type ResourceIdentity struct {
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceIdentity.
+func (ri ResourceIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ri.Type != "" {
+		objectMap["type"] = ri.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // SecurityAlertPolicyProperties properties of a security alert policy.
 type SecurityAlertPolicyProperties struct {
 	// State - Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. Possible values include: 'SecurityAlertPolicyStateNew', 'SecurityAlertPolicyStateEnabled', 'SecurityAlertPolicyStateDisabled'
@@ -3471,6 +3472,33 @@ type SecurityAlertPolicyProperties struct {
 	RetentionDays *int32 `json:"retentionDays,omitempty"`
 	// CreationTime - READ-ONLY; Specifies the UTC creation time of the policy.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SecurityAlertPolicyProperties.
+func (sapp SecurityAlertPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sapp.State != "" {
+		objectMap["state"] = sapp.State
+	}
+	if sapp.DisabledAlerts != nil {
+		objectMap["disabledAlerts"] = sapp.DisabledAlerts
+	}
+	if sapp.EmailAddresses != nil {
+		objectMap["emailAddresses"] = sapp.EmailAddresses
+	}
+	if sapp.EmailAccountAdmins != nil {
+		objectMap["emailAccountAdmins"] = sapp.EmailAccountAdmins
+	}
+	if sapp.StorageEndpoint != nil {
+		objectMap["storageEndpoint"] = sapp.StorageEndpoint
+	}
+	if sapp.StorageAccountAccessKey != nil {
+		objectMap["storageAccountAccessKey"] = sapp.StorageAccountAccessKey
+	}
+	if sapp.RetentionDays != nil {
+		objectMap["retentionDays"] = sapp.RetentionDays
+	}
+	return json.Marshal(objectMap)
 }
 
 // SensitivityLabel a sensitivity label.
@@ -3623,10 +3651,15 @@ func (sllr SensitivityLabelListResult) IsEmpty() bool {
 	return sllr.Value == nil || len(*sllr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sllr SensitivityLabelListResult) hasNextLink() bool {
+	return sllr.NextLink != nil && len(*sllr.NextLink) != 0
+}
+
 // sensitivityLabelListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sllr SensitivityLabelListResult) sensitivityLabelListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if sllr.NextLink == nil || len(to.String(sllr.NextLink)) < 1 {
+	if !sllr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3654,11 +3687,16 @@ func (page *SensitivityLabelListResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sllr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sllr)
+		if err != nil {
+			return err
+		}
+		page.sllr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sllr = next
 	return nil
 }
 
@@ -3706,6 +3744,27 @@ type SensitivityLabelProperties struct {
 	IsDisabled *bool `json:"isDisabled,omitempty"`
 	// Rank - Possible values include: 'None', 'Low', 'Medium', 'High', 'Critical'
 	Rank SensitivityLabelRank `json:"rank,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SensitivityLabelProperties.
+func (slp SensitivityLabelProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if slp.LabelName != nil {
+		objectMap["labelName"] = slp.LabelName
+	}
+	if slp.LabelID != nil {
+		objectMap["labelId"] = slp.LabelID
+	}
+	if slp.InformationType != nil {
+		objectMap["informationType"] = slp.InformationType
+	}
+	if slp.InformationTypeID != nil {
+		objectMap["informationTypeId"] = slp.InformationTypeID
+	}
+	if slp.Rank != "" {
+		objectMap["rank"] = slp.Rank
+	}
+	return json.Marshal(objectMap)
 }
 
 // ServerAzureADAdministrator azure Active Directory administrator.
@@ -3781,8 +3840,8 @@ func (saaa *ServerAzureADAdministrator) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServerAzureADAdministratorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// ServerAzureADAdministratorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type ServerAzureADAdministratorsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -3984,10 +4043,15 @@ func (svalr ServerVulnerabilityAssessmentListResult) IsEmpty() bool {
 	return svalr.Value == nil || len(*svalr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (svalr ServerVulnerabilityAssessmentListResult) hasNextLink() bool {
+	return svalr.NextLink != nil && len(*svalr.NextLink) != 0
+}
+
 // serverVulnerabilityAssessmentListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (svalr ServerVulnerabilityAssessmentListResult) serverVulnerabilityAssessmentListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if svalr.NextLink == nil || len(to.String(svalr.NextLink)) < 1 {
+	if !svalr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4015,11 +4079,16 @@ func (page *ServerVulnerabilityAssessmentListResultPage) NextWithContext(ctx con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.svalr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.svalr)
+		if err != nil {
+			return err
+		}
+		page.svalr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.svalr = next
 	return nil
 }
 
@@ -4103,6 +4172,22 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = tr.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// UpsertManagedServerOperationParameters ...
+type UpsertManagedServerOperationParameters struct {
+	Family          *string `json:"family,omitempty"`
+	Tier            *string `json:"tier,omitempty"`
+	VCores          *int32  `json:"vCores,omitempty"`
+	StorageSizeInGB *int32  `json:"storageSizeInGB,omitempty"`
+}
+
+// UpsertManagedServerOperationStep ...
+type UpsertManagedServerOperationStep struct {
+	Order *int32  `json:"order,omitempty"`
+	Name  *string `json:"name,omitempty"`
+	// Status - Possible values include: 'StatusNotStarted', 'StatusInProgress', 'StatusSlowedDown', 'StatusCompleted', 'StatusFailed', 'StatusCanceled'
+	Status Status `json:"status,omitempty"`
 }
 
 // Usage ARM usage.
@@ -4200,10 +4285,15 @@ func (ulr UsageListResult) IsEmpty() bool {
 	return ulr.Value == nil || len(*ulr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ulr UsageListResult) hasNextLink() bool {
+	return ulr.NextLink != nil && len(*ulr.NextLink) != 0
+}
+
 // usageListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ulr UsageListResult) usageListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ulr.NextLink == nil || len(to.String(ulr.NextLink)) < 1 {
+	if !ulr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4231,11 +4321,16 @@ func (page *UsageListResultPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ulr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ulr)
+		if err != nil {
+			return err
+		}
+		page.ulr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ulr = next
 	return nil
 }
 
@@ -4269,8 +4364,7 @@ func NewUsageListResultPage(getNextPage func(context.Context, UsageListResult) (
 	return UsageListResultPage{fn: getNextPage}
 }
 
-// VulnerabilityAssessmentRecurringScansProperties properties of a Vulnerability Assessment recurring
-// scans.
+// VulnerabilityAssessmentRecurringScansProperties properties of a Vulnerability Assessment recurring scans.
 type VulnerabilityAssessmentRecurringScansProperties struct {
 	// IsEnabled - Recurring scans state.
 	IsEnabled *bool `json:"isEnabled,omitempty"`

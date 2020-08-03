@@ -21,6 +21,7 @@ package subscriptionsapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-11-01/subscriptions/subscriptionsapi"
 
+type BaseClientAPI = original.BaseClientAPI
 type ClientAPI = original.ClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type TenantsClientAPI = original.TenantsClientAPI

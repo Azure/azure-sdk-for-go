@@ -31,218 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/batchai/mgmt/2018-05-01/batchai"
 
-// AllocationState enumerates the values for allocation state.
-type AllocationState string
-
-const (
-	// Resizing ...
-	Resizing AllocationState = "resizing"
-	// Steady ...
-	Steady AllocationState = "steady"
-)
-
-// PossibleAllocationStateValues returns an array of possible values for the AllocationState const type.
-func PossibleAllocationStateValues() []AllocationState {
-	return []AllocationState{Resizing, Steady}
-}
-
-// CachingType enumerates the values for caching type.
-type CachingType string
-
-const (
-	// None ...
-	None CachingType = "none"
-	// Readonly ...
-	Readonly CachingType = "readonly"
-	// Readwrite ...
-	Readwrite CachingType = "readwrite"
-)
-
-// PossibleCachingTypeValues returns an array of possible values for the CachingType const type.
-func PossibleCachingTypeValues() []CachingType {
-	return []CachingType{None, Readonly, Readwrite}
-}
-
-// DeallocationOption enumerates the values for deallocation option.
-type DeallocationOption string
-
-const (
-	// Requeue ...
-	Requeue DeallocationOption = "requeue"
-	// Terminate ...
-	Terminate DeallocationOption = "terminate"
-	// Waitforjobcompletion ...
-	Waitforjobcompletion DeallocationOption = "waitforjobcompletion"
-)
-
-// PossibleDeallocationOptionValues returns an array of possible values for the DeallocationOption const type.
-func PossibleDeallocationOptionValues() []DeallocationOption {
-	return []DeallocationOption{Requeue, Terminate, Waitforjobcompletion}
-}
-
-// ExecutionState enumerates the values for execution state.
-type ExecutionState string
-
-const (
-	// Failed ...
-	Failed ExecutionState = "failed"
-	// Queued ...
-	Queued ExecutionState = "queued"
-	// Running ...
-	Running ExecutionState = "running"
-	// Succeeded ...
-	Succeeded ExecutionState = "succeeded"
-	// Terminating ...
-	Terminating ExecutionState = "terminating"
-)
-
-// PossibleExecutionStateValues returns an array of possible values for the ExecutionState const type.
-func PossibleExecutionStateValues() []ExecutionState {
-	return []ExecutionState{Failed, Queued, Running, Succeeded, Terminating}
-}
-
-// FileServerProvisioningState enumerates the values for file server provisioning state.
-type FileServerProvisioningState string
-
-const (
-	// FileServerProvisioningStateCreating ...
-	FileServerProvisioningStateCreating FileServerProvisioningState = "creating"
-	// FileServerProvisioningStateDeleting ...
-	FileServerProvisioningStateDeleting FileServerProvisioningState = "deleting"
-	// FileServerProvisioningStateFailed ...
-	FileServerProvisioningStateFailed FileServerProvisioningState = "failed"
-	// FileServerProvisioningStateSucceeded ...
-	FileServerProvisioningStateSucceeded FileServerProvisioningState = "succeeded"
-	// FileServerProvisioningStateUpdating ...
-	FileServerProvisioningStateUpdating FileServerProvisioningState = "updating"
-)
-
-// PossibleFileServerProvisioningStateValues returns an array of possible values for the FileServerProvisioningState const type.
-func PossibleFileServerProvisioningStateValues() []FileServerProvisioningState {
-	return []FileServerProvisioningState{FileServerProvisioningStateCreating, FileServerProvisioningStateDeleting, FileServerProvisioningStateFailed, FileServerProvisioningStateSucceeded, FileServerProvisioningStateUpdating}
-}
-
-// FileType enumerates the values for file type.
-type FileType string
-
-const (
-	// FileTypeDirectory ...
-	FileTypeDirectory FileType = "directory"
-	// FileTypeFile ...
-	FileTypeFile FileType = "file"
-)
-
-// PossibleFileTypeValues returns an array of possible values for the FileType const type.
-func PossibleFileTypeValues() []FileType {
-	return []FileType{FileTypeDirectory, FileTypeFile}
-}
-
-// JobPriority enumerates the values for job priority.
-type JobPriority string
-
-const (
-	// High ...
-	High JobPriority = "high"
-	// Low ...
-	Low JobPriority = "low"
-	// Normal ...
-	Normal JobPriority = "normal"
-)
-
-// PossibleJobPriorityValues returns an array of possible values for the JobPriority const type.
-func PossibleJobPriorityValues() []JobPriority {
-	return []JobPriority{High, Low, Normal}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// ProvisioningStateCreating ...
-	ProvisioningStateCreating ProvisioningState = "creating"
-	// ProvisioningStateDeleting ...
-	ProvisioningStateDeleting ProvisioningState = "deleting"
-	// ProvisioningStateFailed ...
-	ProvisioningStateFailed ProvisioningState = "failed"
-	// ProvisioningStateSucceeded ...
-	ProvisioningStateSucceeded ProvisioningState = "succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateSucceeded}
-}
-
-// StorageAccountType enumerates the values for storage account type.
-type StorageAccountType string
-
-const (
-	// PremiumLRS ...
-	PremiumLRS StorageAccountType = "Premium_LRS"
-	// StandardLRS ...
-	StandardLRS StorageAccountType = "Standard_LRS"
-)
-
-// PossibleStorageAccountTypeValues returns an array of possible values for the StorageAccountType const type.
-func PossibleStorageAccountTypeValues() []StorageAccountType {
-	return []StorageAccountType{PremiumLRS, StandardLRS}
-}
-
-// ToolType enumerates the values for tool type.
-type ToolType string
-
-const (
-	// Caffe ...
-	Caffe ToolType = "caffe"
-	// Caffe2 ...
-	Caffe2 ToolType = "caffe2"
-	// Chainer ...
-	Chainer ToolType = "chainer"
-	// Cntk ...
-	Cntk ToolType = "cntk"
-	// Custom ...
-	Custom ToolType = "custom"
-	// Custommpi ...
-	Custommpi ToolType = "custommpi"
-	// Horovod ...
-	Horovod ToolType = "horovod"
-	// Tensorflow ...
-	Tensorflow ToolType = "tensorflow"
-)
-
-// PossibleToolTypeValues returns an array of possible values for the ToolType const type.
-func PossibleToolTypeValues() []ToolType {
-	return []ToolType{Caffe, Caffe2, Chainer, Cntk, Custom, Custommpi, Horovod, Tensorflow}
-}
-
-// UsageUnit enumerates the values for usage unit.
-type UsageUnit string
-
-const (
-	// Count ...
-	Count UsageUnit = "Count"
-)
-
-// PossibleUsageUnitValues returns an array of possible values for the UsageUnit const type.
-func PossibleUsageUnitValues() []UsageUnit {
-	return []UsageUnit{Count}
-}
-
-// VMPriority enumerates the values for vm priority.
-type VMPriority string
-
-const (
-	// Dedicated ...
-	Dedicated VMPriority = "dedicated"
-	// Lowpriority ...
-	Lowpriority VMPriority = "lowpriority"
-)
-
-// PossibleVMPriorityValues returns an array of possible values for the VMPriority const type.
-func PossibleVMPriorityValues() []VMPriority {
-	return []VMPriority{Dedicated, Lowpriority}
-}
-
 // AppInsightsReference azure Application Insights information for performance counters reporting.
 type AppInsightsReference struct {
 	// Component - Azure Application Insights component resource ID.
@@ -253,9 +41,9 @@ type AppInsightsReference struct {
 	InstrumentationKeySecretReference *KeyVaultSecretReference `json:"instrumentationKeySecretReference,omitempty"`
 }
 
-// AutoScaleSettings auto-scale settings for the cluster. The system automatically scales the cluster up
-// and down (within minimumNodeCount and maximumNodeCount) based on the number of queued and running jobs
-// assigned to the cluster.
+// AutoScaleSettings auto-scale settings for the cluster. The system automatically scales the cluster up and
+// down (within minimumNodeCount and maximumNodeCount) based on the number of queued and running jobs assigned
+// to the cluster.
 type AutoScaleSettings struct {
 	// MinimumNodeCount - The minimum number of compute nodes the Batch AI service will try to allocate for the cluster. Note, the actual number of nodes can be less than the specified value if the subscription has not enough quota to fulfill the request.
 	MinimumNodeCount *int32 `json:"minimumNodeCount,omitempty"`
@@ -564,10 +352,15 @@ func (clr ClusterListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (clr ClusterListResult) hasNextLink() bool {
+	return clr.NextLink != nil && len(*clr.NextLink) != 0
+}
+
 // clusterListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (clr ClusterListResult) clusterListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if clr.NextLink == nil || len(to.String(clr.NextLink)) < 1 {
+	if !clr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -595,11 +388,16 @@ func (page *ClusterListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.clr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.clr)
+		if err != nil {
+			return err
+		}
+		page.clr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.clr = next
 	return nil
 }
 
@@ -667,8 +465,34 @@ type ClusterProperties struct {
 	NodeStateCounts *NodeStateCounts `json:"nodeStateCounts,omitempty"`
 }
 
-// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// MarshalJSON is the custom marshaler for ClusterProperties.
+func (cp ClusterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.VMSize != nil {
+		objectMap["vmSize"] = cp.VMSize
+	}
+	if cp.VMPriority != "" {
+		objectMap["vmPriority"] = cp.VMPriority
+	}
+	if cp.ScaleSettings != nil {
+		objectMap["scaleSettings"] = cp.ScaleSettings
+	}
+	if cp.VirtualMachineConfiguration != nil {
+		objectMap["virtualMachineConfiguration"] = cp.VirtualMachineConfiguration
+	}
+	if cp.NodeSetup != nil {
+		objectMap["nodeSetup"] = cp.NodeSetup
+	}
+	if cp.UserAccountSettings != nil {
+		objectMap["userAccountSettings"] = cp.UserAccountSettings
+	}
+	if cp.Subnet != nil {
+		objectMap["subnet"] = cp.Subnet
+	}
+	return json.Marshal(objectMap)
+}
+
+// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ClustersCreateFuture struct {
 	azure.Future
 }
@@ -696,8 +520,7 @@ func (future *ClustersCreateFuture) Result(client ClustersClient) (c Cluster, er
 	return
 }
 
-// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ClustersDeleteFuture struct {
 	azure.Future
 }
@@ -992,10 +815,15 @@ func (elr ExperimentListResult) IsEmpty() bool {
 	return elr.Value == nil || len(*elr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (elr ExperimentListResult) hasNextLink() bool {
+	return elr.NextLink != nil && len(*elr.NextLink) != 0
+}
+
 // experimentListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (elr ExperimentListResult) experimentListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if elr.NextLink == nil || len(to.String(elr.NextLink)) < 1 {
+	if !elr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1023,11 +851,16 @@ func (page *ExperimentListResultPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.elr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.elr)
+		if err != nil {
+			return err
+		}
+		page.elr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.elr = next
 	return nil
 }
 
@@ -1272,10 +1105,15 @@ func (flr FileListResult) IsEmpty() bool {
 	return flr.Value == nil || len(*flr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (flr FileListResult) hasNextLink() bool {
+	return flr.NextLink != nil && len(*flr.NextLink) != 0
+}
+
 // fileListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (flr FileListResult) fileListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if flr.NextLink == nil || len(to.String(flr.NextLink)) < 1 {
+	if !flr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1303,11 +1141,16 @@ func (page *FileListResultPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.flr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.flr)
+		if err != nil {
+			return err
+		}
+		page.flr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.flr = next
 	return nil
 }
 
@@ -1482,6 +1325,15 @@ type FileServerListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FileServerListResult.
+func (fslr FileServerListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fslr.Value != nil {
+		objectMap["value"] = fslr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // FileServerListResultIterator provides access to a complete listing of FileServer values.
 type FileServerListResultIterator struct {
 	i    int
@@ -1550,10 +1402,15 @@ func (fslr FileServerListResult) IsEmpty() bool {
 	return fslr.Value == nil || len(*fslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (fslr FileServerListResult) hasNextLink() bool {
+	return fslr.NextLink != nil && len(*fslr.NextLink) != 0
+}
+
 // fileServerListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (fslr FileServerListResult) fileServerListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if fslr.NextLink == nil || len(to.String(fslr.NextLink)) < 1 {
+	if !fslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1581,11 +1438,16 @@ func (page *FileServerListResultPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.fslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.fslr)
+		if err != nil {
+			return err
+		}
+		page.fslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.fslr = next
 	return nil
 }
 
@@ -1637,6 +1499,24 @@ type FileServerProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of the File Server. Possible values: creating - The File Server is getting created; updating - The File Server creation has been accepted and it is getting updated; deleting - The user has requested that the File Server be deleted, and it is in the process of being deleted; failed - The File Server creation has failed with the specified error code. Details about the error code are specified in the message field; succeeded - The File Server creation has succeeded. Possible values include: 'FileServerProvisioningStateCreating', 'FileServerProvisioningStateUpdating', 'FileServerProvisioningStateDeleting', 'FileServerProvisioningStateSucceeded', 'FileServerProvisioningStateFailed'
 	ProvisioningState FileServerProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileServerProperties.
+func (fsp FileServerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fsp.VMSize != nil {
+		objectMap["vmSize"] = fsp.VMSize
+	}
+	if fsp.SSHConfiguration != nil {
+		objectMap["sshConfiguration"] = fsp.SSHConfiguration
+	}
+	if fsp.DataDisks != nil {
+		objectMap["dataDisks"] = fsp.DataDisks
+	}
+	if fsp.Subnet != nil {
+		objectMap["subnet"] = fsp.Subnet
+	}
+	return json.Marshal(objectMap)
 }
 
 // FileServerReference file Server mounting configuration.
@@ -1988,10 +1868,15 @@ func (jlr JobListResult) IsEmpty() bool {
 	return jlr.Value == nil || len(*jlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (jlr JobListResult) hasNextLink() bool {
+	return jlr.NextLink != nil && len(*jlr.NextLink) != 0
+}
+
 // jobListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (jlr JobListResult) jobListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if jlr.NextLink == nil || len(to.String(jlr.NextLink)) < 1 {
+	if !jlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2019,11 +1904,16 @@ func (page *JobListResultPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.jlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.jlr)
+		if err != nil {
+			return err
+		}
+		page.jlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.jlr = next
 	return nil
 }
 
@@ -2116,6 +2006,81 @@ type JobProperties struct {
 	ExecutionInfo *JobPropertiesExecutionInfo `json:"executionInfo,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobProperties.
+func (jp JobProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if jp.SchedulingPriority != "" {
+		objectMap["schedulingPriority"] = jp.SchedulingPriority
+	}
+	if jp.Cluster != nil {
+		objectMap["cluster"] = jp.Cluster
+	}
+	if jp.MountVolumes != nil {
+		objectMap["mountVolumes"] = jp.MountVolumes
+	}
+	if jp.NodeCount != nil {
+		objectMap["nodeCount"] = jp.NodeCount
+	}
+	if jp.ContainerSettings != nil {
+		objectMap["containerSettings"] = jp.ContainerSettings
+	}
+	if jp.ToolType != "" {
+		objectMap["toolType"] = jp.ToolType
+	}
+	if jp.CntkSettings != nil {
+		objectMap["cntkSettings"] = jp.CntkSettings
+	}
+	if jp.PyTorchSettings != nil {
+		objectMap["pyTorchSettings"] = jp.PyTorchSettings
+	}
+	if jp.TensorFlowSettings != nil {
+		objectMap["tensorFlowSettings"] = jp.TensorFlowSettings
+	}
+	if jp.CaffeSettings != nil {
+		objectMap["caffeSettings"] = jp.CaffeSettings
+	}
+	if jp.Caffe2Settings != nil {
+		objectMap["caffe2Settings"] = jp.Caffe2Settings
+	}
+	if jp.ChainerSettings != nil {
+		objectMap["chainerSettings"] = jp.ChainerSettings
+	}
+	if jp.CustomToolkitSettings != nil {
+		objectMap["customToolkitSettings"] = jp.CustomToolkitSettings
+	}
+	if jp.CustomMpiSettings != nil {
+		objectMap["customMpiSettings"] = jp.CustomMpiSettings
+	}
+	if jp.HorovodSettings != nil {
+		objectMap["horovodSettings"] = jp.HorovodSettings
+	}
+	if jp.JobPreparation != nil {
+		objectMap["jobPreparation"] = jp.JobPreparation
+	}
+	if jp.StdOutErrPathPrefix != nil {
+		objectMap["stdOutErrPathPrefix"] = jp.StdOutErrPathPrefix
+	}
+	if jp.InputDirectories != nil {
+		objectMap["inputDirectories"] = jp.InputDirectories
+	}
+	if jp.OutputDirectories != nil {
+		objectMap["outputDirectories"] = jp.OutputDirectories
+	}
+	if jp.EnvironmentVariables != nil {
+		objectMap["environmentVariables"] = jp.EnvironmentVariables
+	}
+	if jp.Secrets != nil {
+		objectMap["secrets"] = jp.Secrets
+	}
+	if jp.Constraints != nil {
+		objectMap["constraints"] = jp.Constraints
+	}
+	if jp.ExecutionInfo != nil {
+		objectMap["executionInfo"] = jp.ExecutionInfo
+	}
+	return json.Marshal(objectMap)
+}
+
 // JobPropertiesConstraints constraints associated with the Job.
 type JobPropertiesConstraints struct {
 	// MaxWallClockTime - Max time the job can run. Default value: 1 week.
@@ -2184,8 +2149,7 @@ func (future *JobsDeleteFuture) Result(client JobsClient) (ar autorest.Response,
 	return
 }
 
-// JobsTerminateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// JobsTerminateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type JobsTerminateFuture struct {
 	azure.Future
 }
@@ -2292,10 +2256,15 @@ func (lur ListUsagesResult) IsEmpty() bool {
 	return lur.Value == nil || len(*lur.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lur ListUsagesResult) hasNextLink() bool {
+	return lur.NextLink != nil && len(*lur.NextLink) != 0
+}
+
 // listUsagesResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lur ListUsagesResult) listUsagesResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lur.NextLink == nil || len(to.String(lur.NextLink)) < 1 {
+	if !lur.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2323,11 +2292,16 @@ func (page *ListUsagesResultPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lur)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lur)
+		if err != nil {
+			return err
+		}
+		page.lur = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lur = next
 	return nil
 }
 
@@ -2434,6 +2408,18 @@ type Operation struct {
 	Properties interface{} `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	if o.Properties != nil {
+		objectMap["properties"] = o.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplay the object that describes the operation.
 type OperationDisplay struct {
 	// Provider - READ-ONLY
@@ -2523,10 +2509,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2554,11 +2545,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -2730,10 +2726,15 @@ func (rlilr RemoteLoginInformationListResult) IsEmpty() bool {
 	return rlilr.Value == nil || len(*rlilr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rlilr RemoteLoginInformationListResult) hasNextLink() bool {
+	return rlilr.NextLink != nil && len(*rlilr.NextLink) != 0
+}
+
 // remoteLoginInformationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rlilr RemoteLoginInformationListResult) remoteLoginInformationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rlilr.NextLink == nil || len(to.String(rlilr.NextLink)) < 1 {
+	if !rlilr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2761,11 +2762,16 @@ func (page *RemoteLoginInformationListResultPage) NextWithContext(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rlilr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rlilr)
+		if err != nil {
+			return err
+		}
+		page.rlilr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rlilr = next
 	return nil
 }
 
@@ -2826,8 +2832,8 @@ type ResourceID struct {
 }
 
 // ScaleSettings at least one of manual or autoScale settings must be specified. Only one of manual or
-// autoScale settings can be specified. If autoScale settings are specified, the system automatically
-// scales the cluster up and down (within the supplied limits) based on the pending jobs on the cluster.
+// autoScale settings can be specified. If autoScale settings are specified, the system automatically scales
+// the cluster up and down (within the supplied limits) based on the pending jobs on the cluster.
 type ScaleSettings struct {
 	// Manual - Manual scale settings for the cluster.
 	Manual *ManualScaleSettings `json:"manual,omitempty"`
@@ -2847,6 +2853,24 @@ type SetupTask struct {
 	StdOutErrPathPrefix *string `json:"stdOutErrPathPrefix,omitempty"`
 	// StdOutErrPathSuffix - READ-ONLY; A path segment appended by Batch AI to stdOutErrPathPrefix to form a path where stdout, stderr and execution log of the setup task will be uploaded. Batch AI creates the setup task output directories under an unique path to avoid conflicts between different clusters. The full path can be obtained by concatenation of stdOutErrPathPrefix and stdOutErrPathSuffix.
 	StdOutErrPathSuffix *string `json:"stdOutErrPathSuffix,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SetupTask.
+func (st SetupTask) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if st.CommandLine != nil {
+		objectMap["commandLine"] = st.CommandLine
+	}
+	if st.EnvironmentVariables != nil {
+		objectMap["environmentVariables"] = st.EnvironmentVariables
+	}
+	if st.Secrets != nil {
+		objectMap["secrets"] = st.Secrets
+	}
+	if st.StdOutErrPathPrefix != nil {
+		objectMap["stdOutErrPathPrefix"] = st.StdOutErrPathPrefix
+	}
+	return json.Marshal(objectMap)
 }
 
 // SSHConfiguration SSH configuration.
@@ -3111,10 +3135,15 @@ func (wlr WorkspaceListResult) IsEmpty() bool {
 	return wlr.Value == nil || len(*wlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wlr WorkspaceListResult) hasNextLink() bool {
+	return wlr.NextLink != nil && len(*wlr.NextLink) != 0
+}
+
 // workspaceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wlr WorkspaceListResult) workspaceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wlr.NextLink == nil || len(to.String(wlr.NextLink)) < 1 {
+	if !wlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3142,11 +3171,16 @@ func (page *WorkspaceListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wlr)
+		if err != nil {
+			return err
+		}
+		page.wlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wlr = next
 	return nil
 }
 
@@ -3190,8 +3224,7 @@ type WorkspaceProperties struct {
 	ProvisioningStateTransitionTime *date.Time `json:"provisioningStateTransitionTime,omitempty"`
 }
 
-// WorkspacesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// WorkspacesCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type WorkspacesCreateFuture struct {
 	azure.Future
 }
@@ -3219,8 +3252,7 @@ func (future *WorkspacesCreateFuture) Result(client WorkspacesClient) (w Workspa
 	return
 }
 
-// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type WorkspacesDeleteFuture struct {
 	azure.Future
 }

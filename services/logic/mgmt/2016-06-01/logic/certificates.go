@@ -320,6 +320,9 @@ func (client CertificatesClient) ListByIntegrationAccounts(ctx context.Context, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.CertificatesClient", "ListByIntegrationAccounts", resp, "Failure responding to request")
 	}
+	if result.iaclr.hasNextLink() && result.iaclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

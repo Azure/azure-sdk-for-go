@@ -101,6 +101,9 @@ func (client ActivityRunsClient) ListByPipelineRun(ctx context.Context, resource
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.ActivityRunsClient", "ListByPipelineRun", resp, "Failure responding to request")
 	}
+	if result.arlr.hasNextLink() && result.arlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -97,6 +97,9 @@ func (client ReportsClient) ListByService(ctx context.Context, resourceGroupName
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ReportsClient", "ListByService", resp, "Failure responding to request")
 	}
+	if result.rc.hasNextLink() && result.rc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

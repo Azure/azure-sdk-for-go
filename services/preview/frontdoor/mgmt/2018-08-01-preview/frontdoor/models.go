@@ -30,465 +30,12 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2018-08-01-preview/frontdoor"
 
-// Action enumerates the values for action.
-type Action string
-
-const (
-	// Allow ...
-	Allow Action = "Allow"
-	// Block ...
-	Block Action = "Block"
-	// Log ...
-	Log Action = "Log"
-)
-
-// PossibleActionValues returns an array of possible values for the Action const type.
-func PossibleActionValues() []Action {
-	return []Action{Allow, Block, Log}
-}
-
-// Availability enumerates the values for availability.
-type Availability string
-
-const (
-	// Available ...
-	Available Availability = "Available"
-	// Unavailable ...
-	Unavailable Availability = "Unavailable"
-)
-
-// PossibleAvailabilityValues returns an array of possible values for the Availability const type.
-func PossibleAvailabilityValues() []Availability {
-	return []Availability{Available, Unavailable}
-}
-
-// CertificateSource enumerates the values for certificate source.
-type CertificateSource string
-
-const (
-	// CertificateSourceAzureKeyVault ...
-	CertificateSourceAzureKeyVault CertificateSource = "AzureKeyVault"
-	// CertificateSourceFrontDoor ...
-	CertificateSourceFrontDoor CertificateSource = "FrontDoor"
-)
-
-// PossibleCertificateSourceValues returns an array of possible values for the CertificateSource const type.
-func PossibleCertificateSourceValues() []CertificateSource {
-	return []CertificateSource{CertificateSourceAzureKeyVault, CertificateSourceFrontDoor}
-}
-
-// CertificateType enumerates the values for certificate type.
-type CertificateType string
-
-const (
-	// Dedicated ...
-	Dedicated CertificateType = "Dedicated"
-)
-
-// PossibleCertificateTypeValues returns an array of possible values for the CertificateType const type.
-func PossibleCertificateTypeValues() []CertificateType {
-	return []CertificateType{Dedicated}
-}
-
-// CustomHTTPSProvisioningState enumerates the values for custom https provisioning state.
-type CustomHTTPSProvisioningState string
-
-const (
-	// Disabled ...
-	Disabled CustomHTTPSProvisioningState = "Disabled"
-	// Disabling ...
-	Disabling CustomHTTPSProvisioningState = "Disabling"
-	// Enabled ...
-	Enabled CustomHTTPSProvisioningState = "Enabled"
-	// Enabling ...
-	Enabling CustomHTTPSProvisioningState = "Enabling"
-	// Failed ...
-	Failed CustomHTTPSProvisioningState = "Failed"
-)
-
-// PossibleCustomHTTPSProvisioningStateValues returns an array of possible values for the CustomHTTPSProvisioningState const type.
-func PossibleCustomHTTPSProvisioningStateValues() []CustomHTTPSProvisioningState {
-	return []CustomHTTPSProvisioningState{Disabled, Disabling, Enabled, Enabling, Failed}
-}
-
-// CustomHTTPSProvisioningSubstate enumerates the values for custom https provisioning substate.
-type CustomHTTPSProvisioningSubstate string
-
-const (
-	// CertificateDeleted ...
-	CertificateDeleted CustomHTTPSProvisioningSubstate = "CertificateDeleted"
-	// CertificateDeployed ...
-	CertificateDeployed CustomHTTPSProvisioningSubstate = "CertificateDeployed"
-	// DeletingCertificate ...
-	DeletingCertificate CustomHTTPSProvisioningSubstate = "DeletingCertificate"
-	// DeployingCertificate ...
-	DeployingCertificate CustomHTTPSProvisioningSubstate = "DeployingCertificate"
-	// DomainControlValidationRequestApproved ...
-	DomainControlValidationRequestApproved CustomHTTPSProvisioningSubstate = "DomainControlValidationRequestApproved"
-	// DomainControlValidationRequestRejected ...
-	DomainControlValidationRequestRejected CustomHTTPSProvisioningSubstate = "DomainControlValidationRequestRejected"
-	// DomainControlValidationRequestTimedOut ...
-	DomainControlValidationRequestTimedOut CustomHTTPSProvisioningSubstate = "DomainControlValidationRequestTimedOut"
-	// IssuingCertificate ...
-	IssuingCertificate CustomHTTPSProvisioningSubstate = "IssuingCertificate"
-	// PendingDomainControlValidationREquestApproval ...
-	PendingDomainControlValidationREquestApproval CustomHTTPSProvisioningSubstate = "PendingDomainControlValidationREquestApproval"
-	// SubmittingDomainControlValidationRequest ...
-	SubmittingDomainControlValidationRequest CustomHTTPSProvisioningSubstate = "SubmittingDomainControlValidationRequest"
-)
-
-// PossibleCustomHTTPSProvisioningSubstateValues returns an array of possible values for the CustomHTTPSProvisioningSubstate const type.
-func PossibleCustomHTTPSProvisioningSubstateValues() []CustomHTTPSProvisioningSubstate {
-	return []CustomHTTPSProvisioningSubstate{CertificateDeleted, CertificateDeployed, DeletingCertificate, DeployingCertificate, DomainControlValidationRequestApproved, DomainControlValidationRequestRejected, DomainControlValidationRequestTimedOut, IssuingCertificate, PendingDomainControlValidationREquestApproval, SubmittingDomainControlValidationRequest}
-}
-
-// DynamicCompressionEnabled enumerates the values for dynamic compression enabled.
-type DynamicCompressionEnabled string
-
-const (
-	// DynamicCompressionEnabledDisabled ...
-	DynamicCompressionEnabledDisabled DynamicCompressionEnabled = "Disabled"
-	// DynamicCompressionEnabledEnabled ...
-	DynamicCompressionEnabledEnabled DynamicCompressionEnabled = "Enabled"
-)
-
-// PossibleDynamicCompressionEnabledValues returns an array of possible values for the DynamicCompressionEnabled const type.
-func PossibleDynamicCompressionEnabledValues() []DynamicCompressionEnabled {
-	return []DynamicCompressionEnabled{DynamicCompressionEnabledDisabled, DynamicCompressionEnabledEnabled}
-}
-
-// EnabledState enumerates the values for enabled state.
-type EnabledState string
-
-const (
-	// EnabledStateDisabled ...
-	EnabledStateDisabled EnabledState = "Disabled"
-	// EnabledStateEnabled ...
-	EnabledStateEnabled EnabledState = "Enabled"
-)
-
-// PossibleEnabledStateValues returns an array of possible values for the EnabledState const type.
-func PossibleEnabledStateValues() []EnabledState {
-	return []EnabledState{EnabledStateDisabled, EnabledStateEnabled}
-}
-
-// EnabledStateEnum enumerates the values for enabled state enum.
-type EnabledStateEnum string
-
-const (
-	// EnabledStateEnumDisabled ...
-	EnabledStateEnumDisabled EnabledStateEnum = "Disabled"
-	// EnabledStateEnumEnabled ...
-	EnabledStateEnumEnabled EnabledStateEnum = "Enabled"
-)
-
-// PossibleEnabledStateEnumValues returns an array of possible values for the EnabledStateEnum const type.
-func PossibleEnabledStateEnumValues() []EnabledStateEnum {
-	return []EnabledStateEnum{EnabledStateEnumDisabled, EnabledStateEnumEnabled}
-}
-
-// ForwardingProtocol enumerates the values for forwarding protocol.
-type ForwardingProtocol string
-
-const (
-	// HTTPOnly ...
-	HTTPOnly ForwardingProtocol = "HttpOnly"
-	// HTTPSOnly ...
-	HTTPSOnly ForwardingProtocol = "HttpsOnly"
-	// MatchRequest ...
-	MatchRequest ForwardingProtocol = "MatchRequest"
-)
-
-// PossibleForwardingProtocolValues returns an array of possible values for the ForwardingProtocol const type.
-func PossibleForwardingProtocolValues() []ForwardingProtocol {
-	return []ForwardingProtocol{HTTPOnly, HTTPSOnly, MatchRequest}
-}
-
-// MatchCondition enumerates the values for match condition.
-type MatchCondition string
-
-const (
-	// PostArgs ...
-	PostArgs MatchCondition = "PostArgs"
-	// QueryString ...
-	QueryString MatchCondition = "QueryString"
-	// RemoteAddr ...
-	RemoteAddr MatchCondition = "RemoteAddr"
-	// RequestBody ...
-	RequestBody MatchCondition = "RequestBody"
-	// RequestHeader ...
-	RequestHeader MatchCondition = "RequestHeader"
-	// RequestMethod ...
-	RequestMethod MatchCondition = "RequestMethod"
-	// RequestURI ...
-	RequestURI MatchCondition = "RequestUri"
-)
-
-// PossibleMatchConditionValues returns an array of possible values for the MatchCondition const type.
-func PossibleMatchConditionValues() []MatchCondition {
-	return []MatchCondition{PostArgs, QueryString, RemoteAddr, RequestBody, RequestHeader, RequestMethod, RequestURI}
-}
-
-// Mode enumerates the values for mode.
-type Mode string
-
-const (
-	// Detection ...
-	Detection Mode = "Detection"
-	// Prevention ...
-	Prevention Mode = "Prevention"
-)
-
-// PossibleModeValues returns an array of possible values for the Mode const type.
-func PossibleModeValues() []Mode {
-	return []Mode{Detection, Prevention}
-}
-
-// NetworkOperationStatus enumerates the values for network operation status.
-type NetworkOperationStatus string
-
-const (
-	// NetworkOperationStatusFailed ...
-	NetworkOperationStatusFailed NetworkOperationStatus = "Failed"
-	// NetworkOperationStatusInProgress ...
-	NetworkOperationStatusInProgress NetworkOperationStatus = "InProgress"
-	// NetworkOperationStatusSucceeded ...
-	NetworkOperationStatusSucceeded NetworkOperationStatus = "Succeeded"
-)
-
-// PossibleNetworkOperationStatusValues returns an array of possible values for the NetworkOperationStatus const type.
-func PossibleNetworkOperationStatusValues() []NetworkOperationStatus {
-	return []NetworkOperationStatus{NetworkOperationStatusFailed, NetworkOperationStatusInProgress, NetworkOperationStatusSucceeded}
-}
-
-// Operator enumerates the values for operator.
-type Operator string
-
-const (
-	// Any ...
-	Any Operator = "Any"
-	// BeginsWith ...
-	BeginsWith Operator = "BeginsWith"
-	// Contains ...
-	Contains Operator = "Contains"
-	// EndsWith ...
-	EndsWith Operator = "EndsWith"
-	// Equal ...
-	Equal Operator = "Equal"
-	// GeoMatch ...
-	GeoMatch Operator = "GeoMatch"
-	// GreaterThan ...
-	GreaterThan Operator = "GreaterThan"
-	// GreaterThanOrEqual ...
-	GreaterThanOrEqual Operator = "GreaterThanOrEqual"
-	// IPMatch ...
-	IPMatch Operator = "IPMatch"
-	// LessThan ...
-	LessThan Operator = "LessThan"
-	// LessThanOrEqual ...
-	LessThanOrEqual Operator = "LessThanOrEqual"
-)
-
-// PossibleOperatorValues returns an array of possible values for the Operator const type.
-func PossibleOperatorValues() []Operator {
-	return []Operator{Any, BeginsWith, Contains, EndsWith, Equal, GeoMatch, GreaterThan, GreaterThanOrEqual, IPMatch, LessThan, LessThanOrEqual}
-}
-
-// Protocol enumerates the values for protocol.
-type Protocol string
-
-const (
-	// HTTP ...
-	HTTP Protocol = "Http"
-	// HTTPS ...
-	HTTPS Protocol = "Https"
-)
-
-// PossibleProtocolValues returns an array of possible values for the Protocol const type.
-func PossibleProtocolValues() []Protocol {
-	return []Protocol{HTTP, HTTPS}
-}
-
-// Query enumerates the values for query.
-type Query string
-
-const (
-	// StripAll ...
-	StripAll Query = "StripAll"
-	// StripNone ...
-	StripNone Query = "StripNone"
-)
-
-// PossibleQueryValues returns an array of possible values for the Query const type.
-func PossibleQueryValues() []Query {
-	return []Query{StripAll, StripNone}
-}
-
-// ResourceState enumerates the values for resource state.
-type ResourceState string
-
-const (
-	// ResourceStateCreating ...
-	ResourceStateCreating ResourceState = "Creating"
-	// ResourceStateDeleting ...
-	ResourceStateDeleting ResourceState = "Deleting"
-	// ResourceStateDisabled ...
-	ResourceStateDisabled ResourceState = "Disabled"
-	// ResourceStateDisabling ...
-	ResourceStateDisabling ResourceState = "Disabling"
-	// ResourceStateEnabled ...
-	ResourceStateEnabled ResourceState = "Enabled"
-	// ResourceStateEnabling ...
-	ResourceStateEnabling ResourceState = "Enabling"
-)
-
-// PossibleResourceStateValues returns an array of possible values for the ResourceState const type.
-func PossibleResourceStateValues() []ResourceState {
-	return []ResourceState{ResourceStateCreating, ResourceStateDeleting, ResourceStateDisabled, ResourceStateDisabling, ResourceStateEnabled, ResourceStateEnabling}
-}
-
-// ResourceType enumerates the values for resource type.
-type ResourceType string
-
-const (
-	// MicrosoftNetworkfrontDoors ...
-	MicrosoftNetworkfrontDoors ResourceType = "Microsoft.Network/frontDoors"
-	// MicrosoftNetworkfrontDoorsfrontendEndpoints ...
-	MicrosoftNetworkfrontDoorsfrontendEndpoints ResourceType = "Microsoft.Network/frontDoors/frontendEndpoints"
-)
-
-// PossibleResourceTypeValues returns an array of possible values for the ResourceType const type.
-func PossibleResourceTypeValues() []ResourceType {
-	return []ResourceType{MicrosoftNetworkfrontDoors, MicrosoftNetworkfrontDoorsfrontendEndpoints}
-}
-
-// RuleGroupOverride enumerates the values for rule group override.
-type RuleGroupOverride string
-
-const (
-	// SQLInjection ...
-	SQLInjection RuleGroupOverride = "SqlInjection"
-	// XSS ...
-	XSS RuleGroupOverride = "XSS"
-)
-
-// PossibleRuleGroupOverrideValues returns an array of possible values for the RuleGroupOverride const type.
-func PossibleRuleGroupOverrideValues() []RuleGroupOverride {
-	return []RuleGroupOverride{SQLInjection, XSS}
-}
-
-// RuleSetType enumerates the values for rule set type.
-type RuleSetType string
-
-const (
-	// RuleSetTypeAzureManagedRuleSet ...
-	RuleSetTypeAzureManagedRuleSet RuleSetType = "AzureManagedRuleSet"
-	// RuleSetTypeUnknown ...
-	RuleSetTypeUnknown RuleSetType = "Unknown"
-)
-
-// PossibleRuleSetTypeValues returns an array of possible values for the RuleSetType const type.
-func PossibleRuleSetTypeValues() []RuleSetType {
-	return []RuleSetType{RuleSetTypeAzureManagedRuleSet, RuleSetTypeUnknown}
-}
-
-// RuleType enumerates the values for rule type.
-type RuleType string
-
-const (
-	// MatchRule ...
-	MatchRule RuleType = "MatchRule"
-	// RateLimitRule ...
-	RateLimitRule RuleType = "RateLimitRule"
-)
-
-// PossibleRuleTypeValues returns an array of possible values for the RuleType const type.
-func PossibleRuleTypeValues() []RuleType {
-	return []RuleType{MatchRule, RateLimitRule}
-}
-
-// SessionAffinityEnabledState enumerates the values for session affinity enabled state.
-type SessionAffinityEnabledState string
-
-const (
-	// SessionAffinityEnabledStateDisabled ...
-	SessionAffinityEnabledStateDisabled SessionAffinityEnabledState = "Disabled"
-	// SessionAffinityEnabledStateEnabled ...
-	SessionAffinityEnabledStateEnabled SessionAffinityEnabledState = "Enabled"
-)
-
-// PossibleSessionAffinityEnabledStateValues returns an array of possible values for the SessionAffinityEnabledState const type.
-func PossibleSessionAffinityEnabledStateValues() []SessionAffinityEnabledState {
-	return []SessionAffinityEnabledState{SessionAffinityEnabledStateDisabled, SessionAffinityEnabledStateEnabled}
-}
-
-// TLSProtocolType enumerates the values for tls protocol type.
-type TLSProtocolType string
-
-const (
-	// ServerNameIndication ...
-	ServerNameIndication TLSProtocolType = "ServerNameIndication"
-)
-
-// PossibleTLSProtocolTypeValues returns an array of possible values for the TLSProtocolType const type.
-func PossibleTLSProtocolTypeValues() []TLSProtocolType {
-	return []TLSProtocolType{ServerNameIndication}
-}
-
-// Transform enumerates the values for transform.
-type Transform string
-
-const (
-	// HTMLEntityDecode ...
-	HTMLEntityDecode Transform = "HtmlEntityDecode"
-	// Lowercase ...
-	Lowercase Transform = "Lowercase"
-	// RemoveNulls ...
-	RemoveNulls Transform = "RemoveNulls"
-	// Trim ...
-	Trim Transform = "Trim"
-	// Uppercase ...
-	Uppercase Transform = "Uppercase"
-	// URLDecode ...
-	URLDecode Transform = "UrlDecode"
-	// URLEncode ...
-	URLEncode Transform = "UrlEncode"
-)
-
-// PossibleTransformValues returns an array of possible values for the Transform const type.
-func PossibleTransformValues() []Transform {
-	return []Transform{HTMLEntityDecode, Lowercase, RemoveNulls, Trim, Uppercase, URLDecode, URLEncode}
-}
-
-// WebApplicationFirewallPolicy enumerates the values for web application firewall policy.
-type WebApplicationFirewallPolicy string
-
-const (
-	// WebApplicationFirewallPolicyCreating ...
-	WebApplicationFirewallPolicyCreating WebApplicationFirewallPolicy = "Creating"
-	// WebApplicationFirewallPolicyDeleting ...
-	WebApplicationFirewallPolicyDeleting WebApplicationFirewallPolicy = "Deleting"
-	// WebApplicationFirewallPolicyDisabled ...
-	WebApplicationFirewallPolicyDisabled WebApplicationFirewallPolicy = "Disabled"
-	// WebApplicationFirewallPolicyDisabling ...
-	WebApplicationFirewallPolicyDisabling WebApplicationFirewallPolicy = "Disabling"
-	// WebApplicationFirewallPolicyEnabled ...
-	WebApplicationFirewallPolicyEnabled WebApplicationFirewallPolicy = "Enabled"
-	// WebApplicationFirewallPolicyEnabling ...
-	WebApplicationFirewallPolicyEnabling WebApplicationFirewallPolicy = "Enabling"
-)
-
-// PossibleWebApplicationFirewallPolicyValues returns an array of possible values for the WebApplicationFirewallPolicy const type.
-func PossibleWebApplicationFirewallPolicyValues() []WebApplicationFirewallPolicy {
-	return []WebApplicationFirewallPolicy{WebApplicationFirewallPolicyCreating, WebApplicationFirewallPolicyDeleting, WebApplicationFirewallPolicyDisabled, WebApplicationFirewallPolicyDisabling, WebApplicationFirewallPolicyEnabled, WebApplicationFirewallPolicyEnabling}
-}
-
 // AzureAsyncOperationResult the response body contains the status of the specified asynchronous operation,
-// indicating whether it has succeeded, is in progress, or has failed. Note that this status is distinct
-// from the HTTP status code returned for the Get Operation Status operation itself. If the asynchronous
-// operation succeeded, the response body includes the HTTP status code for the successful request. If the
-// asynchronous operation failed, the response body includes the HTTP status code for the failed request
-// and error information regarding the failure.
+// indicating whether it has succeeded, is in progress, or has failed. Note that this status is distinct from
+// the HTTP status code returned for the Get Operation Status operation itself. If the asynchronous operation
+// succeeded, the response body includes the HTTP status code for the successful request. If the asynchronous
+// operation failed, the response body includes the HTTP status code for the failed request and error
+// information regarding the failure.
 type AzureAsyncOperationResult struct {
 	// Status - Status of the Azure async operation. Possible values are: 'InProgress', 'Succeeded', and 'Failed'. Possible values include: 'NetworkOperationStatusInProgress', 'NetworkOperationStatusSucceeded', 'NetworkOperationStatusFailed'
 	Status NetworkOperationStatus `json:"status,omitempty"`
@@ -654,6 +201,15 @@ type BackendPoolListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for BackendPoolListResult.
+func (bplr BackendPoolListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bplr.NextLink != nil {
+		objectMap["nextLink"] = bplr.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
 // BackendPoolProperties the JSON object that contains the properties required to create a routing rule.
 type BackendPoolProperties struct {
 	// ResourceState - Resource status. Possible values include: 'ResourceStateCreating', 'ResourceStateEnabling', 'ResourceStateEnabled', 'ResourceStateDisabling', 'ResourceStateDisabled', 'ResourceStateDeleting'
@@ -813,6 +369,36 @@ type CustomRule struct {
 	Transforms *[]Transform `json:"transforms,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CustomRule.
+func (cr CustomRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cr.Name != nil {
+		objectMap["name"] = cr.Name
+	}
+	if cr.Priority != nil {
+		objectMap["priority"] = cr.Priority
+	}
+	if cr.RuleType != "" {
+		objectMap["ruleType"] = cr.RuleType
+	}
+	if cr.RateLimitDurationInMinutes != nil {
+		objectMap["rateLimitDurationInMinutes"] = cr.RateLimitDurationInMinutes
+	}
+	if cr.RateLimitThreshold != nil {
+		objectMap["rateLimitThreshold"] = cr.RateLimitThreshold
+	}
+	if cr.MatchConditions != nil {
+		objectMap["matchConditions"] = cr.MatchConditions
+	}
+	if cr.Action != "" {
+		objectMap["action"] = cr.Action
+	}
+	if cr.Transforms != nil {
+		objectMap["transforms"] = cr.Transforms
+	}
+	return json.Marshal(objectMap)
+}
+
 // CustomRules defines contents of custom rules
 type CustomRules struct {
 	// Rules - List of rules
@@ -858,8 +444,8 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// ErrorResponse error response indicates Front Door service is not able to process the incoming request.
-// The reason is provided in the error message.
+// ErrorResponse error response indicates Front Door service is not able to process the incoming request. The
+// reason is provided in the error message.
 type ErrorResponse struct {
 	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
@@ -867,8 +453,8 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// FrontDoor front Door represents a collection of backend endpoints to route traffic to along with rules
-// that specify how traffic is sent there.
+// FrontDoor front Door represents a collection of backend endpoints to route traffic to along with rules that
+// specify how traffic is sent there.
 type FrontDoor struct {
 	autorest.Response `json:"-"`
 	// Properties - Properties of the Front Door Load Balancer
@@ -1121,6 +707,27 @@ type FrontendEndpointProperties struct {
 	WebApplicationFirewallPolicyLink *FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink `json:"webApplicationFirewallPolicyLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FrontendEndpointProperties.
+func (fep FrontendEndpointProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fep.ResourceState != "" {
+		objectMap["resourceState"] = fep.ResourceState
+	}
+	if fep.HostName != nil {
+		objectMap["hostName"] = fep.HostName
+	}
+	if fep.SessionAffinityEnabledState != "" {
+		objectMap["sessionAffinityEnabledState"] = fep.SessionAffinityEnabledState
+	}
+	if fep.SessionAffinityTTLSeconds != nil {
+		objectMap["sessionAffinityTtlSeconds"] = fep.SessionAffinityTTLSeconds
+	}
+	if fep.WebApplicationFirewallPolicyLink != nil {
+		objectMap["webApplicationFirewallPolicyLink"] = fep.WebApplicationFirewallPolicyLink
+	}
+	return json.Marshal(objectMap)
+}
+
 // FrontendEndpointsDisableHTTPSFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type FrontendEndpointsDisableHTTPSFuture struct {
@@ -1167,14 +774,23 @@ func (future *FrontendEndpointsEnableHTTPSFuture) Result(client FrontendEndpoint
 	return
 }
 
-// FrontendEndpointsListResult result of the request to list frontend endpoints. It contains a list of
-// Frontend endpoint objects and a URL link to get the next set of results.
+// FrontendEndpointsListResult result of the request to list frontend endpoints. It contains a list of Frontend
+// endpoint objects and a URL link to get the next set of results.
 type FrontendEndpointsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of Frontend endpoints within a Front Door.
 	Value *[]FrontendEndpoint `json:"value,omitempty"`
 	// NextLink - URL to get the next set of frontend endpoints if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FrontendEndpointsListResult.
+func (felr FrontendEndpointsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if felr.NextLink != nil {
+		objectMap["nextLink"] = felr.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // FrontendEndpointsListResultIterator provides access to a complete listing of FrontendEndpoint values.
@@ -1245,10 +861,15 @@ func (felr FrontendEndpointsListResult) IsEmpty() bool {
 	return felr.Value == nil || len(*felr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (felr FrontendEndpointsListResult) hasNextLink() bool {
+	return felr.NextLink != nil && len(*felr.NextLink) != 0
+}
+
 // frontendEndpointsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (felr FrontendEndpointsListResult) frontendEndpointsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if felr.NextLink == nil || len(to.String(felr.NextLink)) < 1 {
+	if !felr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1276,11 +897,16 @@ func (page *FrontendEndpointsListResultPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.felr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.felr)
+		if err != nil {
+			return err
+		}
+		page.felr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.felr = next
 	return nil
 }
 
@@ -1326,8 +952,8 @@ type FrontendEndpointUpdateParameters struct {
 	WebApplicationFirewallPolicyLink *FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink `json:"webApplicationFirewallPolicyLink,omitempty"`
 }
 
-// FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink defines the Web Application Firewall
-// policy for each host (if applicable)
+// FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink defines the Web Application Firewall policy
+// for each host (if applicable)
 type FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink struct {
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
@@ -1340,6 +966,15 @@ type HealthProbeSettingsListResult struct {
 	Value *[]HealthProbeSettingsModel `json:"value,omitempty"`
 	// NextLink - URL to get the next set of HealthProbeSettings objects if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HealthProbeSettingsListResult.
+func (hpslr HealthProbeSettingsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hpslr.NextLink != nil {
+		objectMap["nextLink"] = hpslr.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // HealthProbeSettingsModel load balancing settings for a backend pool
@@ -1420,8 +1055,8 @@ func (hpsm *HealthProbeSettingsModel) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// HealthProbeSettingsProperties the JSON object that contains the properties required to create a health
-// probe settings.
+// HealthProbeSettingsProperties the JSON object that contains the properties required to create a health probe
+// settings.
 type HealthProbeSettingsProperties struct {
 	// ResourceState - Resource status. Possible values include: 'ResourceStateCreating', 'ResourceStateEnabling', 'ResourceStateEnabled', 'ResourceStateDisabling', 'ResourceStateDisabled', 'ResourceStateDeleting'
 	ResourceState ResourceState `json:"resourceState,omitempty"`
@@ -1467,6 +1102,15 @@ type ListResult struct {
 	Value *[]FrontDoor `json:"value,omitempty"`
 	// NextLink - URL to get the next set of Front Door objects if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListResult.
+func (lr ListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lr.NextLink != nil {
+		objectMap["nextLink"] = lr.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // ListResultIterator provides access to a complete listing of FrontDoor values.
@@ -1537,10 +1181,15 @@ func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1568,11 +1217,16 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lr = next
 	return nil
 }
 
@@ -1606,13 +1260,22 @@ func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult
 	return ListResultPage{fn: getNextPage}
 }
 
-// LoadBalancingSettingsListResult result of the request to list load balancing settings. It contains a
-// list of load balancing settings objects and a URL link to get the next set of results.
+// LoadBalancingSettingsListResult result of the request to list load balancing settings. It contains a list of
+// load balancing settings objects and a URL link to get the next set of results.
 type LoadBalancingSettingsListResult struct {
 	// Value - READ-ONLY; List of Backend Pools within a Front Door.
 	Value *[]LoadBalancingSettingsModel `json:"value,omitempty"`
 	// NextLink - URL to get the next set of LoadBalancingSettings objects if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LoadBalancingSettingsListResult.
+func (lbslr LoadBalancingSettingsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lbslr.NextLink != nil {
+		objectMap["nextLink"] = lbslr.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // LoadBalancingSettingsModel load balancing settings for a backend pool
@@ -1843,8 +1506,7 @@ type MatchCondition1 struct {
 	MatchValue *[]string `json:"matchValue,omitempty"`
 }
 
-// PoliciesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// PoliciesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type PoliciesDeleteFuture struct {
 	azure.Future
 }
@@ -1898,6 +1560,36 @@ type Properties struct {
 	EnabledState EnabledStateEnum `json:"enabledState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Properties.
+func (p Properties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.ResourceState != "" {
+		objectMap["resourceState"] = p.ResourceState
+	}
+	if p.FriendlyName != nil {
+		objectMap["friendlyName"] = p.FriendlyName
+	}
+	if p.RoutingRules != nil {
+		objectMap["routingRules"] = p.RoutingRules
+	}
+	if p.LoadBalancingSettings != nil {
+		objectMap["loadBalancingSettings"] = p.LoadBalancingSettings
+	}
+	if p.HealthProbeSettings != nil {
+		objectMap["healthProbeSettings"] = p.HealthProbeSettings
+	}
+	if p.BackendPools != nil {
+		objectMap["backendPools"] = p.BackendPools
+	}
+	if p.FrontendEndpoints != nil {
+		objectMap["frontendEndpoints"] = p.FrontendEndpoints
+	}
+	if p.EnabledState != "" {
+		objectMap["enabledState"] = p.EnabledState
+	}
+	return json.Marshal(objectMap)
+}
+
 // PurgeParameters parameters required for content purge.
 type PurgeParameters struct {
 	// ContentPaths - The path to the content to be purged. Can describe a file path or a wild card directory.
@@ -1930,8 +1622,8 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RoutingRule a routing rule represents a specification for traffic to treat and where to send it, along
-// with health probe information.
+// RoutingRule a routing rule represents a specification for traffic to treat and where to send it, along with
+// health probe information.
 type RoutingRule struct {
 	// RoutingRuleProperties - Properties of the Front Door Routing Rule
 	*RoutingRuleProperties `json:"properties,omitempty"`
@@ -2016,6 +1708,15 @@ type RoutingRuleListResult struct {
 	Value *[]RoutingRule `json:"value,omitempty"`
 	// NextLink - URL to get the next set of RoutingRule objects if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RoutingRuleListResult.
+func (rrlr RoutingRuleListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rrlr.NextLink != nil {
+		objectMap["nextLink"] = rrlr.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // RoutingRuleProperties the JSON object that contains the properties required to create a routing rule.
@@ -2241,6 +1942,15 @@ type WebApplicationFirewallPolicyListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for WebApplicationFirewallPolicyListResult.
+func (wafplr WebApplicationFirewallPolicyListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wafplr.NextLink != nil {
+		objectMap["nextLink"] = wafplr.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
 // WebApplicationFirewallPolicyListResultIterator provides access to a complete listing of
 // WebApplicationFirewallPolicy1 values.
 type WebApplicationFirewallPolicyListResultIterator struct {
@@ -2310,10 +2020,15 @@ func (wafplr WebApplicationFirewallPolicyListResult) IsEmpty() bool {
 	return wafplr.Value == nil || len(*wafplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wafplr WebApplicationFirewallPolicyListResult) hasNextLink() bool {
+	return wafplr.NextLink != nil && len(*wafplr.NextLink) != 0
+}
+
 // webApplicationFirewallPolicyListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wafplr WebApplicationFirewallPolicyListResult) webApplicationFirewallPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wafplr.NextLink == nil || len(to.String(wafplr.NextLink)) < 1 {
+	if !wafplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2341,11 +2056,16 @@ func (page *WebApplicationFirewallPolicyListResultPage) NextWithContext(ctx cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wafplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wafplr)
+		if err != nil {
+			return err
+		}
+		page.wafplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wafplr = next
 	return nil
 }
 
@@ -2391,4 +2111,19 @@ type WebApplicationFirewallPolicyPropertiesFormat struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// ResourceState - READ-ONLY; Possible values include: 'WebApplicationFirewallPolicyCreating', 'WebApplicationFirewallPolicyEnabling', 'WebApplicationFirewallPolicyEnabled', 'WebApplicationFirewallPolicyDisabling', 'WebApplicationFirewallPolicyDisabled', 'WebApplicationFirewallPolicyDeleting'
 	ResourceState WebApplicationFirewallPolicy `json:"resourceState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WebApplicationFirewallPolicyPropertiesFormat.
+func (wafppf WebApplicationFirewallPolicyPropertiesFormat) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wafppf.PolicySettings != nil {
+		objectMap["policySettings"] = wafppf.PolicySettings
+	}
+	if wafppf.CustomRules != nil {
+		objectMap["customRules"] = wafppf.CustomRules
+	}
+	if wafppf.ManagedRules != nil {
+		objectMap["managedRules"] = wafppf.ManagedRules
+	}
+	return json.Marshal(objectMap)
 }

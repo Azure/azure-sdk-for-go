@@ -408,6 +408,9 @@ func (client VirtualMachineImageTemplatesClient) List(ctx context.Context) (resu
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesClient", "List", resp, "Failure responding to request")
 	}
+	if result.itlr.hasNextLink() && result.itlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -517,6 +520,9 @@ func (client VirtualMachineImageTemplatesClient) ListByResourceGroup(ctx context
 	result.itlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.itlr.hasNextLink() && result.itlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -635,6 +641,9 @@ func (client VirtualMachineImageTemplatesClient) ListRunOutputs(ctx context.Cont
 	result.roc, err = client.ListRunOutputsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplatesClient", "ListRunOutputs", resp, "Failure responding to request")
+	}
+	if result.roc.hasNextLink() && result.roc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

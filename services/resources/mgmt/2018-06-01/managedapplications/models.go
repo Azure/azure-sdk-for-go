@@ -30,84 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/managedapplications"
 
-// ApplicationArtifactType enumerates the values for application artifact type.
-type ApplicationArtifactType string
-
-const (
-	// Custom ...
-	Custom ApplicationArtifactType = "Custom"
-	// Template ...
-	Template ApplicationArtifactType = "Template"
-)
-
-// PossibleApplicationArtifactTypeValues returns an array of possible values for the ApplicationArtifactType const type.
-func PossibleApplicationArtifactTypeValues() []ApplicationArtifactType {
-	return []ApplicationArtifactType{Custom, Template}
-}
-
-// ApplicationLockLevel enumerates the values for application lock level.
-type ApplicationLockLevel string
-
-const (
-	// CanNotDelete ...
-	CanNotDelete ApplicationLockLevel = "CanNotDelete"
-	// None ...
-	None ApplicationLockLevel = "None"
-	// ReadOnly ...
-	ReadOnly ApplicationLockLevel = "ReadOnly"
-)
-
-// PossibleApplicationLockLevelValues returns an array of possible values for the ApplicationLockLevel const type.
-func PossibleApplicationLockLevelValues() []ApplicationLockLevel {
-	return []ApplicationLockLevel{CanNotDelete, None, ReadOnly}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Accepted ...
-	Accepted ProvisioningState = "Accepted"
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Created ...
-	Created ProvisioningState = "Created"
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleted ...
-	Deleted ProvisioningState = "Deleted"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Ready ...
-	Ready ProvisioningState = "Ready"
-	// Running ...
-	Running ProvisioningState = "Running"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Accepted, Canceled, Created, Creating, Deleted, Deleting, Failed, Ready, Running, Succeeded, Updating}
-}
-
-// ResourceIdentityType enumerates the values for resource identity type.
-type ResourceIdentityType string
-
-const (
-	// SystemAssigned ...
-	SystemAssigned ResourceIdentityType = "SystemAssigned"
-)
-
-// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{SystemAssigned}
-}
-
 // Application information about managed application.
 type Application struct {
 	autorest.Response `json:"-"`
@@ -510,10 +432,15 @@ func (adlr ApplicationDefinitionListResult) IsEmpty() bool {
 	return adlr.Value == nil || len(*adlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (adlr ApplicationDefinitionListResult) hasNextLink() bool {
+	return adlr.NextLink != nil && len(*adlr.NextLink) != 0
+}
+
 // applicationDefinitionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (adlr ApplicationDefinitionListResult) applicationDefinitionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if adlr.NextLink == nil || len(to.String(adlr.NextLink)) < 1 {
+	if !adlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -541,11 +468,16 @@ func (page *ApplicationDefinitionListResultPage) NextWithContext(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.adlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.adlr)
+		if err != nil {
+			return err
+		}
+		page.adlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.adlr = next
 	return nil
 }
 
@@ -601,8 +533,8 @@ type ApplicationDefinitionProperties struct {
 	CreateUIDefinition interface{} `json:"createUiDefinition,omitempty"`
 }
 
-// ApplicationDefinitionsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// ApplicationDefinitionsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ApplicationDefinitionsCreateOrUpdateByIDFuture struct {
 	azure.Future
 }
@@ -782,10 +714,15 @@ func (alr ApplicationListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (alr ApplicationListResult) hasNextLink() bool {
+	return alr.NextLink != nil && len(*alr.NextLink) != 0
+}
+
 // applicationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (alr ApplicationListResult) applicationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
+	if !alr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -813,11 +750,16 @@ func (page *ApplicationListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.alr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.alr)
+		if err != nil {
+			return err
+		}
+		page.alr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.alr = next
 	return nil
 }
 
@@ -1035,6 +977,21 @@ type ApplicationProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ApplicationProperties.
+func (ap ApplicationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.ManagedResourceGroupID != nil {
+		objectMap["managedResourceGroupId"] = ap.ManagedResourceGroupID
+	}
+	if ap.ApplicationDefinitionID != nil {
+		objectMap["applicationDefinitionId"] = ap.ApplicationDefinitionID
+	}
+	if ap.Parameters != nil {
+		objectMap["parameters"] = ap.Parameters
+	}
+	return json.Marshal(objectMap)
+}
+
 // ApplicationPropertiesPatchable the managed application properties.
 type ApplicationPropertiesPatchable struct {
 	// ManagedResourceGroupID - The managed resource group Id.
@@ -1047,6 +1004,21 @@ type ApplicationPropertiesPatchable struct {
 	Outputs interface{} `json:"outputs,omitempty"`
 	// ProvisioningState - READ-ONLY; The managed application provisioning state. Possible values include: 'Accepted', 'Running', 'Ready', 'Creating', 'Created', 'Deleting', 'Deleted', 'Canceled', 'Failed', 'Succeeded', 'Updating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationPropertiesPatchable.
+func (app ApplicationPropertiesPatchable) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if app.ManagedResourceGroupID != nil {
+		objectMap["managedResourceGroupId"] = app.ManagedResourceGroupID
+	}
+	if app.ApplicationDefinitionID != nil {
+		objectMap["applicationDefinitionId"] = app.ApplicationDefinitionID
+	}
+	if app.Parameters != nil {
+		objectMap["parameters"] = app.Parameters
+	}
+	return json.Marshal(objectMap)
 }
 
 // ApplicationProviderAuthorization the managed application provider authorization.
@@ -1086,8 +1058,8 @@ func (future *ApplicationsCreateOrUpdateByIDFuture) Result(client ApplicationsCl
 	return
 }
 
-// ApplicationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ApplicationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ApplicationsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1161,8 +1133,8 @@ func (future *ApplicationsDeleteFuture) Result(client ApplicationsClient) (ar au
 	return
 }
 
-// ErrorResponse error response indicates managed application is not able to process the incoming request.
-// The reason is provided in the error message.
+// ErrorResponse error response indicates managed application is not able to process the incoming request. The
+// reason is provided in the error message.
 type ErrorResponse struct {
 	// HTTPStatus - Http status code.
 	HTTPStatus *string `json:"httpStatus,omitempty"`
@@ -1221,6 +1193,15 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The identity type. Possible values include: 'SystemAssigned'
 	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // Plan plan for the managed application.

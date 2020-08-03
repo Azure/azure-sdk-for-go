@@ -22,7 +22,7 @@ package managementgroups
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-02-01/managementgroups"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-05-01/managementgroups"
 )
 
 const (
@@ -77,14 +77,14 @@ const (
 type Type = original.Type
 
 const (
-	MicrosoftManagementmanagementGroup Type = original.MicrosoftManagementmanagementGroup
+	MicrosoftManagementmanagementGroups Type = original.MicrosoftManagementmanagementGroups
 )
 
 type Type1 = original.Type1
 
 const (
-	MicrosoftManagementmanagementGroups Type1 = original.MicrosoftManagementmanagementGroups
-	Subscriptions                       Type1 = original.Subscriptions
+	Type1MicrosoftManagementmanagementGroups Type1 = original.Type1MicrosoftManagementmanagementGroups
+	Type1Subscriptions                       Type1 = original.Type1Subscriptions
 )
 
 type Type2 = original.Type2
@@ -137,6 +137,9 @@ type InfoProperties = original.InfoProperties
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
+type ListSubscriptionUnderManagementGroup = original.ListSubscriptionUnderManagementGroup
+type ListSubscriptionUnderManagementGroupIterator = original.ListSubscriptionUnderManagementGroupIterator
+type ListSubscriptionUnderManagementGroupPage = original.ListSubscriptionUnderManagementGroupPage
 type ManagementGroup = original.ManagementGroup
 type Operation = original.Operation
 type OperationDisplayProperties = original.OperationDisplayProperties
@@ -150,6 +153,8 @@ type PatchManagementGroupRequest = original.PatchManagementGroupRequest
 type PathElement = original.PathElement
 type Properties = original.Properties
 type SetObject = original.SetObject
+type SubscriptionUnderManagementGroup = original.SubscriptionUnderManagementGroup
+type SubscriptionUnderManagementGroupProperties = original.SubscriptionUnderManagementGroupProperties
 type SubscriptionsClient = original.SubscriptionsClient
 type TenantBackfillStatusResult = original.TenantBackfillStatusResult
 
@@ -191,6 +196,12 @@ func NewListResultIterator(page ListResultPage) ListResultIterator {
 }
 func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
 	return original.NewListResultPage(getNextPage)
+}
+func NewListSubscriptionUnderManagementGroupIterator(page ListSubscriptionUnderManagementGroupPage) ListSubscriptionUnderManagementGroupIterator {
+	return original.NewListSubscriptionUnderManagementGroupIterator(page)
+}
+func NewListSubscriptionUnderManagementGroupPage(getNextPage func(context.Context, ListSubscriptionUnderManagementGroup) (ListSubscriptionUnderManagementGroup, error)) ListSubscriptionUnderManagementGroupPage {
+	return original.NewListSubscriptionUnderManagementGroupPage(getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)

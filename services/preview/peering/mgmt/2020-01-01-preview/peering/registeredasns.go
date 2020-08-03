@@ -310,6 +310,9 @@ func (client RegisteredAsnsClient) ListByPeering(ctx context.Context, resourceGr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.RegisteredAsnsClient", "ListByPeering", resp, "Failure responding to request")
 	}
+	if result.ralr.hasNextLink() && result.ralr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

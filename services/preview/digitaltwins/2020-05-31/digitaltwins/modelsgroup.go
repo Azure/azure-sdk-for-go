@@ -324,6 +324,9 @@ func (client ModelsClient) List(ctx context.Context, dependenciesFor []string, i
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "digitaltwins.ModelsClient", "List", resp, "Failure responding to request")
 	}
+	if result.pmdc.hasNextLink() && result.pmdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

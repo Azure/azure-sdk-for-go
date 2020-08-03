@@ -76,6 +76,9 @@ func (client JobsClient) GetAllJobsInSite(ctx context.Context, subscriptionID st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.JobsClient", "GetAllJobsInSite", resp, "Failure responding to request")
 	}
+	if result.vmjc.hasNextLink() && result.vmjc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

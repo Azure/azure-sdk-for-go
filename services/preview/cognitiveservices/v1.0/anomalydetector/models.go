@@ -25,31 +25,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/anomalydetector"
 
-// Granularity enumerates the values for granularity.
-type Granularity string
-
-const (
-	// Daily ...
-	Daily Granularity = "daily"
-	// Hourly ...
-	Hourly Granularity = "hourly"
-	// Minutely ...
-	Minutely Granularity = "minutely"
-	// Monthly ...
-	Monthly Granularity = "monthly"
-	// Secondly ...
-	Secondly Granularity = "secondly"
-	// Weekly ...
-	Weekly Granularity = "weekly"
-	// Yearly ...
-	Yearly Granularity = "yearly"
-)
-
-// PossibleGranularityValues returns an array of possible values for the Granularity const type.
-func PossibleGranularityValues() []Granularity {
-	return []Granularity{Daily, Hourly, Minutely, Monthly, Secondly, Weekly, Yearly}
-}
-
 // APIError error information returned by the API.
 type APIError struct {
 	// Code - The error code.

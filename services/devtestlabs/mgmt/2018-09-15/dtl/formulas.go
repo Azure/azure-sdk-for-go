@@ -322,6 +322,9 @@ func (client FormulasClient) List(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.FormulasClient", "List", resp, "Failure responding to request")
 	}
+	if result.fl.hasNextLink() && result.fl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -234,6 +234,9 @@ func (client Client) List(ctx context.Context, reservationOrderID string) (resul
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.Client", "List", resp, "Failure responding to request")
 	}
+	if result.l.hasNextLink() && result.l.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -344,6 +347,9 @@ func (client Client) ListRevisions(ctx context.Context, reservationID string, re
 	result.l, err = client.ListRevisionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.Client", "ListRevisions", resp, "Failure responding to request")
+	}
+	if result.l.hasNextLink() && result.l.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

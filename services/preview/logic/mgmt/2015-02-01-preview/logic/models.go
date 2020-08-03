@@ -31,192 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic"
 
-// KeyType enumerates the values for key type.
-type KeyType string
-
-const (
-	// NotSpecified ...
-	NotSpecified KeyType = "NotSpecified"
-	// Primary ...
-	Primary KeyType = "Primary"
-	// Secondary ...
-	Secondary KeyType = "Secondary"
-)
-
-// PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
-func PossibleKeyTypeValues() []KeyType {
-	return []KeyType{NotSpecified, Primary, Secondary}
-}
-
-// ParameterType enumerates the values for parameter type.
-type ParameterType string
-
-const (
-	// ParameterTypeArray ...
-	ParameterTypeArray ParameterType = "Array"
-	// ParameterTypeBool ...
-	ParameterTypeBool ParameterType = "Bool"
-	// ParameterTypeFloat ...
-	ParameterTypeFloat ParameterType = "Float"
-	// ParameterTypeInt ...
-	ParameterTypeInt ParameterType = "Int"
-	// ParameterTypeNotSpecified ...
-	ParameterTypeNotSpecified ParameterType = "NotSpecified"
-	// ParameterTypeObject ...
-	ParameterTypeObject ParameterType = "Object"
-	// ParameterTypeSecureObject ...
-	ParameterTypeSecureObject ParameterType = "SecureObject"
-	// ParameterTypeSecureString ...
-	ParameterTypeSecureString ParameterType = "SecureString"
-	// ParameterTypeString ...
-	ParameterTypeString ParameterType = "String"
-)
-
-// PossibleParameterTypeValues returns an array of possible values for the ParameterType const type.
-func PossibleParameterTypeValues() []ParameterType {
-	return []ParameterType{ParameterTypeArray, ParameterTypeBool, ParameterTypeFloat, ParameterTypeInt, ParameterTypeNotSpecified, ParameterTypeObject, ParameterTypeSecureObject, ParameterTypeSecureString, ParameterTypeString}
-}
-
-// RecurrenceFrequency enumerates the values for recurrence frequency.
-type RecurrenceFrequency string
-
-const (
-	// Day ...
-	Day RecurrenceFrequency = "Day"
-	// Hour ...
-	Hour RecurrenceFrequency = "Hour"
-	// Minute ...
-	Minute RecurrenceFrequency = "Minute"
-	// Month ...
-	Month RecurrenceFrequency = "Month"
-	// Second ...
-	Second RecurrenceFrequency = "Second"
-	// Week ...
-	Week RecurrenceFrequency = "Week"
-	// Year ...
-	Year RecurrenceFrequency = "Year"
-)
-
-// PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
-func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
-	return []RecurrenceFrequency{Day, Hour, Minute, Month, Second, Week, Year}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// SkuNameBasic ...
-	SkuNameBasic SkuName = "Basic"
-	// SkuNameFree ...
-	SkuNameFree SkuName = "Free"
-	// SkuNameNotSpecified ...
-	SkuNameNotSpecified SkuName = "NotSpecified"
-	// SkuNamePremium ...
-	SkuNamePremium SkuName = "Premium"
-	// SkuNameShared ...
-	SkuNameShared SkuName = "Shared"
-	// SkuNameStandard ...
-	SkuNameStandard SkuName = "Standard"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{SkuNameBasic, SkuNameFree, SkuNameNotSpecified, SkuNamePremium, SkuNameShared, SkuNameStandard}
-}
-
-// WorkflowProvisioningState enumerates the values for workflow provisioning state.
-type WorkflowProvisioningState string
-
-const (
-	// WorkflowProvisioningStateMoving ...
-	WorkflowProvisioningStateMoving WorkflowProvisioningState = "Moving"
-	// WorkflowProvisioningStateNotSpecified ...
-	WorkflowProvisioningStateNotSpecified WorkflowProvisioningState = "NotSpecified"
-	// WorkflowProvisioningStateSucceeded ...
-	WorkflowProvisioningStateSucceeded WorkflowProvisioningState = "Succeeded"
-)
-
-// PossibleWorkflowProvisioningStateValues returns an array of possible values for the WorkflowProvisioningState const type.
-func PossibleWorkflowProvisioningStateValues() []WorkflowProvisioningState {
-	return []WorkflowProvisioningState{WorkflowProvisioningStateMoving, WorkflowProvisioningStateNotSpecified, WorkflowProvisioningStateSucceeded}
-}
-
-// WorkflowState enumerates the values for workflow state.
-type WorkflowState string
-
-const (
-	// WorkflowStateDeleted ...
-	WorkflowStateDeleted WorkflowState = "Deleted"
-	// WorkflowStateDisabled ...
-	WorkflowStateDisabled WorkflowState = "Disabled"
-	// WorkflowStateEnabled ...
-	WorkflowStateEnabled WorkflowState = "Enabled"
-	// WorkflowStateNotSpecified ...
-	WorkflowStateNotSpecified WorkflowState = "NotSpecified"
-	// WorkflowStateSuspended ...
-	WorkflowStateSuspended WorkflowState = "Suspended"
-)
-
-// PossibleWorkflowStateValues returns an array of possible values for the WorkflowState const type.
-func PossibleWorkflowStateValues() []WorkflowState {
-	return []WorkflowState{WorkflowStateDeleted, WorkflowStateDisabled, WorkflowStateEnabled, WorkflowStateNotSpecified, WorkflowStateSuspended}
-}
-
-// WorkflowStatus enumerates the values for workflow status.
-type WorkflowStatus string
-
-const (
-	// WorkflowStatusAborted ...
-	WorkflowStatusAborted WorkflowStatus = "Aborted"
-	// WorkflowStatusCancelled ...
-	WorkflowStatusCancelled WorkflowStatus = "Cancelled"
-	// WorkflowStatusFailed ...
-	WorkflowStatusFailed WorkflowStatus = "Failed"
-	// WorkflowStatusFaulted ...
-	WorkflowStatusFaulted WorkflowStatus = "Faulted"
-	// WorkflowStatusNotSpecified ...
-	WorkflowStatusNotSpecified WorkflowStatus = "NotSpecified"
-	// WorkflowStatusPaused ...
-	WorkflowStatusPaused WorkflowStatus = "Paused"
-	// WorkflowStatusRunning ...
-	WorkflowStatusRunning WorkflowStatus = "Running"
-	// WorkflowStatusSkipped ...
-	WorkflowStatusSkipped WorkflowStatus = "Skipped"
-	// WorkflowStatusSucceeded ...
-	WorkflowStatusSucceeded WorkflowStatus = "Succeeded"
-	// WorkflowStatusSuspended ...
-	WorkflowStatusSuspended WorkflowStatus = "Suspended"
-	// WorkflowStatusTimedOut ...
-	WorkflowStatusTimedOut WorkflowStatus = "TimedOut"
-	// WorkflowStatusWaiting ...
-	WorkflowStatusWaiting WorkflowStatus = "Waiting"
-)
-
-// PossibleWorkflowStatusValues returns an array of possible values for the WorkflowStatus const type.
-func PossibleWorkflowStatusValues() []WorkflowStatus {
-	return []WorkflowStatus{WorkflowStatusAborted, WorkflowStatusCancelled, WorkflowStatusFailed, WorkflowStatusFaulted, WorkflowStatusNotSpecified, WorkflowStatusPaused, WorkflowStatusRunning, WorkflowStatusSkipped, WorkflowStatusSucceeded, WorkflowStatusSuspended, WorkflowStatusTimedOut, WorkflowStatusWaiting}
-}
-
-// WorkflowTriggerProvisioningState enumerates the values for workflow trigger provisioning state.
-type WorkflowTriggerProvisioningState string
-
-const (
-	// WorkflowTriggerProvisioningStateCreating ...
-	WorkflowTriggerProvisioningStateCreating WorkflowTriggerProvisioningState = "Creating"
-	// WorkflowTriggerProvisioningStateNotSpecified ...
-	WorkflowTriggerProvisioningStateNotSpecified WorkflowTriggerProvisioningState = "NotSpecified"
-	// WorkflowTriggerProvisioningStateSucceeded ...
-	WorkflowTriggerProvisioningStateSucceeded WorkflowTriggerProvisioningState = "Succeeded"
-	// WorkflowTriggerProvisioningStateUpdating ...
-	WorkflowTriggerProvisioningStateUpdating WorkflowTriggerProvisioningState = "Updating"
-)
-
-// PossibleWorkflowTriggerProvisioningStateValues returns an array of possible values for the WorkflowTriggerProvisioningState const type.
-func PossibleWorkflowTriggerProvisioningStateValues() []WorkflowTriggerProvisioningState {
-	return []WorkflowTriggerProvisioningState{WorkflowTriggerProvisioningStateCreating, WorkflowTriggerProvisioningStateNotSpecified, WorkflowTriggerProvisioningStateSucceeded, WorkflowTriggerProvisioningStateUpdating}
-}
-
 // ContentHash ...
 type ContentHash struct {
 	// Algorithm - Gets or sets the algorithm.
@@ -288,6 +102,15 @@ type ResourceReference struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Gets the resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceReference.
+func (rr ResourceReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rr.ID != nil {
+		objectMap["id"] = rr.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // RunWorkflowParameters ...
@@ -575,10 +398,15 @@ func (waklr WorkflowAccessKeyListResult) IsEmpty() bool {
 	return waklr.Value == nil || len(*waklr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (waklr WorkflowAccessKeyListResult) hasNextLink() bool {
+	return waklr.NextLink != nil && len(*waklr.NextLink) != 0
+}
+
 // workflowAccessKeyListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (waklr WorkflowAccessKeyListResult) workflowAccessKeyListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if waklr.NextLink == nil || len(to.String(waklr.NextLink)) < 1 {
+	if !waklr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -606,11 +434,16 @@ func (page *WorkflowAccessKeyListResultPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.waklr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.waklr)
+		if err != nil {
+			return err
+		}
+		page.waklr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.waklr = next
 	return nil
 }
 
@@ -735,10 +568,15 @@ func (wlr WorkflowListResult) IsEmpty() bool {
 	return wlr.Value == nil || len(*wlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wlr WorkflowListResult) hasNextLink() bool {
+	return wlr.NextLink != nil && len(*wlr.NextLink) != 0
+}
+
 // workflowListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wlr WorkflowListResult) workflowListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wlr.NextLink == nil || len(to.String(wlr.NextLink)) < 1 {
+	if !wlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -766,11 +604,16 @@ func (page *WorkflowListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wlr)
+		if err != nil {
+			return err
+		}
+		page.wlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wlr = next
 	return nil
 }
 
@@ -814,6 +657,21 @@ type WorkflowOutputParameter struct {
 	Value interface{} `json:"value,omitempty"`
 	// Metadata - Gets or sets the metadata.
 	Metadata interface{} `json:"metadata,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkflowOutputParameter.
+func (wop WorkflowOutputParameter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wop.Type != "" {
+		objectMap["type"] = wop.Type
+	}
+	if wop.Value != nil {
+		objectMap["value"] = wop.Value
+	}
+	if wop.Metadata != nil {
+		objectMap["metadata"] = wop.Metadata
+	}
+	return json.Marshal(objectMap)
 }
 
 // WorkflowParameter ...
@@ -1111,10 +969,15 @@ func (wralr WorkflowRunActionListResult) IsEmpty() bool {
 	return wralr.Value == nil || len(*wralr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wralr WorkflowRunActionListResult) hasNextLink() bool {
+	return wralr.NextLink != nil && len(*wralr.NextLink) != 0
+}
+
 // workflowRunActionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wralr WorkflowRunActionListResult) workflowRunActionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wralr.NextLink == nil || len(to.String(wralr.NextLink)) < 1 {
+	if !wralr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1142,11 +1005,16 @@ func (page *WorkflowRunActionListResultPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wralr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wralr)
+		if err != nil {
+			return err
+		}
+		page.wralr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wralr = next
 	return nil
 }
 
@@ -1283,10 +1151,15 @@ func (wrlr WorkflowRunListResult) IsEmpty() bool {
 	return wrlr.Value == nil || len(*wrlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wrlr WorkflowRunListResult) hasNextLink() bool {
+	return wrlr.NextLink != nil && len(*wrlr.NextLink) != 0
+}
+
 // workflowRunListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wrlr WorkflowRunListResult) workflowRunListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wrlr.NextLink == nil || len(to.String(wrlr.NextLink)) < 1 {
+	if !wrlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1314,11 +1187,16 @@ func (page *WorkflowRunListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wrlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wrlr)
+		if err != nil {
+			return err
+		}
+		page.wrlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wrlr = next
 	return nil
 }
 
@@ -1685,10 +1563,15 @@ func (wthlr WorkflowTriggerHistoryListResult) IsEmpty() bool {
 	return wthlr.Value == nil || len(*wthlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wthlr WorkflowTriggerHistoryListResult) hasNextLink() bool {
+	return wthlr.NextLink != nil && len(*wthlr.NextLink) != 0
+}
+
 // workflowTriggerHistoryListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wthlr WorkflowTriggerHistoryListResult) workflowTriggerHistoryListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wthlr.NextLink == nil || len(to.String(wthlr.NextLink)) < 1 {
+	if !wthlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1716,11 +1599,16 @@ func (page *WorkflowTriggerHistoryListResultPage) NextWithContext(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wthlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wthlr)
+		if err != nil {
+			return err
+		}
+		page.wthlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wthlr = next
 	return nil
 }
 
@@ -1855,10 +1743,15 @@ func (wtlr WorkflowTriggerListResult) IsEmpty() bool {
 	return wtlr.Value == nil || len(*wtlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wtlr WorkflowTriggerListResult) hasNextLink() bool {
+	return wtlr.NextLink != nil && len(*wtlr.NextLink) != 0
+}
+
 // workflowTriggerListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wtlr WorkflowTriggerListResult) workflowTriggerListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wtlr.NextLink == nil || len(to.String(wtlr.NextLink)) < 1 {
+	if !wtlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1886,11 +1779,16 @@ func (page *WorkflowTriggerListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wtlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wtlr)
+		if err != nil {
+			return err
+		}
+		page.wtlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wtlr = next
 	return nil
 }
 

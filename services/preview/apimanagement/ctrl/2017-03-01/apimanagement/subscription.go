@@ -373,6 +373,9 @@ func (client SubscriptionClient) List(ctx context.Context, apimBaseURL string, f
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.SubscriptionClient", "List", resp, "Failure responding to request")
 	}
+	if result.sc.hasNextLink() && result.sc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -784,6 +784,7 @@ const (
 	TypeOracleSink                   TypeBasicCopySink = original.TypeOracleSink
 	TypeOrcSink                      TypeBasicCopySink = original.TypeOrcSink
 	TypeParquetSink                  TypeBasicCopySink = original.TypeParquetSink
+	TypeRestSink                     TypeBasicCopySink = original.TypeRestSink
 	TypeSalesforceServiceCloudSink   TypeBasicCopySink = original.TypeSalesforceServiceCloudSink
 	TypeSalesforceSink               TypeBasicCopySink = original.TypeSalesforceSink
 	TypeSapCloudForCustomerSink      TypeBasicCopySink = original.TypeSapCloudForCustomerSink
@@ -894,6 +895,7 @@ const (
 type TypeBasicCustomSetupBase = original.TypeBasicCustomSetupBase
 
 const (
+	TypeAzPowerShellSetup        TypeBasicCustomSetupBase = original.TypeAzPowerShellSetup
 	TypeCmdkeySetup              TypeBasicCustomSetupBase = original.TypeCmdkeySetup
 	TypeComponentSetup           TypeBasicCustomSetupBase = original.TypeComponentSetup
 	TypeCustomSetupBase          TypeBasicCustomSetupBase = original.TypeCustomSetupBase
@@ -1316,6 +1318,8 @@ type AvroFormat = original.AvroFormat
 type AvroSink = original.AvroSink
 type AvroSource = original.AvroSource
 type AvroWriteSettings = original.AvroWriteSettings
+type AzPowerShellSetup = original.AzPowerShellSetup
+type AzPowerShellSetupTypeProperties = original.AzPowerShellSetupTypeProperties
 type AzureBatchLinkedService = original.AzureBatchLinkedService
 type AzureBatchLinkedServiceTypeProperties = original.AzureBatchLinkedServiceTypeProperties
 type AzureBlobDataset = original.AzureBlobDataset
@@ -1955,6 +1959,7 @@ type RestResourceDataset = original.RestResourceDataset
 type RestResourceDatasetTypeProperties = original.RestResourceDatasetTypeProperties
 type RestServiceLinkedService = original.RestServiceLinkedService
 type RestServiceLinkedServiceTypeProperties = original.RestServiceLinkedServiceTypeProperties
+type RestSink = original.RestSink
 type RestSource = original.RestSource
 type RetryPolicy = original.RetryPolicy
 type RunFilterParameters = original.RunFilterParameters

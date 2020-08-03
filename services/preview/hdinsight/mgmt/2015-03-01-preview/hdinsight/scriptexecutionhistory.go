@@ -75,6 +75,9 @@ func (client ScriptExecutionHistoryClient) List(ctx context.Context, resourceGro
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptExecutionHistoryClient", "List", resp, "Failure responding to request")
 	}
+	if result.saehl.hasNextLink() && result.saehl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -314,6 +314,9 @@ func (client NetworkClient) ListByResourceGroup(ctx context.Context, resourceGro
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.NetworkClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.nrdl.hasNextLink() && result.nrdl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -423,6 +426,9 @@ func (client NetworkClient) ListBySubscription(ctx context.Context) (result Netw
 	result.nrdl, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.NetworkClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.nrdl.hasNextLink() && result.nrdl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

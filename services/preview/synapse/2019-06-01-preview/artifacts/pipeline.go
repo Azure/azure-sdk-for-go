@@ -443,6 +443,9 @@ func (client PipelineClient) GetPipelinesByWorkspace(ctx context.Context) (resul
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "GetPipelinesByWorkspace", resp, "Failure responding to request")
 	}
+	if result.plr.hasNextLink() && result.plr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

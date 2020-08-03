@@ -167,6 +167,9 @@ func (client AvailabilityStatusesClient) List(ctx context.Context, resourceURI s
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.AvailabilityStatusesClient", "List", resp, "Failure responding to request")
 	}
+	if result.aslr.hasNextLink() && result.aslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -287,6 +290,9 @@ func (client AvailabilityStatusesClient) ListByResourceGroup(ctx context.Context
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.AvailabilityStatusesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.aslr.hasNextLink() && result.aslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -406,6 +412,9 @@ func (client AvailabilityStatusesClient) ListBySubscriptionID(ctx context.Contex
 	result.aslr, err = client.ListBySubscriptionIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.AvailabilityStatusesClient", "ListBySubscriptionID", resp, "Failure responding to request")
+	}
+	if result.aslr.hasNextLink() && result.aslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

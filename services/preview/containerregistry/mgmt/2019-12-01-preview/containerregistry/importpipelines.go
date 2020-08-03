@@ -365,6 +365,9 @@ func (client ImportPipelinesClient) List(ctx context.Context, resourceGroupName 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.ImportPipelinesClient", "List", resp, "Failure responding to request")
 	}
+	if result.iplr.hasNextLink() && result.iplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

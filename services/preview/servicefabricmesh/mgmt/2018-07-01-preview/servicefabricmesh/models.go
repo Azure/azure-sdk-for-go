@@ -30,134 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/servicefabricmesh/mgmt/2018-07-01-preview/servicefabricmesh"
 
-// ApplicationResourceStatus enumerates the values for application resource status.
-type ApplicationResourceStatus string
-
-const (
-	// Creating ...
-	Creating ApplicationResourceStatus = "Creating"
-	// Deleting ...
-	Deleting ApplicationResourceStatus = "Deleting"
-	// Failed ...
-	Failed ApplicationResourceStatus = "Failed"
-	// Invalid ...
-	Invalid ApplicationResourceStatus = "Invalid"
-	// Ready ...
-	Ready ApplicationResourceStatus = "Ready"
-	// Upgrading ...
-	Upgrading ApplicationResourceStatus = "Upgrading"
-)
-
-// PossibleApplicationResourceStatusValues returns an array of possible values for the ApplicationResourceStatus const type.
-func PossibleApplicationResourceStatusValues() []ApplicationResourceStatus {
-	return []ApplicationResourceStatus{Creating, Deleting, Failed, Invalid, Ready, Upgrading}
-}
-
-// DiagnosticsSinkKind enumerates the values for diagnostics sink kind.
-type DiagnosticsSinkKind string
-
-const (
-	// DiagnosticsSinkKindAzureInternalMonitoringPipeline Diagnostics settings for Geneva.
-	DiagnosticsSinkKindAzureInternalMonitoringPipeline DiagnosticsSinkKind = "AzureInternalMonitoringPipeline"
-	// DiagnosticsSinkKindInvalid Indicates an invalid sink kind. All Service Fabric enumerations have the
-	// invalid type.
-	DiagnosticsSinkKindInvalid DiagnosticsSinkKind = "Invalid"
-)
-
-// PossibleDiagnosticsSinkKindValues returns an array of possible values for the DiagnosticsSinkKind const type.
-func PossibleDiagnosticsSinkKindValues() []DiagnosticsSinkKind {
-	return []DiagnosticsSinkKind{DiagnosticsSinkKindAzureInternalMonitoringPipeline, DiagnosticsSinkKindInvalid}
-}
-
-// HealthState enumerates the values for health state.
-type HealthState string
-
-const (
-	// HealthStateError Indicates the health state is at an error level. Error health state should be
-	// investigated, as they can impact the correct functionality of the cluster. The value is 3.
-	HealthStateError HealthState = "Error"
-	// HealthStateInvalid Indicates an invalid health state. All Service Fabric enumerations have the invalid
-	// type. The value is zero.
-	HealthStateInvalid HealthState = "Invalid"
-	// HealthStateOk Indicates the health state is okay. The value is 1.
-	HealthStateOk HealthState = "Ok"
-	// HealthStateUnknown Indicates an unknown health status. The value is 65535.
-	HealthStateUnknown HealthState = "Unknown"
-	// HealthStateWarning Indicates the health state is at a warning level. The value is 2.
-	HealthStateWarning HealthState = "Warning"
-)
-
-// PossibleHealthStateValues returns an array of possible values for the HealthState const type.
-func PossibleHealthStateValues() []HealthState {
-	return []HealthState{HealthStateError, HealthStateInvalid, HealthStateOk, HealthStateUnknown, HealthStateWarning}
-}
-
-// IngressQoSLevel enumerates the values for ingress qo s level.
-type IngressQoSLevel string
-
-const (
-	// Bronze ...
-	Bronze IngressQoSLevel = "Bronze"
-)
-
-// PossibleIngressQoSLevelValues returns an array of possible values for the IngressQoSLevel const type.
-func PossibleIngressQoSLevelValues() []IngressQoSLevel {
-	return []IngressQoSLevel{Bronze}
-}
-
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// KindAzureInternalMonitoringPipeline ...
-	KindAzureInternalMonitoringPipeline Kind = "AzureInternalMonitoringPipeline"
-	// KindDiagnosticsSinkProperties ...
-	KindDiagnosticsSinkProperties Kind = "DiagnosticsSinkProperties"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{KindAzureInternalMonitoringPipeline, KindDiagnosticsSinkProperties}
-}
-
-// OperatingSystemTypes enumerates the values for operating system types.
-type OperatingSystemTypes string
-
-const (
-	// Linux ...
-	Linux OperatingSystemTypes = "Linux"
-	// Windows ...
-	Windows OperatingSystemTypes = "Windows"
-)
-
-// PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
-func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
-	return []OperatingSystemTypes{Linux, Windows}
-}
-
-// ServiceResourceStatus enumerates the values for service resource status.
-type ServiceResourceStatus string
-
-const (
-	// ServiceResourceStatusActive ...
-	ServiceResourceStatusActive ServiceResourceStatus = "Active"
-	// ServiceResourceStatusCreating ...
-	ServiceResourceStatusCreating ServiceResourceStatus = "Creating"
-	// ServiceResourceStatusDeleting ...
-	ServiceResourceStatusDeleting ServiceResourceStatus = "Deleting"
-	// ServiceResourceStatusFailed ...
-	ServiceResourceStatusFailed ServiceResourceStatus = "Failed"
-	// ServiceResourceStatusUnknown ...
-	ServiceResourceStatusUnknown ServiceResourceStatus = "Unknown"
-	// ServiceResourceStatusUpgrading ...
-	ServiceResourceStatusUpgrading ServiceResourceStatus = "Upgrading"
-)
-
-// PossibleServiceResourceStatusValues returns an array of possible values for the ServiceResourceStatus const type.
-func PossibleServiceResourceStatusValues() []ServiceResourceStatus {
-	return []ServiceResourceStatus{ServiceResourceStatusActive, ServiceResourceStatusCreating, ServiceResourceStatusDeleting, ServiceResourceStatusFailed, ServiceResourceStatusUnknown, ServiceResourceStatusUpgrading}
-}
-
 // ApplicationProperties this type describes properties of an application resource.
 type ApplicationProperties struct {
 	// Description - User readable description of the application.
@@ -178,6 +50,24 @@ type ApplicationProperties struct {
 	ServiceNames *[]string `json:"serviceNames,omitempty"`
 	// Diagnostics - Describes the diagnostics definition and usage for an application resource.
 	Diagnostics *DiagnosticsDescription `json:"diagnostics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationProperties.
+func (ap ApplicationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.Description != nil {
+		objectMap["description"] = ap.Description
+	}
+	if ap.DebugParams != nil {
+		objectMap["debugParams"] = ap.DebugParams
+	}
+	if ap.Services != nil {
+		objectMap["services"] = ap.Services
+	}
+	if ap.Diagnostics != nil {
+		objectMap["diagnostics"] = ap.Diagnostics
+	}
+	return json.Marshal(objectMap)
 }
 
 // ApplicationResourceDescription this type describes an application resource.
@@ -359,10 +249,15 @@ func (ardl ApplicationResourceDescriptionList) IsEmpty() bool {
 	return ardl.Value == nil || len(*ardl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ardl ApplicationResourceDescriptionList) hasNextLink() bool {
+	return ardl.NextLink != nil && len(*ardl.NextLink) != 0
+}
+
 // applicationResourceDescriptionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ardl ApplicationResourceDescriptionList) applicationResourceDescriptionListPreparer(ctx context.Context) (*http.Request, error) {
-	if ardl.NextLink == nil || len(to.String(ardl.NextLink)) < 1 {
+	if !ardl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -390,11 +285,16 @@ func (page *ApplicationResourceDescriptionListPage) NextWithContext(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ardl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ardl)
+		if err != nil {
+			return err
+		}
+		page.ardl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ardl = next
 	return nil
 }
 
@@ -450,6 +350,24 @@ type ApplicationResourceProperties struct {
 	ServiceNames *[]string `json:"serviceNames,omitempty"`
 	// Diagnostics - Describes the diagnostics definition and usage for an application resource.
 	Diagnostics *DiagnosticsDescription `json:"diagnostics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationResourceProperties.
+func (arp ApplicationResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if arp.Description != nil {
+		objectMap["description"] = arp.Description
+	}
+	if arp.DebugParams != nil {
+		objectMap["debugParams"] = arp.DebugParams
+	}
+	if arp.Services != nil {
+		objectMap["services"] = arp.Services
+	}
+	if arp.Diagnostics != nil {
+		objectMap["diagnostics"] = arp.Diagnostics
+	}
+	return json.Marshal(objectMap)
 }
 
 // AvailableOperationDisplay an operation available at the listed Azure resource provider.
@@ -558,6 +476,48 @@ type ContainerCodePackageProperties struct {
 	InstanceView *ContainerInstanceView `json:"instanceView,omitempty"`
 	// Diagnostics - Reference to sinks in DiagnosticsDescription.
 	Diagnostics *DiagnosticsRef `json:"diagnostics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerCodePackageProperties.
+func (ccpp ContainerCodePackageProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ccpp.Name != nil {
+		objectMap["name"] = ccpp.Name
+	}
+	if ccpp.Image != nil {
+		objectMap["image"] = ccpp.Image
+	}
+	if ccpp.ImageRegistryCredential != nil {
+		objectMap["imageRegistryCredential"] = ccpp.ImageRegistryCredential
+	}
+	if ccpp.Entrypoint != nil {
+		objectMap["entrypoint"] = ccpp.Entrypoint
+	}
+	if ccpp.Commands != nil {
+		objectMap["commands"] = ccpp.Commands
+	}
+	if ccpp.EnvironmentVariables != nil {
+		objectMap["environmentVariables"] = ccpp.EnvironmentVariables
+	}
+	if ccpp.Settings != nil {
+		objectMap["settings"] = ccpp.Settings
+	}
+	if ccpp.Labels != nil {
+		objectMap["labels"] = ccpp.Labels
+	}
+	if ccpp.Endpoints != nil {
+		objectMap["endpoints"] = ccpp.Endpoints
+	}
+	if ccpp.Resources != nil {
+		objectMap["resources"] = ccpp.Resources
+	}
+	if ccpp.VolumeRefs != nil {
+		objectMap["volumeRefs"] = ccpp.VolumeRefs
+	}
+	if ccpp.Diagnostics != nil {
+		objectMap["diagnostics"] = ccpp.Diagnostics
+	}
+	return json.Marshal(objectMap)
 }
 
 // ContainerEvent a container event.
@@ -814,6 +774,18 @@ type IngressConfig struct {
 	PublicIPAddress *string `json:"publicIPAddress,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IngressConfig.
+func (ic IngressConfig) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ic.QosLevel != "" {
+		objectMap["qosLevel"] = ic.QosLevel
+	}
+	if ic.Layer4 != nil {
+		objectMap["layer4"] = ic.Layer4
+	}
+	return json.Marshal(objectMap)
+}
+
 // Layer4IngressConfig describes the layer4 configuration for public connectivity for this network.
 type Layer4IngressConfig struct {
 	// Name - Layer4 ingress config name.
@@ -828,9 +800,9 @@ type Layer4IngressConfig struct {
 	EndpointName *string `json:"endpointName,omitempty"`
 }
 
-// ManagedProxyResource the resource model definition for Azure Resource Manager proxy resource. It will
-// have everything other than required location and tags. This proxy resource is explicitly created or
-// updated by including it in the parent resource.
+// ManagedProxyResource the resource model definition for Azure Resource Manager proxy resource. It will have
+// everything other than required location and tags. This proxy resource is explicitly created or updated by
+// including it in the parent resource.
 type ManagedProxyResource struct {
 	// ID - READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -838,6 +810,15 @@ type ManagedProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedProxyResource.
+func (mpr ManagedProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mpr.Name != nil {
+		objectMap["name"] = mpr.Name
+	}
+	return json.Marshal(objectMap)
 }
 
 // NetworkProperties describes a network.
@@ -966,8 +947,8 @@ type NetworkResourceDescriptionList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// NetworkResourceDescriptionListIterator provides access to a complete listing of
-// NetworkResourceDescription values.
+// NetworkResourceDescriptionListIterator provides access to a complete listing of NetworkResourceDescription
+// values.
 type NetworkResourceDescriptionListIterator struct {
 	i    int
 	page NetworkResourceDescriptionListPage
@@ -1035,10 +1016,15 @@ func (nrdl NetworkResourceDescriptionList) IsEmpty() bool {
 	return nrdl.Value == nil || len(*nrdl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (nrdl NetworkResourceDescriptionList) hasNextLink() bool {
+	return nrdl.NextLink != nil && len(*nrdl.NextLink) != 0
+}
+
 // networkResourceDescriptionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (nrdl NetworkResourceDescriptionList) networkResourceDescriptionListPreparer(ctx context.Context) (*http.Request, error) {
-	if nrdl.NextLink == nil || len(to.String(nrdl.NextLink)) < 1 {
+	if !nrdl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1066,11 +1052,16 @@ func (page *NetworkResourceDescriptionListPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.nrdl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.nrdl)
+		if err != nil {
+			return err
+		}
+		page.nrdl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.nrdl = next
 	return nil
 }
 
@@ -1116,6 +1107,21 @@ type NetworkResourceProperties struct {
 	IngressConfig *IngressConfig `json:"ingressConfig,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NetworkResourceProperties.
+func (nrp NetworkResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nrp.Description != nil {
+		objectMap["description"] = nrp.Description
+	}
+	if nrp.AddressPrefix != nil {
+		objectMap["addressPrefix"] = nrp.AddressPrefix
+	}
+	if nrp.IngressConfig != nil {
+		objectMap["ingressConfig"] = nrp.IngressConfig
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult describes the result of the request to list Service Fabric operations.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
@@ -1123,6 +1129,15 @@ type OperationListResult struct {
 	Value *[]OperationResult `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if olr.Value != nil {
+		objectMap["value"] = olr.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of OperationResult values.
@@ -1193,10 +1208,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1224,11 +1244,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -1293,6 +1318,15 @@ type ProxyResource struct {
 	Location *string `json:"location,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pr.Location != nil {
+		objectMap["location"] = pr.Location
+	}
+	return json.Marshal(objectMap)
+}
+
 // Resource the resource model definition for Azure Resource Manager resource.
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1305,8 +1339,17 @@ type Resource struct {
 	Location *string `json:"location,omitempty"`
 }
 
-// ResourceLimits this type describes the resource limits for a given container. It describes the most
-// amount of resources a container is allowed to use before being restarted.
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
+	return json.Marshal(objectMap)
+}
+
+// ResourceLimits this type describes the resource limits for a given container. It describes the most amount
+// of resources a container is allowed to use before being restarted.
 type ResourceLimits struct {
 	// MemoryInGB - The memory limit in GB.
 	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
@@ -1314,10 +1357,9 @@ type ResourceLimits struct {
 	CPU *float64 `json:"cpu,omitempty"`
 }
 
-// ResourceRequests this type describes the requested resources for a given container. It describes the
-// least amount of resources required for the container. A container can consume more than requested
-// resources up to the specified limits before being restarted. Currently, the requested resources are
-// treated as limits.
+// ResourceRequests this type describes the requested resources for a given container. It describes the least
+// amount of resources required for the container. A container can consume more than requested resources up to
+// the specified limits before being restarted. Currently, the requested resources are treated as limits.
 type ResourceRequests struct {
 	// MemoryInGB - The memory request in GB for this container.
 	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
@@ -1410,10 +1452,15 @@ func (sl ServiceList) IsEmpty() bool {
 	return sl.Value == nil || len(*sl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sl ServiceList) hasNextLink() bool {
+	return sl.NextLink != nil && len(*sl.NextLink) != 0
+}
+
 // serviceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sl ServiceList) serviceListPreparer(ctx context.Context) (*http.Request, error) {
-	if sl.NextLink == nil || len(to.String(sl.NextLink)) < 1 {
+	if !sl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1441,11 +1488,16 @@ func (page *ServiceListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sl)
+		if err != nil {
+			return err
+		}
+		page.sl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sl = next
 	return nil
 }
 
@@ -1572,10 +1624,15 @@ func (srl ServiceReplicaList) IsEmpty() bool {
 	return srl.Value == nil || len(*srl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (srl ServiceReplicaList) hasNextLink() bool {
+	return srl.NextLink != nil && len(*srl.NextLink) != 0
+}
+
 // serviceReplicaListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (srl ServiceReplicaList) serviceReplicaListPreparer(ctx context.Context) (*http.Request, error) {
-	if srl.NextLink == nil || len(to.String(srl.NextLink)) < 1 {
+	if !srl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1603,11 +1660,16 @@ func (page *ServiceReplicaListPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.srl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.srl)
+		if err != nil {
+			return err
+		}
+		page.srl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.srl = next
 	return nil
 }
 
@@ -1749,6 +1811,33 @@ type ServiceResourceProperties struct {
 	NetworkRefs *[]NetworkRef `json:"networkRefs,omitempty"`
 	// Diagnostics - Reference to sinks in DiagnosticsDescription.
 	Diagnostics *DiagnosticsRef `json:"diagnostics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceResourceProperties.
+func (srp ServiceResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if srp.Description != nil {
+		objectMap["description"] = srp.Description
+	}
+	if srp.ReplicaCount != nil {
+		objectMap["replicaCount"] = srp.ReplicaCount
+	}
+	if srp.HealthState != "" {
+		objectMap["healthState"] = srp.HealthState
+	}
+	if srp.OsType != "" {
+		objectMap["osType"] = srp.OsType
+	}
+	if srp.CodePackages != nil {
+		objectMap["codePackages"] = srp.CodePackages
+	}
+	if srp.NetworkRefs != nil {
+		objectMap["networkRefs"] = srp.NetworkRefs
+	}
+	if srp.Diagnostics != nil {
+		objectMap["diagnostics"] = srp.Diagnostics
+	}
+	return json.Marshal(objectMap)
 }
 
 // Setting describes a setting for the container.
@@ -1984,10 +2073,15 @@ func (vrdl VolumeResourceDescriptionList) IsEmpty() bool {
 	return vrdl.Value == nil || len(*vrdl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (vrdl VolumeResourceDescriptionList) hasNextLink() bool {
+	return vrdl.NextLink != nil && len(*vrdl.NextLink) != 0
+}
+
 // volumeResourceDescriptionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (vrdl VolumeResourceDescriptionList) volumeResourceDescriptionListPreparer(ctx context.Context) (*http.Request, error) {
-	if vrdl.NextLink == nil || len(to.String(vrdl.NextLink)) < 1 {
+	if !vrdl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2015,11 +2109,16 @@ func (page *VolumeResourceDescriptionListPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.vrdl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.vrdl)
+		if err != nil {
+			return err
+		}
+		page.vrdl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.vrdl = next
 	return nil
 }
 
@@ -2063,4 +2162,19 @@ type VolumeResourceProperties struct {
 	Provider *string `json:"provider,omitempty"`
 	// AzureFileParameters - This type describes a volume provided by an Azure Files file share.
 	AzureFileParameters *VolumeProviderParametersAzureFile `json:"azureFileParameters,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VolumeResourceProperties.
+func (vrp VolumeResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vrp.Description != nil {
+		objectMap["description"] = vrp.Description
+	}
+	if vrp.Provider != nil {
+		objectMap["provider"] = vrp.Provider
+	}
+	if vrp.AzureFileParameters != nil {
+		objectMap["azureFileParameters"] = vrp.AzureFileParameters
+	}
+	return json.Marshal(objectMap)
 }

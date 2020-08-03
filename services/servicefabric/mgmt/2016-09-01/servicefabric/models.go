@@ -30,181 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2016-09-01/servicefabric"
 
-// ClusterState enumerates the values for cluster state.
-type ClusterState string
-
-const (
-	// AutoScale ...
-	AutoScale ClusterState = "AutoScale"
-	// BaselineUpgrade ...
-	BaselineUpgrade ClusterState = "BaselineUpgrade"
-	// Deploying ...
-	Deploying ClusterState = "Deploying"
-	// EnforcingClusterVersion ...
-	EnforcingClusterVersion ClusterState = "EnforcingClusterVersion"
-	// Ready ...
-	Ready ClusterState = "Ready"
-	// UpdatingInfrastructure ...
-	UpdatingInfrastructure ClusterState = "UpdatingInfrastructure"
-	// UpdatingUserCertificate ...
-	UpdatingUserCertificate ClusterState = "UpdatingUserCertificate"
-	// UpdatingUserConfiguration ...
-	UpdatingUserConfiguration ClusterState = "UpdatingUserConfiguration"
-	// UpgradeServiceUnreachable ...
-	UpgradeServiceUnreachable ClusterState = "UpgradeServiceUnreachable"
-	// WaitingForNodes ...
-	WaitingForNodes ClusterState = "WaitingForNodes"
-)
-
-// PossibleClusterStateValues returns an array of possible values for the ClusterState const type.
-func PossibleClusterStateValues() []ClusterState {
-	return []ClusterState{AutoScale, BaselineUpgrade, Deploying, EnforcingClusterVersion, Ready, UpdatingInfrastructure, UpdatingUserCertificate, UpdatingUserConfiguration, UpgradeServiceUnreachable, WaitingForNodes}
-}
-
-// DurabilityLevel enumerates the values for durability level.
-type DurabilityLevel string
-
-const (
-	// Bronze ...
-	Bronze DurabilityLevel = "Bronze"
-	// Gold ...
-	Gold DurabilityLevel = "Gold"
-	// Silver ...
-	Silver DurabilityLevel = "Silver"
-)
-
-// PossibleDurabilityLevelValues returns an array of possible values for the DurabilityLevel const type.
-func PossibleDurabilityLevelValues() []DurabilityLevel {
-	return []DurabilityLevel{Bronze, Gold, Silver}
-}
-
-// Environment enumerates the values for environment.
-type Environment string
-
-const (
-	// Linux ...
-	Linux Environment = "Linux"
-	// Windows ...
-	Windows Environment = "Windows"
-)
-
-// PossibleEnvironmentValues returns an array of possible values for the Environment const type.
-func PossibleEnvironmentValues() []Environment {
-	return []Environment{Linux, Windows}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Canceled, Failed, Succeeded, Updating}
-}
-
-// ReliabilityLevel enumerates the values for reliability level.
-type ReliabilityLevel string
-
-const (
-	// ReliabilityLevelBronze ...
-	ReliabilityLevelBronze ReliabilityLevel = "Bronze"
-	// ReliabilityLevelGold ...
-	ReliabilityLevelGold ReliabilityLevel = "Gold"
-	// ReliabilityLevelSilver ...
-	ReliabilityLevelSilver ReliabilityLevel = "Silver"
-)
-
-// PossibleReliabilityLevelValues returns an array of possible values for the ReliabilityLevel const type.
-func PossibleReliabilityLevelValues() []ReliabilityLevel {
-	return []ReliabilityLevel{ReliabilityLevelBronze, ReliabilityLevelGold, ReliabilityLevelSilver}
-}
-
-// ReliabilityLevel1 enumerates the values for reliability level 1.
-type ReliabilityLevel1 string
-
-const (
-	// ReliabilityLevel1Bronze ...
-	ReliabilityLevel1Bronze ReliabilityLevel1 = "Bronze"
-	// ReliabilityLevel1Gold ...
-	ReliabilityLevel1Gold ReliabilityLevel1 = "Gold"
-	// ReliabilityLevel1Platinum ...
-	ReliabilityLevel1Platinum ReliabilityLevel1 = "Platinum"
-	// ReliabilityLevel1Silver ...
-	ReliabilityLevel1Silver ReliabilityLevel1 = "Silver"
-)
-
-// PossibleReliabilityLevel1Values returns an array of possible values for the ReliabilityLevel1 const type.
-func PossibleReliabilityLevel1Values() []ReliabilityLevel1 {
-	return []ReliabilityLevel1{ReliabilityLevel1Bronze, ReliabilityLevel1Gold, ReliabilityLevel1Platinum, ReliabilityLevel1Silver}
-}
-
-// UpgradeMode enumerates the values for upgrade mode.
-type UpgradeMode string
-
-const (
-	// Automatic ...
-	Automatic UpgradeMode = "Automatic"
-	// Manual ...
-	Manual UpgradeMode = "Manual"
-)
-
-// PossibleUpgradeModeValues returns an array of possible values for the UpgradeMode const type.
-func PossibleUpgradeModeValues() []UpgradeMode {
-	return []UpgradeMode{Automatic, Manual}
-}
-
-// UpgradeMode1 enumerates the values for upgrade mode 1.
-type UpgradeMode1 string
-
-const (
-	// UpgradeMode1Automatic ...
-	UpgradeMode1Automatic UpgradeMode1 = "Automatic"
-	// UpgradeMode1Manual ...
-	UpgradeMode1Manual UpgradeMode1 = "Manual"
-)
-
-// PossibleUpgradeMode1Values returns an array of possible values for the UpgradeMode1 const type.
-func PossibleUpgradeMode1Values() []UpgradeMode1 {
-	return []UpgradeMode1{UpgradeMode1Automatic, UpgradeMode1Manual}
-}
-
-// X509StoreName enumerates the values for x509 store name.
-type X509StoreName string
-
-const (
-	// AddressBook ...
-	AddressBook X509StoreName = "AddressBook"
-	// AuthRoot ...
-	AuthRoot X509StoreName = "AuthRoot"
-	// CertificateAuthority ...
-	CertificateAuthority X509StoreName = "CertificateAuthority"
-	// Disallowed ...
-	Disallowed X509StoreName = "Disallowed"
-	// My ...
-	My X509StoreName = "My"
-	// Root ...
-	Root X509StoreName = "Root"
-	// TrustedPeople ...
-	TrustedPeople X509StoreName = "TrustedPeople"
-	// TrustedPublisher ...
-	TrustedPublisher X509StoreName = "TrustedPublisher"
-)
-
-// PossibleX509StoreNameValues returns an array of possible values for the X509StoreName const type.
-func PossibleX509StoreNameValues() []X509StoreName {
-	return []X509StoreName{AddressBook, AuthRoot, CertificateAuthority, Disallowed, My, Root, TrustedPeople, TrustedPublisher}
-}
-
 // AvailableOperationDisplay operation supported by ServiceFabric resource provider
 type AvailableOperationDisplay struct {
 	// Provider - Provider name
@@ -432,10 +257,15 @@ func (ccvlr ClusterCodeVersionsListResult) IsEmpty() bool {
 	return ccvlr.Value == nil || len(*ccvlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ccvlr ClusterCodeVersionsListResult) hasNextLink() bool {
+	return ccvlr.NextLink != nil && len(*ccvlr.NextLink) != 0
+}
+
 // clusterCodeVersionsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ccvlr ClusterCodeVersionsListResult) clusterCodeVersionsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ccvlr.NextLink == nil || len(to.String(ccvlr.NextLink)) < 1 {
+	if !ccvlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -463,11 +293,16 @@ func (page *ClusterCodeVersionsListResultPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ccvlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ccvlr)
+		if err != nil {
+			return err
+		}
+		page.ccvlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ccvlr = next
 	return nil
 }
 
@@ -582,8 +417,7 @@ func (ccvr *ClusterCodeVersionsResult) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster
-// node.
+// ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster node.
 type ClusterHealthPolicy struct {
 	// MaxPercentUnhealthyNodes - The maximum allowed percentage of unhealthy nodes before reporting an error. For example, to allow 10% of nodes to be unhealthy, this value would be 10.
 	MaxPercentUnhealthyNodes *int32 `json:"maxPercentUnhealthyNodes,omitempty"`
@@ -667,10 +501,15 @@ func (clr ClusterListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (clr ClusterListResult) hasNextLink() bool {
+	return clr.NextLink != nil && len(*clr.NextLink) != 0
+}
+
 // clusterListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (clr ClusterListResult) clusterListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if clr.NextLink == nil || len(to.String(clr.NextLink)) < 1 {
+	if !clr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -698,11 +537,16 @@ func (page *ClusterListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.clr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.clr)
+		if err != nil {
+			return err
+		}
+		page.clr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.clr = next
 	return nil
 }
 
@@ -778,6 +622,54 @@ type ClusterProperties struct {
 	UpgradeDescription *ClusterUpgradePolicy `json:"upgradeDescription,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ClusterProperties.
+func (cp ClusterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.ClusterCodeVersion != nil {
+		objectMap["clusterCodeVersion"] = cp.ClusterCodeVersion
+	}
+	if cp.Certificate != nil {
+		objectMap["certificate"] = cp.Certificate
+	}
+	if cp.ReliabilityLevel != "" {
+		objectMap["reliabilityLevel"] = cp.ReliabilityLevel
+	}
+	if cp.UpgradeMode != "" {
+		objectMap["upgradeMode"] = cp.UpgradeMode
+	}
+	if cp.ClientCertificateThumbprints != nil {
+		objectMap["clientCertificateThumbprints"] = cp.ClientCertificateThumbprints
+	}
+	if cp.ClientCertificateCommonNames != nil {
+		objectMap["clientCertificateCommonNames"] = cp.ClientCertificateCommonNames
+	}
+	if cp.FabricSettings != nil {
+		objectMap["fabricSettings"] = cp.FabricSettings
+	}
+	if cp.ReverseProxyCertificate != nil {
+		objectMap["reverseProxyCertificate"] = cp.ReverseProxyCertificate
+	}
+	if cp.ManagementEndpoint != nil {
+		objectMap["managementEndpoint"] = cp.ManagementEndpoint
+	}
+	if cp.NodeTypes != nil {
+		objectMap["nodeTypes"] = cp.NodeTypes
+	}
+	if cp.AzureActiveDirectory != nil {
+		objectMap["azureActiveDirectory"] = cp.AzureActiveDirectory
+	}
+	if cp.VMImage != nil {
+		objectMap["vmImage"] = cp.VMImage
+	}
+	if cp.DiagnosticsStorageAccountConfig != nil {
+		objectMap["diagnosticsStorageAccountConfig"] = cp.DiagnosticsStorageAccountConfig
+	}
+	if cp.UpgradeDescription != nil {
+		objectMap["upgradeDescription"] = cp.UpgradeDescription
+	}
+	return json.Marshal(objectMap)
+}
+
 // ClusterPropertiesUpdateParameters the cluster resource properties can be updated
 type ClusterPropertiesUpdateParameters struct {
 	// ReliabilityLevel - This level is used to set the number of replicas of the system services. Possible values include: 'ReliabilityLevelBronze', 'ReliabilityLevelSilver', 'ReliabilityLevelGold'
@@ -802,8 +694,7 @@ type ClusterPropertiesUpdateParameters struct {
 	UpgradeDescription *ClusterUpgradePolicy `json:"upgradeDescription,omitempty"`
 }
 
-// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ClustersCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ClustersCreateFuture struct {
 	azure.Future
 }
@@ -831,8 +722,7 @@ func (future *ClustersCreateFuture) Result(client ClustersClient) (c Cluster, er
 	return
 }
 
-// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ClustersUpdateFuture struct {
 	azure.Future
 }
@@ -992,8 +882,8 @@ type ErrorModelError struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// NodeTypeDescription describes a node type in the cluster, each node type represents sub set of nodes in
-// the cluster
+// NodeTypeDescription describes a node type in the cluster, each node type represents sub set of nodes in the
+// cluster
 type NodeTypeDescription struct {
 	// Name - Name of the node type
 	Name *string `json:"name,omitempty"`
@@ -1058,8 +948,8 @@ func (ntd NodeTypeDescription) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationListResult result of the request to list ServiceFabric operations. It contains a list of
-// operations and a URL link to get the next set of results.
+// OperationListResult result of the request to list ServiceFabric operations. It contains a list of operations
+// and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of ServiceFabric operations supported by the Microsoft.ServiceFabric resource provider.
@@ -1136,10 +1026,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1167,11 +1062,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 

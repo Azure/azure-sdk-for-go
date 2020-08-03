@@ -320,6 +320,9 @@ func (client BandwidthSchedulesClient) ListByDataBoxEdgeDevice(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.BandwidthSchedulesClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
 	}
+	if result.bsl.hasNextLink() && result.bsl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

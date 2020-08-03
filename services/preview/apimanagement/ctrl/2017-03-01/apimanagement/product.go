@@ -357,6 +357,9 @@ func (client ProductClient) List(ctx context.Context, apimBaseURL string, filter
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductClient", "List", resp, "Failure responding to request")
 	}
+	if result.pc.hasNextLink() && result.pc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

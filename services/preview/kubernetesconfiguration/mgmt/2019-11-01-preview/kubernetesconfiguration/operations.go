@@ -72,6 +72,9 @@ func (client OperationsClient) List(ctx context.Context) (result ResourceProvide
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kubernetesconfiguration.OperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.rpol.hasNextLink() && result.rpol.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -297,6 +297,9 @@ func (client DefinitionsClient) List(ctx context.Context) (result DefinitionList
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.DefinitionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.dl.hasNextLink() && result.dl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

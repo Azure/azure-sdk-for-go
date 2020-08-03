@@ -31,550 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2017-11-15-preview/datamigration"
 
-// AuthenticationType enumerates the values for authentication type.
-type AuthenticationType string
-
-const (
-	// ActiveDirectoryIntegrated ...
-	ActiveDirectoryIntegrated AuthenticationType = "ActiveDirectoryIntegrated"
-	// ActiveDirectoryPassword ...
-	ActiveDirectoryPassword AuthenticationType = "ActiveDirectoryPassword"
-	// None ...
-	None AuthenticationType = "None"
-	// SQLAuthentication ...
-	SQLAuthentication AuthenticationType = "SqlAuthentication"
-	// WindowsAuthentication ...
-	WindowsAuthentication AuthenticationType = "WindowsAuthentication"
-)
-
-// PossibleAuthenticationTypeValues returns an array of possible values for the AuthenticationType const type.
-func PossibleAuthenticationTypeValues() []AuthenticationType {
-	return []AuthenticationType{ActiveDirectoryIntegrated, ActiveDirectoryPassword, None, SQLAuthentication, WindowsAuthentication}
-}
-
-// DatabaseCompatLevel enumerates the values for database compat level.
-type DatabaseCompatLevel string
-
-const (
-	// CompatLevel100 ...
-	CompatLevel100 DatabaseCompatLevel = "CompatLevel100"
-	// CompatLevel110 ...
-	CompatLevel110 DatabaseCompatLevel = "CompatLevel110"
-	// CompatLevel120 ...
-	CompatLevel120 DatabaseCompatLevel = "CompatLevel120"
-	// CompatLevel130 ...
-	CompatLevel130 DatabaseCompatLevel = "CompatLevel130"
-	// CompatLevel140 ...
-	CompatLevel140 DatabaseCompatLevel = "CompatLevel140"
-	// CompatLevel80 ...
-	CompatLevel80 DatabaseCompatLevel = "CompatLevel80"
-	// CompatLevel90 ...
-	CompatLevel90 DatabaseCompatLevel = "CompatLevel90"
-)
-
-// PossibleDatabaseCompatLevelValues returns an array of possible values for the DatabaseCompatLevel const type.
-func PossibleDatabaseCompatLevelValues() []DatabaseCompatLevel {
-	return []DatabaseCompatLevel{CompatLevel100, CompatLevel110, CompatLevel120, CompatLevel130, CompatLevel140, CompatLevel80, CompatLevel90}
-}
-
-// DatabaseFileType enumerates the values for database file type.
-type DatabaseFileType string
-
-const (
-	// Filestream ...
-	Filestream DatabaseFileType = "Filestream"
-	// Fulltext ...
-	Fulltext DatabaseFileType = "Fulltext"
-	// Log ...
-	Log DatabaseFileType = "Log"
-	// NotSupported ...
-	NotSupported DatabaseFileType = "NotSupported"
-	// Rows ...
-	Rows DatabaseFileType = "Rows"
-)
-
-// PossibleDatabaseFileTypeValues returns an array of possible values for the DatabaseFileType const type.
-func PossibleDatabaseFileTypeValues() []DatabaseFileType {
-	return []DatabaseFileType{Filestream, Fulltext, Log, NotSupported, Rows}
-}
-
-// DatabaseMigrationStage enumerates the values for database migration stage.
-type DatabaseMigrationStage string
-
-const (
-	// DatabaseMigrationStageBackup ...
-	DatabaseMigrationStageBackup DatabaseMigrationStage = "Backup"
-	// DatabaseMigrationStageCompleted ...
-	DatabaseMigrationStageCompleted DatabaseMigrationStage = "Completed"
-	// DatabaseMigrationStageFileCopy ...
-	DatabaseMigrationStageFileCopy DatabaseMigrationStage = "FileCopy"
-	// DatabaseMigrationStageInitialize ...
-	DatabaseMigrationStageInitialize DatabaseMigrationStage = "Initialize"
-	// DatabaseMigrationStageNone ...
-	DatabaseMigrationStageNone DatabaseMigrationStage = "None"
-	// DatabaseMigrationStageRestore ...
-	DatabaseMigrationStageRestore DatabaseMigrationStage = "Restore"
-)
-
-// PossibleDatabaseMigrationStageValues returns an array of possible values for the DatabaseMigrationStage const type.
-func PossibleDatabaseMigrationStageValues() []DatabaseMigrationStage {
-	return []DatabaseMigrationStage{DatabaseMigrationStageBackup, DatabaseMigrationStageCompleted, DatabaseMigrationStageFileCopy, DatabaseMigrationStageInitialize, DatabaseMigrationStageNone, DatabaseMigrationStageRestore}
-}
-
-// DatabaseState enumerates the values for database state.
-type DatabaseState string
-
-const (
-	// Copying ...
-	Copying DatabaseState = "Copying"
-	// Emergency ...
-	Emergency DatabaseState = "Emergency"
-	// Offline ...
-	Offline DatabaseState = "Offline"
-	// OfflineSecondary ...
-	OfflineSecondary DatabaseState = "OfflineSecondary"
-	// Online ...
-	Online DatabaseState = "Online"
-	// Recovering ...
-	Recovering DatabaseState = "Recovering"
-	// RecoveryPending ...
-	RecoveryPending DatabaseState = "RecoveryPending"
-	// Restoring ...
-	Restoring DatabaseState = "Restoring"
-	// Suspect ...
-	Suspect DatabaseState = "Suspect"
-)
-
-// PossibleDatabaseStateValues returns an array of possible values for the DatabaseState const type.
-func PossibleDatabaseStateValues() []DatabaseState {
-	return []DatabaseState{Copying, Emergency, Offline, OfflineSecondary, Online, Recovering, RecoveryPending, Restoring, Suspect}
-}
-
-// ErrorType enumerates the values for error type.
-type ErrorType string
-
-const (
-	// ErrorTypeDefault ...
-	ErrorTypeDefault ErrorType = "Default"
-	// ErrorTypeError ...
-	ErrorTypeError ErrorType = "Error"
-	// ErrorTypeWarning ...
-	ErrorTypeWarning ErrorType = "Warning"
-)
-
-// PossibleErrorTypeValues returns an array of possible values for the ErrorType const type.
-func PossibleErrorTypeValues() []ErrorType {
-	return []ErrorType{ErrorTypeDefault, ErrorTypeError, ErrorTypeWarning}
-}
-
-// MigrationState enumerates the values for migration state.
-type MigrationState string
-
-const (
-	// MigrationStateCompleted ...
-	MigrationStateCompleted MigrationState = "Completed"
-	// MigrationStateFailed ...
-	MigrationStateFailed MigrationState = "Failed"
-	// MigrationStateInProgress ...
-	MigrationStateInProgress MigrationState = "InProgress"
-	// MigrationStateNone ...
-	MigrationStateNone MigrationState = "None"
-	// MigrationStateSkipped ...
-	MigrationStateSkipped MigrationState = "Skipped"
-	// MigrationStateStopped ...
-	MigrationStateStopped MigrationState = "Stopped"
-	// MigrationStateWarning ...
-	MigrationStateWarning MigrationState = "Warning"
-)
-
-// PossibleMigrationStateValues returns an array of possible values for the MigrationState const type.
-func PossibleMigrationStateValues() []MigrationState {
-	return []MigrationState{MigrationStateCompleted, MigrationStateFailed, MigrationStateInProgress, MigrationStateNone, MigrationStateSkipped, MigrationStateStopped, MigrationStateWarning}
-}
-
-// MigrationStatus enumerates the values for migration status.
-type MigrationStatus string
-
-const (
-	// MigrationStatusCompleted ...
-	MigrationStatusCompleted MigrationStatus = "Completed"
-	// MigrationStatusCompletedWithWarnings ...
-	MigrationStatusCompletedWithWarnings MigrationStatus = "CompletedWithWarnings"
-	// MigrationStatusConfigured ...
-	MigrationStatusConfigured MigrationStatus = "Configured"
-	// MigrationStatusConnecting ...
-	MigrationStatusConnecting MigrationStatus = "Connecting"
-	// MigrationStatusDefault ...
-	MigrationStatusDefault MigrationStatus = "Default"
-	// MigrationStatusError ...
-	MigrationStatusError MigrationStatus = "Error"
-	// MigrationStatusRunning ...
-	MigrationStatusRunning MigrationStatus = "Running"
-	// MigrationStatusSelectLogins ...
-	MigrationStatusSelectLogins MigrationStatus = "SelectLogins"
-	// MigrationStatusSourceAndTargetSelected ...
-	MigrationStatusSourceAndTargetSelected MigrationStatus = "SourceAndTargetSelected"
-	// MigrationStatusStopped ...
-	MigrationStatusStopped MigrationStatus = "Stopped"
-)
-
-// PossibleMigrationStatusValues returns an array of possible values for the MigrationStatus const type.
-func PossibleMigrationStatusValues() []MigrationStatus {
-	return []MigrationStatus{MigrationStatusCompleted, MigrationStatusCompletedWithWarnings, MigrationStatusConfigured, MigrationStatusConnecting, MigrationStatusDefault, MigrationStatusError, MigrationStatusRunning, MigrationStatusSelectLogins, MigrationStatusSourceAndTargetSelected, MigrationStatusStopped}
-}
-
-// NameCheckFailureReason enumerates the values for name check failure reason.
-type NameCheckFailureReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists NameCheckFailureReason = "AlreadyExists"
-	// Invalid ...
-	Invalid NameCheckFailureReason = "Invalid"
-)
-
-// PossibleNameCheckFailureReasonValues returns an array of possible values for the NameCheckFailureReason const type.
-func PossibleNameCheckFailureReasonValues() []NameCheckFailureReason {
-	return []NameCheckFailureReason{AlreadyExists, Invalid}
-}
-
-// ObjectType enumerates the values for object type.
-type ObjectType string
-
-const (
-	// Function ...
-	Function ObjectType = "Function"
-	// StoredProcedures ...
-	StoredProcedures ObjectType = "StoredProcedures"
-	// Table ...
-	Table ObjectType = "Table"
-	// User ...
-	User ObjectType = "User"
-	// View ...
-	View ObjectType = "View"
-)
-
-// PossibleObjectTypeValues returns an array of possible values for the ObjectType const type.
-func PossibleObjectTypeValues() []ObjectType {
-	return []ObjectType{Function, StoredProcedures, Table, User, View}
-}
-
-// ProjectProvisioningState enumerates the values for project provisioning state.
-type ProjectProvisioningState string
-
-const (
-	// Deleting ...
-	Deleting ProjectProvisioningState = "Deleting"
-	// Succeeded ...
-	Succeeded ProjectProvisioningState = "Succeeded"
-)
-
-// PossibleProjectProvisioningStateValues returns an array of possible values for the ProjectProvisioningState const type.
-func PossibleProjectProvisioningStateValues() []ProjectProvisioningState {
-	return []ProjectProvisioningState{Deleting, Succeeded}
-}
-
-// ProjectSourcePlatform enumerates the values for project source platform.
-type ProjectSourcePlatform string
-
-const (
-	// SQL ...
-	SQL ProjectSourcePlatform = "SQL"
-	// Unknown ...
-	Unknown ProjectSourcePlatform = "Unknown"
-)
-
-// PossibleProjectSourcePlatformValues returns an array of possible values for the ProjectSourcePlatform const type.
-func PossibleProjectSourcePlatformValues() []ProjectSourcePlatform {
-	return []ProjectSourcePlatform{SQL, Unknown}
-}
-
-// ProjectTargetPlatform enumerates the values for project target platform.
-type ProjectTargetPlatform string
-
-const (
-	// ProjectTargetPlatformSQLDB ...
-	ProjectTargetPlatformSQLDB ProjectTargetPlatform = "SQLDB"
-	// ProjectTargetPlatformUnknown ...
-	ProjectTargetPlatformUnknown ProjectTargetPlatform = "Unknown"
-)
-
-// PossibleProjectTargetPlatformValues returns an array of possible values for the ProjectTargetPlatform const type.
-func PossibleProjectTargetPlatformValues() []ProjectTargetPlatform {
-	return []ProjectTargetPlatform{ProjectTargetPlatformSQLDB, ProjectTargetPlatformUnknown}
-}
-
-// ResourceSkuCapacityScaleType enumerates the values for resource sku capacity scale type.
-type ResourceSkuCapacityScaleType string
-
-const (
-	// ResourceSkuCapacityScaleTypeAutomatic ...
-	ResourceSkuCapacityScaleTypeAutomatic ResourceSkuCapacityScaleType = "Automatic"
-	// ResourceSkuCapacityScaleTypeManual ...
-	ResourceSkuCapacityScaleTypeManual ResourceSkuCapacityScaleType = "Manual"
-	// ResourceSkuCapacityScaleTypeNone ...
-	ResourceSkuCapacityScaleTypeNone ResourceSkuCapacityScaleType = "None"
-)
-
-// PossibleResourceSkuCapacityScaleTypeValues returns an array of possible values for the ResourceSkuCapacityScaleType const type.
-func PossibleResourceSkuCapacityScaleTypeValues() []ResourceSkuCapacityScaleType {
-	return []ResourceSkuCapacityScaleType{ResourceSkuCapacityScaleTypeAutomatic, ResourceSkuCapacityScaleTypeManual, ResourceSkuCapacityScaleTypeNone}
-}
-
-// ResourceSkuRestrictionsReasonCode enumerates the values for resource sku restrictions reason code.
-type ResourceSkuRestrictionsReasonCode string
-
-const (
-	// NotAvailableForSubscription ...
-	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = "NotAvailableForSubscription"
-	// QuotaID ...
-	QuotaID ResourceSkuRestrictionsReasonCode = "QuotaId"
-)
-
-// PossibleResourceSkuRestrictionsReasonCodeValues returns an array of possible values for the ResourceSkuRestrictionsReasonCode const type.
-func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
-	return []ResourceSkuRestrictionsReasonCode{NotAvailableForSubscription, QuotaID}
-}
-
-// ResourceSkuRestrictionsType enumerates the values for resource sku restrictions type.
-type ResourceSkuRestrictionsType string
-
-const (
-	// Location ...
-	Location ResourceSkuRestrictionsType = "location"
-)
-
-// PossibleResourceSkuRestrictionsTypeValues returns an array of possible values for the ResourceSkuRestrictionsType const type.
-func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
-	return []ResourceSkuRestrictionsType{Location}
-}
-
-// ResultType enumerates the values for result type.
-type ResultType string
-
-const (
-	// ResultTypeDatabaseLevelOutput ...
-	ResultTypeDatabaseLevelOutput ResultType = "DatabaseLevelOutput"
-	// ResultTypeErrorOutput ...
-	ResultTypeErrorOutput ResultType = "ErrorOutput"
-	// ResultTypeMigrateSQLServerSQLDbTaskOutput ...
-	ResultTypeMigrateSQLServerSQLDbTaskOutput ResultType = "MigrateSqlServerSqlDbTaskOutput"
-	// ResultTypeMigrationLevelOutput ...
-	ResultTypeMigrationLevelOutput ResultType = "MigrationLevelOutput"
-	// ResultTypeTableLevelOutput ...
-	ResultTypeTableLevelOutput ResultType = "TableLevelOutput"
-)
-
-// PossibleResultTypeValues returns an array of possible values for the ResultType const type.
-func PossibleResultTypeValues() []ResultType {
-	return []ResultType{ResultTypeDatabaseLevelOutput, ResultTypeErrorOutput, ResultTypeMigrateSQLServerSQLDbTaskOutput, ResultTypeMigrationLevelOutput, ResultTypeTableLevelOutput}
-}
-
-// ResultTypeBasicConnectToSourceSQLServerTaskOutput enumerates the values for result type basic connect to
-// source sql server task output.
-type ResultTypeBasicConnectToSourceSQLServerTaskOutput string
-
-const (
-	// ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput ...
-	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "ConnectToSourceSqlServerTaskOutput"
-	// ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput ...
-	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "DatabaseLevelOutput"
-	// ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput ...
-	ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput ResultTypeBasicConnectToSourceSQLServerTaskOutput = "TaskLevelOutput"
-)
-
-// PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues returns an array of possible values for the ResultTypeBasicConnectToSourceSQLServerTaskOutput const type.
-func PossibleResultTypeBasicConnectToSourceSQLServerTaskOutputValues() []ResultTypeBasicConnectToSourceSQLServerTaskOutput {
-	return []ResultTypeBasicConnectToSourceSQLServerTaskOutput{ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeConnectToSourceSQLServerTaskOutput, ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeDatabaseLevelOutput, ResultTypeBasicConnectToSourceSQLServerTaskOutputResultTypeTaskLevelOutput}
-}
-
-// ServerLevelPermissionsGroup enumerates the values for server level permissions group.
-type ServerLevelPermissionsGroup string
-
-const (
-	// Default ...
-	Default ServerLevelPermissionsGroup = "Default"
-	// MigrationFromSQLServerToAzureDB ...
-	MigrationFromSQLServerToAzureDB ServerLevelPermissionsGroup = "MigrationFromSqlServerToAzureDB"
-)
-
-// PossibleServerLevelPermissionsGroupValues returns an array of possible values for the ServerLevelPermissionsGroup const type.
-func PossibleServerLevelPermissionsGroupValues() []ServerLevelPermissionsGroup {
-	return []ServerLevelPermissionsGroup{Default, MigrationFromSQLServerToAzureDB}
-}
-
-// ServiceProvisioningState enumerates the values for service provisioning state.
-type ServiceProvisioningState string
-
-const (
-	// ServiceProvisioningStateAccepted ...
-	ServiceProvisioningStateAccepted ServiceProvisioningState = "Accepted"
-	// ServiceProvisioningStateDeleting ...
-	ServiceProvisioningStateDeleting ServiceProvisioningState = "Deleting"
-	// ServiceProvisioningStateDeploying ...
-	ServiceProvisioningStateDeploying ServiceProvisioningState = "Deploying"
-	// ServiceProvisioningStateFailed ...
-	ServiceProvisioningStateFailed ServiceProvisioningState = "Failed"
-	// ServiceProvisioningStateFailedToStart ...
-	ServiceProvisioningStateFailedToStart ServiceProvisioningState = "FailedToStart"
-	// ServiceProvisioningStateFailedToStop ...
-	ServiceProvisioningStateFailedToStop ServiceProvisioningState = "FailedToStop"
-	// ServiceProvisioningStateStarting ...
-	ServiceProvisioningStateStarting ServiceProvisioningState = "Starting"
-	// ServiceProvisioningStateStopped ...
-	ServiceProvisioningStateStopped ServiceProvisioningState = "Stopped"
-	// ServiceProvisioningStateStopping ...
-	ServiceProvisioningStateStopping ServiceProvisioningState = "Stopping"
-	// ServiceProvisioningStateSucceeded ...
-	ServiceProvisioningStateSucceeded ServiceProvisioningState = "Succeeded"
-)
-
-// PossibleServiceProvisioningStateValues returns an array of possible values for the ServiceProvisioningState const type.
-func PossibleServiceProvisioningStateValues() []ServiceProvisioningState {
-	return []ServiceProvisioningState{ServiceProvisioningStateAccepted, ServiceProvisioningStateDeleting, ServiceProvisioningStateDeploying, ServiceProvisioningStateFailed, ServiceProvisioningStateFailedToStart, ServiceProvisioningStateFailedToStop, ServiceProvisioningStateStarting, ServiceProvisioningStateStopped, ServiceProvisioningStateStopping, ServiceProvisioningStateSucceeded}
-}
-
-// ServiceScalability enumerates the values for service scalability.
-type ServiceScalability string
-
-const (
-	// ServiceScalabilityAutomatic ...
-	ServiceScalabilityAutomatic ServiceScalability = "automatic"
-	// ServiceScalabilityManual ...
-	ServiceScalabilityManual ServiceScalability = "manual"
-	// ServiceScalabilityNone ...
-	ServiceScalabilityNone ServiceScalability = "none"
-)
-
-// PossibleServiceScalabilityValues returns an array of possible values for the ServiceScalability const type.
-func PossibleServiceScalabilityValues() []ServiceScalability {
-	return []ServiceScalability{ServiceScalabilityAutomatic, ServiceScalabilityManual, ServiceScalabilityNone}
-}
-
-// Severity enumerates the values for severity.
-type Severity string
-
-const (
-	// SeverityError ...
-	SeverityError Severity = "Error"
-	// SeverityMessage ...
-	SeverityMessage Severity = "Message"
-	// SeverityWarning ...
-	SeverityWarning Severity = "Warning"
-)
-
-// PossibleSeverityValues returns an array of possible values for the Severity const type.
-func PossibleSeverityValues() []Severity {
-	return []Severity{SeverityError, SeverityMessage, SeverityWarning}
-}
-
-// TaskState enumerates the values for task state.
-type TaskState string
-
-const (
-	// TaskStateCanceled ...
-	TaskStateCanceled TaskState = "Canceled"
-	// TaskStateFailed ...
-	TaskStateFailed TaskState = "Failed"
-	// TaskStateFailedInputValidation ...
-	TaskStateFailedInputValidation TaskState = "FailedInputValidation"
-	// TaskStateFaulted ...
-	TaskStateFaulted TaskState = "Faulted"
-	// TaskStateQueued ...
-	TaskStateQueued TaskState = "Queued"
-	// TaskStateRunning ...
-	TaskStateRunning TaskState = "Running"
-	// TaskStateSucceeded ...
-	TaskStateSucceeded TaskState = "Succeeded"
-	// TaskStateUnknown ...
-	TaskStateUnknown TaskState = "Unknown"
-)
-
-// PossibleTaskStateValues returns an array of possible values for the TaskState const type.
-func PossibleTaskStateValues() []TaskState {
-	return []TaskState{TaskStateCanceled, TaskStateFailed, TaskStateFailedInputValidation, TaskStateFaulted, TaskStateQueued, TaskStateRunning, TaskStateSucceeded, TaskStateUnknown}
-}
-
-// TaskType enumerates the values for task type.
-type TaskType string
-
-const (
-	// TaskTypeConnectToSourceSQLServer ...
-	TaskTypeConnectToSourceSQLServer TaskType = "ConnectToSource.SqlServer"
-	// TaskTypeConnectToTargetSQLDb ...
-	TaskTypeConnectToTargetSQLDb TaskType = "ConnectToTarget.SqlDb"
-	// TaskTypeGetUserTablesSQL ...
-	TaskTypeGetUserTablesSQL TaskType = "GetUserTables.Sql"
-	// TaskTypeMigrateSQLServerSQLDb ...
-	TaskTypeMigrateSQLServerSQLDb TaskType = "Migrate.SqlServer.SqlDb"
-	// TaskTypeProjectTaskProperties ...
-	TaskTypeProjectTaskProperties TaskType = "ProjectTaskProperties"
-)
-
-// PossibleTaskTypeValues returns an array of possible values for the TaskType const type.
-func PossibleTaskTypeValues() []TaskType {
-	return []TaskType{TaskTypeConnectToSourceSQLServer, TaskTypeConnectToTargetSQLDb, TaskTypeGetUserTablesSQL, TaskTypeMigrateSQLServerSQLDb, TaskTypeProjectTaskProperties}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeConnectionInfo ...
-	TypeConnectionInfo Type = "ConnectionInfo"
-	// TypeSQLConnectionInfo ...
-	TypeSQLConnectionInfo Type = "SqlConnectionInfo"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeConnectionInfo, TypeSQLConnectionInfo}
-}
-
-// UpdateActionType enumerates the values for update action type.
-type UpdateActionType string
-
-const (
-	// AddedOnTarget ...
-	AddedOnTarget UpdateActionType = "AddedOnTarget"
-	// ChangedOnTarget ...
-	ChangedOnTarget UpdateActionType = "ChangedOnTarget"
-	// DeletedOnTarget ...
-	DeletedOnTarget UpdateActionType = "DeletedOnTarget"
-)
-
-// PossibleUpdateActionTypeValues returns an array of possible values for the UpdateActionType const type.
-func PossibleUpdateActionTypeValues() []UpdateActionType {
-	return []UpdateActionType{AddedOnTarget, ChangedOnTarget, DeletedOnTarget}
-}
-
-// ValidationStatus enumerates the values for validation status.
-type ValidationStatus string
-
-const (
-	// ValidationStatusCompleted ...
-	ValidationStatusCompleted ValidationStatus = "Completed"
-	// ValidationStatusCompletedWithIssues ...
-	ValidationStatusCompletedWithIssues ValidationStatus = "CompletedWithIssues"
-	// ValidationStatusDefault ...
-	ValidationStatusDefault ValidationStatus = "Default"
-	// ValidationStatusFailed ...
-	ValidationStatusFailed ValidationStatus = "Failed"
-	// ValidationStatusInitialized ...
-	ValidationStatusInitialized ValidationStatus = "Initialized"
-	// ValidationStatusInProgress ...
-	ValidationStatusInProgress ValidationStatus = "InProgress"
-	// ValidationStatusNotStarted ...
-	ValidationStatusNotStarted ValidationStatus = "NotStarted"
-	// ValidationStatusStopped ...
-	ValidationStatusStopped ValidationStatus = "Stopped"
-)
-
-// PossibleValidationStatusValues returns an array of possible values for the ValidationStatus const type.
-func PossibleValidationStatusValues() []ValidationStatus {
-	return []ValidationStatus{ValidationStatusCompleted, ValidationStatusCompletedWithIssues, ValidationStatusDefault, ValidationStatusFailed, ValidationStatusInitialized, ValidationStatusInProgress, ValidationStatusNotStarted, ValidationStatusStopped}
-}
-
 // APIError error information.
 type APIError struct {
 	// Error - Error information in OData format
@@ -796,8 +252,8 @@ func (ctsssto ConnectToSourceSQLServerTaskOutput) AsBasicConnectToSourceSQLServe
 	return &ctsssto, true
 }
 
-// ConnectToSourceSQLServerTaskOutputDatabaseLevel database level output for the task that validates
-// connection to SQL Server and also validates source server requirements
+// ConnectToSourceSQLServerTaskOutputDatabaseLevel database level output for the task that validates connection
+// to SQL Server and also validates source server requirements
 type ConnectToSourceSQLServerTaskOutputDatabaseLevel struct {
 	// Name - READ-ONLY; Database name
 	Name *string `json:"name,omitempty"`
@@ -845,8 +301,8 @@ func (ctssstodl ConnectToSourceSQLServerTaskOutputDatabaseLevel) AsBasicConnectT
 	return &ctssstodl, true
 }
 
-// ConnectToSourceSQLServerTaskOutputTaskLevel task level output for the task that validates connection to
-// SQL Server and also validates source server requirements
+// ConnectToSourceSQLServerTaskOutputTaskLevel task level output for the task that validates connection to SQL
+// Server and also validates source server requirements
 type ConnectToSourceSQLServerTaskOutputTaskLevel struct {
 	// Databases - READ-ONLY; Source databases as a map from database name to database id
 	Databases map[string]*string `json:"databases"`
@@ -892,8 +348,8 @@ func (ctssstotl ConnectToSourceSQLServerTaskOutputTaskLevel) AsBasicConnectToSou
 	return &ctssstotl, true
 }
 
-// ConnectToSourceSQLServerTaskProperties properties for the task that validates connection to SQL Server
-// and also validates source server requirements
+// ConnectToSourceSQLServerTaskProperties properties for the task that validates connection to SQL Server and
+// also validates source server requirements
 type ConnectToSourceSQLServerTaskProperties struct {
 	// Input - Task input
 	Input *ConnectToSourceSQLServerTaskInput `json:"input,omitempty"`
@@ -1035,8 +491,8 @@ func (cttsdto ConnectToTargetSQLDbTaskOutput) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ConnectToTargetSQLDbTaskProperties properties for the task that validates connection to SQL DB and
-// target server requirements
+// ConnectToTargetSQLDbTaskProperties properties for the task that validates connection to SQL DB and target
+// server requirements
 type ConnectToTargetSQLDbTaskProperties struct {
 	// Input - Task input
 	Input *ConnectToTargetSQLDbTaskInput `json:"input,omitempty"`
@@ -1181,6 +637,15 @@ type DatabaseObjectName struct {
 	ObjectType ObjectType `json:"objectType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DatabaseObjectName.
+func (don DatabaseObjectName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if don.ObjectType != "" {
+		objectMap["objectType"] = don.ObjectType
+	}
+	return json.Marshal(objectMap)
+}
+
 // DatabaseSummaryResult summary of database results in the migration
 type DatabaseSummaryResult struct {
 	// SizeMB - READ-ONLY; Size of the database in megabytes
@@ -1261,6 +726,15 @@ type Error struct {
 	Message *string `json:"message,omitempty"`
 	// Type - Possible values include: 'ErrorTypeDefault', 'ErrorTypeWarning', 'ErrorTypeError'
 	Type ErrorType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if e.Type != "" {
+		objectMap["type"] = e.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // ExecutionStatistics description about the errors happen while performing migration validation
@@ -1416,8 +890,8 @@ func (msssddi MigrateSQLServerSQLDbDatabaseInput) MarshalJSON() ([]byte, error) 
 	return json.Marshal(objectMap)
 }
 
-// MigrateSQLServerSQLDbTaskInput input for the task that migrates on-prem SQL Server databases to Azure
-// SQL Database
+// MigrateSQLServerSQLDbTaskInput input for the task that migrates on-prem SQL Server databases to Azure SQL
+// Database
 type MigrateSQLServerSQLDbTaskInput struct {
 	// SelectedDatabases - Databases to migrate
 	SelectedDatabases *[]MigrateSQLServerSQLDbDatabaseInput `json:"selectedDatabases,omitempty"`
@@ -1539,8 +1013,7 @@ func (msssdto MigrateSQLServerSQLDbTaskOutput) AsBasicMigrateSQLServerSQLDbTaskO
 	return &msssdto, true
 }
 
-// MigrateSQLServerSQLDbTaskOutputDatabaseLevel database level result for Sql Server to Azure Sql DB
-// migration.
+// MigrateSQLServerSQLDbTaskOutputDatabaseLevel database level result for Sql Server to Azure Sql DB migration.
 type MigrateSQLServerSQLDbTaskOutputDatabaseLevel struct {
 	// DatabaseName - READ-ONLY; Name of the item
 	DatabaseName *string `json:"databaseName,omitempty"`
@@ -1812,8 +1285,8 @@ func (msssdtotl MigrateSQLServerSQLDbTaskOutputTableLevel) AsBasicMigrateSQLServ
 	return &msssdtotl, true
 }
 
-// MigrateSQLServerSQLDbTaskProperties properties for the task that migrates on-prem SQL Server databases
-// to Azure SQL Database
+// MigrateSQLServerSQLDbTaskProperties properties for the task that migrates on-prem SQL Server databases to
+// Azure SQL Database
 type MigrateSQLServerSQLDbTaskProperties struct {
 	// Input - Task input
 	Input *MigrateSQLServerSQLDbTaskInput `json:"input,omitempty"`
@@ -2226,10 +1699,15 @@ func (pl ProjectList) IsEmpty() bool {
 	return pl.Value == nil || len(*pl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pl ProjectList) hasNextLink() bool {
+	return pl.NextLink != nil && len(*pl.NextLink) != 0
+}
+
 // projectListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pl ProjectList) projectListPreparer(ctx context.Context) (*http.Request, error) {
-	if pl.NextLink == nil || len(to.String(pl.NextLink)) < 1 {
+	if !pl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2257,11 +1735,16 @@ func (page *ProjectListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pl)
+		if err != nil {
+			return err
+		}
+		page.pl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pl = next
 	return nil
 }
 
@@ -2331,6 +1814,23 @@ type ProjectProperties struct {
 	DatabasesInfo *[]DatabaseInfo `json:"databasesInfo,omitempty"`
 	// ProvisioningState - READ-ONLY; The project's provisioning state. Possible values include: 'Deleting', 'Succeeded'
 	ProvisioningState ProjectProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProjectProperties.
+func (pp ProjectProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pp.SourcePlatform != "" {
+		objectMap["sourcePlatform"] = pp.SourcePlatform
+	}
+	if pp.TargetPlatform != "" {
+		objectMap["targetPlatform"] = pp.TargetPlatform
+	}
+	objectMap["sourceConnectionInfo"] = pp.SourceConnectionInfo
+	objectMap["targetConnectionInfo"] = pp.TargetConnectionInfo
+	if pp.DatabasesInfo != nil {
+		objectMap["databasesInfo"] = pp.DatabasesInfo
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ProjectProperties struct.
@@ -2422,6 +1922,16 @@ type ProjectTask struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProjectTask.
+func (pt ProjectTask) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pt.Etag != nil {
+		objectMap["etag"] = pt.Etag
+	}
+	objectMap["properties"] = pt.Properties
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ProjectTask struct.
@@ -2704,10 +2214,15 @@ func (ql QuotaList) IsEmpty() bool {
 	return ql.Value == nil || len(*ql.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ql QuotaList) hasNextLink() bool {
+	return ql.NextLink != nil && len(*ql.NextLink) != 0
+}
+
 // quotaListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ql QuotaList) quotaListPreparer(ctx context.Context) (*http.Request, error) {
-	if ql.NextLink == nil || len(to.String(ql.NextLink)) < 1 {
+	if !ql.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2735,11 +2250,16 @@ func (page *QuotaListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ql)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ql)
+		if err != nil {
+			return err
+		}
+		page.ql = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ql = next
 	return nil
 }
 
@@ -2950,10 +2470,15 @@ func (rsr ResourceSkusResult) IsEmpty() bool {
 	return rsr.Value == nil || len(*rsr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rsr ResourceSkusResult) hasNextLink() bool {
+	return rsr.NextLink != nil && len(*rsr.NextLink) != 0
+}
+
 // resourceSkusResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rsr ResourceSkusResult) resourceSkusResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rsr.NextLink == nil || len(to.String(rsr.NextLink)) < 1 {
+	if !rsr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2981,11 +2506,16 @@ func (page *ResourceSkusResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rsr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rsr)
+		if err != nil {
+			return err
+		}
+		page.rsr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rsr = next
 	return nil
 }
 
@@ -3280,10 +2810,15 @@ func (sl ServiceList) IsEmpty() bool {
 	return sl.Value == nil || len(*sl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sl ServiceList) hasNextLink() bool {
+	return sl.NextLink != nil && len(*sl.NextLink) != 0
+}
+
 // serviceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sl ServiceList) serviceListPreparer(ctx context.Context) (*http.Request, error) {
-	if sl.NextLink == nil || len(to.String(sl.NextLink)) < 1 {
+	if !sl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3311,11 +2846,16 @@ func (page *ServiceListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sl)
+		if err != nil {
+			return err
+		}
+		page.sl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sl = next
 	return nil
 }
 
@@ -3446,10 +2986,15 @@ func (sol ServiceOperationList) IsEmpty() bool {
 	return sol.Value == nil || len(*sol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sol ServiceOperationList) hasNextLink() bool {
+	return sol.NextLink != nil && len(*sol.NextLink) != 0
+}
+
 // serviceOperationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sol ServiceOperationList) serviceOperationListPreparer(ctx context.Context) (*http.Request, error) {
-	if sol.NextLink == nil || len(to.String(sol.NextLink)) < 1 {
+	if !sol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3477,11 +3022,16 @@ func (page *ServiceOperationListPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sol)
+		if err != nil {
+			return err
+		}
+		page.sol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sol = next
 	return nil
 }
 
@@ -3525,6 +3075,18 @@ type ServiceProperties struct {
 	VirtualSubnetID *string `json:"virtualSubnetId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServiceProperties.
+func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.PublicKey != nil {
+		objectMap["publicKey"] = sp.PublicKey
+	}
+	if sp.VirtualSubnetID != nil {
+		objectMap["virtualSubnetId"] = sp.VirtualSubnetID
+	}
+	return json.Marshal(objectMap)
+}
+
 // ServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServicesCreateOrUpdateFuture struct {
@@ -3554,8 +3116,7 @@ func (future *ServicesCreateOrUpdateFuture) Result(client ServicesClient) (s Ser
 	return
 }
 
-// ServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServicesDeleteFuture struct {
 	azure.Future
 }
@@ -3668,10 +3229,15 @@ func (ssl ServiceSkuList) IsEmpty() bool {
 	return ssl.Value == nil || len(*ssl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ssl ServiceSkuList) hasNextLink() bool {
+	return ssl.NextLink != nil && len(*ssl.NextLink) != 0
+}
+
 // serviceSkuListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ssl ServiceSkuList) serviceSkuListPreparer(ctx context.Context) (*http.Request, error) {
-	if ssl.NextLink == nil || len(to.String(ssl.NextLink)) < 1 {
+	if !ssl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3699,11 +3265,16 @@ func (page *ServiceSkuListPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ssl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ssl)
+		if err != nil {
+			return err
+		}
+		page.ssl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ssl = next
 	return nil
 }
 
@@ -3737,8 +3308,7 @@ func NewServiceSkuListPage(getNextPage func(context.Context, ServiceSkuList) (Se
 	return ServiceSkuListPage{fn: getNextPage}
 }
 
-// ServicesStartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServicesStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServicesStartFuture struct {
 	azure.Future
 }
@@ -3795,8 +3365,7 @@ type ServiceStatusResponse struct {
 	SupportedTaskTypes *[]string `json:"supportedTaskTypes,omitempty"`
 }
 
-// ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServicesUpdateFuture struct {
 	azure.Future
 }
@@ -3975,10 +3544,15 @@ func (tl TaskList) IsEmpty() bool {
 	return tl.Value == nil || len(*tl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tl TaskList) hasNextLink() bool {
+	return tl.NextLink != nil && len(*tl.NextLink) != 0
+}
+
 // taskListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tl TaskList) taskListPreparer(ctx context.Context) (*http.Request, error) {
-	if tl.NextLink == nil || len(to.String(tl.NextLink)) < 1 {
+	if !tl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4006,11 +3580,16 @@ func (page *TaskListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tl)
+		if err != nil {
+			return err
+		}
+		page.tl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tl = next
 	return nil
 }
 

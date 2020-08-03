@@ -515,6 +515,9 @@ func (client CertificateClient) List(ctx context.Context, filter string, selectP
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.CertificateClient", "List", resp, "Failure responding to request")
 	}
+	if result.clr.hasNextLink() && result.clr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

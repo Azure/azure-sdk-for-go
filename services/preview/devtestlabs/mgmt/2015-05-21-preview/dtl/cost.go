@@ -152,6 +152,9 @@ func (client CostClient) List(ctx context.Context, resourceGroupName string, lab
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CostClient", "List", resp, "Failure responding to request")
 	}
+	if result.rwcc.hasNextLink() && result.rwcc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

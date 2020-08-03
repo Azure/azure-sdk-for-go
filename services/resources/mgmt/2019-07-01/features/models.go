@@ -31,121 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-07-01/features"
 
-// ChangeType enumerates the values for change type.
-type ChangeType string
-
-const (
-	// Create The resource does not exist in the current state but is present in the desired state. The
-	// resource will be created when the deployment is executed.
-	Create ChangeType = "Create"
-	// Delete The resource exists in the current state and is missing from the desired state. The resource will
-	// be deleted when the deployment is executed.
-	Delete ChangeType = "Delete"
-	// Deploy The resource exists in the current state and the desired state and will be redeployed when the
-	// deployment is executed. The properties of the resource may or may not change.
-	Deploy ChangeType = "Deploy"
-	// Ignore The resource exists in the current state and is missing from the desired state. The resource will
-	// not be deployed or modified when the deployment is executed.
-	Ignore ChangeType = "Ignore"
-	// Modify The resource exists in the current state and the desired state and will be redeployed when the
-	// deployment is executed. The properties of the resource will change.
-	Modify ChangeType = "Modify"
-	// NoChange The resource exists in the current state and the desired state and will be redeployed when the
-	// deployment is executed. The properties of the resource will not change.
-	NoChange ChangeType = "NoChange"
-)
-
-// PossibleChangeTypeValues returns an array of possible values for the ChangeType const type.
-func PossibleChangeTypeValues() []ChangeType {
-	return []ChangeType{Create, Delete, Deploy, Ignore, Modify, NoChange}
-}
-
-// DeploymentMode enumerates the values for deployment mode.
-type DeploymentMode string
-
-const (
-	// Complete ...
-	Complete DeploymentMode = "Complete"
-	// Incremental ...
-	Incremental DeploymentMode = "Incremental"
-)
-
-// PossibleDeploymentModeValues returns an array of possible values for the DeploymentMode const type.
-func PossibleDeploymentModeValues() []DeploymentMode {
-	return []DeploymentMode{Complete, Incremental}
-}
-
-// OnErrorDeploymentType enumerates the values for on error deployment type.
-type OnErrorDeploymentType string
-
-const (
-	// LastSuccessful ...
-	LastSuccessful OnErrorDeploymentType = "LastSuccessful"
-	// SpecificDeployment ...
-	SpecificDeployment OnErrorDeploymentType = "SpecificDeployment"
-)
-
-// PossibleOnErrorDeploymentTypeValues returns an array of possible values for the OnErrorDeploymentType const type.
-func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
-	return []OnErrorDeploymentType{LastSuccessful, SpecificDeployment}
-}
-
-// PropertyChangeType enumerates the values for property change type.
-type PropertyChangeType string
-
-const (
-	// PropertyChangeTypeArray The property is an array and contains nested changes.
-	PropertyChangeTypeArray PropertyChangeType = "Array"
-	// PropertyChangeTypeCreate The property does not exist in the current state but is present in the desired
-	// state. The property will be created when the deployment is executed.
-	PropertyChangeTypeCreate PropertyChangeType = "Create"
-	// PropertyChangeTypeDelete The property exists in the current state and is missing from the desired state.
-	// It will be deleted when the deployment is executed.
-	PropertyChangeTypeDelete PropertyChangeType = "Delete"
-	// PropertyChangeTypeModify The property exists in both current and desired state and is different. The
-	// value of the property will change when the deployment is executed.
-	PropertyChangeTypeModify PropertyChangeType = "Modify"
-)
-
-// PossiblePropertyChangeTypeValues returns an array of possible values for the PropertyChangeType const type.
-func PossiblePropertyChangeTypeValues() []PropertyChangeType {
-	return []PropertyChangeType{PropertyChangeTypeArray, PropertyChangeTypeCreate, PropertyChangeTypeDelete, PropertyChangeTypeModify}
-}
-
-// ResourceIdentityType enumerates the values for resource identity type.
-type ResourceIdentityType string
-
-const (
-	// None ...
-	None ResourceIdentityType = "None"
-	// SystemAssigned ...
-	SystemAssigned ResourceIdentityType = "SystemAssigned"
-	// SystemAssignedUserAssigned ...
-	SystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
-	// UserAssigned ...
-	UserAssigned ResourceIdentityType = "UserAssigned"
-)
-
-// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{None, SystemAssigned, SystemAssignedUserAssigned, UserAssigned}
-}
-
-// WhatIfResultFormat enumerates the values for what if result format.
-type WhatIfResultFormat string
-
-const (
-	// FullResourcePayloads ...
-	FullResourcePayloads WhatIfResultFormat = "FullResourcePayloads"
-	// ResourceIDOnly ...
-	ResourceIDOnly WhatIfResultFormat = "ResourceIdOnly"
-)
-
-// PossibleWhatIfResultFormatValues returns an array of possible values for the WhatIfResultFormat const type.
-func PossibleWhatIfResultFormatValues() []WhatIfResultFormat {
-	return []WhatIfResultFormat{FullResourcePayloads, ResourceIDOnly}
-}
-
 // AliasPathType the type of the paths for alias.
 type AliasPathType struct {
 	// Path - The path of an alias.
@@ -225,6 +110,18 @@ type DeploymentExtended struct {
 	Properties *DeploymentPropertiesExtended `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DeploymentExtended.
+func (de DeploymentExtended) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if de.Location != nil {
+		objectMap["location"] = de.Location
+	}
+	if de.Properties != nil {
+		objectMap["properties"] = de.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // DeploymentExtendedFilter deployment filter.
 type DeploymentExtendedFilter struct {
 	// ProvisioningState - The provisioning state.
@@ -238,6 +135,15 @@ type DeploymentListResult struct {
 	Value *[]DeploymentExtended `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeploymentListResult.
+func (dlr DeploymentListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dlr.Value != nil {
+		objectMap["value"] = dlr.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // DeploymentListResultIterator provides access to a complete listing of DeploymentExtended values.
@@ -308,10 +214,15 @@ func (dlr DeploymentListResult) IsEmpty() bool {
 	return dlr.Value == nil || len(*dlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dlr DeploymentListResult) hasNextLink() bool {
+	return dlr.NextLink != nil && len(*dlr.NextLink) != 0
+}
+
 // deploymentListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dlr DeploymentListResult) deploymentListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dlr.NextLink == nil || len(to.String(dlr.NextLink)) < 1 {
+	if !dlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -339,11 +250,16 @@ func (page *DeploymentListResultPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dlr)
+		if err != nil {
+			return err
+		}
+		page.dlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dlr = next
 	return nil
 }
 
@@ -388,6 +304,15 @@ type DeploymentOperation struct {
 	Properties *DeploymentOperationProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DeploymentOperation.
+func (do DeploymentOperation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if do.Properties != nil {
+		objectMap["properties"] = do.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // DeploymentOperationProperties deployment operation properties.
 type DeploymentOperationProperties struct {
 	// ProvisioningState - READ-ONLY; The state of the provisioning.
@@ -419,8 +344,16 @@ type DeploymentOperationsListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// DeploymentOperationsListResultIterator provides access to a complete listing of DeploymentOperation
-// values.
+// MarshalJSON is the custom marshaler for DeploymentOperationsListResult.
+func (dolr DeploymentOperationsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dolr.Value != nil {
+		objectMap["value"] = dolr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// DeploymentOperationsListResultIterator provides access to a complete listing of DeploymentOperation values.
 type DeploymentOperationsListResultIterator struct {
 	i    int
 	page DeploymentOperationsListResultPage
@@ -488,10 +421,15 @@ func (dolr DeploymentOperationsListResult) IsEmpty() bool {
 	return dolr.Value == nil || len(*dolr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dolr DeploymentOperationsListResult) hasNextLink() bool {
+	return dolr.NextLink != nil && len(*dolr.NextLink) != 0
+}
+
 // deploymentOperationsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dolr DeploymentOperationsListResult) deploymentOperationsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dolr.NextLink == nil || len(to.String(dolr.NextLink)) < 1 {
+	if !dolr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -519,11 +457,16 @@ func (page *DeploymentOperationsListResultPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dolr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dolr)
+		if err != nil {
+			return err
+		}
+		page.dolr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dolr = next
 	return nil
 }
 
@@ -607,6 +550,42 @@ type DeploymentPropertiesExtended struct {
 	OnErrorDeployment *OnErrorDeploymentExtended `json:"onErrorDeployment,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DeploymentPropertiesExtended.
+func (dpe DeploymentPropertiesExtended) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dpe.Outputs != nil {
+		objectMap["outputs"] = dpe.Outputs
+	}
+	if dpe.Providers != nil {
+		objectMap["providers"] = dpe.Providers
+	}
+	if dpe.Dependencies != nil {
+		objectMap["dependencies"] = dpe.Dependencies
+	}
+	if dpe.Template != nil {
+		objectMap["template"] = dpe.Template
+	}
+	if dpe.TemplateLink != nil {
+		objectMap["templateLink"] = dpe.TemplateLink
+	}
+	if dpe.Parameters != nil {
+		objectMap["parameters"] = dpe.Parameters
+	}
+	if dpe.ParametersLink != nil {
+		objectMap["parametersLink"] = dpe.ParametersLink
+	}
+	if dpe.Mode != "" {
+		objectMap["mode"] = dpe.Mode
+	}
+	if dpe.DebugSetting != nil {
+		objectMap["debugSetting"] = dpe.DebugSetting
+	}
+	if dpe.OnErrorDeployment != nil {
+		objectMap["onErrorDeployment"] = dpe.OnErrorDeployment
+	}
+	return json.Marshal(objectMap)
+}
+
 // DeploymentsCreateOrUpdateAtManagementGroupScopeFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type DeploymentsCreateOrUpdateAtManagementGroupScopeFuture struct {
@@ -665,8 +644,8 @@ func (future *DeploymentsCreateOrUpdateAtScopeFuture) Result(client DeploymentsC
 	return
 }
 
-// DeploymentsCreateOrUpdateAtSubscriptionScopeFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// DeploymentsCreateOrUpdateAtSubscriptionScopeFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type DeploymentsCreateOrUpdateAtSubscriptionScopeFuture struct {
 	azure.Future
 }
@@ -694,8 +673,8 @@ func (future *DeploymentsCreateOrUpdateAtSubscriptionScopeFuture) Result(client 
 	return
 }
 
-// DeploymentsCreateOrUpdateAtTenantScopeFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// DeploymentsCreateOrUpdateAtTenantScopeFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DeploymentsCreateOrUpdateAtTenantScopeFuture struct {
 	azure.Future
 }
@@ -723,8 +702,8 @@ func (future *DeploymentsCreateOrUpdateAtTenantScopeFuture) Result(client Deploy
 	return
 }
 
-// DeploymentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DeploymentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DeploymentsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -752,8 +731,8 @@ func (future *DeploymentsCreateOrUpdateFuture) Result(client DeploymentsClient) 
 	return
 }
 
-// DeploymentsDeleteAtManagementGroupScopeFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// DeploymentsDeleteAtManagementGroupScopeFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DeploymentsDeleteAtManagementGroupScopeFuture struct {
 	azure.Future
 }
@@ -775,8 +754,8 @@ func (future *DeploymentsDeleteAtManagementGroupScopeFuture) Result(client Deplo
 	return
 }
 
-// DeploymentsDeleteAtScopeFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DeploymentsDeleteAtScopeFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DeploymentsDeleteAtScopeFuture struct {
 	azure.Future
 }
@@ -1183,6 +1162,18 @@ type OnErrorDeploymentExtended struct {
 	DeploymentName *string `json:"deploymentName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OnErrorDeploymentExtended.
+func (oede OnErrorDeploymentExtended) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if oede.Type != "" {
+		objectMap["type"] = oede.Type
+	}
+	if oede.DeploymentName != nil {
+		objectMap["deploymentName"] = oede.DeploymentName
+	}
+	return json.Marshal(objectMap)
+}
+
 // Operation microsoft.Resources operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
@@ -1281,10 +1272,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1312,11 +1308,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -1387,6 +1388,15 @@ type Provider struct {
 	ResourceTypes *[]ProviderResourceType `json:"resourceTypes,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Provider.
+func (p Provider) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.Namespace != nil {
+		objectMap["namespace"] = p.Namespace
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProviderListResult list of resource providers.
 type ProviderListResult struct {
 	autorest.Response `json:"-"`
@@ -1394,6 +1404,15 @@ type ProviderListResult struct {
 	Value *[]Provider `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProviderListResult.
+func (plr ProviderListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if plr.Value != nil {
+		objectMap["value"] = plr.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // ProviderListResultIterator provides access to a complete listing of Provider values.
@@ -1464,10 +1483,15 @@ func (plr ProviderListResult) IsEmpty() bool {
 	return plr.Value == nil || len(*plr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (plr ProviderListResult) hasNextLink() bool {
+	return plr.NextLink != nil && len(*plr.NextLink) != 0
+}
+
 // providerListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (plr ProviderListResult) providerListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if plr.NextLink == nil || len(to.String(plr.NextLink)) < 1 {
+	if !plr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1495,11 +1519,16 @@ func (page *ProviderListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.plr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.plr)
+		if err != nil {
+			return err
+		}
+		page.plr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.plr = next
 	return nil
 }
 
@@ -1662,6 +1691,15 @@ type ResourceGroupListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceGroupListResult.
+func (rglr ResourceGroupListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rglr.Value != nil {
+		objectMap["value"] = rglr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // ResourceGroupListResultIterator provides access to a complete listing of ResourceGroup values.
 type ResourceGroupListResultIterator struct {
 	i    int
@@ -1730,10 +1768,15 @@ func (rglr ResourceGroupListResult) IsEmpty() bool {
 	return rglr.Value == nil || len(*rglr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rglr ResourceGroupListResult) hasNextLink() bool {
+	return rglr.NextLink != nil && len(*rglr.NextLink) != 0
+}
+
 // resourceGroupListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rglr ResourceGroupListResult) resourceGroupListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rglr.NextLink == nil || len(to.String(rglr.NextLink)) < 1 {
+	if !rglr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1761,11 +1804,16 @@ func (page *ResourceGroupListResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rglr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rglr)
+		if err != nil {
+			return err
+		}
+		page.rglr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rglr = next
 	return nil
 }
 
@@ -1867,6 +1915,15 @@ type ResourceListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceListResult.
+func (rlr ResourceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rlr.Value != nil {
+		objectMap["value"] = rlr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // ResourceListResultIterator provides access to a complete listing of GenericResourceExpanded values.
 type ResourceListResultIterator struct {
 	i    int
@@ -1935,10 +1992,15 @@ func (rlr ResourceListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rlr ResourceListResult) hasNextLink() bool {
+	return rlr.NextLink != nil && len(*rlr.NextLink) != 0
+}
+
 // resourceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rlr ResourceListResult) resourceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
+	if !rlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1966,11 +2028,16 @@ func (page *ResourceListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rlr)
+		if err != nil {
+			return err
+		}
+		page.rlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rlr = next
 	return nil
 }
 
@@ -2018,8 +2085,8 @@ type ResourceProviderOperationDisplayProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// ResourcesCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ResourcesCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ResourcesCreateOrUpdateByIDFuture struct {
 	azure.Future
 }
@@ -2099,8 +2166,7 @@ func (future *ResourcesDeleteByIDFuture) Result(client ResourcesClient) (ar auto
 	return
 }
 
-// ResourcesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ResourcesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ResourcesDeleteFuture struct {
 	azure.Future
 }
@@ -2182,8 +2248,7 @@ func (future *ResourcesUpdateByIDFuture) Result(client ResourcesClient) (gr Gene
 	return
 }
 
-// ResourcesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ResourcesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ResourcesUpdateFuture struct {
 	azure.Future
 }
@@ -2277,6 +2342,21 @@ type TagDetails struct {
 	Values *[]TagValue `json:"values,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TagDetails.
+func (td TagDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if td.TagName != nil {
+		objectMap["tagName"] = td.TagName
+	}
+	if td.Count != nil {
+		objectMap["count"] = td.Count
+	}
+	if td.Values != nil {
+		objectMap["values"] = td.Values
+	}
+	return json.Marshal(objectMap)
+}
+
 // TagsListResult list of subscription tags.
 type TagsListResult struct {
 	autorest.Response `json:"-"`
@@ -2284,6 +2364,15 @@ type TagsListResult struct {
 	Value *[]TagDetails `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TagsListResult.
+func (tlr TagsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tlr.Value != nil {
+		objectMap["value"] = tlr.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // TagsListResultIterator provides access to a complete listing of TagDetails values.
@@ -2354,10 +2443,15 @@ func (tlr TagsListResult) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tlr TagsListResult) hasNextLink() bool {
+	return tlr.NextLink != nil && len(*tlr.NextLink) != 0
+}
+
 // tagsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tlr TagsListResult) tagsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if tlr.NextLink == nil || len(to.String(tlr.NextLink)) < 1 {
+	if !tlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2385,11 +2479,16 @@ func (page *TagsListResultPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tlr)
+		if err != nil {
+			return err
+		}
+		page.tlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tlr = next
 	return nil
 }
 
@@ -2432,6 +2531,18 @@ type TagValue struct {
 	TagValue *string `json:"tagValue,omitempty"`
 	// Count - The tag value count.
 	Count *TagCount `json:"count,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TagValue.
+func (tv TagValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tv.TagValue != nil {
+		objectMap["tagValue"] = tv.TagValue
+	}
+	if tv.Count != nil {
+		objectMap["count"] = tv.Count
+	}
+	return json.Marshal(objectMap)
 }
 
 // TargetResource target resource.
@@ -2482,8 +2593,8 @@ type WhatIfOperationProperties struct {
 	Changes *[]WhatIfChange `json:"changes,omitempty"`
 }
 
-// WhatIfOperationResult result of the What-If operation. Contains a list of predicted changes and a URL
-// link to get to the next set of results.
+// WhatIfOperationResult result of the What-If operation. Contains a list of predicted changes and a URL link
+// to get to the next set of results.
 type WhatIfOperationResult struct {
 	autorest.Response `json:"-"`
 	// Status - Status of the What-If operation.

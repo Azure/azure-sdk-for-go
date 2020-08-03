@@ -29,40 +29,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/enterpriseknowledgegraphservice/2018-12-03/enterpriseknowledgegraphservice"
 
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Creating, Deleting, Failed, Succeeded}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// F0 ...
-	F0 SkuName = "F0"
-	// S1 ...
-	S1 SkuName = "S1"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{F0, S1}
-}
-
 // EnterpriseKnowledgeGraph enterpriseKnowledgeGraph resource definition
 type EnterpriseKnowledgeGraph struct {
 	autorest.Response `json:"-"`
@@ -117,6 +83,15 @@ type EnterpriseKnowledgeGraphResponseList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; Gets the list of EnterpriseKnowledgeGraph service results and their properties.
 	Value *[]EnterpriseKnowledgeGraph `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EnterpriseKnowledgeGraphResponseList.
+func (ekgrl EnterpriseKnowledgeGraphResponseList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ekgrl.NextLink != nil {
+		objectMap["nextLink"] = ekgrl.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // EnterpriseKnowledgeGraphResponseListIterator provides access to a complete listing of
@@ -188,10 +163,15 @@ func (ekgrl EnterpriseKnowledgeGraphResponseList) IsEmpty() bool {
 	return ekgrl.Value == nil || len(*ekgrl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ekgrl EnterpriseKnowledgeGraphResponseList) hasNextLink() bool {
+	return ekgrl.NextLink != nil && len(*ekgrl.NextLink) != 0
+}
+
 // enterpriseKnowledgeGraphResponseListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ekgrl EnterpriseKnowledgeGraphResponseList) enterpriseKnowledgeGraphResponseListPreparer(ctx context.Context) (*http.Request, error) {
-	if ekgrl.NextLink == nil || len(to.String(ekgrl.NextLink)) < 1 {
+	if !ekgrl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -219,11 +199,16 @@ func (page *EnterpriseKnowledgeGraphResponseListPage) NextWithContext(ctx contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ekgrl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ekgrl)
+		if err != nil {
+			return err
+		}
+		page.ekgrl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ekgrl = next
 	return nil
 }
 
@@ -372,10 +357,15 @@ func (oelr OperationEntityListResult) IsEmpty() bool {
 	return oelr.Value == nil || len(*oelr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (oelr OperationEntityListResult) hasNextLink() bool {
+	return oelr.NextLink != nil && len(*oelr.NextLink) != 0
+}
+
 // operationEntityListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (oelr OperationEntityListResult) operationEntityListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if oelr.NextLink == nil || len(to.String(oelr.NextLink)) < 1 {
+	if !oelr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -403,11 +393,16 @@ func (page *OperationEntityListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.oelr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.oelr)
+		if err != nil {
+			return err
+		}
+		page.oelr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.oelr = next
 	return nil
 }
 

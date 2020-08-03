@@ -380,6 +380,9 @@ func (client ConnectionsClient) List(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ConnectionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.cc.hasNextLink() && result.cc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

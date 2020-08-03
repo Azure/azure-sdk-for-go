@@ -71,6 +71,9 @@ func (client TenantsClient) List(ctx context.Context) (result TenantListResultPa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscriptions.TenantsClient", "List", resp, "Failure responding to request")
 	}
+	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

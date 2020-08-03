@@ -76,6 +76,9 @@ func (client HyperVHostClient) GetAllHostsInSite(ctx context.Context, subscripti
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVHostClient", "GetAllHostsInSite", resp, "Failure responding to request")
 	}
+	if result.hvhc.hasNextLink() && result.hvhc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

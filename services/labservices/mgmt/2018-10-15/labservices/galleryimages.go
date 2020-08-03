@@ -315,6 +315,9 @@ func (client GalleryImagesClient) List(ctx context.Context, resourceGroupName st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GalleryImagesClient", "List", resp, "Failure responding to request")
 	}
+	if result.rwcgi.hasNextLink() && result.rwcgi.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

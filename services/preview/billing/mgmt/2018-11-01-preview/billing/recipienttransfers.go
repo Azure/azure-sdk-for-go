@@ -273,6 +273,9 @@ func (client RecipientTransfersClient) List(ctx context.Context) (result Recipie
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RecipientTransfersClient", "List", resp, "Failure responding to request")
 	}
+	if result.rtdlr.hasNextLink() && result.rtdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

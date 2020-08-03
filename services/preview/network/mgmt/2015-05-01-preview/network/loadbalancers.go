@@ -300,6 +300,9 @@ func (client LoadBalancersClient) List(ctx context.Context, resourceGroupName st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancersClient", "List", resp, "Failure responding to request")
 	}
+	if result.lblr.hasNextLink() && result.lblr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -408,6 +411,9 @@ func (client LoadBalancersClient) ListAll(ctx context.Context) (result LoadBalan
 	result.lblr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.LoadBalancersClient", "ListAll", resp, "Failure responding to request")
+	}
+	if result.lblr.hasNextLink() && result.lblr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

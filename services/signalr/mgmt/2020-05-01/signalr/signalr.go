@@ -405,6 +405,9 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "signalr.Client", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.rl.hasNextLink() && result.rl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -513,6 +516,9 @@ func (client Client) ListBySubscription(ctx context.Context) (result ResourceLis
 	result.rl, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "signalr.Client", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.rl.hasNextLink() && result.rl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

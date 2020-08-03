@@ -18,6 +18,7 @@ package training
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/satori/go.uuid"
@@ -25,156 +26,6 @@ import (
 
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.2/customvision/training"
-
-// Classifier enumerates the values for classifier.
-type Classifier string
-
-const (
-	// Multiclass ...
-	Multiclass Classifier = "Multiclass"
-	// Multilabel ...
-	Multilabel Classifier = "Multilabel"
-)
-
-// PossibleClassifierValues returns an array of possible values for the Classifier const type.
-func PossibleClassifierValues() []Classifier {
-	return []Classifier{Multiclass, Multilabel}
-}
-
-// DomainType enumerates the values for domain type.
-type DomainType string
-
-const (
-	// Classification ...
-	Classification DomainType = "Classification"
-	// ObjectDetection ...
-	ObjectDetection DomainType = "ObjectDetection"
-)
-
-// PossibleDomainTypeValues returns an array of possible values for the DomainType const type.
-func PossibleDomainTypeValues() []DomainType {
-	return []DomainType{Classification, ObjectDetection}
-}
-
-// ExportFlavorModel enumerates the values for export flavor model.
-type ExportFlavorModel string
-
-const (
-	// Linux ...
-	Linux ExportFlavorModel = "Linux"
-	// ONNX10 ...
-	ONNX10 ExportFlavorModel = "ONNX10"
-	// ONNX12 ...
-	ONNX12 ExportFlavorModel = "ONNX12"
-	// Windows ...
-	Windows ExportFlavorModel = "Windows"
-)
-
-// PossibleExportFlavorModelValues returns an array of possible values for the ExportFlavorModel const type.
-func PossibleExportFlavorModelValues() []ExportFlavorModel {
-	return []ExportFlavorModel{Linux, ONNX10, ONNX12, Windows}
-}
-
-// ExportPlatformModel enumerates the values for export platform model.
-type ExportPlatformModel string
-
-const (
-	// CoreML ...
-	CoreML ExportPlatformModel = "CoreML"
-	// DockerFile ...
-	DockerFile ExportPlatformModel = "DockerFile"
-	// ONNX ...
-	ONNX ExportPlatformModel = "ONNX"
-	// TensorFlow ...
-	TensorFlow ExportPlatformModel = "TensorFlow"
-)
-
-// PossibleExportPlatformModelValues returns an array of possible values for the ExportPlatformModel const type.
-func PossibleExportPlatformModelValues() []ExportPlatformModel {
-	return []ExportPlatformModel{CoreML, DockerFile, ONNX, TensorFlow}
-}
-
-// ExportStatusModel enumerates the values for export status model.
-type ExportStatusModel string
-
-const (
-	// Done ...
-	Done ExportStatusModel = "Done"
-	// Exporting ...
-	Exporting ExportStatusModel = "Exporting"
-	// Failed ...
-	Failed ExportStatusModel = "Failed"
-)
-
-// PossibleExportStatusModelValues returns an array of possible values for the ExportStatusModel const type.
-func PossibleExportStatusModelValues() []ExportStatusModel {
-	return []ExportStatusModel{Done, Exporting, Failed}
-}
-
-// ImageCreateStatus enumerates the values for image create status.
-type ImageCreateStatus string
-
-const (
-	// ErrorImageFormat ...
-	ErrorImageFormat ImageCreateStatus = "ErrorImageFormat"
-	// ErrorImageSize ...
-	ErrorImageSize ImageCreateStatus = "ErrorImageSize"
-	// ErrorLimitExceed ...
-	ErrorLimitExceed ImageCreateStatus = "ErrorLimitExceed"
-	// ErrorNegativeAndRegularTagOnSameImage ...
-	ErrorNegativeAndRegularTagOnSameImage ImageCreateStatus = "ErrorNegativeAndRegularTagOnSameImage"
-	// ErrorRegionLimitExceed ...
-	ErrorRegionLimitExceed ImageCreateStatus = "ErrorRegionLimitExceed"
-	// ErrorSource ...
-	ErrorSource ImageCreateStatus = "ErrorSource"
-	// ErrorStorage ...
-	ErrorStorage ImageCreateStatus = "ErrorStorage"
-	// ErrorTagLimitExceed ...
-	ErrorTagLimitExceed ImageCreateStatus = "ErrorTagLimitExceed"
-	// ErrorUnknown ...
-	ErrorUnknown ImageCreateStatus = "ErrorUnknown"
-	// OK ...
-	OK ImageCreateStatus = "OK"
-	// OKDuplicate ...
-	OKDuplicate ImageCreateStatus = "OKDuplicate"
-)
-
-// PossibleImageCreateStatusValues returns an array of possible values for the ImageCreateStatus const type.
-func PossibleImageCreateStatusValues() []ImageCreateStatus {
-	return []ImageCreateStatus{ErrorImageFormat, ErrorImageSize, ErrorLimitExceed, ErrorNegativeAndRegularTagOnSameImage, ErrorRegionLimitExceed, ErrorSource, ErrorStorage, ErrorTagLimitExceed, ErrorUnknown, OK, OKDuplicate}
-}
-
-// OrderBy enumerates the values for order by.
-type OrderBy string
-
-const (
-	// Newest ...
-	Newest OrderBy = "Newest"
-	// Oldest ...
-	Oldest OrderBy = "Oldest"
-	// Suggested ...
-	Suggested OrderBy = "Suggested"
-)
-
-// PossibleOrderByValues returns an array of possible values for the OrderBy const type.
-func PossibleOrderByValues() []OrderBy {
-	return []OrderBy{Newest, Oldest, Suggested}
-}
-
-// TagType enumerates the values for tag type.
-type TagType string
-
-const (
-	// Negative ...
-	Negative TagType = "Negative"
-	// Regular ...
-	Regular TagType = "Regular"
-)
-
-// PossibleTagTypeValues returns an array of possible values for the TagType const type.
-func PossibleTagTypeValues() []TagType {
-	return []TagType{Negative, Regular}
-}
 
 // BoundingBox ...
 type BoundingBox struct {
@@ -335,6 +186,27 @@ type ImageRegion struct {
 	Height *float64   `json:"height,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImageRegion.
+func (ir ImageRegion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ir.TagID != nil {
+		objectMap["tagId"] = ir.TagID
+	}
+	if ir.Left != nil {
+		objectMap["left"] = ir.Left
+	}
+	if ir.Top != nil {
+		objectMap["top"] = ir.Top
+	}
+	if ir.Width != nil {
+		objectMap["width"] = ir.Width
+	}
+	if ir.Height != nil {
+		objectMap["height"] = ir.Height
+	}
+	return json.Marshal(objectMap)
+}
+
 // ImageRegionCreateBatch batch of image region information to create.
 type ImageRegionCreateBatch struct {
 	Regions *[]ImageRegionCreateEntry `json:"regions,omitempty"`
@@ -368,6 +240,27 @@ type ImageRegionCreateResult struct {
 	Top    *float64   `json:"top,omitempty"`
 	Width  *float64   `json:"width,omitempty"`
 	Height *float64   `json:"height,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageRegionCreateResult.
+func (ircr ImageRegionCreateResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ircr.TagID != nil {
+		objectMap["tagId"] = ircr.TagID
+	}
+	if ircr.Left != nil {
+		objectMap["left"] = ircr.Left
+	}
+	if ircr.Top != nil {
+		objectMap["top"] = ircr.Top
+	}
+	if ircr.Width != nil {
+		objectMap["width"] = ircr.Width
+	}
+	if ircr.Height != nil {
+		objectMap["height"] = ircr.Height
+	}
+	return json.Marshal(objectMap)
 }
 
 // ImageRegionCreateSummary ...
@@ -470,6 +363,18 @@ type Iteration struct {
 	DomainID *uuid.UUID `json:"domainId,omitempty"`
 	// ClassificationType - READ-ONLY; Gets the classification type of the project. Possible values include: 'Multiclass', 'Multilabel'
 	ClassificationType Classifier `json:"classificationType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Iteration.
+func (i Iteration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Name != nil {
+		objectMap["name"] = i.Name
+	}
+	if i.IsDefault != nil {
+		objectMap["isDefault"] = i.IsDefault
+	}
+	return json.Marshal(objectMap)
 }
 
 // IterationPerformance represents the detailed performance data for a trained iteration.
@@ -595,6 +500,21 @@ type Project struct {
 	ThumbnailURI *string `json:"thumbnailUri,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Project.
+func (p Project) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.Name != nil {
+		objectMap["name"] = p.Name
+	}
+	if p.Description != nil {
+		objectMap["description"] = p.Description
+	}
+	if p.Settings != nil {
+		objectMap["settings"] = p.Settings
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProjectSettings represents settings associated with a project.
 type ProjectSettings struct {
 	// DomainID - Gets or sets the id of the Domain to use with this project.
@@ -656,6 +576,21 @@ type Tag struct {
 	Type TagType `json:"type,omitempty"`
 	// ImageCount - READ-ONLY; Gets the number of images with this tag.
 	ImageCount *int32 `json:"imageCount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Tag.
+func (t Tag) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if t.Name != nil {
+		objectMap["name"] = t.Name
+	}
+	if t.Description != nil {
+		objectMap["description"] = t.Description
+	}
+	if t.Type != "" {
+		objectMap["type"] = t.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // TagPerformance represents performance data for a particular tag in a trained iteration.

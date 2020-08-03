@@ -14077,6 +14077,9 @@ func (client AppsClient) List(ctx context.Context) (result AppCollectionPage, er
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "List", resp, "Failure responding to request")
 	}
+	if result.ac.hasNextLink() && result.ac.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -14365,6 +14368,9 @@ func (client AppsClient) ListBackups(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListBackups", resp, "Failure responding to request")
 	}
+	if result.bic.hasNextLink() && result.bic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -14487,6 +14493,9 @@ func (client AppsClient) ListBackupsSlot(ctx context.Context, resourceGroupName 
 	result.bic, err = client.ListBackupsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListBackupsSlot", resp, "Failure responding to request")
+	}
+	if result.bic.hasNextLink() && result.bic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -14813,6 +14822,9 @@ func (client AppsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.ac.hasNextLink() && result.ac.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -14936,6 +14948,9 @@ func (client AppsClient) ListConfigurations(ctx context.Context, resourceGroupNa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurations", resp, "Failure responding to request")
 	}
+	if result.scrc.hasNextLink() && result.scrc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -15057,6 +15072,9 @@ func (client AppsClient) ListConfigurationSnapshotInfo(ctx context.Context, reso
 	result.scsic, err = client.ListConfigurationSnapshotInfoResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfo", resp, "Failure responding to request")
+	}
+	if result.scsic.hasNextLink() && result.scsic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -15182,6 +15200,9 @@ func (client AppsClient) ListConfigurationSnapshotInfoSlot(ctx context.Context, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationSnapshotInfoSlot", resp, "Failure responding to request")
 	}
+	if result.scsic.hasNextLink() && result.scsic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -15305,6 +15326,9 @@ func (client AppsClient) ListConfigurationsSlot(ctx context.Context, resourceGro
 	result.scrc, err = client.ListConfigurationsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListConfigurationsSlot", resp, "Failure responding to request")
+	}
+	if result.scrc.hasNextLink() && result.scrc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -15597,6 +15621,9 @@ func (client AppsClient) ListContinuousWebJobs(ctx context.Context, resourceGrou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListContinuousWebJobs", resp, "Failure responding to request")
 	}
+	if result.cwjc.hasNextLink() && result.cwjc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -15719,6 +15746,9 @@ func (client AppsClient) ListContinuousWebJobsSlot(ctx context.Context, resource
 	result.cwjc, err = client.ListContinuousWebJobsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListContinuousWebJobsSlot", resp, "Failure responding to request")
+	}
+	if result.cwjc.hasNextLink() && result.cwjc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -16017,6 +16047,9 @@ func (client AppsClient) ListDeployments(ctx context.Context, resourceGroupName 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListDeployments", resp, "Failure responding to request")
 	}
+	if result.dc.hasNextLink() && result.dc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -16140,6 +16173,9 @@ func (client AppsClient) ListDeploymentsSlot(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListDeploymentsSlot", resp, "Failure responding to request")
 	}
+	if result.dc.hasNextLink() && result.dc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -16261,6 +16297,9 @@ func (client AppsClient) ListDomainOwnershipIdentifiers(ctx context.Context, res
 	result.ic, err = client.ListDomainOwnershipIdentifiersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListDomainOwnershipIdentifiers", resp, "Failure responding to request")
+	}
+	if result.ic.hasNextLink() && result.ic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -16385,6 +16424,9 @@ func (client AppsClient) ListDomainOwnershipIdentifiersSlot(ctx context.Context,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListDomainOwnershipIdentifiersSlot", resp, "Failure responding to request")
 	}
+	if result.ic.hasNextLink() && result.ic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -16506,6 +16548,9 @@ func (client AppsClient) ListFunctions(ctx context.Context, resourceGroupName st
 	result.fec, err = client.ListFunctionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListFunctions", resp, "Failure responding to request")
+	}
+	if result.fec.hasNextLink() && result.fec.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -16801,6 +16846,9 @@ func (client AppsClient) ListHostNameBindings(ctx context.Context, resourceGroup
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHostNameBindings", resp, "Failure responding to request")
 	}
+	if result.hnbc.hasNextLink() && result.hnbc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -16923,6 +16971,9 @@ func (client AppsClient) ListHostNameBindingsSlot(ctx context.Context, resourceG
 	result.hnbc, err = client.ListHostNameBindingsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListHostNameBindingsSlot", resp, "Failure responding to request")
+	}
+	if result.hnbc.hasNextLink() && result.hnbc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -17392,6 +17443,9 @@ func (client AppsClient) ListInstanceFunctionsSlot(ctx context.Context, resource
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceFunctionsSlot", resp, "Failure responding to request")
 	}
+	if result.fec.hasNextLink() && result.fec.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -17514,6 +17568,9 @@ func (client AppsClient) ListInstanceIdentifiers(ctx context.Context, resourceGr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceIdentifiers", resp, "Failure responding to request")
 	}
+	if result.aic.hasNextLink() && result.aic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -17635,6 +17692,9 @@ func (client AppsClient) ListInstanceIdentifiersSlot(ctx context.Context, resour
 	result.aic, err = client.ListInstanceIdentifiersSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceIdentifiersSlot", resp, "Failure responding to request")
+	}
+	if result.aic.hasNextLink() && result.aic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -17760,6 +17820,9 @@ func (client AppsClient) ListInstanceProcesses(ctx context.Context, resourceGrou
 	result.pic, err = client.ListInstanceProcessesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceProcesses", resp, "Failure responding to request")
+	}
+	if result.pic.hasNextLink() && result.pic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -17888,6 +17951,9 @@ func (client AppsClient) ListInstanceProcessesSlot(ctx context.Context, resource
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceProcessesSlot", resp, "Failure responding to request")
 	}
+	if result.pic.hasNextLink() && result.pic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -18014,6 +18080,9 @@ func (client AppsClient) ListInstanceProcessModules(ctx context.Context, resourc
 	result.pmic, err = client.ListInstanceProcessModulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceProcessModules", resp, "Failure responding to request")
+	}
+	if result.pmic.hasNextLink() && result.pmic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -18144,6 +18213,9 @@ func (client AppsClient) ListInstanceProcessModulesSlot(ctx context.Context, res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceProcessModulesSlot", resp, "Failure responding to request")
 	}
+	if result.pmic.hasNextLink() && result.pmic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -18270,6 +18342,9 @@ func (client AppsClient) ListInstanceProcessThreads(ctx context.Context, resourc
 	result.ptic, err = client.ListInstanceProcessThreadsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceProcessThreads", resp, "Failure responding to request")
+	}
+	if result.ptic.hasNextLink() && result.ptic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -18399,6 +18474,9 @@ func (client AppsClient) ListInstanceProcessThreadsSlot(ctx context.Context, res
 	result.ptic, err = client.ListInstanceProcessThreadsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListInstanceProcessThreadsSlot", resp, "Failure responding to request")
+	}
+	if result.ptic.hasNextLink() && result.ptic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -18693,6 +18771,9 @@ func (client AppsClient) ListMetricDefinitions(ctx context.Context, resourceGrou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitions", resp, "Failure responding to request")
 	}
+	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -18815,6 +18896,9 @@ func (client AppsClient) ListMetricDefinitionsSlot(ctx context.Context, resource
 	result.rmdc, err = client.ListMetricDefinitionsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricDefinitionsSlot", resp, "Failure responding to request")
+	}
+	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -18941,6 +19025,9 @@ func (client AppsClient) ListMetrics(ctx context.Context, resourceGroupName stri
 	result.rmc, err = client.ListMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetrics", resp, "Failure responding to request")
+	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -19074,6 +19161,9 @@ func (client AppsClient) ListMetricsSlot(ctx context.Context, resourceGroupName 
 	result.rmc, err = client.ListMetricsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListMetricsSlot", resp, "Failure responding to request")
+	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -19379,6 +19469,9 @@ func (client AppsClient) ListPerfMonCounters(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPerfMonCounters", resp, "Failure responding to request")
 	}
+	if result.pmcc.hasNextLink() && result.pmcc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -19506,6 +19599,9 @@ func (client AppsClient) ListPerfMonCountersSlot(ctx context.Context, resourceGr
 	result.pmcc, err = client.ListPerfMonCountersSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPerfMonCountersSlot", resp, "Failure responding to request")
+	}
+	if result.pmcc.hasNextLink() && result.pmcc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -19802,6 +19898,9 @@ func (client AppsClient) ListProcesses(ctx context.Context, resourceGroupName st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListProcesses", resp, "Failure responding to request")
 	}
+	if result.pic.hasNextLink() && result.pic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -19926,6 +20025,9 @@ func (client AppsClient) ListProcessesSlot(ctx context.Context, resourceGroupNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListProcessesSlot", resp, "Failure responding to request")
 	}
+	if result.pic.hasNextLink() && result.pic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -20048,6 +20150,9 @@ func (client AppsClient) ListProcessModules(ctx context.Context, resourceGroupNa
 	result.pmic, err = client.ListProcessModulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListProcessModules", resp, "Failure responding to request")
+	}
+	if result.pmic.hasNextLink() && result.pmic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -20175,6 +20280,9 @@ func (client AppsClient) ListProcessModulesSlot(ctx context.Context, resourceGro
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListProcessModulesSlot", resp, "Failure responding to request")
 	}
+	if result.pmic.hasNextLink() && result.pmic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -20298,6 +20406,9 @@ func (client AppsClient) ListProcessThreads(ctx context.Context, resourceGroupNa
 	result.ptic, err = client.ListProcessThreadsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListProcessThreads", resp, "Failure responding to request")
+	}
+	if result.ptic.hasNextLink() && result.ptic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -20424,6 +20535,9 @@ func (client AppsClient) ListProcessThreadsSlot(ctx context.Context, resourceGro
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListProcessThreadsSlot", resp, "Failure responding to request")
 	}
+	if result.ptic.hasNextLink() && result.ptic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -20547,6 +20661,9 @@ func (client AppsClient) ListPublicCertificates(ctx context.Context, resourceGro
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublicCertificates", resp, "Failure responding to request")
 	}
+	if result.pcc.hasNextLink() && result.pcc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -20669,6 +20786,9 @@ func (client AppsClient) ListPublicCertificatesSlot(ctx context.Context, resourc
 	result.pcc, err = client.ListPublicCertificatesSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublicCertificatesSlot", resp, "Failure responding to request")
+	}
+	if result.pcc.hasNextLink() && result.pcc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -21305,6 +21425,9 @@ func (client AppsClient) ListSiteExtensions(ctx context.Context, resourceGroupNa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSiteExtensions", resp, "Failure responding to request")
 	}
+	if result.seic.hasNextLink() && result.seic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -21427,6 +21550,9 @@ func (client AppsClient) ListSiteExtensionsSlot(ctx context.Context, resourceGro
 	result.seic, err = client.ListSiteExtensionsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSiteExtensionsSlot", resp, "Failure responding to request")
+	}
+	if result.seic.hasNextLink() && result.seic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -21806,6 +21932,9 @@ func (client AppsClient) ListSlotDifferencesFromProduction(ctx context.Context, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesFromProduction", resp, "Failure responding to request")
 	}
+	if result.sdc.hasNextLink() && result.sdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -21934,6 +22063,9 @@ func (client AppsClient) ListSlotDifferencesSlot(ctx context.Context, resourceGr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlotDifferencesSlot", resp, "Failure responding to request")
 	}
+	if result.sdc.hasNextLink() && result.sdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -22058,6 +22190,9 @@ func (client AppsClient) ListSlots(ctx context.Context, resourceGroupName string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSlots", resp, "Failure responding to request")
 	}
+	if result.ac.hasNextLink() && result.ac.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -22178,6 +22313,9 @@ func (client AppsClient) ListSnapshots(ctx context.Context, resourceGroupName st
 	result.sc, err = client.ListSnapshotsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshots", resp, "Failure responding to request")
+	}
+	if result.sc.hasNextLink() && result.sc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -22300,6 +22438,9 @@ func (client AppsClient) ListSnapshotsSlot(ctx context.Context, resourceGroupNam
 	result.sc, err = client.ListSnapshotsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListSnapshotsSlot", resp, "Failure responding to request")
+	}
+	if result.sc.hasNextLink() && result.sc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -22593,6 +22734,9 @@ func (client AppsClient) ListTriggeredWebJobHistory(ctx context.Context, resourc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListTriggeredWebJobHistory", resp, "Failure responding to request")
 	}
+	if result.tjhc.hasNextLink() && result.tjhc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -22718,6 +22862,9 @@ func (client AppsClient) ListTriggeredWebJobHistorySlot(ctx context.Context, res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListTriggeredWebJobHistorySlot", resp, "Failure responding to request")
 	}
+	if result.tjhc.hasNextLink() && result.tjhc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -22841,6 +22988,9 @@ func (client AppsClient) ListTriggeredWebJobs(ctx context.Context, resourceGroup
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListTriggeredWebJobs", resp, "Failure responding to request")
 	}
+	if result.twjc.hasNextLink() && result.twjc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -22963,6 +23113,9 @@ func (client AppsClient) ListTriggeredWebJobsSlot(ctx context.Context, resourceG
 	result.twjc, err = client.ListTriggeredWebJobsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListTriggeredWebJobsSlot", resp, "Failure responding to request")
+	}
+	if result.twjc.hasNextLink() && result.twjc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -23088,6 +23241,9 @@ func (client AppsClient) ListUsages(ctx context.Context, resourceGroupName strin
 	result.cuqc, err = client.ListUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListUsages", resp, "Failure responding to request")
+	}
+	if result.cuqc.hasNextLink() && result.cuqc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -23217,6 +23373,9 @@ func (client AppsClient) ListUsagesSlot(ctx context.Context, resourceGroupName s
 	result.cuqc, err = client.ListUsagesSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListUsagesSlot", resp, "Failure responding to request")
+	}
+	if result.cuqc.hasNextLink() && result.cuqc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -23512,6 +23671,9 @@ func (client AppsClient) ListWebJobs(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListWebJobs", resp, "Failure responding to request")
 	}
+	if result.jc.hasNextLink() && result.jc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -23634,6 +23796,9 @@ func (client AppsClient) ListWebJobsSlot(ctx context.Context, resourceGroupName 
 	result.jc, err = client.ListWebJobsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListWebJobsSlot", resp, "Failure responding to request")
+	}
+	if result.jc.hasNextLink() && result.jc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

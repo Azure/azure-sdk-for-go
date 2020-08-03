@@ -328,6 +328,9 @@ func (client ConfigurationStoresClient) List(ctx context.Context, skipToken stri
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "List", resp, "Failure responding to request")
 	}
+	if result.cslr.hasNextLink() && result.cslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -443,6 +446,9 @@ func (client ConfigurationStoresClient) ListByResourceGroup(ctx context.Context,
 	result.cslr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.cslr.hasNextLink() && result.cslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -569,6 +575,9 @@ func (client ConfigurationStoresClient) ListKeys(ctx context.Context, resourceGr
 	result.aklr, err = client.ListKeysResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "ListKeys", resp, "Failure responding to request")
+	}
+	if result.aklr.hasNextLink() && result.aklr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

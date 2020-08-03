@@ -28,109 +28,7 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2018-01-01/eventgrid"
 
-// EndpointType enumerates the values for endpoint type.
-type EndpointType string
-
-const (
-	// EndpointTypeEventHub ...
-	EndpointTypeEventHub EndpointType = "EventHub"
-	// EndpointTypeEventSubscriptionDestination ...
-	EndpointTypeEventSubscriptionDestination EndpointType = "EventSubscriptionDestination"
-	// EndpointTypeWebHook ...
-	EndpointTypeWebHook EndpointType = "WebHook"
-)
-
-// PossibleEndpointTypeValues returns an array of possible values for the EndpointType const type.
-func PossibleEndpointTypeValues() []EndpointType {
-	return []EndpointType{EndpointTypeEventHub, EndpointTypeEventSubscriptionDestination, EndpointTypeWebHook}
-}
-
-// EventSubscriptionProvisioningState enumerates the values for event subscription provisioning state.
-type EventSubscriptionProvisioningState string
-
-const (
-	// Canceled ...
-	Canceled EventSubscriptionProvisioningState = "Canceled"
-	// Creating ...
-	Creating EventSubscriptionProvisioningState = "Creating"
-	// Deleting ...
-	Deleting EventSubscriptionProvisioningState = "Deleting"
-	// Failed ...
-	Failed EventSubscriptionProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded EventSubscriptionProvisioningState = "Succeeded"
-	// Updating ...
-	Updating EventSubscriptionProvisioningState = "Updating"
-)
-
-// PossibleEventSubscriptionProvisioningStateValues returns an array of possible values for the EventSubscriptionProvisioningState const type.
-func PossibleEventSubscriptionProvisioningStateValues() []EventSubscriptionProvisioningState {
-	return []EventSubscriptionProvisioningState{Canceled, Creating, Deleting, Failed, Succeeded, Updating}
-}
-
-// ResourceRegionType enumerates the values for resource region type.
-type ResourceRegionType string
-
-const (
-	// GlobalResource ...
-	GlobalResource ResourceRegionType = "GlobalResource"
-	// RegionalResource ...
-	RegionalResource ResourceRegionType = "RegionalResource"
-)
-
-// PossibleResourceRegionTypeValues returns an array of possible values for the ResourceRegionType const type.
-func PossibleResourceRegionTypeValues() []ResourceRegionType {
-	return []ResourceRegionType{GlobalResource, RegionalResource}
-}
-
-// TopicProvisioningState enumerates the values for topic provisioning state.
-type TopicProvisioningState string
-
-const (
-	// TopicProvisioningStateCanceled ...
-	TopicProvisioningStateCanceled TopicProvisioningState = "Canceled"
-	// TopicProvisioningStateCreating ...
-	TopicProvisioningStateCreating TopicProvisioningState = "Creating"
-	// TopicProvisioningStateDeleting ...
-	TopicProvisioningStateDeleting TopicProvisioningState = "Deleting"
-	// TopicProvisioningStateFailed ...
-	TopicProvisioningStateFailed TopicProvisioningState = "Failed"
-	// TopicProvisioningStateSucceeded ...
-	TopicProvisioningStateSucceeded TopicProvisioningState = "Succeeded"
-	// TopicProvisioningStateUpdating ...
-	TopicProvisioningStateUpdating TopicProvisioningState = "Updating"
-)
-
-// PossibleTopicProvisioningStateValues returns an array of possible values for the TopicProvisioningState const type.
-func PossibleTopicProvisioningStateValues() []TopicProvisioningState {
-	return []TopicProvisioningState{TopicProvisioningStateCanceled, TopicProvisioningStateCreating, TopicProvisioningStateDeleting, TopicProvisioningStateFailed, TopicProvisioningStateSucceeded, TopicProvisioningStateUpdating}
-}
-
-// TopicTypeProvisioningState enumerates the values for topic type provisioning state.
-type TopicTypeProvisioningState string
-
-const (
-	// TopicTypeProvisioningStateCanceled ...
-	TopicTypeProvisioningStateCanceled TopicTypeProvisioningState = "Canceled"
-	// TopicTypeProvisioningStateCreating ...
-	TopicTypeProvisioningStateCreating TopicTypeProvisioningState = "Creating"
-	// TopicTypeProvisioningStateDeleting ...
-	TopicTypeProvisioningStateDeleting TopicTypeProvisioningState = "Deleting"
-	// TopicTypeProvisioningStateFailed ...
-	TopicTypeProvisioningStateFailed TopicTypeProvisioningState = "Failed"
-	// TopicTypeProvisioningStateSucceeded ...
-	TopicTypeProvisioningStateSucceeded TopicTypeProvisioningState = "Succeeded"
-	// TopicTypeProvisioningStateUpdating ...
-	TopicTypeProvisioningStateUpdating TopicTypeProvisioningState = "Updating"
-)
-
-// PossibleTopicTypeProvisioningStateValues returns an array of possible values for the TopicTypeProvisioningState const type.
-func PossibleTopicTypeProvisioningStateValues() []TopicTypeProvisioningState {
-	return []TopicTypeProvisioningState{TopicTypeProvisioningStateCanceled, TopicTypeProvisioningStateCreating, TopicTypeProvisioningStateDeleting, TopicTypeProvisioningStateFailed, TopicTypeProvisioningStateSucceeded, TopicTypeProvisioningStateUpdating}
-}
-
-// EventHubEventSubscriptionDestination information about the event hub destination for an event
-// subscription
+// EventHubEventSubscriptionDestination information about the event hub destination for an event subscription
 type EventHubEventSubscriptionDestination struct {
 	// EventHubEventSubscriptionDestinationProperties - Event Hub Properties of the event subscription destination
 	*EventHubEventSubscriptionDestinationProperties `json:"properties,omitempty"`
@@ -405,6 +303,19 @@ type EventSubscriptionProperties struct {
 	Labels *[]string `json:"labels,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EventSubscriptionProperties.
+func (esp EventSubscriptionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["destination"] = esp.Destination
+	if esp.Filter != nil {
+		objectMap["filter"] = esp.Filter
+	}
+	if esp.Labels != nil {
+		objectMap["labels"] = esp.Labels
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for EventSubscriptionProperties struct.
 func (esp *EventSubscriptionProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -493,8 +404,8 @@ func (future *EventSubscriptionsCreateOrUpdateFuture) Result(client EventSubscri
 	return
 }
 
-// EventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// EventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EventSubscriptionsDeleteFuture struct {
 	azure.Future
 }
@@ -523,8 +434,8 @@ type EventSubscriptionsListResult struct {
 	Value *[]EventSubscription `json:"value,omitempty"`
 }
 
-// EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EventSubscriptionsUpdateFuture struct {
 	azure.Future
 }
@@ -1154,11 +1065,20 @@ func (whesd *WebHookEventSubscriptionDestination) UnmarshalJSON(body []byte) err
 	return nil
 }
 
-// WebHookEventSubscriptionDestinationProperties information about the webhook destination properties for
-// an event subscription.
+// WebHookEventSubscriptionDestinationProperties information about the webhook destination properties for an
+// event subscription.
 type WebHookEventSubscriptionDestinationProperties struct {
 	// EndpointURL - The URL that represents the endpoint of the destination of an event subscription.
 	EndpointURL *string `json:"endpointUrl,omitempty"`
 	// EndpointBaseURL - READ-ONLY; The base URL that represents the endpoint of the destination of an event subscription.
 	EndpointBaseURL *string `json:"endpointBaseUrl,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WebHookEventSubscriptionDestinationProperties.
+func (whesdp WebHookEventSubscriptionDestinationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if whesdp.EndpointURL != nil {
+		objectMap["endpointUrl"] = whesdp.EndpointURL
+	}
+	return json.Marshal(objectMap)
 }

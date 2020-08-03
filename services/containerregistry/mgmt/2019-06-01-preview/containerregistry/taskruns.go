@@ -46,7 +46,7 @@ func NewTaskRunsClientWithBaseURI(baseURI string, subscriptionID string) TaskRun
 // Parameters:
 // resourceGroupName - the name of the resource group to which the container registry belongs.
 // registryName - the name of the container registry.
-// taskRunName - the name of task run.
+// taskRunName - the name of the task run.
 // taskRun - the parameters of a run that needs to scheduled.
 func (client TaskRunsClient) Create(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun TaskRun) (result TaskRunsCreateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -65,7 +65,11 @@ func (client TaskRunsClient) Create(ctx context.Context, resourceGroupName strin
 		{TargetValue: registryName,
 			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}}}); err != nil {
+				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}},
+		{TargetValue: taskRunName,
+			Constraints: []validation.Constraint{{Target: "taskRunName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "taskRunName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "taskRunName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("containerregistry.TaskRunsClient", "Create", err.Error())
 	}
 
@@ -136,7 +140,7 @@ func (client TaskRunsClient) CreateResponder(resp *http.Response) (result TaskRu
 // Parameters:
 // resourceGroupName - the name of the resource group to which the container registry belongs.
 // registryName - the name of the container registry.
-// taskRunName - the task run name.
+// taskRunName - the name of the task run.
 func (client TaskRunsClient) Delete(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (result TaskRunsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TaskRunsClient.Delete")
@@ -154,7 +158,11 @@ func (client TaskRunsClient) Delete(ctx context.Context, resourceGroupName strin
 		{TargetValue: registryName,
 			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}}}); err != nil {
+				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}},
+		{TargetValue: taskRunName,
+			Constraints: []validation.Constraint{{Target: "taskRunName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "taskRunName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "taskRunName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("containerregistry.TaskRunsClient", "Delete", err.Error())
 	}
 
@@ -222,7 +230,7 @@ func (client TaskRunsClient) DeleteResponder(resp *http.Response) (result autore
 // Parameters:
 // resourceGroupName - the name of the resource group to which the container registry belongs.
 // registryName - the name of the container registry.
-// taskRunName - the run request name.
+// taskRunName - the name of the task run.
 func (client TaskRunsClient) Get(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (result TaskRun, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TaskRunsClient.Get")
@@ -240,7 +248,11 @@ func (client TaskRunsClient) Get(ctx context.Context, resourceGroupName string, 
 		{TargetValue: registryName,
 			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}}}); err != nil {
+				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}},
+		{TargetValue: taskRunName,
+			Constraints: []validation.Constraint{{Target: "taskRunName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "taskRunName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "taskRunName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("containerregistry.TaskRunsClient", "Get", err.Error())
 	}
 
@@ -309,7 +321,7 @@ func (client TaskRunsClient) GetResponder(resp *http.Response) (result TaskRun, 
 // Parameters:
 // resourceGroupName - the name of the resource group to which the container registry belongs.
 // registryName - the name of the container registry.
-// taskRunName - the run request name.
+// taskRunName - the name of the task run.
 func (client TaskRunsClient) GetDetails(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (result TaskRun, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TaskRunsClient.GetDetails")
@@ -327,7 +339,11 @@ func (client TaskRunsClient) GetDetails(ctx context.Context, resourceGroupName s
 		{TargetValue: registryName,
 			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}}}); err != nil {
+				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}},
+		{TargetValue: taskRunName,
+			Constraints: []validation.Constraint{{Target: "taskRunName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "taskRunName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "taskRunName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("containerregistry.TaskRunsClient", "GetDetails", err.Error())
 	}
 
@@ -435,6 +451,9 @@ func (client TaskRunsClient) List(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsClient", "List", resp, "Failure responding to request")
 	}
+	if result.trlr.hasNextLink() && result.trlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -519,7 +538,7 @@ func (client TaskRunsClient) ListComplete(ctx context.Context, resourceGroupName
 // Parameters:
 // resourceGroupName - the name of the resource group to which the container registry belongs.
 // registryName - the name of the container registry.
-// taskRunName - the task run name.
+// taskRunName - the name of the task run.
 // updateParameters - the parameters for updating a task run.
 func (client TaskRunsClient) Update(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters) (result TaskRunsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -538,7 +557,11 @@ func (client TaskRunsClient) Update(ctx context.Context, resourceGroupName strin
 		{TargetValue: registryName,
 			Constraints: []validation.Constraint{{Target: "registryName", Name: validation.MaxLength, Rule: 50, Chain: nil},
 				{Target: "registryName", Name: validation.MinLength, Rule: 5, Chain: nil},
-				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}}}); err != nil {
+				{Target: "registryName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]*$`, Chain: nil}}},
+		{TargetValue: taskRunName,
+			Constraints: []validation.Constraint{{Target: "taskRunName", Name: validation.MaxLength, Rule: 50, Chain: nil},
+				{Target: "taskRunName", Name: validation.MinLength, Rule: 5, Chain: nil},
+				{Target: "taskRunName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9-]*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("containerregistry.TaskRunsClient", "Update", err.Error())
 	}
 

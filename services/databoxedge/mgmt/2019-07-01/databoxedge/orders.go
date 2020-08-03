@@ -322,6 +322,9 @@ func (client OrdersClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceNa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.OrdersClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
 	}
+	if result.ol.hasNextLink() && result.ol.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

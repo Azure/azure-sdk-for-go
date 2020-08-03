@@ -80,6 +80,9 @@ func (client UsageClient) List(ctx context.Context, location string) (result Lis
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.UsageClient", "List", resp, "Failure responding to request")
 	}
+	if result.lur.hasNextLink() && result.lur.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

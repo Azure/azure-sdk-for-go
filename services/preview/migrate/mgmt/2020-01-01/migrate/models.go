@@ -30,211 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/migrate/mgmt/2020-01-01/migrate"
 
-// Bitness enumerates the values for bitness.
-type Bitness string
-
-const (
-	// SixFourbit ...
-	SixFourbit Bitness = "64bit"
-	// ThreeTwobit ...
-	ThreeTwobit Bitness = "32bit"
-)
-
-// PossibleBitnessValues returns an array of possible values for the Bitness const type.
-func PossibleBitnessValues() []Bitness {
-	return []Bitness{SixFourbit, ThreeTwobit}
-}
-
-// CPUSpeedAccuracy enumerates the values for cpu speed accuracy.
-type CPUSpeedAccuracy string
-
-const (
-	// Actual ...
-	Actual CPUSpeedAccuracy = "actual"
-	// Estimated ...
-	Estimated CPUSpeedAccuracy = "estimated"
-)
-
-// PossibleCPUSpeedAccuracyValues returns an array of possible values for the CPUSpeedAccuracy const type.
-func PossibleCPUSpeedAccuracyValues() []CPUSpeedAccuracy {
-	return []CPUSpeedAccuracy{Actual, Estimated}
-}
-
-// CredentialType enumerates the values for credential type.
-type CredentialType string
-
-const (
-	// HyperVFabric ...
-	HyperVFabric CredentialType = "HyperVFabric"
-	// LinuxGuest ...
-	LinuxGuest CredentialType = "LinuxGuest"
-	// LinuxServer ...
-	LinuxServer CredentialType = "LinuxServer"
-	// VMwareFabric ...
-	VMwareFabric CredentialType = "VMwareFabric"
-	// WindowsGuest ...
-	WindowsGuest CredentialType = "WindowsGuest"
-	// WindowsServer ...
-	WindowsServer CredentialType = "WindowsServer"
-)
-
-// PossibleCredentialTypeValues returns an array of possible values for the CredentialType const type.
-func PossibleCredentialTypeValues() []CredentialType {
-	return []CredentialType{HyperVFabric, LinuxGuest, LinuxServer, VMwareFabric, WindowsGuest, WindowsServer}
-}
-
-// Family enumerates the values for family.
-type Family string
-
-const (
-	// Aix ...
-	Aix Family = "aix"
-	// Linux ...
-	Linux Family = "linux"
-	// Solaris ...
-	Solaris Family = "solaris"
-	// Unknown ...
-	Unknown Family = "unknown"
-	// Windows ...
-	Windows Family = "windows"
-)
-
-// PossibleFamilyValues returns an array of possible values for the Family const type.
-func PossibleFamilyValues() []Family {
-	return []Family{Aix, Linux, Solaris, Unknown, Windows}
-}
-
-// HighlyAvailable enumerates the values for highly available.
-type HighlyAvailable string
-
-const (
-	// HighlyAvailableNo ...
-	HighlyAvailableNo HighlyAvailable = "No"
-	// HighlyAvailableUnknown ...
-	HighlyAvailableUnknown HighlyAvailable = "Unknown"
-	// HighlyAvailableYes ...
-	HighlyAvailableYes HighlyAvailable = "Yes"
-)
-
-// PossibleHighlyAvailableValues returns an array of possible values for the HighlyAvailable const type.
-func PossibleHighlyAvailableValues() []HighlyAvailable {
-	return []HighlyAvailable{HighlyAvailableNo, HighlyAvailableUnknown, HighlyAvailableYes}
-}
-
-// HypervisorType enumerates the values for hypervisor type.
-type HypervisorType string
-
-const (
-	// HypervisorTypeHyperv ...
-	HypervisorTypeHyperv HypervisorType = "hyperv"
-	// HypervisorTypeUnknown ...
-	HypervisorTypeUnknown HypervisorType = "unknown"
-)
-
-// PossibleHypervisorTypeValues returns an array of possible values for the HypervisorType const type.
-func PossibleHypervisorTypeValues() []HypervisorType {
-	return []HypervisorType{HypervisorTypeHyperv, HypervisorTypeUnknown}
-}
-
-// PropertiesMonitoringState enumerates the values for properties monitoring state.
-type PropertiesMonitoringState string
-
-const (
-	// Discovered ...
-	Discovered PropertiesMonitoringState = "discovered"
-	// Monitored ...
-	Monitored PropertiesMonitoringState = "monitored"
-)
-
-// PossiblePropertiesMonitoringStateValues returns an array of possible values for the PropertiesMonitoringState const type.
-func PossiblePropertiesMonitoringStateValues() []PropertiesMonitoringState {
-	return []PropertiesMonitoringState{Discovered, Monitored}
-}
-
-// PropertiesVirtualizationState enumerates the values for properties virtualization state.
-type PropertiesVirtualizationState string
-
-const (
-	// PropertiesVirtualizationStateHypervisor ...
-	PropertiesVirtualizationStateHypervisor PropertiesVirtualizationState = "hypervisor"
-	// PropertiesVirtualizationStatePhysical ...
-	PropertiesVirtualizationStatePhysical PropertiesVirtualizationState = "physical"
-	// PropertiesVirtualizationStateUnknown ...
-	PropertiesVirtualizationStateUnknown PropertiesVirtualizationState = "unknown"
-	// PropertiesVirtualizationStateVirtual ...
-	PropertiesVirtualizationStateVirtual PropertiesVirtualizationState = "virtual"
-)
-
-// PossiblePropertiesVirtualizationStateValues returns an array of possible values for the PropertiesVirtualizationState const type.
-func PossiblePropertiesVirtualizationStateValues() []PropertiesVirtualizationState {
-	return []PropertiesVirtualizationState{PropertiesVirtualizationStateHypervisor, PropertiesVirtualizationStatePhysical, PropertiesVirtualizationStateUnknown, PropertiesVirtualizationStateVirtual}
-}
-
-// RebootStatus enumerates the values for reboot status.
-type RebootStatus string
-
-const (
-	// RebootStatusNotRebooted ...
-	RebootStatusNotRebooted RebootStatus = "notRebooted"
-	// RebootStatusRebooted ...
-	RebootStatusRebooted RebootStatus = "rebooted"
-	// RebootStatusUnknown ...
-	RebootStatusUnknown RebootStatus = "unknown"
-)
-
-// PossibleRebootStatusValues returns an array of possible values for the RebootStatus const type.
-func PossibleRebootStatusValues() []RebootStatus {
-	return []RebootStatus{RebootStatusNotRebooted, RebootStatusRebooted, RebootStatusUnknown}
-}
-
-// VirtualDiskMode enumerates the values for virtual disk mode.
-type VirtualDiskMode string
-
-const (
-	// Append ...
-	Append VirtualDiskMode = "append"
-	// IndependentNonpersistent ...
-	IndependentNonpersistent VirtualDiskMode = "independent_nonpersistent"
-	// IndependentPersistent ...
-	IndependentPersistent VirtualDiskMode = "independent_persistent"
-	// Nonpersistent ...
-	Nonpersistent VirtualDiskMode = "nonpersistent"
-	// Persistent ...
-	Persistent VirtualDiskMode = "persistent"
-	// Undoable ...
-	Undoable VirtualDiskMode = "undoable"
-)
-
-// PossibleVirtualDiskModeValues returns an array of possible values for the VirtualDiskMode const type.
-func PossibleVirtualDiskModeValues() []VirtualDiskMode {
-	return []VirtualDiskMode{Append, IndependentNonpersistent, IndependentPersistent, Nonpersistent, Persistent, Undoable}
-}
-
-// VirtualMachineType enumerates the values for virtual machine type.
-type VirtualMachineType string
-
-const (
-	// VirtualMachineTypeHyperv ...
-	VirtualMachineTypeHyperv VirtualMachineType = "hyperv"
-	// VirtualMachineTypeLdom ...
-	VirtualMachineTypeLdom VirtualMachineType = "ldom"
-	// VirtualMachineTypeLpar ...
-	VirtualMachineTypeLpar VirtualMachineType = "lpar"
-	// VirtualMachineTypeUnknown ...
-	VirtualMachineTypeUnknown VirtualMachineType = "unknown"
-	// VirtualMachineTypeVirtualPc ...
-	VirtualMachineTypeVirtualPc VirtualMachineType = "virtualPc"
-	// VirtualMachineTypeVmware ...
-	VirtualMachineTypeVmware VirtualMachineType = "vmware"
-	// VirtualMachineTypeXen ...
-	VirtualMachineTypeXen VirtualMachineType = "xen"
-)
-
-// PossibleVirtualMachineTypeValues returns an array of possible values for the VirtualMachineType const type.
-func PossibleVirtualMachineTypeValues() []VirtualMachineType {
-	return []VirtualMachineType{VirtualMachineTypeHyperv, VirtualMachineTypeLdom, VirtualMachineTypeLpar, VirtualMachineTypeUnknown, VirtualMachineTypeVirtualPc, VirtualMachineTypeVmware, VirtualMachineTypeXen}
-}
-
 // AgentConfiguration ...
 type AgentConfiguration struct {
 	AgentID                 *string `json:"agentId,omitempty"`
@@ -336,8 +131,8 @@ type Feature struct {
 	Status *string `json:"status,omitempty"`
 }
 
-// GuestOSDetails data related to a machine's operating system. Serialized and stored as part of Machine
-// Rest object.
+// GuestOSDetails data related to a machine's operating system. Serialized and stored as part of Machine Rest
+// object.
 type GuestOSDetails struct {
 	// OsType - Type of the operating system.
 	OsType *string `json:"osType,omitempty"`
@@ -345,6 +140,15 @@ type GuestOSDetails struct {
 	OsName *string `json:"osName,omitempty"`
 	// OsVersion - READ-ONLY; Version of the operating system.
 	OsVersion *string `json:"osVersion,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GuestOSDetails.
+func (god GuestOSDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if god.OsType != nil {
+		objectMap["osType"] = god.OsType
+	}
+	return json.Marshal(objectMap)
 }
 
 // HealthErrorDetails error contract returned when some exception occurs in Rest API.
@@ -391,6 +195,18 @@ type HyperVCluster struct {
 	Type *string `json:"type,omitempty"`
 	// Properties - Nested properties of the cluster.
 	Properties *HyperVClusterProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HyperVCluster.
+func (hvc HyperVCluster) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hvc.Name != nil {
+		objectMap["name"] = hvc.Name
+	}
+	if hvc.Properties != nil {
+		objectMap["properties"] = hvc.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // HyperVClusterCollection collection of Hyper-V clusters.
@@ -470,10 +286,15 @@ func (hvcc HyperVClusterCollection) IsEmpty() bool {
 	return hvcc.Value == nil || len(*hvcc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (hvcc HyperVClusterCollection) hasNextLink() bool {
+	return hvcc.NextLink != nil && len(*hvcc.NextLink) != 0
+}
+
 // hyperVClusterCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (hvcc HyperVClusterCollection) hyperVClusterCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if hvcc.NextLink == nil || len(to.String(hvcc.NextLink)) < 1 {
+	if !hvcc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -501,11 +322,16 @@ func (page *HyperVClusterCollectionPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.hvcc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.hvcc)
+		if err != nil {
+			return err
+		}
+		page.hvcc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.hvcc = next
 	return nil
 }
 
@@ -559,6 +385,21 @@ type HyperVClusterProperties struct {
 	Errors *[]HealthErrorDetails `json:"errors,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HyperVClusterProperties.
+func (hvcp HyperVClusterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hvcp.Fqdn != nil {
+		objectMap["fqdn"] = hvcp.Fqdn
+	}
+	if hvcp.RunAsAccountID != nil {
+		objectMap["runAsAccountId"] = hvcp.RunAsAccountID
+	}
+	if hvcp.HostFqdnList != nil {
+		objectMap["hostFqdnList"] = hvcp.HostFqdnList
+	}
+	return json.Marshal(objectMap)
+}
+
 // HyperVDisk second level object returned as part of Machine REST resource.
 type HyperVDisk struct {
 	// InstanceID - READ-ONLY; Id of the disk.
@@ -588,6 +429,18 @@ type HyperVHost struct {
 	Type *string `json:"type,omitempty"`
 	// Properties - Nested properties.
 	Properties *HyperVHostProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HyperVHost.
+func (hvh HyperVHost) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hvh.Name != nil {
+		objectMap["name"] = hvh.Name
+	}
+	if hvh.Properties != nil {
+		objectMap["properties"] = hvh.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // HyperVHostCollection collection of Hyper-V hosts.
@@ -667,10 +520,15 @@ func (hvhc HyperVHostCollection) IsEmpty() bool {
 	return hvhc.Value == nil || len(*hvhc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (hvhc HyperVHostCollection) hasNextLink() bool {
+	return hvhc.NextLink != nil && len(*hvhc.NextLink) != 0
+}
+
 // hyperVHostCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (hvhc HyperVHostCollection) hyperVHostCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if hvhc.NextLink == nil || len(to.String(hvhc.NextLink)) < 1 {
+	if !hvhc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -698,11 +556,16 @@ func (page *HyperVHostCollectionPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.hvhc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.hvhc)
+		if err != nil {
+			return err
+		}
+		page.hvhc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.hvhc = next
 	return nil
 }
 
@@ -750,6 +613,18 @@ type HyperVHostProperties struct {
 	Version *string `json:"version,omitempty"`
 	// Errors - READ-ONLY; Errors for Hyper-V hosts.
 	Errors *[]HealthErrorDetails `json:"errors,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HyperVHostProperties.
+func (hvhp HyperVHostProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hvhp.Fqdn != nil {
+		objectMap["fqdn"] = hvhp.Fqdn
+	}
+	if hvhp.RunAsAccountID != nil {
+		objectMap["runAsAccountId"] = hvhp.RunAsAccountID
+	}
+	return json.Marshal(objectMap)
 }
 
 // HypervisorConfiguration ...
@@ -849,10 +724,15 @@ func (hvjc HyperVJobCollection) IsEmpty() bool {
 	return hvjc.Value == nil || len(*hvjc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (hvjc HyperVJobCollection) hasNextLink() bool {
+	return hvjc.NextLink != nil && len(*hvjc.NextLink) != 0
+}
+
 // hyperVJobCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (hvjc HyperVJobCollection) hyperVJobCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if hvjc.NextLink == nil || len(to.String(hvjc.NextLink)) < 1 {
+	if !hvjc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -880,11 +760,16 @@ func (page *HyperVJobCollectionPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.hvjc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.hvjc)
+		if err != nil {
+			return err
+		}
+		page.hvjc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.hvjc = next
 	return nil
 }
 
@@ -1008,10 +893,15 @@ func (hvmc HyperVMachineCollection) IsEmpty() bool {
 	return hvmc.Value == nil || len(*hvmc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (hvmc HyperVMachineCollection) hasNextLink() bool {
+	return hvmc.NextLink != nil && len(*hvmc.NextLink) != 0
+}
+
 // hyperVMachineCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (hvmc HyperVMachineCollection) hyperVMachineCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if hvmc.NextLink == nil || len(to.String(hvmc.NextLink)) < 1 {
+	if !hvmc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1039,11 +929,16 @@ func (page *HyperVMachineCollectionPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.hvmc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.hvmc)
+		if err != nil {
+			return err
+		}
+		page.hvmc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.hvmc = next
 	return nil
 }
 
@@ -1257,10 +1152,15 @@ func (hvraac HyperVRunAsAccountCollection) IsEmpty() bool {
 	return hvraac.Value == nil || len(*hvraac.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (hvraac HyperVRunAsAccountCollection) hasNextLink() bool {
+	return hvraac.NextLink != nil && len(*hvraac.NextLink) != 0
+}
+
 // hyperVRunAsAccountCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (hvraac HyperVRunAsAccountCollection) hyperVRunAsAccountCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if hvraac.NextLink == nil || len(to.String(hvraac.NextLink)) < 1 {
+	if !hvraac.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1288,11 +1188,16 @@ func (page *HyperVRunAsAccountCollectionPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.hvraac)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.hvraac)
+		if err != nil {
+			return err
+		}
+		page.hvraac = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.hvraac = next
 	return nil
 }
 
@@ -1481,6 +1386,15 @@ type Operation struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplay displayable properties of the operation.
 type OperationDisplay struct {
 	// Provider - READ-ONLY; Provider of the operation.
@@ -1570,10 +1484,15 @@ func (orl OperationResultList) IsEmpty() bool {
 	return orl.Value == nil || len(*orl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (orl OperationResultList) hasNextLink() bool {
+	return orl.NextLink != nil && len(*orl.NextLink) != 0
+}
+
 // operationResultListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (orl OperationResultList) operationResultListPreparer(ctx context.Context) (*http.Request, error) {
-	if orl.NextLink == nil || len(to.String(orl.NextLink)) < 1 {
+	if !orl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1601,11 +1520,16 @@ func (page *OperationResultListPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.orl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.orl)
+		if err != nil {
+			return err
+		}
+		page.orl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.orl = next
 	return nil
 }
 
@@ -1720,6 +1644,18 @@ type SiteAgentProperties struct {
 	KeyVaultID *string `json:"keyVaultId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SiteAgentProperties.
+func (sap SiteAgentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sap.KeyVaultURI != nil {
+		objectMap["keyVaultUri"] = sap.KeyVaultURI
+	}
+	if sap.KeyVaultID != nil {
+		objectMap["keyVaultId"] = sap.KeyVaultID
+	}
+	return json.Marshal(objectMap)
+}
+
 // SiteHealthSummary site health summary model.
 type SiteHealthSummary struct {
 	// ApplianceName - READ-ONLY; Appliance name.
@@ -1744,6 +1680,21 @@ type SiteHealthSummary struct {
 	AffectedResourceType *string `json:"affectedResourceType,omitempty"`
 	// AffectedResources - Affected resources.
 	AffectedResources *[]string `json:"affectedResources,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SiteHealthSummary.
+func (shs SiteHealthSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if shs.AffectedObjectsCount != nil {
+		objectMap["affectedObjectsCount"] = shs.AffectedObjectsCount
+	}
+	if shs.HitCount != nil {
+		objectMap["hitCount"] = shs.HitCount
+	}
+	if shs.AffectedResources != nil {
+		objectMap["affectedResources"] = shs.AffectedResources
+	}
+	return json.Marshal(objectMap)
 }
 
 // SiteHealthSummaryCollection collection of SiteHealthSummary.
@@ -1823,10 +1774,15 @@ func (shsc SiteHealthSummaryCollection) IsEmpty() bool {
 	return shsc.Value == nil || len(*shsc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (shsc SiteHealthSummaryCollection) hasNextLink() bool {
+	return shsc.NextLink != nil && len(*shsc.NextLink) != 0
+}
+
 // siteHealthSummaryCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (shsc SiteHealthSummaryCollection) siteHealthSummaryCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if shsc.NextLink == nil || len(to.String(shsc.NextLink)) < 1 {
+	if !shsc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1854,11 +1810,16 @@ func (page *SiteHealthSummaryCollectionPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.shsc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.shsc)
+		if err != nil {
+			return err
+		}
+		page.shsc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.shsc = next
 	return nil
 }
 
@@ -1904,6 +1865,24 @@ type SiteProperties struct {
 	DiscoverySolutionID *string `json:"discoverySolutionId,omitempty"`
 	// ApplianceName - Appliance Name.
 	ApplianceName *string `json:"applianceName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SiteProperties.
+func (sp SiteProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.ServicePrincipalIdentityDetails != nil {
+		objectMap["servicePrincipalIdentityDetails"] = sp.ServicePrincipalIdentityDetails
+	}
+	if sp.AgentDetails != nil {
+		objectMap["agentDetails"] = sp.AgentDetails
+	}
+	if sp.DiscoverySolutionID != nil {
+		objectMap["discoverySolutionId"] = sp.DiscoverySolutionID
+	}
+	if sp.ApplianceName != nil {
+		objectMap["applianceName"] = sp.ApplianceName
+	}
+	return json.Marshal(objectMap)
 }
 
 // SiteSpnProperties class for site properties.
@@ -1964,6 +1943,18 @@ type VCenter struct {
 	Type *string `json:"type,omitempty"`
 	// Properties - vCenter nested properties.
 	Properties *VCenterProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VCenter.
+func (vc VCenter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vc.Name != nil {
+		objectMap["name"] = vc.Name
+	}
+	if vc.Properties != nil {
+		objectMap["properties"] = vc.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // VCenterCollection collection of vCenter.
@@ -2043,10 +2034,15 @@ func (vcc VCenterCollection) IsEmpty() bool {
 	return vcc.Value == nil || len(*vcc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (vcc VCenterCollection) hasNextLink() bool {
+	return vcc.NextLink != nil && len(*vcc.NextLink) != 0
+}
+
 // vCenterCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (vcc VCenterCollection) vCenterCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if vcc.NextLink == nil || len(to.String(vcc.NextLink)) < 1 {
+	if !vcc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2074,11 +2070,16 @@ func (page *VCenterCollectionPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.vcc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.vcc)
+		if err != nil {
+			return err
+		}
+		page.vcc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.vcc = next
 	return nil
 }
 
@@ -2132,6 +2133,21 @@ type VCenterProperties struct {
 	InstanceUUID *string `json:"instanceUuid,omitempty"`
 	// Errors - READ-ONLY; Error details.
 	Errors *[]HealthErrorDetails `json:"errors,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VCenterProperties.
+func (vcp VCenterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vcp.Fqdn != nil {
+		objectMap["fqdn"] = vcp.Fqdn
+	}
+	if vcp.Port != nil {
+		objectMap["port"] = vcp.Port
+	}
+	if vcp.RunAsAccountID != nil {
+		objectMap["runAsAccountId"] = vcp.RunAsAccountID
+	}
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachineConfiguration ...
@@ -2257,10 +2273,15 @@ func (vmjc VMwareJobCollection) IsEmpty() bool {
 	return vmjc.Value == nil || len(*vmjc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (vmjc VMwareJobCollection) hasNextLink() bool {
+	return vmjc.NextLink != nil && len(*vmjc.NextLink) != 0
+}
+
 // vMwareJobCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (vmjc VMwareJobCollection) vMwareJobCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if vmjc.NextLink == nil || len(to.String(vmjc.NextLink)) < 1 {
+	if !vmjc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2288,11 +2309,16 @@ func (page *VMwareJobCollectionPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.vmjc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.vmjc)
+		if err != nil {
+			return err
+		}
+		page.vmjc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.vmjc = next
 	return nil
 }
 
@@ -2416,10 +2442,15 @@ func (vmmc VMwareMachineCollection) IsEmpty() bool {
 	return vmmc.Value == nil || len(*vmmc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (vmmc VMwareMachineCollection) hasNextLink() bool {
+	return vmmc.NextLink != nil && len(*vmmc.NextLink) != 0
+}
+
 // vMwareMachineCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (vmmc VMwareMachineCollection) vMwareMachineCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if vmmc.NextLink == nil || len(to.String(vmmc.NextLink)) < 1 {
+	if !vmmc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2447,11 +2478,16 @@ func (page *VMwareMachineCollectionPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.vmmc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.vmmc)
+		if err != nil {
+			return err
+		}
+		page.vmmc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.vmmc = next
 	return nil
 }
 
@@ -2667,10 +2703,15 @@ func (vmraac VMwareRunAsAccountCollection) IsEmpty() bool {
 	return vmraac.Value == nil || len(*vmraac.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (vmraac VMwareRunAsAccountCollection) hasNextLink() bool {
+	return vmraac.NextLink != nil && len(*vmraac.NextLink) != 0
+}
+
 // vMwareRunAsAccountCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (vmraac VMwareRunAsAccountCollection) vMwareRunAsAccountCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if vmraac.NextLink == nil || len(to.String(vmraac.NextLink)) < 1 {
+	if !vmraac.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2698,11 +2739,16 @@ func (page *VMwareRunAsAccountCollectionPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.vmraac)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.vmraac)
+		if err != nil {
+			return err
+		}
+		page.vmraac = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.vmraac = next
 	return nil
 }
 

@@ -153,6 +153,9 @@ func (client VirtualMachineTemplatesClient) List(ctx context.Context, pcName str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.VirtualMachineTemplatesClient", "List", resp, "Failure responding to request")
 	}
+	if result.vmtlr.hasNextLink() && result.vmtlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

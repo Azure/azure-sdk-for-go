@@ -416,6 +416,9 @@ func (client ClustersClient) ListByWorkspace(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "ListByWorkspace", resp, "Failure responding to request")
 	}
+	if result.clr.hasNextLink() && result.clr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -551,6 +554,9 @@ func (client ClustersClient) ListRemoteLoginInformation(ctx context.Context, res
 	result.rlilr, err = client.ListRemoteLoginInformationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "ListRemoteLoginInformation", resp, "Failure responding to request")
+	}
+	if result.rlilr.hasNextLink() && result.rlilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

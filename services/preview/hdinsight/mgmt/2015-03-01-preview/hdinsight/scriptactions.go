@@ -227,6 +227,9 @@ func (client ScriptActionsClient) ListPersistedScripts(ctx context.Context, reso
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hdinsight.ScriptActionsClient", "ListPersistedScripts", resp, "Failure responding to request")
 	}
+	if result.sal.hasNextLink() && result.sal.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

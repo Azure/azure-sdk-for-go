@@ -339,6 +339,9 @@ func (client LinkedServiceClient) GetLinkedServicesByWorkspace(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.LinkedServiceClient", "GetLinkedServicesByWorkspace", resp, "Failure responding to request")
 	}
+	if result.lslr.hasNextLink() && result.lslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

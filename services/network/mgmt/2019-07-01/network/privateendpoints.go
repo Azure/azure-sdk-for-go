@@ -305,6 +305,9 @@ func (client PrivateEndpointsClient) List(ctx context.Context, resourceGroupName
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PrivateEndpointsClient", "List", resp, "Failure responding to request")
 	}
+	if result.pelr.hasNextLink() && result.pelr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -413,6 +416,9 @@ func (client PrivateEndpointsClient) ListBySubscription(ctx context.Context) (re
 	result.pelr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.PrivateEndpointsClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.pelr.hasNextLink() && result.pelr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

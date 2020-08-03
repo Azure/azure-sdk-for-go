@@ -175,6 +175,9 @@ func (client PrivateEndpointConnectionClient) ListByBatchAccount(ctx context.Con
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PrivateEndpointConnectionClient", "ListByBatchAccount", resp, "Failure responding to request")
 	}
+	if result.lpecr.hasNextLink() && result.lpecr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

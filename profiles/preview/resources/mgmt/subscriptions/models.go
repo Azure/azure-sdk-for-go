@@ -43,6 +43,13 @@ const (
 	Physical RegionType = original.Physical
 )
 
+type ResourceNameStatus = original.ResourceNameStatus
+
+const (
+	Allowed  ResourceNameStatus = original.Allowed
+	Reserved ResourceNameStatus = original.Reserved
+)
+
 type SpendingLimit = original.SpendingLimit
 
 const (
@@ -70,7 +77,10 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type CheckResourceNameResult = original.CheckResourceNameResult
 type Client = original.Client
+type ErrorDefinition = original.ErrorDefinition
+type ErrorResponse = original.ErrorResponse
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
@@ -86,6 +96,7 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type PairedRegion = original.PairedRegion
 type Policies = original.Policies
+type ResourceName = original.ResourceName
 type Subscription = original.Subscription
 type TenantIDDescription = original.TenantIDDescription
 type TenantListResult = original.TenantListResult
@@ -140,6 +151,9 @@ func PossibleRegionCategoryValues() []RegionCategory {
 }
 func PossibleRegionTypeValues() []RegionType {
 	return original.PossibleRegionTypeValues()
+}
+func PossibleResourceNameStatusValues() []ResourceNameStatus {
+	return original.PossibleResourceNameStatusValues()
 }
 func PossibleSpendingLimitValues() []SpendingLimit {
 	return original.PossibleSpendingLimitValues()

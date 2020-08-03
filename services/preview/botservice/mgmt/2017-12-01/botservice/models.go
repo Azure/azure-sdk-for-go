@@ -29,119 +29,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2017-12-01/botservice"
 
-// ChannelName enumerates the values for channel name.
-type ChannelName string
-
-const (
-	// ChannelNameDirectLineChannel ...
-	ChannelNameDirectLineChannel ChannelName = "DirectLineChannel"
-	// ChannelNameEmailChannel ...
-	ChannelNameEmailChannel ChannelName = "EmailChannel"
-	// ChannelNameFacebookChannel ...
-	ChannelNameFacebookChannel ChannelName = "FacebookChannel"
-	// ChannelNameKikChannel ...
-	ChannelNameKikChannel ChannelName = "KikChannel"
-	// ChannelNameMsTeamsChannel ...
-	ChannelNameMsTeamsChannel ChannelName = "MsTeamsChannel"
-	// ChannelNameSkypeChannel ...
-	ChannelNameSkypeChannel ChannelName = "SkypeChannel"
-	// ChannelNameSlackChannel ...
-	ChannelNameSlackChannel ChannelName = "SlackChannel"
-	// ChannelNameSmsChannel ...
-	ChannelNameSmsChannel ChannelName = "SmsChannel"
-	// ChannelNameTelegramChannel ...
-	ChannelNameTelegramChannel ChannelName = "TelegramChannel"
-	// ChannelNameWebChatChannel ...
-	ChannelNameWebChatChannel ChannelName = "WebChatChannel"
-)
-
-// PossibleChannelNameValues returns an array of possible values for the ChannelName const type.
-func PossibleChannelNameValues() []ChannelName {
-	return []ChannelName{ChannelNameDirectLineChannel, ChannelNameEmailChannel, ChannelNameFacebookChannel, ChannelNameKikChannel, ChannelNameMsTeamsChannel, ChannelNameSkypeChannel, ChannelNameSlackChannel, ChannelNameSmsChannel, ChannelNameTelegramChannel, ChannelNameWebChatChannel}
-}
-
-// ChannelNameBasicChannel enumerates the values for channel name basic channel.
-type ChannelNameBasicChannel string
-
-const (
-	// ChannelNameChannel ...
-	ChannelNameChannel ChannelNameBasicChannel = "Channel"
-	// ChannelNameDirectLineChannel1 ...
-	ChannelNameDirectLineChannel1 ChannelNameBasicChannel = "DirectLineChannel"
-	// ChannelNameEmailChannel1 ...
-	ChannelNameEmailChannel1 ChannelNameBasicChannel = "EmailChannel"
-	// ChannelNameFacebookChannel1 ...
-	ChannelNameFacebookChannel1 ChannelNameBasicChannel = "FacebookChannel"
-	// ChannelNameKikChannel1 ...
-	ChannelNameKikChannel1 ChannelNameBasicChannel = "KikChannel"
-	// ChannelNameMsTeamsChannel1 ...
-	ChannelNameMsTeamsChannel1 ChannelNameBasicChannel = "MsTeamsChannel"
-	// ChannelNameSkypeChannel1 ...
-	ChannelNameSkypeChannel1 ChannelNameBasicChannel = "SkypeChannel"
-	// ChannelNameSlackChannel1 ...
-	ChannelNameSlackChannel1 ChannelNameBasicChannel = "SlackChannel"
-	// ChannelNameSmsChannel1 ...
-	ChannelNameSmsChannel1 ChannelNameBasicChannel = "SmsChannel"
-	// ChannelNameTelegramChannel1 ...
-	ChannelNameTelegramChannel1 ChannelNameBasicChannel = "TelegramChannel"
-	// ChannelNameWebChatChannel1 ...
-	ChannelNameWebChatChannel1 ChannelNameBasicChannel = "WebChatChannel"
-)
-
-// PossibleChannelNameBasicChannelValues returns an array of possible values for the ChannelNameBasicChannel const type.
-func PossibleChannelNameBasicChannelValues() []ChannelNameBasicChannel {
-	return []ChannelNameBasicChannel{ChannelNameChannel, ChannelNameDirectLineChannel1, ChannelNameEmailChannel1, ChannelNameFacebookChannel1, ChannelNameKikChannel1, ChannelNameMsTeamsChannel1, ChannelNameSkypeChannel1, ChannelNameSlackChannel1, ChannelNameSmsChannel1, ChannelNameTelegramChannel1, ChannelNameWebChatChannel1}
-}
-
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// KindBot ...
-	KindBot Kind = "bot"
-	// KindDesigner ...
-	KindDesigner Kind = "designer"
-	// KindFunction ...
-	KindFunction Kind = "function"
-	// KindSdk ...
-	KindSdk Kind = "sdk"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{KindBot, KindDesigner, KindFunction, KindSdk}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// F0 ...
-	F0 SkuName = "F0"
-	// S1 ...
-	S1 SkuName = "S1"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{F0, S1}
-}
-
-// SkuTier enumerates the values for sku tier.
-type SkuTier string
-
-const (
-	// Free ...
-	Free SkuTier = "Free"
-	// Standard ...
-	Standard SkuTier = "Standard"
-)
-
-// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() []SkuTier {
-	return []SkuTier{Free, Standard}
-}
-
 // Bot bot resource definition
 type Bot struct {
 	autorest.Response `json:"-"`
@@ -359,6 +246,42 @@ type BotProperties struct {
 	LuisKey *string `json:"luisKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for BotProperties.
+func (bp BotProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bp.DisplayName != nil {
+		objectMap["displayName"] = bp.DisplayName
+	}
+	if bp.Description != nil {
+		objectMap["description"] = bp.Description
+	}
+	if bp.IconURL != nil {
+		objectMap["iconUrl"] = bp.IconURL
+	}
+	if bp.Endpoint != nil {
+		objectMap["endpoint"] = bp.Endpoint
+	}
+	if bp.MsaAppID != nil {
+		objectMap["msaAppId"] = bp.MsaAppID
+	}
+	if bp.DeveloperAppInsightKey != nil {
+		objectMap["developerAppInsightKey"] = bp.DeveloperAppInsightKey
+	}
+	if bp.DeveloperAppInsightsAPIKey != nil {
+		objectMap["developerAppInsightsApiKey"] = bp.DeveloperAppInsightsAPIKey
+	}
+	if bp.DeveloperAppInsightsApplicationID != nil {
+		objectMap["developerAppInsightsApplicationId"] = bp.DeveloperAppInsightsApplicationID
+	}
+	if bp.LuisAppIds != nil {
+		objectMap["luisAppIds"] = bp.LuisAppIds
+	}
+	if bp.LuisKey != nil {
+		objectMap["luisKey"] = bp.LuisKey
+	}
+	return json.Marshal(objectMap)
+}
+
 // BotResponseList the list of  bot service operation response.
 type BotResponseList struct {
 	autorest.Response `json:"-"`
@@ -366,6 +289,15 @@ type BotResponseList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; Gets the list of bot service results and their properties.
 	Value *[]Bot `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BotResponseList.
+func (brl BotResponseList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if brl.NextLink != nil {
+		objectMap["nextLink"] = brl.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // BotResponseListIterator provides access to a complete listing of Bot values.
@@ -436,10 +368,15 @@ func (brl BotResponseList) IsEmpty() bool {
 	return brl.Value == nil || len(*brl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (brl BotResponseList) hasNextLink() bool {
+	return brl.NextLink != nil && len(*brl.NextLink) != 0
+}
+
 // botResponseListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (brl BotResponseList) botResponseListPreparer(ctx context.Context) (*http.Request, error) {
-	if brl.NextLink == nil || len(to.String(brl.NextLink)) < 1 {
+	if !brl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -467,11 +404,16 @@ func (page *BotResponseListPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.brl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.brl)
+		if err != nil {
+			return err
+		}
+		page.brl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.brl = next
 	return nil
 }
 
@@ -678,6 +620,15 @@ type ChannelResponseList struct {
 	Value *[]BotChannel `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ChannelResponseList.
+func (crl ChannelResponseList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if crl.NextLink != nil {
+		objectMap["nextLink"] = crl.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
 // ChannelResponseListIterator provides access to a complete listing of BotChannel values.
 type ChannelResponseListIterator struct {
 	i    int
@@ -746,10 +697,15 @@ func (crl ChannelResponseList) IsEmpty() bool {
 	return crl.Value == nil || len(*crl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (crl ChannelResponseList) hasNextLink() bool {
+	return crl.NextLink != nil && len(*crl.NextLink) != 0
+}
+
 // channelResponseListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (crl ChannelResponseList) channelResponseListPreparer(ctx context.Context) (*http.Request, error) {
-	if crl.NextLink == nil || len(to.String(crl.NextLink)) < 1 {
+	if !crl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -777,11 +733,16 @@ func (page *ChannelResponseListPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.crl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.crl)
+		if err != nil {
+			return err
+		}
+		page.crl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.crl = next
 	return nil
 }
 
@@ -887,8 +848,8 @@ func (cs ConnectionSetting) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ConnectionSettingParameter extra Parameter in a Connection Setting Properties to indicate service
-// provider specific properties
+// ConnectionSettingParameter extra Parameter in a Connection Setting Properties to indicate service provider
+// specific properties
 type ConnectionSettingParameter struct {
 	// Key - Key for the Connection Setting Parameter.
 	Key *string `json:"key,omitempty"`
@@ -914,6 +875,30 @@ type ConnectionSettingProperties struct {
 	Parameters *[]ConnectionSettingParameter `json:"parameters,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ConnectionSettingProperties.
+func (csp ConnectionSettingProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if csp.ClientID != nil {
+		objectMap["clientId"] = csp.ClientID
+	}
+	if csp.ClientSecret != nil {
+		objectMap["clientSecret"] = csp.ClientSecret
+	}
+	if csp.Scopes != nil {
+		objectMap["scopes"] = csp.Scopes
+	}
+	if csp.ServiceProviderID != nil {
+		objectMap["serviceProviderId"] = csp.ServiceProviderID
+	}
+	if csp.ServiceProviderDisplayName != nil {
+		objectMap["serviceProviderDisplayName"] = csp.ServiceProviderDisplayName
+	}
+	if csp.Parameters != nil {
+		objectMap["parameters"] = csp.Parameters
+	}
+	return json.Marshal(objectMap)
+}
+
 // ConnectionSettingResponseList the list of bot service connection settings response.
 type ConnectionSettingResponseList struct {
 	autorest.Response `json:"-"`
@@ -921,6 +906,15 @@ type ConnectionSettingResponseList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; Gets the list of bot service connection settings and their properties.
 	Value *[]ConnectionSetting `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectionSettingResponseList.
+func (csrl ConnectionSettingResponseList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if csrl.NextLink != nil {
+		objectMap["nextLink"] = csrl.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // ConnectionSettingResponseListIterator provides access to a complete listing of ConnectionSetting values.
@@ -991,10 +985,15 @@ func (csrl ConnectionSettingResponseList) IsEmpty() bool {
 	return csrl.Value == nil || len(*csrl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (csrl ConnectionSettingResponseList) hasNextLink() bool {
+	return csrl.NextLink != nil && len(*csrl.NextLink) != 0
+}
+
 // connectionSettingResponseListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (csrl ConnectionSettingResponseList) connectionSettingResponseListPreparer(ctx context.Context) (*http.Request, error) {
-	if csrl.NextLink == nil || len(to.String(csrl.NextLink)) < 1 {
+	if !csrl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1022,11 +1021,16 @@ func (page *ConnectionSettingResponseListPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.csrl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.csrl)
+		if err != nil {
+			return err
+		}
+		page.csrl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.csrl = next
 	return nil
 }
 
@@ -1163,6 +1167,24 @@ type DirectLineSite struct {
 	IsV1Enabled *bool `json:"isV1Enabled,omitempty"`
 	// IsV3Enabled - Whether this site is enabled for Bot Framework V1 protocol
 	IsV3Enabled *bool `json:"isV3Enabled,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DirectLineSite.
+func (dls DirectLineSite) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dls.SiteName != nil {
+		objectMap["siteName"] = dls.SiteName
+	}
+	if dls.IsEnabled != nil {
+		objectMap["isEnabled"] = dls.IsEnabled
+	}
+	if dls.IsV1Enabled != nil {
+		objectMap["isV1Enabled"] = dls.IsV1Enabled
+	}
+	if dls.IsV3Enabled != nil {
+		objectMap["isV3Enabled"] = dls.IsV3Enabled
+	}
+	return json.Marshal(objectMap)
 }
 
 // EmailChannel email channel definition
@@ -1365,6 +1387,24 @@ type FacebookChannelProperties struct {
 	CallbackURL *string `json:"callbackUrl,omitempty"`
 	// IsEnabled - Whether this channel is enabled for the bot
 	IsEnabled *bool `json:"isEnabled,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FacebookChannelProperties.
+func (fcp FacebookChannelProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fcp.Pages != nil {
+		objectMap["pages"] = fcp.Pages
+	}
+	if fcp.AppID != nil {
+		objectMap["appId"] = fcp.AppID
+	}
+	if fcp.AppSecret != nil {
+		objectMap["appSecret"] = fcp.AppSecret
+	}
+	if fcp.IsEnabled != nil {
+		objectMap["isEnabled"] = fcp.IsEnabled
+	}
+	return json.Marshal(objectMap)
 }
 
 // FacebookPage a Facebook page for Facebook channel registration
@@ -1666,10 +1706,15 @@ func (oelr OperationEntityListResult) IsEmpty() bool {
 	return oelr.Value == nil || len(*oelr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (oelr OperationEntityListResult) hasNextLink() bool {
+	return oelr.NextLink != nil && len(*oelr.NextLink) != 0
+}
+
 // operationEntityListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (oelr OperationEntityListResult) operationEntityListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if oelr.NextLink == nil || len(to.String(oelr.NextLink)) < 1 {
+	if !oelr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1697,11 +1742,16 @@ func (page *OperationEntityListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.oelr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.oelr)
+		if err != nil {
+			return err
+		}
+		page.oelr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.oelr = next
 	return nil
 }
 
@@ -1814,6 +1864,15 @@ type ServiceProviderProperties struct {
 	Parameters *[]ServiceProviderParameter `json:"parameters,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServiceProviderProperties.
+func (spp ServiceProviderProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if spp.Parameters != nil {
+		objectMap["parameters"] = spp.Parameters
+	}
+	return json.Marshal(objectMap)
+}
+
 // ServiceProviderResponseList the list of bot service providers response.
 type ServiceProviderResponseList struct {
 	autorest.Response `json:"-"`
@@ -1823,12 +1882,30 @@ type ServiceProviderResponseList struct {
 	Value *[]ServiceProvider `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServiceProviderResponseList.
+func (sprl ServiceProviderResponseList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sprl.NextLink != nil {
+		objectMap["nextLink"] = sprl.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
 // Sku the SKU of the cognitive services account.
 type Sku struct {
 	// Name - The sku name. Possible values include: 'F0', 'S1'
 	Name SkuName `json:"name,omitempty"`
 	// Tier - READ-ONLY; Gets the sku tier. This is based on the SKU name. Possible values include: 'Free', 'Standard'
 	Tier SkuTier `json:"tier,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Sku.
+func (s Sku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.Name != "" {
+		objectMap["name"] = s.Name
+	}
+	return json.Marshal(objectMap)
 }
 
 // SkypeChannel skype channel definition
@@ -2035,6 +2112,27 @@ type SlackChannelProperties struct {
 	IsValidated *bool `json:"isValidated,omitempty"`
 	// IsEnabled - Whether this channel is enabled for the bot
 	IsEnabled *bool `json:"isEnabled,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SlackChannelProperties.
+func (scp SlackChannelProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if scp.ClientID != nil {
+		objectMap["clientId"] = scp.ClientID
+	}
+	if scp.ClientSecret != nil {
+		objectMap["clientSecret"] = scp.ClientSecret
+	}
+	if scp.VerificationToken != nil {
+		objectMap["verificationToken"] = scp.VerificationToken
+	}
+	if scp.LandingPageURL != nil {
+		objectMap["landingPageUrl"] = scp.LandingPageURL
+	}
+	if scp.IsEnabled != nil {
+		objectMap["isEnabled"] = scp.IsEnabled
+	}
+	return json.Marshal(objectMap)
 }
 
 // SmsChannel sms channel definition
@@ -2312,6 +2410,15 @@ type WebChatChannelProperties struct {
 	Sites *[]WebChatSite `json:"sites,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for WebChatChannelProperties.
+func (wccp WebChatChannelProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wccp.Sites != nil {
+		objectMap["sites"] = wccp.Sites
+	}
+	return json.Marshal(objectMap)
+}
+
 // WebChatSite a site for the Webchat channel
 type WebChatSite struct {
 	// SiteID - READ-ONLY; Site Id
@@ -2326,4 +2433,19 @@ type WebChatSite struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// EnablePreview - Whether this site is enabled for preview versions of Webchat
 	EnablePreview *bool `json:"enablePreview,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WebChatSite.
+func (wcs WebChatSite) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wcs.SiteName != nil {
+		objectMap["siteName"] = wcs.SiteName
+	}
+	if wcs.IsEnabled != nil {
+		objectMap["isEnabled"] = wcs.IsEnabled
+	}
+	if wcs.EnablePreview != nil {
+		objectMap["enablePreview"] = wcs.EnablePreview
+	}
+	return json.Marshal(objectMap)
 }

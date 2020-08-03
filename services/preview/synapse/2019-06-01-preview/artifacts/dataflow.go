@@ -334,6 +334,9 @@ func (client DataFlowClient) GetDataFlowsByWorkspace(ctx context.Context) (resul
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "GetDataFlowsByWorkspace", resp, "Failure responding to request")
 	}
+	if result.dflr.hasNextLink() && result.dflr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

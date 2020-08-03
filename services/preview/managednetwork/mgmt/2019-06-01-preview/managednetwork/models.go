@@ -30,55 +30,7 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/managednetwork/mgmt/2019-06-01-preview/managednetwork"
 
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// Connectivity ...
-	Connectivity Kind = "Connectivity"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{Connectivity}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Deleting, Failed, Succeeded, Updating}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// HubAndSpokeTopology ...
-	HubAndSpokeTopology Type = "HubAndSpokeTopology"
-	// MeshTopology ...
-	MeshTopology Type = "MeshTopology"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{HubAndSpokeTopology, MeshTopology}
-}
-
-// ConnectivityCollection the collection of Connectivity related groups and policies within the Managed
-// Network
+// ConnectivityCollection the collection of Connectivity related groups and policies within the Managed Network
 type ConnectivityCollection struct {
 	// Groups - READ-ONLY; The collection of connectivity related Managed Network Groups within the Managed Network
 	Groups *[]Group `json:"groups,omitempty"`
@@ -195,8 +147,8 @@ func (g *Group) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// GroupListResult result of the request to list Managed Network Groups. It contains a list of groups and a
-// URL link to get the next set of results.
+// GroupListResult result of the request to list Managed Network Groups. It contains a list of groups and a URL
+// link to get the next set of results.
 type GroupListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets a page of ManagedNetworkGroup
@@ -273,10 +225,15 @@ func (glr GroupListResult) IsEmpty() bool {
 	return glr.Value == nil || len(*glr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (glr GroupListResult) hasNextLink() bool {
+	return glr.NextLink != nil && len(*glr.NextLink) != 0
+}
+
 // groupListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (glr GroupListResult) groupListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if glr.NextLink == nil || len(to.String(glr.NextLink)) < 1 {
+	if !glr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -304,11 +261,16 @@ func (page *GroupListResultPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.glr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.glr)
+		if err != nil {
+			return err
+		}
+		page.glr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.glr = next
 	return nil
 }
 
@@ -356,6 +318,24 @@ type GroupProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GroupProperties.
+func (gp GroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gp.ManagementGroups != nil {
+		objectMap["managementGroups"] = gp.ManagementGroups
+	}
+	if gp.Subscriptions != nil {
+		objectMap["subscriptions"] = gp.Subscriptions
+	}
+	if gp.VirtualNetworks != nil {
+		objectMap["virtualNetworks"] = gp.VirtualNetworks
+	}
+	if gp.Subnets != nil {
+		objectMap["subnets"] = gp.Subnets
+	}
+	return json.Marshal(objectMap)
 }
 
 // GroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -425,8 +405,26 @@ type HubAndSpokePeeringPolicyProperties struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
-// ListResult result of the request to list Managed Network. It contains a list of Managed Networks and a
-// URL link to get the next set of results.
+// MarshalJSON is the custom marshaler for HubAndSpokePeeringPolicyProperties.
+func (hasppp HubAndSpokePeeringPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hasppp.Type != "" {
+		objectMap["type"] = hasppp.Type
+	}
+	if hasppp.Hub != nil {
+		objectMap["hub"] = hasppp.Hub
+	}
+	if hasppp.Spokes != nil {
+		objectMap["spokes"] = hasppp.Spokes
+	}
+	if hasppp.Mesh != nil {
+		objectMap["mesh"] = hasppp.Mesh
+	}
+	return json.Marshal(objectMap)
+}
+
+// ListResult result of the request to list Managed Network. It contains a list of Managed Networks and a URL
+// link to get the next set of results.
 type ListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets a page of ManagedNetworks
@@ -503,10 +501,15 @@ func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -534,11 +537,16 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lr = next
 	return nil
 }
 
@@ -673,8 +681,8 @@ func (mn *ManagedNetwork) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ManagedNetworksDeleteFutureType an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ManagedNetworksDeleteFutureType an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ManagedNetworksDeleteFutureType struct {
 	azure.Future
 }
@@ -696,8 +704,8 @@ func (future *ManagedNetworksDeleteFutureType) Result(client ManagedNetworksClie
 	return
 }
 
-// ManagedNetworksUpdateFutureType an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ManagedNetworksUpdateFutureType an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ManagedNetworksUpdateFutureType struct {
 	azure.Future
 }
@@ -739,6 +747,24 @@ type MeshPeeringPolicyProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MeshPeeringPolicyProperties.
+func (mppp MeshPeeringPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mppp.Type != "" {
+		objectMap["type"] = mppp.Type
+	}
+	if mppp.Hub != nil {
+		objectMap["hub"] = mppp.Hub
+	}
+	if mppp.Spokes != nil {
+		objectMap["spokes"] = mppp.Spokes
+	}
+	if mppp.Mesh != nil {
+		objectMap["mesh"] = mppp.Mesh
+	}
+	return json.Marshal(objectMap)
 }
 
 // Operation REST API operation
@@ -837,10 +863,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -868,11 +899,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -973,8 +1009,20 @@ type PeeringPolicy struct {
 	Location *string `json:"location,omitempty"`
 }
 
-// PeeringPolicyListResult result of the request to list Managed Network Peering Policies. It contains a
-// list of policies and a URL link to get the next set of results.
+// MarshalJSON is the custom marshaler for PeeringPolicy.
+func (pp PeeringPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pp.Properties != nil {
+		objectMap["properties"] = pp.Properties
+	}
+	if pp.Location != nil {
+		objectMap["location"] = pp.Location
+	}
+	return json.Marshal(objectMap)
+}
+
+// PeeringPolicyListResult result of the request to list Managed Network Peering Policies. It contains a list
+// of policies and a URL link to get the next set of results.
 type PeeringPolicyListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets a page of Peering Policies
@@ -1051,10 +1099,15 @@ func (pplr PeeringPolicyListResult) IsEmpty() bool {
 	return pplr.Value == nil || len(*pplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pplr PeeringPolicyListResult) hasNextLink() bool {
+	return pplr.NextLink != nil && len(*pplr.NextLink) != 0
+}
+
 // peeringPolicyListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pplr PeeringPolicyListResult) peeringPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if pplr.NextLink == nil || len(to.String(pplr.NextLink)) < 1 {
+	if !pplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1082,11 +1135,16 @@ func (page *PeeringPolicyListResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pplr)
+		if err != nil {
+			return err
+		}
+		page.pplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pplr = next
 	return nil
 }
 
@@ -1136,6 +1194,24 @@ type PeeringPolicyProperties struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PeeringPolicyProperties.
+func (ppp PeeringPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ppp.Type != "" {
+		objectMap["type"] = ppp.Type
+	}
+	if ppp.Hub != nil {
+		objectMap["hub"] = ppp.Hub
+	}
+	if ppp.Spokes != nil {
+		objectMap["spokes"] = ppp.Spokes
+	}
+	if ppp.Mesh != nil {
+		objectMap["mesh"] = ppp.Mesh
+	}
+	return json.Marshal(objectMap)
+}
+
 // Properties properties of Managed Network
 type Properties struct {
 	// Scope - The collection of management groups, subscriptions, virtual networks, and subnets by the Managed Network. This is a read-only property that is reflective of all ScopeAssignments for this Managed Network
@@ -1146,6 +1222,15 @@ type Properties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Properties.
+func (p Properties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.Scope != nil {
+		objectMap["scope"] = p.Scope
+	}
+	return json.Marshal(objectMap)
 }
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
@@ -1161,6 +1246,15 @@ type ProxyResource struct {
 	Location *string `json:"location,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pr.Location != nil {
+		objectMap["location"] = pr.Location
+	}
+	return json.Marshal(objectMap)
+}
+
 // Resource the general resource model definition
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1171,6 +1265,15 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
+	return json.Marshal(objectMap)
 }
 
 // ResourceID generic pointer to a resource
@@ -1286,8 +1389,8 @@ func (sa *ScopeAssignment) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ScopeAssignmentListResult result of the request to list ScopeAssignment. It contains a list of groups
-// and a URL link to get the next set of results.
+// ScopeAssignmentListResult result of the request to list ScopeAssignment. It contains a list of groups and a
+// URL link to get the next set of results.
 type ScopeAssignmentListResult struct {
 	autorest.Response `json:"-"`
 	// Value - Gets a page of ScopeAssignment
@@ -1364,10 +1467,15 @@ func (salr ScopeAssignmentListResult) IsEmpty() bool {
 	return salr.Value == nil || len(*salr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (salr ScopeAssignmentListResult) hasNextLink() bool {
+	return salr.NextLink != nil && len(*salr.NextLink) != 0
+}
+
 // scopeAssignmentListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (salr ScopeAssignmentListResult) scopeAssignmentListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if salr.NextLink == nil || len(to.String(salr.NextLink)) < 1 {
+	if !salr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1395,11 +1503,16 @@ func (page *ScopeAssignmentListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.salr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.salr)
+		if err != nil {
+			return err
+		}
+		page.salr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.salr = next
 	return nil
 }
 
@@ -1441,6 +1554,15 @@ type ScopeAssignmentProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScopeAssignmentProperties.
+func (sap ScopeAssignmentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sap.AssignedManagedNetwork != nil {
+		objectMap["assignedManagedNetwork"] = sap.AssignedManagedNetwork
+	}
+	return json.Marshal(objectMap)
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource

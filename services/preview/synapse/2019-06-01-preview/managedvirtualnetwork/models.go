@@ -19,6 +19,7 @@ package managedvirtualnetwork
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
@@ -41,6 +42,15 @@ type ManagedPrivateEndpoint struct {
 	Properties *ManagedPrivateEndpointProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ManagedPrivateEndpoint.
+func (mpe ManagedPrivateEndpoint) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mpe.Properties != nil {
+		objectMap["properties"] = mpe.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // ManagedPrivateEndpointConnectionState the connection state of a managed private endpoint
 type ManagedPrivateEndpointConnectionState struct {
 	// Status - READ-ONLY; The approval status
@@ -49,6 +59,18 @@ type ManagedPrivateEndpointConnectionState struct {
 	Description *string `json:"description,omitempty"`
 	// ActionsRequired - The actions required on the managed private endpoint
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedPrivateEndpointConnectionState.
+func (mpecs ManagedPrivateEndpointConnectionState) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mpecs.Description != nil {
+		objectMap["description"] = mpecs.Description
+	}
+	if mpecs.ActionsRequired != nil {
+		objectMap["actionsRequired"] = mpecs.ActionsRequired
+	}
+	return json.Marshal(objectMap)
 }
 
 // ManagedPrivateEndpointListResponse a list of managed private endpoints
@@ -60,8 +82,17 @@ type ManagedPrivateEndpointListResponse struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ManagedPrivateEndpointListResponseIterator provides access to a complete listing of
-// ManagedPrivateEndpoint values.
+// MarshalJSON is the custom marshaler for ManagedPrivateEndpointListResponse.
+func (mpelr ManagedPrivateEndpointListResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mpelr.Value != nil {
+		objectMap["value"] = mpelr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// ManagedPrivateEndpointListResponseIterator provides access to a complete listing of ManagedPrivateEndpoint
+// values.
 type ManagedPrivateEndpointListResponseIterator struct {
 	i    int
 	page ManagedPrivateEndpointListResponsePage
@@ -129,10 +160,15 @@ func (mpelr ManagedPrivateEndpointListResponse) IsEmpty() bool {
 	return mpelr.Value == nil || len(*mpelr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mpelr ManagedPrivateEndpointListResponse) hasNextLink() bool {
+	return mpelr.NextLink != nil && len(*mpelr.NextLink) != 0
+}
+
 // managedPrivateEndpointListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mpelr ManagedPrivateEndpointListResponse) managedPrivateEndpointListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if mpelr.NextLink == nil || len(to.String(mpelr.NextLink)) < 1 {
+	if !mpelr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -160,11 +196,16 @@ func (page *ManagedPrivateEndpointListResponsePage) NextWithContext(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mpelr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mpelr)
+		if err != nil {
+			return err
+		}
+		page.mpelr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mpelr = next
 	return nil
 }
 
@@ -210,4 +251,19 @@ type ManagedPrivateEndpointProperties struct {
 	ConnectionState *ManagedPrivateEndpointConnectionState `json:"connectionState,omitempty"`
 	// IsReserved - READ-ONLY; Denotes whether the managed private endpoint is reserved
 	IsReserved *bool `json:"isReserved,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedPrivateEndpointProperties.
+func (mpep ManagedPrivateEndpointProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mpep.PrivateLinkResourceID != nil {
+		objectMap["privateLinkResourceId"] = mpep.PrivateLinkResourceID
+	}
+	if mpep.GroupID != nil {
+		objectMap["groupId"] = mpep.GroupID
+	}
+	if mpep.ConnectionState != nil {
+		objectMap["connectionState"] = mpep.ConnectionState
+	}
+	return json.Marshal(objectMap)
 }

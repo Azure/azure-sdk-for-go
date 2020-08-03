@@ -30,550 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2016-12-01/backup"
 
-// AzureFileShareType enumerates the values for azure file share type.
-type AzureFileShareType string
-
-const (
-	// Invalid ...
-	Invalid AzureFileShareType = "Invalid"
-	// XSMB ...
-	XSMB AzureFileShareType = "XSMB"
-	// XSync ...
-	XSync AzureFileShareType = "XSync"
-)
-
-// PossibleAzureFileShareTypeValues returns an array of possible values for the AzureFileShareType const type.
-func PossibleAzureFileShareTypeValues() []AzureFileShareType {
-	return []AzureFileShareType{Invalid, XSMB, XSync}
-}
-
-// ContainerType enumerates the values for container type.
-type ContainerType string
-
-const (
-	// ContainerTypeAzureBackupServerContainer ...
-	ContainerTypeAzureBackupServerContainer ContainerType = "AzureBackupServerContainer"
-	// ContainerTypeAzureSQLContainer ...
-	ContainerTypeAzureSQLContainer ContainerType = "AzureSqlContainer"
-	// ContainerTypeCluster ...
-	ContainerTypeCluster ContainerType = "Cluster"
-	// ContainerTypeDPMContainer ...
-	ContainerTypeDPMContainer ContainerType = "DPMContainer"
-	// ContainerTypeGenericContainer ...
-	ContainerTypeGenericContainer ContainerType = "GenericContainer"
-	// ContainerTypeIaasVMContainer ...
-	ContainerTypeIaasVMContainer ContainerType = "IaasVMContainer"
-	// ContainerTypeIaasVMServiceContainer ...
-	ContainerTypeIaasVMServiceContainer ContainerType = "IaasVMServiceContainer"
-	// ContainerTypeInvalid ...
-	ContainerTypeInvalid ContainerType = "Invalid"
-	// ContainerTypeMABContainer ...
-	ContainerTypeMABContainer ContainerType = "MABContainer"
-	// ContainerTypeSQLAGWorkLoadContainer ...
-	ContainerTypeSQLAGWorkLoadContainer ContainerType = "SQLAGWorkLoadContainer"
-	// ContainerTypeStorageContainer ...
-	ContainerTypeStorageContainer ContainerType = "StorageContainer"
-	// ContainerTypeUnknown ...
-	ContainerTypeUnknown ContainerType = "Unknown"
-	// ContainerTypeVCenter ...
-	ContainerTypeVCenter ContainerType = "VCenter"
-	// ContainerTypeVMAppContainer ...
-	ContainerTypeVMAppContainer ContainerType = "VMAppContainer"
-	// ContainerTypeWindows ...
-	ContainerTypeWindows ContainerType = "Windows"
-)
-
-// PossibleContainerTypeValues returns an array of possible values for the ContainerType const type.
-func PossibleContainerTypeValues() []ContainerType {
-	return []ContainerType{ContainerTypeAzureBackupServerContainer, ContainerTypeAzureSQLContainer, ContainerTypeCluster, ContainerTypeDPMContainer, ContainerTypeGenericContainer, ContainerTypeIaasVMContainer, ContainerTypeIaasVMServiceContainer, ContainerTypeInvalid, ContainerTypeMABContainer, ContainerTypeSQLAGWorkLoadContainer, ContainerTypeStorageContainer, ContainerTypeUnknown, ContainerTypeVCenter, ContainerTypeVMAppContainer, ContainerTypeWindows}
-}
-
-// ContainerTypeBasicProtectionContainer enumerates the values for container type basic protection container.
-type ContainerTypeBasicProtectionContainer string
-
-const (
-	// ContainerTypeAzureBackupServerContainer1 ...
-	ContainerTypeAzureBackupServerContainer1 ContainerTypeBasicProtectionContainer = "AzureBackupServerContainer"
-	// ContainerTypeAzureSQLContainer1 ...
-	ContainerTypeAzureSQLContainer1 ContainerTypeBasicProtectionContainer = "AzureSqlContainer"
-	// ContainerTypeAzureWorkloadContainer ...
-	ContainerTypeAzureWorkloadContainer ContainerTypeBasicProtectionContainer = "AzureWorkloadContainer"
-	// ContainerTypeDPMContainer1 ...
-	ContainerTypeDPMContainer1 ContainerTypeBasicProtectionContainer = "DPMContainer"
-	// ContainerTypeGenericContainer1 ...
-	ContainerTypeGenericContainer1 ContainerTypeBasicProtectionContainer = "GenericContainer"
-	// ContainerTypeIaaSVMContainer ...
-	ContainerTypeIaaSVMContainer ContainerTypeBasicProtectionContainer = "IaaSVMContainer"
-	// ContainerTypeMicrosoftClassicComputevirtualMachines ...
-	ContainerTypeMicrosoftClassicComputevirtualMachines ContainerTypeBasicProtectionContainer = "Microsoft.ClassicCompute/virtualMachines"
-	// ContainerTypeMicrosoftComputevirtualMachines ...
-	ContainerTypeMicrosoftComputevirtualMachines ContainerTypeBasicProtectionContainer = "Microsoft.Compute/virtualMachines"
-	// ContainerTypeProtectionContainer ...
-	ContainerTypeProtectionContainer ContainerTypeBasicProtectionContainer = "ProtectionContainer"
-	// ContainerTypeSQLAGWorkLoadContainer1 ...
-	ContainerTypeSQLAGWorkLoadContainer1 ContainerTypeBasicProtectionContainer = "SQLAGWorkLoadContainer"
-	// ContainerTypeStorageContainer1 ...
-	ContainerTypeStorageContainer1 ContainerTypeBasicProtectionContainer = "StorageContainer"
-	// ContainerTypeVMAppContainer1 ...
-	ContainerTypeVMAppContainer1 ContainerTypeBasicProtectionContainer = "VMAppContainer"
-	// ContainerTypeWindows1 ...
-	ContainerTypeWindows1 ContainerTypeBasicProtectionContainer = "Windows"
-)
-
-// PossibleContainerTypeBasicProtectionContainerValues returns an array of possible values for the ContainerTypeBasicProtectionContainer const type.
-func PossibleContainerTypeBasicProtectionContainerValues() []ContainerTypeBasicProtectionContainer {
-	return []ContainerTypeBasicProtectionContainer{ContainerTypeAzureBackupServerContainer1, ContainerTypeAzureSQLContainer1, ContainerTypeAzureWorkloadContainer, ContainerTypeDPMContainer1, ContainerTypeGenericContainer1, ContainerTypeIaaSVMContainer, ContainerTypeMicrosoftClassicComputevirtualMachines, ContainerTypeMicrosoftComputevirtualMachines, ContainerTypeProtectionContainer, ContainerTypeSQLAGWorkLoadContainer1, ContainerTypeStorageContainer1, ContainerTypeVMAppContainer1, ContainerTypeWindows1}
-}
-
-// EngineType enumerates the values for engine type.
-type EngineType string
-
-const (
-	// BackupEngineTypeAzureBackupServerEngine ...
-	BackupEngineTypeAzureBackupServerEngine EngineType = "AzureBackupServerEngine"
-	// BackupEngineTypeBackupEngineBase ...
-	BackupEngineTypeBackupEngineBase EngineType = "BackupEngineBase"
-	// BackupEngineTypeDpmBackupEngine ...
-	BackupEngineTypeDpmBackupEngine EngineType = "DpmBackupEngine"
-)
-
-// PossibleEngineTypeValues returns an array of possible values for the EngineType const type.
-func PossibleEngineTypeValues() []EngineType {
-	return []EngineType{BackupEngineTypeAzureBackupServerEngine, BackupEngineTypeBackupEngineBase, BackupEngineTypeDpmBackupEngine}
-}
-
-// InquiryStatus enumerates the values for inquiry status.
-type InquiryStatus string
-
-const (
-	// InquiryStatusFailed ...
-	InquiryStatusFailed InquiryStatus = "Failed"
-	// InquiryStatusInvalid ...
-	InquiryStatusInvalid InquiryStatus = "Invalid"
-	// InquiryStatusSuccess ...
-	InquiryStatusSuccess InquiryStatus = "Success"
-)
-
-// PossibleInquiryStatusValues returns an array of possible values for the InquiryStatus const type.
-func PossibleInquiryStatusValues() []InquiryStatus {
-	return []InquiryStatus{InquiryStatusFailed, InquiryStatusInvalid, InquiryStatusSuccess}
-}
-
-// ItemType enumerates the values for item type.
-type ItemType string
-
-const (
-	// ItemTypeAzureFileShare ...
-	ItemTypeAzureFileShare ItemType = "AzureFileShare"
-	// ItemTypeAzureSQLDb ...
-	ItemTypeAzureSQLDb ItemType = "AzureSqlDb"
-	// ItemTypeClient ...
-	ItemTypeClient ItemType = "Client"
-	// ItemTypeExchange ...
-	ItemTypeExchange ItemType = "Exchange"
-	// ItemTypeFileFolder ...
-	ItemTypeFileFolder ItemType = "FileFolder"
-	// ItemTypeGenericDataSource ...
-	ItemTypeGenericDataSource ItemType = "GenericDataSource"
-	// ItemTypeInvalid ...
-	ItemTypeInvalid ItemType = "Invalid"
-	// ItemTypeSAPAseDatabase ...
-	ItemTypeSAPAseDatabase ItemType = "SAPAseDatabase"
-	// ItemTypeSAPHanaDatabase ...
-	ItemTypeSAPHanaDatabase ItemType = "SAPHanaDatabase"
-	// ItemTypeSharepoint ...
-	ItemTypeSharepoint ItemType = "Sharepoint"
-	// ItemTypeSQLDataBase ...
-	ItemTypeSQLDataBase ItemType = "SQLDataBase"
-	// ItemTypeSQLDB ...
-	ItemTypeSQLDB ItemType = "SQLDB"
-	// ItemTypeSystemState ...
-	ItemTypeSystemState ItemType = "SystemState"
-	// ItemTypeVM ...
-	ItemTypeVM ItemType = "VM"
-	// ItemTypeVMwareVM ...
-	ItemTypeVMwareVM ItemType = "VMwareVM"
-)
-
-// PossibleItemTypeValues returns an array of possible values for the ItemType const type.
-func PossibleItemTypeValues() []ItemType {
-	return []ItemType{ItemTypeAzureFileShare, ItemTypeAzureSQLDb, ItemTypeClient, ItemTypeExchange, ItemTypeFileFolder, ItemTypeGenericDataSource, ItemTypeInvalid, ItemTypeSAPAseDatabase, ItemTypeSAPHanaDatabase, ItemTypeSharepoint, ItemTypeSQLDataBase, ItemTypeSQLDB, ItemTypeSystemState, ItemTypeVM, ItemTypeVMwareVM}
-}
-
-// ManagementType enumerates the values for management type.
-type ManagementType string
-
-const (
-	// ManagementTypeAzureBackupServer ...
-	ManagementTypeAzureBackupServer ManagementType = "AzureBackupServer"
-	// ManagementTypeAzureIaasVM ...
-	ManagementTypeAzureIaasVM ManagementType = "AzureIaasVM"
-	// ManagementTypeAzureSQL ...
-	ManagementTypeAzureSQL ManagementType = "AzureSql"
-	// ManagementTypeAzureStorage ...
-	ManagementTypeAzureStorage ManagementType = "AzureStorage"
-	// ManagementTypeAzureWorkload ...
-	ManagementTypeAzureWorkload ManagementType = "AzureWorkload"
-	// ManagementTypeDefaultBackup ...
-	ManagementTypeDefaultBackup ManagementType = "DefaultBackup"
-	// ManagementTypeDPM ...
-	ManagementTypeDPM ManagementType = "DPM"
-	// ManagementTypeInvalid ...
-	ManagementTypeInvalid ManagementType = "Invalid"
-	// ManagementTypeMAB ...
-	ManagementTypeMAB ManagementType = "MAB"
-)
-
-// PossibleManagementTypeValues returns an array of possible values for the ManagementType const type.
-func PossibleManagementTypeValues() []ManagementType {
-	return []ManagementType{ManagementTypeAzureBackupServer, ManagementTypeAzureIaasVM, ManagementTypeAzureSQL, ManagementTypeAzureStorage, ManagementTypeAzureWorkload, ManagementTypeDefaultBackup, ManagementTypeDPM, ManagementTypeInvalid, ManagementTypeMAB}
-}
-
-// ObjectType enumerates the values for object type.
-type ObjectType string
-
-const (
-	// ObjectTypeAzureFileShareBackupRequest ...
-	ObjectTypeAzureFileShareBackupRequest ObjectType = "AzureFileShareBackupRequest"
-	// ObjectTypeAzureWorkloadBackupRequest ...
-	ObjectTypeAzureWorkloadBackupRequest ObjectType = "AzureWorkloadBackupRequest"
-	// ObjectTypeBackupRequest ...
-	ObjectTypeBackupRequest ObjectType = "BackupRequest"
-	// ObjectTypeIaasVMBackupRequest ...
-	ObjectTypeIaasVMBackupRequest ObjectType = "IaasVMBackupRequest"
-)
-
-// PossibleObjectTypeValues returns an array of possible values for the ObjectType const type.
-func PossibleObjectTypeValues() []ObjectType {
-	return []ObjectType{ObjectTypeAzureFileShareBackupRequest, ObjectTypeAzureWorkloadBackupRequest, ObjectTypeBackupRequest, ObjectTypeIaasVMBackupRequest}
-}
-
-// ObjectTypeBasicILRRequest enumerates the values for object type basic ilr request.
-type ObjectTypeBasicILRRequest string
-
-const (
-	// ObjectTypeAzureFileShareProvisionILRRequest ...
-	ObjectTypeAzureFileShareProvisionILRRequest ObjectTypeBasicILRRequest = "AzureFileShareProvisionILRRequest"
-	// ObjectTypeIaasVMILRRegistrationRequest ...
-	ObjectTypeIaasVMILRRegistrationRequest ObjectTypeBasicILRRequest = "IaasVMILRRegistrationRequest"
-	// ObjectTypeILRRequest ...
-	ObjectTypeILRRequest ObjectTypeBasicILRRequest = "ILRRequest"
-)
-
-// PossibleObjectTypeBasicILRRequestValues returns an array of possible values for the ObjectTypeBasicILRRequest const type.
-func PossibleObjectTypeBasicILRRequestValues() []ObjectTypeBasicILRRequest {
-	return []ObjectTypeBasicILRRequest{ObjectTypeAzureFileShareProvisionILRRequest, ObjectTypeIaasVMILRRegistrationRequest, ObjectTypeILRRequest}
-}
-
-// ObjectTypeBasicOperationStatusExtendedInfo enumerates the values for object type basic operation status
-// extended info.
-type ObjectTypeBasicOperationStatusExtendedInfo string
-
-const (
-	// ObjectTypeOperationStatusExtendedInfo ...
-	ObjectTypeOperationStatusExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusExtendedInfo"
-	// ObjectTypeOperationStatusJobExtendedInfo ...
-	ObjectTypeOperationStatusJobExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusJobExtendedInfo"
-	// ObjectTypeOperationStatusJobsExtendedInfo ...
-	ObjectTypeOperationStatusJobsExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusJobsExtendedInfo"
-	// ObjectTypeOperationStatusProvisionILRExtendedInfo ...
-	ObjectTypeOperationStatusProvisionILRExtendedInfo ObjectTypeBasicOperationStatusExtendedInfo = "OperationStatusProvisionILRExtendedInfo"
-)
-
-// PossibleObjectTypeBasicOperationStatusExtendedInfoValues returns an array of possible values for the ObjectTypeBasicOperationStatusExtendedInfo const type.
-func PossibleObjectTypeBasicOperationStatusExtendedInfoValues() []ObjectTypeBasicOperationStatusExtendedInfo {
-	return []ObjectTypeBasicOperationStatusExtendedInfo{ObjectTypeOperationStatusExtendedInfo, ObjectTypeOperationStatusJobExtendedInfo, ObjectTypeOperationStatusJobsExtendedInfo, ObjectTypeOperationStatusProvisionILRExtendedInfo}
-}
-
-// ObjectTypeBasicRecoveryPoint enumerates the values for object type basic recovery point.
-type ObjectTypeBasicRecoveryPoint string
-
-const (
-	// ObjectTypeRecoveryPoint ...
-	ObjectTypeRecoveryPoint ObjectTypeBasicRecoveryPoint = "RecoveryPoint"
-)
-
-// PossibleObjectTypeBasicRecoveryPointValues returns an array of possible values for the ObjectTypeBasicRecoveryPoint const type.
-func PossibleObjectTypeBasicRecoveryPointValues() []ObjectTypeBasicRecoveryPoint {
-	return []ObjectTypeBasicRecoveryPoint{ObjectTypeRecoveryPoint}
-}
-
-// OperationStatusValues enumerates the values for operation status values.
-type OperationStatusValues string
-
-const (
-	// OperationStatusValuesCanceled ...
-	OperationStatusValuesCanceled OperationStatusValues = "Canceled"
-	// OperationStatusValuesFailed ...
-	OperationStatusValuesFailed OperationStatusValues = "Failed"
-	// OperationStatusValuesInProgress ...
-	OperationStatusValuesInProgress OperationStatusValues = "InProgress"
-	// OperationStatusValuesInvalid ...
-	OperationStatusValuesInvalid OperationStatusValues = "Invalid"
-	// OperationStatusValuesSucceeded ...
-	OperationStatusValuesSucceeded OperationStatusValues = "Succeeded"
-)
-
-// PossibleOperationStatusValuesValues returns an array of possible values for the OperationStatusValues const type.
-func PossibleOperationStatusValuesValues() []OperationStatusValues {
-	return []OperationStatusValues{OperationStatusValuesCanceled, OperationStatusValuesFailed, OperationStatusValuesInProgress, OperationStatusValuesInvalid, OperationStatusValuesSucceeded}
-}
-
-// OperationType enumerates the values for operation type.
-type OperationType string
-
-const (
-	// OperationTypeInvalid ...
-	OperationTypeInvalid OperationType = "Invalid"
-	// OperationTypeRegister ...
-	OperationTypeRegister OperationType = "Register"
-	// OperationTypeReregister ...
-	OperationTypeReregister OperationType = "Reregister"
-)
-
-// PossibleOperationTypeValues returns an array of possible values for the OperationType const type.
-func PossibleOperationTypeValues() []OperationType {
-	return []OperationType{OperationTypeInvalid, OperationTypeRegister, OperationTypeReregister}
-}
-
-// ProtectableContainerType enumerates the values for protectable container type.
-type ProtectableContainerType string
-
-const (
-	// ProtectableContainerTypeProtectableContainer ...
-	ProtectableContainerTypeProtectableContainer ProtectableContainerType = "ProtectableContainer"
-	// ProtectableContainerTypeStorageContainer ...
-	ProtectableContainerTypeStorageContainer ProtectableContainerType = "StorageContainer"
-	// ProtectableContainerTypeVMAppContainer ...
-	ProtectableContainerTypeVMAppContainer ProtectableContainerType = "VMAppContainer"
-)
-
-// PossibleProtectableContainerTypeValues returns an array of possible values for the ProtectableContainerType const type.
-func PossibleProtectableContainerTypeValues() []ProtectableContainerType {
-	return []ProtectableContainerType{ProtectableContainerTypeProtectableContainer, ProtectableContainerTypeStorageContainer, ProtectableContainerTypeVMAppContainer}
-}
-
-// ProtectableItemType enumerates the values for protectable item type.
-type ProtectableItemType string
-
-const (
-	// ProtectableItemTypeAzureFileShare ...
-	ProtectableItemTypeAzureFileShare ProtectableItemType = "AzureFileShare"
-	// ProtectableItemTypeAzureVMWorkloadProtectableItem ...
-	ProtectableItemTypeAzureVMWorkloadProtectableItem ProtectableItemType = "AzureVmWorkloadProtectableItem"
-	// ProtectableItemTypeIaaSVMProtectableItem ...
-	ProtectableItemTypeIaaSVMProtectableItem ProtectableItemType = "IaaSVMProtectableItem"
-	// ProtectableItemTypeMicrosoftClassicComputevirtualMachines ...
-	ProtectableItemTypeMicrosoftClassicComputevirtualMachines ProtectableItemType = "Microsoft.ClassicCompute/virtualMachines"
-	// ProtectableItemTypeMicrosoftComputevirtualMachines ...
-	ProtectableItemTypeMicrosoftComputevirtualMachines ProtectableItemType = "Microsoft.Compute/virtualMachines"
-	// ProtectableItemTypeSAPAseSystem ...
-	ProtectableItemTypeSAPAseSystem ProtectableItemType = "SAPAseSystem"
-	// ProtectableItemTypeSAPHanaDatabase ...
-	ProtectableItemTypeSAPHanaDatabase ProtectableItemType = "SAPHanaDatabase"
-	// ProtectableItemTypeSAPHanaSystem ...
-	ProtectableItemTypeSAPHanaSystem ProtectableItemType = "SAPHanaSystem"
-	// ProtectableItemTypeSQLAvailabilityGroupContainer ...
-	ProtectableItemTypeSQLAvailabilityGroupContainer ProtectableItemType = "SQLAvailabilityGroupContainer"
-	// ProtectableItemTypeSQLDataBase ...
-	ProtectableItemTypeSQLDataBase ProtectableItemType = "SQLDataBase"
-	// ProtectableItemTypeSQLInstance ...
-	ProtectableItemTypeSQLInstance ProtectableItemType = "SQLInstance"
-	// ProtectableItemTypeWorkloadProtectableItem ...
-	ProtectableItemTypeWorkloadProtectableItem ProtectableItemType = "WorkloadProtectableItem"
-)
-
-// PossibleProtectableItemTypeValues returns an array of possible values for the ProtectableItemType const type.
-func PossibleProtectableItemTypeValues() []ProtectableItemType {
-	return []ProtectableItemType{ProtectableItemTypeAzureFileShare, ProtectableItemTypeAzureVMWorkloadProtectableItem, ProtectableItemTypeIaaSVMProtectableItem, ProtectableItemTypeMicrosoftClassicComputevirtualMachines, ProtectableItemTypeMicrosoftComputevirtualMachines, ProtectableItemTypeSAPAseSystem, ProtectableItemTypeSAPHanaDatabase, ProtectableItemTypeSAPHanaSystem, ProtectableItemTypeSQLAvailabilityGroupContainer, ProtectableItemTypeSQLDataBase, ProtectableItemTypeSQLInstance, ProtectableItemTypeWorkloadProtectableItem}
-}
-
-// ProtectionStatus enumerates the values for protection status.
-type ProtectionStatus string
-
-const (
-	// ProtectionStatusInvalid ...
-	ProtectionStatusInvalid ProtectionStatus = "Invalid"
-	// ProtectionStatusNotProtected ...
-	ProtectionStatusNotProtected ProtectionStatus = "NotProtected"
-	// ProtectionStatusProtected ...
-	ProtectionStatusProtected ProtectionStatus = "Protected"
-	// ProtectionStatusProtecting ...
-	ProtectionStatusProtecting ProtectionStatus = "Protecting"
-	// ProtectionStatusProtectionFailed ...
-	ProtectionStatusProtectionFailed ProtectionStatus = "ProtectionFailed"
-)
-
-// PossibleProtectionStatusValues returns an array of possible values for the ProtectionStatus const type.
-func PossibleProtectionStatusValues() []ProtectionStatus {
-	return []ProtectionStatus{ProtectionStatusInvalid, ProtectionStatusNotProtected, ProtectionStatusProtected, ProtectionStatusProtecting, ProtectionStatusProtectionFailed}
-}
-
-// SQLDataDirectoryType enumerates the values for sql data directory type.
-type SQLDataDirectoryType string
-
-const (
-	// SQLDataDirectoryTypeData ...
-	SQLDataDirectoryTypeData SQLDataDirectoryType = "Data"
-	// SQLDataDirectoryTypeInvalid ...
-	SQLDataDirectoryTypeInvalid SQLDataDirectoryType = "Invalid"
-	// SQLDataDirectoryTypeLog ...
-	SQLDataDirectoryTypeLog SQLDataDirectoryType = "Log"
-)
-
-// PossibleSQLDataDirectoryTypeValues returns an array of possible values for the SQLDataDirectoryType const type.
-func PossibleSQLDataDirectoryTypeValues() []SQLDataDirectoryType {
-	return []SQLDataDirectoryType{SQLDataDirectoryTypeData, SQLDataDirectoryTypeInvalid, SQLDataDirectoryTypeLog}
-}
-
-// StorageType enumerates the values for storage type.
-type StorageType string
-
-const (
-	// StorageTypeGeoRedundant ...
-	StorageTypeGeoRedundant StorageType = "GeoRedundant"
-	// StorageTypeInvalid ...
-	StorageTypeInvalid StorageType = "Invalid"
-	// StorageTypeLocallyRedundant ...
-	StorageTypeLocallyRedundant StorageType = "LocallyRedundant"
-)
-
-// PossibleStorageTypeValues returns an array of possible values for the StorageType const type.
-func PossibleStorageTypeValues() []StorageType {
-	return []StorageType{StorageTypeGeoRedundant, StorageTypeInvalid, StorageTypeLocallyRedundant}
-}
-
-// StorageTypeState enumerates the values for storage type state.
-type StorageTypeState string
-
-const (
-	// StorageTypeStateInvalid ...
-	StorageTypeStateInvalid StorageTypeState = "Invalid"
-	// StorageTypeStateLocked ...
-	StorageTypeStateLocked StorageTypeState = "Locked"
-	// StorageTypeStateUnlocked ...
-	StorageTypeStateUnlocked StorageTypeState = "Unlocked"
-)
-
-// PossibleStorageTypeStateValues returns an array of possible values for the StorageTypeState const type.
-func PossibleStorageTypeStateValues() []StorageTypeState {
-	return []StorageTypeState{StorageTypeStateInvalid, StorageTypeStateLocked, StorageTypeStateUnlocked}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeCopyOnlyFull ...
-	TypeCopyOnlyFull Type = "CopyOnlyFull"
-	// TypeDifferential ...
-	TypeDifferential Type = "Differential"
-	// TypeFull ...
-	TypeFull Type = "Full"
-	// TypeInvalid ...
-	TypeInvalid Type = "Invalid"
-	// TypeLog ...
-	TypeLog Type = "Log"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeCopyOnlyFull, TypeDifferential, TypeFull, TypeInvalid, TypeLog}
-}
-
-// WorkloadItemType enumerates the values for workload item type.
-type WorkloadItemType string
-
-const (
-	// WorkloadItemTypeInvalid ...
-	WorkloadItemTypeInvalid WorkloadItemType = "Invalid"
-	// WorkloadItemTypeSAPAseDatabase ...
-	WorkloadItemTypeSAPAseDatabase WorkloadItemType = "SAPAseDatabase"
-	// WorkloadItemTypeSAPAseSystem ...
-	WorkloadItemTypeSAPAseSystem WorkloadItemType = "SAPAseSystem"
-	// WorkloadItemTypeSAPHanaDatabase ...
-	WorkloadItemTypeSAPHanaDatabase WorkloadItemType = "SAPHanaDatabase"
-	// WorkloadItemTypeSAPHanaSystem ...
-	WorkloadItemTypeSAPHanaSystem WorkloadItemType = "SAPHanaSystem"
-	// WorkloadItemTypeSQLDataBase ...
-	WorkloadItemTypeSQLDataBase WorkloadItemType = "SQLDataBase"
-	// WorkloadItemTypeSQLInstance ...
-	WorkloadItemTypeSQLInstance WorkloadItemType = "SQLInstance"
-)
-
-// PossibleWorkloadItemTypeValues returns an array of possible values for the WorkloadItemType const type.
-func PossibleWorkloadItemTypeValues() []WorkloadItemType {
-	return []WorkloadItemType{WorkloadItemTypeInvalid, WorkloadItemTypeSAPAseDatabase, WorkloadItemTypeSAPAseSystem, WorkloadItemTypeSAPHanaDatabase, WorkloadItemTypeSAPHanaSystem, WorkloadItemTypeSQLDataBase, WorkloadItemTypeSQLInstance}
-}
-
-// WorkloadItemTypeBasicWorkloadItem enumerates the values for workload item type basic workload item.
-type WorkloadItemTypeBasicWorkloadItem string
-
-const (
-	// WorkloadItemTypeAzureVMWorkloadItem ...
-	WorkloadItemTypeAzureVMWorkloadItem WorkloadItemTypeBasicWorkloadItem = "AzureVmWorkloadItem"
-	// WorkloadItemTypeSAPAseDatabase1 ...
-	WorkloadItemTypeSAPAseDatabase1 WorkloadItemTypeBasicWorkloadItem = "SAPAseDatabase"
-	// WorkloadItemTypeSAPAseSystem1 ...
-	WorkloadItemTypeSAPAseSystem1 WorkloadItemTypeBasicWorkloadItem = "SAPAseSystem"
-	// WorkloadItemTypeSAPHanaDatabase1 ...
-	WorkloadItemTypeSAPHanaDatabase1 WorkloadItemTypeBasicWorkloadItem = "SAPHanaDatabase"
-	// WorkloadItemTypeSAPHanaSystem1 ...
-	WorkloadItemTypeSAPHanaSystem1 WorkloadItemTypeBasicWorkloadItem = "SAPHanaSystem"
-	// WorkloadItemTypeSQLDataBase1 ...
-	WorkloadItemTypeSQLDataBase1 WorkloadItemTypeBasicWorkloadItem = "SQLDataBase"
-	// WorkloadItemTypeSQLInstance1 ...
-	WorkloadItemTypeSQLInstance1 WorkloadItemTypeBasicWorkloadItem = "SQLInstance"
-	// WorkloadItemTypeWorkloadItem ...
-	WorkloadItemTypeWorkloadItem WorkloadItemTypeBasicWorkloadItem = "WorkloadItem"
-)
-
-// PossibleWorkloadItemTypeBasicWorkloadItemValues returns an array of possible values for the WorkloadItemTypeBasicWorkloadItem const type.
-func PossibleWorkloadItemTypeBasicWorkloadItemValues() []WorkloadItemTypeBasicWorkloadItem {
-	return []WorkloadItemTypeBasicWorkloadItem{WorkloadItemTypeAzureVMWorkloadItem, WorkloadItemTypeSAPAseDatabase1, WorkloadItemTypeSAPAseSystem1, WorkloadItemTypeSAPHanaDatabase1, WorkloadItemTypeSAPHanaSystem1, WorkloadItemTypeSQLDataBase1, WorkloadItemTypeSQLInstance1, WorkloadItemTypeWorkloadItem}
-}
-
-// WorkloadType enumerates the values for workload type.
-type WorkloadType string
-
-const (
-	// WorkloadTypeAzureFileShare ...
-	WorkloadTypeAzureFileShare WorkloadType = "AzureFileShare"
-	// WorkloadTypeAzureSQLDb ...
-	WorkloadTypeAzureSQLDb WorkloadType = "AzureSqlDb"
-	// WorkloadTypeClient ...
-	WorkloadTypeClient WorkloadType = "Client"
-	// WorkloadTypeExchange ...
-	WorkloadTypeExchange WorkloadType = "Exchange"
-	// WorkloadTypeFileFolder ...
-	WorkloadTypeFileFolder WorkloadType = "FileFolder"
-	// WorkloadTypeGenericDataSource ...
-	WorkloadTypeGenericDataSource WorkloadType = "GenericDataSource"
-	// WorkloadTypeInvalid ...
-	WorkloadTypeInvalid WorkloadType = "Invalid"
-	// WorkloadTypeSAPAseDatabase ...
-	WorkloadTypeSAPAseDatabase WorkloadType = "SAPAseDatabase"
-	// WorkloadTypeSAPHanaDatabase ...
-	WorkloadTypeSAPHanaDatabase WorkloadType = "SAPHanaDatabase"
-	// WorkloadTypeSharepoint ...
-	WorkloadTypeSharepoint WorkloadType = "Sharepoint"
-	// WorkloadTypeSQLDataBase ...
-	WorkloadTypeSQLDataBase WorkloadType = "SQLDataBase"
-	// WorkloadTypeSQLDB ...
-	WorkloadTypeSQLDB WorkloadType = "SQLDB"
-	// WorkloadTypeSystemState ...
-	WorkloadTypeSystemState WorkloadType = "SystemState"
-	// WorkloadTypeVM ...
-	WorkloadTypeVM WorkloadType = "VM"
-	// WorkloadTypeVMwareVM ...
-	WorkloadTypeVMwareVM WorkloadType = "VMwareVM"
-)
-
-// PossibleWorkloadTypeValues returns an array of possible values for the WorkloadType const type.
-func PossibleWorkloadTypeValues() []WorkloadType {
-	return []WorkloadType{WorkloadTypeAzureFileShare, WorkloadTypeAzureSQLDb, WorkloadTypeClient, WorkloadTypeExchange, WorkloadTypeFileFolder, WorkloadTypeGenericDataSource, WorkloadTypeInvalid, WorkloadTypeSAPAseDatabase, WorkloadTypeSAPHanaDatabase, WorkloadTypeSharepoint, WorkloadTypeSQLDataBase, WorkloadTypeSQLDB, WorkloadTypeSystemState, WorkloadTypeVM, WorkloadTypeVMwareVM}
-}
-
 // AzureBackupServerContainer azureBackupServer (DPMVenus) workload-specific protection container.
 type AzureBackupServerContainer struct {
 	// CanReRegister - Specifies whether the container is re-registrable.
@@ -2735,8 +2191,8 @@ func (avwsadwi AzureVMWorkloadSAPAseDatabaseWorkloadItem) AsBasicWorkloadItem() 
 	return &avwsadwi, true
 }
 
-// AzureVMWorkloadSAPAseSystemProtectableItem azure VM workload-specific protectable item representing SAP
-// ASE System.
+// AzureVMWorkloadSAPAseSystemProtectableItem azure VM workload-specific protectable item representing SAP ASE
+// System.
 type AzureVMWorkloadSAPAseSystemProtectableItem struct {
 	// ParentName - Name for instance or AG
 	ParentName *string `json:"parentName,omitempty"`
@@ -3000,8 +2456,8 @@ func (avwsaswi AzureVMWorkloadSAPAseSystemWorkloadItem) AsBasicWorkloadItem() (B
 	return &avwsaswi, true
 }
 
-// AzureVMWorkloadSAPHanaDatabaseProtectableItem azure VM workload-specific protectable item representing
-// SAP HANA Database.
+// AzureVMWorkloadSAPHanaDatabaseProtectableItem azure VM workload-specific protectable item representing SAP
+// HANA Database.
 type AzureVMWorkloadSAPHanaDatabaseProtectableItem struct {
 	// ParentName - Name for instance or AG
 	ParentName *string `json:"parentName,omitempty"`
@@ -3153,8 +2609,8 @@ func (avwshdpi AzureVMWorkloadSAPHanaDatabaseProtectableItem) AsBasicWorkloadPro
 	return &avwshdpi, true
 }
 
-// AzureVMWorkloadSAPHanaDatabaseWorkloadItem azure VM workload-specific workload item representing SAP
-// HANA Database.
+// AzureVMWorkloadSAPHanaDatabaseWorkloadItem azure VM workload-specific workload item representing SAP HANA
+// Database.
 type AzureVMWorkloadSAPHanaDatabaseWorkloadItem struct {
 	// ParentName - Name for instance or AG
 	ParentName *string `json:"parentName,omitempty"`
@@ -3530,8 +2986,8 @@ func (avwshswi AzureVMWorkloadSAPHanaSystemWorkloadItem) AsBasicWorkloadItem() (
 	return &avwshswi, true
 }
 
-// AzureVMWorkloadSQLAvailabilityGroupProtectableItem azure VM workload-specific protectable item
-// representing SQL Availability Group.
+// AzureVMWorkloadSQLAvailabilityGroupProtectableItem azure VM workload-specific protectable item representing
+// SQL Availability Group.
 type AzureVMWorkloadSQLAvailabilityGroupProtectableItem struct {
 	// ParentName - Name for instance or AG
 	ParentName *string `json:"parentName,omitempty"`
@@ -3836,8 +3292,7 @@ func (avwsdpi AzureVMWorkloadSQLDatabaseProtectableItem) AsBasicWorkloadProtecta
 	return &avwsdpi, true
 }
 
-// AzureVMWorkloadSQLDatabaseWorkloadItem azure VM workload-specific workload item representing SQL
-// Database.
+// AzureVMWorkloadSQLDatabaseWorkloadItem azure VM workload-specific workload item representing SQL Database.
 type AzureVMWorkloadSQLDatabaseWorkloadItem struct {
 	// ParentName - Name for instance or AG
 	ParentName *string `json:"parentName,omitempty"`
@@ -4101,8 +3556,7 @@ func (avwsipi AzureVMWorkloadSQLInstanceProtectableItem) AsBasicWorkloadProtecta
 	return &avwsipi, true
 }
 
-// AzureVMWorkloadSQLInstanceWorkloadItem azure VM workload-specific workload item representing SQL
-// Instance.
+// AzureVMWorkloadSQLInstanceWorkloadItem azure VM workload-specific workload item representing SQL Instance.
 type AzureVMWorkloadSQLInstanceWorkloadItem struct {
 	// DataDirectoryPaths - Data Directory Paths for default directories
 	DataDirectoryPaths *[]SQLDataDirectory `json:"dataDirectoryPaths,omitempty"`
@@ -5228,10 +4682,15 @@ func (ebrl EngineBaseResourceList) IsEmpty() bool {
 	return ebrl.Value == nil || len(*ebrl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ebrl EngineBaseResourceList) hasNextLink() bool {
+	return ebrl.NextLink != nil && len(*ebrl.NextLink) != 0
+}
+
 // engineBaseResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ebrl EngineBaseResourceList) engineBaseResourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if ebrl.NextLink == nil || len(to.String(ebrl.NextLink)) < 1 {
+	if !ebrl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5259,11 +4718,16 @@ func (page *EngineBaseResourceListPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ebrl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ebrl)
+		if err != nil {
+			return err
+		}
+		page.ebrl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ebrl = next
 	return nil
 }
 
@@ -6150,6 +5614,18 @@ type InquiryValidation struct {
 	AdditionalDetail *string `json:"additionalDetail,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for InquiryValidation.
+func (iv InquiryValidation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iv.Status != nil {
+		objectMap["status"] = iv.Status
+	}
+	if iv.ErrorDetail != nil {
+		objectMap["errorDetail"] = iv.ErrorDetail
+	}
+	return json.Marshal(objectMap)
+}
+
 // InstantItemRecoveryTarget target details for file / folder restore.
 type InstantItemRecoveryTarget struct {
 	// ClientScripts - List of client scripts.
@@ -6982,10 +6458,15 @@ func (pcrl ProtectableContainerResourceList) IsEmpty() bool {
 	return pcrl.Value == nil || len(*pcrl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pcrl ProtectableContainerResourceList) hasNextLink() bool {
+	return pcrl.NextLink != nil && len(*pcrl.NextLink) != 0
+}
+
 // protectableContainerResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pcrl ProtectableContainerResourceList) protectableContainerResourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if pcrl.NextLink == nil || len(to.String(pcrl.NextLink)) < 1 {
+	if !pcrl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -7013,11 +6494,16 @@ func (page *ProtectableContainerResourceListPage) NextWithContext(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pcrl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pcrl)
+		if err != nil {
+			return err
+		}
+		page.pcrl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pcrl = next
 	return nil
 }
 
@@ -7275,8 +6761,8 @@ func (pc ProtectionContainer) AsBasicProtectionContainer() (BasicProtectionConta
 	return &pc, true
 }
 
-// ProtectionContainerResource base class for container with backup items. Containers with specific
-// workloads are derived from this class.
+// ProtectionContainerResource base class for container with backup items. Containers with specific workloads
+// are derived from this class.
 type ProtectionContainerResource struct {
 	autorest.Response `json:"-"`
 	// Properties - ProtectionContainerResource properties
@@ -7397,8 +6883,8 @@ type ProtectionContainerResourceList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ProtectionContainerResourceListIterator provides access to a complete listing of
-// ProtectionContainerResource values.
+// ProtectionContainerResourceListIterator provides access to a complete listing of ProtectionContainerResource
+// values.
 type ProtectionContainerResourceListIterator struct {
 	i    int
 	page ProtectionContainerResourceListPage
@@ -7466,10 +6952,15 @@ func (pcrl ProtectionContainerResourceList) IsEmpty() bool {
 	return pcrl.Value == nil || len(*pcrl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pcrl ProtectionContainerResourceList) hasNextLink() bool {
+	return pcrl.NextLink != nil && len(*pcrl.NextLink) != 0
+}
+
 // protectionContainerResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pcrl ProtectionContainerResourceList) protectionContainerResourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if pcrl.NextLink == nil || len(to.String(pcrl.NextLink)) < 1 {
+	if !pcrl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -7497,11 +6988,16 @@ func (page *ProtectionContainerResourceListPage) NextWithContext(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pcrl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pcrl)
+		if err != nil {
+			return err
+		}
+		page.pcrl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pcrl = next
 	return nil
 }
 
@@ -8080,8 +7576,7 @@ func (wi WorkloadItem) AsBasicWorkloadItem() (BasicWorkloadItem, bool) {
 	return &wi, true
 }
 
-// WorkloadItemResource base class for backup item. Workload-specific backup items are derived from this
-// class.
+// WorkloadItemResource base class for backup item. Workload-specific backup items are derived from this class.
 type WorkloadItemResource struct {
 	// Properties - WorkloadItemResource properties
 	Properties BasicWorkloadItem `json:"properties,omitempty"`
@@ -8269,10 +7764,15 @@ func (wirl WorkloadItemResourceList) IsEmpty() bool {
 	return wirl.Value == nil || len(*wirl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wirl WorkloadItemResourceList) hasNextLink() bool {
+	return wirl.NextLink != nil && len(*wirl.NextLink) != 0
+}
+
 // workloadItemResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wirl WorkloadItemResourceList) workloadItemResourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if wirl.NextLink == nil || len(to.String(wirl.NextLink)) < 1 {
+	if !wirl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -8300,11 +7800,16 @@ func (page *WorkloadItemResourceListPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wirl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wirl)
+		if err != nil {
+			return err
+		}
+		page.wirl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wirl = next
 	return nil
 }
 
@@ -8545,8 +8050,8 @@ func (wpi WorkloadProtectableItem) AsBasicWorkloadProtectableItem() (BasicWorklo
 	return &wpi, true
 }
 
-// WorkloadProtectableItemResource base class for backup item. Workload-specific backup items are derived
-// from this class.
+// WorkloadProtectableItemResource base class for backup item. Workload-specific backup items are derived from
+// this class.
 type WorkloadProtectableItemResource struct {
 	// Properties - WorkloadProtectableItemResource properties
 	Properties BasicWorkloadProtectableItem `json:"properties,omitempty"`
@@ -8735,10 +8240,15 @@ func (wpirl WorkloadProtectableItemResourceList) IsEmpty() bool {
 	return wpirl.Value == nil || len(*wpirl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wpirl WorkloadProtectableItemResourceList) hasNextLink() bool {
+	return wpirl.NextLink != nil && len(*wpirl.NextLink) != 0
+}
+
 // workloadProtectableItemResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wpirl WorkloadProtectableItemResourceList) workloadProtectableItemResourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if wpirl.NextLink == nil || len(to.String(wpirl.NextLink)) < 1 {
+	if !wpirl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -8766,11 +8276,16 @@ func (page *WorkloadProtectableItemResourceListPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wpirl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wpirl)
+		if err != nil {
+			return err
+		}
+		page.wpirl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wpirl = next
 	return nil
 }
 

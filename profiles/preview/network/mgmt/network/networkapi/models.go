@@ -122,4 +122,3 @@ type VpnSiteLinksClientAPI = original.VpnSiteLinksClientAPI
 type VpnSitesClientAPI = original.VpnSitesClientAPI
 type VpnSitesConfigurationClientAPI = original.VpnSitesConfigurationClientAPI
 type WatchersClientAPI = original.WatchersClientAPI
-type WebApplicationFirewallPoliciesClientAPI = original.WebApplicationFirewallPoliciesClientAPI

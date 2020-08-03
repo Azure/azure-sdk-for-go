@@ -32,53 +32,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-05-31/consumption"
 
-// Bound enumerates the values for bound.
-type Bound string
-
-const (
-	// Lower ...
-	Lower Bound = "Lower"
-	// Upper ...
-	Upper Bound = "Upper"
-)
-
-// PossibleBoundValues returns an array of possible values for the Bound const type.
-func PossibleBoundValues() []Bound {
-	return []Bound{Lower, Upper}
-}
-
-// ChargeType enumerates the values for charge type.
-type ChargeType string
-
-const (
-	// ChargeTypeActual ...
-	ChargeTypeActual ChargeType = "Actual"
-	// ChargeTypeForecast ...
-	ChargeTypeForecast ChargeType = "Forecast"
-)
-
-// PossibleChargeTypeValues returns an array of possible values for the ChargeType const type.
-func PossibleChargeTypeValues() []ChargeType {
-	return []ChargeType{ChargeTypeActual, ChargeTypeForecast}
-}
-
-// Grain enumerates the values for grain.
-type Grain string
-
-const (
-	// Daily ...
-	Daily Grain = "Daily"
-	// Monthly ...
-	Monthly Grain = "Monthly"
-	// Yearly ...
-	Yearly Grain = "Yearly"
-)
-
-// PossibleGrainValues returns an array of possible values for the Grain const type.
-func PossibleGrainValues() []Grain {
-	return []Grain{Daily, Monthly, Yearly}
-}
-
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
 	// Code - READ-ONLY; Error code.
@@ -192,6 +145,18 @@ type ForecastProperties struct {
 	ConfidenceLevels *[]ForecastPropertiesConfidenceLevelsItem `json:"confidenceLevels,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ForecastProperties.
+func (fp ForecastProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fp.Grain != "" {
+		objectMap["grain"] = fp.Grain
+	}
+	if fp.ChargeType != "" {
+		objectMap["chargeType"] = fp.ChargeType
+	}
+	return json.Marshal(objectMap)
+}
+
 // ForecastPropertiesConfidenceLevelsItem ...
 type ForecastPropertiesConfidenceLevelsItem struct {
 	// Percentage - READ-ONLY; The percentage level of the confidence
@@ -200,6 +165,15 @@ type ForecastPropertiesConfidenceLevelsItem struct {
 	Bound Bound `json:"bound,omitempty"`
 	// Value - READ-ONLY; The amount of forecast within the percentage level
 	Value *decimal.Decimal `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ForecastPropertiesConfidenceLevelsItem.
+func (fpLi ForecastPropertiesConfidenceLevelsItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fpLi.Bound != "" {
+		objectMap["bound"] = fpLi.Bound
+	}
+	return json.Marshal(objectMap)
 }
 
 // ForecastsListResult result of listing forecasts. It contains a list of available forecasts.
@@ -233,6 +207,15 @@ type Operation struct {
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the object that represents the operation.
@@ -323,10 +306,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -354,11 +342,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -739,10 +732,15 @@ func (udlr UsageDetailsListResult) IsEmpty() bool {
 	return udlr.Value == nil || len(*udlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (udlr UsageDetailsListResult) hasNextLink() bool {
+	return udlr.NextLink != nil && len(*udlr.NextLink) != 0
+}
+
 // usageDetailsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (udlr UsageDetailsListResult) usageDetailsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if udlr.NextLink == nil || len(to.String(udlr.NextLink)) < 1 {
+	if !udlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -770,11 +768,16 @@ func (page *UsageDetailsListResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.udlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.udlr)
+		if err != nil {
+			return err
+		}
+		page.udlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.udlr = next
 	return nil
 }
 

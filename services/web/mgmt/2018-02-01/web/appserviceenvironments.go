@@ -736,6 +736,9 @@ func (client AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpoint
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetInboundNetworkDependenciesEndpoints", resp, "Failure responding to request")
 	}
+	if result.ieec.hasNextLink() && result.ieec.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -941,6 +944,9 @@ func (client AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpoin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "GetOutboundNetworkDependenciesEndpoints", resp, "Failure responding to request")
 	}
+	if result.oeec.hasNextLink() && result.oeec.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1136,6 +1142,9 @@ func (client AppServiceEnvironmentsClient) List(ctx context.Context) (result App
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "List", resp, "Failure responding to request")
 	}
+	if result.asec.hasNextLink() && result.asec.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1254,6 +1263,9 @@ func (client AppServiceEnvironmentsClient) ListAppServicePlans(ctx context.Conte
 	result.aspc, err = client.ListAppServicePlansResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListAppServicePlans", resp, "Failure responding to request")
+	}
+	if result.aspc.hasNextLink() && result.aspc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -1375,6 +1387,9 @@ func (client AppServiceEnvironmentsClient) ListByResourceGroup(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.asec.hasNextLink() && result.asec.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1494,6 +1509,9 @@ func (client AppServiceEnvironmentsClient) ListCapacities(ctx context.Context, r
 	result.scc, err = client.ListCapacitiesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListCapacities", resp, "Failure responding to request")
+	}
+	if result.scc.hasNextLink() && result.scc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -1786,6 +1804,9 @@ func (client AppServiceEnvironmentsClient) ListMetrics(ctx context.Context, reso
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMetrics", resp, "Failure responding to request")
 	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1912,6 +1933,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitions(ctx co
 	result.rmdc, err = client.ListMultiRoleMetricDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleMetricDefinitions", resp, "Failure responding to request")
+	}
+	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -2040,6 +2064,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleMetrics(ctx context.Cont
 	result.rmc, err = client.ListMultiRoleMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleMetrics", resp, "Failure responding to request")
+	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -2179,6 +2206,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefini
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolInstanceMetricDefinitions", resp, "Failure responding to request")
 	}
+	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2303,6 +2333,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetrics(ctx 
 	result.rmc, err = client.ListMultiRolePoolInstanceMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolInstanceMetrics", resp, "Failure responding to request")
+	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -2429,6 +2462,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePools(ctx context.Contex
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePools", resp, "Failure responding to request")
 	}
+	if result.wpc.hasNextLink() && result.wpc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2550,6 +2586,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolSkus(ctx context.Con
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolSkus", resp, "Failure responding to request")
 	}
+	if result.sic.hasNextLink() && result.sic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2670,6 +2709,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleUsages(ctx context.Conte
 	result.uc, err = client.ListMultiRoleUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleUsages", resp, "Failure responding to request")
+	}
+	if result.uc.hasNextLink() && result.uc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -2877,6 +2919,9 @@ func (client AppServiceEnvironmentsClient) ListUsages(ctx context.Context, resou
 	result.cuqc, err = client.ListUsagesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListUsages", resp, "Failure responding to request")
+	}
+	if result.cuqc.hasNextLink() && result.cuqc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -3086,6 +3131,9 @@ func (client AppServiceEnvironmentsClient) ListWebApps(ctx context.Context, reso
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebApps", resp, "Failure responding to request")
 	}
+	if result.ac.hasNextLink() && result.ac.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3210,6 +3258,9 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitions(ctx co
 	result.rmdc, err = client.ListWebWorkerMetricDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerMetricDefinitions", resp, "Failure responding to request")
+	}
+	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -3337,6 +3388,9 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerMetrics(ctx context.Cont
 	result.rmc, err = client.ListWebWorkerMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerMetrics", resp, "Failure responding to request")
+	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -3467,6 +3521,9 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerUsages(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerUsages", resp, "Failure responding to request")
 	}
+	if result.uc.hasNextLink() && result.uc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3591,6 +3648,9 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitio
 	result.rmdc, err = client.ListWorkerPoolInstanceMetricDefinitionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolInstanceMetricDefinitions", resp, "Failure responding to request")
+	}
+	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -3721,6 +3781,9 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetrics(ctx con
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolInstanceMetrics", resp, "Failure responding to request")
 	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3850,6 +3913,9 @@ func (client AppServiceEnvironmentsClient) ListWorkerPools(ctx context.Context, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPools", resp, "Failure responding to request")
 	}
+	if result.wpc.hasNextLink() && result.wpc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3971,6 +4037,9 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolSkus(ctx context.Contex
 	result.sic, err = client.ListWorkerPoolSkusResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolSkus", resp, "Failure responding to request")
+	}
+	if result.sic.hasNextLink() && result.sic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

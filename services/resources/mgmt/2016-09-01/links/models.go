@@ -19,6 +19,7 @@ package links
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
@@ -27,19 +28,6 @@ import (
 
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links"
-
-// Filter enumerates the values for filter.
-type Filter string
-
-const (
-	// AtScope ...
-	AtScope Filter = "atScope()"
-)
-
-// PossibleFilterValues returns an array of possible values for the Filter const type.
-func PossibleFilterValues() []Filter {
-	return []Filter{AtScope}
-}
 
 // Operation microsoft.Resources operation
 type Operation struct {
@@ -139,10 +127,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -170,11 +163,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -221,6 +219,15 @@ type ResourceLink struct {
 	Properties *ResourceLinkProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceLink.
+func (rl ResourceLink) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rl.Properties != nil {
+		objectMap["properties"] = rl.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // ResourceLinkFilter resource link filter.
 type ResourceLinkFilter struct {
 	// TargetID - The ID of the target resource.
@@ -237,6 +244,18 @@ type ResourceLinkProperties struct {
 	Notes *string `json:"notes,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceLinkProperties.
+func (rlp ResourceLinkProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rlp.TargetID != nil {
+		objectMap["targetId"] = rlp.TargetID
+	}
+	if rlp.Notes != nil {
+		objectMap["notes"] = rlp.Notes
+	}
+	return json.Marshal(objectMap)
+}
+
 // ResourceLinkResult list of resource links.
 type ResourceLinkResult struct {
 	autorest.Response `json:"-"`
@@ -244,6 +263,15 @@ type ResourceLinkResult struct {
 	Value *[]ResourceLink `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceLinkResult.
+func (rlr ResourceLinkResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rlr.Value != nil {
+		objectMap["value"] = rlr.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // ResourceLinkResultIterator provides access to a complete listing of ResourceLink values.
@@ -314,10 +342,15 @@ func (rlr ResourceLinkResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rlr ResourceLinkResult) hasNextLink() bool {
+	return rlr.NextLink != nil && len(*rlr.NextLink) != 0
+}
+
 // resourceLinkResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rlr ResourceLinkResult) resourceLinkResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
+	if !rlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -345,11 +378,16 @@ func (page *ResourceLinkResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rlr)
+		if err != nil {
+			return err
+		}
+		page.rlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rlr = next
 	return nil
 }
 

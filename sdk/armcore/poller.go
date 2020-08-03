@@ -34,10 +34,10 @@ const (
 
 var pollingCodes = [...]int{http.StatusNoContent, http.StatusAccepted, http.StatusCreated, http.StatusOK}
 
-// CreatePoller creates a polling tracker based on the verb of the original request and returns
+// NewPoller creates a polling tracker based on the verb of the original request and returns
 // the polling tracker implementation for the method verb or an error.
 // NOTE: this is only meant for internal use in generated code.
-func CreatePoller(pollerType string, finalState string, resp *azcore.Response, errorHandler methodErrorHandler) (Poller, error) {
+func NewPoller(pollerType string, finalState string, resp *azcore.Response, errorHandler methodErrorHandler) (Poller, error) {
 	switch strings.ToUpper(resp.Request.Method) {
 	case http.MethodDelete:
 		pt := &pollingTrackerDelete{pollingTrackerBase: pollingTrackerBase{PollerType: pollerType, FinalStateVia: finalState, OriginalURI: resp.Request.URL.String(), resp: resp, errorHandler: errorHandler}}
@@ -80,9 +80,9 @@ func CreatePoller(pollerType string, finalState string, resp *azcore.Response, e
 	}
 }
 
-// ResumePoller creates a polling tracker from a resume token string.
+// NewPollerFromResumeToken creates a polling tracker from a resume token string.
 // NOTE: this is only meant for internal use in generated code.
-func ResumePoller(pollerType string, token string, errorHandler methodErrorHandler) (Poller, error) {
+func NewPollerFromResumeToken(pollerType string, token string, errorHandler methodErrorHandler) (Poller, error) {
 	// unmarshal into JSON object to determine the tracker type
 	obj := map[string]interface{}{}
 	err := json.Unmarshal([]byte(token), &obj)
@@ -158,6 +158,10 @@ func (p *pollingTrackerBase) Done() bool {
 func (p *pollingTrackerBase) FinalResponse(ctx context.Context, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error) {
 	if !p.Done() {
 		return nil, errors.New("cannot return a final response from a poller in a non-terminal state")
+	}
+	// if respType is nil, this indicates that the request was made from an HTTPPoller
+	if respType == nil {
+		return p.latestResponse().Response, nil
 	}
 	if p.pollerMethodVerb() == http.MethodPut || p.pollerMethodVerb() == http.MethodPatch {
 		res, err := p.handleResponse(p.latestResponse(), respType)

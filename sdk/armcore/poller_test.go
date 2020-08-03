@@ -37,7 +37,7 @@ func handleError(resp *azcore.Response) error {
 	return fmt.Errorf("error status: %d", resp.StatusCode)
 }
 
-func TestCreatePollerTracker(t *testing.T) {
+func TestNewPollerTracker(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(mockSuccessResp)))
@@ -47,7 +47,7 @@ func TestCreatePollerTracker(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	poller, err := CreatePoller("testPoller", "", resp, handleError)
+	poller, err := NewPoller("testPoller", "", resp, handleError)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -73,7 +73,7 @@ func TestResumeTokenFail(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	poller, err := CreatePoller("testPoller", "", resp, handleError)
+	poller, err := NewPoller("testPoller", "", resp, handleError)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -97,7 +97,7 @@ func TestPollUntilDone(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	poller, err := CreatePoller("testPoller", "", resp, handleError)
+	poller, err := NewPoller("testPoller", "", resp, handleError)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -129,7 +129,7 @@ func TestPutFinalResponseCheck(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	poller, err := CreatePoller("testPoller", "", resp, handleError)
+	poller, err := NewPoller("testPoller", "", resp, handleError)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -149,7 +149,7 @@ func TestPutFinalResponseCheck(t *testing.T) {
 	}
 }
 
-func TestResumePollerTracker(t *testing.T) {
+func TestNewPollerFromResumeTokenTracker(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
@@ -160,7 +160,7 @@ func TestResumePollerTracker(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	poller, err := CreatePoller("testPoller", "", resp, handleError)
+	poller, err := NewPoller("testPoller", "", resp, handleError)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -168,7 +168,7 @@ func TestResumePollerTracker(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	poller, err = ResumePoller("testPoller", tk, handleError)
+	poller, err = NewPollerFromResumeToken("testPoller", tk, handleError)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}

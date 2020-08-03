@@ -28,6 +28,32 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-11-01/subscriptions"
 
+// CheckResourceNameResult resource Name valid if not a reserved word, does not contain a reserved word and
+// does not start with a reserved word
+type CheckResourceNameResult struct {
+	autorest.Response `json:"-"`
+	// Name - Name of Resource
+	Name *string `json:"name,omitempty"`
+	// Type - Type of Resource
+	Type *string `json:"type,omitempty"`
+	// Status - Is the resource name Allowed or Reserved. Possible values include: 'Allowed', 'Reserved'
+	Status ResourceNameStatus `json:"status,omitempty"`
+}
+
+// ErrorDefinition error description and code explaining why resource name is invalid.
+type ErrorDefinition struct {
+	// Message - Description of the error.
+	Message *string `json:"message,omitempty"`
+	// Code - Code of the error.
+	Code *string `json:"code,omitempty"`
+}
+
+// ErrorResponse error response.
+type ErrorResponse struct {
+	// Error - The error details.
+	Error *ErrorDefinition `json:"error,omitempty"`
+}
+
 // ListResult subscription list operation response.
 type ListResult struct {
 	autorest.Response `json:"-"`
@@ -105,10 +131,15 @@ func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -136,11 +167,16 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lr = next
 	return nil
 }
 
@@ -203,6 +239,14 @@ type Policies struct {
 	LocationPlacementID *string `json:"locationPlacementId,omitempty"`
 	// QuotaID - Gets or sets the subscription quota Id.
 	QuotaID *string `json:"quotaId,omitempty"`
+}
+
+// ResourceName name and Type of the Resource
+type ResourceName struct {
+	// Name - Name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the resource
+	Type *string `json:"type,omitempty"`
 }
 
 // Subscription subscription information.
@@ -305,10 +349,15 @@ func (tlr TenantListResult) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tlr TenantListResult) hasNextLink() bool {
+	return tlr.NextLink != nil && len(*tlr.NextLink) != 0
+}
+
 // tenantListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tlr TenantListResult) tenantListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if tlr.NextLink == nil || len(to.String(tlr.NextLink)) < 1 {
+	if !tlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -336,11 +385,16 @@ func (page *TenantListResultPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tlr)
+		if err != nil {
+			return err
+		}
+		page.tlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tlr = next
 	return nil
 }
 

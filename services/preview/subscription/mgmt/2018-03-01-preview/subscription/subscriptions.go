@@ -106,7 +106,6 @@ func (client SubscriptionsClient) GetSender(req *http.Request) (*http.Response, 
 func (client SubscriptionsClient) GetResponder(resp *http.Response) (result Model, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -144,6 +143,9 @@ func (client SubscriptionsClient) List(ctx context.Context) (result ListResultPa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.SubscriptionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.lr.hasNextLink() && result.lr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -174,7 +176,6 @@ func (client SubscriptionsClient) ListSender(req *http.Request) (*http.Response,
 func (client SubscriptionsClient) ListResponder(resp *http.Response) (result ListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -285,7 +286,6 @@ func (client SubscriptionsClient) ListLocationsSender(req *http.Request) (*http.
 func (client SubscriptionsClient) ListLocationsResponder(resp *http.Response) (result LocationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

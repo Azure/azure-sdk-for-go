@@ -32,193 +32,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2017-11-15/timeseriesinsights"
 
-// AccessPolicyRole enumerates the values for access policy role.
-type AccessPolicyRole string
-
-const (
-	// Contributor ...
-	Contributor AccessPolicyRole = "Contributor"
-	// Reader ...
-	Reader AccessPolicyRole = "Reader"
-)
-
-// PossibleAccessPolicyRoleValues returns an array of possible values for the AccessPolicyRole const type.
-func PossibleAccessPolicyRoleValues() []AccessPolicyRole {
-	return []AccessPolicyRole{Contributor, Reader}
-}
-
-// DataStringComparisonBehavior enumerates the values for data string comparison behavior.
-type DataStringComparisonBehavior string
-
-const (
-	// Ordinal ...
-	Ordinal DataStringComparisonBehavior = "Ordinal"
-	// OrdinalIgnoreCase ...
-	OrdinalIgnoreCase DataStringComparisonBehavior = "OrdinalIgnoreCase"
-)
-
-// PossibleDataStringComparisonBehaviorValues returns an array of possible values for the DataStringComparisonBehavior const type.
-func PossibleDataStringComparisonBehaviorValues() []DataStringComparisonBehavior {
-	return []DataStringComparisonBehavior{Ordinal, OrdinalIgnoreCase}
-}
-
-// IngressState enumerates the values for ingress state.
-type IngressState string
-
-const (
-	// Disabled ...
-	Disabled IngressState = "Disabled"
-	// Paused ...
-	Paused IngressState = "Paused"
-	// Ready ...
-	Ready IngressState = "Ready"
-	// Running ...
-	Running IngressState = "Running"
-	// Unknown ...
-	Unknown IngressState = "Unknown"
-)
-
-// PossibleIngressStateValues returns an array of possible values for the IngressState const type.
-func PossibleIngressStateValues() []IngressState {
-	return []IngressState{Disabled, Paused, Ready, Running, Unknown}
-}
-
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// KindEventSourceCreateOrUpdateParameters ...
-	KindEventSourceCreateOrUpdateParameters Kind = "EventSourceCreateOrUpdateParameters"
-	// KindMicrosoftEventHub ...
-	KindMicrosoftEventHub Kind = "Microsoft.EventHub"
-	// KindMicrosoftIoTHub ...
-	KindMicrosoftIoTHub Kind = "Microsoft.IoTHub"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{KindEventSourceCreateOrUpdateParameters, KindMicrosoftEventHub, KindMicrosoftIoTHub}
-}
-
-// KindBasicEventSourceResource enumerates the values for kind basic event source resource.
-type KindBasicEventSourceResource string
-
-const (
-	// KindBasicEventSourceResourceKindEventSourceResource ...
-	KindBasicEventSourceResourceKindEventSourceResource KindBasicEventSourceResource = "EventSourceResource"
-	// KindBasicEventSourceResourceKindMicrosoftEventHub ...
-	KindBasicEventSourceResourceKindMicrosoftEventHub KindBasicEventSourceResource = "Microsoft.EventHub"
-	// KindBasicEventSourceResourceKindMicrosoftIotHub ...
-	KindBasicEventSourceResourceKindMicrosoftIotHub KindBasicEventSourceResource = "Microsoft.IotHub"
-)
-
-// PossibleKindBasicEventSourceResourceValues returns an array of possible values for the KindBasicEventSourceResource const type.
-func PossibleKindBasicEventSourceResourceValues() []KindBasicEventSourceResource {
-	return []KindBasicEventSourceResource{KindBasicEventSourceResourceKindEventSourceResource, KindBasicEventSourceResourceKindMicrosoftEventHub, KindBasicEventSourceResourceKindMicrosoftIotHub}
-}
-
-// LocalTimestampFormat enumerates the values for local timestamp format.
-type LocalTimestampFormat string
-
-const (
-	// Embedded ...
-	Embedded LocalTimestampFormat = "Embedded"
-	// Iana ...
-	Iana LocalTimestampFormat = "Iana"
-	// TimeSpan ...
-	TimeSpan LocalTimestampFormat = "TimeSpan"
-)
-
-// PossibleLocalTimestampFormatValues returns an array of possible values for the LocalTimestampFormat const type.
-func PossibleLocalTimestampFormatValues() []LocalTimestampFormat {
-	return []LocalTimestampFormat{Embedded, Iana, TimeSpan}
-}
-
-// PropertyType enumerates the values for property type.
-type PropertyType string
-
-const (
-	// String ...
-	String PropertyType = "String"
-)
-
-// PossiblePropertyTypeValues returns an array of possible values for the PropertyType const type.
-func PossiblePropertyTypeValues() []PropertyType {
-	return []PropertyType{String}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Accepted ...
-	Accepted ProvisioningState = "Accepted"
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Accepted, Creating, Deleting, Failed, Succeeded, Updating}
-}
-
-// ReferenceDataKeyPropertyType enumerates the values for reference data key property type.
-type ReferenceDataKeyPropertyType string
-
-const (
-	// ReferenceDataKeyPropertyTypeBool ...
-	ReferenceDataKeyPropertyTypeBool ReferenceDataKeyPropertyType = "Bool"
-	// ReferenceDataKeyPropertyTypeDateTime ...
-	ReferenceDataKeyPropertyTypeDateTime ReferenceDataKeyPropertyType = "DateTime"
-	// ReferenceDataKeyPropertyTypeDouble ...
-	ReferenceDataKeyPropertyTypeDouble ReferenceDataKeyPropertyType = "Double"
-	// ReferenceDataKeyPropertyTypeString ...
-	ReferenceDataKeyPropertyTypeString ReferenceDataKeyPropertyType = "String"
-)
-
-// PossibleReferenceDataKeyPropertyTypeValues returns an array of possible values for the ReferenceDataKeyPropertyType const type.
-func PossibleReferenceDataKeyPropertyTypeValues() []ReferenceDataKeyPropertyType {
-	return []ReferenceDataKeyPropertyType{ReferenceDataKeyPropertyTypeBool, ReferenceDataKeyPropertyTypeDateTime, ReferenceDataKeyPropertyTypeDouble, ReferenceDataKeyPropertyTypeString}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// S1 ...
-	S1 SkuName = "S1"
-	// S2 ...
-	S2 SkuName = "S2"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{S1, S2}
-}
-
-// StorageLimitExceededBehavior enumerates the values for storage limit exceeded behavior.
-type StorageLimitExceededBehavior string
-
-const (
-	// PauseIngress ...
-	PauseIngress StorageLimitExceededBehavior = "PauseIngress"
-	// PurgeOldData ...
-	PurgeOldData StorageLimitExceededBehavior = "PurgeOldData"
-)
-
-// PossibleStorageLimitExceededBehaviorValues returns an array of possible values for the StorageLimitExceededBehavior const type.
-func PossibleStorageLimitExceededBehaviorValues() []StorageLimitExceededBehavior {
-	return []StorageLimitExceededBehavior{PauseIngress, PurgeOldData}
-}
-
 // AccessPolicyCreateOrUpdateParameters ...
 type AccessPolicyCreateOrUpdateParameters struct {
 	*AccessPolicyResourceProperties `json:"properties,omitempty"`
@@ -264,8 +77,7 @@ type AccessPolicyListResponse struct {
 	Value *[]AccessPolicyResource `json:"value,omitempty"`
 }
 
-// AccessPolicyMutableProperties an object that represents a set of mutable access policy resource
-// properties.
+// AccessPolicyMutableProperties an object that represents a set of mutable access policy resource properties.
 type AccessPolicyMutableProperties struct {
 	// Description - An description of the access policy.
 	Description *string `json:"description,omitempty"`
@@ -395,8 +207,7 @@ func (apup *AccessPolicyUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AzureEventSourceProperties properties of an event source that reads events from an event broker in
-// Azure.
+// AzureEventSourceProperties properties of an event source that reads events from an event broker in Azure.
 type AzureEventSourceProperties struct {
 	// EventSourceResourceID - The resource id of the event source in Azure Resource Manager.
 	EventSourceResourceID *string `json:"eventSourceResourceId,omitempty"`
@@ -406,6 +217,21 @@ type AzureEventSourceProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureEventSourceProperties.
+func (aesp AzureEventSourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aesp.EventSourceResourceID != nil {
+		objectMap["eventSourceResourceId"] = aesp.EventSourceResourceID
+	}
+	if aesp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = aesp.TimestampPropertyName
+	}
+	if aesp.ProvisioningState != "" {
+		objectMap["provisioningState"] = aesp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
 }
 
 // CloudError contains information about an API error.
@@ -426,8 +252,8 @@ type CloudErrorBody struct {
 	Details *[]CloudErrorBody `json:"details,omitempty"`
 }
 
-// CreateOrUpdateTrackedResourceProperties properties required to create any resource tracked by Azure
-// Resource Manager.
+// CreateOrUpdateTrackedResourceProperties properties required to create any resource tracked by Azure Resource
+// Manager.
 type CreateOrUpdateTrackedResourceProperties struct {
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -554,8 +380,8 @@ type EnvironmentMutableProperties struct {
 	PartitionKeyProperties *[]PartitionKeyProperty `json:"partitionKeyProperties,omitempty"`
 }
 
-// EnvironmentResource an environment is a set of time-series data available for query, and is the top
-// level Azure Time Series Insights resource.
+// EnvironmentResource an environment is a set of time-series data available for query, and is the top level
+// Azure Time Series Insights resource.
 type EnvironmentResource struct {
 	autorest.Response `json:"-"`
 	// Sku - The sku determines the capacity of the environment, the SLA (in queries-per-minute and total capacity), and the billing rate.
@@ -689,8 +515,29 @@ type EnvironmentResourceProperties struct {
 	Status *EnvironmentStatus `json:"status,omitempty"`
 }
 
-// EnvironmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// MarshalJSON is the custom marshaler for EnvironmentResourceProperties.
+func (erp EnvironmentResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if erp.DataRetentionTime != nil {
+		objectMap["dataRetentionTime"] = erp.DataRetentionTime
+	}
+	if erp.StorageLimitExceededBehavior != "" {
+		objectMap["storageLimitExceededBehavior"] = erp.StorageLimitExceededBehavior
+	}
+	if erp.PartitionKeyProperties != nil {
+		objectMap["partitionKeyProperties"] = erp.PartitionKeyProperties
+	}
+	if erp.ProvisioningState != "" {
+		objectMap["provisioningState"] = erp.ProvisioningState
+	}
+	if erp.Status != nil {
+		objectMap["status"] = erp.Status
+	}
+	return json.Marshal(objectMap)
+}
+
+// EnvironmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EnvironmentsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -849,6 +696,33 @@ type EventHubEventSourceCommonProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EventHubEventSourceCommonProperties.
+func (ehescp EventHubEventSourceCommonProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ehescp.ServiceBusNamespace != nil {
+		objectMap["serviceBusNamespace"] = ehescp.ServiceBusNamespace
+	}
+	if ehescp.EventHubName != nil {
+		objectMap["eventHubName"] = ehescp.EventHubName
+	}
+	if ehescp.ConsumerGroupName != nil {
+		objectMap["consumerGroupName"] = ehescp.ConsumerGroupName
+	}
+	if ehescp.KeyName != nil {
+		objectMap["keyName"] = ehescp.KeyName
+	}
+	if ehescp.EventSourceResourceID != nil {
+		objectMap["eventSourceResourceId"] = ehescp.EventSourceResourceID
+	}
+	if ehescp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = ehescp.TimestampPropertyName
+	}
+	if ehescp.ProvisioningState != "" {
+		objectMap["provisioningState"] = ehescp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
 // EventHubEventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source
 // operation for an EventHub event source.
 type EventHubEventSourceCreateOrUpdateParameters struct {
@@ -951,8 +825,8 @@ func (ehescoup *EventHubEventSourceCreateOrUpdateParameters) UnmarshalJSON(body 
 	return nil
 }
 
-// EventHubEventSourceCreationProperties properties of the EventHub event source that are required on
-// create or update requests.
+// EventHubEventSourceCreationProperties properties of the EventHub event source that are required on create or
+// update requests.
 type EventHubEventSourceCreationProperties struct {
 	// SharedAccessKey - The value of the shared access key that grants the Time Series Insights service read access to the event hub. This property is not shown in event source responses.
 	SharedAccessKey *string `json:"sharedAccessKey,omitempty"`
@@ -972,6 +846,36 @@ type EventHubEventSourceCreationProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EventHubEventSourceCreationProperties.
+func (ehescp EventHubEventSourceCreationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ehescp.SharedAccessKey != nil {
+		objectMap["sharedAccessKey"] = ehescp.SharedAccessKey
+	}
+	if ehescp.ServiceBusNamespace != nil {
+		objectMap["serviceBusNamespace"] = ehescp.ServiceBusNamespace
+	}
+	if ehescp.EventHubName != nil {
+		objectMap["eventHubName"] = ehescp.EventHubName
+	}
+	if ehescp.ConsumerGroupName != nil {
+		objectMap["consumerGroupName"] = ehescp.ConsumerGroupName
+	}
+	if ehescp.KeyName != nil {
+		objectMap["keyName"] = ehescp.KeyName
+	}
+	if ehescp.EventSourceResourceID != nil {
+		objectMap["eventSourceResourceId"] = ehescp.EventSourceResourceID
+	}
+	if ehescp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = ehescp.TimestampPropertyName
+	}
+	if ehescp.ProvisioningState != "" {
+		objectMap["provisioningState"] = ehescp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
 }
 
 // EventHubEventSourceMutableProperties an object that represents a set of mutable EventHub event source
@@ -1139,8 +1043,35 @@ type EventHubEventSourceResourceProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
-// EventHubEventSourceUpdateParameters parameters supplied to the Update Event Source operation to update
-// an EventHub event source.
+// MarshalJSON is the custom marshaler for EventHubEventSourceResourceProperties.
+func (ehesrp EventHubEventSourceResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ehesrp.ServiceBusNamespace != nil {
+		objectMap["serviceBusNamespace"] = ehesrp.ServiceBusNamespace
+	}
+	if ehesrp.EventHubName != nil {
+		objectMap["eventHubName"] = ehesrp.EventHubName
+	}
+	if ehesrp.ConsumerGroupName != nil {
+		objectMap["consumerGroupName"] = ehesrp.ConsumerGroupName
+	}
+	if ehesrp.KeyName != nil {
+		objectMap["keyName"] = ehesrp.KeyName
+	}
+	if ehesrp.EventSourceResourceID != nil {
+		objectMap["eventSourceResourceId"] = ehesrp.EventSourceResourceID
+	}
+	if ehesrp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = ehesrp.TimestampPropertyName
+	}
+	if ehesrp.ProvisioningState != "" {
+		objectMap["provisioningState"] = ehesrp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
+// EventHubEventSourceUpdateParameters parameters supplied to the Update Event Source operation to update an
+// EventHub event source.
 type EventHubEventSourceUpdateParameters struct {
 	// EventHubEventSourceMutableProperties - Properties of the EventHub event source.
 	*EventHubEventSourceMutableProperties `json:"properties,omitempty"`
@@ -1201,6 +1132,18 @@ type EventSourceCommonProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EventSourceCommonProperties.
+func (escp EventSourceCommonProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if escp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = escp.TimestampPropertyName
+	}
+	if escp.ProvisioningState != "" {
+		objectMap["provisioningState"] = escp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
 }
 
 // BasicEventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source operation.
@@ -1327,8 +1270,7 @@ func (eslr *EventSourceListResponse) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// EventSourceMutableProperties an object that represents a set of mutable event source resource
-// properties.
+// EventSourceMutableProperties an object that represents a set of mutable event source resource properties.
 type EventSourceMutableProperties struct {
 	// TimestampPropertyName - The event property that will be used as the event source's timestamp. If a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation time will be used.
 	TimestampPropertyName *string `json:"timestampPropertyName,omitempty"`
@@ -1499,8 +1441,32 @@ type IoTHubEventSourceCommonProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
-// IoTHubEventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source
-// operation for an IoTHub event source.
+// MarshalJSON is the custom marshaler for IoTHubEventSourceCommonProperties.
+func (ithescp IoTHubEventSourceCommonProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ithescp.IotHubName != nil {
+		objectMap["iotHubName"] = ithescp.IotHubName
+	}
+	if ithescp.ConsumerGroupName != nil {
+		objectMap["consumerGroupName"] = ithescp.ConsumerGroupName
+	}
+	if ithescp.KeyName != nil {
+		objectMap["keyName"] = ithescp.KeyName
+	}
+	if ithescp.EventSourceResourceID != nil {
+		objectMap["eventSourceResourceId"] = ithescp.EventSourceResourceID
+	}
+	if ithescp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = ithescp.TimestampPropertyName
+	}
+	if ithescp.ProvisioningState != "" {
+		objectMap["provisioningState"] = ithescp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
+// IoTHubEventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source operation
+// for an IoTHub event source.
 type IoTHubEventSourceCreateOrUpdateParameters struct {
 	*IoTHubEventSourceCreationProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindEventSourceCreateOrUpdateParameters', 'KindMicrosoftEventHub', 'KindMicrosoftIoTHub'
@@ -1622,8 +1588,35 @@ type IoTHubEventSourceCreationProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
-// IoTHubEventSourceMutableProperties an object that represents a set of mutable IoTHub event source
-// resource properties.
+// MarshalJSON is the custom marshaler for IoTHubEventSourceCreationProperties.
+func (ithescp IoTHubEventSourceCreationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ithescp.SharedAccessKey != nil {
+		objectMap["sharedAccessKey"] = ithescp.SharedAccessKey
+	}
+	if ithescp.IotHubName != nil {
+		objectMap["iotHubName"] = ithescp.IotHubName
+	}
+	if ithescp.ConsumerGroupName != nil {
+		objectMap["consumerGroupName"] = ithescp.ConsumerGroupName
+	}
+	if ithescp.KeyName != nil {
+		objectMap["keyName"] = ithescp.KeyName
+	}
+	if ithescp.EventSourceResourceID != nil {
+		objectMap["eventSourceResourceId"] = ithescp.EventSourceResourceID
+	}
+	if ithescp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = ithescp.TimestampPropertyName
+	}
+	if ithescp.ProvisioningState != "" {
+		objectMap["provisioningState"] = ithescp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
+// IoTHubEventSourceMutableProperties an object that represents a set of mutable IoTHub event source resource
+// properties.
 type IoTHubEventSourceMutableProperties struct {
 	// SharedAccessKey - The value of the shared access key that grants the Time Series Insights service read access to the iot hub. This property is not shown in event source responses.
 	SharedAccessKey *string `json:"sharedAccessKey,omitempty"`
@@ -1785,6 +1778,30 @@ type IoTHubEventSourceResourceProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IoTHubEventSourceResourceProperties.
+func (ithesrp IoTHubEventSourceResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ithesrp.IotHubName != nil {
+		objectMap["iotHubName"] = ithesrp.IotHubName
+	}
+	if ithesrp.ConsumerGroupName != nil {
+		objectMap["consumerGroupName"] = ithesrp.ConsumerGroupName
+	}
+	if ithesrp.KeyName != nil {
+		objectMap["keyName"] = ithesrp.KeyName
+	}
+	if ithesrp.EventSourceResourceID != nil {
+		objectMap["eventSourceResourceId"] = ithesrp.EventSourceResourceID
+	}
+	if ithesrp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = ithesrp.TimestampPropertyName
+	}
+	if ithesrp.ProvisioningState != "" {
+		objectMap["provisioningState"] = ithesrp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
 // IoTHubEventSourceUpdateParameters parameters supplied to the Update Event Source operation to update an
 // IoTHub event source.
 type IoTHubEventSourceUpdateParameters struct {
@@ -1841,8 +1858,7 @@ func (ithesup *IoTHubEventSourceUpdateParameters) UnmarshalJSON(body []byte) err
 
 // LocalTimestamp an object that represents the local timestamp property. It contains the format of local
 // timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
-// specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the
-// events.
+// specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
 type LocalTimestamp struct {
 	// Format - An enum that represents the format of the local timestamp property that needs to be set. Possible values include: 'Embedded', 'Iana', 'TimeSpan'
 	Format LocalTimestampFormat `json:"format,omitempty"`
@@ -1850,8 +1866,8 @@ type LocalTimestamp struct {
 	TimeZoneOffset *LocalTimestampTimeZoneOffset `json:"timeZoneOffset,omitempty"`
 }
 
-// LocalTimestampTimeZoneOffset an object that represents the offset information for the local timestamp
-// format specified. Should not be specified for LocalTimestampFormat - Embedded.
+// LocalTimestampTimeZoneOffset an object that represents the offset information for the local timestamp format
+// specified. Should not be specified for LocalTimestampFormat - Embedded.
 type LocalTimestampTimeZoneOffset struct {
 	// PropertyName - The event property that will be contain the offset information to calculate the local timestamp. When the LocalTimestampFormat is Iana, the property name will contain the name of the column which contains IANA Timezone Name (eg: Americas/Los Angeles). When LocalTimestampFormat is Timespan, it contains the name of property which contains values representing the offset (eg: P1D or 1.00:00:00)
 	PropertyName *string `json:"propertyName,omitempty"`
@@ -1955,10 +1971,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1986,11 +2007,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -2024,8 +2050,8 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 	return OperationListResultPage{fn: getNextPage}
 }
 
-// PartitionKeyProperty the structure of the property that a partition key can have. An environment can
-// have multiple such properties.
+// PartitionKeyProperty the structure of the property that a partition key can have. An environment can have
+// multiple such properties.
 type PartitionKeyProperty struct {
 	// Name - The name of the property.
 	Name *string `json:"name,omitempty"`
@@ -2123,10 +2149,9 @@ type ReferenceDataSetListResponse struct {
 	Value *[]ReferenceDataSetResource `json:"value,omitempty"`
 }
 
-// ReferenceDataSetResource a reference data set provides metadata about the events in an environment.
-// Metadata in the reference data set will be joined with events as they are read from event sources. The
-// metadata that makes up the reference data set is uploaded or modified through the Time Series Insights
-// data plane APIs.
+// ReferenceDataSetResource a reference data set provides metadata about the events in an environment. Metadata
+// in the reference data set will be joined with events as they are read from event sources. The metadata that
+// makes up the reference data set is uploaded or modified through the Time Series Insights data plane APIs.
 type ReferenceDataSetResource struct {
 	autorest.Response                   `json:"-"`
 	*ReferenceDataSetResourceProperties `json:"properties,omitempty"`
@@ -2238,6 +2263,21 @@ type ReferenceDataSetResourceProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ReferenceDataSetResourceProperties.
+func (rdsrp ReferenceDataSetResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rdsrp.KeyProperties != nil {
+		objectMap["keyProperties"] = rdsrp.KeyProperties
+	}
+	if rdsrp.DataStringComparisonBehavior != "" {
+		objectMap["dataStringComparisonBehavior"] = rdsrp.DataStringComparisonBehavior
+	}
+	if rdsrp.ProvisioningState != "" {
+		objectMap["provisioningState"] = rdsrp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
 // ReferenceDataSetUpdateParameters parameters supplied to the Update Reference Data Set operation.
 type ReferenceDataSetUpdateParameters struct {
 	// Tags - Key-value pairs of additional properties for the reference data set.
@@ -2271,8 +2311,17 @@ type ResourceProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
-// Sku the sku determines the capacity of the environment, the SLA (in queries-per-minute and total
-// capacity), and the billing rate.
+// MarshalJSON is the custom marshaler for ResourceProperties.
+func (rp ResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rp.ProvisioningState != "" {
+		objectMap["provisioningState"] = rp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
+// Sku the sku determines the capacity of the environment, the SLA (in queries-per-minute and total capacity),
+// and the billing rate.
 type Sku struct {
 	// Name - The name of this SKU. Possible values include: 'S1', 'S2'
 	Name SkuName `json:"name,omitempty"`

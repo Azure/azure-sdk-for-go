@@ -73,6 +73,9 @@ func (client DefinitionsOperationMetadataClient) List(ctx context.Context) (resu
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "subscription.DefinitionsOperationMetadataClient", "List", resp, "Failure responding to request")
 	}
+	if result.olr.hasNextLink() && result.olr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -103,7 +106,6 @@ func (client DefinitionsOperationMetadataClient) ListSender(req *http.Request) (
 func (client DefinitionsOperationMetadataClient) ListResponder(resp *http.Response) (result OperationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

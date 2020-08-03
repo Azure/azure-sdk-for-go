@@ -149,6 +149,9 @@ func (client ComplianceResultsClient) List(ctx context.Context, scope string) (r
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.ComplianceResultsClient", "List", resp, "Failure responding to request")
 	}
+	if result.crl.hasNextLink() && result.crl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

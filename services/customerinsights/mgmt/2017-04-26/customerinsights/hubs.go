@@ -322,6 +322,9 @@ func (client HubsClient) List(ctx context.Context) (result HubListResultPage, er
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "List", resp, "Failure responding to request")
 	}
+	if result.hlr.hasNextLink() && result.hlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -431,6 +434,9 @@ func (client HubsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	result.hlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.HubsClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.hlr.hasNextLink() && result.hlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

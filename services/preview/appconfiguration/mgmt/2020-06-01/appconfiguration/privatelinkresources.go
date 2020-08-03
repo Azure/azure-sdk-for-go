@@ -169,6 +169,9 @@ func (client PrivateLinkResourcesClient) ListByConfigurationStore(ctx context.Co
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "appconfiguration.PrivateLinkResourcesClient", "ListByConfigurationStore", resp, "Failure responding to request")
 	}
+	if result.plrlr.hasNextLink() && result.plrlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

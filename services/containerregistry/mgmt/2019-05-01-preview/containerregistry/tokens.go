@@ -360,6 +360,9 @@ func (client TokensClient) List(ctx context.Context, resourceGroupName string, r
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.TokensClient", "List", resp, "Failure responding to request")
 	}
+	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

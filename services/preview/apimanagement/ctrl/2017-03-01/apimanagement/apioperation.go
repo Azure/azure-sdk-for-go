@@ -376,6 +376,9 @@ func (client APIOperationClient) ListByAPI(ctx context.Context, apimBaseURL stri
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIOperationClient", "ListByAPI", resp, "Failure responding to request")
 	}
+	if result.oc.hasNextLink() && result.oc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

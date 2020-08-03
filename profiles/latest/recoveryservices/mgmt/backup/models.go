@@ -220,15 +220,10 @@ const (
 type HealthStatus = original.HealthStatus
 
 const (
-	HealthStatusActionRequired      HealthStatus = original.HealthStatusActionRequired
-	HealthStatusActionSuggested     HealthStatus = original.HealthStatusActionSuggested
-	HealthStatusHealthy             HealthStatus = original.HealthStatusHealthy
-	HealthStatusInvalid             HealthStatus = original.HealthStatusInvalid
-	HealthStatusPassed              HealthStatus = original.HealthStatusPassed
-	HealthStatusPersistentDegraded  HealthStatus = original.HealthStatusPersistentDegraded
-	HealthStatusPersistentUnhealthy HealthStatus = original.HealthStatusPersistentUnhealthy
-	HealthStatusTransientDegraded   HealthStatus = original.HealthStatusTransientDegraded
-	HealthStatusTransientUnhealthy  HealthStatus = original.HealthStatusTransientUnhealthy
+	HealthStatusActionRequired  HealthStatus = original.HealthStatusActionRequired
+	HealthStatusActionSuggested HealthStatus = original.HealthStatusActionSuggested
+	HealthStatusInvalid         HealthStatus = original.HealthStatusInvalid
+	HealthStatusPassed          HealthStatus = original.HealthStatusPassed
 )
 
 type InquiryStatus = original.InquiryStatus
@@ -641,6 +636,17 @@ const (
 	RecoveryTypeRestoreDisks      RecoveryType = original.RecoveryTypeRestoreDisks
 )
 
+type ResourceHealthStatus = original.ResourceHealthStatus
+
+const (
+	ResourceHealthStatusHealthy             ResourceHealthStatus = original.ResourceHealthStatusHealthy
+	ResourceHealthStatusInvalid             ResourceHealthStatus = original.ResourceHealthStatusInvalid
+	ResourceHealthStatusPersistentDegraded  ResourceHealthStatus = original.ResourceHealthStatusPersistentDegraded
+	ResourceHealthStatusPersistentUnhealthy ResourceHealthStatus = original.ResourceHealthStatusPersistentUnhealthy
+	ResourceHealthStatusTransientDegraded   ResourceHealthStatus = original.ResourceHealthStatusTransientDegraded
+	ResourceHealthStatusTransientUnhealthy  ResourceHealthStatus = original.ResourceHealthStatusTransientUnhealthy
+)
+
 type RestorePointQueryType = original.RestorePointQueryType
 
 const (
@@ -1026,7 +1032,6 @@ type GenericProtectedItem = original.GenericProtectedItem
 type GenericProtectionPolicy = original.GenericProtectionPolicy
 type GenericRecoveryPoint = original.GenericRecoveryPoint
 type GetProtectedItemQueryObject = original.GetProtectedItemQueryObject
-type HealthDetails = original.HealthDetails
 type ILRRequest = original.ILRRequest
 type ILRRequestResource = original.ILRRequestResource
 type IaaSVMContainer = original.IaaSVMContainer
@@ -1052,6 +1057,7 @@ type JobResourceListPage = original.JobResourceListPage
 type JobsClient = original.JobsClient
 type JobsGroupClient = original.JobsGroupClient
 type KEKDetails = original.KEKDetails
+type KPIResourceHealthDetails = original.KPIResourceHealthDetails
 type KeyAndSecretDetails = original.KeyAndSecretDetails
 type LogSchedulePolicy = original.LogSchedulePolicy
 type LongTermRetentionPolicy = original.LongTermRetentionPolicy
@@ -1152,6 +1158,7 @@ type RequestResource = original.RequestResource
 type Resource = original.Resource
 type ResourceConfig = original.ResourceConfig
 type ResourceConfigResource = original.ResourceConfigResource
+type ResourceHealthDetails = original.ResourceHealthDetails
 type ResourceList = original.ResourceList
 type ResourceStorageConfigsClient = original.ResourceStorageConfigsClient
 type ResourceVaultConfig = original.ResourceVaultConfig
@@ -1657,6 +1664,9 @@ func PossibleRecoveryPointTierTypeValues() []RecoveryPointTierType {
 }
 func PossibleRecoveryTypeValues() []RecoveryType {
 	return original.PossibleRecoveryTypeValues()
+}
+func PossibleResourceHealthStatusValues() []ResourceHealthStatus {
+	return original.PossibleResourceHealthStatusValues()
 }
 func PossibleRestorePointQueryTypeValues() []RestorePointQueryType {
 	return original.PossibleRestorePointQueryTypeValues()

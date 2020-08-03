@@ -25,135 +25,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/mgmt/2016-02-01-preview/cognitiveservices"
 
-// KeyName enumerates the values for key name.
-type KeyName string
-
-const (
-	// Key1 ...
-	Key1 KeyName = "Key1"
-	// Key2 ...
-	Key2 KeyName = "Key2"
-)
-
-// PossibleKeyNameValues returns an array of possible values for the KeyName const type.
-func PossibleKeyNameValues() []KeyName {
-	return []KeyName{Key1, Key2}
-}
-
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// Academic ...
-	Academic Kind = "Academic"
-	// BingAutosuggest ...
-	BingAutosuggest Kind = "Bing.Autosuggest"
-	// BingSearch ...
-	BingSearch Kind = "Bing.Search"
-	// BingSpeech ...
-	BingSpeech Kind = "Bing.Speech"
-	// BingSpellCheck ...
-	BingSpellCheck Kind = "Bing.SpellCheck"
-	// ComputerVision ...
-	ComputerVision Kind = "ComputerVision"
-	// ContentModerator ...
-	ContentModerator Kind = "ContentModerator"
-	// Emotion ...
-	Emotion Kind = "Emotion"
-	// Face ...
-	Face Kind = "Face"
-	// LUIS ...
-	LUIS Kind = "LUIS"
-	// Recommendations ...
-	Recommendations Kind = "Recommendations"
-	// SpeakerRecognition ...
-	SpeakerRecognition Kind = "SpeakerRecognition"
-	// Speech ...
-	Speech Kind = "Speech"
-	// SpeechTranslation ...
-	SpeechTranslation Kind = "SpeechTranslation"
-	// TextAnalytics ...
-	TextAnalytics Kind = "TextAnalytics"
-	// TextTranslation ...
-	TextTranslation Kind = "TextTranslation"
-	// WebLM ...
-	WebLM Kind = "WebLM"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{Academic, BingAutosuggest, BingSearch, BingSpeech, BingSpellCheck, ComputerVision, ContentModerator, Emotion, Face, LUIS, Recommendations, SpeakerRecognition, Speech, SpeechTranslation, TextAnalytics, TextTranslation, WebLM}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// ResolvingDNS ...
-	ResolvingDNS ProvisioningState = "ResolvingDNS"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Creating, Failed, ResolvingDNS, Succeeded}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// F0 ...
-	F0 SkuName = "F0"
-	// P0 ...
-	P0 SkuName = "P0"
-	// P1 ...
-	P1 SkuName = "P1"
-	// P2 ...
-	P2 SkuName = "P2"
-	// S0 ...
-	S0 SkuName = "S0"
-	// S1 ...
-	S1 SkuName = "S1"
-	// S2 ...
-	S2 SkuName = "S2"
-	// S3 ...
-	S3 SkuName = "S3"
-	// S4 ...
-	S4 SkuName = "S4"
-	// S5 ...
-	S5 SkuName = "S5"
-	// S6 ...
-	S6 SkuName = "S6"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{F0, P0, P1, P2, S0, S1, S2, S3, S4, S5, S6}
-}
-
-// SkuTier enumerates the values for sku tier.
-type SkuTier string
-
-const (
-	// Free ...
-	Free SkuTier = "Free"
-	// Premium ...
-	Premium SkuTier = "Premium"
-	// Standard ...
-	Standard SkuTier = "Standard"
-)
-
-// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() []SkuTier {
-	return []SkuTier{Free, Premium, Standard}
-}
-
 // Account cognitive Services Account is an Azure resource representing the provisioned account, its type,
 // location and SKU.
 type Account struct {
@@ -370,6 +241,15 @@ type AccountProperties struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountProperties.
+func (ap AccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.Endpoint != nil {
+		objectMap["endpoint"] = ap.Endpoint
+	}
+	return json.Marshal(objectMap)
+}
+
 // AccountUpdateParameters the parameters to provide for the account.
 type AccountUpdateParameters struct {
 	Sku *Sku `json:"sku,omitempty"`
@@ -421,4 +301,13 @@ type Sku struct {
 	Name SkuName `json:"name,omitempty"`
 	// Tier - READ-ONLY; Gets the sku tier. This is based on the SKU name. Possible values include: 'Free', 'Standard', 'Premium'
 	Tier SkuTier `json:"tier,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Sku.
+func (s Sku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.Name != "" {
+		objectMap["name"] = s.Name
+	}
+	return json.Marshal(objectMap)
 }

@@ -218,10 +218,15 @@ func (rlr RegistryListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rlr RegistryListResult) hasNextLink() bool {
+	return rlr.NextLink != nil && len(*rlr.NextLink) != 0
+}
+
 // registryListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rlr RegistryListResult) registryListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
+	if !rlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -249,11 +254,16 @@ func (page *RegistryListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rlr)
+		if err != nil {
+			return err
+		}
+		page.rlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rlr = next
 	return nil
 }
 
@@ -316,6 +326,18 @@ type RegistryProperties struct {
 	AdminUserEnabled *bool `json:"adminUserEnabled,omitempty"`
 	// StorageAccount - The properties of the storage account for the container registry. If specified, the storage account must be in the same physical location as the container registry.
 	StorageAccount *StorageAccountProperties `json:"storageAccount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RegistryProperties.
+func (rp RegistryProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rp.AdminUserEnabled != nil {
+		objectMap["adminUserEnabled"] = rp.AdminUserEnabled
+	}
+	if rp.StorageAccount != nil {
+		objectMap["storageAccount"] = rp.StorageAccount
+	}
+	return json.Marshal(objectMap)
 }
 
 // RegistryPropertiesUpdateParameters the parameters for updating the properties of a container registry.

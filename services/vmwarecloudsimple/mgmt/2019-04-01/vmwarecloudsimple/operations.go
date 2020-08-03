@@ -147,6 +147,9 @@ func (client OperationsClient) List(ctx context.Context) (result AvailableOperat
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.OperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.aolr.hasNextLink() && result.aolr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

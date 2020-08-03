@@ -170,6 +170,9 @@ func (client PublicKeysClient) ListByDataManager(ctx context.Context, resourceGr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.PublicKeysClient", "ListByDataManager", resp, "Failure responding to request")
 	}
+	if result.pkl.hasNextLink() && result.pkl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -30,152 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2018-08-31-preview/workloadmonitor"
 
-// AlertGeneration enumerates the values for alert generation.
-type AlertGeneration string
-
-const (
-	// Disabled ...
-	Disabled AlertGeneration = "Disabled"
-	// Enabled ...
-	Enabled AlertGeneration = "Enabled"
-)
-
-// PossibleAlertGenerationValues returns an array of possible values for the AlertGeneration const type.
-func PossibleAlertGenerationValues() []AlertGeneration {
-	return []AlertGeneration{Disabled, Enabled}
-}
-
-// HealthState enumerates the values for health state.
-type HealthState string
-
-const (
-	// Error ...
-	Error HealthState = "Error"
-	// Success ...
-	Success HealthState = "Success"
-	// Uninitialized ...
-	Uninitialized HealthState = "Uninitialized"
-	// Unknown ...
-	Unknown HealthState = "Unknown"
-	// Warning ...
-	Warning HealthState = "Warning"
-)
-
-// PossibleHealthStateValues returns an array of possible values for the HealthState const type.
-func PossibleHealthStateValues() []HealthState {
-	return []HealthState{Error, Success, Uninitialized, Unknown, Warning}
-}
-
-// HealthStateCategory enumerates the values for health state category.
-type HealthStateCategory string
-
-const (
-	// CustomGroup ...
-	CustomGroup HealthStateCategory = "CustomGroup"
-	// Identity ...
-	Identity HealthStateCategory = "Identity"
-)
-
-// PossibleHealthStateCategoryValues returns an array of possible values for the HealthStateCategory const type.
-func PossibleHealthStateCategoryValues() []HealthStateCategory {
-	return []HealthStateCategory{CustomGroup, Identity}
-}
-
-// MonitorCategory enumerates the values for monitor category.
-type MonitorCategory string
-
-const (
-	// AvailabilityHealth ...
-	AvailabilityHealth MonitorCategory = "AvailabilityHealth"
-	// Configuration ...
-	Configuration MonitorCategory = "Configuration"
-	// EntityHealth ...
-	EntityHealth MonitorCategory = "EntityHealth"
-	// PerformanceHealth ...
-	PerformanceHealth MonitorCategory = "PerformanceHealth"
-	// Security ...
-	Security MonitorCategory = "Security"
-)
-
-// PossibleMonitorCategoryValues returns an array of possible values for the MonitorCategory const type.
-func PossibleMonitorCategoryValues() []MonitorCategory {
-	return []MonitorCategory{AvailabilityHealth, Configuration, EntityHealth, PerformanceHealth, Security}
-}
-
-// MonitorState enumerates the values for monitor state.
-type MonitorState string
-
-const (
-	// MonitorStateDisabled ...
-	MonitorStateDisabled MonitorState = "Disabled"
-	// MonitorStateEnabled ...
-	MonitorStateEnabled MonitorState = "Enabled"
-)
-
-// PossibleMonitorStateValues returns an array of possible values for the MonitorState const type.
-func PossibleMonitorStateValues() []MonitorState {
-	return []MonitorState{MonitorStateDisabled, MonitorStateEnabled}
-}
-
-// MonitorType enumerates the values for monitor type.
-type MonitorType string
-
-const (
-	// Aggregate ...
-	Aggregate MonitorType = "Aggregate"
-	// Dependency ...
-	Dependency MonitorType = "Dependency"
-	// Unit ...
-	Unit MonitorType = "Unit"
-)
-
-// PossibleMonitorTypeValues returns an array of possible values for the MonitorType const type.
-func PossibleMonitorTypeValues() []MonitorType {
-	return []MonitorType{Aggregate, Dependency, Unit}
-}
-
-// Operator enumerates the values for operator.
-type Operator string
-
-const (
-	// Equals ...
-	Equals Operator = "Equals"
-	// GreaterThan ...
-	GreaterThan Operator = "GreaterThan"
-	// GreaterThanOrEqual ...
-	GreaterThanOrEqual Operator = "GreaterThanOrEqual"
-	// LessThan ...
-	LessThan Operator = "LessThan"
-	// LessThanOrEqual ...
-	LessThanOrEqual Operator = "LessThanOrEqual"
-	// NotEquals ...
-	NotEquals Operator = "NotEquals"
-)
-
-// PossibleOperatorValues returns an array of possible values for the Operator const type.
-func PossibleOperatorValues() []Operator {
-	return []Operator{Equals, GreaterThan, GreaterThanOrEqual, LessThan, LessThanOrEqual, NotEquals}
-}
-
-// WorkloadType enumerates the values for workload type.
-type WorkloadType string
-
-const (
-	// Apache ...
-	Apache WorkloadType = "Apache"
-	// BaseOS ...
-	BaseOS WorkloadType = "BaseOS"
-	// IIS ...
-	IIS WorkloadType = "IIS"
-	// SQL ...
-	SQL WorkloadType = "SQL"
-)
-
-// PossibleWorkloadTypeValues returns an array of possible values for the WorkloadType const type.
-func PossibleWorkloadTypeValues() []WorkloadType {
-	return []WorkloadType{Apache, BaseOS, IIS, SQL}
-}
-
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
@@ -390,10 +244,15 @@ func (cc ComponentsCollection) IsEmpty() bool {
 	return cc.Value == nil || len(*cc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cc ComponentsCollection) hasNextLink() bool {
+	return cc.NextLink != nil && len(*cc.NextLink) != 0
+}
+
 // componentsCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cc ComponentsCollection) componentsCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if cc.NextLink == nil || len(to.String(cc.NextLink)) < 1 {
+	if !cc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -421,11 +280,16 @@ func (page *ComponentsCollectionPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cc)
+		if err != nil {
+			return err
+		}
+		page.cc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cc = next
 	return nil
 }
 
@@ -786,10 +650,15 @@ func (mic MonitorInstancesCollection) IsEmpty() bool {
 	return mic.Value == nil || len(*mic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mic MonitorInstancesCollection) hasNextLink() bool {
+	return mic.NextLink != nil && len(*mic.NextLink) != 0
+}
+
 // monitorInstancesCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mic MonitorInstancesCollection) monitorInstancesCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if mic.NextLink == nil || len(to.String(mic.NextLink)) < 1 {
+	if !mic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -817,11 +686,16 @@ func (page *MonitorInstancesCollectionPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mic)
+		if err != nil {
+			return err
+		}
+		page.mic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mic = next
 	return nil
 }
 
@@ -974,10 +848,15 @@ func (mc MonitorsCollection) IsEmpty() bool {
 	return mc.Value == nil || len(*mc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mc MonitorsCollection) hasNextLink() bool {
+	return mc.NextLink != nil && len(*mc.NextLink) != 0
+}
+
 // monitorsCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mc MonitorsCollection) monitorsCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if mc.NextLink == nil || len(to.String(mc.NextLink)) < 1 {
+	if !mc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1005,11 +884,16 @@ func (page *MonitorsCollectionPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mc)
+		if err != nil {
+			return err
+		}
+		page.mc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mc = next
 	return nil
 }
 
@@ -1138,8 +1022,16 @@ type NotificationSettingsCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// NotificationSettingsCollectionIterator provides access to a complete listing of NotificationSetting
-// values.
+// MarshalJSON is the custom marshaler for NotificationSettingsCollection.
+func (nsc NotificationSettingsCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nsc.Value != nil {
+		objectMap["value"] = nsc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// NotificationSettingsCollectionIterator provides access to a complete listing of NotificationSetting values.
 type NotificationSettingsCollectionIterator struct {
 	i    int
 	page NotificationSettingsCollectionPage
@@ -1207,10 +1099,15 @@ func (nsc NotificationSettingsCollection) IsEmpty() bool {
 	return nsc.Value == nil || len(*nsc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (nsc NotificationSettingsCollection) hasNextLink() bool {
+	return nsc.NextLink != nil && len(*nsc.NextLink) != 0
+}
+
 // notificationSettingsCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (nsc NotificationSettingsCollection) notificationSettingsCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if nsc.NextLink == nil || len(to.String(nsc.NextLink)) < 1 {
+	if !nsc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1238,11 +1135,16 @@ func (page *NotificationSettingsCollectionPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.nsc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.nsc)
+		if err != nil {
+			return err
+		}
+		page.nsc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.nsc = next
 	return nil
 }
 
@@ -1363,10 +1265,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1394,11 +1301,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 

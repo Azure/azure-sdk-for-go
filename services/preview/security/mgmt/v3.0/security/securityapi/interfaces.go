@@ -148,6 +148,23 @@ type IotAlertsClientAPI interface {
 
 var _ IotAlertsClientAPI = (*security.IotAlertsClient)(nil)
 
+// IotRecommendationTypesClientAPI contains the set of methods on the IotRecommendationTypesClient type.
+type IotRecommendationTypesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, solutionName string, iotRecommendationTypeName string) (result security.IotRecommendationType, err error)
+	List(ctx context.Context, resourceGroupName string, solutionName string) (result security.IotRecommendationTypeList, err error)
+}
+
+var _ IotRecommendationTypesClientAPI = (*security.IotRecommendationTypesClient)(nil)
+
+// IotRecommendationsClientAPI contains the set of methods on the IotRecommendationsClient type.
+type IotRecommendationsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, solutionName string, iotRecommendationID string) (result security.IotRecommendation, err error)
+	List(ctx context.Context, resourceGroupName string, solutionName string, recommendationType string, limit *int32, skipToken string) (result security.IotRecommendationListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, solutionName string, recommendationType string, limit *int32, skipToken string) (result security.IotRecommendationListIterator, err error)
+}
+
+var _ IotRecommendationsClientAPI = (*security.IotRecommendationsClient)(nil)
+
 // LocationsClientAPI contains the set of methods on the LocationsClient type.
 type LocationsClientAPI interface {
 	Get(ctx context.Context) (result security.AscLocation, err error)
@@ -335,9 +352,9 @@ var _ AssessmentsClientAPI = (*security.AssessmentsClient)(nil)
 // AdaptiveApplicationControlsClientAPI contains the set of methods on the AdaptiveApplicationControlsClient type.
 type AdaptiveApplicationControlsClientAPI interface {
 	Delete(ctx context.Context, groupName string) (result autorest.Response, err error)
-	Get(ctx context.Context, groupName string) (result security.AppWhitelistingGroup, err error)
-	List(ctx context.Context, includePathRecommendations *bool, summary *bool) (result security.AppWhitelistingGroups, err error)
-	Put(ctx context.Context, groupName string, body security.AppWhitelistingGroup) (result security.AppWhitelistingGroup, err error)
+	Get(ctx context.Context, groupName string) (result security.AdaptiveApplicationControlGroup, err error)
+	List(ctx context.Context, includePathRecommendations *bool, summary *bool) (result security.AdaptiveApplicationControlGroups, err error)
+	Put(ctx context.Context, groupName string, body security.AdaptiveApplicationControlGroup) (result security.AdaptiveApplicationControlGroup, err error)
 }
 
 var _ AdaptiveApplicationControlsClientAPI = (*security.AdaptiveApplicationControlsClient)(nil)
@@ -403,6 +420,14 @@ type DiscoveredSecuritySolutionsClientAPI interface {
 
 var _ DiscoveredSecuritySolutionsClientAPI = (*security.DiscoveredSecuritySolutionsClient)(nil)
 
+// SolutionsReferenceDataClientAPI contains the set of methods on the SolutionsReferenceDataClient type.
+type SolutionsReferenceDataClientAPI interface {
+	List(ctx context.Context) (result security.SolutionsReferenceDataList, err error)
+	ListByHomeRegion(ctx context.Context) (result security.SolutionsReferenceDataList, err error)
+}
+
+var _ SolutionsReferenceDataClientAPI = (*security.SolutionsReferenceDataClient)(nil)
+
 // ExternalSecuritySolutionsClientAPI contains the set of methods on the ExternalSecuritySolutionsClient type.
 type ExternalSecuritySolutionsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, externalSecuritySolutionsName string) (result security.ExternalSecuritySolutionModel, err error)
@@ -442,6 +467,15 @@ type SecureScoreControlDefinitionsClientAPI interface {
 }
 
 var _ SecureScoreControlDefinitionsClientAPI = (*security.SecureScoreControlDefinitionsClient)(nil)
+
+// SolutionsClientAPI contains the set of methods on the SolutionsClient type.
+type SolutionsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, securitySolutionName string) (result security.Solution, err error)
+	List(ctx context.Context) (result security.SolutionListPage, err error)
+	ListComplete(ctx context.Context) (result security.SolutionListIterator, err error)
+}
+
+var _ SolutionsClientAPI = (*security.SolutionsClient)(nil)
 
 // ConnectorsClientAPI contains the set of methods on the ConnectorsClient type.
 type ConnectorsClientAPI interface {

@@ -26,84 +26,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/2015-10-01-preview/filesystem"
 
-// AppendModeType enumerates the values for append mode type.
-type AppendModeType string
-
-const (
-	// Autocreate ...
-	Autocreate AppendModeType = "autocreate"
-)
-
-// PossibleAppendModeTypeValues returns an array of possible values for the AppendModeType const type.
-func PossibleAppendModeTypeValues() []AppendModeType {
-	return []AppendModeType{Autocreate}
-}
-
-// Exception enumerates the values for exception.
-type Exception string
-
-const (
-	// ExceptionAccessControlException ...
-	ExceptionAccessControlException Exception = "AccessControlException"
-	// ExceptionAdlsRemoteException ...
-	ExceptionAdlsRemoteException Exception = "AdlsRemoteException"
-	// ExceptionBadOffsetException ...
-	ExceptionBadOffsetException Exception = "BadOffsetException"
-	// ExceptionFileAlreadyExistsException ...
-	ExceptionFileAlreadyExistsException Exception = "FileAlreadyExistsException"
-	// ExceptionFileNotFoundException ...
-	ExceptionFileNotFoundException Exception = "FileNotFoundException"
-	// ExceptionIllegalArgumentException ...
-	ExceptionIllegalArgumentException Exception = "IllegalArgumentException"
-	// ExceptionIOException ...
-	ExceptionIOException Exception = "IOException"
-	// ExceptionRuntimeException ...
-	ExceptionRuntimeException Exception = "RuntimeException"
-	// ExceptionSecurityException ...
-	ExceptionSecurityException Exception = "SecurityException"
-	// ExceptionUnsupportedOperationException ...
-	ExceptionUnsupportedOperationException Exception = "UnsupportedOperationException"
-)
-
-// PossibleExceptionValues returns an array of possible values for the Exception const type.
-func PossibleExceptionValues() []Exception {
-	return []Exception{ExceptionAccessControlException, ExceptionAdlsRemoteException, ExceptionBadOffsetException, ExceptionFileAlreadyExistsException, ExceptionFileNotFoundException, ExceptionIllegalArgumentException, ExceptionIOException, ExceptionRuntimeException, ExceptionSecurityException, ExceptionUnsupportedOperationException}
-}
-
-// ExpiryOptionType enumerates the values for expiry option type.
-type ExpiryOptionType string
-
-const (
-	// Absolute ...
-	Absolute ExpiryOptionType = "Absolute"
-	// NeverExpire ...
-	NeverExpire ExpiryOptionType = "NeverExpire"
-	// RelativeToCreationDate ...
-	RelativeToCreationDate ExpiryOptionType = "RelativeToCreationDate"
-	// RelativeToNow ...
-	RelativeToNow ExpiryOptionType = "RelativeToNow"
-)
-
-// PossibleExpiryOptionTypeValues returns an array of possible values for the ExpiryOptionType const type.
-func PossibleExpiryOptionTypeValues() []ExpiryOptionType {
-	return []ExpiryOptionType{Absolute, NeverExpire, RelativeToCreationDate, RelativeToNow}
-}
-
-// FileType enumerates the values for file type.
-type FileType string
-
-const (
-	// DIRECTORY ...
-	DIRECTORY FileType = "DIRECTORY"
-	// FILE ...
-	FILE FileType = "FILE"
-)
-
-// PossibleFileTypeValues returns an array of possible values for the FileType const type.
-func PossibleFileTypeValues() []FileType {
-	return []FileType{DIRECTORY, FILE}
-}
-
 // ACLStatus data Lake Store file or directory Access Control List information.
 type ACLStatus struct {
 	// Entries - the list of ACLSpec entries on a file or directory.
@@ -118,6 +40,24 @@ type ACLStatus struct {
 	StickyBit *bool `json:"stickyBit,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ACLStatus.
+func (as ACLStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if as.Entries != nil {
+		objectMap["entries"] = as.Entries
+	}
+	if as.Group != nil {
+		objectMap["group"] = as.Group
+	}
+	if as.Owner != nil {
+		objectMap["owner"] = as.Owner
+	}
+	if as.Permission != nil {
+		objectMap["permission"] = as.Permission
+	}
+	return json.Marshal(objectMap)
+}
+
 // ACLStatusResult data Lake Store file or directory Access Control List information.
 type ACLStatusResult struct {
 	autorest.Response `json:"-"`
@@ -125,8 +65,8 @@ type ACLStatusResult struct {
 	ACLStatus *ACLStatus `json:"AclStatus,omitempty"`
 }
 
-// AdlsAccessControlException a WebHDFS exception thrown indicating that access is denied due to
-// insufficient permissions. Thrown when a 403 error response code is returned (forbidden).
+// AdlsAccessControlException a WebHDFS exception thrown indicating that access is denied due to insufficient
+// permissions. Thrown when a 403 error response code is returned (forbidden).
 type AdlsAccessControlException struct {
 	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
@@ -201,8 +141,8 @@ func (aace AdlsAccessControlException) AsBasicAdlsRemoteException() (BasicAdlsRe
 	return &aace, true
 }
 
-// AdlsBadOffsetException a WebHDFS exception thrown indicating the append or read is from a bad offset.
-// Thrown when a 400 error response code is returned for append and open operations (Bad request).
+// AdlsBadOffsetException a WebHDFS exception thrown indicating the append or read is from a bad offset. Thrown
+// when a 400 error response code is returned for append and open operations (Bad request).
 type AdlsBadOffsetException struct {
 	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
@@ -534,8 +474,8 @@ func (aiae AdlsIllegalArgumentException) AsBasicAdlsRemoteException() (BasicAdls
 	return &aiae, true
 }
 
-// AdlsIOException a WebHDFS exception thrown indicating there was an IO (read or write) error. Thrown when
-// a 403 error response code is returned (forbidden).
+// AdlsIOException a WebHDFS exception thrown indicating there was an IO (read or write) error. Thrown when a
+// 403 error response code is returned (forbidden).
 type AdlsIOException struct {
 	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
@@ -769,8 +709,8 @@ func (are AdlsRemoteException) AsBasicAdlsRemoteException() (BasicAdlsRemoteExce
 	return &are, true
 }
 
-// AdlsRuntimeException a WebHDFS exception thrown when an unexpected error occurs during an operation.
-// Thrown when a 500 error response code is returned (Internal server error).
+// AdlsRuntimeException a WebHDFS exception thrown when an unexpected error occurs during an operation. Thrown
+// when a 500 error response code is returned (Internal server error).
 type AdlsRuntimeException struct {
 	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
@@ -845,8 +785,8 @@ func (are AdlsRuntimeException) AsBasicAdlsRemoteException() (BasicAdlsRemoteExc
 	return &are, true
 }
 
-// AdlsSecurityException a WebHDFS exception thrown indicating that access is denied. Thrown when a 401
-// error response code is returned (Unauthorized).
+// AdlsSecurityException a WebHDFS exception thrown indicating that access is denied. Thrown when a 401 error
+// response code is returned (Unauthorized).
 type AdlsSecurityException struct {
 	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`
@@ -921,8 +861,8 @@ func (ase AdlsSecurityException) AsBasicAdlsRemoteException() (BasicAdlsRemoteEx
 	return &ase, true
 }
 
-// AdlsUnsupportedOperationException a WebHDFS exception thrown indicating that the requested operation is
-// not supported. Thrown when a 400 error response code is returned (bad request).
+// AdlsUnsupportedOperationException a WebHDFS exception thrown indicating that the requested operation is not
+// supported. Thrown when a 400 error response code is returned (bad request).
 type AdlsUnsupportedOperationException struct {
 	// JavaClassName - READ-ONLY; the full class package name for the exception thrown, such as 'java.lang.IllegalArgumentException'.
 	JavaClassName *string `json:"javaClassName,omitempty"`

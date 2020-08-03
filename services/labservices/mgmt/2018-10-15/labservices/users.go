@@ -322,6 +322,9 @@ func (client UsersClient) List(ctx context.Context, resourceGroupName string, la
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.UsersClient", "List", resp, "Failure responding to request")
 	}
+	if result.rwcu.hasNextLink() && result.rwcu.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

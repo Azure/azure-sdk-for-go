@@ -146,6 +146,9 @@ func (client ProvidersClient) List(ctx context.Context, top *int32) (result Prov
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.ProvidersClient", "List", resp, "Failure responding to request")
 	}
+	if result.plr.hasNextLink() && result.plr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -723,6 +723,9 @@ func (client VirtualMachinesClient) List(ctx context.Context, resourceGroupName 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualMachinesClient", "List", resp, "Failure responding to request")
 	}
+	if result.lvml.hasNextLink() && result.lvml.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

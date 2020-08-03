@@ -31,224 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2018-06-01/reservations"
 
-// AppliedScopeType enumerates the values for applied scope type.
-type AppliedScopeType string
-
-const (
-	// Shared ...
-	Shared AppliedScopeType = "Shared"
-	// Single ...
-	Single AppliedScopeType = "Single"
-)
-
-// PossibleAppliedScopeTypeValues returns an array of possible values for the AppliedScopeType const type.
-func PossibleAppliedScopeTypeValues() []AppliedScopeType {
-	return []AppliedScopeType{Shared, Single}
-}
-
-// ErrorResponseCode enumerates the values for error response code.
-type ErrorResponseCode string
-
-const (
-	// ActivateQuoteFailed ...
-	ActivateQuoteFailed ErrorResponseCode = "ActivateQuoteFailed"
-	// AppliedScopesNotAssociatedWithCommerceAccount ...
-	AppliedScopesNotAssociatedWithCommerceAccount ErrorResponseCode = "AppliedScopesNotAssociatedWithCommerceAccount"
-	// AuthorizationFailed ...
-	AuthorizationFailed ErrorResponseCode = "AuthorizationFailed"
-	// BadRequest ...
-	BadRequest ErrorResponseCode = "BadRequest"
-	// BillingCustomerInputError ...
-	BillingCustomerInputError ErrorResponseCode = "BillingCustomerInputError"
-	// BillingError ...
-	BillingError ErrorResponseCode = "BillingError"
-	// BillingPaymentInstrumentHardError ...
-	BillingPaymentInstrumentHardError ErrorResponseCode = "BillingPaymentInstrumentHardError"
-	// BillingPaymentInstrumentSoftError ...
-	BillingPaymentInstrumentSoftError ErrorResponseCode = "BillingPaymentInstrumentSoftError"
-	// BillingScopeIDCannotBeChanged ...
-	BillingScopeIDCannotBeChanged ErrorResponseCode = "BillingScopeIdCannotBeChanged"
-	// BillingTransientError ...
-	BillingTransientError ErrorResponseCode = "BillingTransientError"
-	// CalculatePriceFailed ...
-	CalculatePriceFailed ErrorResponseCode = "CalculatePriceFailed"
-	// CapacityUpdateScopesFailed ...
-	CapacityUpdateScopesFailed ErrorResponseCode = "CapacityUpdateScopesFailed"
-	// ClientCertificateThumbprintNotSet ...
-	ClientCertificateThumbprintNotSet ErrorResponseCode = "ClientCertificateThumbprintNotSet"
-	// CreateQuoteFailed ...
-	CreateQuoteFailed ErrorResponseCode = "CreateQuoteFailed"
-	// Forbidden ...
-	Forbidden ErrorResponseCode = "Forbidden"
-	// FulfillmentConfigurationError ...
-	FulfillmentConfigurationError ErrorResponseCode = "FulfillmentConfigurationError"
-	// FulfillmentError ...
-	FulfillmentError ErrorResponseCode = "FulfillmentError"
-	// FulfillmentOutOfStockError ...
-	FulfillmentOutOfStockError ErrorResponseCode = "FulfillmentOutOfStockError"
-	// FulfillmentTransientError ...
-	FulfillmentTransientError ErrorResponseCode = "FulfillmentTransientError"
-	// HTTPMethodNotSupported ...
-	HTTPMethodNotSupported ErrorResponseCode = "HttpMethodNotSupported"
-	// InternalServerError ...
-	InternalServerError ErrorResponseCode = "InternalServerError"
-	// InvalidAccessToken ...
-	InvalidAccessToken ErrorResponseCode = "InvalidAccessToken"
-	// InvalidFulfillmentRequestParameters ...
-	InvalidFulfillmentRequestParameters ErrorResponseCode = "InvalidFulfillmentRequestParameters"
-	// InvalidHealthCheckType ...
-	InvalidHealthCheckType ErrorResponseCode = "InvalidHealthCheckType"
-	// InvalidLocationID ...
-	InvalidLocationID ErrorResponseCode = "InvalidLocationId"
-	// InvalidRefundQuantity ...
-	InvalidRefundQuantity ErrorResponseCode = "InvalidRefundQuantity"
-	// InvalidRequestContent ...
-	InvalidRequestContent ErrorResponseCode = "InvalidRequestContent"
-	// InvalidRequestURI ...
-	InvalidRequestURI ErrorResponseCode = "InvalidRequestUri"
-	// InvalidReservationID ...
-	InvalidReservationID ErrorResponseCode = "InvalidReservationId"
-	// InvalidReservationOrderID ...
-	InvalidReservationOrderID ErrorResponseCode = "InvalidReservationOrderId"
-	// InvalidSingleAppliedScopesCount ...
-	InvalidSingleAppliedScopesCount ErrorResponseCode = "InvalidSingleAppliedScopesCount"
-	// InvalidSubscriptionID ...
-	InvalidSubscriptionID ErrorResponseCode = "InvalidSubscriptionId"
-	// InvalidTenantID ...
-	InvalidTenantID ErrorResponseCode = "InvalidTenantId"
-	// MissingAppliedScopesForSingle ...
-	MissingAppliedScopesForSingle ErrorResponseCode = "MissingAppliedScopesForSingle"
-	// MissingTenantID ...
-	MissingTenantID ErrorResponseCode = "MissingTenantId"
-	// NonsupportedAccountID ...
-	NonsupportedAccountID ErrorResponseCode = "NonsupportedAccountId"
-	// NotSpecified ...
-	NotSpecified ErrorResponseCode = "NotSpecified"
-	// NotSupportedCountry ...
-	NotSupportedCountry ErrorResponseCode = "NotSupportedCountry"
-	// NoValidReservationsToReRate ...
-	NoValidReservationsToReRate ErrorResponseCode = "NoValidReservationsToReRate"
-	// OperationCannotBePerformedInCurrentState ...
-	OperationCannotBePerformedInCurrentState ErrorResponseCode = "OperationCannotBePerformedInCurrentState"
-	// OperationFailed ...
-	OperationFailed ErrorResponseCode = "OperationFailed"
-	// PatchValuesSameAsExisting ...
-	PatchValuesSameAsExisting ErrorResponseCode = "PatchValuesSameAsExisting"
-	// PaymentInstrumentNotFound ...
-	PaymentInstrumentNotFound ErrorResponseCode = "PaymentInstrumentNotFound"
-	// PurchaseError ...
-	PurchaseError ErrorResponseCode = "PurchaseError"
-	// ReRateOnlyAllowedForEA ...
-	ReRateOnlyAllowedForEA ErrorResponseCode = "ReRateOnlyAllowedForEA"
-	// ReservationIDNotInReservationOrder ...
-	ReservationIDNotInReservationOrder ErrorResponseCode = "ReservationIdNotInReservationOrder"
-	// ReservationOrderCreationFailed ...
-	ReservationOrderCreationFailed ErrorResponseCode = "ReservationOrderCreationFailed"
-	// ReservationOrderIDAlreadyExists ...
-	ReservationOrderIDAlreadyExists ErrorResponseCode = "ReservationOrderIdAlreadyExists"
-	// ReservationOrderNotEnabled ...
-	ReservationOrderNotEnabled ErrorResponseCode = "ReservationOrderNotEnabled"
-	// ReservationOrderNotFound ...
-	ReservationOrderNotFound ErrorResponseCode = "ReservationOrderNotFound"
-	// RiskCheckFailed ...
-	RiskCheckFailed ErrorResponseCode = "RiskCheckFailed"
-	// RoleAssignmentCreationFailed ...
-	RoleAssignmentCreationFailed ErrorResponseCode = "RoleAssignmentCreationFailed"
-	// ServerTimeout ...
-	ServerTimeout ErrorResponseCode = "ServerTimeout"
-	// UnauthenticatedRequestsThrottled ...
-	UnauthenticatedRequestsThrottled ErrorResponseCode = "UnauthenticatedRequestsThrottled"
-	// UnsupportedReservationTerm ...
-	UnsupportedReservationTerm ErrorResponseCode = "UnsupportedReservationTerm"
-)
-
-// PossibleErrorResponseCodeValues returns an array of possible values for the ErrorResponseCode const type.
-func PossibleErrorResponseCodeValues() []ErrorResponseCode {
-	return []ErrorResponseCode{ActivateQuoteFailed, AppliedScopesNotAssociatedWithCommerceAccount, AuthorizationFailed, BadRequest, BillingCustomerInputError, BillingError, BillingPaymentInstrumentHardError, BillingPaymentInstrumentSoftError, BillingScopeIDCannotBeChanged, BillingTransientError, CalculatePriceFailed, CapacityUpdateScopesFailed, ClientCertificateThumbprintNotSet, CreateQuoteFailed, Forbidden, FulfillmentConfigurationError, FulfillmentError, FulfillmentOutOfStockError, FulfillmentTransientError, HTTPMethodNotSupported, InternalServerError, InvalidAccessToken, InvalidFulfillmentRequestParameters, InvalidHealthCheckType, InvalidLocationID, InvalidRefundQuantity, InvalidRequestContent, InvalidRequestURI, InvalidReservationID, InvalidReservationOrderID, InvalidSingleAppliedScopesCount, InvalidSubscriptionID, InvalidTenantID, MissingAppliedScopesForSingle, MissingTenantID, NonsupportedAccountID, NotSpecified, NotSupportedCountry, NoValidReservationsToReRate, OperationCannotBePerformedInCurrentState, OperationFailed, PatchValuesSameAsExisting, PaymentInstrumentNotFound, PurchaseError, ReRateOnlyAllowedForEA, ReservationIDNotInReservationOrder, ReservationOrderCreationFailed, ReservationOrderIDAlreadyExists, ReservationOrderNotEnabled, ReservationOrderNotFound, RiskCheckFailed, RoleAssignmentCreationFailed, ServerTimeout, UnauthenticatedRequestsThrottled, UnsupportedReservationTerm}
-}
-
-// InstanceFlexibility enumerates the values for instance flexibility.
-type InstanceFlexibility string
-
-const (
-	// NotSupported ...
-	NotSupported InstanceFlexibility = "NotSupported"
-	// Off ...
-	Off InstanceFlexibility = "Off"
-	// On ...
-	On InstanceFlexibility = "On"
-)
-
-// PossibleInstanceFlexibilityValues returns an array of possible values for the InstanceFlexibility const type.
-func PossibleInstanceFlexibilityValues() []InstanceFlexibility {
-	return []InstanceFlexibility{NotSupported, Off, On}
-}
-
-// ReservationTerm enumerates the values for reservation term.
-type ReservationTerm string
-
-const (
-	// P1Y ...
-	P1Y ReservationTerm = "P1Y"
-	// P3Y ...
-	P3Y ReservationTerm = "P3Y"
-)
-
-// PossibleReservationTermValues returns an array of possible values for the ReservationTerm const type.
-func PossibleReservationTermValues() []ReservationTerm {
-	return []ReservationTerm{P1Y, P3Y}
-}
-
-// ReservedResourceType enumerates the values for reserved resource type.
-type ReservedResourceType string
-
-const (
-	// CosmosDb ...
-	CosmosDb ReservedResourceType = "CosmosDb"
-	// RedHat ...
-	RedHat ReservedResourceType = "RedHat"
-	// SQLDatabases ...
-	SQLDatabases ReservedResourceType = "SqlDatabases"
-	// SuseLinux ...
-	SuseLinux ReservedResourceType = "SuseLinux"
-	// VirtualMachines ...
-	VirtualMachines ReservedResourceType = "VirtualMachines"
-)
-
-// PossibleReservedResourceTypeValues returns an array of possible values for the ReservedResourceType const type.
-func PossibleReservedResourceTypeValues() []ReservedResourceType {
-	return []ReservedResourceType{CosmosDb, RedHat, SQLDatabases, SuseLinux, VirtualMachines}
-}
-
-// StatusCode enumerates the values for status code.
-type StatusCode string
-
-const (
-	// StatusCodeActive ...
-	StatusCodeActive StatusCode = "Active"
-	// StatusCodeExpired ...
-	StatusCodeExpired StatusCode = "Expired"
-	// StatusCodeMerged ...
-	StatusCodeMerged StatusCode = "Merged"
-	// StatusCodeNone ...
-	StatusCodeNone StatusCode = "None"
-	// StatusCodePaymentInstrumentError ...
-	StatusCodePaymentInstrumentError StatusCode = "PaymentInstrumentError"
-	// StatusCodePending ...
-	StatusCodePending StatusCode = "Pending"
-	// StatusCodePurchaseError ...
-	StatusCodePurchaseError StatusCode = "PurchaseError"
-	// StatusCodeSplit ...
-	StatusCodeSplit StatusCode = "Split"
-	// StatusCodeSucceeded ...
-	StatusCodeSucceeded StatusCode = "Succeeded"
-)
-
-// PossibleStatusCodeValues returns an array of possible values for the StatusCode const type.
-func PossibleStatusCodeValues() []StatusCode {
-	return []StatusCode{StatusCodeActive, StatusCodeExpired, StatusCodeMerged, StatusCodeNone, StatusCodePaymentInstrumentError, StatusCodePending, StatusCodePurchaseError, StatusCodeSplit, StatusCodeSucceeded}
-}
-
 // AppliedReservationList ...
 type AppliedReservationList struct {
 	Value *[]string `json:"value,omitempty"`
@@ -451,10 +233,15 @@ func (l List) IsEmpty() bool {
 	return l.Value == nil || len(*l.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (l List) hasNextLink() bool {
+	return l.NextLink != nil && len(*l.NextLink) != 0
+}
+
 // listPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (l List) listPreparer(ctx context.Context) (*http.Request, error) {
-	if l.NextLink == nil || len(to.String(l.NextLink)) < 1 {
+	if !l.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -482,11 +269,16 @@ func (page *ListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.l)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.l)
+		if err != nil {
+			return err
+		}
+		page.l = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.l = next
 	return nil
 }
 
@@ -662,10 +454,15 @@ func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OperationList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // operationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OperationList) operationListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -693,11 +490,16 @@ func (page *OperationListPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 
@@ -814,10 +616,15 @@ func (ol OrderList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OrderList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // orderListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OrderList) orderListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -845,11 +652,16 @@ func (page *OrderListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 
@@ -1064,8 +876,52 @@ type Properties struct {
 	MergeProperties    *MergePropertiesType `json:"mergeProperties,omitempty"`
 }
 
-// ReservationMergeFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// MarshalJSON is the custom marshaler for Properties.
+func (p Properties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.ReservedResourceType != "" {
+		objectMap["reservedResourceType"] = p.ReservedResourceType
+	}
+	if p.InstanceFlexibility != "" {
+		objectMap["instanceFlexibility"] = p.InstanceFlexibility
+	}
+	if p.DisplayName != nil {
+		objectMap["displayName"] = p.DisplayName
+	}
+	if p.AppliedScopes != nil {
+		objectMap["appliedScopes"] = p.AppliedScopes
+	}
+	if p.AppliedScopeType != "" {
+		objectMap["appliedScopeType"] = p.AppliedScopeType
+	}
+	if p.Quantity != nil {
+		objectMap["quantity"] = p.Quantity
+	}
+	if p.ProvisioningState != nil {
+		objectMap["provisioningState"] = p.ProvisioningState
+	}
+	if p.EffectiveDateTime != nil {
+		objectMap["effectiveDateTime"] = p.EffectiveDateTime
+	}
+	if p.ExpiryDate != nil {
+		objectMap["expiryDate"] = p.ExpiryDate
+	}
+	if p.SkuDescription != nil {
+		objectMap["skuDescription"] = p.SkuDescription
+	}
+	if p.ExtendedStatusInfo != nil {
+		objectMap["extendedStatusInfo"] = p.ExtendedStatusInfo
+	}
+	if p.SplitProperties != nil {
+		objectMap["splitProperties"] = p.SplitProperties
+	}
+	if p.MergeProperties != nil {
+		objectMap["mergeProperties"] = p.MergeProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// ReservationMergeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ReservationMergeFuture struct {
 	azure.Future
 }
@@ -1136,6 +992,21 @@ type Response struct {
 	Properties *Properties `json:"properties,omitempty"`
 	// Type - READ-ONLY; Type of resource. "Microsoft.Capacity/reservationOrders/reservations"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Response.
+func (r Response) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.Etag != nil {
+		objectMap["etag"] = r.Etag
+	}
+	if r.Sku != nil {
+		objectMap["sku"] = r.Sku
+	}
+	if r.Properties != nil {
+		objectMap["properties"] = r.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // SkuName ...

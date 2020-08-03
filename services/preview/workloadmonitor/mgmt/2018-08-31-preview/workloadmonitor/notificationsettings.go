@@ -179,6 +179,9 @@ func (client NotificationSettingsClient) ListByResource(ctx context.Context, res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.NotificationSettingsClient", "ListByResource", resp, "Failure responding to request")
 	}
+	if result.nsc.hasNextLink() && result.nsc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

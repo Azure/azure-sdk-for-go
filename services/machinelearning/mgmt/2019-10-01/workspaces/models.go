@@ -29,52 +29,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2019-10-01/workspaces"
 
-// State enumerates the values for state.
-type State string
-
-const (
-	// Deleted ...
-	Deleted State = "Deleted"
-	// Disabled ...
-	Disabled State = "Disabled"
-	// Enabled ...
-	Enabled State = "Enabled"
-	// Migrated ...
-	Migrated State = "Migrated"
-	// Registered ...
-	Registered State = "Registered"
-	// Unregistered ...
-	Unregistered State = "Unregistered"
-	// Updated ...
-	Updated State = "Updated"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{Deleted, Disabled, Enabled, Migrated, Registered, Unregistered, Updated}
-}
-
-// WorkspaceType enumerates the values for workspace type.
-type WorkspaceType string
-
-const (
-	// Anonymous ...
-	Anonymous WorkspaceType = "Anonymous"
-	// Free ...
-	Free WorkspaceType = "Free"
-	// PaidPremium ...
-	PaidPremium WorkspaceType = "PaidPremium"
-	// PaidStandard ...
-	PaidStandard WorkspaceType = "PaidStandard"
-	// Production ...
-	Production WorkspaceType = "Production"
-)
-
-// PossibleWorkspaceTypeValues returns an array of possible values for the WorkspaceType const type.
-func PossibleWorkspaceTypeValues() []WorkspaceType {
-	return []WorkspaceType{Anonymous, Free, PaidPremium, PaidStandard, Production}
-}
-
 // ErrorResponse the error response send when an operation fails.
 type ErrorResponse struct {
 	// Code - error code
@@ -169,10 +123,15 @@ func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -200,11 +159,16 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lr = next
 	return nil
 }
 
@@ -283,6 +247,21 @@ type Properties struct {
 	StudioEndpoint *string `json:"studioEndpoint,omitempty"`
 	// KeyVaultIdentifierID - The key vault identifier used for encrypted workspaces.
 	KeyVaultIdentifierID *string `json:"keyVaultIdentifierId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Properties.
+func (p Properties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.UserStorageAccountID != nil {
+		objectMap["userStorageAccountId"] = p.UserStorageAccountID
+	}
+	if p.OwnerEmail != nil {
+		objectMap["ownerEmail"] = p.OwnerEmail
+	}
+	if p.KeyVaultIdentifierID != nil {
+		objectMap["keyVaultIdentifierId"] = p.KeyVaultIdentifierID
+	}
+	return json.Marshal(objectMap)
 }
 
 // PropertiesUpdateParameters the parameters for updating the properties of a machine learning workspace.

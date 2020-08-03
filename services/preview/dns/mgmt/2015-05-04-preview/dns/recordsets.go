@@ -374,6 +374,9 @@ func (client RecordSetsClient) List(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "List", resp, "Failure responding to request")
 	}
+	if result.rslr.hasNextLink() && result.rslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -505,6 +508,9 @@ func (client RecordSetsClient) ListAll(ctx context.Context, resourceGroupName st
 	result.rslr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.RecordSetsClient", "ListAll", resp, "Failure responding to request")
+	}
+	if result.rslr.hasNextLink() && result.rslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

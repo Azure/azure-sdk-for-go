@@ -87,6 +87,9 @@ func (client MonitorInstancesSummaryClient) List(ctx context.Context, selectPara
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.MonitorInstancesSummaryClient", "List", resp, "Failure responding to request")
 	}
+	if result.mic.hasNextLink() && result.mic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

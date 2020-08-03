@@ -31,21 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-11-01/resources"
 
-// DeploymentMode enumerates the values for deployment mode.
-type DeploymentMode string
-
-const (
-	// Complete ...
-	Complete DeploymentMode = "Complete"
-	// Incremental ...
-	Incremental DeploymentMode = "Incremental"
-)
-
-// PossibleDeploymentModeValues returns an array of possible values for the DeploymentMode const type.
-func PossibleDeploymentModeValues() []DeploymentMode {
-	return []DeploymentMode{Complete, Incremental}
-}
-
 // BasicDependency deployment dependency information.
 type BasicDependency struct {
 	// ID - Gets or sets the ID of the dependency.
@@ -88,6 +73,18 @@ type DeploymentExtended struct {
 	Name *string `json:"name,omitempty"`
 	// Properties - Gets or sets deployment properties.
 	Properties *DeploymentPropertiesExtended `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeploymentExtended.
+func (de DeploymentExtended) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if de.Name != nil {
+		objectMap["name"] = de.Name
+	}
+	if de.Properties != nil {
+		objectMap["properties"] = de.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // DeploymentExtendedFilter deployment filter.
@@ -173,10 +170,15 @@ func (dlr DeploymentListResult) IsEmpty() bool {
 	return dlr.Value == nil || len(*dlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dlr DeploymentListResult) hasNextLink() bool {
+	return dlr.NextLink != nil && len(*dlr.NextLink) != 0
+}
+
 // deploymentListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dlr DeploymentListResult) deploymentListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dlr.NextLink == nil || len(to.String(dlr.NextLink)) < 1 {
+	if !dlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -204,11 +206,16 @@ func (page *DeploymentListResultPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dlr)
+		if err != nil {
+			return err
+		}
+		page.dlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dlr = next
 	return nil
 }
 
@@ -276,8 +283,7 @@ type DeploymentOperationsListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// DeploymentOperationsListResultIterator provides access to a complete listing of DeploymentOperation
-// values.
+// DeploymentOperationsListResultIterator provides access to a complete listing of DeploymentOperation values.
 type DeploymentOperationsListResultIterator struct {
 	i    int
 	page DeploymentOperationsListResultPage
@@ -345,10 +351,15 @@ func (dolr DeploymentOperationsListResult) IsEmpty() bool {
 	return dolr.Value == nil || len(*dolr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dolr DeploymentOperationsListResult) hasNextLink() bool {
+	return dolr.NextLink != nil && len(*dolr.NextLink) != 0
+}
+
 // deploymentOperationsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dolr DeploymentOperationsListResult) deploymentOperationsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dolr.NextLink == nil || len(to.String(dolr.NextLink)) < 1 {
+	if !dolr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -376,11 +387,16 @@ func (page *DeploymentOperationsListResultPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dolr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dolr)
+		if err != nil {
+			return err
+		}
+		page.dolr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dolr = next
 	return nil
 }
 
@@ -454,8 +470,8 @@ type DeploymentPropertiesExtended struct {
 	Mode DeploymentMode `json:"mode,omitempty"`
 }
 
-// DeploymentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// DeploymentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DeploymentsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -743,10 +759,15 @@ func (glr GroupListResult) IsEmpty() bool {
 	return glr.Value == nil || len(*glr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (glr GroupListResult) hasNextLink() bool {
+	return glr.NextLink != nil && len(*glr.NextLink) != 0
+}
+
 // groupListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (glr GroupListResult) groupListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if glr.NextLink == nil || len(to.String(glr.NextLink)) < 1 {
+	if !glr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -774,11 +795,16 @@ func (page *GroupListResultPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.glr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.glr)
+		if err != nil {
+			return err
+		}
+		page.glr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.glr = next
 	return nil
 }
 
@@ -917,10 +943,15 @@ func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -948,11 +979,16 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lr = next
 	return nil
 }
 
@@ -1016,8 +1052,7 @@ type MoveInfo struct {
 	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
 }
 
-// MoveResourcesFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// MoveResourcesFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type MoveResourcesFuture struct {
 	azure.Future
 }
@@ -1066,6 +1101,15 @@ type PolicyAssignment struct {
 	Properties *PolicyAssignmentProperties `json:"properties,omitempty"`
 	// Name - READ-ONLY; Gets or sets the policy assignment name.
 	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PolicyAssignment.
+func (pa PolicyAssignment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pa.Properties != nil {
+		objectMap["properties"] = pa.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // PolicyAssignmentListResult policy assignment list operation result.
@@ -1145,10 +1189,15 @@ func (palr PolicyAssignmentListResult) IsEmpty() bool {
 	return palr.Value == nil || len(*palr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (palr PolicyAssignmentListResult) hasNextLink() bool {
+	return palr.NextLink != nil && len(*palr.NextLink) != 0
+}
+
 // policyAssignmentListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (palr PolicyAssignmentListResult) policyAssignmentListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if palr.NextLink == nil || len(to.String(palr.NextLink)) < 1 {
+	if !palr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1176,11 +1225,16 @@ func (page *PolicyAssignmentListResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.palr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.palr)
+		if err != nil {
+			return err
+		}
+		page.palr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.palr = next
 	return nil
 }
 
@@ -1333,10 +1387,15 @@ func (plr ProviderListResult) IsEmpty() bool {
 	return plr.Value == nil || len(*plr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (plr ProviderListResult) hasNextLink() bool {
+	return plr.NextLink != nil && len(*plr.NextLink) != 0
+}
+
 // providerListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (plr ProviderListResult) providerListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if plr.NextLink == nil || len(to.String(plr.NextLink)) < 1 {
+	if !plr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1364,11 +1423,16 @@ func (page *ProviderListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.plr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.plr)
+		if err != nil {
+			return err
+		}
+		page.plr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.plr = next
 	return nil
 }
 
@@ -1488,10 +1552,15 @@ func (podlr ProviderOperationDetailListResult) IsEmpty() bool {
 	return podlr.Value == nil || len(*podlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (podlr ProviderOperationDetailListResult) hasNextLink() bool {
+	return podlr.NextLink != nil && len(*podlr.NextLink) != 0
+}
+
 // providerOperationDetailListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (podlr ProviderOperationDetailListResult) providerOperationDetailListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if podlr.NextLink == nil || len(to.String(podlr.NextLink)) < 1 {
+	if !podlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1519,11 +1588,16 @@ func (page *ProviderOperationDetailListResultPage) NextWithContext(ctx context.C
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.podlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.podlr)
+		if err != nil {
+			return err
+		}
+		page.podlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.podlr = next
 	return nil
 }
 
@@ -1654,6 +1728,21 @@ type TagDetails struct {
 	Values *[]TagValue `json:"values,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TagDetails.
+func (td TagDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if td.TagName != nil {
+		objectMap["tagName"] = td.TagName
+	}
+	if td.Count != nil {
+		objectMap["count"] = td.Count
+	}
+	if td.Values != nil {
+		objectMap["values"] = td.Values
+	}
+	return json.Marshal(objectMap)
+}
+
 // TagsListResult list of subscription tags.
 type TagsListResult struct {
 	autorest.Response `json:"-"`
@@ -1731,10 +1820,15 @@ func (tlr TagsListResult) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tlr TagsListResult) hasNextLink() bool {
+	return tlr.NextLink != nil && len(*tlr.NextLink) != 0
+}
+
 // tagsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tlr TagsListResult) tagsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if tlr.NextLink == nil || len(to.String(tlr.NextLink)) < 1 {
+	if !tlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1762,11 +1856,16 @@ func (page *TagsListResultPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tlr)
+		if err != nil {
+			return err
+		}
+		page.tlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tlr = next
 	return nil
 }
 
@@ -1809,6 +1908,18 @@ type TagValue struct {
 	TagValue *string `json:"tagValue,omitempty"`
 	// Count - Gets or sets the tag value count.
 	Count *TagCount `json:"count,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TagValue.
+func (tv TagValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tv.TagValue != nil {
+		objectMap["tagValue"] = tv.TagValue
+	}
+	if tv.Count != nil {
+		objectMap["count"] = tv.Count
+	}
+	return json.Marshal(objectMap)
 }
 
 // TargetResource target resource.

@@ -31,182 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus"
 
-// AccessRights enumerates the values for access rights.
-type AccessRights string
-
-const (
-	// Listen ...
-	Listen AccessRights = "Listen"
-	// Manage ...
-	Manage AccessRights = "Manage"
-	// SendEnumValue ...
-	SendEnumValue AccessRights = "Send"
-)
-
-// PossibleAccessRightsValues returns an array of possible values for the AccessRights const type.
-func PossibleAccessRightsValues() []AccessRights {
-	return []AccessRights{Listen, Manage, SendEnumValue}
-}
-
-// EntityAvailabilityStatus enumerates the values for entity availability status.
-type EntityAvailabilityStatus string
-
-const (
-	// Available ...
-	Available EntityAvailabilityStatus = "Available"
-	// Limited ...
-	Limited EntityAvailabilityStatus = "Limited"
-	// Renaming ...
-	Renaming EntityAvailabilityStatus = "Renaming"
-	// Restoring ...
-	Restoring EntityAvailabilityStatus = "Restoring"
-	// Unknown ...
-	Unknown EntityAvailabilityStatus = "Unknown"
-)
-
-// PossibleEntityAvailabilityStatusValues returns an array of possible values for the EntityAvailabilityStatus const type.
-func PossibleEntityAvailabilityStatusValues() []EntityAvailabilityStatus {
-	return []EntityAvailabilityStatus{Available, Limited, Renaming, Restoring, Unknown}
-}
-
-// EntityStatus enumerates the values for entity status.
-type EntityStatus string
-
-const (
-	// EntityStatusActive ...
-	EntityStatusActive EntityStatus = "Active"
-	// EntityStatusCreating ...
-	EntityStatusCreating EntityStatus = "Creating"
-	// EntityStatusDeleting ...
-	EntityStatusDeleting EntityStatus = "Deleting"
-	// EntityStatusDisabled ...
-	EntityStatusDisabled EntityStatus = "Disabled"
-	// EntityStatusReceiveDisabled ...
-	EntityStatusReceiveDisabled EntityStatus = "ReceiveDisabled"
-	// EntityStatusRenaming ...
-	EntityStatusRenaming EntityStatus = "Renaming"
-	// EntityStatusRestoring ...
-	EntityStatusRestoring EntityStatus = "Restoring"
-	// EntityStatusSendDisabled ...
-	EntityStatusSendDisabled EntityStatus = "SendDisabled"
-	// EntityStatusUnknown ...
-	EntityStatusUnknown EntityStatus = "Unknown"
-)
-
-// PossibleEntityStatusValues returns an array of possible values for the EntityStatus const type.
-func PossibleEntityStatusValues() []EntityStatus {
-	return []EntityStatus{EntityStatusActive, EntityStatusCreating, EntityStatusDeleting, EntityStatusDisabled, EntityStatusReceiveDisabled, EntityStatusRenaming, EntityStatusRestoring, EntityStatusSendDisabled, EntityStatusUnknown}
-}
-
-// NamespaceState enumerates the values for namespace state.
-type NamespaceState string
-
-const (
-	// NamespaceStateActivating ...
-	NamespaceStateActivating NamespaceState = "Activating"
-	// NamespaceStateActive ...
-	NamespaceStateActive NamespaceState = "Active"
-	// NamespaceStateCreated ...
-	NamespaceStateCreated NamespaceState = "Created"
-	// NamespaceStateCreating ...
-	NamespaceStateCreating NamespaceState = "Creating"
-	// NamespaceStateDisabled ...
-	NamespaceStateDisabled NamespaceState = "Disabled"
-	// NamespaceStateDisabling ...
-	NamespaceStateDisabling NamespaceState = "Disabling"
-	// NamespaceStateEnabling ...
-	NamespaceStateEnabling NamespaceState = "Enabling"
-	// NamespaceStateFailed ...
-	NamespaceStateFailed NamespaceState = "Failed"
-	// NamespaceStateRemoved ...
-	NamespaceStateRemoved NamespaceState = "Removed"
-	// NamespaceStateRemoving ...
-	NamespaceStateRemoving NamespaceState = "Removing"
-	// NamespaceStateSoftDeleted ...
-	NamespaceStateSoftDeleted NamespaceState = "SoftDeleted"
-	// NamespaceStateSoftDeleting ...
-	NamespaceStateSoftDeleting NamespaceState = "SoftDeleting"
-	// NamespaceStateUnknown ...
-	NamespaceStateUnknown NamespaceState = "Unknown"
-)
-
-// PossibleNamespaceStateValues returns an array of possible values for the NamespaceState const type.
-func PossibleNamespaceStateValues() []NamespaceState {
-	return []NamespaceState{NamespaceStateActivating, NamespaceStateActive, NamespaceStateCreated, NamespaceStateCreating, NamespaceStateDisabled, NamespaceStateDisabling, NamespaceStateEnabling, NamespaceStateFailed, NamespaceStateRemoved, NamespaceStateRemoving, NamespaceStateSoftDeleted, NamespaceStateSoftDeleting, NamespaceStateUnknown}
-}
-
-// Policykey enumerates the values for policykey.
-type Policykey string
-
-const (
-	// PrimaryKey ...
-	PrimaryKey Policykey = "PrimaryKey"
-	// SecondaryKey ...
-	SecondaryKey Policykey = "SecondaryKey"
-)
-
-// PossiblePolicykeyValues returns an array of possible values for the Policykey const type.
-func PossiblePolicykeyValues() []Policykey {
-	return []Policykey{PrimaryKey, SecondaryKey}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// Basic ...
-	Basic SkuName = "Basic"
-	// Premium ...
-	Premium SkuName = "Premium"
-	// Standard ...
-	Standard SkuName = "Standard"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{Basic, Premium, Standard}
-}
-
-// SkuTier enumerates the values for sku tier.
-type SkuTier string
-
-const (
-	// SkuTierBasic ...
-	SkuTierBasic SkuTier = "Basic"
-	// SkuTierPremium ...
-	SkuTierPremium SkuTier = "Premium"
-	// SkuTierStandard ...
-	SkuTierStandard SkuTier = "Standard"
-)
-
-// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() []SkuTier {
-	return []SkuTier{SkuTierBasic, SkuTierPremium, SkuTierStandard}
-}
-
-// UnavailableReason enumerates the values for unavailable reason.
-type UnavailableReason string
-
-const (
-	// InvalidName ...
-	InvalidName UnavailableReason = "InvalidName"
-	// NameInLockdown ...
-	NameInLockdown UnavailableReason = "NameInLockdown"
-	// NameInUse ...
-	NameInUse UnavailableReason = "NameInUse"
-	// None ...
-	None UnavailableReason = "None"
-	// SubscriptionIsDisabled ...
-	SubscriptionIsDisabled UnavailableReason = "SubscriptionIsDisabled"
-	// TooManyNamespaceInCurrentSubscription ...
-	TooManyNamespaceInCurrentSubscription UnavailableReason = "TooManyNamespaceInCurrentSubscription"
-)
-
-// PossibleUnavailableReasonValues returns an array of possible values for the UnavailableReason const type.
-func PossibleUnavailableReasonValues() []UnavailableReason {
-	return []UnavailableReason{InvalidName, NameInLockdown, NameInUse, None, SubscriptionIsDisabled, TooManyNamespaceInCurrentSubscription}
-}
-
 // CheckNameAvailability description of a Check Name availability request properties.
 type CheckNameAvailability struct {
 	// Name - The Name to check the namespace name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
@@ -222,6 +46,18 @@ type CheckNameAvailabilityResult struct {
 	Reason UnavailableReason `json:"reason,omitempty"`
 	// Message - READ-ONLY; The detailed info regarding the reason associated with the namespace.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResult.
+func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cnar.NameAvailable != nil {
+		objectMap["nameAvailable"] = cnar.NameAvailable
+	}
+	if cnar.Reason != "" {
+		objectMap["reason"] = cnar.Reason
+	}
+	return json.Marshal(objectMap)
 }
 
 // MessageCountDetails message Count Details.
@@ -394,10 +230,15 @@ func (nlr NamespaceListResult) IsEmpty() bool {
 	return nlr.Value == nil || len(*nlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (nlr NamespaceListResult) hasNextLink() bool {
+	return nlr.NextLink != nil && len(*nlr.NextLink) != 0
+}
+
 // namespaceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (nlr NamespaceListResult) namespaceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if nlr.NextLink == nil || len(to.String(nlr.NextLink)) < 1 {
+	if !nlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -425,11 +266,16 @@ func (page *NamespaceListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.nlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.nlr)
+		if err != nil {
+			return err
+		}
+		page.nlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.nlr = next
 	return nil
 }
 
@@ -479,6 +325,21 @@ type NamespaceProperties struct {
 	CreateACSNamespace *bool `json:"createACSNamespace,omitempty"`
 	// Enabled - Specifies whether this instance is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NamespaceProperties.
+func (np NamespaceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if np.Status != "" {
+		objectMap["status"] = np.Status
+	}
+	if np.CreateACSNamespace != nil {
+		objectMap["createACSNamespace"] = np.CreateACSNamespace
+	}
+	if np.Enabled != nil {
+		objectMap["enabled"] = np.Enabled
+	}
+	return json.Marshal(objectMap)
 }
 
 // NamespaceResource description of a namespace resource.
@@ -594,8 +455,8 @@ func (nr *NamespaceResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// NamespacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// NamespacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type NamespacesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -623,8 +484,7 @@ func (future *NamespacesCreateOrUpdateFuture) Result(client NamespacesClient) (n
 	return
 }
 
-// NamespacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// NamespacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type NamespacesDeleteFuture struct {
 	azure.Future
 }
@@ -674,6 +534,15 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
 	// Provider - READ-ONLY; Service provider: Microsoft.ServiceBus
@@ -684,8 +553,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of the request to list ServiceBus operations. It contains a list of
-// operations and a URL link to get the next set of results.
+// OperationListResult result of the request to list ServiceBus operations. It contains a list of operations
+// and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of ServiceBus operations supported by the Microsoft.ServiceBus resource provider.
@@ -762,10 +631,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -793,11 +667,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -974,10 +853,15 @@ func (qlr QueueListResult) IsEmpty() bool {
 	return qlr.Value == nil || len(*qlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (qlr QueueListResult) hasNextLink() bool {
+	return qlr.NextLink != nil && len(*qlr.NextLink) != 0
+}
+
 // queueListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (qlr QueueListResult) queueListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if qlr.NextLink == nil || len(to.String(qlr.NextLink)) < 1 {
+	if !qlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1005,11 +889,16 @@ func (page *QueueListResultPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.qlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.qlr)
+		if err != nil {
+			return err
+		}
+		page.qlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.qlr = next
 	return nil
 }
 
@@ -1089,6 +978,60 @@ type QueueProperties struct {
 	SupportOrdering *bool `json:"supportOrdering,omitempty"`
 	// UpdatedAt - READ-ONLY; The exact time the message was updated.
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueueProperties.
+func (qp QueueProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if qp.LockDuration != nil {
+		objectMap["lockDuration"] = qp.LockDuration
+	}
+	if qp.AutoDeleteOnIdle != nil {
+		objectMap["autoDeleteOnIdle"] = qp.AutoDeleteOnIdle
+	}
+	if qp.EntityAvailabilityStatus != "" {
+		objectMap["entityAvailabilityStatus"] = qp.EntityAvailabilityStatus
+	}
+	if qp.DefaultMessageTimeToLive != nil {
+		objectMap["defaultMessageTimeToLive"] = qp.DefaultMessageTimeToLive
+	}
+	if qp.DuplicateDetectionHistoryTimeWindow != nil {
+		objectMap["duplicateDetectionHistoryTimeWindow"] = qp.DuplicateDetectionHistoryTimeWindow
+	}
+	if qp.EnableBatchedOperations != nil {
+		objectMap["enableBatchedOperations"] = qp.EnableBatchedOperations
+	}
+	if qp.DeadLetteringOnMessageExpiration != nil {
+		objectMap["deadLetteringOnMessageExpiration"] = qp.DeadLetteringOnMessageExpiration
+	}
+	if qp.EnableExpress != nil {
+		objectMap["enableExpress"] = qp.EnableExpress
+	}
+	if qp.EnablePartitioning != nil {
+		objectMap["enablePartitioning"] = qp.EnablePartitioning
+	}
+	if qp.IsAnonymousAccessible != nil {
+		objectMap["isAnonymousAccessible"] = qp.IsAnonymousAccessible
+	}
+	if qp.MaxDeliveryCount != nil {
+		objectMap["maxDeliveryCount"] = qp.MaxDeliveryCount
+	}
+	if qp.MaxSizeInMegabytes != nil {
+		objectMap["maxSizeInMegabytes"] = qp.MaxSizeInMegabytes
+	}
+	if qp.RequiresDuplicateDetection != nil {
+		objectMap["requiresDuplicateDetection"] = qp.RequiresDuplicateDetection
+	}
+	if qp.RequiresSession != nil {
+		objectMap["requiresSession"] = qp.RequiresSession
+	}
+	if qp.Status != "" {
+		objectMap["status"] = qp.Status
+	}
+	if qp.SupportOrdering != nil {
+		objectMap["supportOrdering"] = qp.SupportOrdering
+	}
+	return json.Marshal(objectMap)
 }
 
 // QueueResource description of queue Resource.
@@ -1193,6 +1136,15 @@ type Resource struct {
 	Location *string `json:"location,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.Location != nil {
+		objectMap["location"] = r.Location
+	}
+	return json.Marshal(objectMap)
 }
 
 // ResourceListKeys namespace/ServiceBus Connection String
@@ -1355,10 +1307,15 @@ func (saarlr SharedAccessAuthorizationRuleListResult) IsEmpty() bool {
 	return saarlr.Value == nil || len(*saarlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (saarlr SharedAccessAuthorizationRuleListResult) hasNextLink() bool {
+	return saarlr.NextLink != nil && len(*saarlr.NextLink) != 0
+}
+
 // sharedAccessAuthorizationRuleListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (saarlr SharedAccessAuthorizationRuleListResult) sharedAccessAuthorizationRuleListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if saarlr.NextLink == nil || len(to.String(saarlr.NextLink)) < 1 {
+	if !saarlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1367,8 +1324,7 @@ func (saarlr SharedAccessAuthorizationRuleListResult) sharedAccessAuthorizationR
 		autorest.WithBaseURL(to.String(saarlr.NextLink)))
 }
 
-// SharedAccessAuthorizationRuleListResultPage contains a page of SharedAccessAuthorizationRuleResource
-// values.
+// SharedAccessAuthorizationRuleListResultPage contains a page of SharedAccessAuthorizationRuleResource values.
 type SharedAccessAuthorizationRuleListResultPage struct {
 	fn     func(context.Context, SharedAccessAuthorizationRuleListResult) (SharedAccessAuthorizationRuleListResult, error)
 	saarlr SharedAccessAuthorizationRuleListResult
@@ -1387,11 +1343,16 @@ func (page *SharedAccessAuthorizationRuleListResultPage) NextWithContext(ctx con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.saarlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.saarlr)
+		if err != nil {
+			return err
+		}
+		page.saarlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.saarlr = next
 	return nil
 }
 
@@ -1670,10 +1631,15 @@ func (slr SubscriptionListResult) IsEmpty() bool {
 	return slr.Value == nil || len(*slr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (slr SubscriptionListResult) hasNextLink() bool {
+	return slr.NextLink != nil && len(*slr.NextLink) != 0
+}
+
 // subscriptionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (slr SubscriptionListResult) subscriptionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if slr.NextLink == nil || len(to.String(slr.NextLink)) < 1 {
+	if !slr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1701,11 +1667,16 @@ func (page *SubscriptionListResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.slr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.slr)
+		if err != nil {
+			return err
+		}
+		page.slr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.slr = next
 	return nil
 }
 
@@ -1773,6 +1744,45 @@ type SubscriptionProperties struct {
 	Status EntityStatus `json:"status,omitempty"`
 	// UpdatedAt - READ-ONLY; The exact time the message was updated.
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SubscriptionProperties.
+func (sp SubscriptionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.AutoDeleteOnIdle != nil {
+		objectMap["autoDeleteOnIdle"] = sp.AutoDeleteOnIdle
+	}
+	if sp.DefaultMessageTimeToLive != nil {
+		objectMap["defaultMessageTimeToLive"] = sp.DefaultMessageTimeToLive
+	}
+	if sp.DeadLetteringOnFilterEvaluationExceptions != nil {
+		objectMap["deadLetteringOnFilterEvaluationExceptions"] = sp.DeadLetteringOnFilterEvaluationExceptions
+	}
+	if sp.DeadLetteringOnMessageExpiration != nil {
+		objectMap["deadLetteringOnMessageExpiration"] = sp.DeadLetteringOnMessageExpiration
+	}
+	if sp.EnableBatchedOperations != nil {
+		objectMap["enableBatchedOperations"] = sp.EnableBatchedOperations
+	}
+	if sp.EntityAvailabilityStatus != "" {
+		objectMap["entityAvailabilityStatus"] = sp.EntityAvailabilityStatus
+	}
+	if sp.IsReadOnly != nil {
+		objectMap["isReadOnly"] = sp.IsReadOnly
+	}
+	if sp.LockDuration != nil {
+		objectMap["lockDuration"] = sp.LockDuration
+	}
+	if sp.MaxDeliveryCount != nil {
+		objectMap["maxDeliveryCount"] = sp.MaxDeliveryCount
+	}
+	if sp.RequiresSession != nil {
+		objectMap["requiresSession"] = sp.RequiresSession
+	}
+	if sp.Status != "" {
+		objectMap["status"] = sp.Status
+	}
+	return json.Marshal(objectMap)
 }
 
 // SubscriptionResource description of subscription resource.
@@ -2004,10 +2014,15 @@ func (tlr TopicListResult) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tlr TopicListResult) hasNextLink() bool {
+	return tlr.NextLink != nil && len(*tlr.NextLink) != 0
+}
+
 // topicListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tlr TopicListResult) topicListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if tlr.NextLink == nil || len(to.String(tlr.NextLink)) < 1 {
+	if !tlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2035,11 +2050,16 @@ func (page *TopicListResultPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tlr)
+		if err != nil {
+			return err
+		}
+		page.tlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tlr = next
 	return nil
 }
 
@@ -2114,6 +2134,54 @@ type TopicProperties struct {
 	SupportOrdering *bool `json:"supportOrdering,omitempty"`
 	// UpdatedAt - READ-ONLY; The exact time the message was updated.
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TopicProperties.
+func (tp TopicProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tp.AutoDeleteOnIdle != nil {
+		objectMap["autoDeleteOnIdle"] = tp.AutoDeleteOnIdle
+	}
+	if tp.EntityAvailabilityStatus != "" {
+		objectMap["entityAvailabilityStatus"] = tp.EntityAvailabilityStatus
+	}
+	if tp.DefaultMessageTimeToLive != nil {
+		objectMap["defaultMessageTimeToLive"] = tp.DefaultMessageTimeToLive
+	}
+	if tp.DuplicateDetectionHistoryTimeWindow != nil {
+		objectMap["duplicateDetectionHistoryTimeWindow"] = tp.DuplicateDetectionHistoryTimeWindow
+	}
+	if tp.EnableBatchedOperations != nil {
+		objectMap["enableBatchedOperations"] = tp.EnableBatchedOperations
+	}
+	if tp.EnableExpress != nil {
+		objectMap["enableExpress"] = tp.EnableExpress
+	}
+	if tp.EnablePartitioning != nil {
+		objectMap["enablePartitioning"] = tp.EnablePartitioning
+	}
+	if tp.FilteringMessagesBeforePublishing != nil {
+		objectMap["filteringMessagesBeforePublishing"] = tp.FilteringMessagesBeforePublishing
+	}
+	if tp.IsAnonymousAccessible != nil {
+		objectMap["isAnonymousAccessible"] = tp.IsAnonymousAccessible
+	}
+	if tp.IsExpress != nil {
+		objectMap["isExpress"] = tp.IsExpress
+	}
+	if tp.MaxSizeInMegabytes != nil {
+		objectMap["maxSizeInMegabytes"] = tp.MaxSizeInMegabytes
+	}
+	if tp.RequiresDuplicateDetection != nil {
+		objectMap["requiresDuplicateDetection"] = tp.RequiresDuplicateDetection
+	}
+	if tp.Status != "" {
+		objectMap["status"] = tp.Status
+	}
+	if tp.SupportOrdering != nil {
+		objectMap["supportOrdering"] = tp.SupportOrdering
+	}
+	return json.Marshal(objectMap)
 }
 
 // TopicResource description of topic resource.

@@ -166,6 +166,7 @@ var _ TriggersClientAPI = (*datafactory.TriggersClient)(nil)
 
 // TriggerRunsClientAPI contains the set of methods on the TriggerRunsClient type.
 type TriggerRunsClientAPI interface {
+	Cancel(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string) (result autorest.Response, err error)
 	QueryByFactory(ctx context.Context, resourceGroupName string, factoryName string, filterParameters datafactory.RunFilterParameters) (result datafactory.TriggerRunsQueryResponse, err error)
 	Rerun(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string) (result autorest.Response, err error)
 }

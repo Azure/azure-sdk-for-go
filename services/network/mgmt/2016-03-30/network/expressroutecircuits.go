@@ -455,6 +455,9 @@ func (client ExpressRouteCircuitsClient) List(ctx context.Context, resourceGroup
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "List", resp, "Failure responding to request")
 	}
+	if result.erclr.hasNextLink() && result.erclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -563,6 +566,9 @@ func (client ExpressRouteCircuitsClient) ListAll(ctx context.Context) (result Ex
 	result.erclr, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsClient", "ListAll", resp, "Failure responding to request")
+	}
+	if result.erclr.hasNextLink() && result.erclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

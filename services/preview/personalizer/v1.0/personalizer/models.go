@@ -18,6 +18,7 @@ package personalizer
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"io"
@@ -25,72 +26,6 @@ import (
 
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/personalizer/v1.0/personalizer"
-
-// ErrorCode enumerates the values for error code.
-type ErrorCode string
-
-const (
-	// BadRequest Request could not be understood by the server.
-	BadRequest ErrorCode = "BadRequest"
-	// EvaluationNotFound Evaluation not found.
-	EvaluationNotFound ErrorCode = "EvaluationNotFound"
-	// FrontEndNotFound Front end not found.
-	FrontEndNotFound ErrorCode = "FrontEndNotFound"
-	// InternalServerError A generic error has occurred on the server.
-	InternalServerError ErrorCode = "InternalServerError"
-	// InvalidContainer SAS Uri must be the Uri to a container that has write permissions.
-	InvalidContainer ErrorCode = "InvalidContainer"
-	// InvalidEvaluationContract Invalid evaluation contract.
-	InvalidEvaluationContract ErrorCode = "InvalidEvaluationContract"
-	// InvalidEventIDToActivate Invalid activate event request.
-	InvalidEventIDToActivate ErrorCode = "InvalidEventIdToActivate"
-	// InvalidExportLogsRequest Invalid export logs request.
-	InvalidExportLogsRequest ErrorCode = "InvalidExportLogsRequest"
-	// InvalidPolicyConfiguration Invalid policy configuration.
-	InvalidPolicyConfiguration ErrorCode = "InvalidPolicyConfiguration"
-	// InvalidPolicyContract Invalid policy contract.
-	InvalidPolicyContract ErrorCode = "InvalidPolicyContract"
-	// InvalidRankRequest Invalid rank request.
-	InvalidRankRequest ErrorCode = "InvalidRankRequest"
-	// InvalidRewardRequest Invalid reward request.
-	InvalidRewardRequest ErrorCode = "InvalidRewardRequest"
-	// InvalidServiceConfiguration Invalid service configuration.
-	InvalidServiceConfiguration ErrorCode = "InvalidServiceConfiguration"
-	// LogsPropertiesNotFound Logs properties not found.
-	LogsPropertiesNotFound ErrorCode = "LogsPropertiesNotFound"
-	// ModelResetFailed Model reset failed.
-	ModelResetFailed ErrorCode = "ModelResetFailed"
-	// RankNullResponse Rank call returned null response.
-	RankNullResponse ErrorCode = "RankNullResponse"
-	// ResourceNotFound Requested resource does not exist on the server.
-	ResourceNotFound ErrorCode = "ResourceNotFound"
-	// UpdateConfigurationFailed Failed to update configuration.
-	UpdateConfigurationFailed ErrorCode = "UpdateConfigurationFailed"
-)
-
-// PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
-func PossibleErrorCodeValues() []ErrorCode {
-	return []ErrorCode{BadRequest, EvaluationNotFound, FrontEndNotFound, InternalServerError, InvalidContainer, InvalidEvaluationContract, InvalidEventIDToActivate, InvalidExportLogsRequest, InvalidPolicyConfiguration, InvalidPolicyContract, InvalidRankRequest, InvalidRewardRequest, InvalidServiceConfiguration, LogsPropertiesNotFound, ModelResetFailed, RankNullResponse, ResourceNotFound, UpdateConfigurationFailed}
-}
-
-// EvaluationJobStatus enumerates the values for evaluation job status.
-type EvaluationJobStatus string
-
-const (
-	// Completed ...
-	Completed EvaluationJobStatus = "completed"
-	// Failed ...
-	Failed EvaluationJobStatus = "failed"
-	// NotSubmitted ...
-	NotSubmitted EvaluationJobStatus = "notSubmitted"
-	// Pending ...
-	Pending EvaluationJobStatus = "pending"
-)
-
-// PossibleEvaluationJobStatusValues returns an array of possible values for the EvaluationJobStatus const type.
-func PossibleEvaluationJobStatusValues() []EvaluationJobStatus {
-	return []EvaluationJobStatus{Completed, Failed, NotSubmitted, Pending}
-}
 
 // ContainerStatus ...
 type ContainerStatus struct {
@@ -144,6 +79,18 @@ type Evaluation struct {
 	Status            EvaluationJobStatus `json:"status,omitempty"`
 	PolicyResults     *[]PolicyResult     `json:"policyResults,omitempty"`
 	FeatureImportance *[][]string         `json:"featureImportance,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Evaluation.
+func (e Evaluation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if e.PolicyResults != nil {
+		objectMap["policyResults"] = e.PolicyResults
+	}
+	if e.FeatureImportance != nil {
+		objectMap["featureImportance"] = e.FeatureImportance
+	}
+	return json.Marshal(objectMap)
 }
 
 // EvaluationContract a counterfactual evaluation.
@@ -238,6 +185,15 @@ type PolicyResultSummary struct {
 	SumOfSquares *float64 `json:"sumOfSquares,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PolicyResultSummary.
+func (prs PolicyResultSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if prs.NonZeroProbability != nil {
+		objectMap["nonZeroProbability"] = prs.NonZeroProbability
+	}
+	return json.Marshal(objectMap)
+}
+
 // PolicyResultTotalSummary ...
 type PolicyResultTotalSummary struct {
 	// TimeStamp - READ-ONLY
@@ -255,6 +211,15 @@ type PolicyResultTotalSummary struct {
 	ConfidenceInterval *float64 `json:"confidenceInterval,omitempty"`
 	// SumOfSquares - READ-ONLY
 	SumOfSquares *float64 `json:"sumOfSquares,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PolicyResultTotalSummary.
+func (prS PolicyResultTotalSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if prS.NonZeroProbability != nil {
+		objectMap["nonZeroProbability"] = prS.NonZeroProbability
+	}
+	return json.Marshal(objectMap)
 }
 
 // RankableAction an action with it's associated features used for ranking.
@@ -303,8 +268,8 @@ type RankRequest struct {
 	DeferActivation *bool `json:"deferActivation,omitempty"`
 }
 
-// RankResponse returns which action to use as rewardActionId, and additional information about each action
-// as a result of a Rank request.
+// RankResponse returns which action to use as rewardActionId, and additional information about each action as
+// a result of a Rank request.
 type RankResponse struct {
 	autorest.Response `json:"-"`
 	// Ranking - READ-ONLY; The calculated ranking for the current request.

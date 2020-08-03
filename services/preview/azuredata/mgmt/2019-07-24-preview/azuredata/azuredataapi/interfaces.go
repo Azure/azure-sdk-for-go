@@ -70,20 +70,6 @@ type SQLManagedInstancesClientAPI interface {
 
 var _ SQLManagedInstancesClientAPI = (*azuredata.SQLManagedInstancesClient)(nil)
 
-// SQLInstancesClientAPI contains the set of methods on the SQLInstancesClient type.
-type SQLInstancesClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, SQLInstanceName string, parameters azuredata.SQLInstance) (result azuredata.SQLInstance, err error)
-	Delete(ctx context.Context, resourceGroupName string, SQLInstanceName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, SQLInstanceName string) (result azuredata.SQLInstance, err error)
-	List(ctx context.Context) (result azuredata.SQLInstanceListResultPage, err error)
-	ListComplete(ctx context.Context) (result azuredata.SQLInstanceListResultIterator, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result azuredata.SQLInstanceListResultPage, err error)
-	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result azuredata.SQLInstanceListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, SQLInstanceName string, parameters azuredata.SQLInstanceUpdate) (result azuredata.SQLInstance, err error)
-}
-
-var _ SQLInstancesClientAPI = (*azuredata.SQLInstancesClient)(nil)
-
 // SQLServerInstancesClientAPI contains the set of methods on the SQLServerInstancesClient type.
 type SQLServerInstancesClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, SQLServerInstanceName string, parameters azuredata.SQLServerInstance) (result azuredata.SQLServerInstance, err error)
@@ -121,21 +107,7 @@ type DataControllersClientAPI interface {
 	ListInSubscription(ctx context.Context) (result azuredata.PageOfDataControllerResourcePage, err error)
 	ListInSubscriptionComplete(ctx context.Context) (result azuredata.PageOfDataControllerResourceIterator, err error)
 	PatchDataController(ctx context.Context, resourceGroupName string, dataControllerName string) (result azuredata.DataControllerResource, err error)
-	PutDataController(ctx context.Context, resourceGroupName string, dataControllerName string) (result azuredata.DataControllerResource, err error)
+	PutDataController(ctx context.Context, resourceGroupName string, dataControllerResource azuredata.DataControllerResource, dataControllerName string) (result azuredata.DataControllerResource, err error)
 }
 
 var _ DataControllersClientAPI = (*azuredata.DataControllersClient)(nil)
-
-// HybridDataManagersClientAPI contains the set of methods on the HybridDataManagersClient type.
-type HybridDataManagersClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, hybridDataManagerName string) (result azuredata.HybridDataManager, err error)
-	Delete(ctx context.Context, resourceGroupName string, hybridDataManagerName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, hybridDataManagerName string) (result azuredata.HybridDataManager, err error)
-	List(ctx context.Context) (result azuredata.HybridDataManagerListResultPage, err error)
-	ListComplete(ctx context.Context) (result azuredata.HybridDataManagerListResultIterator, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result azuredata.HybridDataManagerListResultPage, err error)
-	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result azuredata.HybridDataManagerListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, hybridDataManagerName string, parameters azuredata.HybridDataManagerUpdate) (result azuredata.HybridDataManager, err error)
-}
-
-var _ HybridDataManagersClientAPI = (*azuredata.HybridDataManagersClient)(nil)

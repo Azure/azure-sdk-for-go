@@ -308,6 +308,9 @@ func (client GraphQueryClient) List(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcegraph.GraphQueryClient", "List", resp, "Failure responding to request")
 	}
+	if result.gqlr.hasNextLink() && result.gqlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

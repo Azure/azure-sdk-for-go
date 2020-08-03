@@ -385,6 +385,9 @@ func (client ProductsClient) ListByService(ctx context.Context, resourceGroupNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.ProductsClient", "ListByService", resp, "Failure responding to request")
 	}
+	if result.pc.hasNextLink() && result.pc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

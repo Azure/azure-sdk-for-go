@@ -27,36 +27,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/powerbiembedded/mgmt/2016-01-29/powerbiembedded"
 
-// AccessKeyName enumerates the values for access key name.
-type AccessKeyName string
-
-const (
-	// Key1 ...
-	Key1 AccessKeyName = "key1"
-	// Key2 ...
-	Key2 AccessKeyName = "key2"
-)
-
-// PossibleAccessKeyNameValues returns an array of possible values for the AccessKeyName const type.
-func PossibleAccessKeyNameValues() []AccessKeyName {
-	return []AccessKeyName{Key1, Key2}
-}
-
-// CheckNameReason enumerates the values for check name reason.
-type CheckNameReason string
-
-const (
-	// Invalid ...
-	Invalid CheckNameReason = "Invalid"
-	// Unavailable ...
-	Unavailable CheckNameReason = "Unavailable"
-)
-
-// PossibleCheckNameReasonValues returns an array of possible values for the CheckNameReason const type.
-func PossibleCheckNameReasonValues() []CheckNameReason {
-	return []CheckNameReason{Invalid, Unavailable}
-}
-
 // AzureSku ...
 type AzureSku struct {
 	// Name - SKU name
@@ -251,8 +221,8 @@ type WorkspaceCollectionList struct {
 	Value             *[]WorkspaceCollection `json:"value,omitempty"`
 }
 
-// WorkspaceCollectionsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// WorkspaceCollectionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type WorkspaceCollectionsDeleteFuture struct {
 	azure.Future
 }

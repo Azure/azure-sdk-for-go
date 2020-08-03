@@ -317,6 +317,9 @@ func (client SQLServersClient) ListByResourceGroup(ctx context.Context, resource
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServersClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.sslr.hasNextLink() && result.sslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

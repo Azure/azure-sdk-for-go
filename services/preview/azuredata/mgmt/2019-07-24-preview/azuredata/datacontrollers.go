@@ -221,6 +221,9 @@ func (client DataControllersClient) ListInGroup(ctx context.Context, resourceGro
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.DataControllersClient", "ListInGroup", resp, "Failure responding to request")
 	}
+	if result.podcr.hasNextLink() && result.podcr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -329,6 +332,9 @@ func (client DataControllersClient) ListInSubscription(ctx context.Context) (res
 	result.podcr, err = client.ListInSubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.DataControllersClient", "ListInSubscription", resp, "Failure responding to request")
+	}
+	if result.podcr.hasNextLink() && result.podcr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -485,7 +491,8 @@ func (client DataControllersClient) PatchDataControllerResponder(resp *http.Resp
 // PutDataController creates or replaces a dataController resource
 // Parameters:
 // resourceGroupName - the name of the Azure resource group
-func (client DataControllersClient) PutDataController(ctx context.Context, resourceGroupName string, dataControllerName string) (result DataControllerResource, err error) {
+// dataControllerResource - desc
+func (client DataControllersClient) PutDataController(ctx context.Context, resourceGroupName string, dataControllerResource DataControllerResource, dataControllerName string) (result DataControllerResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataControllersClient.PutDataController")
 		defer func() {
@@ -496,7 +503,7 @@ func (client DataControllersClient) PutDataController(ctx context.Context, resou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.PutDataControllerPreparer(ctx, resourceGroupName, dataControllerName)
+	req, err := client.PutDataControllerPreparer(ctx, resourceGroupName, dataControllerResource, dataControllerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.DataControllersClient", "PutDataController", nil, "Failure preparing request")
 		return
@@ -518,7 +525,7 @@ func (client DataControllersClient) PutDataController(ctx context.Context, resou
 }
 
 // PutDataControllerPreparer prepares the PutDataController request.
-func (client DataControllersClient) PutDataControllerPreparer(ctx context.Context, resourceGroupName string, dataControllerName string) (*http.Request, error) {
+func (client DataControllersClient) PutDataControllerPreparer(ctx context.Context, resourceGroupName string, dataControllerResource DataControllerResource, dataControllerName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"dataControllerName": autorest.Encode("path", dataControllerName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
@@ -531,9 +538,11 @@ func (client DataControllersClient) PutDataControllerPreparer(ctx context.Contex
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureData/dataControllers/{dataControllerName}", pathParameters),
+		autorest.WithJSON(dataControllerResource),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

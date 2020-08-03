@@ -417,6 +417,9 @@ func (client ServiceFabricSchedulesClient) List(ctx context.Context, resourceGro
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricSchedulesClient", "List", resp, "Failure responding to request")
 	}
+	if result.sl.hasNextLink() && result.sl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

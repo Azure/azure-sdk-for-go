@@ -31,29 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2019-02-01-preview/appconfiguration"
 
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Canceled, Creating, Deleting, Failed, Succeeded, Updating}
-}
-
 // APIKey an API key used for authenticating with a configuration store endpoint.
 type APIKey struct {
 	autorest.Response `json:"-"`
@@ -148,10 +125,15 @@ func (aklr APIKeyListResult) IsEmpty() bool {
 	return aklr.Value == nil || len(*aklr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (aklr APIKeyListResult) hasNextLink() bool {
+	return aklr.NextLink != nil && len(*aklr.NextLink) != 0
+}
+
 // aPIKeyListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (aklr APIKeyListResult) aPIKeyListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if aklr.NextLink == nil || len(to.String(aklr.NextLink)) < 1 {
+	if !aklr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -179,11 +161,16 @@ func (page *APIKeyListResultPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.aklr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.aklr)
+		if err != nil {
+			return err
+		}
+		page.aklr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.aklr = next
 	return nil
 }
 
@@ -225,8 +212,8 @@ type CheckNameAvailabilityParameters struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// ConfigurationStore the configuration store along with all resource properties. The Configuration Store
-// will have all information to begin utilizing it.
+// ConfigurationStore the configuration store along with all resource properties. The Configuration Store will
+// have all information to begin utilizing it.
 type ConfigurationStore struct {
 	autorest.Response `json:"-"`
 	// ConfigurationStoreProperties - The properties of a configuration store.
@@ -404,10 +391,15 @@ func (cslr ConfigurationStoreListResult) IsEmpty() bool {
 	return cslr.Value == nil || len(*cslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cslr ConfigurationStoreListResult) hasNextLink() bool {
+	return cslr.NextLink != nil && len(*cslr.NextLink) != 0
+}
+
 // configurationStoreListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cslr ConfigurationStoreListResult) configurationStoreListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cslr.NextLink == nil || len(to.String(cslr.NextLink)) < 1 {
+	if !cslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -435,11 +427,16 @@ func (page *ConfigurationStoreListResultPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cslr)
+		if err != nil {
+			return err
+		}
+		page.cslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cslr = next
 	return nil
 }
 
@@ -483,8 +480,8 @@ type ConfigurationStoreProperties struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 }
 
-// ConfigurationStoresCreateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ConfigurationStoresCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ConfigurationStoresCreateFuture struct {
 	azure.Future
 }
@@ -512,8 +509,8 @@ func (future *ConfigurationStoresCreateFuture) Result(client ConfigurationStores
 	return
 }
 
-// ConfigurationStoresDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ConfigurationStoresDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ConfigurationStoresDeleteFuture struct {
 	azure.Future
 }
@@ -535,8 +532,8 @@ func (future *ConfigurationStoresDeleteFuture) Result(client ConfigurationStores
 	return
 }
 
-// ConfigurationStoresUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ConfigurationStoresUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ConfigurationStoresUpdateFuture struct {
 	azure.Future
 }
@@ -662,6 +659,21 @@ type OperationDefinitionDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDefinitionDisplay.
+func (odd OperationDefinitionDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if odd.Resource != nil {
+		objectMap["resource"] = odd.Resource
+	}
+	if odd.Operation != nil {
+		objectMap["operation"] = odd.Operation
+	}
+	if odd.Description != nil {
+		objectMap["description"] = odd.Description
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationDefinitionListResult the result of a request to list configuration store operations.
 type OperationDefinitionListResult struct {
 	autorest.Response `json:"-"`
@@ -671,8 +683,7 @@ type OperationDefinitionListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// OperationDefinitionListResultIterator provides access to a complete listing of OperationDefinition
-// values.
+// OperationDefinitionListResultIterator provides access to a complete listing of OperationDefinition values.
 type OperationDefinitionListResultIterator struct {
 	i    int
 	page OperationDefinitionListResultPage
@@ -740,10 +751,15 @@ func (odlr OperationDefinitionListResult) IsEmpty() bool {
 	return odlr.Value == nil || len(*odlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (odlr OperationDefinitionListResult) hasNextLink() bool {
+	return odlr.NextLink != nil && len(*odlr.NextLink) != 0
+}
+
 // operationDefinitionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (odlr OperationDefinitionListResult) operationDefinitionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if odlr.NextLink == nil || len(to.String(odlr.NextLink)) < 1 {
+	if !odlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -771,11 +787,16 @@ func (page *OperationDefinitionListResultPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.odlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.odlr)
+		if err != nil {
+			return err
+		}
+		page.odlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.odlr = next
 	return nil
 }
 

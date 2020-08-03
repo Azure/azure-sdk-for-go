@@ -30,191 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/costmanagement/mgmt/2019-03-01/costmanagement"
 
-// ConnectorBillingModel enumerates the values for connector billing model.
-type ConnectorBillingModel string
-
-const (
-	// AutoUpgrade ...
-	AutoUpgrade ConnectorBillingModel = "autoUpgrade"
-	// Expired ...
-	Expired ConnectorBillingModel = "expired"
-	// Premium ...
-	Premium ConnectorBillingModel = "premium"
-	// Trial ...
-	Trial ConnectorBillingModel = "trial"
-)
-
-// PossibleConnectorBillingModelValues returns an array of possible values for the ConnectorBillingModel const type.
-func PossibleConnectorBillingModelValues() []ConnectorBillingModel {
-	return []ConnectorBillingModel{AutoUpgrade, Expired, Premium, Trial}
-}
-
-// ConnectorStatus enumerates the values for connector status.
-type ConnectorStatus string
-
-const (
-	// ConnectorStatusActive ...
-	ConnectorStatusActive ConnectorStatus = "active"
-	// ConnectorStatusError ...
-	ConnectorStatusError ConnectorStatus = "error"
-	// ConnectorStatusExpired ...
-	ConnectorStatusExpired ConnectorStatus = "expired"
-	// ConnectorStatusWarning ...
-	ConnectorStatusWarning ConnectorStatus = "warning"
-)
-
-// PossibleConnectorStatusValues returns an array of possible values for the ConnectorStatus const type.
-func PossibleConnectorStatusValues() []ConnectorStatus {
-	return []ConnectorStatus{ConnectorStatusActive, ConnectorStatusError, ConnectorStatusExpired, ConnectorStatusWarning}
-}
-
-// CostAllocationPolicy enumerates the values for cost allocation policy.
-type CostAllocationPolicy string
-
-const (
-	// Evenly ...
-	Evenly CostAllocationPolicy = "Evenly"
-	// Fixed ...
-	Fixed CostAllocationPolicy = "Fixed"
-	// Proportional ...
-	Proportional CostAllocationPolicy = "Proportional"
-)
-
-// PossibleCostAllocationPolicyValues returns an array of possible values for the CostAllocationPolicy const type.
-func PossibleCostAllocationPolicyValues() []CostAllocationPolicy {
-	return []CostAllocationPolicy{Evenly, Fixed, Proportional}
-}
-
-// Direction enumerates the values for direction.
-type Direction string
-
-const (
-	// Ascending ...
-	Ascending Direction = "Ascending"
-	// Descending ...
-	Descending Direction = "Descending"
-)
-
-// PossibleDirectionValues returns an array of possible values for the Direction const type.
-func PossibleDirectionValues() []Direction {
-	return []Direction{Ascending, Descending}
-}
-
-// FunctionType enumerates the values for function type.
-type FunctionType string
-
-const (
-	// AHUB ...
-	AHUB FunctionType = "AHUB"
-	// All ...
-	All FunctionType = "All"
-	// None ...
-	None FunctionType = "None"
-	// Reservations ...
-	Reservations FunctionType = "Reservations"
-)
-
-// PossibleFunctionTypeValues returns an array of possible values for the FunctionType const type.
-func PossibleFunctionTypeValues() []FunctionType {
-	return []FunctionType{AHUB, All, None, Reservations}
-}
-
-// GranularityType enumerates the values for granularity type.
-type GranularityType string
-
-const (
-	// Daily ...
-	Daily GranularityType = "Daily"
-	// Monthly ...
-	Monthly GranularityType = "Monthly"
-)
-
-// PossibleGranularityTypeValues returns an array of possible values for the GranularityType const type.
-func PossibleGranularityTypeValues() []GranularityType {
-	return []GranularityType{Daily, Monthly}
-}
-
-// OperatorType enumerates the values for operator type.
-type OperatorType string
-
-const (
-	// Contains ...
-	Contains OperatorType = "Contains"
-	// In ...
-	In OperatorType = "In"
-)
-
-// PossibleOperatorTypeValues returns an array of possible values for the OperatorType const type.
-func PossibleOperatorTypeValues() []OperatorType {
-	return []OperatorType{Contains, In}
-}
-
-// ReportConfigColumnType enumerates the values for report config column type.
-type ReportConfigColumnType string
-
-const (
-	// ReportConfigColumnTypeDimension ...
-	ReportConfigColumnTypeDimension ReportConfigColumnType = "Dimension"
-	// ReportConfigColumnTypeTag ...
-	ReportConfigColumnTypeTag ReportConfigColumnType = "Tag"
-)
-
-// PossibleReportConfigColumnTypeValues returns an array of possible values for the ReportConfigColumnType const type.
-func PossibleReportConfigColumnTypeValues() []ReportConfigColumnType {
-	return []ReportConfigColumnType{ReportConfigColumnTypeDimension, ReportConfigColumnTypeTag}
-}
-
-// RuleType enumerates the values for rule type.
-type RuleType string
-
-const (
-	// RuleTypeCostAllocation ...
-	RuleTypeCostAllocation RuleType = "CostAllocation"
-	// RuleTypeCustomPrice ...
-	RuleTypeCustomPrice RuleType = "CustomPrice"
-	// RuleTypeShowbackRuleProperties ...
-	RuleTypeShowbackRuleProperties RuleType = "ShowbackRuleProperties"
-)
-
-// PossibleRuleTypeValues returns an array of possible values for the RuleType const type.
-func PossibleRuleTypeValues() []RuleType {
-	return []RuleType{RuleTypeCostAllocation, RuleTypeCustomPrice, RuleTypeShowbackRuleProperties}
-}
-
-// ShowbackRuleStatus enumerates the values for showback rule status.
-type ShowbackRuleStatus string
-
-const (
-	// Active ...
-	Active ShowbackRuleStatus = "Active"
-	// NotActive ...
-	NotActive ShowbackRuleStatus = "NotActive"
-)
-
-// PossibleShowbackRuleStatusValues returns an array of possible values for the ShowbackRuleStatus const type.
-func PossibleShowbackRuleStatusValues() []ShowbackRuleStatus {
-	return []ShowbackRuleStatus{Active, NotActive}
-}
-
-// TimeframeType enumerates the values for timeframe type.
-type TimeframeType string
-
-const (
-	// Custom ...
-	Custom TimeframeType = "Custom"
-	// MonthToDate ...
-	MonthToDate TimeframeType = "MonthToDate"
-	// WeekToDate ...
-	WeekToDate TimeframeType = "WeekToDate"
-	// YearToDate ...
-	YearToDate TimeframeType = "YearToDate"
-)
-
-// PossibleTimeframeTypeValues returns an array of possible values for the TimeframeType const type.
-func PossibleTimeframeTypeValues() []TimeframeType {
-	return []TimeframeType{Custom, MonthToDate, WeekToDate, YearToDate}
-}
-
 // CheckEligibilityDefinition the check eligibility Connector credentials definition
 type CheckEligibilityDefinition struct {
 	// Kind - Connector kind (eg aws)
@@ -249,6 +64,15 @@ type ConnectorCollectionInfo struct {
 	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
 	// Error - Error information of last collection
 	Error *ConnectorCollectionErrorInfo `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectorCollectionInfo.
+func (cci ConnectorCollectionInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cci.Error != nil {
+		objectMap["error"] = cci.Error
+	}
+	return json.Marshal(objectMap)
 }
 
 // ConnectorDefinition the Connector model definition
@@ -378,6 +202,33 @@ type ConnectorProperties struct {
 	DaysTrialRemaining *int32 `json:"daysTrialRemaining,omitempty"`
 	// CollectionInfo - READ-ONLY; Collection information
 	CollectionInfo *ConnectorCollectionInfo `json:"collectionInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectorProperties.
+func (cp ConnectorProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.DisplayName != nil {
+		objectMap["displayName"] = cp.DisplayName
+	}
+	if cp.CredentialsKey != nil {
+		objectMap["credentialsKey"] = cp.CredentialsKey
+	}
+	if cp.CredentialsSecret != nil {
+		objectMap["credentialsSecret"] = cp.CredentialsSecret
+	}
+	if cp.ReportID != nil {
+		objectMap["reportId"] = cp.ReportID
+	}
+	if cp.DefaultManagementGroupID != nil {
+		objectMap["defaultManagementGroupId"] = cp.DefaultManagementGroupID
+	}
+	if cp.SubscriptionID != nil {
+		objectMap["subscriptionId"] = cp.SubscriptionID
+	}
+	if cp.BillingModel != "" {
+		objectMap["billingModel"] = cp.BillingModel
+	}
+	return json.Marshal(objectMap)
 }
 
 // CostAllocationDetails represents CostAllocation showback rule model
@@ -839,6 +690,18 @@ type ErrorDetails struct {
 	Details *[]ErrorBase `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ed.Target != nil {
+		objectMap["target"] = ed.Target
+	}
+	if ed.Details != nil {
+		objectMap["details"] = ed.Details
+	}
+	return json.Marshal(objectMap)
+}
+
 // ErrorResponse error response indicates that the service is not able to process the incoming request. The
 // reason is provided in the error message.
 type ErrorResponse struct {
@@ -930,8 +793,8 @@ func (ebad *ExternalBillingAccountDefinition) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ExternalBillingAccountDefinitionListResult result of listing ExternalBillingAccount definitions. It
-// contains a list of available ExternalBillingAccount definitions in the scope provided.
+// ExternalBillingAccountDefinitionListResult result of listing ExternalBillingAccount definitions. It contains
+// a list of available ExternalBillingAccount definitions in the scope provided.
 type ExternalBillingAccountDefinitionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of ExternalBillingAccount definitions.
@@ -1034,8 +897,8 @@ func (esd *ExternalSubscriptionDefinition) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ExternalSubscriptionDefinitionListResult result of listing ExternalSubscription definitions. It contains
-// a list of available ExternalSubscription definitions in the scope provided.
+// ExternalSubscriptionDefinitionListResult result of listing ExternalSubscription definitions. It contains a
+// list of available ExternalSubscription definitions in the scope provided.
 type ExternalSubscriptionDefinitionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of ExternalSubscription definitions.
@@ -1077,6 +940,15 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplay the object that represents the operation.
 type OperationDisplay struct {
 	// Provider - READ-ONLY; Service provider: Microsoft.CostManagement.
@@ -1087,8 +959,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of listing cost management operations. It contains a list of operations and a
-// URL link to get the next set of results.
+// OperationListResult result of listing cost management operations. It contains a list of operations and a URL
+// link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of cost management operations supported by the Microsoft.CostManagement resource provider.
@@ -1165,10 +1037,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1196,11 +1073,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -1550,8 +1432,8 @@ func (sr *ShowbackRule) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ShowbackRuleListResult result of listing showback rules. It contains a list of available rules in the
-// scope provided.
+// ShowbackRuleListResult result of listing showback rules. It contains a list of available rules in the scope
+// provided.
 type ShowbackRuleListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of showback rules.

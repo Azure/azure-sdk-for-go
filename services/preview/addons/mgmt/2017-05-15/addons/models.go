@@ -28,65 +28,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/addons/mgmt/2017-05-15/addons"
 
-// PlanTypeName enumerates the values for plan type name.
-type PlanTypeName string
-
-const (
-	// Advanced ...
-	Advanced PlanTypeName = "Advanced"
-	// Essential ...
-	Essential PlanTypeName = "Essential"
-	// Standard ...
-	Standard PlanTypeName = "Standard"
-)
-
-// PossiblePlanTypeNameValues returns an array of possible values for the PlanTypeName const type.
-func PossiblePlanTypeNameValues() []PlanTypeName {
-	return []PlanTypeName{Advanced, Essential, Standard}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Cancelled ...
-	Cancelled ProvisioningState = "Cancelled"
-	// Cancelling ...
-	Cancelling ProvisioningState = "Cancelling"
-	// Downgrading ...
-	Downgrading ProvisioningState = "Downgrading"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Purchasing ...
-	Purchasing ProvisioningState = "Purchasing"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Upgrading ...
-	Upgrading ProvisioningState = "Upgrading"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Cancelled, Cancelling, Downgrading, Failed, Purchasing, Succeeded, Upgrading}
-}
-
-// SupportPlanType enumerates the values for support plan type.
-type SupportPlanType string
-
-const (
-	// SupportPlanTypeAdvanced ...
-	SupportPlanTypeAdvanced SupportPlanType = "advanced"
-	// SupportPlanTypeEssential ...
-	SupportPlanTypeEssential SupportPlanType = "essential"
-	// SupportPlanTypeStandard ...
-	SupportPlanTypeStandard SupportPlanType = "standard"
-)
-
-// PossibleSupportPlanTypeValues returns an array of possible values for the SupportPlanType const type.
-func PossibleSupportPlanTypeValues() []SupportPlanType {
-	return []SupportPlanType{SupportPlanTypeAdvanced, SupportPlanTypeEssential, SupportPlanTypeStandard}
-}
-
 // CanonicalSupportPlanProperties the properties of the Canonical support plan.
 type CanonicalSupportPlanProperties struct {
 	// ProvisioningState - The provisioning state of the resource. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Purchasing', 'Downgrading', 'Cancelling', 'Upgrading'

@@ -160,6 +160,9 @@ func (client EnrollmentAccountsClient) ListByBillingAccountName(ctx context.Cont
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "ListByBillingAccountName", resp, "Failure responding to request")
 	}
+	if result.ealr.hasNextLink() && result.ealr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

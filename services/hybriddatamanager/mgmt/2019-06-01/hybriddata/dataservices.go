@@ -170,6 +170,9 @@ func (client DataServicesClient) ListByDataManager(ctx context.Context, resource
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataServicesClient", "ListByDataManager", resp, "Failure responding to request")
 	}
+	if result.dsl.hasNextLink() && result.dsl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -355,6 +355,9 @@ func (client GroupClient) List(ctx context.Context, apimBaseURL string, filter s
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupClient", "List", resp, "Failure responding to request")
 	}
+	if result.gc.hasNextLink() && result.gc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -194,6 +194,9 @@ func (client ApplicationClient) List(ctx context.Context, maxResults *int32, tim
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "List", resp, "Failure responding to request")
 	}
+	if result.alr.hasNextLink() && result.alr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

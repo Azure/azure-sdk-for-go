@@ -418,6 +418,9 @@ func (client TriggerClient) GetTriggersByWorkspace(ctx context.Context) (result 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "GetTriggersByWorkspace", resp, "Failure responding to request")
 	}
+	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

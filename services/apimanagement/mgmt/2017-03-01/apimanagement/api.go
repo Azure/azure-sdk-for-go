@@ -468,6 +468,9 @@ func (client APIClient) ListByService(ctx context.Context, resourceGroupName str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "ListByService", resp, "Failure responding to request")
 	}
+	if result.ac.hasNextLink() && result.ac.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -620,6 +623,9 @@ func (client APIClient) ListByTags(ctx context.Context, resourceGroupName string
 	result.trc, err = client.ListByTagsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIClient", "ListByTags", resp, "Failure responding to request")
+	}
+	if result.trc.hasNextLink() && result.trc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

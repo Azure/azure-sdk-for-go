@@ -55,6 +55,7 @@ type AppType = original.AppType
 
 const (
 	DeveloperPortal AppType = original.DeveloperPortal
+	Portal          AppType = original.Portal
 )
 
 type AsyncOperationStatus = original.AsyncOperationStatus
@@ -508,6 +509,11 @@ type CertificateCreateOrUpdateProperties = original.CertificateCreateOrUpdatePro
 type CertificateInformation = original.CertificateInformation
 type ClientSecretContract = original.ClientSecretContract
 type ConnectivityStatusContract = original.ConnectivityStatusContract
+type ContentItemCollection = original.ContentItemCollection
+type ContentItemContract = original.ContentItemContract
+type ContentTypeCollection = original.ContentTypeCollection
+type ContentTypeContract = original.ContentTypeContract
+type ContentTypeContractProperties = original.ContentTypeContractProperties
 type DelegationSettingsClient = original.DelegationSettingsClient
 type DeployConfigurationParameterProperties = original.DeployConfigurationParameterProperties
 type DeployConfigurationParameters = original.DeployConfigurationParameters

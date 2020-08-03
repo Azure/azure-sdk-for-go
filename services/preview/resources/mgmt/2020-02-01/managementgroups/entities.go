@@ -101,6 +101,9 @@ func (client EntitiesClient) List(ctx context.Context, selectParameter string, s
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.EntitiesClient", "List", resp, "Failure responding to request")
 	}
+	if result.elr.hasNextLink() && result.elr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

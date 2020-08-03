@@ -36,6 +36,91 @@ func NewTriggerRunClient(endpoint string) TriggerRunClient {
 	return TriggerRunClient{New(endpoint)}
 }
 
+// CancelTriggerInstance cancel single trigger instance by runId.
+// Parameters:
+// triggerName - the trigger name.
+// runID - the pipeline run identifier.
+func (client TriggerRunClient) CancelTriggerInstance(ctx context.Context, triggerName string, runID string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/TriggerRunClient.CancelTriggerInstance")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: triggerName,
+			Constraints: []validation.Constraint{{Target: "triggerName", Name: validation.MaxLength, Rule: 260, Chain: nil},
+				{Target: "triggerName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "triggerName", Name: validation.Pattern, Rule: `^[A-Za-z0-9_][^<>*#.%&:\\+?/]*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("artifacts.TriggerRunClient", "CancelTriggerInstance", err.Error())
+	}
+
+	req, err := client.CancelTriggerInstancePreparer(ctx, triggerName, runID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerRunClient", "CancelTriggerInstance", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CancelTriggerInstanceSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerRunClient", "CancelTriggerInstance", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CancelTriggerInstanceResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerRunClient", "CancelTriggerInstance", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CancelTriggerInstancePreparer prepares the CancelTriggerInstance request.
+func (client TriggerRunClient) CancelTriggerInstancePreparer(ctx context.Context, triggerName string, runID string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"endpoint": client.Endpoint,
+	}
+
+	pathParameters := map[string]interface{}{
+		"runId":       autorest.Encode("path", runID),
+		"triggerName": autorest.Encode("path", triggerName),
+	}
+
+	const APIVersion = "2019-06-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
+		autorest.WithPathParameters("/triggers/{triggerName}/triggerRuns/{runId}/cancel", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CancelTriggerInstanceSender sends the CancelTriggerInstance request. The method will close the
+// http.Response Body if it receives an error.
+func (client TriggerRunClient) CancelTriggerInstanceSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// CancelTriggerInstanceResponder handles the response to the CancelTriggerInstance request. The method always
+// closes the http.Response Body.
+func (client TriggerRunClient) CancelTriggerInstanceResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // QueryTriggerRunsByWorkspace query trigger runs.
 // Parameters:
 // filterParameters - parameters to filter the pipeline run.

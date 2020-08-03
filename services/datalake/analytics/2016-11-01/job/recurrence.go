@@ -161,6 +161,9 @@ func (client RecurrenceClient) List(ctx context.Context, accountName string, sta
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.RecurrenceClient", "List", resp, "Failure responding to request")
 	}
+	if result.rilr.hasNextLink() && result.rilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

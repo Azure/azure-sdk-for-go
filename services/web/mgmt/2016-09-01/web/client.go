@@ -378,6 +378,9 @@ func (client BaseClient) ListGeoRegions(ctx context.Context, sku SkuName, linuxW
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "ListGeoRegions", resp, "Failure responding to request")
 	}
+	if result.grc.hasNextLink() && result.grc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -492,6 +495,9 @@ func (client BaseClient) ListPremierAddOnOffers(ctx context.Context) (result Pre
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "ListPremierAddOnOffers", resp, "Failure responding to request")
 	}
+	if result.paooc.hasNextLink() && result.paooc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -601,6 +607,9 @@ func (client BaseClient) ListSiteIdentifiersAssignedToHostName(ctx context.Conte
 	result.ic, err = client.ListSiteIdentifiersAssignedToHostNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "ListSiteIdentifiersAssignedToHostName", resp, "Failure responding to request")
+	}
+	if result.ic.hasNextLink() && result.ic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -781,6 +790,9 @@ func (client BaseClient) ListSourceControls(ctx context.Context) (result SourceC
 	result.scc, err = client.ListSourceControlsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.BaseClient", "ListSourceControls", resp, "Failure responding to request")
+	}
+	if result.scc.hasNextLink() && result.scc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

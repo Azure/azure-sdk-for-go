@@ -338,6 +338,9 @@ func (client ServiceFabricsClient) List(ctx context.Context, resourceGroupName s
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ServiceFabricsClient", "List", resp, "Failure responding to request")
 	}
+	if result.sfl.hasNextLink() && result.sfl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

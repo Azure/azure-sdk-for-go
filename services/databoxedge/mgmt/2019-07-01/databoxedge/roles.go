@@ -307,6 +307,9 @@ func (client RolesClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.RolesClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
 	}
+	if result.rl.hasNextLink() && result.rl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -330,6 +330,9 @@ func (client MachinesClient) ListByResourceGroup(ctx context.Context, resourceGr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridcompute.MachinesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.mlr.hasNextLink() && result.mlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -445,6 +448,9 @@ func (client MachinesClient) ListBySubscription(ctx context.Context) (result Mac
 	result.mlr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridcompute.MachinesClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.mlr.hasNextLink() && result.mlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

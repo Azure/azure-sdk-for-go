@@ -232,6 +232,9 @@ func (client AddsServiceMembersClient) List(ctx context.Context, serviceName str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServiceMembersClient", "List", resp, "Failure responding to request")
 	}
+	if result.asm.hasNextLink() && result.asm.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

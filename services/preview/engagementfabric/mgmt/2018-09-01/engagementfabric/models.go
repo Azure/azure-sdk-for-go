@@ -25,36 +25,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/engagementfabric/mgmt/2018-09-01/engagementfabric"
 
-// CheckNameUnavailableReason enumerates the values for check name unavailable reason.
-type CheckNameUnavailableReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists CheckNameUnavailableReason = "AlreadyExists"
-	// Invalid ...
-	Invalid CheckNameUnavailableReason = "Invalid"
-)
-
-// PossibleCheckNameUnavailableReasonValues returns an array of possible values for the CheckNameUnavailableReason const type.
-func PossibleCheckNameUnavailableReasonValues() []CheckNameUnavailableReason {
-	return []CheckNameUnavailableReason{AlreadyExists, Invalid}
-}
-
-// KeyRank enumerates the values for key rank.
-type KeyRank string
-
-const (
-	// PrimaryKey ...
-	PrimaryKey KeyRank = "PrimaryKey"
-	// SecondaryKey ...
-	SecondaryKey KeyRank = "SecondaryKey"
-)
-
-// PossibleKeyRankValues returns an array of possible values for the KeyRank const type.
-func PossibleKeyRankValues() []KeyRank {
-	return []KeyRank{PrimaryKey, SecondaryKey}
-}
-
 // Account the EngagementFabric account
 type Account struct {
 	autorest.Response `json:"-"`

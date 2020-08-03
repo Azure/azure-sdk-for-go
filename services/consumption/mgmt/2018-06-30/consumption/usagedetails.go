@@ -95,6 +95,9 @@ func (client UsageDetailsClient) List(ctx context.Context, expand string, filter
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "List", resp, "Failure responding to request")
 	}
+	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -240,6 +243,9 @@ func (client UsageDetailsClient) ListByBillingAccount(ctx context.Context, billi
 	result.udlr, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByBillingAccount", resp, "Failure responding to request")
+	}
+	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -388,6 +394,9 @@ func (client UsageDetailsClient) ListByBillingPeriod(ctx context.Context, billin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByBillingPeriod", resp, "Failure responding to request")
 	}
+	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -535,6 +544,9 @@ func (client UsageDetailsClient) ListByDepartment(ctx context.Context, departmen
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByDepartment", resp, "Failure responding to request")
 	}
+	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -681,6 +693,9 @@ func (client UsageDetailsClient) ListByEnrollmentAccount(ctx context.Context, en
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByEnrollmentAccount", resp, "Failure responding to request")
 	}
+	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -826,6 +841,9 @@ func (client UsageDetailsClient) ListByManagementGroup(ctx context.Context, mana
 	result.udlr, err = client.ListByManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListByManagementGroup", resp, "Failure responding to request")
+	}
+	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -974,6 +992,9 @@ func (client UsageDetailsClient) ListForBillingPeriodByBillingAccount(ctx contex
 	result.udlr, err = client.ListForBillingPeriodByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByBillingAccount", resp, "Failure responding to request")
+	}
+	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -1124,6 +1145,9 @@ func (client UsageDetailsClient) ListForBillingPeriodByDepartment(ctx context.Co
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByDepartment", resp, "Failure responding to request")
 	}
+	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1273,6 +1297,9 @@ func (client UsageDetailsClient) ListForBillingPeriodByEnrollmentAccount(ctx con
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByEnrollmentAccount", resp, "Failure responding to request")
 	}
+	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1421,6 +1448,9 @@ func (client UsageDetailsClient) ListForBillingPeriodByManagementGroup(ctx conte
 	result.udlr, err = client.ListForBillingPeriodByManagementGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "ListForBillingPeriodByManagementGroup", resp, "Failure responding to request")
+	}
+	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

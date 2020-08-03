@@ -316,6 +316,9 @@ func (client FilesClient) List(ctx context.Context, groupName string, serviceNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.FilesClient", "List", resp, "Failure responding to request")
 	}
+	if result.fl.hasNextLink() && result.fl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

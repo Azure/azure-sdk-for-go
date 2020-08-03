@@ -33,1292 +33,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2018-02-01/web"
 
-// AccessControlEntryAction enumerates the values for access control entry action.
-type AccessControlEntryAction string
-
-const (
-	// Deny ...
-	Deny AccessControlEntryAction = "Deny"
-	// Permit ...
-	Permit AccessControlEntryAction = "Permit"
-)
-
-// PossibleAccessControlEntryActionValues returns an array of possible values for the AccessControlEntryAction const type.
-func PossibleAccessControlEntryActionValues() []AccessControlEntryAction {
-	return []AccessControlEntryAction{Deny, Permit}
-}
-
-// AppServicePlanRestrictions enumerates the values for app service plan restrictions.
-type AppServicePlanRestrictions string
-
-const (
-	// Basic ...
-	Basic AppServicePlanRestrictions = "Basic"
-	// Free ...
-	Free AppServicePlanRestrictions = "Free"
-	// None ...
-	None AppServicePlanRestrictions = "None"
-	// Premium ...
-	Premium AppServicePlanRestrictions = "Premium"
-	// Shared ...
-	Shared AppServicePlanRestrictions = "Shared"
-	// Standard ...
-	Standard AppServicePlanRestrictions = "Standard"
-)
-
-// PossibleAppServicePlanRestrictionsValues returns an array of possible values for the AppServicePlanRestrictions const type.
-func PossibleAppServicePlanRestrictionsValues() []AppServicePlanRestrictions {
-	return []AppServicePlanRestrictions{Basic, Free, None, Premium, Shared, Standard}
-}
-
-// AutoHealActionType enumerates the values for auto heal action type.
-type AutoHealActionType string
-
-const (
-	// CustomAction ...
-	CustomAction AutoHealActionType = "CustomAction"
-	// LogEvent ...
-	LogEvent AutoHealActionType = "LogEvent"
-	// Recycle ...
-	Recycle AutoHealActionType = "Recycle"
-)
-
-// PossibleAutoHealActionTypeValues returns an array of possible values for the AutoHealActionType const type.
-func PossibleAutoHealActionTypeValues() []AutoHealActionType {
-	return []AutoHealActionType{CustomAction, LogEvent, Recycle}
-}
-
-// AzureResourceType enumerates the values for azure resource type.
-type AzureResourceType string
-
-const (
-	// TrafficManager ...
-	TrafficManager AzureResourceType = "TrafficManager"
-	// Website ...
-	Website AzureResourceType = "Website"
-)
-
-// PossibleAzureResourceTypeValues returns an array of possible values for the AzureResourceType const type.
-func PossibleAzureResourceTypeValues() []AzureResourceType {
-	return []AzureResourceType{TrafficManager, Website}
-}
-
-// AzureStorageState enumerates the values for azure storage state.
-type AzureStorageState string
-
-const (
-	// InvalidCredentials ...
-	InvalidCredentials AzureStorageState = "InvalidCredentials"
-	// InvalidShare ...
-	InvalidShare AzureStorageState = "InvalidShare"
-	// Ok ...
-	Ok AzureStorageState = "Ok"
-)
-
-// PossibleAzureStorageStateValues returns an array of possible values for the AzureStorageState const type.
-func PossibleAzureStorageStateValues() []AzureStorageState {
-	return []AzureStorageState{InvalidCredentials, InvalidShare, Ok}
-}
-
-// AzureStorageType enumerates the values for azure storage type.
-type AzureStorageType string
-
-const (
-	// AzureBlob ...
-	AzureBlob AzureStorageType = "AzureBlob"
-	// AzureFiles ...
-	AzureFiles AzureStorageType = "AzureFiles"
-)
-
-// PossibleAzureStorageTypeValues returns an array of possible values for the AzureStorageType const type.
-func PossibleAzureStorageTypeValues() []AzureStorageType {
-	return []AzureStorageType{AzureBlob, AzureFiles}
-}
-
-// BackupItemStatus enumerates the values for backup item status.
-type BackupItemStatus string
-
-const (
-	// Created ...
-	Created BackupItemStatus = "Created"
-	// Deleted ...
-	Deleted BackupItemStatus = "Deleted"
-	// DeleteFailed ...
-	DeleteFailed BackupItemStatus = "DeleteFailed"
-	// DeleteInProgress ...
-	DeleteInProgress BackupItemStatus = "DeleteInProgress"
-	// Failed ...
-	Failed BackupItemStatus = "Failed"
-	// InProgress ...
-	InProgress BackupItemStatus = "InProgress"
-	// PartiallySucceeded ...
-	PartiallySucceeded BackupItemStatus = "PartiallySucceeded"
-	// Skipped ...
-	Skipped BackupItemStatus = "Skipped"
-	// Succeeded ...
-	Succeeded BackupItemStatus = "Succeeded"
-	// TimedOut ...
-	TimedOut BackupItemStatus = "TimedOut"
-)
-
-// PossibleBackupItemStatusValues returns an array of possible values for the BackupItemStatus const type.
-func PossibleBackupItemStatusValues() []BackupItemStatus {
-	return []BackupItemStatus{Created, Deleted, DeleteFailed, DeleteInProgress, Failed, InProgress, PartiallySucceeded, Skipped, Succeeded, TimedOut}
-}
-
-// BackupRestoreOperationType enumerates the values for backup restore operation type.
-type BackupRestoreOperationType string
-
-const (
-	// BackupRestoreOperationTypeClone ...
-	BackupRestoreOperationTypeClone BackupRestoreOperationType = "Clone"
-	// BackupRestoreOperationTypeCloudFS ...
-	BackupRestoreOperationTypeCloudFS BackupRestoreOperationType = "CloudFS"
-	// BackupRestoreOperationTypeDefault ...
-	BackupRestoreOperationTypeDefault BackupRestoreOperationType = "Default"
-	// BackupRestoreOperationTypeRelocation ...
-	BackupRestoreOperationTypeRelocation BackupRestoreOperationType = "Relocation"
-	// BackupRestoreOperationTypeSnapshot ...
-	BackupRestoreOperationTypeSnapshot BackupRestoreOperationType = "Snapshot"
-)
-
-// PossibleBackupRestoreOperationTypeValues returns an array of possible values for the BackupRestoreOperationType const type.
-func PossibleBackupRestoreOperationTypeValues() []BackupRestoreOperationType {
-	return []BackupRestoreOperationType{BackupRestoreOperationTypeClone, BackupRestoreOperationTypeCloudFS, BackupRestoreOperationTypeDefault, BackupRestoreOperationTypeRelocation, BackupRestoreOperationTypeSnapshot}
-}
-
-// BuiltInAuthenticationProvider enumerates the values for built in authentication provider.
-type BuiltInAuthenticationProvider string
-
-const (
-	// AzureActiveDirectory ...
-	AzureActiveDirectory BuiltInAuthenticationProvider = "AzureActiveDirectory"
-	// Facebook ...
-	Facebook BuiltInAuthenticationProvider = "Facebook"
-	// Google ...
-	Google BuiltInAuthenticationProvider = "Google"
-	// MicrosoftAccount ...
-	MicrosoftAccount BuiltInAuthenticationProvider = "MicrosoftAccount"
-	// Twitter ...
-	Twitter BuiltInAuthenticationProvider = "Twitter"
-)
-
-// PossibleBuiltInAuthenticationProviderValues returns an array of possible values for the BuiltInAuthenticationProvider const type.
-func PossibleBuiltInAuthenticationProviderValues() []BuiltInAuthenticationProvider {
-	return []BuiltInAuthenticationProvider{AzureActiveDirectory, Facebook, Google, MicrosoftAccount, Twitter}
-}
-
-// CertificateOrderActionType enumerates the values for certificate order action type.
-type CertificateOrderActionType string
-
-const (
-	// CertificateExpirationWarning ...
-	CertificateExpirationWarning CertificateOrderActionType = "CertificateExpirationWarning"
-	// CertificateExpired ...
-	CertificateExpired CertificateOrderActionType = "CertificateExpired"
-	// CertificateIssued ...
-	CertificateIssued CertificateOrderActionType = "CertificateIssued"
-	// CertificateOrderCanceled ...
-	CertificateOrderCanceled CertificateOrderActionType = "CertificateOrderCanceled"
-	// CertificateOrderCreated ...
-	CertificateOrderCreated CertificateOrderActionType = "CertificateOrderCreated"
-	// CertificateRevoked ...
-	CertificateRevoked CertificateOrderActionType = "CertificateRevoked"
-	// DomainValidationComplete ...
-	DomainValidationComplete CertificateOrderActionType = "DomainValidationComplete"
-	// FraudCleared ...
-	FraudCleared CertificateOrderActionType = "FraudCleared"
-	// FraudDetected ...
-	FraudDetected CertificateOrderActionType = "FraudDetected"
-	// FraudDocumentationRequired ...
-	FraudDocumentationRequired CertificateOrderActionType = "FraudDocumentationRequired"
-	// OrgNameChange ...
-	OrgNameChange CertificateOrderActionType = "OrgNameChange"
-	// OrgValidationComplete ...
-	OrgValidationComplete CertificateOrderActionType = "OrgValidationComplete"
-	// SanDrop ...
-	SanDrop CertificateOrderActionType = "SanDrop"
-	// Unknown ...
-	Unknown CertificateOrderActionType = "Unknown"
-)
-
-// PossibleCertificateOrderActionTypeValues returns an array of possible values for the CertificateOrderActionType const type.
-func PossibleCertificateOrderActionTypeValues() []CertificateOrderActionType {
-	return []CertificateOrderActionType{CertificateExpirationWarning, CertificateExpired, CertificateIssued, CertificateOrderCanceled, CertificateOrderCreated, CertificateRevoked, DomainValidationComplete, FraudCleared, FraudDetected, FraudDocumentationRequired, OrgNameChange, OrgValidationComplete, SanDrop, Unknown}
-}
-
-// CertificateOrderStatus enumerates the values for certificate order status.
-type CertificateOrderStatus string
-
-const (
-	// Canceled ...
-	Canceled CertificateOrderStatus = "Canceled"
-	// Denied ...
-	Denied CertificateOrderStatus = "Denied"
-	// Expired ...
-	Expired CertificateOrderStatus = "Expired"
-	// Issued ...
-	Issued CertificateOrderStatus = "Issued"
-	// NotSubmitted ...
-	NotSubmitted CertificateOrderStatus = "NotSubmitted"
-	// Pendingissuance ...
-	Pendingissuance CertificateOrderStatus = "Pendingissuance"
-	// PendingRekey ...
-	PendingRekey CertificateOrderStatus = "PendingRekey"
-	// Pendingrevocation ...
-	Pendingrevocation CertificateOrderStatus = "Pendingrevocation"
-	// Revoked ...
-	Revoked CertificateOrderStatus = "Revoked"
-	// Unused ...
-	Unused CertificateOrderStatus = "Unused"
-)
-
-// PossibleCertificateOrderStatusValues returns an array of possible values for the CertificateOrderStatus const type.
-func PossibleCertificateOrderStatusValues() []CertificateOrderStatus {
-	return []CertificateOrderStatus{Canceled, Denied, Expired, Issued, NotSubmitted, Pendingissuance, PendingRekey, Pendingrevocation, Revoked, Unused}
-}
-
-// CertificateProductType enumerates the values for certificate product type.
-type CertificateProductType string
-
-const (
-	// StandardDomainValidatedSsl ...
-	StandardDomainValidatedSsl CertificateProductType = "StandardDomainValidatedSsl"
-	// StandardDomainValidatedWildCardSsl ...
-	StandardDomainValidatedWildCardSsl CertificateProductType = "StandardDomainValidatedWildCardSsl"
-)
-
-// PossibleCertificateProductTypeValues returns an array of possible values for the CertificateProductType const type.
-func PossibleCertificateProductTypeValues() []CertificateProductType {
-	return []CertificateProductType{StandardDomainValidatedSsl, StandardDomainValidatedWildCardSsl}
-}
-
-// Channels enumerates the values for channels.
-type Channels string
-
-const (
-	// All ...
-	All Channels = "All"
-	// API ...
-	API Channels = "Api"
-	// Email ...
-	Email Channels = "Email"
-	// Notification ...
-	Notification Channels = "Notification"
-	// Webhook ...
-	Webhook Channels = "Webhook"
-)
-
-// PossibleChannelsValues returns an array of possible values for the Channels const type.
-func PossibleChannelsValues() []Channels {
-	return []Channels{All, API, Email, Notification, Webhook}
-}
-
-// CheckNameResourceTypes enumerates the values for check name resource types.
-type CheckNameResourceTypes string
-
-const (
-	// CheckNameResourceTypesHostingEnvironment ...
-	CheckNameResourceTypesHostingEnvironment CheckNameResourceTypes = "HostingEnvironment"
-	// CheckNameResourceTypesMicrosoftWebhostingEnvironments ...
-	CheckNameResourceTypesMicrosoftWebhostingEnvironments CheckNameResourceTypes = "Microsoft.Web/hostingEnvironments"
-	// CheckNameResourceTypesMicrosoftWebpublishingUsers ...
-	CheckNameResourceTypesMicrosoftWebpublishingUsers CheckNameResourceTypes = "Microsoft.Web/publishingUsers"
-	// CheckNameResourceTypesMicrosoftWebsites ...
-	CheckNameResourceTypesMicrosoftWebsites CheckNameResourceTypes = "Microsoft.Web/sites"
-	// CheckNameResourceTypesMicrosoftWebsitesslots ...
-	CheckNameResourceTypesMicrosoftWebsitesslots CheckNameResourceTypes = "Microsoft.Web/sites/slots"
-	// CheckNameResourceTypesPublishingUser ...
-	CheckNameResourceTypesPublishingUser CheckNameResourceTypes = "PublishingUser"
-	// CheckNameResourceTypesSite ...
-	CheckNameResourceTypesSite CheckNameResourceTypes = "Site"
-	// CheckNameResourceTypesSlot ...
-	CheckNameResourceTypesSlot CheckNameResourceTypes = "Slot"
-)
-
-// PossibleCheckNameResourceTypesValues returns an array of possible values for the CheckNameResourceTypes const type.
-func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
-	return []CheckNameResourceTypes{CheckNameResourceTypesHostingEnvironment, CheckNameResourceTypesMicrosoftWebhostingEnvironments, CheckNameResourceTypesMicrosoftWebpublishingUsers, CheckNameResourceTypesMicrosoftWebsites, CheckNameResourceTypesMicrosoftWebsitesslots, CheckNameResourceTypesPublishingUser, CheckNameResourceTypesSite, CheckNameResourceTypesSlot}
-}
-
-// CloneAbilityResult enumerates the values for clone ability result.
-type CloneAbilityResult string
-
-const (
-	// Cloneable ...
-	Cloneable CloneAbilityResult = "Cloneable"
-	// NotCloneable ...
-	NotCloneable CloneAbilityResult = "NotCloneable"
-	// PartiallyCloneable ...
-	PartiallyCloneable CloneAbilityResult = "PartiallyCloneable"
-)
-
-// PossibleCloneAbilityResultValues returns an array of possible values for the CloneAbilityResult const type.
-func PossibleCloneAbilityResultValues() []CloneAbilityResult {
-	return []CloneAbilityResult{Cloneable, NotCloneable, PartiallyCloneable}
-}
-
-// ComputeModeOptions enumerates the values for compute mode options.
-type ComputeModeOptions string
-
-const (
-	// ComputeModeOptionsDedicated ...
-	ComputeModeOptionsDedicated ComputeModeOptions = "Dedicated"
-	// ComputeModeOptionsDynamic ...
-	ComputeModeOptionsDynamic ComputeModeOptions = "Dynamic"
-	// ComputeModeOptionsShared ...
-	ComputeModeOptionsShared ComputeModeOptions = "Shared"
-)
-
-// PossibleComputeModeOptionsValues returns an array of possible values for the ComputeModeOptions const type.
-func PossibleComputeModeOptionsValues() []ComputeModeOptions {
-	return []ComputeModeOptions{ComputeModeOptionsDedicated, ComputeModeOptionsDynamic, ComputeModeOptionsShared}
-}
-
-// ConnectionStringType enumerates the values for connection string type.
-type ConnectionStringType string
-
-const (
-	// APIHub ...
-	APIHub ConnectionStringType = "ApiHub"
-	// Custom ...
-	Custom ConnectionStringType = "Custom"
-	// DocDb ...
-	DocDb ConnectionStringType = "DocDb"
-	// EventHub ...
-	EventHub ConnectionStringType = "EventHub"
-	// MySQL ...
-	MySQL ConnectionStringType = "MySql"
-	// NotificationHub ...
-	NotificationHub ConnectionStringType = "NotificationHub"
-	// PostgreSQL ...
-	PostgreSQL ConnectionStringType = "PostgreSQL"
-	// RedisCache ...
-	RedisCache ConnectionStringType = "RedisCache"
-	// ServiceBus ...
-	ServiceBus ConnectionStringType = "ServiceBus"
-	// SQLAzure ...
-	SQLAzure ConnectionStringType = "SQLAzure"
-	// SQLServer ...
-	SQLServer ConnectionStringType = "SQLServer"
-)
-
-// PossibleConnectionStringTypeValues returns an array of possible values for the ConnectionStringType const type.
-func PossibleConnectionStringTypeValues() []ConnectionStringType {
-	return []ConnectionStringType{APIHub, Custom, DocDb, EventHub, MySQL, NotificationHub, PostgreSQL, RedisCache, ServiceBus, SQLAzure, SQLServer}
-}
-
-// ContinuousWebJobStatus enumerates the values for continuous web job status.
-type ContinuousWebJobStatus string
-
-const (
-	// Initializing ...
-	Initializing ContinuousWebJobStatus = "Initializing"
-	// PendingRestart ...
-	PendingRestart ContinuousWebJobStatus = "PendingRestart"
-	// Running ...
-	Running ContinuousWebJobStatus = "Running"
-	// Starting ...
-	Starting ContinuousWebJobStatus = "Starting"
-	// Stopped ...
-	Stopped ContinuousWebJobStatus = "Stopped"
-)
-
-// PossibleContinuousWebJobStatusValues returns an array of possible values for the ContinuousWebJobStatus const type.
-func PossibleContinuousWebJobStatusValues() []ContinuousWebJobStatus {
-	return []ContinuousWebJobStatus{Initializing, PendingRestart, Running, Starting, Stopped}
-}
-
-// CustomHostNameDNSRecordType enumerates the values for custom host name dns record type.
-type CustomHostNameDNSRecordType string
-
-const (
-	// A ...
-	A CustomHostNameDNSRecordType = "A"
-	// CName ...
-	CName CustomHostNameDNSRecordType = "CName"
-)
-
-// PossibleCustomHostNameDNSRecordTypeValues returns an array of possible values for the CustomHostNameDNSRecordType const type.
-func PossibleCustomHostNameDNSRecordTypeValues() []CustomHostNameDNSRecordType {
-	return []CustomHostNameDNSRecordType{A, CName}
-}
-
-// DatabaseType enumerates the values for database type.
-type DatabaseType string
-
-const (
-	// DatabaseTypeLocalMySQL ...
-	DatabaseTypeLocalMySQL DatabaseType = "LocalMySql"
-	// DatabaseTypeMySQL ...
-	DatabaseTypeMySQL DatabaseType = "MySql"
-	// DatabaseTypePostgreSQL ...
-	DatabaseTypePostgreSQL DatabaseType = "PostgreSql"
-	// DatabaseTypeSQLAzure ...
-	DatabaseTypeSQLAzure DatabaseType = "SqlAzure"
-)
-
-// PossibleDatabaseTypeValues returns an array of possible values for the DatabaseType const type.
-func PossibleDatabaseTypeValues() []DatabaseType {
-	return []DatabaseType{DatabaseTypeLocalMySQL, DatabaseTypeMySQL, DatabaseTypePostgreSQL, DatabaseTypeSQLAzure}
-}
-
-// DNSType enumerates the values for dns type.
-type DNSType string
-
-const (
-	// AzureDNS ...
-	AzureDNS DNSType = "AzureDns"
-	// DefaultDomainRegistrarDNS ...
-	DefaultDomainRegistrarDNS DNSType = "DefaultDomainRegistrarDns"
-)
-
-// PossibleDNSTypeValues returns an array of possible values for the DNSType const type.
-func PossibleDNSTypeValues() []DNSType {
-	return []DNSType{AzureDNS, DefaultDomainRegistrarDNS}
-}
-
-// DNSVerificationTestResult enumerates the values for dns verification test result.
-type DNSVerificationTestResult string
-
-const (
-	// DNSVerificationTestResultFailed ...
-	DNSVerificationTestResultFailed DNSVerificationTestResult = "Failed"
-	// DNSVerificationTestResultPassed ...
-	DNSVerificationTestResultPassed DNSVerificationTestResult = "Passed"
-	// DNSVerificationTestResultSkipped ...
-	DNSVerificationTestResultSkipped DNSVerificationTestResult = "Skipped"
-)
-
-// PossibleDNSVerificationTestResultValues returns an array of possible values for the DNSVerificationTestResult const type.
-func PossibleDNSVerificationTestResultValues() []DNSVerificationTestResult {
-	return []DNSVerificationTestResult{DNSVerificationTestResultFailed, DNSVerificationTestResultPassed, DNSVerificationTestResultSkipped}
-}
-
-// DomainStatus enumerates the values for domain status.
-type DomainStatus string
-
-const (
-	// DomainStatusActive ...
-	DomainStatusActive DomainStatus = "Active"
-	// DomainStatusAwaiting ...
-	DomainStatusAwaiting DomainStatus = "Awaiting"
-	// DomainStatusCancelled ...
-	DomainStatusCancelled DomainStatus = "Cancelled"
-	// DomainStatusConfiscated ...
-	DomainStatusConfiscated DomainStatus = "Confiscated"
-	// DomainStatusDisabled ...
-	DomainStatusDisabled DomainStatus = "Disabled"
-	// DomainStatusExcluded ...
-	DomainStatusExcluded DomainStatus = "Excluded"
-	// DomainStatusExpired ...
-	DomainStatusExpired DomainStatus = "Expired"
-	// DomainStatusFailed ...
-	DomainStatusFailed DomainStatus = "Failed"
-	// DomainStatusHeld ...
-	DomainStatusHeld DomainStatus = "Held"
-	// DomainStatusJSONConverterFailed ...
-	DomainStatusJSONConverterFailed DomainStatus = "JsonConverterFailed"
-	// DomainStatusLocked ...
-	DomainStatusLocked DomainStatus = "Locked"
-	// DomainStatusParked ...
-	DomainStatusParked DomainStatus = "Parked"
-	// DomainStatusPending ...
-	DomainStatusPending DomainStatus = "Pending"
-	// DomainStatusReserved ...
-	DomainStatusReserved DomainStatus = "Reserved"
-	// DomainStatusReverted ...
-	DomainStatusReverted DomainStatus = "Reverted"
-	// DomainStatusSuspended ...
-	DomainStatusSuspended DomainStatus = "Suspended"
-	// DomainStatusTransferred ...
-	DomainStatusTransferred DomainStatus = "Transferred"
-	// DomainStatusUnknown ...
-	DomainStatusUnknown DomainStatus = "Unknown"
-	// DomainStatusUnlocked ...
-	DomainStatusUnlocked DomainStatus = "Unlocked"
-	// DomainStatusUnparked ...
-	DomainStatusUnparked DomainStatus = "Unparked"
-	// DomainStatusUpdated ...
-	DomainStatusUpdated DomainStatus = "Updated"
-)
-
-// PossibleDomainStatusValues returns an array of possible values for the DomainStatus const type.
-func PossibleDomainStatusValues() []DomainStatus {
-	return []DomainStatus{DomainStatusActive, DomainStatusAwaiting, DomainStatusCancelled, DomainStatusConfiscated, DomainStatusDisabled, DomainStatusExcluded, DomainStatusExpired, DomainStatusFailed, DomainStatusHeld, DomainStatusJSONConverterFailed, DomainStatusLocked, DomainStatusParked, DomainStatusPending, DomainStatusReserved, DomainStatusReverted, DomainStatusSuspended, DomainStatusTransferred, DomainStatusUnknown, DomainStatusUnlocked, DomainStatusUnparked, DomainStatusUpdated}
-}
-
-// DomainType enumerates the values for domain type.
-type DomainType string
-
-const (
-	// Regular ...
-	Regular DomainType = "Regular"
-	// SoftDeleted ...
-	SoftDeleted DomainType = "SoftDeleted"
-)
-
-// PossibleDomainTypeValues returns an array of possible values for the DomainType const type.
-func PossibleDomainTypeValues() []DomainType {
-	return []DomainType{Regular, SoftDeleted}
-}
-
-// FrequencyUnit enumerates the values for frequency unit.
-type FrequencyUnit string
-
-const (
-	// Day ...
-	Day FrequencyUnit = "Day"
-	// Hour ...
-	Hour FrequencyUnit = "Hour"
-)
-
-// PossibleFrequencyUnitValues returns an array of possible values for the FrequencyUnit const type.
-func PossibleFrequencyUnitValues() []FrequencyUnit {
-	return []FrequencyUnit{Day, Hour}
-}
-
-// FtpsState enumerates the values for ftps state.
-type FtpsState string
-
-const (
-	// AllAllowed ...
-	AllAllowed FtpsState = "AllAllowed"
-	// Disabled ...
-	Disabled FtpsState = "Disabled"
-	// FtpsOnly ...
-	FtpsOnly FtpsState = "FtpsOnly"
-)
-
-// PossibleFtpsStateValues returns an array of possible values for the FtpsState const type.
-func PossibleFtpsStateValues() []FtpsState {
-	return []FtpsState{AllAllowed, Disabled, FtpsOnly}
-}
-
-// HostingEnvironmentStatus enumerates the values for hosting environment status.
-type HostingEnvironmentStatus string
-
-const (
-	// Deleting ...
-	Deleting HostingEnvironmentStatus = "Deleting"
-	// Preparing ...
-	Preparing HostingEnvironmentStatus = "Preparing"
-	// Ready ...
-	Ready HostingEnvironmentStatus = "Ready"
-	// Scaling ...
-	Scaling HostingEnvironmentStatus = "Scaling"
-)
-
-// PossibleHostingEnvironmentStatusValues returns an array of possible values for the HostingEnvironmentStatus const type.
-func PossibleHostingEnvironmentStatusValues() []HostingEnvironmentStatus {
-	return []HostingEnvironmentStatus{Deleting, Preparing, Ready, Scaling}
-}
-
-// HostNameType enumerates the values for host name type.
-type HostNameType string
-
-const (
-	// Managed ...
-	Managed HostNameType = "Managed"
-	// Verified ...
-	Verified HostNameType = "Verified"
-)
-
-// PossibleHostNameTypeValues returns an array of possible values for the HostNameType const type.
-func PossibleHostNameTypeValues() []HostNameType {
-	return []HostNameType{Managed, Verified}
-}
-
-// HostType enumerates the values for host type.
-type HostType string
-
-const (
-	// HostTypeRepository ...
-	HostTypeRepository HostType = "Repository"
-	// HostTypeStandard ...
-	HostTypeStandard HostType = "Standard"
-)
-
-// PossibleHostTypeValues returns an array of possible values for the HostType const type.
-func PossibleHostTypeValues() []HostType {
-	return []HostType{HostTypeRepository, HostTypeStandard}
-}
-
-// InAvailabilityReasonType enumerates the values for in availability reason type.
-type InAvailabilityReasonType string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists InAvailabilityReasonType = "AlreadyExists"
-	// Invalid ...
-	Invalid InAvailabilityReasonType = "Invalid"
-)
-
-// PossibleInAvailabilityReasonTypeValues returns an array of possible values for the InAvailabilityReasonType const type.
-func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
-	return []InAvailabilityReasonType{AlreadyExists, Invalid}
-}
-
-// InternalLoadBalancingMode enumerates the values for internal load balancing mode.
-type InternalLoadBalancingMode string
-
-const (
-	// InternalLoadBalancingModeNone ...
-	InternalLoadBalancingModeNone InternalLoadBalancingMode = "None"
-	// InternalLoadBalancingModePublishing ...
-	InternalLoadBalancingModePublishing InternalLoadBalancingMode = "Publishing"
-	// InternalLoadBalancingModeWeb ...
-	InternalLoadBalancingModeWeb InternalLoadBalancingMode = "Web"
-)
-
-// PossibleInternalLoadBalancingModeValues returns an array of possible values for the InternalLoadBalancingMode const type.
-func PossibleInternalLoadBalancingModeValues() []InternalLoadBalancingMode {
-	return []InternalLoadBalancingMode{InternalLoadBalancingModeNone, InternalLoadBalancingModePublishing, InternalLoadBalancingModeWeb}
-}
-
-// IPFilterTag enumerates the values for ip filter tag.
-type IPFilterTag string
-
-const (
-	// Default ...
-	Default IPFilterTag = "Default"
-	// XffProxy ...
-	XffProxy IPFilterTag = "XffProxy"
-)
-
-// PossibleIPFilterTagValues returns an array of possible values for the IPFilterTag const type.
-func PossibleIPFilterTagValues() []IPFilterTag {
-	return []IPFilterTag{Default, XffProxy}
-}
-
-// IssueType enumerates the values for issue type.
-type IssueType string
-
-const (
-	// AppCrash ...
-	AppCrash IssueType = "AppCrash"
-	// AppDeployment ...
-	AppDeployment IssueType = "AppDeployment"
-	// AseDeployment ...
-	AseDeployment IssueType = "AseDeployment"
-	// Other ...
-	Other IssueType = "Other"
-	// PlatformIssue ...
-	PlatformIssue IssueType = "PlatformIssue"
-	// RuntimeIssueDetected ...
-	RuntimeIssueDetected IssueType = "RuntimeIssueDetected"
-	// ServiceIncident ...
-	ServiceIncident IssueType = "ServiceIncident"
-	// UserIssue ...
-	UserIssue IssueType = "UserIssue"
-)
-
-// PossibleIssueTypeValues returns an array of possible values for the IssueType const type.
-func PossibleIssueTypeValues() []IssueType {
-	return []IssueType{AppCrash, AppDeployment, AseDeployment, Other, PlatformIssue, RuntimeIssueDetected, ServiceIncident, UserIssue}
-}
-
-// JobType enumerates the values for job type.
-type JobType string
-
-const (
-	// Continuous ...
-	Continuous JobType = "Continuous"
-	// Triggered ...
-	Triggered JobType = "Triggered"
-)
-
-// PossibleJobTypeValues returns an array of possible values for the JobType const type.
-func PossibleJobTypeValues() []JobType {
-	return []JobType{Continuous, Triggered}
-}
-
-// KeyVaultSecretStatus enumerates the values for key vault secret status.
-type KeyVaultSecretStatus string
-
-const (
-	// KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault ...
-	KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault KeyVaultSecretStatus = "AzureServiceUnauthorizedToAccessKeyVault"
-	// KeyVaultSecretStatusCertificateOrderFailed ...
-	KeyVaultSecretStatusCertificateOrderFailed KeyVaultSecretStatus = "CertificateOrderFailed"
-	// KeyVaultSecretStatusExternalPrivateKey ...
-	KeyVaultSecretStatusExternalPrivateKey KeyVaultSecretStatus = "ExternalPrivateKey"
-	// KeyVaultSecretStatusInitialized ...
-	KeyVaultSecretStatusInitialized KeyVaultSecretStatus = "Initialized"
-	// KeyVaultSecretStatusKeyVaultDoesNotExist ...
-	KeyVaultSecretStatusKeyVaultDoesNotExist KeyVaultSecretStatus = "KeyVaultDoesNotExist"
-	// KeyVaultSecretStatusKeyVaultSecretDoesNotExist ...
-	KeyVaultSecretStatusKeyVaultSecretDoesNotExist KeyVaultSecretStatus = "KeyVaultSecretDoesNotExist"
-	// KeyVaultSecretStatusOperationNotPermittedOnKeyVault ...
-	KeyVaultSecretStatusOperationNotPermittedOnKeyVault KeyVaultSecretStatus = "OperationNotPermittedOnKeyVault"
-	// KeyVaultSecretStatusSucceeded ...
-	KeyVaultSecretStatusSucceeded KeyVaultSecretStatus = "Succeeded"
-	// KeyVaultSecretStatusUnknown ...
-	KeyVaultSecretStatusUnknown KeyVaultSecretStatus = "Unknown"
-	// KeyVaultSecretStatusUnknownError ...
-	KeyVaultSecretStatusUnknownError KeyVaultSecretStatus = "UnknownError"
-	// KeyVaultSecretStatusWaitingOnCertificateOrder ...
-	KeyVaultSecretStatusWaitingOnCertificateOrder KeyVaultSecretStatus = "WaitingOnCertificateOrder"
-)
-
-// PossibleKeyVaultSecretStatusValues returns an array of possible values for the KeyVaultSecretStatus const type.
-func PossibleKeyVaultSecretStatusValues() []KeyVaultSecretStatus {
-	return []KeyVaultSecretStatus{KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault, KeyVaultSecretStatusCertificateOrderFailed, KeyVaultSecretStatusExternalPrivateKey, KeyVaultSecretStatusInitialized, KeyVaultSecretStatusKeyVaultDoesNotExist, KeyVaultSecretStatusKeyVaultSecretDoesNotExist, KeyVaultSecretStatusOperationNotPermittedOnKeyVault, KeyVaultSecretStatusSucceeded, KeyVaultSecretStatusUnknown, KeyVaultSecretStatusUnknownError, KeyVaultSecretStatusWaitingOnCertificateOrder}
-}
-
-// LogLevel enumerates the values for log level.
-type LogLevel string
-
-const (
-	// Error ...
-	Error LogLevel = "Error"
-	// Information ...
-	Information LogLevel = "Information"
-	// Off ...
-	Off LogLevel = "Off"
-	// Verbose ...
-	Verbose LogLevel = "Verbose"
-	// Warning ...
-	Warning LogLevel = "Warning"
-)
-
-// PossibleLogLevelValues returns an array of possible values for the LogLevel const type.
-func PossibleLogLevelValues() []LogLevel {
-	return []LogLevel{Error, Information, Off, Verbose, Warning}
-}
-
-// ManagedPipelineMode enumerates the values for managed pipeline mode.
-type ManagedPipelineMode string
-
-const (
-	// Classic ...
-	Classic ManagedPipelineMode = "Classic"
-	// Integrated ...
-	Integrated ManagedPipelineMode = "Integrated"
-)
-
-// PossibleManagedPipelineModeValues returns an array of possible values for the ManagedPipelineMode const type.
-func PossibleManagedPipelineModeValues() []ManagedPipelineMode {
-	return []ManagedPipelineMode{Classic, Integrated}
-}
-
-// ManagedServiceIdentityType enumerates the values for managed service identity type.
-type ManagedServiceIdentityType string
-
-const (
-	// ManagedServiceIdentityTypeNone ...
-	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
-	// ManagedServiceIdentityTypeSystemAssigned ...
-	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
-	// ManagedServiceIdentityTypeSystemAssignedUserAssigned ...
-	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
-	// ManagedServiceIdentityTypeUserAssigned ...
-	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
-)
-
-// PossibleManagedServiceIdentityTypeValues returns an array of possible values for the ManagedServiceIdentityType const type.
-func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
-	return []ManagedServiceIdentityType{ManagedServiceIdentityTypeNone, ManagedServiceIdentityTypeSystemAssigned, ManagedServiceIdentityTypeSystemAssignedUserAssigned, ManagedServiceIdentityTypeUserAssigned}
-}
-
-// MSDeployLogEntryType enumerates the values for ms deploy log entry type.
-type MSDeployLogEntryType string
-
-const (
-	// MSDeployLogEntryTypeError ...
-	MSDeployLogEntryTypeError MSDeployLogEntryType = "Error"
-	// MSDeployLogEntryTypeMessage ...
-	MSDeployLogEntryTypeMessage MSDeployLogEntryType = "Message"
-	// MSDeployLogEntryTypeWarning ...
-	MSDeployLogEntryTypeWarning MSDeployLogEntryType = "Warning"
-)
-
-// PossibleMSDeployLogEntryTypeValues returns an array of possible values for the MSDeployLogEntryType const type.
-func PossibleMSDeployLogEntryTypeValues() []MSDeployLogEntryType {
-	return []MSDeployLogEntryType{MSDeployLogEntryTypeError, MSDeployLogEntryTypeMessage, MSDeployLogEntryTypeWarning}
-}
-
-// MSDeployProvisioningState enumerates the values for ms deploy provisioning state.
-type MSDeployProvisioningState string
-
-const (
-	// MSDeployProvisioningStateAccepted ...
-	MSDeployProvisioningStateAccepted MSDeployProvisioningState = "accepted"
-	// MSDeployProvisioningStateCanceled ...
-	MSDeployProvisioningStateCanceled MSDeployProvisioningState = "canceled"
-	// MSDeployProvisioningStateFailed ...
-	MSDeployProvisioningStateFailed MSDeployProvisioningState = "failed"
-	// MSDeployProvisioningStateRunning ...
-	MSDeployProvisioningStateRunning MSDeployProvisioningState = "running"
-	// MSDeployProvisioningStateSucceeded ...
-	MSDeployProvisioningStateSucceeded MSDeployProvisioningState = "succeeded"
-)
-
-// PossibleMSDeployProvisioningStateValues returns an array of possible values for the MSDeployProvisioningState const type.
-func PossibleMSDeployProvisioningStateValues() []MSDeployProvisioningState {
-	return []MSDeployProvisioningState{MSDeployProvisioningStateAccepted, MSDeployProvisioningStateCanceled, MSDeployProvisioningStateFailed, MSDeployProvisioningStateRunning, MSDeployProvisioningStateSucceeded}
-}
-
-// MySQLMigrationType enumerates the values for my sql migration type.
-type MySQLMigrationType string
-
-const (
-	// LocalToRemote ...
-	LocalToRemote MySQLMigrationType = "LocalToRemote"
-	// RemoteToLocal ...
-	RemoteToLocal MySQLMigrationType = "RemoteToLocal"
-)
-
-// PossibleMySQLMigrationTypeValues returns an array of possible values for the MySQLMigrationType const type.
-func PossibleMySQLMigrationTypeValues() []MySQLMigrationType {
-	return []MySQLMigrationType{LocalToRemote, RemoteToLocal}
-}
-
-// NotificationLevel enumerates the values for notification level.
-type NotificationLevel string
-
-const (
-	// NotificationLevelCritical ...
-	NotificationLevelCritical NotificationLevel = "Critical"
-	// NotificationLevelInformation ...
-	NotificationLevelInformation NotificationLevel = "Information"
-	// NotificationLevelNonUrgentSuggestion ...
-	NotificationLevelNonUrgentSuggestion NotificationLevel = "NonUrgentSuggestion"
-	// NotificationLevelWarning ...
-	NotificationLevelWarning NotificationLevel = "Warning"
-)
-
-// PossibleNotificationLevelValues returns an array of possible values for the NotificationLevel const type.
-func PossibleNotificationLevelValues() []NotificationLevel {
-	return []NotificationLevel{NotificationLevelCritical, NotificationLevelInformation, NotificationLevelNonUrgentSuggestion, NotificationLevelWarning}
-}
-
-// OperationStatus enumerates the values for operation status.
-type OperationStatus string
-
-const (
-	// OperationStatusCreated ...
-	OperationStatusCreated OperationStatus = "Created"
-	// OperationStatusFailed ...
-	OperationStatusFailed OperationStatus = "Failed"
-	// OperationStatusInProgress ...
-	OperationStatusInProgress OperationStatus = "InProgress"
-	// OperationStatusSucceeded ...
-	OperationStatusSucceeded OperationStatus = "Succeeded"
-	// OperationStatusTimedOut ...
-	OperationStatusTimedOut OperationStatus = "TimedOut"
-)
-
-// PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
-func PossibleOperationStatusValues() []OperationStatus {
-	return []OperationStatus{OperationStatusCreated, OperationStatusFailed, OperationStatusInProgress, OperationStatusSucceeded, OperationStatusTimedOut}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// ProvisioningStateCanceled ...
-	ProvisioningStateCanceled ProvisioningState = "Canceled"
-	// ProvisioningStateDeleting ...
-	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed ...
-	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateInProgress ...
-	ProvisioningStateInProgress ProvisioningState = "InProgress"
-	// ProvisioningStateSucceeded ...
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateCanceled, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateInProgress, ProvisioningStateSucceeded}
-}
-
-// PublicCertificateLocation enumerates the values for public certificate location.
-type PublicCertificateLocation string
-
-const (
-	// PublicCertificateLocationCurrentUserMy ...
-	PublicCertificateLocationCurrentUserMy PublicCertificateLocation = "CurrentUserMy"
-	// PublicCertificateLocationLocalMachineMy ...
-	PublicCertificateLocationLocalMachineMy PublicCertificateLocation = "LocalMachineMy"
-	// PublicCertificateLocationUnknown ...
-	PublicCertificateLocationUnknown PublicCertificateLocation = "Unknown"
-)
-
-// PossiblePublicCertificateLocationValues returns an array of possible values for the PublicCertificateLocation const type.
-func PossiblePublicCertificateLocationValues() []PublicCertificateLocation {
-	return []PublicCertificateLocation{PublicCertificateLocationCurrentUserMy, PublicCertificateLocationLocalMachineMy, PublicCertificateLocationUnknown}
-}
-
-// PublishingProfileFormat enumerates the values for publishing profile format.
-type PublishingProfileFormat string
-
-const (
-	// FileZilla3 ...
-	FileZilla3 PublishingProfileFormat = "FileZilla3"
-	// Ftp ...
-	Ftp PublishingProfileFormat = "Ftp"
-	// WebDeploy ...
-	WebDeploy PublishingProfileFormat = "WebDeploy"
-)
-
-// PossiblePublishingProfileFormatValues returns an array of possible values for the PublishingProfileFormat const type.
-func PossiblePublishingProfileFormatValues() []PublishingProfileFormat {
-	return []PublishingProfileFormat{FileZilla3, Ftp, WebDeploy}
-}
-
-// RedundancyMode enumerates the values for redundancy mode.
-type RedundancyMode string
-
-const (
-	// RedundancyModeActiveActive ...
-	RedundancyModeActiveActive RedundancyMode = "ActiveActive"
-	// RedundancyModeFailover ...
-	RedundancyModeFailover RedundancyMode = "Failover"
-	// RedundancyModeGeoRedundant ...
-	RedundancyModeGeoRedundant RedundancyMode = "GeoRedundant"
-	// RedundancyModeManual ...
-	RedundancyModeManual RedundancyMode = "Manual"
-	// RedundancyModeNone ...
-	RedundancyModeNone RedundancyMode = "None"
-)
-
-// PossibleRedundancyModeValues returns an array of possible values for the RedundancyMode const type.
-func PossibleRedundancyModeValues() []RedundancyMode {
-	return []RedundancyMode{RedundancyModeActiveActive, RedundancyModeFailover, RedundancyModeGeoRedundant, RedundancyModeManual, RedundancyModeNone}
-}
-
-// RenderingType enumerates the values for rendering type.
-type RenderingType string
-
-const (
-	// NoGraph ...
-	NoGraph RenderingType = "NoGraph"
-	// Table ...
-	Table RenderingType = "Table"
-	// TimeSeries ...
-	TimeSeries RenderingType = "TimeSeries"
-	// TimeSeriesPerInstance ...
-	TimeSeriesPerInstance RenderingType = "TimeSeriesPerInstance"
-)
-
-// PossibleRenderingTypeValues returns an array of possible values for the RenderingType const type.
-func PossibleRenderingTypeValues() []RenderingType {
-	return []RenderingType{NoGraph, Table, TimeSeries, TimeSeriesPerInstance}
-}
-
-// ResourceScopeType enumerates the values for resource scope type.
-type ResourceScopeType string
-
-const (
-	// ServerFarm ...
-	ServerFarm ResourceScopeType = "ServerFarm"
-	// Subscription ...
-	Subscription ResourceScopeType = "Subscription"
-	// WebSite ...
-	WebSite ResourceScopeType = "WebSite"
-)
-
-// PossibleResourceScopeTypeValues returns an array of possible values for the ResourceScopeType const type.
-func PossibleResourceScopeTypeValues() []ResourceScopeType {
-	return []ResourceScopeType{ServerFarm, Subscription, WebSite}
-}
-
-// RouteType enumerates the values for route type.
-type RouteType string
-
-const (
-	// DEFAULT ...
-	DEFAULT RouteType = "DEFAULT"
-	// INHERITED ...
-	INHERITED RouteType = "INHERITED"
-	// STATIC ...
-	STATIC RouteType = "STATIC"
-)
-
-// PossibleRouteTypeValues returns an array of possible values for the RouteType const type.
-func PossibleRouteTypeValues() []RouteType {
-	return []RouteType{DEFAULT, INHERITED, STATIC}
-}
-
-// ScmType enumerates the values for scm type.
-type ScmType string
-
-const (
-	// ScmTypeBitbucketGit ...
-	ScmTypeBitbucketGit ScmType = "BitbucketGit"
-	// ScmTypeBitbucketHg ...
-	ScmTypeBitbucketHg ScmType = "BitbucketHg"
-	// ScmTypeCodePlexGit ...
-	ScmTypeCodePlexGit ScmType = "CodePlexGit"
-	// ScmTypeCodePlexHg ...
-	ScmTypeCodePlexHg ScmType = "CodePlexHg"
-	// ScmTypeDropbox ...
-	ScmTypeDropbox ScmType = "Dropbox"
-	// ScmTypeExternalGit ...
-	ScmTypeExternalGit ScmType = "ExternalGit"
-	// ScmTypeExternalHg ...
-	ScmTypeExternalHg ScmType = "ExternalHg"
-	// ScmTypeGitHub ...
-	ScmTypeGitHub ScmType = "GitHub"
-	// ScmTypeLocalGit ...
-	ScmTypeLocalGit ScmType = "LocalGit"
-	// ScmTypeNone ...
-	ScmTypeNone ScmType = "None"
-	// ScmTypeOneDrive ...
-	ScmTypeOneDrive ScmType = "OneDrive"
-	// ScmTypeTfs ...
-	ScmTypeTfs ScmType = "Tfs"
-	// ScmTypeVSO ...
-	ScmTypeVSO ScmType = "VSO"
-)
-
-// PossibleScmTypeValues returns an array of possible values for the ScmType const type.
-func PossibleScmTypeValues() []ScmType {
-	return []ScmType{ScmTypeBitbucketGit, ScmTypeBitbucketHg, ScmTypeCodePlexGit, ScmTypeCodePlexHg, ScmTypeDropbox, ScmTypeExternalGit, ScmTypeExternalHg, ScmTypeGitHub, ScmTypeLocalGit, ScmTypeNone, ScmTypeOneDrive, ScmTypeTfs, ScmTypeVSO}
-}
-
-// SiteAvailabilityState enumerates the values for site availability state.
-type SiteAvailabilityState string
-
-const (
-	// DisasterRecoveryMode ...
-	DisasterRecoveryMode SiteAvailabilityState = "DisasterRecoveryMode"
-	// Limited ...
-	Limited SiteAvailabilityState = "Limited"
-	// Normal ...
-	Normal SiteAvailabilityState = "Normal"
-)
-
-// PossibleSiteAvailabilityStateValues returns an array of possible values for the SiteAvailabilityState const type.
-func PossibleSiteAvailabilityStateValues() []SiteAvailabilityState {
-	return []SiteAvailabilityState{DisasterRecoveryMode, Limited, Normal}
-}
-
-// SiteExtensionType enumerates the values for site extension type.
-type SiteExtensionType string
-
-const (
-	// Gallery ...
-	Gallery SiteExtensionType = "Gallery"
-	// WebRoot ...
-	WebRoot SiteExtensionType = "WebRoot"
-)
-
-// PossibleSiteExtensionTypeValues returns an array of possible values for the SiteExtensionType const type.
-func PossibleSiteExtensionTypeValues() []SiteExtensionType {
-	return []SiteExtensionType{Gallery, WebRoot}
-}
-
-// SiteLoadBalancing enumerates the values for site load balancing.
-type SiteLoadBalancing string
-
-const (
-	// LeastRequests ...
-	LeastRequests SiteLoadBalancing = "LeastRequests"
-	// LeastResponseTime ...
-	LeastResponseTime SiteLoadBalancing = "LeastResponseTime"
-	// RequestHash ...
-	RequestHash SiteLoadBalancing = "RequestHash"
-	// WeightedRoundRobin ...
-	WeightedRoundRobin SiteLoadBalancing = "WeightedRoundRobin"
-	// WeightedTotalTraffic ...
-	WeightedTotalTraffic SiteLoadBalancing = "WeightedTotalTraffic"
-)
-
-// PossibleSiteLoadBalancingValues returns an array of possible values for the SiteLoadBalancing const type.
-func PossibleSiteLoadBalancingValues() []SiteLoadBalancing {
-	return []SiteLoadBalancing{LeastRequests, LeastResponseTime, RequestHash, WeightedRoundRobin, WeightedTotalTraffic}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// SkuNameBasic ...
-	SkuNameBasic SkuName = "Basic"
-	// SkuNameDynamic ...
-	SkuNameDynamic SkuName = "Dynamic"
-	// SkuNameElasticIsolated ...
-	SkuNameElasticIsolated SkuName = "ElasticIsolated"
-	// SkuNameElasticPremium ...
-	SkuNameElasticPremium SkuName = "ElasticPremium"
-	// SkuNameFree ...
-	SkuNameFree SkuName = "Free"
-	// SkuNameIsolated ...
-	SkuNameIsolated SkuName = "Isolated"
-	// SkuNamePremium ...
-	SkuNamePremium SkuName = "Premium"
-	// SkuNamePremiumV2 ...
-	SkuNamePremiumV2 SkuName = "PremiumV2"
-	// SkuNameShared ...
-	SkuNameShared SkuName = "Shared"
-	// SkuNameStandard ...
-	SkuNameStandard SkuName = "Standard"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{SkuNameBasic, SkuNameDynamic, SkuNameElasticIsolated, SkuNameElasticPremium, SkuNameFree, SkuNameIsolated, SkuNamePremium, SkuNamePremiumV2, SkuNameShared, SkuNameStandard}
-}
-
-// SolutionType enumerates the values for solution type.
-type SolutionType string
-
-const (
-	// BestPractices ...
-	BestPractices SolutionType = "BestPractices"
-	// DeepInvestigation ...
-	DeepInvestigation SolutionType = "DeepInvestigation"
-	// QuickSolution ...
-	QuickSolution SolutionType = "QuickSolution"
-)
-
-// PossibleSolutionTypeValues returns an array of possible values for the SolutionType const type.
-func PossibleSolutionTypeValues() []SolutionType {
-	return []SolutionType{BestPractices, DeepInvestigation, QuickSolution}
-}
-
-// SslState enumerates the values for ssl state.
-type SslState string
-
-const (
-	// SslStateDisabled ...
-	SslStateDisabled SslState = "Disabled"
-	// SslStateIPBasedEnabled ...
-	SslStateIPBasedEnabled SslState = "IpBasedEnabled"
-	// SslStateSniEnabled ...
-	SslStateSniEnabled SslState = "SniEnabled"
-)
-
-// PossibleSslStateValues returns an array of possible values for the SslState const type.
-func PossibleSslStateValues() []SslState {
-	return []SslState{SslStateDisabled, SslStateIPBasedEnabled, SslStateSniEnabled}
-}
-
-// StatusOptions enumerates the values for status options.
-type StatusOptions string
-
-const (
-	// StatusOptionsCreating ...
-	StatusOptionsCreating StatusOptions = "Creating"
-	// StatusOptionsPending ...
-	StatusOptionsPending StatusOptions = "Pending"
-	// StatusOptionsReady ...
-	StatusOptionsReady StatusOptions = "Ready"
-)
-
-// PossibleStatusOptionsValues returns an array of possible values for the StatusOptions const type.
-func PossibleStatusOptionsValues() []StatusOptions {
-	return []StatusOptions{StatusOptionsCreating, StatusOptionsPending, StatusOptionsReady}
-}
-
-// SupportedTLSVersions enumerates the values for supported tls versions.
-type SupportedTLSVersions string
-
-const (
-	// OneFullStopOne ...
-	OneFullStopOne SupportedTLSVersions = "1.1"
-	// OneFullStopTwo ...
-	OneFullStopTwo SupportedTLSVersions = "1.2"
-	// OneFullStopZero ...
-	OneFullStopZero SupportedTLSVersions = "1.0"
-)
-
-// PossibleSupportedTLSVersionsValues returns an array of possible values for the SupportedTLSVersions const type.
-func PossibleSupportedTLSVersionsValues() []SupportedTLSVersions {
-	return []SupportedTLSVersions{OneFullStopOne, OneFullStopTwo, OneFullStopZero}
-}
-
-// TriggeredWebJobStatus enumerates the values for triggered web job status.
-type TriggeredWebJobStatus string
-
-const (
-	// TriggeredWebJobStatusError ...
-	TriggeredWebJobStatusError TriggeredWebJobStatus = "Error"
-	// TriggeredWebJobStatusFailed ...
-	TriggeredWebJobStatusFailed TriggeredWebJobStatus = "Failed"
-	// TriggeredWebJobStatusSuccess ...
-	TriggeredWebJobStatusSuccess TriggeredWebJobStatus = "Success"
-)
-
-// PossibleTriggeredWebJobStatusValues returns an array of possible values for the TriggeredWebJobStatus const type.
-func PossibleTriggeredWebJobStatusValues() []TriggeredWebJobStatus {
-	return []TriggeredWebJobStatus{TriggeredWebJobStatusError, TriggeredWebJobStatusFailed, TriggeredWebJobStatusSuccess}
-}
-
-// UnauthenticatedClientAction enumerates the values for unauthenticated client action.
-type UnauthenticatedClientAction string
-
-const (
-	// AllowAnonymous ...
-	AllowAnonymous UnauthenticatedClientAction = "AllowAnonymous"
-	// RedirectToLoginPage ...
-	RedirectToLoginPage UnauthenticatedClientAction = "RedirectToLoginPage"
-)
-
-// PossibleUnauthenticatedClientActionValues returns an array of possible values for the UnauthenticatedClientAction const type.
-func PossibleUnauthenticatedClientActionValues() []UnauthenticatedClientAction {
-	return []UnauthenticatedClientAction{AllowAnonymous, RedirectToLoginPage}
-}
-
-// UsageState enumerates the values for usage state.
-type UsageState string
-
-const (
-	// UsageStateExceeded ...
-	UsageStateExceeded UsageState = "Exceeded"
-	// UsageStateNormal ...
-	UsageStateNormal UsageState = "Normal"
-)
-
-// PossibleUsageStateValues returns an array of possible values for the UsageState const type.
-func PossibleUsageStateValues() []UsageState {
-	return []UsageState{UsageStateExceeded, UsageStateNormal}
-}
-
-// ValidateResourceTypes enumerates the values for validate resource types.
-type ValidateResourceTypes string
-
-const (
-	// ValidateResourceTypesServerFarm ...
-	ValidateResourceTypesServerFarm ValidateResourceTypes = "ServerFarm"
-	// ValidateResourceTypesSite ...
-	ValidateResourceTypesSite ValidateResourceTypes = "Site"
-)
-
-// PossibleValidateResourceTypesValues returns an array of possible values for the ValidateResourceTypes const type.
-func PossibleValidateResourceTypesValues() []ValidateResourceTypes {
-	return []ValidateResourceTypes{ValidateResourceTypesServerFarm, ValidateResourceTypesSite}
-}
-
-// WorkerSizeOptions enumerates the values for worker size options.
-type WorkerSizeOptions string
-
-const (
-	// WorkerSizeOptionsD1 ...
-	WorkerSizeOptionsD1 WorkerSizeOptions = "D1"
-	// WorkerSizeOptionsD2 ...
-	WorkerSizeOptionsD2 WorkerSizeOptions = "D2"
-	// WorkerSizeOptionsD3 ...
-	WorkerSizeOptionsD3 WorkerSizeOptions = "D3"
-	// WorkerSizeOptionsDefault ...
-	WorkerSizeOptionsDefault WorkerSizeOptions = "Default"
-	// WorkerSizeOptionsLarge ...
-	WorkerSizeOptionsLarge WorkerSizeOptions = "Large"
-	// WorkerSizeOptionsMedium ...
-	WorkerSizeOptionsMedium WorkerSizeOptions = "Medium"
-	// WorkerSizeOptionsSmall ...
-	WorkerSizeOptionsSmall WorkerSizeOptions = "Small"
-)
-
-// PossibleWorkerSizeOptionsValues returns an array of possible values for the WorkerSizeOptions const type.
-func PossibleWorkerSizeOptionsValues() []WorkerSizeOptions {
-	return []WorkerSizeOptions{WorkerSizeOptionsD1, WorkerSizeOptionsD2, WorkerSizeOptionsD3, WorkerSizeOptionsDefault, WorkerSizeOptionsLarge, WorkerSizeOptionsMedium, WorkerSizeOptionsSmall}
-}
-
 // AbnormalTimePeriod class representing Abnormal Time Period identified in diagnosis
 type AbnormalTimePeriod struct {
 	// StartTime - Start time of the downtime
@@ -1481,6 +195,15 @@ type AppCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AppCollection.
+func (ac AppCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ac.Value != nil {
+		objectMap["value"] = ac.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // AppCollectionIterator provides access to a complete listing of Site values.
 type AppCollectionIterator struct {
 	i    int
@@ -1549,10 +272,15 @@ func (ac AppCollection) IsEmpty() bool {
 	return ac.Value == nil || len(*ac.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ac AppCollection) hasNextLink() bool {
+	return ac.NextLink != nil && len(*ac.NextLink) != 0
+}
+
 // appCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ac AppCollection) appCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if ac.NextLink == nil || len(to.String(ac.NextLink)) < 1 {
+	if !ac.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1580,11 +308,16 @@ func (page *AppCollectionPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ac)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ac)
+		if err != nil {
+			return err
+		}
+		page.ac = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ac = next
 	return nil
 }
 
@@ -1625,6 +358,15 @@ type AppInstanceCollection struct {
 	Value *[]SiteInstance `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppInstanceCollection.
+func (aic AppInstanceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aic.Value != nil {
+		objectMap["value"] = aic.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // AppInstanceCollectionIterator provides access to a complete listing of SiteInstance values.
@@ -1695,10 +437,15 @@ func (aic AppInstanceCollection) IsEmpty() bool {
 	return aic.Value == nil || len(*aic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (aic AppInstanceCollection) hasNextLink() bool {
+	return aic.NextLink != nil && len(*aic.NextLink) != 0
+}
+
 // appInstanceCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (aic AppInstanceCollection) appInstanceCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if aic.NextLink == nil || len(to.String(aic.NextLink)) < 1 {
+	if !aic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1726,11 +473,16 @@ func (page *AppInstanceCollectionPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.aic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.aic)
+		if err != nil {
+			return err
+		}
+		page.aic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.aic = next
 	return nil
 }
 
@@ -1795,6 +547,15 @@ type ApplicationStackCollection struct {
 	Value *[]ApplicationStack `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationStackCollection.
+func (asc ApplicationStackCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if asc.Value != nil {
+		objectMap["value"] = asc.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // ApplicationStackCollectionIterator provides access to a complete listing of ApplicationStack values.
@@ -1865,10 +626,15 @@ func (asc ApplicationStackCollection) IsEmpty() bool {
 	return asc.Value == nil || len(*asc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (asc ApplicationStackCollection) hasNextLink() bool {
+	return asc.NextLink != nil && len(*asc.NextLink) != 0
+}
+
 // applicationStackCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (asc ApplicationStackCollection) applicationStackCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if asc.NextLink == nil || len(to.String(asc.NextLink)) < 1 {
+	if !asc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1896,11 +662,16 @@ func (page *ApplicationStackCollectionPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.asc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.asc)
+		if err != nil {
+			return err
+		}
+		page.asc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.asc = next
 	return nil
 }
 
@@ -2021,8 +792,8 @@ func (future *AppsCreateInstanceMSDeployOperationFuture) Result(client AppsClien
 	return
 }
 
-// AppsCreateInstanceMSDeployOperationSlotFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// AppsCreateInstanceMSDeployOperationSlotFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type AppsCreateInstanceMSDeployOperationSlotFuture struct {
 	azure.Future
 }
@@ -2050,8 +821,8 @@ func (future *AppsCreateInstanceMSDeployOperationSlotFuture) Result(client AppsC
 	return
 }
 
-// AppsCreateMSDeployOperationFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// AppsCreateMSDeployOperationFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AppsCreateMSDeployOperationFuture struct {
 	azure.Future
 }
@@ -2234,6 +1005,18 @@ type AppServiceCertificate struct {
 	ProvisioningState KeyVaultSecretStatus `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AppServiceCertificate.
+func (asc AppServiceCertificate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if asc.KeyVaultID != nil {
+		objectMap["keyVaultId"] = asc.KeyVaultID
+	}
+	if asc.KeyVaultSecretName != nil {
+		objectMap["keyVaultSecretName"] = asc.KeyVaultSecretName
+	}
+	return json.Marshal(objectMap)
+}
+
 // AppServiceCertificateCollection collection of certificate order certificates.
 type AppServiceCertificateCollection struct {
 	autorest.Response `json:"-"`
@@ -2241,6 +1024,15 @@ type AppServiceCertificateCollection struct {
 	Value *[]AppServiceCertificateResource `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppServiceCertificateCollection.
+func (ascc AppServiceCertificateCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ascc.Value != nil {
+		objectMap["value"] = ascc.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // AppServiceCertificateCollectionIterator provides access to a complete listing of
@@ -2312,10 +1104,15 @@ func (ascc AppServiceCertificateCollection) IsEmpty() bool {
 	return ascc.Value == nil || len(*ascc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ascc AppServiceCertificateCollection) hasNextLink() bool {
+	return ascc.NextLink != nil && len(*ascc.NextLink) != 0
+}
+
 // appServiceCertificateCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ascc AppServiceCertificateCollection) appServiceCertificateCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if ascc.NextLink == nil || len(to.String(ascc.NextLink)) < 1 {
+	if !ascc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2343,11 +1140,16 @@ func (page *AppServiceCertificateCollectionPage) NextWithContext(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ascc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ascc)
+		if err != nil {
+			return err
+		}
+		page.ascc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ascc = next
 	return nil
 }
 
@@ -2505,6 +1307,15 @@ type AppServiceCertificateOrderCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AppServiceCertificateOrderCollection.
+func (ascoc AppServiceCertificateOrderCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ascoc.Value != nil {
+		objectMap["value"] = ascoc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // AppServiceCertificateOrderCollectionIterator provides access to a complete listing of
 // AppServiceCertificateOrder values.
 type AppServiceCertificateOrderCollectionIterator struct {
@@ -2574,10 +1385,15 @@ func (ascoc AppServiceCertificateOrderCollection) IsEmpty() bool {
 	return ascoc.Value == nil || len(*ascoc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ascoc AppServiceCertificateOrderCollection) hasNextLink() bool {
+	return ascoc.NextLink != nil && len(*ascoc.NextLink) != 0
+}
+
 // appServiceCertificateOrderCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ascoc AppServiceCertificateOrderCollection) appServiceCertificateOrderCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if ascoc.NextLink == nil || len(to.String(ascoc.NextLink)) < 1 {
+	if !ascoc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2605,11 +1421,16 @@ func (page *AppServiceCertificateOrderCollectionPage) NextWithContext(ctx contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ascoc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ascoc)
+		if err != nil {
+			return err
+		}
+		page.ascoc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ascoc = next
 	return nil
 }
 
@@ -2730,8 +1551,8 @@ func (ascopr *AppServiceCertificateOrderPatchResource) UnmarshalJSON(body []byte
 	return nil
 }
 
-// AppServiceCertificateOrderPatchResourceProperties appServiceCertificateOrderPatchResource resource
-// specific properties
+// AppServiceCertificateOrderPatchResourceProperties appServiceCertificateOrderPatchResource resource specific
+// properties
 type AppServiceCertificateOrderPatchResourceProperties struct {
 	// Certificates - State of the Key Vault secret.
 	Certificates map[string]*AppServiceCertificate `json:"certificates"`
@@ -2869,8 +1690,8 @@ func (asco AppServiceCertificateOrderProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AppServiceCertificateOrdersCreateOrUpdateCertificateFuture an abstraction for monitoring and retrieving
-// the results of a long-running operation.
+// AppServiceCertificateOrdersCreateOrUpdateCertificateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type AppServiceCertificateOrdersCreateOrUpdateCertificateFuture struct {
 	azure.Future
 }
@@ -2898,8 +1719,8 @@ func (future *AppServiceCertificateOrdersCreateOrUpdateCertificateFuture) Result
 	return
 }
 
-// AppServiceCertificateOrdersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// AppServiceCertificateOrdersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type AppServiceCertificateOrdersCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -3014,8 +1835,8 @@ func (ascpr *AppServiceCertificatePatchResource) UnmarshalJSON(body []byte) erro
 	return nil
 }
 
-// AppServiceCertificateResource key Vault container ARM resource for a certificate that is purchased
-// through Azure.
+// AppServiceCertificateResource key Vault container ARM resource for a certificate that is purchased through
+// Azure.
 type AppServiceCertificateResource struct {
 	autorest.Response `json:"-"`
 	// AppServiceCertificate - Core resource properties
@@ -3214,6 +2035,78 @@ type AppServiceEnvironment struct {
 	SslCertKeyVaultSecretName *string `json:"sslCertKeyVaultSecretName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AppServiceEnvironment.
+func (ase AppServiceEnvironment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ase.Name != nil {
+		objectMap["name"] = ase.Name
+	}
+	if ase.Location != nil {
+		objectMap["location"] = ase.Location
+	}
+	if ase.VnetName != nil {
+		objectMap["vnetName"] = ase.VnetName
+	}
+	if ase.VnetResourceGroupName != nil {
+		objectMap["vnetResourceGroupName"] = ase.VnetResourceGroupName
+	}
+	if ase.VnetSubnetName != nil {
+		objectMap["vnetSubnetName"] = ase.VnetSubnetName
+	}
+	if ase.VirtualNetwork != nil {
+		objectMap["virtualNetwork"] = ase.VirtualNetwork
+	}
+	if ase.InternalLoadBalancingMode != "" {
+		objectMap["internalLoadBalancingMode"] = ase.InternalLoadBalancingMode
+	}
+	if ase.MultiSize != nil {
+		objectMap["multiSize"] = ase.MultiSize
+	}
+	if ase.MultiRoleCount != nil {
+		objectMap["multiRoleCount"] = ase.MultiRoleCount
+	}
+	if ase.WorkerPools != nil {
+		objectMap["workerPools"] = ase.WorkerPools
+	}
+	if ase.IpsslAddressCount != nil {
+		objectMap["ipsslAddressCount"] = ase.IpsslAddressCount
+	}
+	if ase.DNSSuffix != nil {
+		objectMap["dnsSuffix"] = ase.DNSSuffix
+	}
+	if ase.NetworkAccessControlList != nil {
+		objectMap["networkAccessControlList"] = ase.NetworkAccessControlList
+	}
+	if ase.FrontEndScaleFactor != nil {
+		objectMap["frontEndScaleFactor"] = ase.FrontEndScaleFactor
+	}
+	if ase.APIManagementAccountID != nil {
+		objectMap["apiManagementAccountId"] = ase.APIManagementAccountID
+	}
+	if ase.Suspended != nil {
+		objectMap["suspended"] = ase.Suspended
+	}
+	if ase.DynamicCacheEnabled != nil {
+		objectMap["dynamicCacheEnabled"] = ase.DynamicCacheEnabled
+	}
+	if ase.ClusterSettings != nil {
+		objectMap["clusterSettings"] = ase.ClusterSettings
+	}
+	if ase.UserWhitelistedIPRanges != nil {
+		objectMap["userWhitelistedIpRanges"] = ase.UserWhitelistedIPRanges
+	}
+	if ase.HasLinuxWorkers != nil {
+		objectMap["hasLinuxWorkers"] = ase.HasLinuxWorkers
+	}
+	if ase.SslCertKeyVaultID != nil {
+		objectMap["sslCertKeyVaultId"] = ase.SslCertKeyVaultID
+	}
+	if ase.SslCertKeyVaultSecretName != nil {
+		objectMap["sslCertKeyVaultSecretName"] = ase.SslCertKeyVaultSecretName
+	}
+	return json.Marshal(objectMap)
+}
+
 // AppServiceEnvironmentCollection collection of App Service Environments.
 type AppServiceEnvironmentCollection struct {
 	autorest.Response `json:"-"`
@@ -3221,6 +2114,15 @@ type AppServiceEnvironmentCollection struct {
 	Value *[]AppServiceEnvironmentResource `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppServiceEnvironmentCollection.
+func (asec AppServiceEnvironmentCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if asec.Value != nil {
+		objectMap["value"] = asec.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // AppServiceEnvironmentCollectionIterator provides access to a complete listing of
@@ -3292,10 +2194,15 @@ func (asec AppServiceEnvironmentCollection) IsEmpty() bool {
 	return asec.Value == nil || len(*asec.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (asec AppServiceEnvironmentCollection) hasNextLink() bool {
+	return asec.NextLink != nil && len(*asec.NextLink) != 0
+}
+
 // appServiceEnvironmentCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (asec AppServiceEnvironmentCollection) appServiceEnvironmentCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if asec.NextLink == nil || len(to.String(asec.NextLink)) < 1 {
+	if !asec.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3323,11 +2230,16 @@ func (page *AppServiceEnvironmentCollectionPage) NextWithContext(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.asec)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.asec)
+		if err != nil {
+			return err
+		}
+		page.asec = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.asec = next
 	return nil
 }
 
@@ -3983,6 +2895,15 @@ type AppServicePlanCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AppServicePlanCollection.
+func (aspc AppServicePlanCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aspc.Value != nil {
+		objectMap["value"] = aspc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // AppServicePlanCollectionIterator provides access to a complete listing of AppServicePlan values.
 type AppServicePlanCollectionIterator struct {
 	i    int
@@ -4051,10 +2972,15 @@ func (aspc AppServicePlanCollection) IsEmpty() bool {
 	return aspc.Value == nil || len(*aspc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (aspc AppServicePlanCollection) hasNextLink() bool {
+	return aspc.NextLink != nil && len(*aspc.NextLink) != 0
+}
+
 // appServicePlanCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (aspc AppServicePlanCollection) appServicePlanCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if aspc.NextLink == nil || len(to.String(aspc.NextLink)) < 1 {
+	if !aspc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4082,11 +3008,16 @@ func (page *AppServicePlanCollectionPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.aspc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.aspc)
+		if err != nil {
+			return err
+		}
+		page.aspc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.aspc = next
 	return nil
 }
 
@@ -4249,6 +3180,48 @@ type AppServicePlanPatchResourceProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AppServicePlanPatchResourceProperties.
+func (asppr AppServicePlanPatchResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if asppr.WorkerTierName != nil {
+		objectMap["workerTierName"] = asppr.WorkerTierName
+	}
+	if asppr.HostingEnvironmentProfile != nil {
+		objectMap["hostingEnvironmentProfile"] = asppr.HostingEnvironmentProfile
+	}
+	if asppr.PerSiteScaling != nil {
+		objectMap["perSiteScaling"] = asppr.PerSiteScaling
+	}
+	if asppr.MaximumElasticWorkerCount != nil {
+		objectMap["maximumElasticWorkerCount"] = asppr.MaximumElasticWorkerCount
+	}
+	if asppr.IsSpot != nil {
+		objectMap["isSpot"] = asppr.IsSpot
+	}
+	if asppr.SpotExpirationTime != nil {
+		objectMap["spotExpirationTime"] = asppr.SpotExpirationTime
+	}
+	if asppr.FreeOfferExpirationTime != nil {
+		objectMap["freeOfferExpirationTime"] = asppr.FreeOfferExpirationTime
+	}
+	if asppr.Reserved != nil {
+		objectMap["reserved"] = asppr.Reserved
+	}
+	if asppr.IsXenon != nil {
+		objectMap["isXenon"] = asppr.IsXenon
+	}
+	if asppr.HyperV != nil {
+		objectMap["hyperV"] = asppr.HyperV
+	}
+	if asppr.TargetWorkerCount != nil {
+		objectMap["targetWorkerCount"] = asppr.TargetWorkerCount
+	}
+	if asppr.TargetWorkerSizeID != nil {
+		objectMap["targetWorkerSizeId"] = asppr.TargetWorkerSizeID
+	}
+	return json.Marshal(objectMap)
+}
+
 // AppServicePlanProperties appServicePlan resource specific properties
 type AppServicePlanProperties struct {
 	// WorkerTierName - Target worker tier assigned to the App Service plan.
@@ -4292,6 +3265,48 @@ type AppServicePlanProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AppServicePlanProperties.
+func (asp AppServicePlanProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if asp.WorkerTierName != nil {
+		objectMap["workerTierName"] = asp.WorkerTierName
+	}
+	if asp.HostingEnvironmentProfile != nil {
+		objectMap["hostingEnvironmentProfile"] = asp.HostingEnvironmentProfile
+	}
+	if asp.PerSiteScaling != nil {
+		objectMap["perSiteScaling"] = asp.PerSiteScaling
+	}
+	if asp.MaximumElasticWorkerCount != nil {
+		objectMap["maximumElasticWorkerCount"] = asp.MaximumElasticWorkerCount
+	}
+	if asp.IsSpot != nil {
+		objectMap["isSpot"] = asp.IsSpot
+	}
+	if asp.SpotExpirationTime != nil {
+		objectMap["spotExpirationTime"] = asp.SpotExpirationTime
+	}
+	if asp.FreeOfferExpirationTime != nil {
+		objectMap["freeOfferExpirationTime"] = asp.FreeOfferExpirationTime
+	}
+	if asp.Reserved != nil {
+		objectMap["reserved"] = asp.Reserved
+	}
+	if asp.IsXenon != nil {
+		objectMap["isXenon"] = asp.IsXenon
+	}
+	if asp.HyperV != nil {
+		objectMap["hyperV"] = asp.HyperV
+	}
+	if asp.TargetWorkerCount != nil {
+		objectMap["targetWorkerCount"] = asp.TargetWorkerCount
+	}
+	if asp.TargetWorkerSizeID != nil {
+		objectMap["targetWorkerSizeId"] = asp.TargetWorkerSizeID
+	}
+	return json.Marshal(objectMap)
+}
+
 // AppServicePlansCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AppServicePlansCreateOrUpdateFuture struct {
@@ -4321,8 +3336,8 @@ func (future *AppServicePlansCreateOrUpdateFuture) Result(client AppServicePlans
 	return
 }
 
-// AppsInstallSiteExtensionFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// AppsInstallSiteExtensionFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AppsInstallSiteExtensionFuture struct {
 	azure.Future
 }
@@ -4437,8 +3452,7 @@ func (future *AppsListPublishingCredentialsSlotFuture) Result(client AppsClient)
 	return
 }
 
-// AppsMigrateMySQLFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AppsMigrateMySQLFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AppsMigrateMySQLFuture struct {
 	azure.Future
 }
@@ -4495,8 +3509,8 @@ func (future *AppsMigrateStorageFuture) Result(client AppsClient) (smr StorageMi
 	return
 }
 
-// AppsRestoreFromBackupBlobFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// AppsRestoreFromBackupBlobFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AppsRestoreFromBackupBlobFuture struct {
 	azure.Future
 }
@@ -4541,8 +3555,8 @@ func (future *AppsRestoreFromBackupBlobSlotFuture) Result(client AppsClient) (ar
 	return
 }
 
-// AppsRestoreFromDeletedAppFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// AppsRestoreFromDeletedAppFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AppsRestoreFromDeletedAppFuture struct {
 	azure.Future
 }
@@ -4609,8 +3623,7 @@ func (future *AppsRestoreFuture) Result(client AppsClient) (ar autorest.Response
 	return
 }
 
-// AppsRestoreSlotFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AppsRestoreSlotFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AppsRestoreSlotFuture struct {
 	azure.Future
 }
@@ -4707,8 +3720,8 @@ func (future *AppsStartNetworkTraceFuture) Result(client AppsClient) (lnt ListNe
 	return
 }
 
-// AppsStartNetworkTraceSlotFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// AppsStartNetworkTraceSlotFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AppsStartNetworkTraceSlotFuture struct {
 	azure.Future
 }
@@ -4736,8 +3749,8 @@ func (future *AppsStartNetworkTraceSlotFuture) Result(client AppsClient) (lnt Li
 	return
 }
 
-// AppsStartWebSiteNetworkTraceOperationFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// AppsStartWebSiteNetworkTraceOperationFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type AppsStartWebSiteNetworkTraceOperationFuture struct {
 	azure.Future
 }
@@ -4765,8 +3778,8 @@ func (future *AppsStartWebSiteNetworkTraceOperationFuture) Result(client AppsCli
 	return
 }
 
-// AppsStartWebSiteNetworkTraceOperationSlotFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// AppsStartWebSiteNetworkTraceOperationSlotFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type AppsStartWebSiteNetworkTraceOperationSlotFuture struct {
 	azure.Future
 }
@@ -4794,8 +3807,7 @@ func (future *AppsStartWebSiteNetworkTraceOperationSlotFuture) Result(client App
 	return
 }
 
-// AppsSwapSlotSlotFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AppsSwapSlotSlotFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AppsSwapSlotSlotFuture struct {
 	azure.Future
 }
@@ -4817,8 +3829,8 @@ func (future *AppsSwapSlotSlotFuture) Result(client AppsClient) (ar autorest.Res
 	return
 }
 
-// AppsSwapSlotWithProductionFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// AppsSwapSlotWithProductionFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AppsSwapSlotWithProductionFuture struct {
 	azure.Future
 }
@@ -4918,6 +3930,27 @@ type AzureStorageInfoValue struct {
 	MountPath *string `json:"mountPath,omitempty"`
 	// State - READ-ONLY; State of the storage account. Possible values include: 'Ok', 'InvalidCredentials', 'InvalidShare'
 	State AzureStorageState `json:"state,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureStorageInfoValue.
+func (asiv AzureStorageInfoValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if asiv.Type != "" {
+		objectMap["type"] = asiv.Type
+	}
+	if asiv.AccountName != nil {
+		objectMap["accountName"] = asiv.AccountName
+	}
+	if asiv.ShareName != nil {
+		objectMap["shareName"] = asiv.ShareName
+	}
+	if asiv.AccessKey != nil {
+		objectMap["accessKey"] = asiv.AccessKey
+	}
+	if asiv.MountPath != nil {
+		objectMap["mountPath"] = asiv.MountPath
+	}
+	return json.Marshal(objectMap)
 }
 
 // AzureStoragePropertyDictionaryResource azureStorageInfo dictionary resource.
@@ -5051,6 +4084,15 @@ type BackupItemCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for BackupItemCollection.
+func (bic BackupItemCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bic.Value != nil {
+		objectMap["value"] = bic.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // BackupItemCollectionIterator provides access to a complete listing of BackupItem values.
 type BackupItemCollectionIterator struct {
 	i    int
@@ -5119,10 +4161,15 @@ func (bic BackupItemCollection) IsEmpty() bool {
 	return bic.Value == nil || len(*bic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (bic BackupItemCollection) hasNextLink() bool {
+	return bic.NextLink != nil && len(*bic.NextLink) != 0
+}
+
 // backupItemCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (bic BackupItemCollection) backupItemCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if bic.NextLink == nil || len(to.String(bic.NextLink)) < 1 {
+	if !bic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5150,11 +4197,16 @@ func (page *BackupItemCollectionPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.bic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.bic)
+		if err != nil {
+			return err
+		}
+		page.bic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.bic = next
 	return nil
 }
 
@@ -5321,8 +4373,8 @@ type BackupRequestProperties struct {
 	Databases *[]DatabaseBackupSetting `json:"databases,omitempty"`
 }
 
-// BackupSchedule description of a backup schedule. Describes how often should be the backup performed and
-// what should be the retention policy.
+// BackupSchedule description of a backup schedule. Describes how often should be the backup performed and what
+// should be the retention policy.
 type BackupSchedule struct {
 	// FrequencyInterval - How often the backup should be executed (e.g. for weekly backup, this should be set to 7 and FrequencyUnit should be set to Day)
 	FrequencyInterval *int32 `json:"frequencyInterval,omitempty"`
@@ -5338,8 +4390,29 @@ type BackupSchedule struct {
 	LastExecutionTime *date.Time `json:"lastExecutionTime,omitempty"`
 }
 
-// BillingMeter app Service billing entity that contains information about meter which the Azure billing
-// system utilizes to charge users for services.
+// MarshalJSON is the custom marshaler for BackupSchedule.
+func (bs BackupSchedule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bs.FrequencyInterval != nil {
+		objectMap["frequencyInterval"] = bs.FrequencyInterval
+	}
+	if bs.FrequencyUnit != "" {
+		objectMap["frequencyUnit"] = bs.FrequencyUnit
+	}
+	if bs.KeepAtLeastOneBackup != nil {
+		objectMap["keepAtLeastOneBackup"] = bs.KeepAtLeastOneBackup
+	}
+	if bs.RetentionPeriodInDays != nil {
+		objectMap["retentionPeriodInDays"] = bs.RetentionPeriodInDays
+	}
+	if bs.StartTime != nil {
+		objectMap["startTime"] = bs.StartTime
+	}
+	return json.Marshal(objectMap)
+}
+
+// BillingMeter app Service billing entity that contains information about meter which the Azure billing system
+// utilizes to charge users for services.
 type BillingMeter struct {
 	// BillingMeterProperties - BillingMeter resource specific properties
 	*BillingMeterProperties `json:"properties,omitempty"`
@@ -5434,6 +4507,15 @@ type BillingMeterCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for BillingMeterCollection.
+func (bmc BillingMeterCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bmc.Value != nil {
+		objectMap["value"] = bmc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // BillingMeterCollectionIterator provides access to a complete listing of BillingMeter values.
 type BillingMeterCollectionIterator struct {
 	i    int
@@ -5502,10 +4584,15 @@ func (bmc BillingMeterCollection) IsEmpty() bool {
 	return bmc.Value == nil || len(*bmc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (bmc BillingMeterCollection) hasNextLink() bool {
+	return bmc.NextLink != nil && len(*bmc.NextLink) != 0
+}
+
 // billingMeterCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (bmc BillingMeterCollection) billingMeterCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if bmc.NextLink == nil || len(to.String(bmc.NextLink)) < 1 {
+	if !bmc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5533,11 +4620,16 @@ func (page *BillingMeterCollectionPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.bmc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.bmc)
+		if err != nil {
+			return err
+		}
+		page.bmc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.bmc = next
 	return nil
 }
 
@@ -5721,6 +4813,15 @@ type CertificateCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CertificateCollection.
+func (cc CertificateCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cc.Value != nil {
+		objectMap["value"] = cc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // CertificateCollectionIterator provides access to a complete listing of Certificate values.
 type CertificateCollectionIterator struct {
 	i    int
@@ -5789,10 +4890,15 @@ func (cc CertificateCollection) IsEmpty() bool {
 	return cc.Value == nil || len(*cc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cc CertificateCollection) hasNextLink() bool {
+	return cc.NextLink != nil && len(*cc.NextLink) != 0
+}
+
 // certificateCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cc CertificateCollection) certificateCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if cc.NextLink == nil || len(to.String(cc.NextLink)) < 1 {
+	if !cc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5820,11 +4926,16 @@ func (page *CertificateCollectionPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cc)
+		if err != nil {
+			return err
+		}
+		page.cc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cc = next
 	return nil
 }
 
@@ -6196,6 +5307,30 @@ type CertificatePatchResourceProperties struct {
 	ServerFarmID *string `json:"serverFarmId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CertificatePatchResourceProperties.
+func (cpr CertificatePatchResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cpr.HostNames != nil {
+		objectMap["hostNames"] = cpr.HostNames
+	}
+	if cpr.PfxBlob != nil {
+		objectMap["pfxBlob"] = cpr.PfxBlob
+	}
+	if cpr.Password != nil {
+		objectMap["password"] = cpr.Password
+	}
+	if cpr.KeyVaultID != nil {
+		objectMap["keyVaultId"] = cpr.KeyVaultID
+	}
+	if cpr.KeyVaultSecretName != nil {
+		objectMap["keyVaultSecretName"] = cpr.KeyVaultSecretName
+	}
+	if cpr.ServerFarmID != nil {
+		objectMap["serverFarmId"] = cpr.ServerFarmID
+	}
+	return json.Marshal(objectMap)
+}
+
 // CertificateProperties certificate resource specific properties
 type CertificateProperties struct {
 	// FriendlyName - READ-ONLY; Friendly name of the certificate.
@@ -6236,6 +5371,30 @@ type CertificateProperties struct {
 	KeyVaultSecretStatus KeyVaultSecretStatus `json:"keyVaultSecretStatus,omitempty"`
 	// ServerFarmID - Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
 	ServerFarmID *string `json:"serverFarmId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CertificateProperties.
+func (c CertificateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.HostNames != nil {
+		objectMap["hostNames"] = c.HostNames
+	}
+	if c.PfxBlob != nil {
+		objectMap["pfxBlob"] = c.PfxBlob
+	}
+	if c.Password != nil {
+		objectMap["password"] = c.Password
+	}
+	if c.KeyVaultID != nil {
+		objectMap["keyVaultId"] = c.KeyVaultID
+	}
+	if c.KeyVaultSecretName != nil {
+		objectMap["keyVaultSecretName"] = c.KeyVaultSecretName
+	}
+	if c.ServerFarmID != nil {
+		objectMap["serverFarmId"] = c.ServerFarmID
+	}
+	return json.Marshal(objectMap)
 }
 
 // CloningInfo information needed for cloning operation.
@@ -6473,6 +5632,15 @@ type ContinuousWebJobCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ContinuousWebJobCollection.
+func (cwjc ContinuousWebJobCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cwjc.Value != nil {
+		objectMap["value"] = cwjc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // ContinuousWebJobCollectionIterator provides access to a complete listing of ContinuousWebJob values.
 type ContinuousWebJobCollectionIterator struct {
 	i    int
@@ -6541,10 +5709,15 @@ func (cwjc ContinuousWebJobCollection) IsEmpty() bool {
 	return cwjc.Value == nil || len(*cwjc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cwjc ContinuousWebJobCollection) hasNextLink() bool {
+	return cwjc.NextLink != nil && len(*cwjc.NextLink) != 0
+}
+
 // continuousWebJobCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cwjc ContinuousWebJobCollection) continuousWebJobCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if cwjc.NextLink == nil || len(to.String(cwjc.NextLink)) < 1 {
+	if !cwjc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -6572,11 +5745,16 @@ func (page *ContinuousWebJobCollectionPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cwjc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cwjc)
+		if err != nil {
+			return err
+		}
+		page.cwjc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cwjc = next
 	return nil
 }
 
@@ -6697,6 +5875,15 @@ type CsmOperationCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CsmOperationCollection.
+func (coc CsmOperationCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if coc.Value != nil {
+		objectMap["value"] = coc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // CsmOperationCollectionIterator provides access to a complete listing of CsmOperationDescription values.
 type CsmOperationCollectionIterator struct {
 	i    int
@@ -6765,10 +5952,15 @@ func (coc CsmOperationCollection) IsEmpty() bool {
 	return coc.Value == nil || len(*coc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (coc CsmOperationCollection) hasNextLink() bool {
+	return coc.NextLink != nil && len(*coc.NextLink) != 0
+}
+
 // csmOperationCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (coc CsmOperationCollection) csmOperationCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if coc.NextLink == nil || len(to.String(coc.NextLink)) < 1 {
+	if !coc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -6796,11 +5988,16 @@ func (page *CsmOperationCollectionPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.coc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.coc)
+		if err != nil {
+			return err
+		}
+		page.coc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.coc = next
 	return nil
 }
 
@@ -6897,6 +6094,15 @@ type CsmUsageQuotaCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CsmUsageQuotaCollection.
+func (cuqc CsmUsageQuotaCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cuqc.Value != nil {
+		objectMap["value"] = cuqc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // CsmUsageQuotaCollectionIterator provides access to a complete listing of CsmUsageQuota values.
 type CsmUsageQuotaCollectionIterator struct {
 	i    int
@@ -6965,10 +6171,15 @@ func (cuqc CsmUsageQuotaCollection) IsEmpty() bool {
 	return cuqc.Value == nil || len(*cuqc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cuqc CsmUsageQuotaCollection) hasNextLink() bool {
+	return cuqc.NextLink != nil && len(*cuqc.NextLink) != 0
+}
+
 // csmUsageQuotaCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cuqc CsmUsageQuotaCollection) csmUsageQuotaCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if cuqc.NextLink == nil || len(to.String(cuqc.NextLink)) < 1 {
+	if !cuqc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -6996,11 +6207,16 @@ func (page *CsmUsageQuotaCollectionPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cuqc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cuqc)
+		if err != nil {
+			return err
+		}
+		page.cuqc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cuqc = next
 	return nil
 }
 
@@ -7147,6 +6363,27 @@ type CustomHostnameAnalysisResultProperties struct {
 	AlternateTxtRecords *[]string `json:"alternateTxtRecords,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CustomHostnameAnalysisResultProperties.
+func (char CustomHostnameAnalysisResultProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if char.CNameRecords != nil {
+		objectMap["cNameRecords"] = char.CNameRecords
+	}
+	if char.TxtRecords != nil {
+		objectMap["txtRecords"] = char.TxtRecords
+	}
+	if char.ARecords != nil {
+		objectMap["aRecords"] = char.ARecords
+	}
+	if char.AlternateCNameRecords != nil {
+		objectMap["alternateCNameRecords"] = char.AlternateCNameRecords
+	}
+	if char.AlternateTxtRecords != nil {
+		objectMap["alternateTxtRecords"] = char.AlternateTxtRecords
+	}
+	return json.Marshal(objectMap)
+}
+
 // DatabaseBackupSetting database backup settings.
 type DatabaseBackupSetting struct {
 	// DatabaseType - Database type (e.g. SqlAzure / MySql). Possible values include: 'DatabaseTypeSQLAzure', 'DatabaseTypeMySQL', 'DatabaseTypeLocalMySQL', 'DatabaseTypePostgreSQL'
@@ -7204,6 +6441,15 @@ type DefaultErrorResponseError struct {
 	Details *[]DefaultErrorResponseErrorDetailsItem `json:"details,omitempty"`
 	// Innererror - READ-ONLY; More information to debug error.
 	Innererror *string `json:"innererror,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DefaultErrorResponseError.
+func (der DefaultErrorResponseError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if der.Details != nil {
+		objectMap["details"] = der.Details
+	}
+	return json.Marshal(objectMap)
 }
 
 // DefaultErrorResponseErrorDetailsItem detailed errors.
@@ -7432,6 +6678,15 @@ type DeletedWebAppCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DeletedWebAppCollection.
+func (dwac DeletedWebAppCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dwac.Value != nil {
+		objectMap["value"] = dwac.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // DeletedWebAppCollectionIterator provides access to a complete listing of DeletedSite values.
 type DeletedWebAppCollectionIterator struct {
 	i    int
@@ -7500,10 +6755,15 @@ func (dwac DeletedWebAppCollection) IsEmpty() bool {
 	return dwac.Value == nil || len(*dwac.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dwac DeletedWebAppCollection) hasNextLink() bool {
+	return dwac.NextLink != nil && len(*dwac.NextLink) != 0
+}
+
 // deletedWebAppCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dwac DeletedWebAppCollection) deletedWebAppCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if dwac.NextLink == nil || len(to.String(dwac.NextLink)) < 1 {
+	if !dwac.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -7531,11 +6791,16 @@ func (page *DeletedWebAppCollectionPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dwac)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dwac)
+		if err != nil {
+			return err
+		}
+		page.dwac = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dwac = next
 	return nil
 }
 
@@ -7665,6 +6930,15 @@ type DeploymentCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DeploymentCollection.
+func (dc DeploymentCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dc.Value != nil {
+		objectMap["value"] = dc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // DeploymentCollectionIterator provides access to a complete listing of Deployment values.
 type DeploymentCollectionIterator struct {
 	i    int
@@ -7733,10 +7007,15 @@ func (dc DeploymentCollection) IsEmpty() bool {
 	return dc.Value == nil || len(*dc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dc DeploymentCollection) hasNextLink() bool {
+	return dc.NextLink != nil && len(*dc.NextLink) != 0
+}
+
 // deploymentCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dc DeploymentCollection) deploymentCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if dc.NextLink == nil || len(to.String(dc.NextLink)) < 1 {
+	if !dc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -7764,11 +7043,16 @@ func (page *DeploymentCollectionPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dc)
+		if err != nil {
+			return err
+		}
+		page.dc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dc = next
 	return nil
 }
 
@@ -8062,6 +7346,15 @@ type DetectorResponseCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DetectorResponseCollection.
+func (drc DetectorResponseCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if drc.Value != nil {
+		objectMap["value"] = drc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // DetectorResponseCollectionIterator provides access to a complete listing of DetectorResponse values.
 type DetectorResponseCollectionIterator struct {
 	i    int
@@ -8130,10 +7423,15 @@ func (drc DetectorResponseCollection) IsEmpty() bool {
 	return drc.Value == nil || len(*drc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (drc DetectorResponseCollection) hasNextLink() bool {
+	return drc.NextLink != nil && len(*drc.NextLink) != 0
+}
+
 // detectorResponseCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (drc DetectorResponseCollection) detectorResponseCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if drc.NextLink == nil || len(to.String(drc.NextLink)) < 1 {
+	if !drc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -8161,11 +7459,16 @@ func (page *DetectorResponseCollectionPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.drc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.drc)
+		if err != nil {
+			return err
+		}
+		page.drc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.drc = next
 	return nil
 }
 
@@ -8303,6 +7606,15 @@ type DiagnosticAnalysisCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DiagnosticAnalysisCollection.
+func (dac DiagnosticAnalysisCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dac.Value != nil {
+		objectMap["value"] = dac.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // DiagnosticAnalysisCollectionIterator provides access to a complete listing of AnalysisDefinition values.
 type DiagnosticAnalysisCollectionIterator struct {
 	i    int
@@ -8371,10 +7683,15 @@ func (dac DiagnosticAnalysisCollection) IsEmpty() bool {
 	return dac.Value == nil || len(*dac.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dac DiagnosticAnalysisCollection) hasNextLink() bool {
+	return dac.NextLink != nil && len(*dac.NextLink) != 0
+}
+
 // diagnosticAnalysisCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dac DiagnosticAnalysisCollection) diagnosticAnalysisCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if dac.NextLink == nil || len(to.String(dac.NextLink)) < 1 {
+	if !dac.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -8402,11 +7719,16 @@ func (page *DiagnosticAnalysisCollectionPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dac)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dac)
+		if err != nil {
+			return err
+		}
+		page.dac = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dac = next
 	return nil
 }
 
@@ -8550,6 +7872,15 @@ type DiagnosticCategoryCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DiagnosticCategoryCollection.
+func (dcc DiagnosticCategoryCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dcc.Value != nil {
+		objectMap["value"] = dcc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // DiagnosticCategoryCollectionIterator provides access to a complete listing of DiagnosticCategory values.
 type DiagnosticCategoryCollectionIterator struct {
 	i    int
@@ -8618,10 +7949,15 @@ func (dcc DiagnosticCategoryCollection) IsEmpty() bool {
 	return dcc.Value == nil || len(*dcc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dcc DiagnosticCategoryCollection) hasNextLink() bool {
+	return dcc.NextLink != nil && len(*dcc.NextLink) != 0
+}
+
 // diagnosticCategoryCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dcc DiagnosticCategoryCollection) diagnosticCategoryCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if dcc.NextLink == nil || len(to.String(dcc.NextLink)) < 1 {
+	if !dcc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -8649,11 +7985,16 @@ func (page *DiagnosticCategoryCollectionPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dcc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dcc)
+		if err != nil {
+			return err
+		}
+		page.dcc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dcc = next
 	return nil
 }
 
@@ -8708,6 +8049,15 @@ type DiagnosticDetectorCollection struct {
 	Value *[]DetectorDefinition `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DiagnosticDetectorCollection.
+func (ddc DiagnosticDetectorCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ddc.Value != nil {
+		objectMap["value"] = ddc.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // DiagnosticDetectorCollectionIterator provides access to a complete listing of DetectorDefinition values.
@@ -8778,10 +8128,15 @@ func (ddc DiagnosticDetectorCollection) IsEmpty() bool {
 	return ddc.Value == nil || len(*ddc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ddc DiagnosticDetectorCollection) hasNextLink() bool {
+	return ddc.NextLink != nil && len(*ddc.NextLink) != 0
+}
+
 // diagnosticDetectorCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ddc DiagnosticDetectorCollection) diagnosticDetectorCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if ddc.NextLink == nil || len(to.String(ddc.NextLink)) < 1 {
+	if !ddc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -8809,11 +8164,16 @@ func (page *DiagnosticDetectorCollectionPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ddc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ddc)
+		if err != nil {
+			return err
+		}
+		page.ddc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ddc = next
 	return nil
 }
 
@@ -9133,6 +8493,15 @@ type DomainCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DomainCollection.
+func (dc DomainCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dc.Value != nil {
+		objectMap["value"] = dc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // DomainCollectionIterator provides access to a complete listing of Domain values.
 type DomainCollectionIterator struct {
 	i    int
@@ -9201,10 +8570,15 @@ func (dc DomainCollection) IsEmpty() bool {
 	return dc.Value == nil || len(*dc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dc DomainCollection) hasNextLink() bool {
+	return dc.NextLink != nil && len(*dc.NextLink) != 0
+}
+
 // domainCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dc DomainCollection) domainCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if dc.NextLink == nil || len(to.String(dc.NextLink)) < 1 {
+	if !dc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -9232,11 +8606,16 @@ func (page *DomainCollectionPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dc)
+		if err != nil {
+			return err
+		}
+		page.dc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dc = next
 	return nil
 }
 
@@ -9377,6 +8756,15 @@ type DomainOwnershipIdentifierCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DomainOwnershipIdentifierCollection.
+func (doic DomainOwnershipIdentifierCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if doic.Value != nil {
+		objectMap["value"] = doic.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // DomainOwnershipIdentifierCollectionIterator provides access to a complete listing of
 // DomainOwnershipIdentifier values.
 type DomainOwnershipIdentifierCollectionIterator struct {
@@ -9446,10 +8834,15 @@ func (doic DomainOwnershipIdentifierCollection) IsEmpty() bool {
 	return doic.Value == nil || len(*doic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (doic DomainOwnershipIdentifierCollection) hasNextLink() bool {
+	return doic.NextLink != nil && len(*doic.NextLink) != 0
+}
+
 // domainOwnershipIdentifierCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (doic DomainOwnershipIdentifierCollection) domainOwnershipIdentifierCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if doic.NextLink == nil || len(to.String(doic.NextLink)) < 1 {
+	if !doic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -9477,11 +8870,16 @@ func (page *DomainOwnershipIdentifierCollectionPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.doic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.doic)
+		if err != nil {
+			return err
+		}
+		page.doic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.doic = next
 	return nil
 }
 
@@ -9651,6 +9049,45 @@ type DomainPatchResourceProperties struct {
 	AuthCode      *string `json:"authCode,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DomainPatchResourceProperties.
+func (dpr DomainPatchResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dpr.ContactAdmin != nil {
+		objectMap["contactAdmin"] = dpr.ContactAdmin
+	}
+	if dpr.ContactBilling != nil {
+		objectMap["contactBilling"] = dpr.ContactBilling
+	}
+	if dpr.ContactRegistrant != nil {
+		objectMap["contactRegistrant"] = dpr.ContactRegistrant
+	}
+	if dpr.ContactTech != nil {
+		objectMap["contactTech"] = dpr.ContactTech
+	}
+	if dpr.Privacy != nil {
+		objectMap["privacy"] = dpr.Privacy
+	}
+	if dpr.AutoRenew != nil {
+		objectMap["autoRenew"] = dpr.AutoRenew
+	}
+	if dpr.Consent != nil {
+		objectMap["consent"] = dpr.Consent
+	}
+	if dpr.DNSType != "" {
+		objectMap["dnsType"] = dpr.DNSType
+	}
+	if dpr.DNSZoneID != nil {
+		objectMap["dnsZoneId"] = dpr.DNSZoneID
+	}
+	if dpr.TargetDNSType != "" {
+		objectMap["targetDnsType"] = dpr.TargetDNSType
+	}
+	if dpr.AuthCode != nil {
+		objectMap["authCode"] = dpr.AuthCode
+	}
+	return json.Marshal(objectMap)
+}
+
 // DomainProperties domain resource specific properties
 type DomainProperties struct {
 	// ContactAdmin - Administrative contact.
@@ -9693,6 +9130,45 @@ type DomainProperties struct {
 	// TargetDNSType - Target DNS type (would be used for migration). Possible values include: 'AzureDNS', 'DefaultDomainRegistrarDNS'
 	TargetDNSType DNSType `json:"targetDnsType,omitempty"`
 	AuthCode      *string `json:"authCode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DomainProperties.
+func (d DomainProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if d.ContactAdmin != nil {
+		objectMap["contactAdmin"] = d.ContactAdmin
+	}
+	if d.ContactBilling != nil {
+		objectMap["contactBilling"] = d.ContactBilling
+	}
+	if d.ContactRegistrant != nil {
+		objectMap["contactRegistrant"] = d.ContactRegistrant
+	}
+	if d.ContactTech != nil {
+		objectMap["contactTech"] = d.ContactTech
+	}
+	if d.Privacy != nil {
+		objectMap["privacy"] = d.Privacy
+	}
+	if d.AutoRenew != nil {
+		objectMap["autoRenew"] = d.AutoRenew
+	}
+	if d.Consent != nil {
+		objectMap["consent"] = d.Consent
+	}
+	if d.DNSType != "" {
+		objectMap["dnsType"] = d.DNSType
+	}
+	if d.DNSZoneID != nil {
+		objectMap["dnsZoneId"] = d.DNSZoneID
+	}
+	if d.TargetDNSType != "" {
+		objectMap["targetDnsType"] = d.TargetDNSType
+	}
+	if d.AuthCode != nil {
+		objectMap["authCode"] = d.AuthCode
+	}
+	return json.Marshal(objectMap)
 }
 
 // DomainPurchaseConsent domain purchase consent object, representing acceptance of applicable legal
@@ -9749,8 +9225,8 @@ type EnabledConfig struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// EndpointDependency a domain name that a service is reached at, including details of the current
-// connection status.
+// EndpointDependency a domain name that a service is reached at, including details of the current connection
+// status.
 type EndpointDependency struct {
 	// DomainName - The domain name of the dependency.
 	DomainName *string `json:"domainName,omitempty"`
@@ -9758,8 +9234,7 @@ type EndpointDependency struct {
 	EndpointDetails *[]EndpointDetail `json:"endpointDetails,omitempty"`
 }
 
-// EndpointDetail current TCP connectivity information from the App Service Environment to a single
-// endpoint.
+// EndpointDetail current TCP connectivity information from the App Service Environment to a single endpoint.
 type EndpointDetail struct {
 	// IPAddress - An IP Address that Domain Name currently resolves to.
 	IPAddress *string `json:"ipAddress,omitempty"`
@@ -9909,6 +9384,15 @@ type FunctionEnvelopeCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FunctionEnvelopeCollection.
+func (fec FunctionEnvelopeCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fec.Value != nil {
+		objectMap["value"] = fec.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // FunctionEnvelopeCollectionIterator provides access to a complete listing of FunctionEnvelope values.
 type FunctionEnvelopeCollectionIterator struct {
 	i    int
@@ -9977,10 +9461,15 @@ func (fec FunctionEnvelopeCollection) IsEmpty() bool {
 	return fec.Value == nil || len(*fec.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (fec FunctionEnvelopeCollection) hasNextLink() bool {
+	return fec.NextLink != nil && len(*fec.NextLink) != 0
+}
+
 // functionEnvelopeCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (fec FunctionEnvelopeCollection) functionEnvelopeCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if fec.NextLink == nil || len(to.String(fec.NextLink)) < 1 {
+	if !fec.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -10008,11 +9497,16 @@ func (page *FunctionEnvelopeCollectionPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.fec)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.fec)
+		if err != nil {
+			return err
+		}
+		page.fec = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.fec = next
 	return nil
 }
 
@@ -10319,6 +9813,15 @@ type GeoRegionCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GeoRegionCollection.
+func (grc GeoRegionCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if grc.Value != nil {
+		objectMap["value"] = grc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // GeoRegionCollectionIterator provides access to a complete listing of GeoRegion values.
 type GeoRegionCollectionIterator struct {
 	i    int
@@ -10387,10 +9890,15 @@ func (grc GeoRegionCollection) IsEmpty() bool {
 	return grc.Value == nil || len(*grc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (grc GeoRegionCollection) hasNextLink() bool {
+	return grc.NextLink != nil && len(*grc.NextLink) != 0
+}
+
 // geoRegionCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (grc GeoRegionCollection) geoRegionCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if grc.NextLink == nil || len(to.String(grc.NextLink)) < 1 {
+	if !grc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -10418,11 +9926,16 @@ func (page *GeoRegionCollectionPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.grc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.grc)
+		if err != nil {
+			return err
+		}
+		page.grc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.grc = next
 	return nil
 }
 
@@ -10482,10 +9995,9 @@ type GlobalCsmSkuDescription struct {
 	Capabilities *[]Capability `json:"capabilities,omitempty"`
 }
 
-// HandlerMapping the IIS handler mappings used to define which handler processes HTTP requests with
-// certain extension.
-// For example, it is used to configure php-cgi.exe process to handle all HTTP requests with *.php
+// HandlerMapping the IIS handler mappings used to define which handler processes HTTP requests with certain
 // extension.
+// For example, it is used to configure php-cgi.exe process to handle all HTTP requests with *.php extension.
 type HandlerMapping struct {
 	// Extension - Requests with this extension will be handled using the specified FastCGI application.
 	Extension *string `json:"extension,omitempty"`
@@ -10520,6 +10032,15 @@ type HostingEnvironmentProfile struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type of the App Service Environment.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HostingEnvironmentProfile.
+func (hep HostingEnvironmentProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hep.ID != nil {
+		objectMap["id"] = hep.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // HostKeys functions host level keys.
@@ -10660,6 +10181,15 @@ type HostNameBindingCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HostNameBindingCollection.
+func (hnbc HostNameBindingCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hnbc.Value != nil {
+		objectMap["value"] = hnbc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // HostNameBindingCollectionIterator provides access to a complete listing of HostNameBinding values.
 type HostNameBindingCollectionIterator struct {
 	i    int
@@ -10728,10 +10258,15 @@ func (hnbc HostNameBindingCollection) IsEmpty() bool {
 	return hnbc.Value == nil || len(*hnbc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (hnbc HostNameBindingCollection) hasNextLink() bool {
+	return hnbc.NextLink != nil && len(*hnbc.NextLink) != 0
+}
+
 // hostNameBindingCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (hnbc HostNameBindingCollection) hostNameBindingCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if hnbc.NextLink == nil || len(to.String(hnbc.NextLink)) < 1 {
+	if !hnbc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -10759,11 +10294,16 @@ func (page *HostNameBindingCollectionPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.hnbc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.hnbc)
+		if err != nil {
+			return err
+		}
+		page.hnbc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.hnbc = next
 	return nil
 }
 
@@ -10817,6 +10357,36 @@ type HostNameBindingProperties struct {
 	Thumbprint *string `json:"thumbprint,omitempty"`
 	// VirtualIP - READ-ONLY; Virtual IP address assigned to the hostname if IP based SSL is enabled.
 	VirtualIP *string `json:"virtualIP,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HostNameBindingProperties.
+func (hnb HostNameBindingProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hnb.SiteName != nil {
+		objectMap["siteName"] = hnb.SiteName
+	}
+	if hnb.DomainID != nil {
+		objectMap["domainId"] = hnb.DomainID
+	}
+	if hnb.AzureResourceName != nil {
+		objectMap["azureResourceName"] = hnb.AzureResourceName
+	}
+	if hnb.AzureResourceType != "" {
+		objectMap["azureResourceType"] = hnb.AzureResourceType
+	}
+	if hnb.CustomHostNameDNSRecordType != "" {
+		objectMap["customHostNameDnsRecordType"] = hnb.CustomHostNameDNSRecordType
+	}
+	if hnb.HostNameType != "" {
+		objectMap["hostNameType"] = hnb.HostNameType
+	}
+	if hnb.SslState != "" {
+		objectMap["sslState"] = hnb.SslState
+	}
+	if hnb.Thumbprint != nil {
+		objectMap["thumbprint"] = hnb.Thumbprint
+	}
+	return json.Marshal(objectMap)
 }
 
 // HostNameSslState SSL-enabled hostname.
@@ -10939,6 +10509,15 @@ type HybridConnectionCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HybridConnectionCollection.
+func (hcc HybridConnectionCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if hcc.Value != nil {
+		objectMap["value"] = hcc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // HybridConnectionCollectionIterator provides access to a complete listing of HybridConnection values.
 type HybridConnectionCollectionIterator struct {
 	i    int
@@ -11007,10 +10586,15 @@ func (hcc HybridConnectionCollection) IsEmpty() bool {
 	return hcc.Value == nil || len(*hcc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (hcc HybridConnectionCollection) hasNextLink() bool {
+	return hcc.NextLink != nil && len(*hcc.NextLink) != 0
+}
+
 // hybridConnectionCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (hcc HybridConnectionCollection) hybridConnectionCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if hcc.NextLink == nil || len(to.String(hcc.NextLink)) < 1 {
+	if !hcc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -11038,11 +10622,16 @@ func (page *HybridConnectionCollectionPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.hcc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.hcc)
+		if err != nil {
+			return err
+		}
+		page.hcc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.hcc = next
 	return nil
 }
 
@@ -11172,8 +10761,8 @@ type HybridConnectionKeyProperties struct {
 	SendKeyValue *string `json:"sendKeyValue,omitempty"`
 }
 
-// HybridConnectionLimits hybrid Connection limits contract. This is used to return the plan limits of
-// Hybrid Connections.
+// HybridConnectionLimits hybrid Connection limits contract. This is used to return the plan limits of Hybrid
+// Connections.
 type HybridConnectionLimits struct {
 	autorest.Response `json:"-"`
 	// HybridConnectionLimitsProperties - HybridConnectionLimits resource specific properties
@@ -11385,6 +10974,15 @@ type IdentifierCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IdentifierCollection.
+func (ic IdentifierCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ic.Value != nil {
+		objectMap["value"] = ic.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // IdentifierCollectionIterator provides access to a complete listing of Identifier values.
 type IdentifierCollectionIterator struct {
 	i    int
@@ -11453,10 +11051,15 @@ func (ic IdentifierCollection) IsEmpty() bool {
 	return ic.Value == nil || len(*ic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ic IdentifierCollection) hasNextLink() bool {
+	return ic.NextLink != nil && len(*ic.NextLink) != 0
+}
+
 // identifierCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ic IdentifierCollection) identifierCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if ic.NextLink == nil || len(to.String(ic.NextLink)) < 1 {
+	if !ic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -11484,11 +11087,16 @@ func (page *IdentifierCollectionPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ic)
+		if err != nil {
+			return err
+		}
+		page.ic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ic = next
 	return nil
 }
 
@@ -11528,8 +11136,8 @@ type IdentifierProperties struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// InboundEnvironmentEndpoint the IP Addresses and Ports that require inbound network access to and within
-// the subnet of the App Service Environment.
+// InboundEnvironmentEndpoint the IP Addresses and Ports that require inbound network access to and within the
+// subnet of the App Service Environment.
 type InboundEnvironmentEndpoint struct {
 	// Description - Short text describing the purpose of the network traffic.
 	Description *string `json:"description,omitempty"`
@@ -11546,6 +11154,15 @@ type InboundEnvironmentEndpointCollection struct {
 	Value *[]InboundEnvironmentEndpoint `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InboundEnvironmentEndpointCollection.
+func (ieec InboundEnvironmentEndpointCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ieec.Value != nil {
+		objectMap["value"] = ieec.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // InboundEnvironmentEndpointCollectionIterator provides access to a complete listing of
@@ -11617,10 +11234,15 @@ func (ieec InboundEnvironmentEndpointCollection) IsEmpty() bool {
 	return ieec.Value == nil || len(*ieec.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ieec InboundEnvironmentEndpointCollection) hasNextLink() bool {
+	return ieec.NextLink != nil && len(*ieec.NextLink) != 0
+}
+
 // inboundEnvironmentEndpointCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ieec InboundEnvironmentEndpointCollection) inboundEnvironmentEndpointCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if ieec.NextLink == nil || len(to.String(ieec.NextLink)) < 1 {
+	if !ieec.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -11648,11 +11270,16 @@ func (page *InboundEnvironmentEndpointCollectionPage) NextWithContext(ctx contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ieec)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ieec)
+		if err != nil {
+			return err
+		}
+		page.ieec = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ieec = next
 	return nil
 }
 
@@ -11809,6 +11436,15 @@ type JobCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobCollection.
+func (jc JobCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if jc.Value != nil {
+		objectMap["value"] = jc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // JobCollectionIterator provides access to a complete listing of Job values.
 type JobCollectionIterator struct {
 	i    int
@@ -11877,10 +11513,15 @@ func (jc JobCollection) IsEmpty() bool {
 	return jc.Value == nil || len(*jc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (jc JobCollection) hasNextLink() bool {
+	return jc.NextLink != nil && len(*jc.NextLink) != 0
+}
+
 // jobCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (jc JobCollection) jobCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if jc.NextLink == nil || len(to.String(jc.NextLink)) < 1 {
+	if !jc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -11908,11 +11549,16 @@ func (page *JobCollectionPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.jc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.jc)
+		if err != nil {
+			return err
+		}
+		page.jc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.jc = next
 	return nil
 }
 
@@ -12772,6 +12418,15 @@ type NameIdentifierCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NameIdentifierCollection.
+func (nic NameIdentifierCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nic.Value != nil {
+		objectMap["value"] = nic.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // NameIdentifierCollectionIterator provides access to a complete listing of NameIdentifier values.
 type NameIdentifierCollectionIterator struct {
 	i    int
@@ -12840,10 +12495,15 @@ func (nic NameIdentifierCollection) IsEmpty() bool {
 	return nic.Value == nil || len(*nic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (nic NameIdentifierCollection) hasNextLink() bool {
+	return nic.NextLink != nil && len(*nic.NextLink) != 0
+}
+
 // nameIdentifierCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (nic NameIdentifierCollection) nameIdentifierCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if nic.NextLink == nil || len(to.String(nic.NextLink)) < 1 {
+	if !nic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -12871,11 +12531,16 @@ func (page *NameIdentifierCollectionPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.nic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.nic)
+		if err != nil {
+			return err
+		}
+		page.nic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.nic = next
 	return nil
 }
 
@@ -13078,6 +12743,15 @@ type OutboundEnvironmentEndpointCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OutboundEnvironmentEndpointCollection.
+func (oeec OutboundEnvironmentEndpointCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if oeec.Value != nil {
+		objectMap["value"] = oeec.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // OutboundEnvironmentEndpointCollectionIterator provides access to a complete listing of
 // OutboundEnvironmentEndpoint values.
 type OutboundEnvironmentEndpointCollectionIterator struct {
@@ -13147,10 +12821,15 @@ func (oeec OutboundEnvironmentEndpointCollection) IsEmpty() bool {
 	return oeec.Value == nil || len(*oeec.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (oeec OutboundEnvironmentEndpointCollection) hasNextLink() bool {
+	return oeec.NextLink != nil && len(*oeec.NextLink) != 0
+}
+
 // outboundEnvironmentEndpointCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (oeec OutboundEnvironmentEndpointCollection) outboundEnvironmentEndpointCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if oeec.NextLink == nil || len(to.String(oeec.NextLink)) < 1 {
+	if !oeec.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -13178,11 +12857,16 @@ func (page *OutboundEnvironmentEndpointCollectionPage) NextWithContext(ctx conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.oeec)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.oeec)
+		if err != nil {
+			return err
+		}
+		page.oeec = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.oeec = next
 	return nil
 }
 
@@ -13223,6 +12907,15 @@ type PerfMonCounterCollection struct {
 	Value *[]PerfMonResponse `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PerfMonCounterCollection.
+func (pmcc PerfMonCounterCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pmcc.Value != nil {
+		objectMap["value"] = pmcc.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // PerfMonCounterCollectionIterator provides access to a complete listing of PerfMonResponse values.
@@ -13293,10 +12986,15 @@ func (pmcc PerfMonCounterCollection) IsEmpty() bool {
 	return pmcc.Value == nil || len(*pmcc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pmcc PerfMonCounterCollection) hasNextLink() bool {
+	return pmcc.NextLink != nil && len(*pmcc.NextLink) != 0
+}
+
 // perfMonCounterCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pmcc PerfMonCounterCollection) perfMonCounterCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if pmcc.NextLink == nil || len(to.String(pmcc.NextLink)) < 1 {
+	if !pmcc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -13324,11 +13022,16 @@ func (page *PerfMonCounterCollectionPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pmcc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pmcc)
+		if err != nil {
+			return err
+		}
+		page.pmcc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pmcc = next
 	return nil
 }
 
@@ -13606,6 +13309,15 @@ type PremierAddOnOfferCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PremierAddOnOfferCollection.
+func (paooc PremierAddOnOfferCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if paooc.Value != nil {
+		objectMap["value"] = paooc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // PremierAddOnOfferCollectionIterator provides access to a complete listing of PremierAddOnOffer values.
 type PremierAddOnOfferCollectionIterator struct {
 	i    int
@@ -13674,10 +13386,15 @@ func (paooc PremierAddOnOfferCollection) IsEmpty() bool {
 	return paooc.Value == nil || len(*paooc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (paooc PremierAddOnOfferCollection) hasNextLink() bool {
+	return paooc.NextLink != nil && len(*paooc.NextLink) != 0
+}
+
 // premierAddOnOfferCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (paooc PremierAddOnOfferCollection) premierAddOnOfferCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if paooc.NextLink == nil || len(to.String(paooc.NextLink)) < 1 {
+	if !paooc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -13705,11 +13422,16 @@ func (page *PremierAddOnOfferCollectionPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.paooc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.paooc)
+		if err != nil {
+			return err
+		}
+		page.paooc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.paooc = next
 	return nil
 }
 
@@ -14092,6 +13814,15 @@ type ProcessInfoCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProcessInfoCollection.
+func (pic ProcessInfoCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pic.Value != nil {
+		objectMap["value"] = pic.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProcessInfoCollectionIterator provides access to a complete listing of ProcessInfo values.
 type ProcessInfoCollectionIterator struct {
 	i    int
@@ -14160,10 +13891,15 @@ func (pic ProcessInfoCollection) IsEmpty() bool {
 	return pic.Value == nil || len(*pic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pic ProcessInfoCollection) hasNextLink() bool {
+	return pic.NextLink != nil && len(*pic.NextLink) != 0
+}
+
 // processInfoCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pic ProcessInfoCollection) processInfoCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if pic.NextLink == nil || len(to.String(pic.NextLink)) < 1 {
+	if !pic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -14191,11 +13927,16 @@ func (page *ProcessInfoCollectionPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pic)
+		if err != nil {
+			return err
+		}
+		page.pic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pic = next
 	return nil
 }
 
@@ -14512,6 +14253,15 @@ type ProcessModuleInfoCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProcessModuleInfoCollection.
+func (pmic ProcessModuleInfoCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pmic.Value != nil {
+		objectMap["value"] = pmic.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProcessModuleInfoCollectionIterator provides access to a complete listing of ProcessModuleInfo values.
 type ProcessModuleInfoCollectionIterator struct {
 	i    int
@@ -14580,10 +14330,15 @@ func (pmic ProcessModuleInfoCollection) IsEmpty() bool {
 	return pmic.Value == nil || len(*pmic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pmic ProcessModuleInfoCollection) hasNextLink() bool {
+	return pmic.NextLink != nil && len(*pmic.NextLink) != 0
+}
+
 // processModuleInfoCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pmic ProcessModuleInfoCollection) processModuleInfoCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if pmic.NextLink == nil || len(to.String(pmic.NextLink)) < 1 {
+	if !pmic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -14611,11 +14366,16 @@ func (page *ProcessModuleInfoCollectionPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pmic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pmic)
+		if err != nil {
+			return err
+		}
+		page.pmic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pmic = next
 	return nil
 }
 
@@ -14771,6 +14531,15 @@ type ProcessThreadInfoCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProcessThreadInfoCollection.
+func (ptic ProcessThreadInfoCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ptic.Value != nil {
+		objectMap["value"] = ptic.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProcessThreadInfoCollectionIterator provides access to a complete listing of ProcessThreadInfo values.
 type ProcessThreadInfoCollectionIterator struct {
 	i    int
@@ -14839,10 +14608,15 @@ func (ptic ProcessThreadInfoCollection) IsEmpty() bool {
 	return ptic.Value == nil || len(*ptic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ptic ProcessThreadInfoCollection) hasNextLink() bool {
+	return ptic.NextLink != nil && len(*ptic.NextLink) != 0
+}
+
 // processThreadInfoCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ptic ProcessThreadInfoCollection) processThreadInfoCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if ptic.NextLink == nil || len(to.String(ptic.NextLink)) < 1 {
+	if !ptic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -14870,11 +14644,16 @@ func (page *ProcessThreadInfoCollectionPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ptic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ptic)
+		if err != nil {
+			return err
+		}
+		page.ptic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ptic = next
 	return nil
 }
 
@@ -14938,6 +14717,48 @@ type ProcessThreadInfoProperties struct {
 	WaitReason *string `json:"wait_reason,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProcessThreadInfoProperties.
+func (pti ProcessThreadInfoProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pti.Href != nil {
+		objectMap["href"] = pti.Href
+	}
+	if pti.Process != nil {
+		objectMap["process"] = pti.Process
+	}
+	if pti.StartAddress != nil {
+		objectMap["start_address"] = pti.StartAddress
+	}
+	if pti.CurrentPriority != nil {
+		objectMap["current_priority"] = pti.CurrentPriority
+	}
+	if pti.PriorityLevel != nil {
+		objectMap["priority_level"] = pti.PriorityLevel
+	}
+	if pti.BasePriority != nil {
+		objectMap["base_priority"] = pti.BasePriority
+	}
+	if pti.StartTime != nil {
+		objectMap["start_time"] = pti.StartTime
+	}
+	if pti.TotalProcessorTime != nil {
+		objectMap["total_processor_time"] = pti.TotalProcessorTime
+	}
+	if pti.UserProcessorTime != nil {
+		objectMap["user_processor_time"] = pti.UserProcessorTime
+	}
+	if pti.PriviledgedProcessorTime != nil {
+		objectMap["priviledged_processor_time"] = pti.PriviledgedProcessorTime
+	}
+	if pti.State != nil {
+		objectMap["state"] = pti.State
+	}
+	if pti.WaitReason != nil {
+		objectMap["wait_reason"] = pti.WaitReason
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProxyOnlyResource azure proxy only resource. This resource is not tracked by Azure Resource Manager.
 type ProxyOnlyResource struct {
 	// ID - READ-ONLY; Resource Id.
@@ -14948,6 +14769,15 @@ type ProxyOnlyResource struct {
 	Kind *string `json:"kind,omitempty"`
 	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyOnlyResource.
+func (por ProxyOnlyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if por.Kind != nil {
+		objectMap["kind"] = por.Kind
+	}
+	return json.Marshal(objectMap)
 }
 
 // PublicCertificate public certificate object
@@ -15046,6 +14876,15 @@ type PublicCertificateCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PublicCertificateCollection.
+func (pcc PublicCertificateCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pcc.Value != nil {
+		objectMap["value"] = pcc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // PublicCertificateCollectionIterator provides access to a complete listing of PublicCertificate values.
 type PublicCertificateCollectionIterator struct {
 	i    int
@@ -15114,10 +14953,15 @@ func (pcc PublicCertificateCollection) IsEmpty() bool {
 	return pcc.Value == nil || len(*pcc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pcc PublicCertificateCollection) hasNextLink() bool {
+	return pcc.NextLink != nil && len(*pcc.NextLink) != 0
+}
+
 // publicCertificateCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pcc PublicCertificateCollection) publicCertificateCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if pcc.NextLink == nil || len(to.String(pcc.NextLink)) < 1 {
+	if !pcc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -15145,11 +14989,16 @@ func (page *PublicCertificateCollectionPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pcc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pcc)
+		if err != nil {
+			return err
+		}
+		page.pcc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pcc = next
 	return nil
 }
 
@@ -15191,6 +15040,18 @@ type PublicCertificateProperties struct {
 	PublicCertificateLocation PublicCertificateLocation `json:"publicCertificateLocation,omitempty"`
 	// Thumbprint - READ-ONLY; Certificate Thumbprint
 	Thumbprint *string `json:"thumbprint,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PublicCertificateProperties.
+func (pc PublicCertificateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pc.Blob != nil {
+		objectMap["blob"] = pc.Blob
+	}
+	if pc.PublicCertificateLocation != "" {
+		objectMap["publicCertificateLocation"] = pc.PublicCertificateLocation
+	}
+	return json.Marshal(objectMap)
 }
 
 // PushSettings push settings for the App.
@@ -15295,8 +15156,8 @@ type PushSettingsProperties struct {
 	DynamicTagsJSON *string `json:"dynamicTagsJson,omitempty"`
 }
 
-// RampUpRule routing rules for ramp up testing. This rule allows to redirect static traffic % to a slot or
-// to gradually change routing % based on performance.
+// RampUpRule routing rules for ramp up testing. This rule allows to redirect static traffic % to a slot or to
+// gradually change routing % based on performance.
 type RampUpRule struct {
 	// ActionHostName - Hostname of a slot to which the traffic will be redirected if decided to. E.g. myapp-stage.azurewebsites.net.
 	ActionHostName *string `json:"actionHostName,omitempty"`
@@ -15420,6 +15281,15 @@ type RecommendationCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RecommendationCollection.
+func (rc RecommendationCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rc.Value != nil {
+		objectMap["value"] = rc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // RecommendationCollectionIterator provides access to a complete listing of Recommendation values.
 type RecommendationCollectionIterator struct {
 	i    int
@@ -15488,10 +15358,15 @@ func (rc RecommendationCollection) IsEmpty() bool {
 	return rc.Value == nil || len(*rc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rc RecommendationCollection) hasNextLink() bool {
+	return rc.NextLink != nil && len(*rc.NextLink) != 0
+}
+
 // recommendationCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rc RecommendationCollection) recommendationCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if rc.NextLink == nil || len(to.String(rc.NextLink)) < 1 {
+	if !rc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -15519,11 +15394,16 @@ func (page *RecommendationCollectionPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rc)
+		if err != nil {
+			return err
+		}
+		page.rc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rc = next
 	return nil
 }
 
@@ -15605,6 +15485,78 @@ type RecommendationProperties struct {
 	BladeName *string `json:"bladeName,omitempty"`
 	// ForwardLink - Forward link to an external document associated with the rule.
 	ForwardLink *string `json:"forwardLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecommendationProperties.
+func (r RecommendationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.CreationTime != nil {
+		objectMap["creationTime"] = r.CreationTime
+	}
+	if r.RecommendationID != nil {
+		objectMap["recommendationId"] = r.RecommendationID
+	}
+	if r.ResourceID != nil {
+		objectMap["resourceId"] = r.ResourceID
+	}
+	if r.ResourceScope != "" {
+		objectMap["resourceScope"] = r.ResourceScope
+	}
+	if r.RuleName != nil {
+		objectMap["ruleName"] = r.RuleName
+	}
+	if r.DisplayName != nil {
+		objectMap["displayName"] = r.DisplayName
+	}
+	if r.Message != nil {
+		objectMap["message"] = r.Message
+	}
+	if r.Level != "" {
+		objectMap["level"] = r.Level
+	}
+	if r.Channels != "" {
+		objectMap["channels"] = r.Channels
+	}
+	if r.ActionName != nil {
+		objectMap["actionName"] = r.ActionName
+	}
+	if r.Enabled != nil {
+		objectMap["enabled"] = r.Enabled
+	}
+	if r.States != nil {
+		objectMap["states"] = r.States
+	}
+	if r.StartTime != nil {
+		objectMap["startTime"] = r.StartTime
+	}
+	if r.EndTime != nil {
+		objectMap["endTime"] = r.EndTime
+	}
+	if r.NextNotificationTime != nil {
+		objectMap["nextNotificationTime"] = r.NextNotificationTime
+	}
+	if r.NotificationExpirationTime != nil {
+		objectMap["notificationExpirationTime"] = r.NotificationExpirationTime
+	}
+	if r.NotifiedTime != nil {
+		objectMap["notifiedTime"] = r.NotifiedTime
+	}
+	if r.Score != nil {
+		objectMap["score"] = r.Score
+	}
+	if r.IsDynamic != nil {
+		objectMap["isDynamic"] = r.IsDynamic
+	}
+	if r.ExtensionName != nil {
+		objectMap["extensionName"] = r.ExtensionName
+	}
+	if r.BladeName != nil {
+		objectMap["bladeName"] = r.BladeName
+	}
+	if r.ForwardLink != nil {
+		objectMap["forwardLink"] = r.ForwardLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // RecommendationRule represents a recommendation rule that the recommendation engine can perform.
@@ -15723,6 +15675,48 @@ type RecommendationRuleProperties struct {
 	BladeName *string `json:"bladeName,omitempty"`
 	// ForwardLink - Forward link to an external document associated with the rule. Applicable to dynamic rule only.
 	ForwardLink *string `json:"forwardLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecommendationRuleProperties.
+func (rr RecommendationRuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rr.RecommendationName != nil {
+		objectMap["recommendationName"] = rr.RecommendationName
+	}
+	if rr.DisplayName != nil {
+		objectMap["displayName"] = rr.DisplayName
+	}
+	if rr.Message != nil {
+		objectMap["message"] = rr.Message
+	}
+	if rr.RecommendationID != nil {
+		objectMap["recommendationId"] = rr.RecommendationID
+	}
+	if rr.Description != nil {
+		objectMap["description"] = rr.Description
+	}
+	if rr.ActionName != nil {
+		objectMap["actionName"] = rr.ActionName
+	}
+	if rr.Level != "" {
+		objectMap["level"] = rr.Level
+	}
+	if rr.Channels != "" {
+		objectMap["channels"] = rr.Channels
+	}
+	if rr.IsDynamic != nil {
+		objectMap["isDynamic"] = rr.IsDynamic
+	}
+	if rr.ExtensionName != nil {
+		objectMap["extensionName"] = rr.ExtensionName
+	}
+	if rr.BladeName != nil {
+		objectMap["bladeName"] = rr.BladeName
+	}
+	if rr.ForwardLink != nil {
+		objectMap["forwardLink"] = rr.ForwardLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // ReissueCertificateOrderRequest class representing certificate reissue request.
@@ -16075,6 +16069,15 @@ type ResourceCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceCollection.
+func (rc ResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rc.Value != nil {
+		objectMap["value"] = rc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // ResourceCollectionIterator provides access to a complete listing of string values.
 type ResourceCollectionIterator struct {
 	i    int
@@ -16143,10 +16146,15 @@ func (rc ResourceCollection) IsEmpty() bool {
 	return rc.Value == nil || len(*rc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rc ResourceCollection) hasNextLink() bool {
+	return rc.NextLink != nil && len(*rc.NextLink) != 0
+}
+
 // resourceCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rc ResourceCollection) resourceCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if rc.NextLink == nil || len(to.String(rc.NextLink)) < 1 {
+	if !rc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -16174,11 +16182,16 @@ func (page *ResourceCollectionPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rc)
+		if err != nil {
+			return err
+		}
+		page.rc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rc = next
 	return nil
 }
 
@@ -16308,6 +16321,15 @@ type ResourceHealthMetadataCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceHealthMetadataCollection.
+func (rhmc ResourceHealthMetadataCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rhmc.Value != nil {
+		objectMap["value"] = rhmc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // ResourceHealthMetadataCollectionIterator provides access to a complete listing of ResourceHealthMetadata
 // values.
 type ResourceHealthMetadataCollectionIterator struct {
@@ -16377,10 +16399,15 @@ func (rhmc ResourceHealthMetadataCollection) IsEmpty() bool {
 	return rhmc.Value == nil || len(*rhmc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rhmc ResourceHealthMetadataCollection) hasNextLink() bool {
+	return rhmc.NextLink != nil && len(*rhmc.NextLink) != 0
+}
+
 // resourceHealthMetadataCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rhmc ResourceHealthMetadataCollection) resourceHealthMetadataCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if rhmc.NextLink == nil || len(to.String(rhmc.NextLink)) < 1 {
+	if !rhmc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -16408,11 +16435,16 @@ func (page *ResourceHealthMetadataCollectionPage) NextWithContext(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rhmc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rhmc)
+		if err != nil {
+			return err
+		}
+		page.rhmc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rhmc = next
 	return nil
 }
 
@@ -16493,6 +16525,15 @@ type ResourceMetricCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceMetricCollection.
+func (rmc ResourceMetricCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rmc.Value != nil {
+		objectMap["value"] = rmc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // ResourceMetricCollectionIterator provides access to a complete listing of ResourceMetric values.
 type ResourceMetricCollectionIterator struct {
 	i    int
@@ -16561,10 +16602,15 @@ func (rmc ResourceMetricCollection) IsEmpty() bool {
 	return rmc.Value == nil || len(*rmc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rmc ResourceMetricCollection) hasNextLink() bool {
+	return rmc.NextLink != nil && len(*rmc.NextLink) != 0
+}
+
 // resourceMetricCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rmc ResourceMetricCollection) resourceMetricCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if rmc.NextLink == nil || len(to.String(rmc.NextLink)) < 1 {
+	if !rmc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -16592,11 +16638,16 @@ func (page *ResourceMetricCollectionPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rmc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rmc)
+		if err != nil {
+			return err
+		}
+		page.rmc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rmc = next
 	return nil
 }
 
@@ -16725,8 +16776,17 @@ type ResourceMetricDefinitionCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ResourceMetricDefinitionCollectionIterator provides access to a complete listing of
-// ResourceMetricDefinition values.
+// MarshalJSON is the custom marshaler for ResourceMetricDefinitionCollection.
+func (rmdc ResourceMetricDefinitionCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rmdc.Value != nil {
+		objectMap["value"] = rmdc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// ResourceMetricDefinitionCollectionIterator provides access to a complete listing of ResourceMetricDefinition
+// values.
 type ResourceMetricDefinitionCollectionIterator struct {
 	i    int
 	page ResourceMetricDefinitionCollectionPage
@@ -16794,10 +16854,15 @@ func (rmdc ResourceMetricDefinitionCollection) IsEmpty() bool {
 	return rmdc.Value == nil || len(*rmdc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rmdc ResourceMetricDefinitionCollection) hasNextLink() bool {
+	return rmdc.NextLink != nil && len(*rmdc.NextLink) != 0
+}
+
 // resourceMetricDefinitionCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rmdc ResourceMetricDefinitionCollection) resourceMetricDefinitionCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if rmdc.NextLink == nil || len(to.String(rmdc.NextLink)) < 1 {
+	if !rmdc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -16825,11 +16890,16 @@ func (page *ResourceMetricDefinitionCollectionPage) NextWithContext(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rmdc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rmdc)
+		if err != nil {
+			return err
+		}
+		page.rmdc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rmdc = next
 	return nil
 }
 
@@ -17198,8 +17268,7 @@ func (s *Site) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SiteAuthSettings configuration settings for the Azure App Service Authentication / Authorization
-// feature.
+// SiteAuthSettings configuration settings for the Azure App Service Authentication / Authorization feature.
 type SiteAuthSettings struct {
 	autorest.Response `json:"-"`
 	// SiteAuthSettingsProperties - SiteAuthSettings resource specific properties
@@ -17773,6 +17842,15 @@ type SiteConfigResourceCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SiteConfigResourceCollection.
+func (scrc SiteConfigResourceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if scrc.Value != nil {
+		objectMap["value"] = scrc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // SiteConfigResourceCollectionIterator provides access to a complete listing of SiteConfigResource values.
 type SiteConfigResourceCollectionIterator struct {
 	i    int
@@ -17841,10 +17919,15 @@ func (scrc SiteConfigResourceCollection) IsEmpty() bool {
 	return scrc.Value == nil || len(*scrc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (scrc SiteConfigResourceCollection) hasNextLink() bool {
+	return scrc.NextLink != nil && len(*scrc.NextLink) != 0
+}
+
 // siteConfigResourceCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (scrc SiteConfigResourceCollection) siteConfigResourceCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if scrc.NextLink == nil || len(to.String(scrc.NextLink)) < 1 {
+	if !scrc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -17872,11 +17955,16 @@ func (page *SiteConfigResourceCollectionPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.scrc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.scrc)
+		if err != nil {
+			return err
+		}
+		page.scrc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.scrc = next
 	return nil
 }
 
@@ -17996,14 +18084,23 @@ func (scsi *SiteConfigurationSnapshotInfo) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SiteConfigurationSnapshotInfoCollection collection of metadata for the app configuration snapshots that
-// can be restored.
+// SiteConfigurationSnapshotInfoCollection collection of metadata for the app configuration snapshots that can
+// be restored.
 type SiteConfigurationSnapshotInfoCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of resources.
 	Value *[]SiteConfigurationSnapshotInfo `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SiteConfigurationSnapshotInfoCollection.
+func (scsic SiteConfigurationSnapshotInfoCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if scsic.Value != nil {
+		objectMap["value"] = scsic.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // SiteConfigurationSnapshotInfoCollectionIterator provides access to a complete listing of
@@ -18075,10 +18172,15 @@ func (scsic SiteConfigurationSnapshotInfoCollection) IsEmpty() bool {
 	return scsic.Value == nil || len(*scsic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (scsic SiteConfigurationSnapshotInfoCollection) hasNextLink() bool {
+	return scsic.NextLink != nil && len(*scsic.NextLink) != 0
+}
+
 // siteConfigurationSnapshotInfoCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (scsic SiteConfigurationSnapshotInfoCollection) siteConfigurationSnapshotInfoCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if scsic.NextLink == nil || len(to.String(scsic.NextLink)) < 1 {
+	if !scsic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -18106,11 +18208,16 @@ func (page *SiteConfigurationSnapshotInfoCollectionPage) NextWithContext(ctx con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.scsic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.scsic)
+		if err != nil {
+			return err
+		}
+		page.scsic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.scsic = next
 	return nil
 }
 
@@ -18248,6 +18355,15 @@ type SiteExtensionInfoCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SiteExtensionInfoCollection.
+func (seic SiteExtensionInfoCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if seic.Value != nil {
+		objectMap["value"] = seic.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // SiteExtensionInfoCollectionIterator provides access to a complete listing of SiteExtensionInfo values.
 type SiteExtensionInfoCollectionIterator struct {
 	i    int
@@ -18316,10 +18432,15 @@ func (seic SiteExtensionInfoCollection) IsEmpty() bool {
 	return seic.Value == nil || len(*seic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (seic SiteExtensionInfoCollection) hasNextLink() bool {
+	return seic.NextLink != nil && len(*seic.NextLink) != 0
+}
+
 // siteExtensionInfoCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (seic SiteExtensionInfoCollection) siteExtensionInfoCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if seic.NextLink == nil || len(to.String(seic.NextLink)) < 1 {
+	if !seic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -18347,11 +18468,16 @@ func (page *SiteExtensionInfoCollectionPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.seic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.seic)
+		if err != nil {
+			return err
+		}
+		page.seic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.seic = next
 	return nil
 }
 
@@ -18822,6 +18948,69 @@ type SitePatchResourceProperties struct {
 	GeoDistributions *[]GeoDistribution `json:"geoDistributions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SitePatchResourceProperties.
+func (spr SitePatchResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if spr.Enabled != nil {
+		objectMap["enabled"] = spr.Enabled
+	}
+	if spr.HostNameSslStates != nil {
+		objectMap["hostNameSslStates"] = spr.HostNameSslStates
+	}
+	if spr.ServerFarmID != nil {
+		objectMap["serverFarmId"] = spr.ServerFarmID
+	}
+	if spr.Reserved != nil {
+		objectMap["reserved"] = spr.Reserved
+	}
+	if spr.IsXenon != nil {
+		objectMap["isXenon"] = spr.IsXenon
+	}
+	if spr.HyperV != nil {
+		objectMap["hyperV"] = spr.HyperV
+	}
+	if spr.SiteConfig != nil {
+		objectMap["siteConfig"] = spr.SiteConfig
+	}
+	if spr.ScmSiteAlsoStopped != nil {
+		objectMap["scmSiteAlsoStopped"] = spr.ScmSiteAlsoStopped
+	}
+	if spr.HostingEnvironmentProfile != nil {
+		objectMap["hostingEnvironmentProfile"] = spr.HostingEnvironmentProfile
+	}
+	if spr.ClientAffinityEnabled != nil {
+		objectMap["clientAffinityEnabled"] = spr.ClientAffinityEnabled
+	}
+	if spr.ClientCertEnabled != nil {
+		objectMap["clientCertEnabled"] = spr.ClientCertEnabled
+	}
+	if spr.ClientCertExclusionPaths != nil {
+		objectMap["clientCertExclusionPaths"] = spr.ClientCertExclusionPaths
+	}
+	if spr.HostNamesDisabled != nil {
+		objectMap["hostNamesDisabled"] = spr.HostNamesDisabled
+	}
+	if spr.ContainerSize != nil {
+		objectMap["containerSize"] = spr.ContainerSize
+	}
+	if spr.DailyMemoryTimeQuota != nil {
+		objectMap["dailyMemoryTimeQuota"] = spr.DailyMemoryTimeQuota
+	}
+	if spr.CloningInfo != nil {
+		objectMap["cloningInfo"] = spr.CloningInfo
+	}
+	if spr.HTTPSOnly != nil {
+		objectMap["httpsOnly"] = spr.HTTPSOnly
+	}
+	if spr.RedundancyMode != "" {
+		objectMap["redundancyMode"] = spr.RedundancyMode
+	}
+	if spr.GeoDistributions != nil {
+		objectMap["geoDistributions"] = spr.GeoDistributions
+	}
+	return json.Marshal(objectMap)
+}
+
 // SitePhpErrorLogFlag used for getting PHP error logging flag.
 type SitePhpErrorLogFlag struct {
 	autorest.Response `json:"-"`
@@ -19003,6 +19192,69 @@ type SiteProperties struct {
 	GeoDistributions *[]GeoDistribution `json:"geoDistributions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SiteProperties.
+func (s SiteProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.Enabled != nil {
+		objectMap["enabled"] = s.Enabled
+	}
+	if s.HostNameSslStates != nil {
+		objectMap["hostNameSslStates"] = s.HostNameSslStates
+	}
+	if s.ServerFarmID != nil {
+		objectMap["serverFarmId"] = s.ServerFarmID
+	}
+	if s.Reserved != nil {
+		objectMap["reserved"] = s.Reserved
+	}
+	if s.IsXenon != nil {
+		objectMap["isXenon"] = s.IsXenon
+	}
+	if s.HyperV != nil {
+		objectMap["hyperV"] = s.HyperV
+	}
+	if s.SiteConfig != nil {
+		objectMap["siteConfig"] = s.SiteConfig
+	}
+	if s.ScmSiteAlsoStopped != nil {
+		objectMap["scmSiteAlsoStopped"] = s.ScmSiteAlsoStopped
+	}
+	if s.HostingEnvironmentProfile != nil {
+		objectMap["hostingEnvironmentProfile"] = s.HostingEnvironmentProfile
+	}
+	if s.ClientAffinityEnabled != nil {
+		objectMap["clientAffinityEnabled"] = s.ClientAffinityEnabled
+	}
+	if s.ClientCertEnabled != nil {
+		objectMap["clientCertEnabled"] = s.ClientCertEnabled
+	}
+	if s.ClientCertExclusionPaths != nil {
+		objectMap["clientCertExclusionPaths"] = s.ClientCertExclusionPaths
+	}
+	if s.HostNamesDisabled != nil {
+		objectMap["hostNamesDisabled"] = s.HostNamesDisabled
+	}
+	if s.ContainerSize != nil {
+		objectMap["containerSize"] = s.ContainerSize
+	}
+	if s.DailyMemoryTimeQuota != nil {
+		objectMap["dailyMemoryTimeQuota"] = s.DailyMemoryTimeQuota
+	}
+	if s.CloningInfo != nil {
+		objectMap["cloningInfo"] = s.CloningInfo
+	}
+	if s.HTTPSOnly != nil {
+		objectMap["httpsOnly"] = s.HTTPSOnly
+	}
+	if s.RedundancyMode != "" {
+		objectMap["redundancyMode"] = s.RedundancyMode
+	}
+	if s.GeoDistributions != nil {
+		objectMap["geoDistributions"] = s.GeoDistributions
+	}
+	return json.Marshal(objectMap)
+}
+
 // SiteSeal site seal
 type SiteSeal struct {
 	autorest.Response `json:"-"`
@@ -19170,6 +19422,15 @@ type SkuInfoCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuInfoCollection.
+func (sic SkuInfoCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sic.Value != nil {
+		objectMap["value"] = sic.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // SkuInfoCollectionIterator provides access to a complete listing of SkuInfo values.
 type SkuInfoCollectionIterator struct {
 	i    int
@@ -19238,10 +19499,15 @@ func (sic SkuInfoCollection) IsEmpty() bool {
 	return sic.Value == nil || len(*sic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sic SkuInfoCollection) hasNextLink() bool {
+	return sic.NextLink != nil && len(*sic.NextLink) != 0
+}
+
 // skuInfoCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sic SkuInfoCollection) skuInfoCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if sic.NextLink == nil || len(to.String(sic.NextLink)) < 1 {
+	if !sic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -19269,11 +19535,16 @@ func (page *SkuInfoCollectionPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sic)
+		if err != nil {
+			return err
+		}
+		page.sic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sic = next
 	return nil
 }
 
@@ -19511,6 +19782,15 @@ type SlotDifferenceCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SlotDifferenceCollection.
+func (sdc SlotDifferenceCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sdc.Value != nil {
+		objectMap["value"] = sdc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // SlotDifferenceCollectionIterator provides access to a complete listing of SlotDifference values.
 type SlotDifferenceCollectionIterator struct {
 	i    int
@@ -19579,10 +19859,15 @@ func (sdc SlotDifferenceCollection) IsEmpty() bool {
 	return sdc.Value == nil || len(*sdc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sdc SlotDifferenceCollection) hasNextLink() bool {
+	return sdc.NextLink != nil && len(*sdc.NextLink) != 0
+}
+
 // slotDifferenceCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sdc SlotDifferenceCollection) slotDifferenceCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if sdc.NextLink == nil || len(to.String(sdc.NextLink)) < 1 {
+	if !sdc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -19610,11 +19895,16 @@ func (page *SlotDifferenceCollectionPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sdc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sdc)
+		if err != nil {
+			return err
+		}
+		page.sdc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sdc = next
 	return nil
 }
 
@@ -19781,6 +20071,15 @@ type SnapshotCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SnapshotCollection.
+func (sc SnapshotCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sc.Value != nil {
+		objectMap["value"] = sc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // SnapshotCollectionIterator provides access to a complete listing of Snapshot values.
 type SnapshotCollectionIterator struct {
 	i    int
@@ -19849,10 +20148,15 @@ func (sc SnapshotCollection) IsEmpty() bool {
 	return sc.Value == nil || len(*sc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sc SnapshotCollection) hasNextLink() bool {
+	return sc.NextLink != nil && len(*sc.NextLink) != 0
+}
+
 // snapshotCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sc SnapshotCollection) snapshotCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if sc.NextLink == nil || len(to.String(sc.NextLink)) < 1 {
+	if !sc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -19880,11 +20184,16 @@ func (page *SnapshotCollectionPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sc)
+		if err != nil {
+			return err
+		}
+		page.sc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sc = next
 	return nil
 }
 
@@ -20152,6 +20461,15 @@ type SourceControlCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SourceControlCollection.
+func (scc SourceControlCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if scc.Value != nil {
+		objectMap["value"] = scc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // SourceControlCollectionIterator provides access to a complete listing of SourceControl values.
 type SourceControlCollectionIterator struct {
 	i    int
@@ -20220,10 +20538,15 @@ func (scc SourceControlCollection) IsEmpty() bool {
 	return scc.Value == nil || len(*scc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (scc SourceControlCollection) hasNextLink() bool {
+	return scc.NextLink != nil && len(*scc.NextLink) != 0
+}
+
 // sourceControlCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (scc SourceControlCollection) sourceControlCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if scc.NextLink == nil || len(to.String(scc.NextLink)) < 1 {
+	if !scc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -20251,11 +20574,16 @@ func (page *SourceControlCollectionPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.scc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.scc)
+		if err != nil {
+			return err
+		}
+		page.scc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.scc = next
 	return nil
 }
 
@@ -20366,6 +20694,15 @@ type StampCapacityCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StampCapacityCollection.
+func (scc StampCapacityCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if scc.Value != nil {
+		objectMap["value"] = scc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // StampCapacityCollectionIterator provides access to a complete listing of StampCapacity values.
 type StampCapacityCollectionIterator struct {
 	i    int
@@ -20434,10 +20771,15 @@ func (scc StampCapacityCollection) IsEmpty() bool {
 	return scc.Value == nil || len(*scc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (scc StampCapacityCollection) hasNextLink() bool {
+	return scc.NextLink != nil && len(*scc.NextLink) != 0
+}
+
 // stampCapacityCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (scc StampCapacityCollection) stampCapacityCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if scc.NextLink == nil || len(to.String(scc.NextLink)) < 1 {
+	if !scc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -20465,11 +20807,16 @@ func (page *StampCapacityCollectionPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.scc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.scc)
+		if err != nil {
+			return err
+		}
+		page.scc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.scc = next
 	return nil
 }
 
@@ -20858,6 +21205,15 @@ type TldLegalAgreementCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TldLegalAgreementCollection.
+func (tlac TldLegalAgreementCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tlac.Value != nil {
+		objectMap["value"] = tlac.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // TldLegalAgreementCollectionIterator provides access to a complete listing of TldLegalAgreement values.
 type TldLegalAgreementCollectionIterator struct {
 	i    int
@@ -20926,10 +21282,15 @@ func (tlac TldLegalAgreementCollection) IsEmpty() bool {
 	return tlac.Value == nil || len(*tlac.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tlac TldLegalAgreementCollection) hasNextLink() bool {
+	return tlac.NextLink != nil && len(*tlac.NextLink) != 0
+}
+
 // tldLegalAgreementCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tlac TldLegalAgreementCollection) tldLegalAgreementCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if tlac.NextLink == nil || len(to.String(tlac.NextLink)) < 1 {
+	if !tlac.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -20957,11 +21318,16 @@ func (page *TldLegalAgreementCollectionPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tlac)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tlac)
+		if err != nil {
+			return err
+		}
+		page.tlac = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tlac = next
 	return nil
 }
 
@@ -21099,6 +21465,15 @@ type TopLevelDomainCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TopLevelDomainCollection.
+func (tldc TopLevelDomainCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tldc.Value != nil {
+		objectMap["value"] = tldc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // TopLevelDomainCollectionIterator provides access to a complete listing of TopLevelDomain values.
 type TopLevelDomainCollectionIterator struct {
 	i    int
@@ -21167,10 +21542,15 @@ func (tldc TopLevelDomainCollection) IsEmpty() bool {
 	return tldc.Value == nil || len(*tldc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tldc TopLevelDomainCollection) hasNextLink() bool {
+	return tldc.NextLink != nil && len(*tldc.NextLink) != 0
+}
+
 // topLevelDomainCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tldc TopLevelDomainCollection) topLevelDomainCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if tldc.NextLink == nil || len(to.String(tldc.NextLink)) < 1 {
+	if !tldc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -21198,11 +21578,16 @@ func (page *TopLevelDomainCollectionPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tldc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tldc)
+		if err != nil {
+			return err
+		}
+		page.tldc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tldc = next
 	return nil
 }
 
@@ -21338,8 +21723,16 @@ type TriggeredJobHistoryCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// TriggeredJobHistoryCollectionIterator provides access to a complete listing of TriggeredJobHistory
-// values.
+// MarshalJSON is the custom marshaler for TriggeredJobHistoryCollection.
+func (tjhc TriggeredJobHistoryCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tjhc.Value != nil {
+		objectMap["value"] = tjhc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// TriggeredJobHistoryCollectionIterator provides access to a complete listing of TriggeredJobHistory values.
 type TriggeredJobHistoryCollectionIterator struct {
 	i    int
 	page TriggeredJobHistoryCollectionPage
@@ -21407,10 +21800,15 @@ func (tjhc TriggeredJobHistoryCollection) IsEmpty() bool {
 	return tjhc.Value == nil || len(*tjhc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tjhc TriggeredJobHistoryCollection) hasNextLink() bool {
+	return tjhc.NextLink != nil && len(*tjhc.NextLink) != 0
+}
+
 // triggeredJobHistoryCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tjhc TriggeredJobHistoryCollection) triggeredJobHistoryCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if tjhc.NextLink == nil || len(to.String(tjhc.NextLink)) < 1 {
+	if !tjhc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -21438,11 +21836,16 @@ func (page *TriggeredJobHistoryCollectionPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tjhc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tjhc)
+		if err != nil {
+			return err
+		}
+		page.tjhc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tjhc = next
 	return nil
 }
 
@@ -21690,6 +22093,15 @@ type TriggeredWebJobCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TriggeredWebJobCollection.
+func (twjc TriggeredWebJobCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if twjc.Value != nil {
+		objectMap["value"] = twjc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // TriggeredWebJobCollectionIterator provides access to a complete listing of TriggeredWebJob values.
 type TriggeredWebJobCollectionIterator struct {
 	i    int
@@ -21758,10 +22170,15 @@ func (twjc TriggeredWebJobCollection) IsEmpty() bool {
 	return twjc.Value == nil || len(*twjc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (twjc TriggeredWebJobCollection) hasNextLink() bool {
+	return twjc.NextLink != nil && len(*twjc.NextLink) != 0
+}
+
 // triggeredWebJobCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (twjc TriggeredWebJobCollection) triggeredWebJobCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if twjc.NextLink == nil || len(to.String(twjc.NextLink)) < 1 {
+	if !twjc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -21789,11 +22206,16 @@ func (page *TriggeredWebJobCollectionPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.twjc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.twjc)
+		if err != nil {
+			return err
+		}
+		page.twjc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.twjc = next
 	return nil
 }
 
@@ -21982,6 +22404,15 @@ type UsageCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UsageCollection.
+func (uc UsageCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if uc.Value != nil {
+		objectMap["value"] = uc.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // UsageCollectionIterator provides access to a complete listing of Usage values.
 type UsageCollectionIterator struct {
 	i    int
@@ -22050,10 +22481,15 @@ func (uc UsageCollection) IsEmpty() bool {
 	return uc.Value == nil || len(*uc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (uc UsageCollection) hasNextLink() bool {
+	return uc.NextLink != nil && len(*uc.NextLink) != 0
+}
+
 // usageCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (uc UsageCollection) usageCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if uc.NextLink == nil || len(to.String(uc.NextLink)) < 1 {
+	if !uc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -22081,11 +22517,16 @@ func (page *UsageCollectionPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.uc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.uc)
+		if err != nil {
+			return err
+		}
+		page.uc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.uc = next
 	return nil
 }
 
@@ -22416,8 +22857,20 @@ type VirtualNetworkProfile struct {
 	Subnet *string `json:"subnet,omitempty"`
 }
 
-// VnetGateway the Virtual Network gateway contract. This is used to give the Virtual Network gateway
-// access to the VPN package.
+// MarshalJSON is the custom marshaler for VirtualNetworkProfile.
+func (vnp VirtualNetworkProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vnp.ID != nil {
+		objectMap["id"] = vnp.ID
+	}
+	if vnp.Subnet != nil {
+		objectMap["subnet"] = vnp.Subnet
+	}
+	return json.Marshal(objectMap)
+}
+
+// VnetGateway the Virtual Network gateway contract. This is used to give the Virtual Network gateway access to
+// the VPN package.
 type VnetGateway struct {
 	autorest.Response `json:"-"`
 	// VnetGatewayProperties - VnetGateway resource specific properties
@@ -22616,6 +23069,24 @@ type VnetInfoProperties struct {
 	DNSServers *string `json:"dnsServers,omitempty"`
 	// IsSwift - Flag that is used to denote if this is VNET injection
 	IsSwift *bool `json:"isSwift,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VnetInfoProperties.
+func (vi VnetInfoProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vi.VnetResourceID != nil {
+		objectMap["vnetResourceId"] = vi.VnetResourceID
+	}
+	if vi.CertBlob != nil {
+		objectMap["certBlob"] = vi.CertBlob
+	}
+	if vi.DNSServers != nil {
+		objectMap["dnsServers"] = vi.DNSServers
+	}
+	if vi.IsSwift != nil {
+		objectMap["isSwift"] = vi.IsSwift
+	}
+	return json.Marshal(objectMap)
 }
 
 // VnetParameters the required set of inputs to validate a VNET
@@ -23018,6 +23489,24 @@ type WorkerPool struct {
 	InstanceNames *[]string `json:"instanceNames,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for WorkerPool.
+func (wp WorkerPool) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wp.WorkerSizeID != nil {
+		objectMap["workerSizeId"] = wp.WorkerSizeID
+	}
+	if wp.ComputeMode != "" {
+		objectMap["computeMode"] = wp.ComputeMode
+	}
+	if wp.WorkerSize != nil {
+		objectMap["workerSize"] = wp.WorkerSize
+	}
+	if wp.WorkerCount != nil {
+		objectMap["workerCount"] = wp.WorkerCount
+	}
+	return json.Marshal(objectMap)
+}
+
 // WorkerPoolCollection collection of worker pools.
 type WorkerPoolCollection struct {
 	autorest.Response `json:"-"`
@@ -23025,6 +23514,15 @@ type WorkerPoolCollection struct {
 	Value *[]WorkerPoolResource `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkerPoolCollection.
+func (wpc WorkerPoolCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wpc.Value != nil {
+		objectMap["value"] = wpc.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // WorkerPoolCollectionIterator provides access to a complete listing of WorkerPoolResource values.
@@ -23095,10 +23593,15 @@ func (wpc WorkerPoolCollection) IsEmpty() bool {
 	return wpc.Value == nil || len(*wpc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wpc WorkerPoolCollection) hasNextLink() bool {
+	return wpc.NextLink != nil && len(*wpc.NextLink) != 0
+}
+
 // workerPoolCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wpc WorkerPoolCollection) workerPoolCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if wpc.NextLink == nil || len(to.String(wpc.NextLink)) < 1 {
+	if !wpc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -23126,11 +23629,16 @@ func (page *WorkerPoolCollectionPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wpc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wpc)
+		if err != nil {
+			return err
+		}
+		page.wpc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wpc = next
 	return nil
 }
 

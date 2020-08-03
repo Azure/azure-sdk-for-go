@@ -25,54 +25,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/2018-11-01-preview/hdinsight"
 
-// ApplicationState enumerates the values for application state.
-type ApplicationState string
-
-const (
-	// ACCEPTED ...
-	ACCEPTED ApplicationState = "ACCEPTED"
-	// FAILED ...
-	FAILED ApplicationState = "FAILED"
-	// FINISHED ...
-	FINISHED ApplicationState = "FINISHED"
-	// FINISHING ...
-	FINISHING ApplicationState = "FINISHING"
-	// KILLED ...
-	KILLED ApplicationState = "KILLED"
-	// NEW ...
-	NEW ApplicationState = "NEW"
-	// NEWSAVING ...
-	NEWSAVING ApplicationState = "NEW_SAVING"
-	// RUNNING ...
-	RUNNING ApplicationState = "RUNNING"
-	// SUBMITTED ...
-	SUBMITTED ApplicationState = "SUBMITTED"
-)
-
-// PossibleApplicationStateValues returns an array of possible values for the ApplicationState const type.
-func PossibleApplicationStateValues() []ApplicationState {
-	return []ApplicationState{ACCEPTED, FAILED, FINISHED, FINISHING, KILLED, NEW, NEWSAVING, RUNNING, SUBMITTED}
-}
-
-// SessionJobKind enumerates the values for session job kind.
-type SessionJobKind string
-
-const (
-	// Pyspark ...
-	Pyspark SessionJobKind = "pyspark"
-	// Spark ...
-	Spark SessionJobKind = "spark"
-	// Sparkr ...
-	Sparkr SessionJobKind = "sparkr"
-	// SQL ...
-	SQL SessionJobKind = "sql"
-)
-
-// PossibleSessionJobKindValues returns an array of possible values for the SessionJobKind const type.
-func PossibleSessionJobKindValues() []SessionJobKind {
-	return []SessionJobKind{Pyspark, Spark, Sparkr, SQL}
-}
-
 // AppState the State of the application.
 type AppState struct {
 	autorest.Response `json:"-"`
@@ -531,4 +483,31 @@ type Userargs struct {
 	Jar *string `json:"jar,omitempty"`
 	// Statusdir - The status directory defined by the user.
 	Statusdir interface{} `json:"statusdir,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Userargs.
+func (u Userargs) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if u.Callback != nil {
+		objectMap["callback"] = u.Callback
+	}
+	if u.Enablelog != nil {
+		objectMap["enablelog"] = u.Enablelog
+	}
+	if u.Execute != nil {
+		objectMap["execute"] = u.Execute
+	}
+	if u.File != nil {
+		objectMap["file"] = u.File
+	}
+	if u.Files != nil {
+		objectMap["files"] = u.Files
+	}
+	if u.Jar != nil {
+		objectMap["jar"] = u.Jar
+	}
+	if u.Statusdir != nil {
+		objectMap["statusdir"] = u.Statusdir
+	}
+	return json.Marshal(objectMap)
 }

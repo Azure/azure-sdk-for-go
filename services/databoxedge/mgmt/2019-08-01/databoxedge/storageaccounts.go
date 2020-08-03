@@ -314,6 +314,9 @@ func (client StorageAccountsClient) ListByDataBoxEdgeDevice(ctx context.Context,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.StorageAccountsClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
 	}
+	if result.sal.hasNextLink() && result.sal.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

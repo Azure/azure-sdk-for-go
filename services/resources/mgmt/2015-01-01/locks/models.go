@@ -29,23 +29,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-01-01/locks"
 
-// LockLevel enumerates the values for lock level.
-type LockLevel string
-
-const (
-	// CanNotDelete ...
-	CanNotDelete LockLevel = "CanNotDelete"
-	// NotSpecified ...
-	NotSpecified LockLevel = "NotSpecified"
-	// ReadOnly ...
-	ReadOnly LockLevel = "ReadOnly"
-)
-
-// PossibleLockLevelValues returns an array of possible values for the LockLevel const type.
-func PossibleLockLevelValues() []LockLevel {
-	return []LockLevel{CanNotDelete, NotSpecified, ReadOnly}
-}
-
 // ManagementLockListResult list of management locks.
 type ManagementLockListResult struct {
 	autorest.Response `json:"-"`
@@ -123,10 +106,15 @@ func (mllr ManagementLockListResult) IsEmpty() bool {
 	return mllr.Value == nil || len(*mllr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mllr ManagementLockListResult) hasNextLink() bool {
+	return mllr.NextLink != nil && len(*mllr.NextLink) != 0
+}
+
 // managementLockListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mllr ManagementLockListResult) managementLockListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if mllr.NextLink == nil || len(to.String(mllr.NextLink)) < 1 {
+	if !mllr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -154,11 +142,16 @@ func (page *ManagementLockListResultPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mllr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mllr)
+		if err != nil {
+			return err
+		}
+		page.mllr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mllr = next
 	return nil
 }
 

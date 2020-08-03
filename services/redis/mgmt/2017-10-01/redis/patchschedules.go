@@ -312,6 +312,9 @@ func (client PatchSchedulesClient) ListByRedisResource(ctx context.Context, reso
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "redis.PatchSchedulesClient", "ListByRedisResource", resp, "Failure responding to request")
 	}
+	if result.pslr.hasNextLink() && result.pslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

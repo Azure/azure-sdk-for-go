@@ -31,193 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2020-02-01/virtualmachineimagebuilder"
 
-// ProvisioningErrorCode enumerates the values for provisioning error code.
-type ProvisioningErrorCode string
-
-const (
-	// BadCustomizerType ...
-	BadCustomizerType ProvisioningErrorCode = "BadCustomizerType"
-	// BadDistributeType ...
-	BadDistributeType ProvisioningErrorCode = "BadDistributeType"
-	// BadManagedImageSource ...
-	BadManagedImageSource ProvisioningErrorCode = "BadManagedImageSource"
-	// BadPIRSource ...
-	BadPIRSource ProvisioningErrorCode = "BadPIRSource"
-	// BadSharedImageDistribute ...
-	BadSharedImageDistribute ProvisioningErrorCode = "BadSharedImageDistribute"
-	// BadSharedImageVersionSource ...
-	BadSharedImageVersionSource ProvisioningErrorCode = "BadSharedImageVersionSource"
-	// BadSourceType ...
-	BadSourceType ProvisioningErrorCode = "BadSourceType"
-	// NoCustomizerScript ...
-	NoCustomizerScript ProvisioningErrorCode = "NoCustomizerScript"
-	// Other ...
-	Other ProvisioningErrorCode = "Other"
-	// ServerError ...
-	ServerError ProvisioningErrorCode = "ServerError"
-	// UnsupportedCustomizerType ...
-	UnsupportedCustomizerType ProvisioningErrorCode = "UnsupportedCustomizerType"
-)
-
-// PossibleProvisioningErrorCodeValues returns an array of possible values for the ProvisioningErrorCode const type.
-func PossibleProvisioningErrorCodeValues() []ProvisioningErrorCode {
-	return []ProvisioningErrorCode{BadCustomizerType, BadDistributeType, BadManagedImageSource, BadPIRSource, BadSharedImageDistribute, BadSharedImageVersionSource, BadSourceType, NoCustomizerScript, Other, ServerError, UnsupportedCustomizerType}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Creating, Deleting, Failed, Succeeded, Updating}
-}
-
-// ResourceIdentityType enumerates the values for resource identity type.
-type ResourceIdentityType string
-
-const (
-	// None ...
-	None ResourceIdentityType = "None"
-	// UserAssigned ...
-	UserAssigned ResourceIdentityType = "UserAssigned"
-)
-
-// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{None, UserAssigned}
-}
-
-// RunState enumerates the values for run state.
-type RunState string
-
-const (
-	// RunStateCanceled ...
-	RunStateCanceled RunState = "Canceled"
-	// RunStateCanceling ...
-	RunStateCanceling RunState = "Canceling"
-	// RunStateFailed ...
-	RunStateFailed RunState = "Failed"
-	// RunStatePartiallySucceeded ...
-	RunStatePartiallySucceeded RunState = "PartiallySucceeded"
-	// RunStateRunning ...
-	RunStateRunning RunState = "Running"
-	// RunStateSucceeded ...
-	RunStateSucceeded RunState = "Succeeded"
-)
-
-// PossibleRunStateValues returns an array of possible values for the RunState const type.
-func PossibleRunStateValues() []RunState {
-	return []RunState{RunStateCanceled, RunStateCanceling, RunStateFailed, RunStatePartiallySucceeded, RunStateRunning, RunStateSucceeded}
-}
-
-// RunSubState enumerates the values for run sub state.
-type RunSubState string
-
-const (
-	// Building ...
-	Building RunSubState = "Building"
-	// Customizing ...
-	Customizing RunSubState = "Customizing"
-	// Distributing ...
-	Distributing RunSubState = "Distributing"
-	// Queued ...
-	Queued RunSubState = "Queued"
-)
-
-// PossibleRunSubStateValues returns an array of possible values for the RunSubState const type.
-func PossibleRunSubStateValues() []RunSubState {
-	return []RunSubState{Building, Customizing, Distributing, Queued}
-}
-
-// SharedImageStorageAccountType enumerates the values for shared image storage account type.
-type SharedImageStorageAccountType string
-
-const (
-	// StandardLRS ...
-	StandardLRS SharedImageStorageAccountType = "Standard_LRS"
-	// StandardZRS ...
-	StandardZRS SharedImageStorageAccountType = "Standard_ZRS"
-)
-
-// PossibleSharedImageStorageAccountTypeValues returns an array of possible values for the SharedImageStorageAccountType const type.
-func PossibleSharedImageStorageAccountTypeValues() []SharedImageStorageAccountType {
-	return []SharedImageStorageAccountType{StandardLRS, StandardZRS}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeImageTemplateSource ...
-	TypeImageTemplateSource Type = "ImageTemplateSource"
-	// TypeManagedImage ...
-	TypeManagedImage Type = "ManagedImage"
-	// TypePlatformImage ...
-	TypePlatformImage Type = "PlatformImage"
-	// TypeSharedImageVersion ...
-	TypeSharedImageVersion Type = "SharedImageVersion"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeImageTemplateSource, TypeManagedImage, TypePlatformImage, TypeSharedImageVersion}
-}
-
-// TypeBasicImageTemplateCustomizer enumerates the values for type basic image template customizer.
-type TypeBasicImageTemplateCustomizer string
-
-const (
-	// TypeFile ...
-	TypeFile TypeBasicImageTemplateCustomizer = "File"
-	// TypeImageTemplateCustomizer ...
-	TypeImageTemplateCustomizer TypeBasicImageTemplateCustomizer = "ImageTemplateCustomizer"
-	// TypePowerShell ...
-	TypePowerShell TypeBasicImageTemplateCustomizer = "PowerShell"
-	// TypeShell ...
-	TypeShell TypeBasicImageTemplateCustomizer = "Shell"
-	// TypeWindowsRestart ...
-	TypeWindowsRestart TypeBasicImageTemplateCustomizer = "WindowsRestart"
-	// TypeWindowsUpdate ...
-	TypeWindowsUpdate TypeBasicImageTemplateCustomizer = "WindowsUpdate"
-)
-
-// PossibleTypeBasicImageTemplateCustomizerValues returns an array of possible values for the TypeBasicImageTemplateCustomizer const type.
-func PossibleTypeBasicImageTemplateCustomizerValues() []TypeBasicImageTemplateCustomizer {
-	return []TypeBasicImageTemplateCustomizer{TypeFile, TypeImageTemplateCustomizer, TypePowerShell, TypeShell, TypeWindowsRestart, TypeWindowsUpdate}
-}
-
-// TypeBasicImageTemplateDistributor enumerates the values for type basic image template distributor.
-type TypeBasicImageTemplateDistributor string
-
-const (
-	// TypeBasicImageTemplateDistributorTypeImageTemplateDistributor ...
-	TypeBasicImageTemplateDistributorTypeImageTemplateDistributor TypeBasicImageTemplateDistributor = "ImageTemplateDistributor"
-	// TypeBasicImageTemplateDistributorTypeManagedImage ...
-	TypeBasicImageTemplateDistributorTypeManagedImage TypeBasicImageTemplateDistributor = "ManagedImage"
-	// TypeBasicImageTemplateDistributorTypeSharedImage ...
-	TypeBasicImageTemplateDistributorTypeSharedImage TypeBasicImageTemplateDistributor = "SharedImage"
-	// TypeBasicImageTemplateDistributorTypeVHD ...
-	TypeBasicImageTemplateDistributorTypeVHD TypeBasicImageTemplateDistributor = "VHD"
-)
-
-// PossibleTypeBasicImageTemplateDistributorValues returns an array of possible values for the TypeBasicImageTemplateDistributor const type.
-func PossibleTypeBasicImageTemplateDistributorValues() []TypeBasicImageTemplateDistributor {
-	return []TypeBasicImageTemplateDistributor{TypeBasicImageTemplateDistributorTypeImageTemplateDistributor, TypeBasicImageTemplateDistributorTypeManagedImage, TypeBasicImageTemplateDistributorTypeSharedImage, TypeBasicImageTemplateDistributorTypeVHD}
-}
-
 // APIError api error.
 type APIError struct {
 	// Details - The Api error details
@@ -580,8 +393,7 @@ func (itd ImageTemplateDistributor) AsBasicImageTemplateDistributor() (BasicImag
 	return &itd, true
 }
 
-// ImageTemplateFileCustomizer uploads files to VMs (Linux, Windows). Corresponds to Packer file
-// provisioner
+// ImageTemplateFileCustomizer uploads files to VMs (Linux, Windows). Corresponds to Packer file provisioner
 type ImageTemplateFileCustomizer struct {
 	// SourceURI - The URI of the file to be uploaded for customizing the VM. It can be a github link, SAS URI for Azure Storage, etc
 	SourceURI *string `json:"sourceUri,omitempty"`
@@ -771,10 +583,15 @@ func (itlr ImageTemplateListResult) IsEmpty() bool {
 	return itlr.Value == nil || len(*itlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (itlr ImageTemplateListResult) hasNextLink() bool {
+	return itlr.NextLink != nil && len(*itlr.NextLink) != 0
+}
+
 // imageTemplateListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (itlr ImageTemplateListResult) imageTemplateListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if itlr.NextLink == nil || len(to.String(itlr.NextLink)) < 1 {
+	if !itlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -802,11 +619,16 @@ func (page *ImageTemplateListResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.itlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.itlr)
+		if err != nil {
+			return err
+		}
+		page.itlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.itlr = next
 	return nil
 }
 
@@ -901,8 +723,7 @@ func (itmid ImageTemplateManagedImageDistributor) AsBasicImageTemplateDistributo
 	return &itmid, true
 }
 
-// ImageTemplateManagedImageSource describes an image source that is a managed image in customer
-// subscription.
+// ImageTemplateManagedImageSource describes an image source that is a managed image in customer subscription.
 type ImageTemplateManagedImageSource struct {
 	// ImageID - ARM resource id of the managed image in customer subscription
 	ImageID *string `json:"imageId,omitempty"`
@@ -1015,8 +836,8 @@ func (itpis ImageTemplatePlatformImageSource) AsBasicImageTemplateSource() (Basi
 	return &itpis, true
 }
 
-// ImageTemplatePowerShellCustomizer runs the specified PowerShell on the VM (Windows). Corresponds to
-// Packer powershell provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
+// ImageTemplatePowerShellCustomizer runs the specified PowerShell on the VM (Windows). Corresponds to Packer
+// powershell provisioner. Exactly one of 'scriptUri' or 'inline' can be specified.
 type ImageTemplatePowerShellCustomizer struct {
 	// ScriptURI - URI of the PowerShell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
 	ScriptURI *string `json:"scriptUri,omitempty"`
@@ -1117,6 +938,25 @@ type ImageTemplateProperties struct {
 	VMProfile *ImageTemplateVMProfile `json:"vmProfile,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImageTemplateProperties.
+func (itp ImageTemplateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["source"] = itp.Source
+	if itp.Customize != nil {
+		objectMap["customize"] = itp.Customize
+	}
+	if itp.Distribute != nil {
+		objectMap["distribute"] = itp.Distribute
+	}
+	if itp.BuildTimeoutInMinutes != nil {
+		objectMap["buildTimeoutInMinutes"] = itp.BuildTimeoutInMinutes
+	}
+	if itp.VMProfile != nil {
+		objectMap["vmProfile"] = itp.VMProfile
+	}
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for ImageTemplateProperties struct.
 func (itp *ImageTemplateProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -1201,8 +1041,8 @@ func (itp *ImageTemplateProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ImageTemplateRestartCustomizer reboots a VM and waits for it to come back online (Windows). Corresponds
-// to Packer windows-restart provisioner
+// ImageTemplateRestartCustomizer reboots a VM and waits for it to come back online (Windows). Corresponds to
+// Packer windows-restart provisioner
 type ImageTemplateRestartCustomizer struct {
 	// RestartCommand - Command to execute the restart [Default: 'shutdown /r /f /t 0 /c "packer restart"']
 	RestartCommand *string `json:"restartCommand,omitempty"`
@@ -1344,8 +1184,8 @@ func (itsid ImageTemplateSharedImageDistributor) AsBasicImageTemplateDistributor
 	return &itsid, true
 }
 
-// ImageTemplateSharedImageVersionSource describes an image source that is an image version in a shared
-// image gallery.
+// ImageTemplateSharedImageVersionSource describes an image source that is an image version in a shared image
+// gallery.
 type ImageTemplateSharedImageVersionSource struct {
 	// ImageVersionID - ARM resource id of the image version in the shared image gallery
 	ImageVersionID *string `json:"imageVersionId,omitempty"`
@@ -1812,10 +1652,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1843,11 +1688,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -2078,10 +1928,15 @@ func (roc RunOutputCollection) IsEmpty() bool {
 	return roc.Value == nil || len(*roc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (roc RunOutputCollection) hasNextLink() bool {
+	return roc.NextLink != nil && len(*roc.NextLink) != 0
+}
+
 // runOutputCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (roc RunOutputCollection) runOutputCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if roc.NextLink == nil || len(to.String(roc.NextLink)) < 1 {
+	if !roc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2109,11 +1964,16 @@ func (page *RunOutputCollectionPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.roc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.roc)
+		if err != nil {
+			return err
+		}
+		page.roc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.roc = next
 	return nil
 }
 
@@ -2157,6 +2017,18 @@ type RunOutputProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RunOutputProperties.
+func (rop RunOutputProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rop.ArtifactID != nil {
+		objectMap["artifactId"] = rop.ArtifactID
+	}
+	if rop.ArtifactURI != nil {
+		objectMap["artifactUri"] = rop.ArtifactURI
+	}
+	return json.Marshal(objectMap)
+}
+
 // SubResource the Sub Resource model definition.
 type SubResource struct {
 	// ID - READ-ONLY; Resource Id
@@ -2165,6 +2037,15 @@ type SubResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SubResource.
+func (sr SubResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sr.Name != nil {
+		objectMap["name"] = sr.Name
+	}
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachineImageTemplatesCancelFuture an abstraction for monitoring and retrieving the results of a
@@ -2190,8 +2071,8 @@ func (future *VirtualMachineImageTemplatesCancelFuture) Result(client VirtualMac
 	return
 }
 
-// VirtualMachineImageTemplatesCreateOrUpdateFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// VirtualMachineImageTemplatesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type VirtualMachineImageTemplatesCreateOrUpdateFuture struct {
 	azure.Future
 }

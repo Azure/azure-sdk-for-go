@@ -623,6 +623,9 @@ func (client ServerFarmsClient) GetServerFarmMetricDefintions(ctx context.Contex
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetricDefintions", resp, "Failure responding to request")
 	}
+	if result.mdc.hasNextLink() && result.mdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -739,6 +742,9 @@ func (client ServerFarmsClient) GetServerFarmMetrics(ctx context.Context, resour
 	result.rmc, err = client.GetServerFarmMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmMetrics", resp, "Failure responding to request")
+	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -935,6 +941,9 @@ func (client ServerFarmsClient) GetServerFarms(ctx context.Context, resourceGrou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarms", resp, "Failure responding to request")
 	}
+	if result.sfc.hasNextLink() && result.sfc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1050,6 +1059,9 @@ func (client ServerFarmsClient) GetServerFarmSites(ctx context.Context, resource
 	result.sc, err = client.GetServerFarmSitesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "GetServerFarmSites", resp, "Failure responding to request")
+	}
+	if result.sc.hasNextLink() && result.sc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

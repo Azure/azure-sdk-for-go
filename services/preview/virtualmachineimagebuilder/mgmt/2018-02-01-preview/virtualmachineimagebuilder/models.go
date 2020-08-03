@@ -31,158 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2018-02-01-preview/virtualmachineimagebuilder"
 
-// ProvisioningErrorCode enumerates the values for provisioning error code.
-type ProvisioningErrorCode string
-
-const (
-	// BadCustomizerType ...
-	BadCustomizerType ProvisioningErrorCode = "BadCustomizerType"
-	// BadISOSource ...
-	BadISOSource ProvisioningErrorCode = "BadISOSource"
-	// BadPIRSource ...
-	BadPIRSource ProvisioningErrorCode = "BadPIRSource"
-	// BadSourceType ...
-	BadSourceType ProvisioningErrorCode = "BadSourceType"
-	// NoCustomizerShellScript ...
-	NoCustomizerShellScript ProvisioningErrorCode = "NoCustomizerShellScript"
-	// Other ...
-	Other ProvisioningErrorCode = "Other"
-	// ServerError ...
-	ServerError ProvisioningErrorCode = "ServerError"
-)
-
-// PossibleProvisioningErrorCodeValues returns an array of possible values for the ProvisioningErrorCode const type.
-func PossibleProvisioningErrorCodeValues() []ProvisioningErrorCode {
-	return []ProvisioningErrorCode{BadCustomizerType, BadISOSource, BadPIRSource, BadSourceType, NoCustomizerShellScript, Other, ServerError}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Creating, Deleting, Failed, Succeeded}
-}
-
-// ProvisioningState1 enumerates the values for provisioning state 1.
-type ProvisioningState1 string
-
-const (
-	// ProvisioningState1Creating ...
-	ProvisioningState1Creating ProvisioningState1 = "Creating"
-	// ProvisioningState1Deleting ...
-	ProvisioningState1Deleting ProvisioningState1 = "Deleting"
-	// ProvisioningState1Failed ...
-	ProvisioningState1Failed ProvisioningState1 = "Failed"
-	// ProvisioningState1Succeeded ...
-	ProvisioningState1Succeeded ProvisioningState1 = "Succeeded"
-)
-
-// PossibleProvisioningState1Values returns an array of possible values for the ProvisioningState1 const type.
-func PossibleProvisioningState1Values() []ProvisioningState1 {
-	return []ProvisioningState1{ProvisioningState1Creating, ProvisioningState1Deleting, ProvisioningState1Failed, ProvisioningState1Succeeded}
-}
-
-// RunState enumerates the values for run state.
-type RunState string
-
-const (
-	// RunStateFailed ...
-	RunStateFailed RunState = "failed"
-	// RunStatePartiallySucceeded ...
-	RunStatePartiallySucceeded RunState = "partiallySucceeded"
-	// RunStateReady ...
-	RunStateReady RunState = "ready"
-	// RunStateRunning ...
-	RunStateRunning RunState = "running"
-	// RunStateSucceeded ...
-	RunStateSucceeded RunState = "succeeded"
-)
-
-// PossibleRunStateValues returns an array of possible values for the RunState const type.
-func PossibleRunStateValues() []RunState {
-	return []RunState{RunStateFailed, RunStatePartiallySucceeded, RunStateReady, RunStateRunning, RunStateSucceeded}
-}
-
-// RunSubState enumerates the values for run sub state.
-type RunSubState string
-
-const (
-	// Building ...
-	Building RunSubState = "building"
-	// Customizing ...
-	Customizing RunSubState = "customizing"
-	// Distributing ...
-	Distributing RunSubState = "distributing"
-	// Queued ...
-	Queued RunSubState = "queued"
-)
-
-// PossibleRunSubStateValues returns an array of possible values for the RunSubState const type.
-func PossibleRunSubStateValues() []RunSubState {
-	return []RunSubState{Building, Customizing, Distributing, Queued}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeImageTemplateSource ...
-	TypeImageTemplateSource Type = "ImageTemplateSource"
-	// TypeISO ...
-	TypeISO Type = "ISO"
-	// TypePlatformImage ...
-	TypePlatformImage Type = "PlatformImage"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeImageTemplateSource, TypeISO, TypePlatformImage}
-}
-
-// TypeBasicImageTemplateCustomizer enumerates the values for type basic image template customizer.
-type TypeBasicImageTemplateCustomizer string
-
-const (
-	// TypeImageTemplateCustomizer ...
-	TypeImageTemplateCustomizer TypeBasicImageTemplateCustomizer = "ImageTemplateCustomizer"
-	// TypeShell ...
-	TypeShell TypeBasicImageTemplateCustomizer = "shell"
-)
-
-// PossibleTypeBasicImageTemplateCustomizerValues returns an array of possible values for the TypeBasicImageTemplateCustomizer const type.
-func PossibleTypeBasicImageTemplateCustomizerValues() []TypeBasicImageTemplateCustomizer {
-	return []TypeBasicImageTemplateCustomizer{TypeImageTemplateCustomizer, TypeShell}
-}
-
-// TypeBasicImageTemplateDistributor enumerates the values for type basic image template distributor.
-type TypeBasicImageTemplateDistributor string
-
-const (
-	// TypeImageTemplateDistributor ...
-	TypeImageTemplateDistributor TypeBasicImageTemplateDistributor = "ImageTemplateDistributor"
-	// TypeManagedImage ...
-	TypeManagedImage TypeBasicImageTemplateDistributor = "managedImage"
-	// TypeSharedImage ...
-	TypeSharedImage TypeBasicImageTemplateDistributor = "sharedImage"
-)
-
-// PossibleTypeBasicImageTemplateDistributorValues returns an array of possible values for the TypeBasicImageTemplateDistributor const type.
-func PossibleTypeBasicImageTemplateDistributorValues() []TypeBasicImageTemplateDistributor {
-	return []TypeBasicImageTemplateDistributor{TypeImageTemplateDistributor, TypeManagedImage, TypeSharedImage}
-}
-
 // APIError api error.
 type APIError struct {
 	// Details - The Api error details
@@ -480,8 +328,8 @@ func (itd ImageTemplateDistributor) AsBasicImageTemplateDistributor() (BasicImag
 	return &itd, true
 }
 
-// ImageTemplateIsoSource describes an image source that is an installation ISO. Currently only supports
-// Red Hat Enterprise Linux 7.2-7.5 ISO's.
+// ImageTemplateIsoSource describes an image source that is an installation ISO. Currently only supports Red
+// Hat Enterprise Linux 7.2-7.5 ISO's.
 type ImageTemplateIsoSource struct {
 	// SourceURI - URL to get the ISO image. This URL has to be accessible to the resource provider at the time of the imageTemplate creation.
 	SourceURI *string `json:"sourceURI,omitempty"`
@@ -617,10 +465,15 @@ func (itlr ImageTemplateListResult) IsEmpty() bool {
 	return itlr.Value == nil || len(*itlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (itlr ImageTemplateListResult) hasNextLink() bool {
+	return itlr.NextLink != nil && len(*itlr.NextLink) != 0
+}
+
 // imageTemplateListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (itlr ImageTemplateListResult) imageTemplateListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if itlr.NextLink == nil || len(to.String(itlr.NextLink)) < 1 {
+	if !itlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -648,11 +501,16 @@ func (page *ImageTemplateListResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.itlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.itlr)
+		if err != nil {
+			return err
+		}
+		page.itlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.itlr = next
 	return nil
 }
 
@@ -813,6 +671,19 @@ type ImageTemplateProperties struct {
 	ProvisioningError *ProvisioningError `json:"provisioningError,omitempty"`
 	// LastRunStatus - READ-ONLY; State of 'run' that is currently executing or was last executed.
 	LastRunStatus *ImageTemplateLastRunStatus `json:"lastRunStatus,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageTemplateProperties.
+func (itp ImageTemplateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["source"] = itp.Source
+	if itp.Customize != nil {
+		objectMap["customize"] = itp.Customize
+	}
+	if itp.Distribute != nil {
+		objectMap["distribute"] = itp.Distribute
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ImageTemplateProperties struct.
@@ -1177,10 +1048,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1208,11 +1084,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -1431,10 +1312,15 @@ func (roc RunOutputCollection) IsEmpty() bool {
 	return roc.Value == nil || len(*roc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (roc RunOutputCollection) hasNextLink() bool {
+	return roc.NextLink != nil && len(*roc.NextLink) != 0
+}
+
 // runOutputCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (roc RunOutputCollection) runOutputCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if roc.NextLink == nil || len(to.String(roc.NextLink)) < 1 {
+	if !roc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1462,11 +1348,16 @@ func (page *RunOutputCollectionPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.roc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.roc)
+		if err != nil {
+			return err
+		}
+		page.roc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.roc = next
 	return nil
 }
 
@@ -1508,6 +1399,15 @@ type RunOutputProperties struct {
 	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RunOutputProperties.
+func (rop RunOutputProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rop.ArtifactID != nil {
+		objectMap["artifactId"] = rop.ArtifactID
+	}
+	return json.Marshal(objectMap)
+}
+
 // SubResource the Sub Resource model definition.
 type SubResource struct {
 	// ID - READ-ONLY; Resource Id
@@ -1518,8 +1418,17 @@ type SubResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// VirtualMachineImageTemplateCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// MarshalJSON is the custom marshaler for SubResource.
+func (sr SubResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sr.Name != nil {
+		objectMap["name"] = sr.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// VirtualMachineImageTemplateCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type VirtualMachineImageTemplateCreateOrUpdateFuture struct {
 	azure.Future
 }

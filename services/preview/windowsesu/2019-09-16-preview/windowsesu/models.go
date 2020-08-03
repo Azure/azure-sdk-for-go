@@ -31,59 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/windowsesu/2019-09-16-preview/windowsesu"
 
-// OsType enumerates the values for os type.
-type OsType string
-
-const (
-	// Windows7 ...
-	Windows7 OsType = "Windows7"
-	// WindowsServer2008 ...
-	WindowsServer2008 OsType = "WindowsServer2008"
-	// WindowsServer2008R2 ...
-	WindowsServer2008R2 OsType = "WindowsServer2008R2"
-)
-
-// PossibleOsTypeValues returns an array of possible values for the OsType const type.
-func PossibleOsTypeValues() []OsType {
-	return []OsType{Windows7, WindowsServer2008, WindowsServer2008R2}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Accepted ...
-	Accepted ProvisioningState = "Accepted"
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Provisioning ...
-	Provisioning ProvisioningState = "Provisioning"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Accepted, Canceled, Failed, Provisioning, Succeeded}
-}
-
-// SupportType enumerates the values for support type.
-type SupportType string
-
-const (
-	// PremiumAssurance ...
-	PremiumAssurance SupportType = "PremiumAssurance"
-	// SupplementalServicing ...
-	SupplementalServicing SupportType = "SupplementalServicing"
-)
-
-// PossibleSupportTypeValues returns an array of possible values for the SupportType const type.
-func PossibleSupportTypeValues() []SupportType {
-	return []SupportType{PremiumAssurance, SupplementalServicing}
-}
-
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
@@ -222,6 +169,15 @@ type MultipleActivationKeyList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MultipleActivationKeyList.
+func (makl MultipleActivationKeyList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if makl.Value != nil {
+		objectMap["value"] = makl.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // MultipleActivationKeyListIterator provides access to a complete listing of MultipleActivationKey values.
 type MultipleActivationKeyListIterator struct {
 	i    int
@@ -290,10 +246,15 @@ func (makl MultipleActivationKeyList) IsEmpty() bool {
 	return makl.Value == nil || len(*makl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (makl MultipleActivationKeyList) hasNextLink() bool {
+	return makl.NextLink != nil && len(*makl.NextLink) != 0
+}
+
 // multipleActivationKeyListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (makl MultipleActivationKeyList) multipleActivationKeyListPreparer(ctx context.Context) (*http.Request, error) {
-	if makl.NextLink == nil || len(to.String(makl.NextLink)) < 1 {
+	if !makl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -321,11 +282,16 @@ func (page *MultipleActivationKeyListPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.makl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.makl)
+		if err != nil {
+			return err
+		}
+		page.makl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.makl = next
 	return nil
 }
 
@@ -379,6 +345,27 @@ type MultipleActivationKeyProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MultipleActivationKeyProperties.
+func (mak MultipleActivationKeyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mak.OsType != "" {
+		objectMap["osType"] = mak.OsType
+	}
+	if mak.SupportType != "" {
+		objectMap["supportType"] = mak.SupportType
+	}
+	if mak.InstalledServerNumber != nil {
+		objectMap["installedServerNumber"] = mak.InstalledServerNumber
+	}
+	if mak.AgreementNumber != nil {
+		objectMap["agreementNumber"] = mak.AgreementNumber
+	}
+	if mak.IsEligible != nil {
+		objectMap["isEligible"] = mak.IsEligible
+	}
+	return json.Marshal(objectMap)
+}
+
 // MultipleActivationKeysCreateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type MultipleActivationKeysCreateFuture struct {
@@ -430,6 +417,15 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplay meta data about operation used for display in portal.
 type OperationDisplay struct {
 	Provider    *string `json:"provider,omitempty"`
@@ -445,6 +441,15 @@ type OperationList struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next page of resources.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationList.
+func (ol OperationList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ol.Value != nil {
+		objectMap["value"] = ol.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationListIterator provides access to a complete listing of Operation values.
@@ -515,10 +520,15 @@ func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OperationList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // operationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OperationList) operationListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -546,11 +556,16 @@ func (page *OperationListPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 

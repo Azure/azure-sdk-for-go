@@ -164,6 +164,9 @@ func (client PeriodsClient) List(ctx context.Context, filter string, skiptoken s
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PeriodsClient", "List", resp, "Failure responding to request")
 	}
+	if result.plr.hasNextLink() && result.plr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

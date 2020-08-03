@@ -30,48 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/azurestackhci/mgmt/2020-03-01-preview/azurestackhci"
 
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Accepted ...
-	Accepted ProvisioningState = "Accepted"
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Provisioning ...
-	Provisioning ProvisioningState = "Provisioning"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Accepted, Canceled, Failed, Provisioning, Succeeded}
-}
-
-// Status enumerates the values for status.
-type Status string
-
-const (
-	// ConnectedRecently ...
-	ConnectedRecently Status = "ConnectedRecently"
-	// Error ...
-	Error Status = "Error"
-	// Expired ...
-	Expired Status = "Expired"
-	// NeverConnected ...
-	NeverConnected Status = "NeverConnected"
-	// NotConnectedRecently ...
-	NotConnectedRecently Status = "NotConnectedRecently"
-)
-
-// PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{ConnectedRecently, Error, Expired, NeverConnected, NotConnectedRecently}
-}
-
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
@@ -194,6 +152,15 @@ type ClusterList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ClusterList.
+func (cl ClusterList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cl.Value != nil {
+		objectMap["value"] = cl.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // ClusterListIterator provides access to a complete listing of Cluster values.
 type ClusterListIterator struct {
 	i    int
@@ -262,10 +229,15 @@ func (cl ClusterList) IsEmpty() bool {
 	return cl.Value == nil || len(*cl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cl ClusterList) hasNextLink() bool {
+	return cl.NextLink != nil && len(*cl.NextLink) != 0
+}
+
 // clusterListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cl ClusterList) clusterListPreparer(ctx context.Context) (*http.Request, error) {
-	if cl.NextLink == nil || len(to.String(cl.NextLink)) < 1 {
+	if !cl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -293,11 +265,16 @@ func (page *ClusterListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cl)
+		if err != nil {
+			return err
+		}
+		page.cl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cl = next
 	return nil
 }
 
@@ -373,6 +350,21 @@ type ClusterProperties struct {
 	BillingModel *string `json:"billingModel,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ClusterProperties.
+func (cp ClusterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.AadClientID != nil {
+		objectMap["aadClientId"] = cp.AadClientID
+	}
+	if cp.AadTenantID != nil {
+		objectMap["aadTenantId"] = cp.AadTenantID
+	}
+	if cp.ReportedProperties != nil {
+		objectMap["reportedProperties"] = cp.ReportedProperties
+	}
+	return json.Marshal(objectMap)
+}
+
 // ClusterReportedProperties properties reported by cluster agent.
 type ClusterReportedProperties struct {
 	// ClusterName - READ-ONLY; Name of the on-prem cluster connected to this resource.
@@ -438,6 +430,15 @@ type Operation struct {
 	Display *OperationDisplay `json:"display,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplay operation properties.
 type OperationDisplay struct {
 	// Provider - Resource provider name.
@@ -457,6 +458,15 @@ type OperationList struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationList.
+func (ol OperationList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ol.Value != nil {
+		objectMap["value"] = ol.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than

@@ -18,6 +18,7 @@ package textanalytics
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -63,6 +64,18 @@ type EntitiesBatchResultItem struct {
 	Statistics *DocumentStatistics `json:"statistics,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EntitiesBatchResultItem.
+func (ebri EntitiesBatchResultItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ebri.ID != nil {
+		objectMap["id"] = ebri.ID
+	}
+	if ebri.Statistics != nil {
+		objectMap["statistics"] = ebri.Statistics
+	}
+	return json.Marshal(objectMap)
+}
+
 // EntityRecord ...
 type EntityRecord struct {
 	// Name - Entity formal name.
@@ -81,6 +94,33 @@ type EntityRecord struct {
 	Type *string `json:"type,omitempty"`
 	// SubType - Entity sub type from Named Entity Recognition model
 	SubType *string `json:"subType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EntityRecord.
+func (er EntityRecord) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if er.Name != nil {
+		objectMap["name"] = er.Name
+	}
+	if er.Matches != nil {
+		objectMap["matches"] = er.Matches
+	}
+	if er.WikipediaLanguage != nil {
+		objectMap["wikipediaLanguage"] = er.WikipediaLanguage
+	}
+	if er.WikipediaID != nil {
+		objectMap["wikipediaId"] = er.WikipediaID
+	}
+	if er.BingID != nil {
+		objectMap["bingId"] = er.BingID
+	}
+	if er.Type != nil {
+		objectMap["type"] = er.Type
+	}
+	if er.SubType != nil {
+		objectMap["subType"] = er.SubType
+	}
+	return json.Marshal(objectMap)
 }
 
 // ErrorRecord ...
@@ -125,6 +165,18 @@ type KeyPhraseBatchResultItem struct {
 	KeyPhrases *[]string `json:"keyPhrases,omitempty"`
 	// Statistics - (Optional) if showStats=true was specified in the request this field will contain information about the document payload.
 	Statistics *DocumentStatistics `json:"statistics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for KeyPhraseBatchResultItem.
+func (kpbri KeyPhraseBatchResultItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if kpbri.ID != nil {
+		objectMap["id"] = kpbri.ID
+	}
+	if kpbri.Statistics != nil {
+		objectMap["statistics"] = kpbri.Statistics
+	}
+	return json.Marshal(objectMap)
 }
 
 // LanguageBatchInput ...

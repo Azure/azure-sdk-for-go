@@ -30,157 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2016-04-01/dns"
 
-// HTTPStatusCode enumerates the values for http status code.
-type HTTPStatusCode string
-
-const (
-	// Accepted ...
-	Accepted HTTPStatusCode = "Accepted"
-	// Ambiguous ...
-	Ambiguous HTTPStatusCode = "Ambiguous"
-	// BadGateway ...
-	BadGateway HTTPStatusCode = "BadGateway"
-	// BadRequest ...
-	BadRequest HTTPStatusCode = "BadRequest"
-	// Conflict ...
-	Conflict HTTPStatusCode = "Conflict"
-	// Continue ...
-	Continue HTTPStatusCode = "Continue"
-	// Created ...
-	Created HTTPStatusCode = "Created"
-	// ExpectationFailed ...
-	ExpectationFailed HTTPStatusCode = "ExpectationFailed"
-	// Forbidden ...
-	Forbidden HTTPStatusCode = "Forbidden"
-	// Found ...
-	Found HTTPStatusCode = "Found"
-	// GatewayTimeout ...
-	GatewayTimeout HTTPStatusCode = "GatewayTimeout"
-	// Gone ...
-	Gone HTTPStatusCode = "Gone"
-	// HTTPVersionNotSupported ...
-	HTTPVersionNotSupported HTTPStatusCode = "HttpVersionNotSupported"
-	// InternalServerError ...
-	InternalServerError HTTPStatusCode = "InternalServerError"
-	// LengthRequired ...
-	LengthRequired HTTPStatusCode = "LengthRequired"
-	// MethodNotAllowed ...
-	MethodNotAllowed HTTPStatusCode = "MethodNotAllowed"
-	// Moved ...
-	Moved HTTPStatusCode = "Moved"
-	// MovedPermanently ...
-	MovedPermanently HTTPStatusCode = "MovedPermanently"
-	// MultipleChoices ...
-	MultipleChoices HTTPStatusCode = "MultipleChoices"
-	// NoContent ...
-	NoContent HTTPStatusCode = "NoContent"
-	// NonAuthoritativeInformation ...
-	NonAuthoritativeInformation HTTPStatusCode = "NonAuthoritativeInformation"
-	// NotAcceptable ...
-	NotAcceptable HTTPStatusCode = "NotAcceptable"
-	// NotFound ...
-	NotFound HTTPStatusCode = "NotFound"
-	// NotImplemented ...
-	NotImplemented HTTPStatusCode = "NotImplemented"
-	// NotModified ...
-	NotModified HTTPStatusCode = "NotModified"
-	// OK ...
-	OK HTTPStatusCode = "OK"
-	// PartialContent ...
-	PartialContent HTTPStatusCode = "PartialContent"
-	// PaymentRequired ...
-	PaymentRequired HTTPStatusCode = "PaymentRequired"
-	// PreconditionFailed ...
-	PreconditionFailed HTTPStatusCode = "PreconditionFailed"
-	// ProxyAuthenticationRequired ...
-	ProxyAuthenticationRequired HTTPStatusCode = "ProxyAuthenticationRequired"
-	// Redirect ...
-	Redirect HTTPStatusCode = "Redirect"
-	// RedirectKeepVerb ...
-	RedirectKeepVerb HTTPStatusCode = "RedirectKeepVerb"
-	// RedirectMethod ...
-	RedirectMethod HTTPStatusCode = "RedirectMethod"
-	// RequestedRangeNotSatisfiable ...
-	RequestedRangeNotSatisfiable HTTPStatusCode = "RequestedRangeNotSatisfiable"
-	// RequestEntityTooLarge ...
-	RequestEntityTooLarge HTTPStatusCode = "RequestEntityTooLarge"
-	// RequestTimeout ...
-	RequestTimeout HTTPStatusCode = "RequestTimeout"
-	// RequestURITooLong ...
-	RequestURITooLong HTTPStatusCode = "RequestUriTooLong"
-	// ResetContent ...
-	ResetContent HTTPStatusCode = "ResetContent"
-	// SeeOther ...
-	SeeOther HTTPStatusCode = "SeeOther"
-	// ServiceUnavailable ...
-	ServiceUnavailable HTTPStatusCode = "ServiceUnavailable"
-	// SwitchingProtocols ...
-	SwitchingProtocols HTTPStatusCode = "SwitchingProtocols"
-	// TemporaryRedirect ...
-	TemporaryRedirect HTTPStatusCode = "TemporaryRedirect"
-	// Unauthorized ...
-	Unauthorized HTTPStatusCode = "Unauthorized"
-	// UnsupportedMediaType ...
-	UnsupportedMediaType HTTPStatusCode = "UnsupportedMediaType"
-	// Unused ...
-	Unused HTTPStatusCode = "Unused"
-	// UpgradeRequired ...
-	UpgradeRequired HTTPStatusCode = "UpgradeRequired"
-	// UseProxy ...
-	UseProxy HTTPStatusCode = "UseProxy"
-)
-
-// PossibleHTTPStatusCodeValues returns an array of possible values for the HTTPStatusCode const type.
-func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
-	return []HTTPStatusCode{Accepted, Ambiguous, BadGateway, BadRequest, Conflict, Continue, Created, ExpectationFailed, Forbidden, Found, GatewayTimeout, Gone, HTTPVersionNotSupported, InternalServerError, LengthRequired, MethodNotAllowed, Moved, MovedPermanently, MultipleChoices, NoContent, NonAuthoritativeInformation, NotAcceptable, NotFound, NotImplemented, NotModified, OK, PartialContent, PaymentRequired, PreconditionFailed, ProxyAuthenticationRequired, Redirect, RedirectKeepVerb, RedirectMethod, RequestedRangeNotSatisfiable, RequestEntityTooLarge, RequestTimeout, RequestURITooLong, ResetContent, SeeOther, ServiceUnavailable, SwitchingProtocols, TemporaryRedirect, Unauthorized, UnsupportedMediaType, Unused, UpgradeRequired, UseProxy}
-}
-
-// OperationStatus enumerates the values for operation status.
-type OperationStatus string
-
-const (
-	// Failed ...
-	Failed OperationStatus = "Failed"
-	// InProgress ...
-	InProgress OperationStatus = "InProgress"
-	// Succeeded ...
-	Succeeded OperationStatus = "Succeeded"
-)
-
-// PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
-func PossibleOperationStatusValues() []OperationStatus {
-	return []OperationStatus{Failed, InProgress, Succeeded}
-}
-
-// RecordType enumerates the values for record type.
-type RecordType string
-
-const (
-	// A ...
-	A RecordType = "A"
-	// AAAA ...
-	AAAA RecordType = "AAAA"
-	// CNAME ...
-	CNAME RecordType = "CNAME"
-	// MX ...
-	MX RecordType = "MX"
-	// NS ...
-	NS RecordType = "NS"
-	// PTR ...
-	PTR RecordType = "PTR"
-	// SOA ...
-	SOA RecordType = "SOA"
-	// SRV ...
-	SRV RecordType = "SRV"
-	// TXT ...
-	TXT RecordType = "TXT"
-)
-
-// PossibleRecordTypeValues returns an array of possible values for the RecordType const type.
-func PossibleRecordTypeValues() []RecordType {
-	return []RecordType{A, AAAA, CNAME, MX, NS, PTR, SOA, SRV, TXT}
-}
-
 // AaaaRecord an AAAA record.
 type AaaaRecord struct {
 	// Ipv6Address - The IPv6 address of this AAAA record.
@@ -428,10 +277,15 @@ func (rslr RecordSetListResult) IsEmpty() bool {
 	return rslr.Value == nil || len(*rslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rslr RecordSetListResult) hasNextLink() bool {
+	return rslr.NextLink != nil && len(*rslr.NextLink) != 0
+}
+
 // recordSetListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rslr RecordSetListResult) recordSetListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rslr.NextLink == nil || len(to.String(rslr.NextLink)) < 1 {
+	if !rslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -459,11 +313,16 @@ func (page *RecordSetListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rslr)
+		if err != nil {
+			return err
+		}
+		page.rslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rslr = next
 	return nil
 }
 
@@ -850,10 +709,15 @@ func (zlr ZoneListResult) IsEmpty() bool {
 	return zlr.Value == nil || len(*zlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (zlr ZoneListResult) hasNextLink() bool {
+	return zlr.NextLink != nil && len(*zlr.NextLink) != 0
+}
+
 // zoneListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (zlr ZoneListResult) zoneListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if zlr.NextLink == nil || len(to.String(zlr.NextLink)) < 1 {
+	if !zlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -881,11 +745,16 @@ func (page *ZoneListResultPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.zlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.zlr)
+		if err != nil {
+			return err
+		}
+		page.zlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.zlr = next
 	return nil
 }
 
@@ -927,6 +796,18 @@ type ZoneProperties struct {
 	NumberOfRecordSets *int64 `json:"numberOfRecordSets,omitempty"`
 	// NameServers - READ-ONLY; The name servers for this DNS zone. This is a read-only property and any attempt to set this value will be ignored.
 	NameServers *[]string `json:"nameServers,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ZoneProperties.
+func (zp ZoneProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if zp.MaxNumberOfRecordSets != nil {
+		objectMap["maxNumberOfRecordSets"] = zp.MaxNumberOfRecordSets
+	}
+	if zp.NumberOfRecordSets != nil {
+		objectMap["numberOfRecordSets"] = zp.NumberOfRecordSets
+	}
+	return json.Marshal(objectMap)
 }
 
 // ZonesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.

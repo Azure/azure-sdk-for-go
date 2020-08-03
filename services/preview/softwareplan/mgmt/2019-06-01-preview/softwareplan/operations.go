@@ -75,6 +75,9 @@ func (client OperationsClient) List(ctx context.Context, scope string) (result O
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "softwareplan.OperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.ol.hasNextLink() && result.ol.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

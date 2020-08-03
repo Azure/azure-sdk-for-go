@@ -112,6 +112,13 @@ const (
 	UsageBased Frequency = original.UsageBased
 )
 
+type InvoiceSectionState = original.InvoiceSectionState
+
+const (
+	InvoiceSectionStateActive     InvoiceSectionState = original.InvoiceSectionStateActive
+	InvoiceSectionStateRestricted InvoiceSectionState = original.InvoiceSectionStateRestricted
+)
+
 type InvoiceStatus = original.InvoiceStatus
 
 const (
@@ -195,6 +202,15 @@ const (
 	SpendingLimitReached ProfileStatusReasonCode = original.SpendingLimitReached
 )
 
+type RelationshipType = original.RelationshipType
+
+const (
+	CSPPartner       RelationshipType = original.CSPPartner
+	Direct           RelationshipType = original.Direct
+	IndirectCustomer RelationshipType = original.IndirectCustomer
+	IndirectPartner  RelationshipType = original.IndirectPartner
+)
+
 type ReservationPurchasesPolicy = original.ReservationPurchasesPolicy
 
 const (
@@ -262,6 +278,14 @@ const (
 	SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported        SubscriptionTransferValidationErrorCode = original.SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported
 )
 
+type TargetCloud = original.TargetCloud
+
+const (
+	USGov TargetCloud = original.USGov
+	USNat TargetCloud = original.USNat
+	USSec TargetCloud = original.USSec
+)
+
 type TransactionTypeKind = original.TransactionTypeKind
 
 const (
@@ -320,10 +344,17 @@ type DownloadURL = original.DownloadURL
 type Enrollment = original.Enrollment
 type EnrollmentAccount = original.EnrollmentAccount
 type EnrollmentAccountContext = original.EnrollmentAccountContext
+type EnrollmentAccountListResult = original.EnrollmentAccountListResult
+type EnrollmentAccountListResultIterator = original.EnrollmentAccountListResultIterator
+type EnrollmentAccountListResultPage = original.EnrollmentAccountListResultPage
 type EnrollmentAccountProperties = original.EnrollmentAccountProperties
+type EnrollmentAccountSummary = original.EnrollmentAccountSummary
+type EnrollmentAccountSummaryProperties = original.EnrollmentAccountSummaryProperties
+type EnrollmentAccountsClient = original.EnrollmentAccountsClient
 type EnrollmentPolicies = original.EnrollmentPolicies
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
+type IndirectRelationshipInfo = original.IndirectRelationshipInfo
 type Instruction = original.Instruction
 type InstructionListResult = original.InstructionListResult
 type InstructionListResultIterator = original.InstructionListResultIterator
@@ -359,6 +390,12 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type Participants = original.Participants
 type PaymentProperties = original.PaymentProperties
+type Period = original.Period
+type PeriodProperties = original.PeriodProperties
+type PeriodsClient = original.PeriodsClient
+type PeriodsListResult = original.PeriodsListResult
+type PeriodsListResultIterator = original.PeriodsListResultIterator
+type PeriodsListResultPage = original.PeriodsListResultPage
 type PermissionsClient = original.PermissionsClient
 type PermissionsListResult = original.PermissionsListResult
 type PermissionsListResultIterator = original.PermissionsListResultIterator
@@ -420,8 +457,8 @@ type ValidateProductTransferEligibilityResult = original.ValidateProductTransfer
 type ValidateSubscriptionTransferEligibilityError = original.ValidateSubscriptionTransferEligibilityError
 type ValidateSubscriptionTransferEligibilityResult = original.ValidateSubscriptionTransferEligibilityResult
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New(subscriptionID string, subscriptionID1 string) BaseClient {
+	return original.New(subscriptionID, subscriptionID1)
 }
 func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
 	return original.NewAccountListResultIterator(page)
@@ -429,17 +466,17 @@ func NewAccountListResultIterator(page AccountListResultPage) AccountListResultI
 func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
 	return original.NewAccountListResultPage(getNextPage)
 }
-func NewAccountsClient(subscriptionID string) AccountsClient {
-	return original.NewAccountsClient(subscriptionID)
+func NewAccountsClient(subscriptionID string, subscriptionID1 string) AccountsClient {
+	return original.NewAccountsClient(subscriptionID, subscriptionID1)
 }
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
-	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) AccountsClient {
+	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewAddressClient(subscriptionID string) AddressClient {
-	return original.NewAddressClient(subscriptionID)
+func NewAddressClient(subscriptionID string, subscriptionID1 string) AddressClient {
+	return original.NewAddressClient(subscriptionID, subscriptionID1)
 }
-func NewAddressClientWithBaseURI(baseURI string, subscriptionID string) AddressClient {
-	return original.NewAddressClientWithBaseURI(baseURI, subscriptionID)
+func NewAddressClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) AddressClient {
+	return original.NewAddressClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewAgreementListResultIterator(page AgreementListResultPage) AgreementListResultIterator {
 	return original.NewAgreementListResultIterator(page)
@@ -447,17 +484,17 @@ func NewAgreementListResultIterator(page AgreementListResultPage) AgreementListR
 func NewAgreementListResultPage(getNextPage func(context.Context, AgreementListResult) (AgreementListResult, error)) AgreementListResultPage {
 	return original.NewAgreementListResultPage(getNextPage)
 }
-func NewAgreementsClient(subscriptionID string) AgreementsClient {
-	return original.NewAgreementsClient(subscriptionID)
+func NewAgreementsClient(subscriptionID string, subscriptionID1 string) AgreementsClient {
+	return original.NewAgreementsClient(subscriptionID, subscriptionID1)
 }
-func NewAgreementsClientWithBaseURI(baseURI string, subscriptionID string) AgreementsClient {
-	return original.NewAgreementsClientWithBaseURI(baseURI, subscriptionID)
+func NewAgreementsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) AgreementsClient {
+	return original.NewAgreementsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewAvailableBalancesClient(subscriptionID string) AvailableBalancesClient {
-	return original.NewAvailableBalancesClient(subscriptionID)
+func NewAvailableBalancesClient(subscriptionID string, subscriptionID1 string) AvailableBalancesClient {
+	return original.NewAvailableBalancesClient(subscriptionID, subscriptionID1)
 }
-func NewAvailableBalancesClientWithBaseURI(baseURI string, subscriptionID string) AvailableBalancesClient {
-	return original.NewAvailableBalancesClientWithBaseURI(baseURI, subscriptionID)
+func NewAvailableBalancesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) AvailableBalancesClient {
+	return original.NewAvailableBalancesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewCustomerListResultIterator(page CustomerListResultPage) CustomerListResultIterator {
 	return original.NewCustomerListResultIterator(page)
@@ -465,11 +502,23 @@ func NewCustomerListResultIterator(page CustomerListResultPage) CustomerListResu
 func NewCustomerListResultPage(getNextPage func(context.Context, CustomerListResult) (CustomerListResult, error)) CustomerListResultPage {
 	return original.NewCustomerListResultPage(getNextPage)
 }
-func NewCustomersClient(subscriptionID string) CustomersClient {
-	return original.NewCustomersClient(subscriptionID)
+func NewCustomersClient(subscriptionID string, subscriptionID1 string) CustomersClient {
+	return original.NewCustomersClient(subscriptionID, subscriptionID1)
 }
-func NewCustomersClientWithBaseURI(baseURI string, subscriptionID string) CustomersClient {
-	return original.NewCustomersClientWithBaseURI(baseURI, subscriptionID)
+func NewCustomersClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CustomersClient {
+	return original.NewCustomersClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+}
+func NewEnrollmentAccountListResultIterator(page EnrollmentAccountListResultPage) EnrollmentAccountListResultIterator {
+	return original.NewEnrollmentAccountListResultIterator(page)
+}
+func NewEnrollmentAccountListResultPage(getNextPage func(context.Context, EnrollmentAccountListResult) (EnrollmentAccountListResult, error)) EnrollmentAccountListResultPage {
+	return original.NewEnrollmentAccountListResultPage(getNextPage)
+}
+func NewEnrollmentAccountsClient(subscriptionID string, subscriptionID1 string) EnrollmentAccountsClient {
+	return original.NewEnrollmentAccountsClient(subscriptionID, subscriptionID1)
+}
+func NewEnrollmentAccountsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) EnrollmentAccountsClient {
+	return original.NewEnrollmentAccountsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewInstructionListResultIterator(page InstructionListResultPage) InstructionListResultIterator {
 	return original.NewInstructionListResultIterator(page)
@@ -477,11 +526,11 @@ func NewInstructionListResultIterator(page InstructionListResultPage) Instructio
 func NewInstructionListResultPage(getNextPage func(context.Context, InstructionListResult) (InstructionListResult, error)) InstructionListResultPage {
 	return original.NewInstructionListResultPage(getNextPage)
 }
-func NewInstructionsClient(subscriptionID string) InstructionsClient {
-	return original.NewInstructionsClient(subscriptionID)
+func NewInstructionsClient(subscriptionID string, subscriptionID1 string) InstructionsClient {
+	return original.NewInstructionsClient(subscriptionID, subscriptionID1)
 }
-func NewInstructionsClientWithBaseURI(baseURI string, subscriptionID string) InstructionsClient {
-	return original.NewInstructionsClientWithBaseURI(baseURI, subscriptionID)
+func NewInstructionsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) InstructionsClient {
+	return original.NewInstructionsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewInvoiceListResultIterator(page InvoiceListResultPage) InvoiceListResultIterator {
 	return original.NewInvoiceListResultIterator(page)
@@ -501,17 +550,17 @@ func NewInvoiceSectionListWithCreateSubPermissionResultIterator(page InvoiceSect
 func NewInvoiceSectionListWithCreateSubPermissionResultPage(getNextPage func(context.Context, InvoiceSectionListWithCreateSubPermissionResult) (InvoiceSectionListWithCreateSubPermissionResult, error)) InvoiceSectionListWithCreateSubPermissionResultPage {
 	return original.NewInvoiceSectionListWithCreateSubPermissionResultPage(getNextPage)
 }
-func NewInvoiceSectionsClient(subscriptionID string) InvoiceSectionsClient {
-	return original.NewInvoiceSectionsClient(subscriptionID)
+func NewInvoiceSectionsClient(subscriptionID string, subscriptionID1 string) InvoiceSectionsClient {
+	return original.NewInvoiceSectionsClient(subscriptionID, subscriptionID1)
 }
-func NewInvoiceSectionsClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsClient {
-	return original.NewInvoiceSectionsClientWithBaseURI(baseURI, subscriptionID)
+func NewInvoiceSectionsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) InvoiceSectionsClient {
+	return original.NewInvoiceSectionsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewInvoicesClient(subscriptionID string) InvoicesClient {
-	return original.NewInvoicesClient(subscriptionID)
+func NewInvoicesClient(subscriptionID string, subscriptionID1 string) InvoicesClient {
+	return original.NewInvoicesClient(subscriptionID, subscriptionID1)
 }
-func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) InvoicesClient {
-	return original.NewInvoicesClientWithBaseURI(baseURI, subscriptionID)
+func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) InvoicesClient {
+	return original.NewInvoicesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -519,17 +568,29 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string, subscriptionID1 string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, subscriptionID1)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewPermissionsClient(subscriptionID string) PermissionsClient {
-	return original.NewPermissionsClient(subscriptionID)
+func NewPeriodsClient(subscriptionID string, subscriptionID1 string) PeriodsClient {
+	return original.NewPeriodsClient(subscriptionID, subscriptionID1)
 }
-func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string) PermissionsClient {
-	return original.NewPermissionsClientWithBaseURI(baseURI, subscriptionID)
+func NewPeriodsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PeriodsClient {
+	return original.NewPeriodsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
+}
+func NewPeriodsListResultIterator(page PeriodsListResultPage) PeriodsListResultIterator {
+	return original.NewPeriodsListResultIterator(page)
+}
+func NewPeriodsListResultPage(getNextPage func(context.Context, PeriodsListResult) (PeriodsListResult, error)) PeriodsListResultPage {
+	return original.NewPeriodsListResultPage(getNextPage)
+}
+func NewPermissionsClient(subscriptionID string, subscriptionID1 string) PermissionsClient {
+	return original.NewPermissionsClient(subscriptionID, subscriptionID1)
+}
+func NewPermissionsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PermissionsClient {
+	return original.NewPermissionsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewPermissionsListResultIterator(page PermissionsListResultPage) PermissionsListResultIterator {
 	return original.NewPermissionsListResultIterator(page)
@@ -537,17 +598,17 @@ func NewPermissionsListResultIterator(page PermissionsListResultPage) Permission
 func NewPermissionsListResultPage(getNextPage func(context.Context, PermissionsListResult) (PermissionsListResult, error)) PermissionsListResultPage {
 	return original.NewPermissionsListResultPage(getNextPage)
 }
-func NewPoliciesClient(subscriptionID string) PoliciesClient {
-	return original.NewPoliciesClient(subscriptionID)
+func NewPoliciesClient(subscriptionID string, subscriptionID1 string) PoliciesClient {
+	return original.NewPoliciesClient(subscriptionID, subscriptionID1)
 }
-func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
-	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID)
+func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PoliciesClient {
+	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewProductsClient(subscriptionID string) ProductsClient {
-	return original.NewProductsClient(subscriptionID)
+func NewProductsClient(subscriptionID string, subscriptionID1 string) ProductsClient {
+	return original.NewProductsClient(subscriptionID, subscriptionID1)
 }
-func NewProductsClientWithBaseURI(baseURI string, subscriptionID string) ProductsClient {
-	return original.NewProductsClientWithBaseURI(baseURI, subscriptionID)
+func NewProductsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ProductsClient {
+	return original.NewProductsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewProductsListResultIterator(page ProductsListResultPage) ProductsListResultIterator {
 	return original.NewProductsListResultIterator(page)
@@ -561,17 +622,17 @@ func NewProfileListResultIterator(page ProfileListResultPage) ProfileListResultI
 func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
 	return original.NewProfileListResultPage(getNextPage)
 }
-func NewProfilesClient(subscriptionID string) ProfilesClient {
-	return original.NewProfilesClient(subscriptionID)
+func NewProfilesClient(subscriptionID string, subscriptionID1 string) ProfilesClient {
+	return original.NewProfilesClient(subscriptionID, subscriptionID1)
 }
-func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string) ProfilesClient {
-	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID)
+func NewProfilesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ProfilesClient {
+	return original.NewProfilesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewPropertyClient(subscriptionID string) PropertyClient {
-	return original.NewPropertyClient(subscriptionID)
+func NewPropertyClient(subscriptionID string, subscriptionID1 string) PropertyClient {
+	return original.NewPropertyClient(subscriptionID, subscriptionID1)
 }
-func NewPropertyClientWithBaseURI(baseURI string, subscriptionID string) PropertyClient {
-	return original.NewPropertyClientWithBaseURI(baseURI, subscriptionID)
+func NewPropertyClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PropertyClient {
+	return original.NewPropertyClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewRoleAssignmentListResultIterator(page RoleAssignmentListResultPage) RoleAssignmentListResultIterator {
 	return original.NewRoleAssignmentListResultIterator(page)
@@ -579,11 +640,11 @@ func NewRoleAssignmentListResultIterator(page RoleAssignmentListResultPage) Role
 func NewRoleAssignmentListResultPage(getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
 	return original.NewRoleAssignmentListResultPage(getNextPage)
 }
-func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
-	return original.NewRoleAssignmentsClient(subscriptionID)
+func NewRoleAssignmentsClient(subscriptionID string, subscriptionID1 string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClient(subscriptionID, subscriptionID1)
 }
-func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
-	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID)
+func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewRoleDefinitionListResultIterator(page RoleDefinitionListResultPage) RoleDefinitionListResultIterator {
 	return original.NewRoleDefinitionListResultIterator(page)
@@ -591,17 +652,17 @@ func NewRoleDefinitionListResultIterator(page RoleDefinitionListResultPage) Role
 func NewRoleDefinitionListResultPage(getNextPage func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error)) RoleDefinitionListResultPage {
 	return original.NewRoleDefinitionListResultPage(getNextPage)
 }
-func NewRoleDefinitionsClient(subscriptionID string) RoleDefinitionsClient {
-	return original.NewRoleDefinitionsClient(subscriptionID)
+func NewRoleDefinitionsClient(subscriptionID string, subscriptionID1 string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClient(subscriptionID, subscriptionID1)
 }
-func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) RoleDefinitionsClient {
-	return original.NewRoleDefinitionsClientWithBaseURI(baseURI, subscriptionID)
+func NewRoleDefinitionsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
-	return original.NewSubscriptionsClient(subscriptionID)
+func NewSubscriptionsClient(subscriptionID string, subscriptionID1 string) SubscriptionsClient {
+	return original.NewSubscriptionsClient(subscriptionID, subscriptionID1)
 }
-func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsClient {
-	return original.NewSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) SubscriptionsClient {
+	return original.NewSubscriptionsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewSubscriptionsListResultIterator(page SubscriptionsListResultPage) SubscriptionsListResultIterator {
 	return original.NewSubscriptionsListResultIterator(page)
@@ -615,14 +676,14 @@ func NewTransactionListResultIterator(page TransactionListResultPage) Transactio
 func NewTransactionListResultPage(getNextPage func(context.Context, TransactionListResult) (TransactionListResult, error)) TransactionListResultPage {
 	return original.NewTransactionListResultPage(getNextPage)
 }
-func NewTransactionsClient(subscriptionID string) TransactionsClient {
-	return original.NewTransactionsClient(subscriptionID)
+func NewTransactionsClient(subscriptionID string, subscriptionID1 string) TransactionsClient {
+	return original.NewTransactionsClient(subscriptionID, subscriptionID1)
 }
-func NewTransactionsClientWithBaseURI(baseURI string, subscriptionID string) TransactionsClient {
-	return original.NewTransactionsClientWithBaseURI(baseURI, subscriptionID)
+func NewTransactionsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) TransactionsClient {
+	return original.NewTransactionsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func PossibleAcceptanceModeValues() []AcceptanceMode {
 	return original.PossibleAcceptanceModeValues()
@@ -654,6 +715,9 @@ func PossibleDocumentTypeValues() []DocumentType {
 func PossibleFrequencyValues() []Frequency {
 	return original.PossibleFrequencyValues()
 }
+func PossibleInvoiceSectionStateValues() []InvoiceSectionState {
+	return original.PossibleInvoiceSectionStateValues()
+}
 func PossibleInvoiceStatusValues() []InvoiceStatus {
 	return original.PossibleInvoiceStatusValues()
 }
@@ -681,6 +745,9 @@ func PossibleProfileStatusReasonCodeValues() []ProfileStatusReasonCode {
 func PossibleProfileStatusValues() []ProfileStatus {
 	return original.PossibleProfileStatusValues()
 }
+func PossibleRelationshipTypeValues() []RelationshipType {
+	return original.PossibleRelationshipTypeValues()
+}
 func PossibleReservationPurchasesPolicyValues() []ReservationPurchasesPolicy {
 	return original.PossibleReservationPurchasesPolicyValues()
 }
@@ -704,6 +771,9 @@ func PossibleSubscriptionStatusTypeValues() []SubscriptionStatusType {
 }
 func PossibleSubscriptionTransferValidationErrorCodeValues() []SubscriptionTransferValidationErrorCode {
 	return original.PossibleSubscriptionTransferValidationErrorCodeValues()
+}
+func PossibleTargetCloudValues() []TargetCloud {
+	return original.PossibleTargetCloudValues()
 }
 func PossibleTransactionTypeKindValues() []TransactionTypeKind {
 	return original.PossibleTransactionTypeKindValues()

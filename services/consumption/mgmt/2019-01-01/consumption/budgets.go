@@ -369,6 +369,9 @@ func (client BudgetsClient) List(ctx context.Context, scope string) (result Budg
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "List", resp, "Failure responding to request")
 	}
+	if result.blr.hasNextLink() && result.blr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

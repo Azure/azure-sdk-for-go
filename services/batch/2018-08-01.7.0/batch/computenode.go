@@ -823,6 +823,9 @@ func (client ComputeNodeClient) List(ctx context.Context, poolID string, filter 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ComputeNodeClient", "List", resp, "Failure responding to request")
 	}
+	if result.cnlr.hasNextLink() && result.cnlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -345,6 +345,9 @@ func (client LoggerClient) List(ctx context.Context, apimBaseURL string, filter 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.LoggerClient", "List", resp, "Failure responding to request")
 	}
+	if result.lc.hasNextLink() && result.lc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

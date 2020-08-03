@@ -302,6 +302,9 @@ func (client AvailabilitySetsClient) List(ctx context.Context, resourceGroupName
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "List", resp, "Failure responding to request")
 	}
+	if result.aslr.hasNextLink() && result.aslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -488,6 +491,9 @@ func (client AvailabilitySetsClient) ListBySubscription(ctx context.Context, exp
 	result.aslr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.AvailabilitySetsClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.aslr.hasNextLink() && result.aslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

@@ -30,21 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2018-07-01-preview/policyinsights"
 
-// PolicyStatesResource enumerates the values for policy states resource.
-type PolicyStatesResource string
-
-const (
-	// Default ...
-	Default PolicyStatesResource = "default"
-	// Latest ...
-	Latest PolicyStatesResource = "latest"
-)
-
-// PossiblePolicyStatesResourceValues returns an array of possible values for the PolicyStatesResource const type.
-func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
-	return []PolicyStatesResource{Default, Latest}
-}
-
 // ErrorDefinition error definition.
 type ErrorDefinition struct {
 	// Code - READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
@@ -695,10 +680,15 @@ func (peqr PolicyEventsQueryResults) IsEmpty() bool {
 	return peqr.Value == nil || len(*peqr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (peqr PolicyEventsQueryResults) hasNextLink() bool {
+	return peqr.OdataNextLink != nil && len(*peqr.OdataNextLink) != 0
+}
+
 // policyEventsQueryResultsPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (peqr PolicyEventsQueryResults) policyEventsQueryResultsPreparer(ctx context.Context) (*http.Request, error) {
-	if peqr.OdataNextLink == nil || len(to.String(peqr.OdataNextLink)) < 1 {
+	if !peqr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -726,11 +716,16 @@ func (page *PolicyEventsQueryResultsPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.peqr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.peqr)
+		if err != nil {
+			return err
+		}
+		page.peqr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.peqr = next
 	return nil
 }
 
@@ -1293,10 +1288,15 @@ func (psqr PolicyStatesQueryResults) IsEmpty() bool {
 	return psqr.Value == nil || len(*psqr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (psqr PolicyStatesQueryResults) hasNextLink() bool {
+	return psqr.OdataNextLink != nil && len(*psqr.OdataNextLink) != 0
+}
+
 // policyStatesQueryResultsPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (psqr PolicyStatesQueryResults) policyStatesQueryResultsPreparer(ctx context.Context) (*http.Request, error) {
-	if psqr.OdataNextLink == nil || len(to.String(psqr.OdataNextLink)) < 1 {
+	if !psqr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1324,11 +1324,16 @@ func (page *PolicyStatesQueryResultsPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.psqr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.psqr)
+		if err != nil {
+			return err
+		}
+		page.psqr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.psqr = next
 	return nil
 }
 
@@ -1385,8 +1390,8 @@ type PolicyTrackedResourcesQueryResults struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// PolicyTrackedResourcesQueryResultsIterator provides access to a complete listing of
-// PolicyTrackedResource values.
+// PolicyTrackedResourcesQueryResultsIterator provides access to a complete listing of PolicyTrackedResource
+// values.
 type PolicyTrackedResourcesQueryResultsIterator struct {
 	i    int
 	page PolicyTrackedResourcesQueryResultsPage
@@ -1454,10 +1459,15 @@ func (ptrqr PolicyTrackedResourcesQueryResults) IsEmpty() bool {
 	return ptrqr.Value == nil || len(*ptrqr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ptrqr PolicyTrackedResourcesQueryResults) hasNextLink() bool {
+	return ptrqr.NextLink != nil && len(*ptrqr.NextLink) != 0
+}
+
 // policyTrackedResourcesQueryResultsPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ptrqr PolicyTrackedResourcesQueryResults) policyTrackedResourcesQueryResultsPreparer(ctx context.Context) (*http.Request, error) {
-	if ptrqr.NextLink == nil || len(to.String(ptrqr.NextLink)) < 1 {
+	if !ptrqr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1485,11 +1495,16 @@ func (page *PolicyTrackedResourcesQueryResultsPage) NextWithContext(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ptrqr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ptrqr)
+		if err != nil {
+			return err
+		}
+		page.ptrqr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ptrqr = next
 	return nil
 }
 
@@ -1706,10 +1721,15 @@ func (rdlr RemediationDeploymentsListResult) IsEmpty() bool {
 	return rdlr.Value == nil || len(*rdlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rdlr RemediationDeploymentsListResult) hasNextLink() bool {
+	return rdlr.NextLink != nil && len(*rdlr.NextLink) != 0
+}
+
 // remediationDeploymentsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rdlr RemediationDeploymentsListResult) remediationDeploymentsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rdlr.NextLink == nil || len(to.String(rdlr.NextLink)) < 1 {
+	if !rdlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1737,11 +1757,16 @@ func (page *RemediationDeploymentsListResultPage) NextWithContext(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rdlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rdlr)
+		if err != nil {
+			return err
+		}
+		page.rdlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rdlr = next
 	return nil
 }
 
@@ -1775,8 +1800,7 @@ func NewRemediationDeploymentsListResultPage(getNextPage func(context.Context, R
 	return RemediationDeploymentsListResultPage{fn: getNextPage}
 }
 
-// RemediationDeploymentSummary the deployment status summary for all deployments created by the
-// remediation.
+// RemediationDeploymentSummary the deployment status summary for all deployments created by the remediation.
 type RemediationDeploymentSummary struct {
 	// TotalDeployments - The number of deployments required by the remediation.
 	TotalDeployments *int32 `json:"totalDeployments,omitempty"`
@@ -1869,10 +1893,15 @@ func (rlr RemediationListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rlr RemediationListResult) hasNextLink() bool {
+	return rlr.NextLink != nil && len(*rlr.NextLink) != 0
+}
+
 // remediationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rlr RemediationListResult) remediationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
+	if !rlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1900,11 +1929,16 @@ func (page *RemediationListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rlr)
+		if err != nil {
+			return err
+		}
+		page.rlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rlr = next
 	return nil
 }
 
@@ -1956,6 +1990,24 @@ type RemediationProperties struct {
 	DeploymentStatus *RemediationDeploymentSummary `json:"deploymentStatus,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RemediationProperties.
+func (rp RemediationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rp.PolicyAssignmentID != nil {
+		objectMap["policyAssignmentId"] = rp.PolicyAssignmentID
+	}
+	if rp.PolicyDefinitionReferenceID != nil {
+		objectMap["policyDefinitionReferenceId"] = rp.PolicyDefinitionReferenceID
+	}
+	if rp.Filters != nil {
+		objectMap["filters"] = rp.Filters
+	}
+	if rp.DeploymentStatus != nil {
+		objectMap["deploymentStatus"] = rp.DeploymentStatus
+	}
+	return json.Marshal(objectMap)
+}
+
 // String ...
 type String struct {
 	autorest.Response `json:"-"`
@@ -1995,8 +2047,8 @@ type SummaryResults struct {
 	NonCompliantPolicies *int32 `json:"nonCompliantPolicies,omitempty"`
 }
 
-// TrackedResourceModificationDetails the details of the policy triggered deployment that created or
-// modified the tracked resource.
+// TrackedResourceModificationDetails the details of the policy triggered deployment that created or modified
+// the tracked resource.
 type TrackedResourceModificationDetails struct {
 	// PolicyDetails - READ-ONLY; The details of the policy that created or modified the tracked resource.
 	PolicyDetails *PolicyDetails `json:"policyDetails,omitempty"`

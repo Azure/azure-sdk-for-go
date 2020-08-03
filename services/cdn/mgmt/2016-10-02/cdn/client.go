@@ -164,6 +164,9 @@ func (client BaseClient) ListOperations(ctx context.Context) (result OperationLi
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.BaseClient", "ListOperations", resp, "Failure responding to request")
 	}
+	if result.olr.hasNextLink() && result.olr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -267,6 +270,9 @@ func (client BaseClient) ListResourceUsage(ctx context.Context) (result Resource
 	result.rulr, err = client.ListResourceUsageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.BaseClient", "ListResourceUsage", resp, "Failure responding to request")
+	}
+	if result.rulr.hasNextLink() && result.rulr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

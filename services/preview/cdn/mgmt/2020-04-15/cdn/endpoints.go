@@ -32,14 +32,14 @@ type EndpointsClient struct {
 }
 
 // NewEndpointsClient creates an instance of the EndpointsClient client.
-func NewEndpointsClient(subscriptionID string, subscriptionID1 string) EndpointsClient {
-	return NewEndpointsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewEndpointsClient(subscriptionID string) EndpointsClient {
+	return NewEndpointsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewEndpointsClientWithBaseURI creates an instance of the EndpointsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) EndpointsClient {
-	return EndpointsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
+	return EndpointsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new CDN endpoint with the specified endpoint name under the specified subscription, resource group
@@ -346,6 +346,9 @@ func (client EndpointsClient) ListByProfile(ctx context.Context, resourceGroupNa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListByProfile", resp, "Failure responding to request")
 	}
+	if result.elr.hasNextLink() && result.elr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -467,6 +470,9 @@ func (client EndpointsClient) ListResourceUsage(ctx context.Context, resourceGro
 	result.rulr, err = client.ListResourceUsageResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.EndpointsClient", "ListResourceUsage", resp, "Failure responding to request")
+	}
+	if result.rulr.hasNextLink() && result.rulr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

@@ -350,6 +350,9 @@ func (client PrivateEndpointConnectionsClient) List(ctx context.Context, resourc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.PrivateEndpointConnectionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.peclr.hasNextLink() && result.peclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

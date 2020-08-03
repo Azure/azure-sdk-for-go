@@ -151,6 +151,9 @@ func (client ResourcePoolsClient) List(ctx context.Context, regionID string, pcN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcePoolsClient", "List", resp, "Failure responding to request")
 	}
+	if result.rplr.hasNextLink() && result.rplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -348,6 +348,9 @@ func (client BackendClient) List(ctx context.Context, apimBaseURL string, filter
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.BackendClient", "List", resp, "Failure responding to request")
 	}
+	if result.bc.hasNextLink() && result.bc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

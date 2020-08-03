@@ -72,6 +72,9 @@ func (client ServiceLocationsClient) List(ctx context.Context) (result ServiceLo
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.ServiceLocationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.sllr.hasNextLink() && result.sllr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

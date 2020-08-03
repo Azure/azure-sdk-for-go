@@ -101,6 +101,9 @@ func (client APIIssuesClient) ListByService(ctx context.Context, resourceGroupNa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIIssuesClient", "ListByService", resp, "Failure responding to request")
 	}
+	if result.ic.hasNextLink() && result.ic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

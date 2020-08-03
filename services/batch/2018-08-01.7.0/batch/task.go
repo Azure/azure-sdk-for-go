@@ -602,6 +602,9 @@ func (client TaskClient) List(ctx context.Context, jobID string, filter string, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.TaskClient", "List", resp, "Failure responding to request")
 	}
+	if result.ctlr.hasNextLink() && result.ctlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

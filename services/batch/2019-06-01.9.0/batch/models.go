@@ -30,814 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/batch/2019-06-01.9.0/batch"
 
-// AccessScope enumerates the values for access scope.
-type AccessScope string
-
-const (
-	// Job Grants access to perform all operations on the Job containing the Task.
-	Job AccessScope = "job"
-)
-
-// PossibleAccessScopeValues returns an array of possible values for the AccessScope const type.
-func PossibleAccessScopeValues() []AccessScope {
-	return []AccessScope{Job}
-}
-
-// AllocationState enumerates the values for allocation state.
-type AllocationState string
-
-const (
-	// Resizing The Pool is resizing; that is, Compute Nodes are being added to or removed from the Pool.
-	Resizing AllocationState = "resizing"
-	// Steady The Pool is not resizing. There are no changes to the number of Compute Nodes in the Pool in
-	// progress. A Pool enters this state when it is created and when no operations are being performed on the
-	// Pool to change the number of Compute Nodes.
-	Steady AllocationState = "steady"
-	// Stopping The Pool was resizing, but the user has requested that the resize be stopped, but the stop
-	// request has not yet been completed.
-	Stopping AllocationState = "stopping"
-)
-
-// PossibleAllocationStateValues returns an array of possible values for the AllocationState const type.
-func PossibleAllocationStateValues() []AllocationState {
-	return []AllocationState{Resizing, Steady, Stopping}
-}
-
-// AutoUserScope enumerates the values for auto user scope.
-type AutoUserScope string
-
-const (
-	// Pool Specifies that the Task runs as the common auto user Account which is created on every Compute Node
-	// in a Pool.
-	Pool AutoUserScope = "pool"
-	// Task Specifies that the service should create a new user for the Task.
-	Task AutoUserScope = "task"
-)
-
-// PossibleAutoUserScopeValues returns an array of possible values for the AutoUserScope const type.
-func PossibleAutoUserScopeValues() []AutoUserScope {
-	return []AutoUserScope{Pool, Task}
-}
-
-// CachingType enumerates the values for caching type.
-type CachingType string
-
-const (
-	// None The caching mode for the disk is not enabled.
-	None CachingType = "none"
-	// ReadOnly The caching mode for the disk is read only.
-	ReadOnly CachingType = "readonly"
-	// ReadWrite The caching mode for the disk is read and write.
-	ReadWrite CachingType = "readwrite"
-)
-
-// PossibleCachingTypeValues returns an array of possible values for the CachingType const type.
-func PossibleCachingTypeValues() []CachingType {
-	return []CachingType{None, ReadOnly, ReadWrite}
-}
-
-// CertificateFormat enumerates the values for certificate format.
-type CertificateFormat string
-
-const (
-	// Cer The Certificate is a base64-encoded X.509 Certificate.
-	Cer CertificateFormat = "cer"
-	// Pfx The Certificate is a PFX (PKCS#12) formatted Certificate or Certificate chain.
-	Pfx CertificateFormat = "pfx"
-)
-
-// PossibleCertificateFormatValues returns an array of possible values for the CertificateFormat const type.
-func PossibleCertificateFormatValues() []CertificateFormat {
-	return []CertificateFormat{Cer, Pfx}
-}
-
-// CertificateState enumerates the values for certificate state.
-type CertificateState string
-
-const (
-	// Active The Certificate is available for use in Pools.
-	Active CertificateState = "active"
-	// DeleteFailed The user requested that the Certificate be deleted, but there are Pools that still have
-	// references to the Certificate, or it is still installed on one or more Nodes. (The latter can occur if
-	// the Certificate has been removed from the Pool, but the Compute Node has not yet restarted. Compute
-	// Nodes refresh their Certificates only when they restart.) You may use the cancel Certificate delete
-	// operation to cancel the delete, or the delete Certificate operation to retry the delete.
-	DeleteFailed CertificateState = "deletefailed"
-	// Deleting The user has requested that the Certificate be deleted, but the delete operation has not yet
-	// completed. You may not reference the Certificate when creating or updating Pools.
-	Deleting CertificateState = "deleting"
-)
-
-// PossibleCertificateStateValues returns an array of possible values for the CertificateState const type.
-func PossibleCertificateStateValues() []CertificateState {
-	return []CertificateState{Active, DeleteFailed, Deleting}
-}
-
-// CertificateStoreLocation enumerates the values for certificate store location.
-type CertificateStoreLocation string
-
-const (
-	// CurrentUser Certificates should be installed to the CurrentUser Certificate store.
-	CurrentUser CertificateStoreLocation = "currentuser"
-	// LocalMachine Certificates should be installed to the LocalMachine Certificate store.
-	LocalMachine CertificateStoreLocation = "localmachine"
-)
-
-// PossibleCertificateStoreLocationValues returns an array of possible values for the CertificateStoreLocation const type.
-func PossibleCertificateStoreLocationValues() []CertificateStoreLocation {
-	return []CertificateStoreLocation{CurrentUser, LocalMachine}
-}
-
-// CertificateVisibility enumerates the values for certificate visibility.
-type CertificateVisibility string
-
-const (
-	// CertificateVisibilityRemoteUser The Certificate should be visible to the user Accounts under which users
-	// remotely access the Compute Node.
-	CertificateVisibilityRemoteUser CertificateVisibility = "remoteuser"
-	// CertificateVisibilityStartTask The Certificate should be visible to the user Account under which the
-	// start Task is run.
-	CertificateVisibilityStartTask CertificateVisibility = "starttask"
-	// CertificateVisibilityTask The Certificate should be visible to the user Accounts under which Job Tasks
-	// are run.
-	CertificateVisibilityTask CertificateVisibility = "task"
-)
-
-// PossibleCertificateVisibilityValues returns an array of possible values for the CertificateVisibility const type.
-func PossibleCertificateVisibilityValues() []CertificateVisibility {
-	return []CertificateVisibility{CertificateVisibilityRemoteUser, CertificateVisibilityStartTask, CertificateVisibilityTask}
-}
-
-// ComputeNodeDeallocationOption enumerates the values for compute node deallocation option.
-type ComputeNodeDeallocationOption string
-
-const (
-	// Requeue Terminate running Task processes and requeue the Tasks. The Tasks will run again when a Compute
-	// Node is available. Remove Compute Nodes as soon as Tasks have been terminated.
-	Requeue ComputeNodeDeallocationOption = "requeue"
-	// RetainedData Allow currently running Tasks to complete, then wait for all Task data retention periods to
-	// expire. Schedule no new Tasks while waiting. Remove Compute Nodes when all Task retention periods have
-	// expired.
-	RetainedData ComputeNodeDeallocationOption = "retaineddata"
-	// TaskCompletion Allow currently running Tasks to complete. Schedule no new Tasks while waiting. Remove
-	// Compute Nodes when all Tasks have completed.
-	TaskCompletion ComputeNodeDeallocationOption = "taskcompletion"
-	// Terminate Terminate running Tasks. The Tasks will be completed with failureInfo indicating that they
-	// were terminated, and will not run again. Remove Compute Nodes as soon as Tasks have been terminated.
-	Terminate ComputeNodeDeallocationOption = "terminate"
-)
-
-// PossibleComputeNodeDeallocationOptionValues returns an array of possible values for the ComputeNodeDeallocationOption const type.
-func PossibleComputeNodeDeallocationOptionValues() []ComputeNodeDeallocationOption {
-	return []ComputeNodeDeallocationOption{Requeue, RetainedData, TaskCompletion, Terminate}
-}
-
-// ComputeNodeFillType enumerates the values for compute node fill type.
-type ComputeNodeFillType string
-
-const (
-	// Pack As many Tasks as possible (maxTasksPerNode) should be assigned to each Compute Node in the Pool
-	// before any Tasks are assigned to the next Compute Node in the Pool.
-	Pack ComputeNodeFillType = "pack"
-	// Spread Tasks should be assigned evenly across all Compute Nodes in the Pool.
-	Spread ComputeNodeFillType = "spread"
-)
-
-// PossibleComputeNodeFillTypeValues returns an array of possible values for the ComputeNodeFillType const type.
-func PossibleComputeNodeFillTypeValues() []ComputeNodeFillType {
-	return []ComputeNodeFillType{Pack, Spread}
-}
-
-// ComputeNodeRebootOption enumerates the values for compute node reboot option.
-type ComputeNodeRebootOption string
-
-const (
-	// ComputeNodeRebootOptionRequeue Terminate running Task processes and requeue the Tasks. The Tasks will
-	// run again when a Compute Node is available. Restart the Compute Node as soon as Tasks have been
-	// terminated.
-	ComputeNodeRebootOptionRequeue ComputeNodeRebootOption = "requeue"
-	// ComputeNodeRebootOptionRetainedData Allow currently running Tasks to complete, then wait for all Task
-	// data retention periods to expire. Schedule no new Tasks while waiting. Restart the Compute Node when all
-	// Task retention periods have expired.
-	ComputeNodeRebootOptionRetainedData ComputeNodeRebootOption = "retaineddata"
-	// ComputeNodeRebootOptionTaskCompletion Allow currently running Tasks to complete. Schedule no new Tasks
-	// while waiting. Restart the Compute Node when all Tasks have completed.
-	ComputeNodeRebootOptionTaskCompletion ComputeNodeRebootOption = "taskcompletion"
-	// ComputeNodeRebootOptionTerminate Terminate running Tasks. The Tasks will be completed with failureInfo
-	// indicating that they were terminated, and will not run again. Restart the Compute Node as soon as Tasks
-	// have been terminated.
-	ComputeNodeRebootOptionTerminate ComputeNodeRebootOption = "terminate"
-)
-
-// PossibleComputeNodeRebootOptionValues returns an array of possible values for the ComputeNodeRebootOption const type.
-func PossibleComputeNodeRebootOptionValues() []ComputeNodeRebootOption {
-	return []ComputeNodeRebootOption{ComputeNodeRebootOptionRequeue, ComputeNodeRebootOptionRetainedData, ComputeNodeRebootOptionTaskCompletion, ComputeNodeRebootOptionTerminate}
-}
-
-// ComputeNodeReimageOption enumerates the values for compute node reimage option.
-type ComputeNodeReimageOption string
-
-const (
-	// ComputeNodeReimageOptionRequeue Terminate running Task processes and requeue the Tasks. The Tasks will
-	// run again when a Compute Node is available. Reimage the Compute Node as soon as Tasks have been
-	// terminated.
-	ComputeNodeReimageOptionRequeue ComputeNodeReimageOption = "requeue"
-	// ComputeNodeReimageOptionRetainedData Allow currently running Tasks to complete, then wait for all Task
-	// data retention periods to expire. Schedule no new Tasks while waiting. Reimage the Compute Node when all
-	// Task retention periods have expired.
-	ComputeNodeReimageOptionRetainedData ComputeNodeReimageOption = "retaineddata"
-	// ComputeNodeReimageOptionTaskCompletion Allow currently running Tasks to complete. Schedule no new Tasks
-	// while waiting. Reimage the Compute Node when all Tasks have completed.
-	ComputeNodeReimageOptionTaskCompletion ComputeNodeReimageOption = "taskcompletion"
-	// ComputeNodeReimageOptionTerminate Terminate running Tasks. The Tasks will be completed with failureInfo
-	// indicating that they were terminated, and will not run again. Reimage the Compute Node as soon as Tasks
-	// have been terminated.
-	ComputeNodeReimageOptionTerminate ComputeNodeReimageOption = "terminate"
-)
-
-// PossibleComputeNodeReimageOptionValues returns an array of possible values for the ComputeNodeReimageOption const type.
-func PossibleComputeNodeReimageOptionValues() []ComputeNodeReimageOption {
-	return []ComputeNodeReimageOption{ComputeNodeReimageOptionRequeue, ComputeNodeReimageOptionRetainedData, ComputeNodeReimageOptionTaskCompletion, ComputeNodeReimageOptionTerminate}
-}
-
-// ComputeNodeState enumerates the values for compute node state.
-type ComputeNodeState string
-
-const (
-	// Creating The Batch service has obtained the underlying virtual machine from Azure Compute, but it has
-	// not yet started to join the Pool.
-	Creating ComputeNodeState = "creating"
-	// Idle The Compute Node is not currently running a Task.
-	Idle ComputeNodeState = "idle"
-	// LeavingPool The Compute Node is leaving the Pool, either because the user explicitly removed it or
-	// because the Pool is resizing or autoscaling down.
-	LeavingPool ComputeNodeState = "leavingpool"
-	// Offline The Compute Node is not currently running a Task, and scheduling of new Tasks to the Compute
-	// Node is disabled.
-	Offline ComputeNodeState = "offline"
-	// Preempted The low-priority Compute Node has been preempted. Tasks which were running on the Compute Node
-	// when it was preempted will be rescheduled when another Compute Node becomes available.
-	Preempted ComputeNodeState = "preempted"
-	// Rebooting The Compute Node is rebooting.
-	Rebooting ComputeNodeState = "rebooting"
-	// Reimaging The Compute Node is reimaging.
-	Reimaging ComputeNodeState = "reimaging"
-	// Running The Compute Node is running one or more Tasks (other than a start task).
-	Running ComputeNodeState = "running"
-	// Starting The Batch service is starting on the underlying virtual machine.
-	Starting ComputeNodeState = "starting"
-	// StartTaskFailed The start Task has failed on the Compute Node (and exhausted all retries), and
-	// waitForSuccess is set. The Compute Node is not usable for running Tasks.
-	StartTaskFailed ComputeNodeState = "starttaskfailed"
-	// Unknown The Batch service has lost contact with the Compute Node, and does not know its true state.
-	Unknown ComputeNodeState = "unknown"
-	// Unusable The Compute Node cannot be used for Task execution due to errors.
-	Unusable ComputeNodeState = "unusable"
-	// WaitingForStartTask The start Task has started running on the Compute Node, but waitForSuccess is set
-	// and the start Task has not yet completed.
-	WaitingForStartTask ComputeNodeState = "waitingforstarttask"
-)
-
-// PossibleComputeNodeStateValues returns an array of possible values for the ComputeNodeState const type.
-func PossibleComputeNodeStateValues() []ComputeNodeState {
-	return []ComputeNodeState{Creating, Idle, LeavingPool, Offline, Preempted, Rebooting, Reimaging, Running, Starting, StartTaskFailed, Unknown, Unusable, WaitingForStartTask}
-}
-
-// ContainerWorkingDirectory enumerates the values for container working directory.
-type ContainerWorkingDirectory string
-
-const (
-	// ContainerImageDefault Use the working directory defined in the container Image. Beware that this
-	// directory will not contain the Resource Files downloaded by Batch.
-	ContainerImageDefault ContainerWorkingDirectory = "containerImageDefault"
-	// TaskWorkingDirectory Use the standard Batch service Task working directory, which will contain the Task
-	// Resource Files populated by Batch.
-	TaskWorkingDirectory ContainerWorkingDirectory = "taskWorkingDirectory"
-)
-
-// PossibleContainerWorkingDirectoryValues returns an array of possible values for the ContainerWorkingDirectory const type.
-func PossibleContainerWorkingDirectoryValues() []ContainerWorkingDirectory {
-	return []ContainerWorkingDirectory{ContainerImageDefault, TaskWorkingDirectory}
-}
-
-// DependencyAction enumerates the values for dependency action.
-type DependencyAction string
-
-const (
-	// Block Block the Task's dependencies.
-	Block DependencyAction = "block"
-	// Satisfy Satisfy the Task's dependencies.
-	Satisfy DependencyAction = "satisfy"
-)
-
-// PossibleDependencyActionValues returns an array of possible values for the DependencyAction const type.
-func PossibleDependencyActionValues() []DependencyAction {
-	return []DependencyAction{Block, Satisfy}
-}
-
-// DisableComputeNodeSchedulingOption enumerates the values for disable compute node scheduling option.
-type DisableComputeNodeSchedulingOption string
-
-const (
-	// DisableComputeNodeSchedulingOptionRequeue Terminate running Task processes and requeue the Tasks. The
-	// Tasks may run again on other Compute Nodes, or when Task scheduling is re-enabled on this Compute Node.
-	// Enter offline state as soon as Tasks have been terminated.
-	DisableComputeNodeSchedulingOptionRequeue DisableComputeNodeSchedulingOption = "requeue"
-	// DisableComputeNodeSchedulingOptionTaskCompletion Allow currently running Tasks to complete. Schedule no
-	// new Tasks while waiting. Enter offline state when all Tasks have completed.
-	DisableComputeNodeSchedulingOptionTaskCompletion DisableComputeNodeSchedulingOption = "taskcompletion"
-	// DisableComputeNodeSchedulingOptionTerminate Terminate running Tasks. The Tasks will be completed with
-	// failureInfo indicating that they were terminated, and will not run again. Enter offline state as soon as
-	// Tasks have been terminated.
-	DisableComputeNodeSchedulingOptionTerminate DisableComputeNodeSchedulingOption = "terminate"
-)
-
-// PossibleDisableComputeNodeSchedulingOptionValues returns an array of possible values for the DisableComputeNodeSchedulingOption const type.
-func PossibleDisableComputeNodeSchedulingOptionValues() []DisableComputeNodeSchedulingOption {
-	return []DisableComputeNodeSchedulingOption{DisableComputeNodeSchedulingOptionRequeue, DisableComputeNodeSchedulingOptionTaskCompletion, DisableComputeNodeSchedulingOptionTerminate}
-}
-
-// DisableJobOption enumerates the values for disable job option.
-type DisableJobOption string
-
-const (
-	// DisableJobOptionRequeue Terminate running Tasks and requeue them. The Tasks will run again when the Job
-	// is enabled.
-	DisableJobOptionRequeue DisableJobOption = "requeue"
-	// DisableJobOptionTerminate Terminate running Tasks. The Tasks will be completed with failureInfo
-	// indicating that they were terminated, and will not run again.
-	DisableJobOptionTerminate DisableJobOption = "terminate"
-	// DisableJobOptionWait Allow currently running Tasks to complete.
-	DisableJobOptionWait DisableJobOption = "wait"
-)
-
-// PossibleDisableJobOptionValues returns an array of possible values for the DisableJobOption const type.
-func PossibleDisableJobOptionValues() []DisableJobOption {
-	return []DisableJobOption{DisableJobOptionRequeue, DisableJobOptionTerminate, DisableJobOptionWait}
-}
-
-// DynamicVNetAssignmentScope enumerates the values for dynamic v net assignment scope.
-type DynamicVNetAssignmentScope string
-
-const (
-	// DynamicVNetAssignmentScopeJob Dynamic VNet assignment is done per-job.
-	DynamicVNetAssignmentScopeJob DynamicVNetAssignmentScope = "job"
-	// DynamicVNetAssignmentScopeNone No dynamic VNet assignment is enabled.
-	DynamicVNetAssignmentScopeNone DynamicVNetAssignmentScope = "none"
-)
-
-// PossibleDynamicVNetAssignmentScopeValues returns an array of possible values for the DynamicVNetAssignmentScope const type.
-func PossibleDynamicVNetAssignmentScopeValues() []DynamicVNetAssignmentScope {
-	return []DynamicVNetAssignmentScope{DynamicVNetAssignmentScopeJob, DynamicVNetAssignmentScopeNone}
-}
-
-// ElevationLevel enumerates the values for elevation level.
-type ElevationLevel string
-
-const (
-	// Admin The user is a user with elevated access and operates with full Administrator permissions.
-	Admin ElevationLevel = "admin"
-	// NonAdmin The user is a standard user without elevated access.
-	NonAdmin ElevationLevel = "nonadmin"
-)
-
-// PossibleElevationLevelValues returns an array of possible values for the ElevationLevel const type.
-func PossibleElevationLevelValues() []ElevationLevel {
-	return []ElevationLevel{Admin, NonAdmin}
-}
-
-// ErrorCategory enumerates the values for error category.
-type ErrorCategory string
-
-const (
-	// ServerError The error is due to an internal server issue.
-	ServerError ErrorCategory = "servererror"
-	// UserError The error is due to a user issue, such as misconfiguration.
-	UserError ErrorCategory = "usererror"
-)
-
-// PossibleErrorCategoryValues returns an array of possible values for the ErrorCategory const type.
-func PossibleErrorCategoryValues() []ErrorCategory {
-	return []ErrorCategory{ServerError, UserError}
-}
-
-// InboundEndpointProtocol enumerates the values for inbound endpoint protocol.
-type InboundEndpointProtocol string
-
-const (
-	// TCP Use TCP for the endpoint.
-	TCP InboundEndpointProtocol = "tcp"
-	// UDP Use UDP for the endpoint.
-	UDP InboundEndpointProtocol = "udp"
-)
-
-// PossibleInboundEndpointProtocolValues returns an array of possible values for the InboundEndpointProtocol const type.
-func PossibleInboundEndpointProtocolValues() []InboundEndpointProtocol {
-	return []InboundEndpointProtocol{TCP, UDP}
-}
-
-// JobAction enumerates the values for job action.
-type JobAction string
-
-const (
-	// JobActionDisable Disable the Job. This is equivalent to calling the disable Job API, with a disableTasks
-	// value of requeue.
-	JobActionDisable JobAction = "disable"
-	// JobActionNone Take no action.
-	JobActionNone JobAction = "none"
-	// JobActionTerminate Terminate the Job. The terminateReason in the Job's executionInfo is set to
-	// "TaskFailed".
-	JobActionTerminate JobAction = "terminate"
-)
-
-// PossibleJobActionValues returns an array of possible values for the JobAction const type.
-func PossibleJobActionValues() []JobAction {
-	return []JobAction{JobActionDisable, JobActionNone, JobActionTerminate}
-}
-
-// JobPreparationTaskState enumerates the values for job preparation task state.
-type JobPreparationTaskState string
-
-const (
-	// JobPreparationTaskStateCompleted The Task has exited with exit code 0, or the Task has exhausted its
-	// retry limit, or the Batch service was unable to start the Task due to Task preparation errors (such as
-	// resource file download failures).
-	JobPreparationTaskStateCompleted JobPreparationTaskState = "completed"
-	// JobPreparationTaskStateRunning The Task is currently running (including retrying).
-	JobPreparationTaskStateRunning JobPreparationTaskState = "running"
-)
-
-// PossibleJobPreparationTaskStateValues returns an array of possible values for the JobPreparationTaskState const type.
-func PossibleJobPreparationTaskStateValues() []JobPreparationTaskState {
-	return []JobPreparationTaskState{JobPreparationTaskStateCompleted, JobPreparationTaskStateRunning}
-}
-
-// JobReleaseTaskState enumerates the values for job release task state.
-type JobReleaseTaskState string
-
-const (
-	// JobReleaseTaskStateCompleted The Task has exited with exit code 0, or the Task has exhausted its retry
-	// limit, or the Batch service was unable to start the Task due to Task preparation errors (such as
-	// resource file download failures).
-	JobReleaseTaskStateCompleted JobReleaseTaskState = "completed"
-	// JobReleaseTaskStateRunning The Task is currently running (including retrying).
-	JobReleaseTaskStateRunning JobReleaseTaskState = "running"
-)
-
-// PossibleJobReleaseTaskStateValues returns an array of possible values for the JobReleaseTaskState const type.
-func PossibleJobReleaseTaskStateValues() []JobReleaseTaskState {
-	return []JobReleaseTaskState{JobReleaseTaskStateCompleted, JobReleaseTaskStateRunning}
-}
-
-// JobScheduleState enumerates the values for job schedule state.
-type JobScheduleState string
-
-const (
-	// JobScheduleStateActive The Job Schedule is active and will create Jobs as per its schedule.
-	JobScheduleStateActive JobScheduleState = "active"
-	// JobScheduleStateCompleted The Job Schedule has terminated, either by reaching its end time or by the
-	// user terminating it explicitly.
-	JobScheduleStateCompleted JobScheduleState = "completed"
-	// JobScheduleStateDeleting The user has requested that the Job Schedule be deleted, but the delete
-	// operation is still in progress. The scheduler will not initiate any new Jobs for this Job Schedule, and
-	// will delete any existing Jobs and Tasks under the Job Schedule, including any active Job. The Job
-	// Schedule will be deleted when all Jobs and Tasks under the Job Schedule have been deleted.
-	JobScheduleStateDeleting JobScheduleState = "deleting"
-	// JobScheduleStateDisabled The user has disabled the Job Schedule. The scheduler will not initiate any new
-	// Jobs will on this schedule, but any existing active Job will continue to run.
-	JobScheduleStateDisabled JobScheduleState = "disabled"
-	// JobScheduleStateTerminating The Job Schedule has no more work to do, or has been explicitly terminated
-	// by the user, but the termination operation is still in progress. The scheduler will not initiate any new
-	// Jobs for this Job Schedule, nor is any existing Job active.
-	JobScheduleStateTerminating JobScheduleState = "terminating"
-)
-
-// PossibleJobScheduleStateValues returns an array of possible values for the JobScheduleState const type.
-func PossibleJobScheduleStateValues() []JobScheduleState {
-	return []JobScheduleState{JobScheduleStateActive, JobScheduleStateCompleted, JobScheduleStateDeleting, JobScheduleStateDisabled, JobScheduleStateTerminating}
-}
-
-// JobState enumerates the values for job state.
-type JobState string
-
-const (
-	// JobStateActive The Job is available to have Tasks scheduled.
-	JobStateActive JobState = "active"
-	// JobStateCompleted All Tasks have terminated, and the system will not accept any more Tasks or any
-	// further changes to the Job.
-	JobStateCompleted JobState = "completed"
-	// JobStateDeleting A user has requested that the Job be deleted, but the delete operation is still in
-	// progress (for example, because the system is still terminating running Tasks).
-	JobStateDeleting JobState = "deleting"
-	// JobStateDisabled A user has disabled the Job. No Tasks are running, and no new Tasks will be scheduled.
-	JobStateDisabled JobState = "disabled"
-	// JobStateDisabling A user has requested that the Job be disabled, but the disable operation is still in
-	// progress (for example, waiting for Tasks to terminate).
-	JobStateDisabling JobState = "disabling"
-	// JobStateEnabling A user has requested that the Job be enabled, but the enable operation is still in
-	// progress.
-	JobStateEnabling JobState = "enabling"
-	// JobStateTerminating The Job is about to complete, either because a Job Manager Task has completed or
-	// because the user has terminated the Job, but the terminate operation is still in progress (for example,
-	// because Job Release Tasks are running).
-	JobStateTerminating JobState = "terminating"
-)
-
-// PossibleJobStateValues returns an array of possible values for the JobState const type.
-func PossibleJobStateValues() []JobState {
-	return []JobState{JobStateActive, JobStateCompleted, JobStateDeleting, JobStateDisabled, JobStateDisabling, JobStateEnabling, JobStateTerminating}
-}
-
-// LoginMode enumerates the values for login mode.
-type LoginMode string
-
-const (
-	// Batch The LOGON32_LOGON_BATCH Win32 login mode. The batch login mode is recommended for long running
-	// parallel processes.
-	Batch LoginMode = "batch"
-	// Interactive The LOGON32_LOGON_INTERACTIVE Win32 login mode. UAC is enabled on Windows
-	// VirtualMachineConfiguration Pools. If this option is used with an elevated user identity in a Windows
-	// VirtualMachineConfiguration Pool, the user session will not be elevated unless the application executed
-	// by the Task command line is configured to always require administrative privilege or to always require
-	// maximum privilege.
-	Interactive LoginMode = "interactive"
-)
-
-// PossibleLoginModeValues returns an array of possible values for the LoginMode const type.
-func PossibleLoginModeValues() []LoginMode {
-	return []LoginMode{Batch, Interactive}
-}
-
-// NetworkSecurityGroupRuleAccess enumerates the values for network security group rule access.
-type NetworkSecurityGroupRuleAccess string
-
-const (
-	// Allow Allow access.
-	Allow NetworkSecurityGroupRuleAccess = "allow"
-	// Deny Deny access.
-	Deny NetworkSecurityGroupRuleAccess = "deny"
-)
-
-// PossibleNetworkSecurityGroupRuleAccessValues returns an array of possible values for the NetworkSecurityGroupRuleAccess const type.
-func PossibleNetworkSecurityGroupRuleAccessValues() []NetworkSecurityGroupRuleAccess {
-	return []NetworkSecurityGroupRuleAccess{Allow, Deny}
-}
-
-// OnAllTasksComplete enumerates the values for on all tasks complete.
-type OnAllTasksComplete string
-
-const (
-	// NoAction Do nothing. The Job remains active unless terminated or disabled by some other means.
-	NoAction OnAllTasksComplete = "noaction"
-	// TerminateJob Terminate the Job. The Job's terminateReason is set to 'AllTasksComplete'.
-	TerminateJob OnAllTasksComplete = "terminatejob"
-)
-
-// PossibleOnAllTasksCompleteValues returns an array of possible values for the OnAllTasksComplete const type.
-func PossibleOnAllTasksCompleteValues() []OnAllTasksComplete {
-	return []OnAllTasksComplete{NoAction, TerminateJob}
-}
-
-// OnTaskFailure enumerates the values for on task failure.
-type OnTaskFailure string
-
-const (
-	// OnTaskFailureNoAction Do nothing. The Job remains active unless terminated or disabled by some other
-	// means.
-	OnTaskFailureNoAction OnTaskFailure = "noaction"
-	// OnTaskFailurePerformExitOptionsJobAction Take the action associated with the Task exit condition in the
-	// Task's exitConditions collection. (This may still result in no action being taken, if that is what the
-	// Task specifies.)
-	OnTaskFailurePerformExitOptionsJobAction OnTaskFailure = "performexitoptionsjobaction"
-)
-
-// PossibleOnTaskFailureValues returns an array of possible values for the OnTaskFailure const type.
-func PossibleOnTaskFailureValues() []OnTaskFailure {
-	return []OnTaskFailure{OnTaskFailureNoAction, OnTaskFailurePerformExitOptionsJobAction}
-}
-
-// OSType enumerates the values for os type.
-type OSType string
-
-const (
-	// Linux The Linux operating system.
-	Linux OSType = "linux"
-	// Windows The Windows operating system.
-	Windows OSType = "windows"
-)
-
-// PossibleOSTypeValues returns an array of possible values for the OSType const type.
-func PossibleOSTypeValues() []OSType {
-	return []OSType{Linux, Windows}
-}
-
-// OutputFileUploadCondition enumerates the values for output file upload condition.
-type OutputFileUploadCondition string
-
-const (
-	// OutputFileUploadConditionTaskCompletion Upload the file(s) after the Task process exits, no matter what
-	// the exit code was.
-	OutputFileUploadConditionTaskCompletion OutputFileUploadCondition = "taskcompletion"
-	// OutputFileUploadConditionTaskFailure Upload the file(s) only after the Task process exits with a nonzero
-	// exit code.
-	OutputFileUploadConditionTaskFailure OutputFileUploadCondition = "taskfailure"
-	// OutputFileUploadConditionTaskSuccess Upload the file(s) only after the Task process exits with an exit
-	// code of 0.
-	OutputFileUploadConditionTaskSuccess OutputFileUploadCondition = "tasksuccess"
-)
-
-// PossibleOutputFileUploadConditionValues returns an array of possible values for the OutputFileUploadCondition const type.
-func PossibleOutputFileUploadConditionValues() []OutputFileUploadCondition {
-	return []OutputFileUploadCondition{OutputFileUploadConditionTaskCompletion, OutputFileUploadConditionTaskFailure, OutputFileUploadConditionTaskSuccess}
-}
-
-// PoolLifetimeOption enumerates the values for pool lifetime option.
-type PoolLifetimeOption string
-
-const (
-	// PoolLifetimeOptionJob The Pool exists for the lifetime of the Job to which it is dedicated. The Batch
-	// service creates the Pool when it creates the Job. If the 'job' option is applied to a Job Schedule, the
-	// Batch service creates a new auto Pool for every Job created on the schedule.
-	PoolLifetimeOptionJob PoolLifetimeOption = "job"
-	// PoolLifetimeOptionJobSchedule The Pool exists for the lifetime of the Job Schedule. The Batch Service
-	// creates the Pool when it creates the first Job on the schedule. You may apply this option only to Job
-	// Schedules, not to Jobs.
-	PoolLifetimeOptionJobSchedule PoolLifetimeOption = "jobschedule"
-)
-
-// PossiblePoolLifetimeOptionValues returns an array of possible values for the PoolLifetimeOption const type.
-func PossiblePoolLifetimeOptionValues() []PoolLifetimeOption {
-	return []PoolLifetimeOption{PoolLifetimeOptionJob, PoolLifetimeOptionJobSchedule}
-}
-
-// PoolState enumerates the values for pool state.
-type PoolState string
-
-const (
-	// PoolStateActive The Pool is available to run Tasks subject to the availability of Compute Nodes.
-	PoolStateActive PoolState = "active"
-	// PoolStateDeleting The user has requested that the Pool be deleted, but the delete operation has not yet
-	// completed.
-	PoolStateDeleting PoolState = "deleting"
-)
-
-// PossiblePoolStateValues returns an array of possible values for the PoolState const type.
-func PossiblePoolStateValues() []PoolState {
-	return []PoolState{PoolStateActive, PoolStateDeleting}
-}
-
-// SchedulingState enumerates the values for scheduling state.
-type SchedulingState string
-
-const (
-	// Disabled No new Tasks will be scheduled on the Compute Node. Tasks already running on the Compute Node
-	// may still run to completion. All Compute Nodes start with scheduling enabled.
-	Disabled SchedulingState = "disabled"
-	// Enabled Tasks can be scheduled on the Compute Node.
-	Enabled SchedulingState = "enabled"
-)
-
-// PossibleSchedulingStateValues returns an array of possible values for the SchedulingState const type.
-func PossibleSchedulingStateValues() []SchedulingState {
-	return []SchedulingState{Disabled, Enabled}
-}
-
-// StartTaskState enumerates the values for start task state.
-type StartTaskState string
-
-const (
-	// StartTaskStateCompleted The start Task has exited with exit code 0, or the start Task has failed and the
-	// retry limit has reached, or the start Task process did not run due to Task preparation errors (such as
-	// resource file download failures).
-	StartTaskStateCompleted StartTaskState = "completed"
-	// StartTaskStateRunning The start Task is currently running.
-	StartTaskStateRunning StartTaskState = "running"
-)
-
-// PossibleStartTaskStateValues returns an array of possible values for the StartTaskState const type.
-func PossibleStartTaskStateValues() []StartTaskState {
-	return []StartTaskState{StartTaskStateCompleted, StartTaskStateRunning}
-}
-
-// StorageAccountType enumerates the values for storage account type.
-type StorageAccountType string
-
-const (
-	// PremiumLRS The data disk should use premium locally redundant storage.
-	PremiumLRS StorageAccountType = "premium_lrs"
-	// StandardLRS The data disk should use standard locally redundant storage.
-	StandardLRS StorageAccountType = "standard_lrs"
-)
-
-// PossibleStorageAccountTypeValues returns an array of possible values for the StorageAccountType const type.
-func PossibleStorageAccountTypeValues() []StorageAccountType {
-	return []StorageAccountType{PremiumLRS, StandardLRS}
-}
-
-// SubtaskState enumerates the values for subtask state.
-type SubtaskState string
-
-const (
-	// SubtaskStateCompleted The Task is no longer eligible to run, usually because the Task has finished
-	// successfully, or the Task has finished unsuccessfully and has exhausted its retry limit. A Task is also
-	// marked as completed if an error occurred launching the Task, or when the Task has been terminated.
-	SubtaskStateCompleted SubtaskState = "completed"
-	// SubtaskStatePreparing The Task has been assigned to a Compute Node, but is waiting for a required Job
-	// Preparation Task to complete on the Compute Node. If the Job Preparation Task succeeds, the Task will
-	// move to running. If the Job Preparation Task fails, the Task will return to active and will be eligible
-	// to be assigned to a different Compute Node.
-	SubtaskStatePreparing SubtaskState = "preparing"
-	// SubtaskStateRunning The Task is running on a Compute Node. This includes task-level preparation such as
-	// downloading resource files or deploying Packages specified on the Task - it does not necessarily mean
-	// that the Task command line has started executing.
-	SubtaskStateRunning SubtaskState = "running"
-)
-
-// PossibleSubtaskStateValues returns an array of possible values for the SubtaskState const type.
-func PossibleSubtaskStateValues() []SubtaskState {
-	return []SubtaskState{SubtaskStateCompleted, SubtaskStatePreparing, SubtaskStateRunning}
-}
-
-// TaskAddStatus enumerates the values for task add status.
-type TaskAddStatus string
-
-const (
-	// TaskAddStatusClientError The Task failed to add due to a client error and should not be retried without
-	// modifying the request as appropriate.
-	TaskAddStatusClientError TaskAddStatus = "clienterror"
-	// TaskAddStatusServerError Task failed to add due to a server error and can be retried without
-	// modification.
-	TaskAddStatusServerError TaskAddStatus = "servererror"
-	// TaskAddStatusSuccess The Task was added successfully.
-	TaskAddStatusSuccess TaskAddStatus = "success"
-)
-
-// PossibleTaskAddStatusValues returns an array of possible values for the TaskAddStatus const type.
-func PossibleTaskAddStatusValues() []TaskAddStatus {
-	return []TaskAddStatus{TaskAddStatusClientError, TaskAddStatusServerError, TaskAddStatusSuccess}
-}
-
-// TaskExecutionResult enumerates the values for task execution result.
-type TaskExecutionResult string
-
-const (
-	// Failure There was an error during processing of the Task. The failure may have occurred before the Task
-	// process was launched, while the Task process was executing, or after the Task process exited.
-	Failure TaskExecutionResult = "failure"
-	// Success The Task ran successfully.
-	Success TaskExecutionResult = "success"
-)
-
-// PossibleTaskExecutionResultValues returns an array of possible values for the TaskExecutionResult const type.
-func PossibleTaskExecutionResultValues() []TaskExecutionResult {
-	return []TaskExecutionResult{Failure, Success}
-}
-
-// TaskState enumerates the values for task state.
-type TaskState string
-
-const (
-	// TaskStateActive The Task is queued and able to run, but is not currently assigned to a Compute Node. A
-	// Task enters this state when it is created, when it is enabled after being disabled, or when it is
-	// awaiting a retry after a failed run.
-	TaskStateActive TaskState = "active"
-	// TaskStateCompleted The Task is no longer eligible to run, usually because the Task has finished
-	// successfully, or the Task has finished unsuccessfully and has exhausted its retry limit. A Task is also
-	// marked as completed if an error occurred launching the Task, or when the Task has been terminated.
-	TaskStateCompleted TaskState = "completed"
-	// TaskStatePreparing The Task has been assigned to a Compute Node, but is waiting for a required Job
-	// Preparation Task to complete on the Compute Node. If the Job Preparation Task succeeds, the Task will
-	// move to running. If the Job Preparation Task fails, the Task will return to active and will be eligible
-	// to be assigned to a different Compute Node.
-	TaskStatePreparing TaskState = "preparing"
-	// TaskStateRunning The Task is running on a Compute Node. This includes task-level preparation such as
-	// downloading resource files or deploying Packages specified on the Task - it does not necessarily mean
-	// that the Task command line has started executing.
-	TaskStateRunning TaskState = "running"
-)
-
-// PossibleTaskStateValues returns an array of possible values for the TaskState const type.
-func PossibleTaskStateValues() []TaskState {
-	return []TaskState{TaskStateActive, TaskStateCompleted, TaskStatePreparing, TaskStateRunning}
-}
-
-// VerificationType enumerates the values for verification type.
-type VerificationType string
-
-const (
-	// Unverified The associated Compute Node agent SKU should have binary compatibility with the Image, but
-	// specific functionality has not been verified.
-	Unverified VerificationType = "unverified"
-	// Verified The Image is guaranteed to be compatible with the associated Compute Node agent SKU and all
-	// Batch features have been confirmed to work as expected.
-	Verified VerificationType = "verified"
-)
-
-// PossibleVerificationTypeValues returns an array of possible values for the VerificationType const type.
-func PossibleVerificationTypeValues() []VerificationType {
-	return []VerificationType{Unverified, Verified}
-}
-
 // AccountListSupportedImagesResult ...
 type AccountListSupportedImagesResult struct {
 	autorest.Response `json:"-"`
@@ -845,8 +37,7 @@ type AccountListSupportedImagesResult struct {
 	OdataNextLink     *string             `json:"odata.nextLink,omitempty"`
 }
 
-// AccountListSupportedImagesResultIterator provides access to a complete listing of ImageInformation
-// values.
+// AccountListSupportedImagesResultIterator provides access to a complete listing of ImageInformation values.
 type AccountListSupportedImagesResultIterator struct {
 	i    int
 	page AccountListSupportedImagesResultPage
@@ -914,10 +105,15 @@ func (alsir AccountListSupportedImagesResult) IsEmpty() bool {
 	return alsir.Value == nil || len(*alsir.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (alsir AccountListSupportedImagesResult) hasNextLink() bool {
+	return alsir.OdataNextLink != nil && len(*alsir.OdataNextLink) != 0
+}
+
 // accountListSupportedImagesResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (alsir AccountListSupportedImagesResult) accountListSupportedImagesResultPreparer(ctx context.Context) (*http.Request, error) {
-	if alsir.OdataNextLink == nil || len(to.String(alsir.OdataNextLink)) < 1 {
+	if !alsir.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -945,11 +141,16 @@ func (page *AccountListSupportedImagesResultPage) NextWithContext(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.alsir)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.alsir)
+		if err != nil {
+			return err
+		}
+		page.alsir = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.alsir = next
 	return nil
 }
 
@@ -1064,10 +265,15 @@ func (alr ApplicationListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (alr ApplicationListResult) hasNextLink() bool {
+	return alr.OdataNextLink != nil && len(*alr.OdataNextLink) != 0
+}
+
 // applicationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (alr ApplicationListResult) applicationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if alr.OdataNextLink == nil || len(to.String(alr.OdataNextLink)) < 1 {
+	if !alr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1095,11 +301,16 @@ func (page *ApplicationListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.alr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.alr)
+		if err != nil {
+			return err
+		}
+		page.alr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.alr = next
 	return nil
 }
 
@@ -1189,8 +400,8 @@ type AutoUserSpecification struct {
 	ElevationLevel ElevationLevel `json:"elevationLevel,omitempty"`
 }
 
-// Certificate a Certificate that can be installed on Compute Nodes and can be used to authenticate
-// operations on the machine.
+// Certificate a Certificate that can be installed on Compute Nodes and can be used to authenticate operations
+// on the machine.
 type Certificate struct {
 	autorest.Response   `json:"-"`
 	Thumbprint          *string `json:"thumbprint,omitempty"`
@@ -1294,10 +505,15 @@ func (clr CertificateListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (clr CertificateListResult) hasNextLink() bool {
+	return clr.OdataNextLink != nil && len(*clr.OdataNextLink) != 0
+}
+
 // certificateListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (clr CertificateListResult) certificateListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if clr.OdataNextLink == nil || len(to.String(clr.OdataNextLink)) < 1 {
+	if !clr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1325,11 +541,16 @@ func (page *CertificateListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.clr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.clr)
+		if err != nil {
+			return err
+		}
+		page.clr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.clr = next
 	return nil
 }
 
@@ -1494,10 +715,15 @@ func (cjlpartsr CloudJobListPreparationAndReleaseTaskStatusResult) IsEmpty() boo
 	return cjlpartsr.Value == nil || len(*cjlpartsr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cjlpartsr CloudJobListPreparationAndReleaseTaskStatusResult) hasNextLink() bool {
+	return cjlpartsr.OdataNextLink != nil && len(*cjlpartsr.OdataNextLink) != 0
+}
+
 // cloudJobListPreparationAndReleaseTaskStatusResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cjlpartsr CloudJobListPreparationAndReleaseTaskStatusResult) cloudJobListPreparationAndReleaseTaskStatusResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cjlpartsr.OdataNextLink == nil || len(to.String(cjlpartsr.OdataNextLink)) < 1 {
+	if !cjlpartsr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1526,11 +752,16 @@ func (page *CloudJobListPreparationAndReleaseTaskStatusResultPage) NextWithConte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cjlpartsr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cjlpartsr)
+		if err != nil {
+			return err
+		}
+		page.cjlpartsr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cjlpartsr = next
 	return nil
 }
 
@@ -1639,10 +870,15 @@ func (cjlr CloudJobListResult) IsEmpty() bool {
 	return cjlr.Value == nil || len(*cjlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cjlr CloudJobListResult) hasNextLink() bool {
+	return cjlr.OdataNextLink != nil && len(*cjlr.OdataNextLink) != 0
+}
+
 // cloudJobListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cjlr CloudJobListResult) cloudJobListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cjlr.OdataNextLink == nil || len(to.String(cjlr.OdataNextLink)) < 1 {
+	if !cjlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1670,11 +906,16 @@ func (page *CloudJobListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cjlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cjlr)
+		if err != nil {
+			return err
+		}
+		page.cjlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cjlr = next
 	return nil
 }
 
@@ -1809,10 +1050,15 @@ func (cjslr CloudJobScheduleListResult) IsEmpty() bool {
 	return cjslr.Value == nil || len(*cjslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cjslr CloudJobScheduleListResult) hasNextLink() bool {
+	return cjslr.OdataNextLink != nil && len(*cjslr.OdataNextLink) != 0
+}
+
 // cloudJobScheduleListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cjslr CloudJobScheduleListResult) cloudJobScheduleListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cjslr.OdataNextLink == nil || len(to.String(cjslr.OdataNextLink)) < 1 {
+	if !cjslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1840,11 +1086,16 @@ func (page *CloudJobScheduleListResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cjslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cjslr)
+		if err != nil {
+			return err
+		}
+		page.cjslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cjslr = next
 	return nil
 }
 
@@ -2015,10 +1266,15 @@ func (cplr CloudPoolListResult) IsEmpty() bool {
 	return cplr.Value == nil || len(*cplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cplr CloudPoolListResult) hasNextLink() bool {
+	return cplr.OdataNextLink != nil && len(*cplr.OdataNextLink) != 0
+}
+
 // cloudPoolListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cplr CloudPoolListResult) cloudPoolListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cplr.OdataNextLink == nil || len(to.String(cplr.OdataNextLink)) < 1 {
+	if !cplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2046,11 +1302,16 @@ func (page *CloudPoolListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cplr)
+		if err != nil {
+			return err
+		}
+		page.cplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cplr = next
 	return nil
 }
 
@@ -2098,12 +1359,12 @@ type CloudServiceConfiguration struct {
 }
 
 // CloudTask batch will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery
-// operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node
-// disappeared due to host failure. Retries due to recovery operations are independent of and are not
-// counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a
-// recovery operation may occur. Because of this, all Tasks should be idempotent. This means Tasks need to
-// tolerate being interrupted and restarted without causing any corruption or duplicate data. The best
-// practice for long running Tasks is to use some form of checkpointing.
+// operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node disappeared
+// due to host failure. Retries due to recovery operations are independent of and are not counted against the
+// maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a recovery operation may
+// occur. Because of this, all Tasks should be idempotent. This means Tasks need to tolerate being interrupted
+// and restarted without causing any corruption or duplicate data. The best practice for long running Tasks is
+// to use some form of checkpointing.
 type CloudTask struct {
 	autorest.Response `json:"-"`
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters.
@@ -2224,10 +1485,15 @@ func (ctlr CloudTaskListResult) IsEmpty() bool {
 	return ctlr.Value == nil || len(*ctlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ctlr CloudTaskListResult) hasNextLink() bool {
+	return ctlr.OdataNextLink != nil && len(*ctlr.OdataNextLink) != 0
+}
+
 // cloudTaskListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ctlr CloudTaskListResult) cloudTaskListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ctlr.OdataNextLink == nil || len(to.String(ctlr.OdataNextLink)) < 1 {
+	if !ctlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2255,11 +1521,16 @@ func (page *CloudTaskListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ctlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ctlr)
+		if err != nil {
+			return err
+		}
+		page.ctlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ctlr = next
 	return nil
 }
 
@@ -2439,10 +1710,15 @@ func (cnlr ComputeNodeListResult) IsEmpty() bool {
 	return cnlr.Value == nil || len(*cnlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cnlr ComputeNodeListResult) hasNextLink() bool {
+	return cnlr.OdataNextLink != nil && len(*cnlr.OdataNextLink) != 0
+}
+
 // computeNodeListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cnlr ComputeNodeListResult) computeNodeListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cnlr.OdataNextLink == nil || len(to.String(cnlr.OdataNextLink)) < 1 {
+	if !cnlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2470,11 +1746,16 @@ func (page *ComputeNodeListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cnlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cnlr)
+		if err != nil {
+			return err
+		}
+		page.cnlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cnlr = next
 	return nil
 }
 
@@ -2737,22 +2018,21 @@ type JobExecutionInformation struct {
 }
 
 // JobManagerTask the Job Manager Task is automatically started when the Job is created. The Batch service
-// tries to schedule the Job Manager Task before any other Tasks in the Job. When shrinking a Pool, the
-// Batch service tries to preserve Nodes where Job Manager Tasks are running for as long as possible (that
-// is, Compute Nodes running 'normal' Tasks are removed before Compute Nodes running Job Manager Tasks).
-// When a Job Manager Task fails and needs to be restarted, the system tries to schedule it at the highest
-// priority. If there are no idle Compute Nodes available, the system may terminate one of the running
-// Tasks in the Pool and return it to the queue in order to make room for the Job Manager Task to restart.
-// Note that a Job Manager Task in one Job does not have priority over Tasks in other Jobs. Across Jobs,
-// only Job level priorities are observed. For example, if a Job Manager in a priority 0 Job needs to be
-// restarted, it will not displace Tasks of a priority 1 Job. Batch will retry Tasks when a recovery
-// operation is triggered on a Node. Examples of recovery operations include (but are not limited to) when
-// an unhealthy Node is rebooted or a Compute Node disappeared due to host failure. Retries due to recovery
-// operations are independent of and are not counted against the maxTaskRetryCount. Even if the
-// maxTaskRetryCount is 0, an internal retry due to a recovery operation may occur. Because of this, all
-// Tasks should be idempotent. This means Tasks need to tolerate being interrupted and restarted without
-// causing any corruption or duplicate data. The best practice for long running Tasks is to use some form
-// of checkpointing.
+// tries to schedule the Job Manager Task before any other Tasks in the Job. When shrinking a Pool, the Batch
+// service tries to preserve Nodes where Job Manager Tasks are running for as long as possible (that is,
+// Compute Nodes running 'normal' Tasks are removed before Compute Nodes running Job Manager Tasks). When a Job
+// Manager Task fails and needs to be restarted, the system tries to schedule it at the highest priority. If
+// there are no idle Compute Nodes available, the system may terminate one of the running Tasks in the Pool and
+// return it to the queue in order to make room for the Job Manager Task to restart. Note that a Job Manager
+// Task in one Job does not have priority over Tasks in other Jobs. Across Jobs, only Job level priorities are
+// observed. For example, if a Job Manager in a priority 0 Job needs to be restarted, it will not displace
+// Tasks of a priority 1 Job. Batch will retry Tasks when a recovery operation is triggered on a Node. Examples
+// of recovery operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node
+// disappeared due to host failure. Retries due to recovery operations are independent of and are not counted
+// against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a recovery
+// operation may occur. Because of this, all Tasks should be idempotent. This means Tasks need to tolerate
+// being interrupted and restarted without causing any corruption or duplicate data. The best practice for long
+// running Tasks is to use some form of checkpointing.
 type JobManagerTask struct {
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters.
 	ID *string `json:"id,omitempty"`
@@ -2813,24 +2093,23 @@ type JobPreparationAndReleaseTaskExecutionInformation struct {
 }
 
 // JobPreparationTask you can use Job Preparation to prepare a Node to run Tasks for the Job. Activities
-// commonly performed in Job Preparation include: Downloading common resource files used by all the Tasks
-// in the Job. The Job Preparation Task can download these common resource files to the shared location on
-// the Node. (AZ_BATCH_NODE_ROOT_DIR\shared), or starting a local service on the Node so that all Tasks of
-// that Job can communicate with it. If the Job Preparation Task fails (that is, exhausts its retry count
-// before exiting with exit code 0), Batch will not run Tasks of this Job on the Node. The Compute Node
-// remains ineligible to run Tasks of this Job until it is reimaged. The Compute Node remains active and
-// can be used for other Jobs. The Job Preparation Task can run multiple times on the same Node. Therefore,
-// you should write the Job Preparation Task to handle re-execution. If the Node is rebooted, the Job
-// Preparation Task is run again on the Compute Node before scheduling any other Task of the Job, if
-// rerunOnNodeRebootAfterSuccess is true or if the Job Preparation Task did not previously complete. If the
-// Node is reimaged, the Job Preparation Task is run again before scheduling any Task of the Job. Batch
-// will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery operations
-// include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node disappeared due to
-// host failure. Retries due to recovery operations are independent of and are not counted against the
-// maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a recovery operation may
-// occur. Because of this, all Tasks should be idempotent. This means Tasks need to tolerate being
-// interrupted and restarted without causing any corruption or duplicate data. The best practice for long
-// running Tasks is to use some form of checkpointing.
+// commonly performed in Job Preparation include: Downloading common resource files used by all the Tasks in
+// the Job. The Job Preparation Task can download these common resource files to the shared location on the
+// Node. (AZ_BATCH_NODE_ROOT_DIR\shared), or starting a local service on the Node so that all Tasks of that Job
+// can communicate with it. If the Job Preparation Task fails (that is, exhausts its retry count before exiting
+// with exit code 0), Batch will not run Tasks of this Job on the Node. The Compute Node remains ineligible to
+// run Tasks of this Job until it is reimaged. The Compute Node remains active and can be used for other Jobs.
+// The Job Preparation Task can run multiple times on the same Node. Therefore, you should write the Job
+// Preparation Task to handle re-execution. If the Node is rebooted, the Job Preparation Task is run again on
+// the Compute Node before scheduling any other Task of the Job, if rerunOnNodeRebootAfterSuccess is true or if
+// the Job Preparation Task did not previously complete. If the Node is reimaged, the Job Preparation Task is
+// run again before scheduling any Task of the Job. Batch will retry Tasks when a recovery operation is
+// triggered on a Node. Examples of recovery operations include (but are not limited to) when an unhealthy Node
+// is rebooted or a Compute Node disappeared due to host failure. Retries due to recovery operations are
+// independent of and are not counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an
+// internal retry due to a recovery operation may occur. Because of this, all Tasks should be idempotent. This
+// means Tasks need to tolerate being interrupted and restarted without causing any corruption or duplicate
+// data. The best practice for long running Tasks is to use some form of checkpointing.
 type JobPreparationTask struct {
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters. If you do not specify this property, the Batch service assigns a default value of 'jobpreparation'. No other Task in the Job can have the same ID as the Job Preparation Task. If you try to submit a Task with the same id, the Batch service rejects the request with error code TaskIdSameAsJobPreparationTask; if you are calling the REST API directly, the HTTP status code is 409 (Conflict).
 	ID *string `json:"id,omitempty"`
@@ -2874,17 +2153,17 @@ type JobPreparationTaskExecutionInformation struct {
 	Result TaskExecutionResult `json:"result,omitempty"`
 }
 
-// JobReleaseTask the Job Release Task runs when the Job ends, because of one of the following: The user
-// calls the Terminate Job API, or the Delete Job API while the Job is still active, the Job's maximum wall
-// clock time constraint is reached, and the Job is still active, or the Job's Job Manager Task completed,
-// and the Job is configured to terminate when the Job Manager completes. The Job Release Task runs on each
-// Node where Tasks of the Job have run and the Job Preparation Task ran and completed. If you reimage a
-// Node after it has run the Job Preparation Task, and the Job ends without any further Tasks of the Job
-// running on that Node (and hence the Job Preparation Task does not re-run), then the Job Release Task
-// does not run on that Compute Node. If a Node reboots while the Job Release Task is still running, the
-// Job Release Task runs again when the Compute Node starts up. The Job is not marked as complete until all
-// Job Release Tasks have completed. The Job Release Task runs in the background. It does not occupy a
-// scheduling slot; that is, it does not count towards the maxTasksPerNode limit specified on the Pool.
+// JobReleaseTask the Job Release Task runs when the Job ends, because of one of the following: The user calls
+// the Terminate Job API, or the Delete Job API while the Job is still active, the Job's maximum wall clock
+// time constraint is reached, and the Job is still active, or the Job's Job Manager Task completed, and the
+// Job is configured to terminate when the Job Manager completes. The Job Release Task runs on each Node where
+// Tasks of the Job have run and the Job Preparation Task ran and completed. If you reimage a Node after it has
+// run the Job Preparation Task, and the Job ends without any further Tasks of the Job running on that Node
+// (and hence the Job Preparation Task does not re-run), then the Job Release Task does not run on that Compute
+// Node. If a Node reboots while the Job Release Task is still running, the Job Release Task runs again when
+// the Compute Node starts up. The Job is not marked as complete until all Job Release Tasks have completed.
+// The Job Release Task runs in the background. It does not occupy a scheduling slot; that is, it does not
+// count towards the maxTasksPerNode limit specified on the Pool.
 type JobReleaseTask struct {
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters. If you do not specify this property, the Batch service assigns a default value of 'jobrelease'. No other Task in the Job can have the same ID as the Job Release Task. If you try to submit a Task with the same id, the Batch service rejects the request with error code TaskIdSameAsJobReleaseTask; if you are calling the REST API directly, the HTTP status code is 409 (Conflict).
 	ID *string `json:"id,omitempty"`
@@ -3078,10 +2357,9 @@ type MetadataItem struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// MultiInstanceSettings multi-instance Tasks are commonly used to support MPI Tasks. In the MPI case, if
-// any of the subtasks fail (for example due to exiting with a non-zero exit code) the entire
-// multi-instance Task fails. The multi-instance Task is then terminated and retried, up to its retry
-// limit.
+// MultiInstanceSettings multi-instance Tasks are commonly used to support MPI Tasks. In the MPI case, if any
+// of the subtasks fail (for example due to exiting with a non-zero exit code) the entire multi-instance Task
+// fails. The multi-instance Task is then terminated and retried, up to its retry limit.
 type MultiInstanceSettings struct {
 	// NumberOfInstances - If omitted, the default is 1.
 	NumberOfInstances *int32 `json:"numberOfInstances,omitempty"`
@@ -3119,8 +2397,8 @@ type NetworkSecurityGroupRule struct {
 	SourcePortRanges *[]string `json:"sourcePortRanges,omitempty"`
 }
 
-// NodeAgentInformation the Batch Compute Node agent is a program that runs on each Compute Node in the
-// Pool and provides Batch capability on the Compute Node.
+// NodeAgentInformation the Batch Compute Node agent is a program that runs on each Compute Node in the Pool
+// and provides Batch capability on the Compute Node.
 type NodeAgentInformation struct {
 	// Version - This version number can be checked against the Compute Node agent release notes located at https://github.com/Azure/Batch/blob/master/changelogs/nodeagent/CHANGELOG.md.
 	Version *string `json:"version,omitempty"`
@@ -3235,10 +2513,15 @@ func (nflr NodeFileListResult) IsEmpty() bool {
 	return nflr.Value == nil || len(*nflr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (nflr NodeFileListResult) hasNextLink() bool {
+	return nflr.OdataNextLink != nil && len(*nflr.OdataNextLink) != 0
+}
+
 // nodeFileListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (nflr NodeFileListResult) nodeFileListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if nflr.OdataNextLink == nil || len(to.String(nflr.OdataNextLink)) < 1 {
+	if !nflr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3266,11 +2549,16 @@ func (page *NodeFileListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.nflr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.nflr)
+		if err != nil {
+			return err
+		}
+		page.nflr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.nflr = next
 	return nil
 }
 
@@ -3509,10 +2797,15 @@ func (plumr PoolListUsageMetricsResult) IsEmpty() bool {
 	return plumr.Value == nil || len(*plumr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (plumr PoolListUsageMetricsResult) hasNextLink() bool {
+	return plumr.OdataNextLink != nil && len(*plumr.OdataNextLink) != 0
+}
+
 // poolListUsageMetricsResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (plumr PoolListUsageMetricsResult) poolListUsageMetricsResultPreparer(ctx context.Context) (*http.Request, error) {
-	if plumr.OdataNextLink == nil || len(to.String(plumr.OdataNextLink)) < 1 {
+	if !plumr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3540,11 +2833,16 @@ func (page *PoolListUsageMetricsResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.plumr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.plumr)
+		if err != nil {
+			return err
+		}
+		page.plumr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.plumr = next
 	return nil
 }
 
@@ -3661,10 +2959,15 @@ func (pnclr PoolNodeCountsListResult) IsEmpty() bool {
 	return pnclr.Value == nil || len(*pnclr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pnclr PoolNodeCountsListResult) hasNextLink() bool {
+	return pnclr.OdataNextLink != nil && len(*pnclr.OdataNextLink) != 0
+}
+
 // poolNodeCountsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pnclr PoolNodeCountsListResult) poolNodeCountsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if pnclr.OdataNextLink == nil || len(to.String(pnclr.OdataNextLink)) < 1 {
+	if !pnclr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3692,11 +2995,16 @@ func (page *PoolNodeCountsListResultPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pnclr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pnclr)
+		if err != nil {
+			return err
+		}
+		page.pnclr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pnclr = next
 	return nil
 }
 
@@ -3890,15 +3198,15 @@ type Schedule struct {
 }
 
 // StartTask batch will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery
-// operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node
-// disappeared due to host failure. Retries due to recovery operations are independent of and are not
-// counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a
-// recovery operation may occur. Because of this, all Tasks should be idempotent. This means Tasks need to
-// tolerate being interrupted and restarted without causing any corruption or duplicate data. The best
-// practice for long running Tasks is to use some form of checkpointing. In some cases the start Task may
-// be re-run even though the Compute Node was not rebooted. Special care should be taken to avoid start
-// Tasks which create breakaway process or install/launch services from the start Task working directory,
-// as this will block Batch from being able to re-run the start Task.
+// operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node disappeared
+// due to host failure. Retries due to recovery operations are independent of and are not counted against the
+// maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a recovery operation may
+// occur. Because of this, all Tasks should be idempotent. This means Tasks need to tolerate being interrupted
+// and restarted without causing any corruption or duplicate data. The best practice for long running Tasks is
+// to use some form of checkpointing. In some cases the start Task may be re-run even though the Compute Node
+// was not rebooted. Special care should be taken to avoid start Tasks which create breakaway process or
+// install/launch services from the start Task working directory, as this will block Batch from being able to
+// re-run the start Task.
 type StartTask struct {
 	// CommandLine - The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the Task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
 	CommandLine *string `json:"commandLine,omitempty"`
@@ -3974,12 +3282,12 @@ type TaskAddCollectionResult struct {
 }
 
 // TaskAddParameter batch will retry Tasks when a recovery operation is triggered on a Node. Examples of
-// recovery operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute
-// Node disappeared due to host failure. Retries due to recovery operations are independent of and are not
-// counted against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a
-// recovery operation may occur. Because of this, all Tasks should be idempotent. This means Tasks need to
-// tolerate being interrupted and restarted without causing any corruption or duplicate data. The best
-// practice for long running Tasks is to use some form of checkpointing.
+// recovery operations include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node
+// disappeared due to host failure. Retries due to recovery operations are independent of and are not counted
+// against the maxTaskRetryCount. Even if the maxTaskRetryCount is 0, an internal retry due to a recovery
+// operation may occur. Because of this, all Tasks should be idempotent. This means Tasks need to tolerate
+// being interrupted and restarted without causing any corruption or duplicate data. The best practice for long
+// running Tasks is to use some form of checkpointing.
 type TaskAddParameter struct {
 	// ID - The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within a Job that differ only by case).
 	ID *string `json:"id,omitempty"`
@@ -4103,8 +3411,8 @@ type TaskFailureInformation struct {
 	Details  *[]NameValuePair `json:"details,omitempty"`
 }
 
-// TaskIDRange the start and end of the range are inclusive. For example, if a range has start 9 and end
-// 12, then it represents Tasks '9', '10', '11' and '12'.
+// TaskIDRange the start and end of the range are inclusive. For example, if a range has start 9 and end 12,
+// then it represents Tasks '9', '10', '11' and '12'.
 type TaskIDRange struct {
 	Start *int32 `json:"start,omitempty"`
 	End   *int32 `json:"end,omitempty"`

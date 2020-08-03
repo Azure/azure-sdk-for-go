@@ -113,6 +113,13 @@ type CheckNameAvailabilityClientAPI interface {
 
 var _ CheckNameAvailabilityClientAPI = (*mysql.CheckNameAvailabilityClient)(nil)
 
+// OperationsClientAPI contains the set of methods on the OperationsClient type.
+type OperationsClientAPI interface {
+	List(ctx context.Context) (result mysql.OperationListResult, err error)
+}
+
+var _ OperationsClientAPI = (*mysql.OperationsClient)(nil)
+
 // ServerSecurityAlertPoliciesClientAPI contains the set of methods on the ServerSecurityAlertPoliciesClient type.
 type ServerSecurityAlertPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters mysql.ServerSecurityAlertPolicy) (result mysql.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
@@ -120,10 +127,3 @@ type ServerSecurityAlertPoliciesClientAPI interface {
 }
 
 var _ ServerSecurityAlertPoliciesClientAPI = (*mysql.ServerSecurityAlertPoliciesClient)(nil)
-
-// OperationsClientAPI contains the set of methods on the OperationsClient type.
-type OperationsClientAPI interface {
-	List(ctx context.Context) (result mysql.OperationListResult, err error)
-}
-
-var _ OperationsClientAPI = (*mysql.OperationsClient)(nil)

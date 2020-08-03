@@ -378,6 +378,9 @@ func (client TriggersClient) ListByFactory(ctx context.Context, resourceGroupNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "ListByFactory", resp, "Failure responding to request")
 	}
+	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -509,6 +512,9 @@ func (client TriggersClient) ListRuns(ctx context.Context, resourceGroupName str
 	result.trlr, err = client.ListRunsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.TriggersClient", "ListRuns", resp, "Failure responding to request")
+	}
+	if result.trlr.hasNextLink() && result.trlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

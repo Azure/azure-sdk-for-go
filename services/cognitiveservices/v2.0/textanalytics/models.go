@@ -18,6 +18,7 @@ package textanalytics
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -70,6 +71,24 @@ type EntityRecord struct {
 	WikipediaURL *string `json:"wikipediaUrl,omitempty"`
 	// BingID - Bing unique identifier of the recognized entity. Use in conjunction with the Bing Entity Search API to fetch additional relevant information.
 	BingID *string `json:"bingId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EntityRecord.
+func (er EntityRecord) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if er.Name != nil {
+		objectMap["name"] = er.Name
+	}
+	if er.WikipediaLanguage != nil {
+		objectMap["wikipediaLanguage"] = er.WikipediaLanguage
+	}
+	if er.WikipediaID != nil {
+		objectMap["wikipediaId"] = er.WikipediaID
+	}
+	if er.BingID != nil {
+		objectMap["bingId"] = er.BingID
+	}
+	return json.Marshal(objectMap)
 }
 
 // ErrorRecord ...

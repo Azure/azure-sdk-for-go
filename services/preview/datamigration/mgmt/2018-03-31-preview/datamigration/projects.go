@@ -315,6 +315,9 @@ func (client ProjectsClient) List(ctx context.Context, groupName string, service
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ProjectsClient", "List", resp, "Failure responding to request")
 	}
+	if result.pl.hasNextLink() && result.pl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -364,6 +364,9 @@ func (client JobsClient) ListByResourceGroup(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.ljr.hasNextLink() && result.ljr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -485,6 +488,9 @@ func (client JobsClient) ListBySubscription(ctx context.Context, top *int32, fil
 	result.ljr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storageimportexport.JobsClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.ljr.hasNextLink() && result.ljr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

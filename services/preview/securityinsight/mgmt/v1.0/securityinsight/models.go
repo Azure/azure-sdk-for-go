@@ -31,326 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/v1.0/securityinsight"
 
-// AlertRuleKind enumerates the values for alert rule kind.
-type AlertRuleKind string
-
-const (
-	// Fusion ...
-	Fusion AlertRuleKind = "Fusion"
-	// MicrosoftSecurityIncidentCreation ...
-	MicrosoftSecurityIncidentCreation AlertRuleKind = "MicrosoftSecurityIncidentCreation"
-	// Scheduled ...
-	Scheduled AlertRuleKind = "Scheduled"
-)
-
-// PossibleAlertRuleKindValues returns an array of possible values for the AlertRuleKind const type.
-func PossibleAlertRuleKindValues() []AlertRuleKind {
-	return []AlertRuleKind{Fusion, MicrosoftSecurityIncidentCreation, Scheduled}
-}
-
-// AlertSeverity enumerates the values for alert severity.
-type AlertSeverity string
-
-const (
-	// High High severity
-	High AlertSeverity = "High"
-	// Informational Informational severity
-	Informational AlertSeverity = "Informational"
-	// Low Low severity
-	Low AlertSeverity = "Low"
-	// Medium Medium severity
-	Medium AlertSeverity = "Medium"
-)
-
-// PossibleAlertSeverityValues returns an array of possible values for the AlertSeverity const type.
-func PossibleAlertSeverityValues() []AlertSeverity {
-	return []AlertSeverity{High, Informational, Low, Medium}
-}
-
-// AttackTactic enumerates the values for attack tactic.
-type AttackTactic string
-
-const (
-	// Collection ...
-	Collection AttackTactic = "Collection"
-	// CommandAndControl ...
-	CommandAndControl AttackTactic = "CommandAndControl"
-	// CredentialAccess ...
-	CredentialAccess AttackTactic = "CredentialAccess"
-	// DefenseEvasion ...
-	DefenseEvasion AttackTactic = "DefenseEvasion"
-	// Discovery ...
-	Discovery AttackTactic = "Discovery"
-	// Execution ...
-	Execution AttackTactic = "Execution"
-	// Exfiltration ...
-	Exfiltration AttackTactic = "Exfiltration"
-	// Impact ...
-	Impact AttackTactic = "Impact"
-	// InitialAccess ...
-	InitialAccess AttackTactic = "InitialAccess"
-	// LateralMovement ...
-	LateralMovement AttackTactic = "LateralMovement"
-	// Persistence ...
-	Persistence AttackTactic = "Persistence"
-	// PrivilegeEscalation ...
-	PrivilegeEscalation AttackTactic = "PrivilegeEscalation"
-)
-
-// PossibleAttackTacticValues returns an array of possible values for the AttackTactic const type.
-func PossibleAttackTacticValues() []AttackTactic {
-	return []AttackTactic{Collection, CommandAndControl, CredentialAccess, DefenseEvasion, Discovery, Execution, Exfiltration, Impact, InitialAccess, LateralMovement, Persistence, PrivilegeEscalation}
-}
-
-// DataConnectorKind enumerates the values for data connector kind.
-type DataConnectorKind string
-
-const (
-	// DataConnectorKindAmazonWebServicesCloudTrail ...
-	DataConnectorKindAmazonWebServicesCloudTrail DataConnectorKind = "AmazonWebServicesCloudTrail"
-	// DataConnectorKindAzureActiveDirectory ...
-	DataConnectorKindAzureActiveDirectory DataConnectorKind = "AzureActiveDirectory"
-	// DataConnectorKindAzureAdvancedThreatProtection ...
-	DataConnectorKindAzureAdvancedThreatProtection DataConnectorKind = "AzureAdvancedThreatProtection"
-	// DataConnectorKindAzureSecurityCenter ...
-	DataConnectorKindAzureSecurityCenter DataConnectorKind = "AzureSecurityCenter"
-	// DataConnectorKindMicrosoftCloudAppSecurity ...
-	DataConnectorKindMicrosoftCloudAppSecurity DataConnectorKind = "MicrosoftCloudAppSecurity"
-	// DataConnectorKindMicrosoftDefenderAdvancedThreatProtection ...
-	DataConnectorKindMicrosoftDefenderAdvancedThreatProtection DataConnectorKind = "MicrosoftDefenderAdvancedThreatProtection"
-	// DataConnectorKindOffice365 ...
-	DataConnectorKindOffice365 DataConnectorKind = "Office365"
-	// DataConnectorKindThreatIntelligence ...
-	DataConnectorKindThreatIntelligence DataConnectorKind = "ThreatIntelligence"
-)
-
-// PossibleDataConnectorKindValues returns an array of possible values for the DataConnectorKind const type.
-func PossibleDataConnectorKindValues() []DataConnectorKind {
-	return []DataConnectorKind{DataConnectorKindAmazonWebServicesCloudTrail, DataConnectorKindAzureActiveDirectory, DataConnectorKindAzureAdvancedThreatProtection, DataConnectorKindAzureSecurityCenter, DataConnectorKindMicrosoftCloudAppSecurity, DataConnectorKindMicrosoftDefenderAdvancedThreatProtection, DataConnectorKindOffice365, DataConnectorKindThreatIntelligence}
-}
-
-// DataTypeState enumerates the values for data type state.
-type DataTypeState string
-
-const (
-	// Disabled ...
-	Disabled DataTypeState = "Disabled"
-	// Enabled ...
-	Enabled DataTypeState = "Enabled"
-)
-
-// PossibleDataTypeStateValues returns an array of possible values for the DataTypeState const type.
-func PossibleDataTypeStateValues() []DataTypeState {
-	return []DataTypeState{Disabled, Enabled}
-}
-
-// IncidentSeverity enumerates the values for incident severity.
-type IncidentSeverity string
-
-const (
-	// IncidentSeverityCritical Critical severity
-	IncidentSeverityCritical IncidentSeverity = "Critical"
-	// IncidentSeverityHigh High severity
-	IncidentSeverityHigh IncidentSeverity = "High"
-	// IncidentSeverityInformational Informational severity
-	IncidentSeverityInformational IncidentSeverity = "Informational"
-	// IncidentSeverityLow Low severity
-	IncidentSeverityLow IncidentSeverity = "Low"
-	// IncidentSeverityMedium Medium severity
-	IncidentSeverityMedium IncidentSeverity = "Medium"
-)
-
-// PossibleIncidentSeverityValues returns an array of possible values for the IncidentSeverity const type.
-func PossibleIncidentSeverityValues() []IncidentSeverity {
-	return []IncidentSeverity{IncidentSeverityCritical, IncidentSeverityHigh, IncidentSeverityInformational, IncidentSeverityLow, IncidentSeverityMedium}
-}
-
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// KindAlertRule ...
-	KindAlertRule Kind = "AlertRule"
-	// KindFusion ...
-	KindFusion Kind = "Fusion"
-	// KindMicrosoftSecurityIncidentCreation ...
-	KindMicrosoftSecurityIncidentCreation Kind = "MicrosoftSecurityIncidentCreation"
-	// KindScheduled ...
-	KindScheduled Kind = "Scheduled"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{KindAlertRule, KindFusion, KindMicrosoftSecurityIncidentCreation, KindScheduled}
-}
-
-// KindBasicAlertRuleTemplate enumerates the values for kind basic alert rule template.
-type KindBasicAlertRuleTemplate string
-
-const (
-	// KindBasicAlertRuleTemplateKindAlertRuleTemplate ...
-	KindBasicAlertRuleTemplateKindAlertRuleTemplate KindBasicAlertRuleTemplate = "AlertRuleTemplate"
-	// KindBasicAlertRuleTemplateKindFusion ...
-	KindBasicAlertRuleTemplateKindFusion KindBasicAlertRuleTemplate = "Fusion"
-	// KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation ...
-	KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation KindBasicAlertRuleTemplate = "MicrosoftSecurityIncidentCreation"
-	// KindBasicAlertRuleTemplateKindScheduled ...
-	KindBasicAlertRuleTemplateKindScheduled KindBasicAlertRuleTemplate = "Scheduled"
-)
-
-// PossibleKindBasicAlertRuleTemplateValues returns an array of possible values for the KindBasicAlertRuleTemplate const type.
-func PossibleKindBasicAlertRuleTemplateValues() []KindBasicAlertRuleTemplate {
-	return []KindBasicAlertRuleTemplate{KindBasicAlertRuleTemplateKindAlertRuleTemplate, KindBasicAlertRuleTemplateKindFusion, KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation, KindBasicAlertRuleTemplateKindScheduled}
-}
-
-// KindBasicDataConnector enumerates the values for kind basic data connector.
-type KindBasicDataConnector string
-
-const (
-	// KindAmazonWebServicesCloudTrail ...
-	KindAmazonWebServicesCloudTrail KindBasicDataConnector = "AmazonWebServicesCloudTrail"
-	// KindAzureActiveDirectory ...
-	KindAzureActiveDirectory KindBasicDataConnector = "AzureActiveDirectory"
-	// KindAzureAdvancedThreatProtection ...
-	KindAzureAdvancedThreatProtection KindBasicDataConnector = "AzureAdvancedThreatProtection"
-	// KindAzureSecurityCenter ...
-	KindAzureSecurityCenter KindBasicDataConnector = "AzureSecurityCenter"
-	// KindDataConnector ...
-	KindDataConnector KindBasicDataConnector = "DataConnector"
-	// KindMicrosoftCloudAppSecurity ...
-	KindMicrosoftCloudAppSecurity KindBasicDataConnector = "MicrosoftCloudAppSecurity"
-	// KindMicrosoftDefenderAdvancedThreatProtection ...
-	KindMicrosoftDefenderAdvancedThreatProtection KindBasicDataConnector = "MicrosoftDefenderAdvancedThreatProtection"
-	// KindOffice365 ...
-	KindOffice365 KindBasicDataConnector = "Office365"
-	// KindThreatIntelligence ...
-	KindThreatIntelligence KindBasicDataConnector = "ThreatIntelligence"
-)
-
-// PossibleKindBasicDataConnectorValues returns an array of possible values for the KindBasicDataConnector const type.
-func PossibleKindBasicDataConnectorValues() []KindBasicDataConnector {
-	return []KindBasicDataConnector{KindAmazonWebServicesCloudTrail, KindAzureActiveDirectory, KindAzureAdvancedThreatProtection, KindAzureSecurityCenter, KindDataConnector, KindMicrosoftCloudAppSecurity, KindMicrosoftDefenderAdvancedThreatProtection, KindOffice365, KindThreatIntelligence}
-}
-
-// KindBasicSettings enumerates the values for kind basic settings.
-type KindBasicSettings string
-
-const (
-	// KindSettings ...
-	KindSettings KindBasicSettings = "Settings"
-	// KindToggleSettings ...
-	KindToggleSettings KindBasicSettings = "ToggleSettings"
-	// KindUebaSettings ...
-	KindUebaSettings KindBasicSettings = "UebaSettings"
-)
-
-// PossibleKindBasicSettingsValues returns an array of possible values for the KindBasicSettings const type.
-func PossibleKindBasicSettingsValues() []KindBasicSettings {
-	return []KindBasicSettings{KindSettings, KindToggleSettings, KindUebaSettings}
-}
-
-// LicenseStatus enumerates the values for license status.
-type LicenseStatus string
-
-const (
-	// LicenseStatusDisabled ...
-	LicenseStatusDisabled LicenseStatus = "Disabled"
-	// LicenseStatusEnabled ...
-	LicenseStatusEnabled LicenseStatus = "Enabled"
-)
-
-// PossibleLicenseStatusValues returns an array of possible values for the LicenseStatus const type.
-func PossibleLicenseStatusValues() []LicenseStatus {
-	return []LicenseStatus{LicenseStatusDisabled, LicenseStatusEnabled}
-}
-
-// MicrosoftSecurityProductName enumerates the values for microsoft security product name.
-type MicrosoftSecurityProductName string
-
-const (
-	// AzureActiveDirectoryIdentityProtection ...
-	AzureActiveDirectoryIdentityProtection MicrosoftSecurityProductName = "Azure Active Directory Identity Protection"
-	// AzureAdvancedThreatProtection ...
-	AzureAdvancedThreatProtection MicrosoftSecurityProductName = "Azure Advanced Threat Protection"
-	// AzureSecurityCenter ...
-	AzureSecurityCenter MicrosoftSecurityProductName = "Azure Security Center"
-	// AzureSecurityCenterforIoT ...
-	AzureSecurityCenterforIoT MicrosoftSecurityProductName = "Azure Security Center for IoT"
-	// MicrosoftCloudAppSecurity ...
-	MicrosoftCloudAppSecurity MicrosoftSecurityProductName = "Microsoft Cloud App Security"
-)
-
-// PossibleMicrosoftSecurityProductNameValues returns an array of possible values for the MicrosoftSecurityProductName const type.
-func PossibleMicrosoftSecurityProductNameValues() []MicrosoftSecurityProductName {
-	return []MicrosoftSecurityProductName{AzureActiveDirectoryIdentityProtection, AzureAdvancedThreatProtection, AzureSecurityCenter, AzureSecurityCenterforIoT, MicrosoftCloudAppSecurity}
-}
-
-// SettingKind enumerates the values for setting kind.
-type SettingKind string
-
-const (
-	// SettingKindToggleSettings ...
-	SettingKindToggleSettings SettingKind = "ToggleSettings"
-	// SettingKindUebaSettings ...
-	SettingKindUebaSettings SettingKind = "UebaSettings"
-)
-
-// PossibleSettingKindValues returns an array of possible values for the SettingKind const type.
-func PossibleSettingKindValues() []SettingKind {
-	return []SettingKind{SettingKindToggleSettings, SettingKindUebaSettings}
-}
-
-// StatusInMcas enumerates the values for status in mcas.
-type StatusInMcas string
-
-const (
-	// StatusInMcasDisabled ...
-	StatusInMcasDisabled StatusInMcas = "Disabled"
-	// StatusInMcasEnabled ...
-	StatusInMcasEnabled StatusInMcas = "Enabled"
-)
-
-// PossibleStatusInMcasValues returns an array of possible values for the StatusInMcas const type.
-func PossibleStatusInMcasValues() []StatusInMcas {
-	return []StatusInMcas{StatusInMcasDisabled, StatusInMcasEnabled}
-}
-
-// TemplateStatus enumerates the values for template status.
-type TemplateStatus string
-
-const (
-	// Available Alert rule template is available.
-	Available TemplateStatus = "Available"
-	// Installed Alert rule template installed. and can not use more then once
-	Installed TemplateStatus = "Installed"
-	// NotAvailable Alert rule template is not available
-	NotAvailable TemplateStatus = "NotAvailable"
-)
-
-// PossibleTemplateStatusValues returns an array of possible values for the TemplateStatus const type.
-func PossibleTemplateStatusValues() []TemplateStatus {
-	return []TemplateStatus{Available, Installed, NotAvailable}
-}
-
-// TriggerOperator enumerates the values for trigger operator.
-type TriggerOperator string
-
-const (
-	// Equal ...
-	Equal TriggerOperator = "Equal"
-	// GreaterThan ...
-	GreaterThan TriggerOperator = "GreaterThan"
-	// LessThan ...
-	LessThan TriggerOperator = "LessThan"
-	// NotEqual ...
-	NotEqual TriggerOperator = "NotEqual"
-)
-
-// PossibleTriggerOperatorValues returns an array of possible values for the TriggerOperator const type.
-func PossibleTriggerOperatorValues() []TriggerOperator {
-	return []TriggerOperator{Equal, GreaterThan, LessThan, NotEqual}
-}
-
 // AADDataConnector represents AAD (Azure Active Directory) data connector.
 type AADDataConnector struct {
 	// AADDataConnectorProperties - AAD (Azure Active Directory) data connector properties.
@@ -374,11 +54,11 @@ func (adc AADDataConnector) MarshalJSON() ([]byte, error) {
 	if adc.AADDataConnectorProperties != nil {
 		objectMap["properties"] = adc.AADDataConnectorProperties
 	}
-	if adc.Etag != nil {
-		objectMap["etag"] = adc.Etag
-	}
 	if adc.Kind != "" {
 		objectMap["kind"] = adc.Kind
+	}
+	if adc.Etag != nil {
+		objectMap["etag"] = adc.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -451,6 +131,15 @@ func (adc *AADDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				adc.AADDataConnectorProperties = &aADDataConnectorProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicDataConnector
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				adc.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -487,15 +176,6 @@ func (adc *AADDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				adc.Etag = &etag
 			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicDataConnector
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				adc.Kind = kind
-			}
 		}
 	}
 
@@ -514,6 +194,8 @@ type AADDataConnectorProperties struct {
 type AATPDataConnector struct {
 	// AATPDataConnectorProperties - AATP (Azure Advanced Threat Protection) data connector properties.
 	*AATPDataConnectorProperties `json:"properties,omitempty"`
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -522,8 +204,6 @@ type AATPDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
-	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AATPDataConnector.
@@ -533,11 +213,11 @@ func (adc AATPDataConnector) MarshalJSON() ([]byte, error) {
 	if adc.AATPDataConnectorProperties != nil {
 		objectMap["properties"] = adc.AATPDataConnectorProperties
 	}
-	if adc.Etag != nil {
-		objectMap["etag"] = adc.Etag
-	}
 	if adc.Kind != "" {
 		objectMap["kind"] = adc.Kind
+	}
+	if adc.Etag != nil {
+		objectMap["etag"] = adc.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -610,6 +290,15 @@ func (adc *AATPDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				adc.AATPDataConnectorProperties = &aATPDataConnectorProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicDataConnector
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				adc.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -646,15 +335,6 @@ func (adc *AATPDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				adc.Etag = &etag
 			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicDataConnector
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				adc.Kind = kind
-			}
 		}
 	}
 
@@ -671,7 +351,7 @@ type AATPDataConnectorProperties struct {
 
 // ActionPropertiesBase action property bag base.
 type ActionPropertiesBase struct {
-	// LogicAppResourceID - Logic App Resource Id, providers/Microsoft.Logic/workflows/{WorkflowID}.
+	// LogicAppResourceID - Logic App Resource Id, /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-workflow-id}.
 	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
 }
 
@@ -765,7 +445,7 @@ func (ar *ActionRequest) UnmarshalJSON(body []byte) error {
 type ActionRequestProperties struct {
 	// TriggerURI - Logic App Callback URL for this specific workflow.
 	TriggerURI *string `json:"triggerUri,omitempty"`
-	// LogicAppResourceID - Logic App Resource Id, providers/Microsoft.Logic/workflows/{WorkflowID}.
+	// LogicAppResourceID - Logic App Resource Id, /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-workflow-id}.
 	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
 }
 
@@ -860,7 +540,7 @@ func (ar *ActionResponse) UnmarshalJSON(body []byte) error {
 type ActionResponseProperties struct {
 	// WorkflowID - The name of the logic app's workflow.
 	WorkflowID *string `json:"workflowId,omitempty"`
-	// LogicAppResourceID - Logic App Resource Id, providers/Microsoft.Logic/workflows/{WorkflowID}.
+	// LogicAppResourceID - Logic App Resource Id, /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-workflow-id}.
 	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
 }
 
@@ -871,6 +551,15 @@ type ActionsList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of actions.
 	Value *[]ActionResponse `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ActionsList.
+func (al ActionsList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if al.Value != nil {
+		objectMap["value"] = al.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // ActionsListIterator provides access to a complete listing of ActionResponse values.
@@ -941,10 +630,15 @@ func (al ActionsList) IsEmpty() bool {
 	return al.Value == nil || len(*al.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (al ActionsList) hasNextLink() bool {
+	return al.NextLink != nil && len(*al.NextLink) != 0
+}
+
 // actionsListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (al ActionsList) actionsListPreparer(ctx context.Context) (*http.Request, error) {
-	if al.NextLink == nil || len(to.String(al.NextLink)) < 1 {
+	if !al.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -972,11 +666,16 @@ func (page *ActionsListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.al)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.al)
+		if err != nil {
+			return err
+		}
+		page.al = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.al = next
 	return nil
 }
 
@@ -1021,6 +720,8 @@ type BasicAlertRule interface {
 // AlertRule alert rule.
 type AlertRule struct {
 	autorest.Response `json:"-"`
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
+	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -1029,8 +730,6 @@ type AlertRule struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
-	Kind Kind `json:"kind,omitempty"`
 }
 
 func unmarshalBasicAlertRule(body []byte) (BasicAlertRule, error) {
@@ -1082,11 +781,11 @@ func unmarshalBasicAlertRuleArray(body []byte) ([]BasicAlertRule, error) {
 func (ar AlertRule) MarshalJSON() ([]byte, error) {
 	ar.Kind = KindAlertRule
 	objectMap := make(map[string]interface{})
-	if ar.Etag != nil {
-		objectMap["etag"] = ar.Etag
-	}
 	if ar.Kind != "" {
 		objectMap["kind"] = ar.Kind
+	}
+	if ar.Etag != nil {
+		objectMap["etag"] = ar.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -1116,12 +815,6 @@ func (ar AlertRule) AsBasicAlertRule() (BasicAlertRule, bool) {
 	return &ar, true
 }
 
-// AlertRuleKind1 describes an Azure resource with kind.
-type AlertRuleKind1 struct {
-	// Kind - The kind of the alert rule. Possible values include: 'Scheduled', 'MicrosoftSecurityIncidentCreation', 'Fusion'
-	Kind AlertRuleKind `json:"kind,omitempty"`
-}
-
 // AlertRuleModel ...
 type AlertRuleModel struct {
 	autorest.Response `json:"-"`
@@ -1146,6 +839,15 @@ type AlertRulesList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of alert rules.
 	Value *[]BasicAlertRule `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AlertRulesList.
+func (arl AlertRulesList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if arl.Value != nil {
+		objectMap["value"] = arl.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for AlertRulesList struct.
@@ -1248,10 +950,15 @@ func (arl AlertRulesList) IsEmpty() bool {
 	return arl.Value == nil || len(*arl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (arl AlertRulesList) hasNextLink() bool {
+	return arl.NextLink != nil && len(*arl.NextLink) != 0
+}
+
 // alertRulesListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (arl AlertRulesList) alertRulesListPreparer(ctx context.Context) (*http.Request, error) {
-	if arl.NextLink == nil || len(to.String(arl.NextLink)) < 1 {
+	if !arl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1279,11 +986,16 @@ func (page *AlertRulesListPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.arl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.arl)
+		if err != nil {
+			return err
+		}
+		page.arl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.arl = next
 	return nil
 }
 
@@ -1327,14 +1039,15 @@ type BasicAlertRuleTemplate interface {
 
 // AlertRuleTemplate alert rule template.
 type AlertRuleTemplate struct {
+	autorest.Response `json:"-"`
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
+	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
-	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
 func unmarshalBasicAlertRuleTemplate(body []byte) (BasicAlertRuleTemplate, error) {
@@ -1425,38 +1138,232 @@ type AlertRuleTemplateDataSource struct {
 	DataTypes *[]string `json:"dataTypes,omitempty"`
 }
 
-// AlertRuleTemplatePropertiesBase base alert rule template property bag.
-type AlertRuleTemplatePropertiesBase struct {
-	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
-	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
-	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
-	CreatedDateUTC *date.Time `json:"createdDateUTC,omitempty"`
-	// Description - The description of the alert rule template.
-	Description *string `json:"description,omitempty"`
-	// DisplayName - The display name for alert rule template.
-	DisplayName *string `json:"displayName,omitempty"`
-	// RequiredDataConnectors - The required data connectors for this template
-	RequiredDataConnectors *[]AlertRuleTemplateDataSource `json:"requiredDataConnectors,omitempty"`
-	// Status - The alert rule template status. Possible values include: 'Installed', 'Available', 'NotAvailable'
-	Status TemplateStatus `json:"status,omitempty"`
+// AlertRuleTemplateModel ...
+type AlertRuleTemplateModel struct {
+	autorest.Response `json:"-"`
+	Value             BasicAlertRuleTemplate `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AlertRuleTemplateModel struct.
+func (artm *AlertRuleTemplateModel) UnmarshalJSON(body []byte) error {
+	art, err := unmarshalBasicAlertRuleTemplate(body)
+	if err != nil {
+		return err
+	}
+	artm.Value = art
+
+	return nil
+}
+
+// AlertRuleTemplatesList list all the alert rule templates.
+type AlertRuleTemplatesList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of alert rule templates.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of alert rule templates.
+	Value *[]BasicAlertRuleTemplate `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AlertRuleTemplatesList.
+func (artl AlertRuleTemplatesList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if artl.Value != nil {
+		objectMap["value"] = artl.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AlertRuleTemplatesList struct.
+func (artl *AlertRuleTemplatesList) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "nextLink":
+			if v != nil {
+				var nextLink string
+				err = json.Unmarshal(*v, &nextLink)
+				if err != nil {
+					return err
+				}
+				artl.NextLink = &nextLink
+			}
+		case "value":
+			if v != nil {
+				value, err := unmarshalBasicAlertRuleTemplateArray(*v)
+				if err != nil {
+					return err
+				}
+				artl.Value = &value
+			}
+		}
+	}
+
+	return nil
+}
+
+// AlertRuleTemplatesListIterator provides access to a complete listing of AlertRuleTemplate values.
+type AlertRuleTemplatesListIterator struct {
+	i    int
+	page AlertRuleTemplatesListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *AlertRuleTemplatesListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRuleTemplatesListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *AlertRuleTemplatesListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter AlertRuleTemplatesListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter AlertRuleTemplatesListIterator) Response() AlertRuleTemplatesList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter AlertRuleTemplatesListIterator) Value() BasicAlertRuleTemplate {
+	if !iter.page.NotDone() {
+		return AlertRuleTemplate{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the AlertRuleTemplatesListIterator type.
+func NewAlertRuleTemplatesListIterator(page AlertRuleTemplatesListPage) AlertRuleTemplatesListIterator {
+	return AlertRuleTemplatesListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (artl AlertRuleTemplatesList) IsEmpty() bool {
+	return artl.Value == nil || len(*artl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (artl AlertRuleTemplatesList) hasNextLink() bool {
+	return artl.NextLink != nil && len(*artl.NextLink) != 0
+}
+
+// alertRuleTemplatesListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (artl AlertRuleTemplatesList) alertRuleTemplatesListPreparer(ctx context.Context) (*http.Request, error) {
+	if !artl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(artl.NextLink)))
+}
+
+// AlertRuleTemplatesListPage contains a page of BasicAlertRuleTemplate values.
+type AlertRuleTemplatesListPage struct {
+	fn   func(context.Context, AlertRuleTemplatesList) (AlertRuleTemplatesList, error)
+	artl AlertRuleTemplatesList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *AlertRuleTemplatesListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AlertRuleTemplatesListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.artl)
+		if err != nil {
+			return err
+		}
+		page.artl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *AlertRuleTemplatesListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page AlertRuleTemplatesListPage) NotDone() bool {
+	return !page.artl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page AlertRuleTemplatesListPage) Response() AlertRuleTemplatesList {
+	return page.artl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page AlertRuleTemplatesListPage) Values() []BasicAlertRuleTemplate {
+	if page.artl.IsEmpty() {
+		return nil
+	}
+	return *page.artl.Value
+}
+
+// Creates a new instance of the AlertRuleTemplatesListPage type.
+func NewAlertRuleTemplatesListPage(getNextPage func(context.Context, AlertRuleTemplatesList) (AlertRuleTemplatesList, error)) AlertRuleTemplatesListPage {
+	return AlertRuleTemplatesListPage{fn: getNextPage}
 }
 
 // AlertsDataTypeOfDataConnector alerts data type for data connectors.
 type AlertsDataTypeOfDataConnector struct {
 	// Alerts - Alerts data type connection.
-	Alerts *AlertsDataTypeOfDataConnectorAlerts `json:"alerts,omitempty"`
-}
-
-// AlertsDataTypeOfDataConnectorAlerts alerts data type connection.
-type AlertsDataTypeOfDataConnectorAlerts struct {
-	// State - Describe whether this data type connection is enabled or not. Possible values include: 'Enabled', 'Disabled'
-	State DataTypeState `json:"state,omitempty"`
+	Alerts *DataConnectorDataTypeCommon `json:"alerts,omitempty"`
 }
 
 // ASCDataConnector represents ASC (Azure Security Center) data connector.
 type ASCDataConnector struct {
 	// ASCDataConnectorProperties - ASC (Azure Security Center) data connector properties.
 	*ASCDataConnectorProperties `json:"properties,omitempty"`
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -1465,8 +1372,6 @@ type ASCDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
-	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ASCDataConnector.
@@ -1476,11 +1381,11 @@ func (adc ASCDataConnector) MarshalJSON() ([]byte, error) {
 	if adc.ASCDataConnectorProperties != nil {
 		objectMap["properties"] = adc.ASCDataConnectorProperties
 	}
-	if adc.Etag != nil {
-		objectMap["etag"] = adc.Etag
-	}
 	if adc.Kind != "" {
 		objectMap["kind"] = adc.Kind
+	}
+	if adc.Etag != nil {
+		objectMap["etag"] = adc.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -1553,6 +1458,15 @@ func (adc *ASCDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				adc.ASCDataConnectorProperties = &aSCDataConnectorProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicDataConnector
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				adc.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -1589,15 +1503,6 @@ func (adc *ASCDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				adc.Etag = &etag
 			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicDataConnector
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				adc.Kind = kind
-			}
 		}
 	}
 
@@ -1616,6 +1521,8 @@ type ASCDataConnectorProperties struct {
 type AwsCloudTrailDataConnector struct {
 	// AwsCloudTrailDataConnectorProperties - Amazon Web Services CloudTrail data connector properties.
 	*AwsCloudTrailDataConnectorProperties `json:"properties,omitempty"`
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -1624,8 +1531,6 @@ type AwsCloudTrailDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
-	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AwsCloudTrailDataConnector.
@@ -1635,11 +1540,11 @@ func (actdc AwsCloudTrailDataConnector) MarshalJSON() ([]byte, error) {
 	if actdc.AwsCloudTrailDataConnectorProperties != nil {
 		objectMap["properties"] = actdc.AwsCloudTrailDataConnectorProperties
 	}
-	if actdc.Etag != nil {
-		objectMap["etag"] = actdc.Etag
-	}
 	if actdc.Kind != "" {
 		objectMap["kind"] = actdc.Kind
+	}
+	if actdc.Etag != nil {
+		objectMap["etag"] = actdc.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -1712,6 +1617,15 @@ func (actdc *AwsCloudTrailDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				actdc.AwsCloudTrailDataConnectorProperties = &awsCloudTrailDataConnectorProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicDataConnector
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				actdc.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -1748,15 +1662,6 @@ func (actdc *AwsCloudTrailDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				actdc.Etag = &etag
 			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicDataConnector
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				actdc.Kind = kind
-			}
 		}
 	}
 
@@ -1784,23 +1689,35 @@ type AwsCloudTrailDataConnectorProperties struct {
 	DataTypes *AwsCloudTrailDataConnectorDataTypes `json:"dataTypes,omitempty"`
 }
 
-// CloudError error response structure.
-type CloudError struct {
-	// CloudErrorBody - Error data
-	*CloudErrorBody `json:"error,omitempty"`
+// Bookmark represents a bookmark in Azure Security Insights.
+type Bookmark struct {
+	autorest.Response `json:"-"`
+	// BookmarkProperties - Bookmark properties
+	*BookmarkProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for CloudError.
-func (ce CloudError) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for Bookmark.
+func (b Bookmark) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ce.CloudErrorBody != nil {
-		objectMap["error"] = ce.CloudErrorBody
+	if b.BookmarkProperties != nil {
+		objectMap["properties"] = b.BookmarkProperties
+	}
+	if b.Etag != nil {
+		objectMap["etag"] = b.Etag
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for CloudError struct.
-func (ce *CloudError) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for Bookmark struct.
+func (b *Bookmark) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -1808,14 +1725,50 @@ func (ce *CloudError) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "error":
+		case "properties":
 			if v != nil {
-				var cloudErrorBody CloudErrorBody
-				err = json.Unmarshal(*v, &cloudErrorBody)
+				var bookmarkProperties BookmarkProperties
+				err = json.Unmarshal(*v, &bookmarkProperties)
 				if err != nil {
 					return err
 				}
-				ce.CloudErrorBody = &cloudErrorBody
+				b.BookmarkProperties = &bookmarkProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				b.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				b.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				b.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				b.Etag = &etag
 			}
 		}
 	}
@@ -1823,12 +1776,211 @@ func (ce *CloudError) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CloudErrorBody error details.
-type CloudErrorBody struct {
-	// Code - READ-ONLY; An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
-	// Message - READ-ONLY; A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty"`
+// BookmarkList list all the bookmarks.
+type BookmarkList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of cases.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of bookmarks.
+	Value *[]Bookmark `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BookmarkList.
+func (bl BookmarkList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bl.Value != nil {
+		objectMap["value"] = bl.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// BookmarkListIterator provides access to a complete listing of Bookmark values.
+type BookmarkListIterator struct {
+	i    int
+	page BookmarkListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *BookmarkListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BookmarkListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *BookmarkListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter BookmarkListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter BookmarkListIterator) Response() BookmarkList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter BookmarkListIterator) Value() Bookmark {
+	if !iter.page.NotDone() {
+		return Bookmark{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the BookmarkListIterator type.
+func NewBookmarkListIterator(page BookmarkListPage) BookmarkListIterator {
+	return BookmarkListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (bl BookmarkList) IsEmpty() bool {
+	return bl.Value == nil || len(*bl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (bl BookmarkList) hasNextLink() bool {
+	return bl.NextLink != nil && len(*bl.NextLink) != 0
+}
+
+// bookmarkListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (bl BookmarkList) bookmarkListPreparer(ctx context.Context) (*http.Request, error) {
+	if !bl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(bl.NextLink)))
+}
+
+// BookmarkListPage contains a page of Bookmark values.
+type BookmarkListPage struct {
+	fn func(context.Context, BookmarkList) (BookmarkList, error)
+	bl BookmarkList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *BookmarkListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BookmarkListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.bl)
+		if err != nil {
+			return err
+		}
+		page.bl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *BookmarkListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page BookmarkListPage) NotDone() bool {
+	return !page.bl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page BookmarkListPage) Response() BookmarkList {
+	return page.bl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page BookmarkListPage) Values() []Bookmark {
+	if page.bl.IsEmpty() {
+		return nil
+	}
+	return *page.bl.Value
+}
+
+// Creates a new instance of the BookmarkListPage type.
+func NewBookmarkListPage(getNextPage func(context.Context, BookmarkList) (BookmarkList, error)) BookmarkListPage {
+	return BookmarkListPage{fn: getNextPage}
+}
+
+// BookmarkProperties describes bookmark properties
+type BookmarkProperties struct {
+	// Created - The time the bookmark was created
+	Created *date.Time `json:"created,omitempty"`
+	// CreatedBy - Describes a user that created the bookmark
+	CreatedBy *UserInfo `json:"createdBy,omitempty"`
+	// DisplayName - The display name of the bookmark
+	DisplayName *string `json:"displayName,omitempty"`
+	// Labels - List of labels relevant to this bookmark
+	Labels *[]string `json:"labels,omitempty"`
+	// Notes - The notes of the bookmark
+	Notes *string `json:"notes,omitempty"`
+	// Query - The query of the bookmark.
+	Query *string `json:"query,omitempty"`
+	// QueryResult - The query result of the bookmark.
+	QueryResult *string `json:"queryResult,omitempty"`
+	// Updated - The last time the bookmark was updated
+	Updated *date.Time `json:"updated,omitempty"`
+	// UpdatedBy - Describes a user that updated the bookmark
+	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
+	// IncidentInfo - Describes an incident that relates to bookmark
+	IncidentInfo *IncidentInfo `json:"incidentInfo,omitempty"`
+}
+
+// ClientInfo information on the client (user or application) that made some action
+type ClientInfo struct {
+	// Email - The email of the client.
+	Email *string `json:"email,omitempty"`
+	// Name - The name of the client.
+	Name *string `json:"name,omitempty"`
+	// ObjectID - The object id of the client.
+	ObjectID *uuid.UUID `json:"objectId,omitempty"`
+	// UserPrincipalName - The user principal name of the client.
+	UserPrincipalName *string `json:"userPrincipalName,omitempty"`
+}
+
+// CloudError an error response for a resource management request.
+type CloudError struct {
+	// Error - The error object of the CloudError response
+	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // BasicDataConnector data connector.
@@ -1847,6 +1999,8 @@ type BasicDataConnector interface {
 // DataConnector data connector.
 type DataConnector struct {
 	autorest.Response `json:"-"`
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -1855,8 +2009,6 @@ type DataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
-	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
 func unmarshalBasicDataConnector(body []byte) (BasicDataConnector, error) {
@@ -1928,11 +2080,11 @@ func unmarshalBasicDataConnectorArray(body []byte) ([]BasicDataConnector, error)
 func (dc DataConnector) MarshalJSON() ([]byte, error) {
 	dc.Kind = KindDataConnector
 	objectMap := make(map[string]interface{})
-	if dc.Etag != nil {
-		objectMap["etag"] = dc.Etag
-	}
 	if dc.Kind != "" {
 		objectMap["kind"] = dc.Kind
+	}
+	if dc.Etag != nil {
+		objectMap["etag"] = dc.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -1993,12 +2145,6 @@ type DataConnectorDataTypeCommon struct {
 	State DataTypeState `json:"state,omitempty"`
 }
 
-// DataConnectorKind1 describes an Azure resource with kind.
-type DataConnectorKind1 struct {
-	// Kind - The kind of the data connector. Possible values include: 'DataConnectorKindAzureActiveDirectory', 'DataConnectorKindAzureSecurityCenter', 'DataConnectorKindMicrosoftCloudAppSecurity', 'DataConnectorKindThreatIntelligence', 'DataConnectorKindOffice365', 'DataConnectorKindAmazonWebServicesCloudTrail', 'DataConnectorKindAzureAdvancedThreatProtection', 'DataConnectorKindMicrosoftDefenderAdvancedThreatProtection'
-	Kind DataConnectorKind `json:"kind,omitempty"`
-}
-
 // DataConnectorList list all the data connectors.
 type DataConnectorList struct {
 	autorest.Response `json:"-"`
@@ -2006,6 +2152,15 @@ type DataConnectorList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - Array of data connectors.
 	Value *[]BasicDataConnector `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataConnectorList.
+func (dcl DataConnectorList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dcl.Value != nil {
+		objectMap["value"] = dcl.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for DataConnectorList struct.
@@ -2108,10 +2263,15 @@ func (dcl DataConnectorList) IsEmpty() bool {
 	return dcl.Value == nil || len(*dcl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dcl DataConnectorList) hasNextLink() bool {
+	return dcl.NextLink != nil && len(*dcl.NextLink) != 0
+}
+
 // dataConnectorListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dcl DataConnectorList) dataConnectorListPreparer(ctx context.Context) (*http.Request, error) {
-	if dcl.NextLink == nil || len(to.String(dcl.NextLink)) < 1 {
+	if !dcl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2139,11 +2299,16 @@ func (page *DataConnectorListPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dcl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dcl)
+		if err != nil {
+			return err
+		}
+		page.dcl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dcl = next
 	return nil
 }
 
@@ -2206,10 +2371,34 @@ type DataConnectorWithAlertsProperties struct {
 	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
 }
 
+// ErrorAdditionalInfo the resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// Type - READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty"`
+	// Info - READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty"`
+}
+
+// ErrorResponse the resource management error response.
+type ErrorResponse struct {
+	// Code - READ-ONLY; The error code.
+	Code *string `json:"code,omitempty"`
+	// Message - READ-ONLY; The error message.
+	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The error target.
+	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]ErrorResponse `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
 // FusionAlertRule represents Fusion alert rule.
 type FusionAlertRule struct {
 	// FusionAlertRuleProperties - Fusion alert rule properties
 	*FusionAlertRuleProperties `json:"properties,omitempty"`
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
+	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -2218,8 +2407,6 @@ type FusionAlertRule struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
-	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FusionAlertRule.
@@ -2229,11 +2416,11 @@ func (far FusionAlertRule) MarshalJSON() ([]byte, error) {
 	if far.FusionAlertRuleProperties != nil {
 		objectMap["properties"] = far.FusionAlertRuleProperties
 	}
-	if far.Etag != nil {
-		objectMap["etag"] = far.Etag
-	}
 	if far.Kind != "" {
 		objectMap["kind"] = far.Kind
+	}
+	if far.Etag != nil {
+		objectMap["etag"] = far.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -2281,6 +2468,15 @@ func (far *FusionAlertRule) UnmarshalJSON(body []byte) error {
 				}
 				far.FusionAlertRuleProperties = &fusionAlertRuleProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind Kind
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				far.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -2317,15 +2513,6 @@ func (far *FusionAlertRule) UnmarshalJSON(body []byte) error {
 				}
 				far.Etag = &etag
 			}
-		case "kind":
-			if v != nil {
-				var kind Kind
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				far.Kind = kind
-			}
 		}
 	}
 
@@ -2350,18 +2537,30 @@ type FusionAlertRuleProperties struct {
 	Tactics *[]AttackTactic `json:"tactics,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FusionAlertRuleProperties.
+func (farp FusionAlertRuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if farp.AlertRuleTemplateName != nil {
+		objectMap["alertRuleTemplateName"] = farp.AlertRuleTemplateName
+	}
+	if farp.Enabled != nil {
+		objectMap["enabled"] = farp.Enabled
+	}
+	return json.Marshal(objectMap)
+}
+
 // FusionAlertRuleTemplate represents Fusion alert rule template.
 type FusionAlertRuleTemplate struct {
 	// FusionAlertRuleTemplateProperties - Fusion alert rule template properties
 	*FusionAlertRuleTemplateProperties `json:"properties,omitempty"`
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
+	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
-	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FusionAlertRuleTemplate.
@@ -2420,6 +2619,15 @@ func (fart *FusionAlertRuleTemplate) UnmarshalJSON(body []byte) error {
 				}
 				fart.FusionAlertRuleTemplateProperties = &fusionAlertRuleTemplateProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicAlertRuleTemplate
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				fart.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -2447,27 +2655,14 @@ func (fart *FusionAlertRuleTemplate) UnmarshalJSON(body []byte) error {
 				}
 				fart.Type = &typeVar
 			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicAlertRuleTemplate
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				fart.Kind = kind
-			}
 		}
 	}
 
 	return nil
 }
 
-// FusionAlertRuleTemplateProperties fusion alert rule template properties
+// FusionAlertRuleTemplateProperties represents Fusion alert rule template properties
 type FusionAlertRuleTemplateProperties struct {
-	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
-	Severity AlertSeverity `json:"severity,omitempty"`
-	// Tactics - The tactics of the alert rule template
-	Tactics *[]AttackTactic `json:"tactics,omitempty"`
 	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
 	// CreatedDateUTC - READ-ONLY; The time that this alert rule template has been added.
@@ -2480,24 +2675,44 @@ type FusionAlertRuleTemplateProperties struct {
 	RequiredDataConnectors *[]AlertRuleTemplateDataSource `json:"requiredDataConnectors,omitempty"`
 	// Status - The alert rule template status. Possible values include: 'Installed', 'Available', 'NotAvailable'
 	Status TemplateStatus `json:"status,omitempty"`
+	// Severity - The severity for alerts created by this alert rule. Possible values include: 'High', 'Medium', 'Low', 'Informational'
+	Severity AlertSeverity `json:"severity,omitempty"`
+	// Tactics - The tactics of the alert rule template
+	Tactics *[]AttackTactic `json:"tactics,omitempty"`
 }
 
-// IncidentInfo describes related incident information for the bookmark
-type IncidentInfo struct {
-	// IncidentID - Incident Id
-	IncidentID *string `json:"incidentId,omitempty"`
-	// Severity - The severity of the incident. Possible values include: 'IncidentSeverityCritical', 'IncidentSeverityHigh', 'IncidentSeverityMedium', 'IncidentSeverityLow', 'IncidentSeverityInformational'
-	Severity IncidentSeverity `json:"severity,omitempty"`
-	// Title - The title of the incident
-	Title *string `json:"title,omitempty"`
-	// RelationName - Relation Name
-	RelationName *string `json:"relationName,omitempty"`
+// MarshalJSON is the custom marshaler for FusionAlertRuleTemplateProperties.
+func (fartp FusionAlertRuleTemplateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fartp.AlertRulesCreatedByTemplateCount != nil {
+		objectMap["alertRulesCreatedByTemplateCount"] = fartp.AlertRulesCreatedByTemplateCount
+	}
+	if fartp.Description != nil {
+		objectMap["description"] = fartp.Description
+	}
+	if fartp.DisplayName != nil {
+		objectMap["displayName"] = fartp.DisplayName
+	}
+	if fartp.RequiredDataConnectors != nil {
+		objectMap["requiredDataConnectors"] = fartp.RequiredDataConnectors
+	}
+	if fartp.Status != "" {
+		objectMap["status"] = fartp.Status
+	}
+	if fartp.Severity != "" {
+		objectMap["severity"] = fartp.Severity
+	}
+	if fartp.Tactics != nil {
+		objectMap["tactics"] = fartp.Tactics
+	}
+	return json.Marshal(objectMap)
 }
 
-// MCASDataConnector represents MCAS (Microsoft Cloud App Security) data connector.
-type MCASDataConnector struct {
-	// MCASDataConnectorProperties - MCAS (Microsoft Cloud App Security) data connector properties.
-	*MCASDataConnectorProperties `json:"properties,omitempty"`
+// Incident represents an incident in Azure Security Insights.
+type Incident struct {
+	autorest.Response `json:"-"`
+	// IncidentProperties - Incident properties
+	*IncidentProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -2506,8 +2721,648 @@ type MCASDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Incident.
+func (i Incident) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.IncidentProperties != nil {
+		objectMap["properties"] = i.IncidentProperties
+	}
+	if i.Etag != nil {
+		objectMap["etag"] = i.Etag
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Incident struct.
+func (i *Incident) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var incidentProperties IncidentProperties
+				err = json.Unmarshal(*v, &incidentProperties)
+				if err != nil {
+					return err
+				}
+				i.IncidentProperties = &incidentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				i.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				i.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				i.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				i.Etag = &etag
+			}
+		}
+	}
+
+	return nil
+}
+
+// IncidentAdditionalData incident additional data property bag.
+type IncidentAdditionalData struct {
+	// AlertsCount - READ-ONLY; The number of alerts in the incident
+	AlertsCount *int32 `json:"alertsCount,omitempty"`
+	// BookmarksCount - READ-ONLY; The number of bookmarks in the incident
+	BookmarksCount *int32 `json:"bookmarksCount,omitempty"`
+	// CommentsCount - READ-ONLY; The number of comments in the incident
+	CommentsCount *int32 `json:"commentsCount,omitempty"`
+	// AlertProductNames - READ-ONLY; List of product names of alerts in the incident
+	AlertProductNames *[]string `json:"alertProductNames,omitempty"`
+	// Tactics - READ-ONLY; The tactics associated with incident
+	Tactics *[]AttackTactic `json:"tactics,omitempty"`
+}
+
+// IncidentComment represents an incident comment
+type IncidentComment struct {
+	autorest.Response `json:"-"`
+	// IncidentCommentProperties - Incident comment properties
+	*IncidentCommentProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IncidentComment.
+func (ic IncidentComment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ic.IncidentCommentProperties != nil {
+		objectMap["properties"] = ic.IncidentCommentProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IncidentComment struct.
+func (ic *IncidentComment) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var incidentCommentProperties IncidentCommentProperties
+				err = json.Unmarshal(*v, &incidentCommentProperties)
+				if err != nil {
+					return err
+				}
+				ic.IncidentCommentProperties = &incidentCommentProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ic.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ic.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ic.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// IncidentCommentList list of incident comments.
+type IncidentCommentList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of comments.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of comments.
+	Value *[]IncidentComment `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IncidentCommentList.
+func (icl IncidentCommentList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if icl.Value != nil {
+		objectMap["value"] = icl.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// IncidentCommentListIterator provides access to a complete listing of IncidentComment values.
+type IncidentCommentListIterator struct {
+	i    int
+	page IncidentCommentListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IncidentCommentListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IncidentCommentListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IncidentCommentListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IncidentCommentListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IncidentCommentListIterator) Response() IncidentCommentList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IncidentCommentListIterator) Value() IncidentComment {
+	if !iter.page.NotDone() {
+		return IncidentComment{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IncidentCommentListIterator type.
+func NewIncidentCommentListIterator(page IncidentCommentListPage) IncidentCommentListIterator {
+	return IncidentCommentListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (icl IncidentCommentList) IsEmpty() bool {
+	return icl.Value == nil || len(*icl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (icl IncidentCommentList) hasNextLink() bool {
+	return icl.NextLink != nil && len(*icl.NextLink) != 0
+}
+
+// incidentCommentListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (icl IncidentCommentList) incidentCommentListPreparer(ctx context.Context) (*http.Request, error) {
+	if !icl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(icl.NextLink)))
+}
+
+// IncidentCommentListPage contains a page of IncidentComment values.
+type IncidentCommentListPage struct {
+	fn  func(context.Context, IncidentCommentList) (IncidentCommentList, error)
+	icl IncidentCommentList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IncidentCommentListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IncidentCommentListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.icl)
+		if err != nil {
+			return err
+		}
+		page.icl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IncidentCommentListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IncidentCommentListPage) NotDone() bool {
+	return !page.icl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IncidentCommentListPage) Response() IncidentCommentList {
+	return page.icl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IncidentCommentListPage) Values() []IncidentComment {
+	if page.icl.IsEmpty() {
+		return nil
+	}
+	return *page.icl.Value
+}
+
+// Creates a new instance of the IncidentCommentListPage type.
+func NewIncidentCommentListPage(getNextPage func(context.Context, IncidentCommentList) (IncidentCommentList, error)) IncidentCommentListPage {
+	return IncidentCommentListPage{fn: getNextPage}
+}
+
+// IncidentCommentProperties incident comment property bag.
+type IncidentCommentProperties struct {
+	// CreatedTimeUtc - READ-ONLY; The time the comment was created
+	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
+	// Message - The comment message
+	Message *string `json:"message,omitempty"`
+	// Author - READ-ONLY; Describes the client that created the comment
+	Author *ClientInfo `json:"author,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IncidentCommentProperties.
+func (icp IncidentCommentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if icp.Message != nil {
+		objectMap["message"] = icp.Message
+	}
+	return json.Marshal(objectMap)
+}
+
+// IncidentInfo describes related incident information for the bookmark
+type IncidentInfo struct {
+	// IncidentID - Incident Id
+	IncidentID *string `json:"incidentId,omitempty"`
+	// Severity - The severity of the incident. Possible values include: 'CaseSeverityCritical', 'CaseSeverityHigh', 'CaseSeverityMedium', 'CaseSeverityLow', 'CaseSeverityInformational'
+	Severity CaseSeverity `json:"severity,omitempty"`
+	// Title - The title of the incident
+	Title *string `json:"title,omitempty"`
+	// RelationName - Relation Name
+	RelationName *string `json:"relationName,omitempty"`
+}
+
+// IncidentLabel represents an incident label
+type IncidentLabel struct {
+	// LabelName - The name of the label
+	LabelName *string `json:"labelName,omitempty"`
+	// LabelType - READ-ONLY; The type of the label. Possible values include: 'User', 'System'
+	LabelType IncidentLabelType `json:"labelType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IncidentLabel.
+func (il IncidentLabel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if il.LabelName != nil {
+		objectMap["labelName"] = il.LabelName
+	}
+	return json.Marshal(objectMap)
+}
+
+// IncidentList list all the incidents.
+type IncidentList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of incidents.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of incidents.
+	Value *[]Incident `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IncidentList.
+func (il IncidentList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if il.Value != nil {
+		objectMap["value"] = il.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// IncidentListIterator provides access to a complete listing of Incident values.
+type IncidentListIterator struct {
+	i    int
+	page IncidentListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IncidentListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IncidentListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IncidentListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IncidentListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IncidentListIterator) Response() IncidentList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IncidentListIterator) Value() Incident {
+	if !iter.page.NotDone() {
+		return Incident{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IncidentListIterator type.
+func NewIncidentListIterator(page IncidentListPage) IncidentListIterator {
+	return IncidentListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (il IncidentList) IsEmpty() bool {
+	return il.Value == nil || len(*il.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (il IncidentList) hasNextLink() bool {
+	return il.NextLink != nil && len(*il.NextLink) != 0
+}
+
+// incidentListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (il IncidentList) incidentListPreparer(ctx context.Context) (*http.Request, error) {
+	if !il.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(il.NextLink)))
+}
+
+// IncidentListPage contains a page of Incident values.
+type IncidentListPage struct {
+	fn func(context.Context, IncidentList) (IncidentList, error)
+	il IncidentList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IncidentListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IncidentListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.il)
+		if err != nil {
+			return err
+		}
+		page.il = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IncidentListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IncidentListPage) NotDone() bool {
+	return !page.il.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IncidentListPage) Response() IncidentList {
+	return page.il
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IncidentListPage) Values() []Incident {
+	if page.il.IsEmpty() {
+		return nil
+	}
+	return *page.il.Value
+}
+
+// Creates a new instance of the IncidentListPage type.
+func NewIncidentListPage(getNextPage func(context.Context, IncidentList) (IncidentList, error)) IncidentListPage {
+	return IncidentListPage{fn: getNextPage}
+}
+
+// IncidentOwnerInfo information on the user an incident is assigned to
+type IncidentOwnerInfo struct {
+	// Email - The email of the user the incident is assigned to.
+	Email *string `json:"email,omitempty"`
+	// AssignedTo - The name of the user the incident is assigned to.
+	AssignedTo *string `json:"assignedTo,omitempty"`
+	// ObjectID - The object id of the user the incident is assigned to.
+	ObjectID *uuid.UUID `json:"objectId,omitempty"`
+	// UserPrincipalName - The user principal name of the user the incident is assigned to.
+	UserPrincipalName *string `json:"userPrincipalName,omitempty"`
+}
+
+// IncidentProperties describes incident properties
+type IncidentProperties struct {
+	// AdditionalData - READ-ONLY; Additional data on the incident
+	AdditionalData *IncidentAdditionalData `json:"additionalData,omitempty"`
+	// Classification - The reason the incident was closed. Possible values include: 'Undetermined', 'TruePositive', 'BenignPositive', 'FalsePositive'
+	Classification IncidentClassification `json:"classification,omitempty"`
+	// ClassificationComment - Describes the reason the incident was closed
+	ClassificationComment *string `json:"classificationComment,omitempty"`
+	// ClassificationReason - The classification reason the incident was closed with. Possible values include: 'SuspiciousActivity', 'SuspiciousButExpected', 'IncorrectAlertLogic', 'InaccurateData'
+	ClassificationReason IncidentClassificationReason `json:"classificationReason,omitempty"`
+	// CreatedTimeUtc - READ-ONLY; The time the incident was created
+	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
+	// Description - The description of the incident
+	Description *string `json:"description,omitempty"`
+	// FirstActivityTimeUtc - The time of the first activity in the incident
+	FirstActivityTimeUtc *date.Time `json:"firstActivityTimeUtc,omitempty"`
+	// IncidentURL - READ-ONLY; The deep-link url to the incident in Azure portal
+	IncidentURL *string `json:"incidentUrl,omitempty"`
+	// IncidentNumber - READ-ONLY; A sequential number
+	IncidentNumber *int32 `json:"incidentNumber,omitempty"`
+	// Labels - List of labels relevant to this incident
+	Labels *[]IncidentLabel `json:"labels,omitempty"`
+	// LastActivityTimeUtc - The time of the last activity in the incident
+	LastActivityTimeUtc *date.Time `json:"lastActivityTimeUtc,omitempty"`
+	// LastModifiedTimeUtc - READ-ONLY; The last time the incident was updated
+	LastModifiedTimeUtc *date.Time `json:"lastModifiedTimeUtc,omitempty"`
+	// Owner - Describes a user that the incident is assigned to
+	Owner *IncidentOwnerInfo `json:"owner,omitempty"`
+	// RelatedAnalyticRuleIds - READ-ONLY; List of resource ids of Analytic rules related to the incident
+	RelatedAnalyticRuleIds *[]string `json:"relatedAnalyticRuleIds,omitempty"`
+	// Severity - The severity of the incident. Possible values include: 'IncidentSeverityHigh', 'IncidentSeverityMedium', 'IncidentSeverityLow', 'IncidentSeverityInformational'
+	Severity IncidentSeverity `json:"severity,omitempty"`
+	// Status - The status of the incident. Possible values include: 'IncidentStatusNew', 'IncidentStatusActive', 'IncidentStatusClosed'
+	Status IncidentStatus `json:"status,omitempty"`
+	// Title - The title of the incident
+	Title *string `json:"title,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IncidentProperties.
+func (IP IncidentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if IP.Classification != "" {
+		objectMap["classification"] = IP.Classification
+	}
+	if IP.ClassificationComment != nil {
+		objectMap["classificationComment"] = IP.ClassificationComment
+	}
+	if IP.ClassificationReason != "" {
+		objectMap["classificationReason"] = IP.ClassificationReason
+	}
+	if IP.Description != nil {
+		objectMap["description"] = IP.Description
+	}
+	if IP.FirstActivityTimeUtc != nil {
+		objectMap["firstActivityTimeUtc"] = IP.FirstActivityTimeUtc
+	}
+	if IP.Labels != nil {
+		objectMap["labels"] = IP.Labels
+	}
+	if IP.LastActivityTimeUtc != nil {
+		objectMap["lastActivityTimeUtc"] = IP.LastActivityTimeUtc
+	}
+	if IP.Owner != nil {
+		objectMap["owner"] = IP.Owner
+	}
+	if IP.Severity != "" {
+		objectMap["severity"] = IP.Severity
+	}
+	if IP.Status != "" {
+		objectMap["status"] = IP.Status
+	}
+	if IP.Title != nil {
+		objectMap["title"] = IP.Title
+	}
+	return json.Marshal(objectMap)
+}
+
+// MCASDataConnector represents MCAS (Microsoft Cloud App Security) data connector.
+type MCASDataConnector struct {
+	// MCASDataConnectorProperties - MCAS (Microsoft Cloud App Security) data connector properties.
+	*MCASDataConnectorProperties `json:"properties,omitempty"`
 	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
 	Kind KindBasicDataConnector `json:"kind,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MCASDataConnector.
@@ -2517,11 +3372,11 @@ func (mdc MCASDataConnector) MarshalJSON() ([]byte, error) {
 	if mdc.MCASDataConnectorProperties != nil {
 		objectMap["properties"] = mdc.MCASDataConnectorProperties
 	}
-	if mdc.Etag != nil {
-		objectMap["etag"] = mdc.Etag
-	}
 	if mdc.Kind != "" {
 		objectMap["kind"] = mdc.Kind
+	}
+	if mdc.Etag != nil {
+		objectMap["etag"] = mdc.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -2594,6 +3449,15 @@ func (mdc *MCASDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				mdc.MCASDataConnectorProperties = &mCASDataConnectorProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicDataConnector
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				mdc.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -2630,48 +3494,34 @@ func (mdc *MCASDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				mdc.Etag = &etag
 			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicDataConnector
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				mdc.Kind = kind
-			}
 		}
 	}
 
 	return nil
 }
 
-// MCASDataConnectorDataTypes the available data types for MCAS (Microsoft Cloud App Security) data
-// connector.
+// MCASDataConnectorDataTypes the available data types for MCAS (Microsoft Cloud App Security) data connector.
 type MCASDataConnectorDataTypes struct {
 	// DiscoveryLogs - Discovery log data type connection.
-	DiscoveryLogs *MCASDataConnectorDataTypesDiscoveryLogs `json:"discoveryLogs,omitempty"`
+	DiscoveryLogs *DataConnectorDataTypeCommon `json:"discoveryLogs,omitempty"`
 	// Alerts - Alerts data type connection.
-	Alerts *AlertsDataTypeOfDataConnectorAlerts `json:"alerts,omitempty"`
-}
-
-// MCASDataConnectorDataTypesDiscoveryLogs discovery log data type connection.
-type MCASDataConnectorDataTypesDiscoveryLogs struct {
-	// State - Describe whether this data type connection is enabled or not. Possible values include: 'Enabled', 'Disabled'
-	State DataTypeState `json:"state,omitempty"`
+	Alerts *DataConnectorDataTypeCommon `json:"alerts,omitempty"`
 }
 
 // MCASDataConnectorProperties MCAS (Microsoft Cloud App Security) data connector properties.
 type MCASDataConnectorProperties struct {
-	// DataTypes - The available data types for the connector.
-	DataTypes *MCASDataConnectorDataTypes `json:"dataTypes,omitempty"`
 	// TenantID - The tenant id to connect to, and get the data from.
 	TenantID *string `json:"tenantId,omitempty"`
+	// DataTypes - The available data types for the connector.
+	DataTypes *MCASDataConnectorDataTypes `json:"dataTypes,omitempty"`
 }
 
 // MDATPDataConnector represents MDATP (Microsoft Defender Advanced Threat Protection) data connector.
 type MDATPDataConnector struct {
 	// MDATPDataConnectorProperties - MDATP (Microsoft Defender Advanced Threat Protection) data connector properties.
 	*MDATPDataConnectorProperties `json:"properties,omitempty"`
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -2680,8 +3530,6 @@ type MDATPDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
-	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MDATPDataConnector.
@@ -2691,11 +3539,11 @@ func (mdc MDATPDataConnector) MarshalJSON() ([]byte, error) {
 	if mdc.MDATPDataConnectorProperties != nil {
 		objectMap["properties"] = mdc.MDATPDataConnectorProperties
 	}
-	if mdc.Etag != nil {
-		objectMap["etag"] = mdc.Etag
-	}
 	if mdc.Kind != "" {
 		objectMap["kind"] = mdc.Kind
+	}
+	if mdc.Etag != nil {
+		objectMap["etag"] = mdc.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -2768,6 +3616,15 @@ func (mdc *MDATPDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				mdc.MDATPDataConnectorProperties = &mDATPDataConnectorProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicDataConnector
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				mdc.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -2804,15 +3661,6 @@ func (mdc *MDATPDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				mdc.Etag = &etag
 			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicDataConnector
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				mdc.Kind = kind
-			}
 		}
 	}
 
@@ -2832,6 +3680,8 @@ type MDATPDataConnectorProperties struct {
 type MicrosoftSecurityIncidentCreationAlertRule struct {
 	// MicrosoftSecurityIncidentCreationAlertRuleProperties - MicrosoftSecurityIncidentCreation rule properties
 	*MicrosoftSecurityIncidentCreationAlertRuleProperties `json:"properties,omitempty"`
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
+	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -2840,8 +3690,6 @@ type MicrosoftSecurityIncidentCreationAlertRule struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
-	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MicrosoftSecurityIncidentCreationAlertRule.
@@ -2851,11 +3699,11 @@ func (msicar MicrosoftSecurityIncidentCreationAlertRule) MarshalJSON() ([]byte, 
 	if msicar.MicrosoftSecurityIncidentCreationAlertRuleProperties != nil {
 		objectMap["properties"] = msicar.MicrosoftSecurityIncidentCreationAlertRuleProperties
 	}
-	if msicar.Etag != nil {
-		objectMap["etag"] = msicar.Etag
-	}
 	if msicar.Kind != "" {
 		objectMap["kind"] = msicar.Kind
+	}
+	if msicar.Etag != nil {
+		objectMap["etag"] = msicar.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -2903,6 +3751,15 @@ func (msicar *MicrosoftSecurityIncidentCreationAlertRule) UnmarshalJSON(body []b
 				}
 				msicar.MicrosoftSecurityIncidentCreationAlertRuleProperties = &microsoftSecurityIncidentCreationAlertRuleProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind Kind
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				msicar.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -2939,15 +3796,6 @@ func (msicar *MicrosoftSecurityIncidentCreationAlertRule) UnmarshalJSON(body []b
 				}
 				msicar.Etag = &etag
 			}
-		case "kind":
-			if v != nil {
-				var kind Kind
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				msicar.Kind = kind
-			}
 		}
 	}
 
@@ -2959,14 +3807,15 @@ func (msicar *MicrosoftSecurityIncidentCreationAlertRule) UnmarshalJSON(body []b
 type MicrosoftSecurityIncidentCreationAlertRuleCommonProperties struct {
 	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
 	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
+	// DisplayNamesExcludeFilter - the alerts' displayNames on which the cases will not be generated
+	DisplayNamesExcludeFilter *[]string `json:"displayNamesExcludeFilter,omitempty"`
 	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection', 'AzureSecurityCenterforIoT'
 	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
 	// SeveritiesFilter - the alerts' severities on which the cases will be generated
 	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`
 }
 
-// MicrosoftSecurityIncidentCreationAlertRuleProperties microsoftSecurityIncidentCreation rule property
-// bag.
+// MicrosoftSecurityIncidentCreationAlertRuleProperties microsoftSecurityIncidentCreation rule property bag.
 type MicrosoftSecurityIncidentCreationAlertRuleProperties struct {
 	// AlertRuleTemplateName - The Name of the alert rule template used to create this rule.
 	AlertRuleTemplateName *string `json:"alertRuleTemplateName,omitempty"`
@@ -2980,10 +3829,42 @@ type MicrosoftSecurityIncidentCreationAlertRuleProperties struct {
 	LastModifiedUtc *date.Time `json:"lastModifiedUtc,omitempty"`
 	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
 	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
+	// DisplayNamesExcludeFilter - the alerts' displayNames on which the cases will not be generated
+	DisplayNamesExcludeFilter *[]string `json:"displayNamesExcludeFilter,omitempty"`
 	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection', 'AzureSecurityCenterforIoT'
 	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
 	// SeveritiesFilter - the alerts' severities on which the cases will be generated
 	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MicrosoftSecurityIncidentCreationAlertRuleProperties.
+func (msicarp MicrosoftSecurityIncidentCreationAlertRuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if msicarp.AlertRuleTemplateName != nil {
+		objectMap["alertRuleTemplateName"] = msicarp.AlertRuleTemplateName
+	}
+	if msicarp.Description != nil {
+		objectMap["description"] = msicarp.Description
+	}
+	if msicarp.DisplayName != nil {
+		objectMap["displayName"] = msicarp.DisplayName
+	}
+	if msicarp.Enabled != nil {
+		objectMap["enabled"] = msicarp.Enabled
+	}
+	if msicarp.DisplayNamesFilter != nil {
+		objectMap["displayNamesFilter"] = msicarp.DisplayNamesFilter
+	}
+	if msicarp.DisplayNamesExcludeFilter != nil {
+		objectMap["displayNamesExcludeFilter"] = msicarp.DisplayNamesExcludeFilter
+	}
+	if msicarp.ProductFilter != "" {
+		objectMap["productFilter"] = msicarp.ProductFilter
+	}
+	if msicarp.SeveritiesFilter != nil {
+		objectMap["severitiesFilter"] = msicarp.SeveritiesFilter
+	}
+	return json.Marshal(objectMap)
 }
 
 // MicrosoftSecurityIncidentCreationAlertRuleTemplate represents MicrosoftSecurityIncidentCreation rule
@@ -2991,14 +3872,14 @@ type MicrosoftSecurityIncidentCreationAlertRuleProperties struct {
 type MicrosoftSecurityIncidentCreationAlertRuleTemplate struct {
 	// MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties - MicrosoftSecurityIncidentCreation rule template properties
 	*MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties `json:"properties,omitempty"`
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
+	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
-	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MicrosoftSecurityIncidentCreationAlertRuleTemplate.
@@ -3057,6 +3938,15 @@ func (msicart *MicrosoftSecurityIncidentCreationAlertRuleTemplate) UnmarshalJSON
 				}
 				msicart.MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties = &microsoftSecurityIncidentCreationAlertRuleTemplateProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicAlertRuleTemplate
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				msicart.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -3084,23 +3974,14 @@ func (msicart *MicrosoftSecurityIncidentCreationAlertRuleTemplate) UnmarshalJSON
 				}
 				msicart.Type = &typeVar
 			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicAlertRuleTemplate
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				msicart.Kind = kind
-			}
 		}
 	}
 
 	return nil
 }
 
-// MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties microsoftSecurityIncidentCreation rule
-// template properties
+// MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties microsoftSecurityIncidentCreation rule template
+// properties
 type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
 	// AlertRulesCreatedByTemplateCount - the number of alert rules that were created by this template
 	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
@@ -3116,10 +3997,45 @@ type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
 	Status TemplateStatus `json:"status,omitempty"`
 	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
 	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
+	// DisplayNamesExcludeFilter - the alerts' displayNames on which the cases will not be generated
+	DisplayNamesExcludeFilter *[]string `json:"displayNamesExcludeFilter,omitempty"`
 	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection', 'AzureSecurityCenterforIoT'
 	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
 	// SeveritiesFilter - the alerts' severities on which the cases will be generated
 	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties.
+func (msicartp MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if msicartp.AlertRulesCreatedByTemplateCount != nil {
+		objectMap["alertRulesCreatedByTemplateCount"] = msicartp.AlertRulesCreatedByTemplateCount
+	}
+	if msicartp.Description != nil {
+		objectMap["description"] = msicartp.Description
+	}
+	if msicartp.DisplayName != nil {
+		objectMap["displayName"] = msicartp.DisplayName
+	}
+	if msicartp.RequiredDataConnectors != nil {
+		objectMap["requiredDataConnectors"] = msicartp.RequiredDataConnectors
+	}
+	if msicartp.Status != "" {
+		objectMap["status"] = msicartp.Status
+	}
+	if msicartp.DisplayNamesFilter != nil {
+		objectMap["displayNamesFilter"] = msicartp.DisplayNamesFilter
+	}
+	if msicartp.DisplayNamesExcludeFilter != nil {
+		objectMap["displayNamesExcludeFilter"] = msicartp.DisplayNamesExcludeFilter
+	}
+	if msicartp.ProductFilter != "" {
+		objectMap["productFilter"] = msicartp.ProductFilter
+	}
+	if msicartp.SeveritiesFilter != nil {
+		objectMap["severitiesFilter"] = msicartp.SeveritiesFilter
+	}
+	return json.Marshal(objectMap)
 }
 
 // OfficeConsent consent for Office365 tenant that already made.
@@ -3202,6 +4118,15 @@ type OfficeConsentList struct {
 	Value *[]OfficeConsent `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OfficeConsentList.
+func (ocl OfficeConsentList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ocl.Value != nil {
+		objectMap["value"] = ocl.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // OfficeConsentProperties consent property bag.
 type OfficeConsentProperties struct {
 	// TenantID - The tenantId of the Office365 with the consent.
@@ -3210,10 +4135,21 @@ type OfficeConsentProperties struct {
 	TenantName *string `json:"tenantName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OfficeConsentProperties.
+func (ocp OfficeConsentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ocp.TenantID != nil {
+		objectMap["tenantId"] = ocp.TenantID
+	}
+	return json.Marshal(objectMap)
+}
+
 // OfficeDataConnector represents office data connector.
 type OfficeDataConnector struct {
 	// OfficeDataConnectorProperties - Office data connector properties.
 	*OfficeDataConnectorProperties `json:"properties,omitempty"`
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -3222,8 +4158,6 @@ type OfficeDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
-	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for OfficeDataConnector.
@@ -3233,11 +4167,11 @@ func (odc OfficeDataConnector) MarshalJSON() ([]byte, error) {
 	if odc.OfficeDataConnectorProperties != nil {
 		objectMap["properties"] = odc.OfficeDataConnectorProperties
 	}
-	if odc.Etag != nil {
-		objectMap["etag"] = odc.Etag
-	}
 	if odc.Kind != "" {
 		objectMap["kind"] = odc.Kind
+	}
+	if odc.Etag != nil {
+		objectMap["etag"] = odc.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -3310,6 +4244,15 @@ func (odc *OfficeDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				odc.OfficeDataConnectorProperties = &officeDataConnectorProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicDataConnector
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				odc.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -3346,15 +4289,6 @@ func (odc *OfficeDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				odc.Etag = &etag
 			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicDataConnector
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				odc.Kind = kind
-			}
 		}
 	}
 
@@ -3383,10 +4317,10 @@ type OfficeDataConnectorDataTypesSharePoint struct {
 
 // OfficeDataConnectorProperties office data connector properties.
 type OfficeDataConnectorProperties struct {
-	// DataTypes - The available data types for the connector.
-	DataTypes *OfficeDataConnectorDataTypes `json:"dataTypes,omitempty"`
 	// TenantID - The tenant id to connect to, and get the data from.
 	TenantID *string `json:"tenantId,omitempty"`
+	// DataTypes - The available data types for the connector.
+	DataTypes *OfficeDataConnectorDataTypes `json:"dataTypes,omitempty"`
 }
 
 // Operation operation provided by provider
@@ -3486,10 +4420,15 @@ func (ol OperationsList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OperationsList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // operationsListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OperationsList) operationsListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3517,11 +4456,16 @@ func (page *OperationsListPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 
@@ -3577,10 +4521,21 @@ type ResourceWithEtag struct {
 	Etag *string `json:"etag,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceWithEtag.
+func (rwe ResourceWithEtag) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rwe.Etag != nil {
+		objectMap["etag"] = rwe.Etag
+	}
+	return json.Marshal(objectMap)
+}
+
 // ScheduledAlertRule represents scheduled alert rule.
 type ScheduledAlertRule struct {
 	// ScheduledAlertRuleProperties - Scheduled alert rule properties
 	*ScheduledAlertRuleProperties `json:"properties,omitempty"`
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
+	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -3589,8 +4544,6 @@ type ScheduledAlertRule struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
-	Kind Kind `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ScheduledAlertRule.
@@ -3600,11 +4553,11 @@ func (sar ScheduledAlertRule) MarshalJSON() ([]byte, error) {
 	if sar.ScheduledAlertRuleProperties != nil {
 		objectMap["properties"] = sar.ScheduledAlertRuleProperties
 	}
-	if sar.Etag != nil {
-		objectMap["etag"] = sar.Etag
-	}
 	if sar.Kind != "" {
 		objectMap["kind"] = sar.Kind
+	}
+	if sar.Etag != nil {
+		objectMap["etag"] = sar.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -3652,6 +4605,15 @@ func (sar *ScheduledAlertRule) UnmarshalJSON(body []byte) error {
 				}
 				sar.ScheduledAlertRuleProperties = &scheduledAlertRuleProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind Kind
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				sar.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -3687,15 +4649,6 @@ func (sar *ScheduledAlertRule) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sar.Etag = &etag
-			}
-		case "kind":
-			if v != nil {
-				var kind Kind
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				sar.Kind = kind
 			}
 		}
 	}
@@ -3751,18 +4704,63 @@ type ScheduledAlertRuleProperties struct {
 	TriggerThreshold *int32 `json:"triggerThreshold,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ScheduledAlertRuleProperties.
+func (sarp ScheduledAlertRuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sarp.AlertRuleTemplateName != nil {
+		objectMap["alertRuleTemplateName"] = sarp.AlertRuleTemplateName
+	}
+	if sarp.Description != nil {
+		objectMap["description"] = sarp.Description
+	}
+	if sarp.DisplayName != nil {
+		objectMap["displayName"] = sarp.DisplayName
+	}
+	if sarp.Enabled != nil {
+		objectMap["enabled"] = sarp.Enabled
+	}
+	if sarp.SuppressionDuration != nil {
+		objectMap["suppressionDuration"] = sarp.SuppressionDuration
+	}
+	if sarp.SuppressionEnabled != nil {
+		objectMap["suppressionEnabled"] = sarp.SuppressionEnabled
+	}
+	if sarp.Tactics != nil {
+		objectMap["tactics"] = sarp.Tactics
+	}
+	if sarp.Query != nil {
+		objectMap["query"] = sarp.Query
+	}
+	if sarp.QueryFrequency != nil {
+		objectMap["queryFrequency"] = sarp.QueryFrequency
+	}
+	if sarp.QueryPeriod != nil {
+		objectMap["queryPeriod"] = sarp.QueryPeriod
+	}
+	if sarp.Severity != "" {
+		objectMap["severity"] = sarp.Severity
+	}
+	if sarp.TriggerOperator != "" {
+		objectMap["triggerOperator"] = sarp.TriggerOperator
+	}
+	if sarp.TriggerThreshold != nil {
+		objectMap["triggerThreshold"] = sarp.TriggerThreshold
+	}
+	return json.Marshal(objectMap)
+}
+
 // ScheduledAlertRuleTemplate represents scheduled alert rule template.
 type ScheduledAlertRuleTemplate struct {
 	// ScheduledAlertRuleTemplateProperties - Scheduled alert rule template properties
 	*ScheduledAlertRuleTemplateProperties `json:"properties,omitempty"`
+	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
+	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicAlertRuleTemplateKindAlertRuleTemplate', 'KindBasicAlertRuleTemplateKindFusion', 'KindBasicAlertRuleTemplateKindMicrosoftSecurityIncidentCreation', 'KindBasicAlertRuleTemplateKindScheduled'
-	Kind KindBasicAlertRuleTemplate `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ScheduledAlertRuleTemplate.
@@ -3821,6 +4819,15 @@ func (sart *ScheduledAlertRuleTemplate) UnmarshalJSON(body []byte) error {
 				}
 				sart.ScheduledAlertRuleTemplateProperties = &scheduledAlertRuleTemplateProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicAlertRuleTemplate
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				sart.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -3847,15 +4854,6 @@ func (sart *ScheduledAlertRuleTemplate) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sart.Type = &typeVar
-			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicAlertRuleTemplate
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				sart.Kind = kind
 			}
 		}
 	}
@@ -3893,15 +4891,59 @@ type ScheduledAlertRuleTemplateProperties struct {
 	Tactics *[]AttackTactic `json:"tactics,omitempty"`
 }
 
-// BasicSettings the Setting.
+// MarshalJSON is the custom marshaler for ScheduledAlertRuleTemplateProperties.
+func (sartp ScheduledAlertRuleTemplateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sartp.AlertRulesCreatedByTemplateCount != nil {
+		objectMap["alertRulesCreatedByTemplateCount"] = sartp.AlertRulesCreatedByTemplateCount
+	}
+	if sartp.Description != nil {
+		objectMap["description"] = sartp.Description
+	}
+	if sartp.DisplayName != nil {
+		objectMap["displayName"] = sartp.DisplayName
+	}
+	if sartp.RequiredDataConnectors != nil {
+		objectMap["requiredDataConnectors"] = sartp.RequiredDataConnectors
+	}
+	if sartp.Status != "" {
+		objectMap["status"] = sartp.Status
+	}
+	if sartp.Query != nil {
+		objectMap["query"] = sartp.Query
+	}
+	if sartp.QueryFrequency != nil {
+		objectMap["queryFrequency"] = sartp.QueryFrequency
+	}
+	if sartp.QueryPeriod != nil {
+		objectMap["queryPeriod"] = sartp.QueryPeriod
+	}
+	if sartp.Severity != "" {
+		objectMap["severity"] = sartp.Severity
+	}
+	if sartp.TriggerOperator != "" {
+		objectMap["triggerOperator"] = sartp.TriggerOperator
+	}
+	if sartp.TriggerThreshold != nil {
+		objectMap["triggerThreshold"] = sartp.TriggerThreshold
+	}
+	if sartp.Tactics != nil {
+		objectMap["tactics"] = sartp.Tactics
+	}
+	return json.Marshal(objectMap)
+}
+
+// BasicSettings the Settings.
 type BasicSettings interface {
 	AsToggleSettings() (*ToggleSettings, bool)
 	AsUebaSettings() (*UebaSettings, bool)
 	AsSettings() (*Settings, bool)
 }
 
-// Settings the Setting.
+// Settings the Settings.
 type Settings struct {
+	// Kind - Possible values include: 'KindSettings', 'KindToggleSettings', 'KindUebaSettings'
+	Kind KindBasicSettings `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -3910,8 +4952,6 @@ type Settings struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindSettings', 'KindToggleSettings', 'KindUebaSettings'
-	Kind KindBasicSettings `json:"kind,omitempty"`
 }
 
 func unmarshalBasicSettings(body []byte) (BasicSettings, error) {
@@ -3959,11 +4999,11 @@ func unmarshalBasicSettingsArray(body []byte) ([]BasicSettings, error) {
 func (s Settings) MarshalJSON() ([]byte, error) {
 	s.Kind = KindSettings
 	objectMap := make(map[string]interface{})
-	if s.Etag != nil {
-		objectMap["etag"] = s.Etag
-	}
 	if s.Kind != "" {
 		objectMap["kind"] = s.Kind
+	}
+	if s.Etag != nil {
+		objectMap["etag"] = s.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -3988,12 +5028,6 @@ func (s Settings) AsBasicSettings() (BasicSettings, bool) {
 	return &s, true
 }
 
-// SettingsKind describes an Azure resource with kind.
-type SettingsKind struct {
-	// Kind - The kind of the setting. Possible values include: 'SettingKindUebaSettings', 'SettingKindToggleSettings'
-	Kind SettingKind `json:"kind,omitempty"`
-}
-
 // ThreatIntelligence threatIntelligence property bag.
 type ThreatIntelligence struct {
 	// Confidence - READ-ONLY; Confidence (must be between 0 and 1)
@@ -4014,6 +5048,8 @@ type ThreatIntelligence struct {
 type TIDataConnector struct {
 	// TIDataConnectorProperties - TI (Threat Intelligence) data connector properties.
 	*TIDataConnectorProperties `json:"properties,omitempty"`
+	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
+	Kind KindBasicDataConnector `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -4022,8 +5058,6 @@ type TIDataConnector struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindDataConnector', 'KindAzureActiveDirectory', 'KindAzureAdvancedThreatProtection', 'KindAzureSecurityCenter', 'KindAmazonWebServicesCloudTrail', 'KindMicrosoftCloudAppSecurity', 'KindMicrosoftDefenderAdvancedThreatProtection', 'KindOffice365', 'KindThreatIntelligence'
-	Kind KindBasicDataConnector `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for TIDataConnector.
@@ -4033,11 +5067,11 @@ func (tdc TIDataConnector) MarshalJSON() ([]byte, error) {
 	if tdc.TIDataConnectorProperties != nil {
 		objectMap["properties"] = tdc.TIDataConnectorProperties
 	}
-	if tdc.Etag != nil {
-		objectMap["etag"] = tdc.Etag
-	}
 	if tdc.Kind != "" {
 		objectMap["kind"] = tdc.Kind
+	}
+	if tdc.Etag != nil {
+		objectMap["etag"] = tdc.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -4110,6 +5144,15 @@ func (tdc *TIDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				tdc.TIDataConnectorProperties = &tIDataConnectorProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicDataConnector
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				tdc.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -4146,15 +5189,6 @@ func (tdc *TIDataConnector) UnmarshalJSON(body []byte) error {
 				}
 				tdc.Etag = &etag
 			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicDataConnector
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				tdc.Kind = kind
-			}
 		}
 	}
 
@@ -4175,16 +5209,18 @@ type TIDataConnectorDataTypesIndicators struct {
 
 // TIDataConnectorProperties TI (Threat Intelligence) data connector properties.
 type TIDataConnectorProperties struct {
-	// DataTypes - The available data types for the connector.
-	DataTypes *TIDataConnectorDataTypes `json:"dataTypes,omitempty"`
 	// TenantID - The tenant id to connect to, and get the data from.
 	TenantID *string `json:"tenantId,omitempty"`
+	// DataTypes - The available data types for the connector.
+	DataTypes *TIDataConnectorDataTypes `json:"dataTypes,omitempty"`
 }
 
 // ToggleSettings settings with single toggle.
 type ToggleSettings struct {
 	// ToggleSettingsProperties - toggle properties
 	*ToggleSettingsProperties `json:"properties,omitempty"`
+	// Kind - Possible values include: 'KindSettings', 'KindToggleSettings', 'KindUebaSettings'
+	Kind KindBasicSettings `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -4193,8 +5229,6 @@ type ToggleSettings struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindSettings', 'KindToggleSettings', 'KindUebaSettings'
-	Kind KindBasicSettings `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ToggleSettings.
@@ -4204,11 +5238,11 @@ func (ts ToggleSettings) MarshalJSON() ([]byte, error) {
 	if ts.ToggleSettingsProperties != nil {
 		objectMap["properties"] = ts.ToggleSettingsProperties
 	}
-	if ts.Etag != nil {
-		objectMap["etag"] = ts.Etag
-	}
 	if ts.Kind != "" {
 		objectMap["kind"] = ts.Kind
+	}
+	if ts.Etag != nil {
+		objectMap["etag"] = ts.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -4251,6 +5285,15 @@ func (ts *ToggleSettings) UnmarshalJSON(body []byte) error {
 				}
 				ts.ToggleSettingsProperties = &toggleSettingsProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicSettings
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ts.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -4287,15 +5330,6 @@ func (ts *ToggleSettings) UnmarshalJSON(body []byte) error {
 				}
 				ts.Etag = &etag
 			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicSettings
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				ts.Kind = kind
-			}
 		}
 	}
 
@@ -4312,6 +5346,8 @@ type ToggleSettingsProperties struct {
 type UebaSettings struct {
 	// UebaSettingsProperties - User and Entity Behavior Analytics settings properties
 	*UebaSettingsProperties `json:"properties,omitempty"`
+	// Kind - Possible values include: 'KindSettings', 'KindToggleSettings', 'KindUebaSettings'
+	Kind KindBasicSettings `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Azure resource name
@@ -4320,8 +5356,6 @@ type UebaSettings struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindSettings', 'KindToggleSettings', 'KindUebaSettings'
-	Kind KindBasicSettings `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for UebaSettings.
@@ -4331,11 +5365,11 @@ func (us UebaSettings) MarshalJSON() ([]byte, error) {
 	if us.UebaSettingsProperties != nil {
 		objectMap["properties"] = us.UebaSettingsProperties
 	}
-	if us.Etag != nil {
-		objectMap["etag"] = us.Etag
-	}
 	if us.Kind != "" {
 		objectMap["kind"] = us.Kind
+	}
+	if us.Etag != nil {
+		objectMap["etag"] = us.Etag
 	}
 	return json.Marshal(objectMap)
 }
@@ -4378,6 +5412,15 @@ func (us *UebaSettings) UnmarshalJSON(body []byte) error {
 				}
 				us.UebaSettingsProperties = &uebaSettingsProperties
 			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicSettings
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				us.Kind = kind
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -4414,15 +5457,6 @@ func (us *UebaSettings) UnmarshalJSON(body []byte) error {
 				}
 				us.Etag = &etag
 			}
-		case "kind":
-			if v != nil {
-				var kind KindBasicSettings
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				us.Kind = kind
-			}
 		}
 	}
 
@@ -4439,6 +5473,15 @@ type UebaSettingsProperties struct {
 	StatusInMcas StatusInMcas `json:"statusInMcas,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UebaSettingsProperties.
+func (usp UebaSettingsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if usp.IsEnabled != nil {
+		objectMap["isEnabled"] = usp.IsEnabled
+	}
+	return json.Marshal(objectMap)
+}
+
 // UserInfo user information that made some action
 type UserInfo struct {
 	// Email - READ-ONLY; The email of the user.
@@ -4447,4 +5490,13 @@ type UserInfo struct {
 	Name *string `json:"name,omitempty"`
 	// ObjectID - The object id of the user.
 	ObjectID *uuid.UUID `json:"objectId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UserInfo.
+func (UI UserInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if UI.ObjectID != nil {
+		objectMap["objectId"] = UI.ObjectID
+	}
+	return json.Marshal(objectMap)
 }

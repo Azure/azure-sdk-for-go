@@ -661,6 +661,9 @@ func (client HybridConnectionsClient) ListAuthorizationRules(ctx context.Context
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.HybridConnectionsClient", "ListAuthorizationRules", resp, "Failure responding to request")
 	}
+	if result.arlr.hasNextLink() && result.arlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -784,6 +787,9 @@ func (client HybridConnectionsClient) ListByNamespace(ctx context.Context, resou
 	result.hclr, err = client.ListByNamespaceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.HybridConnectionsClient", "ListByNamespace", resp, "Failure responding to request")
+	}
+	if result.hclr.hasNextLink() && result.hclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -1006,6 +1012,9 @@ func (client HybridConnectionsClient) ListPostAuthorizationRules(ctx context.Con
 	result.arlr, err = client.ListPostAuthorizationRulesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "relay.HybridConnectionsClient", "ListPostAuthorizationRules", resp, "Failure responding to request")
+	}
+	if result.arlr.hasNextLink() && result.arlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

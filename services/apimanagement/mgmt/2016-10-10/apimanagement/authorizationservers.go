@@ -374,6 +374,9 @@ func (client AuthorizationServersClient) ListByService(ctx context.Context, reso
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServersClient", "ListByService", resp, "Failure responding to request")
 	}
+	if result.asc.hasNextLink() && result.asc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

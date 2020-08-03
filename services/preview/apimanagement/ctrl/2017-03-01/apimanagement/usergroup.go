@@ -91,6 +91,9 @@ func (client UserGroupClient) List(ctx context.Context, apimBaseURL string, UID 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.UserGroupClient", "List", resp, "Failure responding to request")
 	}
+	if result.gc.hasNextLink() && result.gc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

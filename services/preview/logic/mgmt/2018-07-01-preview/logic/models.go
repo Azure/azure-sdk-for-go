@@ -30,740 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2018-07-01-preview/logic"
 
-// AgreementType enumerates the values for agreement type.
-type AgreementType string
-
-const (
-	// AS2 ...
-	AS2 AgreementType = "AS2"
-	// Edifact ...
-	Edifact AgreementType = "Edifact"
-	// NotSpecified ...
-	NotSpecified AgreementType = "NotSpecified"
-	// X12 ...
-	X12 AgreementType = "X12"
-)
-
-// PossibleAgreementTypeValues returns an array of possible values for the AgreementType const type.
-func PossibleAgreementTypeValues() []AgreementType {
-	return []AgreementType{AS2, Edifact, NotSpecified, X12}
-}
-
-// DayOfWeek enumerates the values for day of week.
-type DayOfWeek string
-
-const (
-	// Friday ...
-	Friday DayOfWeek = "Friday"
-	// Monday ...
-	Monday DayOfWeek = "Monday"
-	// Saturday ...
-	Saturday DayOfWeek = "Saturday"
-	// Sunday ...
-	Sunday DayOfWeek = "Sunday"
-	// Thursday ...
-	Thursday DayOfWeek = "Thursday"
-	// Tuesday ...
-	Tuesday DayOfWeek = "Tuesday"
-	// Wednesday ...
-	Wednesday DayOfWeek = "Wednesday"
-)
-
-// PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
-func PossibleDayOfWeekValues() []DayOfWeek {
-	return []DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
-}
-
-// DaysOfWeek enumerates the values for days of week.
-type DaysOfWeek string
-
-const (
-	// DaysOfWeekFriday ...
-	DaysOfWeekFriday DaysOfWeek = "Friday"
-	// DaysOfWeekMonday ...
-	DaysOfWeekMonday DaysOfWeek = "Monday"
-	// DaysOfWeekSaturday ...
-	DaysOfWeekSaturday DaysOfWeek = "Saturday"
-	// DaysOfWeekSunday ...
-	DaysOfWeekSunday DaysOfWeek = "Sunday"
-	// DaysOfWeekThursday ...
-	DaysOfWeekThursday DaysOfWeek = "Thursday"
-	// DaysOfWeekTuesday ...
-	DaysOfWeekTuesday DaysOfWeek = "Tuesday"
-	// DaysOfWeekWednesday ...
-	DaysOfWeekWednesday DaysOfWeek = "Wednesday"
-)
-
-// PossibleDaysOfWeekValues returns an array of possible values for the DaysOfWeek const type.
-func PossibleDaysOfWeekValues() []DaysOfWeek {
-	return []DaysOfWeek{DaysOfWeekFriday, DaysOfWeekMonday, DaysOfWeekSaturday, DaysOfWeekSunday, DaysOfWeekThursday, DaysOfWeekTuesday, DaysOfWeekWednesday}
-}
-
-// EdifactCharacterSet enumerates the values for edifact character set.
-type EdifactCharacterSet string
-
-const (
-	// EdifactCharacterSetKECA ...
-	EdifactCharacterSetKECA EdifactCharacterSet = "KECA"
-	// EdifactCharacterSetNotSpecified ...
-	EdifactCharacterSetNotSpecified EdifactCharacterSet = "NotSpecified"
-	// EdifactCharacterSetUNOA ...
-	EdifactCharacterSetUNOA EdifactCharacterSet = "UNOA"
-	// EdifactCharacterSetUNOB ...
-	EdifactCharacterSetUNOB EdifactCharacterSet = "UNOB"
-	// EdifactCharacterSetUNOC ...
-	EdifactCharacterSetUNOC EdifactCharacterSet = "UNOC"
-	// EdifactCharacterSetUNOD ...
-	EdifactCharacterSetUNOD EdifactCharacterSet = "UNOD"
-	// EdifactCharacterSetUNOE ...
-	EdifactCharacterSetUNOE EdifactCharacterSet = "UNOE"
-	// EdifactCharacterSetUNOF ...
-	EdifactCharacterSetUNOF EdifactCharacterSet = "UNOF"
-	// EdifactCharacterSetUNOG ...
-	EdifactCharacterSetUNOG EdifactCharacterSet = "UNOG"
-	// EdifactCharacterSetUNOH ...
-	EdifactCharacterSetUNOH EdifactCharacterSet = "UNOH"
-	// EdifactCharacterSetUNOI ...
-	EdifactCharacterSetUNOI EdifactCharacterSet = "UNOI"
-	// EdifactCharacterSetUNOJ ...
-	EdifactCharacterSetUNOJ EdifactCharacterSet = "UNOJ"
-	// EdifactCharacterSetUNOK ...
-	EdifactCharacterSetUNOK EdifactCharacterSet = "UNOK"
-	// EdifactCharacterSetUNOX ...
-	EdifactCharacterSetUNOX EdifactCharacterSet = "UNOX"
-	// EdifactCharacterSetUNOY ...
-	EdifactCharacterSetUNOY EdifactCharacterSet = "UNOY"
-)
-
-// PossibleEdifactCharacterSetValues returns an array of possible values for the EdifactCharacterSet const type.
-func PossibleEdifactCharacterSetValues() []EdifactCharacterSet {
-	return []EdifactCharacterSet{EdifactCharacterSetKECA, EdifactCharacterSetNotSpecified, EdifactCharacterSetUNOA, EdifactCharacterSetUNOB, EdifactCharacterSetUNOC, EdifactCharacterSetUNOD, EdifactCharacterSetUNOE, EdifactCharacterSetUNOF, EdifactCharacterSetUNOG, EdifactCharacterSetUNOH, EdifactCharacterSetUNOI, EdifactCharacterSetUNOJ, EdifactCharacterSetUNOK, EdifactCharacterSetUNOX, EdifactCharacterSetUNOY}
-}
-
-// EdifactDecimalIndicator enumerates the values for edifact decimal indicator.
-type EdifactDecimalIndicator string
-
-const (
-	// EdifactDecimalIndicatorComma ...
-	EdifactDecimalIndicatorComma EdifactDecimalIndicator = "Comma"
-	// EdifactDecimalIndicatorDecimal ...
-	EdifactDecimalIndicatorDecimal EdifactDecimalIndicator = "Decimal"
-	// EdifactDecimalIndicatorNotSpecified ...
-	EdifactDecimalIndicatorNotSpecified EdifactDecimalIndicator = "NotSpecified"
-)
-
-// PossibleEdifactDecimalIndicatorValues returns an array of possible values for the EdifactDecimalIndicator const type.
-func PossibleEdifactDecimalIndicatorValues() []EdifactDecimalIndicator {
-	return []EdifactDecimalIndicator{EdifactDecimalIndicatorComma, EdifactDecimalIndicatorDecimal, EdifactDecimalIndicatorNotSpecified}
-}
-
-// EncryptionAlgorithm enumerates the values for encryption algorithm.
-type EncryptionAlgorithm string
-
-const (
-	// EncryptionAlgorithmAES128 ...
-	EncryptionAlgorithmAES128 EncryptionAlgorithm = "AES128"
-	// EncryptionAlgorithmAES192 ...
-	EncryptionAlgorithmAES192 EncryptionAlgorithm = "AES192"
-	// EncryptionAlgorithmAES256 ...
-	EncryptionAlgorithmAES256 EncryptionAlgorithm = "AES256"
-	// EncryptionAlgorithmDES3 ...
-	EncryptionAlgorithmDES3 EncryptionAlgorithm = "DES3"
-	// EncryptionAlgorithmNone ...
-	EncryptionAlgorithmNone EncryptionAlgorithm = "None"
-	// EncryptionAlgorithmNotSpecified ...
-	EncryptionAlgorithmNotSpecified EncryptionAlgorithm = "NotSpecified"
-	// EncryptionAlgorithmRC2 ...
-	EncryptionAlgorithmRC2 EncryptionAlgorithm = "RC2"
-)
-
-// PossibleEncryptionAlgorithmValues returns an array of possible values for the EncryptionAlgorithm const type.
-func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
-	return []EncryptionAlgorithm{EncryptionAlgorithmAES128, EncryptionAlgorithmAES192, EncryptionAlgorithmAES256, EncryptionAlgorithmDES3, EncryptionAlgorithmNone, EncryptionAlgorithmNotSpecified, EncryptionAlgorithmRC2}
-}
-
-// EventLevel enumerates the values for event level.
-type EventLevel string
-
-const (
-	// Critical ...
-	Critical EventLevel = "Critical"
-	// Error ...
-	Error EventLevel = "Error"
-	// Informational ...
-	Informational EventLevel = "Informational"
-	// LogAlways ...
-	LogAlways EventLevel = "LogAlways"
-	// Verbose ...
-	Verbose EventLevel = "Verbose"
-	// Warning ...
-	Warning EventLevel = "Warning"
-)
-
-// PossibleEventLevelValues returns an array of possible values for the EventLevel const type.
-func PossibleEventLevelValues() []EventLevel {
-	return []EventLevel{Critical, Error, Informational, LogAlways, Verbose, Warning}
-}
-
-// HashingAlgorithm enumerates the values for hashing algorithm.
-type HashingAlgorithm string
-
-const (
-	// HashingAlgorithmMD5 ...
-	HashingAlgorithmMD5 HashingAlgorithm = "MD5"
-	// HashingAlgorithmNone ...
-	HashingAlgorithmNone HashingAlgorithm = "None"
-	// HashingAlgorithmNotSpecified ...
-	HashingAlgorithmNotSpecified HashingAlgorithm = "NotSpecified"
-	// HashingAlgorithmSHA1 ...
-	HashingAlgorithmSHA1 HashingAlgorithm = "SHA1"
-	// HashingAlgorithmSHA2256 ...
-	HashingAlgorithmSHA2256 HashingAlgorithm = "SHA2256"
-	// HashingAlgorithmSHA2384 ...
-	HashingAlgorithmSHA2384 HashingAlgorithm = "SHA2384"
-	// HashingAlgorithmSHA2512 ...
-	HashingAlgorithmSHA2512 HashingAlgorithm = "SHA2512"
-)
-
-// PossibleHashingAlgorithmValues returns an array of possible values for the HashingAlgorithm const type.
-func PossibleHashingAlgorithmValues() []HashingAlgorithm {
-	return []HashingAlgorithm{HashingAlgorithmMD5, HashingAlgorithmNone, HashingAlgorithmNotSpecified, HashingAlgorithmSHA1, HashingAlgorithmSHA2256, HashingAlgorithmSHA2384, HashingAlgorithmSHA2512}
-}
-
-// IntegrationAccountSkuName enumerates the values for integration account sku name.
-type IntegrationAccountSkuName string
-
-const (
-	// IntegrationAccountSkuNameBasic ...
-	IntegrationAccountSkuNameBasic IntegrationAccountSkuName = "Basic"
-	// IntegrationAccountSkuNameFree ...
-	IntegrationAccountSkuNameFree IntegrationAccountSkuName = "Free"
-	// IntegrationAccountSkuNameNotSpecified ...
-	IntegrationAccountSkuNameNotSpecified IntegrationAccountSkuName = "NotSpecified"
-	// IntegrationAccountSkuNameStandard ...
-	IntegrationAccountSkuNameStandard IntegrationAccountSkuName = "Standard"
-)
-
-// PossibleIntegrationAccountSkuNameValues returns an array of possible values for the IntegrationAccountSkuName const type.
-func PossibleIntegrationAccountSkuNameValues() []IntegrationAccountSkuName {
-	return []IntegrationAccountSkuName{IntegrationAccountSkuNameBasic, IntegrationAccountSkuNameFree, IntegrationAccountSkuNameNotSpecified, IntegrationAccountSkuNameStandard}
-}
-
-// KeyType enumerates the values for key type.
-type KeyType string
-
-const (
-	// KeyTypeNotSpecified ...
-	KeyTypeNotSpecified KeyType = "NotSpecified"
-	// KeyTypePrimary ...
-	KeyTypePrimary KeyType = "Primary"
-	// KeyTypeSecondary ...
-	KeyTypeSecondary KeyType = "Secondary"
-)
-
-// PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
-func PossibleKeyTypeValues() []KeyType {
-	return []KeyType{KeyTypeNotSpecified, KeyTypePrimary, KeyTypeSecondary}
-}
-
-// MapType enumerates the values for map type.
-type MapType string
-
-const (
-	// MapTypeLiquid ...
-	MapTypeLiquid MapType = "Liquid"
-	// MapTypeNotSpecified ...
-	MapTypeNotSpecified MapType = "NotSpecified"
-	// MapTypeXslt ...
-	MapTypeXslt MapType = "Xslt"
-	// MapTypeXslt20 ...
-	MapTypeXslt20 MapType = "Xslt20"
-	// MapTypeXslt30 ...
-	MapTypeXslt30 MapType = "Xslt30"
-)
-
-// PossibleMapTypeValues returns an array of possible values for the MapType const type.
-func PossibleMapTypeValues() []MapType {
-	return []MapType{MapTypeLiquid, MapTypeNotSpecified, MapTypeXslt, MapTypeXslt20, MapTypeXslt30}
-}
-
-// MessageFilterType enumerates the values for message filter type.
-type MessageFilterType string
-
-const (
-	// MessageFilterTypeExclude ...
-	MessageFilterTypeExclude MessageFilterType = "Exclude"
-	// MessageFilterTypeInclude ...
-	MessageFilterTypeInclude MessageFilterType = "Include"
-	// MessageFilterTypeNotSpecified ...
-	MessageFilterTypeNotSpecified MessageFilterType = "NotSpecified"
-)
-
-// PossibleMessageFilterTypeValues returns an array of possible values for the MessageFilterType const type.
-func PossibleMessageFilterTypeValues() []MessageFilterType {
-	return []MessageFilterType{MessageFilterTypeExclude, MessageFilterTypeInclude, MessageFilterTypeNotSpecified}
-}
-
-// ParameterType enumerates the values for parameter type.
-type ParameterType string
-
-const (
-	// ParameterTypeArray ...
-	ParameterTypeArray ParameterType = "Array"
-	// ParameterTypeBool ...
-	ParameterTypeBool ParameterType = "Bool"
-	// ParameterTypeFloat ...
-	ParameterTypeFloat ParameterType = "Float"
-	// ParameterTypeInt ...
-	ParameterTypeInt ParameterType = "Int"
-	// ParameterTypeNotSpecified ...
-	ParameterTypeNotSpecified ParameterType = "NotSpecified"
-	// ParameterTypeObject ...
-	ParameterTypeObject ParameterType = "Object"
-	// ParameterTypeSecureObject ...
-	ParameterTypeSecureObject ParameterType = "SecureObject"
-	// ParameterTypeSecureString ...
-	ParameterTypeSecureString ParameterType = "SecureString"
-	// ParameterTypeString ...
-	ParameterTypeString ParameterType = "String"
-)
-
-// PossibleParameterTypeValues returns an array of possible values for the ParameterType const type.
-func PossibleParameterTypeValues() []ParameterType {
-	return []ParameterType{ParameterTypeArray, ParameterTypeBool, ParameterTypeFloat, ParameterTypeInt, ParameterTypeNotSpecified, ParameterTypeObject, ParameterTypeSecureObject, ParameterTypeSecureString, ParameterTypeString}
-}
-
-// PartnerType enumerates the values for partner type.
-type PartnerType string
-
-const (
-	// PartnerTypeB2B ...
-	PartnerTypeB2B PartnerType = "B2B"
-	// PartnerTypeNotSpecified ...
-	PartnerTypeNotSpecified PartnerType = "NotSpecified"
-)
-
-// PossiblePartnerTypeValues returns an array of possible values for the PartnerType const type.
-func PossiblePartnerTypeValues() []PartnerType {
-	return []PartnerType{PartnerTypeB2B, PartnerTypeNotSpecified}
-}
-
-// RecurrenceFrequency enumerates the values for recurrence frequency.
-type RecurrenceFrequency string
-
-const (
-	// RecurrenceFrequencyDay ...
-	RecurrenceFrequencyDay RecurrenceFrequency = "Day"
-	// RecurrenceFrequencyHour ...
-	RecurrenceFrequencyHour RecurrenceFrequency = "Hour"
-	// RecurrenceFrequencyMinute ...
-	RecurrenceFrequencyMinute RecurrenceFrequency = "Minute"
-	// RecurrenceFrequencyMonth ...
-	RecurrenceFrequencyMonth RecurrenceFrequency = "Month"
-	// RecurrenceFrequencyNotSpecified ...
-	RecurrenceFrequencyNotSpecified RecurrenceFrequency = "NotSpecified"
-	// RecurrenceFrequencySecond ...
-	RecurrenceFrequencySecond RecurrenceFrequency = "Second"
-	// RecurrenceFrequencyWeek ...
-	RecurrenceFrequencyWeek RecurrenceFrequency = "Week"
-	// RecurrenceFrequencyYear ...
-	RecurrenceFrequencyYear RecurrenceFrequency = "Year"
-)
-
-// PossibleRecurrenceFrequencyValues returns an array of possible values for the RecurrenceFrequency const type.
-func PossibleRecurrenceFrequencyValues() []RecurrenceFrequency {
-	return []RecurrenceFrequency{RecurrenceFrequencyDay, RecurrenceFrequencyHour, RecurrenceFrequencyMinute, RecurrenceFrequencyMonth, RecurrenceFrequencyNotSpecified, RecurrenceFrequencySecond, RecurrenceFrequencyWeek, RecurrenceFrequencyYear}
-}
-
-// SchemaType enumerates the values for schema type.
-type SchemaType string
-
-const (
-	// SchemaTypeNotSpecified ...
-	SchemaTypeNotSpecified SchemaType = "NotSpecified"
-	// SchemaTypeXML ...
-	SchemaTypeXML SchemaType = "Xml"
-)
-
-// PossibleSchemaTypeValues returns an array of possible values for the SchemaType const type.
-func PossibleSchemaTypeValues() []SchemaType {
-	return []SchemaType{SchemaTypeNotSpecified, SchemaTypeXML}
-}
-
-// SegmentTerminatorSuffix enumerates the values for segment terminator suffix.
-type SegmentTerminatorSuffix string
-
-const (
-	// SegmentTerminatorSuffixCR ...
-	SegmentTerminatorSuffixCR SegmentTerminatorSuffix = "CR"
-	// SegmentTerminatorSuffixCRLF ...
-	SegmentTerminatorSuffixCRLF SegmentTerminatorSuffix = "CRLF"
-	// SegmentTerminatorSuffixLF ...
-	SegmentTerminatorSuffixLF SegmentTerminatorSuffix = "LF"
-	// SegmentTerminatorSuffixNone ...
-	SegmentTerminatorSuffixNone SegmentTerminatorSuffix = "None"
-	// SegmentTerminatorSuffixNotSpecified ...
-	SegmentTerminatorSuffixNotSpecified SegmentTerminatorSuffix = "NotSpecified"
-)
-
-// PossibleSegmentTerminatorSuffixValues returns an array of possible values for the SegmentTerminatorSuffix const type.
-func PossibleSegmentTerminatorSuffixValues() []SegmentTerminatorSuffix {
-	return []SegmentTerminatorSuffix{SegmentTerminatorSuffixCR, SegmentTerminatorSuffixCRLF, SegmentTerminatorSuffixLF, SegmentTerminatorSuffixNone, SegmentTerminatorSuffixNotSpecified}
-}
-
-// SigningAlgorithm enumerates the values for signing algorithm.
-type SigningAlgorithm string
-
-const (
-	// SigningAlgorithmDefault ...
-	SigningAlgorithmDefault SigningAlgorithm = "Default"
-	// SigningAlgorithmNotSpecified ...
-	SigningAlgorithmNotSpecified SigningAlgorithm = "NotSpecified"
-	// SigningAlgorithmSHA1 ...
-	SigningAlgorithmSHA1 SigningAlgorithm = "SHA1"
-	// SigningAlgorithmSHA2256 ...
-	SigningAlgorithmSHA2256 SigningAlgorithm = "SHA2256"
-	// SigningAlgorithmSHA2384 ...
-	SigningAlgorithmSHA2384 SigningAlgorithm = "SHA2384"
-	// SigningAlgorithmSHA2512 ...
-	SigningAlgorithmSHA2512 SigningAlgorithm = "SHA2512"
-)
-
-// PossibleSigningAlgorithmValues returns an array of possible values for the SigningAlgorithm const type.
-func PossibleSigningAlgorithmValues() []SigningAlgorithm {
-	return []SigningAlgorithm{SigningAlgorithmDefault, SigningAlgorithmNotSpecified, SigningAlgorithmSHA1, SigningAlgorithmSHA2256, SigningAlgorithmSHA2384, SigningAlgorithmSHA2512}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// SkuNameBasic ...
-	SkuNameBasic SkuName = "Basic"
-	// SkuNameFree ...
-	SkuNameFree SkuName = "Free"
-	// SkuNameNotSpecified ...
-	SkuNameNotSpecified SkuName = "NotSpecified"
-	// SkuNamePremium ...
-	SkuNamePremium SkuName = "Premium"
-	// SkuNameShared ...
-	SkuNameShared SkuName = "Shared"
-	// SkuNameStandard ...
-	SkuNameStandard SkuName = "Standard"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{SkuNameBasic, SkuNameFree, SkuNameNotSpecified, SkuNamePremium, SkuNameShared, SkuNameStandard}
-}
-
-// TrackEventsOperationOptions enumerates the values for track events operation options.
-type TrackEventsOperationOptions string
-
-const (
-	// DisableSourceInfoEnrich ...
-	DisableSourceInfoEnrich TrackEventsOperationOptions = "DisableSourceInfoEnrich"
-	// None ...
-	None TrackEventsOperationOptions = "None"
-)
-
-// PossibleTrackEventsOperationOptionsValues returns an array of possible values for the TrackEventsOperationOptions const type.
-func PossibleTrackEventsOperationOptionsValues() []TrackEventsOperationOptions {
-	return []TrackEventsOperationOptions{DisableSourceInfoEnrich, None}
-}
-
-// TrackingRecordType enumerates the values for tracking record type.
-type TrackingRecordType string
-
-const (
-	// TrackingRecordTypeAS2MDN ...
-	TrackingRecordTypeAS2MDN TrackingRecordType = "AS2MDN"
-	// TrackingRecordTypeAS2Message ...
-	TrackingRecordTypeAS2Message TrackingRecordType = "AS2Message"
-	// TrackingRecordTypeCustom ...
-	TrackingRecordTypeCustom TrackingRecordType = "Custom"
-	// TrackingRecordTypeEdifactFunctionalGroup ...
-	TrackingRecordTypeEdifactFunctionalGroup TrackingRecordType = "EdifactFunctionalGroup"
-	// TrackingRecordTypeEdifactFunctionalGroupAcknowledgment ...
-	TrackingRecordTypeEdifactFunctionalGroupAcknowledgment TrackingRecordType = "EdifactFunctionalGroupAcknowledgment"
-	// TrackingRecordTypeEdifactInterchange ...
-	TrackingRecordTypeEdifactInterchange TrackingRecordType = "EdifactInterchange"
-	// TrackingRecordTypeEdifactInterchangeAcknowledgment ...
-	TrackingRecordTypeEdifactInterchangeAcknowledgment TrackingRecordType = "EdifactInterchangeAcknowledgment"
-	// TrackingRecordTypeEdifactTransactionSet ...
-	TrackingRecordTypeEdifactTransactionSet TrackingRecordType = "EdifactTransactionSet"
-	// TrackingRecordTypeEdifactTransactionSetAcknowledgment ...
-	TrackingRecordTypeEdifactTransactionSetAcknowledgment TrackingRecordType = "EdifactTransactionSetAcknowledgment"
-	// TrackingRecordTypeNotSpecified ...
-	TrackingRecordTypeNotSpecified TrackingRecordType = "NotSpecified"
-	// TrackingRecordTypeX12FunctionalGroup ...
-	TrackingRecordTypeX12FunctionalGroup TrackingRecordType = "X12FunctionalGroup"
-	// TrackingRecordTypeX12FunctionalGroupAcknowledgment ...
-	TrackingRecordTypeX12FunctionalGroupAcknowledgment TrackingRecordType = "X12FunctionalGroupAcknowledgment"
-	// TrackingRecordTypeX12Interchange ...
-	TrackingRecordTypeX12Interchange TrackingRecordType = "X12Interchange"
-	// TrackingRecordTypeX12InterchangeAcknowledgment ...
-	TrackingRecordTypeX12InterchangeAcknowledgment TrackingRecordType = "X12InterchangeAcknowledgment"
-	// TrackingRecordTypeX12TransactionSet ...
-	TrackingRecordTypeX12TransactionSet TrackingRecordType = "X12TransactionSet"
-	// TrackingRecordTypeX12TransactionSetAcknowledgment ...
-	TrackingRecordTypeX12TransactionSetAcknowledgment TrackingRecordType = "X12TransactionSetAcknowledgment"
-)
-
-// PossibleTrackingRecordTypeValues returns an array of possible values for the TrackingRecordType const type.
-func PossibleTrackingRecordTypeValues() []TrackingRecordType {
-	return []TrackingRecordType{TrackingRecordTypeAS2MDN, TrackingRecordTypeAS2Message, TrackingRecordTypeCustom, TrackingRecordTypeEdifactFunctionalGroup, TrackingRecordTypeEdifactFunctionalGroupAcknowledgment, TrackingRecordTypeEdifactInterchange, TrackingRecordTypeEdifactInterchangeAcknowledgment, TrackingRecordTypeEdifactTransactionSet, TrackingRecordTypeEdifactTransactionSetAcknowledgment, TrackingRecordTypeNotSpecified, TrackingRecordTypeX12FunctionalGroup, TrackingRecordTypeX12FunctionalGroupAcknowledgment, TrackingRecordTypeX12Interchange, TrackingRecordTypeX12InterchangeAcknowledgment, TrackingRecordTypeX12TransactionSet, TrackingRecordTypeX12TransactionSetAcknowledgment}
-}
-
-// TrailingSeparatorPolicy enumerates the values for trailing separator policy.
-type TrailingSeparatorPolicy string
-
-const (
-	// TrailingSeparatorPolicyMandatory ...
-	TrailingSeparatorPolicyMandatory TrailingSeparatorPolicy = "Mandatory"
-	// TrailingSeparatorPolicyNotAllowed ...
-	TrailingSeparatorPolicyNotAllowed TrailingSeparatorPolicy = "NotAllowed"
-	// TrailingSeparatorPolicyNotSpecified ...
-	TrailingSeparatorPolicyNotSpecified TrailingSeparatorPolicy = "NotSpecified"
-	// TrailingSeparatorPolicyOptional ...
-	TrailingSeparatorPolicyOptional TrailingSeparatorPolicy = "Optional"
-)
-
-// PossibleTrailingSeparatorPolicyValues returns an array of possible values for the TrailingSeparatorPolicy const type.
-func PossibleTrailingSeparatorPolicyValues() []TrailingSeparatorPolicy {
-	return []TrailingSeparatorPolicy{TrailingSeparatorPolicyMandatory, TrailingSeparatorPolicyNotAllowed, TrailingSeparatorPolicyNotSpecified, TrailingSeparatorPolicyOptional}
-}
-
-// UsageIndicator enumerates the values for usage indicator.
-type UsageIndicator string
-
-const (
-	// UsageIndicatorInformation ...
-	UsageIndicatorInformation UsageIndicator = "Information"
-	// UsageIndicatorNotSpecified ...
-	UsageIndicatorNotSpecified UsageIndicator = "NotSpecified"
-	// UsageIndicatorProduction ...
-	UsageIndicatorProduction UsageIndicator = "Production"
-	// UsageIndicatorTest ...
-	UsageIndicatorTest UsageIndicator = "Test"
-)
-
-// PossibleUsageIndicatorValues returns an array of possible values for the UsageIndicator const type.
-func PossibleUsageIndicatorValues() []UsageIndicator {
-	return []UsageIndicator{UsageIndicatorInformation, UsageIndicatorNotSpecified, UsageIndicatorProduction, UsageIndicatorTest}
-}
-
-// WorkflowProvisioningState enumerates the values for workflow provisioning state.
-type WorkflowProvisioningState string
-
-const (
-	// WorkflowProvisioningStateAccepted ...
-	WorkflowProvisioningStateAccepted WorkflowProvisioningState = "Accepted"
-	// WorkflowProvisioningStateCanceled ...
-	WorkflowProvisioningStateCanceled WorkflowProvisioningState = "Canceled"
-	// WorkflowProvisioningStateCompleted ...
-	WorkflowProvisioningStateCompleted WorkflowProvisioningState = "Completed"
-	// WorkflowProvisioningStateCreated ...
-	WorkflowProvisioningStateCreated WorkflowProvisioningState = "Created"
-	// WorkflowProvisioningStateCreating ...
-	WorkflowProvisioningStateCreating WorkflowProvisioningState = "Creating"
-	// WorkflowProvisioningStateDeleted ...
-	WorkflowProvisioningStateDeleted WorkflowProvisioningState = "Deleted"
-	// WorkflowProvisioningStateDeleting ...
-	WorkflowProvisioningStateDeleting WorkflowProvisioningState = "Deleting"
-	// WorkflowProvisioningStateFailed ...
-	WorkflowProvisioningStateFailed WorkflowProvisioningState = "Failed"
-	// WorkflowProvisioningStateMoving ...
-	WorkflowProvisioningStateMoving WorkflowProvisioningState = "Moving"
-	// WorkflowProvisioningStateNotSpecified ...
-	WorkflowProvisioningStateNotSpecified WorkflowProvisioningState = "NotSpecified"
-	// WorkflowProvisioningStateReady ...
-	WorkflowProvisioningStateReady WorkflowProvisioningState = "Ready"
-	// WorkflowProvisioningStateRegistered ...
-	WorkflowProvisioningStateRegistered WorkflowProvisioningState = "Registered"
-	// WorkflowProvisioningStateRegistering ...
-	WorkflowProvisioningStateRegistering WorkflowProvisioningState = "Registering"
-	// WorkflowProvisioningStateRunning ...
-	WorkflowProvisioningStateRunning WorkflowProvisioningState = "Running"
-	// WorkflowProvisioningStateSucceeded ...
-	WorkflowProvisioningStateSucceeded WorkflowProvisioningState = "Succeeded"
-	// WorkflowProvisioningStateUnregistered ...
-	WorkflowProvisioningStateUnregistered WorkflowProvisioningState = "Unregistered"
-	// WorkflowProvisioningStateUnregistering ...
-	WorkflowProvisioningStateUnregistering WorkflowProvisioningState = "Unregistering"
-	// WorkflowProvisioningStateUpdating ...
-	WorkflowProvisioningStateUpdating WorkflowProvisioningState = "Updating"
-)
-
-// PossibleWorkflowProvisioningStateValues returns an array of possible values for the WorkflowProvisioningState const type.
-func PossibleWorkflowProvisioningStateValues() []WorkflowProvisioningState {
-	return []WorkflowProvisioningState{WorkflowProvisioningStateAccepted, WorkflowProvisioningStateCanceled, WorkflowProvisioningStateCompleted, WorkflowProvisioningStateCreated, WorkflowProvisioningStateCreating, WorkflowProvisioningStateDeleted, WorkflowProvisioningStateDeleting, WorkflowProvisioningStateFailed, WorkflowProvisioningStateMoving, WorkflowProvisioningStateNotSpecified, WorkflowProvisioningStateReady, WorkflowProvisioningStateRegistered, WorkflowProvisioningStateRegistering, WorkflowProvisioningStateRunning, WorkflowProvisioningStateSucceeded, WorkflowProvisioningStateUnregistered, WorkflowProvisioningStateUnregistering, WorkflowProvisioningStateUpdating}
-}
-
-// WorkflowState enumerates the values for workflow state.
-type WorkflowState string
-
-const (
-	// WorkflowStateCompleted ...
-	WorkflowStateCompleted WorkflowState = "Completed"
-	// WorkflowStateDeleted ...
-	WorkflowStateDeleted WorkflowState = "Deleted"
-	// WorkflowStateDisabled ...
-	WorkflowStateDisabled WorkflowState = "Disabled"
-	// WorkflowStateEnabled ...
-	WorkflowStateEnabled WorkflowState = "Enabled"
-	// WorkflowStateNotSpecified ...
-	WorkflowStateNotSpecified WorkflowState = "NotSpecified"
-	// WorkflowStateSuspended ...
-	WorkflowStateSuspended WorkflowState = "Suspended"
-)
-
-// PossibleWorkflowStateValues returns an array of possible values for the WorkflowState const type.
-func PossibleWorkflowStateValues() []WorkflowState {
-	return []WorkflowState{WorkflowStateCompleted, WorkflowStateDeleted, WorkflowStateDisabled, WorkflowStateEnabled, WorkflowStateNotSpecified, WorkflowStateSuspended}
-}
-
-// WorkflowStatus enumerates the values for workflow status.
-type WorkflowStatus string
-
-const (
-	// WorkflowStatusAborted ...
-	WorkflowStatusAborted WorkflowStatus = "Aborted"
-	// WorkflowStatusCancelled ...
-	WorkflowStatusCancelled WorkflowStatus = "Cancelled"
-	// WorkflowStatusFailed ...
-	WorkflowStatusFailed WorkflowStatus = "Failed"
-	// WorkflowStatusFaulted ...
-	WorkflowStatusFaulted WorkflowStatus = "Faulted"
-	// WorkflowStatusIgnored ...
-	WorkflowStatusIgnored WorkflowStatus = "Ignored"
-	// WorkflowStatusNotSpecified ...
-	WorkflowStatusNotSpecified WorkflowStatus = "NotSpecified"
-	// WorkflowStatusPaused ...
-	WorkflowStatusPaused WorkflowStatus = "Paused"
-	// WorkflowStatusRunning ...
-	WorkflowStatusRunning WorkflowStatus = "Running"
-	// WorkflowStatusSkipped ...
-	WorkflowStatusSkipped WorkflowStatus = "Skipped"
-	// WorkflowStatusSucceeded ...
-	WorkflowStatusSucceeded WorkflowStatus = "Succeeded"
-	// WorkflowStatusSuspended ...
-	WorkflowStatusSuspended WorkflowStatus = "Suspended"
-	// WorkflowStatusTimedOut ...
-	WorkflowStatusTimedOut WorkflowStatus = "TimedOut"
-	// WorkflowStatusWaiting ...
-	WorkflowStatusWaiting WorkflowStatus = "Waiting"
-)
-
-// PossibleWorkflowStatusValues returns an array of possible values for the WorkflowStatus const type.
-func PossibleWorkflowStatusValues() []WorkflowStatus {
-	return []WorkflowStatus{WorkflowStatusAborted, WorkflowStatusCancelled, WorkflowStatusFailed, WorkflowStatusFaulted, WorkflowStatusIgnored, WorkflowStatusNotSpecified, WorkflowStatusPaused, WorkflowStatusRunning, WorkflowStatusSkipped, WorkflowStatusSucceeded, WorkflowStatusSuspended, WorkflowStatusTimedOut, WorkflowStatusWaiting}
-}
-
-// WorkflowTriggerProvisioningState enumerates the values for workflow trigger provisioning state.
-type WorkflowTriggerProvisioningState string
-
-const (
-	// WorkflowTriggerProvisioningStateAccepted ...
-	WorkflowTriggerProvisioningStateAccepted WorkflowTriggerProvisioningState = "Accepted"
-	// WorkflowTriggerProvisioningStateCanceled ...
-	WorkflowTriggerProvisioningStateCanceled WorkflowTriggerProvisioningState = "Canceled"
-	// WorkflowTriggerProvisioningStateCompleted ...
-	WorkflowTriggerProvisioningStateCompleted WorkflowTriggerProvisioningState = "Completed"
-	// WorkflowTriggerProvisioningStateCreated ...
-	WorkflowTriggerProvisioningStateCreated WorkflowTriggerProvisioningState = "Created"
-	// WorkflowTriggerProvisioningStateCreating ...
-	WorkflowTriggerProvisioningStateCreating WorkflowTriggerProvisioningState = "Creating"
-	// WorkflowTriggerProvisioningStateDeleted ...
-	WorkflowTriggerProvisioningStateDeleted WorkflowTriggerProvisioningState = "Deleted"
-	// WorkflowTriggerProvisioningStateDeleting ...
-	WorkflowTriggerProvisioningStateDeleting WorkflowTriggerProvisioningState = "Deleting"
-	// WorkflowTriggerProvisioningStateFailed ...
-	WorkflowTriggerProvisioningStateFailed WorkflowTriggerProvisioningState = "Failed"
-	// WorkflowTriggerProvisioningStateMoving ...
-	WorkflowTriggerProvisioningStateMoving WorkflowTriggerProvisioningState = "Moving"
-	// WorkflowTriggerProvisioningStateNotSpecified ...
-	WorkflowTriggerProvisioningStateNotSpecified WorkflowTriggerProvisioningState = "NotSpecified"
-	// WorkflowTriggerProvisioningStateReady ...
-	WorkflowTriggerProvisioningStateReady WorkflowTriggerProvisioningState = "Ready"
-	// WorkflowTriggerProvisioningStateRegistered ...
-	WorkflowTriggerProvisioningStateRegistered WorkflowTriggerProvisioningState = "Registered"
-	// WorkflowTriggerProvisioningStateRegistering ...
-	WorkflowTriggerProvisioningStateRegistering WorkflowTriggerProvisioningState = "Registering"
-	// WorkflowTriggerProvisioningStateRunning ...
-	WorkflowTriggerProvisioningStateRunning WorkflowTriggerProvisioningState = "Running"
-	// WorkflowTriggerProvisioningStateSucceeded ...
-	WorkflowTriggerProvisioningStateSucceeded WorkflowTriggerProvisioningState = "Succeeded"
-	// WorkflowTriggerProvisioningStateUnregistered ...
-	WorkflowTriggerProvisioningStateUnregistered WorkflowTriggerProvisioningState = "Unregistered"
-	// WorkflowTriggerProvisioningStateUnregistering ...
-	WorkflowTriggerProvisioningStateUnregistering WorkflowTriggerProvisioningState = "Unregistering"
-	// WorkflowTriggerProvisioningStateUpdating ...
-	WorkflowTriggerProvisioningStateUpdating WorkflowTriggerProvisioningState = "Updating"
-)
-
-// PossibleWorkflowTriggerProvisioningStateValues returns an array of possible values for the WorkflowTriggerProvisioningState const type.
-func PossibleWorkflowTriggerProvisioningStateValues() []WorkflowTriggerProvisioningState {
-	return []WorkflowTriggerProvisioningState{WorkflowTriggerProvisioningStateAccepted, WorkflowTriggerProvisioningStateCanceled, WorkflowTriggerProvisioningStateCompleted, WorkflowTriggerProvisioningStateCreated, WorkflowTriggerProvisioningStateCreating, WorkflowTriggerProvisioningStateDeleted, WorkflowTriggerProvisioningStateDeleting, WorkflowTriggerProvisioningStateFailed, WorkflowTriggerProvisioningStateMoving, WorkflowTriggerProvisioningStateNotSpecified, WorkflowTriggerProvisioningStateReady, WorkflowTriggerProvisioningStateRegistered, WorkflowTriggerProvisioningStateRegistering, WorkflowTriggerProvisioningStateRunning, WorkflowTriggerProvisioningStateSucceeded, WorkflowTriggerProvisioningStateUnregistered, WorkflowTriggerProvisioningStateUnregistering, WorkflowTriggerProvisioningStateUpdating}
-}
-
-// X12CharacterSet enumerates the values for x12 character set.
-type X12CharacterSet string
-
-const (
-	// X12CharacterSetBasic ...
-	X12CharacterSetBasic X12CharacterSet = "Basic"
-	// X12CharacterSetExtended ...
-	X12CharacterSetExtended X12CharacterSet = "Extended"
-	// X12CharacterSetNotSpecified ...
-	X12CharacterSetNotSpecified X12CharacterSet = "NotSpecified"
-	// X12CharacterSetUTF8 ...
-	X12CharacterSetUTF8 X12CharacterSet = "UTF8"
-)
-
-// PossibleX12CharacterSetValues returns an array of possible values for the X12CharacterSet const type.
-func PossibleX12CharacterSetValues() []X12CharacterSet {
-	return []X12CharacterSet{X12CharacterSetBasic, X12CharacterSetExtended, X12CharacterSetNotSpecified, X12CharacterSetUTF8}
-}
-
-// X12DateFormat enumerates the values for x12 date format.
-type X12DateFormat string
-
-const (
-	// X12DateFormatCCYYMMDD ...
-	X12DateFormatCCYYMMDD X12DateFormat = "CCYYMMDD"
-	// X12DateFormatNotSpecified ...
-	X12DateFormatNotSpecified X12DateFormat = "NotSpecified"
-	// X12DateFormatYYMMDD ...
-	X12DateFormatYYMMDD X12DateFormat = "YYMMDD"
-)
-
-// PossibleX12DateFormatValues returns an array of possible values for the X12DateFormat const type.
-func PossibleX12DateFormatValues() []X12DateFormat {
-	return []X12DateFormat{X12DateFormatCCYYMMDD, X12DateFormatNotSpecified, X12DateFormatYYMMDD}
-}
-
-// X12TimeFormat enumerates the values for x12 time format.
-type X12TimeFormat string
-
-const (
-	// X12TimeFormatHHMM ...
-	X12TimeFormatHHMM X12TimeFormat = "HHMM"
-	// X12TimeFormatHHMMSS ...
-	X12TimeFormatHHMMSS X12TimeFormat = "HHMMSS"
-	// X12TimeFormatHHMMSSd ...
-	X12TimeFormatHHMMSSd X12TimeFormat = "HHMMSSd"
-	// X12TimeFormatHHMMSSdd ...
-	X12TimeFormatHHMMSSdd X12TimeFormat = "HHMMSSdd"
-	// X12TimeFormatNotSpecified ...
-	X12TimeFormatNotSpecified X12TimeFormat = "NotSpecified"
-)
-
-// PossibleX12TimeFormatValues returns an array of possible values for the X12TimeFormat const type.
-func PossibleX12TimeFormatValues() []X12TimeFormat {
-	return []X12TimeFormat{X12TimeFormatHHMM, X12TimeFormatHHMMSS, X12TimeFormatHHMMSSd, X12TimeFormatHHMMSSdd, X12TimeFormatNotSpecified}
-}
-
 // AgreementContent the integration account agreement content.
 type AgreementContent struct {
 	// AS2 - The AS2 agreement content.
@@ -1474,8 +740,8 @@ type ErrorProperties struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// ErrorResponse error response indicates Logic service is not able to process the incoming request. The
-// error property contains the error details.
+// ErrorResponse error response indicates Logic service is not able to process the incoming request. The error
+// property contains the error details.
 type ErrorResponse struct {
 	// Error - The error properties.
 	Error *ErrorProperties `json:"error,omitempty"`
@@ -1741,10 +1007,15 @@ func (iaalr IntegrationAccountAgreementListResult) IsEmpty() bool {
 	return iaalr.Value == nil || len(*iaalr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (iaalr IntegrationAccountAgreementListResult) hasNextLink() bool {
+	return iaalr.NextLink != nil && len(*iaalr.NextLink) != 0
+}
+
 // integrationAccountAgreementListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (iaalr IntegrationAccountAgreementListResult) integrationAccountAgreementListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if iaalr.NextLink == nil || len(to.String(iaalr.NextLink)) < 1 {
+	if !iaalr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1772,11 +1043,16 @@ func (page *IntegrationAccountAgreementListResultPage) NextWithContext(ctx conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.iaalr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.iaalr)
+		if err != nil {
+			return err
+		}
+		page.iaalr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.iaalr = next
 	return nil
 }
 
@@ -1830,6 +1106,33 @@ type IntegrationAccountAgreementProperties struct {
 	GuestIdentity *BusinessIdentity `json:"guestIdentity,omitempty"`
 	// Content - The agreement content.
 	Content *AgreementContent `json:"content,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationAccountAgreementProperties.
+func (iaap IntegrationAccountAgreementProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iaap.Metadata != nil {
+		objectMap["metadata"] = iaap.Metadata
+	}
+	if iaap.AgreementType != "" {
+		objectMap["agreementType"] = iaap.AgreementType
+	}
+	if iaap.HostPartner != nil {
+		objectMap["hostPartner"] = iaap.HostPartner
+	}
+	if iaap.GuestPartner != nil {
+		objectMap["guestPartner"] = iaap.GuestPartner
+	}
+	if iaap.HostIdentity != nil {
+		objectMap["hostIdentity"] = iaap.HostIdentity
+	}
+	if iaap.GuestIdentity != nil {
+		objectMap["guestIdentity"] = iaap.GuestIdentity
+	}
+	if iaap.Content != nil {
+		objectMap["content"] = iaap.Content
+	}
+	return json.Marshal(objectMap)
 }
 
 // IntegrationAccountCertificate the integration account certificate.
@@ -2011,10 +1314,15 @@ func (iaclr IntegrationAccountCertificateListResult) IsEmpty() bool {
 	return iaclr.Value == nil || len(*iaclr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (iaclr IntegrationAccountCertificateListResult) hasNextLink() bool {
+	return iaclr.NextLink != nil && len(*iaclr.NextLink) != 0
+}
+
 // integrationAccountCertificateListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (iaclr IntegrationAccountCertificateListResult) integrationAccountCertificateListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if iaclr.NextLink == nil || len(to.String(iaclr.NextLink)) < 1 {
+	if !iaclr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2042,11 +1350,16 @@ func (page *IntegrationAccountCertificateListResultPage) NextWithContext(ctx con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.iaclr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.iaclr)
+		if err != nil {
+			return err
+		}
+		page.iaclr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.iaclr = next
 	return nil
 }
 
@@ -2092,6 +1405,21 @@ type IntegrationAccountCertificateProperties struct {
 	Key *KeyVaultKeyReference `json:"key,omitempty"`
 	// PublicCertificate - The public certificate.
 	PublicCertificate *string `json:"publicCertificate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationAccountCertificateProperties.
+func (iacp IntegrationAccountCertificateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iacp.Metadata != nil {
+		objectMap["metadata"] = iacp.Metadata
+	}
+	if iacp.Key != nil {
+		objectMap["key"] = iacp.Key
+	}
+	if iacp.PublicCertificate != nil {
+		objectMap["publicCertificate"] = iacp.PublicCertificate
+	}
+	return json.Marshal(objectMap)
 }
 
 // IntegrationAccountListResult the list of integration accounts.
@@ -2171,10 +1499,15 @@ func (ialr IntegrationAccountListResult) IsEmpty() bool {
 	return ialr.Value == nil || len(*ialr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ialr IntegrationAccountListResult) hasNextLink() bool {
+	return ialr.NextLink != nil && len(*ialr.NextLink) != 0
+}
+
 // integrationAccountListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ialr IntegrationAccountListResult) integrationAccountListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ialr.NextLink == nil || len(to.String(ialr.NextLink)) < 1 {
+	if !ialr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2202,11 +1535,16 @@ func (page *IntegrationAccountListResultPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ialr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ialr)
+		if err != nil {
+			return err
+		}
+		page.ialr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ialr = next
 	return nil
 }
 
@@ -2425,10 +1763,15 @@ func (iamlr IntegrationAccountMapListResult) IsEmpty() bool {
 	return iamlr.Value == nil || len(*iamlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (iamlr IntegrationAccountMapListResult) hasNextLink() bool {
+	return iamlr.NextLink != nil && len(*iamlr.NextLink) != 0
+}
+
 // integrationAccountMapListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (iamlr IntegrationAccountMapListResult) integrationAccountMapListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if iamlr.NextLink == nil || len(to.String(iamlr.NextLink)) < 1 {
+	if !iamlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2456,11 +1799,16 @@ func (page *IntegrationAccountMapListResultPage) NextWithContext(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.iamlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.iamlr)
+		if err != nil {
+			return err
+		}
+		page.iamlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.iamlr = next
 	return nil
 }
 
@@ -2512,6 +1860,27 @@ type IntegrationAccountMapProperties struct {
 	ContentLink *ContentLink `json:"contentLink,omitempty"`
 	// Metadata - The metadata.
 	Metadata interface{} `json:"metadata,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationAccountMapProperties.
+func (iamp IntegrationAccountMapProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iamp.MapType != "" {
+		objectMap["mapType"] = iamp.MapType
+	}
+	if iamp.ParametersSchema != nil {
+		objectMap["parametersSchema"] = iamp.ParametersSchema
+	}
+	if iamp.Content != nil {
+		objectMap["content"] = iamp.Content
+	}
+	if iamp.ContentType != nil {
+		objectMap["contentType"] = iamp.ContentType
+	}
+	if iamp.Metadata != nil {
+		objectMap["metadata"] = iamp.Metadata
+	}
+	return json.Marshal(objectMap)
 }
 
 // IntegrationAccountMapPropertiesParametersSchema the parameters schema of integration account map.
@@ -2705,10 +2074,15 @@ func (iaplr IntegrationAccountPartnerListResult) IsEmpty() bool {
 	return iaplr.Value == nil || len(*iaplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (iaplr IntegrationAccountPartnerListResult) hasNextLink() bool {
+	return iaplr.NextLink != nil && len(*iaplr.NextLink) != 0
+}
+
 // integrationAccountPartnerListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (iaplr IntegrationAccountPartnerListResult) integrationAccountPartnerListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if iaplr.NextLink == nil || len(to.String(iaplr.NextLink)) < 1 {
+	if !iaplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2736,11 +2110,16 @@ func (page *IntegrationAccountPartnerListResultPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.iaplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.iaplr)
+		if err != nil {
+			return err
+		}
+		page.iaplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.iaplr = next
 	return nil
 }
 
@@ -2786,6 +2165,21 @@ type IntegrationAccountPartnerProperties struct {
 	Metadata interface{} `json:"metadata,omitempty"`
 	// Content - The partner content.
 	Content *PartnerContent `json:"content,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationAccountPartnerProperties.
+func (iapp IntegrationAccountPartnerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iapp.PartnerType != "" {
+		objectMap["partnerType"] = iapp.PartnerType
+	}
+	if iapp.Metadata != nil {
+		objectMap["metadata"] = iapp.Metadata
+	}
+	if iapp.Content != nil {
+		objectMap["content"] = iapp.Content
+	}
+	return json.Marshal(objectMap)
 }
 
 // IntegrationAccountSchema the integration account schema.
@@ -2904,8 +2298,8 @@ type IntegrationAccountSchemaListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// IntegrationAccountSchemaListResultIterator provides access to a complete listing of
-// IntegrationAccountSchema values.
+// IntegrationAccountSchemaListResultIterator provides access to a complete listing of IntegrationAccountSchema
+// values.
 type IntegrationAccountSchemaListResultIterator struct {
 	i    int
 	page IntegrationAccountSchemaListResultPage
@@ -2973,10 +2367,15 @@ func (iaslr IntegrationAccountSchemaListResult) IsEmpty() bool {
 	return iaslr.Value == nil || len(*iaslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (iaslr IntegrationAccountSchemaListResult) hasNextLink() bool {
+	return iaslr.NextLink != nil && len(*iaslr.NextLink) != 0
+}
+
 // integrationAccountSchemaListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (iaslr IntegrationAccountSchemaListResult) integrationAccountSchemaListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if iaslr.NextLink == nil || len(to.String(iaslr.NextLink)) < 1 {
+	if !iaslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3004,11 +2403,16 @@ func (page *IntegrationAccountSchemaListResultPage) NextWithContext(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.iaslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.iaslr)
+		if err != nil {
+			return err
+		}
+		page.iaslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.iaslr = next
 	return nil
 }
 
@@ -3064,6 +2468,33 @@ type IntegrationAccountSchemaProperties struct {
 	ContentType *string `json:"contentType,omitempty"`
 	// ContentLink - READ-ONLY; The content link.
 	ContentLink *ContentLink `json:"contentLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationAccountSchemaProperties.
+func (iasp IntegrationAccountSchemaProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iasp.SchemaType != "" {
+		objectMap["schemaType"] = iasp.SchemaType
+	}
+	if iasp.TargetNamespace != nil {
+		objectMap["targetNamespace"] = iasp.TargetNamespace
+	}
+	if iasp.DocumentName != nil {
+		objectMap["documentName"] = iasp.DocumentName
+	}
+	if iasp.FileName != nil {
+		objectMap["fileName"] = iasp.FileName
+	}
+	if iasp.Metadata != nil {
+		objectMap["metadata"] = iasp.Metadata
+	}
+	if iasp.Content != nil {
+		objectMap["content"] = iasp.Content
+	}
+	if iasp.ContentType != nil {
+		objectMap["contentType"] = iasp.ContentType
+	}
+	return json.Marshal(objectMap)
 }
 
 // IntegrationAccountSession the integration account session.
@@ -3251,10 +2682,15 @@ func (iaslr IntegrationAccountSessionListResult) IsEmpty() bool {
 	return iaslr.Value == nil || len(*iaslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (iaslr IntegrationAccountSessionListResult) hasNextLink() bool {
+	return iaslr.NextLink != nil && len(*iaslr.NextLink) != 0
+}
+
 // integrationAccountSessionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (iaslr IntegrationAccountSessionListResult) integrationAccountSessionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if iaslr.NextLink == nil || len(to.String(iaslr.NextLink)) < 1 {
+	if !iaslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3282,11 +2718,16 @@ func (page *IntegrationAccountSessionListResultPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.iaslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.iaslr)
+		if err != nil {
+			return err
+		}
+		page.iaslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.iaslr = next
 	return nil
 }
 
@@ -3328,6 +2769,15 @@ type IntegrationAccountSessionProperties struct {
 	ChangedTime *date.Time `json:"changedTime,omitempty"`
 	// Content - The session content.
 	Content interface{} `json:"content,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IntegrationAccountSessionProperties.
+func (iasp IntegrationAccountSessionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iasp.Content != nil {
+		objectMap["content"] = iasp.Content
+	}
+	return json.Marshal(objectMap)
 }
 
 // IntegrationAccountSku the integration account sku.
@@ -3392,6 +2842,15 @@ type KeyVaultKeyReferenceKeyVault struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for KeyVaultKeyReferenceKeyVault.
+func (kvkrV KeyVaultKeyReferenceKeyVault) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if kvkrV.ID != nil {
+		objectMap["id"] = kvkrV.ID
+	}
+	return json.Marshal(objectMap)
+}
+
 // KeyVaultReference the key vault reference.
 type KeyVaultReference struct {
 	// ID - The resource id.
@@ -3400,6 +2859,15 @@ type KeyVaultReference struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Gets the resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for KeyVaultReference.
+func (kvr KeyVaultReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if kvr.ID != nil {
+		objectMap["id"] = kvr.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // ListKeyVaultKeysDefinition the list key vault keys definition.
@@ -3428,8 +2896,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of the request to list Logic operations. It contains a list of operations and
-// a URL link to get the next set of results.
+// OperationListResult result of the request to list Logic operations. It contains a list of operations and a
+// URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Logic operations supported by the Logic resource provider.
@@ -3506,10 +2974,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3537,11 +3010,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -3603,6 +3081,36 @@ type OperationResult struct {
 	// Code - The workflow scope repetition code.
 	Code  *string     `json:"code,omitempty"`
 	Error interface{} `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationResult.
+func (or OperationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if or.RetryHistory != nil {
+		objectMap["retryHistory"] = or.RetryHistory
+	}
+	if or.IterationCount != nil {
+		objectMap["iterationCount"] = or.IterationCount
+	}
+	if or.StartTime != nil {
+		objectMap["startTime"] = or.StartTime
+	}
+	if or.EndTime != nil {
+		objectMap["endTime"] = or.EndTime
+	}
+	if or.Correlation != nil {
+		objectMap["correlation"] = or.Correlation
+	}
+	if or.Status != "" {
+		objectMap["status"] = or.Status
+	}
+	if or.Code != nil {
+		objectMap["code"] = or.Code
+	}
+	if or.Error != nil {
+		objectMap["error"] = or.Error
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationResultProperties the run operation result properties.
@@ -3781,10 +3289,15 @@ func (rhlr RequestHistoryListResult) IsEmpty() bool {
 	return rhlr.Value == nil || len(*rhlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rhlr RequestHistoryListResult) hasNextLink() bool {
+	return rhlr.NextLink != nil && len(*rhlr.NextLink) != 0
+}
+
 // requestHistoryListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rhlr RequestHistoryListResult) requestHistoryListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rhlr.NextLink == nil || len(to.String(rhlr.NextLink)) < 1 {
+	if !rhlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3812,11 +3325,16 @@ func (page *RequestHistoryListResultPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rhlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rhlr)
+		if err != nil {
+			return err
+		}
+		page.rhlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rhlr = next
 	return nil
 }
 
@@ -3896,6 +3414,15 @@ type ResourceReference struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Gets the resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceReference.
+func (rr ResourceReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rr.ID != nil {
+		objectMap["id"] = rr.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // Response a response.
@@ -4175,10 +3702,15 @@ func (wlr WorkflowListResult) IsEmpty() bool {
 	return wlr.Value == nil || len(*wlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wlr WorkflowListResult) hasNextLink() bool {
+	return wlr.NextLink != nil && len(*wlr.NextLink) != 0
+}
+
 // workflowListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wlr WorkflowListResult) workflowListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wlr.NextLink == nil || len(to.String(wlr.NextLink)) < 1 {
+	if !wlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4206,11 +3738,16 @@ func (page *WorkflowListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wlr)
+		if err != nil {
+			return err
+		}
+		page.wlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wlr = next
 	return nil
 }
 
@@ -4256,6 +3793,24 @@ type WorkflowOutputParameter struct {
 	Metadata interface{} `json:"metadata,omitempty"`
 	// Description - The description.
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkflowOutputParameter.
+func (wop WorkflowOutputParameter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wop.Type != "" {
+		objectMap["type"] = wop.Type
+	}
+	if wop.Value != nil {
+		objectMap["value"] = wop.Value
+	}
+	if wop.Metadata != nil {
+		objectMap["metadata"] = wop.Metadata
+	}
+	if wop.Description != nil {
+		objectMap["description"] = wop.Description
+	}
+	return json.Marshal(objectMap)
 }
 
 // WorkflowParameter the workflow parameters.
@@ -4544,10 +4099,15 @@ func (wralr WorkflowRunActionListResult) IsEmpty() bool {
 	return wralr.Value == nil || len(*wralr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wralr WorkflowRunActionListResult) hasNextLink() bool {
+	return wralr.NextLink != nil && len(*wralr.NextLink) != 0
+}
+
 // workflowRunActionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wralr WorkflowRunActionListResult) workflowRunActionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wralr.NextLink == nil || len(to.String(wralr.NextLink)) < 1 {
+	if !wralr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4575,11 +4135,16 @@ func (page *WorkflowRunActionListResultPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wralr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wralr)
+		if err != nil {
+			return err
+		}
+		page.wralr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wralr = next
 	return nil
 }
 
@@ -4637,6 +4202,18 @@ type WorkflowRunActionProperties struct {
 	TrackedProperties interface{} `json:"trackedProperties,omitempty"`
 	// RetryHistory - Gets the retry histories.
 	RetryHistory *[]RetryHistory `json:"retryHistory,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkflowRunActionProperties.
+func (wrap WorkflowRunActionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wrap.Correlation != nil {
+		objectMap["correlation"] = wrap.Correlation
+	}
+	if wrap.RetryHistory != nil {
+		objectMap["retryHistory"] = wrap.RetryHistory
+	}
+	return json.Marshal(objectMap)
 }
 
 // WorkflowRunActionRepetitionDefinition the workflow run action repetition definition.
@@ -4778,6 +4355,39 @@ type WorkflowRunActionRepetitionProperties struct {
 	Error interface{} `json:"error,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for WorkflowRunActionRepetitionProperties.
+func (wrarp WorkflowRunActionRepetitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wrarp.RepetitionIndexes != nil {
+		objectMap["repetitionIndexes"] = wrarp.RepetitionIndexes
+	}
+	if wrarp.RetryHistory != nil {
+		objectMap["retryHistory"] = wrarp.RetryHistory
+	}
+	if wrarp.IterationCount != nil {
+		objectMap["iterationCount"] = wrarp.IterationCount
+	}
+	if wrarp.StartTime != nil {
+		objectMap["startTime"] = wrarp.StartTime
+	}
+	if wrarp.EndTime != nil {
+		objectMap["endTime"] = wrarp.EndTime
+	}
+	if wrarp.Correlation != nil {
+		objectMap["correlation"] = wrarp.Correlation
+	}
+	if wrarp.Status != "" {
+		objectMap["status"] = wrarp.Status
+	}
+	if wrarp.Code != nil {
+		objectMap["code"] = wrarp.Code
+	}
+	if wrarp.Error != nil {
+		objectMap["error"] = wrarp.Error
+	}
+	return json.Marshal(objectMap)
+}
+
 // WorkflowRunFilter the workflow run filter.
 type WorkflowRunFilter struct {
 	// Status - The status of workflow run. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted', 'WorkflowStatusIgnored'
@@ -4861,10 +4471,15 @@ func (wrlr WorkflowRunListResult) IsEmpty() bool {
 	return wrlr.Value == nil || len(*wrlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wrlr WorkflowRunListResult) hasNextLink() bool {
+	return wrlr.NextLink != nil && len(*wrlr.NextLink) != 0
+}
+
 // workflowRunListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wrlr WorkflowRunListResult) workflowRunListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wrlr.NextLink == nil || len(to.String(wrlr.NextLink)) < 1 {
+	if !wrlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4892,11 +4507,16 @@ func (page *WorkflowRunListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wrlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wrlr)
+		if err != nil {
+			return err
+		}
+		page.wrlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wrlr = next
 	return nil
 }
 
@@ -4999,6 +4619,15 @@ type WorkflowRunTrigger struct {
 	TrackedProperties interface{} `json:"trackedProperties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for WorkflowRunTrigger.
+func (wrt WorkflowRunTrigger) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wrt.Correlation != nil {
+		objectMap["correlation"] = wrt.Correlation
+	}
+	return json.Marshal(objectMap)
+}
+
 // WorkflowTrigger the workflow trigger.
 type WorkflowTrigger struct {
 	autorest.Response `json:"-"`
@@ -5087,6 +4716,18 @@ type WorkflowTriggerCallbackURL struct {
 	RelativePathParameters *[]string `json:"relativePathParameters,omitempty"`
 	// Queries - Gets the workflow trigger callback URL query parameters.
 	Queries *WorkflowTriggerListCallbackURLQueries `json:"queries,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkflowTriggerCallbackURL.
+func (wtcu WorkflowTriggerCallbackURL) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wtcu.RelativePathParameters != nil {
+		objectMap["relativePathParameters"] = wtcu.RelativePathParameters
+	}
+	if wtcu.Queries != nil {
+		objectMap["queries"] = wtcu.Queries
+	}
+	return json.Marshal(objectMap)
 }
 
 // WorkflowTriggerFilter the workflow trigger filter.
@@ -5252,10 +4893,15 @@ func (wthlr WorkflowTriggerHistoryListResult) IsEmpty() bool {
 	return wthlr.Value == nil || len(*wthlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wthlr WorkflowTriggerHistoryListResult) hasNextLink() bool {
+	return wthlr.NextLink != nil && len(*wthlr.NextLink) != 0
+}
+
 // workflowTriggerHistoryListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wthlr WorkflowTriggerHistoryListResult) workflowTriggerHistoryListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wthlr.NextLink == nil || len(to.String(wthlr.NextLink)) < 1 {
+	if !wthlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5283,11 +4929,16 @@ func (page *WorkflowTriggerHistoryListResultPage) NextWithContext(ctx context.Co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wthlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wthlr)
+		if err != nil {
+			return err
+		}
+		page.wthlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wthlr = next
 	return nil
 }
 
@@ -5345,6 +4996,15 @@ type WorkflowTriggerHistoryProperties struct {
 	Fired *bool `json:"fired,omitempty"`
 	// Run - READ-ONLY; Gets the reference to workflow run.
 	Run *ResourceReference `json:"run,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkflowTriggerHistoryProperties.
+func (wthp WorkflowTriggerHistoryProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wthp.Correlation != nil {
+		objectMap["correlation"] = wthp.Correlation
+	}
+	return json.Marshal(objectMap)
 }
 
 // WorkflowTriggerListCallbackURLQueries gets the workflow trigger callback URL query parameters.
@@ -5438,10 +5098,15 @@ func (wtlr WorkflowTriggerListResult) IsEmpty() bool {
 	return wtlr.Value == nil || len(*wtlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wtlr WorkflowTriggerListResult) hasNextLink() bool {
+	return wtlr.NextLink != nil && len(*wtlr.NextLink) != 0
+}
+
 // workflowTriggerListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wtlr WorkflowTriggerListResult) workflowTriggerListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wtlr.NextLink == nil || len(to.String(wtlr.NextLink)) < 1 {
+	if !wtlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5469,11 +5134,16 @@ func (page *WorkflowTriggerListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wtlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wtlr)
+		if err != nil {
+			return err
+		}
+		page.wtlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wtlr = next
 	return nil
 }
 
@@ -5723,10 +5393,15 @@ func (wvlr WorkflowVersionListResult) IsEmpty() bool {
 	return wvlr.Value == nil || len(*wvlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wvlr WorkflowVersionListResult) hasNextLink() bool {
+	return wvlr.NextLink != nil && len(*wvlr.NextLink) != 0
+}
+
 // workflowVersionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wvlr WorkflowVersionListResult) workflowVersionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wvlr.NextLink == nil || len(to.String(wvlr.NextLink)) < 1 {
+	if !wvlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5754,11 +5429,16 @@ func (page *WorkflowVersionListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wvlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wvlr)
+		if err != nil {
+			return err
+		}
+		page.wvlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wvlr = next
 	return nil
 }
 

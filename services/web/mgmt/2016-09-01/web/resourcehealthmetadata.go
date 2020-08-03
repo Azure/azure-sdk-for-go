@@ -241,6 +241,9 @@ func (client ResourceHealthMetadataClient) List(ctx context.Context) (result Res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "List", resp, "Failure responding to request")
 	}
+	if result.rhmc.hasNextLink() && result.rhmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -358,6 +361,9 @@ func (client ResourceHealthMetadataClient) ListByResourceGroup(ctx context.Conte
 	result.rhmc, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.rhmc.hasNextLink() && result.rhmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -478,6 +484,9 @@ func (client ResourceHealthMetadataClient) ListBySite(ctx context.Context, resou
 	result.rhmc, err = client.ListBySiteResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "ListBySite", resp, "Failure responding to request")
+	}
+	if result.rhmc.hasNextLink() && result.rhmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -600,6 +609,9 @@ func (client ResourceHealthMetadataClient) ListBySiteSlot(ctx context.Context, r
 	result.rhmc, err = client.ListBySiteSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "ListBySiteSlot", resp, "Failure responding to request")
+	}
+	if result.rhmc.hasNextLink() && result.rhmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

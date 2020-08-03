@@ -32,1053 +32,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2015-05-01-preview/sql"
 
-// AuthenticationType enumerates the values for authentication type.
-type AuthenticationType string
-
-const (
-	// ADPassword ...
-	ADPassword AuthenticationType = "ADPassword"
-	// SQL ...
-	SQL AuthenticationType = "SQL"
-)
-
-// PossibleAuthenticationTypeValues returns an array of possible values for the AuthenticationType const type.
-func PossibleAuthenticationTypeValues() []AuthenticationType {
-	return []AuthenticationType{ADPassword, SQL}
-}
-
-// BlobAuditingPolicyState enumerates the values for blob auditing policy state.
-type BlobAuditingPolicyState string
-
-const (
-	// Disabled ...
-	Disabled BlobAuditingPolicyState = "Disabled"
-	// Enabled ...
-	Enabled BlobAuditingPolicyState = "Enabled"
-)
-
-// PossibleBlobAuditingPolicyStateValues returns an array of possible values for the BlobAuditingPolicyState const type.
-func PossibleBlobAuditingPolicyStateValues() []BlobAuditingPolicyState {
-	return []BlobAuditingPolicyState{Disabled, Enabled}
-}
-
-// CapabilityStatus enumerates the values for capability status.
-type CapabilityStatus string
-
-const (
-	// CapabilityStatusAvailable ...
-	CapabilityStatusAvailable CapabilityStatus = "Available"
-	// CapabilityStatusDefault ...
-	CapabilityStatusDefault CapabilityStatus = "Default"
-	// CapabilityStatusDisabled ...
-	CapabilityStatusDisabled CapabilityStatus = "Disabled"
-	// CapabilityStatusVisible ...
-	CapabilityStatusVisible CapabilityStatus = "Visible"
-)
-
-// PossibleCapabilityStatusValues returns an array of possible values for the CapabilityStatus const type.
-func PossibleCapabilityStatusValues() []CapabilityStatus {
-	return []CapabilityStatus{CapabilityStatusAvailable, CapabilityStatusDefault, CapabilityStatusDisabled, CapabilityStatusVisible}
-}
-
-// CheckNameAvailabilityReason enumerates the values for check name availability reason.
-type CheckNameAvailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid CheckNameAvailabilityReason = "Invalid"
-)
-
-// PossibleCheckNameAvailabilityReasonValues returns an array of possible values for the CheckNameAvailabilityReason const type.
-func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
-	return []CheckNameAvailabilityReason{AlreadyExists, Invalid}
-}
-
-// CreateMode enumerates the values for create mode.
-type CreateMode string
-
-const (
-	// Copy ...
-	Copy CreateMode = "Copy"
-	// Default ...
-	Default CreateMode = "Default"
-	// NonReadableSecondary ...
-	NonReadableSecondary CreateMode = "NonReadableSecondary"
-	// OnlineSecondary ...
-	OnlineSecondary CreateMode = "OnlineSecondary"
-	// PointInTimeRestore ...
-	PointInTimeRestore CreateMode = "PointInTimeRestore"
-	// Recovery ...
-	Recovery CreateMode = "Recovery"
-	// Restore ...
-	Restore CreateMode = "Restore"
-	// RestoreLongTermRetentionBackup ...
-	RestoreLongTermRetentionBackup CreateMode = "RestoreLongTermRetentionBackup"
-)
-
-// PossibleCreateModeValues returns an array of possible values for the CreateMode const type.
-func PossibleCreateModeValues() []CreateMode {
-	return []CreateMode{Copy, Default, NonReadableSecondary, OnlineSecondary, PointInTimeRestore, Recovery, Restore, RestoreLongTermRetentionBackup}
-}
-
-// DatabaseEdition enumerates the values for database edition.
-type DatabaseEdition string
-
-const (
-	// Basic ...
-	Basic DatabaseEdition = "Basic"
-	// Business ...
-	Business DatabaseEdition = "Business"
-	// BusinessCritical ...
-	BusinessCritical DatabaseEdition = "BusinessCritical"
-	// DataWarehouse ...
-	DataWarehouse DatabaseEdition = "DataWarehouse"
-	// Free ...
-	Free DatabaseEdition = "Free"
-	// GeneralPurpose ...
-	GeneralPurpose DatabaseEdition = "GeneralPurpose"
-	// Hyperscale ...
-	Hyperscale DatabaseEdition = "Hyperscale"
-	// Premium ...
-	Premium DatabaseEdition = "Premium"
-	// PremiumRS ...
-	PremiumRS DatabaseEdition = "PremiumRS"
-	// Standard ...
-	Standard DatabaseEdition = "Standard"
-	// Stretch ...
-	Stretch DatabaseEdition = "Stretch"
-	// System ...
-	System DatabaseEdition = "System"
-	// System2 ...
-	System2 DatabaseEdition = "System2"
-	// Web ...
-	Web DatabaseEdition = "Web"
-)
-
-// PossibleDatabaseEditionValues returns an array of possible values for the DatabaseEdition const type.
-func PossibleDatabaseEditionValues() []DatabaseEdition {
-	return []DatabaseEdition{Basic, Business, BusinessCritical, DataWarehouse, Free, GeneralPurpose, Hyperscale, Premium, PremiumRS, Standard, Stretch, System, System2, Web}
-}
-
-// DataMaskingFunction enumerates the values for data masking function.
-type DataMaskingFunction string
-
-const (
-	// DataMaskingFunctionCCN ...
-	DataMaskingFunctionCCN DataMaskingFunction = "CCN"
-	// DataMaskingFunctionDefault ...
-	DataMaskingFunctionDefault DataMaskingFunction = "Default"
-	// DataMaskingFunctionEmail ...
-	DataMaskingFunctionEmail DataMaskingFunction = "Email"
-	// DataMaskingFunctionNumber ...
-	DataMaskingFunctionNumber DataMaskingFunction = "Number"
-	// DataMaskingFunctionSSN ...
-	DataMaskingFunctionSSN DataMaskingFunction = "SSN"
-	// DataMaskingFunctionText ...
-	DataMaskingFunctionText DataMaskingFunction = "Text"
-)
-
-// PossibleDataMaskingFunctionValues returns an array of possible values for the DataMaskingFunction const type.
-func PossibleDataMaskingFunctionValues() []DataMaskingFunction {
-	return []DataMaskingFunction{DataMaskingFunctionCCN, DataMaskingFunctionDefault, DataMaskingFunctionEmail, DataMaskingFunctionNumber, DataMaskingFunctionSSN, DataMaskingFunctionText}
-}
-
-// DataMaskingRuleState enumerates the values for data masking rule state.
-type DataMaskingRuleState string
-
-const (
-	// DataMaskingRuleStateDisabled ...
-	DataMaskingRuleStateDisabled DataMaskingRuleState = "Disabled"
-	// DataMaskingRuleStateEnabled ...
-	DataMaskingRuleStateEnabled DataMaskingRuleState = "Enabled"
-)
-
-// PossibleDataMaskingRuleStateValues returns an array of possible values for the DataMaskingRuleState const type.
-func PossibleDataMaskingRuleStateValues() []DataMaskingRuleState {
-	return []DataMaskingRuleState{DataMaskingRuleStateDisabled, DataMaskingRuleStateEnabled}
-}
-
-// DataMaskingState enumerates the values for data masking state.
-type DataMaskingState string
-
-const (
-	// DataMaskingStateDisabled ...
-	DataMaskingStateDisabled DataMaskingState = "Disabled"
-	// DataMaskingStateEnabled ...
-	DataMaskingStateEnabled DataMaskingState = "Enabled"
-)
-
-// PossibleDataMaskingStateValues returns an array of possible values for the DataMaskingState const type.
-func PossibleDataMaskingStateValues() []DataMaskingState {
-	return []DataMaskingState{DataMaskingStateDisabled, DataMaskingStateEnabled}
-}
-
-// ElasticPoolEdition enumerates the values for elastic pool edition.
-type ElasticPoolEdition string
-
-const (
-	// ElasticPoolEditionBasic ...
-	ElasticPoolEditionBasic ElasticPoolEdition = "Basic"
-	// ElasticPoolEditionBusinessCritical ...
-	ElasticPoolEditionBusinessCritical ElasticPoolEdition = "BusinessCritical"
-	// ElasticPoolEditionGeneralPurpose ...
-	ElasticPoolEditionGeneralPurpose ElasticPoolEdition = "GeneralPurpose"
-	// ElasticPoolEditionPremium ...
-	ElasticPoolEditionPremium ElasticPoolEdition = "Premium"
-	// ElasticPoolEditionStandard ...
-	ElasticPoolEditionStandard ElasticPoolEdition = "Standard"
-)
-
-// PossibleElasticPoolEditionValues returns an array of possible values for the ElasticPoolEdition const type.
-func PossibleElasticPoolEditionValues() []ElasticPoolEdition {
-	return []ElasticPoolEdition{ElasticPoolEditionBasic, ElasticPoolEditionBusinessCritical, ElasticPoolEditionGeneralPurpose, ElasticPoolEditionPremium, ElasticPoolEditionStandard}
-}
-
-// ElasticPoolState enumerates the values for elastic pool state.
-type ElasticPoolState string
-
-const (
-	// ElasticPoolStateCreating ...
-	ElasticPoolStateCreating ElasticPoolState = "Creating"
-	// ElasticPoolStateDisabled ...
-	ElasticPoolStateDisabled ElasticPoolState = "Disabled"
-	// ElasticPoolStateReady ...
-	ElasticPoolStateReady ElasticPoolState = "Ready"
-)
-
-// PossibleElasticPoolStateValues returns an array of possible values for the ElasticPoolState const type.
-func PossibleElasticPoolStateValues() []ElasticPoolState {
-	return []ElasticPoolState{ElasticPoolStateCreating, ElasticPoolStateDisabled, ElasticPoolStateReady}
-}
-
-// FailoverGroupReplicationRole enumerates the values for failover group replication role.
-type FailoverGroupReplicationRole string
-
-const (
-	// Primary ...
-	Primary FailoverGroupReplicationRole = "Primary"
-	// Secondary ...
-	Secondary FailoverGroupReplicationRole = "Secondary"
-)
-
-// PossibleFailoverGroupReplicationRoleValues returns an array of possible values for the FailoverGroupReplicationRole const type.
-func PossibleFailoverGroupReplicationRoleValues() []FailoverGroupReplicationRole {
-	return []FailoverGroupReplicationRole{Primary, Secondary}
-}
-
-// GeoBackupPolicyState enumerates the values for geo backup policy state.
-type GeoBackupPolicyState string
-
-const (
-	// GeoBackupPolicyStateDisabled ...
-	GeoBackupPolicyStateDisabled GeoBackupPolicyState = "Disabled"
-	// GeoBackupPolicyStateEnabled ...
-	GeoBackupPolicyStateEnabled GeoBackupPolicyState = "Enabled"
-)
-
-// PossibleGeoBackupPolicyStateValues returns an array of possible values for the GeoBackupPolicyState const type.
-func PossibleGeoBackupPolicyStateValues() []GeoBackupPolicyState {
-	return []GeoBackupPolicyState{GeoBackupPolicyStateDisabled, GeoBackupPolicyStateEnabled}
-}
-
-// IdentityType enumerates the values for identity type.
-type IdentityType string
-
-const (
-	// SystemAssigned ...
-	SystemAssigned IdentityType = "SystemAssigned"
-)
-
-// PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
-func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{SystemAssigned}
-}
-
-// ManagedInstanceLicenseType enumerates the values for managed instance license type.
-type ManagedInstanceLicenseType string
-
-const (
-	// BasePrice ...
-	BasePrice ManagedInstanceLicenseType = "BasePrice"
-	// LicenseIncluded ...
-	LicenseIncluded ManagedInstanceLicenseType = "LicenseIncluded"
-)
-
-// PossibleManagedInstanceLicenseTypeValues returns an array of possible values for the ManagedInstanceLicenseType const type.
-func PossibleManagedInstanceLicenseTypeValues() []ManagedInstanceLicenseType {
-	return []ManagedInstanceLicenseType{BasePrice, LicenseIncluded}
-}
-
-// ManagedInstanceProxyOverride enumerates the values for managed instance proxy override.
-type ManagedInstanceProxyOverride string
-
-const (
-	// ManagedInstanceProxyOverrideDefault ...
-	ManagedInstanceProxyOverrideDefault ManagedInstanceProxyOverride = "Default"
-	// ManagedInstanceProxyOverrideProxy ...
-	ManagedInstanceProxyOverrideProxy ManagedInstanceProxyOverride = "Proxy"
-	// ManagedInstanceProxyOverrideRedirect ...
-	ManagedInstanceProxyOverrideRedirect ManagedInstanceProxyOverride = "Redirect"
-)
-
-// PossibleManagedInstanceProxyOverrideValues returns an array of possible values for the ManagedInstanceProxyOverride const type.
-func PossibleManagedInstanceProxyOverrideValues() []ManagedInstanceProxyOverride {
-	return []ManagedInstanceProxyOverride{ManagedInstanceProxyOverrideDefault, ManagedInstanceProxyOverrideProxy, ManagedInstanceProxyOverrideRedirect}
-}
-
-// ManagedServerCreateMode enumerates the values for managed server create mode.
-type ManagedServerCreateMode string
-
-const (
-	// ManagedServerCreateModeDefault ...
-	ManagedServerCreateModeDefault ManagedServerCreateMode = "Default"
-	// ManagedServerCreateModePointInTimeRestore ...
-	ManagedServerCreateModePointInTimeRestore ManagedServerCreateMode = "PointInTimeRestore"
-)
-
-// PossibleManagedServerCreateModeValues returns an array of possible values for the ManagedServerCreateMode const type.
-func PossibleManagedServerCreateModeValues() []ManagedServerCreateMode {
-	return []ManagedServerCreateMode{ManagedServerCreateModeDefault, ManagedServerCreateModePointInTimeRestore}
-}
-
-// MaxSizeUnits enumerates the values for max size units.
-type MaxSizeUnits string
-
-const (
-	// Gigabytes ...
-	Gigabytes MaxSizeUnits = "Gigabytes"
-	// Megabytes ...
-	Megabytes MaxSizeUnits = "Megabytes"
-	// Petabytes ...
-	Petabytes MaxSizeUnits = "Petabytes"
-	// Terabytes ...
-	Terabytes MaxSizeUnits = "Terabytes"
-)
-
-// PossibleMaxSizeUnitsValues returns an array of possible values for the MaxSizeUnits const type.
-func PossibleMaxSizeUnitsValues() []MaxSizeUnits {
-	return []MaxSizeUnits{Gigabytes, Megabytes, Petabytes, Terabytes}
-}
-
-// OperationOrigin enumerates the values for operation origin.
-type OperationOrigin string
-
-const (
-	// OperationOriginSystem ...
-	OperationOriginSystem OperationOrigin = "system"
-	// OperationOriginUser ...
-	OperationOriginUser OperationOrigin = "user"
-)
-
-// PossibleOperationOriginValues returns an array of possible values for the OperationOrigin const type.
-func PossibleOperationOriginValues() []OperationOrigin {
-	return []OperationOrigin{OperationOriginSystem, OperationOriginUser}
-}
-
-// PerformanceLevelUnit enumerates the values for performance level unit.
-type PerformanceLevelUnit string
-
-const (
-	// DTU ...
-	DTU PerformanceLevelUnit = "DTU"
-)
-
-// PossiblePerformanceLevelUnitValues returns an array of possible values for the PerformanceLevelUnit const type.
-func PossiblePerformanceLevelUnitValues() []PerformanceLevelUnit {
-	return []PerformanceLevelUnit{DTU}
-}
-
-// PrimaryAggregationType enumerates the values for primary aggregation type.
-type PrimaryAggregationType string
-
-const (
-	// Average ...
-	Average PrimaryAggregationType = "Average"
-	// Count ...
-	Count PrimaryAggregationType = "Count"
-	// Maximum ...
-	Maximum PrimaryAggregationType = "Maximum"
-	// Minimum ...
-	Minimum PrimaryAggregationType = "Minimum"
-	// None ...
-	None PrimaryAggregationType = "None"
-	// Total ...
-	Total PrimaryAggregationType = "Total"
-)
-
-// PossiblePrimaryAggregationTypeValues returns an array of possible values for the PrimaryAggregationType const type.
-func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
-	return []PrimaryAggregationType{Average, Count, Maximum, Minimum, None, Total}
-}
-
-// ReadOnlyEndpointFailoverPolicy enumerates the values for read only endpoint failover policy.
-type ReadOnlyEndpointFailoverPolicy string
-
-const (
-	// ReadOnlyEndpointFailoverPolicyDisabled ...
-	ReadOnlyEndpointFailoverPolicyDisabled ReadOnlyEndpointFailoverPolicy = "Disabled"
-	// ReadOnlyEndpointFailoverPolicyEnabled ...
-	ReadOnlyEndpointFailoverPolicyEnabled ReadOnlyEndpointFailoverPolicy = "Enabled"
-)
-
-// PossibleReadOnlyEndpointFailoverPolicyValues returns an array of possible values for the ReadOnlyEndpointFailoverPolicy const type.
-func PossibleReadOnlyEndpointFailoverPolicyValues() []ReadOnlyEndpointFailoverPolicy {
-	return []ReadOnlyEndpointFailoverPolicy{ReadOnlyEndpointFailoverPolicyDisabled, ReadOnlyEndpointFailoverPolicyEnabled}
-}
-
-// ReadScale enumerates the values for read scale.
-type ReadScale string
-
-const (
-	// ReadScaleDisabled ...
-	ReadScaleDisabled ReadScale = "Disabled"
-	// ReadScaleEnabled ...
-	ReadScaleEnabled ReadScale = "Enabled"
-)
-
-// PossibleReadScaleValues returns an array of possible values for the ReadScale const type.
-func PossibleReadScaleValues() []ReadScale {
-	return []ReadScale{ReadScaleDisabled, ReadScaleEnabled}
-}
-
-// ReadWriteEndpointFailoverPolicy enumerates the values for read write endpoint failover policy.
-type ReadWriteEndpointFailoverPolicy string
-
-const (
-	// Automatic ...
-	Automatic ReadWriteEndpointFailoverPolicy = "Automatic"
-	// Manual ...
-	Manual ReadWriteEndpointFailoverPolicy = "Manual"
-)
-
-// PossibleReadWriteEndpointFailoverPolicyValues returns an array of possible values for the ReadWriteEndpointFailoverPolicy const type.
-func PossibleReadWriteEndpointFailoverPolicyValues() []ReadWriteEndpointFailoverPolicy {
-	return []ReadWriteEndpointFailoverPolicy{Automatic, Manual}
-}
-
-// RecommendedIndexAction enumerates the values for recommended index action.
-type RecommendedIndexAction string
-
-const (
-	// Create ...
-	Create RecommendedIndexAction = "Create"
-	// Drop ...
-	Drop RecommendedIndexAction = "Drop"
-	// Rebuild ...
-	Rebuild RecommendedIndexAction = "Rebuild"
-)
-
-// PossibleRecommendedIndexActionValues returns an array of possible values for the RecommendedIndexAction const type.
-func PossibleRecommendedIndexActionValues() []RecommendedIndexAction {
-	return []RecommendedIndexAction{Create, Drop, Rebuild}
-}
-
-// RecommendedIndexState enumerates the values for recommended index state.
-type RecommendedIndexState string
-
-const (
-	// Active ...
-	Active RecommendedIndexState = "Active"
-	// Blocked ...
-	Blocked RecommendedIndexState = "Blocked"
-	// Executing ...
-	Executing RecommendedIndexState = "Executing"
-	// Expired ...
-	Expired RecommendedIndexState = "Expired"
-	// Ignored ...
-	Ignored RecommendedIndexState = "Ignored"
-	// Pending ...
-	Pending RecommendedIndexState = "Pending"
-	// PendingRevert ...
-	PendingRevert RecommendedIndexState = "Pending Revert"
-	// Reverted ...
-	Reverted RecommendedIndexState = "Reverted"
-	// Reverting ...
-	Reverting RecommendedIndexState = "Reverting"
-	// Success ...
-	Success RecommendedIndexState = "Success"
-	// Verifying ...
-	Verifying RecommendedIndexState = "Verifying"
-)
-
-// PossibleRecommendedIndexStateValues returns an array of possible values for the RecommendedIndexState const type.
-func PossibleRecommendedIndexStateValues() []RecommendedIndexState {
-	return []RecommendedIndexState{Active, Blocked, Executing, Expired, Ignored, Pending, PendingRevert, Reverted, Reverting, Success, Verifying}
-}
-
-// RecommendedIndexType enumerates the values for recommended index type.
-type RecommendedIndexType string
-
-const (
-	// CLUSTERED ...
-	CLUSTERED RecommendedIndexType = "CLUSTERED"
-	// CLUSTEREDCOLUMNSTORE ...
-	CLUSTEREDCOLUMNSTORE RecommendedIndexType = "CLUSTERED COLUMNSTORE"
-	// COLUMNSTORE ...
-	COLUMNSTORE RecommendedIndexType = "COLUMNSTORE"
-	// NONCLUSTERED ...
-	NONCLUSTERED RecommendedIndexType = "NONCLUSTERED"
-)
-
-// PossibleRecommendedIndexTypeValues returns an array of possible values for the RecommendedIndexType const type.
-func PossibleRecommendedIndexTypeValues() []RecommendedIndexType {
-	return []RecommendedIndexType{CLUSTERED, CLUSTEREDCOLUMNSTORE, COLUMNSTORE, NONCLUSTERED}
-}
-
-// ReplicationRole enumerates the values for replication role.
-type ReplicationRole string
-
-const (
-	// ReplicationRoleCopy ...
-	ReplicationRoleCopy ReplicationRole = "Copy"
-	// ReplicationRoleNonReadableSecondary ...
-	ReplicationRoleNonReadableSecondary ReplicationRole = "NonReadableSecondary"
-	// ReplicationRolePrimary ...
-	ReplicationRolePrimary ReplicationRole = "Primary"
-	// ReplicationRoleSecondary ...
-	ReplicationRoleSecondary ReplicationRole = "Secondary"
-	// ReplicationRoleSource ...
-	ReplicationRoleSource ReplicationRole = "Source"
-)
-
-// PossibleReplicationRoleValues returns an array of possible values for the ReplicationRole const type.
-func PossibleReplicationRoleValues() []ReplicationRole {
-	return []ReplicationRole{ReplicationRoleCopy, ReplicationRoleNonReadableSecondary, ReplicationRolePrimary, ReplicationRoleSecondary, ReplicationRoleSource}
-}
-
-// ReplicationState enumerates the values for replication state.
-type ReplicationState string
-
-const (
-	// CATCHUP ...
-	CATCHUP ReplicationState = "CATCH_UP"
-	// PENDING ...
-	PENDING ReplicationState = "PENDING"
-	// SEEDING ...
-	SEEDING ReplicationState = "SEEDING"
-	// SUSPENDED ...
-	SUSPENDED ReplicationState = "SUSPENDED"
-)
-
-// PossibleReplicationStateValues returns an array of possible values for the ReplicationState const type.
-func PossibleReplicationStateValues() []ReplicationState {
-	return []ReplicationState{CATCHUP, PENDING, SEEDING, SUSPENDED}
-}
-
-// RestorePointType enumerates the values for restore point type.
-type RestorePointType string
-
-const (
-	// CONTINUOUS ...
-	CONTINUOUS RestorePointType = "CONTINUOUS"
-	// DISCRETE ...
-	DISCRETE RestorePointType = "DISCRETE"
-)
-
-// PossibleRestorePointTypeValues returns an array of possible values for the RestorePointType const type.
-func PossibleRestorePointTypeValues() []RestorePointType {
-	return []RestorePointType{CONTINUOUS, DISCRETE}
-}
-
-// SampleName enumerates the values for sample name.
-type SampleName string
-
-const (
-	// AdventureWorksLT ...
-	AdventureWorksLT SampleName = "AdventureWorksLT"
-)
-
-// PossibleSampleNameValues returns an array of possible values for the SampleName const type.
-func PossibleSampleNameValues() []SampleName {
-	return []SampleName{AdventureWorksLT}
-}
-
-// SecurityAlertPolicyEmailAccountAdmins enumerates the values for security alert policy email account admins.
-type SecurityAlertPolicyEmailAccountAdmins string
-
-const (
-	// SecurityAlertPolicyEmailAccountAdminsDisabled ...
-	SecurityAlertPolicyEmailAccountAdminsDisabled SecurityAlertPolicyEmailAccountAdmins = "Disabled"
-	// SecurityAlertPolicyEmailAccountAdminsEnabled ...
-	SecurityAlertPolicyEmailAccountAdminsEnabled SecurityAlertPolicyEmailAccountAdmins = "Enabled"
-)
-
-// PossibleSecurityAlertPolicyEmailAccountAdminsValues returns an array of possible values for the SecurityAlertPolicyEmailAccountAdmins const type.
-func PossibleSecurityAlertPolicyEmailAccountAdminsValues() []SecurityAlertPolicyEmailAccountAdmins {
-	return []SecurityAlertPolicyEmailAccountAdmins{SecurityAlertPolicyEmailAccountAdminsDisabled, SecurityAlertPolicyEmailAccountAdminsEnabled}
-}
-
-// SecurityAlertPolicyState enumerates the values for security alert policy state.
-type SecurityAlertPolicyState string
-
-const (
-	// SecurityAlertPolicyStateDisabled ...
-	SecurityAlertPolicyStateDisabled SecurityAlertPolicyState = "Disabled"
-	// SecurityAlertPolicyStateEnabled ...
-	SecurityAlertPolicyStateEnabled SecurityAlertPolicyState = "Enabled"
-	// SecurityAlertPolicyStateNew ...
-	SecurityAlertPolicyStateNew SecurityAlertPolicyState = "New"
-)
-
-// PossibleSecurityAlertPolicyStateValues returns an array of possible values for the SecurityAlertPolicyState const type.
-func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
-	return []SecurityAlertPolicyState{SecurityAlertPolicyStateDisabled, SecurityAlertPolicyStateEnabled, SecurityAlertPolicyStateNew}
-}
-
-// SecurityAlertPolicyUseServerDefault enumerates the values for security alert policy use server default.
-type SecurityAlertPolicyUseServerDefault string
-
-const (
-	// SecurityAlertPolicyUseServerDefaultDisabled ...
-	SecurityAlertPolicyUseServerDefaultDisabled SecurityAlertPolicyUseServerDefault = "Disabled"
-	// SecurityAlertPolicyUseServerDefaultEnabled ...
-	SecurityAlertPolicyUseServerDefaultEnabled SecurityAlertPolicyUseServerDefault = "Enabled"
-)
-
-// PossibleSecurityAlertPolicyUseServerDefaultValues returns an array of possible values for the SecurityAlertPolicyUseServerDefault const type.
-func PossibleSecurityAlertPolicyUseServerDefaultValues() []SecurityAlertPolicyUseServerDefault {
-	return []SecurityAlertPolicyUseServerDefault{SecurityAlertPolicyUseServerDefaultDisabled, SecurityAlertPolicyUseServerDefaultEnabled}
-}
-
-// ServerConnectionType enumerates the values for server connection type.
-type ServerConnectionType string
-
-const (
-	// ServerConnectionTypeDefault ...
-	ServerConnectionTypeDefault ServerConnectionType = "Default"
-	// ServerConnectionTypeProxy ...
-	ServerConnectionTypeProxy ServerConnectionType = "Proxy"
-	// ServerConnectionTypeRedirect ...
-	ServerConnectionTypeRedirect ServerConnectionType = "Redirect"
-)
-
-// PossibleServerConnectionTypeValues returns an array of possible values for the ServerConnectionType const type.
-func PossibleServerConnectionTypeValues() []ServerConnectionType {
-	return []ServerConnectionType{ServerConnectionTypeDefault, ServerConnectionTypeProxy, ServerConnectionTypeRedirect}
-}
-
-// ServerKeyType enumerates the values for server key type.
-type ServerKeyType string
-
-const (
-	// AzureKeyVault ...
-	AzureKeyVault ServerKeyType = "AzureKeyVault"
-	// ServiceManaged ...
-	ServiceManaged ServerKeyType = "ServiceManaged"
-)
-
-// PossibleServerKeyTypeValues returns an array of possible values for the ServerKeyType const type.
-func PossibleServerKeyTypeValues() []ServerKeyType {
-	return []ServerKeyType{AzureKeyVault, ServiceManaged}
-}
-
-// ServiceObjectiveName enumerates the values for service objective name.
-type ServiceObjectiveName string
-
-const (
-	// ServiceObjectiveNameBasic ...
-	ServiceObjectiveNameBasic ServiceObjectiveName = "Basic"
-	// ServiceObjectiveNameDS100 ...
-	ServiceObjectiveNameDS100 ServiceObjectiveName = "DS100"
-	// ServiceObjectiveNameDS1000 ...
-	ServiceObjectiveNameDS1000 ServiceObjectiveName = "DS1000"
-	// ServiceObjectiveNameDS1200 ...
-	ServiceObjectiveNameDS1200 ServiceObjectiveName = "DS1200"
-	// ServiceObjectiveNameDS1500 ...
-	ServiceObjectiveNameDS1500 ServiceObjectiveName = "DS1500"
-	// ServiceObjectiveNameDS200 ...
-	ServiceObjectiveNameDS200 ServiceObjectiveName = "DS200"
-	// ServiceObjectiveNameDS2000 ...
-	ServiceObjectiveNameDS2000 ServiceObjectiveName = "DS2000"
-	// ServiceObjectiveNameDS300 ...
-	ServiceObjectiveNameDS300 ServiceObjectiveName = "DS300"
-	// ServiceObjectiveNameDS400 ...
-	ServiceObjectiveNameDS400 ServiceObjectiveName = "DS400"
-	// ServiceObjectiveNameDS500 ...
-	ServiceObjectiveNameDS500 ServiceObjectiveName = "DS500"
-	// ServiceObjectiveNameDS600 ...
-	ServiceObjectiveNameDS600 ServiceObjectiveName = "DS600"
-	// ServiceObjectiveNameDW100 ...
-	ServiceObjectiveNameDW100 ServiceObjectiveName = "DW100"
-	// ServiceObjectiveNameDW1000 ...
-	ServiceObjectiveNameDW1000 ServiceObjectiveName = "DW1000"
-	// ServiceObjectiveNameDW10000c ...
-	ServiceObjectiveNameDW10000c ServiceObjectiveName = "DW10000c"
-	// ServiceObjectiveNameDW1000c ...
-	ServiceObjectiveNameDW1000c ServiceObjectiveName = "DW1000c"
-	// ServiceObjectiveNameDW1200 ...
-	ServiceObjectiveNameDW1200 ServiceObjectiveName = "DW1200"
-	// ServiceObjectiveNameDW1500 ...
-	ServiceObjectiveNameDW1500 ServiceObjectiveName = "DW1500"
-	// ServiceObjectiveNameDW15000c ...
-	ServiceObjectiveNameDW15000c ServiceObjectiveName = "DW15000c"
-	// ServiceObjectiveNameDW1500c ...
-	ServiceObjectiveNameDW1500c ServiceObjectiveName = "DW1500c"
-	// ServiceObjectiveNameDW200 ...
-	ServiceObjectiveNameDW200 ServiceObjectiveName = "DW200"
-	// ServiceObjectiveNameDW2000 ...
-	ServiceObjectiveNameDW2000 ServiceObjectiveName = "DW2000"
-	// ServiceObjectiveNameDW2000c ...
-	ServiceObjectiveNameDW2000c ServiceObjectiveName = "DW2000c"
-	// ServiceObjectiveNameDW2500c ...
-	ServiceObjectiveNameDW2500c ServiceObjectiveName = "DW2500c"
-	// ServiceObjectiveNameDW300 ...
-	ServiceObjectiveNameDW300 ServiceObjectiveName = "DW300"
-	// ServiceObjectiveNameDW3000 ...
-	ServiceObjectiveNameDW3000 ServiceObjectiveName = "DW3000"
-	// ServiceObjectiveNameDW30000c ...
-	ServiceObjectiveNameDW30000c ServiceObjectiveName = "DW30000c"
-	// ServiceObjectiveNameDW3000c ...
-	ServiceObjectiveNameDW3000c ServiceObjectiveName = "DW3000c"
-	// ServiceObjectiveNameDW400 ...
-	ServiceObjectiveNameDW400 ServiceObjectiveName = "DW400"
-	// ServiceObjectiveNameDW500 ...
-	ServiceObjectiveNameDW500 ServiceObjectiveName = "DW500"
-	// ServiceObjectiveNameDW5000c ...
-	ServiceObjectiveNameDW5000c ServiceObjectiveName = "DW5000c"
-	// ServiceObjectiveNameDW600 ...
-	ServiceObjectiveNameDW600 ServiceObjectiveName = "DW600"
-	// ServiceObjectiveNameDW6000 ...
-	ServiceObjectiveNameDW6000 ServiceObjectiveName = "DW6000"
-	// ServiceObjectiveNameDW6000c ...
-	ServiceObjectiveNameDW6000c ServiceObjectiveName = "DW6000c"
-	// ServiceObjectiveNameDW7500c ...
-	ServiceObjectiveNameDW7500c ServiceObjectiveName = "DW7500c"
-	// ServiceObjectiveNameElasticPool ...
-	ServiceObjectiveNameElasticPool ServiceObjectiveName = "ElasticPool"
-	// ServiceObjectiveNameFree ...
-	ServiceObjectiveNameFree ServiceObjectiveName = "Free"
-	// ServiceObjectiveNameP1 ...
-	ServiceObjectiveNameP1 ServiceObjectiveName = "P1"
-	// ServiceObjectiveNameP11 ...
-	ServiceObjectiveNameP11 ServiceObjectiveName = "P11"
-	// ServiceObjectiveNameP15 ...
-	ServiceObjectiveNameP15 ServiceObjectiveName = "P15"
-	// ServiceObjectiveNameP2 ...
-	ServiceObjectiveNameP2 ServiceObjectiveName = "P2"
-	// ServiceObjectiveNameP3 ...
-	ServiceObjectiveNameP3 ServiceObjectiveName = "P3"
-	// ServiceObjectiveNameP4 ...
-	ServiceObjectiveNameP4 ServiceObjectiveName = "P4"
-	// ServiceObjectiveNameP6 ...
-	ServiceObjectiveNameP6 ServiceObjectiveName = "P6"
-	// ServiceObjectiveNamePRS1 ...
-	ServiceObjectiveNamePRS1 ServiceObjectiveName = "PRS1"
-	// ServiceObjectiveNamePRS2 ...
-	ServiceObjectiveNamePRS2 ServiceObjectiveName = "PRS2"
-	// ServiceObjectiveNamePRS4 ...
-	ServiceObjectiveNamePRS4 ServiceObjectiveName = "PRS4"
-	// ServiceObjectiveNamePRS6 ...
-	ServiceObjectiveNamePRS6 ServiceObjectiveName = "PRS6"
-	// ServiceObjectiveNameS0 ...
-	ServiceObjectiveNameS0 ServiceObjectiveName = "S0"
-	// ServiceObjectiveNameS1 ...
-	ServiceObjectiveNameS1 ServiceObjectiveName = "S1"
-	// ServiceObjectiveNameS12 ...
-	ServiceObjectiveNameS12 ServiceObjectiveName = "S12"
-	// ServiceObjectiveNameS2 ...
-	ServiceObjectiveNameS2 ServiceObjectiveName = "S2"
-	// ServiceObjectiveNameS3 ...
-	ServiceObjectiveNameS3 ServiceObjectiveName = "S3"
-	// ServiceObjectiveNameS4 ...
-	ServiceObjectiveNameS4 ServiceObjectiveName = "S4"
-	// ServiceObjectiveNameS6 ...
-	ServiceObjectiveNameS6 ServiceObjectiveName = "S6"
-	// ServiceObjectiveNameS7 ...
-	ServiceObjectiveNameS7 ServiceObjectiveName = "S7"
-	// ServiceObjectiveNameS9 ...
-	ServiceObjectiveNameS9 ServiceObjectiveName = "S9"
-	// ServiceObjectiveNameSystem ...
-	ServiceObjectiveNameSystem ServiceObjectiveName = "System"
-	// ServiceObjectiveNameSystem0 ...
-	ServiceObjectiveNameSystem0 ServiceObjectiveName = "System0"
-	// ServiceObjectiveNameSystem1 ...
-	ServiceObjectiveNameSystem1 ServiceObjectiveName = "System1"
-	// ServiceObjectiveNameSystem2 ...
-	ServiceObjectiveNameSystem2 ServiceObjectiveName = "System2"
-	// ServiceObjectiveNameSystem2L ...
-	ServiceObjectiveNameSystem2L ServiceObjectiveName = "System2L"
-	// ServiceObjectiveNameSystem3 ...
-	ServiceObjectiveNameSystem3 ServiceObjectiveName = "System3"
-	// ServiceObjectiveNameSystem3L ...
-	ServiceObjectiveNameSystem3L ServiceObjectiveName = "System3L"
-	// ServiceObjectiveNameSystem4 ...
-	ServiceObjectiveNameSystem4 ServiceObjectiveName = "System4"
-	// ServiceObjectiveNameSystem4L ...
-	ServiceObjectiveNameSystem4L ServiceObjectiveName = "System4L"
-)
-
-// PossibleServiceObjectiveNameValues returns an array of possible values for the ServiceObjectiveName const type.
-func PossibleServiceObjectiveNameValues() []ServiceObjectiveName {
-	return []ServiceObjectiveName{ServiceObjectiveNameBasic, ServiceObjectiveNameDS100, ServiceObjectiveNameDS1000, ServiceObjectiveNameDS1200, ServiceObjectiveNameDS1500, ServiceObjectiveNameDS200, ServiceObjectiveNameDS2000, ServiceObjectiveNameDS300, ServiceObjectiveNameDS400, ServiceObjectiveNameDS500, ServiceObjectiveNameDS600, ServiceObjectiveNameDW100, ServiceObjectiveNameDW1000, ServiceObjectiveNameDW10000c, ServiceObjectiveNameDW1000c, ServiceObjectiveNameDW1200, ServiceObjectiveNameDW1500, ServiceObjectiveNameDW15000c, ServiceObjectiveNameDW1500c, ServiceObjectiveNameDW200, ServiceObjectiveNameDW2000, ServiceObjectiveNameDW2000c, ServiceObjectiveNameDW2500c, ServiceObjectiveNameDW300, ServiceObjectiveNameDW3000, ServiceObjectiveNameDW30000c, ServiceObjectiveNameDW3000c, ServiceObjectiveNameDW400, ServiceObjectiveNameDW500, ServiceObjectiveNameDW5000c, ServiceObjectiveNameDW600, ServiceObjectiveNameDW6000, ServiceObjectiveNameDW6000c, ServiceObjectiveNameDW7500c, ServiceObjectiveNameElasticPool, ServiceObjectiveNameFree, ServiceObjectiveNameP1, ServiceObjectiveNameP11, ServiceObjectiveNameP15, ServiceObjectiveNameP2, ServiceObjectiveNameP3, ServiceObjectiveNameP4, ServiceObjectiveNameP6, ServiceObjectiveNamePRS1, ServiceObjectiveNamePRS2, ServiceObjectiveNamePRS4, ServiceObjectiveNamePRS6, ServiceObjectiveNameS0, ServiceObjectiveNameS1, ServiceObjectiveNameS12, ServiceObjectiveNameS2, ServiceObjectiveNameS3, ServiceObjectiveNameS4, ServiceObjectiveNameS6, ServiceObjectiveNameS7, ServiceObjectiveNameS9, ServiceObjectiveNameSystem, ServiceObjectiveNameSystem0, ServiceObjectiveNameSystem1, ServiceObjectiveNameSystem2, ServiceObjectiveNameSystem2L, ServiceObjectiveNameSystem3, ServiceObjectiveNameSystem3L, ServiceObjectiveNameSystem4, ServiceObjectiveNameSystem4L}
-}
-
-// StorageKeyType enumerates the values for storage key type.
-type StorageKeyType string
-
-const (
-	// SharedAccessKey ...
-	SharedAccessKey StorageKeyType = "SharedAccessKey"
-	// StorageAccessKey ...
-	StorageAccessKey StorageKeyType = "StorageAccessKey"
-)
-
-// PossibleStorageKeyTypeValues returns an array of possible values for the StorageKeyType const type.
-func PossibleStorageKeyTypeValues() []StorageKeyType {
-	return []StorageKeyType{SharedAccessKey, StorageAccessKey}
-}
-
-// SyncAgentState enumerates the values for sync agent state.
-type SyncAgentState string
-
-const (
-	// NeverConnected ...
-	NeverConnected SyncAgentState = "NeverConnected"
-	// Offline ...
-	Offline SyncAgentState = "Offline"
-	// Online ...
-	Online SyncAgentState = "Online"
-)
-
-// PossibleSyncAgentStateValues returns an array of possible values for the SyncAgentState const type.
-func PossibleSyncAgentStateValues() []SyncAgentState {
-	return []SyncAgentState{NeverConnected, Offline, Online}
-}
-
-// SyncConflictResolutionPolicy enumerates the values for sync conflict resolution policy.
-type SyncConflictResolutionPolicy string
-
-const (
-	// HubWin ...
-	HubWin SyncConflictResolutionPolicy = "HubWin"
-	// MemberWin ...
-	MemberWin SyncConflictResolutionPolicy = "MemberWin"
-)
-
-// PossibleSyncConflictResolutionPolicyValues returns an array of possible values for the SyncConflictResolutionPolicy const type.
-func PossibleSyncConflictResolutionPolicyValues() []SyncConflictResolutionPolicy {
-	return []SyncConflictResolutionPolicy{HubWin, MemberWin}
-}
-
-// SyncDirection enumerates the values for sync direction.
-type SyncDirection string
-
-const (
-	// Bidirectional ...
-	Bidirectional SyncDirection = "Bidirectional"
-	// OneWayHubToMember ...
-	OneWayHubToMember SyncDirection = "OneWayHubToMember"
-	// OneWayMemberToHub ...
-	OneWayMemberToHub SyncDirection = "OneWayMemberToHub"
-)
-
-// PossibleSyncDirectionValues returns an array of possible values for the SyncDirection const type.
-func PossibleSyncDirectionValues() []SyncDirection {
-	return []SyncDirection{Bidirectional, OneWayHubToMember, OneWayMemberToHub}
-}
-
-// SyncGroupLogType enumerates the values for sync group log type.
-type SyncGroupLogType string
-
-const (
-	// SyncGroupLogTypeAll ...
-	SyncGroupLogTypeAll SyncGroupLogType = "All"
-	// SyncGroupLogTypeError ...
-	SyncGroupLogTypeError SyncGroupLogType = "Error"
-	// SyncGroupLogTypeSuccess ...
-	SyncGroupLogTypeSuccess SyncGroupLogType = "Success"
-	// SyncGroupLogTypeWarning ...
-	SyncGroupLogTypeWarning SyncGroupLogType = "Warning"
-)
-
-// PossibleSyncGroupLogTypeValues returns an array of possible values for the SyncGroupLogType const type.
-func PossibleSyncGroupLogTypeValues() []SyncGroupLogType {
-	return []SyncGroupLogType{SyncGroupLogTypeAll, SyncGroupLogTypeError, SyncGroupLogTypeSuccess, SyncGroupLogTypeWarning}
-}
-
-// SyncGroupState enumerates the values for sync group state.
-type SyncGroupState string
-
-const (
-	// Error ...
-	Error SyncGroupState = "Error"
-	// Good ...
-	Good SyncGroupState = "Good"
-	// NotReady ...
-	NotReady SyncGroupState = "NotReady"
-	// Progressing ...
-	Progressing SyncGroupState = "Progressing"
-	// Warning ...
-	Warning SyncGroupState = "Warning"
-)
-
-// PossibleSyncGroupStateValues returns an array of possible values for the SyncGroupState const type.
-func PossibleSyncGroupStateValues() []SyncGroupState {
-	return []SyncGroupState{Error, Good, NotReady, Progressing, Warning}
-}
-
-// SyncMemberDbType enumerates the values for sync member db type.
-type SyncMemberDbType string
-
-const (
-	// AzureSQLDatabase ...
-	AzureSQLDatabase SyncMemberDbType = "AzureSqlDatabase"
-	// SQLServerDatabase ...
-	SQLServerDatabase SyncMemberDbType = "SqlServerDatabase"
-)
-
-// PossibleSyncMemberDbTypeValues returns an array of possible values for the SyncMemberDbType const type.
-func PossibleSyncMemberDbTypeValues() []SyncMemberDbType {
-	return []SyncMemberDbType{AzureSQLDatabase, SQLServerDatabase}
-}
-
-// SyncMemberState enumerates the values for sync member state.
-type SyncMemberState string
-
-const (
-	// DeProvisioned ...
-	DeProvisioned SyncMemberState = "DeProvisioned"
-	// DeProvisionFailed ...
-	DeProvisionFailed SyncMemberState = "DeProvisionFailed"
-	// DeProvisioning ...
-	DeProvisioning SyncMemberState = "DeProvisioning"
-	// DisabledBackupRestore ...
-	DisabledBackupRestore SyncMemberState = "DisabledBackupRestore"
-	// DisabledTombstoneCleanup ...
-	DisabledTombstoneCleanup SyncMemberState = "DisabledTombstoneCleanup"
-	// Provisioned ...
-	Provisioned SyncMemberState = "Provisioned"
-	// ProvisionFailed ...
-	ProvisionFailed SyncMemberState = "ProvisionFailed"
-	// Provisioning ...
-	Provisioning SyncMemberState = "Provisioning"
-	// ReprovisionFailed ...
-	ReprovisionFailed SyncMemberState = "ReprovisionFailed"
-	// Reprovisioning ...
-	Reprovisioning SyncMemberState = "Reprovisioning"
-	// SyncCancelled ...
-	SyncCancelled SyncMemberState = "SyncCancelled"
-	// SyncCancelling ...
-	SyncCancelling SyncMemberState = "SyncCancelling"
-	// SyncFailed ...
-	SyncFailed SyncMemberState = "SyncFailed"
-	// SyncInProgress ...
-	SyncInProgress SyncMemberState = "SyncInProgress"
-	// SyncSucceeded ...
-	SyncSucceeded SyncMemberState = "SyncSucceeded"
-	// SyncSucceededWithWarnings ...
-	SyncSucceededWithWarnings SyncMemberState = "SyncSucceededWithWarnings"
-	// UnProvisioned ...
-	UnProvisioned SyncMemberState = "UnProvisioned"
-	// UnReprovisioned ...
-	UnReprovisioned SyncMemberState = "UnReprovisioned"
-)
-
-// PossibleSyncMemberStateValues returns an array of possible values for the SyncMemberState const type.
-func PossibleSyncMemberStateValues() []SyncMemberState {
-	return []SyncMemberState{DeProvisioned, DeProvisionFailed, DeProvisioning, DisabledBackupRestore, DisabledTombstoneCleanup, Provisioned, ProvisionFailed, Provisioning, ReprovisionFailed, Reprovisioning, SyncCancelled, SyncCancelling, SyncFailed, SyncInProgress, SyncSucceeded, SyncSucceededWithWarnings, UnProvisioned, UnReprovisioned}
-}
-
-// TransparentDataEncryptionActivityStatus enumerates the values for transparent data encryption activity
-// status.
-type TransparentDataEncryptionActivityStatus string
-
-const (
-	// Decrypting ...
-	Decrypting TransparentDataEncryptionActivityStatus = "Decrypting"
-	// Encrypting ...
-	Encrypting TransparentDataEncryptionActivityStatus = "Encrypting"
-)
-
-// PossibleTransparentDataEncryptionActivityStatusValues returns an array of possible values for the TransparentDataEncryptionActivityStatus const type.
-func PossibleTransparentDataEncryptionActivityStatusValues() []TransparentDataEncryptionActivityStatus {
-	return []TransparentDataEncryptionActivityStatus{Decrypting, Encrypting}
-}
-
-// TransparentDataEncryptionStatus enumerates the values for transparent data encryption status.
-type TransparentDataEncryptionStatus string
-
-const (
-	// TransparentDataEncryptionStatusDisabled ...
-	TransparentDataEncryptionStatusDisabled TransparentDataEncryptionStatus = "Disabled"
-	// TransparentDataEncryptionStatusEnabled ...
-	TransparentDataEncryptionStatusEnabled TransparentDataEncryptionStatus = "Enabled"
-)
-
-// PossibleTransparentDataEncryptionStatusValues returns an array of possible values for the TransparentDataEncryptionStatus const type.
-func PossibleTransparentDataEncryptionStatusValues() []TransparentDataEncryptionStatus {
-	return []TransparentDataEncryptionStatus{TransparentDataEncryptionStatusDisabled, TransparentDataEncryptionStatusEnabled}
-}
-
-// UnitDefinitionType enumerates the values for unit definition type.
-type UnitDefinitionType string
-
-const (
-	// UnitDefinitionTypeBytes ...
-	UnitDefinitionTypeBytes UnitDefinitionType = "Bytes"
-	// UnitDefinitionTypeBytesPerSecond ...
-	UnitDefinitionTypeBytesPerSecond UnitDefinitionType = "BytesPerSecond"
-	// UnitDefinitionTypeCount ...
-	UnitDefinitionTypeCount UnitDefinitionType = "Count"
-	// UnitDefinitionTypeCountPerSecond ...
-	UnitDefinitionTypeCountPerSecond UnitDefinitionType = "CountPerSecond"
-	// UnitDefinitionTypePercent ...
-	UnitDefinitionTypePercent UnitDefinitionType = "Percent"
-	// UnitDefinitionTypeSeconds ...
-	UnitDefinitionTypeSeconds UnitDefinitionType = "Seconds"
-)
-
-// PossibleUnitDefinitionTypeValues returns an array of possible values for the UnitDefinitionType const type.
-func PossibleUnitDefinitionTypeValues() []UnitDefinitionType {
-	return []UnitDefinitionType{UnitDefinitionTypeBytes, UnitDefinitionTypeBytesPerSecond, UnitDefinitionTypeCount, UnitDefinitionTypeCountPerSecond, UnitDefinitionTypePercent, UnitDefinitionTypeSeconds}
-}
-
-// UnitType enumerates the values for unit type.
-type UnitType string
-
-const (
-	// UnitTypeBytes ...
-	UnitTypeBytes UnitType = "bytes"
-	// UnitTypeBytesPerSecond ...
-	UnitTypeBytesPerSecond UnitType = "bytesPerSecond"
-	// UnitTypeCount ...
-	UnitTypeCount UnitType = "count"
-	// UnitTypeCountPerSecond ...
-	UnitTypeCountPerSecond UnitType = "countPerSecond"
-	// UnitTypePercent ...
-	UnitTypePercent UnitType = "percent"
-	// UnitTypeSeconds ...
-	UnitTypeSeconds UnitType = "seconds"
-)
-
-// PossibleUnitTypeValues returns an array of possible values for the UnitType const type.
-func PossibleUnitTypeValues() []UnitType {
-	return []UnitType{UnitTypeBytes, UnitTypeBytesPerSecond, UnitTypeCount, UnitTypeCountPerSecond, UnitTypePercent, UnitTypeSeconds}
-}
-
-// VirtualNetworkRuleState enumerates the values for virtual network rule state.
-type VirtualNetworkRuleState string
-
-const (
-	// Deleting ...
-	Deleting VirtualNetworkRuleState = "Deleting"
-	// Initializing ...
-	Initializing VirtualNetworkRuleState = "Initializing"
-	// InProgress ...
-	InProgress VirtualNetworkRuleState = "InProgress"
-	// Ready ...
-	Ready VirtualNetworkRuleState = "Ready"
-	// Unknown ...
-	Unknown VirtualNetworkRuleState = "Unknown"
-)
-
-// PossibleVirtualNetworkRuleStateValues returns an array of possible values for the VirtualNetworkRuleState const type.
-func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
-	return []VirtualNetworkRuleState{Deleting, Initializing, InProgress, Ready, Unknown}
-}
-
 // CheckNameAvailabilityRequest a request to check whether the specified name for a resource is available.
 type CheckNameAvailabilityRequest struct {
 	// Name - The name whose availability is to be checked.
@@ -1087,8 +40,7 @@ type CheckNameAvailabilityRequest struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// CheckNameAvailabilityResponse a response indicating whether the specified name for a resource is
-// available.
+// CheckNameAvailabilityResponse a response indicating whether the specified name for a resource is available.
 type CheckNameAvailabilityResponse struct {
 	autorest.Response `json:"-"`
 	// Available - READ-ONLY; True if the name is available, otherwise false.
@@ -1375,10 +327,15 @@ func (dbaplr DatabaseBlobAuditingPolicyListResult) IsEmpty() bool {
 	return dbaplr.Value == nil || len(*dbaplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dbaplr DatabaseBlobAuditingPolicyListResult) hasNextLink() bool {
+	return dbaplr.NextLink != nil && len(*dbaplr.NextLink) != 0
+}
+
 // databaseBlobAuditingPolicyListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dbaplr DatabaseBlobAuditingPolicyListResult) databaseBlobAuditingPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dbaplr.NextLink == nil || len(to.String(dbaplr.NextLink)) < 1 {
+	if !dbaplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1406,11 +363,16 @@ func (page *DatabaseBlobAuditingPolicyListResultPage) NextWithContext(ctx contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dbaplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dbaplr)
+		if err != nil {
+			return err
+		}
+		page.dbaplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dbaplr = next
 	return nil
 }
 
@@ -1633,6 +595,54 @@ type DatabaseProperties struct {
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DatabaseProperties.
+func (dp DatabaseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dp.Collation != nil {
+		objectMap["collation"] = dp.Collation
+	}
+	if dp.CreateMode != "" {
+		objectMap["createMode"] = dp.CreateMode
+	}
+	if dp.SourceDatabaseID != nil {
+		objectMap["sourceDatabaseId"] = dp.SourceDatabaseID
+	}
+	if dp.SourceDatabaseDeletionDate != nil {
+		objectMap["sourceDatabaseDeletionDate"] = dp.SourceDatabaseDeletionDate
+	}
+	if dp.RestorePointInTime != nil {
+		objectMap["restorePointInTime"] = dp.RestorePointInTime
+	}
+	if dp.RecoveryServicesRecoveryPointResourceID != nil {
+		objectMap["recoveryServicesRecoveryPointResourceId"] = dp.RecoveryServicesRecoveryPointResourceID
+	}
+	if dp.Edition != "" {
+		objectMap["edition"] = dp.Edition
+	}
+	if dp.MaxSizeBytes != nil {
+		objectMap["maxSizeBytes"] = dp.MaxSizeBytes
+	}
+	if dp.RequestedServiceObjectiveID != nil {
+		objectMap["requestedServiceObjectiveId"] = dp.RequestedServiceObjectiveID
+	}
+	if dp.RequestedServiceObjectiveName != "" {
+		objectMap["requestedServiceObjectiveName"] = dp.RequestedServiceObjectiveName
+	}
+	if dp.ElasticPoolName != nil {
+		objectMap["elasticPoolName"] = dp.ElasticPoolName
+	}
+	if dp.ReadScale != "" {
+		objectMap["readScale"] = dp.ReadScale
+	}
+	if dp.SampleName != "" {
+		objectMap["sampleName"] = dp.SampleName
+	}
+	if dp.ZoneRedundant != nil {
+		objectMap["zoneRedundant"] = dp.ZoneRedundant
+	}
+	return json.Marshal(objectMap)
+}
+
 // DatabasesCreateImportOperationFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type DatabasesCreateImportOperationFuture struct {
@@ -1809,8 +819,7 @@ type DatabaseSecurityAlertPolicyProperties struct {
 	UseServerDefault SecurityAlertPolicyUseServerDefault `json:"useServerDefault,omitempty"`
 }
 
-// DatabasesExportFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabasesExportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DatabasesExportFuture struct {
 	azure.Future
 }
@@ -1838,8 +847,7 @@ func (future *DatabasesExportFuture) Result(client DatabasesClient) (ier ImportE
 	return
 }
 
-// DatabasesImportFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabasesImportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DatabasesImportFuture struct {
 	azure.Future
 }
@@ -1867,8 +875,7 @@ func (future *DatabasesImportFuture) Result(client DatabasesClient) (ier ImportE
 	return
 }
 
-// DatabasesPauseFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabasesPauseFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DatabasesPauseFuture struct {
 	azure.Future
 }
@@ -1890,8 +897,7 @@ func (future *DatabasesPauseFuture) Result(client DatabasesClient) (ar autorest.
 	return
 }
 
-// DatabasesResumeFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabasesResumeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DatabasesResumeFuture struct {
 	azure.Future
 }
@@ -1913,8 +919,7 @@ func (future *DatabasesResumeFuture) Result(client DatabasesClient) (ar autorest
 	return
 }
 
-// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DatabasesUpdateFuture struct {
 	azure.Future
 }
@@ -2160,6 +1165,18 @@ type DataMaskingPolicyProperties struct {
 	MaskingLevel *string `json:"maskingLevel,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DataMaskingPolicyProperties.
+func (dmpp DataMaskingPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dmpp.DataMaskingState != "" {
+		objectMap["dataMaskingState"] = dmpp.DataMaskingState
+	}
+	if dmpp.ExemptPrincipals != nil {
+		objectMap["exemptPrincipals"] = dmpp.ExemptPrincipals
+	}
+	return json.Marshal(objectMap)
+}
+
 // DataMaskingRule represents a database data masking rule.
 type DataMaskingRule struct {
 	autorest.Response `json:"-"`
@@ -2290,6 +1307,45 @@ type DataMaskingRuleProperties struct {
 	ReplacementString *string `json:"replacementString,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DataMaskingRuleProperties.
+func (dmrp DataMaskingRuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dmrp.AliasName != nil {
+		objectMap["aliasName"] = dmrp.AliasName
+	}
+	if dmrp.RuleState != "" {
+		objectMap["ruleState"] = dmrp.RuleState
+	}
+	if dmrp.SchemaName != nil {
+		objectMap["schemaName"] = dmrp.SchemaName
+	}
+	if dmrp.TableName != nil {
+		objectMap["tableName"] = dmrp.TableName
+	}
+	if dmrp.ColumnName != nil {
+		objectMap["columnName"] = dmrp.ColumnName
+	}
+	if dmrp.MaskingFunction != "" {
+		objectMap["maskingFunction"] = dmrp.MaskingFunction
+	}
+	if dmrp.NumberFrom != nil {
+		objectMap["numberFrom"] = dmrp.NumberFrom
+	}
+	if dmrp.NumberTo != nil {
+		objectMap["numberTo"] = dmrp.NumberTo
+	}
+	if dmrp.PrefixSize != nil {
+		objectMap["prefixSize"] = dmrp.PrefixSize
+	}
+	if dmrp.SuffixSize != nil {
+		objectMap["suffixSize"] = dmrp.SuffixSize
+	}
+	if dmrp.ReplacementString != nil {
+		objectMap["replacementString"] = dmrp.ReplacementString
+	}
+	return json.Marshal(objectMap)
+}
+
 // EditionCapability the edition capability.
 type EditionCapability struct {
 	// Name - READ-ONLY; The database edition name.
@@ -2300,6 +1356,15 @@ type EditionCapability struct {
 	Status CapabilityStatus `json:"status,omitempty"`
 	// Reason - The reason for the capability not being available.
 	Reason *string `json:"reason,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EditionCapability.
+func (ec EditionCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ec.Reason != nil {
+		objectMap["reason"] = ec.Reason
+	}
+	return json.Marshal(objectMap)
 }
 
 // ElasticPool represents a database elastic pool.
@@ -2699,6 +1764,15 @@ type ElasticPoolDtuCapability struct {
 	Reason *string `json:"reason,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ElasticPoolDtuCapability.
+func (epdc ElasticPoolDtuCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if epdc.Reason != nil {
+		objectMap["reason"] = epdc.Reason
+	}
+	return json.Marshal(objectMap)
+}
+
 // ElasticPoolEditionCapability the elastic pool edition capability.
 type ElasticPoolEditionCapability struct {
 	// Name - READ-ONLY; The elastic pool edition name.
@@ -2709,6 +1783,15 @@ type ElasticPoolEditionCapability struct {
 	Status CapabilityStatus `json:"status,omitempty"`
 	// Reason - The reason for the capability not being available.
 	Reason *string `json:"reason,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ElasticPoolEditionCapability.
+func (epec ElasticPoolEditionCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if epec.Reason != nil {
+		objectMap["reason"] = epec.Reason
+	}
+	return json.Marshal(objectMap)
 }
 
 // ElasticPoolListResult represents the response to a list elastic pool request.
@@ -2730,6 +1813,15 @@ type ElasticPoolPerDatabaseMaxDtuCapability struct {
 	Reason *string `json:"reason,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ElasticPoolPerDatabaseMaxDtuCapability.
+func (eppdmdc ElasticPoolPerDatabaseMaxDtuCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if eppdmdc.Reason != nil {
+		objectMap["reason"] = eppdmdc.Reason
+	}
+	return json.Marshal(objectMap)
+}
+
 // ElasticPoolPerDatabaseMinDtuCapability the minimum per-database DTU capability.
 type ElasticPoolPerDatabaseMinDtuCapability struct {
 	// Limit - READ-ONLY; The minimum DTUs per database.
@@ -2738,6 +1830,15 @@ type ElasticPoolPerDatabaseMinDtuCapability struct {
 	Status CapabilityStatus `json:"status,omitempty"`
 	// Reason - The reason for the capability not being available.
 	Reason *string `json:"reason,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ElasticPoolPerDatabaseMinDtuCapability.
+func (eppdmdc ElasticPoolPerDatabaseMinDtuCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if eppdmdc.Reason != nil {
+		objectMap["reason"] = eppdmdc.Reason
+	}
+	return json.Marshal(objectMap)
 }
 
 // ElasticPoolProperties represents the properties of an elastic pool.
@@ -2760,8 +1861,32 @@ type ElasticPoolProperties struct {
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 }
 
-// ElasticPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// MarshalJSON is the custom marshaler for ElasticPoolProperties.
+func (epp ElasticPoolProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if epp.Edition != "" {
+		objectMap["edition"] = epp.Edition
+	}
+	if epp.Dtu != nil {
+		objectMap["dtu"] = epp.Dtu
+	}
+	if epp.DatabaseDtuMax != nil {
+		objectMap["databaseDtuMax"] = epp.DatabaseDtuMax
+	}
+	if epp.DatabaseDtuMin != nil {
+		objectMap["databaseDtuMin"] = epp.DatabaseDtuMin
+	}
+	if epp.StorageMB != nil {
+		objectMap["storageMB"] = epp.StorageMB
+	}
+	if epp.ZoneRedundant != nil {
+		objectMap["zoneRedundant"] = epp.ZoneRedundant
+	}
+	return json.Marshal(objectMap)
+}
+
+// ElasticPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ElasticPoolsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -3008,8 +2133,7 @@ type EncryptionProtectorListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// EncryptionProtectorListResultIterator provides access to a complete listing of EncryptionProtector
-// values.
+// EncryptionProtectorListResultIterator provides access to a complete listing of EncryptionProtector values.
 type EncryptionProtectorListResultIterator struct {
 	i    int
 	page EncryptionProtectorListResultPage
@@ -3077,10 +2201,15 @@ func (eplr EncryptionProtectorListResult) IsEmpty() bool {
 	return eplr.Value == nil || len(*eplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (eplr EncryptionProtectorListResult) hasNextLink() bool {
+	return eplr.NextLink != nil && len(*eplr.NextLink) != 0
+}
+
 // encryptionProtectorListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (eplr EncryptionProtectorListResult) encryptionProtectorListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if eplr.NextLink == nil || len(to.String(eplr.NextLink)) < 1 {
+	if !eplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3108,11 +2237,16 @@ func (page *EncryptionProtectorListResultPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.eplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.eplr)
+		if err != nil {
+			return err
+		}
+		page.eplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.eplr = next
 	return nil
 }
 
@@ -3158,6 +2292,18 @@ type EncryptionProtectorProperties struct {
 	URI *string `json:"uri,omitempty"`
 	// Thumbprint - READ-ONLY; Thumbprint of the server key.
 	Thumbprint *string `json:"thumbprint,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EncryptionProtectorProperties.
+func (epp EncryptionProtectorProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if epp.ServerKeyName != nil {
+		objectMap["serverKeyName"] = epp.ServerKeyName
+	}
+	if epp.ServerKeyType != "" {
+		objectMap["serverKeyType"] = epp.ServerKeyType
+	}
+	return json.Marshal(objectMap)
 }
 
 // EncryptionProtectorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -3403,10 +2549,15 @@ func (fglr FailoverGroupListResult) IsEmpty() bool {
 	return fglr.Value == nil || len(*fglr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (fglr FailoverGroupListResult) hasNextLink() bool {
+	return fglr.NextLink != nil && len(*fglr.NextLink) != 0
+}
+
 // failoverGroupListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (fglr FailoverGroupListResult) failoverGroupListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if fglr.NextLink == nil || len(to.String(fglr.NextLink)) < 1 {
+	if !fglr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3434,11 +2585,16 @@ func (page *FailoverGroupListResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.fglr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.fglr)
+		if err != nil {
+			return err
+		}
+		page.fglr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.fglr = next
 	return nil
 }
 
@@ -3486,6 +2642,24 @@ type FailoverGroupProperties struct {
 	PartnerServers *[]PartnerInfo `json:"partnerServers,omitempty"`
 	// Databases - List of databases in the failover group.
 	Databases *[]string `json:"databases,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FailoverGroupProperties.
+func (fgp FailoverGroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fgp.ReadWriteEndpoint != nil {
+		objectMap["readWriteEndpoint"] = fgp.ReadWriteEndpoint
+	}
+	if fgp.ReadOnlyEndpoint != nil {
+		objectMap["readOnlyEndpoint"] = fgp.ReadOnlyEndpoint
+	}
+	if fgp.PartnerServers != nil {
+		objectMap["partnerServers"] = fgp.PartnerServers
+	}
+	if fgp.Databases != nil {
+		objectMap["databases"] = fgp.Databases
+	}
+	return json.Marshal(objectMap)
 }
 
 // FailoverGroupReadOnlyEndpoint read-only endpoint of the failover group instance.
@@ -3583,8 +2757,8 @@ func (future *FailoverGroupsFailoverFuture) Result(client FailoverGroupsClient) 
 	return
 }
 
-// FailoverGroupsForceFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// FailoverGroupsForceFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type FailoverGroupsForceFailoverAllowDataLossFuture struct {
 	azure.Future
 }
@@ -3924,6 +3098,15 @@ type GeoBackupPolicyProperties struct {
 	StorageType *string `json:"storageType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GeoBackupPolicyProperties.
+func (gbpp GeoBackupPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gbpp.State != "" {
+		objectMap["state"] = gbpp.State
+	}
+	return json.Marshal(objectMap)
+}
+
 // ImportExportResponse response for Import/Export Get operation.
 type ImportExportResponse struct {
 	autorest.Response `json:"-"`
@@ -4152,6 +3335,15 @@ type LocationCapabilities struct {
 	Reason *string `json:"reason,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LocationCapabilities.
+func (lc LocationCapabilities) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lc.Reason != nil {
+		objectMap["reason"] = lc.Reason
+	}
+	return json.Marshal(objectMap)
+}
+
 // ManagedInstance an Azure SQL managed instance.
 type ManagedInstance struct {
 	autorest.Response `json:"-"`
@@ -4358,10 +3550,15 @@ func (milr ManagedInstanceListResult) IsEmpty() bool {
 	return milr.Value == nil || len(*milr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (milr ManagedInstanceListResult) hasNextLink() bool {
+	return milr.NextLink != nil && len(*milr.NextLink) != 0
+}
+
 // managedInstanceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (milr ManagedInstanceListResult) managedInstanceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if milr.NextLink == nil || len(to.String(milr.NextLink)) < 1 {
+	if !milr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4389,11 +3586,16 @@ func (page *ManagedInstanceListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.milr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.milr)
+		if err != nil {
+			return err
+		}
+		page.milr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.milr = next
 	return nil
 }
 
@@ -4478,6 +3680,63 @@ type ManagedInstanceProperties struct {
 	MaintenanceConfigurationID *string `json:"maintenanceConfigurationId,omitempty"`
 	// MinimalTLSVersion - Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
 	MinimalTLSVersion *string `json:"minimalTlsVersion,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedInstanceProperties.
+func (mip ManagedInstanceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mip.ManagedInstanceCreateMode != "" {
+		objectMap["managedInstanceCreateMode"] = mip.ManagedInstanceCreateMode
+	}
+	if mip.AdministratorLogin != nil {
+		objectMap["administratorLogin"] = mip.AdministratorLogin
+	}
+	if mip.AdministratorLoginPassword != nil {
+		objectMap["administratorLoginPassword"] = mip.AdministratorLoginPassword
+	}
+	if mip.SubnetID != nil {
+		objectMap["subnetId"] = mip.SubnetID
+	}
+	if mip.LicenseType != "" {
+		objectMap["licenseType"] = mip.LicenseType
+	}
+	if mip.VCores != nil {
+		objectMap["vCores"] = mip.VCores
+	}
+	if mip.StorageSizeInGB != nil {
+		objectMap["storageSizeInGB"] = mip.StorageSizeInGB
+	}
+	if mip.Collation != nil {
+		objectMap["collation"] = mip.Collation
+	}
+	if mip.DNSZonePartner != nil {
+		objectMap["dnsZonePartner"] = mip.DNSZonePartner
+	}
+	if mip.PublicDataEndpointEnabled != nil {
+		objectMap["publicDataEndpointEnabled"] = mip.PublicDataEndpointEnabled
+	}
+	if mip.SourceManagedInstanceID != nil {
+		objectMap["sourceManagedInstanceId"] = mip.SourceManagedInstanceID
+	}
+	if mip.RestorePointInTime != nil {
+		objectMap["restorePointInTime"] = mip.RestorePointInTime
+	}
+	if mip.ProxyOverride != "" {
+		objectMap["proxyOverride"] = mip.ProxyOverride
+	}
+	if mip.TimezoneID != nil {
+		objectMap["timezoneId"] = mip.TimezoneID
+	}
+	if mip.InstancePoolID != nil {
+		objectMap["instancePoolId"] = mip.InstancePoolID
+	}
+	if mip.MaintenanceConfigurationID != nil {
+		objectMap["maintenanceConfigurationId"] = mip.MaintenanceConfigurationID
+	}
+	if mip.MinimalTLSVersion != nil {
+		objectMap["minimalTlsVersion"] = mip.MinimalTLSVersion
+	}
+	return json.Marshal(objectMap)
 }
 
 // ManagedInstancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -4638,6 +3897,15 @@ type MaxSizeCapability struct {
 	Status CapabilityStatus `json:"status,omitempty"`
 	// Reason - The reason for the capability not being available.
 	Reason *string `json:"reason,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MaxSizeCapability.
+func (msc MaxSizeCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if msc.Reason != nil {
+		objectMap["reason"] = msc.Reason
+	}
+	return json.Marshal(objectMap)
 }
 
 // Metric database metrics.
@@ -4835,10 +4103,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4866,11 +4139,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -4912,6 +4190,15 @@ type PartnerInfo struct {
 	Location *string `json:"location,omitempty"`
 	// ReplicationRole - READ-ONLY; Replication role of the partner server. Possible values include: 'Primary', 'Secondary'
 	ReplicationRole FailoverGroupReplicationRole `json:"replicationRole,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PartnerInfo.
+func (pi PartnerInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pi.ID != nil {
+		objectMap["id"] = pi.ID
+	}
+	return json.Marshal(objectMap)
 }
 
 // PerformanceLevelCapability the performance level capability.
@@ -5236,8 +4523,8 @@ type ReplicationLinkProperties struct {
 	ReplicationState ReplicationState `json:"replicationState,omitempty"`
 }
 
-// ReplicationLinksFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// ReplicationLinksFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ReplicationLinksFailoverAllowDataLossFuture struct {
 	azure.Future
 }
@@ -5259,8 +4546,8 @@ func (future *ReplicationLinksFailoverAllowDataLossFuture) Result(client Replica
 	return
 }
 
-// ReplicationLinksFailoverFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ReplicationLinksFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ReplicationLinksFailoverFuture struct {
 	azure.Future
 }
@@ -5323,6 +4610,15 @@ type ResourceIdentity struct {
 	Type IdentityType `json:"type,omitempty"`
 	// TenantID - READ-ONLY; The Azure Active Directory tenant id.
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceIdentity.
+func (ri ResourceIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ri.Type != "" {
+		objectMap["type"] = ri.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // RestorableDroppedDatabase a restorable dropped database
@@ -5743,8 +5039,8 @@ func (saaa *ServerAzureADAdministrator) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServerAzureADAdministratorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// ServerAzureADAdministratorsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type ServerAzureADAdministratorsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -5911,8 +5207,17 @@ type ServerCommunicationLinkProperties struct {
 	PartnerServer *string `json:"partnerServer,omitempty"`
 }
 
-// ServerCommunicationLinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// MarshalJSON is the custom marshaler for ServerCommunicationLinkProperties.
+func (sclp ServerCommunicationLinkProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sclp.PartnerServer != nil {
+		objectMap["partnerServer"] = sclp.PartnerServer
+	}
+	return json.Marshal(objectMap)
+}
+
+// ServerCommunicationLinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ServerCommunicationLinksCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -6216,10 +5521,15 @@ func (sklr ServerKeyListResult) IsEmpty() bool {
 	return sklr.Value == nil || len(*sklr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sklr ServerKeyListResult) hasNextLink() bool {
+	return sklr.NextLink != nil && len(*sklr.NextLink) != 0
+}
+
 // serverKeyListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sklr ServerKeyListResult) serverKeyListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if sklr.NextLink == nil || len(to.String(sklr.NextLink)) < 1 {
+	if !sklr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -6247,11 +5557,16 @@ func (page *ServerKeyListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sklr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sklr)
+		if err != nil {
+			return err
+		}
+		page.sklr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sklr = next
 	return nil
 }
 
@@ -6299,8 +5614,26 @@ type ServerKeyProperties struct {
 	CreationDate *date.Time `json:"creationDate,omitempty"`
 }
 
-// ServerKeysCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// MarshalJSON is the custom marshaler for ServerKeyProperties.
+func (skp ServerKeyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if skp.ServerKeyType != "" {
+		objectMap["serverKeyType"] = skp.ServerKeyType
+	}
+	if skp.URI != nil {
+		objectMap["uri"] = skp.URI
+	}
+	if skp.Thumbprint != nil {
+		objectMap["thumbprint"] = skp.Thumbprint
+	}
+	if skp.CreationDate != nil {
+		objectMap["creationDate"] = skp.CreationDate
+	}
+	return json.Marshal(objectMap)
+}
+
+// ServerKeysCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServerKeysCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -6328,8 +5661,7 @@ func (future *ServerKeysCreateOrUpdateFuture) Result(client ServerKeysClient) (s
 	return
 }
 
-// ServerKeysDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServerKeysDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServerKeysDeleteFuture struct {
 	azure.Future
 }
@@ -6428,10 +5760,15 @@ func (slr ServerListResult) IsEmpty() bool {
 	return slr.Value == nil || len(*slr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (slr ServerListResult) hasNextLink() bool {
+	return slr.NextLink != nil && len(*slr.NextLink) != 0
+}
+
 // serverListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (slr ServerListResult) serverListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if slr.NextLink == nil || len(to.String(slr.NextLink)) < 1 {
+	if !slr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -6459,11 +5796,16 @@ func (page *ServerListResultPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.slr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.slr)
+		if err != nil {
+			return err
+		}
+		page.slr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.slr = next
 	return nil
 }
 
@@ -6511,6 +5853,21 @@ type ServerProperties struct {
 	FullyQualifiedDomainName *string `json:"fullyQualifiedDomainName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServerProperties.
+func (sp ServerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.AdministratorLogin != nil {
+		objectMap["administratorLogin"] = sp.AdministratorLogin
+	}
+	if sp.AdministratorLoginPassword != nil {
+		objectMap["administratorLoginPassword"] = sp.AdministratorLoginPassword
+	}
+	if sp.Version != nil {
+		objectMap["version"] = sp.Version
+	}
+	return json.Marshal(objectMap)
+}
+
 // ServersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServersCreateOrUpdateFuture struct {
@@ -6540,8 +5897,7 @@ func (future *ServersCreateOrUpdateFuture) Result(client ServersClient) (s Serve
 	return
 }
 
-// ServersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServersDeleteFuture struct {
 	azure.Future
 }
@@ -6563,8 +5919,7 @@ func (future *ServersDeleteFuture) Result(client ServersClient) (ar autorest.Res
 	return
 }
 
-// ServersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServersUpdateFuture struct {
 	azure.Future
 }
@@ -6684,6 +6039,15 @@ type ServerVersionCapability struct {
 	Reason *string `json:"reason,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServerVersionCapability.
+func (svc ServerVersionCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if svc.Reason != nil {
+		objectMap["reason"] = svc.Reason
+	}
+	return json.Marshal(objectMap)
+}
+
 // ServiceLevelObjectiveCapability the service objectives capability.
 type ServiceLevelObjectiveCapability struct {
 	// ID - READ-ONLY; The unique ID of the service objective.
@@ -6700,6 +6064,15 @@ type ServiceLevelObjectiveCapability struct {
 	Status CapabilityStatus `json:"status,omitempty"`
 	// Reason - The reason for the capability not being available.
 	Reason *string `json:"reason,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceLevelObjectiveCapability.
+func (sloc ServiceLevelObjectiveCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sloc.Reason != nil {
+		objectMap["reason"] = sloc.Reason
+	}
+	return json.Marshal(objectMap)
 }
 
 // ServiceObjective represents a database service objective.
@@ -7089,10 +6462,15 @@ func (sulr SubscriptionUsageListResult) IsEmpty() bool {
 	return sulr.Value == nil || len(*sulr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sulr SubscriptionUsageListResult) hasNextLink() bool {
+	return sulr.NextLink != nil && len(*sulr.NextLink) != 0
+}
+
 // subscriptionUsageListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sulr SubscriptionUsageListResult) subscriptionUsageListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if sulr.NextLink == nil || len(to.String(sulr.NextLink)) < 1 {
+	if !sulr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -7120,11 +6498,16 @@ func (page *SubscriptionUsageListResultPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sulr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sulr)
+		if err != nil {
+			return err
+		}
+		page.sulr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sulr = next
 	return nil
 }
 
@@ -7331,8 +6714,8 @@ type SyncAgentLinkedDatabaseListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// SyncAgentLinkedDatabaseListResultIterator provides access to a complete listing of
-// SyncAgentLinkedDatabase values.
+// SyncAgentLinkedDatabaseListResultIterator provides access to a complete listing of SyncAgentLinkedDatabase
+// values.
 type SyncAgentLinkedDatabaseListResultIterator struct {
 	i    int
 	page SyncAgentLinkedDatabaseListResultPage
@@ -7400,10 +6783,15 @@ func (saldlr SyncAgentLinkedDatabaseListResult) IsEmpty() bool {
 	return saldlr.Value == nil || len(*saldlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (saldlr SyncAgentLinkedDatabaseListResult) hasNextLink() bool {
+	return saldlr.NextLink != nil && len(*saldlr.NextLink) != 0
+}
+
 // syncAgentLinkedDatabaseListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (saldlr SyncAgentLinkedDatabaseListResult) syncAgentLinkedDatabaseListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if saldlr.NextLink == nil || len(to.String(saldlr.NextLink)) < 1 {
+	if !saldlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -7431,11 +6819,16 @@ func (page *SyncAgentLinkedDatabaseListResultPage) NextWithContext(ctx context.C
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.saldlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.saldlr)
+		if err != nil {
+			return err
+		}
+		page.saldlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.saldlr = next
 	return nil
 }
 
@@ -7562,10 +6955,15 @@ func (salr SyncAgentListResult) IsEmpty() bool {
 	return salr.Value == nil || len(*salr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (salr SyncAgentListResult) hasNextLink() bool {
+	return salr.NextLink != nil && len(*salr.NextLink) != 0
+}
+
 // syncAgentListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (salr SyncAgentListResult) syncAgentListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if salr.NextLink == nil || len(to.String(salr.NextLink)) < 1 {
+	if !salr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -7593,11 +6991,16 @@ func (page *SyncAgentListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.salr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.salr)
+		if err != nil {
+			return err
+		}
+		page.salr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.salr = next
 	return nil
 }
 
@@ -7649,8 +7052,17 @@ type SyncAgentProperties struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// SyncAgentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// MarshalJSON is the custom marshaler for SyncAgentProperties.
+func (sap SyncAgentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sap.SyncDatabaseID != nil {
+		objectMap["syncDatabaseId"] = sap.SyncDatabaseID
+	}
+	return json.Marshal(objectMap)
+}
+
+// SyncAgentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SyncAgentsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -7678,8 +7090,7 @@ func (future *SyncAgentsCreateOrUpdateFuture) Result(client SyncAgentsClient) (s
 	return
 }
 
-// SyncAgentsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// SyncAgentsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SyncAgentsDeleteFuture struct {
 	azure.Future
 }
@@ -7710,8 +7121,7 @@ type SyncDatabaseIDListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// SyncDatabaseIDListResultIterator provides access to a complete listing of SyncDatabaseIDProperties
-// values.
+// SyncDatabaseIDListResultIterator provides access to a complete listing of SyncDatabaseIDProperties values.
 type SyncDatabaseIDListResultIterator struct {
 	i    int
 	page SyncDatabaseIDListResultPage
@@ -7779,10 +7189,15 @@ func (sdilr SyncDatabaseIDListResult) IsEmpty() bool {
 	return sdilr.Value == nil || len(*sdilr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sdilr SyncDatabaseIDListResult) hasNextLink() bool {
+	return sdilr.NextLink != nil && len(*sdilr.NextLink) != 0
+}
+
 // syncDatabaseIDListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sdilr SyncDatabaseIDListResult) syncDatabaseIDListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if sdilr.NextLink == nil || len(to.String(sdilr.NextLink)) < 1 {
+	if !sdilr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -7810,11 +7225,16 @@ func (page *SyncDatabaseIDListResultPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sdilr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sdilr)
+		if err != nil {
+			return err
+		}
+		page.sdilr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sdilr = next
 	return nil
 }
 
@@ -7871,8 +7291,8 @@ type SyncFullSchemaPropertiesListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// SyncFullSchemaPropertiesListResultIterator provides access to a complete listing of
-// SyncFullSchemaProperties values.
+// SyncFullSchemaPropertiesListResultIterator provides access to a complete listing of SyncFullSchemaProperties
+// values.
 type SyncFullSchemaPropertiesListResultIterator struct {
 	i    int
 	page SyncFullSchemaPropertiesListResultPage
@@ -7940,10 +7360,15 @@ func (sfsplr SyncFullSchemaPropertiesListResult) IsEmpty() bool {
 	return sfsplr.Value == nil || len(*sfsplr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sfsplr SyncFullSchemaPropertiesListResult) hasNextLink() bool {
+	return sfsplr.NextLink != nil && len(*sfsplr.NextLink) != 0
+}
+
 // syncFullSchemaPropertiesListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sfsplr SyncFullSchemaPropertiesListResult) syncFullSchemaPropertiesListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if sfsplr.NextLink == nil || len(to.String(sfsplr.NextLink)) < 1 {
+	if !sfsplr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -7971,11 +7396,16 @@ func (page *SyncFullSchemaPropertiesListResultPage) NextWithContext(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sfsplr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sfsplr)
+		if err != nil {
+			return err
+		}
+		page.sfsplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sfsplr = next
 	return nil
 }
 
@@ -8191,10 +7621,15 @@ func (sglr SyncGroupListResult) IsEmpty() bool {
 	return sglr.Value == nil || len(*sglr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sglr SyncGroupListResult) hasNextLink() bool {
+	return sglr.NextLink != nil && len(*sglr.NextLink) != 0
+}
+
 // syncGroupListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sglr SyncGroupListResult) syncGroupListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if sglr.NextLink == nil || len(to.String(sglr.NextLink)) < 1 {
+	if !sglr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -8222,11 +7657,16 @@ func (page *SyncGroupListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sglr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sglr)
+		if err != nil {
+			return err
+		}
+		page.sglr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sglr = next
 	return nil
 }
 
@@ -8337,10 +7777,15 @@ func (sgllr SyncGroupLogListResult) IsEmpty() bool {
 	return sgllr.Value == nil || len(*sgllr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sgllr SyncGroupLogListResult) hasNextLink() bool {
+	return sgllr.NextLink != nil && len(*sgllr.NextLink) != 0
+}
+
 // syncGroupLogListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sgllr SyncGroupLogListResult) syncGroupLogListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if sgllr.NextLink == nil || len(to.String(sgllr.NextLink)) < 1 {
+	if !sgllr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -8368,11 +7813,16 @@ func (page *SyncGroupLogListResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sgllr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sgllr)
+		if err != nil {
+			return err
+		}
+		page.sgllr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sgllr = next
 	return nil
 }
 
@@ -8442,6 +7892,30 @@ type SyncGroupProperties struct {
 	Schema *SyncGroupSchema `json:"schema,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SyncGroupProperties.
+func (sgp SyncGroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sgp.Interval != nil {
+		objectMap["interval"] = sgp.Interval
+	}
+	if sgp.ConflictResolutionPolicy != "" {
+		objectMap["conflictResolutionPolicy"] = sgp.ConflictResolutionPolicy
+	}
+	if sgp.SyncDatabaseID != nil {
+		objectMap["syncDatabaseId"] = sgp.SyncDatabaseID
+	}
+	if sgp.HubDatabaseUserName != nil {
+		objectMap["hubDatabaseUserName"] = sgp.HubDatabaseUserName
+	}
+	if sgp.HubDatabasePassword != nil {
+		objectMap["hubDatabasePassword"] = sgp.HubDatabasePassword
+	}
+	if sgp.Schema != nil {
+		objectMap["schema"] = sgp.Schema
+	}
+	return json.Marshal(objectMap)
+}
+
 // SyncGroupSchema properties of sync group schema.
 type SyncGroupSchema struct {
 	// Tables - List of tables in sync group schema.
@@ -8468,8 +7942,8 @@ type SyncGroupSchemaTableColumn struct {
 	DataType *string `json:"dataType,omitempty"`
 }
 
-// SyncGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// SyncGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SyncGroupsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -8497,8 +7971,7 @@ func (future *SyncGroupsCreateOrUpdateFuture) Result(client SyncGroupsClient) (s
 	return
 }
 
-// SyncGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// SyncGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SyncGroupsDeleteFuture struct {
 	azure.Future
 }
@@ -8520,8 +7993,8 @@ func (future *SyncGroupsDeleteFuture) Result(client SyncGroupsClient) (ar autore
 	return
 }
 
-// SyncGroupsRefreshHubSchemaFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// SyncGroupsRefreshHubSchemaFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SyncGroupsRefreshHubSchemaFuture struct {
 	azure.Future
 }
@@ -8543,8 +8016,7 @@ func (future *SyncGroupsRefreshHubSchemaFuture) Result(client SyncGroupsClient) 
 	return
 }
 
-// SyncGroupsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// SyncGroupsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SyncGroupsUpdateFuture struct {
 	azure.Future
 }
@@ -8722,10 +8194,15 @@ func (smlr SyncMemberListResult) IsEmpty() bool {
 	return smlr.Value == nil || len(*smlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (smlr SyncMemberListResult) hasNextLink() bool {
+	return smlr.NextLink != nil && len(*smlr.NextLink) != 0
+}
+
 // syncMemberListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (smlr SyncMemberListResult) syncMemberListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if smlr.NextLink == nil || len(to.String(smlr.NextLink)) < 1 {
+	if !smlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -8753,11 +8230,16 @@ func (page *SyncMemberListResultPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.smlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.smlr)
+		if err != nil {
+			return err
+		}
+		page.smlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.smlr = next
 	return nil
 }
 
@@ -8813,8 +8295,38 @@ type SyncMemberProperties struct {
 	SyncState SyncMemberState `json:"syncState,omitempty"`
 }
 
-// SyncMembersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// MarshalJSON is the custom marshaler for SyncMemberProperties.
+func (smp SyncMemberProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if smp.DatabaseType != "" {
+		objectMap["databaseType"] = smp.DatabaseType
+	}
+	if smp.SyncAgentID != nil {
+		objectMap["syncAgentId"] = smp.SyncAgentID
+	}
+	if smp.SQLServerDatabaseID != nil {
+		objectMap["sqlServerDatabaseId"] = smp.SQLServerDatabaseID
+	}
+	if smp.ServerName != nil {
+		objectMap["serverName"] = smp.ServerName
+	}
+	if smp.DatabaseName != nil {
+		objectMap["databaseName"] = smp.DatabaseName
+	}
+	if smp.UserName != nil {
+		objectMap["userName"] = smp.UserName
+	}
+	if smp.Password != nil {
+		objectMap["password"] = smp.Password
+	}
+	if smp.SyncDirection != "" {
+		objectMap["syncDirection"] = smp.SyncDirection
+	}
+	return json.Marshal(objectMap)
+}
+
+// SyncMembersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SyncMembersCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -9317,10 +8829,15 @@ func (vclr VirtualClusterListResult) IsEmpty() bool {
 	return vclr.Value == nil || len(*vclr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (vclr VirtualClusterListResult) hasNextLink() bool {
+	return vclr.NextLink != nil && len(*vclr.NextLink) != 0
+}
+
 // virtualClusterListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (vclr VirtualClusterListResult) virtualClusterListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if vclr.NextLink == nil || len(to.String(vclr.NextLink)) < 1 {
+	if !vclr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -9348,11 +8865,16 @@ func (page *VirtualClusterListResultPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.vclr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.vclr)
+		if err != nil {
+			return err
+		}
+		page.vclr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.vclr = next
 	return nil
 }
 
@@ -9394,6 +8916,15 @@ type VirtualClusterProperties struct {
 	Family *string `json:"family,omitempty"`
 	// ChildResources - READ-ONLY; List of resources in this virtual cluster.
 	ChildResources *[]string `json:"childResources,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualClusterProperties.
+func (vcp VirtualClusterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vcp.Family != nil {
+		objectMap["family"] = vcp.Family
+	}
+	return json.Marshal(objectMap)
 }
 
 // VirtualClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -9651,10 +9182,15 @@ func (vnrlr VirtualNetworkRuleListResult) IsEmpty() bool {
 	return vnrlr.Value == nil || len(*vnrlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (vnrlr VirtualNetworkRuleListResult) hasNextLink() bool {
+	return vnrlr.NextLink != nil && len(*vnrlr.NextLink) != 0
+}
+
 // virtualNetworkRuleListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (vnrlr VirtualNetworkRuleListResult) virtualNetworkRuleListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if vnrlr.NextLink == nil || len(to.String(vnrlr.NextLink)) < 1 {
+	if !vnrlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -9682,11 +9218,16 @@ func (page *VirtualNetworkRuleListResultPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.vnrlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.vnrlr)
+		if err != nil {
+			return err
+		}
+		page.vnrlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.vnrlr = next
 	return nil
 }
 
@@ -9730,6 +9271,18 @@ type VirtualNetworkRuleProperties struct {
 	State VirtualNetworkRuleState `json:"state,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VirtualNetworkRuleProperties.
+func (vnrp VirtualNetworkRuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vnrp.VirtualNetworkSubnetID != nil {
+		objectMap["virtualNetworkSubnetId"] = vnrp.VirtualNetworkSubnetID
+	}
+	if vnrp.IgnoreMissingVnetServiceEndpoint != nil {
+		objectMap["ignoreMissingVnetServiceEndpoint"] = vnrp.IgnoreMissingVnetServiceEndpoint
+	}
+	return json.Marshal(objectMap)
+}
+
 // VirtualNetworkRulesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VirtualNetworkRulesCreateOrUpdateFuture struct {
@@ -9759,8 +9312,8 @@ func (future *VirtualNetworkRulesCreateOrUpdateFuture) Result(client VirtualNetw
 	return
 }
 
-// VirtualNetworkRulesDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// VirtualNetworkRulesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type VirtualNetworkRulesDeleteFuture struct {
 	azure.Future
 }

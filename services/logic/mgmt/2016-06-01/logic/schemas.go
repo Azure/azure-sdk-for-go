@@ -316,6 +316,9 @@ func (client SchemasClient) ListByIntegrationAccounts(ctx context.Context, resou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.SchemasClient", "ListByIntegrationAccounts", resp, "Failure responding to request")
 	}
+	if result.iaslr.hasNextLink() && result.iaslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

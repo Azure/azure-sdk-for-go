@@ -31,86 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/blockchain/mgmt/2018-06-01-preview/blockchain"
 
-// MemberProvisioningState enumerates the values for member provisioning state.
-type MemberProvisioningState string
-
-const (
-	// Deleting ...
-	Deleting MemberProvisioningState = "Deleting"
-	// Failed ...
-	Failed MemberProvisioningState = "Failed"
-	// NotSpecified ...
-	NotSpecified MemberProvisioningState = "NotSpecified"
-	// Stale ...
-	Stale MemberProvisioningState = "Stale"
-	// Succeeded ...
-	Succeeded MemberProvisioningState = "Succeeded"
-	// Updating ...
-	Updating MemberProvisioningState = "Updating"
-)
-
-// PossibleMemberProvisioningStateValues returns an array of possible values for the MemberProvisioningState const type.
-func PossibleMemberProvisioningStateValues() []MemberProvisioningState {
-	return []MemberProvisioningState{Deleting, Failed, NotSpecified, Stale, Succeeded, Updating}
-}
-
-// NameAvailabilityReason enumerates the values for name availability reason.
-type NameAvailabilityReason string
-
-const (
-	// NameAvailabilityReasonAlreadyExists ...
-	NameAvailabilityReasonAlreadyExists NameAvailabilityReason = "AlreadyExists"
-	// NameAvailabilityReasonInvalid ...
-	NameAvailabilityReasonInvalid NameAvailabilityReason = "Invalid"
-	// NameAvailabilityReasonNotSpecified ...
-	NameAvailabilityReasonNotSpecified NameAvailabilityReason = "NotSpecified"
-)
-
-// PossibleNameAvailabilityReasonValues returns an array of possible values for the NameAvailabilityReason const type.
-func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
-	return []NameAvailabilityReason{NameAvailabilityReasonAlreadyExists, NameAvailabilityReasonInvalid, NameAvailabilityReasonNotSpecified}
-}
-
-// NodeProvisioningState enumerates the values for node provisioning state.
-type NodeProvisioningState string
-
-const (
-	// NodeProvisioningStateDeleting ...
-	NodeProvisioningStateDeleting NodeProvisioningState = "Deleting"
-	// NodeProvisioningStateFailed ...
-	NodeProvisioningStateFailed NodeProvisioningState = "Failed"
-	// NodeProvisioningStateNotSpecified ...
-	NodeProvisioningStateNotSpecified NodeProvisioningState = "NotSpecified"
-	// NodeProvisioningStateSucceeded ...
-	NodeProvisioningStateSucceeded NodeProvisioningState = "Succeeded"
-	// NodeProvisioningStateUpdating ...
-	NodeProvisioningStateUpdating NodeProvisioningState = "Updating"
-)
-
-// PossibleNodeProvisioningStateValues returns an array of possible values for the NodeProvisioningState const type.
-func PossibleNodeProvisioningStateValues() []NodeProvisioningState {
-	return []NodeProvisioningState{NodeProvisioningStateDeleting, NodeProvisioningStateFailed, NodeProvisioningStateNotSpecified, NodeProvisioningStateSucceeded, NodeProvisioningStateUpdating}
-}
-
-// Protocol enumerates the values for protocol.
-type Protocol string
-
-const (
-	// ProtocolCorda ...
-	ProtocolCorda Protocol = "Corda"
-	// ProtocolNotSpecified ...
-	ProtocolNotSpecified Protocol = "NotSpecified"
-	// ProtocolParity ...
-	ProtocolParity Protocol = "Parity"
-	// ProtocolQuorum ...
-	ProtocolQuorum Protocol = "Quorum"
-)
-
-// PossibleProtocolValues returns an array of possible values for the Protocol const type.
-func PossibleProtocolValues() []Protocol {
-	return []Protocol{ProtocolCorda, ProtocolNotSpecified, ProtocolParity, ProtocolQuorum}
-}
-
 // APIKey API key payload which is exposed in the request/response of the resource provider.
 type APIKey struct {
 	// KeyName - Gets or sets the API key name.
@@ -238,10 +158,15 @@ func (cmc ConsortiumMemberCollection) IsEmpty() bool {
 	return cmc.Value == nil || len(*cmc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cmc ConsortiumMemberCollection) hasNextLink() bool {
+	return cmc.NextLink != nil && len(*cmc.NextLink) != 0
+}
+
 // consortiumMemberCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cmc ConsortiumMemberCollection) consortiumMemberCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if cmc.NextLink == nil || len(to.String(cmc.NextLink)) < 1 {
+	if !cmc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -269,11 +194,16 @@ func (page *ConsortiumMemberCollectionPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cmc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cmc)
+		if err != nil {
+			return err
+		}
+		page.cmc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cmc = next
 	return nil
 }
 
@@ -317,8 +247,7 @@ type FirewallRule struct {
 	EndIPAddress *string `json:"endIpAddress,omitempty"`
 }
 
-// Member payload of the blockchain member which is exposed in the request/response of the resource
-// provider.
+// Member payload of the blockchain member which is exposed in the request/response of the resource provider.
 type Member struct {
 	autorest.Response `json:"-"`
 	// MemberProperties - Gets or sets the blockchain member properties.
@@ -433,8 +362,8 @@ func (mVar *Member) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// MemberCollection collection of the blockchain member payload which is exposed in the request/response of
-// the resource provider.
+// MemberCollection collection of the blockchain member payload which is exposed in the request/response of the
+// resource provider.
 type MemberCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Gets or sets the collection of blockchain members.
@@ -512,10 +441,15 @@ func (mc MemberCollection) IsEmpty() bool {
 	return mc.Value == nil || len(*mc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mc MemberCollection) hasNextLink() bool {
+	return mc.NextLink != nil && len(*mc.NextLink) != 0
+}
+
 // memberCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mc MemberCollection) memberCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if mc.NextLink == nil || len(to.String(mc.NextLink)) < 1 {
+	if !mc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -543,11 +477,16 @@ func (page *MemberCollectionPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mc)
+		if err != nil {
+			return err
+		}
+		page.mc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mc = next
 	return nil
 }
 
@@ -619,6 +558,36 @@ type MemberProperties struct {
 	FirewallRules *[]FirewallRule `json:"firewallRules,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MemberProperties.
+func (mp MemberProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mp.Protocol != "" {
+		objectMap["protocol"] = mp.Protocol
+	}
+	if mp.ValidatorNodesSku != nil {
+		objectMap["validatorNodesSku"] = mp.ValidatorNodesSku
+	}
+	if mp.Password != nil {
+		objectMap["password"] = mp.Password
+	}
+	if mp.Consortium != nil {
+		objectMap["consortium"] = mp.Consortium
+	}
+	if mp.ConsortiumManagementAccountPassword != nil {
+		objectMap["consortiumManagementAccountPassword"] = mp.ConsortiumManagementAccountPassword
+	}
+	if mp.ConsortiumRole != nil {
+		objectMap["consortiumRole"] = mp.ConsortiumRole
+	}
+	if mp.ConsortiumMemberDisplayName != nil {
+		objectMap["consortiumMemberDisplayName"] = mp.ConsortiumMemberDisplayName
+	}
+	if mp.FirewallRules != nil {
+		objectMap["firewallRules"] = mp.FirewallRules
+	}
+	return json.Marshal(objectMap)
+}
+
 // MemberPropertiesUpdate update the payload of the blockchain member properties for a blockchain member.
 type MemberPropertiesUpdate struct {
 	// ConsortiumManagementAccountPassword - Sets the managed consortium management account password.
@@ -629,8 +598,7 @@ type MemberPropertiesUpdate struct {
 	FirewallRules *[]FirewallRule `json:"firewallRules,omitempty"`
 }
 
-// MembersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// MembersCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type MembersCreateFuture struct {
 	azure.Future
 }
@@ -658,8 +626,7 @@ func (future *MembersCreateFuture) Result(client MembersClient) (mVar Member, er
 	return
 }
 
-// MembersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// MembersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type MembersDeleteFuture struct {
 	azure.Future
 }
@@ -746,8 +713,8 @@ type NameAvailability struct {
 	Reason NameAvailabilityReason `json:"reason,omitempty"`
 }
 
-// NameAvailabilityRequest name availability request payload which is exposed in the request of the
-// resource provider.
+// NameAvailabilityRequest name availability request payload which is exposed in the request of the resource
+// provider.
 type NameAvailabilityRequest struct {
 	// Name - Gets or sets the name to check.
 	Name *string `json:"name,omitempty"`
@@ -788,8 +755,8 @@ type ResourceProviderOperation struct {
 	Display *ResourceProviderOperationDisplay `json:"display,omitempty"`
 }
 
-// ResourceProviderOperationCollection collection of operation payload which is exposed in the response of
-// the resource provider.
+// ResourceProviderOperationCollection collection of operation payload which is exposed in the response of the
+// resource provider.
 type ResourceProviderOperationCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Gets or sets the collection of operations.
@@ -868,10 +835,15 @@ func (rpoc ResourceProviderOperationCollection) IsEmpty() bool {
 	return rpoc.Value == nil || len(*rpoc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rpoc ResourceProviderOperationCollection) hasNextLink() bool {
+	return rpoc.NextLink != nil && len(*rpoc.NextLink) != 0
+}
+
 // resourceProviderOperationCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rpoc ResourceProviderOperationCollection) resourceProviderOperationCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if rpoc.NextLink == nil || len(to.String(rpoc.NextLink)) < 1 {
+	if !rpoc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -899,11 +871,16 @@ func (page *ResourceProviderOperationCollectionPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rpoc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rpoc)
+		if err != nil {
+			return err
+		}
+		page.rpoc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rpoc = next
 	return nil
 }
 
@@ -937,8 +914,8 @@ func NewResourceProviderOperationCollectionPage(getNextPage func(context.Context
 	return ResourceProviderOperationCollectionPage{fn: getNextPage}
 }
 
-// ResourceProviderOperationDisplay operation display payload which is exposed in the response of the
-// resource provider.
+// ResourceProviderOperationDisplay operation display payload which is exposed in the response of the resource
+// provider.
 type ResourceProviderOperationDisplay struct {
 	// Provider - Gets or sets the name of the provider for display purposes.
 	Provider *string `json:"provider,omitempty"`
@@ -1098,8 +1075,8 @@ func (tn *TransactionNode) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// TransactionNodeCollection collection of transaction node payload which is exposed in the
-// request/response of the resource provider.
+// TransactionNodeCollection collection of transaction node payload which is exposed in the request/response of
+// the resource provider.
 type TransactionNodeCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Gets or sets the collection of transaction nodes.
@@ -1177,10 +1154,15 @@ func (tnc TransactionNodeCollection) IsEmpty() bool {
 	return tnc.Value == nil || len(*tnc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tnc TransactionNodeCollection) hasNextLink() bool {
+	return tnc.NextLink != nil && len(*tnc.NextLink) != 0
+}
+
 // transactionNodeCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tnc TransactionNodeCollection) transactionNodeCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if tnc.NextLink == nil || len(to.String(tnc.NextLink)) < 1 {
+	if !tnc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1208,11 +1190,16 @@ func (page *TransactionNodeCollectionPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tnc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tnc)
+		if err != nil {
+			return err
+		}
+		page.tnc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tnc = next
 	return nil
 }
 
@@ -1246,8 +1233,7 @@ func NewTransactionNodeCollectionPage(getNextPage func(context.Context, Transact
 	return TransactionNodeCollectionPage{fn: getNextPage}
 }
 
-// TransactionNodeProperties payload of transaction node properties payload in the transaction node
-// payload.
+// TransactionNodeProperties payload of transaction node properties payload in the transaction node payload.
 type TransactionNodeProperties struct {
 	// ProvisioningState - READ-ONLY; Gets or sets the blockchain member provision state. Possible values include: 'NodeProvisioningStateNotSpecified', 'NodeProvisioningStateUpdating', 'NodeProvisioningStateDeleting', 'NodeProvisioningStateSucceeded', 'NodeProvisioningStateFailed'
 	ProvisioningState NodeProvisioningState `json:"provisioningState,omitempty"`
@@ -1261,6 +1247,18 @@ type TransactionNodeProperties struct {
 	Password *string `json:"password,omitempty"`
 	// FirewallRules - Gets or sets the firewall rules.
 	FirewallRules *[]FirewallRule `json:"firewallRules,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TransactionNodeProperties.
+func (tnp TransactionNodeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tnp.Password != nil {
+		objectMap["password"] = tnp.Password
+	}
+	if tnp.FirewallRules != nil {
+		objectMap["firewallRules"] = tnp.FirewallRules
+	}
+	return json.Marshal(objectMap)
 }
 
 // TransactionNodePropertiesUpdate update the payload of the transaction node properties in the transaction
@@ -1324,8 +1322,8 @@ func (future *TransactionNodesDeleteFuture) Result(client TransactionNodesClient
 	return
 }
 
-// TransactionNodeUpdate update the transaction node payload which is exposed in the request/response of
-// the resource provider.
+// TransactionNodeUpdate update the transaction node payload which is exposed in the request/response of the
+// resource provider.
 type TransactionNodeUpdate struct {
 	// TransactionNodePropertiesUpdate - Gets or sets the transaction node update properties.
 	*TransactionNodePropertiesUpdate `json:"properties,omitempty"`

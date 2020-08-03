@@ -31,126 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2017-01-01/aad"
 
-// ExternalAccess enumerates the values for external access.
-type ExternalAccess string
-
-const (
-	// Disabled ...
-	Disabled ExternalAccess = "Disabled"
-	// Enabled ...
-	Enabled ExternalAccess = "Enabled"
-)
-
-// PossibleExternalAccessValues returns an array of possible values for the ExternalAccess const type.
-func PossibleExternalAccessValues() []ExternalAccess {
-	return []ExternalAccess{Disabled, Enabled}
-}
-
-// FilteredSync enumerates the values for filtered sync.
-type FilteredSync string
-
-const (
-	// FilteredSyncDisabled ...
-	FilteredSyncDisabled FilteredSync = "Disabled"
-	// FilteredSyncEnabled ...
-	FilteredSyncEnabled FilteredSync = "Enabled"
-)
-
-// PossibleFilteredSyncValues returns an array of possible values for the FilteredSync const type.
-func PossibleFilteredSyncValues() []FilteredSync {
-	return []FilteredSync{FilteredSyncDisabled, FilteredSyncEnabled}
-}
-
-// Ldaps enumerates the values for ldaps.
-type Ldaps string
-
-const (
-	// LdapsDisabled ...
-	LdapsDisabled Ldaps = "Disabled"
-	// LdapsEnabled ...
-	LdapsEnabled Ldaps = "Enabled"
-)
-
-// PossibleLdapsValues returns an array of possible values for the Ldaps const type.
-func PossibleLdapsValues() []Ldaps {
-	return []Ldaps{LdapsDisabled, LdapsEnabled}
-}
-
-// NotifyDcAdmins enumerates the values for notify dc admins.
-type NotifyDcAdmins string
-
-const (
-	// NotifyDcAdminsDisabled ...
-	NotifyDcAdminsDisabled NotifyDcAdmins = "Disabled"
-	// NotifyDcAdminsEnabled ...
-	NotifyDcAdminsEnabled NotifyDcAdmins = "Enabled"
-)
-
-// PossibleNotifyDcAdminsValues returns an array of possible values for the NotifyDcAdmins const type.
-func PossibleNotifyDcAdminsValues() []NotifyDcAdmins {
-	return []NotifyDcAdmins{NotifyDcAdminsDisabled, NotifyDcAdminsEnabled}
-}
-
-// NotifyGlobalAdmins enumerates the values for notify global admins.
-type NotifyGlobalAdmins string
-
-const (
-	// NotifyGlobalAdminsDisabled ...
-	NotifyGlobalAdminsDisabled NotifyGlobalAdmins = "Disabled"
-	// NotifyGlobalAdminsEnabled ...
-	NotifyGlobalAdminsEnabled NotifyGlobalAdmins = "Enabled"
-)
-
-// PossibleNotifyGlobalAdminsValues returns an array of possible values for the NotifyGlobalAdmins const type.
-func PossibleNotifyGlobalAdminsValues() []NotifyGlobalAdmins {
-	return []NotifyGlobalAdmins{NotifyGlobalAdminsDisabled, NotifyGlobalAdminsEnabled}
-}
-
-// NtlmV1 enumerates the values for ntlm v1.
-type NtlmV1 string
-
-const (
-	// NtlmV1Disabled ...
-	NtlmV1Disabled NtlmV1 = "Disabled"
-	// NtlmV1Enabled ...
-	NtlmV1Enabled NtlmV1 = "Enabled"
-)
-
-// PossibleNtlmV1Values returns an array of possible values for the NtlmV1 const type.
-func PossibleNtlmV1Values() []NtlmV1 {
-	return []NtlmV1{NtlmV1Disabled, NtlmV1Enabled}
-}
-
-// SyncNtlmPasswords enumerates the values for sync ntlm passwords.
-type SyncNtlmPasswords string
-
-const (
-	// SyncNtlmPasswordsDisabled ...
-	SyncNtlmPasswordsDisabled SyncNtlmPasswords = "Disabled"
-	// SyncNtlmPasswordsEnabled ...
-	SyncNtlmPasswordsEnabled SyncNtlmPasswords = "Enabled"
-)
-
-// PossibleSyncNtlmPasswordsValues returns an array of possible values for the SyncNtlmPasswords const type.
-func PossibleSyncNtlmPasswordsValues() []SyncNtlmPasswords {
-	return []SyncNtlmPasswords{SyncNtlmPasswordsDisabled, SyncNtlmPasswordsEnabled}
-}
-
-// TLSV1 enumerates the values for tlsv1.
-type TLSV1 string
-
-const (
-	// TLSV1Disabled ...
-	TLSV1Disabled TLSV1 = "Disabled"
-	// TLSV1Enabled ...
-	TLSV1Enabled TLSV1 = "Enabled"
-)
-
-// PossibleTLSV1Values returns an array of possible values for the TLSV1 const type.
-func PossibleTLSV1Values() []TLSV1 {
-	return []TLSV1{TLSV1Disabled, TLSV1Enabled}
-}
-
 // DomainSecuritySettings domain Security Settings
 type DomainSecuritySettings struct {
 	// NtlmV1 - A flag to determine whether or not NtlmV1 is enabled or disabled. Possible values include: 'NtlmV1Enabled', 'NtlmV1Disabled'
@@ -285,6 +165,15 @@ type DomainServiceListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DomainServiceListResult.
+func (dslr DomainServiceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dslr.Value != nil {
+		objectMap["value"] = dslr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // DomainServiceListResultIterator provides access to a complete listing of DomainService values.
 type DomainServiceListResultIterator struct {
 	i    int
@@ -353,10 +242,15 @@ func (dslr DomainServiceListResult) IsEmpty() bool {
 	return dslr.Value == nil || len(*dslr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dslr DomainServiceListResult) hasNextLink() bool {
+	return dslr.NextLink != nil && len(*dslr.NextLink) != 0
+}
+
 // domainServiceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dslr DomainServiceListResult) domainServiceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dslr.NextLink == nil || len(to.String(dslr.NextLink)) < 1 {
+	if !dslr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -384,11 +278,16 @@ func (page *DomainServiceListResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dslr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dslr)
+		if err != nil {
+			return err
+		}
+		page.dslr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dslr = next
 	return nil
 }
 
@@ -452,6 +351,30 @@ type DomainServiceProperties struct {
 	ServiceStatus *string `json:"serviceStatus,omitempty"`
 	// ProvisioningState - READ-ONLY; the current deployment or provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DomainServiceProperties.
+func (dsp DomainServiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dsp.DomainName != nil {
+		objectMap["domainName"] = dsp.DomainName
+	}
+	if dsp.SubnetID != nil {
+		objectMap["subnetId"] = dsp.SubnetID
+	}
+	if dsp.LdapsSettings != nil {
+		objectMap["ldapsSettings"] = dsp.LdapsSettings
+	}
+	if dsp.NotificationSettings != nil {
+		objectMap["notificationSettings"] = dsp.NotificationSettings
+	}
+	if dsp.DomainSecuritySettings != nil {
+		objectMap["domainSecuritySettings"] = dsp.DomainSecuritySettings
+	}
+	if dsp.FilteredSync != "" {
+		objectMap["filteredSync"] = dsp.FilteredSync
+	}
+	return json.Marshal(objectMap)
 }
 
 // DomainServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -583,6 +506,24 @@ type LdapsSettings struct {
 	ExternalAccessIPAddress *string `json:"externalAccessIpAddress,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LdapsSettings.
+func (ls LdapsSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ls.Ldaps != "" {
+		objectMap["ldaps"] = ls.Ldaps
+	}
+	if ls.PfxCertificate != nil {
+		objectMap["pfxCertificate"] = ls.PfxCertificate
+	}
+	if ls.PfxCertificatePassword != nil {
+		objectMap["pfxCertificatePassword"] = ls.PfxCertificatePassword
+	}
+	if ls.ExternalAccess != "" {
+		objectMap["externalAccess"] = ls.ExternalAccess
+	}
+	return json.Marshal(objectMap)
+}
+
 // NotificationSettings settings for notification
 type NotificationSettings struct {
 	// NotifyGlobalAdmins - Should global admins be notified. Possible values include: 'NotifyGlobalAdminsEnabled', 'NotifyGlobalAdminsDisabled'
@@ -622,6 +563,15 @@ type OperationEntityListResult struct {
 	Value *[]OperationEntity `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The continuation token for the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationEntityListResult.
+func (oelr OperationEntityListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if oelr.Value != nil {
+		objectMap["value"] = oelr.Value
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationEntityListResultIterator provides access to a complete listing of OperationEntity values.
@@ -692,10 +642,15 @@ func (oelr OperationEntityListResult) IsEmpty() bool {
 	return oelr.Value == nil || len(*oelr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (oelr OperationEntityListResult) hasNextLink() bool {
+	return oelr.NextLink != nil && len(*oelr.NextLink) != 0
+}
+
 // operationEntityListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (oelr OperationEntityListResult) operationEntityListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if oelr.NextLink == nil || len(to.String(oelr.NextLink)) < 1 {
+	if !oelr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -723,11 +678,16 @@ func (page *OperationEntityListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.oelr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.oelr)
+		if err != nil {
+			return err
+		}
+		page.oelr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.oelr = next
 	return nil
 }
 

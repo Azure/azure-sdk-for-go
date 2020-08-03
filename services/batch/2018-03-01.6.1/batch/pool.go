@@ -1047,6 +1047,9 @@ func (client PoolClient) List(ctx context.Context, filter string, selectParamete
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "List", resp, "Failure responding to request")
 	}
+	if result.cplr.hasNextLink() && result.cplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1213,6 +1216,9 @@ func (client PoolClient) ListUsageMetrics(ctx context.Context, startTime *date.T
 	result.plumr, err = client.ListUsageMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.PoolClient", "ListUsageMetrics", resp, "Failure responding to request")
+	}
+	if result.plumr.hasNextLink() && result.plumr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

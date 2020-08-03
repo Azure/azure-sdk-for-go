@@ -85,6 +85,9 @@ func (client UsageAggregatesClient) List(ctx context.Context, reportedStartTime 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", resp, "Failure responding to request")
 	}
+	if result.ualr.hasNextLink() && result.ualr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

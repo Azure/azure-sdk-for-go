@@ -162,6 +162,9 @@ func (client ArmTemplatesClient) List(ctx context.Context, resourceGroupName str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ArmTemplatesClient", "List", resp, "Failure responding to request")
 	}
+	if result.atl.hasNextLink() && result.atl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

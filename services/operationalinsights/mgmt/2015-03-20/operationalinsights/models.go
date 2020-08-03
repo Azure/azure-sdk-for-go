@@ -30,76 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-03-20/operationalinsights"
 
-// PurgeState enumerates the values for purge state.
-type PurgeState string
-
-const (
-	// Completed ...
-	Completed PurgeState = "completed"
-	// Pending ...
-	Pending PurgeState = "pending"
-)
-
-// PossiblePurgeStateValues returns an array of possible values for the PurgeState const type.
-func PossiblePurgeStateValues() []PurgeState {
-	return []PurgeState{Completed, Pending}
-}
-
-// SearchSortEnum enumerates the values for search sort enum.
-type SearchSortEnum string
-
-const (
-	// Asc ...
-	Asc SearchSortEnum = "asc"
-	// Desc ...
-	Desc SearchSortEnum = "desc"
-)
-
-// PossibleSearchSortEnumValues returns an array of possible values for the SearchSortEnum const type.
-func PossibleSearchSortEnumValues() []SearchSortEnum {
-	return []SearchSortEnum{Asc, Desc}
-}
-
-// SkuNameEnum enumerates the values for sku name enum.
-type SkuNameEnum string
-
-const (
-	// CapacityReservation ...
-	CapacityReservation SkuNameEnum = "CapacityReservation"
-	// Free ...
-	Free SkuNameEnum = "Free"
-	// PerGB2018 ...
-	PerGB2018 SkuNameEnum = "PerGB2018"
-	// PerNode ...
-	PerNode SkuNameEnum = "PerNode"
-	// Premium ...
-	Premium SkuNameEnum = "Premium"
-	// Standalone ...
-	Standalone SkuNameEnum = "Standalone"
-	// Standard ...
-	Standard SkuNameEnum = "Standard"
-)
-
-// PossibleSkuNameEnumValues returns an array of possible values for the SkuNameEnum const type.
-func PossibleSkuNameEnumValues() []SkuNameEnum {
-	return []SkuNameEnum{CapacityReservation, Free, PerGB2018, PerNode, Premium, Standalone, Standard}
-}
-
-// StorageInsightState enumerates the values for storage insight state.
-type StorageInsightState string
-
-const (
-	// ERROR ...
-	ERROR StorageInsightState = "ERROR"
-	// OK ...
-	OK StorageInsightState = "OK"
-)
-
-// PossibleStorageInsightStateValues returns an array of possible values for the StorageInsightState const type.
-func PossibleStorageInsightStateValues() []StorageInsightState {
-	return []StorageInsightState{ERROR, OK}
-}
-
 // AvailableServiceTier service Tier details.
 type AvailableServiceTier struct {
 	// ServiceTier - READ-ONLY; The name of the Service Tier. Possible values include: 'Free', 'Standard', 'Premium', 'PerNode', 'PerGB2018', 'Standalone', 'CapacityReservation'
@@ -608,10 +538,15 @@ func (silr StorageInsightListResult) IsEmpty() bool {
 	return silr.Value == nil || len(*silr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (silr StorageInsightListResult) hasNextLink() bool {
+	return silr.OdataNextLink != nil && len(*silr.OdataNextLink) != 0
+}
+
 // storageInsightListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (silr StorageInsightListResult) storageInsightListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if silr.OdataNextLink == nil || len(to.String(silr.OdataNextLink)) < 1 {
+	if !silr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -639,11 +574,16 @@ func (page *StorageInsightListResultPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.silr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.silr)
+		if err != nil {
+			return err
+		}
+		page.silr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.silr = next
 	return nil
 }
 
@@ -687,6 +627,21 @@ type StorageInsightProperties struct {
 	StorageAccount *StorageAccount `json:"storageAccount,omitempty"`
 	// Status - READ-ONLY; The status of the storage insight
 	Status *StorageInsightStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StorageInsightProperties.
+func (sip StorageInsightProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sip.Containers != nil {
+		objectMap["containers"] = sip.Containers
+	}
+	if sip.Tables != nil {
+		objectMap["tables"] = sip.Tables
+	}
+	if sip.StorageAccount != nil {
+		objectMap["storageAccount"] = sip.StorageAccount
+	}
+	return json.Marshal(objectMap)
 }
 
 // StorageInsightStatus the status of the storage insight.

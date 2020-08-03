@@ -31,166 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2016-11-01/job"
 
-// CompileMode enumerates the values for compile mode.
-type CompileMode string
-
-const (
-	// Full ...
-	Full CompileMode = "Full"
-	// Semantic ...
-	Semantic CompileMode = "Semantic"
-	// SingleBox ...
-	SingleBox CompileMode = "SingleBox"
-)
-
-// PossibleCompileModeValues returns an array of possible values for the CompileMode const type.
-func PossibleCompileModeValues() []CompileMode {
-	return []CompileMode{Full, Semantic, SingleBox}
-}
-
-// ResourceType enumerates the values for resource type.
-type ResourceType string
-
-const (
-	// JobManagerResource ...
-	JobManagerResource ResourceType = "JobManagerResource"
-	// JobManagerResourceInUserFolder ...
-	JobManagerResourceInUserFolder ResourceType = "JobManagerResourceInUserFolder"
-	// StatisticsResource ...
-	StatisticsResource ResourceType = "StatisticsResource"
-	// StatisticsResourceInUserFolder ...
-	StatisticsResourceInUserFolder ResourceType = "StatisticsResourceInUserFolder"
-	// VertexResource ...
-	VertexResource ResourceType = "VertexResource"
-	// VertexResourceInUserFolder ...
-	VertexResourceInUserFolder ResourceType = "VertexResourceInUserFolder"
-)
-
-// PossibleResourceTypeValues returns an array of possible values for the ResourceType const type.
-func PossibleResourceTypeValues() []ResourceType {
-	return []ResourceType{JobManagerResource, JobManagerResourceInUserFolder, StatisticsResource, StatisticsResourceInUserFolder, VertexResource, VertexResourceInUserFolder}
-}
-
-// Result enumerates the values for result.
-type Result string
-
-const (
-	// Cancelled ...
-	Cancelled Result = "Cancelled"
-	// Failed ...
-	Failed Result = "Failed"
-	// None ...
-	None Result = "None"
-	// Succeeded ...
-	Succeeded Result = "Succeeded"
-)
-
-// PossibleResultValues returns an array of possible values for the Result const type.
-func PossibleResultValues() []Result {
-	return []Result{Cancelled, Failed, None, Succeeded}
-}
-
-// SeverityTypes enumerates the values for severity types.
-type SeverityTypes string
-
-const (
-	// Deprecated ...
-	Deprecated SeverityTypes = "Deprecated"
-	// Error ...
-	Error SeverityTypes = "Error"
-	// Info ...
-	Info SeverityTypes = "Info"
-	// SevereWarning ...
-	SevereWarning SeverityTypes = "SevereWarning"
-	// UserWarning ...
-	UserWarning SeverityTypes = "UserWarning"
-	// Warning ...
-	Warning SeverityTypes = "Warning"
-)
-
-// PossibleSeverityTypesValues returns an array of possible values for the SeverityTypes const type.
-func PossibleSeverityTypesValues() []SeverityTypes {
-	return []SeverityTypes{Deprecated, Error, Info, SevereWarning, UserWarning, Warning}
-}
-
-// State enumerates the values for state.
-type State string
-
-const (
-	// StateAccepted ...
-	StateAccepted State = "Accepted"
-	// StateCompiling ...
-	StateCompiling State = "Compiling"
-	// StateEnded ...
-	StateEnded State = "Ended"
-	// StateNew ...
-	StateNew State = "New"
-	// StatePaused ...
-	StatePaused State = "Paused"
-	// StateQueued ...
-	StateQueued State = "Queued"
-	// StateRunning ...
-	StateRunning State = "Running"
-	// StateScheduling ...
-	StateScheduling State = "Scheduling"
-	// StateStarting ...
-	StateStarting State = "Starting"
-	// StateWaitingForCapacity ...
-	StateWaitingForCapacity State = "WaitingForCapacity"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{StateAccepted, StateCompiling, StateEnded, StateNew, StatePaused, StateQueued, StateRunning, StateScheduling, StateStarting, StateWaitingForCapacity}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeHive ...
-	TypeHive Type = "Hive"
-	// TypeJobProperties ...
-	TypeJobProperties Type = "JobProperties"
-	// TypeUSQL ...
-	TypeUSQL Type = "USql"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeHive, TypeJobProperties, TypeUSQL}
-}
-
-// TypeBasicCreateJobProperties enumerates the values for type basic create job properties.
-type TypeBasicCreateJobProperties string
-
-const (
-	// TypeBasicCreateJobPropertiesTypeCreateJobProperties ...
-	TypeBasicCreateJobPropertiesTypeCreateJobProperties TypeBasicCreateJobProperties = "CreateJobProperties"
-	// TypeBasicCreateJobPropertiesTypeUSQL ...
-	TypeBasicCreateJobPropertiesTypeUSQL TypeBasicCreateJobProperties = "USql"
-)
-
-// PossibleTypeBasicCreateJobPropertiesValues returns an array of possible values for the TypeBasicCreateJobProperties const type.
-func PossibleTypeBasicCreateJobPropertiesValues() []TypeBasicCreateJobProperties {
-	return []TypeBasicCreateJobProperties{TypeBasicCreateJobPropertiesTypeCreateJobProperties, TypeBasicCreateJobPropertiesTypeUSQL}
-}
-
-// TypeEnum enumerates the values for type enum.
-type TypeEnum string
-
-const (
-	// Hive ...
-	Hive TypeEnum = "Hive"
-	// USQL ...
-	USQL TypeEnum = "USql"
-)
-
-// PossibleTypeEnumValues returns an array of possible values for the TypeEnum const type.
-func PossibleTypeEnumValues() []TypeEnum {
-	return []TypeEnum{Hive, USQL}
-}
-
 // BaseJobParameters data Lake Analytics Job Parameters base class for build and submit.
 type BaseJobParameters struct {
 	// Type - the job type of the current job (Hive or USql). Possible values include: 'USQL', 'Hive'
@@ -705,10 +545,15 @@ func (ilr InfoListResult) IsEmpty() bool {
 	return ilr.Value == nil || len(*ilr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ilr InfoListResult) hasNextLink() bool {
+	return ilr.NextLink != nil && len(*ilr.NextLink) != 0
+}
+
 // infoListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ilr InfoListResult) infoListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ilr.NextLink == nil || len(to.String(ilr.NextLink)) < 1 {
+	if !ilr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -736,11 +581,16 @@ func (page *InfoListResultPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ilr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ilr)
+		if err != nil {
+			return err
+		}
+		page.ilr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ilr = next
 	return nil
 }
 
@@ -774,8 +624,8 @@ func NewInfoListResultPage(getNextPage func(context.Context, InfoListResult) (In
 	return InfoListResultPage{fn: getNextPage}
 }
 
-// Information the extended Data Lake Analytics job information properties returned when retrieving a
-// specific job.
+// Information the extended Data Lake Analytics job information properties returned when retrieving a specific
+// job.
 type Information struct {
 	autorest.Response `json:"-"`
 	// ErrorMessage - READ-ONLY; the error message details for the job, if the job failed.
@@ -816,6 +666,22 @@ type Information struct {
 	Related *RelationshipProperties `json:"related,omitempty"`
 	// HierarchyQueueNode - READ-ONLY; the name of hierarchy queue node this job is assigned to, null if job has not been assigned yet or the account doesn't have hierarchy queue.
 	HierarchyQueueNode *string `json:"hierarchyQueueNode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Information.
+func (i Information) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["properties"] = i.Properties
+	if i.Name != nil {
+		objectMap["name"] = i.Name
+	}
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	if i.Related != nil {
+		objectMap["related"] = i.Related
+	}
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for Information struct.
@@ -1039,6 +905,21 @@ type InformationBasic struct {
 	HierarchyQueueNode *string `json:"hierarchyQueueNode,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for InformationBasic.
+func (ib InformationBasic) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ib.Name != nil {
+		objectMap["name"] = ib.Name
+	}
+	if ib.Type != "" {
+		objectMap["type"] = ib.Type
+	}
+	if ib.Related != nil {
+		objectMap["related"] = ib.Related
+	}
+	return json.Marshal(objectMap)
+}
+
 // InnerError the Data Lake Analytics job error details.
 type InnerError struct {
 	// DiagnosticCode - READ-ONLY; the diagnostic error code.
@@ -1067,8 +948,8 @@ type InnerError struct {
 	InnerError *InnerError `json:"innerError,omitempty"`
 }
 
-// PipelineInformation job Pipeline Information, showing the relationship of jobs and recurrences of those
-// jobs in a pipeline.
+// PipelineInformation job Pipeline Information, showing the relationship of jobs and recurrences of those jobs
+// in a pipeline.
 type PipelineInformation struct {
 	autorest.Response `json:"-"`
 	// PipelineID - READ-ONLY; the job relationship pipeline identifier (a GUID).
@@ -1106,8 +987,7 @@ type PipelineInformationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// PipelineInformationListResultIterator provides access to a complete listing of PipelineInformation
-// values.
+// PipelineInformationListResultIterator provides access to a complete listing of PipelineInformation values.
 type PipelineInformationListResultIterator struct {
 	i    int
 	page PipelineInformationListResultPage
@@ -1175,10 +1055,15 @@ func (pilr PipelineInformationListResult) IsEmpty() bool {
 	return pilr.Value == nil || len(*pilr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pilr PipelineInformationListResult) hasNextLink() bool {
+	return pilr.NextLink != nil && len(*pilr.NextLink) != 0
+}
+
 // pipelineInformationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pilr PipelineInformationListResult) pipelineInformationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if pilr.NextLink == nil || len(to.String(pilr.NextLink)) < 1 {
+	if !pilr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1206,11 +1091,16 @@ func (page *PipelineInformationListResultPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pilr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pilr)
+		if err != nil {
+			return err
+		}
+		page.pilr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pilr = next
 	return nil
 }
 
@@ -1444,10 +1334,15 @@ func (rilr RecurrenceInformationListResult) IsEmpty() bool {
 	return rilr.Value == nil || len(*rilr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rilr RecurrenceInformationListResult) hasNextLink() bool {
+	return rilr.NextLink != nil && len(*rilr.NextLink) != 0
+}
+
 // recurrenceInformationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rilr RecurrenceInformationListResult) recurrenceInformationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rilr.NextLink == nil || len(to.String(rilr.NextLink)) < 1 {
+	if !rilr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1475,11 +1370,16 @@ func (page *RecurrenceInformationListResultPage) NextWithContext(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rilr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rilr)
+		if err != nil {
+			return err
+		}
+		page.rilr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rilr = next
 	return nil
 }
 
@@ -1513,8 +1413,8 @@ func NewRecurrenceInformationListResultPage(getNextPage func(context.Context, Re
 	return RecurrenceInformationListResultPage{fn: getNextPage}
 }
 
-// RelationshipProperties job relationship information properties including pipeline information,
-// correlation information, etc.
+// RelationshipProperties job relationship information properties including pipeline information, correlation
+// information, etc.
 type RelationshipProperties struct {
 	// PipelineID - the job relationship pipeline identifier (a GUID).
 	PipelineID *uuid.UUID `json:"pipelineId,omitempty"`

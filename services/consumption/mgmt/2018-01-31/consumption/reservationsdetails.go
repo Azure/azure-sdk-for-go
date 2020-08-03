@@ -77,6 +77,9 @@ func (client ReservationsDetailsClient) ListByReservationOrder(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationsDetailsClient", "ListByReservationOrder", resp, "Failure responding to request")
 	}
+	if result.rdlr.hasNextLink() && result.rdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -190,6 +193,9 @@ func (client ReservationsDetailsClient) ListByReservationOrderAndReservation(ctx
 	result.rdlr, err = client.ListByReservationOrderAndReservationResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationsDetailsClient", "ListByReservationOrderAndReservation", resp, "Failure responding to request")
+	}
+	if result.rdlr.hasNextLink() && result.rdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

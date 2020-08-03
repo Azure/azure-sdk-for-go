@@ -30,155 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/kusto/mgmt/2018-09-07-preview/kusto"
 
-// AzureScaleType enumerates the values for azure scale type.
-type AzureScaleType string
-
-const (
-	// Automatic ...
-	Automatic AzureScaleType = "automatic"
-	// Manual ...
-	Manual AzureScaleType = "manual"
-	// None ...
-	None AzureScaleType = "none"
-)
-
-// PossibleAzureScaleTypeValues returns an array of possible values for the AzureScaleType const type.
-func PossibleAzureScaleTypeValues() []AzureScaleType {
-	return []AzureScaleType{Automatic, Manual, None}
-}
-
-// AzureSkuName enumerates the values for azure sku name.
-type AzureSkuName string
-
-const (
-	// D13V2 ...
-	D13V2 AzureSkuName = "D13_v2"
-	// D14V2 ...
-	D14V2 AzureSkuName = "D14_v2"
-	// KC16 ...
-	KC16 AzureSkuName = "KC16"
-	// KC8 ...
-	KC8 AzureSkuName = "KC8"
-	// KS16 ...
-	KS16 AzureSkuName = "KS16"
-	// KS8 ...
-	KS8 AzureSkuName = "KS8"
-	// L16 ...
-	L16 AzureSkuName = "L16"
-	// L8 ...
-	L8 AzureSkuName = "L8"
-)
-
-// PossibleAzureSkuNameValues returns an array of possible values for the AzureSkuName const type.
-func PossibleAzureSkuNameValues() []AzureSkuName {
-	return []AzureSkuName{D13V2, D14V2, KC16, KC8, KS16, KS8, L16, L8}
-}
-
-// DatabasePrincipalRole enumerates the values for database principal role.
-type DatabasePrincipalRole string
-
-const (
-	// Admin ...
-	Admin DatabasePrincipalRole = "Admin"
-	// Ingestor ...
-	Ingestor DatabasePrincipalRole = "Ingestor"
-	// Monitor ...
-	Monitor DatabasePrincipalRole = "Monitor"
-	// UnrestrictedViewers ...
-	UnrestrictedViewers DatabasePrincipalRole = "UnrestrictedViewers"
-	// User ...
-	User DatabasePrincipalRole = "User"
-	// Viewer ...
-	Viewer DatabasePrincipalRole = "Viewer"
-)
-
-// PossibleDatabasePrincipalRoleValues returns an array of possible values for the DatabasePrincipalRole const type.
-func PossibleDatabasePrincipalRoleValues() []DatabasePrincipalRole {
-	return []DatabasePrincipalRole{Admin, Ingestor, Monitor, UnrestrictedViewers, User, Viewer}
-}
-
-// DatabasePrincipalType enumerates the values for database principal type.
-type DatabasePrincipalType string
-
-const (
-	// DatabasePrincipalTypeApp ...
-	DatabasePrincipalTypeApp DatabasePrincipalType = "App"
-	// DatabasePrincipalTypeGroup ...
-	DatabasePrincipalTypeGroup DatabasePrincipalType = "Group"
-	// DatabasePrincipalTypeUser ...
-	DatabasePrincipalTypeUser DatabasePrincipalType = "User"
-)
-
-// PossibleDatabasePrincipalTypeValues returns an array of possible values for the DatabasePrincipalType const type.
-func PossibleDatabasePrincipalTypeValues() []DatabasePrincipalType {
-	return []DatabasePrincipalType{DatabasePrincipalTypeApp, DatabasePrincipalTypeGroup, DatabasePrincipalTypeUser}
-}
-
-// DataFormat enumerates the values for data format.
-type DataFormat string
-
-const (
-	// CSV ...
-	CSV DataFormat = "CSV"
-	// JSON ...
-	JSON DataFormat = "JSON"
-	// MULTIJSON ...
-	MULTIJSON DataFormat = "MULTIJSON"
-)
-
-// PossibleDataFormatValues returns an array of possible values for the DataFormat const type.
-func PossibleDataFormatValues() []DataFormat {
-	return []DataFormat{CSV, JSON, MULTIJSON}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Running ...
-	Running ProvisioningState = "Running"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Creating, Deleting, Failed, Running, Succeeded}
-}
-
-// State enumerates the values for state.
-type State string
-
-const (
-	// StateCreating ...
-	StateCreating State = "Creating"
-	// StateDeleted ...
-	StateDeleted State = "Deleted"
-	// StateDeleting ...
-	StateDeleting State = "Deleting"
-	// StateRunning ...
-	StateRunning State = "Running"
-	// StateStarting ...
-	StateStarting State = "Starting"
-	// StateStopped ...
-	StateStopped State = "Stopped"
-	// StateStopping ...
-	StateStopping State = "Stopping"
-	// StateUnavailable ...
-	StateUnavailable State = "Unavailable"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{StateCreating, StateDeleted, StateDeleting, StateRunning, StateStarting, StateStopped, StateStopping, StateUnavailable}
-}
-
 // AzureCapacity ...
 type AzureCapacity struct {
 	// ScaleType - Scale type. Possible values include: 'Automatic', 'Manual', 'None'
@@ -405,6 +256,15 @@ type ClusterProperties struct {
 	TrustedExternalTenants *[]TrustedExternalTenant `json:"trustedExternalTenants,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ClusterProperties.
+func (cp ClusterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.TrustedExternalTenants != nil {
+		objectMap["trustedExternalTenants"] = cp.TrustedExternalTenants
+	}
+	return json.Marshal(objectMap)
+}
+
 // ClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ClustersCreateOrUpdateFuture struct {
@@ -434,8 +294,7 @@ func (future *ClustersCreateOrUpdateFuture) Result(client ClustersClient) (c Clu
 	return
 }
 
-// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ClustersDeleteFuture struct {
 	azure.Future
 }
@@ -457,8 +316,7 @@ func (future *ClustersDeleteFuture) Result(client ClustersClient) (ar autorest.R
 	return
 }
 
-// ClustersStartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ClustersStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ClustersStartFuture struct {
 	azure.Future
 }
@@ -502,8 +360,7 @@ func (future *ClustersStopFuture) Result(client ClustersClient) (ar autorest.Res
 	return
 }
 
-// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ClustersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ClustersUpdateFuture struct {
 	azure.Future
 }
@@ -822,6 +679,21 @@ type DatabaseProperties struct {
 	Statistics *DatabaseStatistics `json:"statistics,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DatabaseProperties.
+func (dp DatabaseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dp.SoftDeletePeriodInDays != nil {
+		objectMap["softDeletePeriodInDays"] = dp.SoftDeletePeriodInDays
+	}
+	if dp.HotCachePeriodInDays != nil {
+		objectMap["hotCachePeriodInDays"] = dp.HotCachePeriodInDays
+	}
+	if dp.Statistics != nil {
+		objectMap["statistics"] = dp.Statistics
+	}
+	return json.Marshal(objectMap)
+}
+
 // DatabasesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DatabasesCreateOrUpdateFuture struct {
@@ -851,8 +723,7 @@ func (future *DatabasesCreateOrUpdateFuture) Result(client DatabasesClient) (d D
 	return
 }
 
-// DatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabasesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DatabasesDeleteFuture struct {
 	azure.Future
 }
@@ -880,8 +751,7 @@ type DatabaseStatistics struct {
 	Size *float64 `json:"size,omitempty"`
 }
 
-// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DatabasesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DatabasesUpdateFuture struct {
 	azure.Future
 }
@@ -1141,8 +1011,8 @@ func (future *EventHubConnectionsCreateOrUpdateFuture) Result(client EventHubCon
 	return
 }
 
-// EventHubConnectionsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// EventHubConnectionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EventHubConnectionsDeleteFuture struct {
 	azure.Future
 }
@@ -1164,8 +1034,8 @@ func (future *EventHubConnectionsDeleteFuture) Result(client EventHubConnections
 	return
 }
 
-// EventHubConnectionsUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// EventHubConnectionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EventHubConnectionsUpdateFuture struct {
 	azure.Future
 }
@@ -1450,10 +1320,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1481,11 +1356,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 

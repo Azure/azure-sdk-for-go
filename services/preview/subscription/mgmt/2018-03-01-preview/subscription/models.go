@@ -30,59 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2018-03-01-preview/subscription"
 
-// OfferType enumerates the values for offer type.
-type OfferType string
-
-const (
-	// MSAZR0017P ...
-	MSAZR0017P OfferType = "MS-AZR-0017P"
-	// MSAZR0148P ...
-	MSAZR0148P OfferType = "MS-AZR-0148P"
-)
-
-// PossibleOfferTypeValues returns an array of possible values for the OfferType const type.
-func PossibleOfferTypeValues() []OfferType {
-	return []OfferType{MSAZR0017P, MSAZR0148P}
-}
-
-// SpendingLimit enumerates the values for spending limit.
-type SpendingLimit string
-
-const (
-	// CurrentPeriodOff ...
-	CurrentPeriodOff SpendingLimit = "CurrentPeriodOff"
-	// Off ...
-	Off SpendingLimit = "Off"
-	// On ...
-	On SpendingLimit = "On"
-)
-
-// PossibleSpendingLimitValues returns an array of possible values for the SpendingLimit const type.
-func PossibleSpendingLimitValues() []SpendingLimit {
-	return []SpendingLimit{CurrentPeriodOff, Off, On}
-}
-
-// State enumerates the values for state.
-type State string
-
-const (
-	// Deleted ...
-	Deleted State = "Deleted"
-	// Disabled ...
-	Disabled State = "Disabled"
-	// Enabled ...
-	Enabled State = "Enabled"
-	// PastDue ...
-	PastDue State = "PastDue"
-	// Warned ...
-	Warned State = "Warned"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{Deleted, Disabled, Enabled, PastDue, Warned}
-}
-
 // AdPrincipal active Directory Principal who’ll get owner access on the new subscription.
 type AdPrincipal struct {
 	// ObjectID - Object id of the Principal
@@ -134,8 +81,8 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// FactoryCreateSubscriptionInEnrollmentAccountFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// FactoryCreateSubscriptionInEnrollmentAccountFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type FactoryCreateSubscriptionInEnrollmentAccountFuture struct {
 	azure.Future
 }
@@ -240,10 +187,15 @@ func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -271,11 +223,16 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lr = next
 	return nil
 }
 
@@ -349,6 +306,18 @@ type Model struct {
 	AuthorizationSource *string `json:"authorizationSource,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Model.
+func (mVar Model) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mVar.SubscriptionPolicies != nil {
+		objectMap["subscriptionPolicies"] = mVar.SubscriptionPolicies
+	}
+	if mVar.AuthorizationSource != nil {
+		objectMap["authorizationSource"] = mVar.AuthorizationSource
+	}
+	return json.Marshal(objectMap)
+}
+
 // Operation status of the subscription POST operation.
 type Operation struct {
 	// ID - READ-ONLY; The operation Id.
@@ -357,6 +326,18 @@ type Operation struct {
 	Status *string `json:"status,omitempty"`
 	// StatusDetail - Status Detail of the pending subscription
 	StatusDetail *string `json:"statusDetail,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Status != nil {
+		objectMap["status"] = o.Status
+	}
+	if o.StatusDetail != nil {
+		objectMap["statusDetail"] = o.StatusDetail
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationListResult a list of pending subscription operations.
@@ -461,10 +442,15 @@ func (tlr TenantListResult) IsEmpty() bool {
 	return tlr.Value == nil || len(*tlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tlr TenantListResult) hasNextLink() bool {
+	return tlr.NextLink != nil && len(*tlr.NextLink) != 0
+}
+
 // tenantListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tlr TenantListResult) tenantListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if tlr.NextLink == nil || len(to.String(tlr.NextLink)) < 1 {
+	if !tlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -492,11 +478,16 @@ func (page *TenantListResultPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tlr)
+		if err != nil {
+			return err
+		}
+		page.tlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tlr = next
 	return nil
 }
 

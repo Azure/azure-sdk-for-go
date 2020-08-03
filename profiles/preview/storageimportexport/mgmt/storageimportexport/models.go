@@ -22,7 +22,7 @@ package storageimportexport
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport"
+	original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2020-08-01/storageimportexport"
 )
 
 const (
@@ -41,16 +41,33 @@ const (
 	Transferring      DriveState = original.Transferring
 )
 
+type KekType = original.KekType
+
+const (
+	CustomerManaged  KekType = original.CustomerManaged
+	MicrosoftManaged KekType = original.MicrosoftManaged
+)
+
+type Type = original.Type
+
+const (
+	None           Type = original.None
+	SystemAssigned Type = original.SystemAssigned
+	UserAssigned   Type = original.UserAssigned
+)
+
 type BaseClient = original.BaseClient
 type BitLockerKeysClient = original.BitLockerKeysClient
 type DriveBitLockerKey = original.DriveBitLockerKey
 type DriveStatus = original.DriveStatus
+type EncryptionKeyDetails = original.EncryptionKeyDetails
 type ErrorResponse = original.ErrorResponse
 type ErrorResponseError = original.ErrorResponseError
 type ErrorResponseErrorDetailsItem = original.ErrorResponseErrorDetailsItem
 type Export = original.Export
 type ExportBlobList = original.ExportBlobList
 type GetBitLockerKeysResponse = original.GetBitLockerKeysResponse
+type IdentityDetails = original.IdentityDetails
 type JobDetails = original.JobDetails
 type JobResponse = original.JobResponse
 type JobsClient = original.JobsClient
@@ -65,7 +82,7 @@ type LocationsResponse = original.LocationsResponse
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationsClient = original.OperationsClient
-type PackageInfomation = original.PackageInfomation
+type PackageInformation = original.PackageInformation
 type PutJobParameters = original.PutJobParameters
 type ReturnAddress = original.ReturnAddress
 type ReturnShipping = original.ReturnShipping
@@ -111,6 +128,12 @@ func NewWithBaseURI(baseURI string, subscriptionID string, acceptLanguage string
 }
 func PossibleDriveStateValues() []DriveState {
 	return original.PossibleDriveStateValues()
+}
+func PossibleKekTypeValues() []KekType {
+	return original.PossibleKekTypeValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

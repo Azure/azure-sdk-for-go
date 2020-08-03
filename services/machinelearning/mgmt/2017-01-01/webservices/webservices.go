@@ -345,6 +345,9 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.Client", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.pwsl.hasNextLink() && result.pwsl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -458,6 +461,9 @@ func (client Client) ListBySubscriptionID(ctx context.Context, skiptoken string)
 	result.pwsl, err = client.ListBySubscriptionIDResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.Client", "ListBySubscriptionID", resp, "Failure responding to request")
+	}
+	if result.pwsl.hasNextLink() && result.pwsl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

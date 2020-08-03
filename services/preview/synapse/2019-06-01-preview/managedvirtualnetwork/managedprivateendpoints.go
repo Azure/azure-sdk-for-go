@@ -308,6 +308,9 @@ func (client ManagedPrivateEndpointsClient) List(ctx context.Context, workspaceN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedvirtualnetwork.ManagedPrivateEndpointsClient", "List", resp, "Failure responding to request")
 	}
+	if result.mpelr.hasNextLink() && result.mpelr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

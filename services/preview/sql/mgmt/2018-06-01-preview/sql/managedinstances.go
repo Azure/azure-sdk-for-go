@@ -312,6 +312,9 @@ func (client ManagedInstancesClient) List(ctx context.Context) (result ManagedIn
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesClient", "List", resp, "Failure responding to request")
 	}
+	if result.milr.hasNextLink() && result.milr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -423,6 +426,9 @@ func (client ManagedInstancesClient) ListByInstancePool(ctx context.Context, res
 	result.milr, err = client.ListByInstancePoolResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesClient", "ListByInstancePool", resp, "Failure responding to request")
+	}
+	if result.milr.hasNextLink() && result.milr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -536,6 +542,9 @@ func (client ManagedInstancesClient) ListByResourceGroup(ctx context.Context, re
 	result.milr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "sql.ManagedInstancesClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.milr.hasNextLink() && result.milr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

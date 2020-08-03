@@ -145,6 +145,9 @@ func (client GlobalClient) GetAllCertificates(ctx context.Context) (result Certi
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "GetAllCertificates", resp, "Failure responding to request")
 	}
+	if result.cc.hasNextLink() && result.cc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -252,6 +255,9 @@ func (client GlobalClient) GetAllClassicMobileServices(ctx context.Context) (res
 	result.cmsc, err = client.GetAllClassicMobileServicesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "GetAllClassicMobileServices", resp, "Failure responding to request")
+	}
+	if result.cmsc.hasNextLink() && result.cmsc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -361,6 +367,9 @@ func (client GlobalClient) GetAllHostingEnvironments(ctx context.Context) (resul
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "GetAllHostingEnvironments", resp, "Failure responding to request")
 	}
+	if result.hec.hasNextLink() && result.hec.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -468,6 +477,9 @@ func (client GlobalClient) GetAllManagedHostingEnvironments(ctx context.Context)
 	result.mhec, err = client.GetAllManagedHostingEnvironmentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "GetAllManagedHostingEnvironments", resp, "Failure responding to request")
+	}
+	if result.mhec.hasNextLink() && result.mhec.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -580,6 +592,9 @@ func (client GlobalClient) GetAllServerFarms(ctx context.Context, detailed *bool
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "GetAllServerFarms", resp, "Failure responding to request")
 	}
+	if result.sfc.hasNextLink() && result.sfc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -691,6 +706,9 @@ func (client GlobalClient) GetAllSites(ctx context.Context) (result SiteCollecti
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "GetAllSites", resp, "Failure responding to request")
 	}
+	if result.sc.hasNextLink() && result.sc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -801,6 +819,9 @@ func (client GlobalClient) GetSubscriptionGeoRegions(ctx context.Context, sku st
 	result.grc, err = client.GetSubscriptionGeoRegionsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalClient", "GetSubscriptionGeoRegions", resp, "Failure responding to request")
+	}
+	if result.grc.hasNextLink() && result.grc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

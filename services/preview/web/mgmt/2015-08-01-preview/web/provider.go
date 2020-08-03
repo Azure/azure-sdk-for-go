@@ -209,6 +209,9 @@ func (client ProviderClient) GetSourceControls(ctx context.Context) (result Sour
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetSourceControls", resp, "Failure responding to request")
 	}
+	if result.scc.hasNextLink() && result.scc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

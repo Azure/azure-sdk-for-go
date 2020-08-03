@@ -18,6 +18,7 @@ package translatortext
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/satori/go.uuid"
@@ -25,103 +26,6 @@ import (
 
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0_preview.1/translatortext"
-
-// Code enumerates the values for code.
-type Code string
-
-const (
-	// InternalServerError ...
-	InternalServerError Code = "InternalServerError"
-	// InvalidArgument ...
-	InvalidArgument Code = "InvalidArgument"
-	// InvalidRequest ...
-	InvalidRequest Code = "InvalidRequest"
-	// RequestRateTooHigh ...
-	RequestRateTooHigh Code = "RequestRateTooHigh"
-	// ResourceNotFound ...
-	ResourceNotFound Code = "ResourceNotFound"
-	// ServiceUnavailable ...
-	ServiceUnavailable Code = "ServiceUnavailable"
-	// Unauthorized ...
-	Unauthorized Code = "Unauthorized"
-)
-
-// PossibleCodeValues returns an array of possible values for the Code const type.
-func PossibleCodeValues() []Code {
-	return []Code{InternalServerError, InvalidArgument, InvalidRequest, RequestRateTooHigh, ResourceNotFound, ServiceUnavailable, Unauthorized}
-}
-
-// Status enumerates the values for status.
-type Status string
-
-const (
-	// Cancelled ...
-	Cancelled Status = "Cancelled"
-	// Cancelling ...
-	Cancelling Status = "Cancelling"
-	// Failed ...
-	Failed Status = "Failed"
-	// NotStarted ...
-	NotStarted Status = "NotStarted"
-	// Running ...
-	Running Status = "Running"
-	// Succeeded ...
-	Succeeded Status = "Succeeded"
-)
-
-// PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{Cancelled, Cancelling, Failed, NotStarted, Running, Succeeded}
-}
-
-// Status1 enumerates the values for status 1.
-type Status1 string
-
-const (
-	// Status1Cancelled ...
-	Status1Cancelled Status1 = "Cancelled"
-	// Status1Cancelling ...
-	Status1Cancelling Status1 = "Cancelling"
-	// Status1Failed ...
-	Status1Failed Status1 = "Failed"
-	// Status1NotStarted ...
-	Status1NotStarted Status1 = "NotStarted"
-	// Status1Running ...
-	Status1Running Status1 = "Running"
-	// Status1Succeeded ...
-	Status1Succeeded Status1 = "Succeeded"
-)
-
-// PossibleStatus1Values returns an array of possible values for the Status1 const type.
-func PossibleStatus1Values() []Status1 {
-	return []Status1{Status1Cancelled, Status1Cancelling, Status1Failed, Status1NotStarted, Status1Running, Status1Succeeded}
-}
-
-// StorageSource enumerates the values for storage source.
-type StorageSource string
-
-const (
-	// AzureBlob ...
-	AzureBlob StorageSource = "AzureBlob"
-)
-
-// PossibleStorageSourceValues returns an array of possible values for the StorageSource const type.
-func PossibleStorageSourceValues() []StorageSource {
-	return []StorageSource{AzureBlob}
-}
-
-// StorageSource1 enumerates the values for storage source 1.
-type StorageSource1 string
-
-const (
-	// StorageSource1AzureBlob ...
-	StorageSource1AzureBlob StorageSource1 = "AzureBlob"
-)
-
-// PossibleStorageSource1Values returns an array of possible values for the StorageSource1 const type.
-func PossibleStorageSource1Values() []StorageSource1 {
-	return []StorageSource1{StorageSource1AzureBlob}
-}
 
 // BatchRequest definition for the input batch translation request
 type BatchRequest struct {
@@ -198,16 +102,16 @@ type DocumentStatusResponse struct {
 
 // ErrorResponseV2 contains unified error information used for HTTP responses across any Cognitive Service.
 // Instances
-// can be created either through Microsoft.CloudAI.Containers.HttpStatusExceptionV2 or by returning it
-// directly from
+// can be created either through Microsoft.CloudAI.Containers.HttpStatusExceptionV2 or by returning it directly
+// from
 // a controller.
 type ErrorResponseV2 struct {
 	autorest.Response `json:"-"`
 	Error             *ErrorV2 `json:"error,omitempty"`
 }
 
-// ErrorV2 this contains an outer error with error code, message, details, target and an inner error with
-// more descriptive details.
+// ErrorV2 this contains an outer error with error code, message, details, target and an inner error with more
+// descriptive details.
 type ErrorV2 struct {
 	// Code - Possible values include: 'InvalidRequest', 'InvalidArgument', 'InternalServerError', 'ServiceUnavailable', 'ResourceNotFound', 'Unauthorized', 'RequestRateTooHigh'
 	Code Code `json:"code,omitempty"`
@@ -217,6 +121,18 @@ type ErrorV2 struct {
 	// For example it would be "documents" or "document id" in case of invalid document.
 	Target     *string       `json:"target,omitempty"`
 	InnerError *InnerErrorV2 `json:"innerError,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorV2.
+func (ev ErrorV2) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ev.Code != "" {
+		objectMap["code"] = ev.Code
+	}
+	if ev.InnerError != nil {
+		objectMap["innerError"] = ev.InnerError
+	}
+	return json.Marshal(objectMap)
 }
 
 // FileFormat ...
@@ -250,8 +166,8 @@ type Glossary struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// InnerErrorV2 new Inner Error format which conforms to Cognitive Services API Guidelines which is
-// available at
+// InnerErrorV2 new Inner Error format which conforms to Cognitive Services API Guidelines which is available
+// at
 // https://microsoft.sharepoint.com/%3Aw%3A/t/CognitiveServicesPMO/EUoytcrjuJdKpeOKIK_QRC8BPtUYQpKBi8JsWyeDMRsWlQ?e=CPq8ow.
 // This contains required properties ErrorCode, message and optional properties target, details(key value
 // pair), inner error(this can be nested).
@@ -266,6 +182,15 @@ type InnerErrorV2 struct {
 	// For example it would be "documents" or "document id" in case of invalid document.
 	Target     *string       `json:"target,omitempty"`
 	InnerError *InnerErrorV2 `json:"innerError,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InnerErrorV2.
+func (iev InnerErrorV2) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if iev.InnerError != nil {
+		objectMap["innerError"] = iev.InnerError
+	}
+	return json.Marshal(objectMap)
 }
 
 // SetObject ...

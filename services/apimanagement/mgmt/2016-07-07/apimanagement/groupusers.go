@@ -200,6 +200,9 @@ func (client GroupUsersClient) ListByGroup(ctx context.Context, resourceGroupNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroup", resp, "Failure responding to request")
 	}
+	if result.uc.hasNextLink() && result.uc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

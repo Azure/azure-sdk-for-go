@@ -31,213 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2017-08-01-preview/compute"
 
-// AgentVMSizeTypes enumerates the values for agent vm size types.
-type AgentVMSizeTypes string
-
-const (
-	// StandardA0 ...
-	StandardA0 AgentVMSizeTypes = "Standard_A0"
-	// StandardA1 ...
-	StandardA1 AgentVMSizeTypes = "Standard_A1"
-	// StandardA10 ...
-	StandardA10 AgentVMSizeTypes = "Standard_A10"
-	// StandardA11 ...
-	StandardA11 AgentVMSizeTypes = "Standard_A11"
-	// StandardA2 ...
-	StandardA2 AgentVMSizeTypes = "Standard_A2"
-	// StandardA3 ...
-	StandardA3 AgentVMSizeTypes = "Standard_A3"
-	// StandardA4 ...
-	StandardA4 AgentVMSizeTypes = "Standard_A4"
-	// StandardA5 ...
-	StandardA5 AgentVMSizeTypes = "Standard_A5"
-	// StandardA6 ...
-	StandardA6 AgentVMSizeTypes = "Standard_A6"
-	// StandardA7 ...
-	StandardA7 AgentVMSizeTypes = "Standard_A7"
-	// StandardA8 ...
-	StandardA8 AgentVMSizeTypes = "Standard_A8"
-	// StandardA9 ...
-	StandardA9 AgentVMSizeTypes = "Standard_A9"
-	// StandardD1 ...
-	StandardD1 AgentVMSizeTypes = "Standard_D1"
-	// StandardD11 ...
-	StandardD11 AgentVMSizeTypes = "Standard_D11"
-	// StandardD11V2 ...
-	StandardD11V2 AgentVMSizeTypes = "Standard_D11_v2"
-	// StandardD12 ...
-	StandardD12 AgentVMSizeTypes = "Standard_D12"
-	// StandardD12V2 ...
-	StandardD12V2 AgentVMSizeTypes = "Standard_D12_v2"
-	// StandardD13 ...
-	StandardD13 AgentVMSizeTypes = "Standard_D13"
-	// StandardD13V2 ...
-	StandardD13V2 AgentVMSizeTypes = "Standard_D13_v2"
-	// StandardD14 ...
-	StandardD14 AgentVMSizeTypes = "Standard_D14"
-	// StandardD14V2 ...
-	StandardD14V2 AgentVMSizeTypes = "Standard_D14_v2"
-	// StandardD1V2 ...
-	StandardD1V2 AgentVMSizeTypes = "Standard_D1_v2"
-	// StandardD2 ...
-	StandardD2 AgentVMSizeTypes = "Standard_D2"
-	// StandardD2V2 ...
-	StandardD2V2 AgentVMSizeTypes = "Standard_D2_v2"
-	// StandardD3 ...
-	StandardD3 AgentVMSizeTypes = "Standard_D3"
-	// StandardD3V2 ...
-	StandardD3V2 AgentVMSizeTypes = "Standard_D3_v2"
-	// StandardD4 ...
-	StandardD4 AgentVMSizeTypes = "Standard_D4"
-	// StandardD4V2 ...
-	StandardD4V2 AgentVMSizeTypes = "Standard_D4_v2"
-	// StandardD5V2 ...
-	StandardD5V2 AgentVMSizeTypes = "Standard_D5_v2"
-	// StandardDS1 ...
-	StandardDS1 AgentVMSizeTypes = "Standard_DS1"
-	// StandardDS11 ...
-	StandardDS11 AgentVMSizeTypes = "Standard_DS11"
-	// StandardDS12 ...
-	StandardDS12 AgentVMSizeTypes = "Standard_DS12"
-	// StandardDS13 ...
-	StandardDS13 AgentVMSizeTypes = "Standard_DS13"
-	// StandardDS14 ...
-	StandardDS14 AgentVMSizeTypes = "Standard_DS14"
-	// StandardDS2 ...
-	StandardDS2 AgentVMSizeTypes = "Standard_DS2"
-	// StandardDS3 ...
-	StandardDS3 AgentVMSizeTypes = "Standard_DS3"
-	// StandardDS4 ...
-	StandardDS4 AgentVMSizeTypes = "Standard_DS4"
-	// StandardG1 ...
-	StandardG1 AgentVMSizeTypes = "Standard_G1"
-	// StandardG2 ...
-	StandardG2 AgentVMSizeTypes = "Standard_G2"
-	// StandardG3 ...
-	StandardG3 AgentVMSizeTypes = "Standard_G3"
-	// StandardG4 ...
-	StandardG4 AgentVMSizeTypes = "Standard_G4"
-	// StandardG5 ...
-	StandardG5 AgentVMSizeTypes = "Standard_G5"
-	// StandardGS1 ...
-	StandardGS1 AgentVMSizeTypes = "Standard_GS1"
-	// StandardGS2 ...
-	StandardGS2 AgentVMSizeTypes = "Standard_GS2"
-	// StandardGS3 ...
-	StandardGS3 AgentVMSizeTypes = "Standard_GS3"
-	// StandardGS4 ...
-	StandardGS4 AgentVMSizeTypes = "Standard_GS4"
-	// StandardGS5 ...
-	StandardGS5 AgentVMSizeTypes = "Standard_GS5"
-)
-
-// PossibleAgentVMSizeTypesValues returns an array of possible values for the AgentVMSizeTypes const type.
-func PossibleAgentVMSizeTypesValues() []AgentVMSizeTypes {
-	return []AgentVMSizeTypes{StandardA0, StandardA1, StandardA10, StandardA11, StandardA2, StandardA3, StandardA4, StandardA5, StandardA6, StandardA7, StandardA8, StandardA9, StandardD1, StandardD11, StandardD11V2, StandardD12, StandardD12V2, StandardD13, StandardD13V2, StandardD14, StandardD14V2, StandardD1V2, StandardD2, StandardD2V2, StandardD3, StandardD3V2, StandardD4, StandardD4V2, StandardD5V2, StandardDS1, StandardDS11, StandardDS12, StandardDS13, StandardDS14, StandardDS2, StandardDS3, StandardDS4, StandardG1, StandardG2, StandardG3, StandardG4, StandardG5, StandardGS1, StandardGS2, StandardGS3, StandardGS4, StandardGS5}
-}
-
-// ClusterType enumerates the values for cluster type.
-type ClusterType string
-
-const (
-	// ACS ...
-	ACS ClusterType = "ACS"
-	// Local ...
-	Local ClusterType = "Local"
-)
-
-// PossibleClusterTypeValues returns an array of possible values for the ClusterType const type.
-func PossibleClusterTypeValues() []ClusterType {
-	return []ClusterType{ACS, Local}
-}
-
-// OperationStatus enumerates the values for operation status.
-type OperationStatus string
-
-const (
-	// Canceled ...
-	Canceled OperationStatus = "Canceled"
-	// Creating ...
-	Creating OperationStatus = "Creating"
-	// Deleting ...
-	Deleting OperationStatus = "Deleting"
-	// Failed ...
-	Failed OperationStatus = "Failed"
-	// Succeeded ...
-	Succeeded OperationStatus = "Succeeded"
-	// Unknown ...
-	Unknown OperationStatus = "Unknown"
-	// Updating ...
-	Updating OperationStatus = "Updating"
-)
-
-// PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
-func PossibleOperationStatusValues() []OperationStatus {
-	return []OperationStatus{Canceled, Creating, Deleting, Failed, Succeeded, Unknown, Updating}
-}
-
-// OrchestratorType enumerates the values for orchestrator type.
-type OrchestratorType string
-
-const (
-	// Kubernetes ...
-	Kubernetes OrchestratorType = "Kubernetes"
-	// None ...
-	None OrchestratorType = "None"
-)
-
-// PossibleOrchestratorTypeValues returns an array of possible values for the OrchestratorType const type.
-func PossibleOrchestratorTypeValues() []OrchestratorType {
-	return []OrchestratorType{Kubernetes, None}
-}
-
-// Status enumerates the values for status.
-type Status string
-
-const (
-	// Disabled ...
-	Disabled Status = "Disabled"
-	// Enabled ...
-	Enabled Status = "Enabled"
-)
-
-// PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{Disabled, Enabled}
-}
-
-// SystemServiceType enumerates the values for system service type.
-type SystemServiceType string
-
-const (
-	// SystemServiceTypeBatchFrontEnd ...
-	SystemServiceTypeBatchFrontEnd SystemServiceType = "BatchFrontEnd"
-	// SystemServiceTypeNone ...
-	SystemServiceTypeNone SystemServiceType = "None"
-	// SystemServiceTypeScoringFrontEnd ...
-	SystemServiceTypeScoringFrontEnd SystemServiceType = "ScoringFrontEnd"
-)
-
-// PossibleSystemServiceTypeValues returns an array of possible values for the SystemServiceType const type.
-func PossibleSystemServiceTypeValues() []SystemServiceType {
-	return []SystemServiceType{SystemServiceTypeBatchFrontEnd, SystemServiceTypeNone, SystemServiceTypeScoringFrontEnd}
-}
-
-// UpdatesAvailable enumerates the values for updates available.
-type UpdatesAvailable string
-
-const (
-	// No ...
-	No UpdatesAvailable = "No"
-	// Yes ...
-	Yes UpdatesAvailable = "Yes"
-)
-
-// PossibleUpdatesAvailableValues returns an array of possible values for the UpdatesAvailable const type.
-func PossibleUpdatesAvailableValues() []UpdatesAvailable {
-	return []UpdatesAvailable{No, Yes}
-}
-
 // AcsClusterProperties information about the container service backing the cluster
 type AcsClusterProperties struct {
 	// ClusterFqdn - READ-ONLY; The FQDN of the cluster.
@@ -254,6 +47,30 @@ type AcsClusterProperties struct {
 	AgentCount *int32 `json:"agentCount,omitempty"`
 	// AgentVMSize - The Azure VM size of the agent VM nodes. This cannot be changed once the cluster is created. This list is non exhaustive; refer to https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes for the possible VM sizes. Possible values include: 'StandardA0', 'StandardA1', 'StandardA2', 'StandardA3', 'StandardA4', 'StandardA5', 'StandardA6', 'StandardA7', 'StandardA8', 'StandardA9', 'StandardA10', 'StandardA11', 'StandardD1', 'StandardD2', 'StandardD3', 'StandardD4', 'StandardD11', 'StandardD12', 'StandardD13', 'StandardD14', 'StandardD1V2', 'StandardD2V2', 'StandardD3V2', 'StandardD4V2', 'StandardD5V2', 'StandardD11V2', 'StandardD12V2', 'StandardD13V2', 'StandardD14V2', 'StandardG1', 'StandardG2', 'StandardG3', 'StandardG4', 'StandardG5', 'StandardDS1', 'StandardDS2', 'StandardDS3', 'StandardDS4', 'StandardDS11', 'StandardDS12', 'StandardDS13', 'StandardDS14', 'StandardGS1', 'StandardGS2', 'StandardGS3', 'StandardGS4', 'StandardGS5'
 	AgentVMSize AgentVMSizeTypes `json:"agentVmSize,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AcsClusterProperties.
+func (acp AcsClusterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if acp.OrchestratorType != "" {
+		objectMap["orchestratorType"] = acp.OrchestratorType
+	}
+	if acp.OrchestratorProperties != nil {
+		objectMap["orchestratorProperties"] = acp.OrchestratorProperties
+	}
+	if acp.SystemServices != nil {
+		objectMap["systemServices"] = acp.SystemServices
+	}
+	if acp.MasterCount != nil {
+		objectMap["masterCount"] = acp.MasterCount
+	}
+	if acp.AgentCount != nil {
+		objectMap["agentCount"] = acp.AgentCount
+	}
+	if acp.AgentVMSize != "" {
+		objectMap["agentVmSize"] = acp.AgentVMSize
+	}
+	return json.Marshal(objectMap)
 }
 
 // AppInsightsCredentials appInsights credentials.
@@ -601,8 +418,35 @@ type OperationalizationClusterProperties struct {
 	GlobalServiceConfiguration *GlobalServiceConfiguration `json:"globalServiceConfiguration,omitempty"`
 }
 
-// OperationalizationClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// MarshalJSON is the custom marshaler for OperationalizationClusterProperties.
+func (ocp OperationalizationClusterProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ocp.Description != nil {
+		objectMap["description"] = ocp.Description
+	}
+	if ocp.ClusterType != "" {
+		objectMap["clusterType"] = ocp.ClusterType
+	}
+	if ocp.StorageAccount != nil {
+		objectMap["storageAccount"] = ocp.StorageAccount
+	}
+	if ocp.ContainerRegistry != nil {
+		objectMap["containerRegistry"] = ocp.ContainerRegistry
+	}
+	if ocp.ContainerService != nil {
+		objectMap["containerService"] = ocp.ContainerService
+	}
+	if ocp.AppInsights != nil {
+		objectMap["appInsights"] = ocp.AppInsights
+	}
+	if ocp.GlobalServiceConfiguration != nil {
+		objectMap["globalServiceConfiguration"] = ocp.GlobalServiceConfiguration
+	}
+	return json.Marshal(objectMap)
+}
+
+// OperationalizationClustersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type OperationalizationClustersCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -682,8 +526,7 @@ func (future *OperationalizationClustersUpdateSystemServicesFuture) Result(clien
 	return
 }
 
-// OperationalizationClusterUpdateParameters parameters for PATCH operation on an operationalization
-// cluster
+// OperationalizationClusterUpdateParameters parameters for PATCH operation on an operationalization cluster
 type OperationalizationClusterUpdateParameters struct {
 	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
 	Tags map[string]*string `json:"tags"`
@@ -776,10 +619,15 @@ func (pocl PaginatedOperationalizationClustersList) IsEmpty() bool {
 	return pocl.Value == nil || len(*pocl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pocl PaginatedOperationalizationClustersList) hasNextLink() bool {
+	return pocl.NextLink != nil && len(*pocl.NextLink) != 0
+}
+
 // paginatedOperationalizationClustersListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pocl PaginatedOperationalizationClustersList) paginatedOperationalizationClustersListPreparer(ctx context.Context) (*http.Request, error) {
-	if pocl.NextLink == nil || len(to.String(pocl.NextLink)) < 1 {
+	if !pocl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -807,11 +655,16 @@ func (page *PaginatedOperationalizationClustersListPage) NextWithContext(ctx con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pocl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pocl)
+		if err != nil {
+			return err
+		}
+		page.pocl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pocl = next
 	return nil
 }
 
@@ -910,8 +763,8 @@ type ServicePrincipalProperties struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-// SslConfiguration SSL configuration. If configured data-plane calls to user services will be exposed over
-// SSL only.
+// SslConfiguration SSL configuration. If configured data-plane calls to user services will be exposed over SSL
+// only.
 type SslConfiguration struct {
 	// Status - SSL status. Allowed values are Enabled and Disabled. Possible values include: 'Enabled', 'Disabled'
 	Status Status `json:"status,omitempty"`
@@ -947,6 +800,15 @@ type SystemService struct {
 	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
 	// Version - READ-ONLY; The state of the system service
 	Version *string `json:"version,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SystemService.
+func (ss SystemService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ss.SystemServiceType != "" {
+		objectMap["systemServiceType"] = ss.SystemServiceType
+	}
+	return json.Marshal(objectMap)
 }
 
 // UpdateSystemServicesResponse response of the update system services API

@@ -308,6 +308,9 @@ func (client TriggersClient) ListByDataBoxEdgeDevice(ctx context.Context, device
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.TriggersClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
 	}
+	if result.tl.hasNextLink() && result.tl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

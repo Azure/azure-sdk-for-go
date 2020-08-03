@@ -31,14 +31,14 @@ type CustomersClient struct {
 }
 
 // NewCustomersClient creates an instance of the CustomersClient client.
-func NewCustomersClient(subscriptionID string) CustomersClient {
-	return NewCustomersClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewCustomersClient(subscriptionID string, subscriptionID1 string) CustomersClient {
+	return NewCustomersClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewCustomersClientWithBaseURI creates an instance of the CustomersClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewCustomersClientWithBaseURI(baseURI string, subscriptionID string) CustomersClient {
-	return CustomersClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewCustomersClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CustomersClient {
+	return CustomersClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // Get gets a customer by its ID. The operation is supported only for billing accounts with agreement type Microsoft
@@ -155,6 +155,9 @@ func (client CustomersClient) ListByBillingAccount(ctx context.Context, billingA
 	result.clr, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.CustomersClient", "ListByBillingAccount", resp, "Failure responding to request")
+	}
+	if result.clr.hasNextLink() && result.clr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -276,6 +279,9 @@ func (client CustomersClient) ListByBillingProfile(ctx context.Context, billingA
 	result.clr, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.CustomersClient", "ListByBillingProfile", resp, "Failure responding to request")
+	}
+	if result.clr.hasNextLink() && result.clr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

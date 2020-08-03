@@ -152,6 +152,9 @@ func (client ProductsClient) ListByBillingAccountName(ctx context.Context, billi
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "ListByBillingAccountName", resp, "Failure responding to request")
 	}
+	if result.plr.hasNextLink() && result.plr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -268,6 +271,9 @@ func (client ProductsClient) ListByInvoiceSectionName(ctx context.Context, billi
 	result.plr, err = client.ListByInvoiceSectionNameResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.ProductsClient", "ListByInvoiceSectionName", resp, "Failure responding to request")
+	}
+	if result.plr.hasNextLink() && result.plr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

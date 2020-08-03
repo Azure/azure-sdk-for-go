@@ -364,6 +364,9 @@ func (client OpenIDConnectProvidersClient) ListByService(ctx context.Context, re
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.OpenIDConnectProvidersClient", "ListByService", resp, "Failure responding to request")
 	}
+	if result.oicpc.hasNextLink() && result.oicpc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

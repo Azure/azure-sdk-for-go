@@ -240,6 +240,9 @@ func (client InvoicesClient) List(ctx context.Context, expand string, filter str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "List", resp, "Failure responding to request")
 	}
+	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

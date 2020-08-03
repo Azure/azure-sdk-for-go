@@ -30,192 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2016-10-02/cdn"
 
-// CustomDomainResourceState enumerates the values for custom domain resource state.
-type CustomDomainResourceState string
-
-const (
-	// Active ...
-	Active CustomDomainResourceState = "Active"
-	// Creating ...
-	Creating CustomDomainResourceState = "Creating"
-	// Deleting ...
-	Deleting CustomDomainResourceState = "Deleting"
-)
-
-// PossibleCustomDomainResourceStateValues returns an array of possible values for the CustomDomainResourceState const type.
-func PossibleCustomDomainResourceStateValues() []CustomDomainResourceState {
-	return []CustomDomainResourceState{Active, Creating, Deleting}
-}
-
-// CustomHTTPSProvisioningState enumerates the values for custom https provisioning state.
-type CustomHTTPSProvisioningState string
-
-const (
-	// Disabled ...
-	Disabled CustomHTTPSProvisioningState = "Disabled"
-	// Disabling ...
-	Disabling CustomHTTPSProvisioningState = "Disabling"
-	// Enabled ...
-	Enabled CustomHTTPSProvisioningState = "Enabled"
-	// Enabling ...
-	Enabling CustomHTTPSProvisioningState = "Enabling"
-	// Failed ...
-	Failed CustomHTTPSProvisioningState = "Failed"
-)
-
-// PossibleCustomHTTPSProvisioningStateValues returns an array of possible values for the CustomHTTPSProvisioningState const type.
-func PossibleCustomHTTPSProvisioningStateValues() []CustomHTTPSProvisioningState {
-	return []CustomHTTPSProvisioningState{Disabled, Disabling, Enabled, Enabling, Failed}
-}
-
-// EndpointResourceState enumerates the values for endpoint resource state.
-type EndpointResourceState string
-
-const (
-	// EndpointResourceStateCreating ...
-	EndpointResourceStateCreating EndpointResourceState = "Creating"
-	// EndpointResourceStateDeleting ...
-	EndpointResourceStateDeleting EndpointResourceState = "Deleting"
-	// EndpointResourceStateRunning ...
-	EndpointResourceStateRunning EndpointResourceState = "Running"
-	// EndpointResourceStateStarting ...
-	EndpointResourceStateStarting EndpointResourceState = "Starting"
-	// EndpointResourceStateStopped ...
-	EndpointResourceStateStopped EndpointResourceState = "Stopped"
-	// EndpointResourceStateStopping ...
-	EndpointResourceStateStopping EndpointResourceState = "Stopping"
-)
-
-// PossibleEndpointResourceStateValues returns an array of possible values for the EndpointResourceState const type.
-func PossibleEndpointResourceStateValues() []EndpointResourceState {
-	return []EndpointResourceState{EndpointResourceStateCreating, EndpointResourceStateDeleting, EndpointResourceStateRunning, EndpointResourceStateStarting, EndpointResourceStateStopped, EndpointResourceStateStopping}
-}
-
-// GeoFilterActions enumerates the values for geo filter actions.
-type GeoFilterActions string
-
-const (
-	// Allow ...
-	Allow GeoFilterActions = "Allow"
-	// Block ...
-	Block GeoFilterActions = "Block"
-)
-
-// PossibleGeoFilterActionsValues returns an array of possible values for the GeoFilterActions const type.
-func PossibleGeoFilterActionsValues() []GeoFilterActions {
-	return []GeoFilterActions{Allow, Block}
-}
-
-// OptimizationType enumerates the values for optimization type.
-type OptimizationType string
-
-const (
-	// DynamicSiteAcceleration ...
-	DynamicSiteAcceleration OptimizationType = "DynamicSiteAcceleration"
-	// GeneralMediaStreaming ...
-	GeneralMediaStreaming OptimizationType = "GeneralMediaStreaming"
-	// GeneralWebDelivery ...
-	GeneralWebDelivery OptimizationType = "GeneralWebDelivery"
-	// LargeFileDownload ...
-	LargeFileDownload OptimizationType = "LargeFileDownload"
-	// VideoOnDemandMediaStreaming ...
-	VideoOnDemandMediaStreaming OptimizationType = "VideoOnDemandMediaStreaming"
-)
-
-// PossibleOptimizationTypeValues returns an array of possible values for the OptimizationType const type.
-func PossibleOptimizationTypeValues() []OptimizationType {
-	return []OptimizationType{DynamicSiteAcceleration, GeneralMediaStreaming, GeneralWebDelivery, LargeFileDownload, VideoOnDemandMediaStreaming}
-}
-
-// OriginResourceState enumerates the values for origin resource state.
-type OriginResourceState string
-
-const (
-	// OriginResourceStateActive ...
-	OriginResourceStateActive OriginResourceState = "Active"
-	// OriginResourceStateCreating ...
-	OriginResourceStateCreating OriginResourceState = "Creating"
-	// OriginResourceStateDeleting ...
-	OriginResourceStateDeleting OriginResourceState = "Deleting"
-)
-
-// PossibleOriginResourceStateValues returns an array of possible values for the OriginResourceState const type.
-func PossibleOriginResourceStateValues() []OriginResourceState {
-	return []OriginResourceState{OriginResourceStateActive, OriginResourceStateCreating, OriginResourceStateDeleting}
-}
-
-// ProfileResourceState enumerates the values for profile resource state.
-type ProfileResourceState string
-
-const (
-	// ProfileResourceStateActive ...
-	ProfileResourceStateActive ProfileResourceState = "Active"
-	// ProfileResourceStateCreating ...
-	ProfileResourceStateCreating ProfileResourceState = "Creating"
-	// ProfileResourceStateDeleting ...
-	ProfileResourceStateDeleting ProfileResourceState = "Deleting"
-	// ProfileResourceStateDisabled ...
-	ProfileResourceStateDisabled ProfileResourceState = "Disabled"
-)
-
-// PossibleProfileResourceStateValues returns an array of possible values for the ProfileResourceState const type.
-func PossibleProfileResourceStateValues() []ProfileResourceState {
-	return []ProfileResourceState{ProfileResourceStateActive, ProfileResourceStateCreating, ProfileResourceStateDeleting, ProfileResourceStateDisabled}
-}
-
-// QueryStringCachingBehavior enumerates the values for query string caching behavior.
-type QueryStringCachingBehavior string
-
-const (
-	// BypassCaching ...
-	BypassCaching QueryStringCachingBehavior = "BypassCaching"
-	// IgnoreQueryString ...
-	IgnoreQueryString QueryStringCachingBehavior = "IgnoreQueryString"
-	// NotSet ...
-	NotSet QueryStringCachingBehavior = "NotSet"
-	// UseQueryString ...
-	UseQueryString QueryStringCachingBehavior = "UseQueryString"
-)
-
-// PossibleQueryStringCachingBehaviorValues returns an array of possible values for the QueryStringCachingBehavior const type.
-func PossibleQueryStringCachingBehaviorValues() []QueryStringCachingBehavior {
-	return []QueryStringCachingBehavior{BypassCaching, IgnoreQueryString, NotSet, UseQueryString}
-}
-
-// ResourceType enumerates the values for resource type.
-type ResourceType string
-
-const (
-	// MicrosoftCdnProfilesEndpoints ...
-	MicrosoftCdnProfilesEndpoints ResourceType = "Microsoft.Cdn/Profiles/Endpoints"
-)
-
-// PossibleResourceTypeValues returns an array of possible values for the ResourceType const type.
-func PossibleResourceTypeValues() []ResourceType {
-	return []ResourceType{MicrosoftCdnProfilesEndpoints}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// CustomVerizon ...
-	CustomVerizon SkuName = "Custom_Verizon"
-	// PremiumVerizon ...
-	PremiumVerizon SkuName = "Premium_Verizon"
-	// StandardAkamai ...
-	StandardAkamai SkuName = "Standard_Akamai"
-	// StandardChinaCdn ...
-	StandardChinaCdn SkuName = "Standard_ChinaCdn"
-	// StandardVerizon ...
-	StandardVerizon SkuName = "Standard_Verizon"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{CustomVerizon, PremiumVerizon, StandardAkamai, StandardChinaCdn, StandardVerizon}
-}
-
 // CheckNameAvailabilityInput input of CheckNameAvailability API.
 type CheckNameAvailabilityInput struct {
 	// Name - The resource name to validate.
@@ -421,10 +235,15 @@ func (cdlr CustomDomainListResult) IsEmpty() bool {
 	return cdlr.Value == nil || len(*cdlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cdlr CustomDomainListResult) hasNextLink() bool {
+	return cdlr.NextLink != nil && len(*cdlr.NextLink) != 0
+}
+
 // customDomainListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cdlr CustomDomainListResult) customDomainListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cdlr.NextLink == nil || len(to.String(cdlr.NextLink)) < 1 {
+	if !cdlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -452,11 +271,16 @@ func (page *CustomDomainListResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cdlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cdlr)
+		if err != nil {
+			return err
+		}
+		page.cdlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cdlr = next
 	return nil
 }
 
@@ -540,6 +364,18 @@ type CustomDomainProperties struct {
 	ValidationData *string `json:"validationData,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning status of the custom domain.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomDomainProperties.
+func (cdp CustomDomainProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cdp.HostName != nil {
+		objectMap["hostName"] = cdp.HostName
+	}
+	if cdp.ValidationData != nil {
+		objectMap["validationData"] = cdp.ValidationData
+	}
+	return json.Marshal(objectMap)
 }
 
 // CustomDomainPropertiesParameters the JSON object that contains the properties of the custom domain to
@@ -774,8 +610,8 @@ type EdgeNodeProperties struct {
 	IPAddressGroups *[]IPAddressGroup `json:"ipAddressGroups,omitempty"`
 }
 
-// EdgenodeResult result of the request to list CDN edgenodes. It contains a list of ip address group and a
-// URL link to get the next set of results.
+// EdgenodeResult result of the request to list CDN edgenodes. It contains a list of ip address group and a URL
+// link to get the next set of results.
 type EdgenodeResult struct {
 	autorest.Response `json:"-"`
 	// Value - Edge node of CDN service.
@@ -852,10 +688,15 @@ func (er EdgenodeResult) IsEmpty() bool {
 	return er.Value == nil || len(*er.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (er EdgenodeResult) hasNextLink() bool {
+	return er.NextLink != nil && len(*er.NextLink) != 0
+}
+
 // edgenodeResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (er EdgenodeResult) edgenodeResultPreparer(ctx context.Context) (*http.Request, error) {
-	if er.NextLink == nil || len(to.String(er.NextLink)) < 1 {
+	if !er.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -883,11 +724,16 @@ func (page *EdgenodeResultPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.er)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.er)
+		if err != nil {
+			return err
+		}
+		page.er = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.er = next
 	return nil
 }
 
@@ -1023,8 +869,8 @@ func (e *Endpoint) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// EndpointListResult result of the request to list endpoints. It contains a list of endpoint objects and a
-// URL link to get the next set of results.
+// EndpointListResult result of the request to list endpoints. It contains a list of endpoint objects and a URL
+// link to get the next set of results.
 type EndpointListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of CDN endpoints within a profile
@@ -1101,10 +947,15 @@ func (elr EndpointListResult) IsEmpty() bool {
 	return elr.Value == nil || len(*elr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (elr EndpointListResult) hasNextLink() bool {
+	return elr.NextLink != nil && len(*elr.NextLink) != 0
+}
+
 // endpointListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (elr EndpointListResult) endpointListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if elr.NextLink == nil || len(to.String(elr.NextLink)) < 1 {
+	if !elr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1132,11 +983,16 @@ func (page *EndpointListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.elr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.elr)
+		if err != nil {
+			return err
+		}
+		page.elr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.elr = next
 	return nil
 }
 
@@ -1200,8 +1056,44 @@ type EndpointProperties struct {
 	GeoFilters *[]GeoFilter `json:"geoFilters,omitempty"`
 }
 
-// EndpointPropertiesUpdateParameters result of the request to list endpoints. It contains a list of
-// endpoints and a URL link to get the next set of results.
+// MarshalJSON is the custom marshaler for EndpointProperties.
+func (ep EndpointProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ep.Origins != nil {
+		objectMap["origins"] = ep.Origins
+	}
+	if ep.OriginHostHeader != nil {
+		objectMap["originHostHeader"] = ep.OriginHostHeader
+	}
+	if ep.OriginPath != nil {
+		objectMap["originPath"] = ep.OriginPath
+	}
+	if ep.ContentTypesToCompress != nil {
+		objectMap["contentTypesToCompress"] = ep.ContentTypesToCompress
+	}
+	if ep.IsCompressionEnabled != nil {
+		objectMap["isCompressionEnabled"] = ep.IsCompressionEnabled
+	}
+	if ep.IsHTTPAllowed != nil {
+		objectMap["isHttpAllowed"] = ep.IsHTTPAllowed
+	}
+	if ep.IsHTTPSAllowed != nil {
+		objectMap["isHttpsAllowed"] = ep.IsHTTPSAllowed
+	}
+	if ep.QueryStringCachingBehavior != "" {
+		objectMap["queryStringCachingBehavior"] = ep.QueryStringCachingBehavior
+	}
+	if ep.OptimizationType != "" {
+		objectMap["optimizationType"] = ep.OptimizationType
+	}
+	if ep.GeoFilters != nil {
+		objectMap["geoFilters"] = ep.GeoFilters
+	}
+	return json.Marshal(objectMap)
+}
+
+// EndpointPropertiesUpdateParameters result of the request to list endpoints. It contains a list of endpoints
+// and a URL link to get the next set of results.
 type EndpointPropertiesUpdateParameters struct {
 	// OriginHostHeader - The host header CDN sends along with content requests to origin. The default value is the host name of the origin.
 	OriginHostHeader *string `json:"originHostHeader,omitempty"`
@@ -1223,8 +1115,7 @@ type EndpointPropertiesUpdateParameters struct {
 	GeoFilters *[]GeoFilter `json:"geoFilters,omitempty"`
 }
 
-// EndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type EndpointsCreateFuture struct {
 	azure.Future
 }
@@ -1252,8 +1143,7 @@ func (future *EndpointsCreateFuture) Result(client EndpointsClient) (e Endpoint,
 	return
 }
 
-// EndpointsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EndpointsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type EndpointsDeleteFuture struct {
 	azure.Future
 }
@@ -1321,8 +1211,7 @@ func (future *EndpointsPurgeContentFuture) Result(client EndpointsClient) (ar au
 	return
 }
 
-// EndpointsStartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EndpointsStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type EndpointsStartFuture struct {
 	azure.Future
 }
@@ -1350,8 +1239,7 @@ func (future *EndpointsStartFuture) Result(client EndpointsClient) (e Endpoint, 
 	return
 }
 
-// EndpointsStopFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EndpointsStopFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type EndpointsStopFuture struct {
 	azure.Future
 }
@@ -1379,8 +1267,7 @@ func (future *EndpointsStopFuture) Result(client EndpointsClient) (e Endpoint, e
 	return
 }
 
-// EndpointsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EndpointsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type EndpointsUpdateFuture struct {
 	azure.Future
 }
@@ -1460,8 +1347,8 @@ func (eup *EndpointUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ErrorResponse error response indicates CDN service is not able to process the incoming request. The
-// reason is provided in the error message.
+// ErrorResponse error response indicates CDN service is not able to process the incoming request. The reason
+// is provided in the error message.
 type ErrorResponse struct {
 	// Code - Error code.
 	Code *string `json:"code,omitempty"`
@@ -1513,8 +1400,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of the request to list CDN operations. It contains a list of operations and a
-// URL link to get the next set of results.
+// OperationListResult result of the request to list CDN operations. It contains a list of operations and a URL
+// link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of CDN operations supported by the CDN resource provider.
@@ -1591,10 +1478,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1622,11 +1514,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -1660,9 +1557,9 @@ func NewOperationListResultPage(getNextPage func(context.Context, OperationListR
 	return OperationListResultPage{fn: getNextPage}
 }
 
-// Origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented
-// by an endpoint do not have the requested content cached, they attempt to fetch it from one or more of
-// the configured origins.
+// Origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
+// an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
+// configured origins.
 type Origin struct {
 	autorest.Response `json:"-"`
 	*OriginProperties `json:"properties,omitempty"`
@@ -1762,8 +1659,8 @@ func (o *Origin) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// OriginListResult result of the request to list origins. It contains a list of origin objects and a URL
-// link to get the next set of results.
+// OriginListResult result of the request to list origins. It contains a list of origin objects and a URL link
+// to get the next set of results.
 type OriginListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of CDN origins within an endpoint
@@ -1840,10 +1737,15 @@ func (olr OriginListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OriginListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // originListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OriginListResult) originListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1871,11 +1773,16 @@ func (page *OriginListResultPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -1923,6 +1830,21 @@ type OriginProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OriginProperties.
+func (op OriginProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if op.HostName != nil {
+		objectMap["hostName"] = op.HostName
+	}
+	if op.HTTPPort != nil {
+		objectMap["httpPort"] = op.HTTPPort
+	}
+	if op.HTTPSPort != nil {
+		objectMap["httpsPort"] = op.HTTPSPort
+	}
+	return json.Marshal(objectMap)
+}
+
 // OriginPropertiesParameters the JSON object that contains the properties of the origin to create.
 type OriginPropertiesParameters struct {
 	// HostName - The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are supported.
@@ -1933,8 +1855,7 @@ type OriginPropertiesParameters struct {
 	HTTPSPort *int32 `json:"httpsPort,omitempty"`
 }
 
-// OriginsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// OriginsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type OriginsUpdateFuture struct {
 	azure.Future
 }
@@ -2001,8 +1922,8 @@ func (oup *OriginUpdateParameters) UnmarshalJSON(body []byte) error {
 }
 
 // Profile CDN profile represents the top level resource and the entry point into the CDN API. This allows
-// users to set up a logical grouping of endpoints in addition to creating shared configuration settings
-// and selecting pricing tiers and providers.
+// users to set up a logical grouping of endpoints in addition to creating shared configuration settings and
+// selecting pricing tiers and providers.
 type Profile struct {
 	autorest.Response `json:"-"`
 	// Sku - The pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.
@@ -2116,8 +2037,8 @@ func (p *Profile) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ProfileListResult result of the request to list profiles. It contains a list of profile objects and a
-// URL link to get the next set of results.
+// ProfileListResult result of the request to list profiles. It contains a list of profile objects and a URL
+// link to get the next set of results.
 type ProfileListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of CDN profiles within a resource group.
@@ -2194,10 +2115,15 @@ func (plr ProfileListResult) IsEmpty() bool {
 	return plr.Value == nil || len(*plr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (plr ProfileListResult) hasNextLink() bool {
+	return plr.NextLink != nil && len(*plr.NextLink) != 0
+}
+
 // profileListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (plr ProfileListResult) profileListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if plr.NextLink == nil || len(to.String(plr.NextLink)) < 1 {
+	if !plr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2225,11 +2151,16 @@ func (page *ProfileListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.plr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.plr)
+		if err != nil {
+			return err
+		}
+		page.plr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.plr = next
 	return nil
 }
 
@@ -2271,8 +2202,7 @@ type ProfileProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// ProfilesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ProfilesCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ProfilesCreateFuture struct {
 	azure.Future
 }
@@ -2300,8 +2230,7 @@ func (future *ProfilesCreateFuture) Result(client ProfilesClient) (p Profile, er
 	return
 }
 
-// ProfilesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ProfilesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ProfilesDeleteFuture struct {
 	azure.Future
 }
@@ -2323,8 +2252,7 @@ func (future *ProfilesDeleteFuture) Result(client ProfilesClient) (ar autorest.R
 	return
 }
 
-// ProfilesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ProfilesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ProfilesUpdateFuture struct {
 	azure.Future
 }
@@ -2488,10 +2416,15 @@ func (rulr ResourceUsageListResult) IsEmpty() bool {
 	return rulr.Value == nil || len(*rulr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rulr ResourceUsageListResult) hasNextLink() bool {
+	return rulr.NextLink != nil && len(*rulr.NextLink) != 0
+}
+
 // resourceUsageListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rulr ResourceUsageListResult) resourceUsageListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rulr.NextLink == nil || len(to.String(rulr.NextLink)) < 1 {
+	if !rulr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2519,11 +2452,16 @@ func (page *ResourceUsageListResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rulr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rulr)
+		if err != nil {
+			return err
+		}
+		page.rulr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rulr = next
 	return nil
 }
 

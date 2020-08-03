@@ -315,6 +315,9 @@ func (client PrefixesClient) ListByPeeringService(ctx context.Context, resourceG
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PrefixesClient", "ListByPeeringService", resp, "Failure responding to request")
 	}
+	if result.splr.hasNextLink() && result.splr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

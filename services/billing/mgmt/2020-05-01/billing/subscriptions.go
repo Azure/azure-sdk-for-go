@@ -32,14 +32,14 @@ type SubscriptionsClient struct {
 }
 
 // NewSubscriptionsClient creates an instance of the SubscriptionsClient client.
-func NewSubscriptionsClient(subscriptionID string) SubscriptionsClient {
-	return NewSubscriptionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewSubscriptionsClient(subscriptionID string, subscriptionID1 string) SubscriptionsClient {
+	return NewSubscriptionsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewSubscriptionsClientWithBaseURI creates an instance of the SubscriptionsClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionsClient {
-	return SubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) SubscriptionsClient {
+	return SubscriptionsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // Get gets a subscription by its ID. The operation is supported for billing accounts with agreement type Microsoft
@@ -148,6 +148,9 @@ func (client SubscriptionsClient) ListByBillingAccount(ctx context.Context, bill
 	result.slr, err = client.ListByBillingAccountResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByBillingAccount", resp, "Failure responding to request")
+	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -260,6 +263,9 @@ func (client SubscriptionsClient) ListByBillingProfile(ctx context.Context, bill
 	result.slr, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByBillingProfile", resp, "Failure responding to request")
+	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -374,6 +380,9 @@ func (client SubscriptionsClient) ListByCustomer(ctx context.Context, billingAcc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByCustomer", resp, "Failure responding to request")
 	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -487,6 +496,9 @@ func (client SubscriptionsClient) ListByInvoiceSection(ctx context.Context, bill
 	result.slr, err = client.ListByInvoiceSectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByInvoiceSection", resp, "Failure responding to request")
+	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

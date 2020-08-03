@@ -151,6 +151,9 @@ func (client RequestsClient) List(ctx context.Context, subscriptionID string, fi
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerlockbox.RequestsClient", "List", resp, "Failure responding to request")
 	}
+	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

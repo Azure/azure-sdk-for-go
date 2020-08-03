@@ -31,378 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2016-07-07/apimanagement"
 
-// APIProtocolContract enumerates the values for api protocol contract.
-type APIProtocolContract string
-
-const (
-	// HTTP ...
-	HTTP APIProtocolContract = "Http"
-	// HTTPS ...
-	HTTPS APIProtocolContract = "Https"
-)
-
-// PossibleAPIProtocolContractValues returns an array of possible values for the APIProtocolContract const type.
-func PossibleAPIProtocolContractValues() []APIProtocolContract {
-	return []APIProtocolContract{HTTP, HTTPS}
-}
-
-// APITypeContract enumerates the values for api type contract.
-type APITypeContract string
-
-const (
-	// APITypeContractHTTP ...
-	APITypeContractHTTP APITypeContract = "Http"
-	// APITypeContractSoap ...
-	APITypeContractSoap APITypeContract = "Soap"
-)
-
-// PossibleAPITypeContractValues returns an array of possible values for the APITypeContract const type.
-func PossibleAPITypeContractValues() []APITypeContract {
-	return []APITypeContract{APITypeContractHTTP, APITypeContractSoap}
-}
-
-// AsyncOperationState enumerates the values for async operation state.
-type AsyncOperationState string
-
-const (
-	// Failed ...
-	Failed AsyncOperationState = "Failed"
-	// InProgress ...
-	InProgress AsyncOperationState = "InProgress"
-	// Started ...
-	Started AsyncOperationState = "Started"
-	// Succeeded ...
-	Succeeded AsyncOperationState = "Succeeded"
-)
-
-// PossibleAsyncOperationStateValues returns an array of possible values for the AsyncOperationState const type.
-func PossibleAsyncOperationStateValues() []AsyncOperationState {
-	return []AsyncOperationState{Failed, InProgress, Started, Succeeded}
-}
-
-// BearerTokenSendingMethodsContract enumerates the values for bearer token sending methods contract.
-type BearerTokenSendingMethodsContract string
-
-const (
-	// AuthorizationHeader ...
-	AuthorizationHeader BearerTokenSendingMethodsContract = "authorizationHeader"
-	// Query ...
-	Query BearerTokenSendingMethodsContract = "query"
-)
-
-// PossibleBearerTokenSendingMethodsContractValues returns an array of possible values for the BearerTokenSendingMethodsContract const type.
-func PossibleBearerTokenSendingMethodsContractValues() []BearerTokenSendingMethodsContract {
-	return []BearerTokenSendingMethodsContract{AuthorizationHeader, Query}
-}
-
-// ClientAuthenticationMethodContract enumerates the values for client authentication method contract.
-type ClientAuthenticationMethodContract string
-
-const (
-	// Basic ...
-	Basic ClientAuthenticationMethodContract = "Basic"
-	// Body ...
-	Body ClientAuthenticationMethodContract = "Body"
-)
-
-// PossibleClientAuthenticationMethodContractValues returns an array of possible values for the ClientAuthenticationMethodContract const type.
-func PossibleClientAuthenticationMethodContractValues() []ClientAuthenticationMethodContract {
-	return []ClientAuthenticationMethodContract{Basic, Body}
-}
-
-// GrantTypesContract enumerates the values for grant types contract.
-type GrantTypesContract string
-
-const (
-	// AuthorizationCode ...
-	AuthorizationCode GrantTypesContract = "authorizationCode"
-	// ClientCredentials ...
-	ClientCredentials GrantTypesContract = "clientCredentials"
-	// Implicit ...
-	Implicit GrantTypesContract = "implicit"
-	// ResourceOwnerPassword ...
-	ResourceOwnerPassword GrantTypesContract = "resourceOwnerPassword"
-)
-
-// PossibleGrantTypesContractValues returns an array of possible values for the GrantTypesContract const type.
-func PossibleGrantTypesContractValues() []GrantTypesContract {
-	return []GrantTypesContract{AuthorizationCode, ClientCredentials, Implicit, ResourceOwnerPassword}
-}
-
-// GroupTypeContract enumerates the values for group type contract.
-type GroupTypeContract string
-
-const (
-	// Custom ...
-	Custom GroupTypeContract = "Custom"
-	// External ...
-	External GroupTypeContract = "External"
-	// System ...
-	System GroupTypeContract = "System"
-)
-
-// PossibleGroupTypeContractValues returns an array of possible values for the GroupTypeContract const type.
-func PossibleGroupTypeContractValues() []GroupTypeContract {
-	return []GroupTypeContract{Custom, External, System}
-}
-
-// HostnameType enumerates the values for hostname type.
-type HostnameType string
-
-const (
-	// Management ...
-	Management HostnameType = "Management"
-	// Portal ...
-	Portal HostnameType = "Portal"
-	// Proxy ...
-	Proxy HostnameType = "Proxy"
-	// Scm ...
-	Scm HostnameType = "Scm"
-)
-
-// PossibleHostnameTypeValues returns an array of possible values for the HostnameType const type.
-func PossibleHostnameTypeValues() []HostnameType {
-	return []HostnameType{Management, Portal, Proxy, Scm}
-}
-
-// HTTPStatusCode enumerates the values for http status code.
-type HTTPStatusCode string
-
-const (
-	// Accepted ...
-	Accepted HTTPStatusCode = "Accepted"
-	// Conflict ...
-	Conflict HTTPStatusCode = "Conflict"
-	// Continue ...
-	Continue HTTPStatusCode = "Continue"
-	// Created ...
-	Created HTTPStatusCode = "Created"
-	// NotFound ...
-	NotFound HTTPStatusCode = "NotFound"
-	// OK ...
-	OK HTTPStatusCode = "OK"
-)
-
-// PossibleHTTPStatusCodeValues returns an array of possible values for the HTTPStatusCode const type.
-func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
-	return []HTTPStatusCode{Accepted, Conflict, Continue, Created, NotFound, OK}
-}
-
-// IdentityProviderNameType enumerates the values for identity provider name type.
-type IdentityProviderNameType string
-
-const (
-	// Aad ...
-	Aad IdentityProviderNameType = "aad"
-	// Facebook ...
-	Facebook IdentityProviderNameType = "facebook"
-	// Google ...
-	Google IdentityProviderNameType = "google"
-	// Microsoft ...
-	Microsoft IdentityProviderNameType = "microsoft"
-	// Twitter ...
-	Twitter IdentityProviderNameType = "twitter"
-)
-
-// PossibleIdentityProviderNameTypeValues returns an array of possible values for the IdentityProviderNameType const type.
-func PossibleIdentityProviderNameTypeValues() []IdentityProviderNameType {
-	return []IdentityProviderNameType{Aad, Facebook, Google, Microsoft, Twitter}
-}
-
-// MethodContract enumerates the values for method contract.
-type MethodContract string
-
-const (
-	// DELETE ...
-	DELETE MethodContract = "DELETE"
-	// GET ...
-	GET MethodContract = "GET"
-	// HEAD ...
-	HEAD MethodContract = "HEAD"
-	// OPTIONS ...
-	OPTIONS MethodContract = "OPTIONS"
-	// PATCH ...
-	PATCH MethodContract = "PATCH"
-	// POST ...
-	POST MethodContract = "POST"
-	// PUT ...
-	PUT MethodContract = "PUT"
-	// TRACE ...
-	TRACE MethodContract = "TRACE"
-)
-
-// PossibleMethodContractValues returns an array of possible values for the MethodContract const type.
-func PossibleMethodContractValues() []MethodContract {
-	return []MethodContract{DELETE, GET, HEAD, OPTIONS, PATCH, POST, PUT, TRACE}
-}
-
-// NameAvailabilityReason enumerates the values for name availability reason.
-type NameAvailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists NameAvailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid NameAvailabilityReason = "Invalid"
-	// Valid ...
-	Valid NameAvailabilityReason = "Valid"
-)
-
-// PossibleNameAvailabilityReasonValues returns an array of possible values for the NameAvailabilityReason const type.
-func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
-	return []NameAvailabilityReason{AlreadyExists, Invalid, Valid}
-}
-
-// OperationStatus enumerates the values for operation status.
-type OperationStatus string
-
-const (
-	// OperationStatusFailed ...
-	OperationStatusFailed OperationStatus = "Failed"
-	// OperationStatusInProgress ...
-	OperationStatusInProgress OperationStatus = "InProgress"
-	// OperationStatusSucceeded ...
-	OperationStatusSucceeded OperationStatus = "Succeeded"
-)
-
-// PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
-func PossibleOperationStatusValues() []OperationStatus {
-	return []OperationStatus{OperationStatusFailed, OperationStatusInProgress, OperationStatusSucceeded}
-}
-
-// PolicyScopeContract enumerates the values for policy scope contract.
-type PolicyScopeContract string
-
-const (
-	// All ...
-	All PolicyScopeContract = "All"
-	// API ...
-	API PolicyScopeContract = "Api"
-	// Operation ...
-	Operation PolicyScopeContract = "Operation"
-	// Product ...
-	Product PolicyScopeContract = "Product"
-	// Tenant ...
-	Tenant PolicyScopeContract = "Tenant"
-)
-
-// PossiblePolicyScopeContractValues returns an array of possible values for the PolicyScopeContract const type.
-func PossiblePolicyScopeContractValues() []PolicyScopeContract {
-	return []PolicyScopeContract{All, API, Operation, Product, Tenant}
-}
-
-// ProductStateContract enumerates the values for product state contract.
-type ProductStateContract string
-
-const (
-	// NotPublished ...
-	NotPublished ProductStateContract = "NotPublished"
-	// Published ...
-	Published ProductStateContract = "Published"
-)
-
-// PossibleProductStateContractValues returns an array of possible values for the ProductStateContract const type.
-func PossibleProductStateContractValues() []ProductStateContract {
-	return []ProductStateContract{NotPublished, Published}
-}
-
-// ReportsAggregation enumerates the values for reports aggregation.
-type ReportsAggregation string
-
-const (
-	// ByAPI ...
-	ByAPI ReportsAggregation = "byApi"
-	// ByGeo ...
-	ByGeo ReportsAggregation = "byGeo"
-	// ByOperation ...
-	ByOperation ReportsAggregation = "byOperation"
-	// ByProduct ...
-	ByProduct ReportsAggregation = "byProduct"
-	// BySubscription ...
-	BySubscription ReportsAggregation = "bySubscription"
-	// ByTime ...
-	ByTime ReportsAggregation = "byTime"
-	// ByUser ...
-	ByUser ReportsAggregation = "byUser"
-)
-
-// PossibleReportsAggregationValues returns an array of possible values for the ReportsAggregation const type.
-func PossibleReportsAggregationValues() []ReportsAggregation {
-	return []ReportsAggregation{ByAPI, ByGeo, ByOperation, ByProduct, BySubscription, ByTime, ByUser}
-}
-
-// SkuType enumerates the values for sku type.
-type SkuType string
-
-const (
-	// Developer ...
-	Developer SkuType = "Developer"
-	// Premium ...
-	Premium SkuType = "Premium"
-	// Standard ...
-	Standard SkuType = "Standard"
-)
-
-// PossibleSkuTypeValues returns an array of possible values for the SkuType const type.
-func PossibleSkuTypeValues() []SkuType {
-	return []SkuType{Developer, Premium, Standard}
-}
-
-// SubscriptionStateContract enumerates the values for subscription state contract.
-type SubscriptionStateContract string
-
-const (
-	// Active ...
-	Active SubscriptionStateContract = "Active"
-	// Cancelled ...
-	Cancelled SubscriptionStateContract = "Cancelled"
-	// Expired ...
-	Expired SubscriptionStateContract = "Expired"
-	// Rejected ...
-	Rejected SubscriptionStateContract = "Rejected"
-	// Submitted ...
-	Submitted SubscriptionStateContract = "Submitted"
-	// Suspended ...
-	Suspended SubscriptionStateContract = "Suspended"
-)
-
-// PossibleSubscriptionStateContractValues returns an array of possible values for the SubscriptionStateContract const type.
-func PossibleSubscriptionStateContractValues() []SubscriptionStateContract {
-	return []SubscriptionStateContract{Active, Cancelled, Expired, Rejected, Submitted, Suspended}
-}
-
-// UserStateContract enumerates the values for user state contract.
-type UserStateContract string
-
-const (
-	// UserStateContractActive ...
-	UserStateContractActive UserStateContract = "Active"
-	// UserStateContractBlocked ...
-	UserStateContractBlocked UserStateContract = "Blocked"
-)
-
-// PossibleUserStateContractValues returns an array of possible values for the UserStateContract const type.
-func PossibleUserStateContractValues() []UserStateContract {
-	return []UserStateContract{UserStateContractActive, UserStateContractBlocked}
-}
-
-// VirtualNetworkType enumerates the values for virtual network type.
-type VirtualNetworkType string
-
-const (
-	// VirtualNetworkTypeExternal ...
-	VirtualNetworkTypeExternal VirtualNetworkType = "External"
-	// VirtualNetworkTypeInternal ...
-	VirtualNetworkTypeInternal VirtualNetworkType = "Internal"
-	// VirtualNetworkTypeNone ...
-	VirtualNetworkTypeNone VirtualNetworkType = "None"
-)
-
-// PossibleVirtualNetworkTypeValues returns an array of possible values for the VirtualNetworkType const type.
-func PossibleVirtualNetworkTypeValues() []VirtualNetworkType {
-	return []VirtualNetworkType{VirtualNetworkTypeExternal, VirtualNetworkTypeInternal, VirtualNetworkTypeNone}
-}
-
 // AccessInformationContract tenant access information contract of the API Management service.
 type AccessInformationContract struct {
 	autorest.Response `json:"-"`
@@ -416,8 +44,7 @@ type AccessInformationContract struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// AccessInformationUpdateParameters tenant access information update parameters of the API Management
-// service.
+// AccessInformationUpdateParameters tenant access information update parameters of the API Management service.
 type AccessInformationUpdateParameters struct {
 	// Enabled - Tenant access information of the API Management service.
 	Enabled *bool `json:"enabled,omitempty"`
@@ -435,6 +62,24 @@ type AdditionalRegion struct {
 	StaticIPs *[]string `json:"staticIPs,omitempty"`
 	// Vpnconfiguration - Virtual network configuration for the location.
 	Vpnconfiguration *VirtualNetworkConfiguration `json:"vpnconfiguration,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AdditionalRegion.
+func (ar AdditionalRegion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ar.Location != nil {
+		objectMap["location"] = ar.Location
+	}
+	if ar.SkuType != "" {
+		objectMap["skuType"] = ar.SkuType
+	}
+	if ar.SkuUnitCount != nil {
+		objectMap["skuUnitCount"] = ar.SkuUnitCount
+	}
+	if ar.Vpnconfiguration != nil {
+		objectMap["vpnconfiguration"] = ar.Vpnconfiguration
+	}
+	return json.Marshal(objectMap)
 }
 
 // APICollection paged Api list representation.
@@ -516,10 +161,15 @@ func (ac APICollection) IsEmpty() bool {
 	return ac.Value == nil || len(*ac.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ac APICollection) hasNextLink() bool {
+	return ac.NextLink != nil && len(*ac.NextLink) != 0
+}
+
 // aPICollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ac APICollection) aPICollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if ac.NextLink == nil || len(to.String(ac.NextLink)) < 1 {
+	if !ac.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -547,11 +197,16 @@ func (page *APICollectionPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ac)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ac)
+		if err != nil {
+			return err
+		}
+		page.ac = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ac = next
 	return nil
 }
 
@@ -606,6 +261,36 @@ type APIContract struct {
 	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
 	// Type - Type of API. Possible values include: 'APITypeContractHTTP', 'APITypeContractSoap'
 	Type APITypeContract `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for APIContract.
+func (ac APIContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ac.Name != nil {
+		objectMap["name"] = ac.Name
+	}
+	if ac.Description != nil {
+		objectMap["description"] = ac.Description
+	}
+	if ac.ServiceURL != nil {
+		objectMap["serviceUrl"] = ac.ServiceURL
+	}
+	if ac.Path != nil {
+		objectMap["path"] = ac.Path
+	}
+	if ac.Protocols != nil {
+		objectMap["protocols"] = ac.Protocols
+	}
+	if ac.AuthenticationSettings != nil {
+		objectMap["authenticationSettings"] = ac.AuthenticationSettings
+	}
+	if ac.SubscriptionKeyParameterNames != nil {
+		objectMap["subscriptionKeyParameterNames"] = ac.SubscriptionKeyParameterNames
+	}
+	if ac.Type != "" {
+		objectMap["type"] = ac.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // APIExportResult the response model for the export API output operation.
@@ -703,10 +388,15 @@ func (asc AuthorizationServerCollection) IsEmpty() bool {
 	return asc.Value == nil || len(*asc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (asc AuthorizationServerCollection) hasNextLink() bool {
+	return asc.NextLink != nil && len(*asc.NextLink) != 0
+}
+
 // authorizationServerCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (asc AuthorizationServerCollection) authorizationServerCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if asc.NextLink == nil || len(to.String(asc.NextLink)) < 1 {
+	if !asc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -734,11 +424,16 @@ func (page *AuthorizationServerCollectionPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.asc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.asc)
+		if err != nil {
+			return err
+		}
+		page.asc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.asc = next
 	return nil
 }
 
@@ -851,10 +546,15 @@ func (bc BackendCollection) IsEmpty() bool {
 	return bc.Value == nil || len(*bc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (bc BackendCollection) hasNextLink() bool {
+	return bc.NextLink != nil && len(*bc.NextLink) != 0
+}
+
 // backendCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (bc BackendCollection) backendCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if bc.NextLink == nil || len(to.String(bc.NextLink)) < 1 {
+	if !bc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -882,11 +582,16 @@ func (page *BackendCollectionPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.bc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.bc)
+		if err != nil {
+			return err
+		}
+		page.bc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.bc = next
 	return nil
 }
 
@@ -928,8 +633,8 @@ type BackendContract struct {
 	SkipCertificateChainValidation *bool `json:"skipCertificateChainValidation,omitempty"`
 }
 
-// BackendResponse the Backend entity in API Management represents a backend service that is configured to
-// skip certification chain validation when using a self-signed certificate to test mutual certificate
+// BackendResponse the Backend entity in API Management represents a backend service that is configured to skip
+// certification chain validation when using a self-signed certificate to test mutual certificate
 // authentication.
 type BackendResponse struct {
 	autorest.Response `json:"-"`
@@ -939,6 +644,18 @@ type BackendResponse struct {
 	Host *string `json:"host,omitempty"`
 	// SkipCertificateChainValidation - Flag indicating whether SSL certificate chain validation should be skipped when using self-signed certificates for this backend host.
 	SkipCertificateChainValidation *bool `json:"skipCertificateChainValidation,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BackendResponse.
+func (br BackendResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if br.Host != nil {
+		objectMap["host"] = br.Host
+	}
+	if br.SkipCertificateChainValidation != nil {
+		objectMap["skipCertificateChainValidation"] = br.SkipCertificateChainValidation
+	}
+	return json.Marshal(objectMap)
 }
 
 // BackendUpdateParameters parameters supplied to the Update Backend operation.
@@ -1028,10 +745,15 @@ func (cc CertificateCollection) IsEmpty() bool {
 	return cc.Value == nil || len(*cc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cc CertificateCollection) hasNextLink() bool {
+	return cc.NextLink != nil && len(*cc.NextLink) != 0
+}
+
 // certificateCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cc CertificateCollection) certificateCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if cc.NextLink == nil || len(to.String(cc.NextLink)) < 1 {
+	if !cc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1059,11 +781,16 @@ func (page *CertificateCollectionPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cc)
+		if err != nil {
+			return err
+		}
+		page.cc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cc = next
 	return nil
 }
 
@@ -1108,6 +835,21 @@ type CertificateContract struct {
 	Thumbprint *string `json:"thumbprint,omitempty"`
 	// ExpirationDate - Expiration date of the certificate. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CertificateContract.
+func (cc CertificateContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cc.Subject != nil {
+		objectMap["subject"] = cc.Subject
+	}
+	if cc.Thumbprint != nil {
+		objectMap["thumbprint"] = cc.Thumbprint
+	}
+	if cc.ExpirationDate != nil {
+		objectMap["expirationDate"] = cc.ExpirationDate
+	}
+	return json.Marshal(objectMap)
 }
 
 // CertificateCreateOrUpdateParameters parameters supplied to the CreateOrUpdate certificate operation.
@@ -1253,10 +995,15 @@ func (gc GroupCollection) IsEmpty() bool {
 	return gc.Value == nil || len(*gc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (gc GroupCollection) hasNextLink() bool {
+	return gc.NextLink != nil && len(*gc.NextLink) != 0
+}
+
 // groupCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (gc GroupCollection) groupCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if gc.NextLink == nil || len(to.String(gc.NextLink)) < 1 {
+	if !gc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1284,11 +1031,16 @@ func (page *GroupCollectionPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.gc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.gc)
+		if err != nil {
+			return err
+		}
+		page.gc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.gc = next
 	return nil
 }
 
@@ -1339,6 +1091,18 @@ type GroupContract struct {
 	ExternalID *string `json:"externalId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GroupContract.
+func (gc GroupContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gc.Name != nil {
+		objectMap["name"] = gc.Name
+	}
+	if gc.Description != nil {
+		objectMap["description"] = gc.Description
+	}
+	return json.Marshal(objectMap)
+}
+
 // GroupCreateParameters parameters supplied to the Create Group operation.
 type GroupCreateParameters struct {
 	// Name - Group name.
@@ -1373,9 +1137,9 @@ type HostnameConfiguration struct {
 	Certificate *CertificateInformation `json:"certificate,omitempty"`
 }
 
-// IdentityProviderContract the external Identity Providers like Facebook, Google, Microsoft, Twitter or
-// Azure Active Directory which can be used to enable access to the API Management service developer portal
-// for all users.
+// IdentityProviderContract the external Identity Providers like Facebook, Google, Microsoft, Twitter or Azure
+// Active Directory which can be used to enable access to the API Management service developer portal for all
+// users.
 type IdentityProviderContract struct {
 	autorest.Response `json:"-"`
 	// ClientID - Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for Google login, App ID for Microsoft.
@@ -1496,10 +1260,15 @@ func (lc LoggerCollection) IsEmpty() bool {
 	return lc.Value == nil || len(*lc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lc LoggerCollection) hasNextLink() bool {
+	return lc.NextLink != nil && len(*lc.NextLink) != 0
+}
+
 // loggerCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lc LoggerCollection) loggerCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if lc.NextLink == nil || len(to.String(lc.NextLink)) < 1 {
+	if !lc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1527,11 +1296,16 @@ func (page *LoggerCollectionPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lc)
+		if err != nil {
+			return err
+		}
+		page.lc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lc = next
 	return nil
 }
 
@@ -1596,8 +1370,7 @@ func (lcp LoggerCreateParameters) MarshalJSON() ([]byte, error) {
 }
 
 // LoggerResponse the Logger entity in API Management represents an event sink that you can use to log API
-// Management events. Currently the Logger entity supports logging API Management events to Azure Event
-// Hubs.
+// Management events. Currently the Logger entity supports logging API Management events to Azure Event Hubs.
 type LoggerResponse struct {
 	autorest.Response `json:"-"`
 	// ID - READ-ONLY; Uniquely identifies the logger within the current API Management service instance. The value is a valid relative URL in the format of /loggers/{loggerId} where {loggerId} is a logger identifier.
@@ -1705,6 +1478,60 @@ type OAuth2AuthorizationServerContract struct {
 	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
 	// ResourceOwnerPassword - Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password.
 	ResourceOwnerPassword *string `json:"resourceOwnerPassword,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OAuth2AuthorizationServerContract.
+func (oa2asc OAuth2AuthorizationServerContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if oa2asc.Name != nil {
+		objectMap["name"] = oa2asc.Name
+	}
+	if oa2asc.Description != nil {
+		objectMap["description"] = oa2asc.Description
+	}
+	if oa2asc.ClientRegistrationEndpoint != nil {
+		objectMap["clientRegistrationEndpoint"] = oa2asc.ClientRegistrationEndpoint
+	}
+	if oa2asc.AuthorizationEndpoint != nil {
+		objectMap["authorizationEndpoint"] = oa2asc.AuthorizationEndpoint
+	}
+	if oa2asc.AuthorizationMethods != nil {
+		objectMap["authorizationMethods"] = oa2asc.AuthorizationMethods
+	}
+	if oa2asc.ClientAuthenticationMethod != nil {
+		objectMap["clientAuthenticationMethod"] = oa2asc.ClientAuthenticationMethod
+	}
+	if oa2asc.TokenBodyParameters != nil {
+		objectMap["tokenBodyParameters"] = oa2asc.TokenBodyParameters
+	}
+	if oa2asc.TokenEndpoint != nil {
+		objectMap["tokenEndpoint"] = oa2asc.TokenEndpoint
+	}
+	if oa2asc.SupportState != nil {
+		objectMap["supportState"] = oa2asc.SupportState
+	}
+	if oa2asc.DefaultScope != nil {
+		objectMap["defaultScope"] = oa2asc.DefaultScope
+	}
+	if oa2asc.GrantTypes != nil {
+		objectMap["grantTypes"] = oa2asc.GrantTypes
+	}
+	if oa2asc.BearerTokenSendingMethods != nil {
+		objectMap["bearerTokenSendingMethods"] = oa2asc.BearerTokenSendingMethods
+	}
+	if oa2asc.ClientID != nil {
+		objectMap["clientId"] = oa2asc.ClientID
+	}
+	if oa2asc.ClientSecret != nil {
+		objectMap["clientSecret"] = oa2asc.ClientSecret
+	}
+	if oa2asc.ResourceOwnerUsername != nil {
+		objectMap["resourceOwnerUsername"] = oa2asc.ResourceOwnerUsername
+	}
+	if oa2asc.ResourceOwnerPassword != nil {
+		objectMap["resourceOwnerPassword"] = oa2asc.ResourceOwnerPassword
+	}
+	return json.Marshal(objectMap)
 }
 
 // OAuth2AuthorizationServerUpdateContract external OAuth authorization server Update settings contract.
@@ -1823,10 +1650,15 @@ func (oicpc OpenIDConnectProviderCollection) IsEmpty() bool {
 	return oicpc.Value == nil || len(*oicpc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (oicpc OpenIDConnectProviderCollection) hasNextLink() bool {
+	return oicpc.NextLink != nil && len(*oicpc.NextLink) != 0
+}
+
 // openIDConnectProviderCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (oicpc OpenIDConnectProviderCollection) openIDConnectProviderCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if oicpc.NextLink == nil || len(to.String(oicpc.NextLink)) < 1 {
+	if !oicpc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1854,11 +1686,16 @@ func (page *OpenIDConnectProviderCollectionPage) NextWithContext(ctx context.Con
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.oicpc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.oicpc)
+		if err != nil {
+			return err
+		}
+		page.oicpc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.oicpc = next
 	return nil
 }
 
@@ -2016,10 +1853,15 @@ func (oc OperationCollection) IsEmpty() bool {
 	return oc.Value == nil || len(*oc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (oc OperationCollection) hasNextLink() bool {
+	return oc.NextLink != nil && len(*oc.NextLink) != 0
+}
+
 // operationCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (oc OperationCollection) operationCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if oc.NextLink == nil || len(to.String(oc.NextLink)) < 1 {
+	if !oc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2047,11 +1889,16 @@ func (page *OperationCollectionPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.oc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.oc)
+		if err != nil {
+			return err
+		}
+		page.oc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.oc = next
 	return nil
 }
 
@@ -2104,6 +1951,33 @@ type OperationContract struct {
 	Request *RequestContract `json:"request,omitempty"`
 	// Responses - Array of Operation responses.
 	Responses *[]ResultContract `json:"responses,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationContract.
+func (oc OperationContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if oc.Name != nil {
+		objectMap["name"] = oc.Name
+	}
+	if oc.Method != nil {
+		objectMap["method"] = oc.Method
+	}
+	if oc.URLTemplate != nil {
+		objectMap["urlTemplate"] = oc.URLTemplate
+	}
+	if oc.TemplateParameters != nil {
+		objectMap["templateParameters"] = oc.TemplateParameters
+	}
+	if oc.Description != nil {
+		objectMap["description"] = oc.Description
+	}
+	if oc.Request != nil {
+		objectMap["request"] = oc.Request
+	}
+	if oc.Responses != nil {
+		objectMap["responses"] = oc.Responses
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationResultContract operation Result.
@@ -2235,10 +2109,15 @@ func (pc ProductCollection) IsEmpty() bool {
 	return pc.Value == nil || len(*pc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pc ProductCollection) hasNextLink() bool {
+	return pc.NextLink != nil && len(*pc.NextLink) != 0
+}
+
 // productCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pc ProductCollection) productCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if pc.NextLink == nil || len(to.String(pc.NextLink)) < 1 {
+	if !pc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2266,11 +2145,16 @@ func (page *ProductCollectionPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pc)
+		if err != nil {
+			return err
+		}
+		page.pc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pc = next
 	return nil
 }
 
@@ -2323,6 +2207,33 @@ type ProductContract struct {
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is NotPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductStateContract `json:"state,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProductContract.
+func (pc ProductContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pc.Name != nil {
+		objectMap["name"] = pc.Name
+	}
+	if pc.Description != nil {
+		objectMap["description"] = pc.Description
+	}
+	if pc.Terms != nil {
+		objectMap["terms"] = pc.Terms
+	}
+	if pc.SubscriptionRequired != nil {
+		objectMap["subscriptionRequired"] = pc.SubscriptionRequired
+	}
+	if pc.ApprovalRequired != nil {
+		objectMap["approvalRequired"] = pc.ApprovalRequired
+	}
+	if pc.SubscriptionsLimit != nil {
+		objectMap["subscriptionsLimit"] = pc.SubscriptionsLimit
+	}
+	if pc.State != "" {
+		objectMap["state"] = pc.State
+	}
+	return json.Marshal(objectMap)
 }
 
 // ProductUpdateParameters parameters supplied to the CreateOrUpdate Product operation.
@@ -2422,10 +2333,15 @@ func (pc PropertyCollection) IsEmpty() bool {
 	return pc.Value == nil || len(*pc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pc PropertyCollection) hasNextLink() bool {
+	return pc.NextLink != nil && len(*pc.NextLink) != 0
+}
+
 // propertyCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pc PropertyCollection) propertyCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if pc.NextLink == nil || len(to.String(pc.NextLink)) < 1 {
+	if !pc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2453,11 +2369,16 @@ func (page *PropertyCollectionPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pc)
+		if err != nil {
+			return err
+		}
+		page.pc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pc = next
 	return nil
 }
 
@@ -2504,6 +2425,24 @@ type PropertyContract struct {
 	Tags *[]string `json:"tags,omitempty"`
 	// Secret - Determines whether the value is a secret and should be encrypted or not. Default value is false.
 	Secret *bool `json:"secret,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PropertyContract.
+func (pc PropertyContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pc.Name != nil {
+		objectMap["name"] = pc.Name
+	}
+	if pc.Value != nil {
+		objectMap["value"] = pc.Value
+	}
+	if pc.Tags != nil {
+		objectMap["tags"] = pc.Tags
+	}
+	if pc.Secret != nil {
+		objectMap["secret"] = pc.Secret
+	}
+	return json.Marshal(objectMap)
 }
 
 // PropertyCreateParameters parameters supplied to the Create Property operation.
@@ -2660,10 +2599,15 @@ func (rc ReportCollection) IsEmpty() bool {
 	return rc.Value == nil || len(*rc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rc ReportCollection) hasNextLink() bool {
+	return rc.NextLink != nil && len(*rc.NextLink) != 0
+}
+
 // reportCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rc ReportCollection) reportCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if rc.NextLink == nil || len(to.String(rc.NextLink)) < 1 {
+	if !rc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2691,11 +2635,16 @@ func (page *ReportCollectionPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rc)
+		if err != nil {
+			return err
+		}
+		page.rc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rc = next
 	return nil
 }
 
@@ -2783,6 +2732,84 @@ type ReportRecordContract struct {
 	ServiceTimeMin *float64 `json:"serviceTimeMin,omitempty"`
 	// ServiceTimeMax - Maximum time it took to process request on backend.
 	ServiceTimeMax *float64 `json:"serviceTimeMax,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReportRecordContract.
+func (rrc ReportRecordContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rrc.Name != nil {
+		objectMap["name"] = rrc.Name
+	}
+	if rrc.Timestamp != nil {
+		objectMap["timestamp"] = rrc.Timestamp
+	}
+	if rrc.Interval != nil {
+		objectMap["interval"] = rrc.Interval
+	}
+	if rrc.Country != nil {
+		objectMap["country"] = rrc.Country
+	}
+	if rrc.Region != nil {
+		objectMap["region"] = rrc.Region
+	}
+	if rrc.Zip != nil {
+		objectMap["zip"] = rrc.Zip
+	}
+	if rrc.APIID != nil {
+		objectMap["apiId"] = rrc.APIID
+	}
+	if rrc.OperationID != nil {
+		objectMap["operationId"] = rrc.OperationID
+	}
+	if rrc.APIRegion != nil {
+		objectMap["apiRegion"] = rrc.APIRegion
+	}
+	if rrc.SubscriptionID != nil {
+		objectMap["subscriptionId"] = rrc.SubscriptionID
+	}
+	if rrc.CallCountSuccess != nil {
+		objectMap["callCountSuccess"] = rrc.CallCountSuccess
+	}
+	if rrc.CallCountBlocked != nil {
+		objectMap["callCountBlocked"] = rrc.CallCountBlocked
+	}
+	if rrc.CallCountFailed != nil {
+		objectMap["callCountFailed"] = rrc.CallCountFailed
+	}
+	if rrc.CallCountOther != nil {
+		objectMap["callCountOther"] = rrc.CallCountOther
+	}
+	if rrc.CallCountTotal != nil {
+		objectMap["callCountTotal"] = rrc.CallCountTotal
+	}
+	if rrc.Bandwidth != nil {
+		objectMap["bandwidth"] = rrc.Bandwidth
+	}
+	if rrc.CacheHitCount != nil {
+		objectMap["cacheHitCount"] = rrc.CacheHitCount
+	}
+	if rrc.CacheMissCount != nil {
+		objectMap["cacheMissCount"] = rrc.CacheMissCount
+	}
+	if rrc.APITimeAvg != nil {
+		objectMap["apiTimeAvg"] = rrc.APITimeAvg
+	}
+	if rrc.APITimeMin != nil {
+		objectMap["apiTimeMin"] = rrc.APITimeMin
+	}
+	if rrc.APITimeMax != nil {
+		objectMap["apiTimeMax"] = rrc.APITimeMax
+	}
+	if rrc.ServiceTimeAvg != nil {
+		objectMap["serviceTimeAvg"] = rrc.ServiceTimeAvg
+	}
+	if rrc.ServiceTimeMin != nil {
+		objectMap["serviceTimeMin"] = rrc.ServiceTimeMin
+	}
+	if rrc.ServiceTimeMax != nil {
+		objectMap["serviceTimeMax"] = rrc.ServiceTimeMax
+	}
+	return json.Marshal(objectMap)
 }
 
 // RepresentationContract operation request/response representation details.
@@ -2993,10 +3020,15 @@ func (slr ServiceListResult) IsEmpty() bool {
 	return slr.Value == nil || len(*slr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (slr ServiceListResult) hasNextLink() bool {
+	return slr.NextLink != nil && len(*slr.NextLink) != 0
+}
+
 // serviceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (slr ServiceListResult) serviceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if slr.NextLink == nil || len(to.String(slr.NextLink)) < 1 {
+	if !slr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3024,11 +3056,16 @@ func (page *ServiceListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.slr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.slr)
+		if err != nil {
+			return err
+		}
+		page.slr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.slr = next
 	return nil
 }
 
@@ -3197,8 +3234,7 @@ func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServicesBackupFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServicesBackupFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServicesBackupFuture struct {
 	azure.Future
 }
@@ -3234,8 +3270,8 @@ type ServiceSkuProperties struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
-// ServicesManageDeploymentsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ServicesManageDeploymentsFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServicesManageDeploymentsFuture struct {
 	azure.Future
 }
@@ -3263,8 +3299,7 @@ func (future *ServicesManageDeploymentsFuture) Result(client ServicesClient) (sr
 	return
 }
 
-// ServicesRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServicesRestoreFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServicesRestoreFuture struct {
 	azure.Future
 }
@@ -3292,8 +3327,7 @@ func (future *ServicesRestoreFuture) Result(client ServicesClient) (sr ServiceRe
 	return
 }
 
-// ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServicesUpdateFuture struct {
 	azure.Future
 }
@@ -3358,8 +3392,8 @@ type ServiceUpdateHostnameParameters struct {
 	Delete *[]HostnameType `json:"delete,omitempty"`
 }
 
-// ServiceUploadCertificateParameters parameters supplied to the Upload SSL certificate for an API
-// Management service operation.
+// ServiceUploadCertificateParameters parameters supplied to the Upload SSL certificate for an API Management
+// service operation.
 type ServiceUploadCertificateParameters struct {
 	// Type - Hostname type. Possible values include: 'Proxy', 'Portal', 'Management', 'Scm'
 	Type HostnameType `json:"type,omitempty"`
@@ -3454,10 +3488,15 @@ func (sc SubscriptionCollection) IsEmpty() bool {
 	return sc.Value == nil || len(*sc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sc SubscriptionCollection) hasNextLink() bool {
+	return sc.NextLink != nil && len(*sc.NextLink) != 0
+}
+
 // subscriptionCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sc SubscriptionCollection) subscriptionCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if sc.NextLink == nil || len(to.String(sc.NextLink)) < 1 {
+	if !sc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3485,11 +3524,16 @@ func (page *SubscriptionCollectionPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sc)
+		if err != nil {
+			return err
+		}
+		page.sc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sc = next
 	return nil
 }
 
@@ -3554,6 +3598,45 @@ type SubscriptionContract struct {
 	StateComment *string `json:"stateComment,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SubscriptionContract.
+func (sc SubscriptionContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sc.UserID != nil {
+		objectMap["userId"] = sc.UserID
+	}
+	if sc.ProductID != nil {
+		objectMap["productId"] = sc.ProductID
+	}
+	if sc.Name != nil {
+		objectMap["name"] = sc.Name
+	}
+	if sc.State != "" {
+		objectMap["state"] = sc.State
+	}
+	if sc.StartDate != nil {
+		objectMap["startDate"] = sc.StartDate
+	}
+	if sc.ExpirationDate != nil {
+		objectMap["expirationDate"] = sc.ExpirationDate
+	}
+	if sc.EndDate != nil {
+		objectMap["endDate"] = sc.EndDate
+	}
+	if sc.NotificationDate != nil {
+		objectMap["notificationDate"] = sc.NotificationDate
+	}
+	if sc.PrimaryKey != nil {
+		objectMap["primaryKey"] = sc.PrimaryKey
+	}
+	if sc.SecondaryKey != nil {
+		objectMap["secondaryKey"] = sc.SecondaryKey
+	}
+	if sc.StateComment != nil {
+		objectMap["stateComment"] = sc.StateComment
+	}
+	return json.Marshal(objectMap)
+}
+
 // SubscriptionCreateParameters parameters supplied to the Create subscription operation.
 type SubscriptionCreateParameters struct {
 	// UserID - User (user id path) for whom subscription is being created in form /users/{uid}
@@ -3598,8 +3681,8 @@ type SubscriptionUpdateParameters struct {
 	StateComment *string `json:"stateComment,omitempty"`
 }
 
-// TenantConfigurationDeployFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// TenantConfigurationDeployFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type TenantConfigurationDeployFuture struct {
 	azure.Future
 }
@@ -3675,8 +3758,8 @@ type TenantConfigurationSyncStateContract struct {
 	ConfigurationChangeDate *date.Time `json:"configurationChangeDate,omitempty"`
 }
 
-// TenantConfigurationValidateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// TenantConfigurationValidateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type TenantConfigurationValidateFuture struct {
 	azure.Future
 }
@@ -3804,10 +3887,15 @@ func (uc UserCollection) IsEmpty() bool {
 	return uc.Value == nil || len(*uc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (uc UserCollection) hasNextLink() bool {
+	return uc.NextLink != nil && len(*uc.NextLink) != 0
+}
+
 // userCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (uc UserCollection) userCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if uc.NextLink == nil || len(to.String(uc.NextLink)) < 1 {
+	if !uc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3835,11 +3923,16 @@ func (page *UserCollectionPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.uc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.uc)
+		if err != nil {
+			return err
+		}
+		page.uc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.uc = next
 	return nil
 }
 
@@ -3894,6 +3987,33 @@ type UserContract struct {
 	Identities *[]UserIdentityContract `json:"identities,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UserContract.
+func (uc UserContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if uc.ID != nil {
+		objectMap["id"] = uc.ID
+	}
+	if uc.FirstName != nil {
+		objectMap["firstName"] = uc.FirstName
+	}
+	if uc.LastName != nil {
+		objectMap["lastName"] = uc.LastName
+	}
+	if uc.Email != nil {
+		objectMap["email"] = uc.Email
+	}
+	if uc.State != "" {
+		objectMap["state"] = uc.State
+	}
+	if uc.RegistrationDate != nil {
+		objectMap["registrationDate"] = uc.RegistrationDate
+	}
+	if uc.Note != nil {
+		objectMap["note"] = uc.Note
+	}
+	return json.Marshal(objectMap)
+}
+
 // UserCreateParameters parameters supplied to the Create User operation.
 type UserCreateParameters struct {
 	// Email - Email address. Must not be empty and must be unique within the service instance.
@@ -3934,8 +4054,7 @@ type UserUpdateParameters struct {
 	Note *string `json:"note,omitempty"`
 }
 
-// VirtualNetworkConfiguration configuration of a virtual network to which API Management service is
-// deployed.
+// VirtualNetworkConfiguration configuration of a virtual network to which API Management service is deployed.
 type VirtualNetworkConfiguration struct {
 	// Vnetid - READ-ONLY; The virtual network ID. This is typically a GUID. Expect a null GUID by default.
 	Vnetid *string `json:"vnetid,omitempty"`
@@ -3945,4 +4064,16 @@ type VirtualNetworkConfiguration struct {
 	SubnetResourceID *string `json:"subnetResourceId,omitempty"`
 	// Location - The location of the virtual network.
 	Location *string `json:"location,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualNetworkConfiguration.
+func (vnc VirtualNetworkConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vnc.SubnetResourceID != nil {
+		objectMap["subnetResourceId"] = vnc.SubnetResourceID
+	}
+	if vnc.Location != nil {
+		objectMap["location"] = vnc.Location
+	}
+	return json.Marshal(objectMap)
 }

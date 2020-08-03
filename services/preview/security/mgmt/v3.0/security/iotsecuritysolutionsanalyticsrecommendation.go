@@ -180,6 +180,9 @@ func (client IotSecuritySolutionsAnalyticsRecommendationClient) List(ctx context
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionsAnalyticsRecommendationClient", "List", resp, "Failure responding to request")
 	}
+	if result.itsarl.hasNextLink() && result.itsarl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -356,6 +356,9 @@ func (client JobDefinitionsClient) ListByDataManager(ctx context.Context, resour
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "ListByDataManager", resp, "Failure responding to request")
 	}
+	if result.jdl.hasNextLink() && result.jdl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -482,6 +485,9 @@ func (client JobDefinitionsClient) ListByDataService(ctx context.Context, dataSe
 	result.jdl, err = client.ListByDataServiceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobDefinitionsClient", "ListByDataService", resp, "Failure responding to request")
+	}
+	if result.jdl.hasNextLink() && result.jdl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

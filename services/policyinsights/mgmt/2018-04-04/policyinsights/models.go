@@ -26,21 +26,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/policyinsights/mgmt/2018-04-04/policyinsights"
 
-// PolicyStatesResource enumerates the values for policy states resource.
-type PolicyStatesResource string
-
-const (
-	// Default ...
-	Default PolicyStatesResource = "default"
-	// Latest ...
-	Latest PolicyStatesResource = "latest"
-)
-
-// PossiblePolicyStatesResourceValues returns an array of possible values for the PolicyStatesResource const type.
-func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
-	return []PolicyStatesResource{Default, Latest}
-}
-
 // Operation operation definition.
 type Operation struct {
 	// Name - Operation name.

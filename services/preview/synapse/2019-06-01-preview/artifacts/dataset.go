@@ -339,6 +339,9 @@ func (client DatasetClient) GetDatasetsByWorkspace(ctx context.Context) (result 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "GetDatasetsByWorkspace", resp, "Failure responding to request")
 	}
+	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

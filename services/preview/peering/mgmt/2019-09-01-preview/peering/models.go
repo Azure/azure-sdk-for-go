@@ -30,298 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-09-01-preview/peering"
 
-// ConnectionState enumerates the values for connection state.
-type ConnectionState string
-
-const (
-	// Active ...
-	Active ConnectionState = "Active"
-	// Approved ...
-	Approved ConnectionState = "Approved"
-	// None ...
-	None ConnectionState = "None"
-	// PendingApproval ...
-	PendingApproval ConnectionState = "PendingApproval"
-	// ProvisioningCompleted ...
-	ProvisioningCompleted ConnectionState = "ProvisioningCompleted"
-	// ProvisioningFailed ...
-	ProvisioningFailed ConnectionState = "ProvisioningFailed"
-	// ProvisioningStarted ...
-	ProvisioningStarted ConnectionState = "ProvisioningStarted"
-	// Validating ...
-	Validating ConnectionState = "Validating"
-)
-
-// PossibleConnectionStateValues returns an array of possible values for the ConnectionState const type.
-func PossibleConnectionStateValues() []ConnectionState {
-	return []ConnectionState{Active, Approved, None, PendingApproval, ProvisioningCompleted, ProvisioningFailed, ProvisioningStarted, Validating}
-}
-
-// DirectPeeringType enumerates the values for direct peering type.
-type DirectPeeringType string
-
-const (
-	// Cdn ...
-	Cdn DirectPeeringType = "Cdn"
-	// Edge ...
-	Edge DirectPeeringType = "Edge"
-	// Internal ...
-	Internal DirectPeeringType = "Internal"
-	// Transit ...
-	Transit DirectPeeringType = "Transit"
-)
-
-// PossibleDirectPeeringTypeValues returns an array of possible values for the DirectPeeringType const type.
-func PossibleDirectPeeringTypeValues() []DirectPeeringType {
-	return []DirectPeeringType{Cdn, Edge, Internal, Transit}
-}
-
-// Family enumerates the values for family.
-type Family string
-
-const (
-	// Direct ...
-	Direct Family = "Direct"
-	// Exchange ...
-	Exchange Family = "Exchange"
-)
-
-// PossibleFamilyValues returns an array of possible values for the Family const type.
-func PossibleFamilyValues() []Family {
-	return []Family{Direct, Exchange}
-}
-
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// KindDirect ...
-	KindDirect Kind = "Direct"
-	// KindExchange ...
-	KindExchange Kind = "Exchange"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{KindDirect, KindExchange}
-}
-
-// LearnedType enumerates the values for learned type.
-type LearnedType string
-
-const (
-	// LearnedTypeNone ...
-	LearnedTypeNone LearnedType = "None"
-	// LearnedTypeViaServiceProvider ...
-	LearnedTypeViaServiceProvider LearnedType = "ViaServiceProvider"
-	// LearnedTypeViaSession ...
-	LearnedTypeViaSession LearnedType = "ViaSession"
-)
-
-// PossibleLearnedTypeValues returns an array of possible values for the LearnedType const type.
-func PossibleLearnedTypeValues() []LearnedType {
-	return []LearnedType{LearnedTypeNone, LearnedTypeViaServiceProvider, LearnedTypeViaSession}
-}
-
-// Name enumerates the values for name.
-type Name string
-
-const (
-	// BasicDirectFree ...
-	BasicDirectFree Name = "Basic_Direct_Free"
-	// BasicExchangeFree ...
-	BasicExchangeFree Name = "Basic_Exchange_Free"
-	// PremiumDirectFree ...
-	PremiumDirectFree Name = "Premium_Direct_Free"
-	// PremiumDirectMetered ...
-	PremiumDirectMetered Name = "Premium_Direct_Metered"
-	// PremiumDirectUnlimited ...
-	PremiumDirectUnlimited Name = "Premium_Direct_Unlimited"
-	// PremiumExchangeMetered ...
-	PremiumExchangeMetered Name = "Premium_Exchange_Metered"
-)
-
-// PossibleNameValues returns an array of possible values for the Name const type.
-func PossibleNameValues() []Name {
-	return []Name{BasicDirectFree, BasicExchangeFree, PremiumDirectFree, PremiumDirectMetered, PremiumDirectUnlimited, PremiumExchangeMetered}
-}
-
-// PrefixValidationState enumerates the values for prefix validation state.
-type PrefixValidationState string
-
-const (
-	// PrefixValidationStateFailed ...
-	PrefixValidationStateFailed PrefixValidationState = "Failed"
-	// PrefixValidationStateInvalid ...
-	PrefixValidationStateInvalid PrefixValidationState = "Invalid"
-	// PrefixValidationStateNone ...
-	PrefixValidationStateNone PrefixValidationState = "None"
-	// PrefixValidationStatePending ...
-	PrefixValidationStatePending PrefixValidationState = "Pending"
-	// PrefixValidationStateUnknown ...
-	PrefixValidationStateUnknown PrefixValidationState = "Unknown"
-	// PrefixValidationStateVerified ...
-	PrefixValidationStateVerified PrefixValidationState = "Verified"
-	// PrefixValidationStateWarning ...
-	PrefixValidationStateWarning PrefixValidationState = "Warning"
-)
-
-// PossiblePrefixValidationStateValues returns an array of possible values for the PrefixValidationState const type.
-func PossiblePrefixValidationStateValues() []PrefixValidationState {
-	return []PrefixValidationState{PrefixValidationStateFailed, PrefixValidationStateInvalid, PrefixValidationStateNone, PrefixValidationStatePending, PrefixValidationStateUnknown, PrefixValidationStateVerified, PrefixValidationStateWarning}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Deleting, Failed, Succeeded, Updating}
-}
-
-// SessionAddressProvider enumerates the values for session address provider.
-type SessionAddressProvider string
-
-const (
-	// Microsoft ...
-	Microsoft SessionAddressProvider = "Microsoft"
-	// Peer ...
-	Peer SessionAddressProvider = "Peer"
-)
-
-// PossibleSessionAddressProviderValues returns an array of possible values for the SessionAddressProvider const type.
-func PossibleSessionAddressProviderValues() []SessionAddressProvider {
-	return []SessionAddressProvider{Microsoft, Peer}
-}
-
-// SessionStateV4 enumerates the values for session state v4.
-type SessionStateV4 string
-
-const (
-	// SessionStateV4Active ...
-	SessionStateV4Active SessionStateV4 = "Active"
-	// SessionStateV4Connect ...
-	SessionStateV4Connect SessionStateV4 = "Connect"
-	// SessionStateV4Established ...
-	SessionStateV4Established SessionStateV4 = "Established"
-	// SessionStateV4Idle ...
-	SessionStateV4Idle SessionStateV4 = "Idle"
-	// SessionStateV4None ...
-	SessionStateV4None SessionStateV4 = "None"
-	// SessionStateV4OpenConfirm ...
-	SessionStateV4OpenConfirm SessionStateV4 = "OpenConfirm"
-	// SessionStateV4OpenReceived ...
-	SessionStateV4OpenReceived SessionStateV4 = "OpenReceived"
-	// SessionStateV4OpenSent ...
-	SessionStateV4OpenSent SessionStateV4 = "OpenSent"
-	// SessionStateV4PendingAdd ...
-	SessionStateV4PendingAdd SessionStateV4 = "PendingAdd"
-	// SessionStateV4PendingRemove ...
-	SessionStateV4PendingRemove SessionStateV4 = "PendingRemove"
-	// SessionStateV4PendingUpdate ...
-	SessionStateV4PendingUpdate SessionStateV4 = "PendingUpdate"
-)
-
-// PossibleSessionStateV4Values returns an array of possible values for the SessionStateV4 const type.
-func PossibleSessionStateV4Values() []SessionStateV4 {
-	return []SessionStateV4{SessionStateV4Active, SessionStateV4Connect, SessionStateV4Established, SessionStateV4Idle, SessionStateV4None, SessionStateV4OpenConfirm, SessionStateV4OpenReceived, SessionStateV4OpenSent, SessionStateV4PendingAdd, SessionStateV4PendingRemove, SessionStateV4PendingUpdate}
-}
-
-// SessionStateV6 enumerates the values for session state v6.
-type SessionStateV6 string
-
-const (
-	// SessionStateV6Active ...
-	SessionStateV6Active SessionStateV6 = "Active"
-	// SessionStateV6Connect ...
-	SessionStateV6Connect SessionStateV6 = "Connect"
-	// SessionStateV6Established ...
-	SessionStateV6Established SessionStateV6 = "Established"
-	// SessionStateV6Idle ...
-	SessionStateV6Idle SessionStateV6 = "Idle"
-	// SessionStateV6None ...
-	SessionStateV6None SessionStateV6 = "None"
-	// SessionStateV6OpenConfirm ...
-	SessionStateV6OpenConfirm SessionStateV6 = "OpenConfirm"
-	// SessionStateV6OpenReceived ...
-	SessionStateV6OpenReceived SessionStateV6 = "OpenReceived"
-	// SessionStateV6OpenSent ...
-	SessionStateV6OpenSent SessionStateV6 = "OpenSent"
-	// SessionStateV6PendingAdd ...
-	SessionStateV6PendingAdd SessionStateV6 = "PendingAdd"
-	// SessionStateV6PendingRemove ...
-	SessionStateV6PendingRemove SessionStateV6 = "PendingRemove"
-	// SessionStateV6PendingUpdate ...
-	SessionStateV6PendingUpdate SessionStateV6 = "PendingUpdate"
-)
-
-// PossibleSessionStateV6Values returns an array of possible values for the SessionStateV6 const type.
-func PossibleSessionStateV6Values() []SessionStateV6 {
-	return []SessionStateV6{SessionStateV6Active, SessionStateV6Connect, SessionStateV6Established, SessionStateV6Idle, SessionStateV6None, SessionStateV6OpenConfirm, SessionStateV6OpenReceived, SessionStateV6OpenSent, SessionStateV6PendingAdd, SessionStateV6PendingRemove, SessionStateV6PendingUpdate}
-}
-
-// Size enumerates the values for size.
-type Size string
-
-const (
-	// Free ...
-	Free Size = "Free"
-	// Metered ...
-	Metered Size = "Metered"
-	// Unlimited ...
-	Unlimited Size = "Unlimited"
-)
-
-// PossibleSizeValues returns an array of possible values for the Size const type.
-func PossibleSizeValues() []Size {
-	return []Size{Free, Metered, Unlimited}
-}
-
-// Tier enumerates the values for tier.
-type Tier string
-
-const (
-	// Basic ...
-	Basic Tier = "Basic"
-	// Premium ...
-	Premium Tier = "Premium"
-)
-
-// PossibleTierValues returns an array of possible values for the Tier const type.
-func PossibleTierValues() []Tier {
-	return []Tier{Basic, Premium}
-}
-
-// ValidationState enumerates the values for validation state.
-type ValidationState string
-
-const (
-	// ValidationStateApproved ...
-	ValidationStateApproved ValidationState = "Approved"
-	// ValidationStateFailed ...
-	ValidationStateFailed ValidationState = "Failed"
-	// ValidationStateNone ...
-	ValidationStateNone ValidationState = "None"
-	// ValidationStatePending ...
-	ValidationStatePending ValidationState = "Pending"
-)
-
-// PossibleValidationStateValues returns an array of possible values for the ValidationState const type.
-func PossibleValidationStateValues() []ValidationState {
-	return []ValidationState{ValidationStateApproved, ValidationStateFailed, ValidationStateNone, ValidationStatePending}
-}
-
 // BandwidthOffer the properties that define a peering bandwidth offer.
 type BandwidthOffer struct {
 	// OfferName - The name of the bandwidth offer.
@@ -354,6 +62,33 @@ type BgpSession struct {
 	MaxPrefixesAdvertisedV6 *int32 `json:"maxPrefixesAdvertisedV6,omitempty"`
 	// Md5AuthenticationKey - The MD5 authentication key of the session.
 	Md5AuthenticationKey *string `json:"md5AuthenticationKey,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BgpSession.
+func (bs BgpSession) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if bs.SessionPrefixV4 != nil {
+		objectMap["sessionPrefixV4"] = bs.SessionPrefixV4
+	}
+	if bs.SessionPrefixV6 != nil {
+		objectMap["sessionPrefixV6"] = bs.SessionPrefixV6
+	}
+	if bs.PeerSessionIPv4Address != nil {
+		objectMap["peerSessionIPv4Address"] = bs.PeerSessionIPv4Address
+	}
+	if bs.PeerSessionIPv6Address != nil {
+		objectMap["peerSessionIPv6Address"] = bs.PeerSessionIPv6Address
+	}
+	if bs.MaxPrefixesAdvertisedV4 != nil {
+		objectMap["maxPrefixesAdvertisedV4"] = bs.MaxPrefixesAdvertisedV4
+	}
+	if bs.MaxPrefixesAdvertisedV6 != nil {
+		objectMap["maxPrefixesAdvertisedV6"] = bs.MaxPrefixesAdvertisedV6
+	}
+	if bs.Md5AuthenticationKey != nil {
+		objectMap["md5AuthenticationKey"] = bs.Md5AuthenticationKey
+	}
+	return json.Marshal(objectMap)
 }
 
 // CheckServiceProviderAvailabilityInput class for CheckServiceProviderAvailabilityInput
@@ -394,6 +129,30 @@ type DirectConnection struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DirectConnection.
+func (dc DirectConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dc.BandwidthInMbps != nil {
+		objectMap["bandwidthInMbps"] = dc.BandwidthInMbps
+	}
+	if dc.SessionAddressProvider != "" {
+		objectMap["sessionAddressProvider"] = dc.SessionAddressProvider
+	}
+	if dc.UseForPeeringService != nil {
+		objectMap["useForPeeringService"] = dc.UseForPeeringService
+	}
+	if dc.PeeringDBFacilityID != nil {
+		objectMap["peeringDBFacilityId"] = dc.PeeringDBFacilityID
+	}
+	if dc.BgpSession != nil {
+		objectMap["bgpSession"] = dc.BgpSession
+	}
+	if dc.ConnectionIdentifier != nil {
+		objectMap["connectionIdentifier"] = dc.ConnectionIdentifier
+	}
+	return json.Marshal(objectMap)
+}
+
 // DirectPeeringFacility the properties that define a direct peering facility.
 type DirectPeeringFacility struct {
 	// Address - The address of the direct peering facility.
@@ -426,6 +185,21 @@ type ExchangeConnection struct {
 	ConnectionIdentifier *string `json:"connectionIdentifier,omitempty"`
 	// ErrorMessage - READ-ONLY; The error message related to the connection state, if any.
 	ErrorMessage *string `json:"errorMessage,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExchangeConnection.
+func (ec ExchangeConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ec.PeeringDBFacilityID != nil {
+		objectMap["peeringDBFacilityId"] = ec.PeeringDBFacilityID
+	}
+	if ec.BgpSession != nil {
+		objectMap["bgpSession"] = ec.BgpSession
+	}
+	if ec.ConnectionIdentifier != nil {
+		objectMap["connectionIdentifier"] = ec.ConnectionIdentifier
+	}
+	return json.Marshal(objectMap)
 }
 
 // ExchangePeeringFacility the properties that define an exchange peering facility.
@@ -525,10 +299,15 @@ func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -556,11 +335,16 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lr = next
 	return nil
 }
 
@@ -757,10 +541,15 @@ func (llr LocationListResult) IsEmpty() bool {
 	return llr.Value == nil || len(*llr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (llr LocationListResult) hasNextLink() bool {
+	return llr.NextLink != nil && len(*llr.NextLink) != 0
+}
+
 // locationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (llr LocationListResult) locationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if llr.NextLink == nil || len(to.String(llr.NextLink)) < 1 {
+	if !llr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -788,11 +577,16 @@ func (page *LocationListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.llr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.llr)
+		if err != nil {
+			return err
+		}
+		page.llr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.llr = next
 	return nil
 }
 
@@ -854,8 +648,7 @@ type LocationPropertiesExchange struct {
 	PeeringFacilities *[]ExchangePeeringFacility `json:"peeringFacilities,omitempty"`
 }
 
-// Model peering is a logical representation of a set of connections to the Microsoft Cloud Edge at a
-// location.
+// Model peering is a logical representation of a set of connections to the Microsoft Cloud Edge at a location.
 type Model struct {
 	autorest.Response `json:"-"`
 	// Sku - The SKU that defines the tier and kind of the peering.
@@ -1083,10 +876,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1114,11 +912,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -1302,10 +1105,15 @@ func (palr PeerAsnListResult) IsEmpty() bool {
 	return palr.Value == nil || len(*palr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (palr PeerAsnListResult) hasNextLink() bool {
+	return palr.NextLink != nil && len(*palr.NextLink) != 0
+}
+
 // peerAsnListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (palr PeerAsnListResult) peerAsnListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if palr.NextLink == nil || len(to.String(palr.NextLink)) < 1 {
+	if !palr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1333,11 +1141,16 @@ func (page *PeerAsnListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.palr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.palr)
+		if err != nil {
+			return err
+		}
+		page.palr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.palr = next
 	return nil
 }
 
@@ -1385,6 +1198,24 @@ type PeerAsnProperties struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PeerAsnProperties.
+func (pap PeerAsnProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pap.PeerAsn != nil {
+		objectMap["peerAsn"] = pap.PeerAsn
+	}
+	if pap.PeerContactInfo != nil {
+		objectMap["peerContactInfo"] = pap.PeerContactInfo
+	}
+	if pap.PeerName != nil {
+		objectMap["peerName"] = pap.PeerName
+	}
+	if pap.ValidationState != "" {
+		objectMap["validationState"] = pap.ValidationState
+	}
+	return json.Marshal(objectMap)
+}
+
 // Properties the properties that define connectivity to the Microsoft Cloud Edge.
 type Properties struct {
 	// Direct - The properties that define a direct peering.
@@ -1397,6 +1228,21 @@ type Properties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Properties.
+func (p Properties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.Direct != nil {
+		objectMap["direct"] = p.Direct
+	}
+	if p.Exchange != nil {
+		objectMap["exchange"] = p.Exchange
+	}
+	if p.PeeringLocation != nil {
+		objectMap["peeringLocation"] = p.PeeringLocation
+	}
+	return json.Marshal(objectMap)
+}
+
 // PropertiesDirect the properties that define a direct peering.
 type PropertiesDirect struct {
 	// Connections - The set of connections that constitute a direct peering.
@@ -1407,6 +1253,21 @@ type PropertiesDirect struct {
 	PeerAsn *SubResource `json:"peerAsn,omitempty"`
 	// DirectPeeringType - The type of direct peering. Possible values include: 'Edge', 'Transit', 'Cdn', 'Internal'
 	DirectPeeringType DirectPeeringType `json:"directPeeringType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PropertiesDirect.
+func (pd PropertiesDirect) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pd.Connections != nil {
+		objectMap["connections"] = pd.Connections
+	}
+	if pd.PeerAsn != nil {
+		objectMap["peerAsn"] = pd.PeerAsn
+	}
+	if pd.DirectPeeringType != "" {
+		objectMap["directPeeringType"] = pd.DirectPeeringType
+	}
+	return json.Marshal(objectMap)
 }
 
 // PropertiesExchange the properties that define an exchange peering.
@@ -1620,10 +1481,15 @@ func (slr ServiceListResult) IsEmpty() bool {
 	return slr.Value == nil || len(*slr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (slr ServiceListResult) hasNextLink() bool {
+	return slr.NextLink != nil && len(*slr.NextLink) != 0
+}
+
 // serviceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (slr ServiceListResult) serviceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if slr.NextLink == nil || len(to.String(slr.NextLink)) < 1 {
+	if !slr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1651,11 +1517,16 @@ func (page *ServiceListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.slr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.slr)
+		if err != nil {
+			return err
+		}
+		page.slr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.slr = next
 	return nil
 }
 
@@ -1838,10 +1709,15 @@ func (sllr ServiceLocationListResult) IsEmpty() bool {
 	return sllr.Value == nil || len(*sllr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sllr ServiceLocationListResult) hasNextLink() bool {
+	return sllr.NextLink != nil && len(*sllr.NextLink) != 0
+}
+
 // serviceLocationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sllr ServiceLocationListResult) serviceLocationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if sllr.NextLink == nil || len(to.String(sllr.NextLink)) < 1 {
+	if !sllr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1869,11 +1745,16 @@ func (page *ServiceLocationListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sllr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sllr)
+		if err != nil {
+			return err
+		}
+		page.sllr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sllr = next
 	return nil
 }
 
@@ -2081,10 +1962,15 @@ func (splr ServicePrefixListResult) IsEmpty() bool {
 	return splr.Value == nil || len(*splr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (splr ServicePrefixListResult) hasNextLink() bool {
+	return splr.NextLink != nil && len(*splr.NextLink) != 0
+}
+
 // servicePrefixListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (splr ServicePrefixListResult) servicePrefixListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if splr.NextLink == nil || len(to.String(splr.NextLink)) < 1 {
+	if !splr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2112,11 +1998,16 @@ func (page *ServicePrefixListResultPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.splr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.splr)
+		if err != nil {
+			return err
+		}
+		page.splr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.splr = next
 	return nil
 }
 
@@ -2166,6 +2057,15 @@ type ServicePrefixProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServicePrefixProperties.
+func (spp ServicePrefixProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if spp.Prefix != nil {
+		objectMap["prefix"] = spp.Prefix
+	}
+	return json.Marshal(objectMap)
+}
+
 // ServiceProperties the properties that define connectivity to the Peering Service.
 type ServiceProperties struct {
 	// PeeringServiceLocation - The PeeringServiceLocation of the Customer.
@@ -2174,6 +2074,18 @@ type ServiceProperties struct {
 	PeeringServiceProvider *string `json:"peeringServiceProvider,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceProperties.
+func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.PeeringServiceLocation != nil {
+		objectMap["peeringServiceLocation"] = sp.PeeringServiceLocation
+	}
+	if sp.PeeringServiceProvider != nil {
+		objectMap["peeringServiceProvider"] = sp.PeeringServiceProvider
+	}
+	return json.Marshal(objectMap)
 }
 
 // ServiceProvider peeringService provider
@@ -2325,10 +2237,15 @@ func (splr ServiceProviderListResult) IsEmpty() bool {
 	return splr.Value == nil || len(*splr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (splr ServiceProviderListResult) hasNextLink() bool {
+	return splr.NextLink != nil && len(*splr.NextLink) != 0
+}
+
 // serviceProviderListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (splr ServiceProviderListResult) serviceProviderListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if splr.NextLink == nil || len(to.String(splr.NextLink)) < 1 {
+	if !splr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2356,11 +2273,16 @@ func (page *ServiceProviderListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.splr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.splr)
+		if err != nil {
+			return err
+		}
+		page.splr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.splr = next
 	return nil
 }
 

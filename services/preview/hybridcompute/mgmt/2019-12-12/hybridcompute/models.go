@@ -31,85 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hybridcompute/mgmt/2019-12-12/hybridcompute"
 
-// InstanceViewTypes enumerates the values for instance view types.
-type InstanceViewTypes string
-
-const (
-	// InstanceView ...
-	InstanceView InstanceViewTypes = "instanceView"
-)
-
-// PossibleInstanceViewTypesValues returns an array of possible values for the InstanceViewTypes const type.
-func PossibleInstanceViewTypesValues() []InstanceViewTypes {
-	return []InstanceViewTypes{InstanceView}
-}
-
-// ResourceIdentityType enumerates the values for resource identity type.
-type ResourceIdentityType string
-
-const (
-	// SystemAssigned ...
-	SystemAssigned ResourceIdentityType = "SystemAssigned"
-)
-
-// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{SystemAssigned}
-}
-
-// SkuTier enumerates the values for sku tier.
-type SkuTier string
-
-const (
-	// Basic ...
-	Basic SkuTier = "Basic"
-	// Free ...
-	Free SkuTier = "Free"
-	// Premium ...
-	Premium SkuTier = "Premium"
-	// Standard ...
-	Standard SkuTier = "Standard"
-)
-
-// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() []SkuTier {
-	return []SkuTier{Basic, Free, Premium, Standard}
-}
-
-// StatusLevelTypes enumerates the values for status level types.
-type StatusLevelTypes string
-
-const (
-	// Error ...
-	Error StatusLevelTypes = "Error"
-	// Info ...
-	Info StatusLevelTypes = "Info"
-	// Warning ...
-	Warning StatusLevelTypes = "Warning"
-)
-
-// PossibleStatusLevelTypesValues returns an array of possible values for the StatusLevelTypes const type.
-func PossibleStatusLevelTypesValues() []StatusLevelTypes {
-	return []StatusLevelTypes{Error, Info, Warning}
-}
-
-// StatusTypes enumerates the values for status types.
-type StatusTypes string
-
-const (
-	// StatusTypesConnected ...
-	StatusTypesConnected StatusTypes = "Connected"
-	// StatusTypesDisconnected ...
-	StatusTypesDisconnected StatusTypes = "Disconnected"
-	// StatusTypesError ...
-	StatusTypesError StatusTypes = "Error"
-)
-
-// PossibleStatusTypesValues returns an array of possible values for the StatusTypes const type.
-func PossibleStatusTypesValues() []StatusTypes {
-	return []StatusTypes{StatusTypesConnected, StatusTypesDisconnected, StatusTypesError}
-}
-
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
@@ -164,6 +85,15 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The identity type. Possible values include: 'SystemAssigned'
 	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // LocationData metadata pertaining to the geographic location of the resource.
@@ -441,6 +371,36 @@ type MachineExtensionProperties struct {
 	InstanceView *MachineExtensionPropertiesInstanceView `json:"instanceView,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MachineExtensionProperties.
+func (me MachineExtensionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if me.ForceUpdateTag != nil {
+		objectMap["forceUpdateTag"] = me.ForceUpdateTag
+	}
+	if me.Publisher != nil {
+		objectMap["publisher"] = me.Publisher
+	}
+	if me.Type != nil {
+		objectMap["type"] = me.Type
+	}
+	if me.TypeHandlerVersion != nil {
+		objectMap["typeHandlerVersion"] = me.TypeHandlerVersion
+	}
+	if me.AutoUpgradeMinorVersion != nil {
+		objectMap["autoUpgradeMinorVersion"] = me.AutoUpgradeMinorVersion
+	}
+	if me.Settings != nil {
+		objectMap["settings"] = me.Settings
+	}
+	if me.ProtectedSettings != nil {
+		objectMap["protectedSettings"] = me.ProtectedSettings
+	}
+	if me.InstanceView != nil {
+		objectMap["instanceView"] = me.InstanceView
+	}
+	return json.Marshal(objectMap)
+}
+
 // MachineExtensionPropertiesInstanceView the machine extension instance view.
 type MachineExtensionPropertiesInstanceView struct {
 	// Name - The machine extension name.
@@ -473,6 +433,36 @@ type MachineExtensionPropertiesModel struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// InstanceView - The machine extension instance view.
 	InstanceView *MachineExtensionPropertiesInstanceView `json:"instanceView,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MachineExtensionPropertiesModel.
+func (mepm MachineExtensionPropertiesModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mepm.ForceUpdateTag != nil {
+		objectMap["forceUpdateTag"] = mepm.ForceUpdateTag
+	}
+	if mepm.Publisher != nil {
+		objectMap["publisher"] = mepm.Publisher
+	}
+	if mepm.Type != nil {
+		objectMap["type"] = mepm.Type
+	}
+	if mepm.TypeHandlerVersion != nil {
+		objectMap["typeHandlerVersion"] = mepm.TypeHandlerVersion
+	}
+	if mepm.AutoUpgradeMinorVersion != nil {
+		objectMap["autoUpgradeMinorVersion"] = mepm.AutoUpgradeMinorVersion
+	}
+	if mepm.Settings != nil {
+		objectMap["settings"] = mepm.Settings
+	}
+	if mepm.ProtectedSettings != nil {
+		objectMap["protectedSettings"] = mepm.ProtectedSettings
+	}
+	if mepm.InstanceView != nil {
+		objectMap["instanceView"] = mepm.InstanceView
+	}
+	return json.Marshal(objectMap)
 }
 
 // MachineExtensionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -604,10 +594,15 @@ func (melr MachineExtensionsListResult) IsEmpty() bool {
 	return melr.Value == nil || len(*melr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (melr MachineExtensionsListResult) hasNextLink() bool {
+	return melr.NextLink != nil && len(*melr.NextLink) != 0
+}
+
 // machineExtensionsListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (melr MachineExtensionsListResult) machineExtensionsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if melr.NextLink == nil || len(to.String(melr.NextLink)) < 1 {
+	if !melr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -635,11 +630,16 @@ func (page *MachineExtensionsListResultPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.melr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.melr)
+		if err != nil {
+			return err
+		}
+		page.melr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.melr = next
 	return nil
 }
 
@@ -801,6 +801,15 @@ type MachineIdentity struct {
 	Type ResourceIdentityType `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MachineIdentity.
+func (mVar MachineIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mVar.Type != "" {
+		objectMap["type"] = mVar.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // MachineListResult the List hybrid machine operation response.
 type MachineListResult struct {
 	autorest.Response `json:"-"`
@@ -878,10 +887,15 @@ func (mlr MachineListResult) IsEmpty() bool {
 	return mlr.Value == nil || len(*mlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mlr MachineListResult) hasNextLink() bool {
+	return mlr.NextLink != nil && len(*mlr.NextLink) != 0
+}
+
 // machineListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mlr MachineListResult) machineListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if mlr.NextLink == nil || len(to.String(mlr.NextLink)) < 1 {
+	if !mlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -909,11 +923,16 @@ func (page *MachineListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mlr)
+		if err != nil {
+			return err
+		}
+		page.mlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mlr = next
 	return nil
 }
 
@@ -978,6 +997,27 @@ type MachineProperties struct {
 	Extensions *[]MachineExtensionInstanceView `json:"extensions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MachineProperties.
+func (mp MachineProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mp.LocationData != nil {
+		objectMap["locationData"] = mp.LocationData
+	}
+	if mp.OsProfile != nil {
+		objectMap["osProfile"] = mp.OsProfile
+	}
+	if mp.VMID != nil {
+		objectMap["vmId"] = mp.VMID
+	}
+	if mp.ClientPublicKey != nil {
+		objectMap["clientPublicKey"] = mp.ClientPublicKey
+	}
+	if mp.Extensions != nil {
+		objectMap["extensions"] = mp.Extensions
+	}
+	return json.Marshal(objectMap)
+}
+
 // MachinePropertiesModel hybrid Compute Machine properties
 type MachinePropertiesModel struct {
 	LocationData *LocationData `json:"locationData,omitempty"`
@@ -1007,6 +1047,27 @@ type MachinePropertiesModel struct {
 	OsVersion *string `json:"osVersion,omitempty"`
 	// Extensions - Machine Extensions information
 	Extensions *[]MachineExtensionInstanceView `json:"extensions,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MachinePropertiesModel.
+func (mpm MachinePropertiesModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mpm.LocationData != nil {
+		objectMap["locationData"] = mpm.LocationData
+	}
+	if mpm.OsProfile != nil {
+		objectMap["osProfile"] = mpm.OsProfile
+	}
+	if mpm.VMID != nil {
+		objectMap["vmId"] = mpm.VMID
+	}
+	if mpm.ClientPublicKey != nil {
+		objectMap["clientPublicKey"] = mpm.ClientPublicKey
+	}
+	if mpm.Extensions != nil {
+		objectMap["extensions"] = mpm.Extensions
+	}
+	return json.Marshal(objectMap)
 }
 
 // MachinePropertiesOsProfile specifies the operating system settings for the hybrid machine.
@@ -1145,6 +1206,15 @@ type MachineUpdateIdentity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The identity type. Possible values include: 'SystemAssigned'
 	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MachineUpdateIdentity.
+func (mu MachineUpdateIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mu.Type != "" {
+		objectMap["type"] = mu.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // MachineUpdateProperties describes the ARM updatable properties of a hybrid machine.
@@ -1291,8 +1361,7 @@ type Resource struct {
 }
 
 // ResourceModelWithAllowedPropertySet the resource model definition containing the full set of allowed
-// properties for a resource. Except properties bag, there cannot be a top level property outside of this
-// set.
+// properties for a resource. Except properties bag, there cannot be a top level property outside of this set.
 type ResourceModelWithAllowedPropertySet struct {
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -1350,6 +1419,15 @@ type ResourceModelWithAllowedPropertySetIdentity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The identity type. Possible values include: 'SystemAssigned'
 	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceModelWithAllowedPropertySetIdentity.
+func (rmwaps ResourceModelWithAllowedPropertySetIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rmwaps.Type != "" {
+		objectMap["type"] = rmwaps.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // ResourceModelWithAllowedPropertySetPlan ...

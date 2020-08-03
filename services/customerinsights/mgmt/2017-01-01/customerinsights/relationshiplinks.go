@@ -326,6 +326,9 @@ func (client RelationshipLinksClient) ListByHub(ctx context.Context, resourceGro
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.RelationshipLinksClient", "ListByHub", resp, "Failure responding to request")
 	}
+	if result.rllr.hasNextLink() && result.rllr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -113,14 +113,6 @@ type CheckNameAvailabilityClientAPI interface {
 
 var _ CheckNameAvailabilityClientAPI = (*postgresql.CheckNameAvailabilityClient)(nil)
 
-// ServerSecurityAlertPoliciesClientAPI contains the set of methods on the ServerSecurityAlertPoliciesClient type.
-type ServerSecurityAlertPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters postgresql.ServerSecurityAlertPolicy) (result postgresql.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerSecurityAlertPolicy, err error)
-}
-
-var _ ServerSecurityAlertPoliciesClientAPI = (*postgresql.ServerSecurityAlertPoliciesClient)(nil)
-
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result postgresql.OperationListResult, err error)
@@ -159,3 +151,13 @@ type ServerKeysClientAPI interface {
 }
 
 var _ ServerKeysClientAPI = (*postgresql.ServerKeysClient)(nil)
+
+// ServerSecurityAlertPoliciesClientAPI contains the set of methods on the ServerSecurityAlertPoliciesClient type.
+type ServerSecurityAlertPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters postgresql.ServerSecurityAlertPolicy) (result postgresql.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerSecurityAlertPolicy, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.LogicalServerSecurityAlertPolicyListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.LogicalServerSecurityAlertPolicyListResultIterator, err error)
+}
+
+var _ ServerSecurityAlertPoliciesClientAPI = (*postgresql.ServerSecurityAlertPoliciesClient)(nil)

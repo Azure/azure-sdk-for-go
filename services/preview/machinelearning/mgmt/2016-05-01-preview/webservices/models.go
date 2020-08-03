@@ -31,197 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2016-05-01-preview/webservices"
 
-// AssetType enumerates the values for asset type.
-type AssetType string
-
-const (
-	// AssetTypeModule ...
-	AssetTypeModule AssetType = "Module"
-	// AssetTypeResource ...
-	AssetTypeResource AssetType = "Resource"
-)
-
-// PossibleAssetTypeValues returns an array of possible values for the AssetType const type.
-func PossibleAssetTypeValues() []AssetType {
-	return []AssetType{AssetTypeModule, AssetTypeResource}
-}
-
-// ColumnFormat enumerates the values for column format.
-type ColumnFormat string
-
-const (
-	// Byte ...
-	Byte ColumnFormat = "Byte"
-	// Char ...
-	Char ColumnFormat = "Char"
-	// Complex128 ...
-	Complex128 ColumnFormat = "Complex128"
-	// Complex64 ...
-	Complex64 ColumnFormat = "Complex64"
-	// DateTime ...
-	DateTime ColumnFormat = "Date-time"
-	// DateTimeOffset ...
-	DateTimeOffset ColumnFormat = "Date-timeOffset"
-	// Double ...
-	Double ColumnFormat = "Double"
-	// Duration ...
-	Duration ColumnFormat = "Duration"
-	// Float ...
-	Float ColumnFormat = "Float"
-	// Int16 ...
-	Int16 ColumnFormat = "Int16"
-	// Int32 ...
-	Int32 ColumnFormat = "Int32"
-	// Int64 ...
-	Int64 ColumnFormat = "Int64"
-	// Int8 ...
-	Int8 ColumnFormat = "Int8"
-	// Uint16 ...
-	Uint16 ColumnFormat = "Uint16"
-	// Uint32 ...
-	Uint32 ColumnFormat = "Uint32"
-	// Uint64 ...
-	Uint64 ColumnFormat = "Uint64"
-	// Uint8 ...
-	Uint8 ColumnFormat = "Uint8"
-)
-
-// PossibleColumnFormatValues returns an array of possible values for the ColumnFormat const type.
-func PossibleColumnFormatValues() []ColumnFormat {
-	return []ColumnFormat{Byte, Char, Complex128, Complex64, DateTime, DateTimeOffset, Double, Duration, Float, Int16, Int32, Int64, Int8, Uint16, Uint32, Uint64, Uint8}
-}
-
-// ColumnType enumerates the values for column type.
-type ColumnType string
-
-const (
-	// Boolean ...
-	Boolean ColumnType = "Boolean"
-	// Integer ...
-	Integer ColumnType = "Integer"
-	// Number ...
-	Number ColumnType = "Number"
-	// String ...
-	String ColumnType = "String"
-)
-
-// PossibleColumnTypeValues returns an array of possible values for the ColumnType const type.
-func PossibleColumnTypeValues() []ColumnType {
-	return []ColumnType{Boolean, Integer, Number, String}
-}
-
-// DiagnosticsLevel enumerates the values for diagnostics level.
-type DiagnosticsLevel string
-
-const (
-	// All ...
-	All DiagnosticsLevel = "All"
-	// Error ...
-	Error DiagnosticsLevel = "Error"
-	// None ...
-	None DiagnosticsLevel = "None"
-)
-
-// PossibleDiagnosticsLevelValues returns an array of possible values for the DiagnosticsLevel const type.
-func PossibleDiagnosticsLevelValues() []DiagnosticsLevel {
-	return []DiagnosticsLevel{All, Error, None}
-}
-
-// InputPortType enumerates the values for input port type.
-type InputPortType string
-
-const (
-	// Dataset ...
-	Dataset InputPortType = "Dataset"
-)
-
-// PossibleInputPortTypeValues returns an array of possible values for the InputPortType const type.
-func PossibleInputPortTypeValues() []InputPortType {
-	return []InputPortType{Dataset}
-}
-
-// OutputPortType enumerates the values for output port type.
-type OutputPortType string
-
-const (
-	// OutputPortTypeDataset ...
-	OutputPortTypeDataset OutputPortType = "Dataset"
-)
-
-// PossibleOutputPortTypeValues returns an array of possible values for the OutputPortType const type.
-func PossibleOutputPortTypeValues() []OutputPortType {
-	return []OutputPortType{OutputPortTypeDataset}
-}
-
-// PackageType enumerates the values for package type.
-type PackageType string
-
-const (
-	// PackageTypeGraph ...
-	PackageTypeGraph PackageType = "Graph"
-	// PackageTypeWebServiceProperties ...
-	PackageTypeWebServiceProperties PackageType = "WebServiceProperties"
-)
-
-// PossiblePackageTypeValues returns an array of possible values for the PackageType const type.
-func PossiblePackageTypeValues() []PackageType {
-	return []PackageType{PackageTypeGraph, PackageTypeWebServiceProperties}
-}
-
-// ParameterType enumerates the values for parameter type.
-type ParameterType string
-
-const (
-	// ParameterTypeBoolean ...
-	ParameterTypeBoolean ParameterType = "Boolean"
-	// ParameterTypeColumnPicker ...
-	ParameterTypeColumnPicker ParameterType = "ColumnPicker"
-	// ParameterTypeCredential ...
-	ParameterTypeCredential ParameterType = "Credential"
-	// ParameterTypeDataGatewayName ...
-	ParameterTypeDataGatewayName ParameterType = "DataGatewayName"
-	// ParameterTypeDouble ...
-	ParameterTypeDouble ParameterType = "Double"
-	// ParameterTypeEnumerated ...
-	ParameterTypeEnumerated ParameterType = "Enumerated"
-	// ParameterTypeFloat ...
-	ParameterTypeFloat ParameterType = "Float"
-	// ParameterTypeInt ...
-	ParameterTypeInt ParameterType = "Int"
-	// ParameterTypeMode ...
-	ParameterTypeMode ParameterType = "Mode"
-	// ParameterTypeParameterRange ...
-	ParameterTypeParameterRange ParameterType = "ParameterRange"
-	// ParameterTypeScript ...
-	ParameterTypeScript ParameterType = "Script"
-	// ParameterTypeString ...
-	ParameterTypeString ParameterType = "String"
-)
-
-// PossibleParameterTypeValues returns an array of possible values for the ParameterType const type.
-func PossibleParameterTypeValues() []ParameterType {
-	return []ParameterType{ParameterTypeBoolean, ParameterTypeColumnPicker, ParameterTypeCredential, ParameterTypeDataGatewayName, ParameterTypeDouble, ParameterTypeEnumerated, ParameterTypeFloat, ParameterTypeInt, ParameterTypeMode, ParameterTypeParameterRange, ParameterTypeScript, ParameterTypeString}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Provisioning ...
-	Provisioning ProvisioningState = "Provisioning"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Unknown ...
-	Unknown ProvisioningState = "Unknown"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Failed, Provisioning, Succeeded, Unknown}
-}
-
 // AssetItem information about an asset associated with the web service.
 type AssetItem struct {
 	// Name - Asset's friendly name.
@@ -280,8 +89,8 @@ type AssetLocation struct {
 	Credentials *string `json:"credentials,omitempty"`
 }
 
-// ColumnSpecification swagger 2.0 schema for a column within the data table representing a web service
-// input or output. See Swagger specification: http://swagger.io/specification/
+// ColumnSpecification swagger 2.0 schema for a column within the data table representing a web service input
+// or output. See Swagger specification: http://swagger.io/specification/
 type ColumnSpecification struct {
 	// Type - Data type of the column. Possible values include: 'Boolean', 'Integer', 'Number', 'String'
 	Type ColumnType `json:"type,omitempty"`
@@ -301,8 +110,7 @@ type CommitmentPlan struct {
 	ID *string `json:"id,omitempty"`
 }
 
-// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -370,8 +178,8 @@ type GraphEdge struct {
 	TargetPortID *string `json:"targetPortId,omitempty"`
 }
 
-// GraphNode specifies a node in the web service graph. The node can either be an input, output or asset
-// node, so only one of the corresponding id properties is populated at any given time.
+// GraphNode specifies a node in the web service graph. The node can either be an input, output or asset node,
+// so only one of the corresponding id properties is populated at any given time.
 type GraphNode struct {
 	// AssetID - The id of the asset represented by this node.
 	AssetID *string `json:"assetId,omitempty"`
@@ -459,8 +267,8 @@ type Keys struct {
 	Secondary *string `json:"secondary,omitempty"`
 }
 
-// MachineLearningWorkspace information about the machine learning workspace containing the experiment that
-// is source for the web service.
+// MachineLearningWorkspace information about the machine learning workspace containing the experiment that is
+// source for the web service.
 type MachineLearningWorkspace struct {
 	// ID - Specifies the workspace ID of the machine learning workspace associated with the web service
 	ID *string `json:"id,omitempty"`
@@ -582,10 +390,15 @@ func (pwsl PaginatedWebServicesList) IsEmpty() bool {
 	return pwsl.Value == nil || len(*pwsl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pwsl PaginatedWebServicesList) hasNextLink() bool {
+	return pwsl.NextLink != nil && len(*pwsl.NextLink) != 0
+}
+
 // paginatedWebServicesListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pwsl PaginatedWebServicesList) paginatedWebServicesListPreparer(ctx context.Context) (*http.Request, error) {
-	if pwsl.NextLink == nil || len(to.String(pwsl.NextLink)) < 1 {
+	if !pwsl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -613,11 +426,16 @@ func (page *PaginatedWebServicesListPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pwsl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pwsl)
+		if err != nil {
+			return err
+		}
+		page.pwsl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pwsl = next
 	return nil
 }
 

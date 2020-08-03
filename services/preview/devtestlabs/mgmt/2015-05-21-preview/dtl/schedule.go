@@ -383,6 +383,9 @@ func (client ScheduleClient) List(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ScheduleClient", "List", resp, "Failure responding to request")
 	}
+	if result.rwcs.hasNextLink() && result.rwcs.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

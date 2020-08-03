@@ -477,6 +477,9 @@ func (client LabAccountsClient) ListByResourceGroup(ctx context.Context, resourc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.rwcla.hasNextLink() && result.rwcla.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -602,6 +605,9 @@ func (client LabAccountsClient) ListBySubscription(ctx context.Context, expand s
 	result.rwcla, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.rwcla.hasNextLink() && result.rwcla.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

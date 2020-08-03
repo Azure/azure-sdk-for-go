@@ -227,6 +227,9 @@ func (client HyperVSitesClient) GetSiteHealthSummary(ctx context.Context, subscr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVSitesClient", "GetSiteHealthSummary", resp, "Failure responding to request")
 	}
+	if result.shsc.hasNextLink() && result.shsc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

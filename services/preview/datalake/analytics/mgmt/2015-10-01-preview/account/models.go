@@ -31,67 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/mgmt/2015-10-01-preview/account"
 
-// DataLakeAnalyticsAccountState enumerates the values for data lake analytics account state.
-type DataLakeAnalyticsAccountState string
-
-const (
-	// Active ...
-	Active DataLakeAnalyticsAccountState = "active"
-	// Suspended ...
-	Suspended DataLakeAnalyticsAccountState = "suspended"
-)
-
-// PossibleDataLakeAnalyticsAccountStateValues returns an array of possible values for the DataLakeAnalyticsAccountState const type.
-func PossibleDataLakeAnalyticsAccountStateValues() []DataLakeAnalyticsAccountState {
-	return []DataLakeAnalyticsAccountState{Active, Suspended}
-}
-
-// DataLakeAnalyticsAccountStatus enumerates the values for data lake analytics account status.
-type DataLakeAnalyticsAccountStatus string
-
-const (
-	// Creating ...
-	Creating DataLakeAnalyticsAccountStatus = "Creating"
-	// Deleted ...
-	Deleted DataLakeAnalyticsAccountStatus = "Deleted"
-	// Deleting ...
-	Deleting DataLakeAnalyticsAccountStatus = "Deleting"
-	// Failed ...
-	Failed DataLakeAnalyticsAccountStatus = "Failed"
-	// Patching ...
-	Patching DataLakeAnalyticsAccountStatus = "Patching"
-	// Resuming ...
-	Resuming DataLakeAnalyticsAccountStatus = "Resuming"
-	// Running ...
-	Running DataLakeAnalyticsAccountStatus = "Running"
-	// Succeeded ...
-	Succeeded DataLakeAnalyticsAccountStatus = "Succeeded"
-	// Suspending ...
-	Suspending DataLakeAnalyticsAccountStatus = "Suspending"
-)
-
-// PossibleDataLakeAnalyticsAccountStatusValues returns an array of possible values for the DataLakeAnalyticsAccountStatus const type.
-func PossibleDataLakeAnalyticsAccountStatusValues() []DataLakeAnalyticsAccountStatus {
-	return []DataLakeAnalyticsAccountStatus{Creating, Deleted, Deleting, Failed, Patching, Resuming, Running, Succeeded, Suspending}
-}
-
-// OperationStatus enumerates the values for operation status.
-type OperationStatus string
-
-const (
-	// OperationStatusFailed ...
-	OperationStatusFailed OperationStatus = "Failed"
-	// OperationStatusInProgress ...
-	OperationStatusInProgress OperationStatus = "InProgress"
-	// OperationStatusSucceeded ...
-	OperationStatusSucceeded OperationStatus = "Succeeded"
-)
-
-// PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
-func PossibleOperationStatusValues() []OperationStatus {
-	return []OperationStatus{OperationStatusFailed, OperationStatusInProgress, OperationStatusSucceeded}
-}
-
 // AddDataLakeStoreParameters additional Data Lake Store parameters.
 type AddDataLakeStoreParameters struct {
 	// Properties - the properties for the Data Lake Store account being added.
@@ -105,11 +44,11 @@ type AddStorageAccountParameters struct {
 }
 
 // AzureAsyncOperationResult the response body contains the status of the specified asynchronous operation,
-// indicating whether it has succeeded, is inprogress, or has failed. Note that this status is distinct
-// from the HTTP status code returned for the Get Operation Status operation itself. If the asynchronous
-// operation succeeded, the response body includes the HTTP status code for the successful request. If the
-// asynchronous operation failed, the response body includes the HTTP status code for the failed request
-// and error information regarding the failure.
+// indicating whether it has succeeded, is inprogress, or has failed. Note that this status is distinct from
+// the HTTP status code returned for the Get Operation Status operation itself. If the asynchronous operation
+// succeeded, the response body includes the HTTP status code for the successful request. If the asynchronous
+// operation failed, the response body includes the HTTP status code for the failed request and error
+// information regarding the failure.
 type AzureAsyncOperationResult struct {
 	// Status - READ-ONLY; the status of the AzureAsyncOperation. Possible values include: 'OperationStatusInProgress', 'OperationStatusSucceeded', 'OperationStatusFailed'
 	Status OperationStatus `json:"status,omitempty"`
@@ -164,8 +103,8 @@ func (future *CreateFuture) Result(client Client) (dlaa DataLakeAnalyticsAccount
 	return
 }
 
-// DataLakeAnalyticsAccount a Data Lake Analytics account object, containing all information associated
-// with the named Data Lake Analytics account.
+// DataLakeAnalyticsAccount a Data Lake Analytics account object, containing all information associated with
+// the named Data Lake Analytics account.
 type DataLakeAnalyticsAccount struct {
 	autorest.Response `json:"-"`
 	// Location - the account regional location.
@@ -280,10 +219,15 @@ func (dlaaldlsr DataLakeAnalyticsAccountListDataLakeStoreResult) IsEmpty() bool 
 	return dlaaldlsr.Value == nil || len(*dlaaldlsr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dlaaldlsr DataLakeAnalyticsAccountListDataLakeStoreResult) hasNextLink() bool {
+	return dlaaldlsr.NextLink != nil && len(*dlaaldlsr.NextLink) != 0
+}
+
 // dataLakeAnalyticsAccountListDataLakeStoreResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dlaaldlsr DataLakeAnalyticsAccountListDataLakeStoreResult) dataLakeAnalyticsAccountListDataLakeStoreResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dlaaldlsr.NextLink == nil || len(to.String(dlaaldlsr.NextLink)) < 1 {
+	if !dlaaldlsr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -311,11 +255,16 @@ func (page *DataLakeAnalyticsAccountListDataLakeStoreResultPage) NextWithContext
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dlaaldlsr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dlaaldlsr)
+		if err != nil {
+			return err
+		}
+		page.dlaaldlsr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dlaaldlsr = next
 	return nil
 }
 
@@ -358,8 +307,8 @@ type DataLakeAnalyticsAccountListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// DataLakeAnalyticsAccountListResultIterator provides access to a complete listing of
-// DataLakeAnalyticsAccount values.
+// DataLakeAnalyticsAccountListResultIterator provides access to a complete listing of DataLakeAnalyticsAccount
+// values.
 type DataLakeAnalyticsAccountListResultIterator struct {
 	i    int
 	page DataLakeAnalyticsAccountListResultPage
@@ -427,10 +376,15 @@ func (dlaalr DataLakeAnalyticsAccountListResult) IsEmpty() bool {
 	return dlaalr.Value == nil || len(*dlaalr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dlaalr DataLakeAnalyticsAccountListResult) hasNextLink() bool {
+	return dlaalr.NextLink != nil && len(*dlaalr.NextLink) != 0
+}
+
 // dataLakeAnalyticsAccountListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dlaalr DataLakeAnalyticsAccountListResult) dataLakeAnalyticsAccountListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dlaalr.NextLink == nil || len(to.String(dlaalr.NextLink)) < 1 {
+	if !dlaalr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -458,11 +412,16 @@ func (page *DataLakeAnalyticsAccountListResultPage) NextWithContext(ctx context.
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dlaalr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dlaalr)
+		if err != nil {
+			return err
+		}
+		page.dlaalr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dlaalr = next
 	return nil
 }
 
@@ -576,10 +535,15 @@ func (dlaalsar DataLakeAnalyticsAccountListStorageAccountsResult) IsEmpty() bool
 	return dlaalsar.Value == nil || len(*dlaalsar.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dlaalsar DataLakeAnalyticsAccountListStorageAccountsResult) hasNextLink() bool {
+	return dlaalsar.NextLink != nil && len(*dlaalsar.NextLink) != 0
+}
+
 // dataLakeAnalyticsAccountListStorageAccountsResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dlaalsar DataLakeAnalyticsAccountListStorageAccountsResult) dataLakeAnalyticsAccountListStorageAccountsResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dlaalsar.NextLink == nil || len(to.String(dlaalsar.NextLink)) < 1 {
+	if !dlaalsar.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -607,11 +571,16 @@ func (page *DataLakeAnalyticsAccountListStorageAccountsResultPage) NextWithConte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dlaalsar)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dlaalsar)
+		if err != nil {
+			return err
+		}
+		page.dlaalsar = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dlaalsar = next
 	return nil
 }
 
@@ -645,8 +614,8 @@ func NewDataLakeAnalyticsAccountListStorageAccountsResultPage(getNextPage func(c
 	return DataLakeAnalyticsAccountListStorageAccountsResultPage{fn: getNextPage}
 }
 
-// DataLakeAnalyticsAccountProperties the account specific properties that are associated with an
-// underlying Data Lake Analytics account.
+// DataLakeAnalyticsAccountProperties the account specific properties that are associated with an underlying
+// Data Lake Analytics account.
 type DataLakeAnalyticsAccountProperties struct {
 	// ProvisioningState - READ-ONLY; the provisioning status of the Data Lake Analytics account. Possible values include: 'Failed', 'Creating', 'Running', 'Succeeded', 'Patching', 'Suspending', 'Resuming', 'Deleting', 'Deleted'
 	ProvisioningState DataLakeAnalyticsAccountStatus `json:"provisioningState,omitempty"`
@@ -668,6 +637,27 @@ type DataLakeAnalyticsAccountProperties struct {
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// Endpoint - READ-ONLY; the full CName endpoint for this account.
 	Endpoint *string `json:"endpoint,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataLakeAnalyticsAccountProperties.
+func (dlaap DataLakeAnalyticsAccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dlaap.DefaultDataLakeStoreAccount != nil {
+		objectMap["defaultDataLakeStoreAccount"] = dlaap.DefaultDataLakeStoreAccount
+	}
+	if dlaap.MaxDegreeOfParallelism != nil {
+		objectMap["maxDegreeOfParallelism"] = dlaap.MaxDegreeOfParallelism
+	}
+	if dlaap.MaxJobCount != nil {
+		objectMap["maxJobCount"] = dlaap.MaxJobCount
+	}
+	if dlaap.DataLakeStoreAccounts != nil {
+		objectMap["dataLakeStoreAccounts"] = dlaap.DataLakeStoreAccounts
+	}
+	if dlaap.StorageAccounts != nil {
+		objectMap["storageAccounts"] = dlaap.StorageAccounts
+	}
+	return json.Marshal(objectMap)
 }
 
 // DataLakeStoreAccountInfo data Lake Store account information.
@@ -817,10 +807,15 @@ func (lbcr ListBlobContainersResult) IsEmpty() bool {
 	return lbcr.Value == nil || len(*lbcr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lbcr ListBlobContainersResult) hasNextLink() bool {
+	return lbcr.NextLink != nil && len(*lbcr.NextLink) != 0
+}
+
 // listBlobContainersResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lbcr ListBlobContainersResult) listBlobContainersResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lbcr.NextLink == nil || len(to.String(lbcr.NextLink)) < 1 {
+	if !lbcr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -848,11 +843,16 @@ func (page *ListBlobContainersResultPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lbcr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lbcr)
+		if err != nil {
+			return err
+		}
+		page.lbcr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lbcr = next
 	return nil
 }
 
@@ -886,8 +886,8 @@ func NewListBlobContainersResultPage(getNextPage func(context.Context, ListBlobC
 	return ListBlobContainersResultPage{fn: getNextPage}
 }
 
-// ListSasTokensResult the SAS response that contains the storage account, container and associated SAS
-// token for connection use.
+// ListSasTokensResult the SAS response that contains the storage account, container and associated SAS token
+// for connection use.
 type ListSasTokensResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY
@@ -964,10 +964,15 @@ func (lstr ListSasTokensResult) IsEmpty() bool {
 	return lstr.Value == nil || len(*lstr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lstr ListSasTokensResult) hasNextLink() bool {
+	return lstr.NextLink != nil && len(*lstr.NextLink) != 0
+}
+
 // listSasTokensResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lstr ListSasTokensResult) listSasTokensResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lstr.NextLink == nil || len(to.String(lstr.NextLink)) < 1 {
+	if !lstr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -995,11 +1000,16 @@ func (page *ListSasTokensResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lstr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lstr)
+		if err != nil {
+			return err
+		}
+		page.lstr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lstr = next
 	return nil
 }
 

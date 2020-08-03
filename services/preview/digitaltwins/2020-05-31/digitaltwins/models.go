@@ -42,6 +42,15 @@ type Error struct {
 	Innererror *InnerError `json:"innererror,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if e.Innererror != nil {
+		objectMap["innererror"] = e.Innererror
+	}
+	return json.Marshal(objectMap)
+}
+
 // ErrorResponse error response.
 type ErrorResponse struct {
 	// Error - The error details.
@@ -58,6 +67,18 @@ type EventRoute struct {
 	EndpointName *string `json:"endpointName,omitempty"`
 	// Filter - An expression which describes the events which are routed to the endpoint.
 	Filter *string `json:"filter,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EventRoute.
+func (er EventRoute) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if er.EndpointName != nil {
+		objectMap["endpointName"] = er.EndpointName
+	}
+	if er.Filter != nil {
+		objectMap["filter"] = er.Filter
+	}
+	return json.Marshal(objectMap)
 }
 
 // EventRouteCollection a collection of EventRoute objects.
@@ -137,10 +158,15 @@ func (erc EventRouteCollection) IsEmpty() bool {
 	return erc.Value == nil || len(*erc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (erc EventRouteCollection) hasNextLink() bool {
+	return erc.NextLink != nil && len(*erc.NextLink) != 0
+}
+
 // eventRouteCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (erc EventRouteCollection) eventRouteCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if erc.NextLink == nil || len(to.String(erc.NextLink)) < 1 {
+	if !erc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -168,11 +194,16 @@ func (page *EventRouteCollectionPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.erc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.erc)
+		if err != nil {
+			return err
+		}
+		page.erc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.erc = next
 	return nil
 }
 
@@ -218,8 +249,7 @@ type IncomingRelationship struct {
 	RelationshipLink *string `json:"$relationshipLink,omitempty"`
 }
 
-// IncomingRelationshipCollection a collection of incoming relationships which relate digital twins
-// together.
+// IncomingRelationshipCollection a collection of incoming relationships which relate digital twins together.
 type IncomingRelationshipCollection struct {
 	autorest.Response `json:"-"`
 	Value             *[]IncomingRelationship `json:"value,omitempty"`
@@ -227,8 +257,7 @@ type IncomingRelationshipCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// IncomingRelationshipCollectionIterator provides access to a complete listing of IncomingRelationship
-// values.
+// IncomingRelationshipCollectionIterator provides access to a complete listing of IncomingRelationship values.
 type IncomingRelationshipCollectionIterator struct {
 	i    int
 	page IncomingRelationshipCollectionPage
@@ -296,10 +325,15 @@ func (irc IncomingRelationshipCollection) IsEmpty() bool {
 	return irc.Value == nil || len(*irc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (irc IncomingRelationshipCollection) hasNextLink() bool {
+	return irc.NextLink != nil && len(*irc.NextLink) != 0
+}
+
 // incomingRelationshipCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (irc IncomingRelationshipCollection) incomingRelationshipCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if irc.NextLink == nil || len(to.String(irc.NextLink)) < 1 {
+	if !irc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -327,11 +361,16 @@ func (page *IncomingRelationshipCollectionPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.irc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.irc)
+		if err != nil {
+			return err
+		}
+		page.irc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.irc = next
 	return nil
 }
 
@@ -497,10 +536,15 @@ func (pmdc PagedModelDataCollection) IsEmpty() bool {
 	return pmdc.Value == nil || len(*pmdc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pmdc PagedModelDataCollection) hasNextLink() bool {
+	return pmdc.NextLink != nil && len(*pmdc.NextLink) != 0
+}
+
 // pagedModelDataCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pmdc PagedModelDataCollection) pagedModelDataCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if pmdc.NextLink == nil || len(to.String(pmdc.NextLink)) < 1 {
+	if !pmdc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -528,11 +572,16 @@ func (page *PagedModelDataCollectionPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pmdc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pmdc)
+		if err != nil {
+			return err
+		}
+		page.pmdc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pmdc = next
 	return nil
 }
 
@@ -575,8 +624,8 @@ type QueryResult struct {
 	ContinuationToken *string `json:"continuationToken,omitempty"`
 }
 
-// QuerySpecification a query specification containing either a query statement or a continuation token
-// from a previous query result.
+// QuerySpecification a query specification containing either a query statement or a continuation token from a
+// previous query result.
 type QuerySpecification struct {
 	// Query - The query to execute. This value is ignored if a continuation token is provided.
 	Query *string `json:"query,omitempty"`
@@ -661,10 +710,15 @@ func (rc RelationshipCollection) IsEmpty() bool {
 	return rc.Value == nil || len(*rc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rc RelationshipCollection) hasNextLink() bool {
+	return rc.NextLink != nil && len(*rc.NextLink) != 0
+}
+
 // relationshipCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rc RelationshipCollection) relationshipCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if rc.NextLink == nil || len(to.String(rc.NextLink)) < 1 {
+	if !rc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -692,11 +746,16 @@ func (page *RelationshipCollectionPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rc)
+		if err != nil {
+			return err
+		}
+		page.rc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rc = next
 	return nil
 }
 

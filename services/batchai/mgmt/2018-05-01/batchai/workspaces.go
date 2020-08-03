@@ -345,6 +345,9 @@ func (client WorkspacesClient) List(ctx context.Context, maxResults *int32) (res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.WorkspacesClient", "List", resp, "Failure responding to request")
 	}
+	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -471,6 +474,9 @@ func (client WorkspacesClient) ListByResourceGroup(ctx context.Context, resource
 	result.wlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.WorkspacesClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

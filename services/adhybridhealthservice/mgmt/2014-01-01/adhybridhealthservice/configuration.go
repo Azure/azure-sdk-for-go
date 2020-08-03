@@ -206,6 +206,9 @@ func (client ConfigurationClient) ListAddsConfigurations(ctx context.Context, se
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.ConfigurationClient", "ListAddsConfigurations", resp, "Failure responding to request")
 	}
+	if result.ac.hasNextLink() && result.ac.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

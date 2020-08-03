@@ -73,6 +73,9 @@ func (client AvailableProviderOperationsClient) List(ctx context.Context) (resul
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.AvailableProviderOperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.apo.hasNextLink() && result.apo.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

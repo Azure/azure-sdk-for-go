@@ -31,108 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/kubernetesconfiguration/mgmt/2019-11-01-preview/kubernetesconfiguration"
 
-// ComplianceState enumerates the values for compliance state.
-type ComplianceState string
-
-const (
-	// Compliant ...
-	Compliant ComplianceState = "Compliant"
-	// Failed ...
-	Failed ComplianceState = "Failed"
-	// Installed ...
-	Installed ComplianceState = "Installed"
-	// Noncompliant ...
-	Noncompliant ComplianceState = "Noncompliant"
-	// Pending ...
-	Pending ComplianceState = "Pending"
-)
-
-// PossibleComplianceStateValues returns an array of possible values for the ComplianceState const type.
-func PossibleComplianceStateValues() []ComplianceState {
-	return []ComplianceState{Compliant, Failed, Installed, Noncompliant, Pending}
-}
-
-// EnableHelmOperator enumerates the values for enable helm operator.
-type EnableHelmOperator string
-
-const (
-	// False ...
-	False EnableHelmOperator = "false"
-	// True ...
-	True EnableHelmOperator = "true"
-)
-
-// PossibleEnableHelmOperatorValues returns an array of possible values for the EnableHelmOperator const type.
-func PossibleEnableHelmOperatorValues() []EnableHelmOperator {
-	return []EnableHelmOperator{False, True}
-}
-
-// MessageLevel enumerates the values for message level.
-type MessageLevel string
-
-const (
-	// Error ...
-	Error MessageLevel = "Error"
-	// Information ...
-	Information MessageLevel = "Information"
-	// Warning ...
-	Warning MessageLevel = "Warning"
-)
-
-// PossibleMessageLevelValues returns an array of possible values for the MessageLevel const type.
-func PossibleMessageLevelValues() []MessageLevel {
-	return []MessageLevel{Error, Information, Warning}
-}
-
-// OperatorScope enumerates the values for operator scope.
-type OperatorScope string
-
-const (
-	// Cluster ...
-	Cluster OperatorScope = "cluster"
-	// Namespace ...
-	Namespace OperatorScope = "namespace"
-)
-
-// PossibleOperatorScopeValues returns an array of possible values for the OperatorScope const type.
-func PossibleOperatorScopeValues() []OperatorScope {
-	return []OperatorScope{Cluster, Namespace}
-}
-
-// OperatorType enumerates the values for operator type.
-type OperatorType string
-
-const (
-	// Flux ...
-	Flux OperatorType = "Flux"
-)
-
-// PossibleOperatorTypeValues returns an array of possible values for the OperatorType const type.
-func PossibleOperatorTypeValues() []OperatorType {
-	return []OperatorType{Flux}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// ProvisioningStateAccepted ...
-	ProvisioningStateAccepted ProvisioningState = "Accepted"
-	// ProvisioningStateDeleting ...
-	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed ...
-	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateRunning ...
-	ProvisioningStateRunning ProvisioningState = "Running"
-	// ProvisioningStateSucceeded ...
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateAccepted, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateRunning, ProvisioningStateSucceeded}
-}
-
 // ComplianceStatus compliance Status details
 type ComplianceStatus struct {
 	// ComplianceState - READ-ONLY; The compliance state of the configuration. Possible values include: 'Pending', 'Compliant', 'Noncompliant', 'Installed', 'Failed'
@@ -143,6 +41,21 @@ type ComplianceStatus struct {
 	Message *string `json:"message,omitempty"`
 	// MessageLevel - Level of the message. Possible values include: 'Error', 'Warning', 'Information'
 	MessageLevel MessageLevel `json:"messageLevel,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ComplianceStatus.
+func (cs ComplianceStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cs.LastConfigApplied != nil {
+		objectMap["lastConfigApplied"] = cs.LastConfigApplied
+	}
+	if cs.Message != nil {
+		objectMap["message"] = cs.Message
+	}
+	if cs.MessageLevel != "" {
+		objectMap["messageLevel"] = cs.MessageLevel
+	}
+	return json.Marshal(objectMap)
 }
 
 // ErrorDefinition error definition.
@@ -218,6 +131,15 @@ type ResourceProviderOperationList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceProviderOperationList.
+func (rpol ResourceProviderOperationList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rpol.Value != nil {
+		objectMap["value"] = rpol.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // ResourceProviderOperationListIterator provides access to a complete listing of ResourceProviderOperation
 // values.
 type ResourceProviderOperationListIterator struct {
@@ -287,10 +209,15 @@ func (rpol ResourceProviderOperationList) IsEmpty() bool {
 	return rpol.Value == nil || len(*rpol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rpol ResourceProviderOperationList) hasNextLink() bool {
+	return rpol.NextLink != nil && len(*rpol.NextLink) != 0
+}
+
 // resourceProviderOperationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rpol ResourceProviderOperationList) resourceProviderOperationListPreparer(ctx context.Context) (*http.Request, error) {
-	if rpol.NextLink == nil || len(to.String(rpol.NextLink)) < 1 {
+	if !rpol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -318,11 +245,16 @@ func (page *ResourceProviderOperationListPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rpol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rpol)
+		if err != nil {
+			return err
+		}
+		page.rpol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rpol = next
 	return nil
 }
 
@@ -435,8 +367,8 @@ func (scc *SourceControlConfiguration) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SourceControlConfigurationList result of the request to list Source Control Configurations.  It contains
-// a list of SourceControlConfiguration objects and a URL link to get the next set of results.
+// SourceControlConfigurationList result of the request to list Source Control Configurations.  It contains a
+// list of SourceControlConfiguration objects and a URL link to get the next set of results.
 type SourceControlConfigurationList struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of Source Control Configurations within a Kubernetes cluster.
@@ -445,8 +377,8 @@ type SourceControlConfigurationList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// SourceControlConfigurationListIterator provides access to a complete listing of
-// SourceControlConfiguration values.
+// SourceControlConfigurationListIterator provides access to a complete listing of SourceControlConfiguration
+// values.
 type SourceControlConfigurationListIterator struct {
 	i    int
 	page SourceControlConfigurationListPage
@@ -514,10 +446,15 @@ func (sccl SourceControlConfigurationList) IsEmpty() bool {
 	return sccl.Value == nil || len(*sccl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sccl SourceControlConfigurationList) hasNextLink() bool {
+	return sccl.NextLink != nil && len(*sccl.NextLink) != 0
+}
+
 // sourceControlConfigurationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sccl SourceControlConfigurationList) sourceControlConfigurationListPreparer(ctx context.Context) (*http.Request, error) {
-	if sccl.NextLink == nil || len(to.String(sccl.NextLink)) < 1 {
+	if !sccl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -545,11 +482,16 @@ func (page *SourceControlConfigurationListPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sccl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sccl)
+		if err != nil {
+			return err
+		}
+		page.sccl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sccl = next
 	return nil
 }
 
@@ -607,6 +549,36 @@ type SourceControlConfigurationProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ComplianceStatus - READ-ONLY; Compliance Status of the Configuration
 	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SourceControlConfigurationProperties.
+func (scc SourceControlConfigurationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if scc.RepositoryURL != nil {
+		objectMap["repositoryUrl"] = scc.RepositoryURL
+	}
+	if scc.OperatorNamespace != nil {
+		objectMap["operatorNamespace"] = scc.OperatorNamespace
+	}
+	if scc.OperatorInstanceName != nil {
+		objectMap["operatorInstanceName"] = scc.OperatorInstanceName
+	}
+	if scc.OperatorType != "" {
+		objectMap["operatorType"] = scc.OperatorType
+	}
+	if scc.OperatorParams != nil {
+		objectMap["operatorParams"] = scc.OperatorParams
+	}
+	if scc.OperatorScope != "" {
+		objectMap["operatorScope"] = scc.OperatorScope
+	}
+	if scc.EnableHelmOperator != "" {
+		objectMap["enableHelmOperator"] = scc.EnableHelmOperator
+	}
+	if scc.HelmOperatorProperties != nil {
+		objectMap["helmOperatorProperties"] = scc.HelmOperatorProperties
+	}
+	return json.Marshal(objectMap)
 }
 
 // SourceControlConfigurationsDeleteFuture an abstraction for monitoring and retrieving the results of a

@@ -161,6 +161,9 @@ func (client PipelineClient) List(ctx context.Context, accountName string, start
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.PipelineClient", "List", resp, "Failure responding to request")
 	}
+	if result.pilr.hasNextLink() && result.pilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

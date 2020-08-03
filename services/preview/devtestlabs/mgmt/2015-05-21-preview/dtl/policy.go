@@ -314,6 +314,9 @@ func (client PolicyClient) List(ctx context.Context, resourceGroupName string, l
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.PolicyClient", "List", resp, "Failure responding to request")
 	}
+	if result.rwcp.hasNextLink() && result.rwcp.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

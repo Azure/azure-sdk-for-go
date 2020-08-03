@@ -113,6 +113,13 @@ type CheckNameAvailabilityClientAPI interface {
 
 var _ CheckNameAvailabilityClientAPI = (*postgresql.CheckNameAvailabilityClient)(nil)
 
+// OperationsClientAPI contains the set of methods on the OperationsClient type.
+type OperationsClientAPI interface {
+	List(ctx context.Context) (result postgresql.OperationListResult, err error)
+}
+
+var _ OperationsClientAPI = (*postgresql.OperationsClient)(nil)
+
 // ServerSecurityAlertPoliciesClientAPI contains the set of methods on the ServerSecurityAlertPoliciesClient type.
 type ServerSecurityAlertPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters postgresql.ServerSecurityAlertPolicy) (result postgresql.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
@@ -120,10 +127,3 @@ type ServerSecurityAlertPoliciesClientAPI interface {
 }
 
 var _ ServerSecurityAlertPoliciesClientAPI = (*postgresql.ServerSecurityAlertPoliciesClient)(nil)
-
-// OperationsClientAPI contains the set of methods on the OperationsClient type.
-type OperationsClientAPI interface {
-	List(ctx context.Context) (result postgresql.OperationListResult, err error)
-}
-
-var _ OperationsClientAPI = (*postgresql.OperationsClient)(nil)

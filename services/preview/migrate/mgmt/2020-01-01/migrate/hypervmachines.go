@@ -78,6 +78,9 @@ func (client HyperVMachinesClient) GetAllMachinesInSite(ctx context.Context, sub
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVMachinesClient", "GetAllMachinesInSite", resp, "Failure responding to request")
 	}
+	if result.hvmc.hasNextLink() && result.hvmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

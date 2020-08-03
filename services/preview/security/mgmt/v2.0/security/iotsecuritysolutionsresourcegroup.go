@@ -89,6 +89,9 @@ func (client IoTSecuritySolutionsResourceGroupClient) List(ctx context.Context, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsResourceGroupClient", "List", resp, "Failure responding to request")
 	}
+	if result.itssl.hasNextLink() && result.itssl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

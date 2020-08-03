@@ -217,6 +217,9 @@ func (client OrderClient) List(ctx context.Context) (result OrderListPage, err e
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "List", resp, "Failure responding to request")
 	}
+	if result.ol.hasNextLink() && result.ol.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

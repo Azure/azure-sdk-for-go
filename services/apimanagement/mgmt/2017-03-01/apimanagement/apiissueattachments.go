@@ -106,6 +106,9 @@ func (client APIIssueAttachmentsClient) ListByService(ctx context.Context, resou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.APIIssueAttachmentsClient", "ListByService", resp, "Failure responding to request")
 	}
+	if result.iac.hasNextLink() && result.iac.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

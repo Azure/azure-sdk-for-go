@@ -493,6 +493,9 @@ func (client ResourceGroupsClient) List(ctx context.Context, filter string, top 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourceGroupsClient", "List", resp, "Failure responding to request")
 	}
+	if result.rglr.hasNextLink() && result.rglr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

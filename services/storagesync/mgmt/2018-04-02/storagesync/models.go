@@ -30,125 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2018-04-02/storagesync"
 
-// CloudTiering enumerates the values for cloud tiering.
-type CloudTiering string
-
-const (
-	// Off ...
-	Off CloudTiering = "off"
-	// On ...
-	On CloudTiering = "on"
-)
-
-// PossibleCloudTieringValues returns an array of possible values for the CloudTiering const type.
-func PossibleCloudTieringValues() []CloudTiering {
-	return []CloudTiering{Off, On}
-}
-
-// CloudTiering1 enumerates the values for cloud tiering 1.
-type CloudTiering1 string
-
-const (
-	// CloudTiering1Off ...
-	CloudTiering1Off CloudTiering1 = "off"
-	// CloudTiering1On ...
-	CloudTiering1On CloudTiering1 = "on"
-)
-
-// PossibleCloudTiering1Values returns an array of possible values for the CloudTiering1 const type.
-func PossibleCloudTiering1Values() []CloudTiering1 {
-	return []CloudTiering1{CloudTiering1Off, CloudTiering1On}
-}
-
-// CloudTiering2 enumerates the values for cloud tiering 2.
-type CloudTiering2 string
-
-const (
-	// CloudTiering2Off ...
-	CloudTiering2Off CloudTiering2 = "off"
-	// CloudTiering2On ...
-	CloudTiering2On CloudTiering2 = "on"
-)
-
-// PossibleCloudTiering2Values returns an array of possible values for the CloudTiering2 const type.
-func PossibleCloudTiering2Values() []CloudTiering2 {
-	return []CloudTiering2{CloudTiering2Off, CloudTiering2On}
-}
-
-// NameAvailabilityReason enumerates the values for name availability reason.
-type NameAvailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists NameAvailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid NameAvailabilityReason = "Invalid"
-)
-
-// PossibleNameAvailabilityReasonValues returns an array of possible values for the NameAvailabilityReason const type.
-func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
-	return []NameAvailabilityReason{AlreadyExists, Invalid}
-}
-
-// Operation enumerates the values for operation.
-type Operation string
-
-const (
-	// Cancel ...
-	Cancel Operation = "cancel"
-	// Do ...
-	Do Operation = "do"
-	// Undo ...
-	Undo Operation = "undo"
-)
-
-// PossibleOperationValues returns an array of possible values for the Operation const type.
-func PossibleOperationValues() []Operation {
-	return []Operation{Cancel, Do, Undo}
-}
-
-// Reason enumerates the values for reason.
-type Reason string
-
-const (
-	// Deleted ...
-	Deleted Reason = "Deleted"
-	// Registered ...
-	Registered Reason = "Registered"
-	// Suspended ...
-	Suspended Reason = "Suspended"
-	// Unregistered ...
-	Unregistered Reason = "Unregistered"
-	// Warned ...
-	Warned Reason = "Warned"
-)
-
-// PossibleReasonValues returns an array of possible values for the Reason const type.
-func PossibleReasonValues() []Reason {
-	return []Reason{Deleted, Registered, Suspended, Unregistered, Warned}
-}
-
-// Status enumerates the values for status.
-type Status string
-
-const (
-	// Aborted ...
-	Aborted Status = "aborted"
-	// Active ...
-	Active Status = "active"
-	// Expired ...
-	Expired Status = "expired"
-	// Failed ...
-	Failed Status = "failed"
-	// Succeeded ...
-	Succeeded Status = "succeeded"
-)
-
-// PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{Aborted, Active, Expired, Failed, Succeeded}
-}
-
 // APIError error type
 type APIError struct {
 	// Code - Error code of the given entry.
@@ -377,6 +258,36 @@ type CloudEndpointProperties struct {
 	LastOperationName *string `json:"lastOperationName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CloudEndpointProperties.
+func (cep CloudEndpointProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cep.StorageAccountResourceID != nil {
+		objectMap["storageAccountResourceId"] = cep.StorageAccountResourceID
+	}
+	if cep.StorageAccountShareName != nil {
+		objectMap["storageAccountShareName"] = cep.StorageAccountShareName
+	}
+	if cep.StorageAccountTenantID != nil {
+		objectMap["storageAccountTenantId"] = cep.StorageAccountTenantID
+	}
+	if cep.PartnershipID != nil {
+		objectMap["partnershipId"] = cep.PartnershipID
+	}
+	if cep.FriendlyName != nil {
+		objectMap["friendlyName"] = cep.FriendlyName
+	}
+	if cep.ProvisioningState != nil {
+		objectMap["provisioningState"] = cep.ProvisioningState
+	}
+	if cep.LastWorkflowID != nil {
+		objectMap["lastWorkflowId"] = cep.LastWorkflowID
+	}
+	if cep.LastOperationName != nil {
+		objectMap["lastOperationName"] = cep.LastOperationName
+	}
+	return json.Marshal(objectMap)
+}
+
 // CloudEndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type CloudEndpointsCreateFuture struct {
@@ -429,8 +340,8 @@ func (future *CloudEndpointsDeleteFuture) Result(client CloudEndpointsClient) (a
 	return
 }
 
-// CloudEndpointsPostBackupFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// CloudEndpointsPostBackupFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CloudEndpointsPostBackupFuture struct {
 	azure.Future
 }
@@ -458,8 +369,8 @@ func (future *CloudEndpointsPostBackupFuture) Result(client CloudEndpointsClient
 	return
 }
 
-// CloudEndpointsPostRestoreFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// CloudEndpointsPostRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CloudEndpointsPostRestoreFuture struct {
 	azure.Future
 }
@@ -504,8 +415,8 @@ func (future *CloudEndpointsPreBackupFuture) Result(client CloudEndpointsClient)
 	return
 }
 
-// CloudEndpointsPreRestoreFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// CloudEndpointsPreRestoreFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CloudEndpointsPreRestoreFuture struct {
 	azure.Future
 }
@@ -656,10 +567,15 @@ func (oelr OperationEntityListResult) IsEmpty() bool {
 	return oelr.Value == nil || len(*oelr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (oelr OperationEntityListResult) hasNextLink() bool {
+	return oelr.NextLink != nil && len(*oelr.NextLink) != 0
+}
+
 // operationEntityListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (oelr OperationEntityListResult) operationEntityListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if oelr.NextLink == nil || len(to.String(oelr.NextLink)) < 1 {
+	if !oelr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -687,11 +603,16 @@ func (page *OperationEntityListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.oelr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.oelr)
+		if err != nil {
+			return err
+		}
+		page.oelr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.oelr = next
 	return nil
 }
 
@@ -1119,6 +1040,15 @@ type RestoreFileSpec struct {
 	Isdir *bool `json:"isdir,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RestoreFileSpec.
+func (rfs RestoreFileSpec) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rfs.Path != nil {
+		objectMap["path"] = rfs.Path
+	}
+	return json.Marshal(objectMap)
+}
+
 // ServerEndpoint server Endpoint object.
 type ServerEndpoint struct {
 	autorest.Response `json:"-"`
@@ -1354,8 +1284,8 @@ func (future *ServerEndpointsDeleteFuture) Result(client ServerEndpointsClient) 
 	return
 }
 
-// ServerEndpointsRecallActionFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ServerEndpointsRecallActionFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ServerEndpointsRecallActionFuture struct {
 	azure.Future
 }
@@ -1633,6 +1563,18 @@ type SubscriptionState struct {
 	Properties interface{} `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SubscriptionState.
+func (ss SubscriptionState) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ss.State != "" {
+		objectMap["state"] = ss.State
+	}
+	if ss.Properties != nil {
+		objectMap["properties"] = ss.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // SyncGroup sync Group object.
 type SyncGroup struct {
 	autorest.Response `json:"-"`
@@ -1744,6 +1686,15 @@ type SyncGroupProperties struct {
 	UniqueID *string `json:"uniqueId,omitempty"`
 	// SyncGroupStatus - READ-ONLY; Sync group status
 	SyncGroupStatus *string `json:"syncGroupStatus,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SyncGroupProperties.
+func (sgp SyncGroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sgp.UniqueID != nil {
+		objectMap["uniqueId"] = sgp.UniqueID
+	}
+	return json.Marshal(objectMap)
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource

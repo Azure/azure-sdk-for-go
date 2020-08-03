@@ -154,6 +154,9 @@ func (client CustomizationPoliciesClient) List(ctx context.Context, regionID str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.CustomizationPoliciesClient", "List", resp, "Failure responding to request")
 	}
+	if result.cplr.hasNextLink() && result.cplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

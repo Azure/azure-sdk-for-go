@@ -76,6 +76,9 @@ func (client RunAsAccountsClient) GetAllRunAsAccountsInSite(ctx context.Context,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.RunAsAccountsClient", "GetAllRunAsAccountsInSite", resp, "Failure responding to request")
 	}
+	if result.vmraac.hasNextLink() && result.vmraac.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

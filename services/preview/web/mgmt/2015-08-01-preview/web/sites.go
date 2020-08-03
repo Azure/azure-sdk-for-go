@@ -3769,6 +3769,9 @@ func (client SitesClient) GetDeletedSites(ctx context.Context, resourceGroupName
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetDeletedSites", resp, "Failure responding to request")
 	}
+	if result.dsc.hasNextLink() && result.dsc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3964,6 +3967,9 @@ func (client SitesClient) GetDeployments(ctx context.Context, resourceGroupName 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetDeployments", resp, "Failure responding to request")
 	}
+	if result.dc.hasNextLink() && result.dc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -4156,6 +4162,9 @@ func (client SitesClient) GetDeploymentsSlot(ctx context.Context, resourceGroupN
 	result.dc, err = client.GetDeploymentsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetDeploymentsSlot", resp, "Failure responding to request")
+	}
+	if result.dc.hasNextLink() && result.dc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -4350,6 +4359,9 @@ func (client SitesClient) GetInstanceDeployments(ctx context.Context, resourceGr
 	result.dc, err = client.GetInstanceDeploymentsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetInstanceDeployments", resp, "Failure responding to request")
+	}
+	if result.dc.hasNextLink() && result.dc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -4547,6 +4559,9 @@ func (client SitesClient) GetInstanceDeploymentsSlot(ctx context.Context, resour
 	result.dc, err = client.GetInstanceDeploymentsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetInstanceDeploymentsSlot", resp, "Failure responding to request")
+	}
+	if result.dc.hasNextLink() && result.dc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -5441,6 +5456,9 @@ func (client SitesClient) GetSiteHostNameBindings(ctx context.Context, resourceG
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteHostNameBindings", resp, "Failure responding to request")
 	}
+	if result.hnbc.hasNextLink() && result.hnbc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -5634,6 +5652,9 @@ func (client SitesClient) GetSiteHostNameBindingsSlot(ctx context.Context, resou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteHostNameBindingsSlot", resp, "Failure responding to request")
 	}
+	if result.hnbc.hasNextLink() && result.hnbc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -5748,6 +5769,9 @@ func (client SitesClient) GetSiteInstanceIdentifiers(ctx context.Context, resour
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteInstanceIdentifiers", resp, "Failure responding to request")
 	}
+	if result.sic.hasNextLink() && result.sic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -5861,6 +5885,9 @@ func (client SitesClient) GetSiteInstanceIdentifiersSlot(ctx context.Context, re
 	result.sic, err = client.GetSiteInstanceIdentifiersSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteInstanceIdentifiersSlot", resp, "Failure responding to request")
+	}
+	if result.sic.hasNextLink() && result.sic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -6128,6 +6155,9 @@ func (client SitesClient) GetSiteMetricDefinitions(ctx context.Context, resource
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricDefinitions", resp, "Failure responding to request")
 	}
+	if result.mdc.hasNextLink() && result.mdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -6241,6 +6271,9 @@ func (client SitesClient) GetSiteMetricDefinitionsSlot(ctx context.Context, reso
 	result.mdc, err = client.GetSiteMetricDefinitionsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricDefinitionsSlot", resp, "Failure responding to request")
+	}
+	if result.mdc.hasNextLink() && result.mdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -6359,6 +6392,9 @@ func (client SitesClient) GetSiteMetrics(ctx context.Context, resourceGroupName 
 	result.rmc, err = client.GetSiteMetricsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetrics", resp, "Failure responding to request")
+	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -6483,6 +6519,9 @@ func (client SitesClient) GetSiteMetricsSlot(ctx context.Context, resourceGroupN
 	result.rmc, err = client.GetSiteMetricsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteMetricsSlot", resp, "Failure responding to request")
+	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -7221,6 +7260,9 @@ func (client SitesClient) GetSites(ctx context.Context, resourceGroupName string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSites", resp, "Failure responding to request")
 	}
+	if result.sc.hasNextLink() && result.sc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -7423,6 +7465,9 @@ func (client SitesClient) GetSiteSlots(ctx context.Context, resourceGroupName st
 	result.sc, err = client.GetSiteSlotsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteSlots", resp, "Failure responding to request")
+	}
+	if result.sc.hasNextLink() && result.sc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -7847,6 +7892,9 @@ func (client SitesClient) GetSiteUsages(ctx context.Context, resourceGroupName s
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteUsages", resp, "Failure responding to request")
 	}
+	if result.cuqc.hasNextLink() && result.cuqc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -7966,6 +8014,9 @@ func (client SitesClient) GetSiteUsagesSlot(ctx context.Context, resourceGroupNa
 	result.cuqc, err = client.GetSiteUsagesSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSiteUsagesSlot", resp, "Failure responding to request")
+	}
+	if result.cuqc.hasNextLink() && result.cuqc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -8628,6 +8679,9 @@ func (client SitesClient) GetSlotsDifferencesFromProduction(ctx context.Context,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSlotsDifferencesFromProduction", resp, "Failure responding to request")
 	}
+	if result.sdc.hasNextLink() && result.sdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -8744,6 +8798,9 @@ func (client SitesClient) GetSlotsDifferencesSlot(ctx context.Context, resourceG
 	result.sdc, err = client.GetSlotsDifferencesSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "GetSlotsDifferencesSlot", resp, "Failure responding to request")
+	}
+	if result.sdc.hasNextLink() && result.sdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -9317,6 +9374,9 @@ func (client SitesClient) ListSiteBackups(ctx context.Context, resourceGroupName
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteBackups", resp, "Failure responding to request")
 	}
+	if result.bic.hasNextLink() && result.bic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -9430,6 +9490,9 @@ func (client SitesClient) ListSiteBackupsSlot(ctx context.Context, resourceGroup
 	result.bic, err = client.ListSiteBackupsSlotResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSiteBackupsSlot", resp, "Failure responding to request")
+	}
+	if result.bic.hasNextLink() && result.bic.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

@@ -320,6 +320,9 @@ func (client ManagedNetworksClient) ListByResourceGroup(ctx context.Context, res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.lr.hasNextLink() && result.lr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -449,6 +452,9 @@ func (client ManagedNetworksClient) ListBySubscription(ctx context.Context, top 
 	result.lr, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.lr.hasNextLink() && result.lr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

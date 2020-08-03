@@ -307,6 +307,9 @@ func (client MembersClient) List(ctx context.Context, resourceGroupName string) 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "List", resp, "Failure responding to request")
 	}
+	if result.mc.hasNextLink() && result.mc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -415,6 +418,9 @@ func (client MembersClient) ListAll(ctx context.Context) (result MemberCollectio
 	result.mc, err = client.ListAllResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "ListAll", resp, "Failure responding to request")
+	}
+	if result.mc.hasNextLink() && result.mc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -603,6 +609,9 @@ func (client MembersClient) ListConsortiumMembers(ctx context.Context, blockchai
 	result.cmc, err = client.ListConsortiumMembersResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "ListConsortiumMembers", resp, "Failure responding to request")
+	}
+	if result.cmc.hasNextLink() && result.cmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

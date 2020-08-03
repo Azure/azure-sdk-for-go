@@ -76,6 +76,9 @@ func (client HyperVClusterClient) GetAllClustersInSite(ctx context.Context, subs
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.HyperVClusterClient", "GetAllClustersInSite", resp, "Failure responding to request")
 	}
+	if result.hvcc.hasNextLink() && result.hvcc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -258,6 +258,9 @@ func (client Client) List(ctx context.Context, skiptoken string) (result Paginat
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.Client", "List", resp, "Failure responding to request")
 	}
+	if result.pwsl.hasNextLink() && result.pwsl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -371,6 +374,9 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	result.pwsl, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "webservices.Client", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.pwsl.hasNextLink() && result.pwsl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

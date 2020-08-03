@@ -31,105 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/storagecache/mgmt/2019-08-01-preview/storagecache"
 
-// FirmwareStatusType enumerates the values for firmware status type.
-type FirmwareStatusType string
-
-const (
-	// Available ...
-	Available FirmwareStatusType = "available"
-	// Unavailable ...
-	Unavailable FirmwareStatusType = "unavailable"
-)
-
-// PossibleFirmwareStatusTypeValues returns an array of possible values for the FirmwareStatusType const type.
-func PossibleFirmwareStatusTypeValues() []FirmwareStatusType {
-	return []FirmwareStatusType{Available, Unavailable}
-}
-
-// HealthStateType enumerates the values for health state type.
-type HealthStateType string
-
-const (
-	// Degraded ...
-	Degraded HealthStateType = "Degraded"
-	// Down ...
-	Down HealthStateType = "Down"
-	// Flushing ...
-	Flushing HealthStateType = "Flushing"
-	// Healthy ...
-	Healthy HealthStateType = "Healthy"
-	// Stopped ...
-	Stopped HealthStateType = "Stopped"
-	// Stopping ...
-	Stopping HealthStateType = "Stopping"
-	// Transitioning ...
-	Transitioning HealthStateType = "Transitioning"
-	// Unknown ...
-	Unknown HealthStateType = "Unknown"
-	// Upgrading ...
-	Upgrading HealthStateType = "Upgrading"
-)
-
-// PossibleHealthStateTypeValues returns an array of possible values for the HealthStateType const type.
-func PossibleHealthStateTypeValues() []HealthStateType {
-	return []HealthStateType{Degraded, Down, Flushing, Healthy, Stopped, Stopping, Transitioning, Unknown, Upgrading}
-}
-
-// ProvisioningStateType enumerates the values for provisioning state type.
-type ProvisioningStateType string
-
-const (
-	// Cancelled ...
-	Cancelled ProvisioningStateType = "Cancelled"
-	// Creating ...
-	Creating ProvisioningStateType = "Creating"
-	// Deleting ...
-	Deleting ProvisioningStateType = "Deleting"
-	// Failed ...
-	Failed ProvisioningStateType = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningStateType = "Succeeded"
-	// Updating ...
-	Updating ProvisioningStateType = "Updating"
-)
-
-// PossibleProvisioningStateTypeValues returns an array of possible values for the ProvisioningStateType const type.
-func PossibleProvisioningStateTypeValues() []ProvisioningStateType {
-	return []ProvisioningStateType{Cancelled, Creating, Deleting, Failed, Succeeded, Updating}
-}
-
-// ReasonCode enumerates the values for reason code.
-type ReasonCode string
-
-const (
-	// NotAvailableForSubscription ...
-	NotAvailableForSubscription ReasonCode = "NotAvailableForSubscription"
-	// QuotaID ...
-	QuotaID ReasonCode = "QuotaId"
-)
-
-// PossibleReasonCodeValues returns an array of possible values for the ReasonCode const type.
-func PossibleReasonCodeValues() []ReasonCode {
-	return []ReasonCode{NotAvailableForSubscription, QuotaID}
-}
-
-// StorageTargetType enumerates the values for storage target type.
-type StorageTargetType string
-
-const (
-	// StorageTargetTypeClfs ...
-	StorageTargetTypeClfs StorageTargetType = "clfs"
-	// StorageTargetTypeNfs3 ...
-	StorageTargetTypeNfs3 StorageTargetType = "nfs3"
-	// StorageTargetTypeUnknown ...
-	StorageTargetTypeUnknown StorageTargetType = "unknown"
-)
-
-// PossibleStorageTargetTypeValues returns an array of possible values for the StorageTargetType const type.
-func PossibleStorageTargetTypeValues() []StorageTargetType {
-	return []StorageTargetType{StorageTargetTypeClfs, StorageTargetTypeNfs3, StorageTargetTypeUnknown}
-}
-
 // APIOperation REST API operation description: see
 // https://github.com/Azure/azure-rest-api-specs/blob/master/documentation/openapi-authoring-automated-guidelines.md#r3023-operationsapiimplementation
 type APIOperation struct {
@@ -227,10 +128,15 @@ func (aolr APIOperationListResult) IsEmpty() bool {
 	return aolr.Value == nil || len(*aolr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (aolr APIOperationListResult) hasNextLink() bool {
+	return aolr.NextLink != nil && len(*aolr.NextLink) != 0
+}
+
 // aPIOperationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (aolr APIOperationListResult) aPIOperationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if aolr.NextLink == nil || len(to.String(aolr.NextLink)) < 1 {
+	if !aolr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -258,11 +164,16 @@ func (page *APIOperationListResultPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.aolr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.aolr)
+		if err != nil {
+			return err
+		}
+		page.aolr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.aolr = next
 	return nil
 }
 
@@ -412,8 +323,8 @@ func (c *Cache) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CacheHealth an indication of cache health.  Gives more information about health than just that related
-// to provisioning.
+// CacheHealth an indication of cache health.  Gives more information about health than just that related to
+// provisioning.
 type CacheHealth struct {
 	// State - List of cache health states. Possible values include: 'Unknown', 'Healthy', 'Degraded', 'Down', 'Transitioning', 'Stopping', 'Stopped', 'Upgrading', 'Flushing'
 	State HealthStateType `json:"state,omitempty"`
@@ -435,6 +346,24 @@ type CacheProperties struct {
 	Subnet *string `json:"subnet,omitempty"`
 	// UpgradeStatus - Upgrade status of the cache.
 	UpgradeStatus *CacheUpgradeStatus `json:"upgradeStatus,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CacheProperties.
+func (c CacheProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.CacheSizeGB != nil {
+		objectMap["cacheSizeGB"] = c.CacheSizeGB
+	}
+	if c.ProvisioningState != "" {
+		objectMap["provisioningState"] = c.ProvisioningState
+	}
+	if c.Subnet != nil {
+		objectMap["subnet"] = c.Subnet
+	}
+	if c.UpgradeStatus != nil {
+		objectMap["upgradeStatus"] = c.UpgradeStatus
+	}
+	return json.Marshal(objectMap)
 }
 
 // CachesCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -527,8 +456,8 @@ type CacheSku struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// CachesListResult result of the request to list caches. It contains a list of caches and a URL link to
-// get the next set of results.
+// CachesListResult result of the request to list caches. It contains a list of caches and a URL link to get
+// the next set of results.
 type CachesListResult struct {
 	autorest.Response `json:"-"`
 	// NextLink - URL to get the next set of cache list results if there are any.
@@ -605,10 +534,15 @@ func (clr CachesListResult) IsEmpty() bool {
 	return clr.Value == nil || len(*clr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (clr CachesListResult) hasNextLink() bool {
+	return clr.NextLink != nil && len(*clr.NextLink) != 0
+}
+
 // cachesListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (clr CachesListResult) cachesListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if clr.NextLink == nil || len(to.String(clr.NextLink)) < 1 {
+	if !clr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -636,11 +570,16 @@ func (page *CachesListResultPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.clr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.clr)
+		if err != nil {
+			return err
+		}
+		page.clr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.clr = next
 	return nil
 }
 
@@ -831,6 +770,24 @@ type ResourceSku struct {
 	Restrictions *[]Restriction `json:"restrictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceSku.
+func (rs ResourceSku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rs.Capabilities != nil {
+		objectMap["capabilities"] = rs.Capabilities
+	}
+	if rs.LocationInfo != nil {
+		objectMap["locationInfo"] = rs.LocationInfo
+	}
+	if rs.Name != nil {
+		objectMap["name"] = rs.Name
+	}
+	if rs.Restrictions != nil {
+		objectMap["restrictions"] = rs.Restrictions
+	}
+	return json.Marshal(objectMap)
+}
+
 // ResourceSkuCapabilities a resource SKU capability.
 type ResourceSkuCapabilities struct {
 	// Name - Name of a capability, such as ops/sec
@@ -854,6 +811,15 @@ type ResourceSkusResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; The list of skus available for the subscription.
 	Value *[]ResourceSku `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceSkusResult.
+func (rsr ResourceSkusResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rsr.NextLink != nil {
+		objectMap["nextLink"] = rsr.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // ResourceSkusResultIterator provides access to a complete listing of ResourceSku values.
@@ -924,10 +890,15 @@ func (rsr ResourceSkusResult) IsEmpty() bool {
 	return rsr.Value == nil || len(*rsr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rsr ResourceSkusResult) hasNextLink() bool {
+	return rsr.NextLink != nil && len(*rsr.NextLink) != 0
+}
+
 // resourceSkusResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rsr ResourceSkusResult) resourceSkusResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rsr.NextLink == nil || len(to.String(rsr.NextLink)) < 1 {
+	if !rsr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -955,11 +926,16 @@ func (page *ResourceSkusResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rsr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rsr)
+		if err != nil {
+			return err
+		}
+		page.rsr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rsr = next
 	return nil
 }
 
@@ -1001,6 +977,15 @@ type Restriction struct {
 	Values *[]string `json:"values,omitempty"`
 	// ReasonCode - The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". Quota Id is set when the SKU has requiredQuotas parameter as the subscription does not belong to that quota. The "NotAvailableForSubscription" is related to capacity at DC. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
 	ReasonCode ReasonCode `json:"reasonCode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Restriction.
+func (r Restriction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.ReasonCode != "" {
+		objectMap["reasonCode"] = r.ReasonCode
+	}
+	return json.Marshal(objectMap)
 }
 
 // SetObject ...
@@ -1233,10 +1218,15 @@ func (str StorageTargetsResult) IsEmpty() bool {
 	return str.Value == nil || len(*str.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (str StorageTargetsResult) hasNextLink() bool {
+	return str.NextLink != nil && len(*str.NextLink) != 0
+}
+
 // storageTargetsResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (str StorageTargetsResult) storageTargetsResultPreparer(ctx context.Context) (*http.Request, error) {
-	if str.NextLink == nil || len(to.String(str.NextLink)) < 1 {
+	if !str.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1264,11 +1254,16 @@ func (page *StorageTargetsResultPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.str)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.str)
+		if err != nil {
+			return err
+		}
+		page.str = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.str = next
 	return nil
 }
 
@@ -1410,10 +1405,15 @@ func (umr UsageModelsResult) IsEmpty() bool {
 	return umr.Value == nil || len(*umr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (umr UsageModelsResult) hasNextLink() bool {
+	return umr.NextLink != nil && len(*umr.NextLink) != 0
+}
+
 // usageModelsResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (umr UsageModelsResult) usageModelsResultPreparer(ctx context.Context) (*http.Request, error) {
-	if umr.NextLink == nil || len(to.String(umr.NextLink)) < 1 {
+	if !umr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1441,11 +1441,16 @@ func (page *UsageModelsResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.umr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.umr)
+		if err != nil {
+			return err
+		}
+		page.umr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.umr = next
 	return nil
 }
 

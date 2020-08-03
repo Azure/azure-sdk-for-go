@@ -90,6 +90,9 @@ func (client IoTSecuritySolutionsAnalyticsAggregatedAlertsClient) List(ctx conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsAggregatedAlertsClient", "List", resp, "Failure responding to request")
 	}
+	if result.itsaal.hasNextLink() && result.itsaal.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

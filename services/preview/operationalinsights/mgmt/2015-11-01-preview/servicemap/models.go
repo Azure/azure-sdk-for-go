@@ -30,364 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap"
 
-// Accuracy enumerates the values for accuracy.
-type Accuracy string
-
-const (
-	// Actual ...
-	Actual Accuracy = "actual"
-	// Estimated ...
-	Estimated Accuracy = "estimated"
-)
-
-// PossibleAccuracyValues returns an array of possible values for the Accuracy const type.
-func PossibleAccuracyValues() []Accuracy {
-	return []Accuracy{Actual, Estimated}
-}
-
-// AzureCloudServiceRoleType enumerates the values for azure cloud service role type.
-type AzureCloudServiceRoleType string
-
-const (
-	// Unknown ...
-	Unknown AzureCloudServiceRoleType = "unknown"
-	// Web ...
-	Web AzureCloudServiceRoleType = "web"
-	// Worker ...
-	Worker AzureCloudServiceRoleType = "worker"
-)
-
-// PossibleAzureCloudServiceRoleTypeValues returns an array of possible values for the AzureCloudServiceRoleType const type.
-func PossibleAzureCloudServiceRoleTypeValues() []AzureCloudServiceRoleType {
-	return []AzureCloudServiceRoleType{Unknown, Web, Worker}
-}
-
-// Bitness enumerates the values for bitness.
-type Bitness string
-
-const (
-	// SixFourbit ...
-	SixFourbit Bitness = "64bit"
-	// ThreeTwobit ...
-	ThreeTwobit Bitness = "32bit"
-)
-
-// PossibleBitnessValues returns an array of possible values for the Bitness const type.
-func PossibleBitnessValues() []Bitness {
-	return []Bitness{SixFourbit, ThreeTwobit}
-}
-
-// ConnectionFailureState enumerates the values for connection failure state.
-type ConnectionFailureState string
-
-const (
-	// Failed ...
-	Failed ConnectionFailureState = "failed"
-	// Mixed ...
-	Mixed ConnectionFailureState = "mixed"
-	// Ok ...
-	Ok ConnectionFailureState = "ok"
-)
-
-// PossibleConnectionFailureStateValues returns an array of possible values for the ConnectionFailureState const type.
-func PossibleConnectionFailureStateValues() []ConnectionFailureState {
-	return []ConnectionFailureState{Failed, Mixed, Ok}
-}
-
-// HypervisorType enumerates the values for hypervisor type.
-type HypervisorType string
-
-const (
-	// HypervisorTypeHyperv ...
-	HypervisorTypeHyperv HypervisorType = "hyperv"
-	// HypervisorTypeUnknown ...
-	HypervisorTypeUnknown HypervisorType = "unknown"
-)
-
-// PossibleHypervisorTypeValues returns an array of possible values for the HypervisorType const type.
-func PossibleHypervisorTypeValues() []HypervisorType {
-	return []HypervisorType{HypervisorTypeHyperv, HypervisorTypeUnknown}
-}
-
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// KindRefclientgroup ...
-	KindRefclientgroup Kind = "ref:clientgroup"
-	// KindRefmachine ...
-	KindRefmachine Kind = "ref:machine"
-	// KindRefmachinewithhints ...
-	KindRefmachinewithhints Kind = "ref:machinewithhints"
-	// KindRefport ...
-	KindRefport Kind = "ref:port"
-	// KindRefprocess ...
-	KindRefprocess Kind = "ref:process"
-	// KindResourceReference ...
-	KindResourceReference Kind = "ResourceReference"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{KindRefclientgroup, KindRefmachine, KindRefmachinewithhints, KindRefport, KindRefprocess, KindResourceReference}
-}
-
-// KindBasicCoreResource enumerates the values for kind basic core resource.
-type KindBasicCoreResource string
-
-const (
-	// KindClientGroup ...
-	KindClientGroup KindBasicCoreResource = "clientGroup"
-	// KindCoreResource ...
-	KindCoreResource KindBasicCoreResource = "CoreResource"
-	// KindMachine ...
-	KindMachine KindBasicCoreResource = "machine"
-	// KindMachineGroup ...
-	KindMachineGroup KindBasicCoreResource = "machineGroup"
-	// KindPort ...
-	KindPort KindBasicCoreResource = "port"
-	// KindProcess ...
-	KindProcess KindBasicCoreResource = "process"
-)
-
-// PossibleKindBasicCoreResourceValues returns an array of possible values for the KindBasicCoreResource const type.
-func PossibleKindBasicCoreResourceValues() []KindBasicCoreResource {
-	return []KindBasicCoreResource{KindClientGroup, KindCoreResource, KindMachine, KindMachineGroup, KindPort, KindProcess}
-}
-
-// KindBasicHostingConfiguration enumerates the values for kind basic hosting configuration.
-type KindBasicHostingConfiguration string
-
-const (
-	// KindHostingConfiguration ...
-	KindHostingConfiguration KindBasicHostingConfiguration = "HostingConfiguration"
-	// KindProviderazure ...
-	KindProviderazure KindBasicHostingConfiguration = "provider:azure"
-)
-
-// PossibleKindBasicHostingConfigurationValues returns an array of possible values for the KindBasicHostingConfiguration const type.
-func PossibleKindBasicHostingConfigurationValues() []KindBasicHostingConfiguration {
-	return []KindBasicHostingConfiguration{KindHostingConfiguration, KindProviderazure}
-}
-
-// KindBasicMapRequest enumerates the values for kind basic map request.
-type KindBasicMapRequest string
-
-const (
-	// KindMapmachineGroupDependency ...
-	KindMapmachineGroupDependency KindBasicMapRequest = "map:machine-group-dependency"
-	// KindMapmachineListDependency ...
-	KindMapmachineListDependency KindBasicMapRequest = "map:machine-list-dependency"
-	// KindMapRequest ...
-	KindMapRequest KindBasicMapRequest = "MapRequest"
-	// KindMapsingleMachineDependency ...
-	KindMapsingleMachineDependency KindBasicMapRequest = "map:single-machine-dependency"
-	// KindMultipleMachinesMapRequest ...
-	KindMultipleMachinesMapRequest KindBasicMapRequest = "MultipleMachinesMapRequest"
-)
-
-// PossibleKindBasicMapRequestValues returns an array of possible values for the KindBasicMapRequest const type.
-func PossibleKindBasicMapRequestValues() []KindBasicMapRequest {
-	return []KindBasicMapRequest{KindMapmachineGroupDependency, KindMapmachineListDependency, KindMapRequest, KindMapsingleMachineDependency, KindMultipleMachinesMapRequest}
-}
-
-// KindBasicProcessHostingConfiguration enumerates the values for kind basic process hosting configuration.
-type KindBasicProcessHostingConfiguration string
-
-const (
-	// KindBasicProcessHostingConfigurationKindProcessHostingConfiguration ...
-	KindBasicProcessHostingConfigurationKindProcessHostingConfiguration KindBasicProcessHostingConfiguration = "ProcessHostingConfiguration"
-	// KindBasicProcessHostingConfigurationKindProviderazure ...
-	KindBasicProcessHostingConfigurationKindProviderazure KindBasicProcessHostingConfiguration = "provider:azure"
-)
-
-// PossibleKindBasicProcessHostingConfigurationValues returns an array of possible values for the KindBasicProcessHostingConfiguration const type.
-func PossibleKindBasicProcessHostingConfigurationValues() []KindBasicProcessHostingConfiguration {
-	return []KindBasicProcessHostingConfiguration{KindBasicProcessHostingConfigurationKindProcessHostingConfiguration, KindBasicProcessHostingConfigurationKindProviderazure}
-}
-
-// KindBasicRelationship enumerates the values for kind basic relationship.
-type KindBasicRelationship string
-
-const (
-	// KindRelacceptor ...
-	KindRelacceptor KindBasicRelationship = "rel:acceptor"
-	// KindRelationship ...
-	KindRelationship KindBasicRelationship = "Relationship"
-	// KindRelconnection ...
-	KindRelconnection KindBasicRelationship = "rel:connection"
-)
-
-// PossibleKindBasicRelationshipValues returns an array of possible values for the KindBasicRelationship const type.
-func PossibleKindBasicRelationshipValues() []KindBasicRelationship {
-	return []KindBasicRelationship{KindRelacceptor, KindRelationship, KindRelconnection}
-}
-
-// MachineGroupType enumerates the values for machine group type.
-type MachineGroupType string
-
-const (
-	// MachineGroupTypeAzureCs ...
-	MachineGroupTypeAzureCs MachineGroupType = "azure-cs"
-	// MachineGroupTypeAzureSf ...
-	MachineGroupTypeAzureSf MachineGroupType = "azure-sf"
-	// MachineGroupTypeAzureVmss ...
-	MachineGroupTypeAzureVmss MachineGroupType = "azure-vmss"
-	// MachineGroupTypeUnknown ...
-	MachineGroupTypeUnknown MachineGroupType = "unknown"
-	// MachineGroupTypeUserStatic ...
-	MachineGroupTypeUserStatic MachineGroupType = "user-static"
-)
-
-// PossibleMachineGroupTypeValues returns an array of possible values for the MachineGroupType const type.
-func PossibleMachineGroupTypeValues() []MachineGroupType {
-	return []MachineGroupType{MachineGroupTypeAzureCs, MachineGroupTypeAzureSf, MachineGroupTypeAzureVmss, MachineGroupTypeUnknown, MachineGroupTypeUserStatic}
-}
-
-// MachineRebootStatus enumerates the values for machine reboot status.
-type MachineRebootStatus string
-
-const (
-	// MachineRebootStatusNotRebooted ...
-	MachineRebootStatusNotRebooted MachineRebootStatus = "notRebooted"
-	// MachineRebootStatusRebooted ...
-	MachineRebootStatusRebooted MachineRebootStatus = "rebooted"
-	// MachineRebootStatusUnknown ...
-	MachineRebootStatusUnknown MachineRebootStatus = "unknown"
-)
-
-// PossibleMachineRebootStatusValues returns an array of possible values for the MachineRebootStatus const type.
-func PossibleMachineRebootStatusValues() []MachineRebootStatus {
-	return []MachineRebootStatus{MachineRebootStatusNotRebooted, MachineRebootStatusRebooted, MachineRebootStatusUnknown}
-}
-
-// MonitoringState enumerates the values for monitoring state.
-type MonitoringState string
-
-const (
-	// Discovered ...
-	Discovered MonitoringState = "discovered"
-	// Monitored ...
-	Monitored MonitoringState = "monitored"
-)
-
-// PossibleMonitoringStateValues returns an array of possible values for the MonitoringState const type.
-func PossibleMonitoringStateValues() []MonitoringState {
-	return []MonitoringState{Discovered, Monitored}
-}
-
-// OperatingSystemFamily enumerates the values for operating system family.
-type OperatingSystemFamily string
-
-const (
-	// OperatingSystemFamilyAix ...
-	OperatingSystemFamilyAix OperatingSystemFamily = "aix"
-	// OperatingSystemFamilyLinux ...
-	OperatingSystemFamilyLinux OperatingSystemFamily = "linux"
-	// OperatingSystemFamilySolaris ...
-	OperatingSystemFamilySolaris OperatingSystemFamily = "solaris"
-	// OperatingSystemFamilyUnknown ...
-	OperatingSystemFamilyUnknown OperatingSystemFamily = "unknown"
-	// OperatingSystemFamilyWindows ...
-	OperatingSystemFamilyWindows OperatingSystemFamily = "windows"
-)
-
-// PossibleOperatingSystemFamilyValues returns an array of possible values for the OperatingSystemFamily const type.
-func PossibleOperatingSystemFamilyValues() []OperatingSystemFamily {
-	return []OperatingSystemFamily{OperatingSystemFamilyAix, OperatingSystemFamilyLinux, OperatingSystemFamilySolaris, OperatingSystemFamilyUnknown, OperatingSystemFamilyWindows}
-}
-
-// ProcessRole enumerates the values for process role.
-type ProcessRole string
-
-const (
-	// AppServer ...
-	AppServer ProcessRole = "appServer"
-	// DatabaseServer ...
-	DatabaseServer ProcessRole = "databaseServer"
-	// LdapServer ...
-	LdapServer ProcessRole = "ldapServer"
-	// SmbServer ...
-	SmbServer ProcessRole = "smbServer"
-	// WebServer ...
-	WebServer ProcessRole = "webServer"
-)
-
-// PossibleProcessRoleValues returns an array of possible values for the ProcessRole const type.
-func PossibleProcessRoleValues() []ProcessRole {
-	return []ProcessRole{AppServer, DatabaseServer, LdapServer, SmbServer, WebServer}
-}
-
-// Provider enumerates the values for provider.
-type Provider string
-
-const (
-	// Azure ...
-	Azure Provider = "azure"
-)
-
-// PossibleProviderValues returns an array of possible values for the Provider const type.
-func PossibleProviderValues() []Provider {
-	return []Provider{Azure}
-}
-
-// Provider1 enumerates the values for provider 1.
-type Provider1 string
-
-const (
-	// Provider1Azure ...
-	Provider1Azure Provider1 = "azure"
-)
-
-// PossibleProvider1Values returns an array of possible values for the Provider1 const type.
-func PossibleProvider1Values() []Provider1 {
-	return []Provider1{Provider1Azure}
-}
-
-// VirtualizationState enumerates the values for virtualization state.
-type VirtualizationState string
-
-const (
-	// VirtualizationStateHypervisor ...
-	VirtualizationStateHypervisor VirtualizationState = "hypervisor"
-	// VirtualizationStatePhysical ...
-	VirtualizationStatePhysical VirtualizationState = "physical"
-	// VirtualizationStateUnknown ...
-	VirtualizationStateUnknown VirtualizationState = "unknown"
-	// VirtualizationStateVirtual ...
-	VirtualizationStateVirtual VirtualizationState = "virtual"
-)
-
-// PossibleVirtualizationStateValues returns an array of possible values for the VirtualizationState const type.
-func PossibleVirtualizationStateValues() []VirtualizationState {
-	return []VirtualizationState{VirtualizationStateHypervisor, VirtualizationStatePhysical, VirtualizationStateUnknown, VirtualizationStateVirtual}
-}
-
-// VirtualMachineType enumerates the values for virtual machine type.
-type VirtualMachineType string
-
-const (
-	// VirtualMachineTypeHyperv ...
-	VirtualMachineTypeHyperv VirtualMachineType = "hyperv"
-	// VirtualMachineTypeLdom ...
-	VirtualMachineTypeLdom VirtualMachineType = "ldom"
-	// VirtualMachineTypeLpar ...
-	VirtualMachineTypeLpar VirtualMachineType = "lpar"
-	// VirtualMachineTypeUnknown ...
-	VirtualMachineTypeUnknown VirtualMachineType = "unknown"
-	// VirtualMachineTypeVirtualPc ...
-	VirtualMachineTypeVirtualPc VirtualMachineType = "virtualPc"
-	// VirtualMachineTypeVmware ...
-	VirtualMachineTypeVmware VirtualMachineType = "vmware"
-	// VirtualMachineTypeXen ...
-	VirtualMachineTypeXen VirtualMachineType = "xen"
-)
-
-// PossibleVirtualMachineTypeValues returns an array of possible values for the VirtualMachineType const type.
-func PossibleVirtualMachineTypeValues() []VirtualMachineType {
-	return []VirtualMachineType{VirtualMachineTypeHyperv, VirtualMachineTypeLdom, VirtualMachineTypeLpar, VirtualMachineTypeUnknown, VirtualMachineTypeVirtualPc, VirtualMachineTypeVmware, VirtualMachineTypeXen}
-}
-
 // Acceptor a process accepting on a port.
 type Acceptor struct {
 	*AcceptorProperties `json:"properties,omitempty"`
@@ -698,8 +340,8 @@ type AzureVMScaleSetConfiguration struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// ClientGroup represents a collection of clients of a resource. A client group can represent the clients
-// of a port, process, or a machine.
+// ClientGroup represents a collection of clients of a resource. A client group can represent the clients of a
+// port, process, or a machine.
 type ClientGroup struct {
 	autorest.Response `json:"-"`
 	// ClientGroupProperties - Resource properties.
@@ -995,10 +637,15 @@ func (cgmc ClientGroupMembersCollection) IsEmpty() bool {
 	return cgmc.Value == nil || len(*cgmc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cgmc ClientGroupMembersCollection) hasNextLink() bool {
+	return cgmc.NextLink != nil && len(*cgmc.NextLink) != 0
+}
+
 // clientGroupMembersCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cgmc ClientGroupMembersCollection) clientGroupMembersCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if cgmc.NextLink == nil || len(to.String(cgmc.NextLink)) < 1 {
+	if !cgmc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1026,11 +673,16 @@ func (page *ClientGroupMembersCollectionPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cgmc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cgmc)
+		if err != nil {
+			return err
+		}
+		page.cgmc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cgmc = next
 	return nil
 }
 
@@ -1351,10 +1003,15 @@ func (cc ConnectionCollection) IsEmpty() bool {
 	return cc.Value == nil || len(*cc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cc ConnectionCollection) hasNextLink() bool {
+	return cc.NextLink != nil && len(*cc.NextLink) != 0
+}
+
 // connectionCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cc ConnectionCollection) connectionCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if cc.NextLink == nil || len(to.String(cc.NextLink)) < 1 {
+	if !cc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1382,11 +1039,16 @@ func (page *ConnectionCollectionPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cc)
+		if err != nil {
+			return err
+		}
+		page.cc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cc = next
 	return nil
 }
 
@@ -1767,11 +1429,11 @@ type Liveness struct {
 }
 
 // Machine a machine resource represents a discovered computer system. It can be *monitored*, i.e., a
-// Dependency Agent is running on it, or *discovered*, i.e., its existence was inferred by observing the
-// data stream from monitored machines. As machines change, prior versions of the machine resource are
-// preserved and available for access. A machine is live during an interval of time, if either its
-// Dependency Agent has reported data during (parts) of that interval, or a Dependency agent running on
-// other machines has reported activity associated with the machine.
+// Dependency Agent is running on it, or *discovered*, i.e., its existence was inferred by observing the data
+// stream from monitored machines. As machines change, prior versions of the machine resource are preserved and
+// available for access. A machine is live during an interval of time, if either its Dependency Agent has
+// reported data during (parts) of that interval, or a Dependency agent running on other machines has reported
+// activity associated with the machine.
 type Machine struct {
 	autorest.Response `json:"-"`
 	// MachineProperties - Resource properties.
@@ -1985,10 +1647,15 @@ func (mc MachineCollection) IsEmpty() bool {
 	return mc.Value == nil || len(*mc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mc MachineCollection) hasNextLink() bool {
+	return mc.NextLink != nil && len(*mc.NextLink) != 0
+}
+
 // machineCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mc MachineCollection) machineCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if mc.NextLink == nil || len(to.String(mc.NextLink)) < 1 {
+	if !mc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2016,11 +1683,16 @@ func (page *MachineCollectionPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mc)
+		if err != nil {
+			return err
+		}
+		page.mc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mc = next
 	return nil
 }
 
@@ -2276,10 +1948,15 @@ func (mgc MachineGroupCollection) IsEmpty() bool {
 	return mgc.Value == nil || len(*mgc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mgc MachineGroupCollection) hasNextLink() bool {
+	return mgc.NextLink != nil && len(*mgc.NextLink) != 0
+}
+
 // machineGroupCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mgc MachineGroupCollection) machineGroupCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if mgc.NextLink == nil || len(to.String(mgc.NextLink)) < 1 {
+	if !mgc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2307,11 +1984,16 @@ func (page *MachineGroupCollectionPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mgc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mgc)
+		if err != nil {
+			return err
+		}
+		page.mgc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mgc = next
 	return nil
 }
 
@@ -3270,10 +2952,10 @@ type OperatingSystemConfiguration struct {
 	Bitness Bitness `json:"bitness,omitempty"`
 }
 
-// Port a port resource represents a server port on a machine. The port may be actively *monitored*, i.e.,
-// a Dependency Agent is running on its machine, or *discovered*, i.e., its existence was inferred by
-// observing the data stream from monitored machines. A port is live during an interval of time, if that
-// port had associated activity during (parts) of that interval.
+// Port a port resource represents a server port on a machine. The port may be actively *monitored*, i.e., a
+// Dependency Agent is running on its machine, or *discovered*, i.e., its existence was inferred by observing
+// the data stream from monitored machines. A port is live during an interval of time, if that port had
+// associated activity during (parts) of that interval.
 type Port struct {
 	autorest.Response `json:"-"`
 	// PortProperties - Resource properties.
@@ -3487,10 +3169,15 @@ func (pc PortCollection) IsEmpty() bool {
 	return pc.Value == nil || len(*pc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pc PortCollection) hasNextLink() bool {
+	return pc.NextLink != nil && len(*pc.NextLink) != 0
+}
+
 // portCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pc PortCollection) portCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if pc.NextLink == nil || len(to.String(pc.NextLink)) < 1 {
+	if !pc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3518,11 +3205,16 @@ func (page *PortCollectionPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pc)
+		if err != nil {
+			return err
+		}
+		page.pc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pc = next
 	return nil
 }
 
@@ -3764,12 +3456,21 @@ type PortReferenceProperties struct {
 	PortNumber *int32 `json:"portNumber,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PortReferenceProperties.
+func (pr PortReferenceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pr.PortNumber != nil {
+		objectMap["portNumber"] = pr.PortNumber
+	}
+	return json.Marshal(objectMap)
+}
+
 // Process a process resource represents a process running on a machine. The process may be actively
-// *monitored*, i.e., a Dependency Agent is running on its machine, or *discovered*, i.e., its existence
-// was inferred by observing the data stream from monitored machines. A process resource represents a pool
-// of actual operating system resources that share command lines and metadata. As the process pool evolves
-// over time, prior versions of the process resource are preserved and available for access. A process is
-// live during an interval of time, if that process is executing during (parts) of that interval
+// *monitored*, i.e., a Dependency Agent is running on its machine, or *discovered*, i.e., its existence was
+// inferred by observing the data stream from monitored machines. A process resource represents a pool of
+// actual operating system resources that share command lines and metadata. As the process pool evolves over
+// time, prior versions of the process resource are preserved and available for access. A process is live
+// during an interval of time, if that process is executing during (parts) of that interval
 type Process struct {
 	autorest.Response `json:"-"`
 	// ProcessProperties - Resource properties.
@@ -3983,10 +3684,15 @@ func (pc ProcessCollection) IsEmpty() bool {
 	return pc.Value == nil || len(*pc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pc ProcessCollection) hasNextLink() bool {
+	return pc.NextLink != nil && len(*pc.NextLink) != 0
+}
+
 // processCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pc ProcessCollection) processCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if pc.NextLink == nil || len(to.String(pc.NextLink)) < 1 {
+	if !pc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4014,11 +3720,16 @@ func (page *ProcessCollectionPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pc)
+		if err != nil {
+			return err
+		}
+		page.pc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pc = next
 	return nil
 }
 

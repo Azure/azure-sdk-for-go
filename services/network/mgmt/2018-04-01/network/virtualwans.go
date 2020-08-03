@@ -299,6 +299,9 @@ func (client VirtualWANsClient) List(ctx context.Context) (result ListVirtualWAN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualWANsClient", "List", resp, "Failure responding to request")
 	}
+	if result.lvwnr.hasNextLink() && result.lvwnr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -408,6 +411,9 @@ func (client VirtualWANsClient) ListByResourceGroup(ctx context.Context, resourc
 	result.lvwnr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "network.VirtualWANsClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.lvwnr.hasNextLink() && result.lvwnr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

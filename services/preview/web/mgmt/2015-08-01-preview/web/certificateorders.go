@@ -536,6 +536,9 @@ func (client CertificateOrdersClient) GetCertificateOrders(ctx context.Context, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificateOrders", resp, "Failure responding to request")
 	}
+	if result.coc.hasNextLink() && result.coc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -647,6 +650,9 @@ func (client CertificateOrdersClient) GetCertificates(ctx context.Context, resou
 	result.cocc, err = client.GetCertificatesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.CertificateOrdersClient", "GetCertificates", resp, "Failure responding to request")
+	}
+	if result.cocc.hasNextLink() && result.cocc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

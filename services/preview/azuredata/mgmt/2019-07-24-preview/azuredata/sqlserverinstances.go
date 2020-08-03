@@ -313,6 +313,9 @@ func (client SQLServerInstancesClient) List(ctx context.Context) (result SQLServ
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServerInstancesClient", "List", resp, "Failure responding to request")
 	}
+	if result.ssilr.hasNextLink() && result.ssilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -422,6 +425,9 @@ func (client SQLServerInstancesClient) ListByResourceGroup(ctx context.Context, 
 	result.ssilr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLServerInstancesClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.ssilr.hasNextLink() && result.ssilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

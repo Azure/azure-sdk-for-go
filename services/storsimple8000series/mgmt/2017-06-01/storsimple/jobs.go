@@ -256,6 +256,9 @@ func (client JobsClient) ListByDevice(ctx context.Context, deviceName string, re
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.JobsClient", "ListByDevice", resp, "Failure responding to request")
 	}
+	if result.jl.hasNextLink() && result.jl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -381,6 +384,9 @@ func (client JobsClient) ListByManager(ctx context.Context, resourceGroupName st
 	result.jl, err = client.ListByManagerResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.JobsClient", "ListByManager", resp, "Failure responding to request")
+	}
+	if result.jl.hasNextLink() && result.jl.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

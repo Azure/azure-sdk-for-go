@@ -393,6 +393,9 @@ func (client AssessmentsMetadataClient) List(ctx context.Context) (result Assess
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "List", resp, "Failure responding to request")
 	}
+	if result.aml.hasNextLink() && result.aml.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -502,6 +505,9 @@ func (client AssessmentsMetadataClient) ListBySubscription(ctx context.Context) 
 	result.aml, err = client.ListBySubscriptionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.AssessmentsMetadataClient", "ListBySubscription", resp, "Failure responding to request")
+	}
+	if result.aml.hasNextLink() && result.aml.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

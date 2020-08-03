@@ -71,6 +71,9 @@ func (client OperationsClient) List(ctx context.Context) (result AvailableProvid
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.OperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.apo.hasNextLink() && result.apo.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

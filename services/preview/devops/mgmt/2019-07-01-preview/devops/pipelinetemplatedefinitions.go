@@ -72,6 +72,9 @@ func (client PipelineTemplateDefinitionsClient) List(ctx context.Context) (resul
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devops.PipelineTemplateDefinitionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.ptdlr.hasNextLink() && result.ptdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

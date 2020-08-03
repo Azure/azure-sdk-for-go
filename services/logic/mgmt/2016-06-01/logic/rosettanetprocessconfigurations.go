@@ -354,6 +354,9 @@ func (client RosettaNetProcessConfigurationsClient) ListByIntegrationAccounts(ct
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "logic.RosettaNetProcessConfigurationsClient", "ListByIntegrationAccounts", resp, "Failure responding to request")
 	}
+	if result.iarnpclr.hasNextLink() && result.iarnpclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

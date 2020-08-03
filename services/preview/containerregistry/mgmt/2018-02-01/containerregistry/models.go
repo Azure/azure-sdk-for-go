@@ -31,388 +31,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2018-02-01/containerregistry"
 
-// Action enumerates the values for action.
-type Action string
-
-const (
-	// Allow ...
-	Allow Action = "Allow"
-)
-
-// PossibleActionValues returns an array of possible values for the Action const type.
-func PossibleActionValues() []Action {
-	return []Action{Allow}
-}
-
-// BaseImageDependencyType enumerates the values for base image dependency type.
-type BaseImageDependencyType string
-
-const (
-	// BuildTime ...
-	BuildTime BaseImageDependencyType = "BuildTime"
-	// RunTime ...
-	RunTime BaseImageDependencyType = "RunTime"
-)
-
-// PossibleBaseImageDependencyTypeValues returns an array of possible values for the BaseImageDependencyType const type.
-func PossibleBaseImageDependencyTypeValues() []BaseImageDependencyType {
-	return []BaseImageDependencyType{BuildTime, RunTime}
-}
-
-// BaseImageTriggerType enumerates the values for base image trigger type.
-type BaseImageTriggerType string
-
-const (
-	// All ...
-	All BaseImageTriggerType = "All"
-	// None ...
-	None BaseImageTriggerType = "None"
-	// Runtime ...
-	Runtime BaseImageTriggerType = "Runtime"
-)
-
-// PossibleBaseImageTriggerTypeValues returns an array of possible values for the BaseImageTriggerType const type.
-func PossibleBaseImageTriggerTypeValues() []BaseImageTriggerType {
-	return []BaseImageTriggerType{All, None, Runtime}
-}
-
-// BuildStatus enumerates the values for build status.
-type BuildStatus string
-
-const (
-	// Canceled ...
-	Canceled BuildStatus = "Canceled"
-	// Error ...
-	Error BuildStatus = "Error"
-	// Failed ...
-	Failed BuildStatus = "Failed"
-	// Queued ...
-	Queued BuildStatus = "Queued"
-	// Running ...
-	Running BuildStatus = "Running"
-	// Started ...
-	Started BuildStatus = "Started"
-	// Succeeded ...
-	Succeeded BuildStatus = "Succeeded"
-	// Timeout ...
-	Timeout BuildStatus = "Timeout"
-)
-
-// PossibleBuildStatusValues returns an array of possible values for the BuildStatus const type.
-func PossibleBuildStatusValues() []BuildStatus {
-	return []BuildStatus{Canceled, Error, Failed, Queued, Running, Started, Succeeded, Timeout}
-}
-
-// BuildTaskStatus enumerates the values for build task status.
-type BuildTaskStatus string
-
-const (
-	// Disabled ...
-	Disabled BuildTaskStatus = "Disabled"
-	// Enabled ...
-	Enabled BuildTaskStatus = "Enabled"
-)
-
-// PossibleBuildTaskStatusValues returns an array of possible values for the BuildTaskStatus const type.
-func PossibleBuildTaskStatusValues() []BuildTaskStatus {
-	return []BuildTaskStatus{Disabled, Enabled}
-}
-
-// BuildType enumerates the values for build type.
-type BuildType string
-
-const (
-	// AutoBuild ...
-	AutoBuild BuildType = "AutoBuild"
-	// QuickBuild ...
-	QuickBuild BuildType = "QuickBuild"
-)
-
-// PossibleBuildTypeValues returns an array of possible values for the BuildType const type.
-func PossibleBuildTypeValues() []BuildType {
-	return []BuildType{AutoBuild, QuickBuild}
-}
-
-// DefaultAction enumerates the values for default action.
-type DefaultAction string
-
-const (
-	// DefaultActionAllow ...
-	DefaultActionAllow DefaultAction = "Allow"
-	// DefaultActionDeny ...
-	DefaultActionDeny DefaultAction = "Deny"
-)
-
-// PossibleDefaultActionValues returns an array of possible values for the DefaultAction const type.
-func PossibleDefaultActionValues() []DefaultAction {
-	return []DefaultAction{DefaultActionAllow, DefaultActionDeny}
-}
-
-// ImportMode enumerates the values for import mode.
-type ImportMode string
-
-const (
-	// Force ...
-	Force ImportMode = "Force"
-	// NoForce ...
-	NoForce ImportMode = "NoForce"
-)
-
-// PossibleImportModeValues returns an array of possible values for the ImportMode const type.
-func PossibleImportModeValues() []ImportMode {
-	return []ImportMode{Force, NoForce}
-}
-
-// OsType enumerates the values for os type.
-type OsType string
-
-const (
-	// Linux ...
-	Linux OsType = "Linux"
-	// Windows ...
-	Windows OsType = "Windows"
-)
-
-// PossibleOsTypeValues returns an array of possible values for the OsType const type.
-func PossibleOsTypeValues() []OsType {
-	return []OsType{Linux, Windows}
-}
-
-// PasswordName enumerates the values for password name.
-type PasswordName string
-
-const (
-	// Password ...
-	Password PasswordName = "password"
-	// Password2 ...
-	Password2 PasswordName = "password2"
-)
-
-// PossiblePasswordNameValues returns an array of possible values for the PasswordName const type.
-func PossiblePasswordNameValues() []PasswordName {
-	return []PasswordName{Password, Password2}
-}
-
-// PolicyStatus enumerates the values for policy status.
-type PolicyStatus string
-
-const (
-	// PolicyStatusDisabled ...
-	PolicyStatusDisabled PolicyStatus = "disabled"
-	// PolicyStatusEnabled ...
-	PolicyStatusEnabled PolicyStatus = "enabled"
-)
-
-// PossiblePolicyStatusValues returns an array of possible values for the PolicyStatus const type.
-func PossiblePolicyStatusValues() []PolicyStatus {
-	return []PolicyStatus{PolicyStatusDisabled, PolicyStatusEnabled}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// ProvisioningStateCanceled ...
-	ProvisioningStateCanceled ProvisioningState = "Canceled"
-	// ProvisioningStateCreating ...
-	ProvisioningStateCreating ProvisioningState = "Creating"
-	// ProvisioningStateDeleting ...
-	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed ...
-	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateSucceeded ...
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	// ProvisioningStateUpdating ...
-	ProvisioningStateUpdating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateCanceled, ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateSucceeded, ProvisioningStateUpdating}
-}
-
-// RegistryUsageUnit enumerates the values for registry usage unit.
-type RegistryUsageUnit string
-
-const (
-	// Bytes ...
-	Bytes RegistryUsageUnit = "Bytes"
-	// Count ...
-	Count RegistryUsageUnit = "Count"
-)
-
-// PossibleRegistryUsageUnitValues returns an array of possible values for the RegistryUsageUnit const type.
-func PossibleRegistryUsageUnitValues() []RegistryUsageUnit {
-	return []RegistryUsageUnit{Bytes, Count}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// Basic ...
-	Basic SkuName = "Basic"
-	// Classic ...
-	Classic SkuName = "Classic"
-	// Premium ...
-	Premium SkuName = "Premium"
-	// Standard ...
-	Standard SkuName = "Standard"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{Basic, Classic, Premium, Standard}
-}
-
-// SkuTier enumerates the values for sku tier.
-type SkuTier string
-
-const (
-	// SkuTierBasic ...
-	SkuTierBasic SkuTier = "Basic"
-	// SkuTierClassic ...
-	SkuTierClassic SkuTier = "Classic"
-	// SkuTierPremium ...
-	SkuTierPremium SkuTier = "Premium"
-	// SkuTierStandard ...
-	SkuTierStandard SkuTier = "Standard"
-)
-
-// PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
-func PossibleSkuTierValues() []SkuTier {
-	return []SkuTier{SkuTierBasic, SkuTierClassic, SkuTierPremium, SkuTierStandard}
-}
-
-// SourceControlType enumerates the values for source control type.
-type SourceControlType string
-
-const (
-	// Github ...
-	Github SourceControlType = "Github"
-	// VisualStudioTeamService ...
-	VisualStudioTeamService SourceControlType = "VisualStudioTeamService"
-)
-
-// PossibleSourceControlTypeValues returns an array of possible values for the SourceControlType const type.
-func PossibleSourceControlTypeValues() []SourceControlType {
-	return []SourceControlType{Github, VisualStudioTeamService}
-}
-
-// TokenType enumerates the values for token type.
-type TokenType string
-
-const (
-	// OAuth ...
-	OAuth TokenType = "OAuth"
-	// PAT ...
-	PAT TokenType = "PAT"
-)
-
-// PossibleTokenTypeValues returns an array of possible values for the TokenType const type.
-func PossibleTokenTypeValues() []TokenType {
-	return []TokenType{OAuth, PAT}
-}
-
-// TrustPolicyType enumerates the values for trust policy type.
-type TrustPolicyType string
-
-const (
-	// Notary ...
-	Notary TrustPolicyType = "Notary"
-)
-
-// PossibleTrustPolicyTypeValues returns an array of possible values for the TrustPolicyType const type.
-func PossibleTrustPolicyTypeValues() []TrustPolicyType {
-	return []TrustPolicyType{Notary}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeBuildStepProperties ...
-	TypeBuildStepProperties Type = "BuildStepProperties"
-	// TypeDocker ...
-	TypeDocker Type = "Docker"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeBuildStepProperties, TypeDocker}
-}
-
-// TypeBasicBuildStepPropertiesUpdateParameters enumerates the values for type basic build step properties
-// update parameters.
-type TypeBasicBuildStepPropertiesUpdateParameters string
-
-const (
-	// TypeBasicBuildStepPropertiesUpdateParametersTypeBuildStepPropertiesUpdateParameters ...
-	TypeBasicBuildStepPropertiesUpdateParametersTypeBuildStepPropertiesUpdateParameters TypeBasicBuildStepPropertiesUpdateParameters = "BuildStepPropertiesUpdateParameters"
-	// TypeBasicBuildStepPropertiesUpdateParametersTypeDocker ...
-	TypeBasicBuildStepPropertiesUpdateParametersTypeDocker TypeBasicBuildStepPropertiesUpdateParameters = "Docker"
-)
-
-// PossibleTypeBasicBuildStepPropertiesUpdateParametersValues returns an array of possible values for the TypeBasicBuildStepPropertiesUpdateParameters const type.
-func PossibleTypeBasicBuildStepPropertiesUpdateParametersValues() []TypeBasicBuildStepPropertiesUpdateParameters {
-	return []TypeBasicBuildStepPropertiesUpdateParameters{TypeBasicBuildStepPropertiesUpdateParametersTypeBuildStepPropertiesUpdateParameters, TypeBasicBuildStepPropertiesUpdateParametersTypeDocker}
-}
-
-// TypeBasicQueueBuildRequest enumerates the values for type basic queue build request.
-type TypeBasicQueueBuildRequest string
-
-const (
-	// TypeBuildTask ...
-	TypeBuildTask TypeBasicQueueBuildRequest = "BuildTask"
-	// TypeQueueBuildRequest ...
-	TypeQueueBuildRequest TypeBasicQueueBuildRequest = "QueueBuildRequest"
-	// TypeQuickBuild ...
-	TypeQuickBuild TypeBasicQueueBuildRequest = "QuickBuild"
-)
-
-// PossibleTypeBasicQueueBuildRequestValues returns an array of possible values for the TypeBasicQueueBuildRequest const type.
-func PossibleTypeBasicQueueBuildRequestValues() []TypeBasicQueueBuildRequest {
-	return []TypeBasicQueueBuildRequest{TypeBuildTask, TypeQueueBuildRequest, TypeQuickBuild}
-}
-
-// WebhookAction enumerates the values for webhook action.
-type WebhookAction string
-
-const (
-	// ChartDelete ...
-	ChartDelete WebhookAction = "chart_delete"
-	// ChartPush ...
-	ChartPush WebhookAction = "chart_push"
-	// Delete ...
-	Delete WebhookAction = "delete"
-	// Push ...
-	Push WebhookAction = "push"
-	// Quarantine ...
-	Quarantine WebhookAction = "quarantine"
-)
-
-// PossibleWebhookActionValues returns an array of possible values for the WebhookAction const type.
-func PossibleWebhookActionValues() []WebhookAction {
-	return []WebhookAction{ChartDelete, ChartPush, Delete, Push, Quarantine}
-}
-
-// WebhookStatus enumerates the values for webhook status.
-type WebhookStatus string
-
-const (
-	// WebhookStatusDisabled ...
-	WebhookStatusDisabled WebhookStatus = "disabled"
-	// WebhookStatusEnabled ...
-	WebhookStatusEnabled WebhookStatus = "enabled"
-)
-
-// PossibleWebhookStatusValues returns an array of possible values for the WebhookStatus const type.
-func PossibleWebhookStatusValues() []WebhookStatus {
-	return []WebhookStatus{WebhookStatusDisabled, WebhookStatusEnabled}
-}
-
-// Actor the agent that initiated the event. For most situations, this could be from the authorization
-// context of the request.
+// Actor the agent that initiated the event. For most situations, this could be from the authorization context
+// of the request.
 type Actor struct {
 	// Name - The subject or username associated with the request context that generated the event.
 	Name *string `json:"name,omitempty"`
@@ -594,10 +214,15 @@ func (bal BuildArgumentList) IsEmpty() bool {
 	return bal.Value == nil || len(*bal.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (bal BuildArgumentList) hasNextLink() bool {
+	return bal.NextLink != nil && len(*bal.NextLink) != 0
+}
+
 // buildArgumentListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (bal BuildArgumentList) buildArgumentListPreparer(ctx context.Context) (*http.Request, error) {
-	if bal.NextLink == nil || len(to.String(bal.NextLink)) < 1 {
+	if !bal.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -625,11 +250,16 @@ func (page *BuildArgumentListPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.bal)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.bal)
+		if err != nil {
+			return err
+		}
+		page.bal = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.bal = next
 	return nil
 }
 
@@ -767,10 +397,15 @@ func (blr BuildListResult) IsEmpty() bool {
 	return blr.Value == nil || len(*blr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (blr BuildListResult) hasNextLink() bool {
+	return blr.NextLink != nil && len(*blr.NextLink) != 0
+}
+
 // buildListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (blr BuildListResult) buildListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if blr.NextLink == nil || len(to.String(blr.NextLink)) < 1 {
+	if !blr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -798,11 +433,16 @@ func (page *BuildListResultPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.blr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.blr)
+		if err != nil {
+			return err
+		}
+		page.blr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.blr = next
 	return nil
 }
 
@@ -901,6 +541,13 @@ type BuildStep struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BuildStep.
+func (bs BuildStep) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["properties"] = bs.Properties
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for BuildStep struct.
@@ -1030,10 +677,15 @@ func (bsl BuildStepList) IsEmpty() bool {
 	return bsl.Value == nil || len(*bsl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (bsl BuildStepList) hasNextLink() bool {
+	return bsl.NextLink != nil && len(*bsl.NextLink) != 0
+}
+
 // buildStepListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (bsl BuildStepList) buildStepListPreparer(ctx context.Context) (*http.Request, error) {
-	if bsl.NextLink == nil || len(to.String(bsl.NextLink)) < 1 {
+	if !bsl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1061,11 +713,16 @@ func (page *BuildStepListPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.bsl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.bsl)
+		if err != nil {
+			return err
+		}
+		page.bsl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.bsl = next
 	return nil
 }
 
@@ -1249,8 +906,7 @@ func (bspup BuildStepPropertiesUpdateParameters) AsBasicBuildStepPropertiesUpdat
 	return &bspup, true
 }
 
-// BuildStepsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// BuildStepsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type BuildStepsCreateFuture struct {
 	azure.Future
 }
@@ -1278,8 +934,7 @@ func (future *BuildStepsCreateFuture) Result(client BuildStepsClient) (bs BuildS
 	return
 }
 
-// BuildStepsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// BuildStepsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type BuildStepsDeleteFuture struct {
 	azure.Future
 }
@@ -1301,8 +956,7 @@ func (future *BuildStepsDeleteFuture) Result(client BuildStepsClient) (ar autore
 	return
 }
 
-// BuildStepsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// BuildStepsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type BuildStepsUpdateFuture struct {
 	azure.Future
 }
@@ -1408,8 +1062,8 @@ func (future *BuildsUpdateFuture) Result(client BuildsClient) (b Build, err erro
 	return
 }
 
-// BuildTask the build task that has the resource properties and all build items. The build task will have
-// all information to schedule a build against it.
+// BuildTask the build task that has the resource properties and all build items. The build task will have all
+// information to schedule a build against it.
 type BuildTask struct {
 	autorest.Response `json:"-"`
 	// BuildTaskProperties - The properties of a build task.
@@ -1634,10 +1288,15 @@ func (btlr BuildTaskListResult) IsEmpty() bool {
 	return btlr.Value == nil || len(*btlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (btlr BuildTaskListResult) hasNextLink() bool {
+	return btlr.NextLink != nil && len(*btlr.NextLink) != 0
+}
+
 // buildTaskListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (btlr BuildTaskListResult) buildTaskListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if btlr.NextLink == nil || len(to.String(btlr.NextLink)) < 1 {
+	if !btlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1665,11 +1324,16 @@ func (page *BuildTaskListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.btlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.btlr)
+		if err != nil {
+			return err
+		}
+		page.btlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.btlr = next
 	return nil
 }
 
@@ -1721,6 +1385,27 @@ type BuildTaskProperties struct {
 	Timeout *int32 `json:"timeout,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for BuildTaskProperties.
+func (btp BuildTaskProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if btp.Alias != nil {
+		objectMap["alias"] = btp.Alias
+	}
+	if btp.Status != "" {
+		objectMap["status"] = btp.Status
+	}
+	if btp.SourceRepository != nil {
+		objectMap["sourceRepository"] = btp.SourceRepository
+	}
+	if btp.Platform != nil {
+		objectMap["platform"] = btp.Platform
+	}
+	if btp.Timeout != nil {
+		objectMap["timeout"] = btp.Timeout
+	}
+	return json.Marshal(objectMap)
+}
+
 // BuildTaskPropertiesUpdateParameters the properties for updating a build task.
 type BuildTaskPropertiesUpdateParameters struct {
 	// Alias - The alternative updatable name for a build task.
@@ -1735,8 +1420,7 @@ type BuildTaskPropertiesUpdateParameters struct {
 	SourceRepository *SourceRepositoryUpdateParameters `json:"sourceRepository,omitempty"`
 }
 
-// BuildTasksCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// BuildTasksCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type BuildTasksCreateFuture struct {
 	azure.Future
 }
@@ -1764,8 +1448,7 @@ func (future *BuildTasksCreateFuture) Result(client BuildTasksClient) (bt BuildT
 	return
 }
 
-// BuildTasksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// BuildTasksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type BuildTasksDeleteFuture struct {
 	azure.Future
 }
@@ -1787,8 +1470,7 @@ func (future *BuildTasksDeleteFuture) Result(client BuildTasksClient) (ar autore
 	return
 }
 
-// BuildTasksUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// BuildTasksUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type BuildTasksUpdateFuture struct {
 	azure.Future
 }
@@ -2154,10 +1836,15 @@ func (elr EventListResult) IsEmpty() bool {
 	return elr.Value == nil || len(*elr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (elr EventListResult) hasNextLink() bool {
+	return elr.NextLink != nil && len(*elr.NextLink) != 0
+}
+
 // eventListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (elr EventListResult) eventListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if elr.NextLink == nil || len(to.String(elr.NextLink)) < 1 {
+	if !elr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2185,11 +1872,16 @@ func (page *EventListResultPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.elr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.elr)
+		if err != nil {
+			return err
+		}
+		page.elr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.elr = next
 	return nil
 }
 
@@ -2552,10 +2244,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2583,11 +2280,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -2841,8 +2543,7 @@ type RegenerateCredentialParameters struct {
 	Name PasswordName `json:"name,omitempty"`
 }
 
-// RegistriesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// RegistriesCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type RegistriesCreateFuture struct {
 	azure.Future
 }
@@ -2870,8 +2571,7 @@ func (future *RegistriesCreateFuture) Result(client RegistriesClient) (r Registr
 	return
 }
 
-// RegistriesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// RegistriesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type RegistriesDeleteFuture struct {
 	azure.Future
 }
@@ -2945,8 +2645,7 @@ func (future *RegistriesQueueBuildFuture) Result(client RegistriesClient) (b Bui
 	return
 }
 
-// RegistriesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// RegistriesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type RegistriesUpdateFuture struct {
 	azure.Future
 }
@@ -2974,8 +2673,8 @@ func (future *RegistriesUpdateFuture) Result(client RegistriesClient) (r Registr
 	return
 }
 
-// RegistriesUpdatePoliciesFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// RegistriesUpdatePoliciesFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type RegistriesUpdatePoliciesFuture struct {
 	azure.Future
 }
@@ -3204,10 +2903,15 @@ func (rlr RegistryListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rlr RegistryListResult) hasNextLink() bool {
+	return rlr.NextLink != nil && len(*rlr.NextLink) != 0
+}
+
 // registryListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rlr RegistryListResult) registryListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
+	if !rlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3235,11 +2939,16 @@ func (page *RegistryListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rlr)
+		if err != nil {
+			return err
+		}
+		page.rlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rlr = next
 	return nil
 }
 
@@ -3325,6 +3034,21 @@ type RegistryProperties struct {
 	StorageAccount *StorageAccountProperties `json:"storageAccount,omitempty"`
 	// NetworkRuleSet - The network rule set for a container registry.
 	NetworkRuleSet *NetworkRuleSet `json:"networkRuleSet,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RegistryProperties.
+func (rp RegistryProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rp.AdminUserEnabled != nil {
+		objectMap["adminUserEnabled"] = rp.AdminUserEnabled
+	}
+	if rp.StorageAccount != nil {
+		objectMap["storageAccount"] = rp.StorageAccount
+	}
+	if rp.NetworkRuleSet != nil {
+		objectMap["networkRuleSet"] = rp.NetworkRuleSet
+	}
+	return json.Marshal(objectMap)
 }
 
 // RegistryPropertiesUpdateParameters the parameters for updating the properties of a container registry.
@@ -3601,10 +3325,15 @@ func (rlr ReplicationListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rlr ReplicationListResult) hasNextLink() bool {
+	return rlr.NextLink != nil && len(*rlr.NextLink) != 0
+}
+
 // replicationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rlr ReplicationListResult) replicationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
+	if !rlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3632,11 +3361,16 @@ func (page *ReplicationListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rlr)
+		if err != nil {
+			return err
+		}
+		page.rlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rlr = next
 	return nil
 }
 
@@ -3822,8 +3556,17 @@ type Sku struct {
 	Tier SkuTier `json:"tier,omitempty"`
 }
 
-// Source the registry node that generated the event. Put differently, while the actor initiates the event,
-// the source generates it.
+// MarshalJSON is the custom marshaler for Sku.
+func (s Sku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.Name != "" {
+		objectMap["name"] = s.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// Source the registry node that generated the event. Put differently, while the actor initiates the event, the
+// source generates it.
 type Source struct {
 	// Addr - The IP or hostname and the port of the registry node that generated the event. Generally, this will be resolved by os.Hostname() along with the running port.
 	Addr *string `json:"addr,omitempty"`
@@ -3885,8 +3628,8 @@ type Status struct {
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 }
 
-// StorageAccountProperties the properties of a storage account for a container registry. Only applicable
-// to Classic SKU.
+// StorageAccountProperties the properties of a storage account for a container registry. Only applicable to
+// Classic SKU.
 type StorageAccountProperties struct {
 	// ID - The resource ID of the storage account.
 	ID *string `json:"id,omitempty"`
@@ -4175,10 +3918,15 @@ func (wlr WebhookListResult) IsEmpty() bool {
 	return wlr.Value == nil || len(*wlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wlr WebhookListResult) hasNextLink() bool {
+	return wlr.NextLink != nil && len(*wlr.NextLink) != 0
+}
+
 // webhookListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wlr WebhookListResult) webhookListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if wlr.NextLink == nil || len(to.String(wlr.NextLink)) < 1 {
+	if !wlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4206,11 +3954,16 @@ func (page *WebhookListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wlr)
+		if err != nil {
+			return err
+		}
+		page.wlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wlr = next
 	return nil
 }
 
@@ -4254,6 +4007,21 @@ type WebhookProperties struct {
 	Actions *[]WebhookAction `json:"actions,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the webhook at the time the operation was called. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WebhookProperties.
+func (wp WebhookProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wp.Status != "" {
+		objectMap["status"] = wp.Status
+	}
+	if wp.Scope != nil {
+		objectMap["scope"] = wp.Scope
+	}
+	if wp.Actions != nil {
+		objectMap["actions"] = wp.Actions
+	}
+	return json.Marshal(objectMap)
 }
 
 // WebhookPropertiesCreateParameters the parameters for creating the properties of a webhook.
@@ -4326,8 +4094,7 @@ func (wpup WebhookPropertiesUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// WebhooksCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// WebhooksCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type WebhooksCreateFuture struct {
 	azure.Future
 }
@@ -4355,8 +4122,7 @@ func (future *WebhooksCreateFuture) Result(client WebhooksClient) (w Webhook, er
 	return
 }
 
-// WebhooksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// WebhooksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type WebhooksDeleteFuture struct {
 	azure.Future
 }
@@ -4378,8 +4144,7 @@ func (future *WebhooksDeleteFuture) Result(client WebhooksClient) (ar autorest.R
 	return
 }
 
-// WebhooksUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// WebhooksUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type WebhooksUpdateFuture struct {
 	azure.Future
 }

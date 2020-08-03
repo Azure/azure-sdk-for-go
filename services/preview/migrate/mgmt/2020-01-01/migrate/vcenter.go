@@ -153,6 +153,9 @@ func (client VCenterClient) GetAllVCentersInSite(ctx context.Context, subscripti
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "migrate.VCenterClient", "GetAllVCentersInSite", resp, "Failure responding to request")
 	}
+	if result.vcc.hasNextLink() && result.vcc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

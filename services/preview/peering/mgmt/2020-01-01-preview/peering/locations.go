@@ -74,6 +74,9 @@ func (client LocationsClient) List(ctx context.Context, kind string, directPeeri
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.LocationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.llr.hasNextLink() && result.llr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

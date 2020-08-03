@@ -230,6 +230,9 @@ func (client Client) List(ctx context.Context, skipToken string) (result ListRes
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.Client", "List", resp, "Failure responding to request")
 	}
+	if result.lr.hasNextLink() && result.lr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -343,6 +346,9 @@ func (client Client) ListInResourceGroup(ctx context.Context, resourceGroupName 
 	result.lr, err = client.ListInResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.Client", "ListInResourceGroup", resp, "Failure responding to request")
+	}
+	if result.lr.hasNextLink() && result.lr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

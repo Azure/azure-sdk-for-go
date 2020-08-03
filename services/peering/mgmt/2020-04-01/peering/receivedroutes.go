@@ -80,6 +80,9 @@ func (client ReceivedRoutesClient) ListByPeering(ctx context.Context, resourceGr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.ReceivedRoutesClient", "ListByPeering", resp, "Failure responding to request")
 	}
+	if result.rrlr.hasNextLink() && result.rrlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -31,14 +31,14 @@ type RoleAssignmentsClient struct {
 }
 
 // NewRoleAssignmentsClient creates an instance of the RoleAssignmentsClient client.
-func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
-	return NewRoleAssignmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewRoleAssignmentsClient(subscriptionID string, subscriptionID1 string) RoleAssignmentsClient {
+	return NewRoleAssignmentsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewRoleAssignmentsClientWithBaseURI creates an instance of the RoleAssignmentsClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentsClient {
-	return RoleAssignmentsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewRoleAssignmentsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) RoleAssignmentsClient {
+	return RoleAssignmentsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // DeleteByBillingAccount deletes a role assignment for the caller on a billing account. The operation is supported for
@@ -536,6 +536,9 @@ func (client RoleAssignmentsClient) ListByBillingAccount(ctx context.Context, bi
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "ListByBillingAccount", resp, "Failure responding to request")
 	}
+	if result.ralr.hasNextLink() && result.ralr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -647,6 +650,9 @@ func (client RoleAssignmentsClient) ListByBillingProfile(ctx context.Context, bi
 	result.ralr, err = client.ListByBillingProfileResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "ListByBillingProfile", resp, "Failure responding to request")
+	}
+	if result.ralr.hasNextLink() && result.ralr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -761,6 +767,9 @@ func (client RoleAssignmentsClient) ListByInvoiceSection(ctx context.Context, bi
 	result.ralr, err = client.ListByInvoiceSectionResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RoleAssignmentsClient", "ListByInvoiceSection", resp, "Failure responding to request")
+	}
+	if result.ralr.hasNextLink() && result.ralr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

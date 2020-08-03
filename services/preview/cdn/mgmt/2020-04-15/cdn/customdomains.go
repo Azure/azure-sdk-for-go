@@ -32,14 +32,14 @@ type CustomDomainsClient struct {
 }
 
 // NewCustomDomainsClient creates an instance of the CustomDomainsClient client.
-func NewCustomDomainsClient(subscriptionID string, subscriptionID1 string) CustomDomainsClient {
-	return NewCustomDomainsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
+	return NewCustomDomainsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewCustomDomainsClientWithBaseURI creates an instance of the CustomDomainsClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CustomDomainsClient {
-	return CustomDomainsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) CustomDomainsClient {
+	return CustomDomainsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Create creates a new custom domain within an endpoint.
@@ -532,6 +532,9 @@ func (client CustomDomainsClient) ListByEndpoint(ctx context.Context, resourceGr
 	result.cdlr, err = client.ListByEndpointResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "ListByEndpoint", resp, "Failure responding to request")
+	}
+	if result.cdlr.hasNextLink() && result.cdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

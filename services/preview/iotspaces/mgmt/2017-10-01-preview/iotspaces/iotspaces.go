@@ -416,6 +416,9 @@ func (client Client) List(ctx context.Context) (result DescriptionListResultPage
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iotspaces.Client", "List", resp, "Failure responding to request")
 	}
+	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -532,6 +535,9 @@ func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName 
 	result.dlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "iotspaces.Client", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.dlr.hasNextLink() && result.dlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

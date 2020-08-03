@@ -31,112 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2015-05-01-preview/storage"
 
-// AccountStatus enumerates the values for account status.
-type AccountStatus string
-
-const (
-	// Available ...
-	Available AccountStatus = "Available"
-	// Unavailable ...
-	Unavailable AccountStatus = "Unavailable"
-)
-
-// PossibleAccountStatusValues returns an array of possible values for the AccountStatus const type.
-func PossibleAccountStatusValues() []AccountStatus {
-	return []AccountStatus{Available, Unavailable}
-}
-
-// AccountType enumerates the values for account type.
-type AccountType string
-
-const (
-	// PremiumLRS ...
-	PremiumLRS AccountType = "Premium_LRS"
-	// StandardGRS ...
-	StandardGRS AccountType = "Standard_GRS"
-	// StandardLRS ...
-	StandardLRS AccountType = "Standard_LRS"
-	// StandardRAGRS ...
-	StandardRAGRS AccountType = "Standard_RAGRS"
-	// StandardZRS ...
-	StandardZRS AccountType = "Standard_ZRS"
-)
-
-// PossibleAccountTypeValues returns an array of possible values for the AccountType const type.
-func PossibleAccountTypeValues() []AccountType {
-	return []AccountType{PremiumLRS, StandardGRS, StandardLRS, StandardRAGRS, StandardZRS}
-}
-
-// KeyName enumerates the values for key name.
-type KeyName string
-
-const (
-	// Key1 ...
-	Key1 KeyName = "key1"
-	// Key2 ...
-	Key2 KeyName = "key2"
-)
-
-// PossibleKeyNameValues returns an array of possible values for the KeyName const type.
-func PossibleKeyNameValues() []KeyName {
-	return []KeyName{Key1, Key2}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// ResolvingDNS ...
-	ResolvingDNS ProvisioningState = "ResolvingDNS"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Creating, ResolvingDNS, Succeeded}
-}
-
-// Reason enumerates the values for reason.
-type Reason string
-
-const (
-	// AccountNameInvalid ...
-	AccountNameInvalid Reason = "AccountNameInvalid"
-	// AlreadyExists ...
-	AlreadyExists Reason = "AlreadyExists"
-)
-
-// PossibleReasonValues returns an array of possible values for the Reason const type.
-func PossibleReasonValues() []Reason {
-	return []Reason{AccountNameInvalid, AlreadyExists}
-}
-
-// UsageUnit enumerates the values for usage unit.
-type UsageUnit string
-
-const (
-	// Bytes ...
-	Bytes UsageUnit = "Bytes"
-	// BytesPerSecond ...
-	BytesPerSecond UsageUnit = "BytesPerSecond"
-	// Count ...
-	Count UsageUnit = "Count"
-	// CountsPerSecond ...
-	CountsPerSecond UsageUnit = "CountsPerSecond"
-	// Percent ...
-	Percent UsageUnit = "Percent"
-	// Seconds ...
-	Seconds UsageUnit = "Seconds"
-)
-
-// PossibleUsageUnitValues returns an array of possible values for the UsageUnit const type.
-func PossibleUsageUnitValues() []UsageUnit {
-	return []UsageUnit{Bytes, BytesPerSecond, Count, CountsPerSecond, Percent, Seconds}
-}
-
 // Account the storage account.
 type Account struct {
 	autorest.Response  `json:"-"`
@@ -428,10 +322,15 @@ func (alr AccountListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (alr AccountListResult) hasNextLink() bool {
+	return alr.NextLink != nil && len(*alr.NextLink) != 0
+}
+
 // accountListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (alr AccountListResult) accountListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
+	if !alr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -459,11 +358,16 @@ func (page *AccountListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.alr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.alr)
+		if err != nil {
+			return err
+		}
+		page.alr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.alr = next
 	return nil
 }
 
@@ -543,8 +447,7 @@ type AccountRegenerateKeyParameters struct {
 	KeyName KeyName `json:"keyName,omitempty"`
 }
 
-// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AccountsCreateFuture struct {
 	azure.Future
 }

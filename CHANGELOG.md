@@ -1,5 +1,200 @@
 # CHANGELOG
 
+## `v45.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| hybridnetwork | 2020-01-01-preview |
+| managementgroups | 2020-05-01 |
+| monitoring | 2019-11-01-preview |
+| netapp | 2020-02-01 |
+| signalr | 2020-07-01-preview |
+| storageimportexport | 2020-08-01 |
+| storagetables | 2019-02-02-preview |
+| timeseriesinsights | 2020-05-15 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| aad | 2017-01-01<br/>2017-06-01 |
+| account | 2015-10-01-preview<br/>2015-10-01-preview<br/>2016-11-01 |
+| adhybridhealthservice | 2014-01-01 |
+| alertsmanagement | 2018-05-05<br/>2018-05-05-preview<br/>2019-03-01<br/>2019-05-05 |
+| analysisservices | 2016-05-16<br/>2017-07-14<br/>2017-08-01 |
+| apimanagement | 2016-07-07<br/>2016-10-10<br/>2017-03-01<br/>2017-03-01<br/>2018-01-01<br/>2018-06-01-preview<br/>2019-12-01-preview |
+| appconfiguration | 2019-02-01-preview<br/>2019-10-01<br/>2019-11-01-preview<br/>2020-06-01 |
+| appplatform | 2019-05-01-preview |
+| artifacts | 2019-06-01-preview |
+| authorization | 2015-07-01 |
+| automation | 2015-10-31<br/>2017-05-15-preview<br/>2018-01-15-preview<br/>2018-06-30-preview |
+| avs | 2019-08-09-preview<br/>2020-03-20 |
+| azurestack | 2017-06-01 |
+| azurestackhci | 2020-03-01-preview |
+| backup | 2016-12-01<br/>2017-07-01<br/>2019-05-13 |
+| batch | 2015-12-01<br/>2017-09-01<br/>2018-03-01.6.1<br/>2018-08-01.7.0<br/>2018-12-01<br/>2019-04-01<br/>2019-08-01<br/>2020-03-01 |
+| batchai | 2017-09-01-preview<br/>2018-03-01<br/>2018-05-01 |
+| billing | 2017-02-27-preview<br/>2017-04-24-preview<br/>2018-03-01-preview<br/>2018-11-01-preview |
+| blockchain | 2018-06-01-preview |
+| blueprint | 2018-11-01-preview |
+| botservice | 2017-12-01<br/>2018-07-12 |
+| catalog | 2015-10-01-preview<br/>2016-11-01-preview |
+| cdn | 2015-06-01<br/>2016-04-02<br/>2016-10-02<br/>2017-04-02<br/>2017-10-12<br/>2019-04-15 |
+| cognitiveservices | 2016-02-01-preview<br/>2017-04-18 |
+| commitmentplans | 2016-05-01-preview |
+| compute | 2015-06-15<br/>2016-03-30<br/>2016-04-30-preview<br/>2017-03-30<br/>2017-08-01-preview<br/>2017-12-01<br/>2018-04-01<br/>2018-06-01<br/>2018-10-01<br/>2019-03-01<br/>2019-07-01<br/>2019-12-01<br/>2020-06-01 |
+| computervision | v2.0<br/>v2.1<br/>v3.0 |
+| consumption | 2017-04-24-preview<br/>2017-11-30<br/>2017-12-30-preview<br/>2018-01-31<br/>2018-03-31<br/>2018-05-31<br/>2018-06-30<br/>2018-08-31<br/>2018-10-01<br/>2019-01-01 |
+| containerinstance | 2017-08-01-preview<br/>2017-10-01-preview<br/>2017-12-01-preview<br/>2018-02-01-preview<br/>2018-04-01<br/>2018-06-01<br/>2018-09-01<br/>2018-10-01<br/>2019-12-01 |
+| containerregistry | 2016-06-27-preview<br/>2017-03-01<br/>2017-06-01-preview<br/>2017-10-01<br/>2018-02-01<br/>2018-09-01<br/>2019-04-01<br/>2019-05-01<br/>2019-05-01-preview |
+| containerservice | 2015-11-01-preview<br/>2016-03-30<br/>2016-09-30<br/>2017-01-31<br/>2017-07-01<br/>2017-08-31<br/>2017-09-30<br/>2018-03-31<br/>2018-08-01-preview<br/>2018-09-30-preview<br/>2019-02-01<br/>2019-04-30<br/>2019-06-01<br/>2019-08-01<br/>2019-09-30-preview<br/>2019-10-01<br/>2019-10-27-preview<br/>2019-11-01<br/>2020-01-01<br/>2020-02-01<br/>2020-03-01<br/>2020-04-01<br/>2020-06-01 |
+| costmanagement | 2018-05-31<br/>2018-08-01-preview<br/>2019-01-01<br/>2019-03-01<br/>2019-10-01 |
+| customerinsights | 2017-01-01<br/>2017-04-26 |
+| customerlockbox | 2018-02-28-preview |
+| customimagesearch | v1.0 |
+| customproviders | 2018-09-01-preview |
+| customsearch | v1.0 |
+| databox | 2018-01-01<br/>2019-09-01 |
+| databoxedge | 2019-03-01<br/>2019-07-01<br/>2019-08-01 |
+| databricks | 2018-04-01 |
+| datafactory | 2017-09-01-preview |
+| datamigration | 2017-11-15-preview<br/>2018-03-31-preview<br/>2018-04-19<br/>2018-07-15-preview |
+| deploymentmanager | 2018-09-01-preview<br/>2019-11-01-preview |
+| desktopvirtualization | 2019-01-23-preview<br/>2019-09-24-preview<br/>2019-12-10-preview |
+| devices | 2016-02-03<br/>2017-01-19<br/>2017-07-01<br/>2018-01-22<br/>2018-04-01<br/>2018-12-01-preview<br/>2019-03-22-preview<br/>2020-03-01 |
+| devops | 2019-07-01-preview |
+| devspaces | 2019-04-01 |
+| digitaltwins | 2020-03-01-preview<br/>2020-05-31 |
+| dns | 2016-04-01<br/>2017-09-01<br/>2017-10-01<br/>2018-03-01-preview<br/>2018-05-01 |
+| documentdb | 2015-04-08<br/>2019-08-01<br/>2019-08-01-preview<br/>2019-12-12<br/>2020-03-01<br/>2020-04-01 |
+| dtl | 2016-05-15<br/>2018-09-15 |
+| enterpriseknowledgegraphservice | 2018-12-03 |
+| entitysearch | v1.0 |
+| eventgrid | 2017-06-15-preview<br/>2017-09-15-preview<br/>2018-01-01<br/>2018-01-01<br/>2018-05-01-preview<br/>2018-09-15-preview<br/>2019-01-01<br/>2019-02-01-preview<br/>2019-06-01<br/>2020-01-01-preview<br/>2020-04-01-preview<br/>2020-06-01 |
+| eventhub | 2015-08-01<br/>2017-04-01<br/>2018-01-01-preview |
+| experimentation | 2017-05-01-preview |
+| features | 2019-07-01 |
+| filesystem | 2015-10-01-preview<br/>2016-11-01 |
+| frontdoor | 2018-08-01-preview<br/>2019-04-01<br/>2019-05-01<br/>2019-10-01<br/>2019-11-01<br/>2020-01-01<br/>2020-04-01<br/>2020-05-01 |
+| hanaonazure | 2017-11-03-preview |
+| hardwaresecuritymodules | 2018-10-31-preview |
+| hdinsight | 2015-03-01-preview<br/>2018-06-01-preview<br/>2018-11-01-preview |
+| healthcareapis | 2018-08-20-preview<br/>2019-09-16 |
+| hybridcompute | 2019-12-12 |
+| hybridkubernetes | 2020-01-01-preview |
+| imagesearch | v1.0 |
+| insights | 2015-05-01<br/>2017-05-01-preview<br/>2018-03-01<br/>2018-09-01<br/>2018-11-01-preview<br/>2019-03-01<br/>2019-06-01 |
+| iotcentral | 2018-09-01 |
+| iothub | 2017-08-21-preview<br/>2017-11-15<br/>2018-01-22 |
+| iotspaces | 2017-10-01-preview |
+| job | 2015-11-01-preview<br/>2016-03-20-preview<br/>2016-11-01<br/>2017-09-01-preview |
+| kubernetesconfiguration | 2019-11-01-preview |
+| kusto | 2018-09-07-preview<br/>2019-01-21<br/>2019-05-15<br/>2019-09-07<br/>2019-11-09<br/>2020-02-15<br/>2020-06-14 |
+| labservices | 2018-10-15 |
+| links | 2016-09-01 |
+| logic | 2015-02-01-preview<br/>2015-08-01-preview<br/>2016-06-01<br/>2018-07-01-preview<br/>2019-05-01 |
+| machinelearningservices | 2018-03-01-preview<br/>2018-11-19<br/>2019-05-01<br/>2019-06-01<br/>2019-11-01<br/>2020-01-01<br/>2020-02-18-preview<br/>2020-03-01<br/>2020-04-01 |
+| managedapplications | 2016-09-01-preview<br/>2017-09-01<br/>2018-06-01<br/>2019-07-01 |
+| managednetwork | 2019-06-01-preview |
+| managedservices | 2018-06-01<br/>2019-04-01<br/>2019-06-01 |
+| managedvirtualnetwork | 2019-06-01-preview |
+| managementgroups | 2017-08-31-preview<br/>2017-11-01-preview<br/>2018-01-01-preview<br/>2018-03-01-preview<br/>2019-11-01<br/>2020-02-01 |
+| maps | 2017-01-01-preview<br/>2018-05-01<br/>2020-02-01-preview |
+| mariadb | 2018-06-01 |
+| marketplaceordering | 2015-06-01 |
+| media | 2015-10-01<br/>2018-03-30-preview<br/>2018-06-01-preview<br/>2018-07-01<br/>2019-05-01-preview |
+| migrate | 2018-02-02<br/>2018-09-01-preview<br/>2020-01-01 |
+| mixedreality | 2020-05-01-preview |
+| mysql | 2017-12-01<br/>2017-12-01-preview |
+| netapp | 2017-08-15<br/>2019-05-01<br/>2019-06-01<br/>2019-07-01<br/>2019-08-01<br/>2019-10-01<br/>2019-11-01 |
+| network | 2015-05-01-preview<br/>2015-06-15<br/>2016-03-30<br/>2016-06-01<br/>2016-09-01<br/>2016-12-01<br/>2017-03-01<br/>2017-06-01<br/>2017-08-01<br/>2017-09-01<br/>2017-10-01<br/>2017-11-01<br/>2018-01-01<br/>2018-02-01<br/>2018-04-01<br/>2018-06-01<br/>2018-07-01<br/>2018-08-01<br/>2018-10-01<br/>2018-11-01<br/>2018-12-01<br/>2019-02-01<br/>2019-04-01<br/>2019-06-01<br/>2019-07-01<br/>2019-08-01<br/>2019-09-01<br/>2019-11-01<br/>2019-12-01 |
+| newssearch | v1.0 |
+| notificationhubs | 2017-04-01 |
+| operationalinsights | 2015-03-20<br/>2015-11-01-preview<br/>2020-03-01-preview |
+| operationsmanagement | 2015-11-01-preview |
+| peering | 2019-08-01-preview<br/>2019-09-01-preview<br/>2020-01-01-preview<br/>2020-04-01 |
+| personalizer | v1.0 |
+| policy | 2018-05-01<br/>2019-01-01<br/>2019-06-01<br/>2019-09-01 |
+| policyinsights | 2018-07-01-preview<br/>2019-10-01 |
+| postgresql | 2017-12-01<br/>2017-12-01-preview |
+| powerbidedicated | 2017-10-01 |
+| privatedns | 2018-09-01 |
+| qnamakerruntime | v4.0 |
+| recoveryservices | 2016-06-01 |
+| redis | 2017-02-01<br/>2017-10-01<br/>2018-03-01 |
+| relay | 2016-07-01<br/>2017-04-01 |
+| reservations | 2017-11-01<br/>2018-06-01<br/>2019-04-01<br/>2019-07-19-preview |
+| resourcegraph | 2018-09-01 |
+| resources | 2015-11-01<br/>2016-02-01<br/>2016-07-01<br/>2016-09-01<br/>2017-05-10<br/>2018-02-01<br/>2018-05-01<br/>2019-03-01<br/>2019-05-01 |
+| scheduler | 2014-08-01-preview<br/>2016-01-01<br/>2016-03-01 |
+| search | 2015-02-28<br/>2015-08-19<br/>2020-03-13 |
+| security | v1.0<br/>v2.0 |
+| securityinsight | 2019-01-01-preview |
+| servicebus | 2015-08-01<br/>2017-04-01<br/>2018-01-01-preview |
+| servicefabric | 2016-09-01<br/>2017-07-01-preview<br/>2018-02-01<br/>2019-03-01<br/>2019-03-01-preview<br/>6.3<br/>6.4<br/>6.5<br/>7.0 |
+| servicefabricmesh | 2018-07-01-preview<br/>2018-09-01-preview |
+| servicemap | 2015-11-01-preview |
+| signalr | 2018-03-01-preview<br/>2018-10-01<br/>2020-05-01 |
+| siterecovery | 2016-08-10<br/>2018-01-10<br/>2018-07-10 |
+| spellcheck | v1.0 |
+| sql | 2014-04-01<br/>2015-05-01-preview<br/>2017-03-01-preview<br/>2017-10-01-preview<br/>2018-06-01-preview |
+| sqlvirtualmachine | 2017-03-01-preview |
+| storage | 2016-01-01<br/>2016-05-01<br/>2016-12-01<br/>2017-06-01<br/>2017-10-01<br/>2018-02-01<br/>2018-03-01-preview<br/>2018-07-01<br/>2018-11-01<br/>2019-04-01<br/>2019-06-01 |
+| storagecache | 2019-08-01-preview<br/>2020-03-01 |
+| storageimportexport | 2016-11-01 |
+| storagesync | 2018-04-02<br/>2018-07-01<br/>2018-10-01<br/>2019-02-01<br/>2019-06-01<br/>2019-10-01<br/>2020-03-01 |
+| storsimple | 2016-10-01<br/>2017-06-01 |
+| streamanalytics | 2016-03-01 |
+| subscription | 2017-11-01-preview<br/>2018-03-01-preview<br/>2019-10-01-preview |
+| subscriptions | 2015-11-01<br/>2016-06-01<br/>2018-06-01<br/>2019-06-01<br/>2019-11-01 |
+| support | 2019-05-01-preview<br/>2020-04-01 |
+| synapse | 2019-06-01-preview |
+| textanalytics | v2.0<br/>v2.1 |
+| timeseriesinsights | 2017-02-28-preview<br/>2017-11-15<br/>2018-08-15-preview |
+| trafficmanager | 2017-05-01<br/>2017-09-01-preview<br/>2018-02-01<br/>2018-03-01<br/>2018-04-01 |
+| training | customvision<br/>customvision<br/>customvision<br/>customvision<br/>customvision<br/>customvision<br/>customvision |
+| translatortext | v1.0_preview.1 |
+| videosearch | v1.0 |
+| virtualmachineimagebuilder | 2018-02-01-preview<br/>2019-02-01-preview<br/>2019-05-01-preview<br/>2020-02-01 |
+| visualsearch | v1.0 |
+| vmwarecloudsimple | 2019-04-01 |
+| web | 2015-08-01-preview<br/>2016-09-01<br/>2018-02-01<br/>2019-08-01 |
+| websearch | v1.0 |
+| webservices | 2017-01-01 |
+| windowsesu | 2019-09-16-preview |
+| windowsiot | 2019-06-01 |
+| workloadmonitor | 2018-08-31-preview |
+| workspaces | 2016-04-01<br/>2019-10-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| apimanagement | 2019-01-01<br/>2019-12-01 |
+| azuredata | 2019-07-24-preview |
+| backup | 2019-06-15<br/>2020-02-02 |
+| billing | 2020-05-01 |
+| cdn | 2020-04-15 |
+| containerregistry | 2019-06-01-preview<br/>2019-12-01-preview |
+| datafactory | 2018-06-01 |
+| datashare | 2018-11-01-preview<br/>2019-11-01 |
+| documentdb | 2020-06-01-preview |
+| mysql | 2020-01-01 |
+| network | 2020-03-01<br/>2020-04-01<br/>2020-05-01 |
+| postgresql | 2020-01-01 |
+| security | v3.0 |
+| securityinsight | v1.0 |
+| sql | v3.0 |
+| storagecache | 2019-11-01 |
+
+### NOTE
+
+- All the enums in a package will be in a separated `enums.go` file.
+- Paginated result will automatically skip empty pages.
+- All models that have READ-ONLY fields will have their own custom marshaler.
+
 ## `v44.2.0`
 
 ### New Packages

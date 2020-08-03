@@ -19,6 +19,7 @@ package catalog
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
@@ -29,21 +30,6 @@ import (
 
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2015-10-01-preview/catalog"
-
-// FileType enumerates the values for file type.
-type FileType string
-
-const (
-	// Assembly ...
-	Assembly FileType = "Assembly"
-	// Resource ...
-	Resource FileType = "Resource"
-)
-
-// PossibleFileTypeValues returns an array of possible values for the FileType const type.
-func PossibleFileTypeValues() []FileType {
-	return []FileType{Assembly, Resource}
-}
 
 // DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters dataLakeAnalytics DataLakeAnalyticsAccount
 // information.
@@ -170,6 +156,18 @@ type USQLAssemblyList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for USQLAssemblyList.
+func (usal USQLAssemblyList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if usal.Count != nil {
+		objectMap["count"] = usal.Count
+	}
+	if usal.NextLink != nil {
+		objectMap["nextLink"] = usal.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
 // USQLAssemblyListIterator provides access to a complete listing of USQLAssemblyClr values.
 type USQLAssemblyListIterator struct {
 	i    int
@@ -238,10 +236,15 @@ func (usal USQLAssemblyList) IsEmpty() bool {
 	return usal.Value == nil || len(*usal.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (usal USQLAssemblyList) hasNextLink() bool {
+	return usal.NextLink != nil && len(*usal.NextLink) != 0
+}
+
 // uSQLAssemblyListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (usal USQLAssemblyList) uSQLAssemblyListPreparer(ctx context.Context) (*http.Request, error) {
-	if usal.NextLink == nil || len(to.String(usal.NextLink)) < 1 {
+	if !usal.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -269,11 +272,16 @@ func (page *USQLAssemblyListPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ual)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ual)
+		if err != nil {
+			return err
+		}
+		page.ual = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ual = next
 	return nil
 }
 
@@ -333,6 +341,18 @@ type USQLCredentialList struct {
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for USQLCredentialList.
+func (uscl USQLCredentialList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if uscl.Count != nil {
+		objectMap["count"] = uscl.Count
+	}
+	if uscl.NextLink != nil {
+		objectMap["nextLink"] = uscl.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // USQLCredentialListIterator provides access to a complete listing of USQLCredential values.
@@ -403,10 +423,15 @@ func (uscl USQLCredentialList) IsEmpty() bool {
 	return uscl.Value == nil || len(*uscl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (uscl USQLCredentialList) hasNextLink() bool {
+	return uscl.NextLink != nil && len(*uscl.NextLink) != 0
+}
+
 // uSQLCredentialListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (uscl USQLCredentialList) uSQLCredentialListPreparer(ctx context.Context) (*http.Request, error) {
-	if uscl.NextLink == nil || len(to.String(uscl.NextLink)) < 1 {
+	if !uscl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -434,11 +459,16 @@ func (page *USQLCredentialListPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ucl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ucl)
+		if err != nil {
+			return err
+		}
+		page.ucl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ucl = next
 	return nil
 }
 
@@ -492,6 +522,18 @@ type USQLDatabaseList struct {
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for USQLDatabaseList.
+func (usdl USQLDatabaseList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if usdl.Count != nil {
+		objectMap["count"] = usdl.Count
+	}
+	if usdl.NextLink != nil {
+		objectMap["nextLink"] = usdl.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // USQLDatabaseListIterator provides access to a complete listing of USQLDatabase values.
@@ -562,10 +604,15 @@ func (usdl USQLDatabaseList) IsEmpty() bool {
 	return usdl.Value == nil || len(*usdl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (usdl USQLDatabaseList) hasNextLink() bool {
+	return usdl.NextLink != nil && len(*usdl.NextLink) != 0
+}
+
 // uSQLDatabaseListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (usdl USQLDatabaseList) uSQLDatabaseListPreparer(ctx context.Context) (*http.Request, error) {
-	if usdl.NextLink == nil || len(to.String(usdl.NextLink)) < 1 {
+	if !usdl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -593,11 +640,16 @@ func (page *USQLDatabaseListPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.udl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.udl)
+		if err != nil {
+			return err
+		}
+		page.udl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.udl = next
 	return nil
 }
 
@@ -681,8 +733,19 @@ type USQLExternalDataSourceList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// USQLExternalDataSourceListIterator provides access to a complete listing of USQLExternalDataSource
-// values.
+// MarshalJSON is the custom marshaler for USQLExternalDataSourceList.
+func (usedsl USQLExternalDataSourceList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if usedsl.Count != nil {
+		objectMap["count"] = usedsl.Count
+	}
+	if usedsl.NextLink != nil {
+		objectMap["nextLink"] = usedsl.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
+// USQLExternalDataSourceListIterator provides access to a complete listing of USQLExternalDataSource values.
 type USQLExternalDataSourceListIterator struct {
 	i    int
 	page USQLExternalDataSourceListPage
@@ -750,10 +813,15 @@ func (usedsl USQLExternalDataSourceList) IsEmpty() bool {
 	return usedsl.Value == nil || len(*usedsl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (usedsl USQLExternalDataSourceList) hasNextLink() bool {
+	return usedsl.NextLink != nil && len(*usedsl.NextLink) != 0
+}
+
 // uSQLExternalDataSourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (usedsl USQLExternalDataSourceList) uSQLExternalDataSourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if usedsl.NextLink == nil || len(to.String(usedsl.NextLink)) < 1 {
+	if !usedsl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -781,11 +849,16 @@ func (page *USQLExternalDataSourceListPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.uedsl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.uedsl)
+		if err != nil {
+			return err
+		}
+		page.uedsl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.uedsl = next
 	return nil
 }
 
@@ -871,6 +944,18 @@ type USQLProcedureList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for USQLProcedureList.
+func (uspl USQLProcedureList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if uspl.Count != nil {
+		objectMap["count"] = uspl.Count
+	}
+	if uspl.NextLink != nil {
+		objectMap["nextLink"] = uspl.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
 // USQLProcedureListIterator provides access to a complete listing of USQLProcedure values.
 type USQLProcedureListIterator struct {
 	i    int
@@ -939,10 +1024,15 @@ func (uspl USQLProcedureList) IsEmpty() bool {
 	return uspl.Value == nil || len(*uspl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (uspl USQLProcedureList) hasNextLink() bool {
+	return uspl.NextLink != nil && len(*uspl.NextLink) != 0
+}
+
 // uSQLProcedureListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (uspl USQLProcedureList) uSQLProcedureListPreparer(ctx context.Context) (*http.Request, error) {
-	if uspl.NextLink == nil || len(to.String(uspl.NextLink)) < 1 {
+	if !uspl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -970,11 +1060,16 @@ func (page *USQLProcedureListPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.upl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.upl)
+		if err != nil {
+			return err
+		}
+		page.upl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.upl = next
 	return nil
 }
 
@@ -1030,6 +1125,18 @@ type USQLSchemaList struct {
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for USQLSchemaList.
+func (ussl USQLSchemaList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ussl.Count != nil {
+		objectMap["count"] = ussl.Count
+	}
+	if ussl.NextLink != nil {
+		objectMap["nextLink"] = ussl.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // USQLSchemaListIterator provides access to a complete listing of USQLSchema values.
@@ -1100,10 +1207,15 @@ func (ussl USQLSchemaList) IsEmpty() bool {
 	return ussl.Value == nil || len(*ussl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ussl USQLSchemaList) hasNextLink() bool {
+	return ussl.NextLink != nil && len(*ussl.NextLink) != 0
+}
+
 // uSQLSchemaListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ussl USQLSchemaList) uSQLSchemaListPreparer(ctx context.Context) (*http.Request, error) {
-	if ussl.NextLink == nil || len(to.String(ussl.NextLink)) < 1 {
+	if !ussl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1131,11 +1243,16 @@ func (page *USQLSchemaListPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.usl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.usl)
+		if err != nil {
+			return err
+		}
+		page.usl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.usl = next
 	return nil
 }
 
@@ -1232,6 +1349,18 @@ type USQLTableList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for USQLTableList.
+func (ustl USQLTableList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ustl.Count != nil {
+		objectMap["count"] = ustl.Count
+	}
+	if ustl.NextLink != nil {
+		objectMap["nextLink"] = ustl.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
 // USQLTableListIterator provides access to a complete listing of USQLTable values.
 type USQLTableListIterator struct {
 	i    int
@@ -1300,10 +1429,15 @@ func (ustl USQLTableList) IsEmpty() bool {
 	return ustl.Value == nil || len(*ustl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ustl USQLTableList) hasNextLink() bool {
+	return ustl.NextLink != nil && len(*ustl.NextLink) != 0
+}
+
 // uSQLTableListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ustl USQLTableList) uSQLTableListPreparer(ctx context.Context) (*http.Request, error) {
-	if ustl.NextLink == nil || len(to.String(ustl.NextLink)) < 1 {
+	if !ustl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1331,11 +1465,16 @@ func (page *USQLTableListPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.utl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.utl)
+		if err != nil {
+			return err
+		}
+		page.utl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.utl = next
 	return nil
 }
 
@@ -1401,6 +1540,18 @@ type USQLTablePartitionList struct {
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for USQLTablePartitionList.
+func (ustpl USQLTablePartitionList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ustpl.Count != nil {
+		objectMap["count"] = ustpl.Count
+	}
+	if ustpl.NextLink != nil {
+		objectMap["nextLink"] = ustpl.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // USQLTablePartitionListIterator provides access to a complete listing of USQLTablePartition values.
@@ -1471,10 +1622,15 @@ func (ustpl USQLTablePartitionList) IsEmpty() bool {
 	return ustpl.Value == nil || len(*ustpl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ustpl USQLTablePartitionList) hasNextLink() bool {
+	return ustpl.NextLink != nil && len(*ustpl.NextLink) != 0
+}
+
 // uSQLTablePartitionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ustpl USQLTablePartitionList) uSQLTablePartitionListPreparer(ctx context.Context) (*http.Request, error) {
-	if ustpl.NextLink == nil || len(to.String(ustpl.NextLink)) < 1 {
+	if !ustpl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1502,11 +1658,16 @@ func (page *USQLTablePartitionListPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.utpl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.utpl)
+		if err != nil {
+			return err
+		}
+		page.utpl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.utpl = next
 	return nil
 }
 
@@ -1586,6 +1747,18 @@ type USQLTableStatisticsList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for USQLTableStatisticsList.
+func (ustsl USQLTableStatisticsList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ustsl.Count != nil {
+		objectMap["count"] = ustsl.Count
+	}
+	if ustsl.NextLink != nil {
+		objectMap["nextLink"] = ustsl.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
 // USQLTableStatisticsListIterator provides access to a complete listing of USQLTableStatistics values.
 type USQLTableStatisticsListIterator struct {
 	i    int
@@ -1654,10 +1827,15 @@ func (ustsl USQLTableStatisticsList) IsEmpty() bool {
 	return ustsl.Value == nil || len(*ustsl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ustsl USQLTableStatisticsList) hasNextLink() bool {
+	return ustsl.NextLink != nil && len(*ustsl.NextLink) != 0
+}
+
 // uSQLTableStatisticsListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ustsl USQLTableStatisticsList) uSQLTableStatisticsListPreparer(ctx context.Context) (*http.Request, error) {
-	if ustsl.NextLink == nil || len(to.String(ustsl.NextLink)) < 1 {
+	if !ustsl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1685,11 +1863,16 @@ func (page *USQLTableStatisticsListPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.utsl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.utsl)
+		if err != nil {
+			return err
+		}
+		page.utsl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.utsl = next
 	return nil
 }
 
@@ -1764,6 +1947,63 @@ type USQLTableType struct {
 	Version *uuid.UUID `json:"version,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for USQLTableType.
+func (ustt USQLTableType) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ustt.DatabaseName != nil {
+		objectMap["databaseName"] = ustt.DatabaseName
+	}
+	if ustt.SchemaName != nil {
+		objectMap["schemaName"] = ustt.SchemaName
+	}
+	if ustt.Name != nil {
+		objectMap["typeName"] = ustt.Name
+	}
+	if ustt.TypeFamily != nil {
+		objectMap["typeFamily"] = ustt.TypeFamily
+	}
+	if ustt.CSharpName != nil {
+		objectMap["cSharpName"] = ustt.CSharpName
+	}
+	if ustt.FullCSharpName != nil {
+		objectMap["fullCSharpName"] = ustt.FullCSharpName
+	}
+	if ustt.SystemTypeID != nil {
+		objectMap["systemTypeId"] = ustt.SystemTypeID
+	}
+	if ustt.UserTypeID != nil {
+		objectMap["userTypeId"] = ustt.UserTypeID
+	}
+	if ustt.SchemaID != nil {
+		objectMap["schemaId"] = ustt.SchemaID
+	}
+	if ustt.PrincipalID != nil {
+		objectMap["principalId"] = ustt.PrincipalID
+	}
+	if ustt.IsNullable != nil {
+		objectMap["isNullable"] = ustt.IsNullable
+	}
+	if ustt.IsUserDefined != nil {
+		objectMap["isUserDefined"] = ustt.IsUserDefined
+	}
+	if ustt.IsAssemblyType != nil {
+		objectMap["isAssemblyType"] = ustt.IsAssemblyType
+	}
+	if ustt.IsTableType != nil {
+		objectMap["isTableType"] = ustt.IsTableType
+	}
+	if ustt.IsComplexType != nil {
+		objectMap["isComplexType"] = ustt.IsComplexType
+	}
+	if ustt.ComputeAccountName != nil {
+		objectMap["computeAccountName"] = ustt.ComputeAccountName
+	}
+	if ustt.Version != nil {
+		objectMap["version"] = ustt.Version
+	}
+	return json.Marshal(objectMap)
+}
+
 // USQLTableTypeList a Data Lake Analytics catalog U-SQL table type item list.
 type USQLTableTypeList struct {
 	autorest.Response `json:"-"`
@@ -1773,6 +2013,18 @@ type USQLTableTypeList struct {
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for USQLTableTypeList.
+func (usttl USQLTableTypeList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if usttl.Count != nil {
+		objectMap["count"] = usttl.Count
+	}
+	if usttl.NextLink != nil {
+		objectMap["nextLink"] = usttl.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // USQLTableTypeListIterator provides access to a complete listing of USQLTableType values.
@@ -1843,10 +2095,15 @@ func (usttl USQLTableTypeList) IsEmpty() bool {
 	return usttl.Value == nil || len(*usttl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (usttl USQLTableTypeList) hasNextLink() bool {
+	return usttl.NextLink != nil && len(*usttl.NextLink) != 0
+}
+
 // uSQLTableTypeListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (usttl USQLTableTypeList) uSQLTableTypeListPreparer(ctx context.Context) (*http.Request, error) {
-	if usttl.NextLink == nil || len(to.String(usttl.NextLink)) < 1 {
+	if !usttl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1874,11 +2131,16 @@ func (page *USQLTableTypeListPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.uttl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.uttl)
+		if err != nil {
+			return err
+		}
+		page.uttl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.uttl = next
 	return nil
 }
 
@@ -1940,8 +2202,19 @@ type USQLTableValuedFunctionList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// USQLTableValuedFunctionListIterator provides access to a complete listing of USQLTableValuedFunction
-// values.
+// MarshalJSON is the custom marshaler for USQLTableValuedFunctionList.
+func (ustvfl USQLTableValuedFunctionList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ustvfl.Count != nil {
+		objectMap["count"] = ustvfl.Count
+	}
+	if ustvfl.NextLink != nil {
+		objectMap["nextLink"] = ustvfl.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
+// USQLTableValuedFunctionListIterator provides access to a complete listing of USQLTableValuedFunction values.
 type USQLTableValuedFunctionListIterator struct {
 	i    int
 	page USQLTableValuedFunctionListPage
@@ -2009,10 +2282,15 @@ func (ustvfl USQLTableValuedFunctionList) IsEmpty() bool {
 	return ustvfl.Value == nil || len(*ustvfl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ustvfl USQLTableValuedFunctionList) hasNextLink() bool {
+	return ustvfl.NextLink != nil && len(*ustvfl.NextLink) != 0
+}
+
 // uSQLTableValuedFunctionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ustvfl USQLTableValuedFunctionList) uSQLTableValuedFunctionListPreparer(ctx context.Context) (*http.Request, error) {
-	if ustvfl.NextLink == nil || len(to.String(ustvfl.NextLink)) < 1 {
+	if !ustvfl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2040,11 +2318,16 @@ func (page *USQLTableValuedFunctionListPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.utvfl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.utvfl)
+		if err != nil {
+			return err
+		}
+		page.utvfl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.utvfl = next
 	return nil
 }
 
@@ -2127,6 +2410,18 @@ type USQLTypeList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for USQLTypeList.
+func (ustl USQLTypeList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ustl.Count != nil {
+		objectMap["count"] = ustl.Count
+	}
+	if ustl.NextLink != nil {
+		objectMap["nextLink"] = ustl.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
 // USQLTypeListIterator provides access to a complete listing of USQLType values.
 type USQLTypeListIterator struct {
 	i    int
@@ -2195,10 +2490,15 @@ func (ustl USQLTypeList) IsEmpty() bool {
 	return ustl.Value == nil || len(*ustl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ustl USQLTypeList) hasNextLink() bool {
+	return ustl.NextLink != nil && len(*ustl.NextLink) != 0
+}
+
 // uSQLTypeListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ustl USQLTypeList) uSQLTypeListPreparer(ctx context.Context) (*http.Request, error) {
-	if ustl.NextLink == nil || len(to.String(ustl.NextLink)) < 1 {
+	if !ustl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2226,11 +2526,16 @@ func (page *USQLTypeListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.utl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.utl)
+		if err != nil {
+			return err
+		}
+		page.utl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.utl = next
 	return nil
 }
 
@@ -2290,6 +2595,18 @@ type USQLViewList struct {
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - the link to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for USQLViewList.
+func (usvl USQLViewList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if usvl.Count != nil {
+		objectMap["count"] = usvl.Count
+	}
+	if usvl.NextLink != nil {
+		objectMap["nextLink"] = usvl.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // USQLViewListIterator provides access to a complete listing of USQLView values.
@@ -2360,10 +2677,15 @@ func (usvl USQLViewList) IsEmpty() bool {
 	return usvl.Value == nil || len(*usvl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (usvl USQLViewList) hasNextLink() bool {
+	return usvl.NextLink != nil && len(*usvl.NextLink) != 0
+}
+
 // uSQLViewListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (usvl USQLViewList) uSQLViewListPreparer(ctx context.Context) (*http.Request, error) {
-	if usvl.NextLink == nil || len(to.String(usvl.NextLink)) < 1 {
+	if !usvl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2391,11 +2713,16 @@ func (page *USQLViewListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.uvl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.uvl)
+		if err != nil {
+			return err
+		}
+		page.uvl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.uvl = next
 	return nil
 }
 

@@ -919,6 +919,9 @@ func (client JobScheduleClient) List(ctx context.Context, filter string, selectP
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.JobScheduleClient", "List", resp, "Failure responding to request")
 	}
+	if result.cjslr.hasNextLink() && result.cjslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

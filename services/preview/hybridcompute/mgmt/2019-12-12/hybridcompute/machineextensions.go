@@ -334,6 +334,9 @@ func (client MachineExtensionsClient) List(ctx context.Context, resourceGroupNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.melr.hasNextLink() && result.melr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

@@ -307,6 +307,9 @@ func (client FormulaClient) List(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.FormulaClient", "List", resp, "Failure responding to request")
 	}
+	if result.rwcf.hasNextLink() && result.rwcf.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

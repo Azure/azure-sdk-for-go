@@ -30,87 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/resourcegraph/mgmt/2018-09-01/resourcegraph"
 
-// ColumnDataType enumerates the values for column data type.
-type ColumnDataType string
-
-const (
-	// Boolean ...
-	Boolean ColumnDataType = "boolean"
-	// Integer ...
-	Integer ColumnDataType = "integer"
-	// Number ...
-	Number ColumnDataType = "number"
-	// Object ...
-	Object ColumnDataType = "object"
-	// String ...
-	String ColumnDataType = "string"
-)
-
-// PossibleColumnDataTypeValues returns an array of possible values for the ColumnDataType const type.
-func PossibleColumnDataTypeValues() []ColumnDataType {
-	return []ColumnDataType{Boolean, Integer, Number, Object, String}
-}
-
-// FacetSortOrder enumerates the values for facet sort order.
-type FacetSortOrder string
-
-const (
-	// Asc ...
-	Asc FacetSortOrder = "asc"
-	// Desc ...
-	Desc FacetSortOrder = "desc"
-)
-
-// PossibleFacetSortOrderValues returns an array of possible values for the FacetSortOrder const type.
-func PossibleFacetSortOrderValues() []FacetSortOrder {
-	return []FacetSortOrder{Asc, Desc}
-}
-
-// ResultKind enumerates the values for result kind.
-type ResultKind string
-
-const (
-	// Basic ...
-	Basic ResultKind = "basic"
-)
-
-// PossibleResultKindValues returns an array of possible values for the ResultKind const type.
-func PossibleResultKindValues() []ResultKind {
-	return []ResultKind{Basic}
-}
-
-// ResultTruncated enumerates the values for result truncated.
-type ResultTruncated string
-
-const (
-	// False ...
-	False ResultTruncated = "false"
-	// True ...
-	True ResultTruncated = "true"
-)
-
-// PossibleResultTruncatedValues returns an array of possible values for the ResultTruncated const type.
-func PossibleResultTruncatedValues() []ResultTruncated {
-	return []ResultTruncated{False, True}
-}
-
-// ResultType enumerates the values for result type.
-type ResultType string
-
-const (
-	// ResultTypeFacet ...
-	ResultTypeFacet ResultType = "Facet"
-	// ResultTypeFacetError ...
-	ResultTypeFacetError ResultType = "FacetError"
-	// ResultTypeFacetResult ...
-	ResultTypeFacetResult ResultType = "FacetResult"
-)
-
-// PossibleResultTypeValues returns an array of possible values for the ResultType const type.
-func PossibleResultTypeValues() []ResultType {
-	return []ResultType{ResultTypeFacet, ResultTypeFacetError, ResultTypeFacetResult}
-}
-
 // Column query result column descriptor.
 type Column struct {
 	// Name - Column name.
@@ -119,8 +38,8 @@ type Column struct {
 	Type ColumnDataType `json:"type,omitempty"`
 }
 
-// DateTimeInterval an interval in time specifying the date and time for the inclusive start and exclusive
-// end, i.e. `[start, end)`.
+// DateTimeInterval an interval in time specifying the date and time for the inclusive start and exclusive end,
+// i.e. `[start, end)`.
 type DateTimeInterval struct {
 	// Start - A datetime indicating the inclusive/closed start of the time interval, i.e. `[`**`start`**`, end)`. Specifying a `start` that occurs chronologically after `end` will result in an error.
 	Start *date.Time `json:"start,omitempty"`
@@ -456,6 +375,15 @@ type GraphQueryListResult struct {
 	Value *[]GraphQueryResource `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GraphQueryListResult.
+func (gqlr GraphQueryListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gqlr.NextLink != nil {
+		objectMap["nextLink"] = gqlr.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
 // GraphQueryListResultIterator provides access to a complete listing of GraphQueryResource values.
 type GraphQueryListResultIterator struct {
 	i    int
@@ -524,10 +452,15 @@ func (gqlr GraphQueryListResult) IsEmpty() bool {
 	return gqlr.Value == nil || len(*gqlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (gqlr GraphQueryListResult) hasNextLink() bool {
+	return gqlr.NextLink != nil && len(*gqlr.NextLink) != 0
+}
+
 // graphQueryListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (gqlr GraphQueryListResult) graphQueryListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if gqlr.NextLink == nil || len(to.String(gqlr.NextLink)) < 1 {
+	if !gqlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -555,11 +488,16 @@ func (page *GraphQueryListResultPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.gqlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.gqlr)
+		if err != nil {
+			return err
+		}
+		page.gqlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.gqlr = next
 	return nil
 }
 
@@ -603,6 +541,18 @@ type GraphQueryProperties struct {
 	Query *string `json:"query,omitempty"`
 	// ResultKind - READ-ONLY; Enum indicating a type of graph query. Possible values include: 'Basic'
 	ResultKind ResultKind `json:"resultKind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GraphQueryProperties.
+func (gqp GraphQueryProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if gqp.Description != nil {
+		objectMap["description"] = gqp.Description
+	}
+	if gqp.Query != nil {
+		objectMap["query"] = gqp.Query
+	}
+	return json.Marshal(objectMap)
 }
 
 // GraphQueryPropertiesUpdateParameters properties that contain a workbook for PATCH operation.
@@ -728,8 +678,7 @@ func (gqr *GraphQueryResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// GraphQueryUpdateParameters the parameters that can be provided when updating workbook properties
-// properties.
+// GraphQueryUpdateParameters the parameters that can be provided when updating workbook properties properties.
 type GraphQueryUpdateParameters struct {
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
@@ -896,10 +845,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -927,11 +881,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -1103,8 +1062,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ResourceChangeData data on a specific change, represented by a pair of before and after resource
-// snapshots.
+// ResourceChangeData data on a specific change, represented by a pair of before and after resource snapshots.
 type ResourceChangeData struct {
 	autorest.Response `json:"-"`
 	// ChangeID - The change ID. Valid and unique within the specified resource only.

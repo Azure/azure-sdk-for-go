@@ -72,6 +72,9 @@ func (client GlobalCertificateOrderClient) GetAllCertificateOrders(ctx context.C
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.GlobalCertificateOrderClient", "GetAllCertificateOrders", resp, "Failure responding to request")
 	}
+	if result.coc.hasNextLink() && result.coc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

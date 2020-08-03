@@ -31,636 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/storsimple1200series/mgmt/2016-10-01/storsimple"
 
-// AlertEmailNotificationStatus enumerates the values for alert email notification status.
-type AlertEmailNotificationStatus string
-
-const (
-	// Disabled ...
-	Disabled AlertEmailNotificationStatus = "Disabled"
-	// Enabled ...
-	Enabled AlertEmailNotificationStatus = "Enabled"
-)
-
-// PossibleAlertEmailNotificationStatusValues returns an array of possible values for the AlertEmailNotificationStatus const type.
-func PossibleAlertEmailNotificationStatusValues() []AlertEmailNotificationStatus {
-	return []AlertEmailNotificationStatus{Disabled, Enabled}
-}
-
-// AlertScope enumerates the values for alert scope.
-type AlertScope string
-
-const (
-	// AlertScopeDevice ...
-	AlertScopeDevice AlertScope = "Device"
-	// AlertScopeResource ...
-	AlertScopeResource AlertScope = "Resource"
-)
-
-// PossibleAlertScopeValues returns an array of possible values for the AlertScope const type.
-func PossibleAlertScopeValues() []AlertScope {
-	return []AlertScope{AlertScopeDevice, AlertScopeResource}
-}
-
-// AlertSeverity enumerates the values for alert severity.
-type AlertSeverity string
-
-const (
-	// Critical ...
-	Critical AlertSeverity = "Critical"
-	// Informational ...
-	Informational AlertSeverity = "Informational"
-	// Warning ...
-	Warning AlertSeverity = "Warning"
-)
-
-// PossibleAlertSeverityValues returns an array of possible values for the AlertSeverity const type.
-func PossibleAlertSeverityValues() []AlertSeverity {
-	return []AlertSeverity{Critical, Informational, Warning}
-}
-
-// AlertSourceType enumerates the values for alert source type.
-type AlertSourceType string
-
-const (
-	// AlertSourceTypeDevice ...
-	AlertSourceTypeDevice AlertSourceType = "Device"
-	// AlertSourceTypeResource ...
-	AlertSourceTypeResource AlertSourceType = "Resource"
-)
-
-// PossibleAlertSourceTypeValues returns an array of possible values for the AlertSourceType const type.
-func PossibleAlertSourceTypeValues() []AlertSourceType {
-	return []AlertSourceType{AlertSourceTypeDevice, AlertSourceTypeResource}
-}
-
-// AlertStatus enumerates the values for alert status.
-type AlertStatus string
-
-const (
-	// Active ...
-	Active AlertStatus = "Active"
-	// Cleared ...
-	Cleared AlertStatus = "Cleared"
-)
-
-// PossibleAlertStatusValues returns an array of possible values for the AlertStatus const type.
-func PossibleAlertStatusValues() []AlertStatus {
-	return []AlertStatus{Active, Cleared}
-}
-
-// AuthType enumerates the values for auth type.
-type AuthType string
-
-const (
-	// AccessControlService ...
-	AccessControlService AuthType = "AccessControlService"
-	// AzureActiveDirectory ...
-	AzureActiveDirectory AuthType = "AzureActiveDirectory"
-	// Invalid ...
-	Invalid AuthType = "Invalid"
-)
-
-// PossibleAuthTypeValues returns an array of possible values for the AuthType const type.
-func PossibleAuthTypeValues() []AuthType {
-	return []AuthType{AccessControlService, AzureActiveDirectory, Invalid}
-}
-
-// CloudType enumerates the values for cloud type.
-type CloudType string
-
-const (
-	// Azure ...
-	Azure CloudType = "Azure"
-	// HP ...
-	HP CloudType = "HP"
-	// OpenStack ...
-	OpenStack CloudType = "OpenStack"
-	// S3 ...
-	S3 CloudType = "S3"
-	// S3RRS ...
-	S3RRS CloudType = "S3_RRS"
-)
-
-// PossibleCloudTypeValues returns an array of possible values for the CloudType const type.
-func PossibleCloudTypeValues() []CloudType {
-	return []CloudType{Azure, HP, OpenStack, S3, S3RRS}
-}
-
-// ContractVersions enumerates the values for contract versions.
-type ContractVersions string
-
-const (
-	// InvalidVersion ...
-	InvalidVersion ContractVersions = "InvalidVersion"
-	// V201109 ...
-	V201109 ContractVersions = "V2011_09"
-	// V201202 ...
-	V201202 ContractVersions = "V2012_02"
-	// V201205 ...
-	V201205 ContractVersions = "V2012_05"
-	// V201212 ...
-	V201212 ContractVersions = "V2012_12"
-	// V201304 ...
-	V201304 ContractVersions = "V2013_04"
-	// V201310 ...
-	V201310 ContractVersions = "V2013_10"
-	// V201311 ...
-	V201311 ContractVersions = "V2013_11"
-	// V201404 ...
-	V201404 ContractVersions = "V2014_04"
-	// V201406 ...
-	V201406 ContractVersions = "V2014_06"
-	// V201407 ...
-	V201407 ContractVersions = "V2014_07"
-	// V201409 ...
-	V201409 ContractVersions = "V2014_09"
-	// V201410 ...
-	V201410 ContractVersions = "V2014_10"
-	// V201412 ...
-	V201412 ContractVersions = "V2014_12"
-	// V201501 ...
-	V201501 ContractVersions = "V2015_01"
-	// V201502 ...
-	V201502 ContractVersions = "V2015_02"
-	// V201504 ...
-	V201504 ContractVersions = "V2015_04"
-	// V201505 ...
-	V201505 ContractVersions = "V2015_05"
-	// V201506 ...
-	V201506 ContractVersions = "V2015_06"
-	// V201507 ...
-	V201507 ContractVersions = "V2015_07"
-	// V201508 ...
-	V201508 ContractVersions = "V2015_08"
-	// V201510 ...
-	V201510 ContractVersions = "V2015_10"
-	// V201512 ...
-	V201512 ContractVersions = "V2015_12"
-	// V201601 ...
-	V201601 ContractVersions = "V2016_01"
-	// V201602 ...
-	V201602 ContractVersions = "V2016_02"
-	// V201604 ...
-	V201604 ContractVersions = "V2016_04"
-	// V201605 ...
-	V201605 ContractVersions = "V2016_05"
-	// V201607 ...
-	V201607 ContractVersions = "V2016_07"
-	// V201608 ...
-	V201608 ContractVersions = "V2016_08"
-)
-
-// PossibleContractVersionsValues returns an array of possible values for the ContractVersions const type.
-func PossibleContractVersionsValues() []ContractVersions {
-	return []ContractVersions{InvalidVersion, V201109, V201202, V201205, V201212, V201304, V201310, V201311, V201404, V201406, V201407, V201409, V201410, V201412, V201501, V201502, V201504, V201505, V201506, V201507, V201508, V201510, V201512, V201601, V201602, V201604, V201605, V201607, V201608}
-}
-
-// DataPolicy enumerates the values for data policy.
-type DataPolicy string
-
-const (
-	// DataPolicyCloud ...
-	DataPolicyCloud DataPolicy = "Cloud"
-	// DataPolicyInvalid ...
-	DataPolicyInvalid DataPolicy = "Invalid"
-	// DataPolicyLocal ...
-	DataPolicyLocal DataPolicy = "Local"
-	// DataPolicyTiered ...
-	DataPolicyTiered DataPolicy = "Tiered"
-)
-
-// PossibleDataPolicyValues returns an array of possible values for the DataPolicy const type.
-func PossibleDataPolicyValues() []DataPolicy {
-	return []DataPolicy{DataPolicyCloud, DataPolicyInvalid, DataPolicyLocal, DataPolicyTiered}
-}
-
-// DeviceConfigurationStatus enumerates the values for device configuration status.
-type DeviceConfigurationStatus string
-
-const (
-	// Complete ...
-	Complete DeviceConfigurationStatus = "Complete"
-	// Pending ...
-	Pending DeviceConfigurationStatus = "Pending"
-)
-
-// PossibleDeviceConfigurationStatusValues returns an array of possible values for the DeviceConfigurationStatus const type.
-func PossibleDeviceConfigurationStatusValues() []DeviceConfigurationStatus {
-	return []DeviceConfigurationStatus{Complete, Pending}
-}
-
-// DeviceOperation enumerates the values for device operation.
-type DeviceOperation string
-
-const (
-	// Browsable ...
-	Browsable DeviceOperation = "Browsable"
-	// Deactivate ...
-	Deactivate DeviceOperation = "Deactivate"
-	// Delete ...
-	Delete DeviceOperation = "Delete"
-	// DeleteWithWarning ...
-	DeleteWithWarning DeviceOperation = "DeleteWithWarning"
-	// DRSource ...
-	DRSource DeviceOperation = "DRSource"
-	// DRTarget ...
-	DRTarget DeviceOperation = "DRTarget"
-	// None ...
-	None DeviceOperation = "None"
-	// ReadOnlyForDR ...
-	ReadOnlyForDR DeviceOperation = "ReadOnlyForDR"
-)
-
-// PossibleDeviceOperationValues returns an array of possible values for the DeviceOperation const type.
-func PossibleDeviceOperationValues() []DeviceOperation {
-	return []DeviceOperation{Browsable, Deactivate, Delete, DeleteWithWarning, DRSource, DRTarget, None, ReadOnlyForDR}
-}
-
-// DeviceStatus enumerates the values for device status.
-type DeviceStatus string
-
-const (
-	// Creating ...
-	Creating DeviceStatus = "Creating"
-	// Deactivated ...
-	Deactivated DeviceStatus = "Deactivated"
-	// Deactivating ...
-	Deactivating DeviceStatus = "Deactivating"
-	// Deleted ...
-	Deleted DeviceStatus = "Deleted"
-	// MaintenanceMode ...
-	MaintenanceMode DeviceStatus = "MaintenanceMode"
-	// Offline ...
-	Offline DeviceStatus = "Offline"
-	// Online ...
-	Online DeviceStatus = "Online"
-	// Provisioning ...
-	Provisioning DeviceStatus = "Provisioning"
-	// ReadyToSetup ...
-	ReadyToSetup DeviceStatus = "ReadyToSetup"
-	// RequiresAttention ...
-	RequiresAttention DeviceStatus = "RequiresAttention"
-	// Unknown ...
-	Unknown DeviceStatus = "Unknown"
-)
-
-// PossibleDeviceStatusValues returns an array of possible values for the DeviceStatus const type.
-func PossibleDeviceStatusValues() []DeviceStatus {
-	return []DeviceStatus{Creating, Deactivated, Deactivating, Deleted, MaintenanceMode, Offline, Online, Provisioning, ReadyToSetup, RequiresAttention, Unknown}
-}
-
-// DeviceType enumerates the values for device type.
-type DeviceType string
-
-const (
-	// DeviceTypeAppliance ...
-	DeviceTypeAppliance DeviceType = "Appliance"
-	// DeviceTypeInvalid ...
-	DeviceTypeInvalid DeviceType = "Invalid"
-	// DeviceTypeSeries9000OnPremVirtualAppliance ...
-	DeviceTypeSeries9000OnPremVirtualAppliance DeviceType = "Series9000OnPremVirtualAppliance"
-	// DeviceTypeSeries9000PhysicalAppliance ...
-	DeviceTypeSeries9000PhysicalAppliance DeviceType = "Series9000PhysicalAppliance"
-	// DeviceTypeSeries9000VirtualAppliance ...
-	DeviceTypeSeries9000VirtualAppliance DeviceType = "Series9000VirtualAppliance"
-	// DeviceTypeVirtualAppliance ...
-	DeviceTypeVirtualAppliance DeviceType = "VirtualAppliance"
-)
-
-// PossibleDeviceTypeValues returns an array of possible values for the DeviceType const type.
-func PossibleDeviceTypeValues() []DeviceType {
-	return []DeviceType{DeviceTypeAppliance, DeviceTypeInvalid, DeviceTypeSeries9000OnPremVirtualAppliance, DeviceTypeSeries9000PhysicalAppliance, DeviceTypeSeries9000VirtualAppliance, DeviceTypeVirtualAppliance}
-}
-
-// DhcpStatus enumerates the values for dhcp status.
-type DhcpStatus string
-
-const (
-	// DhcpStatusDisabled ...
-	DhcpStatusDisabled DhcpStatus = "Disabled"
-	// DhcpStatusEnabled ...
-	DhcpStatusEnabled DhcpStatus = "Enabled"
-)
-
-// PossibleDhcpStatusValues returns an array of possible values for the DhcpStatus const type.
-func PossibleDhcpStatusValues() []DhcpStatus {
-	return []DhcpStatus{DhcpStatusDisabled, DhcpStatusEnabled}
-}
-
-// DiskStatus enumerates the values for disk status.
-type DiskStatus string
-
-const (
-	// DiskStatusOffline ...
-	DiskStatusOffline DiskStatus = "Offline"
-	// DiskStatusOnline ...
-	DiskStatusOnline DiskStatus = "Online"
-)
-
-// PossibleDiskStatusValues returns an array of possible values for the DiskStatus const type.
-func PossibleDiskStatusValues() []DiskStatus {
-	return []DiskStatus{DiskStatusOffline, DiskStatusOnline}
-}
-
-// DownloadPhase enumerates the values for download phase.
-type DownloadPhase string
-
-const (
-	// DownloadPhaseDownloading ...
-	DownloadPhaseDownloading DownloadPhase = "Downloading"
-	// DownloadPhaseInitializing ...
-	DownloadPhaseInitializing DownloadPhase = "Initializing"
-	// DownloadPhaseUnknown ...
-	DownloadPhaseUnknown DownloadPhase = "Unknown"
-	// DownloadPhaseVerifying ...
-	DownloadPhaseVerifying DownloadPhase = "Verifying"
-)
-
-// PossibleDownloadPhaseValues returns an array of possible values for the DownloadPhase const type.
-func PossibleDownloadPhaseValues() []DownloadPhase {
-	return []DownloadPhase{DownloadPhaseDownloading, DownloadPhaseInitializing, DownloadPhaseUnknown, DownloadPhaseVerifying}
-}
-
-// EncryptionAlgorithm enumerates the values for encryption algorithm.
-type EncryptionAlgorithm string
-
-const (
-	// EncryptionAlgorithmAES256 ...
-	EncryptionAlgorithmAES256 EncryptionAlgorithm = "AES256"
-	// EncryptionAlgorithmNone ...
-	EncryptionAlgorithmNone EncryptionAlgorithm = "None"
-	// EncryptionAlgorithmRSAESPKCS1V15 ...
-	EncryptionAlgorithmRSAESPKCS1V15 EncryptionAlgorithm = "RSAES_PKCS1_v_1_5"
-)
-
-// PossibleEncryptionAlgorithmValues returns an array of possible values for the EncryptionAlgorithm const type.
-func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
-	return []EncryptionAlgorithm{EncryptionAlgorithmAES256, EncryptionAlgorithmNone, EncryptionAlgorithmRSAESPKCS1V15}
-}
-
-// EncryptionStatus enumerates the values for encryption status.
-type EncryptionStatus string
-
-const (
-	// EncryptionStatusDisabled ...
-	EncryptionStatusDisabled EncryptionStatus = "Disabled"
-	// EncryptionStatusEnabled ...
-	EncryptionStatusEnabled EncryptionStatus = "Enabled"
-)
-
-// PossibleEncryptionStatusValues returns an array of possible values for the EncryptionStatus const type.
-func PossibleEncryptionStatusValues() []EncryptionStatus {
-	return []EncryptionStatus{EncryptionStatusDisabled, EncryptionStatusEnabled}
-}
-
-// InitiatedBy enumerates the values for initiated by.
-type InitiatedBy string
-
-const (
-	// Manual ...
-	Manual InitiatedBy = "Manual"
-	// Scheduled ...
-	Scheduled InitiatedBy = "Scheduled"
-)
-
-// PossibleInitiatedByValues returns an array of possible values for the InitiatedBy const type.
-func PossibleInitiatedByValues() []InitiatedBy {
-	return []InitiatedBy{Manual, Scheduled}
-}
-
-// JobStatus enumerates the values for job status.
-type JobStatus string
-
-const (
-	// JobStatusCanceled ...
-	JobStatusCanceled JobStatus = "Canceled"
-	// JobStatusFailed ...
-	JobStatusFailed JobStatus = "Failed"
-	// JobStatusInvalid ...
-	JobStatusInvalid JobStatus = "Invalid"
-	// JobStatusPaused ...
-	JobStatusPaused JobStatus = "Paused"
-	// JobStatusRunning ...
-	JobStatusRunning JobStatus = "Running"
-	// JobStatusScheduled ...
-	JobStatusScheduled JobStatus = "Scheduled"
-	// JobStatusSucceeded ...
-	JobStatusSucceeded JobStatus = "Succeeded"
-)
-
-// PossibleJobStatusValues returns an array of possible values for the JobStatus const type.
-func PossibleJobStatusValues() []JobStatus {
-	return []JobStatus{JobStatusCanceled, JobStatusFailed, JobStatusInvalid, JobStatusPaused, JobStatusRunning, JobStatusScheduled, JobStatusSucceeded}
-}
-
-// JobType enumerates the values for job type.
-type JobType string
-
-const (
-	// JobTypeBackup ...
-	JobTypeBackup JobType = "Backup"
-	// JobTypeClone ...
-	JobTypeClone JobType = "Clone"
-	// JobTypeDownloadUpdates ...
-	JobTypeDownloadUpdates JobType = "DownloadUpdates"
-	// JobTypeFailover ...
-	JobTypeFailover JobType = "Failover"
-	// JobTypeInstallUpdates ...
-	JobTypeInstallUpdates JobType = "InstallUpdates"
-)
-
-// PossibleJobTypeValues returns an array of possible values for the JobType const type.
-func PossibleJobTypeValues() []JobType {
-	return []JobType{JobTypeBackup, JobTypeClone, JobTypeDownloadUpdates, JobTypeFailover, JobTypeInstallUpdates}
-}
-
-// KeyRolloverStatus enumerates the values for key rollover status.
-type KeyRolloverStatus string
-
-const (
-	// NotRequired ...
-	NotRequired KeyRolloverStatus = "NotRequired"
-	// Required ...
-	Required KeyRolloverStatus = "Required"
-)
-
-// PossibleKeyRolloverStatusValues returns an array of possible values for the KeyRolloverStatus const type.
-func PossibleKeyRolloverStatusValues() []KeyRolloverStatus {
-	return []KeyRolloverStatus{NotRequired, Required}
-}
-
-// ManagerType enumerates the values for manager type.
-type ManagerType string
-
-const (
-	// GardaV1 ...
-	GardaV1 ManagerType = "GardaV1"
-	// HelsinkiV1 ...
-	HelsinkiV1 ManagerType = "HelsinkiV1"
-)
-
-// PossibleManagerTypeValues returns an array of possible values for the ManagerType const type.
-func PossibleManagerTypeValues() []ManagerType {
-	return []ManagerType{GardaV1, HelsinkiV1}
-}
-
-// MetricAggregationType enumerates the values for metric aggregation type.
-type MetricAggregationType string
-
-const (
-	// MetricAggregationTypeAverage ...
-	MetricAggregationTypeAverage MetricAggregationType = "Average"
-	// MetricAggregationTypeLast ...
-	MetricAggregationTypeLast MetricAggregationType = "Last"
-	// MetricAggregationTypeMaximum ...
-	MetricAggregationTypeMaximum MetricAggregationType = "Maximum"
-	// MetricAggregationTypeMinimum ...
-	MetricAggregationTypeMinimum MetricAggregationType = "Minimum"
-	// MetricAggregationTypeNone ...
-	MetricAggregationTypeNone MetricAggregationType = "None"
-	// MetricAggregationTypeTotal ...
-	MetricAggregationTypeTotal MetricAggregationType = "Total"
-)
-
-// PossibleMetricAggregationTypeValues returns an array of possible values for the MetricAggregationType const type.
-func PossibleMetricAggregationTypeValues() []MetricAggregationType {
-	return []MetricAggregationType{MetricAggregationTypeAverage, MetricAggregationTypeLast, MetricAggregationTypeMaximum, MetricAggregationTypeMinimum, MetricAggregationTypeNone, MetricAggregationTypeTotal}
-}
-
-// MetricUnit enumerates the values for metric unit.
-type MetricUnit string
-
-const (
-	// Bytes ...
-	Bytes MetricUnit = "Bytes"
-	// BytesPerSecond ...
-	BytesPerSecond MetricUnit = "BytesPerSecond"
-	// Count ...
-	Count MetricUnit = "Count"
-	// CountPerSecond ...
-	CountPerSecond MetricUnit = "CountPerSecond"
-	// Percent ...
-	Percent MetricUnit = "Percent"
-	// Seconds ...
-	Seconds MetricUnit = "Seconds"
-)
-
-// PossibleMetricUnitValues returns an array of possible values for the MetricUnit const type.
-func PossibleMetricUnitValues() []MetricUnit {
-	return []MetricUnit{Bytes, BytesPerSecond, Count, CountPerSecond, Percent, Seconds}
-}
-
-// MonitoringStatus enumerates the values for monitoring status.
-type MonitoringStatus string
-
-const (
-	// MonitoringStatusDisabled ...
-	MonitoringStatusDisabled MonitoringStatus = "Disabled"
-	// MonitoringStatusEnabled ...
-	MonitoringStatusEnabled MonitoringStatus = "Enabled"
-)
-
-// PossibleMonitoringStatusValues returns an array of possible values for the MonitoringStatus const type.
-func PossibleMonitoringStatusValues() []MonitoringStatus {
-	return []MonitoringStatus{MonitoringStatusDisabled, MonitoringStatusEnabled}
-}
-
-// ServiceOwnersAlertNotificationStatus enumerates the values for service owners alert notification status.
-type ServiceOwnersAlertNotificationStatus string
-
-const (
-	// ServiceOwnersAlertNotificationStatusDisabled ...
-	ServiceOwnersAlertNotificationStatusDisabled ServiceOwnersAlertNotificationStatus = "Disabled"
-	// ServiceOwnersAlertNotificationStatusEnabled ...
-	ServiceOwnersAlertNotificationStatusEnabled ServiceOwnersAlertNotificationStatus = "Enabled"
-)
-
-// PossibleServiceOwnersAlertNotificationStatusValues returns an array of possible values for the ServiceOwnersAlertNotificationStatus const type.
-func PossibleServiceOwnersAlertNotificationStatusValues() []ServiceOwnersAlertNotificationStatus {
-	return []ServiceOwnersAlertNotificationStatus{ServiceOwnersAlertNotificationStatusDisabled, ServiceOwnersAlertNotificationStatusEnabled}
-}
-
-// ShareStatus enumerates the values for share status.
-type ShareStatus string
-
-const (
-	// ShareStatusOffline ...
-	ShareStatusOffline ShareStatus = "Offline"
-	// ShareStatusOnline ...
-	ShareStatusOnline ShareStatus = "Online"
-)
-
-// PossibleShareStatusValues returns an array of possible values for the ShareStatus const type.
-func PossibleShareStatusValues() []ShareStatus {
-	return []ShareStatus{ShareStatusOffline, ShareStatusOnline}
-}
-
-// SslStatus enumerates the values for ssl status.
-type SslStatus string
-
-const (
-	// SslStatusDisabled ...
-	SslStatusDisabled SslStatus = "Disabled"
-	// SslStatusEnabled ...
-	SslStatusEnabled SslStatus = "Enabled"
-)
-
-// PossibleSslStatusValues returns an array of possible values for the SslStatus const type.
-func PossibleSslStatusValues() []SslStatus {
-	return []SslStatus{SslStatusDisabled, SslStatusEnabled}
-}
-
-// SupportedDeviceCapabilities enumerates the values for supported device capabilities.
-type SupportedDeviceCapabilities string
-
-const (
-	// SupportedDeviceCapabilitiesFileServer ...
-	SupportedDeviceCapabilitiesFileServer SupportedDeviceCapabilities = "FileServer"
-	// SupportedDeviceCapabilitiesInvalid ...
-	SupportedDeviceCapabilitiesInvalid SupportedDeviceCapabilities = "Invalid"
-	// SupportedDeviceCapabilitiesIscsiServer ...
-	SupportedDeviceCapabilitiesIscsiServer SupportedDeviceCapabilities = "IscsiServer"
-)
-
-// PossibleSupportedDeviceCapabilitiesValues returns an array of possible values for the SupportedDeviceCapabilities const type.
-func PossibleSupportedDeviceCapabilitiesValues() []SupportedDeviceCapabilities {
-	return []SupportedDeviceCapabilities{SupportedDeviceCapabilitiesFileServer, SupportedDeviceCapabilitiesInvalid, SupportedDeviceCapabilitiesIscsiServer}
-}
-
-// TargetType enumerates the values for target type.
-type TargetType string
-
-const (
-	// TargetTypeDiskServer ...
-	TargetTypeDiskServer TargetType = "DiskServer"
-	// TargetTypeFileServer ...
-	TargetTypeFileServer TargetType = "FileServer"
-)
-
-// PossibleTargetTypeValues returns an array of possible values for the TargetType const type.
-func PossibleTargetTypeValues() []TargetType {
-	return []TargetType{TargetTypeDiskServer, TargetTypeFileServer}
-}
-
-// UpdateOperation enumerates the values for update operation.
-type UpdateOperation string
-
-const (
-	// Downloading ...
-	Downloading UpdateOperation = "Downloading"
-	// Idle ...
-	Idle UpdateOperation = "Idle"
-	// Installing ...
-	Installing UpdateOperation = "Installing"
-	// Scanning ...
-	Scanning UpdateOperation = "Scanning"
-)
-
-// PossibleUpdateOperationValues returns an array of possible values for the UpdateOperation const type.
-func PossibleUpdateOperationValues() []UpdateOperation {
-	return []UpdateOperation{Downloading, Idle, Installing, Scanning}
-}
-
 // AccessControlRecord the access control record
 type AccessControlRecord struct {
 	autorest.Response `json:"-"`
@@ -776,8 +146,8 @@ func (future *AccessControlRecordsCreateOrUpdateFuture) Result(client AccessCont
 	return
 }
 
-// AccessControlRecordsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// AccessControlRecordsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccessControlRecordsDeleteFuture struct {
 	azure.Future
 }
@@ -972,10 +342,15 @@ func (al AlertList) IsEmpty() bool {
 	return al.Value == nil || len(*al.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (al AlertList) hasNextLink() bool {
+	return al.NextLink != nil && len(*al.NextLink) != 0
+}
+
 // alertListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (al AlertList) alertListPreparer(ctx context.Context) (*http.Request, error) {
-	if al.NextLink == nil || len(to.String(al.NextLink)) < 1 {
+	if !al.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1003,11 +378,16 @@ func (page *AlertListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.al)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.al)
+		if err != nil {
+			return err
+		}
+		page.al = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.al = next
 	return nil
 }
 
@@ -1216,10 +596,10 @@ type AlertSource struct {
 	AlertSourceType AlertSourceType `json:"alertSourceType,omitempty"`
 }
 
-// AsymmetricEncryptedSecret this class can be used as the Type for any secret entity represented as
-// Password, CertThumbprint, Algorithm. This class is intended to be used when the secret is encrypted with
-// an asymmetric key pair. The encryptionAlgorithm field is mainly for future usage to potentially allow
-// different entities encrypted using different algorithms.
+// AsymmetricEncryptedSecret this class can be used as the Type for any secret entity represented as Password,
+// CertThumbprint, Algorithm. This class is intended to be used when the secret is encrypted with an asymmetric
+// key pair. The encryptionAlgorithm field is mainly for future usage to potentially allow different entities
+// encrypted using different algorithms.
 type AsymmetricEncryptedSecret struct {
 	// Value - The value of the secret itself. If the secret is in plaintext then EncryptionAlgorithm will be none and EncryptionCertThumbprint will be null.
 	Value *string `json:"value,omitempty"`
@@ -1248,12 +628,11 @@ type AvailableProviderOperation struct {
 	Properties interface{} `json:"properties,omitempty"`
 }
 
-// AvailableProviderOperationDisplay contains the localized display information for this particular
-// operation / action.
+// AvailableProviderOperationDisplay contains the localized display information for this particular operation /
+// action.
 // These value will be used by several clients for
 // (1) custom role definitions for RBAC;
-// (2) complex query filters for the event service; and (3) audit history / records for management
-// operations.
+// (2) complex query filters for the event service; and (3) audit history / records for management operations.
 type AvailableProviderOperationDisplay struct {
 	// Provider - Gets or sets Provider
 	// The localized friendly form of the resource provider name – it is expected to also include the publisher/company responsible.
@@ -1273,8 +652,7 @@ type AvailableProviderOperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// AvailableProviderOperations class for set of operations used for discovery of available provider
-// operations.
+// AvailableProviderOperations class for set of operations used for discovery of available provider operations.
 type AvailableProviderOperations struct {
 	autorest.Response `json:"-"`
 	// Value - The value.
@@ -1352,10 +730,15 @@ func (apo AvailableProviderOperations) IsEmpty() bool {
 	return apo.Value == nil || len(*apo.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (apo AvailableProviderOperations) hasNextLink() bool {
+	return apo.NextLink != nil && len(*apo.NextLink) != 0
+}
+
 // availableProviderOperationsPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (apo AvailableProviderOperations) availableProviderOperationsPreparer(ctx context.Context) (*http.Request, error) {
-	if apo.NextLink == nil || len(to.String(apo.NextLink)) < 1 {
+	if !apo.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1383,11 +766,16 @@ func (page *AvailableProviderOperationsPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.apo)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.apo)
+		if err != nil {
+			return err
+		}
+		page.apo = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.apo = next
 	return nil
 }
 
@@ -1660,10 +1048,15 @@ func (bl BackupList) IsEmpty() bool {
 	return bl.Value == nil || len(*bl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (bl BackupList) hasNextLink() bool {
+	return bl.NextLink != nil && len(*bl.NextLink) != 0
+}
+
 // backupListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (bl BackupList) backupListPreparer(ctx context.Context) (*http.Request, error) {
-	if bl.NextLink == nil || len(to.String(bl.NextLink)) < 1 {
+	if !bl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1691,11 +1084,16 @@ func (page *BackupListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.bl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.bl)
+		if err != nil {
+			return err
+		}
+		page.bl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.bl = next
 	return nil
 }
 
@@ -1864,8 +1262,8 @@ func (future *BackupScheduleGroupsCreateOrUpdateFuture) Result(client BackupSche
 	return
 }
 
-// BackupScheduleGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// BackupScheduleGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type BackupScheduleGroupsDeleteFuture struct {
 	azure.Future
 }
@@ -1909,8 +1307,7 @@ func (future *BackupsCloneFuture) Result(client BackupsClient) (ar autorest.Resp
 	return
 }
 
-// BackupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// BackupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type BackupsDeleteFuture struct {
 	azure.Future
 }
@@ -2021,8 +1418,8 @@ func (cs *ChapSettings) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ChapSettingsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ChapSettingsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ChapSettingsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2311,8 +1708,8 @@ func (future *DevicesCreateOrUpdateAlertSettingsFuture) Result(client DevicesCli
 	return
 }
 
-// DevicesCreateOrUpdateSecuritySettingsFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// DevicesCreateOrUpdateSecuritySettingsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DevicesCreateOrUpdateSecuritySettingsFuture struct {
 	azure.Future
 }
@@ -2357,8 +1754,7 @@ func (future *DevicesDeactivateFuture) Result(client DevicesClient) (ar autorest
 	return
 }
 
-// DevicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DevicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DevicesDeleteFuture struct {
 	azure.Future
 }
@@ -2403,8 +1799,7 @@ func (future *DevicesDownloadUpdatesFuture) Result(client DevicesClient) (ar aut
 	return
 }
 
-// DevicesFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DevicesFailoverFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DevicesFailoverFuture struct {
 	azure.Future
 }
@@ -2711,8 +2106,8 @@ func (future *FileServersBackupNowFuture) Result(client FileServersClient) (ar a
 	return
 }
 
-// FileServersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// FileServersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type FileServersCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2863,8 +2258,32 @@ type FileShareProperties struct {
 	MonitoringStatus MonitoringStatus `json:"monitoringStatus,omitempty"`
 }
 
-// FileSharesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// MarshalJSON is the custom marshaler for FileShareProperties.
+func (fsp FileShareProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fsp.Description != nil {
+		objectMap["description"] = fsp.Description
+	}
+	if fsp.ShareStatus != "" {
+		objectMap["shareStatus"] = fsp.ShareStatus
+	}
+	if fsp.DataPolicy != "" {
+		objectMap["dataPolicy"] = fsp.DataPolicy
+	}
+	if fsp.AdminUser != nil {
+		objectMap["adminUser"] = fsp.AdminUser
+	}
+	if fsp.ProvisionedCapacityInBytes != nil {
+		objectMap["provisionedCapacityInBytes"] = fsp.ProvisionedCapacityInBytes
+	}
+	if fsp.MonitoringStatus != "" {
+		objectMap["monitoringStatus"] = fsp.MonitoringStatus
+	}
+	return json.Marshal(objectMap)
+}
+
+// FileSharesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type FileSharesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2892,8 +2311,7 @@ func (future *FileSharesCreateOrUpdateFuture) Result(client FileSharesClient) (f
 	return
 }
 
-// FileSharesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// FileSharesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type FileSharesDeleteFuture struct {
 	azure.Future
 }
@@ -3025,8 +2443,32 @@ type ISCSIDiskProperties struct {
 	MonitoringStatus MonitoringStatus `json:"monitoringStatus,omitempty"`
 }
 
-// IscsiDisksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// MarshalJSON is the custom marshaler for ISCSIDiskProperties.
+func (idp ISCSIDiskProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if idp.Description != nil {
+		objectMap["description"] = idp.Description
+	}
+	if idp.DiskStatus != "" {
+		objectMap["diskStatus"] = idp.DiskStatus
+	}
+	if idp.AccessControlRecords != nil {
+		objectMap["accessControlRecords"] = idp.AccessControlRecords
+	}
+	if idp.DataPolicy != "" {
+		objectMap["dataPolicy"] = idp.DataPolicy
+	}
+	if idp.ProvisionedCapacityInBytes != nil {
+		objectMap["provisionedCapacityInBytes"] = idp.ProvisionedCapacityInBytes
+	}
+	if idp.MonitoringStatus != "" {
+		objectMap["monitoringStatus"] = idp.MonitoringStatus
+	}
+	return json.Marshal(objectMap)
+}
+
+// IscsiDisksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type IscsiDisksCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -3054,8 +2496,7 @@ func (future *IscsiDisksCreateOrUpdateFuture) Result(client IscsiDisksClient) (I
 	return
 }
 
-// IscsiDisksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// IscsiDisksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type IscsiDisksDeleteFuture struct {
 	azure.Future
 }
@@ -3194,8 +2635,8 @@ func (future *IscsiServersBackupNowFuture) Result(client IscsiServersClient) (ar
 	return
 }
 
-// IscsiServersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// IscsiServersCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type IscsiServersCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -3502,10 +2943,15 @@ func (jl JobList) IsEmpty() bool {
 	return jl.Value == nil || len(*jl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (jl JobList) hasNextLink() bool {
+	return jl.NextLink != nil && len(*jl.NextLink) != 0
+}
+
 // jobListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (jl JobList) jobListPreparer(ctx context.Context) (*http.Request, error) {
-	if jl.NextLink == nil || len(to.String(jl.NextLink)) < 1 {
+	if !jl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3533,11 +2979,16 @@ func (page *JobListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.jl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.jl)
+		if err != nil {
+			return err
+		}
+		page.jl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.jl = next
 	return nil
 }
 
@@ -3879,6 +3330,18 @@ type ManagerProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ManagerProperties.
+func (mp ManagerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mp.CisIntrinsicSettings != nil {
+		objectMap["cisIntrinsicSettings"] = mp.CisIntrinsicSettings
+	}
+	if mp.Sku != nil {
+		objectMap["sku"] = mp.Sku
+	}
+	return json.Marshal(objectMap)
+}
+
 // ManagerSku the Sku.
 type ManagerSku struct {
 	// Name - Refers to the sku name which should be "Standard"
@@ -3891,8 +3354,8 @@ type Message struct {
 	Value    *string `json:"value,omitempty"`
 }
 
-// MetricAvailablity metric availability specifies the time grain (aggregation interval or frequency) and
-// the retention period for that time grain
+// MetricAvailablity metric availability specifies the time grain (aggregation interval or frequency) and the
+// retention period for that time grain
 type MetricAvailablity struct {
 	// TimeGrain - The time grain, specifies the aggregation interval for the metric.
 	TimeGrain *string `json:"timeGrain,omitempty"`
@@ -4355,8 +3818,8 @@ type StorageAccountCredentialProperties struct {
 	AccessKey *AsymmetricEncryptedSecret `json:"accessKey,omitempty"`
 }
 
-// StorageAccountCredentialsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// StorageAccountCredentialsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type StorageAccountCredentialsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -4550,9 +4013,9 @@ func (future *StorageDomainsDeleteFuture) Result(client StorageDomainsClient) (a
 }
 
 // SymmetricEncryptedSecret this class can be used as the Type for any secret entity represented as Value,
-// ValueCertificateThumbprint, EncryptionAlgorithm. In this case, "Value" is a secret and the
-// "valueThumbprint" represents the certificate thumbprint of the value. The algorithm field is mainly for
-// future usage to potentially allow different entities encrypted using different algorithms.
+// ValueCertificateThumbprint, EncryptionAlgorithm. In this case, "Value" is a secret and the "valueThumbprint"
+// represents the certificate thumbprint of the value. The algorithm field is mainly for future usage to
+// potentially allow different entities encrypted using different algorithms.
 type SymmetricEncryptedSecret struct {
 	autorest.Response `json:"-"`
 	// Value - The value of the secret itself. If the secret is in plaintext or null then EncryptionAlgorithm will be none

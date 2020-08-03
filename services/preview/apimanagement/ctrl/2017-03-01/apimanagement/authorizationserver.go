@@ -345,6 +345,9 @@ func (client AuthorizationServerClient) List(ctx context.Context, apimBaseURL st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.AuthorizationServerClient", "List", resp, "Failure responding to request")
 	}
+	if result.asc.hasNextLink() && result.asc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

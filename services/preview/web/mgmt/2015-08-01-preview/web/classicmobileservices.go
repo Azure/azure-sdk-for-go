@@ -224,6 +224,9 @@ func (client ClassicMobileServicesClient) GetClassicMobileServices(ctx context.C
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ClassicMobileServicesClient", "GetClassicMobileServices", resp, "Failure responding to request")
 	}
+	if result.cmsc.hasNextLink() && result.cmsc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }

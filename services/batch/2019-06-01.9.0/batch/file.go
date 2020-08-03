@@ -803,6 +803,9 @@ func (client FileClient) ListFromComputeNode(ctx context.Context, poolID string,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.FileClient", "ListFromComputeNode", resp, "Failure responding to request")
 	}
+	if result.nflr.hasNextLink() && result.nflr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -970,6 +973,9 @@ func (client FileClient) ListFromTask(ctx context.Context, jobID string, taskID 
 	result.nflr, err = client.ListFromTaskResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.FileClient", "ListFromTask", resp, "Failure responding to request")
+	}
+	if result.nflr.hasNextLink() && result.nflr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

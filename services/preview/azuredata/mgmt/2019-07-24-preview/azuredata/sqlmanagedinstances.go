@@ -300,6 +300,9 @@ func (client SQLManagedInstancesClient) List(ctx context.Context) (result SQLMan
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLManagedInstancesClient", "List", resp, "Failure responding to request")
 	}
+	if result.smilr.hasNextLink() && result.smilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -409,6 +412,9 @@ func (client SQLManagedInstancesClient) ListByResourceGroup(ctx context.Context,
 	result.smilr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.SQLManagedInstancesClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.smilr.hasNextLink() && result.smilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

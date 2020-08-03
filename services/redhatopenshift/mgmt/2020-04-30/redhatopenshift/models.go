@@ -30,93 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/redhatopenshift/mgmt/2020-04-30/redhatopenshift"
 
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// AdminUpdating ...
-	AdminUpdating ProvisioningState = "AdminUpdating"
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{AdminUpdating, Creating, Deleting, Failed, Succeeded, Updating}
-}
-
-// Visibility enumerates the values for visibility.
-type Visibility string
-
-const (
-	// Private ...
-	Private Visibility = "Private"
-	// Public ...
-	Public Visibility = "Public"
-)
-
-// PossibleVisibilityValues returns an array of possible values for the Visibility const type.
-func PossibleVisibilityValues() []Visibility {
-	return []Visibility{Private, Public}
-}
-
-// Visibility1 enumerates the values for visibility 1.
-type Visibility1 string
-
-const (
-	// Visibility1Private ...
-	Visibility1Private Visibility1 = "Private"
-	// Visibility1Public ...
-	Visibility1Public Visibility1 = "Public"
-)
-
-// PossibleVisibility1Values returns an array of possible values for the Visibility1 const type.
-func PossibleVisibility1Values() []Visibility1 {
-	return []Visibility1{Visibility1Private, Visibility1Public}
-}
-
-// VMSize enumerates the values for vm size.
-type VMSize string
-
-const (
-	// StandardD2sV3 ...
-	StandardD2sV3 VMSize = "Standard_D2s_v3"
-	// StandardD4sV3 ...
-	StandardD4sV3 VMSize = "Standard_D4s_v3"
-	// StandardD8sV3 ...
-	StandardD8sV3 VMSize = "Standard_D8s_v3"
-)
-
-// PossibleVMSizeValues returns an array of possible values for the VMSize const type.
-func PossibleVMSizeValues() []VMSize {
-	return []VMSize{StandardD2sV3, StandardD4sV3, StandardD8sV3}
-}
-
-// VMSize1 enumerates the values for vm size 1.
-type VMSize1 string
-
-const (
-	// VMSize1StandardD2sV3 ...
-	VMSize1StandardD2sV3 VMSize1 = "Standard_D2s_v3"
-	// VMSize1StandardD4sV3 ...
-	VMSize1StandardD4sV3 VMSize1 = "Standard_D4s_v3"
-	// VMSize1StandardD8sV3 ...
-	VMSize1StandardD8sV3 VMSize1 = "Standard_D8s_v3"
-)
-
-// PossibleVMSize1Values returns an array of possible values for the VMSize1 const type.
-func PossibleVMSize1Values() []VMSize1 {
-	return []VMSize1{VMSize1StandardD2sV3, VMSize1StandardD4sV3, VMSize1StandardD8sV3}
-}
-
 // APIServerProfile aPIServerProfile represents an API server profile.
 type APIServerProfile struct {
 	// Visibility - API server visibility (immutable). Possible values include: 'Private', 'Public'
@@ -400,10 +313,15 @@ func (oscl OpenShiftClusterList) IsEmpty() bool {
 	return oscl.Value == nil || len(*oscl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (oscl OpenShiftClusterList) hasNextLink() bool {
+	return oscl.NextLink != nil && len(*oscl.NextLink) != 0
+}
+
 // openShiftClusterListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (oscl OpenShiftClusterList) openShiftClusterListPreparer(ctx context.Context) (*http.Request, error) {
-	if oscl.NextLink == nil || len(to.String(oscl.NextLink)) < 1 {
+	if !oscl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -431,11 +349,16 @@ func (page *OpenShiftClusterListPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.oscl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.oscl)
+		if err != nil {
+			return err
+		}
+		page.oscl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.oscl = next
 	return nil
 }
 
@@ -712,10 +635,15 @@ func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OperationList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // operationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OperationList) operationListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -743,11 +671,16 @@ func (page *OperationListPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 

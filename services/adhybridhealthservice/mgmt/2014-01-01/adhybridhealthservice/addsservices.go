@@ -537,6 +537,9 @@ func (client AddsServicesClient) List(ctx context.Context, filter string, servic
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "List", resp, "Failure responding to request")
 	}
+	if result.s.hasNextLink() && result.s.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -657,6 +660,9 @@ func (client AddsServicesClient) ListMetricMetadata(ctx context.Context, service
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListMetricMetadata", resp, "Failure responding to request")
 	}
+	if result.mml.hasNextLink() && result.mml.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -775,6 +781,9 @@ func (client AddsServicesClient) ListMetricsAverage(ctx context.Context, service
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListMetricsAverage", resp, "Failure responding to request")
 	}
+	if result.mVar.hasNextLink() && result.mVar.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -888,6 +897,9 @@ func (client AddsServicesClient) ListMetricsSum(ctx context.Context, serviceName
 	result.mVar, err = client.ListMetricsSumResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListMetricsSum", resp, "Failure responding to request")
+	}
+	if result.mVar.hasNextLink() && result.mVar.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -1007,6 +1019,9 @@ func (client AddsServicesClient) ListPremiumServices(ctx context.Context, filter
 	result.s, err = client.ListPremiumServicesResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListPremiumServices", resp, "Failure responding to request")
+	}
+	if result.s.hasNextLink() && result.s.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -1299,6 +1314,9 @@ func (client AddsServicesClient) ListServerAlerts(ctx context.Context, serviceMe
 	result.a, err = client.ListServerAlertsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListServerAlerts", resp, "Failure responding to request")
+	}
+	if result.a.hasNextLink() && result.a.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

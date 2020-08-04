@@ -9,6 +9,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"testing"
@@ -74,6 +75,43 @@ func TestRetryPolicyFailOnStatusCode(t *testing.T) {
 	}
 	if !body.closed {
 		t.Fatal("request body wasn't closed")
+	}
+}
+
+func TestRetryPolicyFailOnStatusCodeRespBodyPreserved(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	const respBody = "response body"
+	srv.SetResponse(mock.WithStatusCode(http.StatusInternalServerError), mock.WithBody([]byte(respBody)))
+	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	req := NewRequest(http.MethodGet, srv.URL())
+	body := newRewindTrackingBody("stuff")
+	if err := req.SetBody(body); err != nil {
+		t.Fatal(err)
+	}
+	resp, err := pl.Do(context.Background(), req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusInternalServerError {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if r := srv.Requests(); r != defaultMaxRetries+1 {
+		t.Fatalf("wrong request count, got %d expected %d", r, defaultMaxRetries+1)
+	}
+	if body.rcount != defaultMaxRetries {
+		t.Fatalf("unexpected rewind count: %d", body.rcount)
+	}
+	if !body.closed {
+		t.Fatal("request body wasn't closed")
+	}
+	// ensure response body hasn't been drained
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(b) != respBody {
+		t.Fatalf("unexpected response body: %s", string(b))
 	}
 }
 

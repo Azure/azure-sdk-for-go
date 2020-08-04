@@ -10,6 +10,8 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net/http"
+	"strings"
 )
 
 // newBodyDownloadPolicy creates a policy object that downloads the response's body to a []byte.
@@ -27,13 +29,45 @@ func newBodyDownloadPolicy() Policy {
 			b, err = ioutil.ReadAll(resp.Body)
 			resp.Body.Close()
 			if err != nil {
-				return resp, fmt.Errorf("body download policy: %w", err)
+				return resp, newBodyDownloadError(err, req)
 			}
 			resp.Body = &nopClosingBytesReader{s: b}
 		}
 		return resp, err
 	})
 }
+
+type bodyDownloadError struct {
+	err     error
+	noRetry bool
+}
+
+func newBodyDownloadError(err error, req *Request) error {
+	// on failure, only retry the request for idempotent operations.
+	// we currently identify them as DELETE, GET, and PUT requests.
+	noRetry := true
+	if m := strings.ToUpper(req.Method); m == http.MethodDelete || m == http.MethodGet || m == http.MethodPut {
+		noRetry = false
+	}
+	return &bodyDownloadError{
+		err:     err,
+		noRetry: noRetry,
+	}
+}
+
+func (b *bodyDownloadError) Error() string {
+	return fmt.Sprintf("body download policy: %s", b.err.Error())
+}
+
+func (b *bodyDownloadError) IsNotRetriable() bool {
+	return b.noRetry
+}
+
+func (b *bodyDownloadError) Unwrap() error {
+	return b.err
+}
+
+var _ Retrier = (*bodyDownloadError)(nil)
 
 // bodyDownloadPolicyOpValues is the struct containing the per-operation values
 type bodyDownloadPolicyOpValues struct {

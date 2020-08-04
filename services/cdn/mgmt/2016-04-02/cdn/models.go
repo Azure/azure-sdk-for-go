@@ -28,150 +28,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2016-04-02/cdn"
 
-// CustomDomainResourceState enumerates the values for custom domain resource state.
-type CustomDomainResourceState string
-
-const (
-	// Active ...
-	Active CustomDomainResourceState = "Active"
-	// Creating ...
-	Creating CustomDomainResourceState = "Creating"
-	// Deleting ...
-	Deleting CustomDomainResourceState = "Deleting"
-)
-
-// PossibleCustomDomainResourceStateValues returns an array of possible values for the CustomDomainResourceState const type.
-func PossibleCustomDomainResourceStateValues() []CustomDomainResourceState {
-	return []CustomDomainResourceState{Active, Creating, Deleting}
-}
-
-// EndpointResourceState enumerates the values for endpoint resource state.
-type EndpointResourceState string
-
-const (
-	// EndpointResourceStateCreating ...
-	EndpointResourceStateCreating EndpointResourceState = "Creating"
-	// EndpointResourceStateDeleting ...
-	EndpointResourceStateDeleting EndpointResourceState = "Deleting"
-	// EndpointResourceStateRunning ...
-	EndpointResourceStateRunning EndpointResourceState = "Running"
-	// EndpointResourceStateStarting ...
-	EndpointResourceStateStarting EndpointResourceState = "Starting"
-	// EndpointResourceStateStopped ...
-	EndpointResourceStateStopped EndpointResourceState = "Stopped"
-	// EndpointResourceStateStopping ...
-	EndpointResourceStateStopping EndpointResourceState = "Stopping"
-)
-
-// PossibleEndpointResourceStateValues returns an array of possible values for the EndpointResourceState const type.
-func PossibleEndpointResourceStateValues() []EndpointResourceState {
-	return []EndpointResourceState{EndpointResourceStateCreating, EndpointResourceStateDeleting, EndpointResourceStateRunning, EndpointResourceStateStarting, EndpointResourceStateStopped, EndpointResourceStateStopping}
-}
-
-// OriginResourceState enumerates the values for origin resource state.
-type OriginResourceState string
-
-const (
-	// OriginResourceStateActive ...
-	OriginResourceStateActive OriginResourceState = "Active"
-	// OriginResourceStateCreating ...
-	OriginResourceStateCreating OriginResourceState = "Creating"
-	// OriginResourceStateDeleting ...
-	OriginResourceStateDeleting OriginResourceState = "Deleting"
-)
-
-// PossibleOriginResourceStateValues returns an array of possible values for the OriginResourceState const type.
-func PossibleOriginResourceStateValues() []OriginResourceState {
-	return []OriginResourceState{OriginResourceStateActive, OriginResourceStateCreating, OriginResourceStateDeleting}
-}
-
-// ProfileResourceState enumerates the values for profile resource state.
-type ProfileResourceState string
-
-const (
-	// ProfileResourceStateActive ...
-	ProfileResourceStateActive ProfileResourceState = "Active"
-	// ProfileResourceStateCreating ...
-	ProfileResourceStateCreating ProfileResourceState = "Creating"
-	// ProfileResourceStateDeleting ...
-	ProfileResourceStateDeleting ProfileResourceState = "Deleting"
-	// ProfileResourceStateDisabled ...
-	ProfileResourceStateDisabled ProfileResourceState = "Disabled"
-)
-
-// PossibleProfileResourceStateValues returns an array of possible values for the ProfileResourceState const type.
-func PossibleProfileResourceStateValues() []ProfileResourceState {
-	return []ProfileResourceState{ProfileResourceStateActive, ProfileResourceStateCreating, ProfileResourceStateDeleting, ProfileResourceStateDisabled}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// ProvisioningStateCreating ...
-	ProvisioningStateCreating ProvisioningState = "Creating"
-	// ProvisioningStateFailed ...
-	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateSucceeded ...
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateCreating, ProvisioningStateFailed, ProvisioningStateSucceeded}
-}
-
-// QueryStringCachingBehavior enumerates the values for query string caching behavior.
-type QueryStringCachingBehavior string
-
-const (
-	// BypassCaching ...
-	BypassCaching QueryStringCachingBehavior = "BypassCaching"
-	// IgnoreQueryString ...
-	IgnoreQueryString QueryStringCachingBehavior = "IgnoreQueryString"
-	// NotSet ...
-	NotSet QueryStringCachingBehavior = "NotSet"
-	// UseQueryString ...
-	UseQueryString QueryStringCachingBehavior = "UseQueryString"
-)
-
-// PossibleQueryStringCachingBehaviorValues returns an array of possible values for the QueryStringCachingBehavior const type.
-func PossibleQueryStringCachingBehaviorValues() []QueryStringCachingBehavior {
-	return []QueryStringCachingBehavior{BypassCaching, IgnoreQueryString, NotSet, UseQueryString}
-}
-
-// ResourceType enumerates the values for resource type.
-type ResourceType string
-
-const (
-	// MicrosoftCdnProfilesEndpoints ...
-	MicrosoftCdnProfilesEndpoints ResourceType = "Microsoft.Cdn/Profiles/Endpoints"
-)
-
-// PossibleResourceTypeValues returns an array of possible values for the ResourceType const type.
-func PossibleResourceTypeValues() []ResourceType {
-	return []ResourceType{MicrosoftCdnProfilesEndpoints}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// CustomVerizon ...
-	CustomVerizon SkuName = "Custom_Verizon"
-	// PremiumVerizon ...
-	PremiumVerizon SkuName = "Premium_Verizon"
-	// StandardAkamai ...
-	StandardAkamai SkuName = "Standard_Akamai"
-	// StandardVerizon ...
-	StandardVerizon SkuName = "Standard_Verizon"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{CustomVerizon, PremiumVerizon, StandardAkamai, StandardVerizon}
-}
-
 // CheckNameAvailabilityInput input of CheckNameAvailability API.
 type CheckNameAvailabilityInput struct {
 	// Name - The resource name to validate.
@@ -191,8 +47,8 @@ type CheckNameAvailabilityOutput struct {
 	Message *string `json:"Message,omitempty"`
 }
 
-// CustomDomain CDN CustomDomain represents a mapping between a user specified domain name and a CDN
-// endpoint. This is to use custom domain names to represent the URLs for branding purposes.
+// CustomDomain CDN CustomDomain represents a mapping between a user specified domain name and a CDN endpoint.
+// This is to use custom domain names to represent the URLs for branding purposes.
 type CustomDomain struct {
 	autorest.Response       `json:"-"`
 	*CustomDomainProperties `json:"properties,omitempty"`
@@ -319,6 +175,18 @@ type CustomDomainProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CustomDomainProperties.
+func (cdp CustomDomainProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cdp.HostName != nil {
+		objectMap["hostName"] = cdp.HostName
+	}
+	if cdp.ProvisioningState != "" {
+		objectMap["provisioningState"] = cdp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
 // CustomDomainPropertiesParameters ...
 type CustomDomainPropertiesParameters struct {
 	// HostName - The host name of the custom domain. Must be a domain name.
@@ -354,8 +222,8 @@ func (future *CustomDomainsCreateFuture) Result(client CustomDomainsClient) (cd 
 	return
 }
 
-// CustomDomainsDeleteIfExistsFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// CustomDomainsDeleteIfExistsFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type CustomDomainsDeleteIfExistsFuture struct {
 	azure.Future
 }
@@ -446,8 +314,8 @@ type DeepCreatedOriginProperties struct {
 }
 
 // Endpoint CDN endpoint is the entity within a CDN profile containing configuration information regarding
-// caching behaviors and origins. The CDN endpoint is exposed using the URL format
-// <endpointname>.azureedge.net by default, but custom domains can also be created.
+// caching behaviors and origins. The CDN endpoint is exposed using the URL format <endpointname>.azureedge.net
+// by default, but custom domains can also be created.
 type Endpoint struct {
 	autorest.Response   `json:"-"`
 	*EndpointProperties `json:"properties,omitempty"`
@@ -646,6 +514,39 @@ type EndpointProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EndpointProperties.
+func (ep EndpointProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ep.OriginHostHeader != nil {
+		objectMap["originHostHeader"] = ep.OriginHostHeader
+	}
+	if ep.OriginPath != nil {
+		objectMap["originPath"] = ep.OriginPath
+	}
+	if ep.ContentTypesToCompress != nil {
+		objectMap["contentTypesToCompress"] = ep.ContentTypesToCompress
+	}
+	if ep.IsCompressionEnabled != nil {
+		objectMap["isCompressionEnabled"] = ep.IsCompressionEnabled
+	}
+	if ep.IsHTTPAllowed != nil {
+		objectMap["isHttpAllowed"] = ep.IsHTTPAllowed
+	}
+	if ep.IsHTTPSAllowed != nil {
+		objectMap["isHttpsAllowed"] = ep.IsHTTPSAllowed
+	}
+	if ep.QueryStringCachingBehavior != "" {
+		objectMap["queryStringCachingBehavior"] = ep.QueryStringCachingBehavior
+	}
+	if ep.Origins != nil {
+		objectMap["origins"] = ep.Origins
+	}
+	if ep.ProvisioningState != "" {
+		objectMap["provisioningState"] = ep.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
 // EndpointPropertiesCreateParameters ...
 type EndpointPropertiesCreateParameters struct {
 	// OriginHostHeader - The host header CDN provider will send along with content requests to origins. The default value is the host name of the origin.
@@ -684,8 +585,7 @@ type EndpointPropertiesUpdateParameters struct {
 	QueryStringCachingBehavior QueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
 }
 
-// EndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EndpointsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type EndpointsCreateFuture struct {
 	azure.Future
 }
@@ -782,8 +682,7 @@ func (future *EndpointsPurgeContentFuture) Result(client EndpointsClient) (ar au
 	return
 }
 
-// EndpointsStartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EndpointsStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type EndpointsStartFuture struct {
 	azure.Future
 }
@@ -811,8 +710,7 @@ func (future *EndpointsStartFuture) Result(client EndpointsClient) (e Endpoint, 
 	return
 }
 
-// EndpointsStopFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EndpointsStopFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type EndpointsStopFuture struct {
 	azure.Future
 }
@@ -840,8 +738,7 @@ func (future *EndpointsStopFuture) Result(client EndpointsClient) (e Endpoint, e
 	return
 }
 
-// EndpointsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EndpointsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type EndpointsUpdateFuture struct {
 	azure.Future
 }
@@ -960,9 +857,9 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 }
 
-// Origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented
-// by an endpoint do not have the requested content cached, they attempt to fetch it from one or more of
-// the configured origins.
+// Origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
+// an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
+// configured origins.
 type Origin struct {
 	autorest.Response `json:"-"`
 	*OriginProperties `json:"properties,omitempty"`
@@ -1093,6 +990,24 @@ type OriginProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OriginProperties.
+func (op OriginProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if op.HostName != nil {
+		objectMap["hostName"] = op.HostName
+	}
+	if op.HTTPPort != nil {
+		objectMap["httpPort"] = op.HTTPPort
+	}
+	if op.HTTPSPort != nil {
+		objectMap["httpsPort"] = op.HTTPSPort
+	}
+	if op.ProvisioningState != "" {
+		objectMap["provisioningState"] = op.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
 // OriginPropertiesParameters ...
 type OriginPropertiesParameters struct {
 	// HostName - The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are supported.
@@ -1103,8 +1018,7 @@ type OriginPropertiesParameters struct {
 	HTTPSPort *int32 `json:"httpsPort,omitempty"`
 }
 
-// OriginsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// OriginsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type OriginsCreateFuture struct {
 	azure.Future
 }
@@ -1161,8 +1075,7 @@ func (future *OriginsDeleteIfExistsFuture) Result(client OriginsClient) (o Origi
 	return
 }
 
-// OriginsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// OriginsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type OriginsUpdateFuture struct {
 	azure.Future
 }
@@ -1191,8 +1104,8 @@ func (future *OriginsUpdateFuture) Result(client OriginsClient) (o Origin, err e
 }
 
 // Profile CDN profile represents the top level resource and the entry point into the CDN API. This allows
-// users to set up a logical grouping of endpoints in addition to creating shared configuration settings
-// and selecting pricing tiers and providers.
+// users to set up a logical grouping of endpoints in addition to creating shared configuration settings and
+// selecting pricing tiers and providers.
 type Profile struct {
 	autorest.Response `json:"-"`
 	// Sku - The SKU (pricing tier) of the CDN profile.
@@ -1346,8 +1259,16 @@ type ProfileProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
-// ProfilesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// MarshalJSON is the custom marshaler for ProfileProperties.
+func (pp ProfileProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pp.ProvisioningState != "" {
+		objectMap["provisioningState"] = pp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
+// ProfilesCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ProfilesCreateFuture struct {
 	azure.Future
 }
@@ -1398,8 +1319,7 @@ func (future *ProfilesDeleteIfExistsFuture) Result(client ProfilesClient) (ar au
 	return
 }
 
-// ProfilesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ProfilesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ProfilesUpdateFuture struct {
 	azure.Future
 }

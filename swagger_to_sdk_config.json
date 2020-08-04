@@ -8,14 +8,14 @@
       "gofmt -w ./services/"
     ],
     "autorest_options": {
-      "use": "@microsoft.azure/autorest.go@~2.1.152",
+      "use": "@microsoft.azure/autorest.go@~2.1.153",
       "go": "",
       "verbose": "",
       "sdkrel:go-sdk-folder": ".",
       "multiapi": "",
       "use-onever": "",
       "preview-chk": "",
-      "version": "previous"
+      "version": "V2"
     },
     "repotag": "azure-sdk-for-go",
     "envs": {

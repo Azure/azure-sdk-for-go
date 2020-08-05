@@ -115,7 +115,6 @@ func (client ExtensionsClient) GetSender(req *http.Request) (*http.Response, err
 func (client ExtensionsClient) GetResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -193,7 +192,6 @@ func (client ExtensionsClient) ListByDatabaseSender(req *http.Request) (*http.Re
 func (client ExtensionsClient) ListByDatabaseResponder(resp *http.Response) (result ExtensionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

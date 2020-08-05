@@ -30,130 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2016-09-30/containerservice"
 
-// OchestratorTypes enumerates the values for ochestrator types.
-type OchestratorTypes string
-
-const (
-	// Custom ...
-	Custom OchestratorTypes = "Custom"
-	// DCOS ...
-	DCOS OchestratorTypes = "DCOS"
-	// Kubernetes ...
-	Kubernetes OchestratorTypes = "Kubernetes"
-	// Swarm ...
-	Swarm OchestratorTypes = "Swarm"
-)
-
-// PossibleOchestratorTypesValues returns an array of possible values for the OchestratorTypes const type.
-func PossibleOchestratorTypesValues() []OchestratorTypes {
-	return []OchestratorTypes{Custom, DCOS, Kubernetes, Swarm}
-}
-
-// VMSizeTypes enumerates the values for vm size types.
-type VMSizeTypes string
-
-const (
-	// StandardA0 ...
-	StandardA0 VMSizeTypes = "Standard_A0"
-	// StandardA1 ...
-	StandardA1 VMSizeTypes = "Standard_A1"
-	// StandardA10 ...
-	StandardA10 VMSizeTypes = "Standard_A10"
-	// StandardA11 ...
-	StandardA11 VMSizeTypes = "Standard_A11"
-	// StandardA2 ...
-	StandardA2 VMSizeTypes = "Standard_A2"
-	// StandardA3 ...
-	StandardA3 VMSizeTypes = "Standard_A3"
-	// StandardA4 ...
-	StandardA4 VMSizeTypes = "Standard_A4"
-	// StandardA5 ...
-	StandardA5 VMSizeTypes = "Standard_A5"
-	// StandardA6 ...
-	StandardA6 VMSizeTypes = "Standard_A6"
-	// StandardA7 ...
-	StandardA7 VMSizeTypes = "Standard_A7"
-	// StandardA8 ...
-	StandardA8 VMSizeTypes = "Standard_A8"
-	// StandardA9 ...
-	StandardA9 VMSizeTypes = "Standard_A9"
-	// StandardD1 ...
-	StandardD1 VMSizeTypes = "Standard_D1"
-	// StandardD11 ...
-	StandardD11 VMSizeTypes = "Standard_D11"
-	// StandardD11V2 ...
-	StandardD11V2 VMSizeTypes = "Standard_D11_v2"
-	// StandardD12 ...
-	StandardD12 VMSizeTypes = "Standard_D12"
-	// StandardD12V2 ...
-	StandardD12V2 VMSizeTypes = "Standard_D12_v2"
-	// StandardD13 ...
-	StandardD13 VMSizeTypes = "Standard_D13"
-	// StandardD13V2 ...
-	StandardD13V2 VMSizeTypes = "Standard_D13_v2"
-	// StandardD14 ...
-	StandardD14 VMSizeTypes = "Standard_D14"
-	// StandardD14V2 ...
-	StandardD14V2 VMSizeTypes = "Standard_D14_v2"
-	// StandardD1V2 ...
-	StandardD1V2 VMSizeTypes = "Standard_D1_v2"
-	// StandardD2 ...
-	StandardD2 VMSizeTypes = "Standard_D2"
-	// StandardD2V2 ...
-	StandardD2V2 VMSizeTypes = "Standard_D2_v2"
-	// StandardD3 ...
-	StandardD3 VMSizeTypes = "Standard_D3"
-	// StandardD3V2 ...
-	StandardD3V2 VMSizeTypes = "Standard_D3_v2"
-	// StandardD4 ...
-	StandardD4 VMSizeTypes = "Standard_D4"
-	// StandardD4V2 ...
-	StandardD4V2 VMSizeTypes = "Standard_D4_v2"
-	// StandardD5V2 ...
-	StandardD5V2 VMSizeTypes = "Standard_D5_v2"
-	// StandardDS1 ...
-	StandardDS1 VMSizeTypes = "Standard_DS1"
-	// StandardDS11 ...
-	StandardDS11 VMSizeTypes = "Standard_DS11"
-	// StandardDS12 ...
-	StandardDS12 VMSizeTypes = "Standard_DS12"
-	// StandardDS13 ...
-	StandardDS13 VMSizeTypes = "Standard_DS13"
-	// StandardDS14 ...
-	StandardDS14 VMSizeTypes = "Standard_DS14"
-	// StandardDS2 ...
-	StandardDS2 VMSizeTypes = "Standard_DS2"
-	// StandardDS3 ...
-	StandardDS3 VMSizeTypes = "Standard_DS3"
-	// StandardDS4 ...
-	StandardDS4 VMSizeTypes = "Standard_DS4"
-	// StandardG1 ...
-	StandardG1 VMSizeTypes = "Standard_G1"
-	// StandardG2 ...
-	StandardG2 VMSizeTypes = "Standard_G2"
-	// StandardG3 ...
-	StandardG3 VMSizeTypes = "Standard_G3"
-	// StandardG4 ...
-	StandardG4 VMSizeTypes = "Standard_G4"
-	// StandardG5 ...
-	StandardG5 VMSizeTypes = "Standard_G5"
-	// StandardGS1 ...
-	StandardGS1 VMSizeTypes = "Standard_GS1"
-	// StandardGS2 ...
-	StandardGS2 VMSizeTypes = "Standard_GS2"
-	// StandardGS3 ...
-	StandardGS3 VMSizeTypes = "Standard_GS3"
-	// StandardGS4 ...
-	StandardGS4 VMSizeTypes = "Standard_GS4"
-	// StandardGS5 ...
-	StandardGS5 VMSizeTypes = "Standard_GS5"
-)
-
-// PossibleVMSizeTypesValues returns an array of possible values for the VMSizeTypes const type.
-func PossibleVMSizeTypesValues() []VMSizeTypes {
-	return []VMSizeTypes{StandardA0, StandardA1, StandardA10, StandardA11, StandardA2, StandardA3, StandardA4, StandardA5, StandardA6, StandardA7, StandardA8, StandardA9, StandardD1, StandardD11, StandardD11V2, StandardD12, StandardD12V2, StandardD13, StandardD13V2, StandardD14, StandardD14V2, StandardD1V2, StandardD2, StandardD2V2, StandardD3, StandardD3V2, StandardD4, StandardD4V2, StandardD5V2, StandardDS1, StandardDS11, StandardDS12, StandardDS13, StandardDS14, StandardDS2, StandardDS3, StandardDS4, StandardG1, StandardG2, StandardG3, StandardG4, StandardG5, StandardGS1, StandardGS2, StandardGS3, StandardGS4, StandardGS5}
-}
-
 // AgentPoolProfile profile for the container service agent pool.
 type AgentPoolProfile struct {
 	// Name - Unique name of the agent pool profile in the context of the subscription and resource group.
@@ -166,6 +42,24 @@ type AgentPoolProfile struct {
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
 	// Fqdn - READ-ONLY; FQDN for the agent pool.
 	Fqdn *string `json:"fqdn,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AgentPoolProfile.
+func (app AgentPoolProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if app.Name != nil {
+		objectMap["name"] = app.Name
+	}
+	if app.Count != nil {
+		objectMap["count"] = app.Count
+	}
+	if app.VMSize != "" {
+		objectMap["vmSize"] = app.VMSize
+	}
+	if app.DNSPrefix != nil {
+		objectMap["dnsPrefix"] = app.DNSPrefix
+	}
+	return json.Marshal(objectMap)
 }
 
 // ContainerService container service.
@@ -297,8 +191,8 @@ func (future *ContainerServicesCreateOrUpdateFutureType) Result(client Container
 	return
 }
 
-// ContainerServicesDeleteFutureType an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ContainerServicesDeleteFutureType an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ContainerServicesDeleteFutureType struct {
 	azure.Future
 }
@@ -417,10 +311,15 @@ func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -448,11 +347,16 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lr = next
 	return nil
 }
 
@@ -496,6 +400,18 @@ type MasterProfile struct {
 	Fqdn *string `json:"fqdn,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MasterProfile.
+func (mp MasterProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mp.Count != nil {
+		objectMap["count"] = mp.Count
+	}
+	if mp.DNSPrefix != nil {
+		objectMap["dnsPrefix"] = mp.DNSPrefix
+	}
+	return json.Marshal(objectMap)
+}
+
 // OrchestratorProfile profile for the container service orchestrator.
 type OrchestratorProfile struct {
 	// OrchestratorType - The orchestrator to use to manage container service cluster resources. Valid values are Swarm, DCOS, and Custom. Possible values include: 'Swarm', 'DCOS', 'Custom', 'Kubernetes'
@@ -522,6 +438,36 @@ type Properties struct {
 	LinuxProfile *LinuxProfile `json:"linuxProfile,omitempty"`
 	// DiagnosticsProfile - Properties of the diagnostic agent.
 	DiagnosticsProfile *DiagnosticsProfile `json:"diagnosticsProfile,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Properties.
+func (p Properties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.OrchestratorProfile != nil {
+		objectMap["orchestratorProfile"] = p.OrchestratorProfile
+	}
+	if p.CustomProfile != nil {
+		objectMap["customProfile"] = p.CustomProfile
+	}
+	if p.ServicePrincipalProfile != nil {
+		objectMap["servicePrincipalProfile"] = p.ServicePrincipalProfile
+	}
+	if p.MasterProfile != nil {
+		objectMap["masterProfile"] = p.MasterProfile
+	}
+	if p.AgentPoolProfiles != nil {
+		objectMap["agentPoolProfiles"] = p.AgentPoolProfiles
+	}
+	if p.WindowsProfile != nil {
+		objectMap["windowsProfile"] = p.WindowsProfile
+	}
+	if p.LinuxProfile != nil {
+		objectMap["linuxProfile"] = p.LinuxProfile
+	}
+	if p.DiagnosticsProfile != nil {
+		objectMap["diagnosticsProfile"] = p.DiagnosticsProfile
+	}
+	return json.Marshal(objectMap)
 }
 
 // Resource the Resource model definition.
@@ -577,6 +523,15 @@ type VMDiagnostics struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// StorageURI - READ-ONLY; The URI of the storage account where diagnostics are stored.
 	StorageURI *string `json:"storageUri,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMDiagnostics.
+func (vd VMDiagnostics) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vd.Enabled != nil {
+		objectMap["enabled"] = vd.Enabled
+	}
+	return json.Marshal(objectMap)
 }
 
 // WindowsProfile profile for Windows VMs in the container service cluster.

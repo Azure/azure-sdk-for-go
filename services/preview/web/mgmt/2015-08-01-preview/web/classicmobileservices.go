@@ -110,7 +110,6 @@ func (client ClassicMobileServicesClient) DeleteClassicMobileServiceSender(req *
 func (client ClassicMobileServicesClient) DeleteClassicMobileServiceResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -186,7 +185,6 @@ func (client ClassicMobileServicesClient) GetClassicMobileServiceSender(req *htt
 func (client ClassicMobileServicesClient) GetClassicMobileServiceResponder(resp *http.Response) (result ClassicMobileService, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -226,6 +224,9 @@ func (client ClassicMobileServicesClient) GetClassicMobileServices(ctx context.C
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ClassicMobileServicesClient", "GetClassicMobileServices", resp, "Failure responding to request")
 	}
+	if result.cmsc.hasNextLink() && result.cmsc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -261,7 +262,6 @@ func (client ClassicMobileServicesClient) GetClassicMobileServicesSender(req *ht
 func (client ClassicMobileServicesClient) GetClassicMobileServicesResponder(resp *http.Response) (result ClassicMobileServiceCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

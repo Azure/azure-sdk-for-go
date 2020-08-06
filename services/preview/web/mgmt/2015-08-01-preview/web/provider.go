@@ -100,7 +100,6 @@ func (client ProviderClient) GetPublishingUserSender(req *http.Request) (*http.R
 func (client ProviderClient) GetPublishingUserResponder(resp *http.Response) (result User, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -173,7 +172,6 @@ func (client ProviderClient) GetSourceControlSender(req *http.Request) (*http.Re
 func (client ProviderClient) GetSourceControlResponder(resp *http.Response) (result SourceControl, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -211,6 +209,9 @@ func (client ProviderClient) GetSourceControls(ctx context.Context) (result Sour
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ProviderClient", "GetSourceControls", resp, "Failure responding to request")
 	}
+	if result.scc.hasNextLink() && result.scc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -241,7 +242,6 @@ func (client ProviderClient) GetSourceControlsSender(req *http.Request) (*http.R
 func (client ProviderClient) GetSourceControlsResponder(resp *http.Response) (result SourceControlCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -349,7 +349,6 @@ func (client ProviderClient) UpdatePublishingUserSender(req *http.Request) (*htt
 func (client ProviderClient) UpdatePublishingUserResponder(resp *http.Response) (result User, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -425,7 +424,6 @@ func (client ProviderClient) UpdateSourceControlSender(req *http.Request) (*http
 func (client ProviderClient) UpdateSourceControlResponder(resp *http.Response) (result SourceControl, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

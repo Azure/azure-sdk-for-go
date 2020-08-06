@@ -32,724 +32,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-01-preview/web"
 
-// AccessControlEntryAction enumerates the values for access control entry action.
-type AccessControlEntryAction string
-
-const (
-	// Deny ...
-	Deny AccessControlEntryAction = "Deny"
-	// Permit ...
-	Permit AccessControlEntryAction = "Permit"
-)
-
-// PossibleAccessControlEntryActionValues returns an array of possible values for the AccessControlEntryAction const type.
-func PossibleAccessControlEntryActionValues() []AccessControlEntryAction {
-	return []AccessControlEntryAction{Deny, Permit}
-}
-
-// AutoHealActionType enumerates the values for auto heal action type.
-type AutoHealActionType string
-
-const (
-	// CustomAction ...
-	CustomAction AutoHealActionType = "CustomAction"
-	// LogEvent ...
-	LogEvent AutoHealActionType = "LogEvent"
-	// Recycle ...
-	Recycle AutoHealActionType = "Recycle"
-)
-
-// PossibleAutoHealActionTypeValues returns an array of possible values for the AutoHealActionType const type.
-func PossibleAutoHealActionTypeValues() []AutoHealActionType {
-	return []AutoHealActionType{CustomAction, LogEvent, Recycle}
-}
-
-// AzureResourceType enumerates the values for azure resource type.
-type AzureResourceType string
-
-const (
-	// TrafficManager ...
-	TrafficManager AzureResourceType = "TrafficManager"
-	// Website ...
-	Website AzureResourceType = "Website"
-)
-
-// PossibleAzureResourceTypeValues returns an array of possible values for the AzureResourceType const type.
-func PossibleAzureResourceTypeValues() []AzureResourceType {
-	return []AzureResourceType{TrafficManager, Website}
-}
-
-// BackupItemStatus enumerates the values for backup item status.
-type BackupItemStatus string
-
-const (
-	// Created ...
-	Created BackupItemStatus = "Created"
-	// Deleted ...
-	Deleted BackupItemStatus = "Deleted"
-	// DeleteFailed ...
-	DeleteFailed BackupItemStatus = "DeleteFailed"
-	// DeleteInProgress ...
-	DeleteInProgress BackupItemStatus = "DeleteInProgress"
-	// Failed ...
-	Failed BackupItemStatus = "Failed"
-	// InProgress ...
-	InProgress BackupItemStatus = "InProgress"
-	// PartiallySucceeded ...
-	PartiallySucceeded BackupItemStatus = "PartiallySucceeded"
-	// Skipped ...
-	Skipped BackupItemStatus = "Skipped"
-	// Succeeded ...
-	Succeeded BackupItemStatus = "Succeeded"
-	// TimedOut ...
-	TimedOut BackupItemStatus = "TimedOut"
-)
-
-// PossibleBackupItemStatusValues returns an array of possible values for the BackupItemStatus const type.
-func PossibleBackupItemStatusValues() []BackupItemStatus {
-	return []BackupItemStatus{Created, Deleted, DeleteFailed, DeleteInProgress, Failed, InProgress, PartiallySucceeded, Skipped, Succeeded, TimedOut}
-}
-
-// BackupRestoreOperationType enumerates the values for backup restore operation type.
-type BackupRestoreOperationType string
-
-const (
-	// Clone ...
-	Clone BackupRestoreOperationType = "Clone"
-	// Default ...
-	Default BackupRestoreOperationType = "Default"
-	// Relocation ...
-	Relocation BackupRestoreOperationType = "Relocation"
-)
-
-// PossibleBackupRestoreOperationTypeValues returns an array of possible values for the BackupRestoreOperationType const type.
-func PossibleBackupRestoreOperationTypeValues() []BackupRestoreOperationType {
-	return []BackupRestoreOperationType{Clone, Default, Relocation}
-}
-
-// BuiltInAuthenticationProvider enumerates the values for built in authentication provider.
-type BuiltInAuthenticationProvider string
-
-const (
-	// AzureActiveDirectory ...
-	AzureActiveDirectory BuiltInAuthenticationProvider = "AzureActiveDirectory"
-	// Facebook ...
-	Facebook BuiltInAuthenticationProvider = "Facebook"
-	// Google ...
-	Google BuiltInAuthenticationProvider = "Google"
-	// MicrosoftAccount ...
-	MicrosoftAccount BuiltInAuthenticationProvider = "MicrosoftAccount"
-	// Twitter ...
-	Twitter BuiltInAuthenticationProvider = "Twitter"
-)
-
-// PossibleBuiltInAuthenticationProviderValues returns an array of possible values for the BuiltInAuthenticationProvider const type.
-func PossibleBuiltInAuthenticationProviderValues() []BuiltInAuthenticationProvider {
-	return []BuiltInAuthenticationProvider{AzureActiveDirectory, Facebook, Google, MicrosoftAccount, Twitter}
-}
-
-// CertificateOrderActionType enumerates the values for certificate order action type.
-type CertificateOrderActionType string
-
-const (
-	// CertificateIssued ...
-	CertificateIssued CertificateOrderActionType = "CertificateIssued"
-	// CertificateOrderCanceled ...
-	CertificateOrderCanceled CertificateOrderActionType = "CertificateOrderCanceled"
-	// CertificateOrderCreated ...
-	CertificateOrderCreated CertificateOrderActionType = "CertificateOrderCreated"
-	// CertificateRevoked ...
-	CertificateRevoked CertificateOrderActionType = "CertificateRevoked"
-	// DomainValidationComplete ...
-	DomainValidationComplete CertificateOrderActionType = "DomainValidationComplete"
-	// FraudDetected ...
-	FraudDetected CertificateOrderActionType = "FraudDetected"
-	// OrgNameChange ...
-	OrgNameChange CertificateOrderActionType = "OrgNameChange"
-	// OrgValidationComplete ...
-	OrgValidationComplete CertificateOrderActionType = "OrgValidationComplete"
-	// SanDrop ...
-	SanDrop CertificateOrderActionType = "SanDrop"
-)
-
-// PossibleCertificateOrderActionTypeValues returns an array of possible values for the CertificateOrderActionType const type.
-func PossibleCertificateOrderActionTypeValues() []CertificateOrderActionType {
-	return []CertificateOrderActionType{CertificateIssued, CertificateOrderCanceled, CertificateOrderCreated, CertificateRevoked, DomainValidationComplete, FraudDetected, OrgNameChange, OrgValidationComplete, SanDrop}
-}
-
-// CertificateOrderStatus enumerates the values for certificate order status.
-type CertificateOrderStatus string
-
-const (
-	// Canceled ...
-	Canceled CertificateOrderStatus = "Canceled"
-	// Denied ...
-	Denied CertificateOrderStatus = "Denied"
-	// Expired ...
-	Expired CertificateOrderStatus = "Expired"
-	// Issued ...
-	Issued CertificateOrderStatus = "Issued"
-	// NotSubmitted ...
-	NotSubmitted CertificateOrderStatus = "NotSubmitted"
-	// Pendingissuance ...
-	Pendingissuance CertificateOrderStatus = "Pendingissuance"
-	// PendingRekey ...
-	PendingRekey CertificateOrderStatus = "PendingRekey"
-	// Pendingrevocation ...
-	Pendingrevocation CertificateOrderStatus = "Pendingrevocation"
-	// Revoked ...
-	Revoked CertificateOrderStatus = "Revoked"
-	// Unused ...
-	Unused CertificateOrderStatus = "Unused"
-)
-
-// PossibleCertificateOrderStatusValues returns an array of possible values for the CertificateOrderStatus const type.
-func PossibleCertificateOrderStatusValues() []CertificateOrderStatus {
-	return []CertificateOrderStatus{Canceled, Denied, Expired, Issued, NotSubmitted, Pendingissuance, PendingRekey, Pendingrevocation, Revoked, Unused}
-}
-
-// CertificateProductType enumerates the values for certificate product type.
-type CertificateProductType string
-
-const (
-	// StandardDomainValidatedSsl ...
-	StandardDomainValidatedSsl CertificateProductType = "StandardDomainValidatedSsl"
-	// StandardDomainValidatedWildCardSsl ...
-	StandardDomainValidatedWildCardSsl CertificateProductType = "StandardDomainValidatedWildCardSsl"
-)
-
-// PossibleCertificateProductTypeValues returns an array of possible values for the CertificateProductType const type.
-func PossibleCertificateProductTypeValues() []CertificateProductType {
-	return []CertificateProductType{StandardDomainValidatedSsl, StandardDomainValidatedWildCardSsl}
-}
-
-// Channels enumerates the values for channels.
-type Channels string
-
-const (
-	// All ...
-	All Channels = "All"
-	// API ...
-	API Channels = "Api"
-	// Email ...
-	Email Channels = "Email"
-	// Notification ...
-	Notification Channels = "Notification"
-)
-
-// PossibleChannelsValues returns an array of possible values for the Channels const type.
-func PossibleChannelsValues() []Channels {
-	return []Channels{All, API, Email, Notification}
-}
-
-// CloneAbilityResult enumerates the values for clone ability result.
-type CloneAbilityResult string
-
-const (
-	// Cloneable ...
-	Cloneable CloneAbilityResult = "Cloneable"
-	// NotCloneable ...
-	NotCloneable CloneAbilityResult = "NotCloneable"
-	// PartiallyCloneable ...
-	PartiallyCloneable CloneAbilityResult = "PartiallyCloneable"
-)
-
-// PossibleCloneAbilityResultValues returns an array of possible values for the CloneAbilityResult const type.
-func PossibleCloneAbilityResultValues() []CloneAbilityResult {
-	return []CloneAbilityResult{Cloneable, NotCloneable, PartiallyCloneable}
-}
-
-// ComputeModeOptions enumerates the values for compute mode options.
-type ComputeModeOptions string
-
-const (
-	// Dedicated ...
-	Dedicated ComputeModeOptions = "Dedicated"
-	// Dynamic ...
-	Dynamic ComputeModeOptions = "Dynamic"
-	// Shared ...
-	Shared ComputeModeOptions = "Shared"
-)
-
-// PossibleComputeModeOptionsValues returns an array of possible values for the ComputeModeOptions const type.
-func PossibleComputeModeOptionsValues() []ComputeModeOptions {
-	return []ComputeModeOptions{Dedicated, Dynamic, Shared}
-}
-
-// ConnectionParameterType enumerates the values for connection parameter type.
-type ConnectionParameterType string
-
-const (
-	// ConnectionParameterTypeArray ...
-	ConnectionParameterTypeArray ConnectionParameterType = "array"
-	// ConnectionParameterTypeBool ...
-	ConnectionParameterTypeBool ConnectionParameterType = "bool"
-	// ConnectionParameterTypeConnection ...
-	ConnectionParameterTypeConnection ConnectionParameterType = "connection"
-	// ConnectionParameterTypeInt ...
-	ConnectionParameterTypeInt ConnectionParameterType = "int"
-	// ConnectionParameterTypeOauthSetting ...
-	ConnectionParameterTypeOauthSetting ConnectionParameterType = "oauthSetting"
-	// ConnectionParameterTypeObject ...
-	ConnectionParameterTypeObject ConnectionParameterType = "object"
-	// ConnectionParameterTypeSecureobject ...
-	ConnectionParameterTypeSecureobject ConnectionParameterType = "secureobject"
-	// ConnectionParameterTypeSecurestring ...
-	ConnectionParameterTypeSecurestring ConnectionParameterType = "securestring"
-	// ConnectionParameterTypeString ...
-	ConnectionParameterTypeString ConnectionParameterType = "string"
-)
-
-// PossibleConnectionParameterTypeValues returns an array of possible values for the ConnectionParameterType const type.
-func PossibleConnectionParameterTypeValues() []ConnectionParameterType {
-	return []ConnectionParameterType{ConnectionParameterTypeArray, ConnectionParameterTypeBool, ConnectionParameterTypeConnection, ConnectionParameterTypeInt, ConnectionParameterTypeOauthSetting, ConnectionParameterTypeObject, ConnectionParameterTypeSecureobject, ConnectionParameterTypeSecurestring, ConnectionParameterTypeString}
-}
-
-// CustomHostNameDNSRecordType enumerates the values for custom host name dns record type.
-type CustomHostNameDNSRecordType string
-
-const (
-	// A ...
-	A CustomHostNameDNSRecordType = "A"
-	// CName ...
-	CName CustomHostNameDNSRecordType = "CName"
-)
-
-// PossibleCustomHostNameDNSRecordTypeValues returns an array of possible values for the CustomHostNameDNSRecordType const type.
-func PossibleCustomHostNameDNSRecordTypeValues() []CustomHostNameDNSRecordType {
-	return []CustomHostNameDNSRecordType{A, CName}
-}
-
-// DatabaseServerType enumerates the values for database server type.
-type DatabaseServerType string
-
-const (
-	// Custom ...
-	Custom DatabaseServerType = "Custom"
-	// MySQL ...
-	MySQL DatabaseServerType = "MySql"
-	// SQLAzure ...
-	SQLAzure DatabaseServerType = "SQLAzure"
-	// SQLServer ...
-	SQLServer DatabaseServerType = "SQLServer"
-)
-
-// PossibleDatabaseServerTypeValues returns an array of possible values for the DatabaseServerType const type.
-func PossibleDatabaseServerTypeValues() []DatabaseServerType {
-	return []DatabaseServerType{Custom, MySQL, SQLAzure, SQLServer}
-}
-
-// DomainStatus enumerates the values for domain status.
-type DomainStatus string
-
-const (
-	// DomainStatusActive ...
-	DomainStatusActive DomainStatus = "Active"
-	// DomainStatusAwaiting ...
-	DomainStatusAwaiting DomainStatus = "Awaiting"
-	// DomainStatusCancelled ...
-	DomainStatusCancelled DomainStatus = "Cancelled"
-	// DomainStatusConfiscated ...
-	DomainStatusConfiscated DomainStatus = "Confiscated"
-	// DomainStatusDisabled ...
-	DomainStatusDisabled DomainStatus = "Disabled"
-	// DomainStatusExcluded ...
-	DomainStatusExcluded DomainStatus = "Excluded"
-	// DomainStatusExpired ...
-	DomainStatusExpired DomainStatus = "Expired"
-	// DomainStatusFailed ...
-	DomainStatusFailed DomainStatus = "Failed"
-	// DomainStatusHeld ...
-	DomainStatusHeld DomainStatus = "Held"
-	// DomainStatusJSONConverterFailed ...
-	DomainStatusJSONConverterFailed DomainStatus = "JsonConverterFailed"
-	// DomainStatusLocked ...
-	DomainStatusLocked DomainStatus = "Locked"
-	// DomainStatusParked ...
-	DomainStatusParked DomainStatus = "Parked"
-	// DomainStatusPending ...
-	DomainStatusPending DomainStatus = "Pending"
-	// DomainStatusReserved ...
-	DomainStatusReserved DomainStatus = "Reserved"
-	// DomainStatusReverted ...
-	DomainStatusReverted DomainStatus = "Reverted"
-	// DomainStatusSuspended ...
-	DomainStatusSuspended DomainStatus = "Suspended"
-	// DomainStatusTransferred ...
-	DomainStatusTransferred DomainStatus = "Transferred"
-	// DomainStatusUnknown ...
-	DomainStatusUnknown DomainStatus = "Unknown"
-	// DomainStatusUnlocked ...
-	DomainStatusUnlocked DomainStatus = "Unlocked"
-	// DomainStatusUnparked ...
-	DomainStatusUnparked DomainStatus = "Unparked"
-	// DomainStatusUpdated ...
-	DomainStatusUpdated DomainStatus = "Updated"
-)
-
-// PossibleDomainStatusValues returns an array of possible values for the DomainStatus const type.
-func PossibleDomainStatusValues() []DomainStatus {
-	return []DomainStatus{DomainStatusActive, DomainStatusAwaiting, DomainStatusCancelled, DomainStatusConfiscated, DomainStatusDisabled, DomainStatusExcluded, DomainStatusExpired, DomainStatusFailed, DomainStatusHeld, DomainStatusJSONConverterFailed, DomainStatusLocked, DomainStatusParked, DomainStatusPending, DomainStatusReserved, DomainStatusReverted, DomainStatusSuspended, DomainStatusTransferred, DomainStatusUnknown, DomainStatusUnlocked, DomainStatusUnparked, DomainStatusUpdated}
-}
-
-// DomainType enumerates the values for domain type.
-type DomainType string
-
-const (
-	// Regular ...
-	Regular DomainType = "Regular"
-	// SoftDeleted ...
-	SoftDeleted DomainType = "SoftDeleted"
-)
-
-// PossibleDomainTypeValues returns an array of possible values for the DomainType const type.
-func PossibleDomainTypeValues() []DomainType {
-	return []DomainType{Regular, SoftDeleted}
-}
-
-// FrequencyUnit enumerates the values for frequency unit.
-type FrequencyUnit string
-
-const (
-	// Day ...
-	Day FrequencyUnit = "Day"
-	// Hour ...
-	Hour FrequencyUnit = "Hour"
-)
-
-// PossibleFrequencyUnitValues returns an array of possible values for the FrequencyUnit const type.
-func PossibleFrequencyUnitValues() []FrequencyUnit {
-	return []FrequencyUnit{Day, Hour}
-}
-
-// HostingEnvironmentStatus enumerates the values for hosting environment status.
-type HostingEnvironmentStatus string
-
-const (
-	// Deleting ...
-	Deleting HostingEnvironmentStatus = "Deleting"
-	// Preparing ...
-	Preparing HostingEnvironmentStatus = "Preparing"
-	// Ready ...
-	Ready HostingEnvironmentStatus = "Ready"
-	// Scaling ...
-	Scaling HostingEnvironmentStatus = "Scaling"
-)
-
-// PossibleHostingEnvironmentStatusValues returns an array of possible values for the HostingEnvironmentStatus const type.
-func PossibleHostingEnvironmentStatusValues() []HostingEnvironmentStatus {
-	return []HostingEnvironmentStatus{Deleting, Preparing, Ready, Scaling}
-}
-
-// HostNameType enumerates the values for host name type.
-type HostNameType string
-
-const (
-	// Managed ...
-	Managed HostNameType = "Managed"
-	// Verified ...
-	Verified HostNameType = "Verified"
-)
-
-// PossibleHostNameTypeValues returns an array of possible values for the HostNameType const type.
-func PossibleHostNameTypeValues() []HostNameType {
-	return []HostNameType{Managed, Verified}
-}
-
-// InternalLoadBalancingMode enumerates the values for internal load balancing mode.
-type InternalLoadBalancingMode string
-
-const (
-	// None ...
-	None InternalLoadBalancingMode = "None"
-	// Publishing ...
-	Publishing InternalLoadBalancingMode = "Publishing"
-	// Web ...
-	Web InternalLoadBalancingMode = "Web"
-)
-
-// PossibleInternalLoadBalancingModeValues returns an array of possible values for the InternalLoadBalancingMode const type.
-func PossibleInternalLoadBalancingModeValues() []InternalLoadBalancingMode {
-	return []InternalLoadBalancingMode{None, Publishing, Web}
-}
-
-// KeyVaultSecretStatus enumerates the values for key vault secret status.
-type KeyVaultSecretStatus string
-
-const (
-	// KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault ...
-	KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault KeyVaultSecretStatus = "AzureServiceUnauthorizedToAccessKeyVault"
-	// KeyVaultSecretStatusCertificateOrderFailed ...
-	KeyVaultSecretStatusCertificateOrderFailed KeyVaultSecretStatus = "CertificateOrderFailed"
-	// KeyVaultSecretStatusInitialized ...
-	KeyVaultSecretStatusInitialized KeyVaultSecretStatus = "Initialized"
-	// KeyVaultSecretStatusKeyVaultDoesNotExist ...
-	KeyVaultSecretStatusKeyVaultDoesNotExist KeyVaultSecretStatus = "KeyVaultDoesNotExist"
-	// KeyVaultSecretStatusKeyVaultSecretDoesNotExist ...
-	KeyVaultSecretStatusKeyVaultSecretDoesNotExist KeyVaultSecretStatus = "KeyVaultSecretDoesNotExist"
-	// KeyVaultSecretStatusOperationNotPermittedOnKeyVault ...
-	KeyVaultSecretStatusOperationNotPermittedOnKeyVault KeyVaultSecretStatus = "OperationNotPermittedOnKeyVault"
-	// KeyVaultSecretStatusSucceeded ...
-	KeyVaultSecretStatusSucceeded KeyVaultSecretStatus = "Succeeded"
-	// KeyVaultSecretStatusUnknown ...
-	KeyVaultSecretStatusUnknown KeyVaultSecretStatus = "Unknown"
-	// KeyVaultSecretStatusUnknownError ...
-	KeyVaultSecretStatusUnknownError KeyVaultSecretStatus = "UnknownError"
-	// KeyVaultSecretStatusWaitingOnCertificateOrder ...
-	KeyVaultSecretStatusWaitingOnCertificateOrder KeyVaultSecretStatus = "WaitingOnCertificateOrder"
-)
-
-// PossibleKeyVaultSecretStatusValues returns an array of possible values for the KeyVaultSecretStatus const type.
-func PossibleKeyVaultSecretStatusValues() []KeyVaultSecretStatus {
-	return []KeyVaultSecretStatus{KeyVaultSecretStatusAzureServiceUnauthorizedToAccessKeyVault, KeyVaultSecretStatusCertificateOrderFailed, KeyVaultSecretStatusInitialized, KeyVaultSecretStatusKeyVaultDoesNotExist, KeyVaultSecretStatusKeyVaultSecretDoesNotExist, KeyVaultSecretStatusOperationNotPermittedOnKeyVault, KeyVaultSecretStatusSucceeded, KeyVaultSecretStatusUnknown, KeyVaultSecretStatusUnknownError, KeyVaultSecretStatusWaitingOnCertificateOrder}
-}
-
-// LinkState enumerates the values for link state.
-type LinkState string
-
-const (
-	// Authenticated ...
-	Authenticated LinkState = "Authenticated"
-	// Error ...
-	Error LinkState = "Error"
-	// Unauthenticated ...
-	Unauthenticated LinkState = "Unauthenticated"
-)
-
-// PossibleLinkStateValues returns an array of possible values for the LinkState const type.
-func PossibleLinkStateValues() []LinkState {
-	return []LinkState{Authenticated, Error, Unauthenticated}
-}
-
-// LogLevel enumerates the values for log level.
-type LogLevel string
-
-const (
-	// LogLevelError ...
-	LogLevelError LogLevel = "Error"
-	// LogLevelInformation ...
-	LogLevelInformation LogLevel = "Information"
-	// LogLevelOff ...
-	LogLevelOff LogLevel = "Off"
-	// LogLevelVerbose ...
-	LogLevelVerbose LogLevel = "Verbose"
-	// LogLevelWarning ...
-	LogLevelWarning LogLevel = "Warning"
-)
-
-// PossibleLogLevelValues returns an array of possible values for the LogLevel const type.
-func PossibleLogLevelValues() []LogLevel {
-	return []LogLevel{LogLevelError, LogLevelInformation, LogLevelOff, LogLevelVerbose, LogLevelWarning}
-}
-
-// ManagedHostingEnvironmentStatus enumerates the values for managed hosting environment status.
-type ManagedHostingEnvironmentStatus string
-
-const (
-	// ManagedHostingEnvironmentStatusDeleting ...
-	ManagedHostingEnvironmentStatusDeleting ManagedHostingEnvironmentStatus = "Deleting"
-	// ManagedHostingEnvironmentStatusPreparing ...
-	ManagedHostingEnvironmentStatusPreparing ManagedHostingEnvironmentStatus = "Preparing"
-	// ManagedHostingEnvironmentStatusReady ...
-	ManagedHostingEnvironmentStatusReady ManagedHostingEnvironmentStatus = "Ready"
-)
-
-// PossibleManagedHostingEnvironmentStatusValues returns an array of possible values for the ManagedHostingEnvironmentStatus const type.
-func PossibleManagedHostingEnvironmentStatusValues() []ManagedHostingEnvironmentStatus {
-	return []ManagedHostingEnvironmentStatus{ManagedHostingEnvironmentStatusDeleting, ManagedHostingEnvironmentStatusPreparing, ManagedHostingEnvironmentStatusReady}
-}
-
-// ManagedPipelineMode enumerates the values for managed pipeline mode.
-type ManagedPipelineMode string
-
-const (
-	// Classic ...
-	Classic ManagedPipelineMode = "Classic"
-	// Integrated ...
-	Integrated ManagedPipelineMode = "Integrated"
-)
-
-// PossibleManagedPipelineModeValues returns an array of possible values for the ManagedPipelineMode const type.
-func PossibleManagedPipelineModeValues() []ManagedPipelineMode {
-	return []ManagedPipelineMode{Classic, Integrated}
-}
-
-// NotificationLevel enumerates the values for notification level.
-type NotificationLevel string
-
-const (
-	// Critical ...
-	Critical NotificationLevel = "Critical"
-	// Information ...
-	Information NotificationLevel = "Information"
-	// NonUrgentSuggestion ...
-	NonUrgentSuggestion NotificationLevel = "NonUrgentSuggestion"
-	// Warning ...
-	Warning NotificationLevel = "Warning"
-)
-
-// PossibleNotificationLevelValues returns an array of possible values for the NotificationLevel const type.
-func PossibleNotificationLevelValues() []NotificationLevel {
-	return []NotificationLevel{Critical, Information, NonUrgentSuggestion, Warning}
-}
-
-// PrincipalType enumerates the values for principal type.
-type PrincipalType string
-
-const (
-	// PrincipalTypeActiveDirectory ...
-	PrincipalTypeActiveDirectory PrincipalType = "ActiveDirectory"
-	// PrincipalTypeConnection ...
-	PrincipalTypeConnection PrincipalType = "Connection"
-	// PrincipalTypeMicrosoftAccount ...
-	PrincipalTypeMicrosoftAccount PrincipalType = "MicrosoftAccount"
-)
-
-// PossiblePrincipalTypeValues returns an array of possible values for the PrincipalType const type.
-func PossiblePrincipalTypeValues() []PrincipalType {
-	return []PrincipalType{PrincipalTypeActiveDirectory, PrincipalTypeConnection, PrincipalTypeMicrosoftAccount}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// ProvisioningStateCanceled ...
-	ProvisioningStateCanceled ProvisioningState = "Canceled"
-	// ProvisioningStateDeleting ...
-	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed ...
-	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateInProgress ...
-	ProvisioningStateInProgress ProvisioningState = "InProgress"
-	// ProvisioningStateSucceeded ...
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateCanceled, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateInProgress, ProvisioningStateSucceeded}
-}
-
-// SiteAvailabilityState enumerates the values for site availability state.
-type SiteAvailabilityState string
-
-const (
-	// DisasterRecoveryMode ...
-	DisasterRecoveryMode SiteAvailabilityState = "DisasterRecoveryMode"
-	// Limited ...
-	Limited SiteAvailabilityState = "Limited"
-	// Normal ...
-	Normal SiteAvailabilityState = "Normal"
-)
-
-// PossibleSiteAvailabilityStateValues returns an array of possible values for the SiteAvailabilityState const type.
-func PossibleSiteAvailabilityStateValues() []SiteAvailabilityState {
-	return []SiteAvailabilityState{DisasterRecoveryMode, Limited, Normal}
-}
-
-// SiteLoadBalancing enumerates the values for site load balancing.
-type SiteLoadBalancing string
-
-const (
-	// LeastRequests ...
-	LeastRequests SiteLoadBalancing = "LeastRequests"
-	// LeastResponseTime ...
-	LeastResponseTime SiteLoadBalancing = "LeastResponseTime"
-	// RequestHash ...
-	RequestHash SiteLoadBalancing = "RequestHash"
-	// WeightedRoundRobin ...
-	WeightedRoundRobin SiteLoadBalancing = "WeightedRoundRobin"
-	// WeightedTotalTraffic ...
-	WeightedTotalTraffic SiteLoadBalancing = "WeightedTotalTraffic"
-)
-
-// PossibleSiteLoadBalancingValues returns an array of possible values for the SiteLoadBalancing const type.
-func PossibleSiteLoadBalancingValues() []SiteLoadBalancing {
-	return []SiteLoadBalancing{LeastRequests, LeastResponseTime, RequestHash, WeightedRoundRobin, WeightedTotalTraffic}
-}
-
-// SslState enumerates the values for ssl state.
-type SslState string
-
-const (
-	// Disabled ...
-	Disabled SslState = "Disabled"
-	// IPBasedEnabled ...
-	IPBasedEnabled SslState = "IpBasedEnabled"
-	// SniEnabled ...
-	SniEnabled SslState = "SniEnabled"
-)
-
-// PossibleSslStateValues returns an array of possible values for the SslState const type.
-func PossibleSslStateValues() []SslState {
-	return []SslState{Disabled, IPBasedEnabled, SniEnabled}
-}
-
-// StatusOptions enumerates the values for status options.
-type StatusOptions string
-
-const (
-	// StatusOptionsPending ...
-	StatusOptionsPending StatusOptions = "Pending"
-	// StatusOptionsReady ...
-	StatusOptionsReady StatusOptions = "Ready"
-)
-
-// PossibleStatusOptionsValues returns an array of possible values for the StatusOptions const type.
-func PossibleStatusOptionsValues() []StatusOptions {
-	return []StatusOptions{StatusOptionsPending, StatusOptionsReady}
-}
-
-// UnauthenticatedClientAction enumerates the values for unauthenticated client action.
-type UnauthenticatedClientAction string
-
-const (
-	// AllowAnonymous ...
-	AllowAnonymous UnauthenticatedClientAction = "AllowAnonymous"
-	// RedirectToLoginPage ...
-	RedirectToLoginPage UnauthenticatedClientAction = "RedirectToLoginPage"
-)
-
-// PossibleUnauthenticatedClientActionValues returns an array of possible values for the UnauthenticatedClientAction const type.
-func PossibleUnauthenticatedClientActionValues() []UnauthenticatedClientAction {
-	return []UnauthenticatedClientAction{AllowAnonymous, RedirectToLoginPage}
-}
-
-// UsageState enumerates the values for usage state.
-type UsageState string
-
-const (
-	// UsageStateExceeded ...
-	UsageStateExceeded UsageState = "Exceeded"
-	// UsageStateNormal ...
-	UsageStateNormal UsageState = "Normal"
-)
-
-// PossibleUsageStateValues returns an array of possible values for the UsageState const type.
-func PossibleUsageStateValues() []UsageState {
-	return []UsageState{UsageStateExceeded, UsageStateNormal}
-}
-
-// WorkerSizeOptions enumerates the values for worker size options.
-type WorkerSizeOptions string
-
-const (
-	// WorkerSizeOptionsDefault ...
-	WorkerSizeOptionsDefault WorkerSizeOptions = "Default"
-	// WorkerSizeOptionsLarge ...
-	WorkerSizeOptionsLarge WorkerSizeOptions = "Large"
-	// WorkerSizeOptionsMedium ...
-	WorkerSizeOptionsMedium WorkerSizeOptions = "Medium"
-	// WorkerSizeOptionsSmall ...
-	WorkerSizeOptionsSmall WorkerSizeOptions = "Small"
-)
-
-// PossibleWorkerSizeOptionsValues returns an array of possible values for the WorkerSizeOptions const type.
-func PossibleWorkerSizeOptionsValues() []WorkerSizeOptions {
-	return []WorkerSizeOptions{WorkerSizeOptionsDefault, WorkerSizeOptionsLarge, WorkerSizeOptionsMedium, WorkerSizeOptionsSmall}
-}
-
 // Address address information for domain registration
 type Address struct {
 	// Address1 - Address 1
@@ -1244,10 +526,15 @@ func (ac ApisCollection) IsEmpty() bool {
 	return ac.Value == nil || len(*ac.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ac ApisCollection) hasNextLink() bool {
+	return ac.NextLink != nil && len(*ac.NextLink) != 0
+}
+
 // apisCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ac ApisCollection) apisCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if ac.NextLink == nil || len(to.String(ac.NextLink)) < 1 {
+	if !ac.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1275,11 +562,16 @@ func (page *ApisCollectionPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ac)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ac)
+		if err != nil {
+			return err
+		}
+		page.ac = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ac = next
 	return nil
 }
 
@@ -1740,10 +1032,15 @@ func (bic BackupItemCollection) IsEmpty() bool {
 	return bic.Value == nil || len(*bic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (bic BackupItemCollection) hasNextLink() bool {
+	return bic.NextLink != nil && len(*bic.NextLink) != 0
+}
+
 // backupItemCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (bic BackupItemCollection) backupItemCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if bic.NextLink == nil || len(to.String(bic.NextLink)) < 1 {
+	if !bic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1771,11 +1068,16 @@ func (page *BackupItemCollectionPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.bic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.bic)
+		if err != nil {
+			return err
+		}
+		page.bic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.bic = next
 	return nil
 }
 
@@ -1980,8 +1282,8 @@ type BackupRequestProperties struct {
 	Type BackupRestoreOperationType `json:"type,omitempty"`
 }
 
-// BackupSchedule description of a backup schedule. Describes how often should be the backup performed and
-// what should be the retention policy.
+// BackupSchedule description of a backup schedule. Describes how often should be the backup performed and what
+// should be the retention policy.
 type BackupSchedule struct {
 	// FrequencyInterval - How often should be the backup executed (e.g. for weekly backup, this should be set to 7 and FrequencyUnit should be set to Day)
 	FrequencyInterval *int32 `json:"frequencyInterval,omitempty"`
@@ -2197,10 +1499,15 @@ func (cc CertificateCollection) IsEmpty() bool {
 	return cc.Value == nil || len(*cc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cc CertificateCollection) hasNextLink() bool {
+	return cc.NextLink != nil && len(*cc.NextLink) != 0
+}
+
 // certificateCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cc CertificateCollection) certificateCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if cc.NextLink == nil || len(to.String(cc.NextLink)) < 1 {
+	if !cc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2228,11 +1535,16 @@ func (page *CertificateCollectionPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cc)
+		if err != nil {
+			return err
+		}
+		page.cc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cc = next
 	return nil
 }
 
@@ -2995,10 +2307,15 @@ func (cocc CertificateOrderCertificateCollection) IsEmpty() bool {
 	return cocc.Value == nil || len(*cocc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cocc CertificateOrderCertificateCollection) hasNextLink() bool {
+	return cocc.NextLink != nil && len(*cocc.NextLink) != 0
+}
+
 // certificateOrderCertificateCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cocc CertificateOrderCertificateCollection) certificateOrderCertificateCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if cocc.NextLink == nil || len(to.String(cocc.NextLink)) < 1 {
+	if !cocc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3026,11 +2343,16 @@ func (page *CertificateOrderCertificateCollectionPage) NextWithContext(ctx conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cocc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cocc)
+		if err != nil {
+			return err
+		}
+		page.cocc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cocc = next
 	return nil
 }
 
@@ -3151,10 +2473,15 @@ func (coc CertificateOrderCollection) IsEmpty() bool {
 	return coc.Value == nil || len(*coc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (coc CertificateOrderCollection) hasNextLink() bool {
+	return coc.NextLink != nil && len(*coc.NextLink) != 0
+}
+
 // certificateOrderCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (coc CertificateOrderCollection) certificateOrderCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if coc.NextLink == nil || len(to.String(coc.NextLink)) < 1 {
+	if !coc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3182,11 +2509,16 @@ func (page *CertificateOrderCollectionPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.coc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.coc)
+		if err != nil {
+			return err
+		}
+		page.coc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.coc = next
 	return nil
 }
 
@@ -3476,8 +2808,7 @@ type ClassicMobileServiceCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ClassicMobileServiceCollectionIterator provides access to a complete listing of ClassicMobileService
-// values.
+// ClassicMobileServiceCollectionIterator provides access to a complete listing of ClassicMobileService values.
 type ClassicMobileServiceCollectionIterator struct {
 	i    int
 	page ClassicMobileServiceCollectionPage
@@ -3545,10 +2876,15 @@ func (cmsc ClassicMobileServiceCollection) IsEmpty() bool {
 	return cmsc.Value == nil || len(*cmsc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cmsc ClassicMobileServiceCollection) hasNextLink() bool {
+	return cmsc.NextLink != nil && len(*cmsc.NextLink) != 0
+}
+
 // classicMobileServiceCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cmsc ClassicMobileServiceCollection) classicMobileServiceCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if cmsc.NextLink == nil || len(to.String(cmsc.NextLink)) < 1 {
+	if !cmsc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3576,11 +2912,16 @@ func (page *ClassicMobileServiceCollectionPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cmsc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cmsc)
+		if err != nil {
+			return err
+		}
+		page.cmsc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cmsc = next
 	return nil
 }
 
@@ -4019,10 +3360,15 @@ func (cc ConnectionCollection) IsEmpty() bool {
 	return cc.Value == nil || len(*cc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cc ConnectionCollection) hasNextLink() bool {
+	return cc.NextLink != nil && len(*cc.NextLink) != 0
+}
+
 // connectionCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cc ConnectionCollection) connectionCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if cc.NextLink == nil || len(to.String(cc.NextLink)) < 1 {
+	if !cc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4050,11 +3396,16 @@ func (page *ConnectionCollectionPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cc)
+		if err != nil {
+			return err
+		}
+		page.cc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cc = next
 	return nil
 }
 
@@ -4683,8 +4034,7 @@ type ConsentLinkPayload struct {
 }
 
 // Contact contact information for domain registration. If 'Domain Privacy' option is not selected then the
-// contact information will be made publicly available through the Whois directories as per ICANN
-// requirements.
+// contact information will be made publicly available through the Whois directories as per ICANN requirements.
 type Contact struct {
 	// AddressMailing - Mailing address
 	AddressMailing *Address `json:"addressMailing,omitempty"`
@@ -4840,10 +4190,15 @@ func (cuqc CsmUsageQuotaCollection) IsEmpty() bool {
 	return cuqc.Value == nil || len(*cuqc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cuqc CsmUsageQuotaCollection) hasNextLink() bool {
+	return cuqc.NextLink != nil && len(*cuqc.NextLink) != 0
+}
+
 // csmUsageQuotaCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cuqc CsmUsageQuotaCollection) csmUsageQuotaCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if cuqc.NextLink == nil || len(to.String(cuqc.NextLink)) < 1 {
+	if !cuqc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4871,11 +4226,16 @@ func (page *CsmUsageQuotaCollectionPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cuqc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cuqc)
+		if err != nil {
+			return err
+		}
+		page.cuqc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cuqc = next
 	return nil
 }
 
@@ -5391,10 +4751,15 @@ func (dsc DeletedSiteCollection) IsEmpty() bool {
 	return dsc.Value == nil || len(*dsc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dsc DeletedSiteCollection) hasNextLink() bool {
+	return dsc.NextLink != nil && len(*dsc.NextLink) != 0
+}
+
 // deletedSiteCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dsc DeletedSiteCollection) deletedSiteCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if dsc.NextLink == nil || len(to.String(dsc.NextLink)) < 1 {
+	if !dsc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5422,11 +4787,16 @@ func (page *DeletedSiteCollectionPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dsc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dsc)
+		if err != nil {
+			return err
+		}
+		page.dsc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dsc = next
 	return nil
 }
 
@@ -5526,6 +4896,60 @@ type DeletedSiteProperties struct {
 	IsDefaultContainer *bool `json:"isDefaultContainer,omitempty"`
 	// DefaultHostName - READ-ONLY; Default hostname of the web app
 	DefaultHostName *string `json:"defaultHostName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeletedSiteProperties.
+func (ds DeletedSiteProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ds.DeletedTimestamp != nil {
+		objectMap["deletedTimestamp"] = ds.DeletedTimestamp
+	}
+	if ds.Name != nil {
+		objectMap["name"] = ds.Name
+	}
+	if ds.Enabled != nil {
+		objectMap["enabled"] = ds.Enabled
+	}
+	if ds.HostNameSslStates != nil {
+		objectMap["hostNameSslStates"] = ds.HostNameSslStates
+	}
+	if ds.ServerFarmID != nil {
+		objectMap["serverFarmId"] = ds.ServerFarmID
+	}
+	if ds.SiteConfig != nil {
+		objectMap["siteConfig"] = ds.SiteConfig
+	}
+	if ds.ScmSiteAlsoStopped != nil {
+		objectMap["scmSiteAlsoStopped"] = ds.ScmSiteAlsoStopped
+	}
+	if ds.HostingEnvironmentProfile != nil {
+		objectMap["hostingEnvironmentProfile"] = ds.HostingEnvironmentProfile
+	}
+	if ds.MicroService != nil {
+		objectMap["microService"] = ds.MicroService
+	}
+	if ds.GatewaySiteName != nil {
+		objectMap["gatewaySiteName"] = ds.GatewaySiteName
+	}
+	if ds.ClientAffinityEnabled != nil {
+		objectMap["clientAffinityEnabled"] = ds.ClientAffinityEnabled
+	}
+	if ds.ClientCertEnabled != nil {
+		objectMap["clientCertEnabled"] = ds.ClientCertEnabled
+	}
+	if ds.HostNamesDisabled != nil {
+		objectMap["hostNamesDisabled"] = ds.HostNamesDisabled
+	}
+	if ds.ContainerSize != nil {
+		objectMap["containerSize"] = ds.ContainerSize
+	}
+	if ds.MaxNumberOfWorkers != nil {
+		objectMap["maxNumberOfWorkers"] = ds.MaxNumberOfWorkers
+	}
+	if ds.CloningInfo != nil {
+		objectMap["cloningInfo"] = ds.CloningInfo
+	}
+	return json.Marshal(objectMap)
 }
 
 // Deployment represents user credentials used for publishing activity
@@ -5728,10 +5152,15 @@ func (dc DeploymentCollection) IsEmpty() bool {
 	return dc.Value == nil || len(*dc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dc DeploymentCollection) hasNextLink() bool {
+	return dc.NextLink != nil && len(*dc.NextLink) != 0
+}
+
 // deploymentCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dc DeploymentCollection) deploymentCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if dc.NextLink == nil || len(to.String(dc.NextLink)) < 1 {
+	if !dc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5759,11 +5188,16 @@ func (page *DeploymentCollectionPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dc)
+		if err != nil {
+			return err
+		}
+		page.dc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dc = next
 	return nil
 }
 
@@ -6032,10 +5466,15 @@ func (dc DomainCollection) IsEmpty() bool {
 	return dc.Value == nil || len(*dc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dc DomainCollection) hasNextLink() bool {
+	return dc.NextLink != nil && len(*dc.NextLink) != 0
+}
+
 // domainCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dc DomainCollection) domainCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if dc.NextLink == nil || len(to.String(dc.NextLink)) < 1 {
+	if !dc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -6063,11 +5502,16 @@ func (page *DomainCollectionPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dc)
+		if err != nil {
+			return err
+		}
+		page.dc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dc = next
 	return nil
 }
 
@@ -6148,8 +5592,7 @@ type DomainProperties struct {
 	DomainNotRenewableReasons *[]string `json:"domainNotRenewableReasons,omitempty"`
 }
 
-// DomainPurchaseConsent domain purchase consent object representing acceptance of applicable legal
-// agreements
+// DomainPurchaseConsent domain purchase consent object representing acceptance of applicable legal agreements
 type DomainPurchaseConsent struct {
 	// AgreementKeys - List of applicable legal agreement keys. This list can be retrieved using ListLegalAgreements Api under TopLevelDomain resource
 	AgreementKeys *[]string `json:"agreementKeys,omitempty"`
@@ -6826,10 +6269,15 @@ func (grc GeoRegionCollection) IsEmpty() bool {
 	return grc.Value == nil || len(*grc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (grc GeoRegionCollection) hasNextLink() bool {
+	return grc.NextLink != nil && len(*grc.NextLink) != 0
+}
+
 // geoRegionCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (grc GeoRegionCollection) geoRegionCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if grc.NextLink == nil || len(to.String(grc.NextLink)) < 1 {
+	if !grc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -6857,11 +6305,16 @@ func (page *GeoRegionCollectionPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.grc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.grc)
+		if err != nil {
+			return err
+		}
+		page.grc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.grc = next
 	return nil
 }
 
@@ -6905,10 +6358,9 @@ type GeoRegionProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 }
 
-// HandlerMapping the IIS handler mappings used to define which handler processes HTTP requests with
-// certain extension.
-// For example it is used to configure php-cgi.exe process to handle all HTTP requests with *.php
+// HandlerMapping the IIS handler mappings used to define which handler processes HTTP requests with certain
 // extension.
+// For example it is used to configure php-cgi.exe process to handle all HTTP requests with *.php extension.
 type HandlerMapping struct {
 	// Extension - Requests with this extension will be handled using the specified FastCGI application.
 	Extension *string `json:"extension,omitempty"`
@@ -7118,10 +6570,15 @@ func (hec HostingEnvironmentCollection) IsEmpty() bool {
 	return hec.Value == nil || len(*hec.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (hec HostingEnvironmentCollection) hasNextLink() bool {
+	return hec.NextLink != nil && len(*hec.NextLink) != 0
+}
+
 // hostingEnvironmentCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (hec HostingEnvironmentCollection) hostingEnvironmentCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if hec.NextLink == nil || len(to.String(hec.NextLink)) < 1 {
+	if !hec.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -7149,11 +6606,16 @@ func (page *HostingEnvironmentCollectionPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.hec)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.hec)
+		if err != nil {
+			return err
+		}
+		page.hec = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.hec = next
 	return nil
 }
 
@@ -7196,8 +6658,8 @@ type HostingEnvironmentDiagnostics struct {
 	DiagnosicsOutput *string `json:"diagnosicsOutput,omitempty"`
 }
 
-// HostingEnvironmentProfile specification for a hostingEnvironment (App Service Environment) to use for
-// this resource
+// HostingEnvironmentProfile specification for a hostingEnvironment (App Service Environment) to use for this
+// resource
 type HostingEnvironmentProfile struct {
 	// ID - Resource id of the hostingEnvironment (App Service Environment)
 	ID *string `json:"id,omitempty"`
@@ -7276,8 +6738,8 @@ type HostingEnvironmentProperties struct {
 	ClusterSettings *[]NameValuePair `json:"clusterSettings,omitempty"`
 }
 
-// HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture an abstraction for monitoring and retrieving
-// the results of a long-running operation.
+// HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture struct {
 	azure.Future
 }
@@ -7334,8 +6796,8 @@ func (future *HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture) Result(clien
 	return
 }
 
-// HostingEnvironmentsCreateOrUpdateWorkerPoolFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// HostingEnvironmentsCreateOrUpdateWorkerPoolFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type HostingEnvironmentsCreateOrUpdateWorkerPoolFuture struct {
 	azure.Future
 }
@@ -7363,8 +6825,8 @@ func (future *HostingEnvironmentsCreateOrUpdateWorkerPoolFuture) Result(client H
 	return
 }
 
-// HostingEnvironmentsDeleteHostingEnvironmentFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// HostingEnvironmentsDeleteHostingEnvironmentFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type HostingEnvironmentsDeleteHostingEnvironmentFuture struct {
 	azure.Future
 }
@@ -7436,8 +6898,8 @@ func (future *HostingEnvironmentsResumeHostingEnvironmentAllFuture) Result(clien
 	return
 }
 
-// HostingEnvironmentsResumeHostingEnvironmentFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// HostingEnvironmentsResumeHostingEnvironmentFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type HostingEnvironmentsResumeHostingEnvironmentFuture struct {
 	azure.Future
 }
@@ -7494,8 +6956,8 @@ func (future *HostingEnvironmentsSuspendHostingEnvironmentAllFuture) Result(clie
 	return
 }
 
-// HostingEnvironmentsSuspendHostingEnvironmentFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// HostingEnvironmentsSuspendHostingEnvironmentFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type HostingEnvironmentsSuspendHostingEnvironmentFuture struct {
 	azure.Future
 }
@@ -7739,10 +7201,15 @@ func (hnbc HostNameBindingCollection) IsEmpty() bool {
 	return hnbc.Value == nil || len(*hnbc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (hnbc HostNameBindingCollection) hasNextLink() bool {
+	return hnbc.NextLink != nil && len(*hnbc.NextLink) != 0
+}
+
 // hostNameBindingCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (hnbc HostNameBindingCollection) hostNameBindingCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if hnbc.NextLink == nil || len(to.String(hnbc.NextLink)) < 1 {
+	if !hnbc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -7770,11 +7237,16 @@ func (page *HostNameBindingCollectionPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.hnbc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.hnbc)
+		if err != nil {
+			return err
+		}
+		page.hnbc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.hnbc = next
 	return nil
 }
 
@@ -8243,10 +7715,15 @@ func (mhec ManagedHostingEnvironmentCollection) IsEmpty() bool {
 	return mhec.Value == nil || len(*mhec.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mhec ManagedHostingEnvironmentCollection) hasNextLink() bool {
+	return mhec.NextLink != nil && len(*mhec.NextLink) != 0
+}
+
 // managedHostingEnvironmentCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mhec ManagedHostingEnvironmentCollection) managedHostingEnvironmentCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if mhec.NextLink == nil || len(to.String(mhec.NextLink)) < 1 {
+	if !mhec.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -8274,11 +7751,16 @@ func (page *ManagedHostingEnvironmentCollectionPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mhec)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mhec)
+		if err != nil {
+			return err
+		}
+		page.mhec = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mhec = next
 	return nil
 }
 
@@ -8341,8 +7823,8 @@ type ManagedHostingEnvironmentProperties struct {
 	APIManagementAccount *string `json:"apiManagementAccount,omitempty"`
 }
 
-// ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture an abstraction for monitoring
-// and retrieving the results of a long-running operation.
+// ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture an abstraction for monitoring and
+// retrieving the results of a long-running operation.
 type ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture struct {
 	azure.Future
 }
@@ -8370,8 +7852,8 @@ func (future *ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentF
 	return
 }
 
-// ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture an abstraction for monitoring and
-// retrieving the results of a long-running operation.
+// ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture an abstraction for monitoring and retrieving
+// the results of a long-running operation.
 type ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture struct {
 	azure.Future
 }
@@ -8607,10 +8089,15 @@ func (mdc MetricDefinitionCollection) IsEmpty() bool {
 	return mdc.Value == nil || len(*mdc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mdc MetricDefinitionCollection) hasNextLink() bool {
+	return mdc.NextLink != nil && len(*mdc.NextLink) != 0
+}
+
 // metricDefinitionCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mdc MetricDefinitionCollection) metricDefinitionCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if mdc.NextLink == nil || len(to.String(mdc.NextLink)) < 1 {
+	if !mdc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -8638,11 +8125,16 @@ func (page *MetricDefinitionCollectionPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mdc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mdc)
+		if err != nil {
+			return err
+		}
+		page.mdc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mdc = next
 	return nil
 }
 
@@ -8773,10 +8265,15 @@ func (nic NameIdentifierCollection) IsEmpty() bool {
 	return nic.Value == nil || len(*nic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (nic NameIdentifierCollection) hasNextLink() bool {
+	return nic.NextLink != nil && len(*nic.NextLink) != 0
+}
+
 // nameIdentifierCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (nic NameIdentifierCollection) nameIdentifierCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if nic.NextLink == nil || len(to.String(nic.NextLink)) < 1 {
+	if !nic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -8804,11 +8301,16 @@ func (page *NameIdentifierCollectionPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.nic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.nic)
+		if err != nil {
+			return err
+		}
+		page.nic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.nic = next
 	return nil
 }
 
@@ -8859,8 +8361,8 @@ type NetworkAccessControlEntry struct {
 	RemoteSubnet *string                  `json:"remoteSubnet,omitempty"`
 }
 
-// NetworkFeatures this is an object used to store a full view of network features (presently VNET
-// integration and Hybrid Connections)
+// NetworkFeatures this is an object used to store a full view of network features (presently VNET integration
+// and Hybrid Connections)
 // for a web app.
 type NetworkFeatures struct {
 	autorest.Response          `json:"-"`
@@ -9166,8 +8668,8 @@ func (paor PremierAddOnRequest) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// RampUpRule routing rules for ramp up testing. This rule allows to redirect static traffic % to a slot or
-// to gradually change routing % based on performance
+// RampUpRule routing rules for ramp up testing. This rule allows to redirect static traffic % to a slot or to
+// gradually change routing % based on performance
 type RampUpRule struct {
 	// ActionHostName - Hostname of a slot to which the traffic will be redirected if decided to. E.g. mysite-stage.azurewebsites.net
 	ActionHostName *string `json:"actionHostName,omitempty"`
@@ -9799,10 +9301,15 @@ func (rmc ResourceMetricCollection) IsEmpty() bool {
 	return rmc.Value == nil || len(*rmc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rmc ResourceMetricCollection) hasNextLink() bool {
+	return rmc.NextLink != nil && len(*rmc.NextLink) != 0
+}
+
 // resourceMetricCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rmc ResourceMetricCollection) resourceMetricCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if rmc.NextLink == nil || len(to.String(rmc.NextLink)) < 1 {
+	if !rmc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -9830,11 +9337,16 @@ func (page *ResourceMetricCollectionPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rmc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rmc)
+		if err != nil {
+			return err
+		}
+		page.rmc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rmc = next
 	return nil
 }
 
@@ -9912,8 +9424,8 @@ type ResourceNameAvailabilityRequest struct {
 	IsFqdn *bool `json:"isFqdn,omitempty"`
 }
 
-// ResponseMessageEnvelopeAPIEntity message envelope that contains the common Azure resource manager
-// properties and the resource provider specific content
+// ResponseMessageEnvelopeAPIEntity message envelope that contains the common Azure resource manager properties
+// and the resource provider specific content
 type ResponseMessageEnvelopeAPIEntity struct {
 	// ID - Resource Id. Typically id is populated only for responses to GET requests. Caller is responsible for passing in this
 	//             value for GET requests only.
@@ -10323,10 +9835,15 @@ func (sfc ServerFarmCollection) IsEmpty() bool {
 	return sfc.Value == nil || len(*sfc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sfc ServerFarmCollection) hasNextLink() bool {
+	return sfc.NextLink != nil && len(*sfc.NextLink) != 0
+}
+
 // serverFarmCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sfc ServerFarmCollection) serverFarmCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if sfc.NextLink == nil || len(to.String(sfc.NextLink)) < 1 {
+	if !sfc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -10354,11 +9871,16 @@ func (page *ServerFarmCollectionPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sfc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sfc)
+		if err != nil {
+			return err
+		}
+		page.sfc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sfc = next
 	return nil
 }
 
@@ -10586,6 +10108,33 @@ type ServerFarmWithRichSkuProperties struct {
 	Reserved *bool `json:"reserved,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServerFarmWithRichSkuProperties.
+func (sfwrs ServerFarmWithRichSkuProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sfwrs.Name != nil {
+		objectMap["name"] = sfwrs.Name
+	}
+	if sfwrs.WorkerTierName != nil {
+		objectMap["workerTierName"] = sfwrs.WorkerTierName
+	}
+	if sfwrs.AdminSiteName != nil {
+		objectMap["adminSiteName"] = sfwrs.AdminSiteName
+	}
+	if sfwrs.HostingEnvironmentProfile != nil {
+		objectMap["hostingEnvironmentProfile"] = sfwrs.HostingEnvironmentProfile
+	}
+	if sfwrs.MaximumNumberOfWorkers != nil {
+		objectMap["maximumNumberOfWorkers"] = sfwrs.MaximumNumberOfWorkers
+	}
+	if sfwrs.PerSiteScaling != nil {
+		objectMap["perSiteScaling"] = sfwrs.PerSiteScaling
+	}
+	if sfwrs.Reserved != nil {
+		objectMap["reserved"] = sfwrs.Reserved
+	}
+	return json.Marshal(objectMap)
+}
+
 // SetObject ...
 type SetObject struct {
 	autorest.Response `json:"-"`
@@ -10715,8 +10264,7 @@ func (s *Site) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SiteAuthSettings configuration settings for the Azure App Service Authentication / Authorization
-// feature.
+// SiteAuthSettings configuration settings for the Azure App Service Authentication / Authorization feature.
 type SiteAuthSettings struct {
 	autorest.Response `json:"-"`
 	// Enabled - Gets or sets a value indicating whether the Authentication / Authorization feature is enabled for the current app.
@@ -10910,10 +10458,15 @@ func (sc SiteCollection) IsEmpty() bool {
 	return sc.Value == nil || len(*sc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sc SiteCollection) hasNextLink() bool {
+	return sc.NextLink != nil && len(*sc.NextLink) != 0
+}
+
 // siteCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sc SiteCollection) siteCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if sc.NextLink == nil || len(to.String(sc.NextLink)) < 1 {
+	if !sc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -10941,11 +10494,16 @@ func (page *SiteCollectionPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sc)
+		if err != nil {
+			return err
+		}
+		page.sc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sc = next
 	return nil
 }
 
@@ -11389,10 +10947,15 @@ func (sic SiteInstanceCollection) IsEmpty() bool {
 	return sic.Value == nil || len(*sic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sic SiteInstanceCollection) hasNextLink() bool {
+	return sic.NextLink != nil && len(*sic.NextLink) != 0
+}
+
 // siteInstanceCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sic SiteInstanceCollection) siteInstanceCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if sic.NextLink == nil || len(to.String(sic.NextLink)) < 1 {
+	if !sic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -11420,11 +10983,16 @@ func (page *SiteInstanceCollectionPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sic)
+		if err != nil {
+			return err
+		}
+		page.sic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sic = next
 	return nil
 }
 
@@ -11675,6 +11243,57 @@ type SiteProperties struct {
 	DefaultHostName *string `json:"defaultHostName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SiteProperties.
+func (s SiteProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.Name != nil {
+		objectMap["name"] = s.Name
+	}
+	if s.Enabled != nil {
+		objectMap["enabled"] = s.Enabled
+	}
+	if s.HostNameSslStates != nil {
+		objectMap["hostNameSslStates"] = s.HostNameSslStates
+	}
+	if s.ServerFarmID != nil {
+		objectMap["serverFarmId"] = s.ServerFarmID
+	}
+	if s.SiteConfig != nil {
+		objectMap["siteConfig"] = s.SiteConfig
+	}
+	if s.ScmSiteAlsoStopped != nil {
+		objectMap["scmSiteAlsoStopped"] = s.ScmSiteAlsoStopped
+	}
+	if s.HostingEnvironmentProfile != nil {
+		objectMap["hostingEnvironmentProfile"] = s.HostingEnvironmentProfile
+	}
+	if s.MicroService != nil {
+		objectMap["microService"] = s.MicroService
+	}
+	if s.GatewaySiteName != nil {
+		objectMap["gatewaySiteName"] = s.GatewaySiteName
+	}
+	if s.ClientAffinityEnabled != nil {
+		objectMap["clientAffinityEnabled"] = s.ClientAffinityEnabled
+	}
+	if s.ClientCertEnabled != nil {
+		objectMap["clientCertEnabled"] = s.ClientCertEnabled
+	}
+	if s.HostNamesDisabled != nil {
+		objectMap["hostNamesDisabled"] = s.HostNamesDisabled
+	}
+	if s.ContainerSize != nil {
+		objectMap["containerSize"] = s.ContainerSize
+	}
+	if s.MaxNumberOfWorkers != nil {
+		objectMap["maxNumberOfWorkers"] = s.MaxNumberOfWorkers
+	}
+	if s.CloningInfo != nil {
+		objectMap["cloningInfo"] = s.CloningInfo
+	}
+	return json.Marshal(objectMap)
+}
+
 // SitePropertiesModel ...
 type SitePropertiesModel struct {
 	Metadata    *[]NameValuePair `json:"metadata,omitempty"`
@@ -11711,8 +11330,8 @@ func (future *SitesCreateOrUpdateSiteFuture) Result(client SitesClient) (s Site,
 	return
 }
 
-// SitesCreateOrUpdateSiteSlotFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// SitesCreateOrUpdateSiteSlotFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SitesCreateOrUpdateSiteSlotFuture struct {
 	azure.Future
 }
@@ -11769,8 +11388,8 @@ func (future *SitesListSitePublishingCredentialsFuture) Result(client SitesClien
 	return
 }
 
-// SitesListSitePublishingCredentialsSlotFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// SitesListSitePublishingCredentialsSlotFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type SitesListSitePublishingCredentialsSlotFuture struct {
 	azure.Future
 }
@@ -11935,8 +11554,7 @@ type SiteSourceControlProperties struct {
 	IsMercurial *bool `json:"isMercurial,omitempty"`
 }
 
-// SitesRecoverSiteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// SitesRecoverSiteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SitesRecoverSiteFuture struct {
 	azure.Future
 }
@@ -11993,8 +11611,7 @@ func (future *SitesRecoverSiteSlotFuture) Result(client SitesClient) (s Site, er
 	return
 }
 
-// SitesRestoreSiteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// SitesRestoreSiteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type SitesRestoreSiteFuture struct {
 	azure.Future
 }
@@ -12080,8 +11697,8 @@ func (future *SitesSwapSlotsSlotFuture) Result(client SitesClient) (so SetObject
 	return
 }
 
-// SitesSwapSlotWithProductionFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// SitesSwapSlotWithProductionFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SitesSwapSlotWithProductionFuture struct {
 	azure.Future
 }
@@ -12222,10 +11839,15 @@ func (sic SkuInfoCollection) IsEmpty() bool {
 	return sic.Value == nil || len(*sic.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sic SkuInfoCollection) hasNextLink() bool {
+	return sic.NextLink != nil && len(*sic.NextLink) != 0
+}
+
 // skuInfoCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sic SkuInfoCollection) skuInfoCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if sic.NextLink == nil || len(to.String(sic.NextLink)) < 1 {
+	if !sic.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -12253,11 +11875,16 @@ func (page *SkuInfoCollectionPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sic)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sic)
+		if err != nil {
+			return err
+		}
+		page.sic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sic = next
 	return nil
 }
 
@@ -12632,10 +12259,15 @@ func (sdc SlotDifferenceCollection) IsEmpty() bool {
 	return sdc.Value == nil || len(*sdc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sdc SlotDifferenceCollection) hasNextLink() bool {
+	return sdc.NextLink != nil && len(*sdc.NextLink) != 0
+}
+
 // slotDifferenceCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sdc SlotDifferenceCollection) slotDifferenceCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if sdc.NextLink == nil || len(to.String(sdc.NextLink)) < 1 {
+	if !sdc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -12663,11 +12295,16 @@ func (page *SlotDifferenceCollectionPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sdc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sdc)
+		if err != nil {
+			return err
+		}
+		page.sdc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sdc = next
 	return nil
 }
 
@@ -12929,10 +12566,15 @@ func (scc SourceControlCollection) IsEmpty() bool {
 	return scc.Value == nil || len(*scc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (scc SourceControlCollection) hasNextLink() bool {
+	return scc.NextLink != nil && len(*scc.NextLink) != 0
+}
+
 // sourceControlCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (scc SourceControlCollection) sourceControlCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if scc.NextLink == nil || len(to.String(scc.NextLink)) < 1 {
+	if !scc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -12960,11 +12602,16 @@ func (page *SourceControlCollectionPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.scc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.scc)
+		if err != nil {
+			return err
+		}
+		page.scc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.scc = next
 	return nil
 }
 
@@ -13117,10 +12764,15 @@ func (scc StampCapacityCollection) IsEmpty() bool {
 	return scc.Value == nil || len(*scc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (scc StampCapacityCollection) hasNextLink() bool {
+	return scc.NextLink != nil && len(*scc.NextLink) != 0
+}
+
 // stampCapacityCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (scc StampCapacityCollection) stampCapacityCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if scc.NextLink == nil || len(to.String(scc.NextLink)) < 1 {
+	if !scc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -13148,11 +12800,16 @@ func (page *StampCapacityCollectionPage) NextWithContext(ctx context.Context) (e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.scc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.scc)
+		if err != nil {
+			return err
+		}
+		page.scc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.scc = next
 	return nil
 }
 
@@ -13335,10 +12992,15 @@ func (tlac TldLegalAgreementCollection) IsEmpty() bool {
 	return tlac.Value == nil || len(*tlac.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tlac TldLegalAgreementCollection) hasNextLink() bool {
+	return tlac.NextLink != nil && len(*tlac.NextLink) != 0
+}
+
 // tldLegalAgreementCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tlac TldLegalAgreementCollection) tldLegalAgreementCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if tlac.NextLink == nil || len(to.String(tlac.NextLink)) < 1 {
+	if !tlac.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -13366,11 +13028,16 @@ func (page *TldLegalAgreementCollectionPage) NextWithContext(ctx context.Context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tlac)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tlac)
+		if err != nil {
+			return err
+		}
+		page.tlac = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tlac = next
 	return nil
 }
 
@@ -13610,10 +13277,15 @@ func (tldc TopLevelDomainCollection) IsEmpty() bool {
 	return tldc.Value == nil || len(*tldc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (tldc TopLevelDomainCollection) hasNextLink() bool {
+	return tldc.NextLink != nil && len(*tldc.NextLink) != 0
+}
+
 // topLevelDomainCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (tldc TopLevelDomainCollection) topLevelDomainCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if tldc.NextLink == nil || len(to.String(tldc.NextLink)) < 1 {
+	if !tldc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -13641,11 +13313,16 @@ func (page *TopLevelDomainCollectionPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.tldc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.tldc)
+		if err != nil {
+			return err
+		}
+		page.tldc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.tldc = next
 	return nil
 }
 
@@ -13886,10 +13563,15 @@ func (uc UsageCollection) IsEmpty() bool {
 	return uc.Value == nil || len(*uc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (uc UsageCollection) hasNextLink() bool {
+	return uc.NextLink != nil && len(*uc.NextLink) != 0
+}
+
 // usageCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (uc UsageCollection) usageCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if uc.NextLink == nil || len(to.String(uc.NextLink)) < 1 {
+	if !uc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -13917,11 +13599,16 @@ func (page *UsageCollectionPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.uc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.uc)
+		if err != nil {
+			return err
+		}
+		page.uc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.uc = next
 	return nil
 }
 
@@ -14775,10 +14462,15 @@ func (wpc WorkerPoolCollection) IsEmpty() bool {
 	return wpc.Value == nil || len(*wpc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wpc WorkerPoolCollection) hasNextLink() bool {
+	return wpc.NextLink != nil && len(*wpc.NextLink) != 0
+}
+
 // workerPoolCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wpc WorkerPoolCollection) workerPoolCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if wpc.NextLink == nil || len(to.String(wpc.NextLink)) < 1 {
+	if !wpc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -14806,11 +14498,16 @@ func (page *WorkerPoolCollectionPage) NextWithContext(ctx context.Context) (err 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wpc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wpc)
+		if err != nil {
+			return err
+		}
+		page.wpc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wpc = next
 	return nil
 }
 

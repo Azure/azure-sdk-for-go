@@ -104,7 +104,6 @@ func (client OrderClient) CalculateSender(req *http.Request) (*http.Response, er
 func (client OrderClient) CalculateResponder(resp *http.Response) (result CalculatePriceResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -181,7 +180,6 @@ func (client OrderClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client OrderClient) GetResponder(resp *http.Response) (result OrderResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -219,6 +217,9 @@ func (client OrderClient) List(ctx context.Context) (result OrderListPage, err e
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "List", resp, "Failure responding to request")
 	}
+	if result.ol.hasNextLink() && result.ol.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -249,7 +250,6 @@ func (client OrderClient) ListSender(req *http.Request) (*http.Response, error) 
 func (client OrderClient) ListResponder(resp *http.Response) (result OrderList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -362,7 +362,6 @@ func (client OrderClient) PurchaseSender(req *http.Request) (future OrderPurchas
 func (client OrderClient) PurchaseResponder(resp *http.Response) (result OrderResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

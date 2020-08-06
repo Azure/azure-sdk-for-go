@@ -127,7 +127,6 @@ func (client BaseClient) AnalyzeWithCustomModelSender(req *http.Request) (*http.
 func (client BaseClient) AnalyzeWithCustomModelResponder(resp *http.Response) (result AnalyzeResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -203,7 +202,6 @@ func (client BaseClient) BatchReadReceiptSender(req *http.Request) (*http.Respon
 func (client BaseClient) BatchReadReceiptResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -273,7 +271,6 @@ func (client BaseClient) BatchReadReceiptInStreamSender(req *http.Request) (*htt
 func (client BaseClient) BatchReadReceiptInStreamResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -343,7 +340,6 @@ func (client BaseClient) DeleteCustomModelSender(req *http.Request) (*http.Respo
 func (client BaseClient) DeleteCustomModelResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -413,7 +409,6 @@ func (client BaseClient) GetCustomModelSender(req *http.Request) (*http.Response
 func (client BaseClient) GetCustomModelResponder(resp *http.Response) (result ModelResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -478,7 +473,6 @@ func (client BaseClient) GetCustomModelsSender(req *http.Request) (*http.Respons
 func (client BaseClient) GetCustomModelsResponder(resp *http.Response) (result ModelsResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -550,7 +544,6 @@ func (client BaseClient) GetExtractedKeysSender(req *http.Request) (*http.Respon
 func (client BaseClient) GetExtractedKeysResponder(resp *http.Response) (result KeysResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -623,7 +616,6 @@ func (client BaseClient) GetReadReceiptResultSender(req *http.Request) (*http.Re
 func (client BaseClient) GetReadReceiptResultResponder(resp *http.Response) (result ReadReceiptResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -715,7 +707,6 @@ func (client BaseClient) TrainCustomModelSender(req *http.Request) (*http.Respon
 func (client BaseClient) TrainCustomModelResponder(resp *http.Response) (result TrainResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

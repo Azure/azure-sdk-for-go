@@ -662,9 +662,9 @@ func NewBindingResourceCollectionPage(getNextPage func(context.Context, BindingR
 
 // BindingResourceProperties binding resource properties payload
 type BindingResourceProperties struct {
-	// ResourceName - The name of the bound resource
+	// ResourceName - READ-ONLY; The name of the bound resource
 	ResourceName *string `json:"resourceName,omitempty"`
-	// ResourceType - The standard Azure resource type of the bound resource
+	// ResourceType - READ-ONLY; The standard Azure resource type of the bound resource
 	ResourceType *string `json:"resourceType,omitempty"`
 	// ResourceID - The Azure resource id of the bound resource
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -683,12 +683,6 @@ type BindingResourceProperties struct {
 // MarshalJSON is the custom marshaler for BindingResourceProperties.
 func (brp BindingResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if brp.ResourceName != nil {
-		objectMap["resourceName"] = brp.ResourceName
-	}
-	if brp.ResourceType != nil {
-		objectMap["resourceType"] = brp.ResourceType
-	}
 	if brp.ResourceID != nil {
 		objectMap["resourceId"] = brp.ResourceID
 	}
@@ -944,6 +938,8 @@ type ClusterResourceProperties struct {
 	ConfigServerProperties *ConfigServerProperties `json:"configServerProperties,omitempty"`
 	// Trace - Trace properties of the Service
 	Trace *TraceProperties `json:"trace,omitempty"`
+	// NetworkProfile - Network profile of the Service
+	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
 	// Version - READ-ONLY; Version of the Service
 	Version *int32 `json:"version,omitempty"`
 	// ServiceID - READ-ONLY; ServiceInstanceEntity GUID which uniquely identifies a created resource
@@ -958,6 +954,9 @@ func (crp ClusterResourceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if crp.Trace != nil {
 		objectMap["trace"] = crp.Trace
+	}
+	if crp.NetworkProfile != nil {
+		objectMap["networkProfile"] = crp.NetworkProfile
 	}
 	return json.Marshal(objectMap)
 }
@@ -1018,10 +1017,22 @@ type ConfigServerSettings struct {
 type CustomDomainProperties struct {
 	// Thumbprint - The thumbprint of bound certificate.
 	Thumbprint *string `json:"thumbprint,omitempty"`
-	// AppName - The app name of domain.
+	// AppName - READ-ONLY; The app name of domain.
 	AppName *string `json:"appName,omitempty"`
 	// CertName - The bound certificate name of domain.
 	CertName *string `json:"certName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomDomainProperties.
+func (cdp CustomDomainProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cdp.Thumbprint != nil {
+		objectMap["thumbprint"] = cdp.Thumbprint
+	}
+	if cdp.CertName != nil {
+		objectMap["certName"] = cdp.CertName
+	}
+	return json.Marshal(objectMap)
 }
 
 // CustomDomainResource custom domain resource payload.
@@ -1714,6 +1725,20 @@ type NameAvailabilityParameters struct {
 	Type *string `json:"type,omitempty"`
 	// Name - Name to be checked
 	Name *string `json:"name,omitempty"`
+}
+
+// NetworkProfile service network profile payload
+type NetworkProfile struct {
+	// ServiceRuntimeSubnetID - Fully qualified resource Id of the subnet to host Azure Spring Cloud Service Runtime
+	ServiceRuntimeSubnetID *string `json:"serviceRuntimeSubnetId,omitempty"`
+	// AppSubnetID - Fully qualified resource Id of the subnet to host Azure Spring Cloud Apps
+	AppSubnetID *string `json:"appSubnetId,omitempty"`
+	// ServiceCidr - Azure Spring Cloud service reserved CIDR
+	ServiceCidr *string `json:"serviceCidr,omitempty"`
+	// ServiceRuntimeNetworkResourceGroup - Name of the resource group containing network resources of Azure Spring Cloud Service Runtime
+	ServiceRuntimeNetworkResourceGroup *string `json:"serviceRuntimeNetworkResourceGroup,omitempty"`
+	// AppNetworkResourceGroup - Name of the resource group containing network resources of Azure Spring Cloud Apps
+	AppNetworkResourceGroup *string `json:"appNetworkResourceGroup,omitempty"`
 }
 
 // OperationDetail operation detail payload

@@ -204,6 +204,7 @@ type MetricDimension = original.MetricDimension
 type MetricSpecification = original.MetricSpecification
 type NameAvailability = original.NameAvailability
 type NameAvailabilityParameters = original.NameAvailabilityParameters
+type NetworkProfile = original.NetworkProfile
 type OperationDetail = original.OperationDetail
 type OperationDisplay = original.OperationDisplay
 type OperationProperties = original.OperationProperties

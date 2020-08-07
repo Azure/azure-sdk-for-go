@@ -222,6 +222,7 @@ const (
 	NameModifyResponseHeader NameBasicDeliveryRuleAction = original.NameModifyResponseHeader
 	NameURLRedirect          NameBasicDeliveryRuleAction = original.NameURLRedirect
 	NameURLRewrite           NameBasicDeliveryRuleAction = original.NameURLRewrite
+	NameURLSigning           NameBasicDeliveryRuleAction = original.NameURLSigning
 )
 
 type OdataType = original.OdataType
@@ -711,6 +712,7 @@ type URLRedirectAction = original.URLRedirectAction
 type URLRedirectActionParameters = original.URLRedirectActionParameters
 type URLRewriteAction = original.URLRewriteAction
 type URLRewriteActionParameters = original.URLRewriteActionParameters
+type URLSigningAction = original.URLSigningAction
 type URLSigningActionParameters = original.URLSigningActionParameters
 type URLSigningKey = original.URLSigningKey
 type URLSigningParamIdentifier = original.URLSigningParamIdentifier

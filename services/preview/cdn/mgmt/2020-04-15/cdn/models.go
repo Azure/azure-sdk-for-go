@@ -791,6 +791,7 @@ func (dr *DeliveryRule) UnmarshalJSON(body []byte) error {
 // BasicDeliveryRuleAction an action for the delivery rule.
 type BasicDeliveryRuleAction interface {
 	AsURLRedirectAction() (*URLRedirectAction, bool)
+	AsURLSigningAction() (*URLSigningAction, bool)
 	AsURLRewriteAction() (*URLRewriteAction, bool)
 	AsDeliveryRuleRequestHeaderAction() (*DeliveryRuleRequestHeaderAction, bool)
 	AsDeliveryRuleResponseHeaderAction() (*DeliveryRuleResponseHeaderAction, bool)
@@ -801,7 +802,7 @@ type BasicDeliveryRuleAction interface {
 
 // DeliveryRuleAction an action for the delivery rule.
 type DeliveryRuleAction struct {
-	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
+	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLSigning', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
 	Name NameBasicDeliveryRuleAction `json:"name,omitempty"`
 }
 
@@ -817,6 +818,10 @@ func unmarshalBasicDeliveryRuleAction(body []byte) (BasicDeliveryRuleAction, err
 		var ura URLRedirectAction
 		err := json.Unmarshal(body, &ura)
 		return ura, err
+	case string(NameURLSigning):
+		var usa URLSigningAction
+		err := json.Unmarshal(body, &usa)
+		return usa, err
 	case string(NameURLRewrite):
 		var ura URLRewriteAction
 		err := json.Unmarshal(body, &ura)
@@ -877,6 +882,11 @@ func (dra DeliveryRuleAction) AsURLRedirectAction() (*URLRedirectAction, bool) {
 	return nil, false
 }
 
+// AsURLSigningAction is the BasicDeliveryRuleAction implementation for DeliveryRuleAction.
+func (dra DeliveryRuleAction) AsURLSigningAction() (*URLSigningAction, bool) {
+	return nil, false
+}
+
 // AsURLRewriteAction is the BasicDeliveryRuleAction implementation for DeliveryRuleAction.
 func (dra DeliveryRuleAction) AsURLRewriteAction() (*URLRewriteAction, bool) {
 	return nil, false
@@ -916,7 +926,7 @@ func (dra DeliveryRuleAction) AsBasicDeliveryRuleAction() (BasicDeliveryRuleActi
 type DeliveryRuleCacheExpirationAction struct {
 	// Parameters - Defines the parameters for the action.
 	Parameters *CacheExpirationActionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
+	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLSigning', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
 	Name NameBasicDeliveryRuleAction `json:"name,omitempty"`
 }
 
@@ -935,6 +945,11 @@ func (drcea DeliveryRuleCacheExpirationAction) MarshalJSON() ([]byte, error) {
 
 // AsURLRedirectAction is the BasicDeliveryRuleAction implementation for DeliveryRuleCacheExpirationAction.
 func (drcea DeliveryRuleCacheExpirationAction) AsURLRedirectAction() (*URLRedirectAction, bool) {
+	return nil, false
+}
+
+// AsURLSigningAction is the BasicDeliveryRuleAction implementation for DeliveryRuleCacheExpirationAction.
+func (drcea DeliveryRuleCacheExpirationAction) AsURLSigningAction() (*URLSigningAction, bool) {
 	return nil, false
 }
 
@@ -977,7 +992,7 @@ func (drcea DeliveryRuleCacheExpirationAction) AsBasicDeliveryRuleAction() (Basi
 type DeliveryRuleCacheKeyQueryStringAction struct {
 	// Parameters - Defines the parameters for the action.
 	Parameters *CacheKeyQueryStringActionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
+	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLSigning', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
 	Name NameBasicDeliveryRuleAction `json:"name,omitempty"`
 }
 
@@ -996,6 +1011,11 @@ func (drckqsa DeliveryRuleCacheKeyQueryStringAction) MarshalJSON() ([]byte, erro
 
 // AsURLRedirectAction is the BasicDeliveryRuleAction implementation for DeliveryRuleCacheKeyQueryStringAction.
 func (drckqsa DeliveryRuleCacheKeyQueryStringAction) AsURLRedirectAction() (*URLRedirectAction, bool) {
+	return nil, false
+}
+
+// AsURLSigningAction is the BasicDeliveryRuleAction implementation for DeliveryRuleCacheKeyQueryStringAction.
+func (drckqsa DeliveryRuleCacheKeyQueryStringAction) AsURLSigningAction() (*URLSigningAction, bool) {
 	return nil, false
 }
 
@@ -1949,7 +1969,7 @@ func (drrbc DeliveryRuleRequestBodyCondition) AsBasicDeliveryRuleCondition() (Ba
 type DeliveryRuleRequestHeaderAction struct {
 	// Parameters - Defines the parameters for the action.
 	Parameters *HeaderActionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
+	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLSigning', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
 	Name NameBasicDeliveryRuleAction `json:"name,omitempty"`
 }
 
@@ -1968,6 +1988,11 @@ func (drrha DeliveryRuleRequestHeaderAction) MarshalJSON() ([]byte, error) {
 
 // AsURLRedirectAction is the BasicDeliveryRuleAction implementation for DeliveryRuleRequestHeaderAction.
 func (drrha DeliveryRuleRequestHeaderAction) AsURLRedirectAction() (*URLRedirectAction, bool) {
+	return nil, false
+}
+
+// AsURLSigningAction is the BasicDeliveryRuleAction implementation for DeliveryRuleRequestHeaderAction.
+func (drrha DeliveryRuleRequestHeaderAction) AsURLSigningAction() (*URLSigningAction, bool) {
 	return nil, false
 }
 
@@ -2414,7 +2439,7 @@ func (drruc DeliveryRuleRequestURICondition) AsBasicDeliveryRuleCondition() (Bas
 type DeliveryRuleResponseHeaderAction struct {
 	// Parameters - Defines the parameters for the action.
 	Parameters *HeaderActionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
+	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLSigning', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
 	Name NameBasicDeliveryRuleAction `json:"name,omitempty"`
 }
 
@@ -2433,6 +2458,11 @@ func (drrha DeliveryRuleResponseHeaderAction) MarshalJSON() ([]byte, error) {
 
 // AsURLRedirectAction is the BasicDeliveryRuleAction implementation for DeliveryRuleResponseHeaderAction.
 func (drrha DeliveryRuleResponseHeaderAction) AsURLRedirectAction() (*URLRedirectAction, bool) {
+	return nil, false
+}
+
+// AsURLSigningAction is the BasicDeliveryRuleAction implementation for DeliveryRuleResponseHeaderAction.
+func (drrha DeliveryRuleResponseHeaderAction) AsURLSigningAction() (*URLSigningAction, bool) {
 	return nil, false
 }
 
@@ -6119,7 +6149,7 @@ type URLPathMatchConditionParameters struct {
 type URLRedirectAction struct {
 	// Parameters - Defines the parameters for the action.
 	Parameters *URLRedirectActionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
+	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLSigning', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
 	Name NameBasicDeliveryRuleAction `json:"name,omitempty"`
 }
 
@@ -6139,6 +6169,11 @@ func (ura URLRedirectAction) MarshalJSON() ([]byte, error) {
 // AsURLRedirectAction is the BasicDeliveryRuleAction implementation for URLRedirectAction.
 func (ura URLRedirectAction) AsURLRedirectAction() (*URLRedirectAction, bool) {
 	return &ura, true
+}
+
+// AsURLSigningAction is the BasicDeliveryRuleAction implementation for URLRedirectAction.
+func (ura URLRedirectAction) AsURLSigningAction() (*URLSigningAction, bool) {
+	return nil, false
 }
 
 // AsURLRewriteAction is the BasicDeliveryRuleAction implementation for URLRedirectAction.
@@ -6197,7 +6232,7 @@ type URLRedirectActionParameters struct {
 type URLRewriteAction struct {
 	// Parameters - Defines the parameters for the action.
 	Parameters *URLRewriteActionParameters `json:"parameters,omitempty"`
-	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
+	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLSigning', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
 	Name NameBasicDeliveryRuleAction `json:"name,omitempty"`
 }
 
@@ -6216,6 +6251,11 @@ func (ura URLRewriteAction) MarshalJSON() ([]byte, error) {
 
 // AsURLRedirectAction is the BasicDeliveryRuleAction implementation for URLRewriteAction.
 func (ura URLRewriteAction) AsURLRedirectAction() (*URLRedirectAction, bool) {
+	return nil, false
+}
+
+// AsURLSigningAction is the BasicDeliveryRuleAction implementation for URLRewriteAction.
+func (ura URLRewriteAction) AsURLSigningAction() (*URLSigningAction, bool) {
 	return nil, false
 }
 
@@ -6263,6 +6303,72 @@ type URLRewriteActionParameters struct {
 	Destination *string `json:"destination,omitempty"`
 	// PreserveUnmatchedPath - Whether to preserve unmatched path. Default value is true.
 	PreserveUnmatchedPath *bool `json:"preserveUnmatchedPath,omitempty"`
+}
+
+// URLSigningAction defines the url signing action for the delivery rule.
+type URLSigningAction struct {
+	// Parameters - Defines the parameters for the action.
+	Parameters *URLSigningActionParameters `json:"parameters,omitempty"`
+	// Name - Possible values include: 'NameDeliveryRuleAction', 'NameURLRedirect', 'NameURLSigning', 'NameURLRewrite', 'NameModifyRequestHeader', 'NameModifyResponseHeader', 'NameCacheExpiration', 'NameCacheKeyQueryString'
+	Name NameBasicDeliveryRuleAction `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for URLSigningAction.
+func (usa URLSigningAction) MarshalJSON() ([]byte, error) {
+	usa.Name = NameURLSigning
+	objectMap := make(map[string]interface{})
+	if usa.Parameters != nil {
+		objectMap["parameters"] = usa.Parameters
+	}
+	if usa.Name != "" {
+		objectMap["name"] = usa.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsURLRedirectAction is the BasicDeliveryRuleAction implementation for URLSigningAction.
+func (usa URLSigningAction) AsURLRedirectAction() (*URLRedirectAction, bool) {
+	return nil, false
+}
+
+// AsURLSigningAction is the BasicDeliveryRuleAction implementation for URLSigningAction.
+func (usa URLSigningAction) AsURLSigningAction() (*URLSigningAction, bool) {
+	return &usa, true
+}
+
+// AsURLRewriteAction is the BasicDeliveryRuleAction implementation for URLSigningAction.
+func (usa URLSigningAction) AsURLRewriteAction() (*URLRewriteAction, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleRequestHeaderAction is the BasicDeliveryRuleAction implementation for URLSigningAction.
+func (usa URLSigningAction) AsDeliveryRuleRequestHeaderAction() (*DeliveryRuleRequestHeaderAction, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleResponseHeaderAction is the BasicDeliveryRuleAction implementation for URLSigningAction.
+func (usa URLSigningAction) AsDeliveryRuleResponseHeaderAction() (*DeliveryRuleResponseHeaderAction, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCacheExpirationAction is the BasicDeliveryRuleAction implementation for URLSigningAction.
+func (usa URLSigningAction) AsDeliveryRuleCacheExpirationAction() (*DeliveryRuleCacheExpirationAction, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleCacheKeyQueryStringAction is the BasicDeliveryRuleAction implementation for URLSigningAction.
+func (usa URLSigningAction) AsDeliveryRuleCacheKeyQueryStringAction() (*DeliveryRuleCacheKeyQueryStringAction, bool) {
+	return nil, false
+}
+
+// AsDeliveryRuleAction is the BasicDeliveryRuleAction implementation for URLSigningAction.
+func (usa URLSigningAction) AsDeliveryRuleAction() (*DeliveryRuleAction, bool) {
+	return nil, false
+}
+
+// AsBasicDeliveryRuleAction is the BasicDeliveryRuleAction implementation for URLSigningAction.
+func (usa URLSigningAction) AsBasicDeliveryRuleAction() (BasicDeliveryRuleAction, bool) {
+	return &usa, true
 }
 
 // URLSigningActionParameters defines the parameters for the Url Signing action.

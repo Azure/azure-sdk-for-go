@@ -420,11 +420,13 @@ const (
 	NameURLRedirect NameBasicDeliveryRuleAction = "UrlRedirect"
 	// NameURLRewrite ...
 	NameURLRewrite NameBasicDeliveryRuleAction = "UrlRewrite"
+	// NameURLSigning ...
+	NameURLSigning NameBasicDeliveryRuleAction = "UrlSigning"
 )
 
 // PossibleNameBasicDeliveryRuleActionValues returns an array of possible values for the NameBasicDeliveryRuleAction const type.
 func PossibleNameBasicDeliveryRuleActionValues() []NameBasicDeliveryRuleAction {
-	return []NameBasicDeliveryRuleAction{NameCacheExpiration, NameCacheKeyQueryString, NameDeliveryRuleAction, NameModifyRequestHeader, NameModifyResponseHeader, NameURLRedirect, NameURLRewrite}
+	return []NameBasicDeliveryRuleAction{NameCacheExpiration, NameCacheKeyQueryString, NameDeliveryRuleAction, NameModifyRequestHeader, NameModifyResponseHeader, NameURLRedirect, NameURLRewrite, NameURLSigning}
 }
 
 // OdataType enumerates the values for odata type.

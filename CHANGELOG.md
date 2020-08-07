@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v45.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| resources | 2019-10-01 |
+| web | 2020-06-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| appplatform | 2019-05-01-preview |
+| cdn | 2020-04-15 |
+
 ## `v45.0.0`
 
 ### New Packages

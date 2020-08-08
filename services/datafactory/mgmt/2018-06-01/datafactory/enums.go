@@ -2550,6 +2550,8 @@ const (
 	TypeAzureBlobStorageWriteSettings TypeBasicStoreWriteSettings = "AzureBlobStorageWriteSettings"
 	// TypeAzureDataLakeStoreWriteSettings ...
 	TypeAzureDataLakeStoreWriteSettings TypeBasicStoreWriteSettings = "AzureDataLakeStoreWriteSettings"
+	// TypeAzureFileStorageWriteSettings ...
+	TypeAzureFileStorageWriteSettings TypeBasicStoreWriteSettings = "AzureFileStorageWriteSettings"
 	// TypeFileServerWriteSettings ...
 	TypeFileServerWriteSettings TypeBasicStoreWriteSettings = "FileServerWriteSettings"
 	// TypeSftpWriteSettings ...
@@ -2560,7 +2562,7 @@ const (
 
 // PossibleTypeBasicStoreWriteSettingsValues returns an array of possible values for the TypeBasicStoreWriteSettings const type.
 func PossibleTypeBasicStoreWriteSettingsValues() []TypeBasicStoreWriteSettings {
-	return []TypeBasicStoreWriteSettings{TypeAzureBlobFSWriteSettings, TypeAzureBlobStorageWriteSettings, TypeAzureDataLakeStoreWriteSettings, TypeFileServerWriteSettings, TypeSftpWriteSettings, TypeStoreWriteSettings}
+	return []TypeBasicStoreWriteSettings{TypeAzureBlobFSWriteSettings, TypeAzureBlobStorageWriteSettings, TypeAzureDataLakeStoreWriteSettings, TypeAzureFileStorageWriteSettings, TypeFileServerWriteSettings, TypeSftpWriteSettings, TypeStoreWriteSettings}
 }
 
 // TypeBasicTrigger enumerates the values for type basic trigger.

@@ -52,6 +52,7 @@ var _ FactoriesClientAPI = (*datafactory.FactoriesClient)(nil)
 type ExposureControlClientAPI interface {
 	GetFeatureValue(ctx context.Context, locationID string, exposureControlRequest datafactory.ExposureControlRequest) (result datafactory.ExposureControlResponse, err error)
 	GetFeatureValueByFactory(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest datafactory.ExposureControlRequest) (result datafactory.ExposureControlResponse, err error)
+	QueryFeatureValuesByFactory(ctx context.Context, resourceGroupName string, factoryName string, exposureControlBatchRequest datafactory.ExposureControlBatchRequest) (result datafactory.ExposureControlBatchResponse, err error)
 }
 
 var _ ExposureControlClientAPI = (*datafactory.ExposureControlClient)(nil)

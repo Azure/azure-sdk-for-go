@@ -68,7 +68,7 @@ jobs:
 
       - script: |
           set -e
-          go test -race -v -coverprofile=coverage.txt -covermode atomic ./... 2>&1 | go-junit-report > report.xml
+          go test -run ^Test[^SB] -race -v -coverprofile=coverage.txt -covermode atomic ./... 2>&1 | go-junit-report > report.xml
           gocov convert coverage.txt > coverage.json
           gocov-xml < coverage.json > coverage.xml
           gocov-html < coverage.json > coverage.html

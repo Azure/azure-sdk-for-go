@@ -12,6 +12,7 @@ GO      = go
 GODOC   = godoc
 GOFMT   = gofmt
 GOCYCLO = gocyclo
+GOJUNITRPT = go-junit-report
 
 V = 0
 Q = $(if $(filter 1,$V),,@)
@@ -40,7 +41,7 @@ test-cover:   ARGS=-cover -coverprofile=cover.out -v     	## Run tests in verbos
 $(TEST_TARGETS): NAME=$(MAKECMDGOALS:test-%=%)
 $(TEST_TARGETS): test
 check test tests: cyclo lint vet terraform.tfstate; $(info $(M) running $(NAME:%=% )tests…) @ ## Run tests
-	$Q cd $(BASE) && $(GO) test -timeout $(TIMEOUT)s $(ARGS) $(TESTPKGS)
+	$Q cd $(BASE) && $(GO) test -timeout $(TIMEOUT)s $(ARGS) $(TESTPKGS) 2>&1 | $(GOJUNITRPT) > report.xml
 
 .PHONY: vet
 vet: $(GOLINT) ; $(info $(M) running vet…) @ ## Run vet

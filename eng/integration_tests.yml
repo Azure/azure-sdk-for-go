@@ -26,8 +26,10 @@ steps:
 
   - script: |
       set -e
-      go get github.com/mattn/goveralls
-      go get golang.org/x/tools/cmd/cover
+      go get github.com/jstemmer/go-junit-report
+      go get github.com/axw/gocov/gocov
+      go get github.com/AlekSi/gocov-xml
+      go get -u github.com/matm/gocov-html
       go get github.com/fzipp/gocyclo
       go get golang.org/x/lint/golint
     displayName: 'Install Dependencies'
@@ -45,7 +47,21 @@ steps:
       export ARM_TENANT_ID=$(AZURE_TENANT_ID)
       export GO111MODULE=on
       make test-cover
-      goveralls -coverprofile=cover.out -service=azure-devops
       make destroy-sb
+      gocov convert cover.out > coverage.json
+      gocov-xml < coverage.json > coverage.xml
+      gocov-html < coverage.json > coverage.html
     displayName: 'Run Integration Tests'
     workingDirectory: '$(sdkPath)'
+
+  - task: PublishTestResults@2
+    inputs:
+      testRunner: JUnit
+      testResultsFiles: $(sdkPath)/report.xml
+      failTaskOnFailedTests: true
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: Cobertura 
+      summaryFileLocation: $(sdkPath)/coverage.xml
+      additionalCodeCoverageFiles: $(sdkPath)/coverage.html

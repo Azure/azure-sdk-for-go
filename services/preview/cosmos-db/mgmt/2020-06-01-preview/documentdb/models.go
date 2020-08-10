@@ -1067,6 +1067,20 @@ func (cmbp ContinuousModeBackupPolicy) AsBasicBackupPolicy() (BasicBackupPolicy,
 	return &cmbp, true
 }
 
+// CorsPolicy the CORS policy for the Cosmos DB database account.
+type CorsPolicy struct {
+	// AllowedOrigins - The origin domains that are permitted to make a request against the service via CORS.
+	AllowedOrigins *string `json:"allowedOrigins,omitempty"`
+	// AllowedMethods - The methods (HTTP request verbs) that the origin domain may use for a CORS request.
+	AllowedMethods *string `json:"allowedMethods,omitempty"`
+	// AllowedHeaders - The request headers that the origin domain may specify on the CORS request.
+	AllowedHeaders *string `json:"allowedHeaders,omitempty"`
+	// ExposedHeaders - The response headers that may be sent in the response to the CORS request and exposed by the browser to the request issuer.
+	ExposedHeaders *string `json:"exposedHeaders,omitempty"`
+	// MaxAgeInSeconds - The maximum amount time that a browser should cache the preflight OPTIONS request.
+	MaxAgeInSeconds *int64 `json:"maxAgeInSeconds,omitempty"`
+}
+
 // CreateUpdateOptions createUpdateOptions are a list of key-value pairs that describe the resource. Supported
 // keys are "If-Match", "If-None-Match", "Session-Token" and "Throughput"
 type CreateUpdateOptions struct {
@@ -1251,6 +1265,8 @@ type DatabaseAccountCreateUpdateProperties struct {
 	EnableAnalyticalStorage *bool `json:"enableAnalyticalStorage,omitempty"`
 	// BackupPolicy - The object representing the policy for taking backups on an account.
 	BackupPolicy BasicBackupPolicy `json:"backupPolicy,omitempty"`
+	// Cors - The CORS policy for the Cosmos DB database account.
+	Cors *[]CorsPolicy `json:"cors,omitempty"`
 	// CreateMode - Possible values include: 'CreateModeDatabaseAccountCreateUpdateProperties', 'CreateModeDefault', 'CreateModeRestore'
 	CreateMode CreateModeBasicDatabaseAccountCreateUpdateProperties `json:"createMode,omitempty"`
 }
@@ -1352,6 +1368,9 @@ func (dacup DatabaseAccountCreateUpdateProperties) MarshalJSON() ([]byte, error)
 		objectMap["enableAnalyticalStorage"] = dacup.EnableAnalyticalStorage
 	}
 	objectMap["backupPolicy"] = dacup.BackupPolicy
+	if dacup.Cors != nil {
+		objectMap["cors"] = dacup.Cors
+	}
 	if dacup.CreateMode != "" {
 		objectMap["createMode"] = dacup.CreateMode
 	}
@@ -1548,6 +1567,15 @@ func (dacup *DatabaseAccountCreateUpdateProperties) UnmarshalJSON(body []byte) e
 				}
 				dacup.BackupPolicy = backupPolicy
 			}
+		case "cors":
+			if v != nil {
+				var cors []CorsPolicy
+				err = json.Unmarshal(*v, &cors)
+				if err != nil {
+					return err
+				}
+				dacup.Cors = &cors
+			}
 		case "createMode":
 			if v != nil {
 				var createMode CreateModeBasicDatabaseAccountCreateUpdateProperties
@@ -1618,6 +1646,8 @@ type DatabaseAccountGetProperties struct {
 	RestoreParameters *RestoreParameters `json:"restoreParameters,omitempty"`
 	// BackupPolicy - The object representing the policy for taking backups on an account.
 	BackupPolicy BasicBackupPolicy `json:"backupPolicy,omitempty"`
+	// Cors - The CORS policy for the Cosmos DB database account.
+	Cors *[]CorsPolicy `json:"cors,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DatabaseAccountGetProperties.
@@ -1678,6 +1708,9 @@ func (dagp DatabaseAccountGetProperties) MarshalJSON() ([]byte, error) {
 		objectMap["restoreParameters"] = dagp.RestoreParameters
 	}
 	objectMap["backupPolicy"] = dagp.BackupPolicy
+	if dagp.Cors != nil {
+		objectMap["cors"] = dagp.Cors
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -1931,6 +1964,15 @@ func (dagp *DatabaseAccountGetProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dagp.BackupPolicy = backupPolicy
+			}
+		case "cors":
+			if v != nil {
+				var cors []CorsPolicy
+				err = json.Unmarshal(*v, &cors)
+				if err != nil {
+					return err
+				}
+				dagp.Cors = &cors
 			}
 		}
 	}
@@ -2392,6 +2434,8 @@ type DatabaseAccountUpdateProperties struct {
 	EnableAnalyticalStorage *bool `json:"enableAnalyticalStorage,omitempty"`
 	// BackupPolicy - The object representing the policy for taking backups on an account.
 	BackupPolicy BasicBackupPolicy `json:"backupPolicy,omitempty"`
+	// Cors - The CORS policy for the Cosmos DB database account.
+	Cors *[]CorsPolicy `json:"cors,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for DatabaseAccountUpdateProperties struct.
@@ -2555,6 +2599,15 @@ func (daup *DatabaseAccountUpdateProperties) UnmarshalJSON(body []byte) error {
 				}
 				daup.BackupPolicy = backupPolicy
 			}
+		case "cors":
+			if v != nil {
+				var cors []CorsPolicy
+				err = json.Unmarshal(*v, &cors)
+				if err != nil {
+					return err
+				}
+				daup.Cors = &cors
+			}
 		}
 	}
 
@@ -2608,6 +2661,8 @@ type DefaultRequestDatabaseAccountCreateUpdateProperties struct {
 	EnableAnalyticalStorage *bool `json:"enableAnalyticalStorage,omitempty"`
 	// BackupPolicy - The object representing the policy for taking backups on an account.
 	BackupPolicy BasicBackupPolicy `json:"backupPolicy,omitempty"`
+	// Cors - The CORS policy for the Cosmos DB database account.
+	Cors *[]CorsPolicy `json:"cors,omitempty"`
 	// CreateMode - Possible values include: 'CreateModeDatabaseAccountCreateUpdateProperties', 'CreateModeDefault', 'CreateModeRestore'
 	CreateMode CreateModeBasicDatabaseAccountCreateUpdateProperties `json:"createMode,omitempty"`
 }
@@ -2668,6 +2723,9 @@ func (drdacup DefaultRequestDatabaseAccountCreateUpdateProperties) MarshalJSON()
 		objectMap["enableAnalyticalStorage"] = drdacup.EnableAnalyticalStorage
 	}
 	objectMap["backupPolicy"] = drdacup.BackupPolicy
+	if drdacup.Cors != nil {
+		objectMap["cors"] = drdacup.Cors
+	}
 	if drdacup.CreateMode != "" {
 		objectMap["createMode"] = drdacup.CreateMode
 	}
@@ -2863,6 +2921,15 @@ func (drdacup *DefaultRequestDatabaseAccountCreateUpdateProperties) UnmarshalJSO
 					return err
 				}
 				drdacup.BackupPolicy = backupPolicy
+			}
+		case "cors":
+			if v != nil {
+				var cors []CorsPolicy
+				err = json.Unmarshal(*v, &cors)
+				if err != nil {
+					return err
+				}
+				drdacup.Cors = &cors
 			}
 		case "createMode":
 			if v != nil {
@@ -5713,6 +5780,8 @@ type RestoreReqeustDatabaseAccountCreateUpdateProperties struct {
 	EnableAnalyticalStorage *bool `json:"enableAnalyticalStorage,omitempty"`
 	// BackupPolicy - The object representing the policy for taking backups on an account.
 	BackupPolicy BasicBackupPolicy `json:"backupPolicy,omitempty"`
+	// Cors - The CORS policy for the Cosmos DB database account.
+	Cors *[]CorsPolicy `json:"cors,omitempty"`
 	// CreateMode - Possible values include: 'CreateModeDatabaseAccountCreateUpdateProperties', 'CreateModeDefault', 'CreateModeRestore'
 	CreateMode CreateModeBasicDatabaseAccountCreateUpdateProperties `json:"createMode,omitempty"`
 }
@@ -5776,6 +5845,9 @@ func (rrdacup RestoreReqeustDatabaseAccountCreateUpdateProperties) MarshalJSON()
 		objectMap["enableAnalyticalStorage"] = rrdacup.EnableAnalyticalStorage
 	}
 	objectMap["backupPolicy"] = rrdacup.BackupPolicy
+	if rrdacup.Cors != nil {
+		objectMap["cors"] = rrdacup.Cors
+	}
 	if rrdacup.CreateMode != "" {
 		objectMap["createMode"] = rrdacup.CreateMode
 	}
@@ -5980,6 +6052,15 @@ func (rrdacup *RestoreReqeustDatabaseAccountCreateUpdateProperties) UnmarshalJSO
 					return err
 				}
 				rrdacup.BackupPolicy = backupPolicy
+			}
+		case "cors":
+			if v != nil {
+				var cors []CorsPolicy
+				err = json.Unmarshal(*v, &cors)
+				if err != nil {
+					return err
+				}
+				rrdacup.Cors = &cors
 			}
 		case "createMode":
 			if v != nil {

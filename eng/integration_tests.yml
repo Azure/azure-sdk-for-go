@@ -1,5 +1,10 @@
 pr: none
 
+variables:
+  GOPATH: '$(system.defaultWorkingDirectory)/work'
+  sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
+  GO111MODULE: 'on'
+
 pool:
   vmImage: 'ubuntu-18.04'
 

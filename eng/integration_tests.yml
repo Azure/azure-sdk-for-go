@@ -1,0 +1,44 @@
+pr: none
+
+pool:
+  vmImage: 'ubuntu-18.04'
+
+steps:
+  - task: GoTool@0
+    inputs:
+      version: '1.14'
+    displayName: "Select Go Version"
+
+  - script: |
+      set -e
+      mkdir -p '$(GOPATH)/bin'
+      mkdir -p '$(sdkPath)'
+      shopt -s extglob
+      mv !(work) '$(sdkPath)'
+      echo '##vso[task.prependpath]$(GOPATH)/bin'
+      go version
+    displayName: 'Create Go Workspace'
+
+  - script: |
+      set -e
+      go get github.com/mattn/goveralls
+      go get golang.org/x/tools/cmd/cover
+      go get github.com/fzipp/gocyclo
+      go get golang.org/x/lint/golint
+    displayName: 'Install Dependencies'
+
+  - script: |
+      set -e
+      curl -sLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/0.12.4/terraform_0.12.4_linux_amd64.zip
+      unzip /tmp/terraform.zip -d /tmp
+      mkdir -p ~/bin
+      export PATH="~/bin:$PATH"
+      export ARM_SUBSCRIPTION_ID=$(AZURE_SUBSCRIPTION_ID)
+      export ARM_CLIENT_ID=$(AZURE_CLIENT_ID)
+      export ARM_CLIENT_SECRET=$(AZURE_CLIENT_SECRET)
+      export ARM_TENANT_ID=$(AZURE_TENANT_ID)
+      export GO111MODULE=on
+      make test-cover
+      goveralls -coverprofile=cover.out -service=azure-devops
+      make destroy-sb
+    displayName: 'Run Integration Tests'

@@ -294,8 +294,8 @@ func testSubscriptionWithDefaultRule(ctx context.Context, t *testing.T, sm *Subs
 	require.NoError(t, err)
 	require.Len(t, rules, 1)
 	rule := rules[0]
-	assert.Equal(t, rule.Filter.Type, "TrueFilter")
-	assert.Equal(t, *rule.Filter.SQLExpression, "1=1")
+	assert.Equal(t, "TrueFilter", rule.Filter.Type)
+	assert.Equal(t, "1=1", *rule.Filter.SQLExpression)
 }
 
 func testSubscriptionWithFalseRule(ctx context.Context, t *testing.T, sm *SubscriptionManager, _, name string) {
@@ -377,8 +377,8 @@ func testSubscriptionWithDefaultRuleDescription(ctx context.Context, t *testing.
 	require.NoError(t, err)
 	require.Len(t, rules, 1)
 	rule := rules[0]
-	assert.Equal(t, rule.Filter.Type, "FalseFilter")
-	assert.Equal(t, *rule.Filter.SQLExpression, "1!=1")
+	assert.Equal(t, "FalseFilter", rule.Filter.Type)
+	assert.Equal(t, "1=0", *rule.Filter.SQLExpression)
 }
 
 func buildSubscription(ctx context.Context, t *testing.T, sm *SubscriptionManager, name string, opts ...SubscriptionManagementOption) *SubscriptionEntity {
@@ -650,7 +650,7 @@ func testSubscriptionSessionReceiveOne(ctx context.Context, t *testing.T, topic 
 	closerCtx, cancel := context.WithCancel(ctx)
 	err := sub.ReceiveOne(closerCtx, NewSessionHandler(
 		HandlerFunc(func(ctx context.Context, msg *Message) error {
-			assert.Equal(t, string(msg.Data), want)
+			assert.Equal(t, want, string(msg.Data))
 			defer cancel()
 			return msg.Complete(ctx)
 		}),

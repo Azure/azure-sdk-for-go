@@ -31,6 +31,7 @@ steps:
       go get github.com/fzipp/gocyclo
       go get golang.org/x/lint/golint
     displayName: 'Install Dependencies'
+    workingDirectory: '$(sdkPath)'
 
   - script: |
       set -e
@@ -47,3 +48,4 @@ steps:
       goveralls -coverprofile=cover.out -service=azure-devops
       make destroy-sb
     displayName: 'Run Integration Tests'
+    workingDirectory: '$(sdkPath)'

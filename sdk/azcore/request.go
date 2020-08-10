@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"strconv"
 	"strings"
 )
 
@@ -169,6 +170,7 @@ func (req *Request) SetBody(body ReadSeekCloser) error {
 	}
 	req.Request.Body = body
 	req.Request.ContentLength = size
+	req.Header.Set(HeaderContentLength, strconv.FormatInt(size, 10))
 	return nil
 }
 

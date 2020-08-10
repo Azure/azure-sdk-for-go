@@ -6,6 +6,7 @@
 package azcore
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -13,6 +14,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"strconv"
 	"testing"
 	"unsafe"
 )
@@ -464,5 +466,22 @@ func TestAzureTagIsReadOnly(t *testing.T) {
 	}
 	if !azureTagIsReadOnly("copy,ro,something") {
 		t.Fatal("expected RO")
+	}
+}
+
+func TestRequestSetBodyContentLengthHeader(t *testing.T) {
+	endpoint, err := url.Parse("http://test.contoso.com")
+	if err != nil {
+		t.Fatal(err)
+	}
+	req := NewRequest(http.MethodPut, *endpoint)
+	buff := make([]byte, 768, 768)
+	const buffLen = 768
+	for i := 0; i < buffLen; i++ {
+		buff[i] = 1
+	}
+	req.SetBody(NopCloser(bytes.NewReader(buff)))
+	if req.Header.Get(HeaderContentLength) != strconv.FormatInt(buffLen, 10) {
+		t.Fatalf("expected content-length %d, got %s", buffLen, req.Header.Get(HeaderContentLength))
 	}
 }

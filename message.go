@@ -182,7 +182,7 @@ func (m *Message) Complete(ctx context.Context) error {
 		return sendMgmtDisposition(ctx, m, disposition{Status: completedDisposition})
 	}
 
-	return m.message.Accept()
+	return m.message.Accept(ctx)
 }
 
 // Abandon will notify Azure Service Bus the message failed but should be re-queued for delivery.
@@ -197,7 +197,7 @@ func (m *Message) Abandon(ctx context.Context) error {
 		return sendMgmtDisposition(ctx, m, d)
 	}
 
-	return m.message.Modify(false, false, nil)
+	return m.message.Modify(ctx, false, false, nil)
 }
 
 // Defer will set aside the message for later processing
@@ -223,7 +223,7 @@ func (m *Message) Defer(ctx context.Context) error {
 	_, span := m.startSpanFromContext(ctx, "sb.Message.Defer")
 	defer span.End()
 
-	return m.message.Modify(true, true, nil)
+	return m.message.Modify(ctx, true, true, nil)
 }
 
 // Release will notify Azure Service Bus the message should be re-queued without failure.
@@ -254,7 +254,7 @@ func (m *Message) DeadLetter(ctx context.Context, err error) error {
 		Condition:   amqp.ErrorCondition(ErrorInternalError),
 		Description: err.Error(),
 	}
-	return m.message.Reject(&amqpErr)
+	return m.message.Reject(ctx, &amqpErr)
 
 }
 
@@ -286,7 +286,7 @@ func (m *Message) DeadLetterWithInfo(ctx context.Context, err error, condition M
 		Description: err.Error(),
 		Info:        info,
 	}
-	return m.message.Reject(&amqpErr)
+	return m.message.Reject(ctx, &amqpErr)
 }
 
 // ScheduleAt will ensure Azure Service Bus delivers the message after the time specified

@@ -1012,12 +1012,28 @@ type BlobItemInternal struct {
 	Name             *string       `xml:"Name"`
 
 	// Dictionary of <string>
-	ObjectReplicationMetadata *map[string]string `xml:"string"`
+	ObjectReplicationMetadata *map[string]string `xml:"ObjectReplicationMetadata"`
 
 	// Properties of a blob
 	Properties *BlobPropertiesInternal `xml:"Properties"`
 	Snapshot   *string                 `xml:"Snapshot"`
 	VersionID  *string                 `xml:"VersionId"`
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type BlobItemInternal.
+func (b *BlobItemInternal) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	type alias BlobItemInternal
+	aux := &struct {
+		*alias
+		ObjectReplicationMetadata *additionalProperties `xml:"ObjectReplicationMetadata"`
+	}{
+		alias: (*alias)(b),
+	}
+	if err := d.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	b.ObjectReplicationMetadata = (*map[string]string)(aux.ObjectReplicationMetadata)
+	return nil
 }
 
 type BlobMetadata struct {
@@ -2344,12 +2360,28 @@ type ContainerItem struct {
 	Deleted *bool `xml:"Deleted"`
 
 	// Dictionary of <string>
-	Metadata *map[string]string `xml:"string"`
+	Metadata *map[string]string `xml:"Metadata"`
 	Name     *string            `xml:"Name"`
 
 	// Properties of a container
 	Properties *ContainerProperties `xml:"Properties"`
 	Version    *string              `xml:"Version"`
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type ContainerItem.
+func (c *ContainerItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	type alias ContainerItem
+	aux := &struct {
+		*alias
+		Metadata *additionalProperties `xml:"Metadata"`
+	}{
+		alias: (*alias)(c),
+	}
+	if err := d.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	c.Metadata = (*map[string]string)(aux.Metadata)
+	return nil
 }
 
 // ContainerListBlobFlatSegmentOptions contains the optional parameters for the Container.ListBlobFlatSegment method.

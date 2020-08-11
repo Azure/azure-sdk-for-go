@@ -3,6 +3,8 @@ package azblob
 import (
 	"context"
 	"net/url"
+	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -91,82 +93,42 @@ func (s ServiceClient) GetAccountInfo(ctx context.Context) (*ServiceGetAccountIn
 	return s.client.ServiceOperations().GetAccountInfo(ctx)
 }
 
-////GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceClient object.
-////OAuth is required for this call, as well as any role that can delegate access to the storage account.
-//func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, info KeyInfo, timeout *int32, requestID *string) (UserDelegationCredential, error) {
-//	sc := newServiceClient(s.client.url, s.client.p)
-//	udk, err := sc.GetUserDelegationKey(ctx, info, timeout, requestID)
-//	if err != nil {
-//		return UserDelegationCredential{}, err
-//	}
-//	return NewUserDelegationCredential(strings.Split(s.client.url.Host, ".")[0], *udk), nil
-//}
-//
-////TODO this was supposed to be generated
-////NewKeyInfo creates a new KeyInfo struct with the correct time formatting & conversion
-//func NewKeyInfo(Start, Expiry time.Time) KeyInfo {
-//	return KeyInfo{
-//		Start:  Start.UTC().Format(SASTimeFormat),
-//		Expiry: Expiry.UTC().Format(SASTimeFormat),
-//	}
-//}
-//
-//// ListContainersFlatSegment returns a single segment of containers starting from the specified Marker. Use an empty
-//// Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
-//// After getting a segment, process it, and then call ListContainersFlatSegment again (passing the the
-//// previously-returned Marker) to get the next segment. For more information, see
-//// https://docs.microsoft.com/rest/api/storageservices/list-containers2.
-//func (s ServiceClient) ListContainersSegment(ctx context.Context, marker Marker, o ListContainersSegmentOptions) (*ListContainersSegmentResponse, error) {
-//	prefix, include, maxResults := o.pointers()
-//	return s.client.ListContainersSegment(ctx, prefix, marker.Val, maxResults, include, nil, nil)
-//}
-//
-//// ListContainersOptions defines options available when calling ListContainers.
-//type ListContainersSegmentOptions struct {
-//	Detail     ListContainersDetail // No IncludeType header is produced if ""
-//	Prefix     string               // No Prefix header is produced if ""
-//	MaxResults int32                // 0 means unspecified
-//	// TODO: update swagger to generate this type?
-//}
-//
-//func (o *ListContainersSegmentOptions) pointers() (prefix *string, include ListContainersIncludeType, maxResults *int32) {
-//	if o.Prefix != "" {
-//		prefix = &o.Prefix
-//	}
-//	if o.MaxResults != 0 {
-//		maxResults = &o.MaxResults
-//	}
-//	include = ListContainersIncludeType(o.Detail.string())
-//	return
-//}
-//
-//// ListContainersFlatDetail indicates what additional information the service should return with each container.
-//type ListContainersDetail struct {
-//	// Tells the service whether to return metadata for each container.
-//	Metadata bool
-//}
-//
-//// string produces the Include query parameter's value.
-//func (d *ListContainersDetail) string() string {
-//	items := make([]string, 0, 1)
-//	// NOTE: Multiple strings MUST be appended in alphabetic order or signing the string for authentication fails!
-//	if d.Metadata {
-//		items = append(items, string(ListContainersIncludeMetadata))
-//	}
-//	if len(items) > 0 {
-//		return strings.Join(items, ",")
-//	}
-//	return string(ListContainersIncludeNone)
-//}
-//
-//func (s ServiceClient) GetProperties(ctx context.Context) (*StorageServiceProperties, error) {
-//	return s.client.GetProperties(ctx, nil, nil)
-//}
-//
-//func (s ServiceClient) SetProperties(ctx context.Context, properties StorageServiceProperties) (*ServiceSetPropertiesResponse, error) {
-//	return s.client.SetProperties(ctx, properties, nil, nil)
-//}
-//
-//func (s ServiceClient) GetStatistics(ctx context.Context) (*StorageServiceStats, error) {
-//	return s.client.GetStatistics(ctx, nil, nil)
-//}
+//GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceClient object.
+//OAuth is required for this call, as well as any role that can delegate access to the storage account.
+func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, info KeyInfo) (UserDelegationCredential, error) {
+	udk, err := s.client.ServiceOperations().GetUserDelegationKey(ctx, info, nil)
+	if err != nil {
+		return UserDelegationCredential{}, err
+	}
+	return NewUserDelegationCredential(strings.Split(s.String(), ".")[0], *udk.UserDelegationKey), nil
+}
+
+//NewKeyInfo creates a new KeyInfo struct with the correct time formatting & conversion
+func NewKeyInfo(Start, Expiry time.Time) KeyInfo {
+	start := Start.UTC().Format(SASTimeFormat)
+	expiry := Expiry.UTC().Format(SASTimeFormat)
+	return KeyInfo{
+		Start:  &start,
+		Expiry: &expiry,
+	}
+}
+
+// The List Containers Segment operation returns a list of the containers under the specified account.
+// A page is returned to allow the user to walk through segments of the list. Please refer to the examples on its ussage.
+// Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
+func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) (ListContainersSegmentResponsePager, error) {
+	return s.client.ServiceOperations().ListContainersSegment(o.pointers())
+}
+
+func (s ServiceClient) GetProperties(ctx context.Context) (*StorageServicePropertiesResponse, error) {
+	return s.client.ServiceOperations().GetProperties(ctx, nil)
+}
+
+func (s ServiceClient) SetProperties(ctx context.Context, properties StorageServiceProperties) (*ServiceSetPropertiesResponse, error) {
+	return s.client.ServiceOperations().SetProperties(ctx, properties, nil)
+}
+
+func (s ServiceClient) GetStatistics(ctx context.Context) (*StorageServiceStatsResponse, error) {
+	return s.client.ServiceOperations().GetStatistics(ctx, nil)
+}

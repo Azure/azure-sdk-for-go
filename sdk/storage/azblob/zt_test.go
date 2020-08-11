@@ -101,14 +101,13 @@ func generateBlobName() string {
 	return generateName(blobPrefix)
 }
 
-//
-//func getContainerURL(c *chk.C, bsu ServiceClient) (container ContainerClient, name string) {
-//	name = generateContainerName()
-//	container = bsu.NewContainerClient(name)
-//
-//	return container, name
-//}
-//
+func getContainerClient(c *chk.C, s ServiceClient) (container ContainerClient, name string) {
+	name = generateContainerName()
+	container = s.NewContainerClient(name)
+
+	return container, name
+}
+
 //func getBlockBlobURL(c *chk.C, container ContainerClient) (blob BlockBlobClient, name string) {
 //	name = generateBlobName()
 //	blob = container.NewBlockBlobClient(name)
@@ -141,29 +140,34 @@ func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 	return bytes.NewReader(data), data
 }
 
-//
-//func createNewContainer(c *chk.C, bsu ServiceClient) (container ContainerClient, name string) {
-//	container, name = getContainerURL(c, bsu)
-//
-//	cResp, err := container.Create(ctx, nil, PublicAccessNone)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(cResp.StatusCode(), chk.Equals, 201)
-//	return container, name
-//}
-//
-//func createNewContainerWithSuffix(c *chk.C, bsu ServiceClient, suffix string) (container ContainerClient, name string) {
-//	// The goal of adding the suffix is to be able to predetermine what order the containers will be in when listed.
-//	// We still need the container prefix to come first, though, to ensure only containers as a part of this test
-//	// are listed at all.
-//	name = generateName(containerPrefix + suffix)
-//	container = bsu.NewContainerClient(name)
-//
-//	cResp, err := container.Create(ctx, nil, PublicAccessNone)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(cResp.StatusCode(), chk.Equals, 201)
-//	return container, name
-//}
-//
+func createNewContainer(c *chk.C, bsu ServiceClient) (container ContainerClient, name string) {
+	container, name = getContainerClient(c, bsu)
+
+	cResp, err := container.Create(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
+	return container, name
+}
+
+func deleteContainer(c *chk.C, container ContainerClient) {
+	resp, err := container.Delete(context.Background(), nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 202)
+}
+
+func createNewContainerWithSuffix(c *chk.C, bsu ServiceClient, suffix string) (container ContainerClient, name string) {
+	// The goal of adding the suffix is to be able to predetermine what order the containers will be in when listed.
+	// We still need the container prefix to come first, though, to ensure only containers as a part of this test
+	// are listed at all.
+	name = generateName(containerPrefix + suffix)
+	container = bsu.NewContainerClient(name)
+
+	cResp, err := container.Create(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
+	return container, name
+}
+
 //func createNewBlockBlob(c *chk.C, container ContainerClient) (blob BlockBlobClient, name string) {
 //	blob, name = getBlockBlobURL(c, container)
 //

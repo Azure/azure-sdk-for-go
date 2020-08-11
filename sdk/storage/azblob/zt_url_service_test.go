@@ -35,47 +35,66 @@ func (s *aztestsSuite) TestGetAccountInfo(c *chk.C) {
 	c.Assert(*bAccInfo, chk.Not(chk.DeepEquals), BlobGetAccountInfoResponse{})
 }
 
-//
-//func (s *aztestsSuite) TestListContainers(c *chk.C) {
-//	sa := getBSU()
-//	resp, err := sa.ListContainersSegment(context.Background(), Marker{}, ListContainersSegmentOptions{Prefix: containerPrefix})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Response().StatusCode, chk.Equals, 200)
-//	c.Assert(resp.RequestID(), chk.Not(chk.Equals), "")
-//	c.Assert(resp.Version(), chk.Not(chk.Equals), "")
-//	c.Assert(len(resp.ContainerItems) >= 0, chk.Equals, true)
-//	c.Assert(resp.ServiceEndpoint, chk.NotNil)
-//
-//	container, name := createNewContainer(c, sa)
-//	defer delContainer(c, container)
-//
-//	md := Metadata{
-//		"foo": "foovalue",
-//		"bar": "barvalue",
-//	}
-//	_, err = container.SetMetadata(context.Background(), md, ContainerAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	resp, err = sa.ListContainersSegment(context.Background(), Marker{}, ListContainersSegmentOptions{Detail: ListContainersDetail{Metadata: true}, Prefix: name})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.ContainerItems, chk.HasLen, 1)
-//	c.Assert(resp.ContainerItems[0].Name, chk.NotNil)
-//	c.Assert(resp.ContainerItems[0].Properties, chk.NotNil)
-//	c.Assert(resp.ContainerItems[0].Properties.LastModified, chk.NotNil)
-//	c.Assert(resp.ContainerItems[0].Properties.Etag, chk.NotNil)
-//	c.Assert(resp.ContainerItems[0].Properties.LeaseStatus, chk.Equals, LeaseStatusUnlocked)
-//	c.Assert(resp.ContainerItems[0].Properties.LeaseState, chk.Equals, LeaseStateAvailable)
-//	c.Assert(string(resp.ContainerItems[0].Properties.LeaseDuration), chk.Equals, "")
-//	c.Assert(string(resp.ContainerItems[0].Properties.PublicAccess), chk.Equals, string(PublicAccessNone))
-//	c.Assert(resp.ContainerItems[0].Metadata, chk.DeepEquals, md)
-//}
-//
+func (s *aztestsSuite) TestListContainersBasic(c *chk.C) {
+	sa := getBSU()
+	prefix := containerPrefix
+	listOptions := ListContainersSegmentOptions{Prefix: &prefix}
+	pager, err := sa.ListContainersSegment(&listOptions)
+	c.Check(err, chk.IsNil)
+
+	for pager.NextPage(context.Background()) {
+		page := pager.PageResponse()
+		c.Assert(page.RawResponse.StatusCode, chk.Equals, 200)
+		c.Assert(page.RequestId, chk.Not(chk.Equals), "")
+		c.Assert(page.Version, chk.Not(chk.Equals), "")
+		c.Assert(len(*page.EnumerationResults.ContainerItems) >= 0, chk.Equals, true)
+		c.Assert(page.EnumerationResults.ServiceEndpoint, chk.NotNil)
+	}
+
+	// ensure no error occurred
+	c.Assert(pager.Err(), chk.IsNil)
+
+	container, name := getContainerClient(c, sa)
+	defer deleteContainer(c, container)
+
+	md := map[string]string{
+		"foo": "foovalue",
+		"bar": "barvalue",
+	}
+
+	options := CreateContainerOptions{Metadata: &md}
+	_, err = container.Create(ctx, &options)
+	c.Assert(err, chk.IsNil)
+
+	listOptions = ListContainersSegmentOptions{Include: ListContainersDetail{Metadata: true}, Prefix: &name}
+	pager, err = sa.ListContainersSegment(&listOptions)
+	c.Assert(err, chk.IsNil)
+
+	pager.NextPage(ctx)
+	page := pager.PageResponse()
+	items := *page.EnumerationResults.ContainerItems
+	c.Assert(items, chk.HasLen, 1)
+	c.Assert(items[0].Name, chk.NotNil)
+	c.Assert(items[0].Properties, chk.NotNil)
+	c.Assert(items[0].Properties.LastModified, chk.NotNil)
+	c.Assert(items[0].Properties.Etag, chk.NotNil)
+	c.Assert(*items[0].Properties.LeaseStatus, chk.Equals, LeaseStatusTypeUnlocked)
+	c.Assert(*items[0].Properties.LeaseState, chk.Equals, LeaseStateTypeAvailable)
+	c.Assert(items[0].Properties.LeaseDuration, chk.IsNil)
+	c.Assert(items[0].Properties.PublicAccess, chk.IsNil)
+	c.Assert(*items[0].Metadata, chk.DeepEquals, md)
+
+	// ensure no error occurred
+	c.Assert(pager.Err(), chk.IsNil)
+}
+
+// TODO re-enable after generator fix
 //func (s *aztestsSuite) TestListContainersPaged(c *chk.C) {
 //	sa := getBSU()
 //
 //	const numContainers = 4
-//	const maxResultsPerPage = 2
-//	const pagedContainersPrefix = "azblobspagedtest"
+//	maxResults := int32(2)
+//	const pagedContainersPrefix = "azcontainermax"
 //
 //	containers := make([]ContainerClient, numContainers)
 //	for i := 0; i < numContainers; i++ {
@@ -84,135 +103,127 @@ func (s *aztestsSuite) TestGetAccountInfo(c *chk.C) {
 //
 //	defer func() {
 //		for i := range containers {
-//			delContainer(c, containers[i])
+//			deleteContainer(c, containers[i])
 //		}
 //	}()
 //
-//	marker := Marker{}
-//	iterations := numContainers / maxResultsPerPage
+//	// list for a first time
+//	prefix := containerPrefix + pagedContainersPrefix
+//	listOptions := ListContainersSegmentOptions{MaxResults: &maxResults, Prefix: &prefix}
+//	pager, err := sa.ListContainersSegment(&listOptions)
+//	c.Assert(err, chk.IsNil)
+//	count := 0
+//	var marker *string = nil
 //
-//	for i := 0; i < iterations; i++ {
-//		resp, err := sa.ListContainersSegment(context.Background(), marker, ListContainersSegmentOptions{MaxResults: maxResultsPerPage, Prefix: containerPrefix + pagedContainersPrefix})
-//		c.Assert(err, chk.IsNil)
-//		c.Assert(resp.ContainerItems, chk.HasLen, maxResultsPerPage)
+//	for pager.NextPage(context.Background()) {
+//		page := pager.PageResponse()
+//		c.Assert(page.RawResponse.StatusCode, chk.Equals, 200)
+//		c.Assert(page.RequestId, chk.Not(chk.Equals), "")
+//		c.Assert(page.Version, chk.Not(chk.Equals), "")
+//		c.Assert(len(*page.EnumerationResults.ContainerItems) == int(maxResults), chk.Equals, true)
+//		c.Assert(page.EnumerationResults.ServiceEndpoint, chk.NotNil)
+//		c.Assert(page.EnumerationResults.Marker, chk.IsNil)
 //
-//		hasMore := i < iterations-1
-//		c.Assert(resp.NextMarker.NotDone(), chk.Equals, hasMore)
-//		marker = resp.NextMarker
+//		// record the marker for the next list
+//		marker = page.EnumerationResults.NextMarker
+//		count += 1
 //	}
-//}
 //
-//func (s *aztestsSuite) TestAccountListContainersEmptyPrefix(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL1, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL1)
-//	containerURL2, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL2)
+//	c.Assert(count, chk.Equals, 1)
+//	c.Assert(pager.Err(), chk.IsNil)
 //
-//	response, err := bsu.ListContainersSegment(ctx, Marker{}, ListContainersSegmentOptions{})
-//
+//	// list again with marker
+//	listOptions = ListContainersSegmentOptions{MaxResults: &maxResults, Prefix: &prefix, Marker: marker}
+//	pager, err = sa.ListContainersSegment(&listOptions)
 //	c.Assert(err, chk.IsNil)
-//	c.Assert(len(response.ContainerItems) >= 2, chk.Equals, true) // The response should contain at least the two created containers. Probably many more
+//	count = 0
+//
+//	for pager.NextPage(context.Background()) {
+//		page := pager.PageResponse()
+//		c.Assert(page.RawResponse.StatusCode, chk.Equals, 200)
+//		c.Assert(page.RequestId, chk.Not(chk.Equals), "")
+//		c.Assert(page.Version, chk.Not(chk.Equals), "")
+//		c.Assert(len(*page.EnumerationResults.ContainerItems) == int(maxResults), chk.Equals, true)
+//		c.Assert(page.EnumerationResults.ServiceEndpoint, chk.NotNil)
+//		c.Assert(page.EnumerationResults.Marker, chk.DeepEquals, marker)
+//		c.Assert(*page.EnumerationResults.NextMarker, chk.Equals, "")
+//		count += 1
+//	}
+//
+//	c.Assert(count, chk.Equals, 1)
+//	c.Assert(pager.Err(), chk.IsNil)
 //}
-//
-//func (s *aztestsSuite) TestAccountListContainersIncludeTypeMetadata(c *chk.C) {
-//	bsu := getBSU()
-//	containerURLNoMetadata, nameNoMetadata := createNewContainerWithSuffix(c, bsu, "a")
-//	defer deleteContainer(c, containerURLNoMetadata)
-//	containerURLMetadata, nameMetadata := createNewContainerWithSuffix(c, bsu, "b")
-//	defer deleteContainer(c, containerURLMetadata)
-//
-//	// Test on containers with and without metadata
-//	_, err := containerURLMetadata.SetMetadata(ctx, basicMetadata, ContainerAccessConditions{})
-//	c.Assert(err, chk.IsNil)
-//
-//	// Also validates not specifying MaxResults
-//	response, err := bsu.ListContainersSegment(ctx, Marker{},
-//		ListContainersSegmentOptions{Prefix: containerPrefix, Detail: ListContainersDetail{Metadata: true}})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(response.ContainerItems[0].Name, chk.Equals, nameNoMetadata)
-//	c.Assert(response.ContainerItems[0].Metadata, chk.HasLen, 0)
-//	c.Assert(response.ContainerItems[1].Name, chk.Equals, nameMetadata)
-//	c.Assert(response.ContainerItems[1].Metadata, chk.DeepEquals, basicMetadata)
-//}
-//
-//func (s *aztestsSuite) TestAccountListContainersMaxResultsNegative(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//
-//	defer deleteContainer(c, containerURL)
-//	_, err := bsu.ListContainersSegment(ctx,
-//		Marker{}, *(&ListContainersSegmentOptions{Prefix: containerPrefix, MaxResults: -2}))
-//	c.Assert(err, chk.Not(chk.IsNil))
-//}
-//
-//func (s *aztestsSuite) TestAccountListContainersMaxResultsZero(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//
-//	defer deleteContainer(c, containerURL)
-//
-//	// Max Results = 0 means the value will be ignored, the header not set, and the server default used
-//	resp, err := bsu.ListContainersSegment(ctx,
-//		Marker{}, *(&ListContainersSegmentOptions{Prefix: containerPrefix, MaxResults: 0}))
-//
-//	c.Assert(err, chk.IsNil)
-//	// There could be existing container
-//	c.Assert(len(resp.ContainerItems) >= 1, chk.Equals, true)
-//}
-//
-//func (s *aztestsSuite) TestAccountListContainersMaxResultsExact(c *chk.C) {
-//	// If this test fails, ensure there are no extra containers prefixed with go in the account. These may be left over if a test is interrupted.
-//	bsu := getBSU()
-//	containerURL1, containerName1 := createNewContainerWithSuffix(c, bsu, "a")
-//	defer deleteContainer(c, containerURL1)
-//	containerURL2, containerName2 := createNewContainerWithSuffix(c, bsu, "b")
-//	defer deleteContainer(c, containerURL2)
-//
-//	response, err := bsu.ListContainersSegment(ctx,
-//		Marker{}, *(&ListContainersSegmentOptions{Prefix: containerPrefix, MaxResults: 2}))
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(response.ContainerItems, chk.HasLen, 2)
-//	c.Assert(response.ContainerItems[0].Name, chk.Equals, containerName1)
-//	c.Assert(response.ContainerItems[1].Name, chk.Equals, containerName2)
-//}
-//
-//func (s *aztestsSuite) TestAccountListContainersMaxResultsInsufficient(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL1, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL1)
-//	containerURL2, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL2)
-//
-//	response, err := bsu.ListContainersSegment(ctx, Marker{},
-//		*(&ListContainersSegmentOptions{Prefix: containerPrefix, MaxResults: 1}))
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(len(response.ContainerItems), chk.Equals, 1)
-//}
-//
-//func (s *aztestsSuite) TestAccountListContainersMaxResultsSufficient(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL1, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL1)
-//	containerURL2, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL2)
-//
-//	response, err := bsu.ListContainersSegment(ctx, Marker{},
-//		*(&ListContainersSegmentOptions{Prefix: containerPrefix, MaxResults: 3}))
-//
-//	c.Assert(err, chk.IsNil)
-//
-//	// This case could be instable, there could be existing containers, so the count should be >= 2
-//	c.Assert(len(response.ContainerItems) >= 2, chk.Equals, true)
-//}
-//
+
+func (s *aztestsSuite) TestAccountListContainersEmptyPrefix(c *chk.C) {
+	bsu := getBSU()
+	containerURL1, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL1)
+	containerURL2, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL2)
+
+	pager, err := bsu.ListContainersSegment(nil)
+	c.Assert(err, chk.IsNil)
+	hasPage := pager.NextPage(context.Background())
+	c.Assert(hasPage, chk.Equals, true)
+
+	c.Assert(len(*pager.PageResponse().EnumerationResults.ContainerItems) >= 2, chk.Equals, true) // The response should contain at least the two created containers. Probably many more
+	c.Assert(pager.Err(), chk.IsNil)
+}
+
+func (s *aztestsSuite) TestAccountListContainersMaxResultsNegative(c *chk.C) {
+	bsu := getBSU()
+	containerURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerURL)
+
+	illegalMaxResults := []int32{-2, 0}
+	for _, num := range illegalMaxResults {
+		options := ListContainersSegmentOptions{MaxResults: &num}
+
+		// getting the pager should still work
+		pager, err := bsu.ListContainersSegment(&options)
+		c.Assert(err, chk.IsNil)
+
+		// getting the next page should fail
+		hasPage := pager.NextPage(context.Background())
+		c.Assert(hasPage, chk.Equals, false)
+
+		// the error (illegal parameter should have been reported)
+		err = pager.Err()
+		c.Assert(err, chk.NotNil)
+	}
+}
+
+func (s *aztestsSuite) TestAccountListContainersMaxResultsExact(c *chk.C) {
+	// If this test fails, ensure there are no extra containers prefixed with go in the account. These may be left over if a test is interrupted.
+	bsu := getBSU()
+	containerURL1, containerName1 := createNewContainerWithSuffix(c, bsu, "abc")
+	defer deleteContainer(c, containerURL1)
+	containerURL2, containerName2 := createNewContainerWithSuffix(c, bsu, "abcde")
+	defer deleteContainer(c, containerURL2)
+
+	prefix := containerPrefix + "abc"
+	maxResults := int32(2)
+	options := ListContainersSegmentOptions{Prefix: &prefix, MaxResults: &maxResults}
+	pager, err := bsu.ListContainersSegment(&options)
+	c.Assert(err, chk.IsNil)
+
+	// getting the next page should work
+	hasPage := pager.NextPage(context.Background())
+	c.Assert(hasPage, chk.Equals, true)
+
+	page := pager.PageResponse()
+	c.Assert(err, chk.IsNil)
+	c.Assert(*page.EnumerationResults.ContainerItems, chk.HasLen, 2)
+	c.Assert(*(*page.EnumerationResults.ContainerItems)[0].Name, chk.DeepEquals, containerName1)
+	c.Assert(*(*page.EnumerationResults.ContainerItems)[1].Name, chk.DeepEquals, containerName2)
+}
+
 //func (s *aztestsSuite) TestAccountDeleteRetentionPolicy(c *chk.C) {
 //	bsu := getBSU()
 //
 //	days := int32(5)
-//	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: true, Days: &days}})
+//	enabled := true
+//	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
 //	c.Assert(err, chk.IsNil)
 //
 //	// From FE, 30 seconds is guaranteed t be enough.
@@ -220,10 +231,11 @@ func (s *aztestsSuite) TestGetAccountInfo(c *chk.C) {
 //
 //	resp, err := bsu.GetProperties(ctx)
 //	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.DeleteRetentionPolicy.Enabled, chk.Equals, true)
-//	c.Assert(*resp.DeleteRetentionPolicy.Days, chk.Equals, int32(5))
+//	c.Assert(resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, chk.DeepEquals, true)
+//	c.Assert(resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.DeepEquals, int32(5))
 //
-//	_, err = bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: false}})
+//	disabled := false
+//	_, err = bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &disabled}})
 //	c.Assert(err, chk.IsNil)
 //
 //	// From FE, 30 seconds is guaranteed t be enough.
@@ -231,10 +243,10 @@ func (s *aztestsSuite) TestGetAccountInfo(c *chk.C) {
 //
 //	resp, err = bsu.GetProperties(ctx)
 //	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.DeleteRetentionPolicy.Enabled, chk.Equals, false)
-//	c.Assert(resp.DeleteRetentionPolicy.Days, chk.IsNil)
+//	c.Assert(resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, chk.DeepEquals, false)
+//	c.Assert(resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.IsNil)
 //}
-//
+
 //func (s *aztestsSuite) TestAccountDeleteRetentionPolicyEmpty(c *chk.C) {
 //	bsu := getBSU()
 //

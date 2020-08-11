@@ -141,6 +141,87 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// Creator an Azure resource which represents Maps Creator product and provides ability to manage private
+// location data.
+type Creator struct {
+	autorest.Response `json:"-"`
+	// Properties - The Creator resource properties.
+	Properties *CreatorProperties `json:"properties,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Creator.
+func (c Creator) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if c.Properties != nil {
+		objectMap["properties"] = c.Properties
+	}
+	if c.Tags != nil {
+		objectMap["tags"] = c.Tags
+	}
+	if c.Location != nil {
+		objectMap["location"] = c.Location
+	}
+	return json.Marshal(objectMap)
+}
+
+// CreatorCreateParameters parameters used to create a new Maps Creator resource.
+type CreatorCreateParameters struct {
+	// Location - The location of the resource.
+	Location *string `json:"location,omitempty"`
+	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for CreatorCreateParameters.
+func (ccp CreatorCreateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ccp.Location != nil {
+		objectMap["location"] = ccp.Location
+	}
+	if ccp.Tags != nil {
+		objectMap["tags"] = ccp.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// CreatorList a list of Creator resources.
+type CreatorList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; a Creator account.
+	Value *[]Creator `json:"value,omitempty"`
+}
+
+// CreatorProperties creator resource properties
+type CreatorProperties struct {
+	// ProvisioningState - The state of the resource provisioning, terminal states: Succeeded, Failed, Canceled
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// CreatorUpdateParameters parameters used to update an existing Creator resource.
+type CreatorUpdateParameters struct {
+	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for CreatorUpdateParameters.
+func (cup CreatorUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cup.Tags != nil {
+		objectMap["tags"] = cup.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
 // ErrorAdditionalInfo the resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// Type - READ-ONLY; The additional info type.
@@ -151,6 +232,12 @@ type ErrorAdditionalInfo struct {
 
 // ErrorResponse the resource management error response.
 type ErrorResponse struct {
+	// Error - The error object.
+	Error *ErrorResponseError `json:"error,omitempty"`
+}
+
+// ErrorResponseError the error object.
+type ErrorResponseError struct {
 	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; The error message.

@@ -54,3 +54,14 @@ type PrivateAtlasesClientAPI interface {
 }
 
 var _ PrivateAtlasesClientAPI = (*maps.PrivateAtlasesClient)(nil)
+
+// CreatorsClientAPI contains the set of methods on the CreatorsClient type.
+type CreatorsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, creatorName string, creatorCreateParameters maps.CreatorCreateParameters) (result maps.Creator, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, creatorName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, creatorName string) (result maps.Creator, err error)
+	ListByAccount(ctx context.Context, resourceGroupName string, accountName string) (result maps.CreatorList, err error)
+	Update(ctx context.Context, resourceGroupName string, accountName string, creatorName string, creatorUpdateParameters maps.CreatorUpdateParameters) (result maps.Creator, err error)
+}
+
+var _ CreatorsClientAPI = (*maps.CreatorsClient)(nil)

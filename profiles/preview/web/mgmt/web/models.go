@@ -22,7 +22,7 @@ package web
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2019-08-01/web"
+	original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-06-01/web"
 )
 
 const (
@@ -117,11 +117,12 @@ const (
 type BuiltInAuthenticationProvider = original.BuiltInAuthenticationProvider
 
 const (
-	AzureActiveDirectory BuiltInAuthenticationProvider = original.AzureActiveDirectory
-	Facebook             BuiltInAuthenticationProvider = original.Facebook
-	Google               BuiltInAuthenticationProvider = original.Google
-	MicrosoftAccount     BuiltInAuthenticationProvider = original.MicrosoftAccount
-	Twitter              BuiltInAuthenticationProvider = original.Twitter
+	BuiltInAuthenticationProviderAzureActiveDirectory BuiltInAuthenticationProvider = original.BuiltInAuthenticationProviderAzureActiveDirectory
+	BuiltInAuthenticationProviderFacebook             BuiltInAuthenticationProvider = original.BuiltInAuthenticationProviderFacebook
+	BuiltInAuthenticationProviderGithub               BuiltInAuthenticationProvider = original.BuiltInAuthenticationProviderGithub
+	BuiltInAuthenticationProviderGoogle               BuiltInAuthenticationProvider = original.BuiltInAuthenticationProviderGoogle
+	BuiltInAuthenticationProviderMicrosoftAccount     BuiltInAuthenticationProvider = original.BuiltInAuthenticationProviderMicrosoftAccount
+	BuiltInAuthenticationProviderTwitter              BuiltInAuthenticationProvider = original.BuiltInAuthenticationProviderTwitter
 )
 
 type CertificateOrderActionType = original.CertificateOrderActionType
@@ -188,6 +189,19 @@ const (
 	CheckNameResourceTypesSlot                            CheckNameResourceTypes = original.CheckNameResourceTypesSlot
 )
 
+type ClientCertMode = original.ClientCertMode
+
+const (
+	Optional ClientCertMode = original.Optional
+	Required ClientCertMode = original.Required
+)
+
+type ClientCredentialMethod = original.ClientCredentialMethod
+
+const (
+	ClientSecretPost ClientCredentialMethod = original.ClientSecretPost
+)
+
 type CloneAbilityResult = original.CloneAbilityResult
 
 const (
@@ -202,18 +216,6 @@ const (
 	ComputeModeOptionsDedicated ComputeModeOptions = original.ComputeModeOptionsDedicated
 	ComputeModeOptionsDynamic   ComputeModeOptions = original.ComputeModeOptionsDynamic
 	ComputeModeOptionsShared    ComputeModeOptions = original.ComputeModeOptionsShared
-)
-
-type ConfigReferenceLocation = original.ConfigReferenceLocation
-
-const (
-	ApplicationSetting ConfigReferenceLocation = original.ApplicationSetting
-)
-
-type ConfigReferenceSource = original.ConfigReferenceSource
-
-const (
-	KeyVault ConfigReferenceSource = original.KeyVault
 )
 
 type ConnectionStringType = original.ConnectionStringType
@@ -240,6 +242,13 @@ const (
 	Running        ContinuousWebJobStatus = original.Running
 	Starting       ContinuousWebJobStatus = original.Starting
 	Stopped        ContinuousWebJobStatus = original.Stopped
+)
+
+type CookieExpirationConvention = original.CookieExpirationConvention
+
+const (
+	FixedTime               CookieExpirationConvention = original.FixedTime
+	IdentityProviderDerived CookieExpirationConvention = original.IdentityProviderDerived
 )
 
 type CustomHostNameDNSRecordType = original.CustomHostNameDNSRecordType
@@ -306,6 +315,14 @@ const (
 	SoftDeleted DomainType = original.SoftDeleted
 )
 
+type ForwardProxyConvention = original.ForwardProxyConvention
+
+const (
+	ForwardProxyConventionCustom   ForwardProxyConvention = original.ForwardProxyConventionCustom
+	ForwardProxyConventionNoProxy  ForwardProxyConvention = original.ForwardProxyConventionNoProxy
+	ForwardProxyConventionStandard ForwardProxyConvention = original.ForwardProxyConventionStandard
+)
+
 type FrequencyUnit = original.FrequencyUnit
 
 const (
@@ -347,8 +364,9 @@ const (
 type IPFilterTag = original.IPFilterTag
 
 const (
-	Default  IPFilterTag = original.Default
-	XffProxy IPFilterTag = original.XffProxy
+	Default    IPFilterTag = original.Default
+	ServiceTag IPFilterTag = original.ServiceTag
+	XffProxy   IPFilterTag = original.XffProxy
 )
 
 type InAvailabilityReasonType = original.InAvailabilityReasonType
@@ -356,14 +374,6 @@ type InAvailabilityReasonType = original.InAvailabilityReasonType
 const (
 	AlreadyExists InAvailabilityReasonType = original.AlreadyExists
 	Invalid       InAvailabilityReasonType = original.Invalid
-)
-
-type InternalLoadBalancingMode = original.InternalLoadBalancingMode
-
-const (
-	InternalLoadBalancingModeNone       InternalLoadBalancingMode = original.InternalLoadBalancingModeNone
-	InternalLoadBalancingModePublishing InternalLoadBalancingMode = original.InternalLoadBalancingModePublishing
-	InternalLoadBalancingModeWeb        InternalLoadBalancingMode = original.InternalLoadBalancingModeWeb
 )
 
 type IssueType = original.IssueType
@@ -400,6 +410,15 @@ const (
 	KeyVaultSecretStatusUnknown                                  KeyVaultSecretStatus = original.KeyVaultSecretStatusUnknown
 	KeyVaultSecretStatusUnknownError                             KeyVaultSecretStatus = original.KeyVaultSecretStatusUnknownError
 	KeyVaultSecretStatusWaitingOnCertificateOrder                KeyVaultSecretStatus = original.KeyVaultSecretStatusWaitingOnCertificateOrder
+)
+
+type LoadBalancingMode = original.LoadBalancingMode
+
+const (
+	LoadBalancingModeNone          LoadBalancingMode = original.LoadBalancingModeNone
+	LoadBalancingModePublishing    LoadBalancingMode = original.LoadBalancingModePublishing
+	LoadBalancingModeWeb           LoadBalancingMode = original.LoadBalancingModeWeb
+	LoadBalancingModeWebPublishing LoadBalancingMode = original.LoadBalancingModeWebPublishing
 )
 
 type LogLevel = original.LogLevel
@@ -515,20 +534,6 @@ const (
 	Table                 RenderingType = original.Table
 	TimeSeries            RenderingType = original.TimeSeries
 	TimeSeriesPerInstance RenderingType = original.TimeSeriesPerInstance
-)
-
-type ResolveStatus = original.ResolveStatus
-
-const (
-	AccessToKeyVaultDenied ResolveStatus = original.AccessToKeyVaultDenied
-	Initialized            ResolveStatus = original.Initialized
-	InvalidSyntax          ResolveStatus = original.InvalidSyntax
-	MSINotEnabled          ResolveStatus = original.MSINotEnabled
-	OtherReasons           ResolveStatus = original.OtherReasons
-	Resolved               ResolveStatus = original.Resolved
-	SecretNotFound         ResolveStatus = original.SecretNotFound
-	SecretVersionNotFound  ResolveStatus = original.SecretVersionNotFound
-	VaultNotFound          ResolveStatus = original.VaultNotFound
 )
 
 type ResourceScopeType = original.ResourceScopeType
@@ -668,6 +673,15 @@ const (
 	RedirectToLoginPage UnauthenticatedClientAction = original.RedirectToLoginPage
 )
 
+type UnauthenticatedClientActionV2 = original.UnauthenticatedClientActionV2
+
+const (
+	UnauthenticatedClientActionV2AllowAnonymous      UnauthenticatedClientActionV2 = original.UnauthenticatedClientActionV2AllowAnonymous
+	UnauthenticatedClientActionV2RedirectToLoginPage UnauthenticatedClientActionV2 = original.UnauthenticatedClientActionV2RedirectToLoginPage
+	UnauthenticatedClientActionV2Return401           UnauthenticatedClientActionV2 = original.UnauthenticatedClientActionV2Return401
+	UnauthenticatedClientActionV2Return403           UnauthenticatedClientActionV2 = original.UnauthenticatedClientActionV2Return403
+)
+
 type UsageState = original.UsageState
 
 const (
@@ -696,21 +710,24 @@ const (
 )
 
 type APIDefinitionInfo = original.APIDefinitionInfo
-type APIKVReference = original.APIKVReference
 type APIManagementConfig = original.APIManagementConfig
 type AbnormalTimePeriod = original.AbnormalTimePeriod
 type Address = original.Address
 type AddressResponse = original.AddressResponse
 type AddressResponseProperties = original.AddressResponseProperties
+type AllowedAudiencesValidation = original.AllowedAudiencesValidation
+type AllowedAudiencesValidationProperties = original.AllowedAudiencesValidationProperties
 type AnalysisData = original.AnalysisData
 type AnalysisDefinition = original.AnalysisDefinition
 type AnalysisDefinitionProperties = original.AnalysisDefinitionProperties
 type AppCollection = original.AppCollection
 type AppCollectionIterator = original.AppCollectionIterator
 type AppCollectionPage = original.AppCollectionPage
-type AppInstanceCollection = original.AppInstanceCollection
-type AppInstanceCollectionIterator = original.AppInstanceCollectionIterator
-type AppInstanceCollectionPage = original.AppInstanceCollectionPage
+type AppInstanceStatusCollection = original.AppInstanceStatusCollection
+type AppInstanceStatusCollectionIterator = original.AppInstanceStatusCollectionIterator
+type AppInstanceStatusCollectionPage = original.AppInstanceStatusCollectionPage
+type AppRegistration = original.AppRegistration
+type AppRegistrationProperties = original.AppRegistrationProperties
 type AppServiceCertificate = original.AppServiceCertificate
 type AppServiceCertificateCollection = original.AppServiceCertificateCollection
 type AppServiceCertificateCollectionIterator = original.AppServiceCertificateCollectionIterator
@@ -795,10 +812,20 @@ type AppsStartWebSiteNetworkTraceOperationSlotFuture = original.AppsStartWebSite
 type AppsSwapSlotSlotFuture = original.AppsSwapSlotSlotFuture
 type AppsSwapSlotWithProductionFuture = original.AppsSwapSlotWithProductionFuture
 type ArmIDWrapper = original.ArmIDWrapper
+type AuthPlatform = original.AuthPlatform
+type AuthPlatformProperties = original.AuthPlatformProperties
 type AutoHealActions = original.AutoHealActions
 type AutoHealCustomAction = original.AutoHealCustomAction
 type AutoHealRules = original.AutoHealRules
 type AutoHealTriggers = original.AutoHealTriggers
+type AzureActiveDirectory = original.AzureActiveDirectory
+type AzureActiveDirectoryLogin = original.AzureActiveDirectoryLogin
+type AzureActiveDirectoryLoginProperties = original.AzureActiveDirectoryLoginProperties
+type AzureActiveDirectoryProperties = original.AzureActiveDirectoryProperties
+type AzureActiveDirectoryRegistration = original.AzureActiveDirectoryRegistration
+type AzureActiveDirectoryRegistrationProperties = original.AzureActiveDirectoryRegistrationProperties
+type AzureActiveDirectoryValidation = original.AzureActiveDirectoryValidation
+type AzureActiveDirectoryValidationProperties = original.AzureActiveDirectoryValidationProperties
 type AzureBlobStorageApplicationLogsConfig = original.AzureBlobStorageApplicationLogsConfig
 type AzureBlobStorageHTTPLogsConfig = original.AzureBlobStorageHTTPLogsConfig
 type AzureStorageInfoValue = original.AzureStorageInfoValue
@@ -818,6 +845,8 @@ type BillingMeterCollection = original.BillingMeterCollection
 type BillingMeterCollectionIterator = original.BillingMeterCollectionIterator
 type BillingMeterCollectionPage = original.BillingMeterCollectionPage
 type BillingMeterProperties = original.BillingMeterProperties
+type BlobStorageTokenStore = original.BlobStorageTokenStore
+type BlobStorageTokenStoreProperties = original.BlobStorageTokenStoreProperties
 type Capability = original.Capability
 type Certificate = original.Certificate
 type CertificateCollection = original.CertificateCollection
@@ -833,6 +862,8 @@ type CertificatePatchResourceProperties = original.CertificatePatchResourcePrope
 type CertificateProperties = original.CertificateProperties
 type CertificateRegistrationProviderClient = original.CertificateRegistrationProviderClient
 type CertificatesClient = original.CertificatesClient
+type ClientRegistration = original.ClientRegistration
+type ClientRegistrationProperties = original.ClientRegistrationProperties
 type CloningInfo = original.CloningInfo
 type ConnStringInfo = original.ConnStringInfo
 type ConnStringValueTypePair = original.ConnStringValueTypePair
@@ -849,6 +880,8 @@ type ContinuousWebJobCollection = original.ContinuousWebJobCollection
 type ContinuousWebJobCollectionIterator = original.ContinuousWebJobCollectionIterator
 type ContinuousWebJobCollectionPage = original.ContinuousWebJobCollectionPage
 type ContinuousWebJobProperties = original.ContinuousWebJobProperties
+type CookieExpiration = original.CookieExpiration
+type CookieExpirationProperties = original.CookieExpirationProperties
 type CorsSettings = original.CorsSettings
 type CsmCopySlotEntity = original.CsmCopySlotEntity
 type CsmMoveResourceEnvelope = original.CsmMoveResourceEnvelope
@@ -870,6 +903,8 @@ type CsmUsageQuotaCollectionIterator = original.CsmUsageQuotaCollectionIterator
 type CsmUsageQuotaCollectionPage = original.CsmUsageQuotaCollectionPage
 type CustomHostnameAnalysisResult = original.CustomHostnameAnalysisResult
 type CustomHostnameAnalysisResultProperties = original.CustomHostnameAnalysisResultProperties
+type CustomOpenIDConnectProvider = original.CustomOpenIDConnectProvider
+type CustomOpenIDConnectProviderProperties = original.CustomOpenIDConnectProviderProperties
 type DataSource = original.DataSource
 type DataTableResponseColumn = original.DataTableResponseColumn
 type DataTableResponseObject = original.DataTableResponseObject
@@ -944,22 +979,37 @@ type EndpointDependency = original.EndpointDependency
 type EndpointDetail = original.EndpointDetail
 type ErrorEntity = original.ErrorEntity
 type Experiments = original.Experiments
+type Facebook = original.Facebook
+type FacebookProperties = original.FacebookProperties
 type FileSystemApplicationLogsConfig = original.FileSystemApplicationLogsConfig
 type FileSystemHTTPLogsConfig = original.FileSystemHTTPLogsConfig
+type FileSystemTokenStore = original.FileSystemTokenStore
+type FileSystemTokenStoreProperties = original.FileSystemTokenStoreProperties
+type ForwardProxy = original.ForwardProxy
+type ForwardProxyProperties = original.ForwardProxyProperties
 type FunctionEnvelope = original.FunctionEnvelope
 type FunctionEnvelopeCollection = original.FunctionEnvelopeCollection
 type FunctionEnvelopeCollectionIterator = original.FunctionEnvelopeCollectionIterator
 type FunctionEnvelopeCollectionPage = original.FunctionEnvelopeCollectionPage
 type FunctionEnvelopeProperties = original.FunctionEnvelopeProperties
 type FunctionSecrets = original.FunctionSecrets
-type FunctionSecretsProperties = original.FunctionSecretsProperties
 type GeoRegion = original.GeoRegion
 type GeoRegionCollection = original.GeoRegionCollection
 type GeoRegionCollectionIterator = original.GeoRegionCollectionIterator
 type GeoRegionCollectionPage = original.GeoRegionCollectionPage
 type GeoRegionProperties = original.GeoRegionProperties
+type GitHub = original.GitHub
+type GitHubProperties = original.GitHubProperties
 type GlobalCsmSkuDescription = original.GlobalCsmSkuDescription
+type GlobalValidation = original.GlobalValidation
+type GlobalValidationProperties = original.GlobalValidationProperties
+type Google = original.Google
+type GoogleProperties = original.GoogleProperties
 type HTTPLogsConfig = original.HTTPLogsConfig
+type HTTPSettings = original.HTTPSettings
+type HTTPSettingsProperties = original.HTTPSettingsProperties
+type HTTPSettingsRoutes = original.HTTPSettingsRoutes
+type HTTPSettingsRoutesProperties = original.HTTPSettingsRoutesProperties
 type HandlerMapping = original.HandlerMapping
 type HostKeys = original.HostKeys
 type HostName = original.HostName
@@ -987,6 +1037,8 @@ type IdentifierCollection = original.IdentifierCollection
 type IdentifierCollectionIterator = original.IdentifierCollectionIterator
 type IdentifierCollectionPage = original.IdentifierCollectionPage
 type IdentifierProperties = original.IdentifierProperties
+type IdentityProviders = original.IdentityProviders
+type IdentityProvidersProperties = original.IdentityProvidersProperties
 type InboundEnvironmentEndpoint = original.InboundEnvironmentEndpoint
 type InboundEnvironmentEndpointCollection = original.InboundEnvironmentEndpointCollection
 type InboundEnvironmentEndpointCollectionIterator = original.InboundEnvironmentEndpointCollectionIterator
@@ -996,10 +1048,9 @@ type JobCollection = original.JobCollection
 type JobCollectionIterator = original.JobCollectionIterator
 type JobCollectionPage = original.JobCollectionPage
 type JobProperties = original.JobProperties
+type JwtClaimChecks = original.JwtClaimChecks
+type JwtClaimChecksProperties = original.JwtClaimChecksProperties
 type KeyInfo = original.KeyInfo
-type KeyVaultReferenceCollection = original.KeyVaultReferenceCollection
-type KeyVaultReferenceCollectionProperties = original.KeyVaultReferenceCollectionProperties
-type KeyVaultReferenceResource = original.KeyVaultReferenceResource
 type ListCapability = original.ListCapability
 type ListCertificateEmail = original.ListCertificateEmail
 type ListCertificateOrderAction = original.ListCertificateOrderAction
@@ -1010,6 +1061,12 @@ type ListVnetInfo = original.ListVnetInfo
 type ListVnetRoute = original.ListVnetRoute
 type LocalizableString = original.LocalizableString
 type LogSpecification = original.LogSpecification
+type Login = original.Login
+type LoginProperties = original.LoginProperties
+type LoginRoutes = original.LoginRoutes
+type LoginRoutesProperties = original.LoginRoutesProperties
+type LoginScopes = original.LoginScopes
+type LoginScopesProperties = original.LoginScopesProperties
 type MSDeploy = original.MSDeploy
 type MSDeployCore = original.MSDeployCore
 type MSDeployLog = original.MSDeployLog
@@ -1034,6 +1091,16 @@ type NetworkAccessControlEntry = original.NetworkAccessControlEntry
 type NetworkFeatures = original.NetworkFeatures
 type NetworkFeaturesProperties = original.NetworkFeaturesProperties
 type NetworkTrace = original.NetworkTrace
+type Nonce = original.Nonce
+type NonceProperties = original.NonceProperties
+type OpenIDConnectClientCredential = original.OpenIDConnectClientCredential
+type OpenIDConnectClientCredentialProperties = original.OpenIDConnectClientCredentialProperties
+type OpenIDConnectConfig = original.OpenIDConnectConfig
+type OpenIDConnectConfigProperties = original.OpenIDConnectConfigProperties
+type OpenIDConnectLogin = original.OpenIDConnectLogin
+type OpenIDConnectLoginProperties = original.OpenIDConnectLoginProperties
+type OpenIDConnectRegistration = original.OpenIDConnectRegistration
+type OpenIDConnectRegistrationProperties = original.OpenIDConnectRegistrationProperties
 type Operation = original.Operation
 type OutboundEnvironmentEndpoint = original.OutboundEnvironmentEndpoint
 type OutboundEnvironmentEndpointCollection = original.OutboundEnvironmentEndpointCollection
@@ -1134,6 +1201,8 @@ type SetObject = original.SetObject
 type Site = original.Site
 type SiteAuthSettings = original.SiteAuthSettings
 type SiteAuthSettingsProperties = original.SiteAuthSettingsProperties
+type SiteAuthSettingsV2 = original.SiteAuthSettingsV2
+type SiteAuthSettingsV2Properties = original.SiteAuthSettingsV2Properties
 type SiteCloneability = original.SiteCloneability
 type SiteCloneabilityCriterion = original.SiteCloneabilityCriterion
 type SiteConfig = original.SiteConfig
@@ -1151,8 +1220,6 @@ type SiteExtensionInfoCollection = original.SiteExtensionInfoCollection
 type SiteExtensionInfoCollectionIterator = original.SiteExtensionInfoCollectionIterator
 type SiteExtensionInfoCollectionPage = original.SiteExtensionInfoCollectionPage
 type SiteExtensionInfoProperties = original.SiteExtensionInfoProperties
-type SiteInstance = original.SiteInstance
-type SiteInstanceProperties = original.SiteInstanceProperties
 type SiteInstanceStatus = original.SiteInstanceStatus
 type SiteInstanceStatusProperties = original.SiteInstanceStatusProperties
 type SiteLimits = original.SiteLimits
@@ -1251,6 +1318,8 @@ type TldLegalAgreement = original.TldLegalAgreement
 type TldLegalAgreementCollection = original.TldLegalAgreementCollection
 type TldLegalAgreementCollectionIterator = original.TldLegalAgreementCollectionIterator
 type TldLegalAgreementCollectionPage = original.TldLegalAgreementCollectionPage
+type TokenStore = original.TokenStore
+type TokenStoreProperties = original.TokenStoreProperties
 type TopLevelDomain = original.TopLevelDomain
 type TopLevelDomainAgreementOption = original.TopLevelDomainAgreementOption
 type TopLevelDomainCollection = original.TopLevelDomainCollection
@@ -1270,6 +1339,10 @@ type TriggeredWebJobCollection = original.TriggeredWebJobCollection
 type TriggeredWebJobCollectionIterator = original.TriggeredWebJobCollectionIterator
 type TriggeredWebJobCollectionPage = original.TriggeredWebJobCollectionPage
 type TriggeredWebJobProperties = original.TriggeredWebJobProperties
+type Twitter = original.Twitter
+type TwitterProperties = original.TwitterProperties
+type TwitterRegistration = original.TwitterRegistration
+type TwitterRegistrationProperties = original.TwitterRegistrationProperties
 type Usage = original.Usage
 type UsageCollection = original.UsageCollection
 type UsageCollectionIterator = original.UsageCollectionIterator
@@ -1312,11 +1385,11 @@ func NewAppCollectionIterator(page AppCollectionPage) AppCollectionIterator {
 func NewAppCollectionPage(getNextPage func(context.Context, AppCollection) (AppCollection, error)) AppCollectionPage {
 	return original.NewAppCollectionPage(getNextPage)
 }
-func NewAppInstanceCollectionIterator(page AppInstanceCollectionPage) AppInstanceCollectionIterator {
-	return original.NewAppInstanceCollectionIterator(page)
+func NewAppInstanceStatusCollectionIterator(page AppInstanceStatusCollectionPage) AppInstanceStatusCollectionIterator {
+	return original.NewAppInstanceStatusCollectionIterator(page)
 }
-func NewAppInstanceCollectionPage(getNextPage func(context.Context, AppInstanceCollection) (AppInstanceCollection, error)) AppInstanceCollectionPage {
-	return original.NewAppInstanceCollectionPage(getNextPage)
+func NewAppInstanceStatusCollectionPage(getNextPage func(context.Context, AppInstanceStatusCollection) (AppInstanceStatusCollection, error)) AppInstanceStatusCollectionPage {
+	return original.NewAppInstanceStatusCollectionPage(getNextPage)
 }
 func NewAppServiceCertificateCollectionIterator(page AppServiceCertificateCollectionPage) AppServiceCertificateCollectionIterator {
 	return original.NewAppServiceCertificateCollectionIterator(page)
@@ -1798,23 +1871,26 @@ func PossibleChannelsValues() []Channels {
 func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 	return original.PossibleCheckNameResourceTypesValues()
 }
+func PossibleClientCertModeValues() []ClientCertMode {
+	return original.PossibleClientCertModeValues()
+}
+func PossibleClientCredentialMethodValues() []ClientCredentialMethod {
+	return original.PossibleClientCredentialMethodValues()
+}
 func PossibleCloneAbilityResultValues() []CloneAbilityResult {
 	return original.PossibleCloneAbilityResultValues()
 }
 func PossibleComputeModeOptionsValues() []ComputeModeOptions {
 	return original.PossibleComputeModeOptionsValues()
 }
-func PossibleConfigReferenceLocationValues() []ConfigReferenceLocation {
-	return original.PossibleConfigReferenceLocationValues()
-}
-func PossibleConfigReferenceSourceValues() []ConfigReferenceSource {
-	return original.PossibleConfigReferenceSourceValues()
-}
 func PossibleConnectionStringTypeValues() []ConnectionStringType {
 	return original.PossibleConnectionStringTypeValues()
 }
 func PossibleContinuousWebJobStatusValues() []ContinuousWebJobStatus {
 	return original.PossibleContinuousWebJobStatusValues()
+}
+func PossibleCookieExpirationConventionValues() []CookieExpirationConvention {
+	return original.PossibleCookieExpirationConventionValues()
 }
 func PossibleCustomHostNameDNSRecordTypeValues() []CustomHostNameDNSRecordType {
 	return original.PossibleCustomHostNameDNSRecordTypeValues()
@@ -1833,6 +1909,9 @@ func PossibleDomainStatusValues() []DomainStatus {
 }
 func PossibleDomainTypeValues() []DomainType {
 	return original.PossibleDomainTypeValues()
+}
+func PossibleForwardProxyConventionValues() []ForwardProxyConvention {
+	return original.PossibleForwardProxyConventionValues()
 }
 func PossibleFrequencyUnitValues() []FrequencyUnit {
 	return original.PossibleFrequencyUnitValues()
@@ -1855,9 +1934,6 @@ func PossibleIPFilterTagValues() []IPFilterTag {
 func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 	return original.PossibleInAvailabilityReasonTypeValues()
 }
-func PossibleInternalLoadBalancingModeValues() []InternalLoadBalancingMode {
-	return original.PossibleInternalLoadBalancingModeValues()
-}
 func PossibleIssueTypeValues() []IssueType {
 	return original.PossibleIssueTypeValues()
 }
@@ -1866,6 +1942,9 @@ func PossibleJobTypeValues() []JobType {
 }
 func PossibleKeyVaultSecretStatusValues() []KeyVaultSecretStatus {
 	return original.PossibleKeyVaultSecretStatusValues()
+}
+func PossibleLoadBalancingModeValues() []LoadBalancingMode {
+	return original.PossibleLoadBalancingModeValues()
 }
 func PossibleLogLevelValues() []LogLevel {
 	return original.PossibleLogLevelValues()
@@ -1905,9 +1984,6 @@ func PossibleRedundancyModeValues() []RedundancyMode {
 }
 func PossibleRenderingTypeValues() []RenderingType {
 	return original.PossibleRenderingTypeValues()
-}
-func PossibleResolveStatusValues() []ResolveStatus {
-	return original.PossibleResolveStatusValues()
 }
 func PossibleResourceScopeTypeValues() []ResourceScopeType {
 	return original.PossibleResourceScopeTypeValues()
@@ -1950,6 +2026,9 @@ func PossibleTriggerTypesValues() []TriggerTypes {
 }
 func PossibleTriggeredWebJobStatusValues() []TriggeredWebJobStatus {
 	return original.PossibleTriggeredWebJobStatusValues()
+}
+func PossibleUnauthenticatedClientActionV2Values() []UnauthenticatedClientActionV2 {
+	return original.PossibleUnauthenticatedClientActionV2Values()
 }
 func PossibleUnauthenticatedClientActionValues() []UnauthenticatedClientAction {
 	return original.PossibleUnauthenticatedClientActionValues()

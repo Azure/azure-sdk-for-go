@@ -7,8 +7,7 @@ pr:
   paths:
     exclude:
     - sdk/
-parameters:
-  ServiceDirectory: ''
+
 jobs:
   - job: Build_Test
     strategy:

@@ -3,6 +3,7 @@ parameters:
   IgnoreLinksFile: "$(Build.SourcesDirectory)/eng/ignore-links.txt"
   UrlLinks: $(dir -r -i *.md)
   WorkingSpace: $(Build.SourcesDirectory)/${{ parameters.Directory }}
+
 steps:
   - task: PowerShell@2
     displayName: Link verification check

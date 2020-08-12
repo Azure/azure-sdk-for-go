@@ -64,10 +64,6 @@ stages:
         parameters: 
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           GoWorkspace: $(GO_WORKSPACE_PATH)
-          
-      - template: ../../../common/pipelines/templates/steps/verify-links.yml
-        parameters:
-          Directory: sdk/${{ parameters.ServiceDirectory }}
 
       - template: ../steps/analyze.yml
         parameters: 

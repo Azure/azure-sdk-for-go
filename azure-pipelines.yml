@@ -29,10 +29,6 @@ jobs:
       go.list.filter: '| grep -v vendor | grep -v azure-sdk-for-go/sdk'
 
     steps:
-    - template: ./eng/common/pipelines/templates/steps/verify-links.yml
-      parameters:
-        UrlLinks: $(Get-ChildItem -Path '$(sdkPath)/*.md' -Recurse | Where {$_.FullName -notlike "*/vendor/*" -and $_.FullName -notlike "*/sdk/*"})
-        WorkSpace': '$(sdkPath)'
     - task: GoTool@0
       inputs:
         version: '$(go.version)'
@@ -54,6 +50,10 @@ jobs:
         go get -u golang.org/x/lint/golint
       workingDirectory: '$(sdkPath)'
       displayName: 'Install Dependencies'
+    - template: '$(sdkPath)/eng/common/pipelines/templates/steps/verify-links.yml'
+      parameters:
+        UrlLinks: $(Get-ChildItem -Path '$(sdkPath)/*.md' -Recurse | Where {$_.FullName -notlike "*/vendor/*" -and $_.FullName -notlike "*/sdk/*"})
+        WorkSpace': '$(sdkPath)'
     - script: go vet -v $(go list ./... $(go.list.filter))
       workingDirectory: '$(sdkPath)'
       displayName: 'Vet'

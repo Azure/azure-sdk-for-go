@@ -59,7 +59,7 @@ jobs:
     - script: go test $(dirname $(find . -path ./vendor -prune -o -path ./sdk -prune -o -path ./sdk -prune -o -name '*_test.go' -print) | sort -u)
       workingDirectory: '$(sdkPath)'
       displayName: 'Run Tests'
-    - template: ../../../common/pipelines/templates/steps/verify-links.yml
+    - template: eng/common/pipelines/templates/steps/verify-links.yml
       parameters:
         UrlLinks: $(Get-ChildItem -Path '$(sdkPath)/*.md' -Recurse | Where {$_.FullName -notlike "*/vendor/*" -and $_.FullName -notlike "*/sdk/*"})
         WorkSpace': '$(sdkPath)'

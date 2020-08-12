@@ -6,18 +6,22 @@ param (
   # switch that will enable devops specific logging for warnings
   [switch] $devOpsLogging = $false,
   # check the links recurisvely based on recursivePattern
-  [switch] $recursive = $true,
+  [switch] $recursive,
   # recusiving check links for all links verified that begin with this baseUrl, defaults to the folder the url is contained in
   [string] $baseUrl = "",
   # path to the root of the site for resolving rooted relative links, defaults to host root for http and file directory for local files
   [string] $rootUrl = "",
   # list of http status codes count as broken links. Defaults to 400, 401, 404, SocketError.HostNotFound = 11001, SocketError.NoData = 11004
   [array] $errorStatusCodes = @(400, 401, 404, 11001, 11004),
-  # flag to allow resolving relative paths or not
-  [bool] $resolveRelativeLinks = $true
+  # flag to allow checking against azure sdk link guidance.
+  [bool] $linkGuidance
 )
 
 $ProgressPreference = "SilentlyContinue"; # Disable invoke-webrequest progress dialog
+# flag to all relative links.
+[bool] $resolveRelativeLinks = $linkGuidance,
+# list of locale keywords
+[array] $locales = @("/en-us/")
 
 function NormalizeUrl([string]$url){
   if (Test-Path $url) {
@@ -117,6 +121,16 @@ function CheckLink ([System.Uri]$linkUri)
   if ($checkedLinks.ContainsKey($linkUri)) { return }
 
   Write-Verbose "Checking link $linkUri..."
+
+  # Check if link uri includes locale info.
+  if ($linkGuidance) {
+    foreach ($locale in $locales) {
+      if ($linkUri -match $locale) {
+        Write-Error "Don't include $locale information in links: $linkUri."
+      }
+    }
+  }
+
   if ($linkUri.IsFile) {
     if (!(Test-Path $linkUri.LocalPath)) {
       LogWarning "Link to file does not exist $($linkUri.LocalPath)"
@@ -124,6 +138,7 @@ function CheckLink ([System.Uri]$linkUri)
     }
   }
   else {
+
     try {
       $headRequestSucceeded = $true
       try {

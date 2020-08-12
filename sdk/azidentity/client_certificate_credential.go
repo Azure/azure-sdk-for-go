@@ -53,9 +53,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, clientCert
 	} else if strings.HasSuffix(clientCertificate, ".PFX") {
 		cert, err = extractFromPFXFile(certData, password)
 	} else {
-		credErr := &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: "only PEM and PFX files are supported"}
-		azcore.Log().Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
-		return nil, credErr
+		err = errors.New("only PEM and PFX files are supported")
 	}
 	if err != nil {
 		credErr := &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: err.Error()}

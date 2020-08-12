@@ -29,7 +29,7 @@ jobs:
       go.list.filter: '| grep -v vendor | grep -v azure-sdk-for-go/sdk'
 
     steps:
-    - template: eng/common/pipelines/templates/steps/verify-links.yml
+    - template: ./eng/common/pipelines/templates/steps/verify-links.yml
       parameters:
         UrlLinks: $(Get-ChildItem -Path '$(sdkPath)/*.md' -Recurse | Where {$_.FullName -notlike "*/vendor/*" -and $_.FullName -notlike "*/sdk/*"})
         WorkSpace': '$(sdkPath)'

@@ -50,7 +50,7 @@ jobs:
         go get -u golang.org/x/lint/golint
       workingDirectory: '$(sdkPath)'
       displayName: 'Install Dependencies'
-    - template: '$(sdkPath)/eng/common/pipelines/templates/steps/verify-links.yml'
+    - template: '$(system.defaultWorkingDirectory)/eng/common/pipelines/templates/steps/verify-links.yml'
       parameters:
         UrlLinks: $(Get-ChildItem -Path '$(sdkPath)/*.md' -Recurse | Where {$_.FullName -notlike "*/vendor/*" -and $_.FullName -notlike "*/sdk/*"})
         WorkSpace': '$(sdkPath)'

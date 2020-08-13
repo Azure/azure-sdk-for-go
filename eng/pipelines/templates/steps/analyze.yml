@@ -6,6 +6,11 @@ parameters:
   Scope: 'sdk/...'
 
 steps:
+          
+  - template: /eng/common/pipelines/templates/steps/verify-links.yml
+    parameters:
+      Directory: sdk/${{ parameters.ServiceDirectory }}
+
   - script: |
       curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
       golangci-lint --version

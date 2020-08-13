@@ -4,17 +4,11 @@
 package azidentity
 
 import (
-	"bufio"
 	"context"
-	"crypto/rsa"
-	"crypto/x509"
 	"encoding/json"
-	"encoding/pem"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
-	"os"
 	"path"
 	"strings"
 	"time"
@@ -118,8 +112,8 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 // clientID: The client (application) ID of the service principal
 // clientCertificatePath: The path to the client certificate PEM file
 // scopes: The scopes required for the token
-func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantID string, clientID string, clientCertificatePath string, scopes []string) (*azcore.AccessToken, error) {
-	msg, err := c.createClientCertificateAuthRequest(tenantID, clientID, clientCertificatePath, scopes)
+func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantID string, clientID string, cert *certContents, scopes []string) (*azcore.AccessToken, error) {
+	msg, err := c.createClientCertificateAuthRequest(tenantID, clientID, cert, scopes)
 	if err != nil {
 		return nil, err
 	}
@@ -221,10 +215,10 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clien
 	return req, nil
 }
 
-func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, clientID string, clientCertificate string, scopes []string) (*azcore.Request, error) {
+func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, clientID string, cert *certContents, scopes []string) (*azcore.Request, error) {
 	u := *c.options.AuthorityHost
 	u.Path = path.Join(u.Path, tenantID, tokenEndpoint)
-	clientAssertion, err := createClientAssertionJWT(clientID, u.String(), clientCertificate)
+	clientAssertion, err := createClientAssertionJWT(clientID, u.String(), cert)
 	if err != nil {
 		return nil, err
 	}
@@ -383,50 +377,4 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(tenantID string, clien
 		return nil, err
 	}
 	return req, nil
-}
-
-func getPrivateKey(cert string) (*rsa.PrivateKey, error) {
-	privateKeyFile, err := os.Open(cert)
-	if err != nil {
-		return nil, fmt.Errorf("Opening certificate file path: %w", err)
-	}
-	defer privateKeyFile.Close()
-
-	pemFileInfo, err := privateKeyFile.Stat()
-	if err != nil {
-		return nil, fmt.Errorf("Getting certificate file info: %w", err)
-	}
-	size := pemFileInfo.Size()
-
-	pemBytes := make([]byte, size)
-	buffer := bufio.NewReader(privateKeyFile)
-	_, err = buffer.Read(pemBytes)
-	if err != nil {
-		return nil, fmt.Errorf("Read PEM file bytes: %w", err)
-	}
-
-	data, rest := pem.Decode([]byte(pemBytes))
-	const privateKeyBlock = "PRIVATE KEY"
-	// NOTE: check types of private keys
-	if data.Type != privateKeyBlock {
-		for len(rest) > 0 {
-			data, rest = pem.Decode(rest)
-			if data.Type == privateKeyBlock {
-				privateKeyImported, err := x509.ParsePKCS8PrivateKey(data.Bytes)
-				if err != nil {
-					return nil, fmt.Errorf("ParsePKCS8PrivateKey: %w", err)
-				}
-
-				return privateKeyImported.(*rsa.PrivateKey), nil
-			}
-		}
-		return nil, errors.New("Cannot find PRIVATE KEY in file")
-	}
-	// NOTE: this could be a function local closure
-	privateKeyImported, err := x509.ParsePKCS8PrivateKey(data.Bytes)
-	if err != nil {
-		return nil, fmt.Errorf("ParsePKCS8PrivateKey: %w", err)
-	}
-
-	return privateKeyImported.(*rsa.PrivateKey), nil
 }

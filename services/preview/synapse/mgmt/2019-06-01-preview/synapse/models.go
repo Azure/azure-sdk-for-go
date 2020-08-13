@@ -2137,6 +2137,58 @@ func (irr *IntegrationRuntimeResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// IntegrationRuntimesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type IntegrationRuntimesCreateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *IntegrationRuntimesCreateFuture) Result(client IntegrationRuntimesClient) (irr IntegrationRuntimeResource, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimesCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("synapse.IntegrationRuntimesCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if irr.Response.Response, err = future.GetResult(sender); err == nil && irr.Response.Response.StatusCode != http.StatusNoContent {
+		irr, err = client.CreateResponder(irr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimesCreateFuture", "Result", irr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// IntegrationRuntimesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type IntegrationRuntimesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *IntegrationRuntimesDeleteFuture) Result(client IntegrationRuntimesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("synapse.IntegrationRuntimesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // IntegrationRuntimeSsisCatalogInfo catalog information for managed dedicated integration runtime.
 type IntegrationRuntimeSsisCatalogInfo struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
@@ -9749,6 +9801,8 @@ type WorkspaceProperties struct {
 	ManagedVirtualNetwork *string `json:"managedVirtualNetwork,omitempty"`
 	// PrivateEndpointConnections - Private endpoint connections to the workspace
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	// ExtraProperties - READ-ONLY; Workspace level configs and feature flags
+	ExtraProperties map[string]interface{} `json:"extraProperties"`
 }
 
 // MarshalJSON is the custom marshaler for WorkspaceProperties.

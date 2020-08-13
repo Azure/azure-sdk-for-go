@@ -2489,6 +2489,8 @@ func (nrs *NetworkRuleSet) UnmarshalJSON(body []byte) error {
 
 // NetworkRuleSetProperties networkRuleSet properties
 type NetworkRuleSetProperties struct {
+	// TrustedServiceAccessEnabled - Value that indicates whether Trusted Service Access is Enabled or not.
+	TrustedServiceAccessEnabled *bool `json:"trustedServiceAccessEnabled,omitempty"`
 	// DefaultAction - Default Action for Network Rule Set. Possible values include: 'Allow', 'Deny'
 	DefaultAction DefaultAction `json:"defaultAction,omitempty"`
 	// VirtualNetworkRules - List VirtualNetwork Rules

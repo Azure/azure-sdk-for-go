@@ -13,7 +13,6 @@ import (
 // credential will fail to get a token returning an AuthenticationFailureError. Also, this credential requires a high degree of trust and is not
 // recommended outside of prototyping when more secure credentials can be used.
 type UsernamePasswordCredential struct {
-	azcore.TokenCredential
 	client   *aadIdentityClient
 	tenantID string // Gets the Azure Active Directory tenant (directory) ID of the service principal
 	clientID string // Gets the client (application) ID of the service principal

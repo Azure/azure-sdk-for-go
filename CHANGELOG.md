@@ -1,5 +1,27 @@
 # CHANGELOG
 
+## `v46.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| network | 2020-06-01 |
+| resources | 2020-06-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| documentdb | 2020-04-01 |
+| hdinsight | 2018-06-01-preview |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| servicebus | 2018-01-01-preview |
+
 ## `v45.1.0`
 
 ### New Packages

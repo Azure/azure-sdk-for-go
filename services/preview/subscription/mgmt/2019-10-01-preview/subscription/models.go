@@ -43,6 +43,34 @@ type CanceledSubscriptionID struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// CreateAliasFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type CreateAliasFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *CreateAliasFuture) Result(client Client) (par PutAliasResponse, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "subscription.CreateAliasFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("subscription.CreateAliasFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if par.Response.Response, err = future.GetResult(sender); err == nil && par.Response.Response.StatusCode != http.StatusNoContent {
+		par, err = client.CreateAliasResponder(par.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "subscription.CreateAliasFuture", "Result", par.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // CreateCspSubscriptionFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type CreateCspSubscriptionFuture struct {
@@ -185,6 +213,13 @@ type ErrorResponse struct {
 	Code *string `json:"code,omitempty"`
 	// Message - Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
+}
+
+// ErrorResponseBody error response indicates that the service is not able to process the incoming request. The
+// reason is provided in the error message.
+type ErrorResponseBody struct {
+	// Error - The details of the error.
+	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // ListResult subscription list operation response.
@@ -487,6 +522,72 @@ type Policies struct {
 	QuotaID *string `json:"quotaId,omitempty"`
 	// SpendingLimit - READ-ONLY; The subscription spending limit. Possible values include: 'On', 'Off', 'CurrentPeriodOff'
 	SpendingLimit SpendingLimit `json:"spendingLimit,omitempty"`
+}
+
+// PutAliasListResult the list of aliases.
+type PutAliasListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The list of alias.
+	Value *[]PutAliasResponse `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PutAliasRequest the parameters required to create a new subscription.
+type PutAliasRequest struct {
+	// Properties - Put alias request properties.
+	Properties *PutAliasRequestProperties `json:"properties,omitempty"`
+}
+
+// PutAliasRequestProperties put subscription properties.
+type PutAliasRequestProperties struct {
+	// DisplayName - The friendly name of the subscription.
+	DisplayName *string `json:"displayName,omitempty"`
+	// WorkloadType - The workload type of the subscription. It can be either Production or DevTest. Possible values include: 'Production', 'DevTest'
+	WorkloadType WorkloadType `json:"workloadType,omitempty"`
+	// BillingScope - Determines whether subscription is fieldLed, partnerLed or LegacyEA
+	BillingScope *string `json:"billingScope,omitempty"`
+	// SubscriptionID - This parameter can be used to create alias for existing subscription Id
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+}
+
+// PutAliasResponse subscription Information with the alias.
+type PutAliasResponse struct {
+	autorest.Response `json:"-"`
+	// ID - READ-ONLY; Fully qualified ID for the alias resource.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Alias ID.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type, Microsoft.Subscription/aliases.
+	Type *string `json:"type,omitempty"`
+	// Properties - Put Alias response properties.
+	Properties *PutAliasResponseProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PutAliasResponse.
+func (par PutAliasResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if par.Properties != nil {
+		objectMap["properties"] = par.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// PutAliasResponseProperties put subscription creation result properties.
+type PutAliasResponseProperties struct {
+	// SubscriptionID - READ-ONLY; Newly created subscription Id.
+	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// ProvisioningState - The provisioning state of the resource. Possible values include: 'Accepted', 'Succeeded', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PutAliasResponseProperties.
+func (parp PutAliasResponseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if parp.ProvisioningState != "" {
+		objectMap["provisioningState"] = parp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
 }
 
 // RenamedSubscriptionID the ID of the subscriptions that is being renamed

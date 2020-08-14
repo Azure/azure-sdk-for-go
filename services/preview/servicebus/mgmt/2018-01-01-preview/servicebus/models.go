@@ -50,12 +50,21 @@ type ErrorResponse struct {
 
 // Identity properties to configure Identity for Bring your Own Keys
 type Identity struct {
-	// PrincipalID - ObjectId from the KeyVault
+	// PrincipalID - READ-ONLY; ObjectId from the KeyVault
 	PrincipalID *string `json:"principalId,omitempty"`
-	// TenantID - TenantId from the KeyVault
+	// TenantID - READ-ONLY; TenantId from the KeyVault
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - Enumerates the possible value Identity type, which currently supports only 'SystemAssigned'. Possible values include: 'SystemAssigned'
 	Type IdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // IPFilterRule single item in a List or Get IpFilterRules operation
@@ -960,8 +969,6 @@ type SBNamespaceProperties struct {
 	MetricID *string `json:"metricId,omitempty"`
 	// ZoneRedundant - Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones.
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
-	// Identity - Properties of BYOK Identity description
-	Identity *Identity `json:"identity,omitempty"`
 	// Encryption - Properties of BYOK Encryption description
 	Encryption *Encryption `json:"encryption,omitempty"`
 }
@@ -971,9 +978,6 @@ func (snp SBNamespaceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if snp.ZoneRedundant != nil {
 		objectMap["zoneRedundant"] = snp.ZoneRedundant
-	}
-	if snp.Identity != nil {
-		objectMap["identity"] = snp.Identity
 	}
 	if snp.Encryption != nil {
 		objectMap["encryption"] = snp.Encryption
@@ -987,6 +991,8 @@ type SBNamespaceUpdateParameters struct {
 	Sku *SBSku `json:"sku,omitempty"`
 	// SBNamespaceProperties - Properties of the namespace.
 	*SBNamespaceProperties `json:"properties,omitempty"`
+	// Identity - Properties of BYOK Identity description
+	Identity *Identity `json:"identity,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
@@ -1007,6 +1013,9 @@ func (snup SBNamespaceUpdateParameters) MarshalJSON() ([]byte, error) {
 	}
 	if snup.SBNamespaceProperties != nil {
 		objectMap["properties"] = snup.SBNamespaceProperties
+	}
+	if snup.Identity != nil {
+		objectMap["identity"] = snup.Identity
 	}
 	if snup.Location != nil {
 		objectMap["location"] = snup.Location
@@ -1043,6 +1052,15 @@ func (snup *SBNamespaceUpdateParameters) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				snup.SBNamespaceProperties = &sBNamespaceProperties
+			}
+		case "identity":
+			if v != nil {
+				var identity Identity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				snup.Identity = &identity
 			}
 		case "location":
 			if v != nil {

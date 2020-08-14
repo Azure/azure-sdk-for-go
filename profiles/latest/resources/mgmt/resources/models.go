@@ -22,18 +22,38 @@ package resources
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-10-01/resources"
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-06-01/resources"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type AliasPathAttributes = original.AliasPathAttributes
+
+const (
+	Modifiable AliasPathAttributes = original.Modifiable
+	None       AliasPathAttributes = original.None
+)
+
+type AliasPathTokenType = original.AliasPathTokenType
+
+const (
+	Any          AliasPathTokenType = original.Any
+	Array        AliasPathTokenType = original.Array
+	Boolean      AliasPathTokenType = original.Boolean
+	Integer      AliasPathTokenType = original.Integer
+	NotSpecified AliasPathTokenType = original.NotSpecified
+	Number       AliasPathTokenType = original.Number
+	Object       AliasPathTokenType = original.Object
+	String       AliasPathTokenType = original.String
+)
+
 type AliasPatternType = original.AliasPatternType
 
 const (
-	Extract      AliasPatternType = original.Extract
-	NotSpecified AliasPatternType = original.NotSpecified
+	AliasPatternTypeExtract      AliasPatternType = original.AliasPatternTypeExtract
+	AliasPatternTypeNotSpecified AliasPatternType = original.AliasPatternTypeNotSpecified
 )
 
 type AliasType = original.AliasType
@@ -93,13 +113,30 @@ const (
 	ProvisioningOperationWaiting                    ProvisioningOperation = original.ProvisioningOperationWaiting
 )
 
+type ProvisioningState = original.ProvisioningState
+
+const (
+	ProvisioningStateAccepted     ProvisioningState = original.ProvisioningStateAccepted
+	ProvisioningStateCanceled     ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreated      ProvisioningState = original.ProvisioningStateCreated
+	ProvisioningStateCreating     ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleted      ProvisioningState = original.ProvisioningStateDeleted
+	ProvisioningStateDeleting     ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed       ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateNotSpecified ProvisioningState = original.ProvisioningStateNotSpecified
+	ProvisioningStateReady        ProvisioningState = original.ProvisioningStateReady
+	ProvisioningStateRunning      ProvisioningState = original.ProvisioningStateRunning
+	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUpdating     ProvisioningState = original.ProvisioningStateUpdating
+)
+
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	None                       ResourceIdentityType = original.None
-	SystemAssigned             ResourceIdentityType = original.SystemAssigned
-	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
-	UserAssigned               ResourceIdentityType = original.UserAssigned
+	ResourceIdentityTypeNone                       ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
 type TagsPatchOperation = original.TagsPatchOperation
@@ -117,8 +154,10 @@ const (
 	ResourceIDOnly       WhatIfResultFormat = original.ResourceIDOnly
 )
 
+type APIProfile = original.APIProfile
 type Alias = original.Alias
 type AliasPath = original.AliasPath
+type AliasPathMetadata = original.AliasPathMetadata
 type AliasPattern = original.AliasPattern
 type BaseClient = original.BaseClient
 type BasicDependency = original.BasicDependency
@@ -216,6 +255,7 @@ type Resource = original.Resource
 type ScopedDeployment = original.ScopedDeployment
 type ScopedDeploymentWhatIf = original.ScopedDeploymentWhatIf
 type Sku = original.Sku
+type StatusMessage = original.StatusMessage
 type SubResource = original.SubResource
 type TagCount = original.TagCount
 type TagDetails = original.TagDetails
@@ -328,6 +368,12 @@ func NewTagsListResultPage(getNextPage func(context.Context, TagsListResult) (Ta
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleAliasPathAttributesValues() []AliasPathAttributes {
+	return original.PossibleAliasPathAttributesValues()
+}
+func PossibleAliasPathTokenTypeValues() []AliasPathTokenType {
+	return original.PossibleAliasPathTokenTypeValues()
+}
 func PossibleAliasPatternTypeValues() []AliasPatternType {
 	return original.PossibleAliasPatternTypeValues()
 }
@@ -348,6 +394,9 @@ func PossiblePropertyChangeTypeValues() []PropertyChangeType {
 }
 func PossibleProvisioningOperationValues() []ProvisioningOperation {
 	return original.PossibleProvisioningOperationValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()

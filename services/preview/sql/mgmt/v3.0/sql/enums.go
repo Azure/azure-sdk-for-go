@@ -1118,6 +1118,29 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{ProvisioningStateCanceled, ProvisioningStateCreated, ProvisioningStateFailed, ProvisioningStateInProgress, ProvisioningStateSucceeded}
 }
 
+// ProvisioningState1 enumerates the values for provisioning state 1.
+type ProvisioningState1 string
+
+const (
+	// ProvisioningState1Creating ...
+	ProvisioningState1Creating ProvisioningState1 = "Creating"
+	// ProvisioningState1Deleting ...
+	ProvisioningState1Deleting ProvisioningState1 = "Deleting"
+	// ProvisioningState1Failed ...
+	ProvisioningState1Failed ProvisioningState1 = "Failed"
+	// ProvisioningState1Succeeded ...
+	ProvisioningState1Succeeded ProvisioningState1 = "Succeeded"
+	// ProvisioningState1Unknown ...
+	ProvisioningState1Unknown ProvisioningState1 = "Unknown"
+	// ProvisioningState1Updating ...
+	ProvisioningState1Updating ProvisioningState1 = "Updating"
+)
+
+// PossibleProvisioningState1Values returns an array of possible values for the ProvisioningState1 const type.
+func PossibleProvisioningState1Values() []ProvisioningState1 {
+	return []ProvisioningState1{ProvisioningState1Creating, ProvisioningState1Deleting, ProvisioningState1Failed, ProvisioningState1Succeeded, ProvisioningState1Unknown, ProvisioningState1Updating}
+}
+
 // ReadOnlyEndpointFailoverPolicy enumerates the values for read only endpoint failover policy.
 type ReadOnlyEndpointFailoverPolicy string
 
@@ -1613,6 +1636,23 @@ const (
 // PossibleStorageAccountTypeValues returns an array of possible values for the StorageAccountType const type.
 func PossibleStorageAccountTypeValues() []StorageAccountType {
 	return []StorageAccountType{GRS, LRS, ZRS}
+}
+
+// StorageAccountType1 enumerates the values for storage account type 1.
+type StorageAccountType1 string
+
+const (
+	// StorageAccountType1GRS ...
+	StorageAccountType1GRS StorageAccountType1 = "GRS"
+	// StorageAccountType1LRS ...
+	StorageAccountType1LRS StorageAccountType1 = "LRS"
+	// StorageAccountType1ZRS ...
+	StorageAccountType1ZRS StorageAccountType1 = "ZRS"
+)
+
+// PossibleStorageAccountType1Values returns an array of possible values for the StorageAccountType1 const type.
+func PossibleStorageAccountType1Values() []StorageAccountType1 {
+	return []StorageAccountType1{StorageAccountType1GRS, StorageAccountType1LRS, StorageAccountType1ZRS}
 }
 
 // StorageKeyType enumerates the values for storage key type.

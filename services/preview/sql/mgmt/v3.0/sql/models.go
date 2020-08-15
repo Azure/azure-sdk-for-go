@@ -857,6 +857,8 @@ func NewBackupShortTermRetentionPolicyListResultPage(getNextPage func(context.Co
 type BackupShortTermRetentionPolicyProperties struct {
 	// RetentionDays - The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
 	RetentionDays *int32 `json:"retentionDays,omitempty"`
+	// DiffBackupIntervalInHours - The differential backup interval in hours. This is how many interval hours between each differential backup will be supported. This is only applicable to live databases but not dropped databases.
+	DiffBackupIntervalInHours *int32 `json:"diffBackupIntervalInHours,omitempty"`
 }
 
 // BaseLongTermRetentionPolicyProperties properties of a long term retention policy
@@ -12895,8 +12897,32 @@ type ManagedInstancePairInfo struct {
 	PartnerManagedInstanceID *string `json:"partnerManagedInstanceId,omitempty"`
 }
 
+// ManagedInstancePrivateLinkServiceConnectionStateProperty ...
+type ManagedInstancePrivateLinkServiceConnectionStateProperty struct {
+	// Status - The private link service connection status.
+	Status *string `json:"status,omitempty"`
+	// Description - The private link service connection description.
+	Description *string `json:"description,omitempty"`
+	// ActionsRequired - READ-ONLY; The private link service connection description.
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedInstancePrivateLinkServiceConnectionStateProperty.
+func (miplscsp ManagedInstancePrivateLinkServiceConnectionStateProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if miplscsp.Status != nil {
+		objectMap["status"] = miplscsp.Status
+	}
+	if miplscsp.Description != nil {
+		objectMap["description"] = miplscsp.Description
+	}
+	return json.Marshal(objectMap)
+}
+
 // ManagedInstanceProperties the properties of a managed instance.
 type ManagedInstanceProperties struct {
+	// ProvisioningState - READ-ONLY; Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1Deleting', 'ProvisioningState1Updating', 'ProvisioningState1Unknown', 'ProvisioningState1Succeeded', 'ProvisioningState1Failed'
+	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
 	// ManagedInstanceCreateMode - Specifies the mode of database creation.
 	//
 	// Default: Regular instance creation.
@@ -12946,6 +12972,10 @@ type ManagedInstanceProperties struct {
 	MaintenanceConfigurationID *string `json:"maintenanceConfigurationId,omitempty"`
 	// MinimalTLSVersion - Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
 	MinimalTLSVersion *string `json:"minimalTlsVersion,omitempty"`
+	// BackupStorageRedundancy - The backup storage redundancy used to store backups for this instance. The options are LRS (LocallyRedundantStorage), ZRS (ZoneRedundantStorage) and GRS (GeoRedundantStorage). Possible values include: 'GRS', 'LRS', 'ZRS'
+	BackupStorageRedundancy StorageAccountType `json:"backupStorageRedundancy,omitempty"`
+	// CurrentBackupStorageRedundancy - READ-ONLY; The current backup storage redundancy used to store backups for this instance. The options are LRS (LocallyRedundantStorage), ZRS (ZoneRedundantStorage) and GRS (GeoRedundantStorage). Possible values include: 'GRS', 'LRS', 'ZRS'
+	CurrentBackupStorageRedundancy StorageAccountType `json:"currentBackupStorageRedundancy,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ManagedInstanceProperties.
@@ -13001,6 +13031,9 @@ func (mip ManagedInstanceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if mip.MinimalTLSVersion != nil {
 		objectMap["minimalTlsVersion"] = mip.MinimalTLSVersion
+	}
+	if mip.BackupStorageRedundancy != "" {
+		objectMap["backupStorageRedundancy"] = mip.BackupStorageRedundancy
 	}
 	return json.Marshal(objectMap)
 }
@@ -19052,8 +19085,8 @@ type SloUsageMetric struct {
 
 // StorageCapability the storage account type capability.
 type StorageCapability struct {
-	// StorageAccountType - READ-ONLY; The storage account type for the database's backups. Possible values include: 'GRS', 'LRS', 'ZRS'
-	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
+	// StorageAccountType - READ-ONLY; The storage account type for the database's backups. Possible values include: 'StorageAccountType1GRS', 'StorageAccountType1LRS', 'StorageAccountType1ZRS'
+	StorageAccountType StorageAccountType1 `json:"storageAccountType,omitempty"`
 	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
 	// Reason - The reason for the capability not being available.

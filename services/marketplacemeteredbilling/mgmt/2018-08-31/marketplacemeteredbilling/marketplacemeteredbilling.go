@@ -39,44 +39,49 @@ func NewClient() Client {
         return Client{ NewWithBaseURI(baseURI, )}
     }
 
-// BatchUsageEventMethod report batch usage events.
+// BatchUsageEvent report batch usage events.
     // Parameters:
         // authorization - bearer token for authorization.
+        // xMsRequestid - a unique string value for tracking the request from the client, preferably a GUID. If this
+        // value isn't provided, one will be generated and provided in the response headers.
         // parameters - parameters supplied to report batch usage events.
-func (client Client) BatchUsageEventMethod(ctx context.Context, authorization string, parameters BatchUsageEvent) (result autorest.Response, err error) {
+        // xMsCorrelationid - a unique string value for operation on the client. This parameter correlates all events
+        // from client operation with events on the server side. If this value isn't provided, one will be generated
+        // and provided in the response headers.
+func (client Client) BatchUsageEvent(ctx context.Context, authorization string, xMsRequestid string, parameters BatchUsageEventRequest, xMsCorrelationid string) (result BatchUsageEventResponse, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/Client.BatchUsageEventMethod")
+        ctx = tracing.StartSpan(ctx, fqdn + "/Client.BatchUsageEvent")
         defer func() {
             sc := -1
-            if result.Response != nil {
-                sc = result.Response.StatusCode
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
             }
             tracing.EndSpan(ctx, sc, err)
         }()
     }
-        req, err := client.BatchUsageEventMethodPreparer(ctx, authorization, parameters)
+        req, err := client.BatchUsageEventPreparer(ctx, authorization, xMsRequestid, parameters, xMsCorrelationid)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "BatchUsageEventMethod", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "BatchUsageEvent", nil , "Failure preparing request")
     return
     }
 
-            resp, err := client.BatchUsageEventMethodSender(req)
+            resp, err := client.BatchUsageEventSender(req)
             if err != nil {
-            result.Response = resp
-            err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "BatchUsageEventMethod", resp, "Failure sending request")
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "BatchUsageEvent", resp, "Failure sending request")
             return
             }
 
-            result, err = client.BatchUsageEventMethodResponder(resp)
+            result, err = client.BatchUsageEventResponder(resp)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "BatchUsageEventMethod", resp, "Failure responding to request")
+            err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "BatchUsageEvent", resp, "Failure responding to request")
             }
 
     return
     }
 
-    // BatchUsageEventMethodPreparer prepares the BatchUsageEventMethod request.
-    func (client Client) BatchUsageEventMethodPreparer(ctx context.Context, authorization string, parameters BatchUsageEvent) (*http.Request, error) {
+    // BatchUsageEventPreparer prepares the BatchUsageEvent request.
+    func (client Client) BatchUsageEventPreparer(ctx context.Context, authorization string, xMsRequestid string, parameters BatchUsageEventRequest, xMsCorrelationid string) (*http.Request, error) {
                     const APIVersion = "2018-08-31"
         queryParameters := map[string]interface{} {
         "api-version": APIVersion,
@@ -89,30 +94,36 @@ func (client Client) BatchUsageEventMethod(ctx context.Context, authorization st
     autorest.WithPath("/batchUsageEvent"),
     autorest.WithJSON(parameters),
     autorest.WithQueryParameters(queryParameters),
-    autorest.WithHeader("authorization", autorest.String(authorization)))
+    autorest.WithHeader("authorization", autorest.String(authorization)),
+    autorest.WithHeader("x-ms-requestid", autorest.String(xMsRequestid)))
+            if len(xMsCorrelationid) > 0 {
+            preparer = autorest.DecoratePreparer(preparer,
+            autorest.WithHeader("x-ms-correlationid",autorest.String(xMsCorrelationid)))
+            }
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
-    // BatchUsageEventMethodSender sends the BatchUsageEventMethod request. The method will close the
+    // BatchUsageEventSender sends the BatchUsageEvent request. The method will close the
     // http.Response Body if it receives an error.
-    func (client Client) BatchUsageEventMethodSender(req *http.Request) (*http.Response, error) {
+    func (client Client) BatchUsageEventSender(req *http.Request) (*http.Response, error) {
         sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
             return autorest.SendWithSender(client, req, sd...)
             }
 
-// BatchUsageEventMethodResponder handles the response to the BatchUsageEventMethod request. The method always
+// BatchUsageEventResponder handles the response to the BatchUsageEvent request. The method always
 // closes the http.Response Body.
-func (client Client) BatchUsageEventMethodResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) BatchUsageEventResponder(resp *http.Response) (result BatchUsageEventResponse, err error) {
     err = autorest.Respond(
     resp,
     client.ByInspecting(),
-    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusBadRequest,http.StatusForbidden),
+    azure.WithErrorUnlessStatusCode(http.StatusOK),
+    autorest.ByUnmarshallingJSON(&result),
     autorest.ByClosing())
-    result.Response = resp
+    result.Response = autorest.Response{Response: resp}
         return
     }
 
-// UsageEventMethod report single usage event.
+// UsageEvent report single usage event.
     // Parameters:
         // authorization - bearer token for authorization.
         // parameters - parameters supplied to report a single usage event.
@@ -121,40 +132,40 @@ func (client Client) BatchUsageEventMethodResponder(resp *http.Response) (result
         // xMsCorrelationid - a unique string value for operation on the client. This parameter correlates all events
         // from client operation with events on the server side. If this value isn't provided, one will be generated
         // and provided in the response headers.
-func (client Client) UsageEventMethod(ctx context.Context, authorization string, parameters UsageEvent, xMsRequestid string, xMsCorrelationid string) (result autorest.Response, err error) {
+func (client Client) UsageEvent(ctx context.Context, authorization string, parameters UsageEventRequest, xMsRequestid string, xMsCorrelationid string) (result SetObject, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/Client.UsageEventMethod")
+        ctx = tracing.StartSpan(ctx, fqdn + "/Client.UsageEvent")
         defer func() {
             sc := -1
-            if result.Response != nil {
-                sc = result.Response.StatusCode
+            if result.Response.Response != nil {
+                sc = result.Response.Response.StatusCode
             }
             tracing.EndSpan(ctx, sc, err)
         }()
     }
-        req, err := client.UsageEventMethodPreparer(ctx, authorization, parameters, xMsRequestid, xMsCorrelationid)
+        req, err := client.UsageEventPreparer(ctx, authorization, parameters, xMsRequestid, xMsCorrelationid)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "UsageEventMethod", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "UsageEvent", nil , "Failure preparing request")
     return
     }
 
-            resp, err := client.UsageEventMethodSender(req)
+            resp, err := client.UsageEventSender(req)
             if err != nil {
-            result.Response = resp
-            err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "UsageEventMethod", resp, "Failure sending request")
+            result.Response = autorest.Response{Response: resp}
+            err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "UsageEvent", resp, "Failure sending request")
             return
             }
 
-            result, err = client.UsageEventMethodResponder(resp)
+            result, err = client.UsageEventResponder(resp)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "UsageEventMethod", resp, "Failure responding to request")
+            err = autorest.NewErrorWithError(err, "marketplacemeteredbilling.Client", "UsageEvent", resp, "Failure responding to request")
             }
 
     return
     }
 
-    // UsageEventMethodPreparer prepares the UsageEventMethod request.
-    func (client Client) UsageEventMethodPreparer(ctx context.Context, authorization string, parameters UsageEvent, xMsRequestid string, xMsCorrelationid string) (*http.Request, error) {
+    // UsageEventPreparer prepares the UsageEvent request.
+    func (client Client) UsageEventPreparer(ctx context.Context, authorization string, parameters UsageEventRequest, xMsRequestid string, xMsCorrelationid string) (*http.Request, error) {
                     const APIVersion = "2018-08-31"
         queryParameters := map[string]interface{} {
         "api-version": APIVersion,
@@ -179,22 +190,23 @@ func (client Client) UsageEventMethod(ctx context.Context, authorization string,
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
-    // UsageEventMethodSender sends the UsageEventMethod request. The method will close the
+    // UsageEventSender sends the UsageEvent request. The method will close the
     // http.Response Body if it receives an error.
-    func (client Client) UsageEventMethodSender(req *http.Request) (*http.Response, error) {
+    func (client Client) UsageEventSender(req *http.Request) (*http.Response, error) {
         sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
             return autorest.SendWithSender(client, req, sd...)
             }
 
-// UsageEventMethodResponder handles the response to the UsageEventMethod request. The method always
+// UsageEventResponder handles the response to the UsageEvent request. The method always
 // closes the http.Response Body.
-func (client Client) UsageEventMethodResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client Client) UsageEventResponder(resp *http.Response) (result SetObject, err error) {
     err = autorest.Respond(
     resp,
     client.ByInspecting(),
     azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusBadRequest,http.StatusForbidden,http.StatusConflict),
+    autorest.ByUnmarshallingJSON(&result.Value),
     autorest.ByClosing())
-    result.Response = resp
+    result.Response = autorest.Response{Response: resp}
         return
     }
 

@@ -20,13 +20,12 @@ package marketplacemeteredbillingapi
 import (
     "context"
     "github.com/Azure/azure-sdk-for-go/services/marketplacemeteredbilling/mgmt/2018-08-31/marketplacemeteredbilling"
-    "github.com/Azure/go-autorest/autorest"
 )
 
         // ClientAPI contains the set of methods on the Client type.
         type ClientAPI interface {
-            BatchUsageEventMethod(ctx context.Context, authorization string, parameters marketplacemeteredbilling.BatchUsageEvent) (result autorest.Response, err error)
-            UsageEventMethod(ctx context.Context, authorization string, parameters marketplacemeteredbilling.UsageEvent, xMsRequestid string, xMsCorrelationid string) (result autorest.Response, err error)
+            BatchUsageEvent(ctx context.Context, authorization string, xMsRequestid string, parameters marketplacemeteredbilling.BatchUsageEventRequest, xMsCorrelationid string) (result marketplacemeteredbilling.BatchUsageEventResponse, err error)
+            UsageEvent(ctx context.Context, authorization string, parameters marketplacemeteredbilling.UsageEventRequest, xMsRequestid string, xMsCorrelationid string) (result marketplacemeteredbilling.SetObject, err error)
         }
 
         var _ ClientAPI = (*marketplacemeteredbilling.Client)(nil)

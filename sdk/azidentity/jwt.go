@@ -35,16 +35,11 @@ type payloadJWT struct {
 
 // createClientAssertionJWT build the JWT header, payload and signature,
 // then returns a string for the JWT assertion
-func createClientAssertionJWT(clientID string, audience string, clientCertificate string) (string, error) {
-	fingerprint, err := spkiFingerprint(clientCertificate)
-	if err != nil {
-		return "", err
-	}
-
+func createClientAssertionJWT(clientID string, audience string, cert *certContents) (string, error) {
 	headerData := headerJWT{
 		Typ: "JWT",
 		Alg: "RS256",
-		X5t: base64.RawURLEncoding.EncodeToString(fingerprint),
+		X5t: base64.RawURLEncoding.EncodeToString(cert.fp),
 	}
 
 	headerJSON, err := json.Marshal(headerData)
@@ -72,12 +67,7 @@ func createClientAssertionJWT(clientID string, audience string, clientCertificat
 	hashedSum := sha256.Sum256(hashed)
 	cryptoRand := rand.Reader
 
-	privateKey, err := getPrivateKey(clientCertificate)
-	if err != nil {
-		return "", err
-	}
-
-	signed, err := rsa.SignPKCS1v15(cryptoRand, privateKey, crypto.SHA256, hashedSum[:])
+	signed, err := rsa.SignPKCS1v15(cryptoRand, cert.pk, crypto.SHA256, hashedSum[:])
 	if err != nil {
 		return "", err
 	}

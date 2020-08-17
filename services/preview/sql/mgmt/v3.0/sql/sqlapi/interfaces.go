@@ -703,17 +703,6 @@ type InstanceFailoverGroupsClientAPI interface {
 
 var _ InstanceFailoverGroupsClientAPI = (*sql.InstanceFailoverGroupsClient)(nil)
 
-// BackupShortTermRetentionPoliciesClientAPI contains the set of methods on the BackupShortTermRetentionPoliciesClient type.
-type BackupShortTermRetentionPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.BackupShortTermRetentionPolicy) (result sql.BackupShortTermRetentionPoliciesCreateOrUpdateFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupShortTermRetentionPolicy, err error)
-	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupShortTermRetentionPolicyListResultPage, err error)
-	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupShortTermRetentionPolicyListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.BackupShortTermRetentionPolicy) (result sql.BackupShortTermRetentionPoliciesUpdateFuture, err error)
-}
-
-var _ BackupShortTermRetentionPoliciesClientAPI = (*sql.BackupShortTermRetentionPoliciesClient)(nil)
-
 // TdeCertificatesClientAPI contains the set of methods on the TdeCertificatesClient type.
 type TdeCertificatesClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, serverName string, parameters sql.TdeCertificate) (result sql.TdeCertificatesCreateFuture, err error)
@@ -817,23 +806,6 @@ type UsagesClientAPI interface {
 }
 
 var _ UsagesClientAPI = (*sql.UsagesClient)(nil)
-
-// ManagedInstancesClientAPI contains the set of methods on the ManagedInstancesClient type.
-type ManagedInstancesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstance) (result sql.ManagedInstancesCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstancesDeleteFuture, err error)
-	Failover(ctx context.Context, resourceGroupName string, managedInstanceName string, replicaType sql.ReplicaType) (result sql.ManagedInstancesFailoverFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstance, err error)
-	List(ctx context.Context) (result sql.ManagedInstanceListResultPage, err error)
-	ListComplete(ctx context.Context) (result sql.ManagedInstanceListResultIterator, err error)
-	ListByInstancePool(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.ManagedInstanceListResultPage, err error)
-	ListByInstancePoolComplete(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.ManagedInstanceListResultIterator, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.ManagedInstanceListResultPage, err error)
-	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result sql.ManagedInstanceListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstanceUpdate) (result sql.ManagedInstancesUpdateFuture, err error)
-}
-
-var _ ManagedInstancesClientAPI = (*sql.ManagedInstancesClient)(nil)
 
 // PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
 type PrivateEndpointConnectionsClientAPI interface {
@@ -987,6 +959,34 @@ type SyncMembersClientAPI interface {
 }
 
 var _ SyncMembersClientAPI = (*sql.SyncMembersClient)(nil)
+
+// ManagedInstancesClientAPI contains the set of methods on the ManagedInstancesClient type.
+type ManagedInstancesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstance) (result sql.ManagedInstancesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstancesDeleteFuture, err error)
+	Failover(ctx context.Context, resourceGroupName string, managedInstanceName string, replicaType sql.ReplicaType) (result sql.ManagedInstancesFailoverFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstance, err error)
+	List(ctx context.Context) (result sql.ManagedInstanceListResultPage, err error)
+	ListComplete(ctx context.Context) (result sql.ManagedInstanceListResultIterator, err error)
+	ListByInstancePool(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.ManagedInstanceListResultPage, err error)
+	ListByInstancePoolComplete(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.ManagedInstanceListResultIterator, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.ManagedInstanceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result sql.ManagedInstanceListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstanceUpdate) (result sql.ManagedInstancesUpdateFuture, err error)
+}
+
+var _ ManagedInstancesClientAPI = (*sql.ManagedInstancesClient)(nil)
+
+// BackupShortTermRetentionPoliciesClientAPI contains the set of methods on the BackupShortTermRetentionPoliciesClient type.
+type BackupShortTermRetentionPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.BackupShortTermRetentionPolicy) (result sql.BackupShortTermRetentionPoliciesCreateOrUpdateFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupShortTermRetentionPolicy, err error)
+	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupShortTermRetentionPolicyListResultPage, err error)
+	ListByDatabaseComplete(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupShortTermRetentionPolicyListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.BackupShortTermRetentionPolicy) (result sql.BackupShortTermRetentionPoliciesUpdateFuture, err error)
+}
+
+var _ BackupShortTermRetentionPoliciesClientAPI = (*sql.BackupShortTermRetentionPoliciesClient)(nil)
 
 // ManagedDatabaseRestoreDetailsClientAPI contains the set of methods on the ManagedDatabaseRestoreDetailsClient type.
 type ManagedDatabaseRestoreDetailsClientAPI interface {

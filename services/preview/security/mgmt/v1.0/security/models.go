@@ -8412,6 +8412,8 @@ type SecureScoreItemProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// ScoreDetails - READ-ONLY; score object
 	*ScoreDetails `json:"score,omitempty"`
+	// Weight - READ-ONLY; The weight for calculation of an aggregated score for several scopes
+	Weight *int64 `json:"weight,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SecureScoreItemProperties.
@@ -8446,6 +8448,15 @@ func (ssip *SecureScoreItemProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ssip.ScoreDetails = &scoreDetails
+			}
+		case "weight":
+			if v != nil {
+				var weight int64
+				err = json.Unmarshal(*v, &weight)
+				if err != nil {
+					return err
+				}
+				ssip.Weight = &weight
 			}
 		}
 	}

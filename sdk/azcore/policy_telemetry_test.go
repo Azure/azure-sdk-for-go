@@ -79,7 +79,7 @@ func TestPolicyTelemetryWithAppIDSanitized(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse()
-	const appID = "This will get the spaces removed an truncated."
+	const appID = "This will get the spaces removed and truncated."
 	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{ApplicationID: appID}))
 	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
 	if err != nil {
@@ -91,7 +91,7 @@ func TestPolicyTelemetryWithAppIDSanitized(t *testing.T) {
 	}
 }
 
-func TestPolicyTelemetryPreserveExistingWithAappID(t *testing.T) {
+func TestPolicyTelemetryPreserveExistingWithAppID(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse()
@@ -105,6 +105,21 @@ func TestPolicyTelemetryPreserveExistingWithAappID(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if v := resp.Request.Header.Get(HeaderUserAgent); v != fmt.Sprintf("%s %s %s", appID, platformInfo, otherValue) {
+		t.Fatalf("unexpected user agent value: %s", v)
+	}
+}
+
+func TestPolicyTelemetryDisabled(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse()
+	const appID = "my_application"
+	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{ApplicationID: appID, Disabled: true}))
+	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if v := resp.Request.Header.Get(HeaderUserAgent); v != "" {
 		t.Fatalf("unexpected user agent value: %s", v)
 	}
 }

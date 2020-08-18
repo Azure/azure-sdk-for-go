@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"strings"
 )
 
 // TelemetryOptions configures the telemetry policy's behavior.
@@ -18,6 +19,13 @@ type TelemetryOptions struct {
 	// Value is a string prepended to each request's User-Agent and sent to the service.
 	// The service records the user-agent in logs for diagnostics and tracking of client requests.
 	Value string
+
+	// ApplicationID is an application-specific identification string used in telemetry.
+	// It has a maximum length of 24 characters and must not contain any spaces.
+	ApplicationID string
+
+	// Disabled will prevent the addition of any telemetry data to the User-Agent.
+	Disabled bool
 }
 
 type telemetryPolicy struct {
@@ -25,17 +33,40 @@ type telemetryPolicy struct {
 }
 
 // NewTelemetryPolicy creates a telemetry policy object that adds telemetry information to outgoing HTTP requests.
+// The format is [<application_id> ]azsdk-<sdk_language>-<package_name>/<package_version> <platform_info> [<custom>].
 func NewTelemetryPolicy(o TelemetryOptions) Policy {
+	tp := telemetryPolicy{}
+	if o.Disabled {
+		return &tp
+	}
 	b := &bytes.Buffer{}
-	b.WriteString(o.Value)
-	if b.Len() > 0 {
+	// normalize ApplicationID
+	if o.ApplicationID != "" {
+		o.ApplicationID = strings.ReplaceAll(o.ApplicationID, " ", "/")
+		if len(o.ApplicationID) > 24 {
+			o.ApplicationID = o.ApplicationID[:24]
+		}
+		b.WriteString(o.ApplicationID)
+		b.WriteRune(' ')
+	}
+	// write out telemetry string
+	if o.Value != "" {
+		b.WriteString(o.Value)
 		b.WriteRune(' ')
 	}
 	b.WriteString(platformInfo)
-	return &telemetryPolicy{telemetryValue: b.String()}
+	tp.telemetryValue = b.String()
+	return &tp
 }
 
 func (p telemetryPolicy) Do(ctx context.Context, req *Request) (*Response, error) {
+	if p.telemetryValue == "" {
+		return req.Next(ctx)
+	}
+	// preserve the existing User-Agent string
+	if ua := req.Request.Header.Get(HeaderUserAgent); ua != "" {
+		p.telemetryValue = fmt.Sprintf("%s %s", p.telemetryValue, ua)
+	}
 	req.Request.Header.Set(HeaderUserAgent, p.telemetryValue)
 	return req.Next(ctx)
 }

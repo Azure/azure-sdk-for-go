@@ -133,6 +133,11 @@ func (r *Receiver) Close(ctx context.Context) error {
 	r.clientMu.Lock()
 	defer r.clientMu.Unlock()
 
+	return r.close(ctx)
+}
+
+// closes the session.  callers *must* hold the client write lock before calling!
+func (r *Receiver) close(ctx context.Context) error {
 	if r.doneListening != nil {
 		r.doneListening()
 	}
@@ -181,7 +186,10 @@ func (r *Receiver) Recover(ctx context.Context) error {
 	closeCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	closeCtx = tab.NewContext(closeCtx, span)
 	defer cancel()
-	_ = r.Close(closeCtx)
+	// we must close then rebuild the session/link atomically
+	r.clientMu.Lock()
+	defer r.clientMu.Unlock()
+	_ = r.close(closeCtx)
 	return r.newSessionAndLink(ctx)
 }
 
@@ -336,7 +344,9 @@ func (r *Receiver) listenForMessage(ctx context.Context) (*amqp.Message, error) 
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.listenForMessage")
 	defer span.End()
 
+	r.clientMu.RLock()
 	msg, err := r.receiver.Receive(ctx)
+	r.clientMu.RUnlock()
 	if err != nil {
 		tab.For(ctx).Debug(err.Error())
 		return nil, err
@@ -351,12 +361,10 @@ func (r *Receiver) listenForMessage(ctx context.Context) (*amqp.Message, error) 
 }
 
 // newSessionAndLink will replace the session and link on the Receiver
+// NOTE: this does *not* take the write lock, callers must hold it as required!
 func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.newSessionAndLink")
 	defer span.End()
-
-	r.clientMu.Lock()
-	defer r.clientMu.Unlock()
 
 	client, err := r.namespace.newClient()
 	if err != nil {

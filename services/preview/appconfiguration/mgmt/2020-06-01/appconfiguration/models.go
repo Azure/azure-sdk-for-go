@@ -530,6 +530,8 @@ func (csp ConfigurationStoreProperties) MarshalJSON() ([]byte, error) {
 type ConfigurationStorePropertiesUpdateParameters struct {
 	// Encryption - The encryption settings of the configuration store.
 	Encryption *EncryptionProperties `json:"encryption,omitempty"`
+	// PublicNetworkAccess - Control permission for data plane traffic coming from public networks while private endpoint is enabled. Possible values include: 'Enabled', 'Disabled'
+	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 }
 
 // ConfigurationStoresCreateFuture an abstraction for monitoring and retrieving the results of a long-running

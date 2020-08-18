@@ -878,6 +878,7 @@ type VirtualNetworksClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, parameters network.VirtualNetwork) (result network.VirtualNetworksCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, virtualNetworkName string) (result network.VirtualNetworksDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, expand string) (result network.VirtualNetwork, err error)
+	GetBastionHosts(ctx context.Context, resourceGroupName string, virtualNetworkName string) (result network.BastionHostListResult, err error)
 	List(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkListResultPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkListResultIterator, err error)
 	ListAll(ctx context.Context) (result network.VirtualNetworkListResultPage, err error)

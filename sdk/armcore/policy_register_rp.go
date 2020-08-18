@@ -32,6 +32,7 @@ type RegistrationOptions struct {
 	// Attempts is the total number of times to attempt automatic registration
 	// in the event that an attempt fails.
 	// The default value is 3.
+	// Set to zero to disable the policy.
 	Attempts int
 
 	// PollingDelay is the amount of time to sleep between polling intervals.
@@ -66,7 +67,9 @@ func DefaultRegistrationOptions() RegistrationOptions {
 }
 
 // NewRPRegistrationPolicy creates a policy object configured using the specified pipeline
-// and options. Pass nil to accept the default options; this is the same as passing the result
+// and options.  The policy controls if an unregistered resource provider should automatically
+// be registered. See https://aka.ms/rps-not-found for more information.
+// Pass nil to accept the default options; this is the same as passing the result
 // from a call to DefaultRegistrationOptions().
 func NewRPRegistrationPolicy(cred azcore.Credential, o *RegistrationOptions) azcore.Policy {
 	if o == nil {
@@ -87,6 +90,10 @@ type rpRegistrationPolicy struct {
 }
 
 func (r *rpRegistrationPolicy) Do(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
+	if r.options.Attempts == 0 {
+		// policy is disabled
+		return req.Next(ctx)
+	}
 	const unregisteredRPCode = "MissingSubscriptionRegistration"
 	const registeredState = "Registered"
 	var rp string

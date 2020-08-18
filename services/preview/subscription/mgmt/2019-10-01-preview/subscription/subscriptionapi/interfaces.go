@@ -20,6 +20,7 @@ package subscriptionapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2019-10-01-preview/subscription"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // SubscriptionsClientAPI contains the set of methods on the SubscriptionsClient type.
@@ -43,10 +44,14 @@ var _ TenantsClientAPI = (*subscription.TenantsClient)(nil)
 // ClientAPI contains the set of methods on the Client type.
 type ClientAPI interface {
 	Cancel(ctx context.Context, subscriptionID string) (result subscription.CanceledSubscriptionID, err error)
+	CreateAlias(ctx context.Context, aliasName string, body subscription.PutAliasRequest) (result subscription.CreateAliasFuture, err error)
 	CreateCspSubscription(ctx context.Context, billingAccountName string, customerName string, body subscription.ModernCspSubscriptionCreationParameters) (result subscription.CreateCspSubscriptionFuture, err error)
 	CreateSubscription(ctx context.Context, billingAccountName string, billingProfileName string, invoiceSectionName string, body subscription.ModernSubscriptionCreationParameters) (result subscription.CreateSubscriptionFuture, err error)
 	CreateSubscriptionInEnrollmentAccount(ctx context.Context, enrollmentAccountName string, body subscription.CreationParameters) (result subscription.CreateSubscriptionInEnrollmentAccountFuture, err error)
+	DeleteAlias(ctx context.Context, aliasName string) (result autorest.Response, err error)
 	Enable(ctx context.Context, subscriptionID string) (result subscription.EnabledSubscriptionID, err error)
+	GetAlias(ctx context.Context, aliasName string) (result subscription.PutAliasResponse, err error)
+	ListAlias(ctx context.Context) (result subscription.PutAliasListResult, err error)
 	Rename(ctx context.Context, subscriptionID string, body subscription.Name) (result subscription.RenamedSubscriptionID, err error)
 }
 

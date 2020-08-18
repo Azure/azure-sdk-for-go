@@ -28,8 +28,7 @@ func newBodyDownloadPolicy() Policy {
 		}
 		// Either bodyDownloadPolicyOpValues was not specified (so skip is false)
 		// or it was specified and skip is false: don't skip downloading the body
-		var b []byte
-		b, err = ioutil.ReadAll(resp.Body)
+		b, err := ioutil.ReadAll(resp.Body)
 		resp.Body.Close()
 		if err != nil {
 			return resp, newBodyDownloadError(err, req)

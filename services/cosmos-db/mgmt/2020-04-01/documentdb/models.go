@@ -1007,6 +1007,20 @@ type ContainerPartitionKey struct {
 	Version *int32 `json:"version,omitempty"`
 }
 
+// CorsPolicy the CORS policy for the Cosmos DB database account.
+type CorsPolicy struct {
+	// AllowedOrigins - The origin domains that are permitted to make a request against the service via CORS.
+	AllowedOrigins *string `json:"allowedOrigins,omitempty"`
+	// AllowedMethods - The methods (HTTP request verbs) that the origin domain may use for a CORS request.
+	AllowedMethods *string `json:"allowedMethods,omitempty"`
+	// AllowedHeaders - The request headers that the origin domain may specify on the CORS request.
+	AllowedHeaders *string `json:"allowedHeaders,omitempty"`
+	// ExposedHeaders - The response headers that may be sent in the response to the CORS request and exposed by the browser to the request issuer.
+	ExposedHeaders *string `json:"exposedHeaders,omitempty"`
+	// MaxAgeInSeconds - The maximum amount time that a browser should cache the preflight OPTIONS request.
+	MaxAgeInSeconds *int64 `json:"maxAgeInSeconds,omitempty"`
+}
+
 // CreateUpdateOptions createUpdateOptions are a list of key-value pairs that describe the resource. Supported
 // keys are "If-Match", "If-None-Match", "Session-Token" and "Throughput"
 type CreateUpdateOptions struct {
@@ -1172,6 +1186,8 @@ type DatabaseAccountCreateUpdateProperties struct {
 	APIProperties *APIProperties `json:"apiProperties,omitempty"`
 	// EnableAnalyticalStorage - Flag to indicate whether to enable storage analytics.
 	EnableAnalyticalStorage *bool `json:"enableAnalyticalStorage,omitempty"`
+	// Cors - The CORS policy for the Cosmos DB database account.
+	Cors *[]CorsPolicy `json:"cors,omitempty"`
 }
 
 // DatabaseAccountGetProperties properties for the database account.
@@ -1221,6 +1237,8 @@ type DatabaseAccountGetProperties struct {
 	APIProperties *APIProperties `json:"apiProperties,omitempty"`
 	// EnableAnalyticalStorage - Flag to indicate whether to enable storage analytics.
 	EnableAnalyticalStorage *bool `json:"enableAnalyticalStorage,omitempty"`
+	// Cors - The CORS policy for the Cosmos DB database account.
+	Cors *[]CorsPolicy `json:"cors,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DatabaseAccountGetProperties.
@@ -1273,6 +1291,9 @@ func (dagp DatabaseAccountGetProperties) MarshalJSON() ([]byte, error) {
 	}
 	if dagp.EnableAnalyticalStorage != nil {
 		objectMap["enableAnalyticalStorage"] = dagp.EnableAnalyticalStorage
+	}
+	if dagp.Cors != nil {
+		objectMap["cors"] = dagp.Cors
 	}
 	return json.Marshal(objectMap)
 }
@@ -1705,6 +1726,8 @@ type DatabaseAccountUpdateProperties struct {
 	APIProperties *APIProperties `json:"apiProperties,omitempty"`
 	// EnableAnalyticalStorage - Flag to indicate whether to enable storage analytics.
 	EnableAnalyticalStorage *bool `json:"enableAnalyticalStorage,omitempty"`
+	// Cors - The CORS policy for the Cosmos DB database account.
+	Cors *[]CorsPolicy `json:"cors,omitempty"`
 }
 
 // ErrorResponse error Response.
@@ -4556,6 +4579,8 @@ type SQLContainerGetPropertiesResource struct {
 	UniqueKeyPolicy *UniqueKeyPolicy `json:"uniqueKeyPolicy,omitempty"`
 	// ConflictResolutionPolicy - The conflict resolution policy for the container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
+	// AnalyticalStorageTTL - Analytical TTL.
+	AnalyticalStorageTTL *int64 `json:"analyticalStorageTtl,omitempty"`
 	// Rid - READ-ONLY; A system generated property. A unique identifier.
 	Rid *string `json:"_rid,omitempty"`
 	// Ts - READ-ONLY; A system generated property that denotes the last updated timestamp of the resource.
@@ -4584,6 +4609,9 @@ func (scgp SQLContainerGetPropertiesResource) MarshalJSON() ([]byte, error) {
 	}
 	if scgp.ConflictResolutionPolicy != nil {
 		objectMap["conflictResolutionPolicy"] = scgp.ConflictResolutionPolicy
+	}
+	if scgp.AnalyticalStorageTTL != nil {
+		objectMap["analyticalStorageTtl"] = scgp.AnalyticalStorageTTL
 	}
 	return json.Marshal(objectMap)
 }
@@ -4709,6 +4737,8 @@ type SQLContainerResource struct {
 	UniqueKeyPolicy *UniqueKeyPolicy `json:"uniqueKeyPolicy,omitempty"`
 	// ConflictResolutionPolicy - The conflict resolution policy for the container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
+	// AnalyticalStorageTTL - Analytical TTL.
+	AnalyticalStorageTTL *int64 `json:"analyticalStorageTtl,omitempty"`
 }
 
 // SQLDatabaseCreateUpdateParameters parameters to create and update Cosmos DB SQL database.

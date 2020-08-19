@@ -24,14 +24,13 @@ import (
 var exportCmd = &cobra.Command{
 	Use: "export <package searching dir>",
 	Short: "Generates a report of all the export content for every package under the specified directory.",
-	Long: `The report command generates a report of all the export content for all of the packages under the directory 
+	Long: `The export command generates a report of all the export content for all of the packages under the directory 
 specified in <package searching dir>.
 
 The export content will be categorized by consts, funcs, interfaces, structs`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		searchingDir := args[0]
-		return exportCommand(searchingDir)
+		return exportCommand(args[0])
 	},
 }
 

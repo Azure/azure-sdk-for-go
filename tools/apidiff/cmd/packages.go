@@ -82,8 +82,7 @@ func thePackagesCmd(args []string) (rpt CommitPkgsReport, err error) {
 
 		// get for rhs
 		dprintf("checking out target commit %s and gathering exports\n", targetCommit)
-		var rhs repoContent
-		rhs, err = getRepoContentForCommit(&cloneRepo, rootDir, targetCommit)
+		rhs, err := getRepoContentForCommit(&cloneRepo, rootDir, targetCommit)
 		if err != nil {
 			return err
 		}

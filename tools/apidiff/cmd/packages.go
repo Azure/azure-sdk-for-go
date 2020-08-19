@@ -15,7 +15,9 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -73,7 +75,7 @@ func thePackagesCmd(args []string) (rpt CommitPkgsReport, err error) {
 		vprintf("generating diff between %s and %s\n", baseCommit, targetCommit)
 		// get for lhs
 		dprintf("checking out base commit %s and gathering exports\n", baseCommit)
-		lhs, err := getRepoContentForCommit(cloneRepo, rootDir, baseCommit)
+		lhs, err := getRepoContentForCommit(&cloneRepo, rootDir, baseCommit)
 		if err != nil {
 			return err
 		}
@@ -81,7 +83,7 @@ func thePackagesCmd(args []string) (rpt CommitPkgsReport, err error) {
 		// get for rhs
 		dprintf("checking out target commit %s and gathering exports\n", targetCommit)
 		var rhs repoContent
-		rhs, err = getRepoContentForCommit(cloneRepo, rootDir, targetCommit)
+		rhs, err = getRepoContentForCommit(&cloneRepo, rootDir, targetCommit)
 		if err != nil {
 			return err
 		}
@@ -102,15 +104,9 @@ func thePackagesCmd(args []string) (rpt CommitPkgsReport, err error) {
 	return
 }
 
-func getRepoContentForCommit(wt repo.WorkingTree, dir, commit string) (r repoContent, err error) {
-	err = wt.Checkout(commit)
-	if err != nil {
-		err = fmt.Errorf("failed to check out commit '%s': %s", commit, err)
-		return
-	}
-
-	pkgDirs := []string{}
-	err = filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+func getPackages(dir string) ([]string, error) {
+	var pkgDirs []string
+	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -137,9 +133,25 @@ func getRepoContentForCommit(wt repo.WorkingTree, dir, commit string) (r repoCon
 		}
 		return skipDir
 	})
+	return pkgDirs, err
+}
+
+func getRepoContentForCommit(wt *repo.WorkingTree, dir, commit string) (r repoContent, err error) {
+	err = wt.Checkout(commit)
 	if err != nil {
+		err = fmt.Errorf("failed to check out commit '%s': %s", commit, err)
 		return
 	}
+
+	return getRepoContent(wt, dir)
+}
+
+func getRepoContent(wt *repo.WorkingTree, dir string) (repoContent, error) {
+	pkgDirs, err := getPackages(dir)
+	if err != nil {
+		return nil, err
+	}
+
 	if debugFlag {
 		fmt.Println("found the following package directories")
 		for _, d := range pkgDirs {
@@ -147,11 +159,12 @@ func getRepoContentForCommit(wt repo.WorkingTree, dir, commit string) (r repoCon
 		}
 	}
 
-	r, err = getExportsForPackages(wt.Root(), pkgDirs)
+	r, err := getExportsForPackages(wt.Root(), pkgDirs)
 	if err != nil {
-		err = fmt.Errorf("failed to get exports for commit '%s': %s", commit, err)
+		return nil, err
 	}
-	return
+
+	return r, nil
 }
 
 // contains repo content, it's structured as "package path":content
@@ -176,6 +189,16 @@ func getExportsForPackages(root string, pkgDirs []string) (repoContent, error) {
 		exps[pkgPath] = exp
 	}
 	return exps, nil
+}
+
+// print prints the repoContent to a Writer as JSON string
+func (r *repoContent) print(o io.Writer) error {
+	b, err := json.MarshalIndent(r, "", "  ")
+	if err != nil {
+		return fmt.Errorf("failed to marshal report: %v", err)
+	}
+	_, err = o.Write(b)
+	return err
 }
 
 // contains a collection of packages

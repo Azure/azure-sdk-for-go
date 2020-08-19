@@ -344,9 +344,14 @@ func (r *Receiver) listenForMessage(ctx context.Context) (*amqp.Message, error) 
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.listenForMessage")
 	defer span.End()
 
+	var receiver *amqp.Receiver
 	r.clientMu.RLock()
-	msg, err := r.receiver.Receive(ctx)
+	if r.receiver == nil {
+		return nil, r.connClosedError(ctx)
+	}
+	receiver = r.receiver
 	r.clientMu.RUnlock()
+	msg, err := receiver.Receive(ctx)
 	if err != nil {
 		tab.For(ctx).Debug(err.Error())
 		return nil, err
@@ -358,6 +363,16 @@ func (r *Receiver) listenForMessage(ctx context.Context) (*amqp.Message, error) 
 	}
 
 	return msg, nil
+}
+
+func (r *Receiver) connClosedError(ctx context.Context) error {
+	name := "Receiver"
+	if r.Name != "" {
+		name = r.Name
+	}
+	err := ErrConnectionClosed(name)
+	tab.For(ctx).Error(err)
+	return err
 }
 
 // newSessionAndLink will replace the session and link on the Receiver

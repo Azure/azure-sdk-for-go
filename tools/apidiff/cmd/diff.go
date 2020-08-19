@@ -33,6 +33,7 @@ var diffCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(diffCmd)
+	diffCmd.PersistentFlags().BoolVarP(&asMarkdown, "markdown", "m", false, "emits the report in markdown format")
 }
 
 func diffCommand(basePath, targetPath string) error {
@@ -53,7 +54,12 @@ func diffCommand(basePath, targetPath string) error {
 	}
 
 	r := getPkgsReport(baseExport, targetExport)
-	b, _ := json.Marshal(r)
-	fmt.Println(string(b))
+
+	if asMarkdown {
+		fmt.Println(r.toMarkdown())
+	} else {
+		b, _ := json.Marshal(r)
+		fmt.Println(string(b))
+	}
 	return nil
 }

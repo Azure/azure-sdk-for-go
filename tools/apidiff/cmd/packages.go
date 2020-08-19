@@ -330,3 +330,50 @@ func getPkgsList(lhs, rhs repoContent) pkgsList {
 	}
 	return list
 }
+
+func (r *pkgsReport) toMarkdown() string {
+	if r.isEmpty() {
+		return ""
+	}
+	md := report.MarkdownWriter{}
+	r.writeAddedPackages(&md)
+	r.writeModifiedPackages(&md)
+	r.writeRemovedPackages(&md)
+	return md.String()
+}
+
+func (r *pkgsReport) writeAddedPackages(md *report.MarkdownWriter) {
+	if len(r.AddedPackages) == 0 {
+		return
+	}
+	md.WriteHeader("Updated Packages")
+	// write list
+	for _, p := range r.AddedPackages {
+		md.WriteLine("- " + p)
+	}
+	md.EmptyLine()
+}
+
+func (r *pkgsReport) writeModifiedPackages(md *report.MarkdownWriter) {
+	if len(r.ModifiedPackages) == 0 {
+		return
+	}
+	md.WriteHeader("Modified Packages")
+	for n, p := range r.ModifiedPackages {
+		md.WriteSubheader("`" + n + "`")
+		// TODO -- refine this
+		md.WriteLine(p.ToMarkdown())
+	}
+}
+
+func (r *pkgsReport) writeRemovedPackages(md *report.MarkdownWriter) {
+	if len(r.RemovedPackages) == 0 {
+		return
+	}
+	md.WriteHeader("Removed Packages")
+	// write list
+	for _, p := range r.RemovedPackages {
+		md.WriteLine("- " + p)
+	}
+	md.EmptyLine()
+}

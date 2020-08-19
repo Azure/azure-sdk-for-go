@@ -23,52 +23,172 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 )
 
-type mdWriter struct {
+type MarkdownWriter struct {
 	sb strings.Builder
 	nl bool
 }
 
-func (md *mdWriter) checkNL() {
+func (md *MarkdownWriter) checkNL() {
 	if md.nl {
 		md.sb.WriteString("\n")
 		md.nl = false
 	}
 }
 
-func (md *mdWriter) WriteHeader(h string) {
+func (md *MarkdownWriter) WriteHeader(h string) {
 	md.checkNL()
 	md.sb.WriteString("## ")
 	md.sb.WriteString(h)
 	md.sb.WriteString("\n\n")
 }
 
-func (md *mdWriter) WriteSubheader(sh string) {
+func (md *MarkdownWriter) WriteSubheader(sh string) {
 	md.checkNL()
 	md.sb.WriteString("### ")
 	md.sb.WriteString(sh)
 	md.sb.WriteString("\n\n")
 }
 
-func (md *mdWriter) WriteLine(s string) {
+func (md *MarkdownWriter) WriteLine(s string) {
 	md.nl = true
 	md.sb.WriteString(s)
 	md.sb.WriteString("\n")
 }
 
-func (md *mdWriter) String() string {
+func (md *MarkdownWriter) WriteTable(table MarkdownTable) {
+	md.WriteLine(table.String())
+}
+
+func (md *MarkdownWriter) EmptyLine() {
+	md.WriteLine("")
+}
+
+func (md *MarkdownWriter) String() string {
 	return md.sb.String()
+}
+
+type MarkdownTable struct {
+	sb *strings.Builder
+	headers []string
+	alignment string
+	rows []markdownTableRow
+}
+
+const (
+	leftAlignment = ":---"
+	centerAlignment = ":---:"
+	rightAlignment = "---:"
+)
+
+func NewMarkdownTable(alignment string, headers ...string) *MarkdownTable {
+	alignment, headers = checkAlignmentAndHeaders(alignment, headers)
+	t := MarkdownTable{
+		sb: &strings.Builder{},
+		headers: headers,
+		alignment: alignment,
+	}
+	return &t
+}
+
+func (t *MarkdownTable) Columns() int {
+	return len(t.headers)
+}
+
+func (t *MarkdownTable) AddRow(items ...string) {
+	t.rows = append(t.rows, markdownTableRow{
+		items: items,
+	})
+}
+
+func checkAlignmentAndHeaders(alignment string, headers []string) (string, []string) {
+	if len(alignment) == len(headers) {
+		return alignment, headers
+	}
+	if len(alignment) > len(headers) {
+		return alignment[:len(headers)], headers
+	}
+	// len(alignment) < len(headers)
+	// default alignment is l
+	return alignment + strings.Repeat("l", len(headers) - len(alignment)), headers
+}
+
+type markdownTableRow struct {
+	items []string
+}
+
+func (r *markdownTableRow) ensureItems(count int) []string {
+	if len(r.items) < count {
+		var items []string
+		for i := 0; i < count - len(r.items); i++ {
+			items = append(r.items, "")
+		}
+		return items
+	}
+	if len(r.items) > count {
+		return r.items[:count]
+	}
+	return r.items
+}
+
+func (t *MarkdownTable) writeHeader() {
+	if len(t.headers) == 0 {
+		return
+	}
+	t.sb.WriteString("| ")
+	t.sb.WriteString(strings.Join(t.headers, " | "))
+	t.sb.WriteString(" |\n")
+}
+
+func (t *MarkdownTable) writeAlignment() {
+	if len(t.alignment) == 0 {
+		return
+	}
+	var alignments []string
+	for _, a := range t.alignment {
+		switch a {
+		case 'c':
+			alignments = append(alignments, centerAlignment)
+		case 'r':
+			alignments = append(alignments, rightAlignment)
+		default:
+			alignments = append(alignments, leftAlignment)
+		}
+	}
+	t.sb.WriteString("| ")
+	t.sb.WriteString(strings.Join(alignments, " | "))
+	t.sb.WriteString(" |\n")
+}
+
+func (t *MarkdownTable) writeRows() {
+	for _, r := range t.rows {
+		t.writeRow(r)
+	}
+}
+
+func (t *MarkdownTable) writeRow(row markdownTableRow) {
+	items := row.ensureItems(t.Columns())
+	t.sb.WriteString("| ")
+	t.sb.WriteString(strings.Join(items, " | "))
+	t.sb.WriteString(" |\n")
+}
+
+func (t *MarkdownTable) String() string {
+	t.writeHeader()
+	t.writeAlignment()
+	t.writeRows()
+	return t.sb.String()
 }
 
 // creates a markdown-formatted report from the specified package
 func formatAsMarkdown(p Package) string {
-	md := mdWriter{}
+	md := MarkdownWriter{}
 	writeBreakingChanges(p, &md)
 	writeNewContent(p, &md)
 	return md.String()
 }
 
 // writes all breaking changes
-func writeBreakingChanges(p Package, md *mdWriter) {
+func writeBreakingChanges(p Package, md *MarkdownWriter) {
 	if !p.HasBreakingChanges() {
 		return
 	}
@@ -78,7 +198,7 @@ func writeBreakingChanges(p Package, md *mdWriter) {
 }
 
 // writes the subset of breaking changes pertaining to removed content
-func writeRemovedContent(removed *delta.Content, md *mdWriter) {
+func writeRemovedContent(removed *delta.Content, md *MarkdownWriter) {
 	if removed == nil {
 		return
 	}
@@ -88,7 +208,7 @@ func writeRemovedContent(removed *delta.Content, md *mdWriter) {
 }
 
 // writes the subset of breaking changes pertaining to signature changes
-func writeSigChanges(bc *BreakingChanges, md *mdWriter) {
+func writeSigChanges(bc *BreakingChanges, md *MarkdownWriter) {
 	if len(bc.Consts) == 0 && len(bc.Funcs) == 0 && len(bc.Structs) == 0 {
 		return
 	}
@@ -144,7 +264,7 @@ func writeSigChanges(bc *BreakingChanges, md *mdWriter) {
 }
 
 // writes all new content
-func writeNewContent(p Package, md *mdWriter) {
+func writeNewContent(p Package, md *MarkdownWriter) {
 	if !p.HasAdditiveChanges() {
 		return
 	}
@@ -155,7 +275,7 @@ func writeNewContent(p Package, md *mdWriter) {
 }
 
 // writes out const information formatted as TypeName.ConstName
-func writeConsts(co map[string]exports.Const, subheader string, md *mdWriter) {
+func writeConsts(co map[string]exports.Const, subheader string, md *MarkdownWriter) {
 	if len(co) == 0 {
 		return
 	}
@@ -173,7 +293,7 @@ func writeConsts(co map[string]exports.Const, subheader string, md *mdWriter) {
 }
 
 // writes out func information formatted as [receiver].FuncName([params]) [returns]
-func writeFuncs(funcs map[string]exports.Func, subheader string, md *mdWriter) {
+func writeFuncs(funcs map[string]exports.Func, subheader string, md *MarkdownWriter) {
 	if len(funcs) == 0 {
 		return
 	}
@@ -204,7 +324,7 @@ func writeFuncs(funcs map[string]exports.Func, subheader string, md *mdWriter) {
 // writes out struct information
 // sheader1 is for added/removed struct types formatted as TypeName
 // sheader2 is for added/removed struct fields formatted as TypeName.FieldName
-func writeStructs(content *delta.Content, sheader1, sheader2 string, md *mdWriter) {
+func writeStructs(content *delta.Content, sheader1, sheader2 string, md *MarkdownWriter) {
 	if len(content.Structs) == 0 {
 		return
 	}

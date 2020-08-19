@@ -322,12 +322,6 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	defer close()
 	// initial response that RP is unregistered
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
-	// polling responses to Register() and Get(), in progress
-	srv.RepeatResponse(5, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)))
-	// polling response, successful registration
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteredResp)))
-	// response for original request (different status code than any of the other responses)
-	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	ops := testRPRegistrationOptions(srv)
 	ops.MaxAttempts = 0
 	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(azcore.AnonymousCredential(), ops))

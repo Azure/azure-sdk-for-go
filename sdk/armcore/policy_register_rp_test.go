@@ -316,3 +316,41 @@ func TestRPRegistrationPolicyCanCancel(t *testing.T) {
 		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
 }
+
+func TestRPRegistrationPolicyDisabled(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	// initial response that RP is unregistered
+	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
+	ops := testRPRegistrationOptions(srv)
+	ops.MaxAttempts = 0
+	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(azcore.AnonymousCredential(), ops))
+	u1 := srv.URL()
+	u2 := &u1
+	u2, err := u2.Parse(requestEndpoint)
+	if err != nil {
+		t.Fatal(err)
+	}
+	req := azcore.NewRequest(http.MethodGet, *u2)
+	// log only RP registration
+	azcore.Log().SetClassifications(LogRPRegistration)
+	defer func() {
+		// reset logging
+		azcore.Log().SetClassifications()
+	}()
+	logEntries := 0
+	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
+		logEntries++
+	})
+	resp, err := pl.Do(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusConflict {
+		t.Fatalf("unexpected status code %d:", resp.StatusCode)
+	}
+	// shouldn't be any log entries
+	if logEntries != 0 {
+		t.Fatalf("expected 0 log entries, got %d", logEntries)
+	}
+}

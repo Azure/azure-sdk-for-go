@@ -329,7 +329,7 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	// response for original request (different status code than any of the other responses)
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	ops := testRPRegistrationOptions(srv)
-	ops.Attempts = 0
+	ops.MaxAttempts = 0
 	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(azcore.AnonymousCredential(), ops))
 	u1 := srv.URL()
 	u2 := &u1

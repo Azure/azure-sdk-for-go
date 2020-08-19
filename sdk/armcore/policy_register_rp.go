@@ -29,11 +29,11 @@ const (
 
 // RegistrationOptions configures the registration policy's behavior.
 type RegistrationOptions struct {
-	// Attempts is the total number of times to attempt automatic registration
+	// MaxAttempts is the total number of times to attempt automatic registration
 	// in the event that an attempt fails.
 	// The default value is 3.
 	// Set to zero to disable the policy.
-	Attempts int
+	MaxAttempts int
 
 	// PollingDelay is the amount of time to sleep between polling intervals.
 	// The default value is 15 seconds.
@@ -58,7 +58,7 @@ type RegistrationOptions struct {
 // DefaultRegistrationOptions returns an instance of RegistrationOptions initialized with default values.
 func DefaultRegistrationOptions() RegistrationOptions {
 	return RegistrationOptions{
-		Attempts:        3,
+		MaxAttempts:     3,
 		PollingDelay:    15 * time.Second,
 		PollingDuration: 5 * time.Minute,
 		HTTPClient:      azcore.DefaultHTTPClientTransport(),
@@ -90,7 +90,7 @@ type rpRegistrationPolicy struct {
 }
 
 func (r *rpRegistrationPolicy) Do(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
-	if r.options.Attempts == 0 {
+	if r.options.MaxAttempts == 0 {
 		// policy is disabled
 		return req.Next(ctx)
 	}
@@ -98,7 +98,7 @@ func (r *rpRegistrationPolicy) Do(ctx context.Context, req *azcore.Request) (*az
 	const registeredState = "Registered"
 	var rp string
 	var resp *azcore.Response
-	for attempts := 0; attempts < r.options.Attempts; attempts++ {
+	for attempts := 0; attempts < r.options.MaxAttempts; attempts++ {
 		var err error
 		// make the original request
 		resp, err = req.Next(ctx)

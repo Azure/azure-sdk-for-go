@@ -337,8 +337,8 @@ func (r *pkgsReport) toMarkdown() string {
 	}
 	md := report.MarkdownWriter{}
 	r.writeAddedPackages(&md)
-	r.writeModifiedPackages(&md)
 	r.writeRemovedPackages(&md)
+	r.writeModifiedPackages(&md)
 	return md.String()
 }
 
@@ -351,7 +351,6 @@ func (r *pkgsReport) writeAddedPackages(md *report.MarkdownWriter) {
 	for _, p := range r.AddedPackages {
 		md.WriteLine("- " + p)
 	}
-	md.EmptyLine()
 }
 
 func (r *pkgsReport) writeModifiedPackages(md *report.MarkdownWriter) {
@@ -359,8 +358,13 @@ func (r *pkgsReport) writeModifiedPackages(md *report.MarkdownWriter) {
 		return
 	}
 	md.WriteHeader("Modified Packages")
+	// write list
+	for n, _ := range r.ModifiedPackages {
+		md.WriteLine(fmt.Sprintf("- `%s`", n))
+	}
+	// write details
 	for n, p := range r.ModifiedPackages {
-		md.WriteSubheader("`" + n + "`")
+		md.WriteHeader(fmt.Sprintf("Modified `%s`", n))
 		// TODO -- refine this
 		md.WriteLine(p.ToMarkdown())
 	}

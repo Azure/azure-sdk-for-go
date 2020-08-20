@@ -77,9 +77,15 @@ func writePackageChangelog(pr pkgsReport) (string, error) {
 	if err := reportAddedPkgs(pr, md); err != nil {
 		return "", fmt.Errorf("failed to write table for added packages: %+v", err)
 	}
-	reportUpdatedPkgs(pr)
-	reportBreakingPkgs(pr)
-	reportRemovedPkgs(pr)
+	if err := reportUpdatedPkgs(pr, md); err != nil {
+		return "", fmt.Errorf("failed to write table for updated packages: %+v", err)
+	}
+	if err := reportBreakingPkgs(pr, md); err != nil {
+		return "", fmt.Errorf("failed to write table for breaking change packages: %+v", err)
+	}
+	if err := reportRemovedPkgs(pr, md); err != nil {
+		return "", fmt.Errorf("failed to write table for removed packages: %+v", err)
+	}
 	return md.String(), nil
 }
 
@@ -96,40 +102,55 @@ func reportAddedPkgs(pr pkgsReport, md *report.MarkdownWriter) error {
 	return nil
 }
 
-func reportUpdatedPkgs(pr pkgsReport) {
+func reportUpdatedPkgs(pr pkgsReport, md *report.MarkdownWriter) error {
 	if !pr.modPkgHasAdditions {
-		return
+		return nil
 	}
-	fmt.Printf("### Updated Packages\n\n")
-	updated := []string{}
+	md.WriteHeader("Updated Packages")
+	var updated []string
 	for pkgName, pkgRpt := range pr.ModifiedPackages {
 		if pkgRpt.HasAdditiveChanges() && !pkgRpt.HasBreakingChanges() {
 			updated = append(updated, pkgName)
 		}
 	}
-	createTable(createTableRows(updated))
+	t, err := createPackageTable(updated)
+	if err != nil {
+		return err
+	}
+	md.WriteTable(*t)
+	return nil
 }
 
-func reportBreakingPkgs(pr pkgsReport) {
+func reportBreakingPkgs(pr pkgsReport, md *report.MarkdownWriter) error {
 	if !pr.modPkgHasBreaking {
-		return
+		return nil
 	}
-	fmt.Printf("### BreakingChanges\n\n")
-	breaking := []string{}
+	md.WriteHeader("Breaking Changes")
+	var breaking []string
 	for pkgName, pkgRpt := range pr.ModifiedPackages {
 		if pkgRpt.HasBreakingChanges() {
 			breaking = append(breaking, pkgName)
 		}
 	}
-	createTable(createTableRows(breaking))
+	t, err := createPackageTable(breaking)
+	if err != nil {
+		return err
+	}
+	md.WriteTable(*t)
+	return nil
 }
 
-func reportRemovedPkgs(pr pkgsReport) {
+func reportRemovedPkgs(pr pkgsReport, md *report.MarkdownWriter) error {
 	if len(pr.RemovedPackages) == 0 {
-		return
+		return nil
 	}
-	fmt.Printf("### Removed Packages\n\n")
-	createTable(createTableRows(pr.RemovedPackages))
+	md.WriteHeader("Removed Packages")
+	t, err := createPackageTable(pr.RemovedPackages)
+	if err != nil {
+		return err
+	}
+	md.WriteTable(*t)
+	return nil
 }
 
 type tableRow struct {
@@ -184,42 +205,4 @@ func categorizePackageAPIVersions(pkgs []string) ([]tableRow, error) {
 		return rows[i].pkgName < rows[j].pkgName
 	})
 	return rows, nil
-}
-
-func createTableRows(pkgs []string) []tableRow {
-	entries := map[string][]string{}
-	for _, pkg := range pkgs {
-		pkgName, apiVer, err := convertFullPackagePathToPackageNameAndAPIVersion(pkg)
-		if err != nil {
-			panic(err)
-		}
-		if apis, ok := entries[pkgName]; ok {
-			entries[pkgName] = append(apis, apiVer)
-		} else {
-			entries[pkgName] = []string{apiVer}
-		}
-	}
-	// convert the map to a slice of tableRows
-	rows := []tableRow{}
-	for pkgName, apiVers := range entries {
-		sort.Strings(apiVers)
-		tr := tableRow{
-			pkgName:     pkgName,
-			apiVersions: apiVers,
-		}
-		rows = append(rows, tr)
-	}
-	sort.Slice(rows, func(i, j int) bool {
-		return rows[i].pkgName < rows[j].pkgName
-	})
-	return rows
-}
-
-func createTable(rows []tableRow) {
-	fmt.Println("| Package Name | API Version |")
-	fmt.Println("| -----------: | :---------: |")
-	for _, row := range rows {
-		fmt.Println("| " + row.pkgName + " | " + strings.Join(row.apiVersions, "<br/>") + " |")
-	}
-	fmt.Println()
 }

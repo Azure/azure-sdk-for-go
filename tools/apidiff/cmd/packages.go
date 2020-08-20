@@ -346,7 +346,7 @@ func (r *pkgsReport) writeAddedPackages(md *report.MarkdownWriter) {
 	if len(r.AddedPackages) == 0 {
 		return
 	}
-	md.WriteHeader("Updated Packages")
+	md.WriteHeader("New Packages")
 	// write list
 	for _, p := range r.AddedPackages {
 		md.WriteLine("- " + p)

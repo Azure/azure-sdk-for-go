@@ -239,3 +239,16 @@ type IncidentRelationsClientAPI interface {
 }
 
 var _ IncidentRelationsClientAPI = (*securityinsight.IncidentRelationsClient)(nil)
+
+// WatchlistsClientAPI contains the set of methods on the WatchlistsClient type.
+type WatchlistsClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, watchlistAlias string, watchlist securityinsight.Watchlist) (result securityinsight.Watchlist, err error)
+	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, watchlistAlias string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, watchlistAlias string) (result securityinsight.Watchlist, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.WatchlistListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.WatchlistListIterator, err error)
+	ListBySubscription(ctx context.Context, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.WatchlistListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.WatchlistListIterator, err error)
+}
+
+var _ WatchlistsClientAPI = (*securityinsight.WatchlistsClient)(nil)

@@ -5229,6 +5229,138 @@ func (e Entity) AsBasicEntity() (BasicEntity, bool) {
 	return &e, true
 }
 
+// EntityAnalytics settings with single toggle.
+type EntityAnalytics struct {
+	// EntityAnalyticsProperties - EntityAnalytics properties
+	*EntityAnalyticsProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindSettings', 'KindEyesOn', 'KindEntityAnalytics', 'KindUeba'
+	Kind KindBasicSettings `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EntityAnalytics.
+func (ea EntityAnalytics) MarshalJSON() ([]byte, error) {
+	ea.Kind = KindEntityAnalytics
+	objectMap := make(map[string]interface{})
+	if ea.EntityAnalyticsProperties != nil {
+		objectMap["properties"] = ea.EntityAnalyticsProperties
+	}
+	if ea.Etag != nil {
+		objectMap["etag"] = ea.Etag
+	}
+	if ea.Kind != "" {
+		objectMap["kind"] = ea.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsEyesOn is the BasicSettings implementation for EntityAnalytics.
+func (ea EntityAnalytics) AsEyesOn() (*EyesOn, bool) {
+	return nil, false
+}
+
+// AsEntityAnalytics is the BasicSettings implementation for EntityAnalytics.
+func (ea EntityAnalytics) AsEntityAnalytics() (*EntityAnalytics, bool) {
+	return &ea, true
+}
+
+// AsUeba is the BasicSettings implementation for EntityAnalytics.
+func (ea EntityAnalytics) AsUeba() (*Ueba, bool) {
+	return nil, false
+}
+
+// AsSettings is the BasicSettings implementation for EntityAnalytics.
+func (ea EntityAnalytics) AsSettings() (*Settings, bool) {
+	return nil, false
+}
+
+// AsBasicSettings is the BasicSettings implementation for EntityAnalytics.
+func (ea EntityAnalytics) AsBasicSettings() (BasicSettings, bool) {
+	return &ea, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for EntityAnalytics struct.
+func (ea *EntityAnalytics) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var entityAnalyticsProperties EntityAnalyticsProperties
+				err = json.Unmarshal(*v, &entityAnalyticsProperties)
+				if err != nil {
+					return err
+				}
+				ea.EntityAnalyticsProperties = &entityAnalyticsProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ea.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ea.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ea.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				ea.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicSettings
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				ea.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// EntityAnalyticsProperties entityAnalytics property bag.
+type EntityAnalyticsProperties struct {
+	// IsEnabled - READ-ONLY; Determines whether the setting is enable or disabled.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+}
+
 // EntityCommonProperties entity common property bag.
 type EntityCommonProperties struct {
 	// AdditionalData - READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
@@ -5795,7 +5927,7 @@ type EyesOn struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindSettings', 'KindEyesOn'
+	// Kind - Possible values include: 'KindSettings', 'KindEyesOn', 'KindEntityAnalytics', 'KindUeba'
 	Kind KindBasicSettings `json:"kind,omitempty"`
 }
 
@@ -5818,6 +5950,16 @@ func (eo EyesOn) MarshalJSON() ([]byte, error) {
 // AsEyesOn is the BasicSettings implementation for EyesOn.
 func (eo EyesOn) AsEyesOn() (*EyesOn, bool) {
 	return &eo, true
+}
+
+// AsEntityAnalytics is the BasicSettings implementation for EyesOn.
+func (eo EyesOn) AsEntityAnalytics() (*EntityAnalytics, bool) {
+	return nil, false
+}
+
+// AsUeba is the BasicSettings implementation for EyesOn.
+func (eo EyesOn) AsUeba() (*Ueba, bool) {
+	return nil, false
 }
 
 // AsSettings is the BasicSettings implementation for EyesOn.
@@ -11612,6 +11754,8 @@ func (sl *SettingList) UnmarshalJSON(body []byte) error {
 // BasicSettings the Setting.
 type BasicSettings interface {
 	AsEyesOn() (*EyesOn, bool)
+	AsEntityAnalytics() (*EntityAnalytics, bool)
+	AsUeba() (*Ueba, bool)
 	AsSettings() (*Settings, bool)
 }
 
@@ -11626,7 +11770,7 @@ type Settings struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - Etag of the azure resource
 	Etag *string `json:"etag,omitempty"`
-	// Kind - Possible values include: 'KindSettings', 'KindEyesOn'
+	// Kind - Possible values include: 'KindSettings', 'KindEyesOn', 'KindEntityAnalytics', 'KindUeba'
 	Kind KindBasicSettings `json:"kind,omitempty"`
 }
 
@@ -11642,6 +11786,14 @@ func unmarshalBasicSettings(body []byte) (BasicSettings, error) {
 		var eo EyesOn
 		err := json.Unmarshal(body, &eo)
 		return eo, err
+	case string(KindEntityAnalytics):
+		var ea EntityAnalytics
+		err := json.Unmarshal(body, &ea)
+		return ea, err
+	case string(KindUeba):
+		var u Ueba
+		err := json.Unmarshal(body, &u)
+		return u, err
 	default:
 		var s Settings
 		err := json.Unmarshal(body, &s)
@@ -11685,6 +11837,16 @@ func (s Settings) AsEyesOn() (*EyesOn, bool) {
 	return nil, false
 }
 
+// AsEntityAnalytics is the BasicSettings implementation for Settings.
+func (s Settings) AsEntityAnalytics() (*EntityAnalytics, bool) {
+	return nil, false
+}
+
+// AsUeba is the BasicSettings implementation for Settings.
+func (s Settings) AsUeba() (*Ueba, bool) {
+	return nil, false
+}
+
 // AsSettings is the BasicSettings implementation for Settings.
 func (s Settings) AsSettings() (*Settings, bool) {
 	return &s, true
@@ -11697,8 +11859,8 @@ func (s Settings) AsBasicSettings() (BasicSettings, bool) {
 
 // SettingsKind describes an Azure resource with kind.
 type SettingsKind struct {
-	// Kind - The kind of the setting
-	Kind *string `json:"kind,omitempty"`
+	// Kind - The kind of the setting. Possible values include: 'SettingKindEyesOn', 'SettingKindEntityAnalytics', 'SettingKindUeba'
+	Kind SettingKind `json:"kind,omitempty"`
 }
 
 // SettingsModel ...
@@ -12318,6 +12480,138 @@ type TiTaxiiDataConnectorProperties struct {
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
+// Ueba settings with single toggle.
+type Ueba struct {
+	// UebaProperties - Ueba properties
+	*UebaProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
+	// Kind - Possible values include: 'KindSettings', 'KindEyesOn', 'KindEntityAnalytics', 'KindUeba'
+	Kind KindBasicSettings `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Ueba.
+func (u Ueba) MarshalJSON() ([]byte, error) {
+	u.Kind = KindUeba
+	objectMap := make(map[string]interface{})
+	if u.UebaProperties != nil {
+		objectMap["properties"] = u.UebaProperties
+	}
+	if u.Etag != nil {
+		objectMap["etag"] = u.Etag
+	}
+	if u.Kind != "" {
+		objectMap["kind"] = u.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsEyesOn is the BasicSettings implementation for Ueba.
+func (u Ueba) AsEyesOn() (*EyesOn, bool) {
+	return nil, false
+}
+
+// AsEntityAnalytics is the BasicSettings implementation for Ueba.
+func (u Ueba) AsEntityAnalytics() (*EntityAnalytics, bool) {
+	return nil, false
+}
+
+// AsUeba is the BasicSettings implementation for Ueba.
+func (u Ueba) AsUeba() (*Ueba, bool) {
+	return &u, true
+}
+
+// AsSettings is the BasicSettings implementation for Ueba.
+func (u Ueba) AsSettings() (*Settings, bool) {
+	return nil, false
+}
+
+// AsBasicSettings is the BasicSettings implementation for Ueba.
+func (u Ueba) AsBasicSettings() (BasicSettings, bool) {
+	return &u, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for Ueba struct.
+func (u *Ueba) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var uebaProperties UebaProperties
+				err = json.Unmarshal(*v, &uebaProperties)
+				if err != nil {
+					return err
+				}
+				u.UebaProperties = &uebaProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				u.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				u.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				u.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				u.Etag = &etag
+			}
+		case "kind":
+			if v != nil {
+				var kind KindBasicSettings
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				u.Kind = kind
+			}
+		}
+	}
+
+	return nil
+}
+
+// UebaProperties ueba property bag.
+type UebaProperties struct {
+	// DataSources - The relevant data sources that enriched by ueba
+	DataSources *[]UebaDataSources `json:"dataSources,omitempty"`
+}
+
 // URLEntity represents a url entity.
 type URLEntity struct {
 	// URLEntityProperties - Url entity properties
@@ -12528,4 +12822,388 @@ func (UI UserInfo) MarshalJSON() ([]byte, error) {
 		objectMap["objectId"] = UI.ObjectID
 	}
 	return json.Marshal(objectMap)
+}
+
+// Watchlist represents a Watchlist in Azure Security Insights.
+type Watchlist struct {
+	autorest.Response `json:"-"`
+	// WatchlistProperties - Watchlist properties
+	*WatchlistProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+	// Etag - Etag of the azure resource
+	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Watchlist.
+func (w Watchlist) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if w.WatchlistProperties != nil {
+		objectMap["properties"] = w.WatchlistProperties
+	}
+	if w.Etag != nil {
+		objectMap["etag"] = w.Etag
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Watchlist struct.
+func (w *Watchlist) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var watchlistProperties WatchlistProperties
+				err = json.Unmarshal(*v, &watchlistProperties)
+				if err != nil {
+					return err
+				}
+				w.WatchlistProperties = &watchlistProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				w.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				w.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				w.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				w.Etag = &etag
+			}
+		}
+	}
+
+	return nil
+}
+
+// WatchlistItem represents a Watchlist Item in Azure Security Insights.
+type WatchlistItem struct {
+	// WatchlistItemProperties - Watchlist item properties
+	*WatchlistItemProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Azure resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Azure resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Azure resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WatchlistItem.
+func (wi WatchlistItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wi.WatchlistItemProperties != nil {
+		objectMap["properties"] = wi.WatchlistItemProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for WatchlistItem struct.
+func (wi *WatchlistItem) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var watchlistItemProperties WatchlistItemProperties
+				err = json.Unmarshal(*v, &watchlistItemProperties)
+				if err != nil {
+					return err
+				}
+				wi.WatchlistItemProperties = &watchlistItemProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				wi.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				wi.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				wi.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// WatchlistItemProperties describes watchlist item properties
+type WatchlistItemProperties struct {
+	// CreatedBy - Describes a user that created the watchlist
+	CreatedBy *UserInfo `json:"createdBy,omitempty"`
+	// UpdatedBy - Describes a user that updated the watchlist
+	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
+	// WatchlistItemName - Name of the watchlist item
+	WatchlistItemName *string `json:"watchlistItemName,omitempty"`
+	// WatchlistItemPair - A key-value pair for a watchlist item
+	WatchlistItemPair interface{} `json:"watchlistItemPair,omitempty"`
+	// EntityMapping - A key-value pair for a watchlist item entity mapping
+	EntityMapping interface{} `json:"entityMapping,omitempty"`
+	// TenantID - The tenantId to which this watchlist item belongs to
+	TenantID *string `json:"tenantId,omitempty"`
+	// CreatedTimeUtc - The time the watchlist item was created
+	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
+	// LastUpdatedTimeUtc - The last time the watchlist item was updated
+	LastUpdatedTimeUtc *date.Time `json:"lastUpdatedTimeUtc,omitempty"`
+	// TimeToLiveUtc - The time to live for the watchlist item
+	TimeToLiveUtc *date.Time `json:"timeToLiveUtc,omitempty"`
+	// WatchlistItemType - The type of the watchlist item
+	WatchlistItemType *string `json:"watchlistItemType,omitempty"`
+	// WatchlistID - The watchlist id of the parent of this watchlist item
+	WatchlistID *string `json:"watchlistId,omitempty"`
+}
+
+// WatchlistList list all the watchlists.
+type WatchlistList struct {
+	autorest.Response `json:"-"`
+	// NextLink - READ-ONLY; URL to fetch the next set of watchlists.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Value - Array of watchlist.
+	Value *[]Watchlist `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WatchlistList.
+func (wl WatchlistList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wl.Value != nil {
+		objectMap["value"] = wl.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// WatchlistListIterator provides access to a complete listing of Watchlist values.
+type WatchlistListIterator struct {
+	i    int
+	page WatchlistListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *WatchlistListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WatchlistListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *WatchlistListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter WatchlistListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter WatchlistListIterator) Response() WatchlistList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter WatchlistListIterator) Value() Watchlist {
+	if !iter.page.NotDone() {
+		return Watchlist{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the WatchlistListIterator type.
+func NewWatchlistListIterator(page WatchlistListPage) WatchlistListIterator {
+	return WatchlistListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (wl WatchlistList) IsEmpty() bool {
+	return wl.Value == nil || len(*wl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (wl WatchlistList) hasNextLink() bool {
+	return wl.NextLink != nil && len(*wl.NextLink) != 0
+}
+
+// watchlistListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (wl WatchlistList) watchlistListPreparer(ctx context.Context) (*http.Request, error) {
+	if !wl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(wl.NextLink)))
+}
+
+// WatchlistListPage contains a page of Watchlist values.
+type WatchlistListPage struct {
+	fn func(context.Context, WatchlistList) (WatchlistList, error)
+	wl WatchlistList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *WatchlistListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WatchlistListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.wl)
+		if err != nil {
+			return err
+		}
+		page.wl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *WatchlistListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page WatchlistListPage) NotDone() bool {
+	return !page.wl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page WatchlistListPage) Response() WatchlistList {
+	return page.wl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page WatchlistListPage) Values() []Watchlist {
+	if page.wl.IsEmpty() {
+		return nil
+	}
+	return *page.wl.Value
+}
+
+// Creates a new instance of the WatchlistListPage type.
+func NewWatchlistListPage(getNextPage func(context.Context, WatchlistList) (WatchlistList, error)) WatchlistListPage {
+	return WatchlistListPage{fn: getNextPage}
+}
+
+// WatchlistProperties describes watchlist properties
+type WatchlistProperties struct {
+	// CreatedTimeUtc - The time the watchlist was created
+	CreatedTimeUtc *date.Time `json:"createdTimeUtc,omitempty"`
+	// CreatedBy - Describes a user that created the watchlist
+	CreatedBy *UserInfo `json:"createdBy,omitempty"`
+	// DisplayName - The display name of the watchlist
+	DisplayName *string `json:"displayName,omitempty"`
+	// WatchlistType - The type of the watchlist
+	WatchlistType *string `json:"watchlistType,omitempty"`
+	// Source - The source of the watchlist. Possible values include: 'Localfile', 'Remotestorage'
+	Source Source `json:"source,omitempty"`
+	// Provider - The provider of the watchlist
+	Provider *string `json:"provider,omitempty"`
+	// Description - A description of the watchlist
+	Description *string `json:"description,omitempty"`
+	// TenantID - The tenantId where the watchlist belongs to.
+	TenantID *string `json:"tenantId,omitempty"`
+	// WorkspaceID - The workspaceId where the watchlist belongs to.
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+	// Labels - List of labels relevant to this watchlist
+	Labels *[]string `json:"labels,omitempty"`
+	// Notes - The notes of the watchlist
+	Notes *string `json:"notes,omitempty"`
+	// LastUpdatedTimeUtc - The last time the watchlist was updated
+	LastUpdatedTimeUtc *date.Time `json:"lastUpdatedTimeUtc,omitempty"`
+	// UpdatedBy - Describes a user that updated the watchlist
+	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
+	// DefaultDuration - The default duration of a watchlist (in ISO 8601 duration format)
+	DefaultDuration *string `json:"defaultDuration,omitempty"`
+	// WatchlistItems - List of watchlist items.
+	WatchlistItems *[]WatchlistItem `json:"watchlistItems,omitempty"`
 }

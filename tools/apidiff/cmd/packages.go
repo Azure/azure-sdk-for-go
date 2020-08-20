@@ -365,7 +365,6 @@ func (r *pkgsReport) writeModifiedPackages(md *report.MarkdownWriter) {
 	// write details
 	for n, p := range r.ModifiedPackages {
 		md.WriteHeader(fmt.Sprintf("Modified `%s`", n))
-		// TODO -- refine this
 		md.WriteLine(p.ToMarkdown())
 	}
 }

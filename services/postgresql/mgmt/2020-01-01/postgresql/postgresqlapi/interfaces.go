@@ -120,6 +120,14 @@ type OperationsClientAPI interface {
 
 var _ OperationsClientAPI = (*postgresql.OperationsClient)(nil)
 
+// ServerSecurityAlertPoliciesClientAPI contains the set of methods on the ServerSecurityAlertPoliciesClient type.
+type ServerSecurityAlertPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters postgresql.ServerSecurityAlertPolicy) (result postgresql.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerSecurityAlertPolicy, err error)
+}
+
+var _ ServerSecurityAlertPoliciesClientAPI = (*postgresql.ServerSecurityAlertPoliciesClient)(nil)
+
 // PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
 type PrivateEndpointConnectionsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, parameters postgresql.PrivateEndpointConnection) (result postgresql.PrivateEndpointConnectionsCreateOrUpdateFuture, err error)
@@ -151,13 +159,3 @@ type ServerKeysClientAPI interface {
 }
 
 var _ ServerKeysClientAPI = (*postgresql.ServerKeysClient)(nil)
-
-// ServerSecurityAlertPoliciesClientAPI contains the set of methods on the ServerSecurityAlertPoliciesClient type.
-type ServerSecurityAlertPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters postgresql.ServerSecurityAlertPolicy) (result postgresql.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerSecurityAlertPolicy, err error)
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.LogicalServerSecurityAlertPolicyListResultPage, err error)
-	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.LogicalServerSecurityAlertPolicyListResultIterator, err error)
-}
-
-var _ ServerSecurityAlertPoliciesClientAPI = (*postgresql.ServerSecurityAlertPoliciesClient)(nil)

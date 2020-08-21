@@ -19,7 +19,7 @@
 
 package networkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-05-01/network/networkapi"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-06-01/network/networkapi"
 
 type ApplicationGatewayPrivateEndpointConnectionsClientAPI = original.ApplicationGatewayPrivateEndpointConnectionsClientAPI
 type ApplicationGatewayPrivateLinkResourcesClientAPI = original.ApplicationGatewayPrivateLinkResourcesClientAPI
@@ -36,9 +36,11 @@ type BaseClientAPI = original.BaseClientAPI
 type BastionHostsClientAPI = original.BastionHostsClientAPI
 type BgpServiceCommunitiesClientAPI = original.BgpServiceCommunitiesClientAPI
 type ConnectionMonitorsClientAPI = original.ConnectionMonitorsClientAPI
+type CustomIPPrefixesClientAPI = original.CustomIPPrefixesClientAPI
 type DdosCustomPoliciesClientAPI = original.DdosCustomPoliciesClientAPI
 type DdosProtectionPlansClientAPI = original.DdosProtectionPlansClientAPI
 type DefaultSecurityRulesClientAPI = original.DefaultSecurityRulesClientAPI
+type DscpConfigurationClientAPI = original.DscpConfigurationClientAPI
 type ExpressRouteCircuitAuthorizationsClientAPI = original.ExpressRouteCircuitAuthorizationsClientAPI
 type ExpressRouteCircuitConnectionsClientAPI = original.ExpressRouteCircuitConnectionsClientAPI
 type ExpressRouteCircuitPeeringsClientAPI = original.ExpressRouteCircuitPeeringsClientAPI
@@ -122,3 +124,4 @@ type VpnSiteLinksClientAPI = original.VpnSiteLinksClientAPI
 type VpnSitesClientAPI = original.VpnSitesClientAPI
 type VpnSitesConfigurationClientAPI = original.VpnSitesConfigurationClientAPI
 type WatchersClientAPI = original.WatchersClientAPI
+type WebApplicationFirewallPoliciesClientAPI = original.WebApplicationFirewallPoliciesClientAPI

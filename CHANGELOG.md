@@ -26,6 +26,8 @@
 
 | Package Name | API Version |
 | -----------: | :---------: |
+| mysql | 2020-01-01 |
+| postgresql | 2020-01-01 |
 | servicebus | 2018-01-01-preview |
 | storagecache | 2019-11-01<br/>2020-03-01 |
 

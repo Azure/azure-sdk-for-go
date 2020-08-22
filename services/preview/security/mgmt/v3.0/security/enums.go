@@ -1399,3 +1399,18 @@ const (
 func PossibleValueTypeValues() []ValueType {
 	return []ValueType{ValueTypeIPCidr, ValueTypeString}
 }
+
+// VersionKind enumerates the values for version kind.
+type VersionKind string
+
+const (
+	// Latest ...
+	Latest VersionKind = "Latest"
+	// Previous ...
+	Previous VersionKind = "Previous"
+)
+
+// PossibleVersionKindValues returns an array of possible values for the VersionKind const type.
+func PossibleVersionKindValues() []VersionKind {
+	return []VersionKind{Latest, Previous}
+}

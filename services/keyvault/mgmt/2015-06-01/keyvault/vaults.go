@@ -317,6 +317,9 @@ func (client VaultsClient) List(ctx context.Context, top *int32) (result Resourc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "List", resp, "Failure responding to request")
 	}
+	if result.rlr.hasNextLink() && result.rlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -432,6 +435,9 @@ func (client VaultsClient) ListByResourceGroup(ctx context.Context, resourceGrou
 	result.vlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.vlr.hasNextLink() && result.vlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return

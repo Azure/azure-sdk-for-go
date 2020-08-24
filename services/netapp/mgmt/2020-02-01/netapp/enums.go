@@ -83,6 +83,40 @@ func PossibleMirrorStateValues() []MirrorState {
 	return []MirrorState{Broken, Mirrored, Uninitialized}
 }
 
+// PatchServiceLevel enumerates the values for patch service level.
+type PatchServiceLevel string
+
+const (
+	// Premium Premium service level
+	Premium PatchServiceLevel = "Premium"
+	// Standard Standard service level
+	Standard PatchServiceLevel = "Standard"
+	// Ultra Ultra service level
+	Ultra PatchServiceLevel = "Ultra"
+)
+
+// PossiblePatchServiceLevelValues returns an array of possible values for the PatchServiceLevel const type.
+func PossiblePatchServiceLevelValues() []PatchServiceLevel {
+	return []PatchServiceLevel{Premium, Standard, Ultra}
+}
+
+// PoolServiceLevel enumerates the values for pool service level.
+type PoolServiceLevel string
+
+const (
+	// PoolServiceLevelPremium Premium service level
+	PoolServiceLevelPremium PoolServiceLevel = "Premium"
+	// PoolServiceLevelStandard Standard service level
+	PoolServiceLevelStandard PoolServiceLevel = "Standard"
+	// PoolServiceLevelUltra Ultra service level
+	PoolServiceLevelUltra PoolServiceLevel = "Ultra"
+)
+
+// PossiblePoolServiceLevelValues returns an array of possible values for the PoolServiceLevel const type.
+func PossiblePoolServiceLevelValues() []PoolServiceLevel {
+	return []PoolServiceLevel{PoolServiceLevelPremium, PoolServiceLevelStandard, PoolServiceLevelUltra}
+}
+
 // RelationshipStatus enumerates the values for relationship status.
 type RelationshipStatus string
 
@@ -123,15 +157,32 @@ func PossibleReplicationScheduleValues() []ReplicationSchedule {
 type ServiceLevel string
 
 const (
-	// Premium Premium service level
-	Premium ServiceLevel = "Premium"
-	// Standard Standard service level
-	Standard ServiceLevel = "Standard"
-	// Ultra Ultra service level
-	Ultra ServiceLevel = "Ultra"
+	// ServiceLevelPremium Premium service level
+	ServiceLevelPremium ServiceLevel = "Premium"
+	// ServiceLevelStandard Standard service level
+	ServiceLevelStandard ServiceLevel = "Standard"
+	// ServiceLevelUltra Ultra service level
+	ServiceLevelUltra ServiceLevel = "Ultra"
 )
 
 // PossibleServiceLevelValues returns an array of possible values for the ServiceLevel const type.
 func PossibleServiceLevelValues() []ServiceLevel {
-	return []ServiceLevel{Premium, Standard, Ultra}
+	return []ServiceLevel{ServiceLevelPremium, ServiceLevelStandard, ServiceLevelUltra}
+}
+
+// VolumeServiceLevel enumerates the values for volume service level.
+type VolumeServiceLevel string
+
+const (
+	// VolumeServiceLevelPremium Premium service level
+	VolumeServiceLevelPremium VolumeServiceLevel = "Premium"
+	// VolumeServiceLevelStandard Standard service level
+	VolumeServiceLevelStandard VolumeServiceLevel = "Standard"
+	// VolumeServiceLevelUltra Ultra service level
+	VolumeServiceLevelUltra VolumeServiceLevel = "Ultra"
+)
+
+// PossibleVolumeServiceLevelValues returns an array of possible values for the VolumeServiceLevel const type.
+func PossibleVolumeServiceLevelValues() []VolumeServiceLevel {
+	return []VolumeServiceLevel{VolumeServiceLevelPremium, VolumeServiceLevelStandard, VolumeServiceLevelUltra}
 }

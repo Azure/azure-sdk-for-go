@@ -797,163 +797,6 @@ func (lfp LogFileProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// LogicalServerSecurityAlertPolicyListResult a list of the server's security alert policies.
-type LogicalServerSecurityAlertPolicyListResult struct {
-	autorest.Response `json:"-"`
-	// Value - READ-ONLY; Array of results.
-	Value *[]ServerSecurityAlertPolicy `json:"value,omitempty"`
-	// NextLink - READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// LogicalServerSecurityAlertPolicyListResultIterator provides access to a complete listing of
-// ServerSecurityAlertPolicy values.
-type LogicalServerSecurityAlertPolicyListResultIterator struct {
-	i    int
-	page LogicalServerSecurityAlertPolicyListResultPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *LogicalServerSecurityAlertPolicyListResultIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/LogicalServerSecurityAlertPolicyListResultIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *LogicalServerSecurityAlertPolicyListResultIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter LogicalServerSecurityAlertPolicyListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter LogicalServerSecurityAlertPolicyListResultIterator) Response() LogicalServerSecurityAlertPolicyListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter LogicalServerSecurityAlertPolicyListResultIterator) Value() ServerSecurityAlertPolicy {
-	if !iter.page.NotDone() {
-		return ServerSecurityAlertPolicy{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the LogicalServerSecurityAlertPolicyListResultIterator type.
-func NewLogicalServerSecurityAlertPolicyListResultIterator(page LogicalServerSecurityAlertPolicyListResultPage) LogicalServerSecurityAlertPolicyListResultIterator {
-	return LogicalServerSecurityAlertPolicyListResultIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (lssaplr LogicalServerSecurityAlertPolicyListResult) IsEmpty() bool {
-	return lssaplr.Value == nil || len(*lssaplr.Value) == 0
-}
-
-// hasNextLink returns true if the NextLink is not empty.
-func (lssaplr LogicalServerSecurityAlertPolicyListResult) hasNextLink() bool {
-	return lssaplr.NextLink != nil && len(*lssaplr.NextLink) != 0
-}
-
-// logicalServerSecurityAlertPolicyListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (lssaplr LogicalServerSecurityAlertPolicyListResult) logicalServerSecurityAlertPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if !lssaplr.hasNextLink() {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(lssaplr.NextLink)))
-}
-
-// LogicalServerSecurityAlertPolicyListResultPage contains a page of ServerSecurityAlertPolicy values.
-type LogicalServerSecurityAlertPolicyListResultPage struct {
-	fn      func(context.Context, LogicalServerSecurityAlertPolicyListResult) (LogicalServerSecurityAlertPolicyListResult, error)
-	lssaplr LogicalServerSecurityAlertPolicyListResult
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *LogicalServerSecurityAlertPolicyListResultPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/LogicalServerSecurityAlertPolicyListResultPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	for {
-		next, err := page.fn(ctx, page.lssaplr)
-		if err != nil {
-			return err
-		}
-		page.lssaplr = next
-		if !next.hasNextLink() || !next.IsEmpty() {
-			break
-		}
-	}
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *LogicalServerSecurityAlertPolicyListResultPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page LogicalServerSecurityAlertPolicyListResultPage) NotDone() bool {
-	return !page.lssaplr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page LogicalServerSecurityAlertPolicyListResultPage) Response() LogicalServerSecurityAlertPolicyListResult {
-	return page.lssaplr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page LogicalServerSecurityAlertPolicyListResultPage) Values() []ServerSecurityAlertPolicy {
-	if page.lssaplr.IsEmpty() {
-		return nil
-	}
-	return *page.lssaplr.Value
-}
-
-// Creates a new instance of the LogicalServerSecurityAlertPolicyListResultPage type.
-func NewLogicalServerSecurityAlertPolicyListResultPage(getNextPage func(context.Context, LogicalServerSecurityAlertPolicyListResult) (LogicalServerSecurityAlertPolicyListResult, error)) LogicalServerSecurityAlertPolicyListResultPage {
-	return LogicalServerSecurityAlertPolicyListResultPage{fn: getNextPage}
-}
-
 // NameAvailability represents a resource name availability.
 type NameAvailability struct {
 	autorest.Response `json:"-"`
@@ -979,7 +822,7 @@ type Operation struct {
 	Name *string `json:"name,omitempty"`
 	// Display - READ-ONLY; The localized display information for this particular operation or action.
 	Display *OperationDisplay `json:"display,omitempty"`
-	// Origin - READ-ONLY; The intended executor of the operation. Possible values include: 'OperationOriginNotSpecified', 'OperationOriginUser', 'OperationOriginSystem'
+	// Origin - READ-ONLY; The intended executor of the operation. Possible values include: 'NotSpecified', 'User', 'System'
 	Origin OperationOrigin `json:"origin,omitempty"`
 	// Properties - READ-ONLY; Additional descriptions for the operation.
 	Properties map[string]interface{} `json:"properties"`
@@ -2248,10 +2091,22 @@ func (ri ResourceIdentity) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SecurityAlertsPolicyProperties properties of a security alert policy.
-type SecurityAlertsPolicyProperties struct {
+// SecurityAlertPolicyProperties properties of a security alert policy.
+type SecurityAlertPolicyProperties struct {
 	// State - Specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'ServerSecurityAlertPolicyStateEnabled', 'ServerSecurityAlertPolicyStateDisabled'
 	State ServerSecurityAlertPolicyState `json:"state,omitempty"`
+	// DisabledAlerts - Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly
+	DisabledAlerts *[]string `json:"disabledAlerts,omitempty"`
+	// EmailAddresses - Specifies an array of e-mail addresses to which the alert is sent.
+	EmailAddresses *[]string `json:"emailAddresses,omitempty"`
+	// EmailAccountAdmins - Specifies that the alert is sent to the account administrators.
+	EmailAccountAdmins *bool `json:"emailAccountAdmins,omitempty"`
+	// StorageEndpoint - Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.
+	StorageEndpoint *string `json:"storageEndpoint,omitempty"`
+	// StorageAccountAccessKey - Specifies the identifier key of the Threat Detection audit storage account.
+	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
+	// RetentionDays - Specifies the number of days to keep in the Threat Detection audit logs.
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
 }
 
 // Server represents a server.
@@ -3621,10 +3476,8 @@ func (future *ServerSecurityAlertPoliciesCreateOrUpdateFuture) Result(client Ser
 // ServerSecurityAlertPolicy a server security alert policy.
 type ServerSecurityAlertPolicy struct {
 	autorest.Response `json:"-"`
-	// SecurityAlertsPolicyProperties - Resource properties.
-	*SecurityAlertsPolicyProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY
-	SystemData *SystemData `json:"systemData,omitempty"`
+	// SecurityAlertPolicyProperties - Resource properties.
+	*SecurityAlertPolicyProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -3636,8 +3489,8 @@ type ServerSecurityAlertPolicy struct {
 // MarshalJSON is the custom marshaler for ServerSecurityAlertPolicy.
 func (ssap ServerSecurityAlertPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ssap.SecurityAlertsPolicyProperties != nil {
-		objectMap["properties"] = ssap.SecurityAlertsPolicyProperties
+	if ssap.SecurityAlertPolicyProperties != nil {
+		objectMap["properties"] = ssap.SecurityAlertPolicyProperties
 	}
 	return json.Marshal(objectMap)
 }
@@ -3653,21 +3506,12 @@ func (ssap *ServerSecurityAlertPolicy) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var securityAlertsPolicyProperties SecurityAlertsPolicyProperties
-				err = json.Unmarshal(*v, &securityAlertsPolicyProperties)
+				var securityAlertPolicyProperties SecurityAlertPolicyProperties
+				err = json.Unmarshal(*v, &securityAlertPolicyProperties)
 				if err != nil {
 					return err
 				}
-				ssap.SecurityAlertsPolicyProperties = &securityAlertsPolicyProperties
-			}
-		case "systemData":
-			if v != nil {
-				var systemData SystemData
-				err = json.Unmarshal(*v, &systemData)
-				if err != nil {
-					return err
-				}
-				ssap.SystemData = &systemData
+				ssap.SecurityAlertPolicyProperties = &securityAlertPolicyProperties
 			}
 		case "id":
 			if v != nil {
@@ -3919,22 +3763,6 @@ type StorageProfile struct {
 	StorageMB *int32 `json:"storageMB,omitempty"`
 	// StorageAutogrow - Enable Storage Auto Grow. Possible values include: 'StorageAutogrowEnabled', 'StorageAutogrowDisabled'
 	StorageAutogrow StorageAutogrow `json:"storageAutogrow,omitempty"`
-}
-
-// SystemData metadata pertaining to creation and last modification of the resource.
-type SystemData struct {
-	// CreatedBy - The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
-	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
-	CreatedByType CreatedByType `json:"createdByType,omitempty"`
-	// CreatedAt - The timestamp of resource creation (UTC).
-	CreatedAt *date.Time `json:"createdAt,omitempty"`
-	// LastModifiedBy - The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
-	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
-	// LastModifiedAt - The type of identity that last modified the resource.
-	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
 // TagsObject tags object for patch operations.

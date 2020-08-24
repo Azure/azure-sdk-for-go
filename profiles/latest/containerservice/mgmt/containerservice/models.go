@@ -22,7 +22,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-06-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-07-01/containerservice"
 )
 
 const (
@@ -57,6 +57,13 @@ type Kind = original.Kind
 const (
 	KindAADIdentityProvider                         Kind = original.KindAADIdentityProvider
 	KindOpenShiftManagedClusterBaseIdentityProvider Kind = original.KindOpenShiftManagedClusterBaseIdentityProvider
+)
+
+type LicenseType = original.LicenseType
+
+const (
+	None          LicenseType = original.None
+	WindowsServer LicenseType = original.WindowsServer
 )
 
 type LoadBalancerSku = original.LoadBalancerSku
@@ -181,9 +188,9 @@ const (
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	None           ResourceIdentityType = original.None
-	SystemAssigned ResourceIdentityType = original.SystemAssigned
-	UserAssigned   ResourceIdentityType = original.UserAssigned
+	ResourceIdentityTypeNone           ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeUserAssigned   ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
 type ScaleSetEvictionPolicy = original.ScaleSetEvictionPolicy
@@ -453,6 +460,7 @@ type ManagedClustersResetAADProfileFuture = original.ManagedClustersResetAADProf
 type ManagedClustersResetServicePrincipalProfileFuture = original.ManagedClustersResetServicePrincipalProfileFuture
 type ManagedClustersRotateClusterCertificatesFuture = original.ManagedClustersRotateClusterCertificatesFuture
 type ManagedClustersUpdateTagsFuture = original.ManagedClustersUpdateTagsFuture
+type ManagedClustersUpgradeNodeImageVersionFuture = original.ManagedClustersUpgradeNodeImageVersionFuture
 type MasterProfile = original.MasterProfile
 type NetworkProfile = original.NetworkProfile
 type NetworkProfileType = original.NetworkProfileType
@@ -578,6 +586,9 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
+}
+func PossibleLicenseTypeValues() []LicenseType {
+	return original.PossibleLicenseTypeValues()
 }
 func PossibleLoadBalancerSkuValues() []LoadBalancerSku {
 	return original.PossibleLoadBalancerSkuValues()

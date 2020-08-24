@@ -16590,9 +16590,9 @@ func (hicpf HubIPConfigurationPropertiesFormat) MarshalJSON() ([]byte, error) {
 
 // HubPublicIPAddresses public IP addresses associated with azure firewall.
 type HubPublicIPAddresses struct {
-	// Addresses - The number of Public IP addresses associated with azure firewall.
+	// Addresses - The list of Public IP addresses associated with azure firewall or IP addresses to be retained.
 	Addresses *[]AzureFirewallPublicIPAddress `json:"addresses,omitempty"`
-	// Count - Private IP Address associated with azure firewall.
+	// Count - The number of Public IP addresses associated with azure firewall.
 	Count *int32 `json:"count,omitempty"`
 }
 

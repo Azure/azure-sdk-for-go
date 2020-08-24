@@ -129,6 +129,14 @@ type OperationsClientAPI interface {
 
 var _ OperationsClientAPI = (*mysql.OperationsClient)(nil)
 
+// ServerSecurityAlertPoliciesClientAPI contains the set of methods on the ServerSecurityAlertPoliciesClient type.
+type ServerSecurityAlertPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters mysql.ServerSecurityAlertPolicy) (result mysql.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServerSecurityAlertPolicy, err error)
+}
+
+var _ ServerSecurityAlertPoliciesClientAPI = (*mysql.ServerSecurityAlertPoliciesClient)(nil)
+
 // QueryTextsClientAPI contains the set of methods on the QueryTextsClient type.
 type QueryTextsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, queryID string) (result mysql.QueryText, err error)
@@ -220,13 +228,3 @@ type ServerKeysClientAPI interface {
 }
 
 var _ ServerKeysClientAPI = (*mysql.ServerKeysClient)(nil)
-
-// ServerSecurityAlertPoliciesClientAPI contains the set of methods on the ServerSecurityAlertPoliciesClient type.
-type ServerSecurityAlertPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters mysql.ServerSecurityAlertPolicy) (result mysql.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServerSecurityAlertPolicy, err error)
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mysql.LogicalServerSecurityAlertPolicyListResultPage, err error)
-	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result mysql.LogicalServerSecurityAlertPolicyListResultIterator, err error)
-}
-
-var _ ServerSecurityAlertPoliciesClientAPI = (*mysql.ServerSecurityAlertPoliciesClient)(nil)

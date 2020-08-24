@@ -75,21 +75,13 @@ const (
 	QuotaID                     ReasonCode = original.QuotaID
 )
 
-type StorageTargetType = original.StorageTargetType
+type TargetType = original.TargetType
 
 const (
-	StorageTargetTypeClfs    StorageTargetType = original.StorageTargetTypeClfs
-	StorageTargetTypeNfs3    StorageTargetType = original.StorageTargetTypeNfs3
-	StorageTargetTypeUnknown StorageTargetType = original.StorageTargetTypeUnknown
-)
-
-type TargetBaseType = original.TargetBaseType
-
-const (
-	TargetBaseTypeClfs                    TargetBaseType = original.TargetBaseTypeClfs
-	TargetBaseTypeNfs3                    TargetBaseType = original.TargetBaseTypeNfs3
-	TargetBaseTypeStorageTargetProperties TargetBaseType = original.TargetBaseTypeStorageTargetProperties
-	TargetBaseTypeUnknown                 TargetBaseType = original.TargetBaseTypeUnknown
+	TargetTypeClfs                    TargetType = original.TargetTypeClfs
+	TargetTypeNfs3                    TargetType = original.TargetTypeNfs3
+	TargetTypeStorageTargetProperties TargetType = original.TargetTypeStorageTargetProperties
+	TargetTypeUnknown                 TargetType = original.TargetTypeUnknown
 )
 
 type APIOperation = original.APIOperation
@@ -245,11 +237,8 @@ func PossibleProvisioningStateTypeValues() []ProvisioningStateType {
 func PossibleReasonCodeValues() []ReasonCode {
 	return original.PossibleReasonCodeValues()
 }
-func PossibleStorageTargetTypeValues() []StorageTargetType {
-	return original.PossibleStorageTargetTypeValues()
-}
-func PossibleTargetBaseTypeValues() []TargetBaseType {
-	return original.PossibleTargetBaseTypeValues()
+func PossibleTargetTypeValues() []TargetType {
+	return original.PossibleTargetTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

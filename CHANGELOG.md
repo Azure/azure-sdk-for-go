@@ -1,5 +1,36 @@
 # CHANGELOG
 
+## `v46.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| appplatform | 2020-07-01 |
+| automanage | 2020-06-30-preview |
+| containerservice | 2020-07-01 |
+| network | 2020-06-01 |
+| regionmove | 2019-10-01-preview |
+| resources | 2020-06-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| appconfiguration | 2020-06-01 |
+| documentdb | 2020-04-01 |
+| hdinsight | 2018-06-01-preview |
+| network | 2020-05-01 |
+
+### BreakingChanges
+
+| Package Name | API Version |
+| -----------: | :---------: |
+| mysql | 2020-01-01 |
+| postgresql | 2020-01-01 |
+| servicebus | 2018-01-01-preview |
+| storagecache | 2019-11-01<br/>2020-03-01 |
+
 ## `v45.1.0`
 
 ### New Packages

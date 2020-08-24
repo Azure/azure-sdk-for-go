@@ -44,6 +44,15 @@ type DataSourcesClientAPI interface {
 
 var _ DataSourcesClientAPI = (*operationalinsights.DataSourcesClient)(nil)
 
+// DataCollectorLogsClientAPI contains the set of methods on the DataCollectorLogsClient type.
+type DataCollectorLogsClientAPI interface {
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, force *bool) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, tableName string, force *bool) (result operationalinsights.DataCollectorLog, err error)
+	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result operationalinsights.DataCollectorLogsListResult, err error)
+}
+
+var _ DataCollectorLogsClientAPI = (*operationalinsights.DataCollectorLogsClient)(nil)
+
 // IntelligencePacksClientAPI contains the set of methods on the IntelligencePacksClient type.
 type IntelligencePacksClientAPI interface {
 	Disable(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string) (result autorest.Response, err error)

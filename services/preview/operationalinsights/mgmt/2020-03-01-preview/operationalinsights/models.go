@@ -517,6 +517,93 @@ type CoreSummary struct {
 	NumberOfDocuments *int64 `json:"numberOfDocuments,omitempty"`
 }
 
+// DataCollectorLog data collector log top level resource container.
+type DataCollectorLog struct {
+	autorest.Response `json:"-"`
+	// DataCollectorLogProperties - Data collector log properties.
+	*DataCollectorLogProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataCollectorLog.
+func (dcl DataCollectorLog) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dcl.DataCollectorLogProperties != nil {
+		objectMap["properties"] = dcl.DataCollectorLogProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DataCollectorLog struct.
+func (dcl *DataCollectorLog) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dataCollectorLogProperties DataCollectorLogProperties
+				err = json.Unmarshal(*v, &dataCollectorLogProperties)
+				if err != nil {
+					return err
+				}
+				dcl.DataCollectorLogProperties = &dataCollectorLogProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dcl.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dcl.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dcl.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DataCollectorLogProperties data collector log properties.
+type DataCollectorLogProperties struct {
+	// Name - Table's name.
+	Name *string `json:"name,omitempty"`
+}
+
+// DataCollectorLogsListResult data collector log tables collection, all tables are scoped to the specified
+// workspace.
+type DataCollectorLogsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - data collector log collection.
+	Value *[]DataCollectorLog `json:"value,omitempty"`
+}
+
 // DataExport the top level data export resource container.
 type DataExport struct {
 	autorest.Response `json:"-"`

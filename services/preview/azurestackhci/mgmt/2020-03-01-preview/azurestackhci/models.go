@@ -334,7 +334,7 @@ type ClusterNode struct {
 type ClusterProperties struct {
 	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'Succeeded', 'Failed', 'Canceled', 'Accepted', 'Provisioning'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// Status - READ-ONLY; Status of the cluster agent. Possible values include: 'NeverConnected', 'ConnectedRecently', 'NotConnectedRecently', 'Expired', 'Error'
+	// Status - READ-ONLY; Status of the cluster agent. Possible values include: 'NotYetRegistered', 'ConnectedRecently', 'NotConnectedRecently', 'Disconnected', 'Error'
 	Status Status `json:"status,omitempty"`
 	// CloudID - READ-ONLY; Unique, immutable resource id.
 	CloudID *string `json:"cloudId,omitempty"`
@@ -348,6 +348,12 @@ type ClusterProperties struct {
 	TrialDaysRemaining *float64 `json:"trialDaysRemaining,omitempty"`
 	// BillingModel - READ-ONLY; Type of billing applied to the resource.
 	BillingModel *string `json:"billingModel,omitempty"`
+	// RegistrationTimestamp - READ-ONLY; First cluster sync timestamp.
+	RegistrationTimestamp *date.Time `json:"registrationTimestamp,omitempty"`
+	// LastSyncTimestamp - READ-ONLY; Most recent cluster sync timestamp.
+	LastSyncTimestamp *date.Time `json:"lastSyncTimestamp,omitempty"`
+	// LastBillingTimestamp - READ-ONLY; Most recent billing meter timestamp.
+	LastBillingTimestamp *date.Time `json:"lastBillingTimestamp,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ClusterProperties.

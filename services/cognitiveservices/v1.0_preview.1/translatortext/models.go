@@ -32,6 +32,8 @@ type BatchRequest struct {
 	Source *SourceInput `json:"source,omitempty"`
 	// Targets - Location of the destination for the output
 	Targets *[]TargetInput `json:"targets,omitempty"`
+	// StorageType - Possible values include: 'Folder', 'File'
+	StorageType StorageType `json:"storageType,omitempty"`
 }
 
 // BatchStatusDetail job status response
@@ -201,7 +203,7 @@ type SetObject struct {
 
 // SourceInput source of the input documents
 type SourceInput struct {
-	// SourceURL - Location of the folder / container with your documents
+	// SourceURL - Location of the folder / container or single file with your documents
 	SourceURL *string         `json:"sourceUrl,omitempty"`
 	Filter    *DocumentFilter `json:"filter,omitempty"`
 	// Language - Language code

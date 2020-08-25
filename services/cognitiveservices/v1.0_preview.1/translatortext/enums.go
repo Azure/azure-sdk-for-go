@@ -113,3 +113,18 @@ const (
 func PossibleStorageSource1Values() []StorageSource1 {
 	return []StorageSource1{StorageSource1AzureBlob}
 }
+
+// StorageType enumerates the values for storage type.
+type StorageType string
+
+const (
+	// File ...
+	File StorageType = "File"
+	// Folder ...
+	Folder StorageType = "Folder"
+)
+
+// PossibleStorageTypeValues returns an array of possible values for the StorageType const type.
+func PossibleStorageTypeValues() []StorageType {
+	return []StorageType{File, Folder}
+}

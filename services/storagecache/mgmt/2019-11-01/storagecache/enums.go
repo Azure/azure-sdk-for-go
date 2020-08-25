@@ -99,15 +99,19 @@ func PossibleReasonCodeValues() []ReasonCode {
 	return []ReasonCode{NotAvailableForSubscription, QuotaID}
 }
 
-// TargetType enumerates the values for target type.
-type TargetType string
+// StorageTargetType enumerates the values for storage target type.
+type StorageTargetType string
 
 const (
-	// TargetTypeStorageTargetProperties ...
-	TargetTypeStorageTargetProperties TargetType = "StorageTarget_properties"
+	// StorageTargetTypeClfs ...
+	StorageTargetTypeClfs StorageTargetType = "clfs"
+	// StorageTargetTypeNfs3 ...
+	StorageTargetTypeNfs3 StorageTargetType = "nfs3"
+	// StorageTargetTypeUnknown ...
+	StorageTargetTypeUnknown StorageTargetType = "unknown"
 )
 
-// PossibleTargetTypeValues returns an array of possible values for the TargetType const type.
-func PossibleTargetTypeValues() []TargetType {
-	return []TargetType{TargetTypeStorageTargetProperties}
+// PossibleStorageTargetTypeValues returns an array of possible values for the StorageTargetType const type.
+func PossibleStorageTargetTypeValues() []StorageTargetType {
+	return []StorageTargetType{StorageTargetTypeClfs, StorageTargetTypeNfs3, StorageTargetTypeUnknown}
 }

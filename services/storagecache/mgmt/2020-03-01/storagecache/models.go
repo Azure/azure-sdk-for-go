@@ -817,8 +817,6 @@ type ClfsTarget struct {
 type ClfsTargetProperties struct {
 	// Junctions - List of Cache namespace junctions to target for namespace associations.
 	Junctions *[]NamespaceJunction `json:"junctions,omitempty"`
-	// TargetType - Type of the Storage Target.
-	TargetType *string `json:"targetType,omitempty"`
 	// ProvisioningState - ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Creating', 'Deleting', 'Updating'
 	ProvisioningState ProvisioningStateType `json:"provisioningState,omitempty"`
 	// Nfs3 - Properties when targetType is nfs3.
@@ -827,19 +825,16 @@ type ClfsTargetProperties struct {
 	Clfs *ClfsTarget `json:"clfs,omitempty"`
 	// Unknown - Properties when targetType is unknown.
 	Unknown *UnknownTarget `json:"unknown,omitempty"`
-	// TargetBaseType - Possible values include: 'TargetBaseTypeStorageTargetProperties', 'TargetBaseTypeNfs3', 'TargetBaseTypeClfs', 'TargetBaseTypeUnknown'
-	TargetBaseType TargetBaseType `json:"targetBaseType,omitempty"`
+	// TargetType - Possible values include: 'TargetTypeStorageTargetProperties', 'TargetTypeNfs3', 'TargetTypeClfs', 'TargetTypeUnknown'
+	TargetType TargetType `json:"targetType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ClfsTargetProperties.
 func (ctp ClfsTargetProperties) MarshalJSON() ([]byte, error) {
-	ctp.TargetBaseType = TargetBaseTypeClfs
+	ctp.TargetType = TargetTypeClfs
 	objectMap := make(map[string]interface{})
 	if ctp.Junctions != nil {
 		objectMap["junctions"] = ctp.Junctions
-	}
-	if ctp.TargetType != nil {
-		objectMap["targetType"] = ctp.TargetType
 	}
 	if ctp.ProvisioningState != "" {
 		objectMap["provisioningState"] = ctp.ProvisioningState
@@ -853,8 +848,8 @@ func (ctp ClfsTargetProperties) MarshalJSON() ([]byte, error) {
 	if ctp.Unknown != nil {
 		objectMap["unknown"] = ctp.Unknown
 	}
-	if ctp.TargetBaseType != "" {
-		objectMap["targetBaseType"] = ctp.TargetBaseType
+	if ctp.TargetType != "" {
+		objectMap["targetType"] = ctp.TargetType
 	}
 	return json.Marshal(objectMap)
 }
@@ -946,8 +941,6 @@ type Nfs3Target struct {
 type Nfs3TargetProperties struct {
 	// Junctions - List of Cache namespace junctions to target for namespace associations.
 	Junctions *[]NamespaceJunction `json:"junctions,omitempty"`
-	// TargetType - Type of the Storage Target.
-	TargetType *string `json:"targetType,omitempty"`
 	// ProvisioningState - ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Creating', 'Deleting', 'Updating'
 	ProvisioningState ProvisioningStateType `json:"provisioningState,omitempty"`
 	// Nfs3 - Properties when targetType is nfs3.
@@ -956,19 +949,16 @@ type Nfs3TargetProperties struct {
 	Clfs *ClfsTarget `json:"clfs,omitempty"`
 	// Unknown - Properties when targetType is unknown.
 	Unknown *UnknownTarget `json:"unknown,omitempty"`
-	// TargetBaseType - Possible values include: 'TargetBaseTypeStorageTargetProperties', 'TargetBaseTypeNfs3', 'TargetBaseTypeClfs', 'TargetBaseTypeUnknown'
-	TargetBaseType TargetBaseType `json:"targetBaseType,omitempty"`
+	// TargetType - Possible values include: 'TargetTypeStorageTargetProperties', 'TargetTypeNfs3', 'TargetTypeClfs', 'TargetTypeUnknown'
+	TargetType TargetType `json:"targetType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Nfs3TargetProperties.
 func (n3tp Nfs3TargetProperties) MarshalJSON() ([]byte, error) {
-	n3tp.TargetBaseType = TargetBaseTypeNfs3
+	n3tp.TargetType = TargetTypeNfs3
 	objectMap := make(map[string]interface{})
 	if n3tp.Junctions != nil {
 		objectMap["junctions"] = n3tp.Junctions
-	}
-	if n3tp.TargetType != nil {
-		objectMap["targetType"] = n3tp.TargetType
 	}
 	if n3tp.ProvisioningState != "" {
 		objectMap["provisioningState"] = n3tp.ProvisioningState
@@ -982,8 +972,8 @@ func (n3tp Nfs3TargetProperties) MarshalJSON() ([]byte, error) {
 	if n3tp.Unknown != nil {
 		objectMap["unknown"] = n3tp.Unknown
 	}
-	if n3tp.TargetBaseType != "" {
-		objectMap["targetBaseType"] = n3tp.TargetBaseType
+	if n3tp.TargetType != "" {
+		objectMap["targetType"] = n3tp.TargetType
 	}
 	return json.Marshal(objectMap)
 }
@@ -1335,8 +1325,6 @@ type BasicStorageTargetProperties interface {
 type StorageTargetProperties struct {
 	// Junctions - List of Cache namespace junctions to target for namespace associations.
 	Junctions *[]NamespaceJunction `json:"junctions,omitempty"`
-	// TargetType - Type of the Storage Target.
-	TargetType *string `json:"targetType,omitempty"`
 	// ProvisioningState - ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Creating', 'Deleting', 'Updating'
 	ProvisioningState ProvisioningStateType `json:"provisioningState,omitempty"`
 	// Nfs3 - Properties when targetType is nfs3.
@@ -1345,8 +1333,8 @@ type StorageTargetProperties struct {
 	Clfs *ClfsTarget `json:"clfs,omitempty"`
 	// Unknown - Properties when targetType is unknown.
 	Unknown *UnknownTarget `json:"unknown,omitempty"`
-	// TargetBaseType - Possible values include: 'TargetBaseTypeStorageTargetProperties', 'TargetBaseTypeNfs3', 'TargetBaseTypeClfs', 'TargetBaseTypeUnknown'
-	TargetBaseType TargetBaseType `json:"targetBaseType,omitempty"`
+	// TargetType - Possible values include: 'TargetTypeStorageTargetProperties', 'TargetTypeNfs3', 'TargetTypeClfs', 'TargetTypeUnknown'
+	TargetType TargetType `json:"targetType,omitempty"`
 }
 
 func unmarshalBasicStorageTargetProperties(body []byte) (BasicStorageTargetProperties, error) {
@@ -1356,16 +1344,16 @@ func unmarshalBasicStorageTargetProperties(body []byte) (BasicStorageTargetPrope
 		return nil, err
 	}
 
-	switch m["targetBaseType"] {
-	case string(TargetBaseTypeNfs3):
+	switch m["targetType"] {
+	case string(TargetTypeNfs3):
 		var n3tp Nfs3TargetProperties
 		err := json.Unmarshal(body, &n3tp)
 		return n3tp, err
-	case string(TargetBaseTypeClfs):
+	case string(TargetTypeClfs):
 		var ctp ClfsTargetProperties
 		err := json.Unmarshal(body, &ctp)
 		return ctp, err
-	case string(TargetBaseTypeUnknown):
+	case string(TargetTypeUnknown):
 		var utp UnknownTargetProperties
 		err := json.Unmarshal(body, &utp)
 		return utp, err
@@ -1396,13 +1384,10 @@ func unmarshalBasicStorageTargetPropertiesArray(body []byte) ([]BasicStorageTarg
 
 // MarshalJSON is the custom marshaler for StorageTargetProperties.
 func (stp StorageTargetProperties) MarshalJSON() ([]byte, error) {
-	stp.TargetBaseType = TargetBaseTypeStorageTargetProperties
+	stp.TargetType = TargetTypeStorageTargetProperties
 	objectMap := make(map[string]interface{})
 	if stp.Junctions != nil {
 		objectMap["junctions"] = stp.Junctions
-	}
-	if stp.TargetType != nil {
-		objectMap["targetType"] = stp.TargetType
 	}
 	if stp.ProvisioningState != "" {
 		objectMap["provisioningState"] = stp.ProvisioningState
@@ -1416,8 +1401,8 @@ func (stp StorageTargetProperties) MarshalJSON() ([]byte, error) {
 	if stp.Unknown != nil {
 		objectMap["unknown"] = stp.Unknown
 	}
-	if stp.TargetBaseType != "" {
-		objectMap["targetBaseType"] = stp.TargetBaseType
+	if stp.TargetType != "" {
+		objectMap["targetType"] = stp.TargetType
 	}
 	return json.Marshal(objectMap)
 }
@@ -1690,8 +1675,6 @@ func (ut UnknownTarget) MarshalJSON() ([]byte, error) {
 type UnknownTargetProperties struct {
 	// Junctions - List of Cache namespace junctions to target for namespace associations.
 	Junctions *[]NamespaceJunction `json:"junctions,omitempty"`
-	// TargetType - Type of the Storage Target.
-	TargetType *string `json:"targetType,omitempty"`
 	// ProvisioningState - ARM provisioning state, see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Creating', 'Deleting', 'Updating'
 	ProvisioningState ProvisioningStateType `json:"provisioningState,omitempty"`
 	// Nfs3 - Properties when targetType is nfs3.
@@ -1700,19 +1683,16 @@ type UnknownTargetProperties struct {
 	Clfs *ClfsTarget `json:"clfs,omitempty"`
 	// Unknown - Properties when targetType is unknown.
 	Unknown *UnknownTarget `json:"unknown,omitempty"`
-	// TargetBaseType - Possible values include: 'TargetBaseTypeStorageTargetProperties', 'TargetBaseTypeNfs3', 'TargetBaseTypeClfs', 'TargetBaseTypeUnknown'
-	TargetBaseType TargetBaseType `json:"targetBaseType,omitempty"`
+	// TargetType - Possible values include: 'TargetTypeStorageTargetProperties', 'TargetTypeNfs3', 'TargetTypeClfs', 'TargetTypeUnknown'
+	TargetType TargetType `json:"targetType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for UnknownTargetProperties.
 func (utp UnknownTargetProperties) MarshalJSON() ([]byte, error) {
-	utp.TargetBaseType = TargetBaseTypeUnknown
+	utp.TargetType = TargetTypeUnknown
 	objectMap := make(map[string]interface{})
 	if utp.Junctions != nil {
 		objectMap["junctions"] = utp.Junctions
-	}
-	if utp.TargetType != nil {
-		objectMap["targetType"] = utp.TargetType
 	}
 	if utp.ProvisioningState != "" {
 		objectMap["provisioningState"] = utp.ProvisioningState
@@ -1726,8 +1706,8 @@ func (utp UnknownTargetProperties) MarshalJSON() ([]byte, error) {
 	if utp.Unknown != nil {
 		objectMap["unknown"] = utp.Unknown
 	}
-	if utp.TargetBaseType != "" {
-		objectMap["targetBaseType"] = utp.TargetBaseType
+	if utp.TargetType != "" {
+		objectMap["targetType"] = utp.TargetType
 	}
 	return json.Marshal(objectMap)
 }

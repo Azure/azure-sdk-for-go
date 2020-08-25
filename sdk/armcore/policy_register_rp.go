@@ -29,10 +29,11 @@ const (
 
 // RegistrationOptions configures the registration policy's behavior.
 type RegistrationOptions struct {
-	// Attempts is the total number of times to attempt automatic registration
+	// MaxAttempts is the total number of times to attempt automatic registration
 	// in the event that an attempt fails.
 	// The default value is 3.
-	Attempts int
+	// Set to zero to disable the policy.
+	MaxAttempts int
 
 	// PollingDelay is the amount of time to sleep between polling intervals.
 	// The default value is 15 seconds.
@@ -57,7 +58,7 @@ type RegistrationOptions struct {
 // DefaultRegistrationOptions returns an instance of RegistrationOptions initialized with default values.
 func DefaultRegistrationOptions() RegistrationOptions {
 	return RegistrationOptions{
-		Attempts:        3,
+		MaxAttempts:     3,
 		PollingDelay:    15 * time.Second,
 		PollingDuration: 5 * time.Minute,
 		HTTPClient:      azcore.DefaultHTTPClientTransport(),
@@ -66,7 +67,9 @@ func DefaultRegistrationOptions() RegistrationOptions {
 }
 
 // NewRPRegistrationPolicy creates a policy object configured using the specified pipeline
-// and options. Pass nil to accept the default options; this is the same as passing the result
+// and options.  The policy controls if an unregistered resource provider should automatically
+// be registered. See https://aka.ms/rps-not-found for more information.
+// Pass nil to accept the default options; this is the same as passing the result
 // from a call to DefaultRegistrationOptions().
 func NewRPRegistrationPolicy(cred azcore.Credential, o *RegistrationOptions) azcore.Policy {
 	if o == nil {
@@ -87,11 +90,15 @@ type rpRegistrationPolicy struct {
 }
 
 func (r *rpRegistrationPolicy) Do(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
+	if r.options.MaxAttempts == 0 {
+		// policy is disabled
+		return req.Next(ctx)
+	}
 	const unregisteredRPCode = "MissingSubscriptionRegistration"
 	const registeredState = "Registered"
 	var rp string
 	var resp *azcore.Response
-	for attempts := 0; attempts < r.options.Attempts; attempts++ {
+	for attempts := 0; attempts < r.options.MaxAttempts; attempts++ {
 		var err error
 		// make the original request
 		resp, err = req.Next(ctx)

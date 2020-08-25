@@ -114,38 +114,21 @@ func PossibleReasonCodeValues() []ReasonCode {
 	return []ReasonCode{NotAvailableForSubscription, QuotaID}
 }
 
-// StorageTargetType enumerates the values for storage target type.
-type StorageTargetType string
+// TargetType enumerates the values for target type.
+type TargetType string
 
 const (
-	// StorageTargetTypeClfs ...
-	StorageTargetTypeClfs StorageTargetType = "clfs"
-	// StorageTargetTypeNfs3 ...
-	StorageTargetTypeNfs3 StorageTargetType = "nfs3"
-	// StorageTargetTypeUnknown ...
-	StorageTargetTypeUnknown StorageTargetType = "unknown"
+	// TargetTypeClfs ...
+	TargetTypeClfs TargetType = "clfs"
+	// TargetTypeNfs3 ...
+	TargetTypeNfs3 TargetType = "nfs3"
+	// TargetTypeStorageTargetProperties ...
+	TargetTypeStorageTargetProperties TargetType = "StorageTargetProperties"
+	// TargetTypeUnknown ...
+	TargetTypeUnknown TargetType = "unknown"
 )
 
-// PossibleStorageTargetTypeValues returns an array of possible values for the StorageTargetType const type.
-func PossibleStorageTargetTypeValues() []StorageTargetType {
-	return []StorageTargetType{StorageTargetTypeClfs, StorageTargetTypeNfs3, StorageTargetTypeUnknown}
-}
-
-// TargetBaseType enumerates the values for target base type.
-type TargetBaseType string
-
-const (
-	// TargetBaseTypeClfs ...
-	TargetBaseTypeClfs TargetBaseType = "clfs"
-	// TargetBaseTypeNfs3 ...
-	TargetBaseTypeNfs3 TargetBaseType = "nfs3"
-	// TargetBaseTypeStorageTargetProperties ...
-	TargetBaseTypeStorageTargetProperties TargetBaseType = "StorageTargetProperties"
-	// TargetBaseTypeUnknown ...
-	TargetBaseTypeUnknown TargetBaseType = "unknown"
-)
-
-// PossibleTargetBaseTypeValues returns an array of possible values for the TargetBaseType const type.
-func PossibleTargetBaseTypeValues() []TargetBaseType {
-	return []TargetBaseType{TargetBaseTypeClfs, TargetBaseTypeNfs3, TargetBaseTypeStorageTargetProperties, TargetBaseTypeUnknown}
+// PossibleTargetTypeValues returns an array of possible values for the TargetType const type.
+func PossibleTargetTypeValues() []TargetType {
+	return []TargetType{TargetTypeClfs, TargetTypeNfs3, TargetTypeStorageTargetProperties, TargetTypeUnknown}
 }

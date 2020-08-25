@@ -186,3 +186,24 @@ func TestDownloadBodyWithRetryPost(t *testing.T) {
 		t.Fatalf("expected %d requests, got %d", 1, r)
 	}
 }
+
+func TestSkipBodyDownloadWith400(t *testing.T) {
+	const message = "error should be downloaded"
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithStatusCode(http.StatusBadRequest), mock.WithBody([]byte(message)))
+	// download policy is automatically added during pipeline construction
+	pl := NewPipeline(srv)
+	req := NewRequest(http.MethodGet, srv.URL())
+	req.SkipBodyDownload()
+	resp, err := pl.Do(context.Background(), req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(resp.payload()) == 0 {
+		t.Fatal("missing payload")
+	}
+	if string(resp.payload()) != message {
+		t.Fatalf("unexpected response: %s", string(resp.payload()))
+	}
+}

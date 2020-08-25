@@ -22,17 +22,18 @@ func newBodyDownloadPolicy() Policy {
 			return resp, err
 		}
 		var opValues bodyDownloadPolicyOpValues
-		if req.OperationValue(&opValues); !opValues.skip && resp.Body != nil {
-			// Either bodyDownloadPolicyOpValues was not specified (so skip is false)
-			// or it was specified and skip is false: don't skip downloading the body
-			var b []byte
-			b, err = ioutil.ReadAll(resp.Body)
-			resp.Body.Close()
-			if err != nil {
-				return resp, newBodyDownloadError(err, req)
-			}
-			resp.Body = &nopClosingBytesReader{s: b}
+		// don't skip downloading error response bodies
+		if req.OperationValue(&opValues); opValues.skip && resp.StatusCode < 400 {
+			return resp, err
 		}
+		// Either bodyDownloadPolicyOpValues was not specified (so skip is false)
+		// or it was specified and skip is false: don't skip downloading the body
+		b, err := ioutil.ReadAll(resp.Body)
+		resp.Body.Close()
+		if err != nil {
+			return resp, newBodyDownloadError(err, req)
+		}
+		resp.Body = &nopClosingBytesReader{s: b}
 		return resp, err
 	})
 }

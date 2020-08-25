@@ -1188,6 +1188,8 @@ type DiskEncryptionProperties struct {
 	EncryptionAlgorithm JSONWebKeyEncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
 	// MsiResourceID - Resource ID of Managed Identity that is used to access the key vault.
 	MsiResourceID *string `json:"msiResourceId,omitempty"`
+	// EncryptionAtHost - Indicates whether or not resource disk encryption is enabled.
+	EncryptionAtHost *bool `json:"encryptionAtHost,omitempty"`
 }
 
 // EncryptionInTransitProperties the encryption-in-transit properties.

@@ -2,6 +2,7 @@ package azblob
 
 import (
 	"context"
+	"errors"
 	"net/url"
 	"strings"
 	"time"
@@ -118,7 +119,26 @@ func NewKeyInfo(Start, Expiry time.Time) KeyInfo {
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
 func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) (ListContainersSegmentResponsePager, error) {
-	return s.client.ServiceOperations().ListContainersSegment(o.pointers())
+	pager, err := s.client.ServiceOperations().ListContainersSegment(o.pointers())
+
+	// override the generated advancer, which is incorrect
+	if err == nil {
+		p := pager.(*listContainersSegmentResponsePager) // cast to the internal type first
+
+		p.advancer = func(response *ListContainersSegmentResponseResponse) (*azcore.Request, error) {
+			if response.EnumerationResults.NextMarker == nil {
+				return nil, errors.New("unexpected missing NextMarker")
+			}
+
+			queryValues, _ := url.ParseQuery(p.request.URL.RawQuery)
+			queryValues.Set("marker", *response.EnumerationResults.NextMarker)
+
+			p.request.URL.RawQuery = queryValues.Encode()
+			return p.request, nil
+		}
+	}
+
+	return pager, err
 }
 
 func (s ServiceClient) GetProperties(ctx context.Context) (*StorageServicePropertiesResponse, error) {

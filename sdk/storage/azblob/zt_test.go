@@ -329,7 +329,6 @@ func getBlobStorageBSU() (ServiceClient, error) {
 	return getGenericBSU("BLOB_STORAGE_")
 }
 
-//
 //func validateStorageError(c *chk.C, err error, code ServiceCodeType) {
 //	serr, _ := err.(StorageError)
 //	c.Assert(serr.ServiceCode(), chk.Equals, code)

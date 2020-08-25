@@ -1,5 +1,6 @@
 package azblob
 
+// TODO enabled these tests once the dependent APIs are all implemented
 //
 //import (
 //	"bytes"

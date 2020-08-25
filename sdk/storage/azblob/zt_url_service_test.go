@@ -3,6 +3,7 @@ package azblob
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
@@ -88,71 +89,71 @@ func (s *aztestsSuite) TestListContainersBasic(c *chk.C) {
 	c.Assert(pager.Err(), chk.IsNil)
 }
 
-// TODO re-enable after generator fix
-//func (s *aztestsSuite) TestListContainersPaged(c *chk.C) {
-//	sa := getBSU()
-//
-//	const numContainers = 4
-//	maxResults := int32(2)
-//	const pagedContainersPrefix = "azcontainermax"
-//
-//	containers := make([]ContainerClient, numContainers)
-//	for i := 0; i < numContainers; i++ {
-//		containers[i], _ = createNewContainerWithSuffix(c, sa, pagedContainersPrefix)
-//	}
-//
-//	defer func() {
-//		for i := range containers {
-//			deleteContainer(c, containers[i])
-//		}
-//	}()
-//
-//	// list for a first time
-//	prefix := containerPrefix + pagedContainersPrefix
-//	listOptions := ListContainersSegmentOptions{MaxResults: &maxResults, Prefix: &prefix}
-//	pager, err := sa.ListContainersSegment(&listOptions)
-//	c.Assert(err, chk.IsNil)
-//	count := 0
-//	var marker *string = nil
-//
-//	for pager.NextPage(context.Background()) {
-//		page := pager.PageResponse()
-//		c.Assert(page.RawResponse.StatusCode, chk.Equals, 200)
-//		c.Assert(page.RequestId, chk.Not(chk.Equals), "")
-//		c.Assert(page.Version, chk.Not(chk.Equals), "")
-//		c.Assert(len(*page.EnumerationResults.ContainerItems) == int(maxResults), chk.Equals, true)
-//		c.Assert(page.EnumerationResults.ServiceEndpoint, chk.NotNil)
-//		c.Assert(page.EnumerationResults.Marker, chk.IsNil)
-//
-//		// record the marker for the next list
-//		marker = page.EnumerationResults.NextMarker
-//		count += 1
-//	}
-//
-//	c.Assert(count, chk.Equals, 1)
-//	c.Assert(pager.Err(), chk.IsNil)
-//
-//	// list again with marker
-//	listOptions = ListContainersSegmentOptions{MaxResults: &maxResults, Prefix: &prefix, Marker: marker}
-//	pager, err = sa.ListContainersSegment(&listOptions)
-//	c.Assert(err, chk.IsNil)
-//	count = 0
-//
-//	for pager.NextPage(context.Background()) {
-//		page := pager.PageResponse()
-//		c.Assert(page.RawResponse.StatusCode, chk.Equals, 200)
-//		c.Assert(page.RequestId, chk.Not(chk.Equals), "")
-//		c.Assert(page.Version, chk.Not(chk.Equals), "")
-//		c.Assert(len(*page.EnumerationResults.ContainerItems) == int(maxResults), chk.Equals, true)
-//		c.Assert(page.EnumerationResults.ServiceEndpoint, chk.NotNil)
-//		c.Assert(page.EnumerationResults.Marker, chk.DeepEquals, marker)
-//		c.Assert(*page.EnumerationResults.NextMarker, chk.Equals, "")
-//		count += 1
-//	}
-//
-//	c.Assert(count, chk.Equals, 1)
-//	c.Assert(pager.Err(), chk.IsNil)
-//}
+func (s *aztestsSuite) TestListContainersPaged(c *chk.C) {
+	sa := getBSU()
+
+	const numContainers = 6
+	maxResults := int32(2)
+	const pagedContainersPrefix = "azcontainerpaged"
+
+	containers := make([]ContainerClient, numContainers)
+	expectedResults := make(map[string]bool)
+	for i := 0; i < numContainers; i++ {
+		containerClient, containerName := createNewContainerWithSuffix(c, sa, pagedContainersPrefix)
+		containers[i] = containerClient
+		expectedResults[containerName] = false
+	}
+
+	defer func() {
+		for i := range containers {
+			deleteContainer(c, containers[i])
+		}
+	}()
+
+	// list for a first time
+	prefix := containerPrefix + pagedContainersPrefix
+	listOptions := ListContainersSegmentOptions{MaxResults: &maxResults, Prefix: &prefix}
+	pager, err := sa.ListContainersSegment(&listOptions)
+	c.Assert(err, chk.IsNil)
+	count := 0
+	results := make([]ContainerItem, 0)
+
+	for pager.NextPage(context.Background()) {
+		page := pager.PageResponse()
+		c.Assert(page.RawResponse.StatusCode, chk.Equals, 200)
+		c.Assert(page.RequestId, chk.Not(chk.Equals), "")
+		c.Assert(page.Version, chk.Not(chk.Equals), "")
+		c.Assert(len(*page.EnumerationResults.ContainerItems) <= int(maxResults), chk.Equals, true)
+		c.Assert(page.EnumerationResults.ServiceEndpoint, chk.NotNil)
+
+		if count == 0 {
+			c.Assert(page.EnumerationResults.Marker, chk.IsNil)
+		} else {
+			c.Assert(page.EnumerationResults.Marker, chk.NotNil)
+		}
+
+		// record the results
+		results = append(results, *page.EnumerationResults.ContainerItems...)
+		count += 1
+	}
+
+	c.Assert(count, chk.Equals, 3)
+	c.Assert(len(results), chk.Equals, numContainers)
+	c.Assert(pager.Err(), chk.IsNil)
+
+	// make sure each container we see is expected
+	for _, container := range results {
+		_, ok := expectedResults[*container.Name]
+		c.Assert(ok, chk.Equals, true)
+
+		expectedResults[*container.Name] = true
+	}
+
+	// make sure every expected container was seen
+	for _, seen := range expectedResults {
+		c.Assert(seen, chk.Equals, true)
+	}
+}
 
 func (s *aztestsSuite) TestAccountListContainersEmptyPrefix(c *chk.C) {
 	bsu := getBSU()
@@ -218,114 +219,118 @@ func (s *aztestsSuite) TestAccountListContainersMaxResultsExact(c *chk.C) {
 	c.Assert(*(*page.EnumerationResults.ContainerItems)[1].Name, chk.DeepEquals, containerName2)
 }
 
-//func (s *aztestsSuite) TestAccountDeleteRetentionPolicy(c *chk.C) {
-//	bsu := getBSU()
-//
-//	days := int32(5)
-//	enabled := true
-//	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
-//	c.Assert(err, chk.IsNil)
-//
-//	// From FE, 30 seconds is guaranteed t be enough.
-//	time.Sleep(time.Second * 30)
-//
-//	resp, err := bsu.GetProperties(ctx)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, chk.DeepEquals, true)
-//	c.Assert(resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.DeepEquals, int32(5))
-//
-//	disabled := false
-//	_, err = bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &disabled}})
-//	c.Assert(err, chk.IsNil)
-//
-//	// From FE, 30 seconds is guaranteed t be enough.
-//	time.Sleep(time.Second * 30)
-//
-//	resp, err = bsu.GetProperties(ctx)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, chk.DeepEquals, false)
-//	c.Assert(resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.IsNil)
-//}
+func (s *aztestsSuite) TestAccountDeleteRetentionPolicy(c *chk.C) {
+	bsu := getBSU()
 
-//func (s *aztestsSuite) TestAccountDeleteRetentionPolicyEmpty(c *chk.C) {
-//	bsu := getBSU()
-//
-//	days := int32(5)
-//	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: true, Days: &days}})
-//	c.Assert(err, chk.IsNil)
-//
-//	// From FE, 30 seconds is guaranteed t be enough.
-//	time.Sleep(time.Second * 30)
-//
-//	resp, err := bsu.GetProperties(ctx)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.DeleteRetentionPolicy.Enabled, chk.Equals, true)
-//	c.Assert(*resp.DeleteRetentionPolicy.Days, chk.Equals, int32(5))
-//
-//	// Enabled should default to false and therefore disable the policy
-//	_, err = bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{}})
-//	c.Assert(err, chk.IsNil)
-//
-//	// From FE, 30 seconds is guaranteed t be enough.
-//	time.Sleep(time.Second * 30)
-//
-//	resp, err = bsu.GetProperties(ctx)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.DeleteRetentionPolicy.Enabled, chk.Equals, false)
-//	c.Assert(resp.DeleteRetentionPolicy.Days, chk.IsNil)
-//}
-//
-//func (s *aztestsSuite) TestAccountDeleteRetentionPolicyNil(c *chk.C) {
-//	bsu := getBSU()
-//
-//	days := int32(5)
-//	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: true, Days: &days}})
-//	c.Assert(err, chk.IsNil)
-//
-//	// From FE, 30 seconds is guaranteed t be enough.
-//	time.Sleep(time.Second * 30)
-//
-//	resp, err := bsu.GetProperties(ctx)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.DeleteRetentionPolicy.Enabled, chk.Equals, true)
-//	c.Assert(*resp.DeleteRetentionPolicy.Days, chk.Equals, int32(5))
-//
-//	_, err = bsu.SetProperties(ctx, StorageServiceProperties{})
-//	c.Assert(err, chk.IsNil)
-//
-//	// From FE, 30 seconds is guaranteed t be enough.
-//	time.Sleep(time.Second * 30)
-//
-//	// If an element of service properties is not passed, the service keeps the current settings.
-//	resp, err = bsu.GetProperties(ctx)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.DeleteRetentionPolicy.Enabled, chk.Equals, true)
-//	c.Assert(*resp.DeleteRetentionPolicy.Days, chk.Equals, int32(5))
-//
-//	// Disable for other tests
-//	bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: false}})
-//}
-//
-//func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysTooSmall(c *chk.C) {
-//	bsu := getBSU()
-//
-//	days := int32(0) // Minimum days is 1. Validated on the client.
-//	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: true, Days: &days}})
-//	c.Assert(strings.Contains(err.Error(), validationErrorSubstring), chk.Equals, true)
-//}
-//
-//func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge(c *chk.C) {
-//	bsu := getBSU()
-//
-//	days := int32(366) // Max days is 365. Left to the service for validation.
-//	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: true, Days: &days}})
-//	validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
-//}
-//
-//func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(c *chk.C) {
-//	bsu := getBSU()
-//
-//	// Days is required if enabled is true.
-//	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: true}})
-//	validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
-//}
+	days := int32(5)
+	enabled := true
+	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
+	c.Assert(err, chk.IsNil)
+
+	// From FE, 30 seconds is guaranteed to be enough.
+	time.Sleep(time.Second * 30)
+
+	resp, err := bsu.GetProperties(ctx)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, chk.DeepEquals, true)
+	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.DeepEquals, int32(5))
+
+	disabled := false
+	_, err = bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &disabled}})
+	c.Assert(err, chk.IsNil)
+
+	// From FE, 30 seconds is guaranteed to be enough.
+	time.Sleep(time.Second * 30)
+
+	resp, err = bsu.GetProperties(ctx)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, chk.DeepEquals, false)
+	c.Assert(resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.IsNil)
+}
+
+func (s *aztestsSuite) TestAccountDeleteRetentionPolicyEmpty(c *chk.C) {
+	bsu := getBSU()
+
+	days := int32(5)
+	enabled := true
+	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
+	c.Assert(err, chk.IsNil)
+
+	// From FE, 30 seconds is guaranteed to be enough.
+	time.Sleep(time.Second * 30)
+
+	resp, err := bsu.GetProperties(ctx)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, chk.DeepEquals, true)
+	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.DeepEquals, int32(5))
+
+	// Empty retention policy causes an error, this is different from track 1.5
+	_, err = bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{}})
+	c.Assert(err, chk.NotNil)
+}
+
+func (s *aztestsSuite) TestAccountDeleteRetentionPolicyNil(c *chk.C) {
+	bsu := getBSU()
+
+	days := int32(5)
+	enabled := true
+	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
+	c.Assert(err, chk.IsNil)
+
+	// From FE, 30 seconds is guaranteed to be enough.
+	time.Sleep(time.Second * 30)
+
+	resp, err := bsu.GetProperties(ctx)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, chk.DeepEquals, true)
+	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.DeepEquals, int32(5))
+
+	_, err = bsu.SetProperties(ctx, StorageServiceProperties{})
+	c.Assert(err, chk.IsNil)
+
+	// From FE, 30 seconds is guaranteed to be enough.
+	time.Sleep(time.Second * 30)
+
+	// If an element of service properties is not passed, the service keeps the current settings.
+	resp, err = bsu.GetProperties(ctx)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, chk.DeepEquals, true)
+	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.DeepEquals, int32(5))
+
+	// Disable for other tests
+	enabled = false
+	bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
+}
+
+func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysTooSmall(c *chk.C) {
+	bsu := getBSU()
+
+	days := int32(0) // Minimum days is 1. Validated on the client.
+	enabled := true
+	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
+	c.Assert(err, chk.NotNil)
+}
+
+func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge(c *chk.C) {
+	bsu := getBSU()
+
+	days := int32(366) // Max days is 365. Left to the service for validation.
+	enabled := true
+	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
+	c.Assert(err, chk.NotNil)
+
+	// TODO the error should have more details, follow up with Joel
+	//validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
+}
+
+func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(c *chk.C) {
+	bsu := getBSU()
+
+	// Days is required if enabled is true.
+	enabled := true
+	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
+	c.Assert(err, chk.NotNil)
+
+	// TODO the error should have more details, follow up with Joel
+	//validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
+}

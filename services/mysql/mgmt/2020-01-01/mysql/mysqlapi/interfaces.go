@@ -40,6 +40,7 @@ type ServersClientAPI interface {
 	Start(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServersStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ServersStopFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, serverName string, parameters mysql.ServerUpdateParameters) (result mysql.ServersUpdateFuture, err error)
+	Upgrade(ctx context.Context, resourceGroupName string, serverName string, parameters mysql.ServerUpgradeParameters) (result mysql.ServersUpgradeFuture, err error)
 }
 
 var _ ServersClientAPI = (*mysql.ServersClient)(nil)

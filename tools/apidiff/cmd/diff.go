@@ -22,10 +22,10 @@ import (
 )
 
 var diffCmd = &cobra.Command{
-	Use: "diff <base export filepath> <target export filepath>",
+	Use:   "diff <base export filepath> <target export filepath>",
 	Short: "Generate a diff report between the two export report files",
-	Long: `The diff command consumes two JSON files with the export reports, and generates a diff report between them.`,
-	Args: cobra.ExactArgs(2),
+	Long:  `The diff command consumes two JSON files with the export reports, and generates a diff report between them.`,
+	Args:  cobra.ExactArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return diffCommand(args[0], args[1])
 	},

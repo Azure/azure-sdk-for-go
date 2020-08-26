@@ -164,7 +164,7 @@ func convertFullPackagePathToPackageNameAndAPIVersion(packageName string) (strin
 	if len(segments) < 2 {
 		return "", "", fmt.Errorf("expecting package name '%s' to have at least two segments", packageName)
 	}
-	return segments[len(segments) - 1], segments[len(segments) - 2], nil
+	return segments[len(segments)-1], segments[len(segments)-2], nil
 }
 
 func createPackageTable(pkgs []string) (*report.MarkdownTable, error) {
@@ -197,7 +197,7 @@ func categorizePackageAPIVersions(pkgs []string) ([]tableRow, error) {
 	for pkgName, apiVers := range entries {
 		sort.Strings(apiVers)
 		rows = append(rows, tableRow{
-			pkgName: pkgName,
+			pkgName:     pkgName,
 			apiVersions: apiVers,
 		})
 	}

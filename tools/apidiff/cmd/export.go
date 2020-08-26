@@ -22,7 +22,7 @@ import (
 )
 
 var exportCmd = &cobra.Command{
-	Use: "export <package searching dir>",
+	Use:   "export <package searching dir>",
 	Short: "Generates a report of all the export content for every package under the specified directory.",
 	Long: `The export command generates a report of all the export content for all of the packages under the directory 
 specified in <package searching dir>.

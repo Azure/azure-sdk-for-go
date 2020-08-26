@@ -18,6 +18,7 @@ import (
 	"strings"
 )
 
+// MarkdownWriter is a writer to write contents in markdown format
 type MarkdownWriter struct {
 	sb strings.Builder
 	nl bool
@@ -30,6 +31,7 @@ func (md *MarkdownWriter) checkNL() {
 	}
 }
 
+// WriteHeader writes a header to the markdown document
 func (md *MarkdownWriter) WriteHeader(h string) {
 	md.checkNL()
 	md.sb.WriteString("## ")
@@ -37,6 +39,7 @@ func (md *MarkdownWriter) WriteHeader(h string) {
 	md.sb.WriteString("\n\n")
 }
 
+// WriteSubheader writes a sub-header to the markdown document
 func (md *MarkdownWriter) WriteSubheader(sh string) {
 	md.checkNL()
 	md.sb.WriteString("### ")
@@ -44,51 +47,59 @@ func (md *MarkdownWriter) WriteSubheader(sh string) {
 	md.sb.WriteString("\n\n")
 }
 
+// WriteLine writes a line to the markdown document
 func (md *MarkdownWriter) WriteLine(s string) {
 	md.nl = true
 	md.sb.WriteString(s)
 	md.sb.WriteString("\n")
 }
 
+// WriteTable writes a table to the markdown document
 func (md *MarkdownWriter) WriteTable(table MarkdownTable) {
 	md.WriteLine(table.String())
 }
 
+// EmptyLine inserts an empty line to the markdown document
 func (md *MarkdownWriter) EmptyLine() {
 	md.WriteLine("")
 }
 
+// String outputs the markdown document as a string
 func (md *MarkdownWriter) String() string {
 	return md.sb.String()
 }
 
+// MarkdownTable describes a table in a markdown document
 type MarkdownTable struct {
-	sb *strings.Builder
-	headers []string
+	sb        *strings.Builder
+	headers   []string
 	alignment string
-	rows []markdownTableRow
+	rows      []markdownTableRow
 }
 
 const (
-	leftAlignment = ":---"
+	leftAlignment   = ":---"
 	centerAlignment = ":---:"
-	rightAlignment = "---:"
+	rightAlignment  = "---:"
 )
 
+// NewMarkdownTable creates a new table with given alignments and headers
 func NewMarkdownTable(alignment string, headers ...string) *MarkdownTable {
 	alignment, headers = checkAlignmentAndHeaders(alignment, headers)
 	t := MarkdownTable{
-		sb: &strings.Builder{},
-		headers: headers,
+		sb:        &strings.Builder{},
+		headers:   headers,
 		alignment: alignment,
 	}
 	return &t
 }
 
+// Columns returns the number of columns in this table
 func (t *MarkdownTable) Columns() int {
 	return len(t.headers)
 }
 
+// AddRow adds a new row to the table
 func (t *MarkdownTable) AddRow(items ...string) {
 	t.rows = append(t.rows, markdownTableRow{
 		items: items,
@@ -102,9 +113,8 @@ func checkAlignmentAndHeaders(alignment string, headers []string) (string, []str
 	if len(alignment) > len(headers) {
 		return alignment[:len(headers)], headers
 	}
-	// len(alignment) < len(headers)
 	// default alignment is l
-	return alignment + strings.Repeat("l", len(headers) - len(alignment)), headers
+	return alignment + strings.Repeat("l", len(headers)-len(alignment)), headers
 }
 
 type markdownTableRow struct {
@@ -114,7 +124,7 @@ type markdownTableRow struct {
 func (r *markdownTableRow) ensureItems(count int) []string {
 	if len(r.items) < count {
 		var items []string
-		for i := 0; i < count - len(r.items); i++ {
+		for i := 0; i < count-len(r.items); i++ {
 			items = append(r.items, "")
 		}
 		return items
@@ -167,6 +177,7 @@ func (t *MarkdownTable) writeRow(row markdownTableRow) {
 	t.sb.WriteString(" |\n")
 }
 
+// String outputs the markdown table to a string
 func (t *MarkdownTable) String() string {
 	t.writeHeader()
 	t.writeAlignment()

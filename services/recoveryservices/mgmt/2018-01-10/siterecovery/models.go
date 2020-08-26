@@ -21242,6 +21242,8 @@ type VMwareCbtEnableMigrationInput struct {
 	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
 	// TargetAvailabilitySetID - The target availability set ARM Id.
 	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	// TargetAvailabilityZone - The target availability zone.
+	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
 	// TargetBootDiagnosticsStorageAccountID - The target boot diagnostics storage account ARM Id.
 	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
 	// PerformAutoResync - A value indicating whether auto resync is to be done.
@@ -21286,6 +21288,9 @@ func (vmcemi VMwareCbtEnableMigrationInput) MarshalJSON() ([]byte, error) {
 	}
 	if vmcemi.TargetAvailabilitySetID != nil {
 		objectMap["targetAvailabilitySetId"] = vmcemi.TargetAvailabilitySetID
+	}
+	if vmcemi.TargetAvailabilityZone != nil {
+		objectMap["targetAvailabilityZone"] = vmcemi.TargetAvailabilityZone
 	}
 	if vmcemi.TargetBootDiagnosticsStorageAccountID != nil {
 		objectMap["targetBootDiagnosticsStorageAccountId"] = vmcemi.TargetBootDiagnosticsStorageAccountID
@@ -21419,6 +21424,10 @@ type VMwareCbtMigrationDetails struct {
 	VmwareMachineID *string `json:"vmwareMachineId,omitempty"`
 	// OsType - READ-ONLY; The type of the OS on the VM.
 	OsType *string `json:"osType,omitempty"`
+	// FirmwareType - READ-ONLY; The firmware type.
+	FirmwareType *string `json:"firmwareType,omitempty"`
+	// TargetGeneration - READ-ONLY; The target generation.
+	TargetGeneration *string `json:"targetGeneration,omitempty"`
 	// LicenseType - License Type of the VM to be used.
 	LicenseType *string `json:"licenseType,omitempty"`
 	// DataMoverRunAsAccountID - READ-ONLY; The data mover RunAs account Id.
@@ -21435,6 +21444,8 @@ type VMwareCbtMigrationDetails struct {
 	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
 	// TargetAvailabilitySetID - The target availability set Id.
 	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	// TargetAvailabilityZone - The target availability zone.
+	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
 	// TargetBootDiagnosticsStorageAccountID - The target boot diagnostics storage account ARM Id.
 	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
 	// ProtectedDisks - The list of protected disks.
@@ -21483,6 +21494,9 @@ func (vmcmd VMwareCbtMigrationDetails) MarshalJSON() ([]byte, error) {
 	}
 	if vmcmd.TargetAvailabilitySetID != nil {
 		objectMap["targetAvailabilitySetId"] = vmcmd.TargetAvailabilitySetID
+	}
+	if vmcmd.TargetAvailabilityZone != nil {
+		objectMap["targetAvailabilityZone"] = vmcmd.TargetAvailabilityZone
 	}
 	if vmcmd.TargetBootDiagnosticsStorageAccountID != nil {
 		objectMap["targetBootDiagnosticsStorageAccountId"] = vmcmd.TargetBootDiagnosticsStorageAccountID
@@ -21914,6 +21928,8 @@ type VMwareCbtUpdateMigrationItemInput struct {
 	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
 	// TargetAvailabilitySetID - The target availability set ARM Id.
 	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	// TargetAvailabilityZone - The target availability zone.
+	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
 	// TargetBootDiagnosticsStorageAccountID - The target boot diagnostics storage account ARM Id.
 	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
 	// TargetNetworkID - The target network ARM Id.
@@ -21943,6 +21959,9 @@ func (vmcumii VMwareCbtUpdateMigrationItemInput) MarshalJSON() ([]byte, error) {
 	}
 	if vmcumii.TargetAvailabilitySetID != nil {
 		objectMap["targetAvailabilitySetId"] = vmcumii.TargetAvailabilitySetID
+	}
+	if vmcumii.TargetAvailabilityZone != nil {
+		objectMap["targetAvailabilityZone"] = vmcumii.TargetAvailabilityZone
 	}
 	if vmcumii.TargetBootDiagnosticsStorageAccountID != nil {
 		objectMap["targetBootDiagnosticsStorageAccountId"] = vmcumii.TargetBootDiagnosticsStorageAccountID

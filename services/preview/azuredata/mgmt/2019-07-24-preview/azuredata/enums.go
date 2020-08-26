@@ -51,23 +51,6 @@ func PossibleOperationOriginValues() []OperationOrigin {
 	return []OperationOrigin{OperationOriginSystem, OperationOriginUser}
 }
 
-// RequestType enumerates the values for request type.
-type RequestType string
-
-const (
-	// Handshake ...
-	Handshake RequestType = "Handshake"
-	// Unknown ...
-	Unknown RequestType = "Unknown"
-	// UsageUpload ...
-	UsageUpload RequestType = "UsageUpload"
-)
-
-// PossibleRequestTypeValues returns an array of possible values for the RequestType const type.
-func PossibleRequestTypeValues() []RequestType {
-	return []RequestType{Handshake, Unknown, UsageUpload}
-}
-
 // ResourceIdentityType enumerates the values for resource identity type.
 type ResourceIdentityType string
 
@@ -98,23 +81,4 @@ const (
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
 func PossibleSkuTierValues() []SkuTier {
 	return []SkuTier{Basic, Free, Premium, Standard}
-}
-
-// UsageUploadStatus enumerates the values for usage upload status.
-type UsageUploadStatus string
-
-const (
-	// UsageUploadStatusCompleted ...
-	UsageUploadStatusCompleted UsageUploadStatus = "Completed"
-	// UsageUploadStatusFailed ...
-	UsageUploadStatusFailed UsageUploadStatus = "Failed"
-	// UsageUploadStatusPartialSuccess ...
-	UsageUploadStatusPartialSuccess UsageUploadStatus = "PartialSuccess"
-	// UsageUploadStatusUnknown ...
-	UsageUploadStatusUnknown UsageUploadStatus = "Unknown"
-)
-
-// PossibleUsageUploadStatusValues returns an array of possible values for the UsageUploadStatus const type.
-func PossibleUsageUploadStatusValues() []UsageUploadStatus {
-	return []UsageUploadStatus{UsageUploadStatusCompleted, UsageUploadStatusFailed, UsageUploadStatusPartialSuccess, UsageUploadStatusUnknown}
 }

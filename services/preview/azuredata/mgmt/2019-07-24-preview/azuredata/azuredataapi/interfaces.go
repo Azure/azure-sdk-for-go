@@ -106,7 +106,7 @@ type DataControllersClientAPI interface {
 	ListInGroupComplete(ctx context.Context, resourceGroupName string) (result azuredata.PageOfDataControllerResourceIterator, err error)
 	ListInSubscription(ctx context.Context) (result azuredata.PageOfDataControllerResourcePage, err error)
 	ListInSubscriptionComplete(ctx context.Context) (result azuredata.PageOfDataControllerResourceIterator, err error)
-	PatchDataController(ctx context.Context, resourceGroupName string, dataControllerName string) (result azuredata.DataControllerResource, err error)
+	PatchDataController(ctx context.Context, resourceGroupName string, dataControllerName string, dataControllerResource azuredata.DataControllerUpdate) (result azuredata.DataControllerResource, err error)
 	PutDataController(ctx context.Context, resourceGroupName string, dataControllerResource azuredata.DataControllerResource, dataControllerName string) (result azuredata.DataControllerResource, err error)
 }
 

@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -417,7 +418,8 @@ func (client DataControllersClient) ListInSubscriptionComplete(ctx context.Conte
 // PatchDataController updates a dataController resource
 // Parameters:
 // resourceGroupName - the name of the Azure resource group
-func (client DataControllersClient) PatchDataController(ctx context.Context, resourceGroupName string, dataControllerName string) (result DataControllerResource, err error) {
+// dataControllerResource - the update data controller resource
+func (client DataControllersClient) PatchDataController(ctx context.Context, resourceGroupName string, dataControllerName string, dataControllerResource DataControllerUpdate) (result DataControllerResource, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataControllersClient.PatchDataController")
 		defer func() {
@@ -428,7 +430,7 @@ func (client DataControllersClient) PatchDataController(ctx context.Context, res
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.PatchDataControllerPreparer(ctx, resourceGroupName, dataControllerName)
+	req, err := client.PatchDataControllerPreparer(ctx, resourceGroupName, dataControllerName, dataControllerResource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.DataControllersClient", "PatchDataController", nil, "Failure preparing request")
 		return
@@ -450,7 +452,7 @@ func (client DataControllersClient) PatchDataController(ctx context.Context, res
 }
 
 // PatchDataControllerPreparer prepares the PatchDataController request.
-func (client DataControllersClient) PatchDataControllerPreparer(ctx context.Context, resourceGroupName string, dataControllerName string) (*http.Request, error) {
+func (client DataControllersClient) PatchDataControllerPreparer(ctx context.Context, resourceGroupName string, dataControllerName string, dataControllerResource DataControllerUpdate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"dataControllerName": autorest.Encode("path", dataControllerName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
@@ -463,9 +465,11 @@ func (client DataControllersClient) PatchDataControllerPreparer(ctx context.Cont
 	}
 
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureData/dataControllers/{dataControllerName}", pathParameters),
+		autorest.WithJSON(dataControllerResource),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -503,6 +507,17 @@ func (client DataControllersClient) PutDataController(ctx context.Context, resou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: dataControllerResource,
+			Constraints: []validation.Constraint{{Target: "dataControllerResource.DataControllerProperties", Name: validation.Null, Rule: true,
+				Chain: []validation.Constraint{{Target: "dataControllerResource.DataControllerProperties.OnPremiseProperty", Name: validation.Null, Rule: true,
+					Chain: []validation.Constraint{{Target: "dataControllerResource.DataControllerProperties.OnPremiseProperty.ID", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "dataControllerResource.DataControllerProperties.OnPremiseProperty.PublicSigningKey", Name: validation.Null, Rule: true, Chain: nil},
+					}},
+				}}}}}); err != nil {
+		return result, validation.NewError("azuredata.DataControllersClient", "PutDataController", err.Error())
+	}
+
 	req, err := client.PutDataControllerPreparer(ctx, resourceGroupName, dataControllerResource, dataControllerName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azuredata.DataControllersClient", "PutDataController", nil, "Failure preparing request")

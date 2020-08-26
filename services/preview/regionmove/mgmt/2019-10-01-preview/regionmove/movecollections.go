@@ -133,7 +133,7 @@ func (client MoveCollectionsClient) CommitResponder(resp *http.Response) (result
 	return
 }
 
-// Create creates a move collection.
+// Create creates or updates a move collection.
 // Parameters:
 // resourceGroupName - the Resource Group Name.
 // moveCollectionName - the Move Collection Name.

@@ -75,7 +75,6 @@ func (c ContainerClient) NewBlobURL(blobName string) BlobClient {
 // NewBlockBlobClient method.
 func (c ContainerClient) NewBlockBlobClient(blobName string) BlockBlobClient {
 	blobURL := appendToURLPath(*c.client.u, blobName)
-	blobURL.RawQuery = "" // TODO remove as we should not have to do this
 	blockBlobClient, _ := newClientWithPipeline(blobURL.String(), c.client.p)
 	return BlockBlobClient{
 		BlobClient: BlobClient{

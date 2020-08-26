@@ -37,12 +37,15 @@ func NewBlockBlobClient(blobURL string, cred azcore.Credential, options *clientO
 // WithPipeline creates a new BlockBlobClient object identical to the source but with the specific request policy pipeline.
 func (bb BlockBlobClient) WithPipeline(pipeline azcore.Pipeline) (BlockBlobClient, error) {
 	client, err := newClientWithPipeline(bb.client.u.String(), pipeline)
+	blobClient := BlobClient{
+		client: client,
+	}
 
 	if err != nil {
 		return BlockBlobClient{}, err
 	}
 
-	return BlockBlobClient{client: client}, err
+	return BlockBlobClient{client: client, BlobClient: blobClient}, err
 }
 
 //// WithSnapshot creates a new BlockBlobClient object identical to the source but with the specified snapshot timestamp.

@@ -13,11 +13,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/shared"
 
 	chk "gopkg.in/check.v1"
-
-	"github.com/Azure/azure-pipeline-go/pipeline"
 )
 
 // For testing docs, see: https://labix.org/gocheck
@@ -59,12 +59,16 @@ var ctx = context.Background()
 //
 //var basicMetadata = Metadata{"foo": "bar"}
 
-type testPipeline struct{}
+const testPipelineMessage string = "test factory invoked"
 
-const testPipelineMessage string = "Test factory invoked"
+func newTestPipeline() azcore.Pipeline {
+	return azcore.NewPipeline(nil, newTestPolicy())
+}
 
-func (tm testPipeline) Do(ctx context.Context, methodFactory pipeline.Factory, request pipeline.Request) (pipeline.Response, error) {
-	return nil, errors.New(testPipelineMessage)
+func newTestPolicy() azcore.Policy {
+	return azcore.PolicyFunc(func(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
+		return nil, errors.New(testPipelineMessage)
+	})
 }
 
 // This function generates an entity name by concatenating the passed prefix,
@@ -108,13 +112,13 @@ func getContainerClient(c *chk.C, s ServiceClient) (container ContainerClient, n
 	return container, name
 }
 
-//func getBlockBlobURL(c *chk.C, container ContainerClient) (blob BlockBlobClient, name string) {
-//	name = generateBlobName()
-//	blob = container.NewBlockBlobClient(name)
-//
-//	return blob, name
-//}
-//
+func getBlockBlobClient(c *chk.C, container ContainerClient) (blob BlockBlobClient, name string) {
+	name = generateBlobName()
+	blob = container.NewBlockBlobClient(name)
+
+	return blob, name
+}
+
 //func getAppendBlobURL(c *chk.C, container ContainerClient) (blob AppendBlobURL, name string) {
 //	name = generateBlobName()
 //	blob = container.NewAppendBlobURL(name)
@@ -168,18 +172,17 @@ func createNewContainerWithSuffix(c *chk.C, bsu ServiceClient, suffix string) (c
 	return container, name
 }
 
-//func createNewBlockBlob(c *chk.C, container ContainerClient) (blob BlockBlobClient, name string) {
-//	blob, name = getBlockBlobURL(c, container)
-//
-//	cResp, err := blob.Upload(ctx, strings.NewReader(blockBlobDefaultData), BlobHTTPHeaders{},
-//		nil, BlobAccessConditions{})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(cResp.StatusCode(), chk.Equals, 201)
-//
-//	return
-//}
-//
+func createNewBlockBlob(c *chk.C, container ContainerClient) (blob BlockBlobClient, name string) {
+	blob, name = getBlockBlobClient(c, container)
+
+	cResp, err := blob.Upload(ctx, azcore.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+
+	c.Assert(err, chk.IsNil)
+	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
+
+	return
+}
+
 //func createNewAppendBlob(c *chk.C, container ContainerClient) (blob AppendBlobURL, name string) {
 //	blob, name = getAppendBlobURL(c, container)
 //

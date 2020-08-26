@@ -679,6 +679,13 @@ func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// PrivateEndpointConnectionListResult a list of private endpoint connections
+type PrivateEndpointConnectionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of private endpoint connections
+	Value *[]PrivateEndpointConnection `json:"value,omitempty"`
+}
+
 // PrivateEndpointConnectionProperties properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// PrivateEndpoint - The resource of private end point.

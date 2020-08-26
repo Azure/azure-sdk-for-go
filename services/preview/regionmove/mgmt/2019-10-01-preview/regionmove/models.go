@@ -1038,7 +1038,8 @@ type MoveResourceProperties struct {
 	DependsOn *[]MoveResourceDependency `json:"dependsOn,omitempty"`
 	// DependsOnOverrides - Gets or sets the move resource dependencies overrides.
 	DependsOnOverrides *[]MoveResourceDependencyOverride `json:"dependsOnOverrides,omitempty"`
-	Errors             *MoveResourceError                `json:"errors,omitempty"`
+	// Errors - READ-ONLY; Defines the move resource errors.
+	Errors *MoveResourcePropertiesErrors `json:"errors,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MoveResourceProperties.
@@ -1056,9 +1057,6 @@ func (mrp MoveResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap["resourceSettings"] = mrp.ResourceSettings
 	if mrp.DependsOnOverrides != nil {
 		objectMap["dependsOnOverrides"] = mrp.DependsOnOverrides
-	}
-	if mrp.Errors != nil {
-		objectMap["errors"] = mrp.Errors
 	}
 	return json.Marshal(objectMap)
 }
@@ -1154,7 +1152,7 @@ func (mrp *MoveResourceProperties) UnmarshalJSON(body []byte) error {
 			}
 		case "errors":
 			if v != nil {
-				var errorsVar MoveResourceError
+				var errorsVar MoveResourcePropertiesErrors
 				err = json.Unmarshal(*v, &errorsVar)
 				if err != nil {
 					return err
@@ -1165,6 +1163,12 @@ func (mrp *MoveResourceProperties) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// MoveResourcePropertiesErrors defines the move resource errors.
+type MoveResourcePropertiesErrors struct {
+	// Properties - The move resource error body.
+	Properties *MoveResourceErrorBody `json:"properties,omitempty"`
 }
 
 // MoveResourcePropertiesMoveStatus defines the move resource status.

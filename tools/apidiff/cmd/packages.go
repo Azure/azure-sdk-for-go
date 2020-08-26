@@ -359,7 +359,7 @@ func (r *pkgsReport) writeModifiedPackages(md *report.MarkdownWriter) {
 	}
 	md.WriteHeader("Modified Packages")
 	// write list
-	for n, _ := range r.ModifiedPackages {
+	for n := range r.ModifiedPackages {
 		md.WriteLine(fmt.Sprintf("- `%s`", n))
 	}
 	// write details

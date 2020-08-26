@@ -24,9 +24,9 @@ import (
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
-	ChangePointDetect(ctx context.Context, body anomalydetector.ChangePointDetectRequest) (result anomalydetector.ChangePointDetectResponse, err error)
-	EntireDetect(ctx context.Context, body anomalydetector.Request) (result anomalydetector.EntireDetectResponse, err error)
-	LastDetect(ctx context.Context, body anomalydetector.Request) (result anomalydetector.LastDetectResponse, err error)
+	DetectChangePoint(ctx context.Context, body anomalydetector.ChangePointDetectRequest) (result anomalydetector.ChangePointDetectResponse, err error)
+	DetectEntireSeries(ctx context.Context, body anomalydetector.DetectRequest) (result anomalydetector.EntireDetectResponse, err error)
+	DetectLastPoint(ctx context.Context, body anomalydetector.DetectRequest) (result anomalydetector.LastDetectResponse, err error)
 }
 
 var _ BaseClientAPI = (*anomalydetector.BaseClient)(nil)

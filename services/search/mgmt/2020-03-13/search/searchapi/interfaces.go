@@ -81,14 +81,3 @@ type PrivateEndpointConnectionsClientAPI interface {
 }
 
 var _ PrivateEndpointConnectionsClientAPI = (*search.PrivateEndpointConnectionsClient)(nil)
-
-// SharedPrivateLinkResourcesClientAPI contains the set of methods on the SharedPrivateLinkResourcesClient type.
-type SharedPrivateLinkResourcesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, searchServiceName string, sharedPrivateLinkResourceName string, sharedPrivateLinkResource search.SharedPrivateLinkResource, clientRequestID *uuid.UUID) (result search.SharedPrivateLinkResource, err error)
-	Delete(ctx context.Context, resourceGroupName string, searchServiceName string, sharedPrivateLinkResourceName string, clientRequestID *uuid.UUID) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, searchServiceName string, sharedPrivateLinkResourceName string, clientRequestID *uuid.UUID) (result search.SharedPrivateLinkResource, err error)
-	ListByService(ctx context.Context, resourceGroupName string, searchServiceName string, clientRequestID *uuid.UUID) (result search.SharedPrivateLinkResourceListResultPage, err error)
-	ListByServiceComplete(ctx context.Context, resourceGroupName string, searchServiceName string, clientRequestID *uuid.UUID) (result search.SharedPrivateLinkResourceListResultIterator, err error)
-}
-
-var _ SharedPrivateLinkResourcesClientAPI = (*search.SharedPrivateLinkResourcesClient)(nil)

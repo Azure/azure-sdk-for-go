@@ -31,7 +31,9 @@ func NewBlockBlobClient(blobURL string, cred azcore.Credential, options *clientO
 		return BlockBlobClient{}, err
 	}
 
-	return BlockBlobClient{client: client}, err
+	return BlockBlobClient{client: client, BlobClient: BlobClient{
+		client,
+	}}, err
 }
 
 // WithPipeline creates a new BlockBlobClient object identical to the source but with the specific request policy pipeline.

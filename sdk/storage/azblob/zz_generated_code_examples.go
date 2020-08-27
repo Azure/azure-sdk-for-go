@@ -10,8 +10,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/shared"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
@@ -33,7 +31,7 @@ func getCredential() azcore.Credential {
 	accountName := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME")
 	accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
 	if accountName != "" && accountKey != "" {
-		keyCred, err := shared.NewSharedKeyCredential(accountName, accountKey)
+		keyCred, err := NewSharedKeyCredential(accountName, accountKey)
 		if err != nil {
 			panic(err)
 		}

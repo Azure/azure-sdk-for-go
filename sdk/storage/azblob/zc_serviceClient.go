@@ -101,7 +101,8 @@ func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, info Key
 	if err != nil {
 		return UserDelegationCredential{}, err
 	}
-	return NewUserDelegationCredential(strings.Split(s.String(), ".")[0], *udk.UserDelegationKey), nil
+	urlParts := NewBlobURLParts(s.URL())
+	return NewUserDelegationCredential(strings.Split(urlParts.Host, ".")[0], *udk.UserDelegationKey), nil
 }
 
 //NewKeyInfo creates a new KeyInfo struct with the correct time formatting & conversion

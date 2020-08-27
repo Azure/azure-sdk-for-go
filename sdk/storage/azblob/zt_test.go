@@ -14,11 +14,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/shared"
 
 	chk "gopkg.in/check.v1"
 )
@@ -233,80 +233,32 @@ func createNewBlockBlob(c *chk.C, container ContainerClient) (blob BlockBlobClie
 //	c.Assert(resp.StatusCode(), chk.Equals, 202)
 //}
 
-func getGenericCredential(accountType string) (*shared.SharedKeyCredential, error) {
+func getGenericCredential(accountType string) (*SharedKeyCredential, error) {
 	accountNameEnvVar := accountType + "AZURE_STORAGE_ACCOUNT_NAME"
 	accountKeyEnvVar := accountType + "AZURE_STORAGE_ACCOUNT_KEY"
 	accountName, accountKey := os.Getenv(accountNameEnvVar), os.Getenv(accountKeyEnvVar)
 	if accountName == "" || accountKey == "" {
 		return nil, errors.New(accountNameEnvVar + " and/or " + accountKeyEnvVar + " environment variables not specified.")
 	}
-	return shared.NewSharedKeyCredential(accountName, accountKey)
+	return NewSharedKeyCredential(accountName, accountKey)
 }
 
-//
-////getOAuthCredential can intake a OAuth credential from environment variables in one of the following ways:
-////Direct: Supply a ADAL OAuth token in OAUTH_TOKEN and application ID in APPLICATION_ID to refresh the supplied token.
-////Client secret: Supply a client secret in CLIENT_SECRET and application ID in APPLICATION_ID for SPN auth.
-////TENANT_ID is optional and will be inferred as common if it is not explicitly defined.
-//func getOAuthCredential(accountType string) (*TokenCredential, error) {
-//	oauthTokenEnvVar := accountType + "OAUTH_TOKEN"
-//	clientSecretEnvVar := accountType + "CLIENT_SECRET"
-//	applicationIdEnvVar := accountType + "APPLICATION_ID"
-//	tenantIdEnvVar := accountType + "TENANT_ID"
-//	oauthToken, appId, tenantId, clientSecret := []byte(os.Getenv(oauthTokenEnvVar)), os.Getenv(applicationIdEnvVar), os.Getenv(tenantIdEnvVar), os.Getenv(clientSecretEnvVar)
-//	if (len(oauthToken) == 0 && clientSecret == "") || appId == "" {
-//		return nil, errors.New("(" + oauthTokenEnvVar + " OR " + clientSecretEnvVar + ") and/or " + applicationIdEnvVar + " environment variables not specified.")
-//	}
-//	if tenantId == "" {
-//		tenantId = "common"
-//	}
-//
-//	var Token adal.Token
-//	if len(oauthToken) != 0 {
-//		if err := json.Unmarshal(oauthToken, &Token); err != nil {
-//			return nil, err
-//		}
-//	}
-//
-//	var spt *adal.ServicePrincipalToken
-//
-//	oauthConfig, err := adal.NewOAuthConfig("https://login.microsoftonline.com", tenantId)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	if len(oauthToken) == 0 {
-//		spt, err = adal.NewServicePrincipalToken(
-//			*oauthConfig,
-//			appId,
-//			clientSecret,
-//			"https://storage.azure.com")
-//		if err != nil {
-//			return nil, err
-//		}
-//	} else {
-//		spt, err = adal.NewServicePrincipalTokenFromManualToken(*oauthConfig,
-//			appId,
-//			"https://storage.azure.com",
-//			Token,
-//		)
-//		if err != nil {
-//			return nil, err
-//		}
-//	}
-//
-//	err = spt.Refresh()
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	tc := NewTokenCredential(spt.Token().AccessToken, func(tc TokenCredential) time.Duration {
-//		_ = spt.Refresh()
-//		return time.Until(spt.Token().Expires())
-//	})
-//
-//	return &tc, nil
-//}
+func getOAuthCredential(c *chk.C) azcore.Credential {
+	cred, err := azidentity.NewEnvironmentCredential(nil)
+	c.Assert(err, chk.IsNil)
+	return cred
+}
+
+func getGenericServiceClientWithOAuth(c *chk.C, accountType string) (ServiceClient, error) {
+	accountNameEnvVar := accountType + "AZURE_STORAGE_ACCOUNT_NAME"
+	accountName := os.Getenv(accountNameEnvVar)
+	if accountName == "" {
+		return ServiceClient{}, errors.New(accountNameEnvVar + " environment variables not specified.")
+	}
+
+	blobPrimaryURL, _ := url.Parse("https://" + accountName + ".blob.core.windows.net/")
+	return NewServiceClient(blobPrimaryURL.String(), getOAuthCredential(c), nil)
+}
 
 func getGenericBSU(accountType string) (ServiceClient, error) {
 	credential, err := getGenericCredential(accountType)

@@ -33,6 +33,6 @@ func (f UserDelegationCredential) ComputeHMACSHA256(message string) (base64Strin
 }
 
 // Private method to return important parameters for NewSASQueryParameters
-func (f UserDelegationCredential) getUDKParams() *UserDelegationKey {
+func (f UserDelegationCredential) GetUDKParams() *UserDelegationKey {
 	return &f.accountKey
 }

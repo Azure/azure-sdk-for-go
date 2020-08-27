@@ -1,16 +1,7 @@
 package azblob
 
-// TODO enabled these tests once the dependent APIs are all implemented
-//
-//import (
-//	"bytes"
-//	"strings"
-//	"time"
-//
-//	chk "gopkg.in/check.v1"
-//)
-//
-////Creates a container and tests permissions by listing blobs
+// TODO enable after container is implemented
+//Creates a container and tests permissions by listing blobs
 //func (s *aztestsSuite) TestUserDelegationSASContainer(c *chk.C) {
 //	bsu := getBSU()
 //	containerURL, containerName := getContainerClient(c, bsu)
@@ -80,29 +71,30 @@ package azblob
 //		c.Fatal(err)
 //	}
 //}
-//
+
+// TODO fix, something is wrong with the generated SAS
 //// Creates a blob, takes a snapshot, downloads from snapshot, and deletes from the snapshot w/ the token
 //func (s *aztestsSuite) TestUserDelegationSASBlob(c *chk.C) {
 //	// Accumulate prerequisite details to create storage etc.
-//	bsu := getBSU()
-//	containerURL, containerName := getContainerClient(c, bsu)
-//	blobURL, blobName := getBlockBlobURL(c, containerURL)
+//	serviceClient, err := getGenericServiceClientWithOAuth(c, "")
+//	c.Assert(err, chk.IsNil)
+//
+//	containerURL, _ := getContainerClient(c, serviceClient)
+//	blobClient, blobName := getBlockBlobClient(c, containerURL)
 //	currentTime := time.Now().UTC()
-//	ocred, err := getOAuthCredential("")
+//
+//	// Create container & upload sample data
+//	_, err = containerURL.Create(ctx, nil)
+//	defer containerURL.Delete(ctx, nil)
 //	if err != nil {
 //		c.Fatal(err)
 //	}
-//
-//	// Create pipeline to handle requests
-//	p := NewPipeline(*ocred, PipelineOptions{})
 //
 //	// Prepare user delegation key
-//	bsu = bsu.WithPipeline(p)
 //	keyInfo := NewKeyInfo(currentTime, currentTime.Add(48*time.Hour))
-//	budk, err := bsu.GetUserDelegationCredential(ctx, keyInfo, nil, nil) //MUST have TokenCredential
-//	if err != nil {
-//		c.Fatal(err)
-//	}
+//	cudk, err := serviceClient.GetUserDelegationCredential(ctx, keyInfo)
+//	c.Assert(err, chk.IsNil)
+//	c.Assert(cudk, chk.NotNil)
 //
 //	// Prepare User Delegation SAS query
 //	bSAS, err := BlobSASSignatureValues{
@@ -112,51 +104,34 @@ package azblob
 //		Permissions:   "rd",
 //		ContainerName: containerName,
 //		BlobName:      blobName,
-//	}.NewSASQueryParameters(budk)
-//	if err != nil {
-//		c.Fatal(err)
-//	}
-//
-//	// Create pipeline
-//	p = NewPipeline(NewAnonymousCredential(), PipelineOptions{})
+//	}.NewSASQueryParameters(cudk)
+//	c.Assert(err, chk.IsNil)
 //
 //	// Append User Delegation SAS token to URL
-//	bSASParts := NewBlobURLParts(blobURL.URL())
+//	bSASParts := NewBlobURLParts(blobClient.URL())
 //	bSASParts.SAS = bSAS
-//	bSASURL := NewBlockBlobURL(bSASParts.URL(), p)
+//	blobURLWithSAS := bSASParts.URL()
+//	blobClientWithSAS, err := NewBlockBlobClient(blobURLWithSAS.String(), azcore.AnonymousCredential(), nil)
+//	c.Assert(err, chk.IsNil)
 //
-//	// Create container & upload sample data
-//	_, err = containerURL.Create(ctx, Metadata{}, PublicAccessNone)
-//	defer containerURL.Delete(ctx, ContainerAccessConditions{})
-//	if err != nil {
-//		c.Fatal(err)
-//	}
 //	data := "Hello World!"
-//	_, err = blobURL.Upload(ctx, strings.NewReader(data), BlobHTTPHeaders{ContentType: "text/plain"}, Metadata{}, BlobAccessConditions{})
-//	if err != nil {
-//		c.Fatal(err)
-//	}
+//	_, err = blobClient.Upload(ctx, azcore.NopCloser(strings.NewReader(data)), nil)
+//	c.Assert(err, chk.IsNil)
 //
 //	// Download data via User Delegation SAS URL; must succeed
-//	downloadResponse, err := bSASURL.Download(ctx, 0, 0, BlobAccessConditions{}, false)
-//	if err != nil {
-//		c.Fatal(err)
-//	}
+//	downloadResponse, err := blobClientWithSAS.Download(ctx, nil)
+//	c.Assert(err, chk.IsNil)
+//
 //	downloadedData := &bytes.Buffer{}
 //	reader := downloadResponse.Body(RetryReaderOptions{})
 //	_, err = downloadedData.ReadFrom(reader)
-//	if err != nil {
-//		c.Fatal(err)
-//	}
+//	c.Assert(err, chk.IsNil)
+//
 //	err = reader.Close()
-//	if err != nil {
-//		c.Fatal(err)
-//	}
+//	c.Assert(err, chk.IsNil)
 //	c.Assert(data, chk.Equals, downloadedData.String())
 //
 //	// Delete the item using the User Delegation SAS URL; must succeed
-//	_, err = bSASURL.Delete(ctx, DeleteSnapshotsOptionInclude, BlobAccessConditions{})
-//	if err != nil {
-//		c.Fatal(err)
-//	}
+//	_, err = blobClientWithSAS.Delete(ctx, nil)
+//	c.Assert(err, chk.IsNil)
 //}

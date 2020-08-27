@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/shared"
 )
 
 // AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
@@ -25,7 +23,7 @@ type AccountSASSignatureValues struct {
 
 // NewSASQueryParameters uses an account's shared key credential to sign this signature values to produce
 // the proper SAS query parameters.
-func (v AccountSASSignatureValues) NewSASQueryParameters(sharedKeyCredential *shared.SharedKeyCredential) (SASQueryParameters, error) {
+func (v AccountSASSignatureValues) NewSASQueryParameters(sharedKeyCredential *SharedKeyCredential) (SASQueryParameters, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/Constructing-an-Account-SAS
 	if v.ExpiryTime.IsZero() || v.Permissions == "" || v.ResourceTypes == "" || v.Services == "" {
 		return SASQueryParameters{}, errors.New("account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")

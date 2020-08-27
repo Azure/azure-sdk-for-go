@@ -3640,6 +3640,28 @@ func (future *ServersUpdateFuture) Result(client ServersClient) (s Server, err e
 	return
 }
 
+// ServersUpgradeFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+type ServersUpgradeFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ServersUpgradeFuture) Result(client ServersClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "mysql.ServersUpgradeFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("mysql.ServersUpgradeFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // ServerUpdateParameters parameters allowed to update for a server.
 type ServerUpdateParameters struct {
 	// Identity - The Azure Active Directory identity of the server.
@@ -3737,6 +3759,51 @@ type ServerUpdateParametersProperties struct {
 	PublicNetworkAccess PublicNetworkAccessEnum `json:"publicNetworkAccess,omitempty"`
 	// ReplicationRole - The replication role of the server.
 	ReplicationRole *string `json:"replicationRole,omitempty"`
+}
+
+// ServerUpgradeParameters ...
+type ServerUpgradeParameters struct {
+	// ServerUpgradeParametersProperties - The properties that can be updated for a server.
+	*ServerUpgradeParametersProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerUpgradeParameters.
+func (sup ServerUpgradeParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sup.ServerUpgradeParametersProperties != nil {
+		objectMap["properties"] = sup.ServerUpgradeParametersProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ServerUpgradeParameters struct.
+func (sup *ServerUpgradeParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var serverUpgradeParametersProperties ServerUpgradeParametersProperties
+				err = json.Unmarshal(*v, &serverUpgradeParametersProperties)
+				if err != nil {
+					return err
+				}
+				sup.ServerUpgradeParametersProperties = &serverUpgradeParametersProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// ServerUpgradeParametersProperties the properties that can be updated for a server.
+type ServerUpgradeParametersProperties struct {
+	// TargetServerVersion - Represents an server storage profile.
+	TargetServerVersion *string `json:"targetServerVersion,omitempty"`
 }
 
 // Sku billing information related properties of a server.

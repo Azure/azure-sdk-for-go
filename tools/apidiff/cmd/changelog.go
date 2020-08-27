@@ -17,6 +17,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"sort"
 	"strings"
 
@@ -62,56 +63,94 @@ func theChangelogCmd(args []string) error {
 		panic("expected only one report")
 	}
 	for _, cr := range rpt.CommitsReports {
-		reportAddedPkgs(cr)
-		reportUpdatedPkgs(cr)
-		reportBreakingPkgs(cr)
-		reportRemovedPkgs(cr)
+		changelog, err := writePackageChangelog(cr)
+		if err != nil {
+			return err
+		}
+		fmt.Println(changelog)
 	}
 	return nil
 }
 
-func reportAddedPkgs(pr pkgsReport) {
-	if len(pr.AddedPackages) == 0 {
-		return
+func writePackageChangelog(pr pkgsReport) (string, error) {
+	md := &report.MarkdownWriter{}
+	if err := reportAddedPkgs(pr, md); err != nil {
+		return "", fmt.Errorf("failed to write table for added packages: %+v", err)
 	}
-	fmt.Printf("### New Packages\n\n")
-	createTable(createTableRows(pr.AddedPackages))
+	if err := reportUpdatedPkgs(pr, md); err != nil {
+		return "", fmt.Errorf("failed to write table for updated packages: %+v", err)
+	}
+	if err := reportBreakingPkgs(pr, md); err != nil {
+		return "", fmt.Errorf("failed to write table for breaking change packages: %+v", err)
+	}
+	if err := reportRemovedPkgs(pr, md); err != nil {
+		return "", fmt.Errorf("failed to write table for removed packages: %+v", err)
+	}
+	return md.String(), nil
 }
 
-func reportUpdatedPkgs(pr pkgsReport) {
-	if !pr.modPkgHasAdditions {
-		return
+func reportAddedPkgs(pr pkgsReport, md *report.MarkdownWriter) error {
+	if len(pr.AddedPackages) == 0 {
+		return nil
 	}
-	fmt.Printf("### Updated Packages\n\n")
-	updated := []string{}
+	md.WriteHeader("New Packages")
+	t, err := createPackageTable(pr.AddedPackages)
+	if err != nil {
+		return err
+	}
+	md.WriteTable(*t)
+	return nil
+}
+
+func reportUpdatedPkgs(pr pkgsReport, md *report.MarkdownWriter) error {
+	if !pr.modPkgHasAdditions {
+		return nil
+	}
+	md.WriteHeader("Updated Packages")
+	var updated []string
 	for pkgName, pkgRpt := range pr.ModifiedPackages {
 		if pkgRpt.HasAdditiveChanges() && !pkgRpt.HasBreakingChanges() {
 			updated = append(updated, pkgName)
 		}
 	}
-	createTable(createTableRows(updated))
+	t, err := createPackageTable(updated)
+	if err != nil {
+		return err
+	}
+	md.WriteTable(*t)
+	return nil
 }
 
-func reportBreakingPkgs(pr pkgsReport) {
+func reportBreakingPkgs(pr pkgsReport, md *report.MarkdownWriter) error {
 	if !pr.modPkgHasBreaking {
-		return
+		return nil
 	}
-	fmt.Printf("### BreakingChanges\n\n")
-	breaking := []string{}
+	md.WriteHeader("Breaking Changes")
+	var breaking []string
 	for pkgName, pkgRpt := range pr.ModifiedPackages {
 		if pkgRpt.HasBreakingChanges() {
 			breaking = append(breaking, pkgName)
 		}
 	}
-	createTable(createTableRows(breaking))
+	t, err := createPackageTable(breaking)
+	if err != nil {
+		return err
+	}
+	md.WriteTable(*t)
+	return nil
 }
 
-func reportRemovedPkgs(pr pkgsReport) {
+func reportRemovedPkgs(pr pkgsReport, md *report.MarkdownWriter) error {
 	if len(pr.RemovedPackages) == 0 {
-		return
+		return nil
 	}
-	fmt.Printf("### Removed Packages\n\n")
-	createTable(createTableRows(pr.RemovedPackages))
+	md.WriteHeader("Removed Packages")
+	t, err := createPackageTable(pr.RemovedPackages)
+	if err != nil {
+		return err
+	}
+	md.WriteTable(*t)
+	return nil
 }
 
 type tableRow struct {
@@ -119,14 +158,34 @@ type tableRow struct {
 	apiVersions []string
 }
 
-func createTableRows(pkgs []string) []tableRow {
-	entries := map[string][]string{}
+func convertFullPackagePathToPackageNameAndAPIVersion(packageName string) (string, string, error) {
+	// packageName is a string like "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-08-31/consumption"
+	segments := strings.Split(packageName, "/")
+	if len(segments) < 2 {
+		return "", "", fmt.Errorf("expecting package name '%s' to have at least two segments", packageName)
+	}
+	return segments[len(segments)-1], segments[len(segments)-2], nil
+}
+
+func createPackageTable(pkgs []string) (*report.MarkdownTable, error) {
+	t := report.NewMarkdownTable("rc", "Package Name", "API Version")
+	rows, err := categorizePackageAPIVersions(pkgs)
+	if err != nil {
+		return nil, err
+	}
+	for _, row := range rows {
+		t.AddRow(row.pkgName, strings.Join(row.apiVersions, "<br/>"))
+	}
+	return t, nil
+}
+
+func categorizePackageAPIVersions(pkgs []string) ([]tableRow, error) {
+	entries := make(map[string][]string)
 	for _, pkg := range pkgs {
-		// contains entries like "github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-08-31/consumption"
-		i := strings.LastIndex(pkg, "/")
-		pkgName := pkg[i+1:]
-		j := strings.LastIndex(pkg[:i], "/")
-		apiVer := pkg[j+1 : i]
+		pkgName, apiVer, err := convertFullPackagePathToPackageNameAndAPIVersion(pkg)
+		if err != nil {
+			return nil, err
+		}
 		if apis, ok := entries[pkgName]; ok {
 			entries[pkgName] = append(apis, apiVer)
 		} else {
@@ -134,26 +193,16 @@ func createTableRows(pkgs []string) []tableRow {
 		}
 	}
 	// convert the map to a slice of tableRows
-	rows := []tableRow{}
+	var rows []tableRow
 	for pkgName, apiVers := range entries {
 		sort.Strings(apiVers)
-		tr := tableRow{
+		rows = append(rows, tableRow{
 			pkgName:     pkgName,
 			apiVersions: apiVers,
-		}
-		rows = append(rows, tr)
+		})
 	}
 	sort.Slice(rows, func(i, j int) bool {
 		return rows[i].pkgName < rows[j].pkgName
 	})
-	return rows
-}
-
-func createTable(rows []tableRow) {
-	fmt.Println("| Package Name | API Version |")
-	fmt.Println("| -----------: | :---------: |")
-	for _, row := range rows {
-		fmt.Println("| " + row.pkgName + " | " + strings.Join(row.apiVersions, "<br/>") + " |")
-	}
-	fmt.Println()
+	return rows, nil
 }

@@ -15,221 +15,172 @@
 package report
 
 import (
-	"fmt"
-	"sort"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/delta"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 )
 
-type mdWriter struct {
+// MarkdownWriter is a writer to write contents in markdown format
+type MarkdownWriter struct {
 	sb strings.Builder
 	nl bool
 }
 
-func (md *mdWriter) checkNL() {
+func (md *MarkdownWriter) checkNL() {
 	if md.nl {
 		md.sb.WriteString("\n")
 		md.nl = false
 	}
 }
 
-func (md *mdWriter) WriteHeader(h string) {
+// WriteHeader writes a header to the markdown document
+func (md *MarkdownWriter) WriteHeader(h string) {
 	md.checkNL()
 	md.sb.WriteString("## ")
 	md.sb.WriteString(h)
 	md.sb.WriteString("\n\n")
 }
 
-func (md *mdWriter) WriteSubheader(sh string) {
+// WriteSubheader writes a sub-header to the markdown document
+func (md *MarkdownWriter) WriteSubheader(sh string) {
 	md.checkNL()
 	md.sb.WriteString("### ")
 	md.sb.WriteString(sh)
 	md.sb.WriteString("\n\n")
 }
 
-func (md *mdWriter) WriteLine(s string) {
+// WriteLine writes a line to the markdown document
+func (md *MarkdownWriter) WriteLine(s string) {
 	md.nl = true
 	md.sb.WriteString(s)
 	md.sb.WriteString("\n")
 }
 
-func (md *mdWriter) String() string {
+// WriteTable writes a table to the markdown document
+func (md *MarkdownWriter) WriteTable(table MarkdownTable) {
+	md.WriteLine(table.String())
+}
+
+// EmptyLine inserts an empty line to the markdown document
+func (md *MarkdownWriter) EmptyLine() {
+	md.WriteLine("")
+}
+
+// String outputs the markdown document as a string
+func (md *MarkdownWriter) String() string {
 	return md.sb.String()
 }
 
-// creates a markdown-formatted report from the specified package
-func formatAsMarkdown(p Package) string {
-	md := mdWriter{}
-	writeBreakingChanges(p, &md)
-	writeNewContent(p, &md)
-	return md.String()
+// MarkdownTable describes a table in a markdown document
+type MarkdownTable struct {
+	sb        *strings.Builder
+	headers   []string
+	alignment string
+	rows      []markdownTableRow
 }
 
-// writes all breaking changes
-func writeBreakingChanges(p Package, md *mdWriter) {
-	if !p.HasBreakingChanges() {
-		return
+const (
+	leftAlignment   = ":---"
+	centerAlignment = ":---:"
+	rightAlignment  = "---:"
+)
+
+// NewMarkdownTable creates a new table with given alignments and headers
+func NewMarkdownTable(alignment string, headers ...string) *MarkdownTable {
+	alignment, headers = checkAlignmentAndHeaders(alignment, headers)
+	t := MarkdownTable{
+		sb:        &strings.Builder{},
+		headers:   headers,
+		alignment: alignment,
 	}
-	md.WriteHeader("Breaking Changes")
-	writeRemovedContent(p.BreakingChanges.Removed, md)
-	writeSigChanges(p.BreakingChanges, md)
+	return &t
 }
 
-// writes the subset of breaking changes pertaining to removed content
-func writeRemovedContent(removed *delta.Content, md *mdWriter) {
-	if removed == nil {
-		return
-	}
-	writeConsts(removed.Consts, "Removed Constants", md)
-	writeFuncs(removed.Funcs, "Removed Funcs", md)
-	writeStructs(removed, "Removed Structs", "Removed Struct Fields", md)
+// Columns returns the number of columns in this table
+func (t *MarkdownTable) Columns() int {
+	return len(t.headers)
 }
 
-// writes the subset of breaking changes pertaining to signature changes
-func writeSigChanges(bc *BreakingChanges, md *mdWriter) {
-	if len(bc.Consts) == 0 && len(bc.Funcs) == 0 && len(bc.Structs) == 0 {
-		return
-	}
-	md.WriteHeader("Signature Changes")
-	if len(bc.Consts) > 0 {
-		items := make([]string, len(bc.Consts))
-		i := 0
-		for k, v := range bc.Consts {
-			items[i] = fmt.Sprintf("1. %s changed type from %s to %s", k, v.From, v.To)
-			i++
-		}
-		sort.Strings(items)
-		md.WriteSubheader("Const Types")
-		for _, item := range items {
-			md.WriteLine(item)
-		}
-	}
-	if len(bc.Funcs) > 0 {
-		// first get all the funcs so we can sort them
-		items := make([]string, len(bc.Funcs))
-		i := 0
-		for k := range bc.Funcs {
-			items[i] = k
-			i++
-		}
-		sort.Strings(items)
-		md.WriteSubheader("Funcs")
-		for _, item := range items {
-			// now add params/returns info
-			changes := bc.Funcs[item]
-			if changes.Params != nil {
-				item = fmt.Sprintf("%s\n\t- Params\n\t\t- From: %s\n\t\t- To: %s", item, changes.Params.From, changes.Params.To)
-			}
-			if changes.Returns != nil {
-				item = fmt.Sprintf("%s\n\t- Returns\n\t\t- From: %s\n\t\t- To: %s", item, changes.Returns.From, changes.Returns.To)
-			}
-			md.WriteLine(fmt.Sprintf("1. %s", item))
-		}
-	}
-	if len(bc.Structs) > 0 {
-		items := make([]string, 0, len(bc.Structs))
-		for k, v := range bc.Structs {
-			for f, d := range v.Fields {
-				items = append(items, fmt.Sprintf("1. %s.%s changed type from %s to %s", k, f, d.From, d.To))
-			}
-		}
-		sort.Strings(items)
-		md.WriteSubheader("Struct Fields")
-		for _, item := range items {
-			md.WriteLine(item)
-		}
-	}
+// AddRow adds a new row to the table
+func (t *MarkdownTable) AddRow(items ...string) {
+	t.rows = append(t.rows, markdownTableRow{
+		items: items,
+	})
 }
 
-// writes all new content
-func writeNewContent(p Package, md *mdWriter) {
-	if !p.HasAdditiveChanges() {
-		return
+func checkAlignmentAndHeaders(alignment string, headers []string) (string, []string) {
+	if len(alignment) == len(headers) {
+		return alignment, headers
 	}
-	md.WriteHeader("New Content")
-	writeConsts(p.AdditiveChanges.Consts, "New Constants", md)
-	writeFuncs(p.AdditiveChanges.Funcs, "New Funcs", md)
-	writeStructs(p.AdditiveChanges, "New Structs", "New Struct Fields", md)
+	if len(alignment) > len(headers) {
+		return alignment[:len(headers)], headers
+	}
+	// default alignment is l
+	return alignment + strings.Repeat("l", len(headers)-len(alignment)), headers
 }
 
-// writes out const information formatted as TypeName.ConstName
-func writeConsts(co map[string]exports.Const, subheader string, md *mdWriter) {
-	if len(co) == 0 {
+type markdownTableRow struct {
+	items []string
+}
+
+func (r *markdownTableRow) ensureItems(count int) []string {
+	if len(r.items) < count {
+		var items []string
+		for i := 0; i < count-len(r.items); i++ {
+			items = append(r.items, "")
+		}
+		return items
+	}
+	if len(r.items) > count {
+		return r.items[:count]
+	}
+	return r.items
+}
+
+func (t *MarkdownTable) writeHeader() {
+	if len(t.headers) == 0 {
 		return
 	}
-	items := make([]string, len(co))
-	i := 0
-	for c, t := range co {
-		items[i] = fmt.Sprintf("1. %s.%s", t.Type, c)
-		i++
+	t.sb.WriteString("| ")
+	t.sb.WriteString(strings.Join(t.headers, " | "))
+	t.sb.WriteString(" |\n")
+}
+
+func (t *MarkdownTable) writeAlignment() {
+	if len(t.alignment) == 0 {
+		return
 	}
-	sort.Strings(items)
-	md.WriteSubheader(subheader)
-	for _, item := range items {
-		md.WriteLine(item)
+	var alignments []string
+	for _, a := range t.alignment {
+		switch a {
+		case 'c':
+			alignments = append(alignments, centerAlignment)
+		case 'r':
+			alignments = append(alignments, rightAlignment)
+		default:
+			alignments = append(alignments, leftAlignment)
+		}
+	}
+	t.sb.WriteString("| ")
+	t.sb.WriteString(strings.Join(alignments, " | "))
+	t.sb.WriteString(" |\n")
+}
+
+func (t *MarkdownTable) writeRows() {
+	for _, r := range t.rows {
+		t.writeRow(r)
 	}
 }
 
-// writes out func information formatted as [receiver].FuncName([params]) [returns]
-func writeFuncs(funcs map[string]exports.Func, subheader string, md *mdWriter) {
-	if len(funcs) == 0 {
-		return
-	}
-	items := make([]string, len(funcs))
-	i := 0
-	for k, v := range funcs {
-		params := ""
-		if v.Params != nil {
-			params = *v.Params
-		}
-		returns := ""
-		if v.Returns != nil {
-			returns = *v.Returns
-			if strings.Index(returns, ",") > -1 {
-				returns = fmt.Sprintf("(%s)", returns)
-			}
-		}
-		items[i] = fmt.Sprintf("1. %s(%s) %s", k, params, returns)
-		i++
-	}
-	sort.Strings(items)
-	md.WriteSubheader(subheader)
-	for _, item := range items {
-		md.WriteLine(item)
-	}
+func (t *MarkdownTable) writeRow(row markdownTableRow) {
+	items := row.ensureItems(t.Columns())
+	t.sb.WriteString("| ")
+	t.sb.WriteString(strings.Join(items, " | "))
+	t.sb.WriteString(" |\n")
 }
 
-// writes out struct information
-// sheader1 is for added/removed struct types formatted as TypeName
-// sheader2 is for added/removed struct fields formatted as TypeName.FieldName
-func writeStructs(content *delta.Content, sheader1, sheader2 string, md *mdWriter) {
-	if len(content.Structs) == 0 {
-		return
-	}
-	md.WriteHeader("Struct Changes")
-	if len(content.CompleteStructs) > 0 {
-		md.WriteSubheader(sheader1)
-		for _, s := range content.CompleteStructs {
-			md.WriteLine(fmt.Sprintf("1. %s", s))
-		}
-	}
-	modified := content.GetModifiedStructs()
-	if len(modified) > 0 {
-		md.WriteSubheader(sheader2)
-		items := make([]string, 0, len(content.Structs)-len(content.CompleteStructs))
-		for s, f := range modified {
-			for _, af := range f.AnonymousFields {
-				items = append(items, fmt.Sprintf("1. %s.%s", s, af))
-			}
-			for f := range f.Fields {
-				items = append(items, fmt.Sprintf("1. %s.%s", s, f))
-			}
-		}
-		sort.Strings(items)
-		for _, item := range items {
-			md.WriteLine(item)
-		}
-	}
+// String outputs the markdown table to a string
+func (t *MarkdownTable) String() string {
+	t.writeHeader()
+	t.writeAlignment()
+	t.writeRows()
+	return t.sb.String()
 }

@@ -157,3 +157,157 @@ func (client VirtualHubBgpConnectionsClient) ListComplete(ctx context.Context, r
 	result.page, err = client.List(ctx, resourceGroupName, virtualHubName)
 	return
 }
+
+// ListAdvertisedRoutes retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// hubName - the name of the virtual hub.
+// connectionName - the name of the virtual hub bgp connection.
+func (client VirtualHubBgpConnectionsClient) ListAdvertisedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string) (result VirtualHubBgpConnectionsListAdvertisedRoutesFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualHubBgpConnectionsClient.ListAdvertisedRoutes")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListAdvertisedRoutesPreparer(ctx, resourceGroupName, hubName, connectionName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualHubBgpConnectionsClient", "ListAdvertisedRoutes", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.ListAdvertisedRoutesSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualHubBgpConnectionsClient", "ListAdvertisedRoutes", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// ListAdvertisedRoutesPreparer prepares the ListAdvertisedRoutes request.
+func (client VirtualHubBgpConnectionsClient) ListAdvertisedRoutesPreparer(ctx context.Context, resourceGroupName string, hubName string, connectionName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"connectionName":    autorest.Encode("path", connectionName),
+		"hubName":           autorest.Encode("path", hubName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{hubName}/bgpConnections/{connectionName}/advertisedRoutes", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListAdvertisedRoutesSender sends the ListAdvertisedRoutes request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualHubBgpConnectionsClient) ListAdvertisedRoutesSender(req *http.Request) (future VirtualHubBgpConnectionsListAdvertisedRoutesFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// ListAdvertisedRoutesResponder handles the response to the ListAdvertisedRoutes request. The method always
+// closes the http.Response Body.
+func (client VirtualHubBgpConnectionsClient) ListAdvertisedRoutesResponder(resp *http.Response) (result PeerRouteList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ListLearnedRoutes retrieves a list of routes the virtual hub bgp connection has learned.
+// Parameters:
+// resourceGroupName - the name of the resource group.
+// hubName - the name of the virtual hub.
+// connectionName - the name of the virtual hub bgp connection.
+func (client VirtualHubBgpConnectionsClient) ListLearnedRoutes(ctx context.Context, resourceGroupName string, hubName string, connectionName string) (result VirtualHubBgpConnectionsListLearnedRoutesFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualHubBgpConnectionsClient.ListLearnedRoutes")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ListLearnedRoutesPreparer(ctx, resourceGroupName, hubName, connectionName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualHubBgpConnectionsClient", "ListLearnedRoutes", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.ListLearnedRoutesSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.VirtualHubBgpConnectionsClient", "ListLearnedRoutes", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// ListLearnedRoutesPreparer prepares the ListLearnedRoutes request.
+func (client VirtualHubBgpConnectionsClient) ListLearnedRoutesPreparer(ctx context.Context, resourceGroupName string, hubName string, connectionName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"connectionName":    autorest.Encode("path", connectionName),
+		"hubName":           autorest.Encode("path", hubName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{hubName}/bgpConnections/{connectionName}/learnedRoutes", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListLearnedRoutesSender sends the ListLearnedRoutes request. The method will close the
+// http.Response Body if it receives an error.
+func (client VirtualHubBgpConnectionsClient) ListLearnedRoutesSender(req *http.Request) (future VirtualHubBgpConnectionsListLearnedRoutesFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// ListLearnedRoutesResponder handles the response to the ListLearnedRoutes request. The method always
+// closes the http.Response Body.
+func (client VirtualHubBgpConnectionsClient) ListLearnedRoutesResponder(resp *http.Response) (result PeerRouteList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}

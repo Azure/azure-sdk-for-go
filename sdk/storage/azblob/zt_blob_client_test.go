@@ -3,13 +3,17 @@ package azblob
 import (
 	"bytes"
 	"crypto/md5"
+	"errors"
+	"io"
 	"io/ioutil"
+	"net/url"
 	"os"
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
 )
 
@@ -1302,6 +1306,7 @@ func (s *aztestsSuite) TestBlobDeleteSnapshot(c *chk.C) {
 	//validateBlobDeleted(c, snapshotURL)
 }
 
+// TODO enable after container client has list command
 //func (s *aztestsSuite) TestBlobDeleteSnapshotsInclude(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
@@ -1310,14 +1315,19 @@ func (s *aztestsSuite) TestBlobDeleteSnapshot(c *chk.C) {
 //
 //	_, err := blobClient.CreateSnapshot(ctx, nil)
 //	c.Assert(err, chk.IsNil)
-//	_, err = blobClient.Delete(ctx, DeleteSnapshotsOptionInclude, nil)
+//
+//	deleteSnapshots := DeleteSnapshotsOptionTypeInclude
+//	_, err = blobClient.Delete(ctx, &DeleteBlobOptions{
+//		DeleteSnapshots: &deleteSnapshots,
+//	})
 //	c.Assert(err, chk.IsNil)
 //
 //	resp, _ := containerClient.ListBlobsFlatSegment(ctx, Marker{},
 //		ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true}})
 //	c.Assert(resp.Segment.BlobItems, chk.HasLen, 0)
 //}
-//
+
+// TODO enable after container client has list command
 //func (s *aztestsSuite) TestBlobDeleteSnapshotsOnly(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
@@ -1335,18 +1345,18 @@ func (s *aztestsSuite) TestBlobDeleteSnapshot(c *chk.C) {
 //	c.Assert(resp.Segment.BlobItems[0].Snapshot == "", chk.Equals, true)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteSnapshotsNoneWithSnapshots(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	_, err := blobClient.CreateSnapshot(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	_, err = blobClient.Delete(ctx, DeleteSnapshotsOptionNone, nil)
-//	validateStorageError(c, err, ServiceCodeSnapshotsPresent)
-//}
-//
+func (s *aztestsSuite) TestBlobDeleteSnapshotsNoneWithSnapshots(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	blobClient, _ := createNewBlockBlob(c, containerClient)
+
+	_, err := blobClient.CreateSnapshot(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	_, err = blobClient.Delete(ctx, nil)
+	c.Assert(err, chk.NotNil)
+}
+
 func validateBlobDeleted(c *chk.C, blobClient BlobClient) {
 	_, err := blobClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.NotNil)
@@ -1617,153 +1627,167 @@ func validateBlobDeleted(c *chk.C, blobClient BlobClient) {
 //	c.Assert(serr.Response().StatusCode, chk.Equals, 304)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesBasic(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	_, err := blobClient.SetHTTPHeaders(ctx, basicHeaders, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	resp, _ := blobClient.GetProperties(ctx, nil)
-//	h := resp.NewHTTPHeaders()
-//	c.Assert(h, chk.DeepEquals, basicHeaders)
-//}
-//
-//func (s *aztestsSuite) TestBlobSetPropertiesEmptyValue(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	_, err := blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{ContentType: "my_type"}, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	_, err = blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{}, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.ContentType(), chk.Equals, "")
-//}
-//
-//func validatePropertiesSet(c *chk.C, blobClient BlockblobClient, disposition string) {
-//	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.ContentDisposition(), chk.Equals, disposition)
-//}
-//
-//func (s *aztestsSuite) TestBlobSetPropertiesIfModifiedSinceTrue(c *chk.C) {
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	_, err := blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{ContentDisposition: "my_disposition"},
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}})
-//	c.Assert(err, chk.IsNil)
-//
-//	validatePropertiesSet(c, blobClient, "my_disposition")
-//}
-//
-//func (s *aztestsSuite) TestBlobSetPropertiesIfModifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{ContentDisposition: "my_disposition"},
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfModifiedSince: currentTime}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobSetPropertiesIfUnmodifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{ContentDisposition: "my_disposition"},
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}})
-//	c.Assert(err, chk.IsNil)
-//
-//	validatePropertiesSet(c, blobClient, "my_disposition")
-//}
-//
-//func (s *aztestsSuite) TestBlobSetPropertiesIfUnmodifiedSinceFalse(c *chk.C) {
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	_, err := blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{ContentDisposition: "my_disposition"},
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfUnmodifiedSince: currentTime}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobSetPropertiesIfMatchTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	_, err = blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{ContentDisposition: "my_disposition"},
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: resp.ETag()}})
-//	c.Assert(err, chk.IsNil)
-//
-//	validatePropertiesSet(c, blobClient, "my_disposition")
-//}
-//
-//func (s *aztestsSuite) TestBlobSetPropertiesIfMatchFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	_, err := blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{ContentDisposition: "my_disposition"},
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfMatch: ETag("garbage")}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
-//func (s *aztestsSuite) TestBlobSetPropertiesIfNoneMatchTrue(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	_, err := blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{ContentDisposition: "my_disposition"},
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: ETag("garbage")}})
-//	c.Assert(err, chk.IsNil)
-//
-//	validatePropertiesSet(c, blobClient, "my_disposition")
-//}
-//
-//func (s *aztestsSuite) TestBlobSetPropertiesIfNoneMatchFalse(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	_, err = blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{ContentDisposition: "my_disposition"},
-//		BlobAccessConditions{ModifiedAccessConditions: ModifiedAccessConditions{IfNoneMatch: resp.ETag()}})
-//	validateStorageError(c, err, ServiceCodeConditionNotMet)
-//}
-//
+
+func (s *aztestsSuite) TestBlobSetPropertiesBasic(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	blobClient, _ := createNewBlockBlob(c, containerClient)
+
+	contentType := "my_type"
+	contentDisposition := "my_disposition"
+	cacheControl := "control"
+	contentLanguage := "my_language"
+	contentEncoding := "my_encoding"
+	headers := BlobHttpHeaders{
+		BlobContentType:        &contentType,
+		BlobContentDisposition: &contentDisposition,
+		BlobCacheControl:       &cacheControl,
+		BlobContentLanguage:    &contentLanguage,
+		BlobContentEncoding:    &contentEncoding}
+	_, err := blobClient.SetHTTPHeaders(ctx, headers, nil)
+	c.Assert(err, chk.IsNil)
+
+	resp, _ := blobClient.GetProperties(ctx, nil)
+	h := resp.NewHTTPHeaders()
+	c.Assert(h, chk.DeepEquals, headers)
+}
+
+func (s *aztestsSuite) TestBlobSetPropertiesEmptyValue(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	blobClient, _ := createNewBlockBlob(c, containerClient)
+
+	contentType := "my_type"
+	_, err := blobClient.SetHTTPHeaders(ctx, BlobHttpHeaders{BlobContentType: &contentType}, nil)
+	c.Assert(err, chk.IsNil)
+
+	_, err = blobClient.SetHTTPHeaders(ctx, BlobHttpHeaders{}, nil)
+	c.Assert(err, chk.IsNil)
+
+	resp, err := blobClient.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.ContentType, chk.IsNil)
+}
+
+func validatePropertiesSet(c *chk.C, blobClient BlockBlobClient, disposition string) {
+	resp, err := blobClient.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*resp.ContentDisposition, chk.Equals, disposition)
+}
+
+func (s *aztestsSuite) TestBlobSetPropertiesIfModifiedSinceTrue(c *chk.C) {
+	currentTime := getRelativeTimeGMT(-10)
+
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	blobClient, _ := createNewBlockBlob(c, containerClient)
+
+	_, err := blobClient.SetHTTPHeaders(ctx, BlobHttpHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
+		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}})
+	c.Assert(err, chk.IsNil)
+
+	validatePropertiesSet(c, blobClient, "my_disposition")
+}
+
+func (s *aztestsSuite) TestBlobSetPropertiesIfModifiedSinceFalse(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	blobClient, _ := createNewBlockBlob(c, containerClient)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	_, err := blobClient.SetHTTPHeaders(ctx, BlobHttpHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
+		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}})
+	c.Assert(err, chk.NotNil)
+}
+
+func (s *aztestsSuite) TestBlobSetPropertiesIfUnmodifiedSinceTrue(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	blobClient, _ := createNewBlockBlob(c, containerClient)
+
+	currentTime := getRelativeTimeGMT(10)
+
+	_, err := blobClient.SetHTTPHeaders(ctx, BlobHttpHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
+		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}})
+	c.Assert(err, chk.IsNil)
+
+	validatePropertiesSet(c, blobClient, "my_disposition")
+}
+
+func (s *aztestsSuite) TestBlobSetPropertiesIfUnmodifiedSinceFalse(c *chk.C) {
+	currentTime := getRelativeTimeGMT(-10)
+
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	blobClient, _ := createNewBlockBlob(c, containerClient)
+
+	_, err := blobClient.SetHTTPHeaders(ctx, BlobHttpHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
+		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}})
+	c.Assert(err, chk.NotNil)
+}
+
+func (s *aztestsSuite) TestBlobSetPropertiesIfMatchTrue(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	blobClient, _ := createNewBlockBlob(c, containerClient)
+
+	resp, err := blobClient.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	_, err = blobClient.SetHTTPHeaders(ctx, BlobHttpHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
+		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag}})
+	c.Assert(err, chk.IsNil)
+
+	validatePropertiesSet(c, blobClient, "my_disposition")
+}
+
+func (s *aztestsSuite) TestBlobSetPropertiesIfMatchFalse(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	blobClient, _ := createNewBlockBlob(c, containerClient)
+
+	_, err := blobClient.SetHTTPHeaders(ctx, BlobHttpHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
+		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: to.StringPtr("garbage")}})
+	c.Assert(err, chk.NotNil)
+}
+
+func (s *aztestsSuite) TestBlobSetPropertiesIfNoneMatchTrue(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	blobClient, _ := createNewBlockBlob(c, containerClient)
+
+	_, err := blobClient.SetHTTPHeaders(ctx, BlobHttpHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
+		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: to.StringPtr("garbage")}})
+	c.Assert(err, chk.IsNil)
+
+	validatePropertiesSet(c, blobClient, "my_disposition")
+}
+
+func (s *aztestsSuite) TestBlobSetPropertiesIfNoneMatchFalse(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	blobClient, _ := createNewBlockBlob(c, containerClient)
+
+	resp, err := blobClient.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	_, err = blobClient.SetHTTPHeaders(ctx, BlobHttpHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
+		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}})
+	c.Assert(err, chk.NotNil)
+}
+
+// TODO enable after metadata fix
 //func (s *aztestsSuite) TestBlobSetMetadataNil(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
@@ -1925,6 +1949,7 @@ func validateBlobDeleted(c *chk.C, blobClient BlobClient) {
 //	validateStorageError(c, err, ServiceCodeConditionNotMet)
 //}
 //
+// TODO problem with blob versioning behavior change
 //func testBlobsUndeleteImpl(c *chk.C, bsu ServiceURL) error {
 //	//containerClient, _ := createNewContainer(c, bsu)
 //	//defer deleteContainer(c, containerClient)
@@ -1945,38 +1970,32 @@ func validateBlobDeleted(c *chk.C, blobClient BlobClient) {
 //	//c.Assert(resp.BlobType(), chk.Equals, BlobBlockBlob) // We could check any property. This is just to double check it was undeleted.
 //	return nil
 //}
-//
+////
 //func (s *aztestsSuite) TestBlobsUndelete(c *chk.C) {
 //	bsu := getBSU()
 //
-//	runTestRequiringServiceProperties(c, bsu, string(ServiceCodeBlobNotFound), enableSoftDelete, testBlobsUndeleteImpl, disableSoftDelete)
+//	runTestRequiringServiceProperties(c, bsu, string(404), enableSoftDelete, testBlobsUndeleteImpl, disableSoftDelete)
 //}
-//
-//func setAndCheckBlobTier(c *chk.C, containerClient containerClient, blobClient blobClient, tier AccessTierType) {
-//	_, err := blobClient.SetTier(ctx, tier, LeaseAccessConditions{})
+
+// TODO enable after page blob is supported
+//func setAndCheckBlobTier(c *chk.C, blobClient BlockBlobClient, tier AccessTier) {
+//	_, err := blobClient.SetTier(ctx, tier, nil)
 //	c.Assert(err, chk.IsNil)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
 //	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.AccessTier(), chk.Equals, string(tier))
-//
-//	resp2, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp2.Segment.BlobItems[0].Properties.AccessTier, chk.Equals, tier)
+//	c.Assert(*resp.AccessTier, chk.Equals, string(tier))
 //}
 //
 //func (s *aztestsSuite) TestBlobSetTierAllTiers(c *chk.C) {
-//	bsu, err := getBlobStorageBSU()
-//	if err != nil {
-//		c.Skip(err.Error())
-//	}
+//	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(c, containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
-//	setAndCheckBlobTier(c, containerClient, blobClient.blobClient, AccessTierHot)
-//	setAndCheckBlobTier(c, containerClient, blobClient.blobClient, AccessTierCool)
-//	setAndCheckBlobTier(c, containerClient, blobClient.blobClient, AccessTierArchive)
+//	setAndCheckBlobTier(c, blobClient, AccessTierHot)
+//	setAndCheckBlobTier(c, blobClient, AccessTierCool)
+//	setAndCheckBlobTier(c, blobClient, AccessTierArchive)
 //
 //	bsu, err = getPremiumBSU()
 //	if err != nil {
@@ -1987,15 +2006,15 @@ func validateBlobDeleted(c *chk.C, blobClient BlobClient) {
 //	defer deleteContainer(c, containerClient)
 //	pageblobClient, _ := createNewPageBlob(c, containerClient)
 //
-//	setAndCheckBlobTier(c, containerClient, pageblobClient.blobClient, AccessTierP4)
-//	setAndCheckBlobTier(c, containerClient, pageblobClient.blobClient, AccessTierP6)
+//	setAndCheckBlobTier(c, containerClient, pageblobClient.BlobClient, AccessTierP4)
+//	setAndCheckBlobTier(c, containerClient, pageblobClient.BlobClient, AccessTierP6)
 //	setAndCheckBlobTier(c, containerClient, pageblobClient.blobClient, AccessTierP10)
 //	setAndCheckBlobTier(c, containerClient, pageblobClient.blobClient, AccessTierP20)
 //	setAndCheckBlobTier(c, containerClient, pageblobClient.blobClient, AccessTierP30)
 //	setAndCheckBlobTier(c, containerClient, pageblobClient.blobClient, AccessTierP40)
 //	setAndCheckBlobTier(c, containerClient, pageblobClient.blobClient, AccessTierP50)
 //}
-//
+
 //func (s *aztestsSuite) TestBlobTierInferred(c *chk.C) {
 //	bsu, err := getPremiumBSU()
 //	if err != nil {
@@ -2084,78 +2103,89 @@ func validateBlobDeleted(c *chk.C, blobClient BlobClient) {
 //	validateStorageError(c, err, ServiceCodeInvalidHeaderValue)
 //}
 //
-//func (s *aztestsSuite) TestblobClientPartsSASQueryTimes(c *chk.C) {
-//	StartTimesInputs := []string{
-//		"2020-04-20",
-//		"2020-04-20T07:00Z",
-//		"2020-04-20T07:15:00Z",
-//		"2020-04-20T07:30:00.1234567Z",
-//	}
-//	StartTimesExpected := []time.Time{
-//		time.Date(2020, time.April, 20, 0, 0, 0, 0, time.UTC),
-//		time.Date(2020, time.April, 20, 7, 0, 0, 0, time.UTC),
-//		time.Date(2020, time.April, 20, 7, 15, 0, 0, time.UTC),
-//		time.Date(2020, time.April, 20, 7, 30, 0, 123456700, time.UTC),
-//	}
-//	ExpiryTimesInputs := []string{
-//		"2020-04-21",
-//		"2020-04-20T08:00Z",
-//		"2020-04-20T08:15:00Z",
-//		"2020-04-20T08:30:00.2345678Z",
-//	}
-//	ExpiryTimesExpected := []time.Time{
-//		time.Date(2020, time.April, 21, 0, 0, 0, 0, time.UTC),
-//		time.Date(2020, time.April, 20, 8, 0, 0, 0, time.UTC),
-//		time.Date(2020, time.April, 20, 8, 15, 0, 0, time.UTC),
-//		time.Date(2020, time.April, 20, 8, 30, 0, 234567800, time.UTC),
-//	}
-//
-//	for i := 0; i < len(StartTimesInputs); i++ {
-//		urlString :=
-//			"https://myaccount.blob.core.windows.net/mycontainer/mydirectory/myfile.txt?" +
-//				"se=" + url.QueryEscape(ExpiryTimesInputs[i]) + "&" +
-//				"sig=NotASignature&" +
-//				"sp=r&" +
-//				"spr=https&" +
-//				"sr=b&" +
-//				"st=" + url.QueryEscape(StartTimesInputs[i]) + "&" +
-//				"sv=2019-10-10"
-//		url, _ := url.Parse(urlString)
-//
-//		parts := newBlobClientParts(*url)
-//		c.Assert(parts.Scheme, chk.Equals, "https")
-//		c.Assert(parts.Host, chk.Equals, "myaccount.blob.core.windows.net")
-//		c.Assert(parts.ContainerName, chk.Equals, "mycontainer")
-//		c.Assert(parts.BlobName, chk.Equals, "mydirectory/myfile.txt")
-//
-//		sas := parts.SAS
-//		c.Assert(sas.StartTime(), chk.Equals, StartTimesExpected[i])
-//		c.Assert(sas.ExpiryTime(), chk.Equals, ExpiryTimesExpected[i])
-//
-//		uResult := parts.URL()
-//		c.Assert(uResult.String(), chk.Equals, urlString)
-//	}
-//}
-//
-//func (s *aztestsSuite) TestDownloadBlockBlobUnexpectedEOF(c *chk.C) {
-//	bsu := getBSU()
-//	cURL, _ := createNewContainer(c, bsu)
-//	defer delContainer(c, cURL)
-//	bURL, _ := createNewBlockBlob(c, cURL) // This uploads for us.
-//	resp, err := bURL.Download(ctx, 0, 0, nil, false)
-//	c.Assert(err, chk.IsNil)
-//
-//	// Verify that we can inject errors first.
-//	reader := resp.Body(InjectErrorInRetryReaderOptions(errors.New("unrecoverable error")))
-//
-//	_, err = ioutil.ReadAll(reader)
-//	c.Assert(err, chk.NotNil)
-//	c.Assert(err.Error(), chk.Equals, "unrecoverable error")
-//
-//	// Then inject the retryable error.
-//	reader = resp.Body(InjectErrorInRetryReaderOptions(io.ErrUnexpectedEOF))
-//
-//	buf, err := ioutil.ReadAll(reader)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(buf, chk.DeepEquals, []byte(blockBlobDefaultData))
-//}
+func (s *aztestsSuite) TestblobClientPartsSASQueryTimes(c *chk.C) {
+	StartTimesInputs := []string{
+		"2020-04-20",
+		"2020-04-20T07:00Z",
+		"2020-04-20T07:15:00Z",
+		"2020-04-20T07:30:00.1234567Z",
+	}
+	StartTimesExpected := []time.Time{
+		time.Date(2020, time.April, 20, 0, 0, 0, 0, time.UTC),
+		time.Date(2020, time.April, 20, 7, 0, 0, 0, time.UTC),
+		time.Date(2020, time.April, 20, 7, 15, 0, 0, time.UTC),
+		time.Date(2020, time.April, 20, 7, 30, 0, 123456700, time.UTC),
+	}
+	ExpiryTimesInputs := []string{
+		"2020-04-21",
+		"2020-04-20T08:00Z",
+		"2020-04-20T08:15:00Z",
+		"2020-04-20T08:30:00.2345678Z",
+	}
+	ExpiryTimesExpected := []time.Time{
+		time.Date(2020, time.April, 21, 0, 0, 0, 0, time.UTC),
+		time.Date(2020, time.April, 20, 8, 0, 0, 0, time.UTC),
+		time.Date(2020, time.April, 20, 8, 15, 0, 0, time.UTC),
+		time.Date(2020, time.April, 20, 8, 30, 0, 234567800, time.UTC),
+	}
+
+	for i := 0; i < len(StartTimesInputs); i++ {
+		urlString :=
+			"https://myaccount.blob.core.windows.net/mycontainer/mydirectory/myfile.txt?" +
+				"se=" + url.QueryEscape(ExpiryTimesInputs[i]) + "&" +
+				"sig=NotASignature&" +
+				"sp=r&" +
+				"spr=https&" +
+				"sr=b&" +
+				"st=" + url.QueryEscape(StartTimesInputs[i]) + "&" +
+				"sv=2019-10-10"
+		url, _ := url.Parse(urlString)
+
+		parts := NewBlobURLParts(*url)
+		c.Assert(parts.Scheme, chk.Equals, "https")
+		c.Assert(parts.Host, chk.Equals, "myaccount.blob.core.windows.net")
+		c.Assert(parts.ContainerName, chk.Equals, "mycontainer")
+		c.Assert(parts.BlobName, chk.Equals, "mydirectory/myfile.txt")
+
+		sas := parts.SAS
+		c.Assert(sas.StartTime(), chk.Equals, StartTimesExpected[i])
+		c.Assert(sas.ExpiryTime(), chk.Equals, ExpiryTimesExpected[i])
+
+		uResult := parts.URL()
+		c.Assert(uResult.String(), chk.Equals, urlString)
+	}
+}
+
+func (s *aztestsSuite) TestDownloadBlockBlobUnexpectedEOF(c *chk.C) {
+	bsu := getBSU()
+	cURL, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, cURL)
+	bURL, _ := createNewBlockBlob(c, cURL) // This uploads for us.
+	resp, err := bURL.Download(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	// Verify that we can inject errors first.
+	reader := resp.Body(InjectErrorInRetryReaderOptions(errors.New("unrecoverable error")))
+
+	_, err = ioutil.ReadAll(reader)
+	c.Assert(err, chk.NotNil)
+	c.Assert(err.Error(), chk.Equals, "unrecoverable error")
+
+	// Then inject the retryable error.
+	reader = resp.Body(InjectErrorInRetryReaderOptions(io.ErrUnexpectedEOF))
+
+	buf, err := ioutil.ReadAll(reader)
+	c.Assert(err, chk.IsNil)
+	c.Assert(buf, chk.DeepEquals, []byte(blockBlobDefaultData))
+}
+
+func InjectErrorInRetryReaderOptions(err error) RetryReaderOptions {
+	return RetryReaderOptions{
+		MaxRetryRequests:       1,
+		doInjectError:          true,
+		doInjectErrorRound:     0,
+		injectedError:          err,
+		NotifyFailedRead:       nil,
+		TreatEarlyCloseAsError: false,
+	}
+}

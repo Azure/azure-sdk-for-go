@@ -88,8 +88,6 @@ func (r httpRange) pointers() *string {
 }
 
 type SetTierOptions struct {
-	tier AccessTier
-
 	// Optional: Indicates the priority with which to rehydrate an archived blob.
 	RehydratePriority *RehydratePriority
 
@@ -97,13 +95,13 @@ type SetTierOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *SetTierOptions) pointers() (tier AccessTier, blobSetTierOptions *BlobSetTierOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) {
+func (o *SetTierOptions) pointers() (blobSetTierOptions *BlobSetTierOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) {
 	if o == nil {
-		return "", nil, nil, nil
+		return nil, nil, nil
 	}
 
 	basics := BlobSetTierOptions{RehydratePriority: o.RehydratePriority}
-	return tier, &basics, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	return &basics, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }
 
 type GetBlobPropertiesOptions struct {
@@ -121,17 +119,16 @@ func (o *GetBlobPropertiesOptions) pointers() (blobGetPropertiesOptions *BlobGet
 }
 
 type SetBlobHTTPHeadersOptions struct {
-	BlobHttpHeaders          BlobHttpHeaders
 	LeaseAccessConditions    *LeaseAccessConditions
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *SetBlobHTTPHeadersOptions) pointers() (blobSetHttpHeadersOptions *BlobSetHTTPHeadersOptions, blobHttpHeaders *BlobHttpHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) {
+func (o *SetBlobHTTPHeadersOptions) pointers() (blobSetHttpHeadersOptions *BlobSetHTTPHeadersOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil, nil, nil
 	}
 
-	return nil, &o.BlobHttpHeaders, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	return nil, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }
 
 type SetBlobMetadataOptions struct {
@@ -195,29 +192,27 @@ func (o *AcquireBlobLeaseOptions) pointers() (blobAcquireLeaseOptions *BlobAcqui
 }
 
 type RenewBlobLeaseOptions struct {
-	LeaseID                  string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *RenewBlobLeaseOptions) pointers() (leaseId string, blobRenewLeaseOptions *BlobRenewLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
+func (o *RenewBlobLeaseOptions) pointers() (blobRenewLeaseOptions *BlobRenewLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
 	if o == nil {
-		return "", nil, nil
+		return nil, nil
 	}
 
-	return o.LeaseID, nil, o.ModifiedAccessConditions
+	return nil, o.ModifiedAccessConditions
 }
 
 type ReleaseBlobLeaseOptions struct {
-	LeaseID                  string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ReleaseBlobLeaseOptions) pointers() (leaseId string, blobReleaseLeaseOptions *BlobReleaseLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
+func (o *ReleaseBlobLeaseOptions) pointers() (blobReleaseLeaseOptions *BlobReleaseLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
 	if o == nil {
-		return "", nil, nil
+		return nil, nil
 	}
 
-	return o.LeaseID, nil, o.ModifiedAccessConditions
+	return nil, o.ModifiedAccessConditions
 }
 
 type BreakBlobLeaseOptions struct {
@@ -257,17 +252,15 @@ func leasePeriodPointer(period int32) (p *int32) {
 }
 
 type ChangeBlobLeaseOptions struct {
-	LeaseID                  string
-	ProposedLeaseID          string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ChangeBlobLeaseOptions) pointers() (leaseId string, proposedLeaseId string, blobChangeLeaseOptions *BlobChangeLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
+func (o *ChangeBlobLeaseOptions) pointers() (blobChangeLeaseOptions *BlobChangeLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
 	if o == nil {
-		return "", "", nil, nil
+		return nil, nil
 	}
 
-	return o.LeaseID, o.ProposedLeaseID, nil, o.ModifiedAccessConditions
+	return nil, o.ModifiedAccessConditions
 }
 
 type StartCopyBlobOptions struct {

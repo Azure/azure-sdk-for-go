@@ -126,8 +126,8 @@ func (b BlobClient) Undelete(ctx context.Context) (*BlobUndeleteResponse, error)
 // bandwidth of the blob. A block blob's tier determines Hot/Cool/Archive storage type. This operation
 // does not update the blob's ETag.
 // For detailed information about block blob level tiering see https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.
-func (b BlobClient) SetTier(ctx context.Context, options *SetTierOptions) (*BlobSetTierResponse, error) {
-	tier, basics, lease, accessConditions := options.pointers()
+func (b BlobClient) SetTier(ctx context.Context, tier AccessTier, options *SetTierOptions) (*BlobSetTierResponse, error) {
+	basics, lease, accessConditions := options.pointers()
 	return b.client.BlobOperations(nil).SetTier(ctx, tier, basics, lease, accessConditions)
 }
 
@@ -140,9 +140,9 @@ func (b BlobClient) GetProperties(ctx context.Context, options *GetBlobPropertie
 
 // SetBlobHTTPHeaders changes a blob's HTTP headers.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
-func (b BlobClient) SetHTTPHeaders(ctx context.Context, options *SetBlobHTTPHeadersOptions) (*BlobSetHTTPHeadersResponse, error) {
-	basics, headers, lease, access := options.pointers()
-	return b.client.BlobOperations(nil).SetHTTPHeaders(ctx, basics, headers, lease, access)
+func (b BlobClient) SetHTTPHeaders(ctx context.Context, blobHttpHeaders BlobHttpHeaders, options *SetBlobHTTPHeadersOptions) (*BlobSetHTTPHeadersResponse, error) {
+	basics, lease, access := options.pointers()
+	return b.client.BlobOperations(nil).SetHTTPHeaders(ctx, basics, &blobHttpHeaders, lease, access)
 }
 
 // SetBlobMetadata changes a blob's metadata.
@@ -175,15 +175,15 @@ func (b BlobClient) AcquireLease(ctx context.Context, options *AcquireBlobLeaseO
 
 // RenewLease renews the blob's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (b BlobClient) RenewLease(ctx context.Context, options *RenewBlobLeaseOptions) (*BlobRenewLeaseResponse, error) {
-	leaseID, basics, access := options.pointers()
+func (b BlobClient) RenewLease(ctx context.Context, leaseID string, options *RenewBlobLeaseOptions) (*BlobRenewLeaseResponse, error) {
+	basics, access := options.pointers()
 	return b.client.BlobOperations(nil).RenewLease(ctx, leaseID, basics, access)
 }
 
 // ReleaseLease releases the blob's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (b BlobClient) ReleaseLease(ctx context.Context, options *ReleaseBlobLeaseOptions) (*BlobReleaseLeaseResponse, error) {
-	leaseID, basics, access := options.pointers()
+func (b BlobClient) ReleaseLease(ctx context.Context, leaseID string, options *ReleaseBlobLeaseOptions) (*BlobReleaseLeaseResponse, error) {
+	basics, access := options.pointers()
 	return b.client.BlobOperations(nil).ReleaseLease(ctx, leaseID, basics, access)
 }
 
@@ -197,8 +197,8 @@ func (b BlobClient) BreakLease(ctx context.Context, options *BreakBlobLeaseOptio
 
 // ChangeLease changes the blob's lease ID.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (b BlobClient) ChangeLease(ctx context.Context, options *ChangeBlobLeaseOptions) (*BlobChangeLeaseResponse, error) {
-	leaseID, proposedID, basics, access := options.pointers()
+func (b BlobClient) ChangeLease(ctx context.Context, leaseID string, proposedID string, options *ChangeBlobLeaseOptions) (*BlobChangeLeaseResponse, error) {
+	basics, access := options.pointers()
 	return b.client.BlobOperations(nil).ChangeLease(ctx, leaseID, proposedID, basics, access)
 }
 

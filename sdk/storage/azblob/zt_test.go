@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"math/rand"
 	"net/url"
 	"os"
@@ -12,6 +13,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
@@ -369,21 +372,20 @@ func runTestRequiringServiceProperties(c *chk.C, bsu ServiceClient, code string,
 	}
 }
 
-//
-//func enableSoftDelete(c *chk.C, bsu ServiceClient) {
-//	days := int32(1)
-//	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: true, Days: &days}})
-//	c.Assert(err, chk.IsNil)
-//}
-//
-//func disableSoftDelete(c *chk.C, bsu ServiceClient) {
-//	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: false}})
-//	c.Assert(err, chk.IsNil)
-//}
-//
-//func validateUpload(c *chk.C, blobURL BlockBlobClient) {
-//	resp, err := blobURL.Download(ctx, 0, 0, BlobAccessConditions{}, false)
-//	c.Assert(err, chk.IsNil)
-//	data, _ := ioutil.ReadAll(resp.Response().Body)
-//	c.Assert(data, chk.HasLen, 0)
-//}
+func enableSoftDelete(c *chk.C, bsu ServiceClient) {
+	days := int32(1)
+	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(true), Days: &days}})
+	c.Assert(err, chk.IsNil)
+}
+
+func disableSoftDelete(c *chk.C, bsu ServiceClient) {
+	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: to.BoolPtr(false)}})
+	c.Assert(err, chk.IsNil)
+}
+
+func validateUpload(c *chk.C, blobURL BlockBlobClient) {
+	resp, err := blobURL.Download(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	data, _ := ioutil.ReadAll(resp.Response().Body)
+	c.Assert(data, chk.HasLen, 0)
+}

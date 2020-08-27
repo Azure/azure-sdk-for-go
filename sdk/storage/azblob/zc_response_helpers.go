@@ -7,39 +7,29 @@ import (
 	"time"
 )
 
-// BlobHTTPHeaders contains read/writeable blob properties.
-type BlobHTTPHeaders struct {
-	ContentType        *string
-	ContentMD5         *[]byte
-	ContentEncoding    *string
-	ContentLanguage    *string
-	ContentDisposition *string
-	CacheControl       *string
-}
-
 // NewHTTPHeaders returns the user-modifiable properties for this blob.
-func (bgpr BlobGetPropertiesResponse) NewHTTPHeaders() BlobHTTPHeaders {
-	return BlobHTTPHeaders{
-		ContentType:        bgpr.ContentType,
-		ContentEncoding:    bgpr.ContentEncoding,
-		ContentLanguage:    bgpr.ContentLanguage,
-		ContentDisposition: bgpr.ContentDisposition,
-		CacheControl:       bgpr.CacheControl,
-		ContentMD5:         bgpr.ContentMd5,
+func (bgpr BlobGetPropertiesResponse) NewHTTPHeaders() BlobHttpHeaders {
+	return BlobHttpHeaders{
+		BlobContentType:        bgpr.ContentType,
+		BlobContentEncoding:    bgpr.ContentEncoding,
+		BlobContentLanguage:    bgpr.ContentLanguage,
+		BlobContentDisposition: bgpr.ContentDisposition,
+		BlobCacheControl:       bgpr.CacheControl,
+		BlobContentMd5:         bgpr.ContentMd5,
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 // NewHTTPHeaders returns the user-modifiable properties for this blob.
-func (dr BlobDownloadResponse) NewHTTPHeaders() BlobHTTPHeaders {
-	return BlobHTTPHeaders{
-		ContentType:        dr.ContentType,
-		ContentEncoding:    dr.ContentEncoding,
-		ContentLanguage:    dr.ContentLanguage,
-		ContentDisposition: dr.ContentDisposition,
-		CacheControl:       dr.CacheControl,
-		ContentMD5:         dr.ContentMd5,
+func (dr BlobDownloadResponse) NewHTTPHeaders() BlobHttpHeaders {
+	return BlobHttpHeaders{
+		BlobContentType:        dr.ContentType,
+		BlobContentEncoding:    dr.ContentEncoding,
+		BlobContentLanguage:    dr.ContentLanguage,
+		BlobContentDisposition: dr.ContentDisposition,
+		BlobCacheControl:       dr.CacheControl,
+		BlobContentMd5:         dr.ContentMd5,
 	}
 }
 
@@ -84,7 +74,7 @@ func (r DownloadResponse) Response() *http.Response {
 }
 
 // NewHTTPHeaders returns the user-modifiable properties for this blob.
-func (r DownloadResponse) NewHTTPHeaders() BlobHTTPHeaders {
+func (r DownloadResponse) NewHTTPHeaders() BlobHttpHeaders {
 	return r.r.NewHTTPHeaders()
 }
 

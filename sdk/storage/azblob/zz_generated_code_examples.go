@@ -16,13 +16,13 @@ import (
 
 const (
 	// the name of the sample container to create
-	containerName = "azblobsamplecontainer"
+	sampleContainerName = "azblobsamplecontainer"
 
 	// the name of the sample block blob
-	blockBlobName = "azblobsampleblockblob"
+	sampleBlockBlobName = "azblobsampleblockblob"
 
 	// the name of the sample append blob
-	appendBlobName = "azblobsampleappendblob"
+	sampleAppendBlobName = "azblobsampleappendblob"
 )
 
 // returns a credential that can be used to authenticate with blob storage
@@ -75,7 +75,7 @@ func pathJoin(elem ...string) string {
 }
 
 func ExampleContainerOperations_Create() {
-	endpoint := pathJoin(getEndpoint(), containerName)
+	endpoint := pathJoin(getEndpoint(), sampleContainerName)
 	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -111,7 +111,7 @@ func ExampleServiceOperations_ListContainersSegment() {
 }
 
 func ExampleBlockBlobOperations_Upload() {
-	endpoint := pathJoin(getEndpoint(), containerName, blockBlobName)
+	endpoint := pathJoin(getEndpoint(), sampleContainerName, sampleBlockBlobName)
 	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -128,7 +128,7 @@ func ExampleBlockBlobOperations_Upload() {
 }
 
 func ExampleBlobOperations_Download() {
-	endpoint := pathJoin(getEndpoint(), containerName, blockBlobName)
+	endpoint := pathJoin(getEndpoint(), sampleContainerName, sampleBlockBlobName)
 	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -146,7 +146,7 @@ func ExampleBlobOperations_Download() {
 }
 
 func ExampleAppendBlobOperations_Create() {
-	endpoint := pathJoin(getEndpoint(), containerName, appendBlobName)
+	endpoint := pathJoin(getEndpoint(), sampleContainerName, sampleAppendBlobName)
 	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -161,7 +161,7 @@ func ExampleAppendBlobOperations_Create() {
 }
 
 func ExampleAppendBlobOperations_AppendBlock() {
-	endpoint := pathJoin(getEndpoint(), containerName, appendBlobName)
+	endpoint := pathJoin(getEndpoint(), sampleContainerName, sampleAppendBlobName)
 	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -178,7 +178,7 @@ func ExampleAppendBlobOperations_AppendBlock() {
 }
 
 func ExampleContainerOperations_ListBlobFlatSegment() {
-	endpoint := pathJoin(getEndpoint(), containerName)
+	endpoint := pathJoin(getEndpoint(), sampleContainerName)
 	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -207,7 +207,7 @@ func ExampleContainerOperations_ListBlobFlatSegment() {
 }
 
 func ExampleBlobOperations_Delete() {
-	endpoint := pathJoin(getEndpoint(), containerName, blockBlobName)
+	endpoint := pathJoin(getEndpoint(), sampleContainerName, sampleBlockBlobName)
 	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -219,7 +219,7 @@ func ExampleBlobOperations_Delete() {
 	}
 	fmt.Println(d.RawResponse.StatusCode)
 
-	endpoint = pathJoin(getEndpoint(), containerName, appendBlobName)
+	endpoint = pathJoin(getEndpoint(), sampleContainerName, sampleAppendBlobName)
 	client, err = newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)
@@ -236,7 +236,7 @@ func ExampleBlobOperations_Delete() {
 }
 
 func ExampleContainerOperations_Delete() {
-	endpoint := pathJoin(getEndpoint(), containerName)
+	endpoint := pathJoin(getEndpoint(), sampleContainerName)
 	client, err := newClient(endpoint, getCredential(), nil)
 	if err != nil {
 		panic(err)

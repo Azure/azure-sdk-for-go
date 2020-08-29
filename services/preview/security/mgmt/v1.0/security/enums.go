@@ -339,11 +339,13 @@ const (
 	Alerts EventSource = "Alerts"
 	// Assessments ...
 	Assessments EventSource = "Assessments"
+	// SubAssessments ...
+	SubAssessments EventSource = "SubAssessments"
 )
 
 // PossibleEventSourceValues returns an array of possible values for the EventSource const type.
 func PossibleEventSourceValues() []EventSource {
-	return []EventSource{Alerts, Assessments}
+	return []EventSource{Alerts, Assessments, SubAssessments}
 }
 
 // Exe enumerates the values for exe.

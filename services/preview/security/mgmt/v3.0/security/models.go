@@ -3661,7 +3661,7 @@ type Automation struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// Location - READ-ONLY; Location where the resource is stored
+	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Kind of the resource
 	Kind *string `json:"kind,omitempty"`
@@ -3676,6 +3676,9 @@ func (a Automation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.AutomationProperties != nil {
 		objectMap["properties"] = a.AutomationProperties
+	}
+	if a.Location != nil {
+		objectMap["location"] = a.Location
 	}
 	if a.Kind != nil {
 		objectMap["kind"] = a.Kind
@@ -4285,7 +4288,7 @@ type AutomationScope struct {
 // security alerts and security assessments. To learn more about the supported security events data models
 // schemas - please visit https://aka.ms/ASCAutomationSchemas.
 type AutomationSource struct {
-	// EventSource - A valid event source type. Possible values include: 'Assessments', 'Alerts'
+	// EventSource - A valid event source type. Possible values include: 'Assessments', 'SubAssessments', 'Alerts'
 	EventSource EventSource `json:"eventSource,omitempty"`
 	// RuleSets - A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical 'or').
 	RuleSets *[]AutomationRuleSet `json:"ruleSets,omitempty"`
@@ -4730,6 +4733,12 @@ func (ard AzureResourceDetails) AsBasicResourceDetails() (BasicResourceDetails, 
 type AzureResourceLink struct {
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
+}
+
+// AzureTrackedResourceLocation describes an Azure resource with location
+type AzureTrackedResourceLocation struct {
+	// Location - Location where the resource is stored
+	Location *string `json:"location,omitempty"`
 }
 
 // CefExternalSecuritySolution represents a security solution which sends CEF logs to an OMS workspace
@@ -9772,6 +9781,35 @@ type IotAlertTypeProperties struct {
 	RemediationSteps *[]string `json:"remediationSteps,omitempty"`
 }
 
+// IotDefenderSettingsList list of IoT Defender settings
+type IotDefenderSettingsList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List data
+	Value *[]IotDefenderSettingsModel `json:"value,omitempty"`
+}
+
+// IotDefenderSettingsModel ioT Defender settings
+type IotDefenderSettingsModel struct {
+	autorest.Response `json:"-"`
+	// Properties - IoT Defender settings properties
+	Properties interface{} `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IotDefenderSettingsModel.
+func (idsm IotDefenderSettingsModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if idsm.Properties != nil {
+		objectMap["properties"] = idsm.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // IotRecommendation ioT recommendation
 type IotRecommendation struct {
 	autorest.Response `json:"-"`
@@ -11185,6 +11223,35 @@ func (page IoTSecuritySolutionsListPage) Values() []IoTSecuritySolutionModel {
 // Creates a new instance of the IoTSecuritySolutionsListPage type.
 func NewIoTSecuritySolutionsListPage(getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
 	return IoTSecuritySolutionsListPage{fn: getNextPage}
+}
+
+// IotSensor ioT sensor
+type IotSensor struct {
+	autorest.Response `json:"-"`
+	// Properties - IoT sensor properties
+	Properties interface{} `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IotSensor.
+func (is IotSensor) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if is.Properties != nil {
+		objectMap["properties"] = is.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// IotSensorsList list of IoT sensors
+type IotSensorsList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List data
+	Value *[]IotSensor `json:"value,omitempty"`
 }
 
 // IoTSeverityMetrics ioT Security solution analytics severity metrics.
@@ -12948,6 +13015,115 @@ func (page OperationListPage) Values() []Operation {
 // Creates a new instance of the OperationListPage type.
 func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
 	return OperationListPage{fn: getNextPage}
+}
+
+// PackageDownloadInfo information on a specific package download
+type PackageDownloadInfo struct {
+	// Version - READ-ONLY; Version number
+	Version *string `json:"version,omitempty"`
+	// Link - Download link
+	Link *string `json:"link,omitempty"`
+	// VersionKind - READ-ONLY; Kind of the version. Possible values include: 'Latest', 'Previous'
+	VersionKind VersionKind `json:"versionKind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PackageDownloadInfo.
+func (pdi PackageDownloadInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pdi.Link != nil {
+		objectMap["link"] = pdi.Link
+	}
+	return json.Marshal(objectMap)
+}
+
+// PackageDownloads information about package downloads
+type PackageDownloads struct {
+	autorest.Response `json:"-"`
+	// Sensor - READ-ONLY; Contains all Sensor binary downloads
+	Sensor *PackageDownloadsSensor `json:"sensor,omitempty"`
+	// CentralManager - READ-ONLY; All downloads for Central Manager
+	CentralManager *PackageDownloadsCentralManager `json:"centralManager,omitempty"`
+	// ThreatIntelligence - READ-ONLY; All downloads for threat intelligence
+	ThreatIntelligence *PackageDownloadsThreatIntelligence `json:"threatIntelligence,omitempty"`
+}
+
+// PackageDownloadsCentralManager all downloads for Central Manager
+type PackageDownloadsCentralManager struct {
+	// Full - READ-ONLY; Contains full package downloads
+	Full *PackageDownloadsCentralManagerFull `json:"full,omitempty"`
+	// Upgrade - READ-ONLY; Central Manager upgrade package downloads (on existing installations)
+	Upgrade *[]PackageDownloadInfo `json:"upgrade,omitempty"`
+}
+
+// PackageDownloadsCentralManagerFull contains full package downloads
+type PackageDownloadsCentralManagerFull struct {
+	// Iso - READ-ONLY; Contains all ISO full versions of the Central Manager
+	Iso *[]PackageDownloadInfo `json:"iso,omitempty"`
+	// Ovf - READ-ONLY; Contains all OVF (virtual machine) full versions of the Central Manager
+	Ovf *PackageDownloadsCentralManagerFullOvf `json:"ovf,omitempty"`
+}
+
+// PackageDownloadsCentralManagerFullOvf contains all OVF (virtual machine) full versions of the Central
+// Manager
+type PackageDownloadsCentralManagerFullOvf struct {
+	// Enterprise - READ-ONLY; The Enterprise package type
+	Enterprise *[]PackageDownloadInfo `json:"enterprise,omitempty"`
+	// EnterpriseHighAvailability - READ-ONLY; The EnterpriseHighAvailability package type
+	EnterpriseHighAvailability *[]PackageDownloadInfo `json:"enterpriseHighAvailability,omitempty"`
+	// Medium - READ-ONLY; The Medium package type
+	Medium *[]PackageDownloadInfo `json:"medium,omitempty"`
+	// MediumHighAvailability - READ-ONLY; The MediumHighAvailability package type
+	MediumHighAvailability *[]PackageDownloadInfo `json:"mediumHighAvailability,omitempty"`
+}
+
+// PackageDownloadsSensor contains all Sensor binary downloads
+type PackageDownloadsSensor struct {
+	// Full - READ-ONLY; Contains full package downloads
+	Full *PackageDownloadsSensorFull `json:"full,omitempty"`
+	// Upgrade - Sensor upgrade package downloads (on existing installations)
+	Upgrade *[]PackageDownloadInfo `json:"upgrade,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PackageDownloadsSensor.
+func (pd PackageDownloadsSensor) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pd.Upgrade != nil {
+		objectMap["upgrade"] = pd.Upgrade
+	}
+	return json.Marshal(objectMap)
+}
+
+// PackageDownloadsSensorFull contains full package downloads
+type PackageDownloadsSensorFull struct {
+	// Iso - READ-ONLY; Contains all ISO full versions for the sensor
+	Iso *[]PackageDownloadInfo `json:"iso,omitempty"`
+	// Ovf - Contains all OVF (virtual machine) full versions for the sensor
+	Ovf *PackageDownloadsSensorFullOvf `json:"ovf,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PackageDownloadsSensorFull.
+func (pd PackageDownloadsSensorFull) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pd.Ovf != nil {
+		objectMap["ovf"] = pd.Ovf
+	}
+	return json.Marshal(objectMap)
+}
+
+// PackageDownloadsSensorFullOvf contains all OVF (virtual machine) full versions for the sensor
+type PackageDownloadsSensorFullOvf struct {
+	// Enterprise - READ-ONLY; Enterprise package type
+	Enterprise *[]PackageDownloadInfo `json:"enterprise,omitempty"`
+	// Medium - READ-ONLY; Medium package type
+	Medium *[]PackageDownloadInfo `json:"medium,omitempty"`
+	// Line - READ-ONLY; Line package type
+	Line *[]PackageDownloadInfo `json:"line,omitempty"`
+}
+
+// PackageDownloadsThreatIntelligence all downloads for threat intelligence
+type PackageDownloadsThreatIntelligence struct {
+	// Link - Download link
+	Link *string `json:"link,omitempty"`
 }
 
 // PathRecommendation represents a path that is recommended to be allowed and its properties
@@ -15131,6 +15307,8 @@ type SecureScoreItemProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// ScoreDetails - READ-ONLY; score object
 	*ScoreDetails `json:"score,omitempty"`
+	// Weight - READ-ONLY; The weight for calculation of an aggregated score for several scopes
+	Weight *int64 `json:"weight,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SecureScoreItemProperties.
@@ -15165,6 +15343,15 @@ func (ssip *SecureScoreItemProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ssip.ScoreDetails = &scoreDetails
+			}
+		case "weight":
+			if v != nil {
+				var weight int64
+				err = json.Unmarshal(*v, &weight)
+				if err != nil {
+					return err
+				}
+				ssip.Weight = &weight
 			}
 		}
 	}
@@ -17903,7 +18090,7 @@ type TrackedResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// Location - READ-ONLY; Location where the resource is stored
+	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Kind of the resource
 	Kind *string `json:"kind,omitempty"`
@@ -17916,6 +18103,9 @@ type TrackedResource struct {
 // MarshalJSON is the custom marshaler for TrackedResource.
 func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
+	}
 	if tr.Kind != nil {
 		objectMap["kind"] = tr.Kind
 	}

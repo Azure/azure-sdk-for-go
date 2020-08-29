@@ -456,11 +456,13 @@ const (
 	Alerts EventSource = "Alerts"
 	// Assessments ...
 	Assessments EventSource = "Assessments"
+	// SubAssessments ...
+	SubAssessments EventSource = "SubAssessments"
 )
 
 // PossibleEventSourceValues returns an array of possible values for the EventSource const type.
 func PossibleEventSourceValues() []EventSource {
-	return []EventSource{Alerts, Assessments}
+	return []EventSource{Alerts, Assessments, SubAssessments}
 }
 
 // Exe enumerates the values for exe.
@@ -1398,4 +1400,19 @@ const (
 // PossibleValueTypeValues returns an array of possible values for the ValueType const type.
 func PossibleValueTypeValues() []ValueType {
 	return []ValueType{ValueTypeIPCidr, ValueTypeString}
+}
+
+// VersionKind enumerates the values for version kind.
+type VersionKind string
+
+const (
+	// Latest ...
+	Latest VersionKind = "Latest"
+	// Previous ...
+	Previous VersionKind = "Previous"
+)
+
+// PossibleVersionKindValues returns an array of possible values for the VersionKind const type.
+func PossibleVersionKindValues() []VersionKind {
+	return []VersionKind{Latest, Previous}
 }

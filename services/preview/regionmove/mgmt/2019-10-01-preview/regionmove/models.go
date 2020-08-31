@@ -248,8 +248,17 @@ type Identity struct {
 type JobStatus struct {
 	// JobName - Possible values include: 'InitialSync'
 	JobName JobName `json:"jobName,omitempty"`
-	// JobProgress - Gets or sets the monitoring job percentage.
+	// JobProgress - READ-ONLY; Gets or sets the monitoring job percentage.
 	JobProgress *string `json:"jobProgress,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobStatus.
+func (js JobStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if js.JobName != "" {
+		objectMap["jobName"] = js.JobName
+	}
+	return json.Marshal(objectMap)
 }
 
 // LBBackendAddressPoolResourceSettings defines load balancer backend address pool properties.
@@ -997,13 +1006,13 @@ type MoveResourceError struct {
 
 // MoveResourceErrorBody an error response from the Azure Migrate service.
 type MoveResourceErrorBody struct {
-	// Code - An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	// Code - READ-ONLY; An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
 	Code *string `json:"code,omitempty"`
-	// Message - A message describing the error, intended to be suitable for display in a user interface.
+	// Message - READ-ONLY; A message describing the error, intended to be suitable for display in a user interface.
 	Message *string `json:"message,omitempty"`
-	// Target - The target of the particular error. For example, the name of the property in error.
+	// Target - READ-ONLY; The target of the particular error. For example, the name of the property in error.
 	Target *string `json:"target,omitempty"`
-	// Details - A list of additional details about the error.
+	// Details - READ-ONLY; A list of additional details about the error.
 	Details *[]MoveResourceErrorBody `json:"details,omitempty"`
 }
 
@@ -1038,7 +1047,8 @@ type MoveResourceProperties struct {
 	DependsOn *[]MoveResourceDependency `json:"dependsOn,omitempty"`
 	// DependsOnOverrides - Gets or sets the move resource dependencies overrides.
 	DependsOnOverrides *[]MoveResourceDependencyOverride `json:"dependsOnOverrides,omitempty"`
-	Errors             *MoveResourceError                `json:"errors,omitempty"`
+	// Errors - READ-ONLY; Defines the move resource errors.
+	Errors *MoveResourcePropertiesErrors `json:"errors,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MoveResourceProperties.
@@ -1056,9 +1066,6 @@ func (mrp MoveResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap["resourceSettings"] = mrp.ResourceSettings
 	if mrp.DependsOnOverrides != nil {
 		objectMap["dependsOnOverrides"] = mrp.DependsOnOverrides
-	}
-	if mrp.Errors != nil {
-		objectMap["errors"] = mrp.Errors
 	}
 	return json.Marshal(objectMap)
 }
@@ -1154,7 +1161,7 @@ func (mrp *MoveResourceProperties) UnmarshalJSON(body []byte) error {
 			}
 		case "errors":
 			if v != nil {
-				var errorsVar MoveResourceError
+				var errorsVar MoveResourcePropertiesErrors
 				err = json.Unmarshal(*v, &errorsVar)
 				if err != nil {
 					return err
@@ -1167,14 +1174,35 @@ func (mrp *MoveResourceProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// MoveResourcePropertiesErrors defines the move resource errors.
+type MoveResourcePropertiesErrors struct {
+	// Properties - The move resource error body.
+	Properties *MoveResourceErrorBody `json:"properties,omitempty"`
+}
+
 // MoveResourcePropertiesMoveStatus defines the move resource status.
 type MoveResourcePropertiesMoveStatus struct {
 	// MoveState - Possible values include: 'AssignmentPending', 'PreparePending', 'PrepareInProgress', 'PrepareFailed', 'MovePending', 'MoveInProgress', 'MoveFailed', 'DiscardInProgress', 'DiscardFailed', 'CommitPending', 'CommitInProgress', 'CommitFailed', 'Committed'
 	MoveState MoveState          `json:"moveState,omitempty"`
 	JobStatus *JobStatus         `json:"jobStatus,omitempty"`
 	Errors    *MoveResourceError `json:"errors,omitempty"`
-	// TargetID - Gets the Target ARM Id of the resource.
+	// TargetID - READ-ONLY; Gets the Target ARM Id of the resource.
 	TargetID *string `json:"targetId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MoveResourcePropertiesMoveStatus.
+func (mrpS MoveResourcePropertiesMoveStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mrpS.MoveState != "" {
+		objectMap["moveState"] = mrpS.MoveState
+	}
+	if mrpS.JobStatus != nil {
+		objectMap["jobStatus"] = mrpS.JobStatus
+	}
+	if mrpS.Errors != nil {
+		objectMap["errors"] = mrpS.Errors
+	}
+	return json.Marshal(objectMap)
 }
 
 // MoveResourcePropertiesSourceResourceSettings gets or sets the source resource settings.
@@ -1332,8 +1360,23 @@ type MoveResourceStatus struct {
 	MoveState MoveState          `json:"moveState,omitempty"`
 	JobStatus *JobStatus         `json:"jobStatus,omitempty"`
 	Errors    *MoveResourceError `json:"errors,omitempty"`
-	// TargetID - Gets the Target ARM Id of the resource.
+	// TargetID - READ-ONLY; Gets the Target ARM Id of the resource.
 	TargetID *string `json:"targetId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MoveResourceStatus.
+func (mrs MoveResourceStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mrs.MoveState != "" {
+		objectMap["moveState"] = mrs.MoveState
+	}
+	if mrs.JobStatus != nil {
+		objectMap["jobStatus"] = mrs.JobStatus
+	}
+	if mrs.Errors != nil {
+		objectMap["errors"] = mrs.Errors
+	}
+	return json.Marshal(objectMap)
 }
 
 // NetworkInterfaceResourceSettings defines the network interface resource settings.

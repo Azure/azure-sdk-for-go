@@ -47,6 +47,7 @@ import (
 type ListDefinition struct {
 	Include      []string          `json:"include"`
 	PathOverride map[string]string `json:"pathOverride"`
+	IgnoredPaths []string          `json:"ignoredPaths"`
 }
 
 const (

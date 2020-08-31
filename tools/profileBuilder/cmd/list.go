@@ -122,7 +122,7 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 		fmt.Printf("Executes profileBuilder in %s\n", outputRootDir)
 		outputLog.Printf("Output-Location set to: %s", outputRootDir)
 		if clearOutputFlag {
-			if err := dirs.DeleteChildDirs(outputRootDir); err != nil {
+			if err := clearOutputFolder(outputRootDir, listDef.IgnoredPaths); err != nil {
 				errLog.Fatalf("Unable to clear output-folder: %v", err)
 			}
 		}
@@ -200,4 +200,31 @@ func generateGoMod(modDir string) error {
 	}
 	_, err = fmt.Fprintf(gomod, gomodFormat, mod)
 	return err
+}
+
+func clearOutputFolder(root string, excepts []string) error {
+	children, err := dirs.GetSubdirs(root)
+	if err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	for _, child := range children {
+		if contains(excepts, child) {
+			continue
+		}
+		childPath := filepath.Join(root, child)
+		err = os.RemoveAll(childPath)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func contains(array []string, item string) bool {
+	for _, e := range array {
+		if e == item {
+			return true
+		}
+	}
+	return false
 }

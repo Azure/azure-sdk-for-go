@@ -23,7 +23,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Azure/azure-sdk-for-go/tools/internal/dirs"
 	"github.com/Azure/azure-sdk-for-go/tools/profileBuilder/model"
 	"github.com/spf13/cobra"
 )
@@ -77,7 +76,7 @@ By default, this command ignores API versions that are in preview.`,
 		}
 
 		if clearOutputFlag {
-			if err := dirs.DeleteChildDirs(outputRootDir); err != nil {
+			if err := clearOutputFolder(outputRootDir, nil); err != nil {
 				errLog.Fatalf("Unable to clear output-folder: %v", err)
 			}
 		}

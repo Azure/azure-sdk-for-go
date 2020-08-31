@@ -2020,7 +2020,7 @@ type Automation struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// Location - READ-ONLY; Location where the resource is stored
+	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Kind of the resource
 	Kind *string `json:"kind,omitempty"`
@@ -2035,6 +2035,9 @@ func (a Automation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if a.AutomationProperties != nil {
 		objectMap["properties"] = a.AutomationProperties
+	}
+	if a.Location != nil {
+		objectMap["location"] = a.Location
 	}
 	if a.Kind != nil {
 		objectMap["kind"] = a.Kind
@@ -2644,7 +2647,7 @@ type AutomationScope struct {
 // security alerts and security assessments. To learn more about the supported security events data models
 // schemas - please visit https://aka.ms/ASCAutomationSchemas.
 type AutomationSource struct {
-	// EventSource - A valid event source type. Possible values include: 'Assessments', 'Alerts'
+	// EventSource - A valid event source type. Possible values include: 'Assessments', 'SubAssessments', 'Alerts'
 	EventSource EventSource `json:"eventSource,omitempty"`
 	// RuleSets - A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical 'or').
 	RuleSets *[]AutomationRuleSet `json:"ruleSets,omitempty"`
@@ -3089,6 +3092,12 @@ func (ard AzureResourceDetails) AsBasicResourceDetails() (BasicResourceDetails, 
 type AzureResourceLink struct {
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
+}
+
+// AzureTrackedResourceLocation describes an Azure resource with location
+type AzureTrackedResourceLocation struct {
+	// Location - Location where the resource is stored
+	Location *string `json:"location,omitempty"`
 }
 
 // CefExternalSecuritySolution represents a security solution which sends CEF logs to an OMS workspace
@@ -8412,6 +8421,8 @@ type SecureScoreItemProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// ScoreDetails - READ-ONLY; score object
 	*ScoreDetails `json:"score,omitempty"`
+	// Weight - READ-ONLY; The weight for calculation of an aggregated score for several scopes
+	Weight *int64 `json:"weight,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SecureScoreItemProperties.
@@ -8446,6 +8457,15 @@ func (ssip *SecureScoreItemProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ssip.ScoreDetails = &scoreDetails
+			}
+		case "weight":
+			if v != nil {
+				var weight int64
+				err = json.Unmarshal(*v, &weight)
+				if err != nil {
+					return err
+				}
+				ssip.Weight = &weight
 			}
 		}
 	}
@@ -9998,7 +10018,7 @@ type TrackedResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// Location - READ-ONLY; Location where the resource is stored
+	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Kind of the resource
 	Kind *string `json:"kind,omitempty"`
@@ -10011,6 +10031,9 @@ type TrackedResource struct {
 // MarshalJSON is the custom marshaler for TrackedResource.
 func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
+	}
 	if tr.Kind != nil {
 		objectMap["kind"] = tr.Kind
 	}

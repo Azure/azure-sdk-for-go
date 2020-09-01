@@ -187,11 +187,13 @@ const (
 	Java11 RuntimeVersion = "Java_11"
 	// Java8 ...
 	Java8 RuntimeVersion = "Java_8"
+	// NetCore31 ...
+	NetCore31 RuntimeVersion = "NetCore_31"
 )
 
 // PossibleRuntimeVersionValues returns an array of possible values for the RuntimeVersion const type.
 func PossibleRuntimeVersionValues() []RuntimeVersion {
-	return []RuntimeVersion{Java11, Java8}
+	return []RuntimeVersion{Java11, Java8, NetCore31}
 }
 
 // SkuScaleType enumerates the values for sku scale type.
@@ -209,6 +211,38 @@ const (
 // PossibleSkuScaleTypeValues returns an array of possible values for the SkuScaleType const type.
 func PossibleSkuScaleTypeValues() []SkuScaleType {
 	return []SkuScaleType{SkuScaleTypeAutomatic, SkuScaleTypeManual, SkuScaleTypeNone}
+}
+
+// SupportedRuntimePlatform enumerates the values for supported runtime platform.
+type SupportedRuntimePlatform string
+
+const (
+	// Java ...
+	Java SupportedRuntimePlatform = "Java"
+	// NETCore ...
+	NETCore SupportedRuntimePlatform = ".NET Core"
+)
+
+// PossibleSupportedRuntimePlatformValues returns an array of possible values for the SupportedRuntimePlatform const type.
+func PossibleSupportedRuntimePlatformValues() []SupportedRuntimePlatform {
+	return []SupportedRuntimePlatform{Java, NETCore}
+}
+
+// SupportedRuntimeVersion enumerates the values for supported runtime version.
+type SupportedRuntimeVersion string
+
+const (
+	// SupportedRuntimeVersionJava11 ...
+	SupportedRuntimeVersionJava11 SupportedRuntimeVersion = "Java_11"
+	// SupportedRuntimeVersionJava8 ...
+	SupportedRuntimeVersionJava8 SupportedRuntimeVersion = "Java_8"
+	// SupportedRuntimeVersionNetCore31 ...
+	SupportedRuntimeVersionNetCore31 SupportedRuntimeVersion = "NetCore_31"
+)
+
+// PossibleSupportedRuntimeVersionValues returns an array of possible values for the SupportedRuntimeVersion const type.
+func PossibleSupportedRuntimeVersionValues() []SupportedRuntimeVersion {
+	return []SupportedRuntimeVersion{SupportedRuntimeVersionJava11, SupportedRuntimeVersionJava8, SupportedRuntimeVersionNetCore31}
 }
 
 // TestKeyType enumerates the values for test key type.
@@ -251,11 +285,13 @@ type UserSourceType string
 const (
 	// Jar ...
 	Jar UserSourceType = "Jar"
+	// NetCoreZip ...
+	NetCoreZip UserSourceType = "NetCoreZip"
 	// Source ...
 	Source UserSourceType = "Source"
 )
 
 // PossibleUserSourceTypeValues returns an array of possible values for the UserSourceType const type.
 func PossibleUserSourceTypeValues() []UserSourceType {
-	return []UserSourceType{Jar, Source}
+	return []UserSourceType{Jar, NetCoreZip, Source}
 }

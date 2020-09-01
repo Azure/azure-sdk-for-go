@@ -13,6 +13,9 @@ const (
 
 // DefaultAzureCredentialOptions contains options for configuring how credentials are acquired.
 type DefaultAzureCredentialOptions struct {
+	// set this field to true in order to exclude the AzureCLICredential from the set of
+	// credentials that will be used to authenticate with
+	ExcludeAzureCLICredential bool
 	// set this field to true in order to exclude the EnvironmentCredential from the set of
 	// credentials that will be used to authenticate with
 	ExcludeEnvironmentCredential bool
@@ -25,6 +28,7 @@ type DefaultAzureCredentialOptions struct {
 // types will be tried, in the following order:
 // - EnvironmentCredential
 // - ManagedIdentityCredential
+// - AzureCLICredential
 // Consult the documentation for these credential types for more information on how they attempt authentication.
 func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*ChainedTokenCredential, error) {
 	var creds []azcore.TokenCredential
@@ -51,6 +55,16 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 			errMsg += err.Error()
 		}
 	}
+
+	if !options.ExcludeAzureCLICredential {
+		cliCred, err := NewAzureCLICredential(nil)
+		if err == nil {
+			creds = append(creds, cliCred)
+		} else {
+			errMsg += err.Error()
+		}
+	}
+
 	// if no credentials are added to the slice of TokenCredentials then return a CredentialUnavailableError
 	if len(creds) == 0 {
 		err := &CredentialUnavailableError{CredentialType: "Default Azure Credential", Message: errMsg}

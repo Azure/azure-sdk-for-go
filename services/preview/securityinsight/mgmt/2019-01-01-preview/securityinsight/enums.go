@@ -100,13 +100,15 @@ const (
 	LateralMovement AttackTactic = "LateralMovement"
 	// Persistence ...
 	Persistence AttackTactic = "Persistence"
+	// PreAttack ...
+	PreAttack AttackTactic = "PreAttack"
 	// PrivilegeEscalation ...
 	PrivilegeEscalation AttackTactic = "PrivilegeEscalation"
 )
 
 // PossibleAttackTacticValues returns an array of possible values for the AttackTactic const type.
 func PossibleAttackTacticValues() []AttackTactic {
-	return []AttackTactic{Collection, CommandAndControl, CredentialAccess, DefenseEvasion, Discovery, Execution, Exfiltration, Impact, InitialAccess, LateralMovement, Persistence, PrivilegeEscalation}
+	return []AttackTactic{Collection, CommandAndControl, CredentialAccess, DefenseEvasion, Discovery, Execution, Exfiltration, Impact, InitialAccess, LateralMovement, Persistence, PreAttack, PrivilegeEscalation}
 }
 
 // CaseSeverity enumerates the values for case severity.
@@ -406,6 +408,21 @@ const (
 // PossibleEntityTypeValues returns an array of possible values for the EntityType const type.
 func PossibleEntityTypeValues() []EntityType {
 	return []EntityType{EntityTypeAccount, EntityTypeAzureResource, EntityTypeCloudApplication, EntityTypeDNS, EntityTypeFile, EntityTypeFileHash, EntityTypeHost, EntityTypeHuntingBookmark, EntityTypeIoTDevice, EntityTypeIP, EntityTypeMalware, EntityTypeProcess, EntityTypeRegistryKey, EntityTypeRegistryValue, EntityTypeSecurityAlert, EntityTypeSecurityGroup, EntityTypeURL}
+}
+
+// EventGroupingAggregationKind enumerates the values for event grouping aggregation kind.
+type EventGroupingAggregationKind string
+
+const (
+	// AlertPerResult ...
+	AlertPerResult EventGroupingAggregationKind = "AlertPerResult"
+	// SingleAlert ...
+	SingleAlert EventGroupingAggregationKind = "SingleAlert"
+)
+
+// PossibleEventGroupingAggregationKindValues returns an array of possible values for the EventGroupingAggregationKind const type.
+func PossibleEventGroupingAggregationKindValues() []EventGroupingAggregationKind {
+	return []EventGroupingAggregationKind{AlertPerResult, SingleAlert}
 }
 
 // FileHashAlgorithm enumerates the values for file hash algorithm.
@@ -778,15 +795,34 @@ func PossibleKindBasicEntityValues() []KindBasicEntity {
 type KindBasicSettings string
 
 const (
+	// KindEntityAnalytics ...
+	KindEntityAnalytics KindBasicSettings = "EntityAnalytics"
 	// KindEyesOn ...
 	KindEyesOn KindBasicSettings = "EyesOn"
 	// KindSettings ...
 	KindSettings KindBasicSettings = "Settings"
+	// KindUeba ...
+	KindUeba KindBasicSettings = "Ueba"
 )
 
 // PossibleKindBasicSettingsValues returns an array of possible values for the KindBasicSettings const type.
 func PossibleKindBasicSettingsValues() []KindBasicSettings {
-	return []KindBasicSettings{KindEyesOn, KindSettings}
+	return []KindBasicSettings{KindEntityAnalytics, KindEyesOn, KindSettings, KindUeba}
+}
+
+// KindBasicThreatIntelligenceResource enumerates the values for kind basic threat intelligence resource.
+type KindBasicThreatIntelligenceResource string
+
+const (
+	// KindIndicator ...
+	KindIndicator KindBasicThreatIntelligenceResource = "indicator"
+	// KindThreatIntelligenceResource ...
+	KindThreatIntelligenceResource KindBasicThreatIntelligenceResource = "ThreatIntelligenceResource"
+)
+
+// PossibleKindBasicThreatIntelligenceResourceValues returns an array of possible values for the KindBasicThreatIntelligenceResource const type.
+func PossibleKindBasicThreatIntelligenceResourceValues() []KindBasicThreatIntelligenceResource {
+	return []KindBasicThreatIntelligenceResource{KindIndicator, KindThreatIntelligenceResource}
 }
 
 // MicrosoftSecurityProductName enumerates the values for microsoft security product name.
@@ -915,6 +951,38 @@ func PossibleRelationTypesValues() []RelationTypes {
 	return []RelationTypes{CasesToBookmarks}
 }
 
+// SettingKind enumerates the values for setting kind.
+type SettingKind string
+
+const (
+	// SettingKindEntityAnalytics ...
+	SettingKindEntityAnalytics SettingKind = "EntityAnalytics"
+	// SettingKindEyesOn ...
+	SettingKindEyesOn SettingKind = "EyesOn"
+	// SettingKindUeba ...
+	SettingKindUeba SettingKind = "Ueba"
+)
+
+// PossibleSettingKindValues returns an array of possible values for the SettingKind const type.
+func PossibleSettingKindValues() []SettingKind {
+	return []SettingKind{SettingKindEntityAnalytics, SettingKindEyesOn, SettingKindUeba}
+}
+
+// Source enumerates the values for source.
+type Source string
+
+const (
+	// Localfile ...
+	Localfile Source = "Local file"
+	// Remotestorage ...
+	Remotestorage Source = "Remote storage"
+)
+
+// PossibleSourceValues returns an array of possible values for the Source const type.
+func PossibleSourceValues() []Source {
+	return []Source{Localfile, Remotestorage}
+}
+
 // TemplateStatus enumerates the values for template status.
 type TemplateStatus string
 
@@ -930,6 +998,36 @@ const (
 // PossibleTemplateStatusValues returns an array of possible values for the TemplateStatus const type.
 func PossibleTemplateStatusValues() []TemplateStatus {
 	return []TemplateStatus{Available, Installed, NotAvailable}
+}
+
+// ThreatIntelligenceArmStixSortBy enumerates the values for threat intelligence arm stix sort by.
+type ThreatIntelligenceArmStixSortBy string
+
+const (
+	// Ascending ...
+	Ascending ThreatIntelligenceArmStixSortBy = "ascending"
+	// Descending ...
+	Descending ThreatIntelligenceArmStixSortBy = "descending"
+	// Unsorted ...
+	Unsorted ThreatIntelligenceArmStixSortBy = "unsorted"
+)
+
+// PossibleThreatIntelligenceArmStixSortByValues returns an array of possible values for the ThreatIntelligenceArmStixSortBy const type.
+func PossibleThreatIntelligenceArmStixSortByValues() []ThreatIntelligenceArmStixSortBy {
+	return []ThreatIntelligenceArmStixSortBy{Ascending, Descending, Unsorted}
+}
+
+// ThreatIntelligenceResourceKind enumerates the values for threat intelligence resource kind.
+type ThreatIntelligenceResourceKind string
+
+const (
+	// Indicator Entity represents threat intelligence indicator in the system.
+	Indicator ThreatIntelligenceResourceKind = "indicator"
+)
+
+// PossibleThreatIntelligenceResourceKindValues returns an array of possible values for the ThreatIntelligenceResourceKind const type.
+func PossibleThreatIntelligenceResourceKindValues() []ThreatIntelligenceResourceKind {
+	return []ThreatIntelligenceResourceKind{Indicator}
 }
 
 // TriggerOperator enumerates the values for trigger operator.
@@ -949,4 +1047,23 @@ const (
 // PossibleTriggerOperatorValues returns an array of possible values for the TriggerOperator const type.
 func PossibleTriggerOperatorValues() []TriggerOperator {
 	return []TriggerOperator{Equal, GreaterThan, LessThan, NotEqual}
+}
+
+// UebaDataSources enumerates the values for ueba data sources.
+type UebaDataSources string
+
+const (
+	// AuditLogs ...
+	AuditLogs UebaDataSources = "AuditLogs"
+	// AzureActivity ...
+	AzureActivity UebaDataSources = "AzureActivity"
+	// SecurityEvent ...
+	SecurityEvent UebaDataSources = "SecurityEvent"
+	// SigninLogs ...
+	SigninLogs UebaDataSources = "SigninLogs"
+)
+
+// PossibleUebaDataSourcesValues returns an array of possible values for the UebaDataSources const type.
+func PossibleUebaDataSourcesValues() []UebaDataSources {
+	return []UebaDataSources{AuditLogs, AzureActivity, SecurityEvent, SigninLogs}
 }

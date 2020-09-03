@@ -121,7 +121,7 @@ func (client ModelsClient) AddSender(req *http.Request) (*http.Response, error) 
 func (client ModelsClient) AddResponder(resp *http.Response) (result ListModelData, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

@@ -750,6 +750,8 @@ type TypeBasicCompressionReadSettings = original.TypeBasicCompressionReadSetting
 
 const (
 	TypeCompressionReadSettings TypeBasicCompressionReadSettings = original.TypeCompressionReadSettings
+	TypeTarGZipReadSettings     TypeBasicCompressionReadSettings = original.TypeTarGZipReadSettings
+	TypeTarReadSettings         TypeBasicCompressionReadSettings = original.TypeTarReadSettings
 	TypeZipDeflateReadSettings  TypeBasicCompressionReadSettings = original.TypeZipDeflateReadSettings
 )
 
@@ -1013,6 +1015,8 @@ const (
 	TypeDatasetCompression TypeBasicDatasetCompression = original.TypeDatasetCompression
 	TypeDeflate            TypeBasicDatasetCompression = original.TypeDeflate
 	TypeGZip               TypeBasicDatasetCompression = original.TypeGZip
+	TypeTar                TypeBasicDatasetCompression = original.TypeTar
+	TypeTarGZip            TypeBasicDatasetCompression = original.TypeTarGZip
 	TypeZipDeflate         TypeBasicDatasetCompression = original.TypeZipDeflate
 )
 
@@ -1245,6 +1249,7 @@ const (
 	TypeAzureBlobFSWriteSettings        TypeBasicStoreWriteSettings = original.TypeAzureBlobFSWriteSettings
 	TypeAzureBlobStorageWriteSettings   TypeBasicStoreWriteSettings = original.TypeAzureBlobStorageWriteSettings
 	TypeAzureDataLakeStoreWriteSettings TypeBasicStoreWriteSettings = original.TypeAzureDataLakeStoreWriteSettings
+	TypeAzureFileStorageWriteSettings   TypeBasicStoreWriteSettings = original.TypeAzureFileStorageWriteSettings
 	TypeFileServerWriteSettings         TypeBasicStoreWriteSettings = original.TypeFileServerWriteSettings
 	TypeSftpWriteSettings               TypeBasicStoreWriteSettings = original.TypeSftpWriteSettings
 	TypeStoreWriteSettings              TypeBasicStoreWriteSettings = original.TypeStoreWriteSettings
@@ -1363,6 +1368,7 @@ type AzureFileStorageLinkedService = original.AzureFileStorageLinkedService
 type AzureFileStorageLinkedServiceTypeProperties = original.AzureFileStorageLinkedServiceTypeProperties
 type AzureFileStorageLocation = original.AzureFileStorageLocation
 type AzureFileStorageReadSettings = original.AzureFileStorageReadSettings
+type AzureFileStorageWriteSettings = original.AzureFileStorageWriteSettings
 type AzureFunctionActivity = original.AzureFunctionActivity
 type AzureFunctionActivityTypeProperties = original.AzureFunctionActivityTypeProperties
 type AzureFunctionLinkedService = original.AzureFunctionLinkedService
@@ -1490,6 +1496,7 @@ type ConcurLinkedService = original.ConcurLinkedService
 type ConcurLinkedServiceTypeProperties = original.ConcurLinkedServiceTypeProperties
 type ConcurObjectDataset = original.ConcurObjectDataset
 type ConcurSource = original.ConcurSource
+type ConnectionStateProperties = original.ConnectionStateProperties
 type ControlActivity = original.ControlActivity
 type CopyActivity = original.CopyActivity
 type CopyActivityTypeProperties = original.CopyActivityTypeProperties
@@ -1567,6 +1574,8 @@ type DatasetLocation = original.DatasetLocation
 type DatasetReference = original.DatasetReference
 type DatasetResource = original.DatasetResource
 type DatasetStorageFormat = original.DatasetStorageFormat
+type DatasetTarCompression = original.DatasetTarCompression
+type DatasetTarGZipCompression = original.DatasetTarGZipCompression
 type DatasetZipDeflateCompression = original.DatasetZipDeflateCompression
 type DatasetsClient = original.DatasetsClient
 type Db2LinkedService = original.Db2LinkedService
@@ -1630,6 +1639,8 @@ type ExecuteSSISPackageActivity = original.ExecuteSSISPackageActivity
 type ExecuteSSISPackageActivityTypeProperties = original.ExecuteSSISPackageActivityTypeProperties
 type ExecutionActivity = original.ExecutionActivity
 type ExportSettings = original.ExportSettings
+type ExposureControlBatchRequest = original.ExposureControlBatchRequest
+type ExposureControlBatchResponse = original.ExposureControlBatchResponse
 type ExposureControlClient = original.ExposureControlClient
 type ExposureControlRequest = original.ExposureControlRequest
 type ExposureControlResponse = original.ExposureControlResponse
@@ -1812,6 +1823,18 @@ type ManagedIntegrationRuntimeOperationResult = original.ManagedIntegrationRunti
 type ManagedIntegrationRuntimeStatus = original.ManagedIntegrationRuntimeStatus
 type ManagedIntegrationRuntimeStatusTypeProperties = original.ManagedIntegrationRuntimeStatusTypeProperties
 type ManagedIntegrationRuntimeTypeProperties = original.ManagedIntegrationRuntimeTypeProperties
+type ManagedPrivateEndpoint = original.ManagedPrivateEndpoint
+type ManagedPrivateEndpointListResponse = original.ManagedPrivateEndpointListResponse
+type ManagedPrivateEndpointListResponseIterator = original.ManagedPrivateEndpointListResponseIterator
+type ManagedPrivateEndpointListResponsePage = original.ManagedPrivateEndpointListResponsePage
+type ManagedPrivateEndpointResource = original.ManagedPrivateEndpointResource
+type ManagedPrivateEndpointsClient = original.ManagedPrivateEndpointsClient
+type ManagedVirtualNetwork = original.ManagedVirtualNetwork
+type ManagedVirtualNetworkListResponse = original.ManagedVirtualNetworkListResponse
+type ManagedVirtualNetworkListResponseIterator = original.ManagedVirtualNetworkListResponseIterator
+type ManagedVirtualNetworkListResponsePage = original.ManagedVirtualNetworkListResponsePage
+type ManagedVirtualNetworkResource = original.ManagedVirtualNetworkResource
+type ManagedVirtualNetworksClient = original.ManagedVirtualNetworksClient
 type MappingDataFlow = original.MappingDataFlow
 type MappingDataFlowTypeProperties = original.MappingDataFlowTypeProperties
 type MariaDBLinkedService = original.MariaDBLinkedService
@@ -2112,6 +2135,8 @@ type SybaseSource = original.SybaseSource
 type SybaseTableDataset = original.SybaseTableDataset
 type SybaseTableDatasetTypeProperties = original.SybaseTableDatasetTypeProperties
 type TabularSource = original.TabularSource
+type TarGZipReadSettings = original.TarGZipReadSettings
+type TarReadSettings = original.TarReadSettings
 type TeradataLinkedService = original.TeradataLinkedService
 type TeradataLinkedServiceTypeProperties = original.TeradataLinkedServiceTypeProperties
 type TeradataPartitionSettings = original.TeradataPartitionSettings
@@ -2277,6 +2302,30 @@ func NewLinkedServicesClient(subscriptionID string) LinkedServicesClient {
 }
 func NewLinkedServicesClientWithBaseURI(baseURI string, subscriptionID string) LinkedServicesClient {
 	return original.NewLinkedServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewManagedPrivateEndpointListResponseIterator(page ManagedPrivateEndpointListResponsePage) ManagedPrivateEndpointListResponseIterator {
+	return original.NewManagedPrivateEndpointListResponseIterator(page)
+}
+func NewManagedPrivateEndpointListResponsePage(getNextPage func(context.Context, ManagedPrivateEndpointListResponse) (ManagedPrivateEndpointListResponse, error)) ManagedPrivateEndpointListResponsePage {
+	return original.NewManagedPrivateEndpointListResponsePage(getNextPage)
+}
+func NewManagedPrivateEndpointsClient(subscriptionID string) ManagedPrivateEndpointsClient {
+	return original.NewManagedPrivateEndpointsClient(subscriptionID)
+}
+func NewManagedPrivateEndpointsClientWithBaseURI(baseURI string, subscriptionID string) ManagedPrivateEndpointsClient {
+	return original.NewManagedPrivateEndpointsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewManagedVirtualNetworkListResponseIterator(page ManagedVirtualNetworkListResponsePage) ManagedVirtualNetworkListResponseIterator {
+	return original.NewManagedVirtualNetworkListResponseIterator(page)
+}
+func NewManagedVirtualNetworkListResponsePage(getNextPage func(context.Context, ManagedVirtualNetworkListResponse) (ManagedVirtualNetworkListResponse, error)) ManagedVirtualNetworkListResponsePage {
+	return original.NewManagedVirtualNetworkListResponsePage(getNextPage)
+}
+func NewManagedVirtualNetworksClient(subscriptionID string) ManagedVirtualNetworksClient {
+	return original.NewManagedVirtualNetworksClient(subscriptionID)
+}
+func NewManagedVirtualNetworksClientWithBaseURI(baseURI string, subscriptionID string) ManagedVirtualNetworksClient {
+	return original.NewManagedVirtualNetworksClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationListResponseIterator(page OperationListResponsePage) OperationListResponseIterator {
 	return original.NewOperationListResponseIterator(page)

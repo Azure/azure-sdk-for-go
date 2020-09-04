@@ -19,11 +19,16 @@
 
 package netappapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-02-01/netapp/netappapi"
+import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-06-01/netapp/netappapi"
 
+type AccountBackupsClientAPI = original.AccountBackupsClientAPI
 type AccountsClientAPI = original.AccountsClientAPI
+type BackupPoliciesClientAPI = original.BackupPoliciesClientAPI
+type BackupsClientAPI = original.BackupsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PoolsClientAPI = original.PoolsClientAPI
 type ResourceClientAPI = original.ResourceClientAPI
+type SnapshotPoliciesClientAPI = original.SnapshotPoliciesClientAPI
 type SnapshotsClientAPI = original.SnapshotsClientAPI
+type VaultsClientAPI = original.VaultsClientAPI
 type VolumesClientAPI = original.VolumesClientAPI

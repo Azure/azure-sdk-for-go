@@ -141,7 +141,7 @@ func (t *MarkdownTable) writeHeader() {
 	}
 	t.sb.WriteString("| ")
 	t.sb.WriteString(strings.Join(t.headers, " | "))
-	t.sb.WriteString(" |\n")
+	t.sb.WriteString(" |")
 }
 
 func (t *MarkdownTable) writeAlignment() {
@@ -159,9 +159,9 @@ func (t *MarkdownTable) writeAlignment() {
 			alignments = append(alignments, leftAlignment)
 		}
 	}
-	t.sb.WriteString("| ")
+	t.sb.WriteString("\n| ")
 	t.sb.WriteString(strings.Join(alignments, " | "))
-	t.sb.WriteString(" |\n")
+	t.sb.WriteString(" |")
 }
 
 func (t *MarkdownTable) writeRows() {
@@ -172,9 +172,9 @@ func (t *MarkdownTable) writeRows() {
 
 func (t *MarkdownTable) writeRow(row markdownTableRow) {
 	items := row.ensureItems(t.Columns())
-	t.sb.WriteString("| ")
+	t.sb.WriteString("\n| ")
 	t.sb.WriteString(strings.Join(items, " | "))
-	t.sb.WriteString(" |\n")
+	t.sb.WriteString(" |")
 }
 
 // String outputs the markdown table to a string

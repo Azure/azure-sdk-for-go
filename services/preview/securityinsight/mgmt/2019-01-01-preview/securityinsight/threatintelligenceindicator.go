@@ -26,33 +26,36 @@ import (
 	"net/http"
 )
 
-// ProductSettingsClient is the API spec for Microsoft.SecurityInsights (Azure Security Insights) resource provider
-type ProductSettingsClient struct {
+// ThreatIntelligenceIndicatorClient is the API spec for Microsoft.SecurityInsights (Azure Security Insights) resource
+// provider
+type ThreatIntelligenceIndicatorClient struct {
 	BaseClient
 }
 
-// NewProductSettingsClient creates an instance of the ProductSettingsClient client.
-func NewProductSettingsClient(subscriptionID string) ProductSettingsClient {
-	return NewProductSettingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewThreatIntelligenceIndicatorClient creates an instance of the ThreatIntelligenceIndicatorClient client.
+func NewThreatIntelligenceIndicatorClient(subscriptionID string) ThreatIntelligenceIndicatorClient {
+	return NewThreatIntelligenceIndicatorClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewProductSettingsClientWithBaseURI creates an instance of the ProductSettingsClient client using a custom endpoint.
-// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewProductSettingsClientWithBaseURI(baseURI string, subscriptionID string) ProductSettingsClient {
-	return ProductSettingsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewThreatIntelligenceIndicatorClientWithBaseURI creates an instance of the ThreatIntelligenceIndicatorClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// clouds, Azure stack).
+func NewThreatIntelligenceIndicatorClientWithBaseURI(baseURI string, subscriptionID string) ThreatIntelligenceIndicatorClient {
+	return ThreatIntelligenceIndicatorClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Delete delete setting of the product.
+// AppendTags append tags to a threat intelligence.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-// settingsName - the setting name. Supports - EyesOn, EntityAnalytics, Ueba
-func (client ProductSettingsClient) Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, settingsName string) (result autorest.Response, err error) {
+// name - threat Intelligence Identifier
+// threatIntelligenceAppendTagsRequestBody - the threat intelligence append tags request body
+func (client ThreatIntelligenceIndicatorClient) AppendTags(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string, threatIntelligenceAppendTagsRequestBody ThreatIntelligenceAppendTagsRequestBody) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProductSettingsClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ThreatIntelligenceIndicatorClient.AppendTags")
 		defer func() {
 			sc := -1
 			if result.Response != nil {
@@ -71,36 +74,131 @@ func (client ProductSettingsClient) Delete(ctx context.Context, resourceGroupNam
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.ProductSettingsClient", "Delete", err.Error())
+		return result, validation.NewError("securityinsight.ThreatIntelligenceIndicatorClient", "AppendTags", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, settingsName)
+	req, err := client.AppendTagsPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, name, threatIntelligenceAppendTagsRequestBody)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.ProductSettingsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorClient", "AppendTags", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.AppendTagsSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorClient", "AppendTags", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.AppendTagsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorClient", "AppendTags", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// AppendTagsPreparer prepares the AppendTags request.
+func (client ThreatIntelligenceIndicatorClient) AppendTagsPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string, threatIntelligenceAppendTagsRequestBody ThreatIntelligenceAppendTagsRequestBody) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"name":                                autorest.Encode("path", name),
+		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
+		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
+		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":                       autorest.Encode("path", workspaceName),
+	}
+
+	const APIVersion = "2019-01-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}/appendTags", pathParameters),
+		autorest.WithJSON(threatIntelligenceAppendTagsRequestBody),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// AppendTagsSender sends the AppendTags request. The method will close the
+// http.Response Body if it receives an error.
+func (client ThreatIntelligenceIndicatorClient) AppendTagsSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// AppendTagsResponder handles the response to the AppendTags request. The method always
+// closes the http.Response Body.
+func (client ThreatIntelligenceIndicatorClient) AppendTagsResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// Delete delete a threat intelligence.
+// Parameters:
+// resourceGroupName - the name of the resource group within the user's subscription. The name is case
+// insensitive.
+// operationalInsightsResourceProvider - the namespace of workspaces resource provider-
+// Microsoft.OperationalInsights.
+// workspaceName - the name of the workspace.
+// name - threat Intelligence Identifier
+func (client ThreatIntelligenceIndicatorClient) Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ThreatIntelligenceIndicatorClient.Delete")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: workspaceName,
+			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("securityinsight.ThreatIntelligenceIndicatorClient", "Delete", err.Error())
+	}
+
+	req, err := client.DeletePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, name)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.DeleteSender(req)
 	if err != nil {
 		result.Response = resp
-		err = autorest.NewErrorWithError(err, "securityinsight.ProductSettingsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorClient", "Delete", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.DeleteResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.ProductSettingsClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ProductSettingsClient) DeletePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, settingsName string) (*http.Request, error) {
+func (client ThreatIntelligenceIndicatorClient) DeletePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"name":                                autorest.Encode("path", name),
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
-		"settingsName":                        autorest.Encode("path", settingsName),
 		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":                       autorest.Encode("path", workspaceName),
 	}
@@ -113,20 +211,20 @@ func (client ProductSettingsClient) DeletePreparer(ctx context.Context, resource
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/settings/{settingsName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProductSettingsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+func (client ThreatIntelligenceIndicatorClient) DeleteSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client ProductSettingsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client ThreatIntelligenceIndicatorClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
@@ -135,17 +233,17 @@ func (client ProductSettingsClient) DeleteResponder(resp *http.Response) (result
 	return
 }
 
-// Get gets a setting.
+// Get gets a threat intelligence indicator.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-// settingsName - the setting name. Supports - EyesOn, EntityAnalytics, Ueba
-func (client ProductSettingsClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, settingsName string) (result SettingsModel, err error) {
+// name - threat Intelligence Identifier
+func (client ThreatIntelligenceIndicatorClient) Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string) (result ThreatIntelligenceResourceModel, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProductSettingsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ThreatIntelligenceIndicatorClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -164,36 +262,36 @@ func (client ProductSettingsClient) Get(ctx context.Context, resourceGroupName s
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.ProductSettingsClient", "Get", err.Error())
+		return result, validation.NewError("securityinsight.ThreatIntelligenceIndicatorClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, settingsName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, name)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.ProductSettingsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.ProductSettingsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.ProductSettingsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client ProductSettingsClient) GetPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, settingsName string) (*http.Request, error) {
+func (client ThreatIntelligenceIndicatorClient) GetPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"name":                                autorest.Encode("path", name),
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
-		"settingsName":                        autorest.Encode("path", settingsName),
 		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":                       autorest.Encode("path", workspaceName),
 	}
@@ -206,20 +304,20 @@ func (client ProductSettingsClient) GetPreparer(ctx context.Context, resourceGro
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/settings/{settingsName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProductSettingsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client ThreatIntelligenceIndicatorClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ProductSettingsClient) GetResponder(resp *http.Response) (result SettingsModel, err error) {
+func (client ThreatIntelligenceIndicatorClient) GetResponder(resp *http.Response) (result ThreatIntelligenceResourceModel, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -229,16 +327,18 @@ func (client ProductSettingsClient) GetResponder(resp *http.Response) (result Se
 	return
 }
 
-// GetAll list of all the settings
+// ReplaceTags replace tags to a threat intelligence.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
-func (client ProductSettingsClient) GetAll(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result SettingList, err error) {
+// name - threat Intelligence Identifier
+// threatIntelligenceReplaceTagsModel - the threat intelligence entity properties for updating tags
+func (client ThreatIntelligenceIndicatorClient) ReplaceTags(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string, threatIntelligenceReplaceTagsModel ThreatIntelligenceIndicatorWithoutReadOnlyFields) (result ThreatIntelligenceResourceModel, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProductSettingsClient.GetAll")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ThreatIntelligenceIndicatorClient.ReplaceTags")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -257,130 +357,36 @@ func (client ProductSettingsClient) GetAll(ctx context.Context, resourceGroupNam
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.ProductSettingsClient", "GetAll", err.Error())
+		return result, validation.NewError("securityinsight.ThreatIntelligenceIndicatorClient", "ReplaceTags", err.Error())
 	}
 
-	req, err := client.GetAllPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName)
+	req, err := client.ReplaceTagsPreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, name, threatIntelligenceReplaceTagsModel)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.ProductSettingsClient", "GetAll", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorClient", "ReplaceTags", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.GetAllSender(req)
+	resp, err := client.ReplaceTagsSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.ProductSettingsClient", "GetAll", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorClient", "ReplaceTags", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.GetAllResponder(resp)
+	result, err = client.ReplaceTagsResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.ProductSettingsClient", "GetAll", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorClient", "ReplaceTags", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// GetAllPreparer prepares the GetAll request.
-func (client ProductSettingsClient) GetAllPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (*http.Request, error) {
+// ReplaceTagsPreparer prepares the ReplaceTags request.
+func (client ThreatIntelligenceIndicatorClient) ReplaceTagsPreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string, threatIntelligenceReplaceTagsModel ThreatIntelligenceIndicatorWithoutReadOnlyFields) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"name":                                autorest.Encode("path", name),
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
-		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":                       autorest.Encode("path", workspaceName),
-	}
-
-	const APIVersion = "2019-01-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsGet(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/settings", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetAllSender sends the GetAll request. The method will close the
-// http.Response Body if it receives an error.
-func (client ProductSettingsClient) GetAllSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetAllResponder handles the response to the GetAll request. The method always
-// closes the http.Response Body.
-func (client ProductSettingsClient) GetAllResponder(resp *http.Response) (result SettingList, err error) {
-	err = autorest.Respond(
-		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
-
-// Update updates setting.
-// Parameters:
-// resourceGroupName - the name of the resource group within the user's subscription. The name is case
-// insensitive.
-// operationalInsightsResourceProvider - the namespace of workspaces resource provider-
-// Microsoft.OperationalInsights.
-// workspaceName - the name of the workspace.
-// settingsName - the setting name. Supports - EyesOn, EntityAnalytics, Ueba
-// settings - the setting
-func (client ProductSettingsClient) Update(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, settingsName string, settings BasicSettings) (result SettingsModel, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/ProductSettingsClient.Update")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.Pattern, Rule: `^[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}$`, Chain: nil}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
-		{TargetValue: workspaceName,
-			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.ProductSettingsClient", "Update", err.Error())
-	}
-
-	req, err := client.UpdatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, settingsName, settings)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.ProductSettingsClient", "Update", nil, "Failure preparing request")
-		return
-	}
-
-	resp, err := client.UpdateSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.ProductSettingsClient", "Update", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.ProductSettingsClient", "Update", resp, "Failure responding to request")
-	}
-
-	return
-}
-
-// UpdatePreparer prepares the Update request.
-func (client ProductSettingsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, settingsName string, settings BasicSettings) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
-		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
-		"settingsName":                        autorest.Encode("path", settingsName),
 		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":                       autorest.Encode("path", workspaceName),
 	}
@@ -392,23 +398,23 @@ func (client ProductSettingsClient) UpdatePreparer(ctx context.Context, resource
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPut(),
+		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/settings/{settingsName}", pathParameters),
-		autorest.WithJSON(settings),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}/replaceTags", pathParameters),
+		autorest.WithJSON(threatIntelligenceReplaceTagsModel),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// UpdateSender sends the Update request. The method will close the
+// ReplaceTagsSender sends the ReplaceTags request. The method will close the
 // http.Response Body if it receives an error.
-func (client ProductSettingsClient) UpdateSender(req *http.Request) (*http.Response, error) {
+func (client ThreatIntelligenceIndicatorClient) ReplaceTagsSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
-// UpdateResponder handles the response to the Update request. The method always
+// ReplaceTagsResponder handles the response to the ReplaceTags request. The method always
 // closes the http.Response Body.
-func (client ProductSettingsClient) UpdateResponder(resp *http.Response) (result SettingsModel, err error) {
+func (client ThreatIntelligenceIndicatorClient) ReplaceTagsResponder(resp *http.Response) (result ThreatIntelligenceResourceModel, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

@@ -52,6 +52,7 @@ var _ FactoriesClientAPI = (*datafactory.FactoriesClient)(nil)
 type ExposureControlClientAPI interface {
 	GetFeatureValue(ctx context.Context, locationID string, exposureControlRequest datafactory.ExposureControlRequest) (result datafactory.ExposureControlResponse, err error)
 	GetFeatureValueByFactory(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest datafactory.ExposureControlRequest) (result datafactory.ExposureControlResponse, err error)
+	QueryFeatureValuesByFactory(ctx context.Context, resourceGroupName string, factoryName string, exposureControlBatchRequest datafactory.ExposureControlBatchRequest) (result datafactory.ExposureControlBatchResponse, err error)
 }
 
 var _ ExposureControlClientAPI = (*datafactory.ExposureControlClient)(nil)
@@ -195,3 +196,24 @@ type DataFlowDebugSessionClientAPI interface {
 }
 
 var _ DataFlowDebugSessionClientAPI = (*datafactory.DataFlowDebugSessionClient)(nil)
+
+// ManagedVirtualNetworksClientAPI contains the set of methods on the ManagedVirtualNetworksClient type.
+type ManagedVirtualNetworksClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, managedVirtualNetwork datafactory.ManagedVirtualNetworkResource, ifMatch string) (result datafactory.ManagedVirtualNetworkResource, err error)
+	Get(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, ifNoneMatch string) (result datafactory.ManagedVirtualNetworkResource, err error)
+	ListByFactory(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.ManagedVirtualNetworkListResponsePage, err error)
+	ListByFactoryComplete(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.ManagedVirtualNetworkListResponseIterator, err error)
+}
+
+var _ ManagedVirtualNetworksClientAPI = (*datafactory.ManagedVirtualNetworksClient)(nil)
+
+// ManagedPrivateEndpointsClientAPI contains the set of methods on the ManagedPrivateEndpointsClient type.
+type ManagedPrivateEndpointsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, managedPrivateEndpointName string, managedPrivateEndpoint datafactory.ManagedPrivateEndpointResource, ifMatch string) (result datafactory.ManagedPrivateEndpointResource, err error)
+	Delete(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, managedPrivateEndpointName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, managedPrivateEndpointName string, ifNoneMatch string) (result datafactory.ManagedPrivateEndpointResource, err error)
+	ListByFactory(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string) (result datafactory.ManagedPrivateEndpointListResponsePage, err error)
+	ListByFactoryComplete(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string) (result datafactory.ManagedPrivateEndpointListResponseIterator, err error)
+}
+
+var _ ManagedPrivateEndpointsClientAPI = (*datafactory.ManagedPrivateEndpointsClient)(nil)

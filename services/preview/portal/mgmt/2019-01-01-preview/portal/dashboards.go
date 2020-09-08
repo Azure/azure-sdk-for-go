@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// DashboardsClient is the allows creation and deletion of Azure Shared Dashboards.
+// DashboardsClient is the client for the Dashboards methods of the Portal service.
 type DashboardsClient struct {
 	BaseClient
 }

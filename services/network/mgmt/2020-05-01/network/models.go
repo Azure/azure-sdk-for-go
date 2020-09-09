@@ -23891,6 +23891,40 @@ type LogSpecification struct {
 	BlobDuration *string `json:"blobDuration,omitempty"`
 }
 
+// ManagedRuleGroupOverride defines a managed rule group override setting.
+type ManagedRuleGroupOverride struct {
+	// RuleGroupName - The managed rule group to override.
+	RuleGroupName *string `json:"ruleGroupName,omitempty"`
+	// Rules - List of rules that will be disabled. If none specified, all rules in the group will be disabled.
+	Rules *[]ManagedRuleOverride `json:"rules,omitempty"`
+}
+
+// ManagedRuleOverride defines a managed rule group override setting.
+type ManagedRuleOverride struct {
+	// RuleID - Identifier for the managed rule.
+	RuleID *string `json:"ruleId,omitempty"`
+	// State - The state of the managed rule. Defaults to Disabled if not specified. Possible values include: 'ManagedRuleEnabledStateDisabled'
+	State ManagedRuleEnabledState `json:"state,omitempty"`
+}
+
+// ManagedRulesDefinition allow to exclude some variable satisfy the condition for the WAF check.
+type ManagedRulesDefinition struct {
+	// Exclusions - The Exclusions that are applied on the policy.
+	Exclusions *[]OwaspCrsExclusionEntry `json:"exclusions,omitempty"`
+	// ManagedRuleSets - The managed rule sets that are associated with the policy.
+	ManagedRuleSets *[]ManagedRuleSet `json:"managedRuleSets,omitempty"`
+}
+
+// ManagedRuleSet defines a managed rule set.
+type ManagedRuleSet struct {
+	// RuleSetType - Defines the rule set type to use.
+	RuleSetType *string `json:"ruleSetType,omitempty"`
+	// RuleSetVersion - Defines the version of the rule set to use.
+	RuleSetVersion *string `json:"ruleSetVersion,omitempty"`
+	// RuleGroupOverrides - Defines the rule group overrides to apply to the rule set.
+	RuleGroupOverrides *[]ManagedRuleGroupOverride `json:"ruleGroupOverrides,omitempty"`
+}
+
 // ManagedServiceIdentity identity for the resource.
 type ManagedServiceIdentity struct {
 	// PrincipalID - READ-ONLY; The principal id of the system assigned identity. This property will only be provided for a system assigned identity.
@@ -23923,12 +23957,34 @@ type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
 	ClientID *string `json:"clientId,omitempty"`
 }
 
+// MatchCondition define match conditions.
+type MatchCondition struct {
+	// MatchVariables - List of match variables.
+	MatchVariables *[]MatchVariable `json:"matchVariables,omitempty"`
+	// Operator - The operator to be matched. Possible values include: 'WebApplicationFirewallOperatorIPMatch', 'WebApplicationFirewallOperatorEqual', 'WebApplicationFirewallOperatorContains', 'WebApplicationFirewallOperatorLessThan', 'WebApplicationFirewallOperatorGreaterThan', 'WebApplicationFirewallOperatorLessThanOrEqual', 'WebApplicationFirewallOperatorGreaterThanOrEqual', 'WebApplicationFirewallOperatorBeginsWith', 'WebApplicationFirewallOperatorEndsWith', 'WebApplicationFirewallOperatorRegex', 'WebApplicationFirewallOperatorGeoMatch'
+	Operator WebApplicationFirewallOperator `json:"operator,omitempty"`
+	// NegationConditon - Whether this is negate condition or not.
+	NegationConditon *bool `json:"negationConditon,omitempty"`
+	// MatchValues - Match value.
+	MatchValues *[]string `json:"matchValues,omitempty"`
+	// Transforms - List of transforms.
+	Transforms *[]WebApplicationFirewallTransform `json:"transforms,omitempty"`
+}
+
 // MatchedRule matched rule.
 type MatchedRule struct {
 	// RuleName - Name of the matched network security rule.
 	RuleName *string `json:"ruleName,omitempty"`
 	// Action - The network traffic is allowed or denied. Possible values are 'Allow' and 'Deny'.
 	Action *string `json:"action,omitempty"`
+}
+
+// MatchVariable define match variables.
+type MatchVariable struct {
+	// VariableName - Match Variable. Possible values include: 'RemoteAddr', 'RequestMethod', 'QueryString', 'PostArgs', 'RequestURI', 'RequestHeaders', 'RequestBody', 'RequestCookies'
+	VariableName WebApplicationFirewallMatchVariable `json:"variableName,omitempty"`
+	// Selector - The selector of match variable.
+	Selector *string `json:"selector,omitempty"`
 }
 
 // MetricSpecification description of metrics specification.
@@ -24860,6 +24916,16 @@ func (orpf OutboundRulePropertiesFormat) MarshalJSON() ([]byte, error) {
 		objectMap["idleTimeoutInMinutes"] = orpf.IdleTimeoutInMinutes
 	}
 	return json.Marshal(objectMap)
+}
+
+// OwaspCrsExclusionEntry allow to exclude some variable satisfy the condition for the WAF check.
+type OwaspCrsExclusionEntry struct {
+	// MatchVariable - The variable to be excluded. Possible values include: 'RequestHeaderNames', 'RequestCookieNames', 'RequestArgNames'
+	MatchVariable OwaspCrsExclusionEntryMatchVariable `json:"matchVariable,omitempty"`
+	// SelectorMatchOperator - When matchVariable is a collection, operate on the selector to specify which elements in the collection this exclusion applies to. Possible values include: 'OwaspCrsExclusionEntrySelectorMatchOperatorEquals', 'OwaspCrsExclusionEntrySelectorMatchOperatorContains', 'OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith', 'OwaspCrsExclusionEntrySelectorMatchOperatorEndsWith', 'OwaspCrsExclusionEntrySelectorMatchOperatorEqualsAny'
+	SelectorMatchOperator OwaspCrsExclusionEntrySelectorMatchOperator `json:"selectorMatchOperator,omitempty"`
+	// Selector - When matchVariable is a collection, operator used to specify which elements in the collection this exclusion applies to.
+	Selector *string `json:"selector,omitempty"`
 }
 
 // P2SConnectionConfiguration p2SConnectionConfiguration Resource.
@@ -26091,6 +26157,20 @@ func (perccpf PeerExpressRouteCircuitConnectionPropertiesFormat) MarshalJSON() (
 		objectMap["authResourceGuid"] = perccpf.AuthResourceGUID
 	}
 	return json.Marshal(objectMap)
+}
+
+// PolicySettings defines contents of a web application firewall global configuration.
+type PolicySettings struct {
+	// State - The state of the policy. Possible values include: 'WebApplicationFirewallEnabledStateDisabled', 'WebApplicationFirewallEnabledStateEnabled'
+	State WebApplicationFirewallEnabledState `json:"state,omitempty"`
+	// Mode - The mode of the policy. Possible values include: 'WebApplicationFirewallModePrevention', 'WebApplicationFirewallModeDetection'
+	Mode WebApplicationFirewallMode `json:"mode,omitempty"`
+	// RequestBodyCheck - Whether to allow WAF to check request Body.
+	RequestBodyCheck *bool `json:"requestBodyCheck,omitempty"`
+	// MaxRequestBodySizeInKb - Maximum request body size in Kb for WAF.
+	MaxRequestBodySizeInKb *int32 `json:"maxRequestBodySizeInKb,omitempty"`
+	// FileUploadLimitInMb - Maximum file upload size in Mb for WAF.
+	FileUploadLimitInMb *int32 `json:"fileUploadLimitInMb,omitempty"`
 }
 
 // PrepareNetworkPoliciesRequest details of PrepareNetworkPolicies for Subnet.
@@ -41664,4 +41744,372 @@ func (future *WatchersVerifyIPFlowFuture) Result(client WatchersClient) (vifr Ve
 		}
 	}
 	return
+}
+
+// WebApplicationFirewallCustomRule defines contents of a web application rule.
+type WebApplicationFirewallCustomRule struct {
+	// Name - The name of the resource that is unique within a policy. This name can be used to access the resource.
+	Name *string `json:"name,omitempty"`
+	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// Priority - Priority of the rule. Rules with a lower value will be evaluated before rules with a higher value.
+	Priority *int32 `json:"priority,omitempty"`
+	// RuleType - The rule type. Possible values include: 'WebApplicationFirewallRuleTypeMatchRule', 'WebApplicationFirewallRuleTypeInvalid'
+	RuleType WebApplicationFirewallRuleType `json:"ruleType,omitempty"`
+	// MatchConditions - List of match conditions.
+	MatchConditions *[]MatchCondition `json:"matchConditions,omitempty"`
+	// Action - Type of Actions. Possible values include: 'WebApplicationFirewallActionAllow', 'WebApplicationFirewallActionBlock', 'WebApplicationFirewallActionLog'
+	Action WebApplicationFirewallAction `json:"action,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WebApplicationFirewallCustomRule.
+func (wafcr WebApplicationFirewallCustomRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wafcr.Name != nil {
+		objectMap["name"] = wafcr.Name
+	}
+	if wafcr.Priority != nil {
+		objectMap["priority"] = wafcr.Priority
+	}
+	if wafcr.RuleType != "" {
+		objectMap["ruleType"] = wafcr.RuleType
+	}
+	if wafcr.MatchConditions != nil {
+		objectMap["matchConditions"] = wafcr.MatchConditions
+	}
+	if wafcr.Action != "" {
+		objectMap["action"] = wafcr.Action
+	}
+	return json.Marshal(objectMap)
+}
+
+// WebApplicationFirewallPoliciesDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type WebApplicationFirewallPoliciesDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *WebApplicationFirewallPoliciesDeleteFuture) Result(client WebApplicationFirewallPoliciesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "network.WebApplicationFirewallPoliciesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("network.WebApplicationFirewallPoliciesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// WebApplicationFirewallPolicy defines web application firewall policy.
+type WebApplicationFirewallPolicy struct {
+	autorest.Response `json:"-"`
+	// WebApplicationFirewallPolicyPropertiesFormat - Properties of the web application firewall policy.
+	*WebApplicationFirewallPolicyPropertiesFormat `json:"properties,omitempty"`
+	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty"`
+	// ID - Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+	// Location - Resource location.
+	Location *string `json:"location,omitempty"`
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for WebApplicationFirewallPolicy.
+func (wafp WebApplicationFirewallPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wafp.WebApplicationFirewallPolicyPropertiesFormat != nil {
+		objectMap["properties"] = wafp.WebApplicationFirewallPolicyPropertiesFormat
+	}
+	if wafp.ID != nil {
+		objectMap["id"] = wafp.ID
+	}
+	if wafp.Location != nil {
+		objectMap["location"] = wafp.Location
+	}
+	if wafp.Tags != nil {
+		objectMap["tags"] = wafp.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for WebApplicationFirewallPolicy struct.
+func (wafp *WebApplicationFirewallPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var webApplicationFirewallPolicyPropertiesFormat WebApplicationFirewallPolicyPropertiesFormat
+				err = json.Unmarshal(*v, &webApplicationFirewallPolicyPropertiesFormat)
+				if err != nil {
+					return err
+				}
+				wafp.WebApplicationFirewallPolicyPropertiesFormat = &webApplicationFirewallPolicyPropertiesFormat
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				wafp.Etag = &etag
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				wafp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				wafp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				wafp.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				wafp.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				wafp.Tags = tags
+			}
+		}
+	}
+
+	return nil
+}
+
+// WebApplicationFirewallPolicyListResult result of the request to list WebApplicationFirewallPolicies. It
+// contains a list of WebApplicationFirewallPolicy objects and a URL link to get the next set of results.
+type WebApplicationFirewallPolicyListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of WebApplicationFirewallPolicies within a resource group.
+	Value *[]WebApplicationFirewallPolicy `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next set of WebApplicationFirewallPolicy objects if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// WebApplicationFirewallPolicyListResultIterator provides access to a complete listing of
+// WebApplicationFirewallPolicy values.
+type WebApplicationFirewallPolicyListResultIterator struct {
+	i    int
+	page WebApplicationFirewallPolicyListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *WebApplicationFirewallPolicyListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WebApplicationFirewallPolicyListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *WebApplicationFirewallPolicyListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter WebApplicationFirewallPolicyListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter WebApplicationFirewallPolicyListResultIterator) Response() WebApplicationFirewallPolicyListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter WebApplicationFirewallPolicyListResultIterator) Value() WebApplicationFirewallPolicy {
+	if !iter.page.NotDone() {
+		return WebApplicationFirewallPolicy{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the WebApplicationFirewallPolicyListResultIterator type.
+func NewWebApplicationFirewallPolicyListResultIterator(page WebApplicationFirewallPolicyListResultPage) WebApplicationFirewallPolicyListResultIterator {
+	return WebApplicationFirewallPolicyListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (wafplr WebApplicationFirewallPolicyListResult) IsEmpty() bool {
+	return wafplr.Value == nil || len(*wafplr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (wafplr WebApplicationFirewallPolicyListResult) hasNextLink() bool {
+	return wafplr.NextLink != nil && len(*wafplr.NextLink) != 0
+}
+
+// webApplicationFirewallPolicyListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (wafplr WebApplicationFirewallPolicyListResult) webApplicationFirewallPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !wafplr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(wafplr.NextLink)))
+}
+
+// WebApplicationFirewallPolicyListResultPage contains a page of WebApplicationFirewallPolicy values.
+type WebApplicationFirewallPolicyListResultPage struct {
+	fn     func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)
+	wafplr WebApplicationFirewallPolicyListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *WebApplicationFirewallPolicyListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WebApplicationFirewallPolicyListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.wafplr)
+		if err != nil {
+			return err
+		}
+		page.wafplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *WebApplicationFirewallPolicyListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page WebApplicationFirewallPolicyListResultPage) NotDone() bool {
+	return !page.wafplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page WebApplicationFirewallPolicyListResultPage) Response() WebApplicationFirewallPolicyListResult {
+	return page.wafplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page WebApplicationFirewallPolicyListResultPage) Values() []WebApplicationFirewallPolicy {
+	if page.wafplr.IsEmpty() {
+		return nil
+	}
+	return *page.wafplr.Value
+}
+
+// Creates a new instance of the WebApplicationFirewallPolicyListResultPage type.
+func NewWebApplicationFirewallPolicyListResultPage(getNextPage func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)) WebApplicationFirewallPolicyListResultPage {
+	return WebApplicationFirewallPolicyListResultPage{fn: getNextPage}
+}
+
+// WebApplicationFirewallPolicyPropertiesFormat defines web application firewall policy properties.
+type WebApplicationFirewallPolicyPropertiesFormat struct {
+	// PolicySettings - The PolicySettings for policy.
+	PolicySettings *PolicySettings `json:"policySettings,omitempty"`
+	// CustomRules - The custom rules inside the policy.
+	CustomRules *[]WebApplicationFirewallCustomRule `json:"customRules,omitempty"`
+	// ApplicationGateways - READ-ONLY; A collection of references to application gateways.
+	ApplicationGateways *[]ApplicationGateway `json:"applicationGateways,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state of the web application firewall policy resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// ResourceState - READ-ONLY; Resource status of the policy. Possible values include: 'WebApplicationFirewallPolicyResourceStateCreating', 'WebApplicationFirewallPolicyResourceStateEnabling', 'WebApplicationFirewallPolicyResourceStateEnabled', 'WebApplicationFirewallPolicyResourceStateDisabling', 'WebApplicationFirewallPolicyResourceStateDisabled', 'WebApplicationFirewallPolicyResourceStateDeleting'
+	ResourceState WebApplicationFirewallPolicyResourceState `json:"resourceState,omitempty"`
+	// ManagedRules - Describes the managedRules structure.
+	ManagedRules *ManagedRulesDefinition `json:"managedRules,omitempty"`
+	// HTTPListeners - READ-ONLY; A collection of references to application gateway http listeners.
+	HTTPListeners *[]SubResource `json:"httpListeners,omitempty"`
+	// PathBasedRules - READ-ONLY; A collection of references to application gateway path rules.
+	PathBasedRules *[]SubResource `json:"pathBasedRules,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WebApplicationFirewallPolicyPropertiesFormat.
+func (wafppf WebApplicationFirewallPolicyPropertiesFormat) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wafppf.PolicySettings != nil {
+		objectMap["policySettings"] = wafppf.PolicySettings
+	}
+	if wafppf.CustomRules != nil {
+		objectMap["customRules"] = wafppf.CustomRules
+	}
+	if wafppf.ManagedRules != nil {
+		objectMap["managedRules"] = wafppf.ManagedRules
+	}
+	return json.Marshal(objectMap)
 }

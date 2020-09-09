@@ -48,7 +48,7 @@ func NewConfigurationProfileAssignmentsClientWithBaseURI(baseURI string, subscri
 // configurationProfileAssignmentName - name of the configuration profile assignment. Only default is
 // supported.
 // parameters - parameters supplied to the create or update configuration profile assignment.
-// resourceGroupName - the resource group name.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // VMName - the name of the virtual machine.
 func (client ConfigurationProfileAssignmentsClient) CreateOrUpdate(ctx context.Context, configurationProfileAssignmentName string, parameters ConfigurationProfileAssignment, resourceGroupName string, VMName string) (result ConfigurationProfileAssignmentsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -62,8 +62,12 @@ func (client ConfigurationProfileAssignmentsClient) CreateOrUpdate(ctx context.C
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automanage.ConfigurationProfileAssignmentsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -132,7 +136,7 @@ func (client ConfigurationProfileAssignmentsClient) CreateOrUpdateResponder(resp
 
 // Delete delete a configuration profile assignment
 // Parameters:
-// resourceGroupName - the resource group name.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // configurationProfileAssignmentName - name of the configuration profile assignment
 // VMName - the name of the virtual machine.
 func (client ConfigurationProfileAssignmentsClient) Delete(ctx context.Context, resourceGroupName string, configurationProfileAssignmentName string, VMName string) (result autorest.Response, err error) {
@@ -148,7 +152,11 @@ func (client ConfigurationProfileAssignmentsClient) Delete(ctx context.Context, 
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automanage.ConfigurationProfileAssignmentsClient", "Delete", err.Error())
 	}
 
@@ -214,7 +222,7 @@ func (client ConfigurationProfileAssignmentsClient) DeleteResponder(resp *http.R
 
 // Get get information about a configuration profile assignment
 // Parameters:
-// resourceGroupName - the resource group name.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // configurationProfileAssignmentName - the configuration profile assignment name.
 // VMName - the name of the virtual machine.
 func (client ConfigurationProfileAssignmentsClient) Get(ctx context.Context, resourceGroupName string, configurationProfileAssignmentName string, VMName string) (result ConfigurationProfileAssignment, err error) {
@@ -230,7 +238,11 @@ func (client ConfigurationProfileAssignmentsClient) Get(ctx context.Context, res
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automanage.ConfigurationProfileAssignmentsClient", "Get", err.Error())
 	}
 
@@ -297,7 +309,7 @@ func (client ConfigurationProfileAssignmentsClient) GetResponder(resp *http.Resp
 
 // List get list of configuration profile assignments
 // Parameters:
-// resourceGroupName - the resource group name.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client ConfigurationProfileAssignmentsClient) List(ctx context.Context, resourceGroupName string) (result ConfigurationProfileAssignmentList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConfigurationProfileAssignmentsClient.List")
@@ -311,7 +323,11 @@ func (client ConfigurationProfileAssignmentsClient) List(ctx context.Context, re
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automanage.ConfigurationProfileAssignmentsClient", "List", err.Error())
 	}
 
@@ -386,6 +402,12 @@ func (client ConfigurationProfileAssignmentsClient) ListBySubscription(ctx conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("automanage.ConfigurationProfileAssignmentsClient", "ListBySubscription", err.Error())
+	}
+
 	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfileAssignmentsClient", "ListBySubscription", nil, "Failure preparing request")

@@ -6,7 +6,6 @@
 package azcore
 
 import (
-	"context"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -16,8 +15,8 @@ import (
 
 // newBodyDownloadPolicy creates a policy object that downloads the response's body to a []byte.
 func newBodyDownloadPolicy() Policy {
-	return PolicyFunc(func(ctx context.Context, req *Request) (*Response, error) {
-		resp, err := req.Next(ctx)
+	return PolicyFunc(func(req *Request) (*Response, error) {
+		resp, err := req.Next()
 		if err != nil {
 			return resp, err
 		}
@@ -39,20 +38,19 @@ func newBodyDownloadPolicy() Policy {
 }
 
 type bodyDownloadError struct {
-	err     error
-	noRetry bool
+	err error
 }
 
 func newBodyDownloadError(err error, req *Request) error {
 	// on failure, only retry the request for idempotent operations.
 	// we currently identify them as DELETE, GET, and PUT requests.
-	noRetry := true
 	if m := strings.ToUpper(req.Method); m == http.MethodDelete || m == http.MethodGet || m == http.MethodPut {
-		noRetry = false
+		// error is safe for retry
+		return err
 	}
+	// wrap error to avoid retries
 	return &bodyDownloadError{
-		err:     err,
-		noRetry: noRetry,
+		err: err,
 	}
 }
 
@@ -60,15 +58,15 @@ func (b *bodyDownloadError) Error() string {
 	return fmt.Sprintf("body download policy: %s", b.err.Error())
 }
 
-func (b *bodyDownloadError) IsNotRetriable() bool {
-	return b.noRetry
+func (b *bodyDownloadError) NonRetriable() {
+	// marker method
 }
 
 func (b *bodyDownloadError) Unwrap() error {
 	return b.err
 }
 
-var _ Retrier = (*bodyDownloadError)(nil)
+var _ NonRetriableError = (*bodyDownloadError)(nil)
 
 // bodyDownloadPolicyOpValues is the struct containing the per-operation values
 type bodyDownloadPolicyOpValues struct {

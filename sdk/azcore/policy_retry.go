@@ -7,6 +7,7 @@ package azcore
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"math/rand"
@@ -109,10 +110,10 @@ type retryPolicy struct {
 	options RetryOptions
 }
 
-func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err error) {
+func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 	options := p.options
 	// check if the retry options have been overridden for this call
-	if override := ctx.Value(ctxWithRetryOptionsKey{}); override != nil {
+	if override := req.Context().Value(ctxWithRetryOptionsKey{}); override != nil {
 		options = override.(RetryOptions)
 	}
 	// Exponential retry algorithm: ((2 ^ attempt) - 1) * delay * random(0.8, 1.2)
@@ -144,8 +145,9 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		}
 
 		// Set the per-try time for this particular retry operation and then Do the operation.
-		tryCtx, tryCancel := context.WithTimeout(ctx, options.TryTimeout)
-		resp, err = req.Next(tryCtx) // Make the request
+		tryCtx, tryCancel := context.WithTimeout(req.Context(), options.TryTimeout)
+		clone := req.clone(tryCtx)
+		resp, err = clone.Next() // Make the request
 		tryCancel()
 		if shouldLog {
 			Log().Write(LogRetryPolicy, fmt.Sprintf("Err=%v, response=%v\n", err, resp))
@@ -154,10 +156,15 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		if err == nil && !resp.HasStatusCode(options.StatusCodes...) {
 			// if there is no error and the response code isn't in the list of retry codes then we're done.
 			return
-		} else if ctx.Err() != nil {
+		} else if ctxErr := req.Context().Err(); ctxErr != nil {
 			// don't retry if the parent context has been cancelled or its deadline exceeded
+			err = ctxErr
 			return
-		} else if retrier, ok := err.(Retrier); ok && retrier.IsNotRetriable() {
+		}
+
+		// check if the error is not retriable
+		var nre NonRetriableError
+		if errors.As(err, &nre) {
 			// the error says it's not retriable so don't retry
 			return
 		}
@@ -181,8 +188,8 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		select {
 		case <-time.After(delay):
 			try++
-		case <-ctx.Done():
-			err = ctx.Err()
+		case <-req.Context().Done():
+			err = req.Context().Err()
 			return
 		}
 	}

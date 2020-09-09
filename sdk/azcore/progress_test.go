@@ -27,16 +27,19 @@ func TestProgressReporting(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithBody(content))
 	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
-	req := NewRequest(http.MethodGet, srv.URL())
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 	req.SkipBodyDownload()
 	var bytesSent int64
 	reqRpt := NewRequestBodyProgress(NopCloser(body), func(bytesTransferred int64) {
 		bytesSent = bytesTransferred
 	})
-	if err := req.SetBody(reqRpt); err != nil {
+	if err := req.SetBody(reqRpt, "application/octet-stream"); err != nil {
 		t.Fatal(err)
 	}
-	resp, err := pl.Do(context.Background(), req)
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

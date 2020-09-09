@@ -7,7 +7,6 @@ package azcore
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"os"
 	"runtime"
@@ -59,16 +58,16 @@ func NewTelemetryPolicy(o TelemetryOptions) Policy {
 	return &tp
 }
 
-func (p telemetryPolicy) Do(ctx context.Context, req *Request) (*Response, error) {
+func (p telemetryPolicy) Do(req *Request) (*Response, error) {
 	if p.telemetryValue == "" {
-		return req.Next(ctx)
+		return req.Next()
 	}
 	// preserve the existing User-Agent string
 	if ua := req.Request.Header.Get(HeaderUserAgent); ua != "" {
 		p.telemetryValue = fmt.Sprintf("%s %s", p.telemetryValue, ua)
 	}
 	req.Request.Header.Set(HeaderUserAgent, p.telemetryValue)
-	return req.Next(ctx)
+	return req.Next()
 }
 
 // NOTE: the ONLY function that should write to this variable is this func

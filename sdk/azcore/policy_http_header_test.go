@@ -28,11 +28,14 @@ func TestAddCustomHTTPHeaderSuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 	// HTTP header policy is automatically added during pipeline construction
 	pl := NewPipeline(srv)
-	req := NewRequest(http.MethodGet, srv.URL())
-	req.Header.Set(preexistingHeader, preexistingValue)
-	resp, err := pl.Do(WithHTTPHeader(context.Background(), http.Header{
+	req, err := NewRequest(WithHTTPHeader(context.Background(), http.Header{
 		customHeader: []string{customValue},
-	}), req)
+	}), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	req.Header.Set(preexistingHeader, preexistingValue)
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -51,7 +54,11 @@ func TestAddCustomHTTPHeaderFail(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 	// HTTP header policy is automatically added during pipeline construction
 	pl := NewPipeline(srv)
-	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -71,9 +78,13 @@ func TestAddCustomHTTPHeaderOverwrite(t *testing.T) {
 	// HTTP header policy is automatically added during pipeline construction
 	pl := NewPipeline(srv)
 	// overwrite the request ID with our own value
-	resp, err := pl.Do(WithHTTPHeader(context.Background(), http.Header{
+	req, err := NewRequest(WithHTTPHeader(context.Background(), http.Header{
 		xMsClientRequestID: []string{customValue},
-	}), NewRequest(http.MethodGet, srv.URL()))
+	}), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -98,9 +109,13 @@ func TestAddCustomHTTPHeaderMultipleValues(t *testing.T) {
 	// HTTP header policy is automatically added during pipeline construction
 	pl := NewPipeline(srv)
 	// overwrite the request ID with our own value
-	resp, err := pl.Do(WithHTTPHeader(context.Background(), http.Header{
+	req, err := NewRequest(WithHTTPHeader(context.Background(), http.Header{
 		customHeader: []string{customValue1, customValue2},
-	}), NewRequest(http.MethodGet, srv.URL()))
+	}), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

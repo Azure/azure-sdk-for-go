@@ -6,7 +6,6 @@
 package azcore
 
 import (
-	"context"
 	"crypto/tls"
 	"net/http"
 )
@@ -34,7 +33,7 @@ func init() {
 
 // DefaultHTTPClientTransport ...
 func DefaultHTTPClientTransport() Transport {
-	return TransportFunc(func(ctx context.Context, req *http.Request) (*http.Response, error) {
-		return defaultHTTPClient.Do(req.WithContext(ctx))
+	return TransportFunc(func(req *http.Request) (*http.Response, error) {
+		return defaultHTTPClient.Do(req)
 	})
 }

@@ -6,7 +6,6 @@
 package azcore
 
 import (
-	"context"
 	"io"
 	"net/http"
 )
@@ -17,31 +16,31 @@ type Policy interface {
 	// Do applies the policy to the specified Request.  When implementing a Policy, mutate the
 	// request before calling req.Do() to move on to the next policy, and respond to the result
 	// before returning to the caller.
-	Do(ctx context.Context, req *Request) (*Response, error)
+	Do(req *Request) (*Response, error)
 }
 
 // PolicyFunc is a type that implements the Policy interface.
 // Use this type when implementing a stateless policy as a first-class function.
-type PolicyFunc func(context.Context, *Request) (*Response, error)
+type PolicyFunc func(*Request) (*Response, error)
 
 // Do implements the Policy interface on PolicyFunc.
-func (pf PolicyFunc) Do(ctx context.Context, req *Request) (*Response, error) {
-	return pf(ctx, req)
+func (pf PolicyFunc) Do(req *Request) (*Response, error) {
+	return pf(req)
 }
 
 // Transport represents an HTTP pipeline transport used to send HTTP requests and receive responses.
 type Transport interface {
 	// Do sends the HTTP request and returns the HTTP response or error.
-	Do(ctx context.Context, req *http.Request) (*http.Response, error)
+	Do(req *http.Request) (*http.Response, error)
 }
 
 // TransportFunc is a type that implements the Transport interface.
 // Use this type when implementing a stateless transport as a first-class function.
-type TransportFunc func(context.Context, *http.Request) (*http.Response, error)
+type TransportFunc func(*http.Request) (*http.Response, error)
 
 // Do implements the Transport interface on TransportFunc.
-func (tf TransportFunc) Do(ctx context.Context, req *http.Request) (*http.Response, error) {
-	return tf(ctx, req)
+func (tf TransportFunc) Do(req *http.Request) (*http.Response, error) {
+	return tf(req)
 }
 
 // used to adapt a TransportPolicy to a Policy
@@ -49,8 +48,8 @@ type transportPolicy struct {
 	trans Transport
 }
 
-func (tp transportPolicy) Do(ctx context.Context, req *Request) (*Response, error) {
-	resp, err := tp.trans.Do(ctx, req.Request)
+func (tp transportPolicy) Do(req *Request) (*Response, error) {
+	resp, err := tp.trans.Do(req.Request)
 	if err != nil {
 		return nil, err
 	}
@@ -76,12 +75,15 @@ func NewPipeline(transport Transport, policies ...Policy) Pipeline {
 	}
 }
 
-// Do is called for each and every HTTP request. It passes the Context and request through
-// all the Policy objects (which can transform the Request's URL/query parameters/headers)
+// Do is called for each and every HTTP request. It passes the request through all
+// the Policy objects (which can transform the Request's URL/query parameters/headers)
 // and ultimately sends the transformed HTTP request over the network.
-func (p Pipeline) Do(ctx context.Context, req *Request) (*Response, error) {
+func (p Pipeline) Do(req *Request) (*Response, error) {
+	if err := req.valid(); err != nil {
+		return nil, err
+	}
 	req.policies = p.policies
-	return req.Next(ctx)
+	return req.Next()
 }
 
 // ReadSeekCloser is the interface that groups the io.ReadCloser and io.Seeker interfaces.
@@ -101,10 +103,4 @@ func (n nopCloser) Close() error {
 // NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
 func NopCloser(rs io.ReadSeeker) ReadSeekCloser {
 	return nopCloser{rs}
-}
-
-// Retrier provides methods describing if an error should be considered as transient.
-type Retrier interface {
-	// IsNotRetriable returns true for error types that are not retriable.
-	IsNotRetriable() bool
 }

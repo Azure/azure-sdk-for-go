@@ -33,3 +33,12 @@ type HTTPResponse interface {
 
 // ensure our internal ResponseError type implements HTTPResponse
 var _ HTTPResponse = (*sdkruntime.ResponseError)(nil)
+
+// NonRetriableError represents a non-transient error.  This works in
+// conjunction with the retry policy, indicating that the error condition
+// is idempotent, so no retries will be attempted.
+// Use errors.As() to access this interface in the error chain.
+type NonRetriableError interface {
+	error
+	NonRetriable()
+}

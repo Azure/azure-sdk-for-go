@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## `v46.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| hybridcompute | 2020-08-02 |
+| mariadb | 2020-01-01 |
+| netapp | 2020-06-01 |
+| operationalinsights | 2020-08-01 |
+| subscription | 2020-09-01 |
+
+### Updated Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| datafactory | 2018-06-01 |
+| mysql | 2020-01-01 |
+| network | 2020-05-01 |
+
 ## `v46.0.0`
 
 ### New Packages

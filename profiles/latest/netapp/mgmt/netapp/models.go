@@ -19,10 +19,20 @@
 
 package netapp
 
-import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-02-01/netapp"
+import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-06-01/netapp"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ActiveDirectoryStatus = original.ActiveDirectoryStatus
+
+const (
+	Created  ActiveDirectoryStatus = original.Created
+	Deleted  ActiveDirectoryStatus = original.Deleted
+	Error    ActiveDirectoryStatus = original.Error
+	InUse    ActiveDirectoryStatus = original.InUse
+	Updating ActiveDirectoryStatus = original.Updating
 )
 
 type CheckNameResourceTypes = original.CheckNameResourceTypes
@@ -32,6 +42,15 @@ const (
 	MicrosoftNetAppnetAppAccountscapacityPools                 CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccountscapacityPools
 	MicrosoftNetAppnetAppAccountscapacityPoolsvolumes          CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccountscapacityPoolsvolumes
 	MicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots
+)
+
+type CheckQuotaNameResourceTypes = original.CheckQuotaNameResourceTypes
+
+const (
+	CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccounts                              CheckQuotaNameResourceTypes = original.CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccounts
+	CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPools                 CheckQuotaNameResourceTypes = original.CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPools
+	CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPoolsvolumes          CheckQuotaNameResourceTypes = original.CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPoolsvolumes
+	CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots CheckQuotaNameResourceTypes = original.CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots
 )
 
 type EndpointType = original.EndpointType
@@ -56,6 +75,13 @@ const (
 	Uninitialized MirrorState = original.Uninitialized
 )
 
+type QosType = original.QosType
+
+const (
+	Auto   QosType = original.Auto
+	Manual QosType = original.Manual
+)
+
 type RelationshipStatus = original.RelationshipStatus
 
 const (
@@ -73,6 +99,13 @@ const (
 	Weekly          ReplicationSchedule = original.Weekly
 )
 
+type SecurityStyle = original.SecurityStyle
+
+const (
+	Ntfs SecurityStyle = original.Ntfs
+	Unix SecurityStyle = original.Unix
+)
+
 type ServiceLevel = original.ServiceLevel
 
 const (
@@ -82,6 +115,8 @@ const (
 )
 
 type Account = original.Account
+type AccountBackupsClient = original.AccountBackupsClient
+type AccountBackupsDeleteFuture = original.AccountBackupsDeleteFuture
 type AccountList = original.AccountList
 type AccountPatch = original.AccountPatch
 type AccountProperties = original.AccountProperties
@@ -91,13 +126,33 @@ type AccountsDeleteFuture = original.AccountsDeleteFuture
 type AccountsUpdateFuture = original.AccountsUpdateFuture
 type ActiveDirectory = original.ActiveDirectory
 type AuthorizeRequest = original.AuthorizeRequest
+type Backup = original.Backup
+type BackupPatch = original.BackupPatch
+type BackupPoliciesClient = original.BackupPoliciesClient
+type BackupPoliciesCreateFuture = original.BackupPoliciesCreateFuture
+type BackupPoliciesDeleteFuture = original.BackupPoliciesDeleteFuture
+type BackupPoliciesList = original.BackupPoliciesList
+type BackupPolicy = original.BackupPolicy
+type BackupPolicyDetails = original.BackupPolicyDetails
+type BackupPolicyPatch = original.BackupPolicyPatch
+type BackupPolicyProperties = original.BackupPolicyProperties
+type BackupProperties = original.BackupProperties
+type BackupsClient = original.BackupsClient
+type BackupsCreateFuture = original.BackupsCreateFuture
+type BackupsDeleteFuture = original.BackupsDeleteFuture
+type BackupsList = original.BackupsList
 type BaseClient = original.BaseClient
+type BreakReplicationRequest = original.BreakReplicationRequest
 type CapacityPool = original.CapacityPool
 type CapacityPoolList = original.CapacityPoolList
 type CapacityPoolPatch = original.CapacityPoolPatch
+type CheckAvailabilityResponse = original.CheckAvailabilityResponse
+type DailySchedule = original.DailySchedule
 type Dimension = original.Dimension
 type ExportPolicyRule = original.ExportPolicyRule
+type HourlySchedule = original.HourlySchedule
 type MetricSpecification = original.MetricSpecification
+type MonthlySchedule = original.MonthlySchedule
 type MountTarget = original.MountTarget
 type MountTargetProperties = original.MountTargetProperties
 type Operation = original.Operation
@@ -105,29 +160,45 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
+type PoolChangeRequest = original.PoolChangeRequest
 type PoolPatchProperties = original.PoolPatchProperties
 type PoolProperties = original.PoolProperties
 type PoolsClient = original.PoolsClient
 type PoolsCreateOrUpdateFuture = original.PoolsCreateOrUpdateFuture
 type PoolsDeleteFuture = original.PoolsDeleteFuture
 type PoolsUpdateFuture = original.PoolsUpdateFuture
+type QuotaAvailabilityRequest = original.QuotaAvailabilityRequest
 type ReplicationObject = original.ReplicationObject
 type ReplicationStatus = original.ReplicationStatus
 type ResourceClient = original.ResourceClient
-type ResourceNameAvailability = original.ResourceNameAvailability
 type ResourceNameAvailabilityRequest = original.ResourceNameAvailabilityRequest
 type ServiceSpecification = original.ServiceSpecification
 type Snapshot = original.Snapshot
+type SnapshotPoliciesClient = original.SnapshotPoliciesClient
+type SnapshotPoliciesDeleteFuture = original.SnapshotPoliciesDeleteFuture
+type SnapshotPoliciesList = original.SnapshotPoliciesList
+type SnapshotPolicy = original.SnapshotPolicy
+type SnapshotPolicyDetails = original.SnapshotPolicyDetails
+type SnapshotPolicyPatch = original.SnapshotPolicyPatch
+type SnapshotPolicyProperties = original.SnapshotPolicyProperties
+type SnapshotPolicyVolumeList = original.SnapshotPolicyVolumeList
 type SnapshotProperties = original.SnapshotProperties
 type SnapshotsClient = original.SnapshotsClient
 type SnapshotsCreateFuture = original.SnapshotsCreateFuture
 type SnapshotsDeleteFuture = original.SnapshotsDeleteFuture
 type SnapshotsList = original.SnapshotsList
 type SnapshotsUpdateFuture = original.SnapshotsUpdateFuture
+type Vault = original.Vault
+type VaultList = original.VaultList
+type VaultProperties = original.VaultProperties
+type VaultsClient = original.VaultsClient
 type Volume = original.Volume
+type VolumeBackupProperties = original.VolumeBackupProperties
+type VolumeBackups = original.VolumeBackups
 type VolumeList = original.VolumeList
 type VolumePatch = original.VolumePatch
 type VolumePatchProperties = original.VolumePatchProperties
+type VolumePatchPropertiesDataProtection = original.VolumePatchPropertiesDataProtection
 type VolumePatchPropertiesExportPolicy = original.VolumePatchPropertiesExportPolicy
 type VolumeProperties = original.VolumeProperties
 type VolumePropertiesDataProtection = original.VolumePropertiesDataProtection
@@ -140,18 +211,39 @@ type VolumesClient = original.VolumesClient
 type VolumesCreateOrUpdateFuture = original.VolumesCreateOrUpdateFuture
 type VolumesDeleteFuture = original.VolumesDeleteFuture
 type VolumesDeleteReplicationFuture = original.VolumesDeleteReplicationFuture
+type VolumesPoolChangeFuture = original.VolumesPoolChangeFuture
+type VolumesReInitializeReplicationFuture = original.VolumesReInitializeReplicationFuture
 type VolumesResyncReplicationFuture = original.VolumesResyncReplicationFuture
 type VolumesRevertFuture = original.VolumesRevertFuture
 type VolumesUpdateFuture = original.VolumesUpdateFuture
+type WeeklySchedule = original.WeeklySchedule
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAccountBackupsClient(subscriptionID string) AccountBackupsClient {
+	return original.NewAccountBackupsClient(subscriptionID)
+}
+func NewAccountBackupsClientWithBaseURI(baseURI string, subscriptionID string) AccountBackupsClient {
+	return original.NewAccountBackupsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)
 }
 func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
 	return original.NewAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBackupPoliciesClient(subscriptionID string) BackupPoliciesClient {
+	return original.NewBackupPoliciesClient(subscriptionID)
+}
+func NewBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupPoliciesClient {
+	return original.NewBackupPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewBackupsClient(subscriptionID string) BackupsClient {
+	return original.NewBackupsClient(subscriptionID)
+}
+func NewBackupsClientWithBaseURI(baseURI string, subscriptionID string) BackupsClient {
+	return original.NewBackupsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -171,11 +263,23 @@ func NewResourceClient(subscriptionID string) ResourceClient {
 func NewResourceClientWithBaseURI(baseURI string, subscriptionID string) ResourceClient {
 	return original.NewResourceClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewSnapshotPoliciesClient(subscriptionID string) SnapshotPoliciesClient {
+	return original.NewSnapshotPoliciesClient(subscriptionID)
+}
+func NewSnapshotPoliciesClientWithBaseURI(baseURI string, subscriptionID string) SnapshotPoliciesClient {
+	return original.NewSnapshotPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewSnapshotsClient(subscriptionID string) SnapshotsClient {
 	return original.NewSnapshotsClient(subscriptionID)
 }
 func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) SnapshotsClient {
 	return original.NewSnapshotsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVaultsClient(subscriptionID string) VaultsClient {
+	return original.NewVaultsClient(subscriptionID)
+}
+func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsClient {
+	return original.NewVaultsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVolumesClient(subscriptionID string) VolumesClient {
 	return original.NewVolumesClient(subscriptionID)
@@ -186,8 +290,14 @@ func NewVolumesClientWithBaseURI(baseURI string, subscriptionID string) VolumesC
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleActiveDirectoryStatusValues() []ActiveDirectoryStatus {
+	return original.PossibleActiveDirectoryStatusValues()
+}
 func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 	return original.PossibleCheckNameResourceTypesValues()
+}
+func PossibleCheckQuotaNameResourceTypesValues() []CheckQuotaNameResourceTypes {
+	return original.PossibleCheckQuotaNameResourceTypesValues()
 }
 func PossibleEndpointTypeValues() []EndpointType {
 	return original.PossibleEndpointTypeValues()
@@ -198,11 +308,17 @@ func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 func PossibleMirrorStateValues() []MirrorState {
 	return original.PossibleMirrorStateValues()
 }
+func PossibleQosTypeValues() []QosType {
+	return original.PossibleQosTypeValues()
+}
 func PossibleRelationshipStatusValues() []RelationshipStatus {
 	return original.PossibleRelationshipStatusValues()
 }
 func PossibleReplicationScheduleValues() []ReplicationSchedule {
 	return original.PossibleReplicationScheduleValues()
+}
+func PossibleSecurityStyleValues() []SecurityStyle {
+	return original.PossibleSecurityStyleValues()
 }
 func PossibleServiceLevelValues() []ServiceLevel {
 	return original.PossibleServiceLevelValues()

@@ -1540,13 +1540,17 @@ type TypeBasicCompressionReadSettings string
 const (
 	// TypeCompressionReadSettings ...
 	TypeCompressionReadSettings TypeBasicCompressionReadSettings = "CompressionReadSettings"
+	// TypeTarGZipReadSettings ...
+	TypeTarGZipReadSettings TypeBasicCompressionReadSettings = "TarGZipReadSettings"
+	// TypeTarReadSettings ...
+	TypeTarReadSettings TypeBasicCompressionReadSettings = "TarReadSettings"
 	// TypeZipDeflateReadSettings ...
 	TypeZipDeflateReadSettings TypeBasicCompressionReadSettings = "ZipDeflateReadSettings"
 )
 
 // PossibleTypeBasicCompressionReadSettingsValues returns an array of possible values for the TypeBasicCompressionReadSettings const type.
 func PossibleTypeBasicCompressionReadSettingsValues() []TypeBasicCompressionReadSettings {
-	return []TypeBasicCompressionReadSettings{TypeCompressionReadSettings, TypeZipDeflateReadSettings}
+	return []TypeBasicCompressionReadSettings{TypeCompressionReadSettings, TypeTarGZipReadSettings, TypeTarReadSettings, TypeZipDeflateReadSettings}
 }
 
 // TypeBasicCopySink enumerates the values for type basic copy sink.
@@ -2072,13 +2076,17 @@ const (
 	TypeDeflate TypeBasicDatasetCompression = "Deflate"
 	// TypeGZip ...
 	TypeGZip TypeBasicDatasetCompression = "GZip"
+	// TypeTar ...
+	TypeTar TypeBasicDatasetCompression = "Tar"
+	// TypeTarGZip ...
+	TypeTarGZip TypeBasicDatasetCompression = "TarGZip"
 	// TypeZipDeflate ...
 	TypeZipDeflate TypeBasicDatasetCompression = "ZipDeflate"
 )
 
 // PossibleTypeBasicDatasetCompressionValues returns an array of possible values for the TypeBasicDatasetCompression const type.
 func PossibleTypeBasicDatasetCompressionValues() []TypeBasicDatasetCompression {
-	return []TypeBasicDatasetCompression{TypeBZip2, TypeDatasetCompression, TypeDeflate, TypeGZip, TypeZipDeflate}
+	return []TypeBasicDatasetCompression{TypeBZip2, TypeDatasetCompression, TypeDeflate, TypeGZip, TypeTar, TypeTarGZip, TypeZipDeflate}
 }
 
 // TypeBasicDatasetLocation enumerates the values for type basic dataset location.
@@ -2550,6 +2558,8 @@ const (
 	TypeAzureBlobStorageWriteSettings TypeBasicStoreWriteSettings = "AzureBlobStorageWriteSettings"
 	// TypeAzureDataLakeStoreWriteSettings ...
 	TypeAzureDataLakeStoreWriteSettings TypeBasicStoreWriteSettings = "AzureDataLakeStoreWriteSettings"
+	// TypeAzureFileStorageWriteSettings ...
+	TypeAzureFileStorageWriteSettings TypeBasicStoreWriteSettings = "AzureFileStorageWriteSettings"
 	// TypeFileServerWriteSettings ...
 	TypeFileServerWriteSettings TypeBasicStoreWriteSettings = "FileServerWriteSettings"
 	// TypeSftpWriteSettings ...
@@ -2560,7 +2570,7 @@ const (
 
 // PossibleTypeBasicStoreWriteSettingsValues returns an array of possible values for the TypeBasicStoreWriteSettings const type.
 func PossibleTypeBasicStoreWriteSettingsValues() []TypeBasicStoreWriteSettings {
-	return []TypeBasicStoreWriteSettings{TypeAzureBlobFSWriteSettings, TypeAzureBlobStorageWriteSettings, TypeAzureDataLakeStoreWriteSettings, TypeFileServerWriteSettings, TypeSftpWriteSettings, TypeStoreWriteSettings}
+	return []TypeBasicStoreWriteSettings{TypeAzureBlobFSWriteSettings, TypeAzureBlobStorageWriteSettings, TypeAzureDataLakeStoreWriteSettings, TypeAzureFileStorageWriteSettings, TypeFileServerWriteSettings, TypeSftpWriteSettings, TypeStoreWriteSettings}
 }
 
 // TypeBasicTrigger enumerates the values for type basic trigger.

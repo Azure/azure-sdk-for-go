@@ -191,15 +191,11 @@ func (p *pollingTrackerBase) FinalResponse(ctx context.Context, pipeline azcore.
 		}
 		return nil, errors.New("missing URL for retrieving result")
 	}
-	u, err := url.Parse(p.finalGetURL())
+	req, err := azcore.NewRequest(ctx, http.MethodGet, p.finalGetURL())
 	if err != nil {
 		return nil, err
 	}
-	req := azcore.NewRequest(http.MethodGet, *u)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := pipeline.Do(ctx, req)
+	resp, err := pipeline.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -436,13 +432,12 @@ func (pt *pollingTrackerBase) updateRawBody() error {
 }
 
 func (pt *pollingTrackerBase) pollForStatus(ctx context.Context, client azcore.Pipeline) error {
-	u, err := url.Parse(pt.URI)
+	req, err := azcore.NewRequest(ctx, http.MethodGet, pt.URI)
 	if err != nil {
 		pt.Err = err
 		return err
 	}
-	req := azcore.NewRequest(http.MethodGet, *u)
-	resp, err := client.Do(ctx, req)
+	resp, err := client.Do(req)
 	pt.resp = resp
 	if err != nil {
 		pt.Err = err

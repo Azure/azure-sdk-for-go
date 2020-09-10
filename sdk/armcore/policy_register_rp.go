@@ -89,10 +89,10 @@ type rpRegistrationPolicy struct {
 	options  RegistrationOptions
 }
 
-func (r *rpRegistrationPolicy) Do(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
+func (r *rpRegistrationPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
 	if r.options.MaxAttempts == 0 {
 		// policy is disabled
-		return req.Next(ctx)
+		return req.Next()
 	}
 	const unregisteredRPCode = "MissingSubscriptionRegistration"
 	const registeredState = "Registered"
@@ -101,7 +101,7 @@ func (r *rpRegistrationPolicy) Do(ctx context.Context, req *azcore.Request) (*az
 	for attempts := 0; attempts < r.options.MaxAttempts; attempts++ {
 		var err error
 		// make the original request
-		resp, err = req.Next(ctx)
+		resp, err = req.Next()
 		// getting a 409 is the first indication that the RP might need to be registered, check error response
 		if err != nil || resp.StatusCode != http.StatusConflict {
 			return resp, err
@@ -131,18 +131,15 @@ func (r *rpRegistrationPolicy) Do(ctx context.Context, req *azcore.Request) (*az
 		// create client and make the registration request
 		// we use the scheme and host from the original request
 		rpOps := &providersOperations{
-			p: r.pipeline,
-			u: &url.URL{
-				Scheme: req.URL.Scheme,
-				Host:   req.URL.Host,
-			},
+			p:     r.pipeline,
+			u:     fmt.Sprintf("%s://%s", req.URL.Scheme, req.URL.Host),
 			subID: subID,
 		}
-		if _, err = rpOps.Register(ctx, rp); err != nil {
+		if _, err = rpOps.Register(req.Context(), rp); err != nil {
 			return resp, err
 		}
 		// RP was registered, however we need to wait for the registration to complete
-		pollCtx, pollCancel := context.WithTimeout(ctx, r.options.PollingDuration)
+		pollCtx, pollCancel := context.WithTimeout(req.Context(), r.options.PollingDuration)
 		var lastRegState string
 		for {
 			// get the current registration state
@@ -224,17 +221,17 @@ type serviceErrorDetails struct {
 
 type providersOperations struct {
 	p     azcore.Pipeline
-	u     *url.URL
+	u     string
 	subID string
 }
 
 // Get - Gets the specified resource provider.
 func (client *providersOperations) Get(ctx context.Context, resourceProviderNamespace string) (*ProviderResponse, error) {
-	req, err := client.getCreateRequest(resourceProviderNamespace)
+	req, err := client.getCreateRequest(ctx, resourceProviderNamespace)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.p.Do(ctx, req)
+	resp, err := client.p.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -246,18 +243,17 @@ func (client *providersOperations) Get(ctx context.Context, resourceProviderName
 }
 
 // getCreateRequest creates the Get request.
-func (client *providersOperations) getCreateRequest(resourceProviderNamespace string) (*azcore.Request, error) {
+func (client *providersOperations) getCreateRequest(ctx context.Context, resourceProviderNamespace string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subID))
-	u, err := client.u.Parse(urlPath)
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
 	if err != nil {
 		return nil, newFrameError(err)
 	}
-	query := u.Query()
+	query := req.URL.Query()
 	query.Set("api-version", "2019-05-01")
-	u.RawQuery = query.Encode()
-	req := azcore.NewRequest(http.MethodGet, *u)
+	req.URL.RawQuery = query.Encode()
 	return req, nil
 }
 
@@ -288,11 +284,11 @@ func (client *providersOperations) getHandleError(resp *azcore.Response) error {
 
 // Register - Registers a subscription with a resource provider.
 func (client *providersOperations) Register(ctx context.Context, resourceProviderNamespace string) (*ProviderResponse, error) {
-	req, err := client.registerCreateRequest(resourceProviderNamespace)
+	req, err := client.registerCreateRequest(ctx, resourceProviderNamespace)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.p.Do(ctx, req)
+	resp, err := client.p.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -304,18 +300,17 @@ func (client *providersOperations) Register(ctx context.Context, resourceProvide
 }
 
 // registerCreateRequest creates the Register request.
-func (client *providersOperations) registerCreateRequest(resourceProviderNamespace string) (*azcore.Request, error) {
+func (client *providersOperations) registerCreateRequest(ctx context.Context, resourceProviderNamespace string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subID))
-	u, err := client.u.Parse(urlPath)
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.u, urlPath))
 	if err != nil {
 		return nil, newFrameError(err)
 	}
-	query := u.Query()
+	query := req.URL.Query()
 	query.Set("api-version", "2019-05-01")
-	u.RawQuery = query.Encode()
-	req := azcore.NewRequest(http.MethodPost, *u)
+	req.URL.RawQuery = query.Encode()
 	return req, nil
 }
 

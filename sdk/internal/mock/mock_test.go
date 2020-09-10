@@ -6,18 +6,12 @@
 package mock
 
 import (
-	"context"
 	"errors"
 	"io/ioutil"
 	"net/http"
 	"testing"
 	"time"
 )
-
-func urlToString(srv *Server) string {
-	u := srv.URL()
-	return u.String()
-}
 
 func TestStaticResponse(t *testing.T) {
 	srv, close := NewServer()
@@ -29,18 +23,18 @@ func TestStaticResponse(t *testing.T) {
 	if srv.isErrorResp() {
 		t.Fatal("unexpected error response")
 	}
-	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	req, err := http.NewRequest(http.MethodGet, srv.URL(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err := srv.Do(context.Background(), req)
+	resp, err := srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if resp.StatusCode != http.StatusNoContent {
 		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
-	resp, err = srv.Do(context.Background(), req)
+	resp, err = srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -60,18 +54,18 @@ func TestStaticError(t *testing.T) {
 	if !srv.isErrorResp() {
 		t.Fatal("unexpected response")
 	}
-	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	req, err := http.NewRequest(http.MethodGet, srv.URL(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err := srv.Do(context.Background(), req)
+	resp, err := srv.Do(req)
 	if !errors.Is(err, staticError) {
 		t.Fatalf("unexpected error %v", err)
 	}
 	if resp != nil {
 		t.Fatal("expected nil response")
 	}
-	resp, err = srv.Do(context.Background(), req)
+	resp, err = srv.Do(req)
 	if !errors.Is(err, staticError) {
 		t.Fatalf("unexpected error %v", err)
 	}
@@ -88,18 +82,18 @@ func TestAppendedResponses(t *testing.T) {
 	if l := len(srv.resp); l != 2 {
 		t.Fatalf("unexpected response count %d", l)
 	}
-	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	req, err := http.NewRequest(http.MethodGet, srv.URL(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err := srv.Do(context.Background(), req)
+	resp, err := srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if resp.StatusCode != http.StatusAccepted {
 		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
-	resp, err = srv.Do(context.Background(), req)
+	resp, err = srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -121,18 +115,18 @@ func TestAppendedErrors(t *testing.T) {
 	if l := len(srv.resp); l != 2 {
 		t.Fatalf("unexpected response count %d", l)
 	}
-	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	req, err := http.NewRequest(http.MethodGet, srv.URL(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err := srv.Do(context.Background(), req)
+	resp, err := srv.Do(req)
 	if !errors.Is(err, staticError1) {
 		t.Fatalf("unexpected error %v", err)
 	}
 	if resp != nil {
 		t.Fatal("expected nil response")
 	}
-	resp, err = srv.Do(context.Background(), req)
+	resp, err = srv.Do(req)
 	if !errors.Is(err, staticError2) {
 		t.Fatalf("unexpected error %v", err)
 	}
@@ -149,12 +143,12 @@ func TestRepeatedResponse(t *testing.T) {
 	if l := len(srv.resp); l != repeatCount {
 		t.Fatalf("unexpected response count %d", l)
 	}
-	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	req, err := http.NewRequest(http.MethodGet, srv.URL(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	for i := 0; i < repeatCount; i++ {
-		resp, err := srv.Do(context.Background(), req)
+		resp, err := srv.Do(req)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -179,12 +173,12 @@ func TestRepeatedError(t *testing.T) {
 	if l := len(srv.resp); l != repeatCount {
 		t.Fatalf("unexpected response count %d", l)
 	}
-	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	req, err := http.NewRequest(http.MethodGet, srv.URL(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	for i := 0; i < repeatCount; i++ {
-		resp, err := srv.Do(context.Background(), req)
+		resp, err := srv.Do(req)
 		if !errors.Is(err, repeatError) {
 			t.Fatalf("unexpected error %v", err)
 		}
@@ -210,11 +204,11 @@ func TestComplexResponse(t *testing.T) {
 		WithHeader("some", "value"),
 		WithSlowResponse(2*time.Second),
 	)
-	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	req, err := http.NewRequest(http.MethodGet, srv.URL(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err := srv.Do(context.Background(), req)
+	resp, err := srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -244,11 +238,11 @@ func TestComplexResponseTLS(t *testing.T) {
 		WithHeader("some", "value"),
 		WithSlowResponse(2*time.Second),
 	)
-	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	req, err := http.NewRequest(http.MethodGet, srv.URL(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err := srv.Do(context.Background(), req)
+	resp, err := srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -273,11 +267,11 @@ func TestBodyReadError(t *testing.T) {
 	defer close()
 	const body = "this is the response body"
 	srv.AppendResponse(WithBodyReadError())
-	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	req, err := http.NewRequest(http.MethodGet, srv.URL(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err := srv.Do(context.Background(), req)
+	resp, err := srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -302,19 +296,19 @@ func TestPredicateSuccess(t *testing.T) {
 	// predicate failure response
 	srv.AppendResponse(WithStatusCode(http.StatusBadRequest))
 	srv.AppendResponse(WithStatusCode(http.StatusNoContent))
-	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	req, err := http.NewRequest(http.MethodGet, srv.URL(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	req.Header.Set(customHeader, customValue)
-	resp, err := srv.Do(context.Background(), req)
+	resp, err := srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
-	resp, err = srv.Do(context.Background(), req)
+	resp, err = srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -334,18 +328,18 @@ func TestPredicateFail(t *testing.T) {
 	// predicate failure response
 	srv.AppendResponse(WithStatusCode(http.StatusBadRequest))
 	srv.AppendResponse(WithStatusCode(http.StatusNoContent))
-	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	req, err := http.NewRequest(http.MethodGet, srv.URL(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err := srv.Do(context.Background(), req)
+	resp, err := srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if resp.StatusCode != http.StatusBadRequest {
 		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
-	resp, err = srv.Do(context.Background(), req)
+	resp, err = srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -371,18 +365,18 @@ func TestPredicateMultiple(t *testing.T) {
 	// predicate failure response
 	srv.AppendResponse(WithStatusCode(http.StatusForbidden))
 	srv.AppendResponse(WithStatusCode(http.StatusOK))
-	req, err := http.NewRequest(http.MethodGet, urlToString(srv), nil)
+	req, err := http.NewRequest(http.MethodGet, srv.URL(), nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err := srv.Do(context.Background(), req)
+	resp, err := srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if resp.StatusCode != http.StatusBadRequest {
 		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
-	resp, err = srv.Do(context.Background(), req)
+	resp, err = srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -390,14 +384,14 @@ func TestPredicateMultiple(t *testing.T) {
 		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
 	req.Header.Add(customHeader, customValue)
-	resp, err = srv.Do(context.Background(), req)
+	resp, err = srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if resp.StatusCode != http.StatusAccepted {
 		t.Fatalf("unexpected status code %d", resp.StatusCode)
 	}
-	resp, err = srv.Do(context.Background(), req)
+	resp, err = srv.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}

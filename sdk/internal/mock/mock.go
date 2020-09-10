@@ -6,12 +6,10 @@
 package mock
 
 import (
-	"context"
 	"errors"
 	"io"
 	"net/http"
 	"net/http/httptest"
-	"net/url"
 	"sync"
 	"time"
 )
@@ -92,25 +90,21 @@ func (s *Server) getResponse() mockResponse {
 }
 
 // URL returns the endpoint of the test server in URL format.
-func (s *Server) URL() url.URL {
-	u, err := url.Parse(s.srv.URL)
-	if err != nil {
-		panic(err)
-	}
-	return *u
+func (s *Server) URL() string {
+	return s.srv.URL
 }
 
 // Do implements the azcore.Transport interface on Server.
 // Calling this when the response queue is empty and no static
 // response has been set will cause a panic.
-func (s *Server) Do(ctx context.Context, req *http.Request) (*http.Response, error) {
+func (s *Server) Do(req *http.Request) (*http.Response, error) {
 	s.count++
 	// error responses are returned here
 	if s.isErrorResp() {
 		resp := s.getResponse()
 		return nil, resp.err
 	}
-	resp, err := s.srv.Client().Do(req.WithContext(ctx))
+	resp, err := s.srv.Client().Do(req)
 	if err != nil {
 		return resp, err
 	}

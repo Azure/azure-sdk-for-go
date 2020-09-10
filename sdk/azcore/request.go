@@ -62,20 +62,30 @@ func (ov opValues) get(value interface{}) bool {
 	return ok
 }
 
+// JoinPaths concatenates multiple URL path segments into one path,
+// inserting path separation characters as required.
+func JoinPaths(paths ...string) string {
+	if len(paths) == 0 {
+		return ""
+	}
+	path := paths[0]
+	for i := 1; i < len(paths); i++ {
+		if path[len(path)-1] == '/' && paths[i][0] == '/' {
+			// strip off trailing '/' to avoid doubling up
+			path = path[:len(path)-1]
+		} else if path[len(path)-1] != '/' && paths[i][0] != '/' {
+			// add a trailing '/'
+			path = path + "/"
+		}
+		path += paths[i]
+	}
+	return path
+}
+
 // NewRequest creates a new Request with the specified input.
 // Endpoint contains the host URL along with any base path.
 // Path contains optional URL path segments to be concatenated to the endpoint.
-func NewRequest(ctx context.Context, httpMethod string, endpoint string, path ...string) (*Request, error) {
-	for i := 0; i < len(path); i++ {
-		if endpoint[len(endpoint)-1] == '/' && path[i][0] == '/' {
-			// strip off trailing '/' to avoid doubling up
-			endpoint = endpoint[:len(endpoint)-1]
-		} else if endpoint[len(endpoint)-1] != '/' && path[i][0] != '/' {
-			// add a trailing '/'
-			endpoint = endpoint + "/"
-		}
-		endpoint += path[i]
-	}
+func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Request, error) {
 	req, err := http.NewRequestWithContext(ctx, httpMethod, endpoint, nil)
 	if err != nil {
 		return nil, err

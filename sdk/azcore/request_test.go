@@ -502,13 +502,10 @@ func TestNewRequestFail(t *testing.T) {
 	}
 }
 
-func TestRequestPathSegments(t *testing.T) {
-	req, err := NewRequest(context.Background(), http.MethodGet, "http://test.contoso.com/", "/path/one", "path/two", "path/three")
-	if err != nil {
-		t.Fatal(err)
-	}
-	const expected = "http://test.contoso.com/path/one/path/two/path/three"
-	if got := req.URL.String(); got != expected {
+func TestJoinPaths(t *testing.T) {
+	path := JoinPaths("http://test.contoso.com/", "/path/one", "path/two", "/path/three/", "path/four/")
+	const expected = "http://test.contoso.com/path/one/path/two/path/three/path/four/"
+	if got := path; got != expected {
 		t.Fatalf("got %s, expected %s", got, expected)
 	}
 }

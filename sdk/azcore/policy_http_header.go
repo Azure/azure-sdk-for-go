@@ -15,9 +15,9 @@ type ctxWithHTTPHeader struct{}
 
 // newHTTPHeaderPolicy creates a policy object that adds custom HTTP headers to a request
 func newHTTPHeaderPolicy() Policy {
-	return PolicyFunc(func(ctx context.Context, req *Request) (*Response, error) {
+	return PolicyFunc(func(req *Request) (*Response, error) {
 		// check if any custom HTTP headers have been specified
-		if header := ctx.Value(ctxWithHTTPHeader{}); header != nil {
+		if header := req.Context().Value(ctxWithHTTPHeader{}); header != nil {
 			for k, v := range header.(http.Header) {
 				// use Set to replace any existing value
 				// it also canonicalizes the header key
@@ -28,7 +28,7 @@ func newHTTPHeaderPolicy() Policy {
 				}
 			}
 		}
-		return req.Next(ctx)
+		return req.Next()
 	})
 }
 

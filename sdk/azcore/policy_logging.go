@@ -7,7 +7,6 @@ package azcore
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -48,7 +47,7 @@ type logPolicyOpValues struct {
 	start time.Time
 }
 
-func (p *requestLogPolicy) Do(ctx context.Context, req *Request) (*Response, error) {
+func (p *requestLogPolicy) Do(req *Request) (*Response, error) {
 	// Get the per-operation values. These are saved in the Message's map so that they persist across each retry calling into this policy object.
 	var opValues logPolicyOpValues
 	if req.OperationValue(&opValues); opValues.start.IsZero() {
@@ -67,7 +66,7 @@ func (p *requestLogPolicy) Do(ctx context.Context, req *Request) (*Response, err
 
 	// Set the time for this particular retry operation and then Do the operation.
 	tryStart := time.Now()
-	response, err := req.Next(ctx) // Make the request
+	response, err := req.Next() // Make the request
 	tryEnd := time.Now()
 	tryDuration := tryEnd.Sub(tryStart)
 	opDuration := tryEnd.Sub(opValues.start)

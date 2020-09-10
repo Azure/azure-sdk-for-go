@@ -11,13 +11,15 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 	"reflect"
 	"strconv"
 	"strings"
+
+	"golang.org/x/net/http/httpguts"
 )
 
 const (
@@ -60,39 +62,53 @@ func (ov opValues) get(value interface{}) bool {
 	return ok
 }
 
+// JoinPaths concatenates multiple URL path segments into one path,
+// inserting path separation characters as required.
+func JoinPaths(paths ...string) string {
+	if len(paths) == 0 {
+		return ""
+	}
+	path := paths[0]
+	for i := 1; i < len(paths); i++ {
+		if path[len(path)-1] == '/' && paths[i][0] == '/' {
+			// strip off trailing '/' to avoid doubling up
+			path = path[:len(path)-1]
+		} else if path[len(path)-1] != '/' && paths[i][0] != '/' {
+			// add a trailing '/'
+			path = path + "/"
+		}
+		path += paths[i]
+	}
+	return path
+}
+
 // NewRequest creates a new Request with the specified input.
-func NewRequest(httpMethod string, endpoint url.URL) *Request {
-	// removeEmptyPort strips the empty port in ":port" to ""
-	// as mandated by RFC 3986 Section 6.2.3.
-	// adapted from removeEmptyPort() in net/http.go
-	if strings.LastIndex(endpoint.Host, ":") > strings.LastIndex(endpoint.Host, "]") {
-		endpoint.Host = strings.TrimSuffix(endpoint.Host, ":")
+func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Request, error) {
+	req, err := http.NewRequestWithContext(ctx, httpMethod, endpoint, nil)
+	if err != nil {
+		return nil, err
 	}
-	return &Request{
-		Request: &http.Request{
-			Method:     httpMethod,
-			URL:        &endpoint,
-			Proto:      "HTTP/1.1",
-			ProtoMajor: 1,
-			ProtoMinor: 1,
-			Header:     http.Header{},
-			Host:       endpoint.Host,
-		},
+	if req.URL.Host == "" {
+		return nil, errors.New("no Host in request URL")
 	}
+	if !(req.URL.Scheme == "http" || req.URL.Scheme == "https") {
+		return nil, fmt.Errorf("unsupported protocol scheme %s", req.URL.Scheme)
+	}
+	return &Request{Request: req}, nil
 }
 
 // Next calls the next policy in the pipeline.
 // If there are no more policies, nil and ErrNoMorePolicies are returned.
 // This method is intended to be called from pipeline policies.
 // To send a request through a pipeline call Pipeline.Do().
-func (req *Request) Next(ctx context.Context) (*Response, error) {
+func (req *Request) Next() (*Response, error) {
 	if len(req.policies) == 0 {
 		return nil, ErrNoMorePolicies
 	}
 	nextPolicy := req.policies[0]
 	nextReq := *req
 	nextReq.policies = nextReq.policies[1:]
-	return nextPolicy.Do(ctx, &nextReq)
+	return nextPolicy.Do(&nextReq)
 }
 
 // MarshalAsByteArray will base-64 encode the byte slice v, then calls SetBody.
@@ -110,8 +126,7 @@ func (req *Request) MarshalAsByteArray(v []byte, format Base64Encoding) error {
 	}
 	// send as a JSON string
 	encode = fmt.Sprintf("\"%s\"", encode)
-	req.Header.Set(HeaderContentType, contentTypeAppJSON)
-	return req.SetBody(NopCloser(strings.NewReader(encode)))
+	return req.SetBody(NopCloser(strings.NewReader(encode)), contentTypeAppJSON)
 }
 
 // MarshalAsJSON calls json.Marshal() to get the JSON encoding of v then calls SetBody.
@@ -122,8 +137,7 @@ func (req *Request) MarshalAsJSON(v interface{}) error {
 	if err != nil {
 		return fmt.Errorf("error marshalling type %s: %w", reflect.TypeOf(v).Name(), err)
 	}
-	req.Header.Set(HeaderContentType, contentTypeAppJSON)
-	return req.SetBody(NopCloser(bytes.NewReader(b)))
+	return req.SetBody(NopCloser(bytes.NewReader(b)), contentTypeAppJSON)
 }
 
 // MarshalAsXML calls xml.Marshal() to get the XML encoding of v then calls SetBody.
@@ -133,8 +147,7 @@ func (req *Request) MarshalAsXML(v interface{}) error {
 	if err != nil {
 		return fmt.Errorf("error marshalling type %s: %w", reflect.TypeOf(v).Name(), err)
 	}
-	req.Header.Set(HeaderContentType, contentTypeAppXML)
-	return req.SetBody(NopCloser(bytes.NewReader(b)))
+	return req.SetBody(NopCloser(bytes.NewReader(b)), contentTypeAppXML)
 }
 
 // SetOperationValue adds/changes a mutable key/value associated with a single operation.
@@ -154,7 +167,7 @@ func (req *Request) OperationValue(value interface{}) bool {
 }
 
 // SetBody sets the specified ReadSeekCloser as the HTTP request body.
-func (req *Request) SetBody(body ReadSeekCloser) error {
+func (req *Request) SetBody(body ReadSeekCloser, contentType string) error {
 	// Set the body and content length.
 	size, err := body.Seek(0, io.SeekEnd) // Seek to the end to get the stream's size
 	if err != nil {
@@ -170,6 +183,7 @@ func (req *Request) SetBody(body ReadSeekCloser) error {
 	}
 	req.Request.Body = body
 	req.Request.ContentLength = size
+	req.Header.Set(HeaderContentType, contentType)
 	req.Header.Set(HeaderContentLength, strconv.FormatInt(size, 10))
 	return nil
 }
@@ -197,6 +211,7 @@ func (req *Request) Close() error {
 	return req.Body.Close()
 }
 
+// copy returns a shallow copy of the request
 func (req *Request) copy() *Request {
 	clonedURL := *req.URL
 	// Copy the values and immutable references
@@ -214,6 +229,32 @@ func (req *Request) copy() *Request {
 			GetBody:       req.GetBody,
 		},
 	}
+}
+
+// clone returns a deep copy of the request with its context changed to ctx
+func (req *Request) clone(ctx context.Context) *Request {
+	r2 := Request{}
+	r2 = *req
+	r2.Request = req.Request.Clone(ctx)
+	return &r2
+}
+
+// valid returns nil if the underlying http.Request is well-formed.
+func (req *Request) valid() error {
+	// check copied from Transport.roundTrip()
+	for k, vv := range req.Header {
+		if !httpguts.ValidHeaderFieldName(k) {
+			req.Close()
+			return fmt.Errorf("invalid header field name %q", k)
+		}
+		for _, v := range vv {
+			if !httpguts.ValidHeaderFieldValue(v) {
+				req.Close()
+				return fmt.Errorf("invalid header field value %q for key %v", v, k)
+			}
+		}
+	}
+	return nil
 }
 
 // returns a clone of the object graph pointed to by v, omitting values of all read-only

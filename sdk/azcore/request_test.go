@@ -12,7 +12,6 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 	"reflect"
 	"strconv"
 	"testing"
@@ -30,11 +29,10 @@ type testXML struct {
 }
 
 func TestRequestMarshalXML(t *testing.T) {
-	u, err := url.Parse("https://contoso.com")
+	req, err := NewRequest(context.Background(), http.MethodPost, "https://contoso.com")
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
-	req := NewRequest(http.MethodPost, *u)
 	err = req.MarshalAsXML(testXML{SomeInt: 1, SomeString: "s"})
 	if err != nil {
 		t.Fatalf("marshal failure: %v", err)
@@ -51,12 +49,11 @@ func TestRequestMarshalXML(t *testing.T) {
 }
 
 func TestRequestEmptyPipeline(t *testing.T) {
-	u, err := url.Parse("https://contoso.com")
+	req, err := NewRequest(context.Background(), http.MethodPost, "https://contoso.com")
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
-	req := NewRequest(http.MethodPost, *u)
-	resp, err := req.Next(context.Background())
+	resp, err := req.Next()
 	if resp != nil {
 		t.Fatal("expected nil response")
 	}
@@ -66,11 +63,10 @@ func TestRequestEmptyPipeline(t *testing.T) {
 }
 
 func TestRequestMarshalJSON(t *testing.T) {
-	u, err := url.Parse("https://contoso.com")
+	req, err := NewRequest(context.Background(), http.MethodPost, "https://contoso.com")
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
-	req := NewRequest(http.MethodPost, *u)
 	err = req.MarshalAsJSON(testJSON{SomeInt: 1, SomeString: "s"})
 	if err != nil {
 		t.Fatalf("marshal failure: %v", err)
@@ -87,11 +83,10 @@ func TestRequestMarshalJSON(t *testing.T) {
 }
 
 func TestRequestMarshalAsByteArrayURLFormat(t *testing.T) {
-	u, err := url.Parse("https://contoso.com")
+	req, err := NewRequest(context.Background(), http.MethodPost, "https://contoso.com")
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
-	req := NewRequest(http.MethodPost, *u)
 	const payload = "a string that gets encoded with base64url"
 	err = req.MarshalAsByteArray([]byte(payload), Base64URLFormat)
 	if err != nil {
@@ -116,11 +111,10 @@ func TestRequestMarshalAsByteArrayURLFormat(t *testing.T) {
 }
 
 func TestRequestMarshalAsByteArrayStdFormat(t *testing.T) {
-	u, err := url.Parse("https://contoso.com")
+	req, err := NewRequest(context.Background(), http.MethodPost, "https://contoso.com")
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
-	req := NewRequest(http.MethodPost, *u)
 	const payload = "a string that gets encoded with base64url"
 	err = req.MarshalAsByteArray([]byte(payload), Base64StdFormat)
 	if err != nil {
@@ -325,11 +319,10 @@ func TestCloneWithoutReadOnlyFieldsCloneNested(t *testing.T) {
 }
 
 func TestCloneWithoutReadOnlyFieldsEndToEnd(t *testing.T) {
-	u, err := url.Parse("https://contoso.com")
+	req, err := NewRequest(context.Background(), http.MethodPost, "https://contoso.com")
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
-	req := NewRequest(http.MethodPost, *u)
 	id := int32(123)
 	name := "widget"
 	type withReadOnly struct {
@@ -470,18 +463,77 @@ func TestAzureTagIsReadOnly(t *testing.T) {
 }
 
 func TestRequestSetBodyContentLengthHeader(t *testing.T) {
-	endpoint, err := url.Parse("http://test.contoso.com")
+	req, err := NewRequest(context.Background(), http.MethodPut, "http://test.contoso.com")
 	if err != nil {
 		t.Fatal(err)
 	}
-	req := NewRequest(http.MethodPut, *endpoint)
 	buff := make([]byte, 768, 768)
 	const buffLen = 768
 	for i := 0; i < buffLen; i++ {
 		buff[i] = 1
 	}
-	req.SetBody(NopCloser(bytes.NewReader(buff)))
+	req.SetBody(NopCloser(bytes.NewReader(buff)), "application/octet-stream")
 	if req.Header.Get(HeaderContentLength) != strconv.FormatInt(buffLen, 10) {
 		t.Fatalf("expected content-length %d, got %s", buffLen, req.Header.Get(HeaderContentLength))
+	}
+}
+
+func TestNewRequestFail(t *testing.T) {
+	req, err := NewRequest(context.Background(), http.MethodOptions, "://test.contoso.com/")
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if req != nil {
+		t.Fatal("unexpected request")
+	}
+	req, err = NewRequest(context.Background(), http.MethodPatch, "/missing/the/host")
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if req != nil {
+		t.Fatal("unexpected request")
+	}
+	req, err = NewRequest(context.Background(), http.MethodPatch, "mailto://nobody.contoso.com")
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if req != nil {
+		t.Fatal("unexpected request")
+	}
+}
+
+func TestJoinPaths(t *testing.T) {
+	if path := JoinPaths(); path != "" {
+		t.Fatalf("unexpected path %s", path)
+	}
+	const expected = "http://test.contoso.com/path/one/path/two/path/three/path/four/"
+	if path := JoinPaths("http://test.contoso.com/", "/path/one", "path/two", "/path/three/", "path/four/"); path != expected {
+		t.Fatalf("got %s, expected %s", path, expected)
+	}
+}
+
+func TestRequestValidFail(t *testing.T) {
+	req, err := NewRequest(context.Background(), http.MethodGet, "http://test.contoso.com/")
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.Header.Add("inval d", "header")
+	p := NewPipeline(nil)
+	resp, err := p.Do(req)
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if resp != nil {
+		t.Fatal("unexpected response")
+	}
+	req.Header = http.Header{}
+	// the string "null\0"
+	req.Header.Add("invalid", string([]byte{0x6e, 0x75, 0x6c, 0x6c, 0x0}))
+	resp, err = p.Do(req)
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if resp != nil {
+		t.Fatal("unexpected response")
 	}
 }

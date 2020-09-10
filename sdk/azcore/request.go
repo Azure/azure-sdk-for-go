@@ -83,8 +83,6 @@ func JoinPaths(paths ...string) string {
 }
 
 // NewRequest creates a new Request with the specified input.
-// Endpoint contains the host URL along with any base path.
-// Path contains optional URL path segments to be concatenated to the endpoint.
 func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Request, error) {
 	req, err := http.NewRequestWithContext(ctx, httpMethod, endpoint, nil)
 	if err != nil {

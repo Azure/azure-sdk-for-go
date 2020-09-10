@@ -2231,11 +2231,15 @@ const (
 	TypeFormatWriteSettings TypeBasicFormatWriteSettings = "FormatWriteSettings"
 	// TypeJSONWriteSettings ...
 	TypeJSONWriteSettings TypeBasicFormatWriteSettings = "JsonWriteSettings"
+	// TypeOrcWriteSettings ...
+	TypeOrcWriteSettings TypeBasicFormatWriteSettings = "OrcWriteSettings"
+	// TypeParquetWriteSettings ...
+	TypeParquetWriteSettings TypeBasicFormatWriteSettings = "ParquetWriteSettings"
 )
 
 // PossibleTypeBasicFormatWriteSettingsValues returns an array of possible values for the TypeBasicFormatWriteSettings const type.
 func PossibleTypeBasicFormatWriteSettingsValues() []TypeBasicFormatWriteSettings {
-	return []TypeBasicFormatWriteSettings{TypeAvroWriteSettings, TypeDelimitedTextWriteSettings, TypeFormatWriteSettings, TypeJSONWriteSettings}
+	return []TypeBasicFormatWriteSettings{TypeAvroWriteSettings, TypeDelimitedTextWriteSettings, TypeFormatWriteSettings, TypeJSONWriteSettings, TypeOrcWriteSettings, TypeParquetWriteSettings}
 }
 
 // TypeBasicImportSettings enumerates the values for type basic import settings.

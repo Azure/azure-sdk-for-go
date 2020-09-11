@@ -69,13 +69,10 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	// response for original request (different status code than any of the other responses)
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(azcore.AnonymousCredential(), testRPRegistrationOptions(srv)))
-	u1 := srv.URL()
-	u2 := &u1
-	u2, err := u2.Parse(requestEndpoint)
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, azcore.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
 	}
-	req := azcore.NewRequest(http.MethodGet, *u2)
 	// log only RP registration
 	azcore.Log().SetClassifications(LogRPRegistration)
 	defer func() {
@@ -86,7 +83,7 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
 		logEntries++
 	})
-	resp, err := pl.Do(context.Background(), req)
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -111,7 +108,10 @@ func TestRPRegistrationPolicyNA(t *testing.T) {
 	// response indicates no RP registration is required, policy does nothing
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(azcore.AnonymousCredential(), testRPRegistrationOptions(srv)))
-	req := azcore.NewRequest(http.MethodGet, srv.URL())
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatal(err)
+	}
 	// log only RP registration
 	azcore.Log().SetClassifications(LogRPRegistration)
 	defer func() {
@@ -121,7 +121,7 @@ func TestRPRegistrationPolicyNA(t *testing.T) {
 	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
 		t.Fatalf("unexpected log entry %s: %s", cls, msg)
 	})
-	resp, err := pl.Do(context.Background(), req)
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -147,7 +147,10 @@ func TestRPRegistrationPolicy409Other(t *testing.T) {
 	// test getting a 409 but not due to registration required
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(failedResp)))
 	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(azcore.AnonymousCredential(), testRPRegistrationOptions(srv)))
-	req := azcore.NewRequest(http.MethodGet, srv.URL())
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatal(err)
+	}
 	// log only RP registration
 	azcore.Log().SetClassifications(LogRPRegistration)
 	defer func() {
@@ -157,7 +160,7 @@ func TestRPRegistrationPolicy409Other(t *testing.T) {
 	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
 		t.Fatalf("unexpected log entry %s: %s", cls, msg)
 	})
-	resp, err := pl.Do(context.Background(), req)
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -175,13 +178,10 @@ func TestRPRegistrationPolicyTimesOut(t *testing.T) {
 	// tests registration takes too long, times out
 	srv.RepeatResponse(10, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)), mock.WithSlowResponse(400*time.Millisecond))
 	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(azcore.AnonymousCredential(), testRPRegistrationOptions(srv)))
-	u1 := srv.URL()
-	u2 := &u1
-	u2, err := u2.Parse(requestEndpoint)
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, azcore.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
 	}
-	req := azcore.NewRequest(http.MethodGet, *u2)
 	// log only RP registration
 	azcore.Log().SetClassifications(LogRPRegistration)
 	defer func() {
@@ -192,7 +192,7 @@ func TestRPRegistrationPolicyTimesOut(t *testing.T) {
 	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
 		logEntries++
 	})
-	resp, err := pl.Do(context.Background(), req)
+	resp, err := pl.Do(req)
 	if !errors.Is(err, context.DeadlineExceeded) {
 		t.Fatalf("expected DeadlineExceeded, got %v", err)
 	}
@@ -221,13 +221,10 @@ func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
 		srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteredResp)))
 	}
 	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(azcore.AnonymousCredential(), testRPRegistrationOptions(srv)))
-	u1 := srv.URL()
-	u2 := &u1
-	u2, err := u2.Parse(requestEndpoint)
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, azcore.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
 	}
-	req := azcore.NewRequest(http.MethodGet, *u2)
 	// log only RP registration
 	azcore.Log().SetClassifications(LogRPRegistration)
 	defer func() {
@@ -238,7 +235,7 @@ func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
 	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
 		logEntries++
 	})
-	resp, err := pl.Do(context.Background(), req)
+	resp, err := pl.Do(req)
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -281,23 +278,22 @@ func TestRPRegistrationPolicyCanCancel(t *testing.T) {
 	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
 		logEntries++
 	})
-	u1 := srv.URL()
-	u2 := &u1
-	u2, err := u2.Parse(requestEndpoint)
-	if err != nil {
-		t.Fatal(err)
-	}
 
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	var resp *azcore.Response
+	var err error
 	go func() {
+		defer wg.Done()
 		// create request and start pipeline
-		req := azcore.NewRequest(http.MethodGet, *u2)
-		resp, err = pl.Do(ctx, req)
-		wg.Done()
+		var req *azcore.Request
+		req, err = azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(srv.URL(), requestEndpoint))
+		if err != nil {
+			return
+		}
+		resp, err = pl.Do(req)
 	}()
 
 	// wait for a bit then cancel the operation
@@ -325,13 +321,10 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	ops := testRPRegistrationOptions(srv)
 	ops.MaxAttempts = 0
 	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(azcore.AnonymousCredential(), ops))
-	u1 := srv.URL()
-	u2 := &u1
-	u2, err := u2.Parse(requestEndpoint)
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, azcore.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
 	}
-	req := azcore.NewRequest(http.MethodGet, *u2)
 	// log only RP registration
 	azcore.Log().SetClassifications(LogRPRegistration)
 	defer func() {
@@ -342,7 +335,7 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
 		logEntries++
 	})
-	resp, err := pl.Do(context.Background(), req)
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}

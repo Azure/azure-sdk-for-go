@@ -42,8 +42,11 @@ func TestNewPollerTracker(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(mockSuccessResp)))
 	p := getPipeline(srv)
-	req := azcore.NewRequest(http.MethodPost, srv.URL())
-	resp, err := p.Do(context.Background(), req)
+	req, err := azcore.NewRequest(context.Background(), http.MethodPost, srv.URL())
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	resp, err := p.Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -68,8 +71,11 @@ func TestResumeTokenFail(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(`{"field": "success"}`)))
 	p := getPipeline(srv)
-	req := azcore.NewRequest(http.MethodPost, srv.URL())
-	resp, err := p.Do(context.Background(), req)
+	req, err := azcore.NewRequest(context.Background(), http.MethodPost, srv.URL())
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	resp, err := p.Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -92,8 +98,11 @@ func TestPollUntilDone(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendResponse(mock.WithBody([]byte(mockSuccessResp)))
 	p := getPipeline(srv)
-	req := azcore.NewRequest(http.MethodPut, srv.URL())
-	resp, err := p.Do(context.Background(), req)
+	req, err := azcore.NewRequest(context.Background(), http.MethodPut, srv.URL())
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	resp, err := p.Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -124,8 +133,11 @@ func TestPutFinalResponseCheck(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(`{"other": "other"}`)))
 	srv.AppendResponse(mock.WithBody([]byte(mockSuccessResp)))
 	p := getPipeline(srv)
-	req := azcore.NewRequest(http.MethodPut, srv.URL())
-	resp, err := p.Do(context.Background(), req)
+	req, err := azcore.NewRequest(context.Background(), http.MethodPut, srv.URL())
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	resp, err := p.Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -155,8 +167,11 @@ func TestNewPollerFromResumeTokenTracker(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
 	srv.AppendResponse(mock.WithBody([]byte(`{"field": "success"}`)))
 	p := getPipeline(srv)
-	req := azcore.NewRequest(http.MethodPut, srv.URL())
-	resp, err := p.Do(context.Background(), req)
+	req, err := azcore.NewRequest(context.Background(), http.MethodPut, srv.URL())
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	resp, err := p.Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}

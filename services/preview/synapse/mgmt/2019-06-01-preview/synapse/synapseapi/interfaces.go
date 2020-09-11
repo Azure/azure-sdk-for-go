@@ -265,8 +265,8 @@ var _ WorkspaceManagedIdentitySQLControlSettingsClientAPI = (*synapse.WorkspaceM
 
 // IntegrationRuntimesClientAPI contains the set of methods on the IntegrationRuntimesClient type.
 type IntegrationRuntimesClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, integrationRuntime synapse.IntegrationRuntimeResource, ifMatch string) (result synapse.IntegrationRuntimeResource, err error)
-	Delete(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result autorest.Response, err error)
+	Create(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, integrationRuntime synapse.IntegrationRuntimeResource, ifMatch string) (result synapse.IntegrationRuntimesCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result synapse.IntegrationRuntimesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, ifNoneMatch string) (result synapse.IntegrationRuntimeResource, err error)
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.IntegrationRuntimeListResponsePage, err error)
 	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result synapse.IntegrationRuntimeListResponseIterator, err error)

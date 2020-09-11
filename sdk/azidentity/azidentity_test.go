@@ -29,7 +29,7 @@ func Test_NonNilTokenCredentialOptsNilAuthorityHost(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Received an error: %v", err)
 	}
-	if opts.AuthorityHost == nil {
+	if opts.AuthorityHost == "" {
 		t.Fatalf("Did not set default authority host")
 	}
 }
@@ -42,7 +42,7 @@ func Test_SetEnvAuthorityHost(t *testing.T) {
 
 	opts := &TokenCredentialOptions{}
 	opts, err = opts.setDefaultValues()
-	if opts.AuthorityHost.String() != envHostString {
+	if opts.AuthorityHost != envHostString {
 		t.Fatalf("Unexpected error when get host from environment vairable: %v", err)
 	}
 
@@ -59,14 +59,9 @@ func Test_CustomAuthorityHost(t *testing.T) {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}
 
-	customHost, err := url.Parse(customHostString)
-	if err != nil {
-		t.Fatalf("Received an error: %v", err)
-	}
-
-	opts := &TokenCredentialOptions{AuthorityHost: customHost}
+	opts := &TokenCredentialOptions{AuthorityHost: customHostString}
 	opts, err = opts.setDefaultValues()
-	if opts.AuthorityHost.String() != customHostString {
+	if opts.AuthorityHost != customHostString {
 		t.Fatalf("Unexpected error when get host from environment vairable: %v", err)
 	}
 
@@ -80,7 +75,7 @@ func Test_CustomAuthorityHost(t *testing.T) {
 func Test_DefaultAuthorityHost(t *testing.T) {
 	opts := &TokenCredentialOptions{}
 	opts, err := opts.setDefaultValues()
-	if opts.AuthorityHost.String() != AzurePublicCloud {
+	if opts.AuthorityHost != AzurePublicCloud {
 		t.Fatalf("Unexpected error when set default AuthorityHost: %v", err)
 	}
 }
@@ -91,12 +86,8 @@ func Test_AzureGermanyAuthorityHost(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	u, err := url.Parse(AzureGermany)
-	if err != nil {
-		t.Fatal(err)
-	}
-	opts.AuthorityHost = u
-	if opts.AuthorityHost.String() != AzureGermany {
+	opts.AuthorityHost = AzureGermany
+	if opts.AuthorityHost != AzureGermany {
 		t.Fatalf("Did not retrieve expected authority host string")
 	}
 }
@@ -107,12 +98,8 @@ func Test_AzureChinaAuthorityHost(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	u, err := url.Parse(AzureChina)
-	if err != nil {
-		t.Fatal(err)
-	}
-	opts.AuthorityHost = u
-	if opts.AuthorityHost.String() != AzureChina {
+	opts.AuthorityHost = AzureChina
+	if opts.AuthorityHost != AzureChina {
 		t.Fatalf("Did not retrieve expected authority host string")
 	}
 }
@@ -123,12 +110,8 @@ func Test_AzureGovernmentAuthorityHost(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	u, err := url.Parse(AzureGovernment)
-	if err != nil {
-		t.Fatal(err)
-	}
-	opts.AuthorityHost = u
-	if opts.AuthorityHost.String() != AzureGovernment {
+	opts.AuthorityHost = AzureGovernment
+	if opts.AuthorityHost != AzureGovernment {
 		t.Fatalf("Did not retrieve expected authority host string")
 	}
 }

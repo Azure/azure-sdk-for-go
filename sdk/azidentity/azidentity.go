@@ -5,7 +5,6 @@ package azidentity
 
 import (
 	"net/http"
-	"net/url"
 	"os"
 	"time"
 
@@ -67,9 +66,9 @@ func (e *AuthenticationFailedError) Unwrap() error {
 	return e.inner
 }
 
-// IsNotRetriable returns true indicating that this is a terminal error.
-func (e *AuthenticationFailedError) IsNotRetriable() bool {
-	return true
+// NonRetriable indicates that this error should not be retried.
+func (e *AuthenticationFailedError) NonRetriable() {
+	// marker method
 }
 
 func (e *AuthenticationFailedError) Error() string {
@@ -78,6 +77,8 @@ func (e *AuthenticationFailedError) Error() string {
 	}
 	return e.msg
 }
+
+var _ azcore.NonRetriableError = (*AuthenticationFailedError)(nil)
 
 func newAADAuthenticationFailedError(resp *azcore.Response) error {
 	authFailed := &AADAuthenticationFailedError{Response: resp}
@@ -102,15 +103,17 @@ func (e *CredentialUnavailableError) Error() string {
 	return e.CredentialType + ": " + e.Message
 }
 
-// IsNotRetriable returns true indicating that this is a terminal error.
-func (e *CredentialUnavailableError) IsNotRetriable() bool {
-	return true
+// NonRetriable indicates that this error should not be retried.
+func (e *CredentialUnavailableError) NonRetriable() {
+	// marker method
 }
+
+var _ azcore.NonRetriableError = (*CredentialUnavailableError)(nil)
 
 // TokenCredentialOptions are used to configure how requests are made to Azure Active Directory.
 type TokenCredentialOptions struct {
 	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
-	AuthorityHost *url.URL
+	AuthorityHost string
 
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
@@ -134,23 +137,11 @@ func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, er
 	}
 
 	if c == nil {
-		defaultAuthorityHostURL, err := url.Parse(authorityHost)
-		if err != nil {
-			return nil, err
-		}
-		c = &TokenCredentialOptions{AuthorityHost: defaultAuthorityHostURL}
+		c = &TokenCredentialOptions{AuthorityHost: authorityHost}
 	}
 
-	if c.AuthorityHost == nil {
-		defaultAuthorityHostURL, err := url.Parse(authorityHost)
-		if err != nil {
-			return nil, err
-		}
-		c.AuthorityHost = defaultAuthorityHostURL
-	}
-
-	if len(c.AuthorityHost.Path) == 0 || c.AuthorityHost.Path[len(c.AuthorityHost.Path)-1:] != "/" {
-		c.AuthorityHost.Path = c.AuthorityHost.Path + "/"
+	if c.AuthorityHost == "" {
+		c.AuthorityHost = authorityHost
 	}
 
 	return c, nil

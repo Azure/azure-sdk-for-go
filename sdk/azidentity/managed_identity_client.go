@@ -45,7 +45,7 @@ type managedIdentityClient struct {
 	imdsAPIVersion         string
 	imdsAvailableTimeoutMS time.Duration
 	msiType                msiType
-	endpoint               *url.URL
+	endpoint               string
 }
 
 type wrappedNumber json.Number
@@ -59,14 +59,8 @@ func (n *wrappedNumber) UnmarshalJSON(b []byte) error {
 }
 
 var (
-	imdsURL        *url.URL // these are initialized in the init func and are R/O afterwards
 	defaultMSIOpts = newDefaultManagedIdentityOptions()
 )
-
-func init() {
-	// The error is checked for in managed_identity_client_test.go and should not be ignored if the test fails
-	imdsURL, _ = url.Parse(imdsEndpoint)
-}
 
 func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
 	return &ManagedIdentityCredentialOptions{
@@ -112,12 +106,12 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, clientID strin
 }
 
 func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, msiType msiType, clientID string, scopes []string) (*azcore.AccessToken, error) {
-	msg, err := c.createAuthRequest(msiType, clientID, scopes)
+	msg, err := c.createAuthRequest(ctx, msiType, clientID, scopes)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := c.pipeline.Do(ctx, msg)
+	resp, err := c.pipeline.Do(msg)
 	if err != nil {
 		return nil, err
 	}
@@ -160,14 +154,14 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 	}
 }
 
-func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID string, scopes []string) (*azcore.Request, error) {
+func (c *managedIdentityClient) createAuthRequest(ctx context.Context, msiType msiType, clientID string, scopes []string) (*azcore.Request, error) {
 	switch msiType {
 	case msiTypeIMDS:
-		return c.createIMDSAuthRequest(scopes), nil
+		return c.createIMDSAuthRequest(ctx, scopes)
 	case msiTypeAppService:
-		return c.createAppServiceAuthRequest(clientID, scopes), nil
+		return c.createAppServiceAuthRequest(ctx, clientID, scopes)
 	case msiTypeCloudShell:
-		return c.createCloudShellAuthRequest(clientID, scopes)
+		return c.createCloudShellAuthRequest(ctx, clientID, scopes)
 	default:
 		errorMsg := ""
 		switch msiType {
@@ -181,19 +175,24 @@ func (c *managedIdentityClient) createAuthRequest(msiType msiType, clientID stri
 	}
 }
 
-func (c *managedIdentityClient) createIMDSAuthRequest(scopes []string) *azcore.Request {
-	request := azcore.NewRequest(http.MethodGet, *c.endpoint)
+func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, scopes []string) (*azcore.Request, error) {
+	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
+	if err != nil {
+		return nil, err
+	}
 	request.Header.Set(azcore.HeaderMetadata, "true")
 	q := request.URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
 	request.URL.RawQuery = q.Encode()
-
-	return request
+	return request, nil
 }
 
-func (c *managedIdentityClient) createAppServiceAuthRequest(clientID string, scopes []string) *azcore.Request {
-	request := azcore.NewRequest(http.MethodGet, *c.endpoint)
+func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.Request, error) {
+	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
+	if err != nil {
+		return nil, err
+	}
 	request.Header.Set("secret", os.Getenv(msiSecretEnvironemntVariable))
 	q := request.URL.Query()
 	q.Add("api-version", appServiceMsiAPIVersion)
@@ -202,13 +201,14 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(clientID string, sco
 		q.Add(qpClientID, clientID)
 	}
 	request.URL.RawQuery = q.Encode()
-
-	return request
+	return request, nil
 }
 
-func (c *managedIdentityClient) createCloudShellAuthRequest(clientID string, scopes []string) (*azcore.Request, error) {
-	request := azcore.NewRequest(http.MethodPost, *c.endpoint)
-	request.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
+func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.Request, error) {
+	request, err := azcore.NewRequest(ctx, http.MethodPost, c.endpoint)
+	if err != nil {
+		return nil, err
+	}
 	request.Header.Set(azcore.HeaderMetadata, "true")
 	data := url.Values{}
 	data.Set("resource", strings.Join(scopes, " "))
@@ -217,8 +217,7 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(clientID string, sco
 	}
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	err := request.SetBody(body)
-	if err != nil {
+	if err := request.SetBody(body, azcore.HeaderURLEncoded); err != nil {
 		return nil, err
 	}
 	return request, nil
@@ -227,18 +226,14 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(clientID string, sco
 func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error) {
 	if c.msiType == msiTypeUnknown { // if we haven't already determined the msi type
 		if endpointEnvVar := os.Getenv(msiEndpointEnvironemntVariable); endpointEnvVar != "" { // if the env var MSI_ENDPOINT is set
-			endpoint, err := url.Parse(endpointEnvVar)
-			if err != nil {
-				return msiTypeUnknown, err
-			}
-			c.endpoint = endpoint
+			c.endpoint = endpointEnvVar
 			if secretEnvVar := os.Getenv(msiSecretEnvironemntVariable); secretEnvVar != "" { // if BOTH the env vars MSI_ENDPOINT and MSI_SECRET are set the MsiType is AppService
 				c.msiType = msiTypeAppService
 			} else { // if ONLY the env var MSI_ENDPOINT is set the MsiType is CloudShell
 				c.msiType = msiTypeCloudShell
 			}
 		} else if c.imdsAvailable(ctx) { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the MsiType is Imds. This will timeout after 500 milliseconds
-			c.endpoint = imdsURL
+			c.endpoint = imdsEndpoint
 			c.msiType = msiTypeIMDS
 		} else { // if MSI_ENDPOINT is NOT set and IMDS enpoint is not available ManagedIdentity is not available
 			c.msiType = msiTypeUnavailable
@@ -251,10 +246,14 @@ func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error)
 func (c *managedIdentityClient) imdsAvailable(ctx context.Context) bool {
 	tempCtx, cancel := context.WithTimeout(ctx, c.imdsAvailableTimeoutMS*time.Millisecond)
 	defer cancel()
-	request := azcore.NewRequest(http.MethodGet, *imdsURL)
+	// this should never fail
+	request, _ := azcore.NewRequest(tempCtx, http.MethodGet, imdsEndpoint)
 	q := request.URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
 	request.URL.RawQuery = q.Encode()
-	_, err := c.pipeline.Do(tempCtx, request)
+	resp, err := c.pipeline.Do(request)
+	if err == nil {
+		resp.Drain()
+	}
 	return err == nil
 }

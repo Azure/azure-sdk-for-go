@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"path"
 	"strings"
 	"time"
 
@@ -18,7 +17,7 @@ import (
 
 const (
 	clientAssertionType = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-	tokenEndpoint       = "/oauth2/v2.0/token/"
+	tokenEndpoint       = "/oauth2/v2.0/token"
 )
 
 const (
@@ -63,12 +62,12 @@ func newAADIdentityClient(options *TokenCredentialOptions) (*aadIdentityClient, 
 // clientSecret: A client secret that was generated for the App Registration used to authenticate the client
 // scopes: The scopes for the given access token
 func (c *aadIdentityClient) refreshAccessToken(ctx context.Context, tenantID string, clientID string, clientSecret string, refreshToken string, scopes []string) (*tokenResponse, error) {
-	msg, err := c.createRefreshTokenRequest(tenantID, clientID, clientSecret, refreshToken, scopes)
+	req, err := c.createRefreshTokenRequest(ctx, tenantID, clientID, clientSecret, refreshToken, scopes)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := c.pipeline.Do(ctx, msg)
+	resp, err := c.pipeline.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -88,12 +87,12 @@ func (c *aadIdentityClient) refreshAccessToken(ctx context.Context, tenantID str
 // clientSecret: A client secret that was generated for the App Registration used to authenticate the client
 // scopes: The scopes required for the token
 func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.AccessToken, error) {
-	msg, err := c.createClientSecretAuthRequest(tenantID, clientID, clientSecret, scopes)
+	req, err := c.createClientSecretAuthRequest(ctx, tenantID, clientID, clientSecret, scopes)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := c.pipeline.Do(ctx, msg)
+	resp, err := c.pipeline.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -113,12 +112,12 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 // clientCertificatePath: The path to the client certificate PEM file
 // scopes: The scopes required for the token
 func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantID string, clientID string, cert *certContents, scopes []string) (*azcore.AccessToken, error) {
-	msg, err := c.createClientCertificateAuthRequest(tenantID, clientID, cert, scopes)
+	req, err := c.createClientCertificateAuthRequest(ctx, tenantID, clientID, cert, scopes)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := c.pipeline.Do(ctx, msg)
+	resp, err := c.pipeline.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -172,9 +171,7 @@ func (c *aadIdentityClient) createRefreshAccessToken(res *azcore.Response) (*tok
 	return &tokenResponse{token: accessToken, refreshToken: value.RefreshToken}, nil
 }
 
-func (c *aadIdentityClient) createRefreshTokenRequest(tenantID, clientID, clientSecret, refreshToken string, scopes []string) (*azcore.Request, error) {
-	u := *c.options.AuthorityHost
-	u.Path = path.Join(u.Path, tenantID, tokenEndpoint)
+func (c *aadIdentityClient) createRefreshTokenRequest(ctx context.Context, tenantID, clientID, clientSecret, refreshToken string, scopes []string) (*azcore.Request, error) {
 	data := url.Values{}
 	data.Set(qpGrantType, "refresh_token")
 	data.Set(qpClientID, clientID)
@@ -186,18 +183,17 @@ func (c *aadIdentityClient) createRefreshTokenRequest(tenantID, clientID, client
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	req := azcore.NewRequest(http.MethodPost, u)
-	req.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-	err := req.SetBody(body)
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, tokenEndpoint))
 	if err != nil {
+		return nil, err
+	}
+	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.Request, error) {
-	u := *c.options.AuthorityHost
-	u.Path = path.Join(u.Path, tenantID, tokenEndpoint)
+func (c *aadIdentityClient) createClientSecretAuthRequest(ctx context.Context, tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.Request, error) {
 	data := url.Values{}
 	data.Set(qpGrantType, "client_credentials")
 	data.Set(qpClientID, clientID)
@@ -205,20 +201,20 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(tenantID string, clien
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	req := azcore.NewRequest(http.MethodPost, u)
-	req.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-	err := req.SetBody(body)
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, tokenEndpoint))
 	if err != nil {
+		return nil, err
+	}
+	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
 		return nil, err
 	}
 
 	return req, nil
 }
 
-func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, clientID string, cert *certContents, scopes []string) (*azcore.Request, error) {
-	u := *c.options.AuthorityHost
-	u.Path = path.Join(u.Path, tenantID, tokenEndpoint)
-	clientAssertion, err := createClientAssertionJWT(clientID, u.String(), cert)
+func (c *aadIdentityClient) createClientCertificateAuthRequest(ctx context.Context, tenantID string, clientID string, cert *certContents, scopes []string) (*azcore.Request, error) {
+	u := azcore.JoinPaths(c.options.AuthorityHost, tenantID, tokenEndpoint)
+	clientAssertion, err := createClientAssertionJWT(clientID, u, cert)
 	if err != nil {
 		return nil, err
 	}
@@ -231,10 +227,11 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, 
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	req := azcore.NewRequest(http.MethodPost, u)
-	req.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-	err = req.SetBody(body)
+	req, err := azcore.NewRequest(ctx, http.MethodPost, u)
 	if err != nil {
+		return nil, err
+	}
+	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -249,12 +246,12 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(tenantID string, 
 // password: User's account password
 // scopes: The scopes required for the token
 func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, tenantID string, clientID string, username string, password string, scopes []string) (*azcore.AccessToken, error) {
-	msg, err := c.createUsernamePasswordAuthRequest(tenantID, clientID, username, password, scopes)
+	req, err := c.createUsernamePasswordAuthRequest(ctx, tenantID, clientID, username, password, scopes)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := c.pipeline.Do(ctx, msg)
+	resp, err := c.pipeline.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -266,9 +263,7 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
 }
 
-func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, clientID string, username string, password string, scopes []string) (*azcore.Request, error) {
-	u := *c.options.AuthorityHost
-	u.Path = path.Join(u.Path, tenantID, tokenEndpoint)
+func (c *aadIdentityClient) createUsernamePasswordAuthRequest(ctx context.Context, tenantID string, clientID string, username string, password string, scopes []string) (*azcore.Request, error) {
 	data := url.Values{}
 	data.Set(qpResponseType, "token")
 	data.Set(qpGrantType, "password")
@@ -278,10 +273,11 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(tenantID string, c
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	req := azcore.NewRequest(http.MethodPost, u)
-	req.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-	err := req.SetBody(body)
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, tokenEndpoint))
 	if err != nil {
+		return nil, err
+	}
+	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -303,12 +299,12 @@ func createDeviceCodeResult(res *azcore.Response) (*deviceCodeResult, error) {
 // deviceCode: The device code associated with the request
 // scopes: The scopes required for the token
 func (c *aadIdentityClient) authenticateDeviceCode(ctx context.Context, tenantID string, clientID string, deviceCode string, scopes []string) (*tokenResponse, error) {
-	msg, err := c.createDeviceCodeAuthRequest(tenantID, clientID, deviceCode, scopes)
+	req, err := c.createDeviceCodeAuthRequest(ctx, tenantID, clientID, deviceCode, scopes)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := c.pipeline.Do(ctx, msg)
+	resp, err := c.pipeline.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -320,12 +316,10 @@ func (c *aadIdentityClient) authenticateDeviceCode(ctx context.Context, tenantID
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
 }
 
-func (c *aadIdentityClient) createDeviceCodeAuthRequest(tenantID string, clientID string, deviceCode string, scopes []string) (*azcore.Request, error) {
+func (c *aadIdentityClient) createDeviceCodeAuthRequest(ctx context.Context, tenantID string, clientID string, deviceCode string, scopes []string) (*azcore.Request, error) {
 	if len(tenantID) == 0 { // if the user did not pass in a tenantID then the default value is set
 		tenantID = "organizations"
 	}
-	u := *c.options.AuthorityHost
-	u.Path = path.Join(u.Path, tenantID, tokenEndpoint)
 	data := url.Values{}
 	data.Set(qpGrantType, deviceCodeGrantType)
 	data.Set(qpClientID, clientID)
@@ -333,22 +327,23 @@ func (c *aadIdentityClient) createDeviceCodeAuthRequest(tenantID string, clientI
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	req := azcore.NewRequest(http.MethodPost, u)
-	req.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-	err := req.SetBody(body)
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, tokenEndpoint))
 	if err != nil {
+		return nil, err
+	}
+	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
 func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, clientID string, scopes []string) (*deviceCodeResult, error) {
-	msg, err := c.createDeviceCodeNumberRequest(tenantID, clientID, scopes)
+	req, err := c.createDeviceCodeNumberRequest(ctx, tenantID, clientID, scopes)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := c.pipeline.Do(ctx, msg)
+	resp, err := c.pipeline.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -359,21 +354,21 @@ func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, 
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
 }
 
-func (c *aadIdentityClient) createDeviceCodeNumberRequest(tenantID string, clientID string, scopes []string) (*azcore.Request, error) {
+func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, tenantID string, clientID string, scopes []string) (*azcore.Request, error) {
 	if len(tenantID) == 0 { // if the user did not pass in a tenantID then the default value is set
 		tenantID = "organizations"
 	}
-	u := *c.options.AuthorityHost
-	u.Path = path.Join(u.Path, tenantID, "/oauth2/v2.0/devicecode") // endpoint that will return a device code along with the other necessary authentication flow parameters in the DeviceCodeResult struct
 	data := url.Values{}
 	data.Set(qpClientID, clientID)
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	req := azcore.NewRequest(http.MethodPost, u)
-	req.Header.Set(azcore.HeaderContentType, azcore.HeaderURLEncoded)
-	err := req.SetBody(body)
+	// endpoint that will return a device code along with the other necessary authentication flow parameters in the DeviceCodeResult struct
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, "/oauth2/v2.0/devicecode"))
 	if err != nil {
+		return nil, err
+	}
+	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
 		return nil, err
 	}
 	return req, nil

@@ -30,7 +30,7 @@ func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	req, err := cred.client.createClientSecretAuthRequest(cred.tenantID, cred.clientID, cred.clientSecret, []string{scope})
+	req, err := cred.client.createClientSecretAuthRequest(context.Background(), cred.tenantID, cred.clientID, cred.clientSecret, []string{scope})
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
 	}
@@ -67,8 +67,7 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srvURL := srv.URL()
-	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -82,8 +81,7 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
-	srvURL := srv.URL()
-	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -128,8 +126,7 @@ func TestClientSecretCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
-	srvURL := srv.URL()
-	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
 	if err != nil {
 		t.Fatalf("Failed to create the credential")
 	}

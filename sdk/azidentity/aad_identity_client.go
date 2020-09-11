@@ -227,7 +227,7 @@ func (c *aadIdentityClient) createClientCertificateAuthRequest(ctx context.Conte
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, tokenEndpoint))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, u)
 	if err != nil {
 		return nil, err
 	}

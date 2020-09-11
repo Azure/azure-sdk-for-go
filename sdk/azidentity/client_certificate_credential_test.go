@@ -148,7 +148,6 @@ func TestClientCertificateCredential_GetTokenNoPrivateKey(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.URL()
 	_, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_nokey.pem", nil, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")

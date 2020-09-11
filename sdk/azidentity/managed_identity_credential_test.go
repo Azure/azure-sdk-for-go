@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -42,8 +43,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellMock(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	testURL := srv.URL()
-	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	msiCred, err := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -62,8 +62,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellMockFail(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	testURL := srv.URL()
-	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	msiCred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -82,8 +81,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMock(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(appServiceTokenSuccessResp)))
-	testURL := srv.URL()
-	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	_ = os.Setenv("MSI_SECRET", "secret")
 	msiCred, err := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})
 	if err != nil {
@@ -103,8 +101,7 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnInt(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(expiresOnIntResp)))
-	testURL := srv.URL()
-	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	_ = os.Setenv("MSI_SECRET", "secret")
 	msiCred, err := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})
 	if err != nil {
@@ -124,8 +121,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMockFail(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	testURL := srv.URL()
-	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	_ = os.Setenv("MSI_SECRET", "secret")
 	msiCred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
 	if err != nil {
@@ -173,7 +169,11 @@ func TestManagedIdentityCredential_NewManagedIdentityCredentialFail(t *testing.T
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	_ = os.Setenv("MSI_ENDPOINT", "https://t .com")
-	_, err = NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	cred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
@@ -184,8 +184,7 @@ func TestBearerPolicy_ManagedIdentityCredential(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	testURL := srv.URL()
-	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	cred, err := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -197,7 +196,11 @@ func TestBearerPolicy_ManagedIdentityCredential(t *testing.T) {
 		azcore.NewRetryPolicy(nil),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{msiScope}}}),
 		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	_, err = pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = pipeline.Do(req)
 	if err != nil {
 		t.Fatalf("Expected an empty error but receive: %v", err)
 	}
@@ -211,8 +214,7 @@ func TestManagedIdentityCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
-	testURL := srv.URL()
-	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	msiCred, err := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -228,8 +230,11 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	cred.client.endpoint = imdsURL
-	req := cred.client.createIMDSAuthRequest([]string{msiScope})
+	cred.client.endpoint = imdsEndpoint
+	req, err := cred.client.createIMDSAuthRequest(context.Background(), []string{msiScope})
+	if err != nil {
+		t.Fatal(err)
+	}
 	if req.Request.Header.Get(azcore.HeaderMetadata) != "true" {
 		t.Fatalf("Unexpected value for Content-Type header")
 	}
@@ -243,8 +248,8 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 	if reqQueryParams["resource"][0] != msiScope {
 		t.Fatalf("Unexpected resource in resource query param")
 	}
-	if req.Request.URL.Host != imdsURL.Host {
-		t.Fatalf("Unexpected default authority host")
+	if u := req.Request.URL.String(); !strings.HasPrefix(u, imdsEndpoint) {
+		t.Fatalf("Unexpected default authority host %s", u)
 	}
 	if req.Request.URL.Scheme != "http" {
 		t.Fatalf("Wrong request scheme")
@@ -263,8 +268,7 @@ func TestManagedIdentityCredential_GetTokenEnvVar(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	testURL := srv.URL()
-	_ = os.Setenv("MSI_ENDPOINT", testURL.String())
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	msiCred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

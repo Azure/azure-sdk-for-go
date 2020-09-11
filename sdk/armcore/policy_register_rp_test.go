@@ -323,7 +323,7 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(azcore.AnonymousCredential(), ops))
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, azcore.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
-		return
+		t.Fatal(err)
 	}
 	// log only RP registration
 	azcore.Log().SetClassifications(LogRPRegistration)

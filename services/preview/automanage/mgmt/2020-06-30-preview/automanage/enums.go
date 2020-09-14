@@ -21,15 +21,15 @@ package automanage
 type ConfigurationProfile string
 
 const (
-	// AzureBestPracticesProd ...
-	AzureBestPracticesProd ConfigurationProfile = "Azure Best Practices - Prod"
-	// AzureBestPracticesTestDev ...
-	AzureBestPracticesTestDev ConfigurationProfile = "Azure Best Practices - TestDev"
+	// AzurevirtualmachinebestpracticesDevTest ...
+	AzurevirtualmachinebestpracticesDevTest ConfigurationProfile = "Azure virtual machine best practices – Dev/Test"
+	// AzurevirtualmachinebestpracticesProduction ...
+	AzurevirtualmachinebestpracticesProduction ConfigurationProfile = "Azure virtual machine best practices – Production"
 )
 
 // PossibleConfigurationProfileValues returns an array of possible values for the ConfigurationProfile const type.
 func PossibleConfigurationProfileValues() []ConfigurationProfile {
-	return []ConfigurationProfile{AzureBestPracticesProd, AzureBestPracticesTestDev}
+	return []ConfigurationProfile{AzurevirtualmachinebestpracticesDevTest, AzurevirtualmachinebestpracticesProduction}
 }
 
 // EnableRealTimeProtection enumerates the values for enable real time protection.

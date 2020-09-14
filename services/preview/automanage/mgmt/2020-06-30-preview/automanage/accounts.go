@@ -45,7 +45,7 @@ func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) Account
 // CreateOrUpdate creates an Automanage Account
 // Parameters:
 // accountName - name of the Automanage account.
-// resourceGroupName - the resource group name.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // parameters - parameters supplied to create or update Automanage account.
 func (client AccountsClient) CreateOrUpdate(ctx context.Context, accountName string, resourceGroupName string, parameters Account) (result Account, err error) {
 	if tracing.IsEnabled() {
@@ -59,8 +59,12 @@ func (client AccountsClient) CreateOrUpdate(ctx context.Context, accountName str
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automanage.AccountsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -128,7 +132,7 @@ func (client AccountsClient) CreateOrUpdateResponder(resp *http.Response) (resul
 
 // Delete delete a Automanage account
 // Parameters:
-// resourceGroupName - the resource group name.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - name of the Automanage account
 func (client AccountsClient) Delete(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -143,7 +147,11 @@ func (client AccountsClient) Delete(ctx context.Context, resourceGroupName strin
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automanage.AccountsClient", "Delete", err.Error())
 	}
 
@@ -209,7 +217,7 @@ func (client AccountsClient) DeleteResponder(resp *http.Response) (result autore
 // Get get information about a Automanage account
 // Parameters:
 // accountName - the Automanage account name.
-// resourceGroupName - the resource group name.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client AccountsClient) Get(ctx context.Context, accountName string, resourceGroupName string) (result Account, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Get")
@@ -222,8 +230,12 @@ func (client AccountsClient) Get(ctx context.Context, accountName string, resour
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automanage.AccountsClient", "Get", err.Error())
 	}
 
@@ -289,7 +301,7 @@ func (client AccountsClient) GetResponder(resp *http.Response) (result Account, 
 
 // ListByResourceGroup retrieve a list of Automanage accounts within a given resource group
 // Parameters:
-// resourceGroupName - the resource group name.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client AccountsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result AccountList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.ListByResourceGroup")
@@ -302,8 +314,12 @@ func (client AccountsClient) ListByResourceGroup(ctx context.Context, resourceGr
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automanage.AccountsClient", "ListByResourceGroup", err.Error())
 	}
 
@@ -378,6 +394,12 @@ func (client AccountsClient) ListBySubscription(ctx context.Context) (result Acc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("automanage.AccountsClient", "ListBySubscription", err.Error())
+	}
+
 	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.AccountsClient", "ListBySubscription", nil, "Failure preparing request")
@@ -439,9 +461,9 @@ func (client AccountsClient) ListBySubscriptionResponder(resp *http.Response) (r
 // Update updates an Automanage Account
 // Parameters:
 // accountName - name of the Automanage account.
-// resourceGroupName - the resource group name.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // parameters - parameters supplied to update Automanage account.
-func (client AccountsClient) Update(ctx context.Context, accountName string, resourceGroupName string, parameters Account) (result Account, err error) {
+func (client AccountsClient) Update(ctx context.Context, accountName string, resourceGroupName string, parameters AccountUpdate) (result Account, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Update")
 		defer func() {
@@ -453,8 +475,12 @@ func (client AccountsClient) Update(ctx context.Context, accountName string, res
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automanage.AccountsClient", "Update", err.Error())
 	}
 
@@ -480,7 +506,7 @@ func (client AccountsClient) Update(ctx context.Context, accountName string, res
 }
 
 // UpdatePreparer prepares the Update request.
-func (client AccountsClient) UpdatePreparer(ctx context.Context, accountName string, resourceGroupName string, parameters Account) (*http.Request, error) {
+func (client AccountsClient) UpdatePreparer(ctx context.Context, accountName string, resourceGroupName string, parameters AccountUpdate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"accountName":       autorest.Encode("path", accountName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),

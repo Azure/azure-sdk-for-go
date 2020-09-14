@@ -46,7 +46,7 @@ func NewConfigurationProfilePreferencesClientWithBaseURI(baseURI string, subscri
 // CreateOrUpdate creates a configuration profile preference
 // Parameters:
 // configurationProfilePreferenceName - name of the configuration profile preference.
-// resourceGroupName - the resource group name.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // parameters - parameters supplied to create or update configuration profile preference.
 func (client ConfigurationProfilePreferencesClient) CreateOrUpdate(ctx context.Context, configurationProfilePreferenceName string, resourceGroupName string, parameters ConfigurationProfilePreference) (result ConfigurationProfilePreference, err error) {
 	if tracing.IsEnabled() {
@@ -60,8 +60,12 @@ func (client ConfigurationProfilePreferencesClient) CreateOrUpdate(ctx context.C
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automanage.ConfigurationProfilePreferencesClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -129,7 +133,7 @@ func (client ConfigurationProfilePreferencesClient) CreateOrUpdateResponder(resp
 
 // Delete delete a configuration profile preference
 // Parameters:
-// resourceGroupName - the resource group name.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // configurationProfilePreferenceName - name of the configuration profile preference
 func (client ConfigurationProfilePreferencesClient) Delete(ctx context.Context, resourceGroupName string, configurationProfilePreferenceName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
@@ -144,7 +148,11 @@ func (client ConfigurationProfilePreferencesClient) Delete(ctx context.Context, 
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automanage.ConfigurationProfilePreferencesClient", "Delete", err.Error())
 	}
 
@@ -210,7 +218,7 @@ func (client ConfigurationProfilePreferencesClient) DeleteResponder(resp *http.R
 // Get get information about a configuration profile preference
 // Parameters:
 // configurationProfilePreferenceName - the configuration profile preference name.
-// resourceGroupName - the resource group name.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client ConfigurationProfilePreferencesClient) Get(ctx context.Context, configurationProfilePreferenceName string, resourceGroupName string) (result ConfigurationProfilePreference, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConfigurationProfilePreferencesClient.Get")
@@ -223,8 +231,12 @@ func (client ConfigurationProfilePreferencesClient) Get(ctx context.Context, con
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automanage.ConfigurationProfilePreferencesClient", "Get", err.Error())
 	}
 
@@ -290,7 +302,7 @@ func (client ConfigurationProfilePreferencesClient) GetResponder(resp *http.Resp
 
 // ListByResourceGroup retrieve a list of configuration profile preferences within a given resource group
 // Parameters:
-// resourceGroupName - the resource group name.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client ConfigurationProfilePreferencesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ConfigurationProfilePreferenceList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConfigurationProfilePreferencesClient.ListByResourceGroup")
@@ -303,8 +315,12 @@ func (client ConfigurationProfilePreferencesClient) ListByResourceGroup(ctx cont
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automanage.ConfigurationProfilePreferencesClient", "ListByResourceGroup", err.Error())
 	}
 
@@ -379,6 +395,12 @@ func (client ConfigurationProfilePreferencesClient) ListBySubscription(ctx conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("automanage.ConfigurationProfilePreferencesClient", "ListBySubscription", err.Error())
+	}
+
 	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automanage.ConfigurationProfilePreferencesClient", "ListBySubscription", nil, "Failure preparing request")
@@ -440,9 +462,9 @@ func (client ConfigurationProfilePreferencesClient) ListBySubscriptionResponder(
 // Update updates a configuration profile preference
 // Parameters:
 // configurationProfilePreferenceName - name of the configuration profile preference.
-// resourceGroupName - the resource group name.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // parameters - parameters supplied to create or update configuration profile preference.
-func (client ConfigurationProfilePreferencesClient) Update(ctx context.Context, configurationProfilePreferenceName string, resourceGroupName string, parameters ConfigurationProfilePreference) (result ConfigurationProfilePreference, err error) {
+func (client ConfigurationProfilePreferencesClient) Update(ctx context.Context, configurationProfilePreferenceName string, resourceGroupName string, parameters ConfigurationProfilePreferenceUpdate) (result ConfigurationProfilePreference, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConfigurationProfilePreferencesClient.Update")
 		defer func() {
@@ -454,8 +476,12 @@ func (client ConfigurationProfilePreferencesClient) Update(ctx context.Context, 
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._]+$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("automanage.ConfigurationProfilePreferencesClient", "Update", err.Error())
 	}
 
@@ -481,7 +507,7 @@ func (client ConfigurationProfilePreferencesClient) Update(ctx context.Context, 
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ConfigurationProfilePreferencesClient) UpdatePreparer(ctx context.Context, configurationProfilePreferenceName string, resourceGroupName string, parameters ConfigurationProfilePreference) (*http.Request, error) {
+func (client ConfigurationProfilePreferencesClient) UpdatePreparer(ctx context.Context, configurationProfilePreferenceName string, resourceGroupName string, parameters ConfigurationProfilePreferenceUpdate) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"configurationProfilePreferenceName": autorest.Encode("path", configurationProfilePreferenceName),
 		"resourceGroupName":                  autorest.Encode("path", resourceGroupName),

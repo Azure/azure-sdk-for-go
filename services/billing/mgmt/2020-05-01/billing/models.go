@@ -2097,7 +2097,7 @@ type InvoiceProperties struct {
 	DueDate *date.Time `json:"dueDate,omitempty"`
 	// InvoiceDate - READ-ONLY; The date when the invoice was generated.
 	InvoiceDate *date.Time `json:"invoiceDate,omitempty"`
-	// Status - READ-ONLY; The current status of the invoice. Possible values include: 'Due', 'OverDue', 'Paid'
+	// Status - READ-ONLY; The current status of the invoice. Possible values include: 'Due', 'OverDue', 'Paid', 'Void'
 	Status InvoiceStatus `json:"status,omitempty"`
 	// AmountDue - READ-ONLY; The amount due as of now.
 	AmountDue *Amount `json:"amountDue,omitempty"`
@@ -2133,8 +2133,22 @@ type InvoiceProperties struct {
 	Documents *[]Document `json:"documents,omitempty"`
 	// Payments - READ-ONLY; List of payments.
 	Payments *[]PaymentProperties `json:"payments,omitempty"`
+	// RebillDetails - READ-ONLY; Rebill details for an invoice.
+	RebillDetails map[string]*RebillDetails `json:"rebillDetails"`
+	// DocumentType - READ-ONLY; The type of the document. Possible values include: 'InvoiceDocumentTypeInvoice', 'InvoiceDocumentTypeCreditNote'
+	DocumentType InvoiceDocumentType `json:"documentType,omitempty"`
+	// BilledDocumentID - READ-ONLY; The Id of the active invoice which is originally billed after this invoice was voided. This field is applicable to the void invoices only.
+	BilledDocumentID *string `json:"billedDocumentId,omitempty"`
+	// CreditForDocumentID - READ-ONLY; The Id of the invoice which got voided and this credit note was issued as a result. This field is applicable to the credit notes only.
+	CreditForDocumentID *string `json:"creditForDocumentId,omitempty"`
 	// SubscriptionID - READ-ONLY; The ID of the subscription for which the invoice is generated.
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InvoiceProperties.
+func (IP InvoiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // InvoicesDownloadBillingSubscriptionInvoiceFuture an abstraction for monitoring and retrieving the results of
@@ -4165,6 +4179,22 @@ func (pp PropertyProperties) MarshalJSON() ([]byte, error) {
 	if pp.CostCenter != nil {
 		objectMap["costCenter"] = pp.CostCenter
 	}
+	return json.Marshal(objectMap)
+}
+
+// RebillDetails the rebill details of an invoice.
+type RebillDetails struct {
+	// CreditNoteDocumentID - READ-ONLY; The ID of credit note.
+	CreditNoteDocumentID *string `json:"creditNoteDocumentId,omitempty"`
+	// InvoiceDocumentID - READ-ONLY; The ID of invoice.
+	InvoiceDocumentID *string `json:"invoiceDocumentId,omitempty"`
+	// RebillDetails - READ-ONLY; Rebill details for an invoice.
+	RebillDetails map[string]*RebillDetails `json:"rebillDetails"`
+}
+
+// MarshalJSON is the custom marshaler for RebillDetails.
+func (rd RebillDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
 

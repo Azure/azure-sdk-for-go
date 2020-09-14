@@ -31,14 +31,14 @@ type TransactionsClient struct {
 }
 
 // NewTransactionsClient creates an instance of the TransactionsClient client.
-func NewTransactionsClient(subscriptionID string, subscriptionID1 string) TransactionsClient {
-	return NewTransactionsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewTransactionsClient(subscriptionID string) TransactionsClient {
+	return NewTransactionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewTransactionsClientWithBaseURI creates an instance of the TransactionsClient client using a custom endpoint.  Use
 // this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewTransactionsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) TransactionsClient {
-	return TransactionsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewTransactionsClientWithBaseURI(baseURI string, subscriptionID string) TransactionsClient {
+	return TransactionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListByInvoice lists the transactions for an invoice. Transactions include purchases, refunds and Azure usage

@@ -31,15 +31,15 @@ type AvailableBalancesClient struct {
 }
 
 // NewAvailableBalancesClient creates an instance of the AvailableBalancesClient client.
-func NewAvailableBalancesClient(subscriptionID string, subscriptionID1 string) AvailableBalancesClient {
-	return NewAvailableBalancesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewAvailableBalancesClient(subscriptionID string) AvailableBalancesClient {
+	return NewAvailableBalancesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAvailableBalancesClientWithBaseURI creates an instance of the AvailableBalancesClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewAvailableBalancesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) AvailableBalancesClient {
-	return AvailableBalancesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewAvailableBalancesClientWithBaseURI(baseURI string, subscriptionID string) AvailableBalancesClient {
+	return AvailableBalancesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get the available credit balance for a billing profile. This is the balance that can be used for pay now to settle

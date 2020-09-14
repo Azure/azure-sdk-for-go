@@ -31,14 +31,14 @@ type ProductsClient struct {
 }
 
 // NewProductsClient creates an instance of the ProductsClient client.
-func NewProductsClient(subscriptionID string, subscriptionID1 string) ProductsClient {
-	return NewProductsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewProductsClient(subscriptionID string) ProductsClient {
+	return NewProductsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewProductsClientWithBaseURI creates an instance of the ProductsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewProductsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) ProductsClient {
-	return ProductsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewProductsClientWithBaseURI(baseURI string, subscriptionID string) ProductsClient {
+	return ProductsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets a product by ID. The operation is supported only for billing accounts with agreement type Microsoft

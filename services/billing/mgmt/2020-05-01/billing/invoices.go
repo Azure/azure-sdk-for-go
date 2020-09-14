@@ -31,14 +31,14 @@ type InvoicesClient struct {
 }
 
 // NewInvoicesClient creates an instance of the InvoicesClient client.
-func NewInvoicesClient(subscriptionID string, subscriptionID1 string) InvoicesClient {
-	return NewInvoicesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewInvoicesClient(subscriptionID string) InvoicesClient {
+	return NewInvoicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewInvoicesClientWithBaseURI creates an instance of the InvoicesClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) InvoicesClient {
-	return InvoicesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) InvoicesClient {
+	return InvoicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // DownloadBillingSubscriptionInvoice gets a URL to download an invoice.

@@ -31,14 +31,14 @@ type AccountsClient struct {
 }
 
 // NewAccountsClient creates an instance of the AccountsClient client.
-func NewAccountsClient(subscriptionID string, subscriptionID1 string) AccountsClient {
-	return NewAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewAccountsClient(subscriptionID string) AccountsClient {
+	return NewAccountsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAccountsClientWithBaseURI creates an instance of the AccountsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) AccountsClient {
-	return AccountsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewAccountsClientWithBaseURI(baseURI string, subscriptionID string) AccountsClient {
+	return AccountsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets a billing account by its ID.

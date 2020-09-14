@@ -291,15 +291,6 @@ type pollingTracker interface {
 	// returns the error response from the service, can be nil
 	pollingError() error
 
-	// returns the polling method being used
-	pollingMethod() pollingMethodType
-
-	// returns the state of the LRO as returned from the service
-	pollingStatus() string
-
-	// returns the URL used for polling status
-	pollingURL() string
-
 	// returns the URL used for the final GET to retrieve the resource
 	finalGetURL() string
 
@@ -502,18 +493,6 @@ func (pt *pollingTrackerBase) updatePollingState(provStateApl bool) error {
 
 func (pt *pollingTrackerBase) pollingError() error {
 	return pt.Err
-}
-
-func (pt *pollingTrackerBase) pollingMethod() pollingMethodType {
-	return pt.Pm
-}
-
-func (pt *pollingTrackerBase) pollingStatus() string {
-	return pt.State
-}
-
-func (pt *pollingTrackerBase) pollingURL() string {
-	return pt.URI
 }
 
 func (pt *pollingTrackerBase) finalGetURL() string {

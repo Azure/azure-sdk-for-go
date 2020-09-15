@@ -853,7 +853,8 @@ func (client JobClient) GetAllLifetimeStatisticsResponder(resp *http.Response) (
 }
 
 // GetTaskCounts task counts provide a count of the Tasks by active, running or completed Task state, and a count of
-// Tasks which succeeded or failed. Tasks in the preparing state are counted as running.
+// Tasks which succeeded or failed. Tasks in the preparing state are counted as running. Note that the numbers returned
+// may not always be up to date. If you need exact task counts, use a list query.
 // Parameters:
 // jobID - the ID of the Job.
 // timeout - the maximum time that the server can spend processing the request, in seconds. The default is 30

@@ -880,7 +880,7 @@ type PoolPatchProperties struct {
 	// Size - Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104).
 	Size *int64 `json:"size,omitempty"`
 	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
-	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
+	ServiceLevel PatchServiceLevel `json:"serviceLevel,omitempty"`
 }
 
 // PoolProperties pool properties
@@ -889,8 +889,8 @@ type PoolProperties struct {
 	PoolID *string `json:"poolId,omitempty"`
 	// Size - Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104).
 	Size *int64 `json:"size,omitempty"`
-	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
-	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
+	// ServiceLevel - The service level of the file system. Possible values include: 'PoolServiceLevelStandard', 'PoolServiceLevelPremium', 'PoolServiceLevelUltra'
+	ServiceLevel PoolServiceLevel `json:"serviceLevel,omitempty"`
 	// ProvisioningState - READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
@@ -992,7 +992,7 @@ type ReplicationObject struct {
 	ReplicationID *string `json:"replicationId,omitempty"`
 	// EndpointType - Indicates whether the local volume is the source or destination for the Volume Replication. Possible values include: 'Src', 'Dst'
 	EndpointType EndpointType `json:"endpointType,omitempty"`
-	// ReplicationSchedule - Schedule. Possible values include: '10minutely', 'Hourly', 'Daily', 'Weekly', 'Monthly'
+	// ReplicationSchedule - Schedule. Possible values include: '10minutely', 'Hourly', 'Daily'
 	ReplicationSchedule ReplicationSchedule `json:"replicationSchedule,omitempty"`
 	// RemoteVolumeResourceID - The resource ID of the remote volume.
 	RemoteVolumeResourceID *string `json:"remoteVolumeResourceId,omitempty"`
@@ -1434,7 +1434,7 @@ func (vp *VolumePatch) UnmarshalJSON(body []byte) error {
 
 // VolumePatchProperties patchable volume properties
 type VolumePatchProperties struct {
-	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
+	// ServiceLevel - The service level of the file system. Possible values include: 'ServiceLevelStandard', 'ServiceLevelPremium', 'ServiceLevelUltra'
 	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
 	// UsageThreshold - Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
@@ -1454,8 +1454,8 @@ type VolumeProperties struct {
 	FileSystemID *string `json:"fileSystemId,omitempty"`
 	// CreationToken - A unique file path for the volume. Used when creating mount targets
 	CreationToken *string `json:"creationToken,omitempty"`
-	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
-	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
+	// ServiceLevel - The service level of the file system. Possible values include: 'VolumeServiceLevelStandard', 'VolumeServiceLevelPremium', 'VolumeServiceLevelUltra'
+	ServiceLevel VolumeServiceLevel `json:"serviceLevel,omitempty"`
 	// UsageThreshold - Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
 	// ExportPolicy - Set of export policy rules

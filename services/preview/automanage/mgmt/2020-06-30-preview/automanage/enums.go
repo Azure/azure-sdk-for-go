@@ -21,15 +21,15 @@ package automanage
 type ConfigurationProfile string
 
 const (
-	// AzureBestPracticesProd ...
-	AzureBestPracticesProd ConfigurationProfile = "Azure Best Practices - Prod"
-	// AzureBestPracticesTestDev ...
-	AzureBestPracticesTestDev ConfigurationProfile = "Azure Best Practices - TestDev"
+	// AzurevirtualmachinebestpracticesDevTest ...
+	AzurevirtualmachinebestpracticesDevTest ConfigurationProfile = "Azure virtual machine best practices – Dev/Test"
+	// AzurevirtualmachinebestpracticesProduction ...
+	AzurevirtualmachinebestpracticesProduction ConfigurationProfile = "Azure virtual machine best practices – Production"
 )
 
 // PossibleConfigurationProfileValues returns an array of possible values for the ConfigurationProfile const type.
 func PossibleConfigurationProfileValues() []ConfigurationProfile {
-	return []ConfigurationProfile{AzureBestPracticesProd, AzureBestPracticesTestDev}
+	return []ConfigurationProfile{AzurevirtualmachinebestpracticesDevTest, AzurevirtualmachinebestpracticesProduction}
 }
 
 // EnableRealTimeProtection enumerates the values for enable real time protection.
@@ -47,21 +47,21 @@ func PossibleEnableRealTimeProtectionValues() []EnableRealTimeProtection {
 	return []EnableRealTimeProtection{False, True}
 }
 
-// ProvisioningStatus enumerates the values for provisioning status.
-type ProvisioningStatus string
+// ProvisioningState enumerates the values for provisioning state.
+type ProvisioningState string
 
 const (
 	// Created ...
-	Created ProvisioningStatus = "Created"
+	Created ProvisioningState = "Created"
 	// Failed ...
-	Failed ProvisioningStatus = "Failed"
+	Failed ProvisioningState = "Failed"
 	// Succeeded ...
-	Succeeded ProvisioningStatus = "Succeeded"
+	Succeeded ProvisioningState = "Succeeded"
 )
 
-// PossibleProvisioningStatusValues returns an array of possible values for the ProvisioningStatus const type.
-func PossibleProvisioningStatusValues() []ProvisioningStatus {
-	return []ProvisioningStatus{Created, Failed, Succeeded}
+// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{Created, Failed, Succeeded}
 }
 
 // ResourceIdentityType enumerates the values for resource identity type.

@@ -38,46 +38,29 @@ var pollingCodes = [...]int{http.StatusNoContent, http.StatusAccepted, http.Stat
 // the polling tracker implementation for the method verb or an error.
 // NOTE: this is only meant for internal use in generated code.
 func NewPoller(pollerType string, finalState string, resp *azcore.Response, errorHandler methodErrorHandler) (Poller, error) {
+	var pt pollingTracker
 	switch strings.ToUpper(resp.Request.Method) {
 	case http.MethodDelete:
-		pt := &pollingTrackerDelete{pollingTrackerBase: pollingTrackerBase{PollerType: pollerType, FinalStateVia: finalState, OriginalURI: resp.Request.URL.String(), resp: resp, errorHandler: errorHandler}}
-		if err := pt.initializeState(); err != nil {
-			return pt, err
-		}
-		// this initializes the polling header values, we do this during creation in case the
-		// initial response send us invalid values; this way the API call will return a non-nil
-		// error (not doing this means the error shows up in Future.Done)
-		return pt, pt.updatePollingMethod()
+		pt = &pollingTrackerDelete{pollingTrackerBase: newPollingTrackerBase(pollerType, finalState, resp, errorHandler)}
 	case http.MethodPatch:
-		pt := &pollingTrackerPatch{pollingTrackerBase: pollingTrackerBase{PollerType: pollerType, FinalStateVia: finalState, OriginalURI: resp.Request.URL.String(), resp: resp, errorHandler: errorHandler}}
-		if err := pt.initializeState(); err != nil {
-			return pt, err
-		}
-		// this initializes the polling header values, we do this during creation in case the
-		// initial response send us invalid values; this way the API call will return a non-nil
-		// error (not doing this means the error shows up in Future.Done)
-		return pt, pt.updatePollingMethod()
+		pt = &pollingTrackerPatch{pollingTrackerBase: newPollingTrackerBase(pollerType, finalState, resp, errorHandler)}
 	case http.MethodPost:
-		pt := &pollingTrackerPost{pollingTrackerBase: pollingTrackerBase{PollerType: pollerType, FinalStateVia: finalState, OriginalURI: resp.Request.URL.String(), resp: resp, errorHandler: errorHandler}}
-		if err := pt.initializeState(); err != nil {
-			return pt, err
-		}
-		// this initializes the polling header values, we do this during creation in case the
-		// initial response send us invalid values; this way the API call will return a non-nil
-		// error (not doing this means the error shows up in Future.Done)
-		return pt, pt.updatePollingMethod()
+		pt = &pollingTrackerPost{pollingTrackerBase: newPollingTrackerBase(pollerType, finalState, resp, errorHandler)}
 	case http.MethodPut:
-		pt := &pollingTrackerPut{pollingTrackerBase: pollingTrackerBase{PollerType: pollerType, FinalStateVia: finalState, OriginalURI: resp.Request.URL.String(), resp: resp, errorHandler: errorHandler}}
-		if err := pt.initializeState(); err != nil {
-			return pt, err
-		}
-		// this initializes the polling header values, we do this during creation in case the
-		// initial response send us invalid values; this way the API call will return a non-nil
-		// error (not doing this means the error shows up in Future.Done)
-		return pt, pt.updatePollingMethod()
+		pt = &pollingTrackerPut{pollingTrackerBase: newPollingTrackerBase(pollerType, finalState, resp, errorHandler)}
 	default:
 		return nil, fmt.Errorf("unsupported HTTP method %s", resp.Request.Method)
 	}
+	if err := pt.initializeState(); err != nil {
+		return nil, err
+	}
+	// this initializes the polling header values, we do this during creation in case the
+	// initial response send us invalid values; this way the API call will return a non-nil
+	// error (not doing this means the error shows up in Future.Done)
+	if err := pt.updatePollingMethod(); err != nil {
+		return nil, err
+	}
+	return &poller{pt: pt}, nil
 }
 
 // NewPollerFromResumeToken creates a polling tracker from a resume token string.
@@ -95,43 +78,25 @@ func NewPollerFromResumeToken(pollerType string, token string, errorHandler meth
 	if obj["method"] == nil {
 		return nil, fmt.Errorf("Token is missing 'method' property")
 	}
-	method := obj["method"].(string)
-	switch strings.ToUpper(method) {
+	var pt pollingTracker
+	switch method := strings.ToUpper(obj["method"].(string)); method {
 	case http.MethodDelete:
-		pt := &pollingTrackerDelete{pollingTrackerBase: pollingTrackerBase{errorHandler: errorHandler}}
-		// now unmarshal into the tracker
-		err = json.Unmarshal([]byte(token), &pt)
-		if err != nil {
-			return nil, err
-		}
-		return pt, nil
+		pt = &pollingTrackerDelete{pollingTrackerBase: pollingTrackerBase{errorHandler: errorHandler}}
 	case http.MethodPatch:
-		pt := &pollingTrackerPatch{pollingTrackerBase: pollingTrackerBase{errorHandler: errorHandler}}
-		// now unmarshal into the tracker
-		err = json.Unmarshal([]byte(token), &pt)
-		if err != nil {
-			return nil, err
-		}
-		return pt, nil
+		pt = &pollingTrackerPatch{pollingTrackerBase: pollingTrackerBase{errorHandler: errorHandler}}
 	case http.MethodPost:
-		pt := &pollingTrackerPost{pollingTrackerBase: pollingTrackerBase{errorHandler: errorHandler}}
-		// now unmarshal into the tracker
-		err = json.Unmarshal([]byte(token), &pt)
-		if err != nil {
-			return nil, err
-		}
-		return pt, nil
+		pt = &pollingTrackerPost{pollingTrackerBase: pollingTrackerBase{errorHandler: errorHandler}}
 	case http.MethodPut:
-		pt := &pollingTrackerPut{pollingTrackerBase: pollingTrackerBase{errorHandler: errorHandler}}
-		// now unmarshal into the tracker
-		err = json.Unmarshal([]byte(token), &pt)
-		if err != nil {
-			return nil, err
-		}
-		return pt, nil
+		pt = &pollingTrackerPut{pollingTrackerBase: pollingTrackerBase{errorHandler: errorHandler}}
 	default:
 		return nil, fmt.Errorf("unsupported method '%s'", method)
 	}
+	// now unmarshal into the tracker
+	err = json.Unmarshal([]byte(token), &pt)
+	if err != nil {
+		return nil, err
+	}
+	return &poller{pt: pt}, nil
 }
 
 // Poller defines the methods that will be called internally in the generated code for long-running operations.
@@ -149,22 +114,24 @@ type Poller interface {
 	PollUntilDone(ctx context.Context, frequency time.Duration, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error)
 }
 
-// Done returns true if there was an error or polling has reached a terminal state.
-func (pt *pollingTrackerBase) Done() bool {
-	return pt.hasTerminated()
+type poller struct {
+	pt pollingTracker
 }
 
-// FinalResponse will perform a final GET and return the final response for the polling operation.
-func (pt *pollingTrackerBase) FinalResponse(ctx context.Context, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error) {
-	if !pt.Done() {
+func (p *poller) Done() bool {
+	return p.pt.hasTerminated()
+}
+
+func (p *poller) FinalResponse(ctx context.Context, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error) {
+	if !p.pt.hasTerminated() {
 		return nil, errors.New("cannot return a final response from a poller in a non-terminal state")
 	}
 	// if respType is nil, this indicates that the request was made from an HTTPPoller
 	if respType == nil {
-		return pt.latestResponse().Response, nil
+		return p.pt.latestResponse().Response, nil
 	}
-	if pt.pollerMethodVerb() == http.MethodPut || pt.pollerMethodVerb() == http.MethodPatch {
-		res, err := pt.handleResponse(pt.latestResponse(), respType)
+	if p.pt.pollerMethodVerb() == http.MethodPut || p.pt.pollerMethodVerb() == http.MethodPatch {
+		res, err := p.handleResponse(p.pt.latestResponse(), respType)
 		if err != nil {
 			return nil, err
 		}
@@ -174,16 +141,16 @@ func (pt *pollingTrackerBase) FinalResponse(ctx context.Context, pipeline azcore
 	}
 	// checking if there was a FinalStateVia configuration to re-route the final GET
 	// request to the value specified in the FinalStateVia property on the poller
-	err := pt.setFinalState()
+	err := p.pt.setFinalState()
 	if err != nil {
 		return nil, err
 	}
-	if pt.finalGetURL() == "" {
+	if p.pt.finalGetURL() == "" {
 		// we can end up in this situation if the async operation returns a 200
 		// with no polling URLs.  in that case return the response which should
 		// contain the JSON payload (only do this for successful terminal cases).
-		if lr := pt.latestResponse(); lr != nil && pt.hasSucceeded() {
-			result, err := pt.handleResponse(lr, respType)
+		if lr := p.pt.latestResponse(); lr != nil && p.pt.hasSucceeded() {
+			result, err := p.handleResponse(lr, respType)
 			if err != nil {
 				return nil, err
 			}
@@ -191,7 +158,7 @@ func (pt *pollingTrackerBase) FinalResponse(ctx context.Context, pipeline azcore
 		}
 		return nil, errors.New("missing URL for retrieving result")
 	}
-	req, err := azcore.NewRequest(ctx, http.MethodGet, pt.finalGetURL())
+	req, err := azcore.NewRequest(ctx, http.MethodGet, p.pt.finalGetURL())
 	if err != nil {
 		return nil, err
 	}
@@ -199,30 +166,67 @@ func (pt *pollingTrackerBase) FinalResponse(ctx context.Context, pipeline azcore
 	if err != nil {
 		return nil, err
 	}
-	return pt.handleResponse(resp, respType)
+	return p.handleResponse(resp, respType)
 }
 
-// ResumeToken generates the string token that can be used with the Resume<PollerType> method
-// on the client to create a new poller from the data held in the current poller type.
-func (pt *pollingTrackerBase) ResumeToken() (string, error) {
-	if pt.hasTerminated() {
+func (p *poller) ResumeToken() (string, error) {
+	if p.pt.hasTerminated() {
 		return "", errors.New("cannot create a ResumeToken from a poller in a terminal state")
 	}
-	js, err := json.Marshal(pt)
+	js, err := json.Marshal(p.pt)
 	if err != nil {
 		return "", err
 	}
 	return string(js), nil
 }
 
-func (pt *pollingTrackerBase) handleResponse(resp *azcore.Response, respType interface{}) (*http.Response, error) {
+func (p *poller) handleResponse(resp *azcore.Response, respType interface{}) (*http.Response, error) {
 	if resp.HasStatusCode(http.StatusNoContent) {
 		return resp.Response, nil
 	}
 	if !resp.HasStatusCode(pollingCodes[:]...) {
-		return nil, pt.handleError(resp)
+		return nil, p.pt.handleError(resp)
 	}
 	return resp.Response, resp.UnmarshalAsJSON(respType)
+}
+
+func (p *poller) Poll(ctx context.Context, pipeline azcore.Pipeline) (*http.Response, error) {
+	if p.pollForStatus(ctx, pipeline, p.pt) {
+		return p.pt.latestResponse().Response, p.pt.pollingError()
+	}
+	return nil, p.pt.pollingError()
+}
+
+func (p *poller) PollUntilDone(ctx context.Context, frequency time.Duration, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error) {
+	// p.resp should only be nil when calling PollUntilDone from a poller that was instantiated from a resume token string
+	if resp := p.pt.latestResponse(); resp != nil {
+		// initial check for a retry-after header existing on the initial response
+		if retryAfter := azcore.RetryAfter(resp.Response); retryAfter > 0 {
+			err := delay(ctx, retryAfter)
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+	// begin polling the endpoint until a terminal state is reached
+	for {
+		resp, err := p.Poll(ctx, pipeline)
+		if err != nil {
+			return nil, err
+		}
+		if p.pt.hasTerminated() {
+			break
+		}
+		d := frequency
+		if retryAfter := azcore.RetryAfter(resp); retryAfter > 0 {
+			d = retryAfter
+		}
+		err = delay(ctx, d)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return p.FinalResponse(ctx, pipeline, respType)
 }
 
 func delay(ctx context.Context, delay time.Duration) error {
@@ -234,12 +238,12 @@ func delay(ctx context.Context, delay time.Duration) error {
 	}
 }
 
-// done queries the service to see if the operation has completed.
-func lroPollDone(ctx context.Context, p azcore.Pipeline, pt pollingTracker) bool {
+// pollForStatus queries the service to see if the operation has completed.
+func (p *poller) pollForStatus(ctx context.Context, pl azcore.Pipeline, pt pollingTracker) bool {
 	if pt.hasTerminated() {
 		return true
 	}
-	if err := pt.pollForStatus(ctx, p); err != nil {
+	if err := pt.pollForStatus(ctx, pl); err != nil {
 		return true
 	}
 	if err := pt.checkForErrors(); err != nil {
@@ -286,15 +290,6 @@ type pollingTracker interface {
 
 	// returns the error response from the service, can be nil
 	pollingError() error
-
-	// returns the polling method being used
-	pollingMethod() pollingMethodType
-
-	// returns the state of the LRO as returned from the service
-	pollingStatus() string
-
-	// returns the URL used for polling status
-	pollingURL() string
 
 	// returns the URL used for the final GET to retrieve the resource
 	finalGetURL() string
@@ -360,6 +355,16 @@ type pollingTrackerBase struct {
 
 	// used to hold an error object returned from the service
 	Err error `json:"error,omitempty"`
+}
+
+func newPollingTrackerBase(pollerType, finalState string, resp *azcore.Response, errorHandler methodErrorHandler) pollingTrackerBase {
+	return pollingTrackerBase{
+		PollerType:    pollerType,
+		FinalStateVia: finalState,
+		OriginalURI:   resp.Request.URL.String(),
+		resp:          resp,
+		errorHandler:  errorHandler,
+	}
 }
 
 func (pt *pollingTrackerBase) initializeState() error {
@@ -490,18 +495,6 @@ func (pt *pollingTrackerBase) pollingError() error {
 	return pt.Err
 }
 
-func (pt *pollingTrackerBase) pollingMethod() pollingMethodType {
-	return pt.Pm
-}
-
-func (pt *pollingTrackerBase) pollingStatus() string {
-	return pt.State
-}
-
-func (pt *pollingTrackerBase) pollingURL() string {
-	return pt.URI
-}
-
 func (pt *pollingTrackerBase) finalGetURL() string {
 	return pt.FinalGetURI
 }
@@ -596,46 +589,6 @@ type pollingTrackerDelete struct {
 	pollingTrackerBase
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service.
-func (pt *pollingTrackerDelete) Poll(ctx context.Context, pipeline azcore.Pipeline) (*http.Response, error) {
-	if lroPollDone(ctx, pipeline, pt) {
-		return pt.latestResponse().Response, pt.pollingError()
-	}
-	return nil, pt.pollingError()
-}
-
-// PollUntilDone will handle the entire span of the polling operation until a terminal state is reached.
-// It will return the final http.Response received or an error, it will also unmarshal the response payload
-// in the respType interface that is passed into the function.
-func (pt *pollingTrackerDelete) PollUntilDone(ctx context.Context, frequency time.Duration, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error) {
-	// initial check for a retry-after header existing on the initial response
-	if retryAfter := azcore.RetryAfter(pt.latestResponse().Response); retryAfter > 0 {
-		err := delay(ctx, retryAfter)
-		if err != nil {
-			return nil, err
-		}
-	}
-	// begin polling the endpoint until a terminal state is reached
-	for {
-		resp, err := pt.Poll(ctx, pipeline)
-		if err != nil {
-			return nil, err
-		}
-		if pt.Done() {
-			break
-		}
-		d := frequency
-		if retryAfter := azcore.RetryAfter(resp); retryAfter > 0 {
-			d = retryAfter
-		}
-		err = delay(ctx, d)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return pt.FinalResponse(ctx, pipeline, respType)
-}
-
 func (pt *pollingTrackerDelete) updatePollingMethod() error {
 	// for 201 the Location header is required
 	if pt.resp.StatusCode == http.StatusCreated {
@@ -695,46 +648,6 @@ func (pt *pollingTrackerDelete) provisioningStateApplicable() bool {
 
 type pollingTrackerPatch struct {
 	pollingTrackerBase
-}
-
-// Poll will send poll the service endpoint and return an http.Response or error received from the service.
-func (pt *pollingTrackerPatch) Poll(ctx context.Context, pipeline azcore.Pipeline) (*http.Response, error) {
-	if lroPollDone(ctx, pipeline, pt) {
-		return pt.latestResponse().Response, pt.pollingError()
-	}
-	return nil, pt.pollingError()
-}
-
-// PollUntilDone will handle the entire span of the polling operation until a terminal state is reached.
-// It will return the final http.Response received or an error, it will also unmarshal the response payload
-// in the respType interface that is passed into the function.
-func (pt *pollingTrackerPatch) PollUntilDone(ctx context.Context, frequency time.Duration, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error) {
-	// initial check for a retry-after header existing on the initial response
-	if retryAfter := azcore.RetryAfter(pt.latestResponse().Response); retryAfter > 0 {
-		err := delay(ctx, retryAfter)
-		if err != nil {
-			return nil, err
-		}
-	}
-	// begin polling the endpoint until a terminal state is reached
-	for {
-		resp, err := pt.Poll(ctx, pipeline)
-		if err != nil {
-			return nil, err
-		}
-		if pt.Done() {
-			break
-		}
-		d := frequency
-		if retryAfter := azcore.RetryAfter(resp); retryAfter > 0 {
-			d = retryAfter
-		}
-		err = delay(ctx, d)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return pt.FinalResponse(ctx, pipeline, respType)
 }
 
 func (pt *pollingTrackerPatch) updatePollingMethod() error {
@@ -799,46 +712,6 @@ type pollingTrackerPost struct {
 	pollingTrackerBase
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service.
-func (pt *pollingTrackerPost) Poll(ctx context.Context, pipeline azcore.Pipeline) (*http.Response, error) {
-	if lroPollDone(ctx, pipeline, pt) {
-		return pt.latestResponse().Response, pt.pollingError()
-	}
-	return nil, pt.pollingError()
-}
-
-// PollUntilDone will handle the entire span of the polling operation until a terminal state is reached.
-// It will return the final http.Response received or an error, it will also unmarshal the response payload
-// in the respType interface that is passed into the function.
-func (pt *pollingTrackerPost) PollUntilDone(ctx context.Context, frequency time.Duration, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error) {
-	// initial check for a retry-after header existing on the initial response
-	if retryAfter := azcore.RetryAfter(pt.latestResponse().Response); retryAfter > 0 {
-		err := delay(ctx, retryAfter)
-		if err != nil {
-			return nil, err
-		}
-	}
-	// begin polling the endpoint until a terminal state is reached
-	for {
-		resp, err := pt.Poll(ctx, pipeline)
-		if err != nil {
-			return nil, err
-		}
-		if pt.Done() {
-			break
-		}
-		d := frequency
-		if retryAfter := azcore.RetryAfter(resp); retryAfter > 0 {
-			d = retryAfter
-		}
-		err = delay(ctx, d)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return pt.FinalResponse(ctx, pipeline, respType)
-}
-
 func (pt *pollingTrackerPost) updatePollingMethod() error {
 	// 201 requires Location header
 	if pt.resp.StatusCode == http.StatusCreated {
@@ -898,49 +771,6 @@ func (pt *pollingTrackerPost) provisioningStateApplicable() bool {
 
 type pollingTrackerPut struct {
 	pollingTrackerBase
-}
-
-// Poll will send poll the service endpoint and return an http.Response or error received from the service.
-func (pt *pollingTrackerPut) Poll(ctx context.Context, pipeline azcore.Pipeline) (*http.Response, error) {
-	if lroPollDone(ctx, pipeline, pt) {
-		return pt.latestResponse().Response, pt.pollingError()
-	}
-	return nil, pt.pollingError()
-}
-
-// PollUntilDone will handle the entire span of the polling operation until a terminal state is reached.
-// It will return the final http.Response received or an error, it will also unmarshal the response payload
-// in the respType interface that is passed into the function.
-func (pt *pollingTrackerPut) PollUntilDone(ctx context.Context, frequency time.Duration, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error) {
-	// p.resp should only be nil when calling PollUntilDone from a poller that was instantiated from a resume token string
-	if pt.resp != nil {
-		// initial check for a retry-after header existing on the initial response
-		if retryAfter := azcore.RetryAfter(pt.latestResponse().Response); retryAfter > 0 {
-			err := delay(ctx, retryAfter)
-			if err != nil {
-				return nil, err
-			}
-		}
-	}
-	// begin polling the endpoint until a terminal state is reached
-	for {
-		resp, err := pt.Poll(ctx, pipeline)
-		if err != nil {
-			return nil, err
-		}
-		if pt.Done() {
-			break
-		}
-		d := frequency
-		if retryAfter := azcore.RetryAfter(resp); retryAfter > 0 {
-			d = retryAfter
-		}
-		err = delay(ctx, d)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return pt.FinalResponse(ctx, pipeline, respType)
 }
 
 func (pt *pollingTrackerPut) updatePollingMethod() error {

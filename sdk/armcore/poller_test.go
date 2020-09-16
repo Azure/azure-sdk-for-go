@@ -50,11 +50,11 @@ func TestNewPollerTracker(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	poller, err := NewPoller("testPoller", "", resp, handleError)
+	pller, err := NewPoller("testPoller", "", resp, handleError)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	pt := poller.(*pollingTrackerPost)
+	pt := pller.(*poller).pt.(*pollingTrackerPost)
 	if pt.PollerType != "testPoller" {
 		t.Fatal("wrong poller type assigned")
 	}

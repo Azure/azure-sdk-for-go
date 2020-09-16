@@ -3366,14 +3366,163 @@ type ConnectivityStatusContract struct {
 
 // ContentItemCollection paged list of content items.
 type ContentItemCollection struct {
+	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Collection of content items.
 	Value *[]ContentItemContract `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Next page link, if any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// ContentItemCollectionIterator provides access to a complete listing of ContentItemContract values.
+type ContentItemCollectionIterator struct {
+	i    int
+	page ContentItemCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ContentItemCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ContentItemCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ContentItemCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ContentItemCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ContentItemCollectionIterator) Response() ContentItemCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ContentItemCollectionIterator) Value() ContentItemContract {
+	if !iter.page.NotDone() {
+		return ContentItemContract{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ContentItemCollectionIterator type.
+func NewContentItemCollectionIterator(page ContentItemCollectionPage) ContentItemCollectionIterator {
+	return ContentItemCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (cic ContentItemCollection) IsEmpty() bool {
+	return cic.Value == nil || len(*cic.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (cic ContentItemCollection) hasNextLink() bool {
+	return cic.NextLink != nil && len(*cic.NextLink) != 0
+}
+
+// contentItemCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (cic ContentItemCollection) contentItemCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if !cic.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(cic.NextLink)))
+}
+
+// ContentItemCollectionPage contains a page of ContentItemContract values.
+type ContentItemCollectionPage struct {
+	fn  func(context.Context, ContentItemCollection) (ContentItemCollection, error)
+	cic ContentItemCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ContentItemCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ContentItemCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.cic)
+		if err != nil {
+			return err
+		}
+		page.cic = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ContentItemCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ContentItemCollectionPage) NotDone() bool {
+	return !page.cic.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ContentItemCollectionPage) Response() ContentItemCollection {
+	return page.cic
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ContentItemCollectionPage) Values() []ContentItemContract {
+	if page.cic.IsEmpty() {
+		return nil
+	}
+	return *page.cic.Value
+}
+
+// Creates a new instance of the ContentItemCollectionPage type.
+func NewContentItemCollectionPage(getNextPage func(context.Context, ContentItemCollection) (ContentItemCollection, error)) ContentItemCollectionPage {
+	return ContentItemCollectionPage{fn: getNextPage}
+}
+
 // ContentItemContract content type contract details.
 type ContentItemContract struct {
+	autorest.Response `json:"-"`
 	// Properties - Properties of the content item.
 	Properties map[string]interface{} `json:"properties"`
 	// ID - READ-ONLY; Resource ID.
@@ -3395,14 +3544,163 @@ func (cic ContentItemContract) MarshalJSON() ([]byte, error) {
 
 // ContentTypeCollection paged list of content types.
 type ContentTypeCollection struct {
+	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Collection of content types.
 	Value *[]ContentTypeContract `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Next page link, if any.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// ContentTypeCollectionIterator provides access to a complete listing of ContentTypeContract values.
+type ContentTypeCollectionIterator struct {
+	i    int
+	page ContentTypeCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ContentTypeCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ContentTypeCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ContentTypeCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ContentTypeCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ContentTypeCollectionIterator) Response() ContentTypeCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ContentTypeCollectionIterator) Value() ContentTypeContract {
+	if !iter.page.NotDone() {
+		return ContentTypeContract{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ContentTypeCollectionIterator type.
+func NewContentTypeCollectionIterator(page ContentTypeCollectionPage) ContentTypeCollectionIterator {
+	return ContentTypeCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ctc ContentTypeCollection) IsEmpty() bool {
+	return ctc.Value == nil || len(*ctc.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (ctc ContentTypeCollection) hasNextLink() bool {
+	return ctc.NextLink != nil && len(*ctc.NextLink) != 0
+}
+
+// contentTypeCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ctc ContentTypeCollection) contentTypeCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if !ctc.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ctc.NextLink)))
+}
+
+// ContentTypeCollectionPage contains a page of ContentTypeContract values.
+type ContentTypeCollectionPage struct {
+	fn  func(context.Context, ContentTypeCollection) (ContentTypeCollection, error)
+	ctc ContentTypeCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ContentTypeCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ContentTypeCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.ctc)
+		if err != nil {
+			return err
+		}
+		page.ctc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ContentTypeCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ContentTypeCollectionPage) NotDone() bool {
+	return !page.ctc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ContentTypeCollectionPage) Response() ContentTypeCollection {
+	return page.ctc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ContentTypeCollectionPage) Values() []ContentTypeContract {
+	if page.ctc.IsEmpty() {
+		return nil
+	}
+	return *page.ctc.Value
+}
+
+// Creates a new instance of the ContentTypeCollectionPage type.
+func NewContentTypeCollectionPage(getNextPage func(context.Context, ContentTypeCollection) (ContentTypeCollection, error)) ContentTypeCollectionPage {
+	return ContentTypeCollectionPage{fn: getNextPage}
+}
+
 // ContentTypeContract content type contract details.
 type ContentTypeContract struct {
+	autorest.Response `json:"-"`
 	// ContentTypeContractProperties - Properties of the content type.
 	*ContentTypeContractProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource ID.
@@ -8934,9 +9232,9 @@ type ProductContractProperties struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of true.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of true.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -8950,9 +9248,9 @@ type ProductEntityBaseParameters struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of true.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of true.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -8970,9 +9268,9 @@ type ProductTagResourceContractProperties struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of true.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of true.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`
@@ -9027,9 +9325,9 @@ type ProductUpdateProperties struct {
 	Terms *string `json:"terms,omitempty"`
 	// SubscriptionRequired - Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it's value is assumed to be true.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
-	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of false.
+	// ApprovalRequired - whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the product’s APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present only if subscriptionRequired property is present and has a value of true.
 	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
-	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false.
+	// SubscriptionsLimit - Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of true.
 	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
 	// State - whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. Possible values include: 'NotPublished', 'Published'
 	State ProductState `json:"state,omitempty"`

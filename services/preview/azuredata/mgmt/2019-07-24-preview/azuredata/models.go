@@ -31,48 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/azuredata/mgmt/2019-07-24-preview/azuredata"
 
-// AzureResource ...
-type AzureResource struct {
-	Etag     *string            `json:"etag,omitempty"`
-	ID       *string            `json:"id,omitempty"`
-	Kind     *string            `json:"kind,omitempty"`
-	Location *string            `json:"location,omitempty"`
-	Name     *string            `json:"name,omitempty"`
-	Sku      *ResourceSku       `json:"sku,omitempty"`
-	Tags     map[string]*string `json:"tags"`
-	Type     *string            `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AzureResource.
-func (ar AzureResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ar.Etag != nil {
-		objectMap["etag"] = ar.Etag
-	}
-	if ar.ID != nil {
-		objectMap["id"] = ar.ID
-	}
-	if ar.Kind != nil {
-		objectMap["kind"] = ar.Kind
-	}
-	if ar.Location != nil {
-		objectMap["location"] = ar.Location
-	}
-	if ar.Name != nil {
-		objectMap["name"] = ar.Name
-	}
-	if ar.Sku != nil {
-		objectMap["sku"] = ar.Sku
-	}
-	if ar.Tags != nil {
-		objectMap["tags"] = ar.Tags
-	}
-	if ar.Type != nil {
-		objectMap["type"] = ar.Type
-	}
-	return json.Marshal(objectMap)
-}
-
 // CloudError an error response from the Azure Data service.
 type CloudError struct {
 	// Error - null
@@ -94,12 +52,6 @@ type CloudErrorBody struct {
 // DataControllerProperties the data controller properties.
 type DataControllerProperties struct {
 	OnPremiseProperty *OnPremiseProperty `json:"onPremiseProperty,omitempty"`
-	// RequestType - Possible values include: 'Unknown', 'Handshake', 'UsageUpload'
-	RequestType       RequestType          `json:"requestType,omitempty"`
-	UploadRequest     *UsageUploadRequest  `json:"uploadRequest,omitempty"`
-	UploadResponse    *UsageUploadResponse `json:"uploadResponse,omitempty"`
-	HandshakeRequest  interface{}          `json:"handshakeRequest,omitempty"`
-	HandshakeResponse *HandshakeResponse   `json:"handshakeResponse,omitempty"`
 }
 
 // DataControllerResource data controller resource
@@ -214,10 +166,19 @@ func (dcr *DataControllerResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// HandshakeResponse ...
-type HandshakeResponse struct {
-	UsageUploadURL *string `json:"usageUploadUrl,omitempty"`
-	UsageResultURL *string `json:"usageResultUrl,omitempty"`
+// DataControllerUpdate used for updating a data controller resource.
+type DataControllerUpdate struct {
+	// Tags - Resource tags
+	Tags map[string]*string `json:"tags"`
+}
+
+// MarshalJSON is the custom marshaler for DataControllerUpdate.
+func (dcu DataControllerUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dcu.Tags != nil {
+		objectMap["tags"] = dcu.Tags
+	}
+	return json.Marshal(objectMap)
 }
 
 // Identity identity for the resource.
@@ -1324,6 +1285,16 @@ func NewSQLManagedInstanceListResultPage(getNextPage func(context.Context, SQLMa
 type SQLManagedInstanceProperties struct {
 	// DataControllerID - null
 	DataControllerID *string `json:"dataControllerId,omitempty"`
+	// InstanceEndpoint - The on premise instance endpoint
+	InstanceEndpoint *string `json:"instanceEndpoint,omitempty"`
+	// Admin - The instance admin user
+	Admin *string `json:"admin,omitempty"`
+	// StartTime - The instance start time
+	StartTime *string `json:"startTime,omitempty"`
+	// EndTime - The instance end time
+	EndTime *string `json:"endTime,omitempty"`
+	// VCore - The instance vCore
+	VCore *string `json:"vCore,omitempty"`
 }
 
 // SQLManagedInstanceUpdate an update to a SQL Managed Instance.
@@ -2242,36 +2213,4 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 		objectMap["location"] = tr.Location
 	}
 	return json.Marshal(objectMap)
-}
-
-// UsageRecord ...
-type UsageRecord struct {
-	ID             *uuid.UUID `json:"id,omitempty"`
-	EventSeq       *int64     `json:"eventSeq,omitempty"`
-	EventID        *uuid.UUID `json:"eventId,omitempty"`
-	Namespace      *string    `json:"namespace,omitempty"`
-	Type           *string    `json:"type,omitempty"`
-	SubscriptionID *uuid.UUID `json:"subscriptionId,omitempty"`
-	ResourceGroup  *string    `json:"resourceGroup,omitempty"`
-	Name           *string    `json:"name,omitempty"`
-	Location       *string    `json:"location,omitempty"`
-	StartTime      *date.Time `json:"startTime,omitempty"`
-	EndTime        *date.Time `json:"endTime,omitempty"`
-	Quantity       *float64   `json:"quantity,omitempty"`
-	Tags           *string    `json:"tags,omitempty"`
-}
-
-// UsageUploadRequest ...
-type UsageUploadRequest struct {
-	ExportType    *string        `json:"exportType,omitempty"`
-	DataTimestamp *date.Time     `json:"dataTimestamp,omitempty"`
-	Data          *[]UsageRecord `json:"data,omitempty"`
-	Signature     *string        `json:"signature,omitempty"`
-}
-
-// UsageUploadResponse ...
-type UsageUploadResponse struct {
-	// UsageUploadStatus - Possible values include: 'UsageUploadStatusUnknown', 'UsageUploadStatusFailed', 'UsageUploadStatusPartialSuccess', 'UsageUploadStatusCompleted'
-	UsageUploadStatus UsageUploadStatus `json:"usageUploadStatus,omitempty"`
-	UsageWaterMark    *int64            `json:"usageWaterMark,omitempty"`
 }

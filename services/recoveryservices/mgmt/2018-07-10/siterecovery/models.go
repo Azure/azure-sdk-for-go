@@ -74,7 +74,7 @@ func (aadi A2AAddDisksInput) AsBasicAddDisksProviderSpecificInput() (BasicAddDis
 
 // A2AApplyRecoveryPointInput applyRecoveryPoint input specific to A2A provider.
 type A2AApplyRecoveryPointInput struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeApplyRecoveryPointProviderSpecificInput', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeApplyRecoveryPointProviderSpecificInput', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicApplyRecoveryPointProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -100,6 +100,11 @@ func (aarpi A2AApplyRecoveryPointInput) AsHyperVReplicaAzureApplyRecoveryPointIn
 
 // AsInMageAzureV2ApplyRecoveryPointInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for A2AApplyRecoveryPointInput.
 func (aarpi A2AApplyRecoveryPointInput) AsInMageAzureV2ApplyRecoveryPointInput() (*InMageAzureV2ApplyRecoveryPointInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmApplyRecoveryPointInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for A2AApplyRecoveryPointInput.
+func (aarpi A2AApplyRecoveryPointInput) AsInMageRcmApplyRecoveryPointInput() (*InMageRcmApplyRecoveryPointInput, bool) {
 	return nil, false
 }
 
@@ -225,7 +230,7 @@ type A2AEnableProtectionInput struct {
 	RecoveryAzureNetworkID *string `json:"recoveryAzureNetworkId,omitempty"`
 	// RecoverySubnetName - The recovery subnet name.
 	RecoverySubnetName *string `json:"recoverySubnetName,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
+	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
 	InstanceType InstanceTypeBasicEnableProtectionProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -301,6 +306,11 @@ func (aepi A2AEnableProtectionInput) AsInMageEnableProtectionInput() (*InMageEna
 	return nil, false
 }
 
+// AsInMageRcmEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for A2AEnableProtectionInput.
+func (aepi A2AEnableProtectionInput) AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool) {
+	return nil, false
+}
+
 // AsSanEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for A2AEnableProtectionInput.
 func (aepi A2AEnableProtectionInput) AsSanEnableProtectionInput() (*SanEnableProtectionInput, bool) {
 	return nil, false
@@ -330,7 +340,7 @@ type A2AEventDetails struct {
 	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
 	// RemoteFabricLocation - Remote fabric location.
 	RemoteFabricLocation *string `json:"remoteFabricLocation,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicEventProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -389,6 +399,11 @@ func (aed A2AEventDetails) AsHyperVReplicaBaseEventDetails() (*HyperVReplicaBase
 
 // AsInMageAzureV2EventDetails is the BasicEventProviderSpecificDetails implementation for A2AEventDetails.
 func (aed A2AEventDetails) AsInMageAzureV2EventDetails() (*InMageAzureV2EventDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmEventDetails is the BasicEventProviderSpecificDetails implementation for A2AEventDetails.
+func (aed A2AEventDetails) AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool) {
 	return nil, false
 }
 
@@ -473,7 +488,7 @@ type A2APolicyCreationInput struct {
 	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
 	// MultiVMSyncStatus - A value indicating whether multi-VM sync has to be enabled. Value should be 'Enabled' or 'Disabled'. Possible values include: 'Enable', 'Disable'
 	MultiVMSyncStatus SetMultiVMSyncStatus `json:"multiVmSyncStatus,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -529,6 +544,11 @@ func (apci A2APolicyCreationInput) AsInMagePolicyInput() (*InMagePolicyInput, bo
 	return nil, false
 }
 
+// AsInMageRcmPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for A2APolicyCreationInput.
+func (apci A2APolicyCreationInput) AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool) {
+	return nil, false
+}
+
 // AsVMwareCbtPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for A2APolicyCreationInput.
 func (apci A2APolicyCreationInput) AsVMwareCbtPolicyCreationInput() (*VMwareCbtPolicyCreationInput, bool) {
 	return nil, false
@@ -556,7 +576,7 @@ type A2APolicyDetails struct {
 	MultiVMSyncStatus *string `json:"multiVmSyncStatus,omitempty"`
 	// CrashConsistentFrequencyInMinutes - The crash consistent snapshot frequency in minutes.
 	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -622,6 +642,11 @@ func (apd A2APolicyDetails) AsInMageBasePolicyDetails() (*InMageBasePolicyDetail
 
 // AsInMagePolicyDetails is the BasicPolicyProviderSpecificDetails implementation for A2APolicyDetails.
 func (apd A2APolicyDetails) AsInMagePolicyDetails() (*InMagePolicyDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for A2APolicyDetails.
+func (apd A2APolicyDetails) AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool) {
 	return nil, false
 }
 
@@ -809,7 +834,7 @@ type A2ARecoveryPointDetails struct {
 	RecoveryPointSyncType RecoveryPointSyncType `json:"recoveryPointSyncType,omitempty"`
 	// Disks - List of disk ids representing a recovery point.
 	Disks *[]string `json:"disks,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeProviderSpecificRecoveryPointDetails', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeA2A', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeProviderSpecificRecoveryPointDetails', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeA2A', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicProviderSpecificRecoveryPointDetails `json:"instanceType,omitempty"`
 }
 
@@ -836,6 +861,11 @@ func (arpd A2ARecoveryPointDetails) AsA2ARecoveryPointDetails() (*A2ARecoveryPoi
 
 // AsInMageAzureV2RecoveryPointDetails is the BasicProviderSpecificRecoveryPointDetails implementation for A2ARecoveryPointDetails.
 func (arpd A2ARecoveryPointDetails) AsInMageAzureV2RecoveryPointDetails() (*InMageAzureV2RecoveryPointDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmRecoveryPointDetails is the BasicProviderSpecificRecoveryPointDetails implementation for A2ARecoveryPointDetails.
+func (arpd A2ARecoveryPointDetails) AsInMageRcmRecoveryPointDetails() (*InMageRcmRecoveryPointDetails, bool) {
 	return nil, false
 }
 
@@ -974,7 +1004,7 @@ type A2AReplicationDetails struct {
 	TfoAzureVMName *string `json:"tfoAzureVMName,omitempty"`
 	// RecoveryProximityPlacementGroupID - The recovery proximity placement group Id.
 	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageRcm', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
 	InstanceType InstanceTypeBasicReplicationProviderSpecificSettings `json:"instanceType,omitempty"`
 }
 
@@ -1123,6 +1153,11 @@ func (ard A2AReplicationDetails) AsHyperVReplicaReplicationDetails() (*HyperVRep
 
 // AsInMageAzureV2ReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for A2AReplicationDetails.
 func (ard A2AReplicationDetails) AsInMageAzureV2ReplicationDetails() (*InMageAzureV2ReplicationDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for A2AReplicationDetails.
+func (ard A2AReplicationDetails) AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool) {
 	return nil, false
 }
 
@@ -1298,6 +1333,128 @@ func (aspi A2ASwitchProtectionInput) AsBasicSwitchProtectionProviderSpecificInpu
 	return &aspi, true
 }
 
+// A2ATestFailoverInput a2A provider specific input for test failover.
+type A2ATestFailoverInput struct {
+	// RecoveryPointID - The recovery point id to be passed to test failover to a particular recovery point. In case of latest recovery point, null should be passed.
+	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	// CloudServiceCreationOption - A value indicating whether to use recovery cloud service for TFO or not.
+	CloudServiceCreationOption *string `json:"cloudServiceCreationOption,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeTestFailoverProviderSpecificInput', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMage'
+	InstanceType InstanceTypeBasicTestFailoverProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for A2ATestFailoverInput.
+func (atfi A2ATestFailoverInput) MarshalJSON() ([]byte, error) {
+	atfi.InstanceType = InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeA2A
+	objectMap := make(map[string]interface{})
+	if atfi.RecoveryPointID != nil {
+		objectMap["recoveryPointId"] = atfi.RecoveryPointID
+	}
+	if atfi.CloudServiceCreationOption != nil {
+		objectMap["cloudServiceCreationOption"] = atfi.CloudServiceCreationOption
+	}
+	if atfi.InstanceType != "" {
+		objectMap["instanceType"] = atfi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2ATestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for A2ATestFailoverInput.
+func (atfi A2ATestFailoverInput) AsA2ATestFailoverInput() (*A2ATestFailoverInput, bool) {
+	return &atfi, true
+}
+
+// AsHyperVReplicaAzureTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for A2ATestFailoverInput.
+func (atfi A2ATestFailoverInput) AsHyperVReplicaAzureTestFailoverInput() (*HyperVReplicaAzureTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2TestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for A2ATestFailoverInput.
+func (atfi A2ATestFailoverInput) AsInMageAzureV2TestFailoverInput() (*InMageAzureV2TestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for A2ATestFailoverInput.
+func (atfi A2ATestFailoverInput) AsInMageRcmTestFailoverInput() (*InMageRcmTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for A2ATestFailoverInput.
+func (atfi A2ATestFailoverInput) AsInMageTestFailoverInput() (*InMageTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsTestFailoverProviderSpecificInput is the BasicTestFailoverProviderSpecificInput implementation for A2ATestFailoverInput.
+func (atfi A2ATestFailoverInput) AsTestFailoverProviderSpecificInput() (*TestFailoverProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicTestFailoverProviderSpecificInput is the BasicTestFailoverProviderSpecificInput implementation for A2ATestFailoverInput.
+func (atfi A2ATestFailoverInput) AsBasicTestFailoverProviderSpecificInput() (BasicTestFailoverProviderSpecificInput, bool) {
+	return &atfi, true
+}
+
+// A2AUnplannedFailoverInput a2A provider specific input for unplanned failover.
+type A2AUnplannedFailoverInput struct {
+	// RecoveryPointID - The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should be passed.
+	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	// CloudServiceCreationOption - A value indicating whether to use recovery cloud service for failover or not.
+	CloudServiceCreationOption *string `json:"cloudServiceCreationOption,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeUnplannedFailoverProviderSpecificInput', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMage'
+	InstanceType InstanceTypeBasicUnplannedFailoverProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for A2AUnplannedFailoverInput.
+func (aufi A2AUnplannedFailoverInput) MarshalJSON() ([]byte, error) {
+	aufi.InstanceType = InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeA2A
+	objectMap := make(map[string]interface{})
+	if aufi.RecoveryPointID != nil {
+		objectMap["recoveryPointId"] = aufi.RecoveryPointID
+	}
+	if aufi.CloudServiceCreationOption != nil {
+		objectMap["cloudServiceCreationOption"] = aufi.CloudServiceCreationOption
+	}
+	if aufi.InstanceType != "" {
+		objectMap["instanceType"] = aufi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for A2AUnplannedFailoverInput.
+func (aufi A2AUnplannedFailoverInput) AsA2AUnplannedFailoverInput() (*A2AUnplannedFailoverInput, bool) {
+	return &aufi, true
+}
+
+// AsHyperVReplicaAzureUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for A2AUnplannedFailoverInput.
+func (aufi A2AUnplannedFailoverInput) AsHyperVReplicaAzureUnplannedFailoverInput() (*HyperVReplicaAzureUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2UnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for A2AUnplannedFailoverInput.
+func (aufi A2AUnplannedFailoverInput) AsInMageAzureV2UnplannedFailoverInput() (*InMageAzureV2UnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for A2AUnplannedFailoverInput.
+func (aufi A2AUnplannedFailoverInput) AsInMageRcmUnplannedFailoverInput() (*InMageRcmUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for A2AUnplannedFailoverInput.
+func (aufi A2AUnplannedFailoverInput) AsInMageUnplannedFailoverInput() (*InMageUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsUnplannedFailoverProviderSpecificInput is the BasicUnplannedFailoverProviderSpecificInput implementation for A2AUnplannedFailoverInput.
+func (aufi A2AUnplannedFailoverInput) AsUnplannedFailoverProviderSpecificInput() (*UnplannedFailoverProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicUnplannedFailoverProviderSpecificInput is the BasicUnplannedFailoverProviderSpecificInput implementation for A2AUnplannedFailoverInput.
+func (aufi A2AUnplannedFailoverInput) AsBasicUnplannedFailoverProviderSpecificInput() (BasicUnplannedFailoverProviderSpecificInput, bool) {
+	return &aufi, true
+}
+
 // A2AUnprotectedDiskDetails a2A unprotected disk details.
 type A2AUnprotectedDiskDetails struct {
 	// DiskLunID - The source lun Id for the data disk.
@@ -1361,7 +1518,7 @@ type A2AUpdateReplicationProtectedItemInput struct {
 	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
 	// TfoAzureVMName - The user given name for test failover VM.
 	TfoAzureVMName *string `json:"tfoAzureVMName,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicUpdateReplicationProtectedItemProviderInput `json:"instanceType,omitempty"`
 }
 
@@ -1408,6 +1565,11 @@ func (aurpii A2AUpdateReplicationProtectedItemInput) AsHyperVReplicaAzureUpdateR
 
 // AsInMageAzureV2UpdateReplicationProtectedItemInput is the BasicUpdateReplicationProtectedItemProviderInput implementation for A2AUpdateReplicationProtectedItemInput.
 func (aurpii A2AUpdateReplicationProtectedItemInput) AsInMageAzureV2UpdateReplicationProtectedItemInput() (*InMageAzureV2UpdateReplicationProtectedItemInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmUpdateReplicationProtectedItemInput is the BasicUpdateReplicationProtectedItemProviderInput implementation for A2AUpdateReplicationProtectedItemInput.
+func (aurpii A2AUpdateReplicationProtectedItemInput) AsInMageRcmUpdateReplicationProtectedItemInput() (*InMageRcmUpdateReplicationProtectedItemInput, bool) {
 	return nil, false
 }
 
@@ -1584,10 +1746,14 @@ type AddRecoveryServicesProviderInput struct {
 type AddRecoveryServicesProviderInputProperties struct {
 	// MachineName - The name of the machine where the provider is getting added.
 	MachineName *string `json:"machineName,omitempty"`
+	// MachineID - The Id of the machine where the provider is getting added.
+	MachineID *string `json:"machineId,omitempty"`
 	// AuthenticationIdentityInput - The identity provider input for DRA authentication.
 	AuthenticationIdentityInput *IdentityProviderInput `json:"authenticationIdentityInput,omitempty"`
 	// ResourceAccessIdentityInput - The identity provider input for resource access.
 	ResourceAccessIdentityInput *IdentityProviderInput `json:"resourceAccessIdentityInput,omitempty"`
+	// DataPlaneAuthenticationIdentityInput - The identity provider input for data plane authentication.
+	DataPlaneAuthenticationIdentityInput *IdentityProviderInput `json:"dataPlaneAuthenticationIdentityInput,omitempty"`
 }
 
 // AddVCenterRequest input required to add vCenter.
@@ -1608,6 +1774,34 @@ type AddVCenterRequestProperties struct {
 	Port *string `json:"port,omitempty"`
 	// RunAsAccountID - The account Id which has privileges to discover the vCenter.
 	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+}
+
+// AgentDetails agent details.
+type AgentDetails struct {
+	// AgentID - READ-ONLY; The Id of the agent running on the server.
+	AgentID *string `json:"agentId,omitempty"`
+	// MachineID - READ-ONLY; The Id of the machine to which the agent is registered.
+	MachineID *string `json:"machineId,omitempty"`
+	// BiosID - READ-ONLY; The machine BIOS Id.
+	BiosID *string `json:"biosId,omitempty"`
+	// Fqdn - READ-ONLY; The machine FQDN.
+	Fqdn *string `json:"fqdn,omitempty"`
+	// Disks - READ-ONLY; The details of agent disks.
+	Disks *[]AgentDiskDetails `json:"disks,omitempty"`
+}
+
+// AgentDiskDetails agent disk details.
+type AgentDiskDetails struct {
+	// DiskID - READ-ONLY; The disk Id.
+	DiskID *string `json:"diskId,omitempty"`
+	// DiskName - READ-ONLY; The disk name.
+	DiskName *string `json:"diskName,omitempty"`
+	// IsOSDisk - READ-ONLY; A value indicating whether the disk is the OS disk.
+	IsOSDisk *string `json:"isOSDisk,omitempty"`
+	// CapacityInBytes - READ-ONLY; The disk capacity in bytes.
+	CapacityInBytes *int64 `json:"capacityInBytes,omitempty"`
+	// LunID - READ-ONLY; The lun of disk.
+	LunID *int32 `json:"lunId,omitempty"`
 }
 
 // Alert implements the Alert class.
@@ -1854,12 +2048,13 @@ type BasicApplyRecoveryPointProviderSpecificInput interface {
 	AsA2AApplyRecoveryPointInput() (*A2AApplyRecoveryPointInput, bool)
 	AsHyperVReplicaAzureApplyRecoveryPointInput() (*HyperVReplicaAzureApplyRecoveryPointInput, bool)
 	AsInMageAzureV2ApplyRecoveryPointInput() (*InMageAzureV2ApplyRecoveryPointInput, bool)
+	AsInMageRcmApplyRecoveryPointInput() (*InMageRcmApplyRecoveryPointInput, bool)
 	AsApplyRecoveryPointProviderSpecificInput() (*ApplyRecoveryPointProviderSpecificInput, bool)
 }
 
 // ApplyRecoveryPointProviderSpecificInput provider specific input for apply recovery point.
 type ApplyRecoveryPointProviderSpecificInput struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeApplyRecoveryPointProviderSpecificInput', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeApplyRecoveryPointProviderSpecificInput', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicApplyRecoveryPointProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -1883,6 +2078,10 @@ func unmarshalBasicApplyRecoveryPointProviderSpecificInput(body []byte) (BasicAp
 		var imavarpi InMageAzureV2ApplyRecoveryPointInput
 		err := json.Unmarshal(body, &imavarpi)
 		return imavarpi, err
+	case string(InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageRcm):
+		var imrarpi InMageRcmApplyRecoveryPointInput
+		err := json.Unmarshal(body, &imrarpi)
+		return imrarpi, err
 	default:
 		var arppsi ApplyRecoveryPointProviderSpecificInput
 		err := json.Unmarshal(body, &arppsi)
@@ -1930,6 +2129,11 @@ func (arppsi ApplyRecoveryPointProviderSpecificInput) AsHyperVReplicaAzureApplyR
 
 // AsInMageAzureV2ApplyRecoveryPointInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for ApplyRecoveryPointProviderSpecificInput.
 func (arppsi ApplyRecoveryPointProviderSpecificInput) AsInMageAzureV2ApplyRecoveryPointInput() (*InMageAzureV2ApplyRecoveryPointInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmApplyRecoveryPointInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for ApplyRecoveryPointProviderSpecificInput.
+func (arppsi ApplyRecoveryPointProviderSpecificInput) AsInMageRcmApplyRecoveryPointInput() (*InMageRcmApplyRecoveryPointInput, bool) {
 	return nil, false
 }
 
@@ -2263,7 +2467,7 @@ func (artd AutomationRunbookTaskDetails) AsBasicTaskTypeDetails() (BasicTaskType
 type AzureFabricCreationInput struct {
 	// Location - The Location.
 	Location *string `json:"location,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeFabricSpecificCreationInput', 'InstanceTypeAzure', 'InstanceTypeVMwareV2'
+	// InstanceType - Possible values include: 'InstanceTypeFabricSpecificCreationInput', 'InstanceTypeAzure', 'InstanceTypeInMageRcm', 'InstanceTypeVMwareV2'
 	InstanceType InstanceTypeBasicFabricSpecificCreationInput `json:"instanceType,omitempty"`
 }
 
@@ -2283,6 +2487,11 @@ func (afci AzureFabricCreationInput) MarshalJSON() ([]byte, error) {
 // AsAzureFabricCreationInput is the BasicFabricSpecificCreationInput implementation for AzureFabricCreationInput.
 func (afci AzureFabricCreationInput) AsAzureFabricCreationInput() (*AzureFabricCreationInput, bool) {
 	return &afci, true
+}
+
+// AsInMageRcmFabricCreationInput is the BasicFabricSpecificCreationInput implementation for AzureFabricCreationInput.
+func (afci AzureFabricCreationInput) AsInMageRcmFabricCreationInput() (*InMageRcmFabricCreationInput, bool) {
+	return nil, false
 }
 
 // AsVMwareV2FabricCreationInput is the BasicFabricSpecificCreationInput implementation for AzureFabricCreationInput.
@@ -2306,7 +2515,7 @@ type AzureFabricSpecificDetails struct {
 	Location *string `json:"location,omitempty"`
 	// ContainerIds - The container Ids for the Azure fabric.
 	ContainerIds *[]string `json:"containerIds,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2'
 	InstanceType InstanceTypeBasicFabricSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -2333,6 +2542,11 @@ func (afsd AzureFabricSpecificDetails) AsAzureFabricSpecificDetails() (*AzureFab
 
 // AsHyperVSiteDetails is the BasicFabricSpecificDetails implementation for AzureFabricSpecificDetails.
 func (afsd AzureFabricSpecificDetails) AsHyperVSiteDetails() (*HyperVSiteDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmFabricSpecificDetails is the BasicFabricSpecificDetails implementation for AzureFabricSpecificDetails.
+func (afsd AzureFabricSpecificDetails) AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool) {
 	return nil, false
 }
 
@@ -3202,9 +3416,9 @@ type DiskEncryptionInfo struct {
 
 // DiskEncryptionKeyInfo disk Encryption Key Information (BitLocker Encryption Key (BEK) on Windows).
 type DiskEncryptionKeyInfo struct {
-	// SecretIdentifier - The secret url / identifier.
+	// SecretIdentifier - The secret URL / identifier.
 	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
-	// KeyVaultResourceArmID - The KeyVault resource ARM id for secret.
+	// KeyVaultResourceArmID - The KeyVault resource ARM Id for secret.
 	KeyVaultResourceArmID *string `json:"keyVaultResourceArmId,omitempty"`
 }
 
@@ -3228,6 +3442,22 @@ type Display struct {
 	Operation *string `json:"operation,omitempty"`
 	// Description - The description. The localized friendly description for the operation, as it should be shown to the user. It should be thorough, yet concise – it will be used in tool tips and detailed views. Prescriptive guidance for namespaces: Read any 'display.provider' resource Create or Update any 'display.provider' resource Delete any 'display.provider' resource Perform any other action on any 'display.provider' resource Prescriptive guidance for namespaces: Read any 'display.resource' Create or Update any 'display.resource' Delete any 'display.resource' 'ActionName' any 'display.resources'
 	Description *string `json:"description,omitempty"`
+}
+
+// DraDetails DRA details.
+type DraDetails struct {
+	// ID - READ-ONLY; The DRA Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The DRA name.
+	Name *string `json:"name,omitempty"`
+	// Version - READ-ONLY; The DRA version.
+	Version *string `json:"version,omitempty"`
+	// LastHeartbeatUtc - READ-ONLY; The last heartbeat received from the DRA.
+	LastHeartbeatUtc *date.Time `json:"lastHeartbeatUtc,omitempty"`
+	// Health - READ-ONLY; The health of the DRA. Possible values include: 'ProtectionHealthNone', 'ProtectionHealthNormal', 'ProtectionHealthWarning', 'ProtectionHealthCritical'
+	Health ProtectionHealth `json:"health,omitempty"`
+	// HealthErrors - READ-ONLY; The health errors.
+	HealthErrors *[]HealthError `json:"healthErrors,omitempty"`
 }
 
 // EnableMigrationInput enable migration input.
@@ -3413,13 +3643,14 @@ type BasicEnableProtectionProviderSpecificInput interface {
 	AsHyperVReplicaAzureEnableProtectionInput() (*HyperVReplicaAzureEnableProtectionInput, bool)
 	AsInMageAzureV2EnableProtectionInput() (*InMageAzureV2EnableProtectionInput, bool)
 	AsInMageEnableProtectionInput() (*InMageEnableProtectionInput, bool)
+	AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool)
 	AsSanEnableProtectionInput() (*SanEnableProtectionInput, bool)
 	AsEnableProtectionProviderSpecificInput() (*EnableProtectionProviderSpecificInput, bool)
 }
 
 // EnableProtectionProviderSpecificInput enable protection provider specific input.
 type EnableProtectionProviderSpecificInput struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
+	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
 	InstanceType InstanceTypeBasicEnableProtectionProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -3447,6 +3678,10 @@ func unmarshalBasicEnableProtectionProviderSpecificInput(body []byte) (BasicEnab
 		var imepi InMageEnableProtectionInput
 		err := json.Unmarshal(body, &imepi)
 		return imepi, err
+	case string(InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageRcm):
+		var imrepi InMageRcmEnableProtectionInput
+		err := json.Unmarshal(body, &imrepi)
+		return imrepi, err
 	case string(InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan):
 		var sepi SanEnableProtectionInput
 		err := json.Unmarshal(body, &sepi)
@@ -3503,6 +3738,11 @@ func (eppsi EnableProtectionProviderSpecificInput) AsInMageAzureV2EnableProtecti
 
 // AsInMageEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for EnableProtectionProviderSpecificInput.
 func (eppsi EnableProtectionProviderSpecificInput) AsInMageEnableProtectionInput() (*InMageEnableProtectionInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for EnableProtectionProviderSpecificInput.
+func (eppsi EnableProtectionProviderSpecificInput) AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool) {
 	return nil, false
 }
 
@@ -3849,12 +4089,13 @@ type BasicEventProviderSpecificDetails interface {
 	AsHyperVReplicaAzureEventDetails() (*HyperVReplicaAzureEventDetails, bool)
 	AsHyperVReplicaBaseEventDetails() (*HyperVReplicaBaseEventDetails, bool)
 	AsInMageAzureV2EventDetails() (*InMageAzureV2EventDetails, bool)
+	AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool)
 	AsEventProviderSpecificDetails() (*EventProviderSpecificDetails, bool)
 }
 
 // EventProviderSpecificDetails model class for provider specific details for an event.
 type EventProviderSpecificDetails struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicEventProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -3890,6 +4131,10 @@ func unmarshalBasicEventProviderSpecificDetails(body []byte) (BasicEventProvider
 		var imaved InMageAzureV2EventDetails
 		err := json.Unmarshal(body, &imaved)
 		return imaved, err
+	case string(InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageRcm):
+		var imred InMageRcmEventDetails
+		err := json.Unmarshal(body, &imred)
+		return imred, err
 	default:
 		var epsd EventProviderSpecificDetails
 		err := json.Unmarshal(body, &epsd)
@@ -3952,6 +4197,11 @@ func (epsd EventProviderSpecificDetails) AsHyperVReplicaBaseEventDetails() (*Hyp
 
 // AsInMageAzureV2EventDetails is the BasicEventProviderSpecificDetails implementation for EventProviderSpecificDetails.
 func (epsd EventProviderSpecificDetails) AsInMageAzureV2EventDetails() (*InMageAzureV2EventDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmEventDetails is the BasicEventProviderSpecificDetails implementation for EventProviderSpecificDetails.
+func (epsd EventProviderSpecificDetails) AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool) {
 	return nil, false
 }
 
@@ -4625,13 +4875,14 @@ func (fscnmi FabricSpecificCreateNetworkMappingInput) AsBasicFabricSpecificCreat
 // BasicFabricSpecificCreationInput fabric provider specific settings.
 type BasicFabricSpecificCreationInput interface {
 	AsAzureFabricCreationInput() (*AzureFabricCreationInput, bool)
+	AsInMageRcmFabricCreationInput() (*InMageRcmFabricCreationInput, bool)
 	AsVMwareV2FabricCreationInput() (*VMwareV2FabricCreationInput, bool)
 	AsFabricSpecificCreationInput() (*FabricSpecificCreationInput, bool)
 }
 
 // FabricSpecificCreationInput fabric provider specific settings.
 type FabricSpecificCreationInput struct {
-	// InstanceType - Possible values include: 'InstanceTypeFabricSpecificCreationInput', 'InstanceTypeAzure', 'InstanceTypeVMwareV2'
+	// InstanceType - Possible values include: 'InstanceTypeFabricSpecificCreationInput', 'InstanceTypeAzure', 'InstanceTypeInMageRcm', 'InstanceTypeVMwareV2'
 	InstanceType InstanceTypeBasicFabricSpecificCreationInput `json:"instanceType,omitempty"`
 }
 
@@ -4647,6 +4898,10 @@ func unmarshalBasicFabricSpecificCreationInput(body []byte) (BasicFabricSpecific
 		var afci AzureFabricCreationInput
 		err := json.Unmarshal(body, &afci)
 		return afci, err
+	case string(InstanceTypeInMageRcm):
+		var imrfci InMageRcmFabricCreationInput
+		err := json.Unmarshal(body, &imrfci)
+		return imrfci, err
 	case string(InstanceTypeVMwareV2):
 		var vmvfci VMwareV2FabricCreationInput
 		err := json.Unmarshal(body, &vmvfci)
@@ -4691,6 +4946,11 @@ func (fsci FabricSpecificCreationInput) AsAzureFabricCreationInput() (*AzureFabr
 	return nil, false
 }
 
+// AsInMageRcmFabricCreationInput is the BasicFabricSpecificCreationInput implementation for FabricSpecificCreationInput.
+func (fsci FabricSpecificCreationInput) AsInMageRcmFabricCreationInput() (*InMageRcmFabricCreationInput, bool) {
+	return nil, false
+}
+
 // AsVMwareV2FabricCreationInput is the BasicFabricSpecificCreationInput implementation for FabricSpecificCreationInput.
 func (fsci FabricSpecificCreationInput) AsVMwareV2FabricCreationInput() (*VMwareV2FabricCreationInput, bool) {
 	return nil, false
@@ -4710,6 +4970,7 @@ func (fsci FabricSpecificCreationInput) AsBasicFabricSpecificCreationInput() (Ba
 type BasicFabricSpecificDetails interface {
 	AsAzureFabricSpecificDetails() (*AzureFabricSpecificDetails, bool)
 	AsHyperVSiteDetails() (*HyperVSiteDetails, bool)
+	AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool)
 	AsVmmDetails() (*VmmDetails, bool)
 	AsVMwareDetails() (*VMwareDetails, bool)
 	AsVMwareV2FabricSpecificDetails() (*VMwareV2FabricSpecificDetails, bool)
@@ -4718,7 +4979,7 @@ type BasicFabricSpecificDetails interface {
 
 // FabricSpecificDetails fabric specific details.
 type FabricSpecificDetails struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2'
 	InstanceType InstanceTypeBasicFabricSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -4738,6 +4999,10 @@ func unmarshalBasicFabricSpecificDetails(body []byte) (BasicFabricSpecificDetail
 		var hvsd HyperVSiteDetails
 		err := json.Unmarshal(body, &hvsd)
 		return hvsd, err
+	case string(InstanceTypeBasicFabricSpecificDetailsInstanceTypeInMageRcm):
+		var imrfsd InMageRcmFabricSpecificDetails
+		err := json.Unmarshal(body, &imrfsd)
+		return imrfsd, err
 	case string(InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM):
 		var vd VmmDetails
 		err := json.Unmarshal(body, &vd)
@@ -4792,6 +5057,11 @@ func (fsd FabricSpecificDetails) AsAzureFabricSpecificDetails() (*AzureFabricSpe
 
 // AsHyperVSiteDetails is the BasicFabricSpecificDetails implementation for FabricSpecificDetails.
 func (fsd FabricSpecificDetails) AsHyperVSiteDetails() (*HyperVSiteDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmFabricSpecificDetails is the BasicFabricSpecificDetails implementation for FabricSpecificDetails.
+func (fsd FabricSpecificDetails) AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool) {
 	return nil, false
 }
 
@@ -5180,7 +5450,7 @@ type HyperVReplica2012EventDetails struct {
 	RemoteContainerName *string `json:"remoteContainerName,omitempty"`
 	// RemoteFabricName - The remote fabric name.
 	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicEventProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -5236,6 +5506,11 @@ func (hvr2ed HyperVReplica2012EventDetails) AsInMageAzureV2EventDetails() (*InMa
 	return nil, false
 }
 
+// AsInMageRcmEventDetails is the BasicEventProviderSpecificDetails implementation for HyperVReplica2012EventDetails.
+func (hvr2ed HyperVReplica2012EventDetails) AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool) {
+	return nil, false
+}
+
 // AsEventProviderSpecificDetails is the BasicEventProviderSpecificDetails implementation for HyperVReplica2012EventDetails.
 func (hvr2ed HyperVReplica2012EventDetails) AsEventProviderSpecificDetails() (*EventProviderSpecificDetails, bool) {
 	return nil, false
@@ -5256,7 +5531,7 @@ type HyperVReplica2012R2EventDetails struct {
 	RemoteContainerName *string `json:"remoteContainerName,omitempty"`
 	// RemoteFabricName - The remote fabric name.
 	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicEventProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -5312,6 +5587,11 @@ func (hvr2ed HyperVReplica2012R2EventDetails) AsInMageAzureV2EventDetails() (*In
 	return nil, false
 }
 
+// AsInMageRcmEventDetails is the BasicEventProviderSpecificDetails implementation for HyperVReplica2012R2EventDetails.
+func (hvr2ed HyperVReplica2012R2EventDetails) AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool) {
+	return nil, false
+}
+
 // AsEventProviderSpecificDetails is the BasicEventProviderSpecificDetails implementation for HyperVReplica2012R2EventDetails.
 func (hvr2ed HyperVReplica2012R2EventDetails) AsEventProviderSpecificDetails() (*EventProviderSpecificDetails, bool) {
 	return nil, false
@@ -5330,7 +5610,7 @@ type HyperVReplicaAzureApplyRecoveryPointInput struct {
 	PrimaryKekCertificatePfx *string `json:"primaryKekCertificatePfx,omitempty"`
 	// SecondaryKekCertificatePfx - The secondary kek certificate pfx.
 	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeApplyRecoveryPointProviderSpecificInput', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeApplyRecoveryPointProviderSpecificInput', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicApplyRecoveryPointProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -5365,6 +5645,11 @@ func (hvraarpi HyperVReplicaAzureApplyRecoveryPointInput) AsHyperVReplicaAzureAp
 
 // AsInMageAzureV2ApplyRecoveryPointInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for HyperVReplicaAzureApplyRecoveryPointInput.
 func (hvraarpi HyperVReplicaAzureApplyRecoveryPointInput) AsInMageAzureV2ApplyRecoveryPointInput() (*InMageAzureV2ApplyRecoveryPointInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmApplyRecoveryPointInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for HyperVReplicaAzureApplyRecoveryPointInput.
+func (hvraarpi HyperVReplicaAzureApplyRecoveryPointInput) AsInMageRcmApplyRecoveryPointInput() (*InMageRcmApplyRecoveryPointInput, bool) {
 	return nil, false
 }
 
@@ -5412,7 +5697,7 @@ type HyperVReplicaAzureEnableProtectionInput struct {
 	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
 	// TargetProximityPlacementGroupID - The proximity placement group ARM Id.
 	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
+	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
 	InstanceType InstanceTypeBasicEnableProtectionProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -5494,6 +5779,11 @@ func (hvraepi HyperVReplicaAzureEnableProtectionInput) AsInMageEnableProtectionI
 	return nil, false
 }
 
+// AsInMageRcmEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for HyperVReplicaAzureEnableProtectionInput.
+func (hvraepi HyperVReplicaAzureEnableProtectionInput) AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool) {
+	return nil, false
+}
+
 // AsSanEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for HyperVReplicaAzureEnableProtectionInput.
 func (hvraepi HyperVReplicaAzureEnableProtectionInput) AsSanEnableProtectionInput() (*SanEnableProtectionInput, bool) {
 	return nil, false
@@ -5517,7 +5807,7 @@ type HyperVReplicaAzureEventDetails struct {
 	FabricName *string `json:"fabricName,omitempty"`
 	// RemoteContainerName - The remote container name.
 	RemoteContainerName *string `json:"remoteContainerName,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicEventProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -5567,6 +5857,11 @@ func (hvraed HyperVReplicaAzureEventDetails) AsHyperVReplicaBaseEventDetails() (
 
 // AsInMageAzureV2EventDetails is the BasicEventProviderSpecificDetails implementation for HyperVReplicaAzureEventDetails.
 func (hvraed HyperVReplicaAzureEventDetails) AsInMageAzureV2EventDetails() (*InMageAzureV2EventDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmEventDetails is the BasicEventProviderSpecificDetails implementation for HyperVReplicaAzureEventDetails.
+func (hvraed HyperVReplicaAzureEventDetails) AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool) {
 	return nil, false
 }
 
@@ -5731,7 +6026,7 @@ type HyperVReplicaAzurePolicyDetails struct {
 	Encryption *string `json:"encryption,omitempty"`
 	// ActiveStorageAccountID - The active storage account Id.
 	ActiveStorageAccountID *string `json:"activeStorageAccountId,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -5803,6 +6098,11 @@ func (hvrapd HyperVReplicaAzurePolicyDetails) AsInMagePolicyDetails() (*InMagePo
 	return nil, false
 }
 
+// AsInMageRcmPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for HyperVReplicaAzurePolicyDetails.
+func (hvrapd HyperVReplicaAzurePolicyDetails) AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool) {
+	return nil, false
+}
+
 // AsRcmAzureMigrationPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for HyperVReplicaAzurePolicyDetails.
 func (hvrapd HyperVReplicaAzurePolicyDetails) AsRcmAzureMigrationPolicyDetails() (*RcmAzureMigrationPolicyDetails, bool) {
 	return nil, false
@@ -5835,7 +6135,7 @@ type HyperVReplicaAzurePolicyInput struct {
 	OnlineReplicationStartTime *string `json:"onlineReplicationStartTime,omitempty"`
 	// StorageAccounts - The list of storage accounts to which the VMs in the primary cloud can replicate to.
 	StorageAccounts *[]string `json:"storageAccounts,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -5891,6 +6191,11 @@ func (hvrapi HyperVReplicaAzurePolicyInput) AsInMageAzureV2PolicyInput() (*InMag
 
 // AsInMagePolicyInput is the BasicPolicyProviderSpecificInput implementation for HyperVReplicaAzurePolicyInput.
 func (hvrapi HyperVReplicaAzurePolicyInput) AsInMagePolicyInput() (*InMagePolicyInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for HyperVReplicaAzurePolicyInput.
+func (hvrapi HyperVReplicaAzurePolicyInput) AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool) {
 	return nil, false
 }
 
@@ -5963,7 +6268,7 @@ type HyperVReplicaAzureReplicationDetails struct {
 	UseManagedDisks *string `json:"useManagedDisks,omitempty"`
 	// LicenseType - License Type of the VM to be used.
 	LicenseType *string `json:"licenseType,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageRcm', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
 	InstanceType InstanceTypeBasicReplicationProviderSpecificSettings `json:"instanceType,omitempty"`
 }
 
@@ -6085,6 +6390,11 @@ func (hvrard HyperVReplicaAzureReplicationDetails) AsInMageAzureV2ReplicationDet
 	return nil, false
 }
 
+// AsInMageRcmReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for HyperVReplicaAzureReplicationDetails.
+func (hvrard HyperVReplicaAzureReplicationDetails) AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool) {
+	return nil, false
+}
+
 // AsInMageReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for HyperVReplicaAzureReplicationDetails.
 func (hvrard HyperVReplicaAzureReplicationDetails) AsInMageReplicationDetails() (*InMageReplicationDetails, bool) {
 	return nil, false
@@ -6176,6 +6486,148 @@ func (hvrari HyperVReplicaAzureReprotectInput) AsBasicReverseReplicationProvider
 	return &hvrari, true
 }
 
+// HyperVReplicaAzureTestFailoverInput hvrA provider specific input for test failover.
+type HyperVReplicaAzureTestFailoverInput struct {
+	// VaultLocation - Location of the vault.
+	VaultLocation *string `json:"vaultLocation,omitempty"`
+	// PrimaryKekCertificatePfx - Primary kek certificate pfx.
+	PrimaryKekCertificatePfx *string `json:"primaryKekCertificatePfx,omitempty"`
+	// SecondaryKekCertificatePfx - Secondary kek certificate pfx.
+	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
+	// RecoveryPointID - The recovery point id to be passed to test failover to a particular recovery point. In case of latest recovery point, null should be passed.
+	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeTestFailoverProviderSpecificInput', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMage'
+	InstanceType InstanceTypeBasicTestFailoverProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HyperVReplicaAzureTestFailoverInput.
+func (hvratfi HyperVReplicaAzureTestFailoverInput) MarshalJSON() ([]byte, error) {
+	hvratfi.InstanceType = InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure
+	objectMap := make(map[string]interface{})
+	if hvratfi.VaultLocation != nil {
+		objectMap["vaultLocation"] = hvratfi.VaultLocation
+	}
+	if hvratfi.PrimaryKekCertificatePfx != nil {
+		objectMap["primaryKekCertificatePfx"] = hvratfi.PrimaryKekCertificatePfx
+	}
+	if hvratfi.SecondaryKekCertificatePfx != nil {
+		objectMap["secondaryKekCertificatePfx"] = hvratfi.SecondaryKekCertificatePfx
+	}
+	if hvratfi.RecoveryPointID != nil {
+		objectMap["recoveryPointId"] = hvratfi.RecoveryPointID
+	}
+	if hvratfi.InstanceType != "" {
+		objectMap["instanceType"] = hvratfi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2ATestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for HyperVReplicaAzureTestFailoverInput.
+func (hvratfi HyperVReplicaAzureTestFailoverInput) AsA2ATestFailoverInput() (*A2ATestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for HyperVReplicaAzureTestFailoverInput.
+func (hvratfi HyperVReplicaAzureTestFailoverInput) AsHyperVReplicaAzureTestFailoverInput() (*HyperVReplicaAzureTestFailoverInput, bool) {
+	return &hvratfi, true
+}
+
+// AsInMageAzureV2TestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for HyperVReplicaAzureTestFailoverInput.
+func (hvratfi HyperVReplicaAzureTestFailoverInput) AsInMageAzureV2TestFailoverInput() (*InMageAzureV2TestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for HyperVReplicaAzureTestFailoverInput.
+func (hvratfi HyperVReplicaAzureTestFailoverInput) AsInMageRcmTestFailoverInput() (*InMageRcmTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for HyperVReplicaAzureTestFailoverInput.
+func (hvratfi HyperVReplicaAzureTestFailoverInput) AsInMageTestFailoverInput() (*InMageTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsTestFailoverProviderSpecificInput is the BasicTestFailoverProviderSpecificInput implementation for HyperVReplicaAzureTestFailoverInput.
+func (hvratfi HyperVReplicaAzureTestFailoverInput) AsTestFailoverProviderSpecificInput() (*TestFailoverProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicTestFailoverProviderSpecificInput is the BasicTestFailoverProviderSpecificInput implementation for HyperVReplicaAzureTestFailoverInput.
+func (hvratfi HyperVReplicaAzureTestFailoverInput) AsBasicTestFailoverProviderSpecificInput() (BasicTestFailoverProviderSpecificInput, bool) {
+	return &hvratfi, true
+}
+
+// HyperVReplicaAzureUnplannedFailoverInput hvrA provider specific input for unplanned failover.
+type HyperVReplicaAzureUnplannedFailoverInput struct {
+	// VaultLocation - Location of the vault.
+	VaultLocation *string `json:"vaultLocation,omitempty"`
+	// PrimaryKekCertificatePfx - Primary kek certificate pfx.
+	PrimaryKekCertificatePfx *string `json:"primaryKekCertificatePfx,omitempty"`
+	// SecondaryKekCertificatePfx - Secondary kek certificate pfx.
+	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
+	// RecoveryPointID - The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should be passed.
+	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeUnplannedFailoverProviderSpecificInput', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMage'
+	InstanceType InstanceTypeBasicUnplannedFailoverProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HyperVReplicaAzureUnplannedFailoverInput.
+func (hvraufi HyperVReplicaAzureUnplannedFailoverInput) MarshalJSON() ([]byte, error) {
+	hvraufi.InstanceType = InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure
+	objectMap := make(map[string]interface{})
+	if hvraufi.VaultLocation != nil {
+		objectMap["vaultLocation"] = hvraufi.VaultLocation
+	}
+	if hvraufi.PrimaryKekCertificatePfx != nil {
+		objectMap["primaryKekCertificatePfx"] = hvraufi.PrimaryKekCertificatePfx
+	}
+	if hvraufi.SecondaryKekCertificatePfx != nil {
+		objectMap["secondaryKekCertificatePfx"] = hvraufi.SecondaryKekCertificatePfx
+	}
+	if hvraufi.RecoveryPointID != nil {
+		objectMap["recoveryPointId"] = hvraufi.RecoveryPointID
+	}
+	if hvraufi.InstanceType != "" {
+		objectMap["instanceType"] = hvraufi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for HyperVReplicaAzureUnplannedFailoverInput.
+func (hvraufi HyperVReplicaAzureUnplannedFailoverInput) AsA2AUnplannedFailoverInput() (*A2AUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for HyperVReplicaAzureUnplannedFailoverInput.
+func (hvraufi HyperVReplicaAzureUnplannedFailoverInput) AsHyperVReplicaAzureUnplannedFailoverInput() (*HyperVReplicaAzureUnplannedFailoverInput, bool) {
+	return &hvraufi, true
+}
+
+// AsInMageAzureV2UnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for HyperVReplicaAzureUnplannedFailoverInput.
+func (hvraufi HyperVReplicaAzureUnplannedFailoverInput) AsInMageAzureV2UnplannedFailoverInput() (*InMageAzureV2UnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for HyperVReplicaAzureUnplannedFailoverInput.
+func (hvraufi HyperVReplicaAzureUnplannedFailoverInput) AsInMageRcmUnplannedFailoverInput() (*InMageRcmUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for HyperVReplicaAzureUnplannedFailoverInput.
+func (hvraufi HyperVReplicaAzureUnplannedFailoverInput) AsInMageUnplannedFailoverInput() (*InMageUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsUnplannedFailoverProviderSpecificInput is the BasicUnplannedFailoverProviderSpecificInput implementation for HyperVReplicaAzureUnplannedFailoverInput.
+func (hvraufi HyperVReplicaAzureUnplannedFailoverInput) AsUnplannedFailoverProviderSpecificInput() (*UnplannedFailoverProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicUnplannedFailoverProviderSpecificInput is the BasicUnplannedFailoverProviderSpecificInput implementation for HyperVReplicaAzureUnplannedFailoverInput.
+func (hvraufi HyperVReplicaAzureUnplannedFailoverInput) AsBasicUnplannedFailoverProviderSpecificInput() (BasicUnplannedFailoverProviderSpecificInput, bool) {
+	return &hvraufi, true
+}
+
 // HyperVReplicaAzureUpdateReplicationProtectedItemInput hyperV replica Azure input to update replication
 // protected item.
 type HyperVReplicaAzureUpdateReplicationProtectedItemInput struct {
@@ -6191,7 +6643,7 @@ type HyperVReplicaAzureUpdateReplicationProtectedItemInput struct {
 	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
 	// TargetAvailabilityZone - The target availability zone.
 	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicUpdateReplicationProtectedItemProviderInput `json:"instanceType,omitempty"`
 }
 
@@ -6238,6 +6690,11 @@ func (hvraurpii HyperVReplicaAzureUpdateReplicationProtectedItemInput) AsInMageA
 	return nil, false
 }
 
+// AsInMageRcmUpdateReplicationProtectedItemInput is the BasicUpdateReplicationProtectedItemProviderInput implementation for HyperVReplicaAzureUpdateReplicationProtectedItemInput.
+func (hvraurpii HyperVReplicaAzureUpdateReplicationProtectedItemInput) AsInMageRcmUpdateReplicationProtectedItemInput() (*InMageRcmUpdateReplicationProtectedItemInput, bool) {
+	return nil, false
+}
+
 // AsUpdateReplicationProtectedItemProviderInput is the BasicUpdateReplicationProtectedItemProviderInput implementation for HyperVReplicaAzureUpdateReplicationProtectedItemInput.
 func (hvraurpii HyperVReplicaAzureUpdateReplicationProtectedItemInput) AsUpdateReplicationProtectedItemProviderInput() (*UpdateReplicationProtectedItemProviderInput, bool) {
 	return nil, false
@@ -6258,7 +6715,7 @@ type HyperVReplicaBaseEventDetails struct {
 	RemoteContainerName *string `json:"remoteContainerName,omitempty"`
 	// RemoteFabricName - The remote fabric name.
 	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicEventProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -6314,6 +6771,11 @@ func (hvrbed HyperVReplicaBaseEventDetails) AsInMageAzureV2EventDetails() (*InMa
 	return nil, false
 }
 
+// AsInMageRcmEventDetails is the BasicEventProviderSpecificDetails implementation for HyperVReplicaBaseEventDetails.
+func (hvrbed HyperVReplicaBaseEventDetails) AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool) {
+	return nil, false
+}
+
 // AsEventProviderSpecificDetails is the BasicEventProviderSpecificDetails implementation for HyperVReplicaBaseEventDetails.
 func (hvrbed HyperVReplicaBaseEventDetails) AsEventProviderSpecificDetails() (*EventProviderSpecificDetails, bool) {
 	return nil, false
@@ -6346,7 +6808,7 @@ type HyperVReplicaBasePolicyDetails struct {
 	AllowedAuthenticationType *int32 `json:"allowedAuthenticationType,omitempty"`
 	// ReplicaDeletionOption - A value indicating whether the VM has to be auto deleted. Supported Values: String.Empty, None, OnRecoveryCloud
 	ReplicaDeletionOption *string `json:"replicaDeletionOption,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -6430,6 +6892,11 @@ func (hvrbpd HyperVReplicaBasePolicyDetails) AsInMagePolicyDetails() (*InMagePol
 	return nil, false
 }
 
+// AsInMageRcmPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for HyperVReplicaBasePolicyDetails.
+func (hvrbpd HyperVReplicaBasePolicyDetails) AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool) {
+	return nil, false
+}
+
 // AsRcmAzureMigrationPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for HyperVReplicaBasePolicyDetails.
 func (hvrbpd HyperVReplicaBasePolicyDetails) AsRcmAzureMigrationPolicyDetails() (*RcmAzureMigrationPolicyDetails, bool) {
 	return nil, false
@@ -6466,7 +6933,7 @@ type HyperVReplicaBaseReplicationDetails struct {
 	InitialReplicationDetails *InitialReplicationDetails `json:"initialReplicationDetails,omitempty"`
 	// VMDiskDetails - VM disk details.
 	VMDiskDetails *[]DiskDetails `json:"vMDiskDetails,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageRcm', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
 	InstanceType InstanceTypeBasicReplicationProviderSpecificSettings `json:"instanceType,omitempty"`
 }
 
@@ -6531,6 +6998,11 @@ func (hvrbrd HyperVReplicaBaseReplicationDetails) AsInMageAzureV2ReplicationDeta
 	return nil, false
 }
 
+// AsInMageRcmReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for HyperVReplicaBaseReplicationDetails.
+func (hvrbrd HyperVReplicaBaseReplicationDetails) AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool) {
+	return nil, false
+}
+
 // AsInMageReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for HyperVReplicaBaseReplicationDetails.
 func (hvrbrd HyperVReplicaBaseReplicationDetails) AsInMageReplicationDetails() (*InMageReplicationDetails, bool) {
 	return nil, false
@@ -6570,7 +7042,7 @@ type HyperVReplicaBluePolicyDetails struct {
 	AllowedAuthenticationType *int32 `json:"allowedAuthenticationType,omitempty"`
 	// ReplicaDeletionOption - A value indicating whether the VM has to be auto deleted. Supported Values: String.Empty, None, OnRecoveryCloud
 	ReplicaDeletionOption *string `json:"replicaDeletionOption,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -6657,6 +7129,11 @@ func (hvrbpd HyperVReplicaBluePolicyDetails) AsInMagePolicyDetails() (*InMagePol
 	return nil, false
 }
 
+// AsInMageRcmPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for HyperVReplicaBluePolicyDetails.
+func (hvrbpd HyperVReplicaBluePolicyDetails) AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool) {
+	return nil, false
+}
+
 // AsRcmAzureMigrationPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for HyperVReplicaBluePolicyDetails.
 func (hvrbpd HyperVReplicaBluePolicyDetails) AsRcmAzureMigrationPolicyDetails() (*RcmAzureMigrationPolicyDetails, bool) {
 	return nil, false
@@ -6701,7 +7178,7 @@ type HyperVReplicaBluePolicyInput struct {
 	AllowedAuthenticationType *int32 `json:"allowedAuthenticationType,omitempty"`
 	// ReplicaDeletion - A value indicating whether the VM has to be auto deleted.
 	ReplicaDeletion *string `json:"replicaDeletion,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -6778,6 +7255,11 @@ func (hvrbpi HyperVReplicaBluePolicyInput) AsInMagePolicyInput() (*InMagePolicyI
 	return nil, false
 }
 
+// AsInMageRcmPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for HyperVReplicaBluePolicyInput.
+func (hvrbpi HyperVReplicaBluePolicyInput) AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool) {
+	return nil, false
+}
+
 // AsVMwareCbtPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for HyperVReplicaBluePolicyInput.
 func (hvrbpi HyperVReplicaBluePolicyInput) AsVMwareCbtPolicyCreationInput() (*VMwareCbtPolicyCreationInput, bool) {
 	return nil, false
@@ -6809,7 +7291,7 @@ type HyperVReplicaBlueReplicationDetails struct {
 	InitialReplicationDetails *InitialReplicationDetails `json:"initialReplicationDetails,omitempty"`
 	// VMDiskDetails - VM disk details.
 	VMDiskDetails *[]DiskDetails `json:"vMDiskDetails,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageRcm', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
 	InstanceType InstanceTypeBasicReplicationProviderSpecificSettings `json:"instanceType,omitempty"`
 }
 
@@ -6874,6 +7356,11 @@ func (hvrbrd HyperVReplicaBlueReplicationDetails) AsInMageAzureV2ReplicationDeta
 	return nil, false
 }
 
+// AsInMageRcmReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for HyperVReplicaBlueReplicationDetails.
+func (hvrbrd HyperVReplicaBlueReplicationDetails) AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool) {
+	return nil, false
+}
+
 // AsInMageReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for HyperVReplicaBlueReplicationDetails.
 func (hvrbrd HyperVReplicaBlueReplicationDetails) AsInMageReplicationDetails() (*InMageReplicationDetails, bool) {
 	return nil, false
@@ -6911,7 +7398,7 @@ type HyperVReplicaPolicyDetails struct {
 	AllowedAuthenticationType *int32 `json:"allowedAuthenticationType,omitempty"`
 	// ReplicaDeletionOption - A value indicating whether the VM has to be auto deleted. Supported Values: String.Empty, None, OnRecoveryCloud
 	ReplicaDeletionOption *string `json:"replicaDeletionOption,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -6995,6 +7482,11 @@ func (hvrpd HyperVReplicaPolicyDetails) AsInMagePolicyDetails() (*InMagePolicyDe
 	return nil, false
 }
 
+// AsInMageRcmPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for HyperVReplicaPolicyDetails.
+func (hvrpd HyperVReplicaPolicyDetails) AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool) {
+	return nil, false
+}
+
 // AsRcmAzureMigrationPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for HyperVReplicaPolicyDetails.
 func (hvrpd HyperVReplicaPolicyDetails) AsRcmAzureMigrationPolicyDetails() (*RcmAzureMigrationPolicyDetails, bool) {
 	return nil, false
@@ -7037,7 +7529,7 @@ type HyperVReplicaPolicyInput struct {
 	AllowedAuthenticationType *int32 `json:"allowedAuthenticationType,omitempty"`
 	// ReplicaDeletion - A value indicating whether the VM has to be auto deleted.
 	ReplicaDeletion *string `json:"replicaDeletion,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -7111,6 +7603,11 @@ func (hvrpi HyperVReplicaPolicyInput) AsInMagePolicyInput() (*InMagePolicyInput,
 	return nil, false
 }
 
+// AsInMageRcmPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for HyperVReplicaPolicyInput.
+func (hvrpi HyperVReplicaPolicyInput) AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool) {
+	return nil, false
+}
+
 // AsVMwareCbtPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for HyperVReplicaPolicyInput.
 func (hvrpi HyperVReplicaPolicyInput) AsVMwareCbtPolicyCreationInput() (*VMwareCbtPolicyCreationInput, bool) {
 	return nil, false
@@ -7142,7 +7639,7 @@ type HyperVReplicaReplicationDetails struct {
 	InitialReplicationDetails *InitialReplicationDetails `json:"initialReplicationDetails,omitempty"`
 	// VMDiskDetails - VM disk details.
 	VMDiskDetails *[]DiskDetails `json:"vMDiskDetails,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageRcm', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
 	InstanceType InstanceTypeBasicReplicationProviderSpecificSettings `json:"instanceType,omitempty"`
 }
 
@@ -7207,6 +7704,11 @@ func (hvrrd HyperVReplicaReplicationDetails) AsInMageAzureV2ReplicationDetails()
 	return nil, false
 }
 
+// AsInMageRcmReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for HyperVReplicaReplicationDetails.
+func (hvrrd HyperVReplicaReplicationDetails) AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool) {
+	return nil, false
+}
+
 // AsInMageReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for HyperVReplicaReplicationDetails.
 func (hvrrd HyperVReplicaReplicationDetails) AsInMageReplicationDetails() (*InMageReplicationDetails, bool) {
 	return nil, false
@@ -7224,7 +7726,7 @@ func (hvrrd HyperVReplicaReplicationDetails) AsBasicReplicationProviderSpecificS
 
 // HyperVSiteDetails hyperVSite fabric specific details.
 type HyperVSiteDetails struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2'
 	InstanceType InstanceTypeBasicFabricSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -7246,6 +7748,11 @@ func (hvsd HyperVSiteDetails) AsAzureFabricSpecificDetails() (*AzureFabricSpecif
 // AsHyperVSiteDetails is the BasicFabricSpecificDetails implementation for HyperVSiteDetails.
 func (hvsd HyperVSiteDetails) AsHyperVSiteDetails() (*HyperVSiteDetails, bool) {
 	return &hvsd, true
+}
+
+// AsInMageRcmFabricSpecificDetails is the BasicFabricSpecificDetails implementation for HyperVSiteDetails.
+func (hvsd HyperVSiteDetails) AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool) {
+	return nil, false
 }
 
 // AsVmmDetails is the BasicFabricSpecificDetails implementation for HyperVSiteDetails.
@@ -7283,11 +7790,11 @@ type HyperVVirtualMachineDetails struct {
 	OsDetails *OSDetails `json:"osDetails,omitempty"`
 	// DiskDetails - The Last successful failover time.
 	DiskDetails *[]DiskDetails `json:"diskDetails,omitempty"`
-	// HasPhysicalDisk - A value indicating whether the VM has a physical disk attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'Unknown', 'Present', 'NotPresent'
+	// HasPhysicalDisk - A value indicating whether the VM has a physical disk attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'PresenceStatusUnknown', 'PresenceStatusPresent', 'PresenceStatusNotPresent'
 	HasPhysicalDisk PresenceStatus `json:"hasPhysicalDisk,omitempty"`
-	// HasFibreChannelAdapter - A value indicating whether the VM has a fibre channel adapter attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'Unknown', 'Present', 'NotPresent'
+	// HasFibreChannelAdapter - A value indicating whether the VM has a fibre channel adapter attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'PresenceStatusUnknown', 'PresenceStatusPresent', 'PresenceStatusNotPresent'
 	HasFibreChannelAdapter PresenceStatus `json:"hasFibreChannelAdapter,omitempty"`
-	// HasSharedVhd - A value indicating whether the VM has a shared VHD attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'Unknown', 'Present', 'NotPresent'
+	// HasSharedVhd - A value indicating whether the VM has a shared VHD attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'PresenceStatusUnknown', 'PresenceStatusPresent', 'PresenceStatusNotPresent'
 	HasSharedVhd PresenceStatus `json:"hasSharedVhd,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeConfigurationSettings', 'InstanceTypeHyperVVirtualMachine', 'InstanceTypeReplicationGroupDetails', 'InstanceTypeVmmVirtualMachine', 'InstanceTypeVMwareVirtualMachine'
 	InstanceType InstanceTypeBasicConfigurationSettings `json:"instanceType,omitempty"`
@@ -7482,7 +7989,7 @@ type InMageAgentVersionDetails struct {
 type InMageAzureV2ApplyRecoveryPointInput struct {
 	// VaultLocation - The vault location where the recovery Vm resides.
 	VaultLocation *string `json:"vaultLocation,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeApplyRecoveryPointProviderSpecificInput', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeApplyRecoveryPointProviderSpecificInput', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicApplyRecoveryPointProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -7512,6 +8019,11 @@ func (imavarpi InMageAzureV2ApplyRecoveryPointInput) AsHyperVReplicaAzureApplyRe
 // AsInMageAzureV2ApplyRecoveryPointInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for InMageAzureV2ApplyRecoveryPointInput.
 func (imavarpi InMageAzureV2ApplyRecoveryPointInput) AsInMageAzureV2ApplyRecoveryPointInput() (*InMageAzureV2ApplyRecoveryPointInput, bool) {
 	return &imavarpi, true
+}
+
+// AsInMageRcmApplyRecoveryPointInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for InMageAzureV2ApplyRecoveryPointInput.
+func (imavarpi InMageAzureV2ApplyRecoveryPointInput) AsInMageRcmApplyRecoveryPointInput() (*InMageRcmApplyRecoveryPointInput, bool) {
+	return nil, false
 }
 
 // AsApplyRecoveryPointProviderSpecificInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for InMageAzureV2ApplyRecoveryPointInput.
@@ -7574,7 +8086,7 @@ type InMageAzureV2EnableProtectionInput struct {
 	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
 	// TargetProximityPlacementGroupID - The proximity placement group ARM Id.
 	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
+	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
 	InstanceType InstanceTypeBasicEnableProtectionProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -7662,6 +8174,11 @@ func (imavepi InMageAzureV2EnableProtectionInput) AsInMageEnableProtectionInput(
 	return nil, false
 }
 
+// AsInMageRcmEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for InMageAzureV2EnableProtectionInput.
+func (imavepi InMageAzureV2EnableProtectionInput) AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool) {
+	return nil, false
+}
+
 // AsSanEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for InMageAzureV2EnableProtectionInput.
 func (imavepi InMageAzureV2EnableProtectionInput) AsSanEnableProtectionInput() (*SanEnableProtectionInput, bool) {
 	return nil, false
@@ -7693,7 +8210,7 @@ type InMageAzureV2EventDetails struct {
 	Summary *string `json:"summary,omitempty"`
 	// SiteName - VMware Site name.
 	SiteName *string `json:"siteName,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicEventProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -7756,6 +8273,11 @@ func (imaved InMageAzureV2EventDetails) AsHyperVReplicaBaseEventDetails() (*Hype
 // AsInMageAzureV2EventDetails is the BasicEventProviderSpecificDetails implementation for InMageAzureV2EventDetails.
 func (imaved InMageAzureV2EventDetails) AsInMageAzureV2EventDetails() (*InMageAzureV2EventDetails, bool) {
 	return &imaved, true
+}
+
+// AsInMageRcmEventDetails is the BasicEventProviderSpecificDetails implementation for InMageAzureV2EventDetails.
+func (imaved InMageAzureV2EventDetails) AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool) {
+	return nil, false
 }
 
 // AsEventProviderSpecificDetails is the BasicEventProviderSpecificDetails implementation for InMageAzureV2EventDetails.
@@ -7851,7 +8373,7 @@ type InMageAzureV2PolicyDetails struct {
 	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
 	// MultiVMSyncStatus - A value indicating whether multi-VM sync has to be enabled.
 	MultiVMSyncStatus *string `json:"multiVmSyncStatus,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -7920,6 +8442,11 @@ func (imavpd InMageAzureV2PolicyDetails) AsInMagePolicyDetails() (*InMagePolicyD
 	return nil, false
 }
 
+// AsInMageRcmPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageAzureV2PolicyDetails.
+func (imavpd InMageAzureV2PolicyDetails) AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool) {
+	return nil, false
+}
+
 // AsRcmAzureMigrationPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageAzureV2PolicyDetails.
 func (imavpd InMageAzureV2PolicyDetails) AsRcmAzureMigrationPolicyDetails() (*RcmAzureMigrationPolicyDetails, bool) {
 	return nil, false
@@ -7952,7 +8479,7 @@ type InMageAzureV2PolicyInput struct {
 	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
 	// MultiVMSyncStatus - A value indicating whether multi-VM sync has to be enabled. Value should be 'Enabled' or 'Disabled'. Possible values include: 'Enable', 'Disable'
 	MultiVMSyncStatus SetMultiVMSyncStatus `json:"multiVmSyncStatus,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -8011,6 +8538,11 @@ func (imavpi InMageAzureV2PolicyInput) AsInMagePolicyInput() (*InMagePolicyInput
 	return nil, false
 }
 
+// AsInMageRcmPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for InMageAzureV2PolicyInput.
+func (imavpi InMageAzureV2PolicyInput) AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool) {
+	return nil, false
+}
+
 // AsVMwareCbtPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for InMageAzureV2PolicyInput.
 func (imavpi InMageAzureV2PolicyInput) AsVMwareCbtPolicyCreationInput() (*VMwareCbtPolicyCreationInput, bool) {
 	return nil, false
@@ -8064,7 +8596,7 @@ type InMageAzureV2ProtectedDiskDetails struct {
 type InMageAzureV2RecoveryPointDetails struct {
 	// IsMultiVMSyncPoint - A value indicating whether the recovery point is multi VM consistent.
 	IsMultiVMSyncPoint *string `json:"isMultiVmSyncPoint,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeProviderSpecificRecoveryPointDetails', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeA2A', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeProviderSpecificRecoveryPointDetails', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeA2A', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicProviderSpecificRecoveryPointDetails `json:"instanceType,omitempty"`
 }
 
@@ -8089,6 +8621,11 @@ func (imavrpd InMageAzureV2RecoveryPointDetails) AsA2ARecoveryPointDetails() (*A
 // AsInMageAzureV2RecoveryPointDetails is the BasicProviderSpecificRecoveryPointDetails implementation for InMageAzureV2RecoveryPointDetails.
 func (imavrpd InMageAzureV2RecoveryPointDetails) AsInMageAzureV2RecoveryPointDetails() (*InMageAzureV2RecoveryPointDetails, bool) {
 	return &imavrpd, true
+}
+
+// AsInMageRcmRecoveryPointDetails is the BasicProviderSpecificRecoveryPointDetails implementation for InMageAzureV2RecoveryPointDetails.
+func (imavrpd InMageAzureV2RecoveryPointDetails) AsInMageRcmRecoveryPointDetails() (*InMageRcmRecoveryPointDetails, bool) {
+	return nil, false
 }
 
 // AsProviderSpecificRecoveryPointDetails is the BasicProviderSpecificRecoveryPointDetails implementation for InMageAzureV2RecoveryPointDetails.
@@ -8211,7 +8748,7 @@ type InMageAzureV2ReplicationDetails struct {
 	OsVersion *string `json:"osVersion,omitempty"`
 	// ProtectedManagedDisks - The list of protected managed disks.
 	ProtectedManagedDisks *[]InMageAzureV2ManagedDiskDetails `json:"protectedManagedDisks,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageRcm', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
 	InstanceType InstanceTypeBasicReplicationProviderSpecificSettings `json:"instanceType,omitempty"`
 }
 
@@ -8414,6 +8951,11 @@ func (imavrd InMageAzureV2ReplicationDetails) AsInMageAzureV2ReplicationDetails(
 	return &imavrd, true
 }
 
+// AsInMageRcmReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for InMageAzureV2ReplicationDetails.
+func (imavrd InMageAzureV2ReplicationDetails) AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool) {
+	return nil, false
+}
+
 // AsInMageReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for InMageAzureV2ReplicationDetails.
 func (imavrd InMageAzureV2ReplicationDetails) AsInMageReplicationDetails() (*InMageReplicationDetails, bool) {
 	return nil, false
@@ -8510,6 +9052,128 @@ func (imavri InMageAzureV2ReprotectInput) AsBasicReverseReplicationProviderSpeci
 	return &imavri, true
 }
 
+// InMageAzureV2TestFailoverInput inMageAzureV2 provider specific input for test failover.
+type InMageAzureV2TestFailoverInput struct {
+	// VaultLocation - Location of the vault.
+	VaultLocation *string `json:"vaultLocation,omitempty"`
+	// RecoveryPointID - The recovery point id to be passed to test failover to a particular recovery point. In case of latest recovery point, null should be passed.
+	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeTestFailoverProviderSpecificInput', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMage'
+	InstanceType InstanceTypeBasicTestFailoverProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageAzureV2TestFailoverInput.
+func (imavtfi InMageAzureV2TestFailoverInput) MarshalJSON() ([]byte, error) {
+	imavtfi.InstanceType = InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageAzureV2
+	objectMap := make(map[string]interface{})
+	if imavtfi.VaultLocation != nil {
+		objectMap["vaultLocation"] = imavtfi.VaultLocation
+	}
+	if imavtfi.RecoveryPointID != nil {
+		objectMap["recoveryPointId"] = imavtfi.RecoveryPointID
+	}
+	if imavtfi.InstanceType != "" {
+		objectMap["instanceType"] = imavtfi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2ATestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageAzureV2TestFailoverInput.
+func (imavtfi InMageAzureV2TestFailoverInput) AsA2ATestFailoverInput() (*A2ATestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageAzureV2TestFailoverInput.
+func (imavtfi InMageAzureV2TestFailoverInput) AsHyperVReplicaAzureTestFailoverInput() (*HyperVReplicaAzureTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2TestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageAzureV2TestFailoverInput.
+func (imavtfi InMageAzureV2TestFailoverInput) AsInMageAzureV2TestFailoverInput() (*InMageAzureV2TestFailoverInput, bool) {
+	return &imavtfi, true
+}
+
+// AsInMageRcmTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageAzureV2TestFailoverInput.
+func (imavtfi InMageAzureV2TestFailoverInput) AsInMageRcmTestFailoverInput() (*InMageRcmTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageAzureV2TestFailoverInput.
+func (imavtfi InMageAzureV2TestFailoverInput) AsInMageTestFailoverInput() (*InMageTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsTestFailoverProviderSpecificInput is the BasicTestFailoverProviderSpecificInput implementation for InMageAzureV2TestFailoverInput.
+func (imavtfi InMageAzureV2TestFailoverInput) AsTestFailoverProviderSpecificInput() (*TestFailoverProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicTestFailoverProviderSpecificInput is the BasicTestFailoverProviderSpecificInput implementation for InMageAzureV2TestFailoverInput.
+func (imavtfi InMageAzureV2TestFailoverInput) AsBasicTestFailoverProviderSpecificInput() (BasicTestFailoverProviderSpecificInput, bool) {
+	return &imavtfi, true
+}
+
+// InMageAzureV2UnplannedFailoverInput inMageAzureV2 provider specific input for unplanned failover.
+type InMageAzureV2UnplannedFailoverInput struct {
+	// VaultLocation - Location of the vault.
+	VaultLocation *string `json:"vaultLocation,omitempty"`
+	// RecoveryPointID - The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should be passed.
+	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeUnplannedFailoverProviderSpecificInput', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMage'
+	InstanceType InstanceTypeBasicUnplannedFailoverProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageAzureV2UnplannedFailoverInput.
+func (imavufi InMageAzureV2UnplannedFailoverInput) MarshalJSON() ([]byte, error) {
+	imavufi.InstanceType = InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageAzureV2
+	objectMap := make(map[string]interface{})
+	if imavufi.VaultLocation != nil {
+		objectMap["vaultLocation"] = imavufi.VaultLocation
+	}
+	if imavufi.RecoveryPointID != nil {
+		objectMap["recoveryPointId"] = imavufi.RecoveryPointID
+	}
+	if imavufi.InstanceType != "" {
+		objectMap["instanceType"] = imavufi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageAzureV2UnplannedFailoverInput.
+func (imavufi InMageAzureV2UnplannedFailoverInput) AsA2AUnplannedFailoverInput() (*A2AUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageAzureV2UnplannedFailoverInput.
+func (imavufi InMageAzureV2UnplannedFailoverInput) AsHyperVReplicaAzureUnplannedFailoverInput() (*HyperVReplicaAzureUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2UnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageAzureV2UnplannedFailoverInput.
+func (imavufi InMageAzureV2UnplannedFailoverInput) AsInMageAzureV2UnplannedFailoverInput() (*InMageAzureV2UnplannedFailoverInput, bool) {
+	return &imavufi, true
+}
+
+// AsInMageRcmUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageAzureV2UnplannedFailoverInput.
+func (imavufi InMageAzureV2UnplannedFailoverInput) AsInMageRcmUnplannedFailoverInput() (*InMageRcmUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageAzureV2UnplannedFailoverInput.
+func (imavufi InMageAzureV2UnplannedFailoverInput) AsInMageUnplannedFailoverInput() (*InMageUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsUnplannedFailoverProviderSpecificInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageAzureV2UnplannedFailoverInput.
+func (imavufi InMageAzureV2UnplannedFailoverInput) AsUnplannedFailoverProviderSpecificInput() (*UnplannedFailoverProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicUnplannedFailoverProviderSpecificInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageAzureV2UnplannedFailoverInput.
+func (imavufi InMageAzureV2UnplannedFailoverInput) AsBasicUnplannedFailoverProviderSpecificInput() (BasicUnplannedFailoverProviderSpecificInput, bool) {
+	return &imavufi, true
+}
+
 // InMageAzureV2UpdateReplicationProtectedItemInput inMage Azure V2 input to update replication protected item.
 type InMageAzureV2UpdateReplicationProtectedItemInput struct {
 	// RecoveryAzureV1ResourceGroupID - The recovery Azure resource group Id for classic deployment.
@@ -8522,7 +9186,7 @@ type InMageAzureV2UpdateReplicationProtectedItemInput struct {
 	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
 	// TargetAvailabilityZone - The target availability zone.
 	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicUpdateReplicationProtectedItemProviderInput `json:"instanceType,omitempty"`
 }
 
@@ -8566,6 +9230,11 @@ func (imavurpii InMageAzureV2UpdateReplicationProtectedItemInput) AsInMageAzureV
 	return &imavurpii, true
 }
 
+// AsInMageRcmUpdateReplicationProtectedItemInput is the BasicUpdateReplicationProtectedItemProviderInput implementation for InMageAzureV2UpdateReplicationProtectedItemInput.
+func (imavurpii InMageAzureV2UpdateReplicationProtectedItemInput) AsInMageRcmUpdateReplicationProtectedItemInput() (*InMageRcmUpdateReplicationProtectedItemInput, bool) {
+	return nil, false
+}
+
 // AsUpdateReplicationProtectedItemProviderInput is the BasicUpdateReplicationProtectedItemProviderInput implementation for InMageAzureV2UpdateReplicationProtectedItemInput.
 func (imavurpii InMageAzureV2UpdateReplicationProtectedItemInput) AsUpdateReplicationProtectedItemProviderInput() (*UpdateReplicationProtectedItemProviderInput, bool) {
 	return nil, false
@@ -8586,7 +9255,7 @@ type InMageBasePolicyDetails struct {
 	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
 	// MultiVMSyncStatus - A value indicating whether multi-VM sync has to be enabled.
 	MultiVMSyncStatus *string `json:"multiVmSyncStatus,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -8649,6 +9318,11 @@ func (imbpd InMageBasePolicyDetails) AsInMageBasePolicyDetails() (*InMageBasePol
 
 // AsInMagePolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageBasePolicyDetails.
 func (imbpd InMageBasePolicyDetails) AsInMagePolicyDetails() (*InMagePolicyDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageBasePolicyDetails.
+func (imbpd InMageBasePolicyDetails) AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool) {
 	return nil, false
 }
 
@@ -8762,7 +9436,7 @@ type InMageEnableProtectionInput struct {
 	DiskExclusionInput *InMageDiskExclusionInput `json:"diskExclusionInput,omitempty"`
 	// DisksToInclude - The disks to include list.
 	DisksToInclude *[]string `json:"disksToInclude,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
+	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
 	InstanceType InstanceTypeBasicEnableProtectionProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -8824,6 +9498,11 @@ func (imepi InMageEnableProtectionInput) AsInMageAzureV2EnableProtectionInput() 
 // AsInMageEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for InMageEnableProtectionInput.
 func (imepi InMageEnableProtectionInput) AsInMageEnableProtectionInput() (*InMageEnableProtectionInput, bool) {
 	return &imepi, true
+}
+
+// AsInMageRcmEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for InMageEnableProtectionInput.
+func (imepi InMageEnableProtectionInput) AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool) {
+	return nil, false
 }
 
 // AsSanEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for InMageEnableProtectionInput.
@@ -8912,7 +9591,7 @@ type InMagePolicyDetails struct {
 	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
 	// MultiVMSyncStatus - A value indicating whether multi-VM sync has to be enabled.
 	MultiVMSyncStatus *string `json:"multiVmSyncStatus,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -8978,6 +9657,11 @@ func (impd InMagePolicyDetails) AsInMagePolicyDetails() (*InMagePolicyDetails, b
 	return &impd, true
 }
 
+// AsInMageRcmPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMagePolicyDetails.
+func (impd InMagePolicyDetails) AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool) {
+	return nil, false
+}
+
 // AsRcmAzureMigrationPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMagePolicyDetails.
 func (impd InMagePolicyDetails) AsRcmAzureMigrationPolicyDetails() (*RcmAzureMigrationPolicyDetails, bool) {
 	return nil, false
@@ -9008,7 +9692,7 @@ type InMagePolicyInput struct {
 	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
 	// MultiVMSyncStatus - A value indicating whether multi-VM sync has to be enabled. Value should be 'Enabled' or 'Disabled'. Possible values include: 'Enable', 'Disable'
 	MultiVMSyncStatus SetMultiVMSyncStatus `json:"multiVmSyncStatus,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -9064,6 +9748,11 @@ func (impi InMagePolicyInput) AsInMagePolicyInput() (*InMagePolicyInput, bool) {
 	return &impi, true
 }
 
+// AsInMageRcmPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for InMagePolicyInput.
+func (impi InMagePolicyInput) AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool) {
+	return nil, false
+}
+
 // AsVMwareCbtPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for InMagePolicyInput.
 func (impi InMagePolicyInput) AsVMwareCbtPolicyCreationInput() (*VMwareCbtPolicyCreationInput, bool) {
 	return nil, false
@@ -9111,6 +9800,1165 @@ type InMageProtectedDiskDetails struct {
 	DiskResized *string `json:"diskResized,omitempty"`
 	// LastRpoCalculatedTime - The last RPO calculated time.
 	LastRpoCalculatedTime *date.Time `json:"lastRpoCalculatedTime,omitempty"`
+}
+
+// InMageRcmAgentUpgradeBlockingErrorDetails inMageRcm source agent upgrade blocking error details.
+type InMageRcmAgentUpgradeBlockingErrorDetails struct {
+	// ErrorCode - READ-ONLY; The error code.
+	ErrorCode *string `json:"errorCode,omitempty"`
+	// ErrorMessage - READ-ONLY; The error message.
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+	// PossibleCauses - READ-ONLY; The possible causes.
+	PossibleCauses *string `json:"possibleCauses,omitempty"`
+	// RecommendedAction - READ-ONLY; The recommended action.
+	RecommendedAction *string `json:"recommendedAction,omitempty"`
+	// ErrorMessageParameters - READ-ONLY; The error message parameters.
+	ErrorMessageParameters map[string]*string `json:"errorMessageParameters"`
+	// ErrorTags - READ-ONLY; The error tags.
+	ErrorTags map[string]*string `json:"errorTags"`
+}
+
+// MarshalJSON is the custom marshaler for InMageRcmAgentUpgradeBlockingErrorDetails.
+func (imraubed InMageRcmAgentUpgradeBlockingErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// InMageRcmApplyRecoveryPointInput applyRecoveryPoint input specific to InMageRcm provider.
+type InMageRcmApplyRecoveryPointInput struct {
+	// RecoveryPointID - The recovery point Id.
+	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeApplyRecoveryPointProviderSpecificInput', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageRcm'
+	InstanceType InstanceTypeBasicApplyRecoveryPointProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageRcmApplyRecoveryPointInput.
+func (imrarpi InMageRcmApplyRecoveryPointInput) MarshalJSON() ([]byte, error) {
+	imrarpi.InstanceType = InstanceTypeBasicApplyRecoveryPointProviderSpecificInputInstanceTypeInMageRcm
+	objectMap := make(map[string]interface{})
+	if imrarpi.RecoveryPointID != nil {
+		objectMap["recoveryPointId"] = imrarpi.RecoveryPointID
+	}
+	if imrarpi.InstanceType != "" {
+		objectMap["instanceType"] = imrarpi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AApplyRecoveryPointInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for InMageRcmApplyRecoveryPointInput.
+func (imrarpi InMageRcmApplyRecoveryPointInput) AsA2AApplyRecoveryPointInput() (*A2AApplyRecoveryPointInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureApplyRecoveryPointInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for InMageRcmApplyRecoveryPointInput.
+func (imrarpi InMageRcmApplyRecoveryPointInput) AsHyperVReplicaAzureApplyRecoveryPointInput() (*HyperVReplicaAzureApplyRecoveryPointInput, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2ApplyRecoveryPointInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for InMageRcmApplyRecoveryPointInput.
+func (imrarpi InMageRcmApplyRecoveryPointInput) AsInMageAzureV2ApplyRecoveryPointInput() (*InMageAzureV2ApplyRecoveryPointInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmApplyRecoveryPointInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for InMageRcmApplyRecoveryPointInput.
+func (imrarpi InMageRcmApplyRecoveryPointInput) AsInMageRcmApplyRecoveryPointInput() (*InMageRcmApplyRecoveryPointInput, bool) {
+	return &imrarpi, true
+}
+
+// AsApplyRecoveryPointProviderSpecificInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for InMageRcmApplyRecoveryPointInput.
+func (imrarpi InMageRcmApplyRecoveryPointInput) AsApplyRecoveryPointProviderSpecificInput() (*ApplyRecoveryPointProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicApplyRecoveryPointProviderSpecificInput is the BasicApplyRecoveryPointProviderSpecificInput implementation for InMageRcmApplyRecoveryPointInput.
+func (imrarpi InMageRcmApplyRecoveryPointInput) AsBasicApplyRecoveryPointProviderSpecificInput() (BasicApplyRecoveryPointProviderSpecificInput, bool) {
+	return &imrarpi, true
+}
+
+// InMageRcmDiskInput inMageRcm disk input.
+type InMageRcmDiskInput struct {
+	// DiskID - The disk Id.
+	DiskID *string `json:"diskId,omitempty"`
+	// LogStorageAccountID - The log storage account ARM Id.
+	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	// DiskType - The disk type. Possible values include: 'StandardLRS', 'PremiumLRS', 'StandardSSDLRS'
+	DiskType DiskAccountType `json:"diskType,omitempty"`
+	// DiskEncryptionSetID - The disk encryption set ARM Id.
+	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+}
+
+// InMageRcmDisksDefaultInput inMageRcm disk input.
+type InMageRcmDisksDefaultInput struct {
+	// LogStorageAccountID - The log storage account ARM Id.
+	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	// DiskType - The disk type. Possible values include: 'StandardLRS', 'PremiumLRS', 'StandardSSDLRS'
+	DiskType DiskAccountType `json:"diskType,omitempty"`
+	// DiskEncryptionSetID - The disk encryption set ARM Id.
+	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+}
+
+// InMageRcmEnableProtectionInput inMageRcm specific enable protection input.
+type InMageRcmEnableProtectionInput struct {
+	// FabricDiscoveryMachineID - The ARM Id of discovered machine.
+	FabricDiscoveryMachineID *string `json:"fabricDiscoveryMachineId,omitempty"`
+	// DisksToInclude - The disks to include list.
+	DisksToInclude *[]InMageRcmDiskInput `json:"disksToInclude,omitempty"`
+	// DisksDefault - The default disk input.
+	DisksDefault *InMageRcmDisksDefaultInput `json:"disksDefault,omitempty"`
+	// TargetResourceGroupID - The target resource group ARM Id.
+	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+	// TargetNetworkID - The selected target network ARM Id.
+	TargetNetworkID *string `json:"targetNetworkId,omitempty"`
+	// TestNetworkID - The selected test network ARM Id.
+	TestNetworkID *string `json:"testNetworkId,omitempty"`
+	// TargetSubnetName - The selected target subnet name.
+	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
+	// TestSubnetName - The selected test subnet name.
+	TestSubnetName *string `json:"testSubnetName,omitempty"`
+	// TargetVMName - The target VM name.
+	TargetVMName *string `json:"targetVmName,omitempty"`
+	// TargetVMSize - The target VM size.
+	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	// LicenseType - The license type. Possible values include: 'LicenseTypeNotSpecified', 'LicenseTypeNoLicenseType', 'LicenseTypeWindowsServer'
+	LicenseType LicenseType `json:"licenseType,omitempty"`
+	// TargetAvailabilitySetID - The target availability set ARM Id.
+	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	// TargetAvailabilityZone - The target availability zone.
+	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	// TargetProximityPlacementGroupID - The target proximity placement group Id.
+	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	// TargetBootDiagnosticsStorageAccountID - The target boot diagnostics storage account ARM Id.
+	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
+	// RunAsAccountID - The run-as account Id.
+	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+	// ProcessServerID - The process server Id.
+	ProcessServerID *string `json:"processServerId,omitempty"`
+	// MultiVMGroupName - The multi VM group name.
+	MultiVMGroupName *string `json:"multiVmGroupName,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
+	InstanceType InstanceTypeBasicEnableProtectionProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageRcmEnableProtectionInput.
+func (imrepi InMageRcmEnableProtectionInput) MarshalJSON() ([]byte, error) {
+	imrepi.InstanceType = InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageRcm
+	objectMap := make(map[string]interface{})
+	if imrepi.FabricDiscoveryMachineID != nil {
+		objectMap["fabricDiscoveryMachineId"] = imrepi.FabricDiscoveryMachineID
+	}
+	if imrepi.DisksToInclude != nil {
+		objectMap["disksToInclude"] = imrepi.DisksToInclude
+	}
+	if imrepi.DisksDefault != nil {
+		objectMap["disksDefault"] = imrepi.DisksDefault
+	}
+	if imrepi.TargetResourceGroupID != nil {
+		objectMap["targetResourceGroupId"] = imrepi.TargetResourceGroupID
+	}
+	if imrepi.TargetNetworkID != nil {
+		objectMap["targetNetworkId"] = imrepi.TargetNetworkID
+	}
+	if imrepi.TestNetworkID != nil {
+		objectMap["testNetworkId"] = imrepi.TestNetworkID
+	}
+	if imrepi.TargetSubnetName != nil {
+		objectMap["targetSubnetName"] = imrepi.TargetSubnetName
+	}
+	if imrepi.TestSubnetName != nil {
+		objectMap["testSubnetName"] = imrepi.TestSubnetName
+	}
+	if imrepi.TargetVMName != nil {
+		objectMap["targetVmName"] = imrepi.TargetVMName
+	}
+	if imrepi.TargetVMSize != nil {
+		objectMap["targetVmSize"] = imrepi.TargetVMSize
+	}
+	if imrepi.LicenseType != "" {
+		objectMap["licenseType"] = imrepi.LicenseType
+	}
+	if imrepi.TargetAvailabilitySetID != nil {
+		objectMap["targetAvailabilitySetId"] = imrepi.TargetAvailabilitySetID
+	}
+	if imrepi.TargetAvailabilityZone != nil {
+		objectMap["targetAvailabilityZone"] = imrepi.TargetAvailabilityZone
+	}
+	if imrepi.TargetProximityPlacementGroupID != nil {
+		objectMap["targetProximityPlacementGroupId"] = imrepi.TargetProximityPlacementGroupID
+	}
+	if imrepi.TargetBootDiagnosticsStorageAccountID != nil {
+		objectMap["targetBootDiagnosticsStorageAccountId"] = imrepi.TargetBootDiagnosticsStorageAccountID
+	}
+	if imrepi.RunAsAccountID != nil {
+		objectMap["runAsAccountId"] = imrepi.RunAsAccountID
+	}
+	if imrepi.ProcessServerID != nil {
+		objectMap["processServerId"] = imrepi.ProcessServerID
+	}
+	if imrepi.MultiVMGroupName != nil {
+		objectMap["multiVmGroupName"] = imrepi.MultiVMGroupName
+	}
+	if imrepi.InstanceType != "" {
+		objectMap["instanceType"] = imrepi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for InMageRcmEnableProtectionInput.
+func (imrepi InMageRcmEnableProtectionInput) AsA2AEnableProtectionInput() (*A2AEnableProtectionInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for InMageRcmEnableProtectionInput.
+func (imrepi InMageRcmEnableProtectionInput) AsHyperVReplicaAzureEnableProtectionInput() (*HyperVReplicaAzureEnableProtectionInput, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2EnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for InMageRcmEnableProtectionInput.
+func (imrepi InMageRcmEnableProtectionInput) AsInMageAzureV2EnableProtectionInput() (*InMageAzureV2EnableProtectionInput, bool) {
+	return nil, false
+}
+
+// AsInMageEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for InMageRcmEnableProtectionInput.
+func (imrepi InMageRcmEnableProtectionInput) AsInMageEnableProtectionInput() (*InMageEnableProtectionInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for InMageRcmEnableProtectionInput.
+func (imrepi InMageRcmEnableProtectionInput) AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool) {
+	return &imrepi, true
+}
+
+// AsSanEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for InMageRcmEnableProtectionInput.
+func (imrepi InMageRcmEnableProtectionInput) AsSanEnableProtectionInput() (*SanEnableProtectionInput, bool) {
+	return nil, false
+}
+
+// AsEnableProtectionProviderSpecificInput is the BasicEnableProtectionProviderSpecificInput implementation for InMageRcmEnableProtectionInput.
+func (imrepi InMageRcmEnableProtectionInput) AsEnableProtectionProviderSpecificInput() (*EnableProtectionProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicEnableProtectionProviderSpecificInput is the BasicEnableProtectionProviderSpecificInput implementation for InMageRcmEnableProtectionInput.
+func (imrepi InMageRcmEnableProtectionInput) AsBasicEnableProtectionProviderSpecificInput() (BasicEnableProtectionProviderSpecificInput, bool) {
+	return &imrepi, true
+}
+
+// InMageRcmEventDetails event details for InMageRcm provider.
+type InMageRcmEventDetails struct {
+	// ProtectedItemName - READ-ONLY; The protected item name.
+	ProtectedItemName *string `json:"protectedItemName,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeEventProviderSpecificDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeHyperVReplicaBaseEventDetails', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageRcm'
+	InstanceType InstanceTypeBasicEventProviderSpecificDetails `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageRcmEventDetails.
+func (imred InMageRcmEventDetails) MarshalJSON() ([]byte, error) {
+	imred.InstanceType = InstanceTypeBasicEventProviderSpecificDetailsInstanceTypeInMageRcm
+	objectMap := make(map[string]interface{})
+	if imred.InstanceType != "" {
+		objectMap["instanceType"] = imred.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AEventDetails is the BasicEventProviderSpecificDetails implementation for InMageRcmEventDetails.
+func (imred InMageRcmEventDetails) AsA2AEventDetails() (*A2AEventDetails, bool) {
+	return nil, false
+}
+
+// AsHyperVReplica2012EventDetails is the BasicEventProviderSpecificDetails implementation for InMageRcmEventDetails.
+func (imred InMageRcmEventDetails) AsHyperVReplica2012EventDetails() (*HyperVReplica2012EventDetails, bool) {
+	return nil, false
+}
+
+// AsHyperVReplica2012R2EventDetails is the BasicEventProviderSpecificDetails implementation for InMageRcmEventDetails.
+func (imred InMageRcmEventDetails) AsHyperVReplica2012R2EventDetails() (*HyperVReplica2012R2EventDetails, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureEventDetails is the BasicEventProviderSpecificDetails implementation for InMageRcmEventDetails.
+func (imred InMageRcmEventDetails) AsHyperVReplicaAzureEventDetails() (*HyperVReplicaAzureEventDetails, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaBaseEventDetails is the BasicEventProviderSpecificDetails implementation for InMageRcmEventDetails.
+func (imred InMageRcmEventDetails) AsHyperVReplicaBaseEventDetails() (*HyperVReplicaBaseEventDetails, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2EventDetails is the BasicEventProviderSpecificDetails implementation for InMageRcmEventDetails.
+func (imred InMageRcmEventDetails) AsInMageAzureV2EventDetails() (*InMageAzureV2EventDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmEventDetails is the BasicEventProviderSpecificDetails implementation for InMageRcmEventDetails.
+func (imred InMageRcmEventDetails) AsInMageRcmEventDetails() (*InMageRcmEventDetails, bool) {
+	return &imred, true
+}
+
+// AsEventProviderSpecificDetails is the BasicEventProviderSpecificDetails implementation for InMageRcmEventDetails.
+func (imred InMageRcmEventDetails) AsEventProviderSpecificDetails() (*EventProviderSpecificDetails, bool) {
+	return nil, false
+}
+
+// AsBasicEventProviderSpecificDetails is the BasicEventProviderSpecificDetails implementation for InMageRcmEventDetails.
+func (imred InMageRcmEventDetails) AsBasicEventProviderSpecificDetails() (BasicEventProviderSpecificDetails, bool) {
+	return &imred, true
+}
+
+// InMageRcmFabricCreationInput inMageRcm fabric provider specific settings.
+type InMageRcmFabricCreationInput struct {
+	// VmwareSiteID - The ARM Id of the VMware site.
+	VmwareSiteID *string `json:"vmwareSiteId,omitempty"`
+	// PhysicalSiteID - The ARM Id of the physical site.
+	PhysicalSiteID *string `json:"physicalSiteId,omitempty"`
+	// SourceAgentIdentity - The identity provider input for source agent authentication.
+	SourceAgentIdentity *IdentityProviderInput `json:"sourceAgentIdentity,omitempty"`
+	// AuthCertificate - The certificate to be used for AAD authentication.
+	AuthCertificate *string `json:"authCertificate,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeFabricSpecificCreationInput', 'InstanceTypeAzure', 'InstanceTypeInMageRcm', 'InstanceTypeVMwareV2'
+	InstanceType InstanceTypeBasicFabricSpecificCreationInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageRcmFabricCreationInput.
+func (imrfci InMageRcmFabricCreationInput) MarshalJSON() ([]byte, error) {
+	imrfci.InstanceType = InstanceTypeInMageRcm
+	objectMap := make(map[string]interface{})
+	if imrfci.VmwareSiteID != nil {
+		objectMap["vmwareSiteId"] = imrfci.VmwareSiteID
+	}
+	if imrfci.PhysicalSiteID != nil {
+		objectMap["physicalSiteId"] = imrfci.PhysicalSiteID
+	}
+	if imrfci.SourceAgentIdentity != nil {
+		objectMap["sourceAgentIdentity"] = imrfci.SourceAgentIdentity
+	}
+	if imrfci.AuthCertificate != nil {
+		objectMap["authCertificate"] = imrfci.AuthCertificate
+	}
+	if imrfci.InstanceType != "" {
+		objectMap["instanceType"] = imrfci.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAzureFabricCreationInput is the BasicFabricSpecificCreationInput implementation for InMageRcmFabricCreationInput.
+func (imrfci InMageRcmFabricCreationInput) AsAzureFabricCreationInput() (*AzureFabricCreationInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmFabricCreationInput is the BasicFabricSpecificCreationInput implementation for InMageRcmFabricCreationInput.
+func (imrfci InMageRcmFabricCreationInput) AsInMageRcmFabricCreationInput() (*InMageRcmFabricCreationInput, bool) {
+	return &imrfci, true
+}
+
+// AsVMwareV2FabricCreationInput is the BasicFabricSpecificCreationInput implementation for InMageRcmFabricCreationInput.
+func (imrfci InMageRcmFabricCreationInput) AsVMwareV2FabricCreationInput() (*VMwareV2FabricCreationInput, bool) {
+	return nil, false
+}
+
+// AsFabricSpecificCreationInput is the BasicFabricSpecificCreationInput implementation for InMageRcmFabricCreationInput.
+func (imrfci InMageRcmFabricCreationInput) AsFabricSpecificCreationInput() (*FabricSpecificCreationInput, bool) {
+	return nil, false
+}
+
+// AsBasicFabricSpecificCreationInput is the BasicFabricSpecificCreationInput implementation for InMageRcmFabricCreationInput.
+func (imrfci InMageRcmFabricCreationInput) AsBasicFabricSpecificCreationInput() (BasicFabricSpecificCreationInput, bool) {
+	return &imrfci, true
+}
+
+// InMageRcmFabricSpecificDetails inMageRcm fabric specific details.
+type InMageRcmFabricSpecificDetails struct {
+	// VmwareSiteID - READ-ONLY; The ARM Id of the VMware site.
+	VmwareSiteID *string `json:"vmwareSiteId,omitempty"`
+	// PhysicalSiteID - READ-ONLY; The ARM Id of the physical site.
+	PhysicalSiteID *string `json:"physicalSiteId,omitempty"`
+	// ServiceEndpoint - READ-ONLY; The service endpoint.
+	ServiceEndpoint *string `json:"serviceEndpoint,omitempty"`
+	// ServiceResourceID - READ-ONLY; The service resource Id.
+	ServiceResourceID *string `json:"serviceResourceId,omitempty"`
+	// ServiceContainerID - READ-ONLY; The service container Id.
+	ServiceContainerID *string `json:"serviceContainerId,omitempty"`
+	// DataPlaneURI - READ-ONLY; The data plane Uri.
+	DataPlaneURI *string `json:"dataPlaneUri,omitempty"`
+	// ControlPlaneURI - READ-ONLY; The control plane Uri.
+	ControlPlaneURI *string `json:"controlPlaneUri,omitempty"`
+	// ProcessServers - READ-ONLY; The list of process servers.
+	ProcessServers *[]ProcessServerDetails `json:"processServers,omitempty"`
+	// RcmProxies - READ-ONLY; The list of RCM proxies.
+	RcmProxies *[]RcmProxyDetails `json:"rcmProxies,omitempty"`
+	// PushInstallers - READ-ONLY; The list of push installers.
+	PushInstallers *[]PushInstallerDetails `json:"pushInstallers,omitempty"`
+	// ReplicationAgents - READ-ONLY; The list of replication agents.
+	ReplicationAgents *[]ReplicationAgentDetails `json:"replicationAgents,omitempty"`
+	// ReprotectAgents - READ-ONLY; The list of reprotect agents.
+	ReprotectAgents *[]ReprotectAgentDetails `json:"reprotectAgents,omitempty"`
+	// Dras - READ-ONLY; The list of DRAs.
+	Dras *[]DraDetails `json:"dras,omitempty"`
+	// AgentDetails - READ-ONLY; The list of agent details.
+	AgentDetails *[]AgentDetails `json:"agentDetails,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2'
+	InstanceType InstanceTypeBasicFabricSpecificDetails `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageRcmFabricSpecificDetails.
+func (imrfsd InMageRcmFabricSpecificDetails) MarshalJSON() ([]byte, error) {
+	imrfsd.InstanceType = InstanceTypeBasicFabricSpecificDetailsInstanceTypeInMageRcm
+	objectMap := make(map[string]interface{})
+	if imrfsd.InstanceType != "" {
+		objectMap["instanceType"] = imrfsd.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAzureFabricSpecificDetails is the BasicFabricSpecificDetails implementation for InMageRcmFabricSpecificDetails.
+func (imrfsd InMageRcmFabricSpecificDetails) AsAzureFabricSpecificDetails() (*AzureFabricSpecificDetails, bool) {
+	return nil, false
+}
+
+// AsHyperVSiteDetails is the BasicFabricSpecificDetails implementation for InMageRcmFabricSpecificDetails.
+func (imrfsd InMageRcmFabricSpecificDetails) AsHyperVSiteDetails() (*HyperVSiteDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmFabricSpecificDetails is the BasicFabricSpecificDetails implementation for InMageRcmFabricSpecificDetails.
+func (imrfsd InMageRcmFabricSpecificDetails) AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool) {
+	return &imrfsd, true
+}
+
+// AsVmmDetails is the BasicFabricSpecificDetails implementation for InMageRcmFabricSpecificDetails.
+func (imrfsd InMageRcmFabricSpecificDetails) AsVmmDetails() (*VmmDetails, bool) {
+	return nil, false
+}
+
+// AsVMwareDetails is the BasicFabricSpecificDetails implementation for InMageRcmFabricSpecificDetails.
+func (imrfsd InMageRcmFabricSpecificDetails) AsVMwareDetails() (*VMwareDetails, bool) {
+	return nil, false
+}
+
+// AsVMwareV2FabricSpecificDetails is the BasicFabricSpecificDetails implementation for InMageRcmFabricSpecificDetails.
+func (imrfsd InMageRcmFabricSpecificDetails) AsVMwareV2FabricSpecificDetails() (*VMwareV2FabricSpecificDetails, bool) {
+	return nil, false
+}
+
+// AsFabricSpecificDetails is the BasicFabricSpecificDetails implementation for InMageRcmFabricSpecificDetails.
+func (imrfsd InMageRcmFabricSpecificDetails) AsFabricSpecificDetails() (*FabricSpecificDetails, bool) {
+	return nil, false
+}
+
+// AsBasicFabricSpecificDetails is the BasicFabricSpecificDetails implementation for InMageRcmFabricSpecificDetails.
+func (imrfsd InMageRcmFabricSpecificDetails) AsBasicFabricSpecificDetails() (BasicFabricSpecificDetails, bool) {
+	return &imrfsd, true
+}
+
+// InMageRcmLastAgentUpgradeErrorDetails inMageRcm last source agent upgrade error details.
+type InMageRcmLastAgentUpgradeErrorDetails struct {
+	// ErrorCode - READ-ONLY; The error code.
+	ErrorCode *string `json:"errorCode,omitempty"`
+	// ErrorMessage - READ-ONLY; The error message.
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+	// PossibleCauses - READ-ONLY; The possible causes.
+	PossibleCauses *string `json:"possibleCauses,omitempty"`
+	// RecommendedAction - READ-ONLY; The recommended action.
+	RecommendedAction *string `json:"recommendedAction,omitempty"`
+	// ErrorMessageParameters - READ-ONLY; The error message parameters.
+	ErrorMessageParameters map[string]*string `json:"errorMessageParameters"`
+	// ErrorTags - READ-ONLY; The error tags.
+	ErrorTags map[string]*string `json:"errorTags"`
+}
+
+// MarshalJSON is the custom marshaler for InMageRcmLastAgentUpgradeErrorDetails.
+func (imrlaued InMageRcmLastAgentUpgradeErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// InMageRcmMobilityAgentDetails inMageRcm mobility agent details.
+type InMageRcmMobilityAgentDetails struct {
+	// Version - READ-ONLY; The agent version.
+	Version *string `json:"version,omitempty"`
+	// LatestVersion - READ-ONLY; The latest agent version available.
+	LatestVersion *string `json:"latestVersion,omitempty"`
+	// DriverVersion - READ-ONLY; The driver version.
+	DriverVersion *string `json:"driverVersion,omitempty"`
+	// LatestUpgradableVersionWithoutReboot - READ-ONLY; The latest upgradeable version available without reboot.
+	LatestUpgradableVersionWithoutReboot *string `json:"latestUpgradableVersionWithoutReboot,omitempty"`
+	// AgentVersionExpiryDate - READ-ONLY; The agent version expiry date.
+	AgentVersionExpiryDate *date.Time `json:"agentVersionExpiryDate,omitempty"`
+	// DriverVersionExpiryDate - READ-ONLY; The driver version expiry date.
+	DriverVersionExpiryDate *date.Time `json:"driverVersionExpiryDate,omitempty"`
+	// LastHeartbeatUtc - READ-ONLY; The time of the last heartbeat received from the agent.
+	LastHeartbeatUtc *date.Time `json:"lastHeartbeatUtc,omitempty"`
+	// ReasonsBlockingUpgrade - READ-ONLY; The whether update is possible or not.
+	ReasonsBlockingUpgrade *[]AgentUpgradeBlockedReason `json:"reasonsBlockingUpgrade,omitempty"`
+	// IsUpgradeable - READ-ONLY; A value indicating whether agent is upgradeable or not.
+	IsUpgradeable *string `json:"isUpgradeable,omitempty"`
+}
+
+// InMageRcmNicDetails inMageRcm NIC details.
+type InMageRcmNicDetails struct {
+	// NicID - READ-ONLY; The NIC Id.
+	NicID *string `json:"nicId,omitempty"`
+	// IsPrimaryNic - READ-ONLY; A value indicating whether this is the primary NIC.
+	IsPrimaryNic *string `json:"isPrimaryNic,omitempty"`
+	// IsSelectedForFailover - READ-ONLY; A value indicating whether this NIC is selected for failover.
+	IsSelectedForFailover *string `json:"isSelectedForFailover,omitempty"`
+	// SourceIPAddress - READ-ONLY; The source IP address.
+	SourceIPAddress *string `json:"sourceIPAddress,omitempty"`
+	// SourceIPAddressType - READ-ONLY; The source IP address type. Possible values include: 'Dynamic', 'Static'
+	SourceIPAddressType EthernetAddressType `json:"sourceIPAddressType,omitempty"`
+	// SourceNetworkID - READ-ONLY; Source network Id.
+	SourceNetworkID *string `json:"sourceNetworkId,omitempty"`
+	// SourceSubnetName - READ-ONLY; Source subnet name.
+	SourceSubnetName *string `json:"sourceSubnetName,omitempty"`
+	// TargetIPAddress - READ-ONLY; The target IP address.
+	TargetIPAddress *string `json:"targetIPAddress,omitempty"`
+	// TargetIPAddressType - READ-ONLY; The target IP address type. Possible values include: 'Dynamic', 'Static'
+	TargetIPAddressType EthernetAddressType `json:"targetIPAddressType,omitempty"`
+	// TargetSubnetName - READ-ONLY; Target subnet name.
+	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
+	// TestSubnetName - READ-ONLY; Test subnet name.
+	TestSubnetName *string `json:"testSubnetName,omitempty"`
+	// TestIPAddress - READ-ONLY; The test IP address.
+	TestIPAddress *string `json:"testIPAddress,omitempty"`
+	// TestIPAddressType - READ-ONLY; The test IP address type. Possible values include: 'Dynamic', 'Static'
+	TestIPAddressType EthernetAddressType `json:"testIPAddressType,omitempty"`
+}
+
+// InMageRcmNicInput inMageRcm NIC input.
+type InMageRcmNicInput struct {
+	// NicID - The NIC Id.
+	NicID *string `json:"nicId,omitempty"`
+	// IsPrimaryNic - A value indicating whether this is the primary NIC.
+	IsPrimaryNic *string `json:"isPrimaryNic,omitempty"`
+	// IsSelectedForFailover - A value indicating whether this NIC is selected for failover.
+	IsSelectedForFailover *string `json:"isSelectedForFailover,omitempty"`
+	// TargetSubnetName - Target subnet name.
+	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
+	// TargetStaticIPAddress - The target static IP address.
+	TargetStaticIPAddress *string `json:"targetStaticIPAddress,omitempty"`
+	// TestSubnetName - The test subnet name.
+	TestSubnetName *string `json:"testSubnetName,omitempty"`
+	// TestStaticIPAddress - The test static IP address.
+	TestStaticIPAddress *string `json:"testStaticIPAddress,omitempty"`
+}
+
+// InMageRcmPolicyCreationInput inMageRcm policy creation input.
+type InMageRcmPolicyCreationInput struct {
+	// RecoveryPointHistoryInMinutes - The duration in minutes until which the recovery points need to be stored.
+	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
+	// CrashConsistentFrequencyInMinutes - The crash consistent snapshot frequency (in minutes).
+	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
+	// AppConsistentFrequencyInMinutes - The app consistent snapshot frequency (in minutes).
+	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	// EnableMultiVMSync - A value indicating whether multi-VM sync has to be enabled.
+	EnableMultiVMSync *string `json:"enableMultiVmSync,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
+	InstanceType InstanceTypeBasicPolicyProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageRcmPolicyCreationInput.
+func (imrpci InMageRcmPolicyCreationInput) MarshalJSON() ([]byte, error) {
+	imrpci.InstanceType = InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageRcm
+	objectMap := make(map[string]interface{})
+	if imrpci.RecoveryPointHistoryInMinutes != nil {
+		objectMap["recoveryPointHistoryInMinutes"] = imrpci.RecoveryPointHistoryInMinutes
+	}
+	if imrpci.CrashConsistentFrequencyInMinutes != nil {
+		objectMap["crashConsistentFrequencyInMinutes"] = imrpci.CrashConsistentFrequencyInMinutes
+	}
+	if imrpci.AppConsistentFrequencyInMinutes != nil {
+		objectMap["appConsistentFrequencyInMinutes"] = imrpci.AppConsistentFrequencyInMinutes
+	}
+	if imrpci.EnableMultiVMSync != nil {
+		objectMap["enableMultiVmSync"] = imrpci.EnableMultiVMSync
+	}
+	if imrpci.InstanceType != "" {
+		objectMap["instanceType"] = imrpci.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2APolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for InMageRcmPolicyCreationInput.
+func (imrpci InMageRcmPolicyCreationInput) AsA2APolicyCreationInput() (*A2APolicyCreationInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzurePolicyInput is the BasicPolicyProviderSpecificInput implementation for InMageRcmPolicyCreationInput.
+func (imrpci InMageRcmPolicyCreationInput) AsHyperVReplicaAzurePolicyInput() (*HyperVReplicaAzurePolicyInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaBluePolicyInput is the BasicPolicyProviderSpecificInput implementation for InMageRcmPolicyCreationInput.
+func (imrpci InMageRcmPolicyCreationInput) AsHyperVReplicaBluePolicyInput() (*HyperVReplicaBluePolicyInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaPolicyInput is the BasicPolicyProviderSpecificInput implementation for InMageRcmPolicyCreationInput.
+func (imrpci InMageRcmPolicyCreationInput) AsHyperVReplicaPolicyInput() (*HyperVReplicaPolicyInput, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2PolicyInput is the BasicPolicyProviderSpecificInput implementation for InMageRcmPolicyCreationInput.
+func (imrpci InMageRcmPolicyCreationInput) AsInMageAzureV2PolicyInput() (*InMageAzureV2PolicyInput, bool) {
+	return nil, false
+}
+
+// AsInMagePolicyInput is the BasicPolicyProviderSpecificInput implementation for InMageRcmPolicyCreationInput.
+func (imrpci InMageRcmPolicyCreationInput) AsInMagePolicyInput() (*InMagePolicyInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for InMageRcmPolicyCreationInput.
+func (imrpci InMageRcmPolicyCreationInput) AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool) {
+	return &imrpci, true
+}
+
+// AsVMwareCbtPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for InMageRcmPolicyCreationInput.
+func (imrpci InMageRcmPolicyCreationInput) AsVMwareCbtPolicyCreationInput() (*VMwareCbtPolicyCreationInput, bool) {
+	return nil, false
+}
+
+// AsPolicyProviderSpecificInput is the BasicPolicyProviderSpecificInput implementation for InMageRcmPolicyCreationInput.
+func (imrpci InMageRcmPolicyCreationInput) AsPolicyProviderSpecificInput() (*PolicyProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicPolicyProviderSpecificInput is the BasicPolicyProviderSpecificInput implementation for InMageRcmPolicyCreationInput.
+func (imrpci InMageRcmPolicyCreationInput) AsBasicPolicyProviderSpecificInput() (BasicPolicyProviderSpecificInput, bool) {
+	return &imrpci, true
+}
+
+// InMageRcmPolicyDetails inMageRcm specific policy details.
+type InMageRcmPolicyDetails struct {
+	// RecoveryPointHistoryInMinutes - READ-ONLY; The duration in minutes until which the recovery points need to be stored.
+	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
+	// AppConsistentFrequencyInMinutes - READ-ONLY; The app consistent snapshot frequency in minutes.
+	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	// CrashConsistentFrequencyInMinutes - READ-ONLY; The crash consistent snapshot frequency in minutes.
+	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
+	// EnableMultiVMSync - READ-ONLY; A value indicating whether multi-VM sync has to be enabled.
+	EnableMultiVMSync *string `json:"enableMultiVmSync,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
+	InstanceType InstanceTypeBasicPolicyProviderSpecificDetails `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageRcmPolicyDetails.
+func (imrpd InMageRcmPolicyDetails) MarshalJSON() ([]byte, error) {
+	imrpd.InstanceType = InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm
+	objectMap := make(map[string]interface{})
+	if imrpd.InstanceType != "" {
+		objectMap["instanceType"] = imrpd.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2APolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageRcmPolicyDetails.
+func (imrpd InMageRcmPolicyDetails) AsA2APolicyDetails() (*A2APolicyDetails, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzurePolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageRcmPolicyDetails.
+func (imrpd InMageRcmPolicyDetails) AsHyperVReplicaAzurePolicyDetails() (*HyperVReplicaAzurePolicyDetails, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaBasePolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageRcmPolicyDetails.
+func (imrpd InMageRcmPolicyDetails) AsHyperVReplicaBasePolicyDetails() (*HyperVReplicaBasePolicyDetails, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaBluePolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageRcmPolicyDetails.
+func (imrpd InMageRcmPolicyDetails) AsHyperVReplicaBluePolicyDetails() (*HyperVReplicaBluePolicyDetails, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageRcmPolicyDetails.
+func (imrpd InMageRcmPolicyDetails) AsHyperVReplicaPolicyDetails() (*HyperVReplicaPolicyDetails, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2PolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageRcmPolicyDetails.
+func (imrpd InMageRcmPolicyDetails) AsInMageAzureV2PolicyDetails() (*InMageAzureV2PolicyDetails, bool) {
+	return nil, false
+}
+
+// AsInMageBasePolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageRcmPolicyDetails.
+func (imrpd InMageRcmPolicyDetails) AsInMageBasePolicyDetails() (*InMageBasePolicyDetails, bool) {
+	return nil, false
+}
+
+// AsInMagePolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageRcmPolicyDetails.
+func (imrpd InMageRcmPolicyDetails) AsInMagePolicyDetails() (*InMagePolicyDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageRcmPolicyDetails.
+func (imrpd InMageRcmPolicyDetails) AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool) {
+	return &imrpd, true
+}
+
+// AsRcmAzureMigrationPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageRcmPolicyDetails.
+func (imrpd InMageRcmPolicyDetails) AsRcmAzureMigrationPolicyDetails() (*RcmAzureMigrationPolicyDetails, bool) {
+	return nil, false
+}
+
+// AsVmwareCbtPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for InMageRcmPolicyDetails.
+func (imrpd InMageRcmPolicyDetails) AsVmwareCbtPolicyDetails() (*VmwareCbtPolicyDetails, bool) {
+	return nil, false
+}
+
+// AsPolicyProviderSpecificDetails is the BasicPolicyProviderSpecificDetails implementation for InMageRcmPolicyDetails.
+func (imrpd InMageRcmPolicyDetails) AsPolicyProviderSpecificDetails() (*PolicyProviderSpecificDetails, bool) {
+	return nil, false
+}
+
+// AsBasicPolicyProviderSpecificDetails is the BasicPolicyProviderSpecificDetails implementation for InMageRcmPolicyDetails.
+func (imrpd InMageRcmPolicyDetails) AsBasicPolicyProviderSpecificDetails() (BasicPolicyProviderSpecificDetails, bool) {
+	return &imrpd, true
+}
+
+// InMageRcmProtectedDiskDetails inMageRcm protected disk details.
+type InMageRcmProtectedDiskDetails struct {
+	// DiskID - READ-ONLY; The disk Id.
+	DiskID *string `json:"diskId,omitempty"`
+	// DiskName - READ-ONLY; The disk name.
+	DiskName *string `json:"diskName,omitempty"`
+	// IsOSDisk - READ-ONLY; A value indicating whether the disk is the OS disk.
+	IsOSDisk *string `json:"isOSDisk,omitempty"`
+	// CapacityInBytes - READ-ONLY; The disk capacity in bytes.
+	CapacityInBytes *int64 `json:"capacityInBytes,omitempty"`
+	// LogStorageAccountID - READ-ONLY; The log storage account ARM Id.
+	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	// DiskEncryptionSetID - READ-ONLY; The disk encryption set ARM Id.
+	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	// SeedManagedDiskID - READ-ONLY; The ARM Id of the seed managed disk.
+	SeedManagedDiskID *string `json:"seedManagedDiskId,omitempty"`
+	// TargetManagedDiskID - READ-ONLY; The ARM Id of the target managed disk.
+	TargetManagedDiskID *string `json:"targetManagedDiskId,omitempty"`
+	// DiskType - READ-ONLY; The disk type. Possible values include: 'StandardLRS', 'PremiumLRS', 'StandardSSDLRS'
+	DiskType DiskAccountType `json:"diskType,omitempty"`
+}
+
+// InMageRcmRecoveryPointDetails inMageRcm provider specific recovery point details.
+type InMageRcmRecoveryPointDetails struct {
+	// IsMultiVMSyncPoint - READ-ONLY; A value indicating whether the recovery point is multi VM consistent.
+	IsMultiVMSyncPoint *string `json:"isMultiVmSyncPoint,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeProviderSpecificRecoveryPointDetails', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeA2A', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageRcm'
+	InstanceType InstanceTypeBasicProviderSpecificRecoveryPointDetails `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageRcmRecoveryPointDetails.
+func (imrrpd InMageRcmRecoveryPointDetails) MarshalJSON() ([]byte, error) {
+	imrrpd.InstanceType = InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageRcm
+	objectMap := make(map[string]interface{})
+	if imrrpd.InstanceType != "" {
+		objectMap["instanceType"] = imrrpd.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2ARecoveryPointDetails is the BasicProviderSpecificRecoveryPointDetails implementation for InMageRcmRecoveryPointDetails.
+func (imrrpd InMageRcmRecoveryPointDetails) AsA2ARecoveryPointDetails() (*A2ARecoveryPointDetails, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2RecoveryPointDetails is the BasicProviderSpecificRecoveryPointDetails implementation for InMageRcmRecoveryPointDetails.
+func (imrrpd InMageRcmRecoveryPointDetails) AsInMageAzureV2RecoveryPointDetails() (*InMageAzureV2RecoveryPointDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmRecoveryPointDetails is the BasicProviderSpecificRecoveryPointDetails implementation for InMageRcmRecoveryPointDetails.
+func (imrrpd InMageRcmRecoveryPointDetails) AsInMageRcmRecoveryPointDetails() (*InMageRcmRecoveryPointDetails, bool) {
+	return &imrrpd, true
+}
+
+// AsProviderSpecificRecoveryPointDetails is the BasicProviderSpecificRecoveryPointDetails implementation for InMageRcmRecoveryPointDetails.
+func (imrrpd InMageRcmRecoveryPointDetails) AsProviderSpecificRecoveryPointDetails() (*ProviderSpecificRecoveryPointDetails, bool) {
+	return nil, false
+}
+
+// AsBasicProviderSpecificRecoveryPointDetails is the BasicProviderSpecificRecoveryPointDetails implementation for InMageRcmRecoveryPointDetails.
+func (imrrpd InMageRcmRecoveryPointDetails) AsBasicProviderSpecificRecoveryPointDetails() (BasicProviderSpecificRecoveryPointDetails, bool) {
+	return &imrrpd, true
+}
+
+// InMageRcmReplicationDetails inMageRcm provider specific details.
+type InMageRcmReplicationDetails struct {
+	// InternalIdentifier - READ-ONLY; The virtual machine internal identifier.
+	InternalIdentifier *string `json:"internalIdentifier,omitempty"`
+	// FabricDiscoveryMachineID - READ-ONLY; The ARM Id of the discovered VM.
+	FabricDiscoveryMachineID *string `json:"fabricDiscoveryMachineId,omitempty"`
+	// MultiVMGroupName - READ-ONLY; The multi VM group name.
+	MultiVMGroupName *string `json:"multiVmGroupName,omitempty"`
+	// DiscoveryType - READ-ONLY; The type of the discovered VM.
+	DiscoveryType *string `json:"discoveryType,omitempty"`
+	// ProcessServerID - READ-ONLY; The process server Id.
+	ProcessServerID *string `json:"processServerId,omitempty"`
+	// ProcessorCoreCount - READ-ONLY; The processor core count.
+	ProcessorCoreCount *int32 `json:"processorCoreCount,omitempty"`
+	// AllocatedMemoryInMB - READ-ONLY; The allocated memory in MB.
+	AllocatedMemoryInMB *float64 `json:"allocatedMemoryInMB,omitempty"`
+	// ProcessServerName - READ-ONLY; The process server name.
+	ProcessServerName *string `json:"processServerName,omitempty"`
+	// RunAsAccountID - READ-ONLY; The run-as account Id.
+	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+	// OsType - READ-ONLY; The type of the OS on the VM.
+	OsType *string `json:"osType,omitempty"`
+	// FirmwareType - READ-ONLY; The firmware type.
+	FirmwareType *string `json:"firmwareType,omitempty"`
+	// TargetGeneration - READ-ONLY; The target generation.
+	TargetGeneration *string `json:"targetGeneration,omitempty"`
+	// LicenseType - READ-ONLY; License Type of the VM to be used.
+	LicenseType *string `json:"licenseType,omitempty"`
+	// TargetVMName - READ-ONLY; Target VM name.
+	TargetVMName *string `json:"targetVmName,omitempty"`
+	// TargetVMSize - READ-ONLY; The target VM size.
+	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	// TargetResourceGroupID - READ-ONLY; The target resource group Id.
+	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+	// TargetAvailabilitySetID - READ-ONLY; The target availability set Id.
+	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	// TargetAvailabilityZone - READ-ONLY; The target availability zone.
+	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	// TargetProximityPlacementGroupID - READ-ONLY; The target proximity placement group Id.
+	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	// TargetBootDiagnosticsStorageAccountID - READ-ONLY; The target boot diagnostics storage account ARM Id.
+	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
+	// TargetNetworkID - READ-ONLY; The target network Id.
+	TargetNetworkID *string `json:"targetNetworkId,omitempty"`
+	// TestNetworkID - READ-ONLY; The test network Id.
+	TestNetworkID *string `json:"testNetworkId,omitempty"`
+	// FailoverRecoveryPointID - READ-ONLY; The recovery point Id to which the VM was failed over.
+	FailoverRecoveryPointID *string `json:"failoverRecoveryPointId,omitempty"`
+	// LastRecoveryPointReceived - READ-ONLY; The last recovery point received time.
+	LastRecoveryPointReceived *date.Time `json:"lastRecoveryPointReceived,omitempty"`
+	// LastRpoInSeconds - READ-ONLY; The last recovery point objective value.
+	LastRpoInSeconds *int64 `json:"lastRpoInSeconds,omitempty"`
+	// LastRpoCalculatedTime - READ-ONLY; The last recovery point objective calculated time.
+	LastRpoCalculatedTime *date.Time `json:"lastRpoCalculatedTime,omitempty"`
+	// LastRecoveryPointID - READ-ONLY; The last recovery point Id.
+	LastRecoveryPointID *string `json:"lastRecoveryPointId,omitempty"`
+	// InitialReplicationProgressPercentage - READ-ONLY; The initial replication progress percentage. This is calculated based on total bytes processed for all disks in the source VM.
+	InitialReplicationProgressPercentage *int32 `json:"initialReplicationProgressPercentage,omitempty"`
+	// InitialReplicationProcessedBytes - READ-ONLY; The initial replication processed bytes. This includes sum of total bytes transferred and matched bytes on all selected disks in source VM.
+	InitialReplicationProcessedBytes *int64 `json:"initialReplicationProcessedBytes,omitempty"`
+	// InitialReplicationTransferredBytes - READ-ONLY; The initial replication transferred bytes from source VM to azure for all selected disks on source VM.
+	InitialReplicationTransferredBytes *int64 `json:"initialReplicationTransferredBytes,omitempty"`
+	// ResyncProgressPercentage - READ-ONLY; The resync progress percentage. This is calculated based on total bytes processed for all disks in the source VM.
+	ResyncProgressPercentage *int32 `json:"resyncProgressPercentage,omitempty"`
+	// ResyncProcessedBytes - READ-ONLY; The resync processed bytes. This includes sum of total bytes transferred and matched bytes on all selected disks in source VM.
+	ResyncProcessedBytes *int64 `json:"resyncProcessedBytes,omitempty"`
+	// ResyncTransferredBytes - READ-ONLY; The resync transferred bytes from source VM to azure for all selected disks on source VM.
+	ResyncTransferredBytes *int64 `json:"resyncTransferredBytes,omitempty"`
+	// ResyncRequired - READ-ONLY; A value indicating whether resync is required.
+	ResyncRequired *string `json:"resyncRequired,omitempty"`
+	// ResyncState - READ-ONLY; The resync state. Possible values include: 'ResyncStateNone', 'ResyncStatePreparedForResynchronization', 'ResyncStateStartedResynchronization'
+	ResyncState ResyncState `json:"resyncState,omitempty"`
+	// AgentUpgradeState - READ-ONLY; The agent auto upgrade state. Possible values include: 'MobilityAgentUpgradeStateNone', 'MobilityAgentUpgradeStateStarted', 'MobilityAgentUpgradeStateCompleted', 'MobilityAgentUpgradeStateCommit'
+	AgentUpgradeState MobilityAgentUpgradeState `json:"agentUpgradeState,omitempty"`
+	// LastAgentUpgradeType - READ-ONLY; The last agent upgrade type.
+	LastAgentUpgradeType *string `json:"lastAgentUpgradeType,omitempty"`
+	// LastAgentUpgradeFailedJobID - READ-ONLY; The last agent upgrade failed or cancelled job Id.
+	LastAgentUpgradeFailedJobID *string `json:"lastAgentUpgradeFailedJobId,omitempty"`
+	// ProtectedDisks - READ-ONLY; The list of protected disks.
+	ProtectedDisks *[]InMageRcmProtectedDiskDetails `json:"protectedDisks,omitempty"`
+	// IsLastUpgradeSuccessful - READ-ONLY; A value indicating whether last agent upgrade was successful or not.
+	IsLastUpgradeSuccessful *string `json:"isLastUpgradeSuccessful,omitempty"`
+	// MobilityAgentDetails - READ-ONLY; The mobility agent information.
+	MobilityAgentDetails *InMageRcmMobilityAgentDetails `json:"mobilityAgentDetails,omitempty"`
+	// LastAgentUpgradeErrorDetails - READ-ONLY; The last agent upgrade error information.
+	LastAgentUpgradeErrorDetails *[]InMageRcmLastAgentUpgradeErrorDetails `json:"lastAgentUpgradeErrorDetails,omitempty"`
+	// AgentUpgradeBlockingErrorDetails - READ-ONLY; The agent upgrade blocking error information.
+	AgentUpgradeBlockingErrorDetails *[]InMageRcmAgentUpgradeBlockingErrorDetails `json:"agentUpgradeBlockingErrorDetails,omitempty"`
+	// VMNics - READ-ONLY; The network details.
+	VMNics *[]InMageRcmNicDetails `json:"vmNics,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageRcm', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
+	InstanceType InstanceTypeBasicReplicationProviderSpecificSettings `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageRcmReplicationDetails.
+func (imrrd InMageRcmReplicationDetails) MarshalJSON() ([]byte, error) {
+	imrrd.InstanceType = InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageRcm
+	objectMap := make(map[string]interface{})
+	if imrrd.InstanceType != "" {
+		objectMap["instanceType"] = imrrd.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for InMageRcmReplicationDetails.
+func (imrrd InMageRcmReplicationDetails) AsA2AReplicationDetails() (*A2AReplicationDetails, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for InMageRcmReplicationDetails.
+func (imrrd InMageRcmReplicationDetails) AsHyperVReplicaAzureReplicationDetails() (*HyperVReplicaAzureReplicationDetails, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaBaseReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for InMageRcmReplicationDetails.
+func (imrrd InMageRcmReplicationDetails) AsHyperVReplicaBaseReplicationDetails() (*HyperVReplicaBaseReplicationDetails, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaBlueReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for InMageRcmReplicationDetails.
+func (imrrd InMageRcmReplicationDetails) AsHyperVReplicaBlueReplicationDetails() (*HyperVReplicaBlueReplicationDetails, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for InMageRcmReplicationDetails.
+func (imrrd InMageRcmReplicationDetails) AsHyperVReplicaReplicationDetails() (*HyperVReplicaReplicationDetails, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2ReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for InMageRcmReplicationDetails.
+func (imrrd InMageRcmReplicationDetails) AsInMageAzureV2ReplicationDetails() (*InMageAzureV2ReplicationDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for InMageRcmReplicationDetails.
+func (imrrd InMageRcmReplicationDetails) AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool) {
+	return &imrrd, true
+}
+
+// AsInMageReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for InMageRcmReplicationDetails.
+func (imrrd InMageRcmReplicationDetails) AsInMageReplicationDetails() (*InMageReplicationDetails, bool) {
+	return nil, false
+}
+
+// AsReplicationProviderSpecificSettings is the BasicReplicationProviderSpecificSettings implementation for InMageRcmReplicationDetails.
+func (imrrd InMageRcmReplicationDetails) AsReplicationProviderSpecificSettings() (*ReplicationProviderSpecificSettings, bool) {
+	return nil, false
+}
+
+// AsBasicReplicationProviderSpecificSettings is the BasicReplicationProviderSpecificSettings implementation for InMageRcmReplicationDetails.
+func (imrrd InMageRcmReplicationDetails) AsBasicReplicationProviderSpecificSettings() (BasicReplicationProviderSpecificSettings, bool) {
+	return &imrrd, true
+}
+
+// InMageRcmTestFailoverInput inMageRcm provider specific input for test failover.
+type InMageRcmTestFailoverInput struct {
+	// NetworkID - The test network Id.
+	NetworkID *string `json:"networkId,omitempty"`
+	// RecoveryPointID - The recovery point id to be passed to test failover to a particular recovery point. In case of latest recovery point, null should be passed.
+	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeTestFailoverProviderSpecificInput', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMage'
+	InstanceType InstanceTypeBasicTestFailoverProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageRcmTestFailoverInput.
+func (imrtfi InMageRcmTestFailoverInput) MarshalJSON() ([]byte, error) {
+	imrtfi.InstanceType = InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageRcm
+	objectMap := make(map[string]interface{})
+	if imrtfi.NetworkID != nil {
+		objectMap["networkId"] = imrtfi.NetworkID
+	}
+	if imrtfi.RecoveryPointID != nil {
+		objectMap["recoveryPointId"] = imrtfi.RecoveryPointID
+	}
+	if imrtfi.InstanceType != "" {
+		objectMap["instanceType"] = imrtfi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2ATestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageRcmTestFailoverInput.
+func (imrtfi InMageRcmTestFailoverInput) AsA2ATestFailoverInput() (*A2ATestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageRcmTestFailoverInput.
+func (imrtfi InMageRcmTestFailoverInput) AsHyperVReplicaAzureTestFailoverInput() (*HyperVReplicaAzureTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2TestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageRcmTestFailoverInput.
+func (imrtfi InMageRcmTestFailoverInput) AsInMageAzureV2TestFailoverInput() (*InMageAzureV2TestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageRcmTestFailoverInput.
+func (imrtfi InMageRcmTestFailoverInput) AsInMageRcmTestFailoverInput() (*InMageRcmTestFailoverInput, bool) {
+	return &imrtfi, true
+}
+
+// AsInMageTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageRcmTestFailoverInput.
+func (imrtfi InMageRcmTestFailoverInput) AsInMageTestFailoverInput() (*InMageTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsTestFailoverProviderSpecificInput is the BasicTestFailoverProviderSpecificInput implementation for InMageRcmTestFailoverInput.
+func (imrtfi InMageRcmTestFailoverInput) AsTestFailoverProviderSpecificInput() (*TestFailoverProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicTestFailoverProviderSpecificInput is the BasicTestFailoverProviderSpecificInput implementation for InMageRcmTestFailoverInput.
+func (imrtfi InMageRcmTestFailoverInput) AsBasicTestFailoverProviderSpecificInput() (BasicTestFailoverProviderSpecificInput, bool) {
+	return &imrtfi, true
+}
+
+// InMageRcmUnplannedFailoverInput inMageRcm provider specific input for unplanned failover.
+type InMageRcmUnplannedFailoverInput struct {
+	// PerformShutdown - A value indicating whether VM is to be shutdown.
+	PerformShutdown *string `json:"performShutdown,omitempty"`
+	// RecoveryPointID - The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should be passed.
+	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeUnplannedFailoverProviderSpecificInput', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMage'
+	InstanceType InstanceTypeBasicUnplannedFailoverProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageRcmUnplannedFailoverInput.
+func (imrufi InMageRcmUnplannedFailoverInput) MarshalJSON() ([]byte, error) {
+	imrufi.InstanceType = InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageRcm
+	objectMap := make(map[string]interface{})
+	if imrufi.PerformShutdown != nil {
+		objectMap["performShutdown"] = imrufi.PerformShutdown
+	}
+	if imrufi.RecoveryPointID != nil {
+		objectMap["recoveryPointId"] = imrufi.RecoveryPointID
+	}
+	if imrufi.InstanceType != "" {
+		objectMap["instanceType"] = imrufi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageRcmUnplannedFailoverInput.
+func (imrufi InMageRcmUnplannedFailoverInput) AsA2AUnplannedFailoverInput() (*A2AUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageRcmUnplannedFailoverInput.
+func (imrufi InMageRcmUnplannedFailoverInput) AsHyperVReplicaAzureUnplannedFailoverInput() (*HyperVReplicaAzureUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2UnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageRcmUnplannedFailoverInput.
+func (imrufi InMageRcmUnplannedFailoverInput) AsInMageAzureV2UnplannedFailoverInput() (*InMageAzureV2UnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageRcmUnplannedFailoverInput.
+func (imrufi InMageRcmUnplannedFailoverInput) AsInMageRcmUnplannedFailoverInput() (*InMageRcmUnplannedFailoverInput, bool) {
+	return &imrufi, true
+}
+
+// AsInMageUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageRcmUnplannedFailoverInput.
+func (imrufi InMageRcmUnplannedFailoverInput) AsInMageUnplannedFailoverInput() (*InMageUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsUnplannedFailoverProviderSpecificInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageRcmUnplannedFailoverInput.
+func (imrufi InMageRcmUnplannedFailoverInput) AsUnplannedFailoverProviderSpecificInput() (*UnplannedFailoverProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicUnplannedFailoverProviderSpecificInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageRcmUnplannedFailoverInput.
+func (imrufi InMageRcmUnplannedFailoverInput) AsBasicUnplannedFailoverProviderSpecificInput() (BasicUnplannedFailoverProviderSpecificInput, bool) {
+	return &imrufi, true
+}
+
+// InMageRcmUpdateReplicationProtectedItemInput inMageRcm provider specific input to update replication
+// protected item.
+type InMageRcmUpdateReplicationProtectedItemInput struct {
+	// TargetVMName - The target VM name.
+	TargetVMName *string `json:"targetVmName,omitempty"`
+	// TargetVMSize - The target VM size.
+	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	// TargetResourceGroupID - The target resource group ARM Id.
+	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+	// TargetAvailabilitySetID - The target availability set ARM Id.
+	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	// TargetAvailabilityZone - The target availability zone.
+	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	// TargetProximityPlacementGroupID - The target proximity placement group Id.
+	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	// TargetBootDiagnosticsStorageAccountID - The target boot diagnostics storage account ARM Id.
+	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
+	// TargetNetworkID - The target network ARM Id.
+	TargetNetworkID *string `json:"targetNetworkId,omitempty"`
+	// TestNetworkID - The test network ARM Id.
+	TestNetworkID *string `json:"testNetworkId,omitempty"`
+	// VMNics - The list of NIC details.
+	VMNics *[]InMageRcmNicInput `json:"vmNics,omitempty"`
+	// LicenseType - The license type. Possible values include: 'LicenseTypeNotSpecified', 'LicenseTypeNoLicenseType', 'LicenseTypeWindowsServer'
+	LicenseType LicenseType `json:"licenseType,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageRcm'
+	InstanceType InstanceTypeBasicUpdateReplicationProtectedItemProviderInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageRcmUpdateReplicationProtectedItemInput.
+func (imrurpii InMageRcmUpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
+	imrurpii.InstanceType = InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageRcm
+	objectMap := make(map[string]interface{})
+	if imrurpii.TargetVMName != nil {
+		objectMap["targetVmName"] = imrurpii.TargetVMName
+	}
+	if imrurpii.TargetVMSize != nil {
+		objectMap["targetVmSize"] = imrurpii.TargetVMSize
+	}
+	if imrurpii.TargetResourceGroupID != nil {
+		objectMap["targetResourceGroupId"] = imrurpii.TargetResourceGroupID
+	}
+	if imrurpii.TargetAvailabilitySetID != nil {
+		objectMap["targetAvailabilitySetId"] = imrurpii.TargetAvailabilitySetID
+	}
+	if imrurpii.TargetAvailabilityZone != nil {
+		objectMap["targetAvailabilityZone"] = imrurpii.TargetAvailabilityZone
+	}
+	if imrurpii.TargetProximityPlacementGroupID != nil {
+		objectMap["targetProximityPlacementGroupId"] = imrurpii.TargetProximityPlacementGroupID
+	}
+	if imrurpii.TargetBootDiagnosticsStorageAccountID != nil {
+		objectMap["targetBootDiagnosticsStorageAccountId"] = imrurpii.TargetBootDiagnosticsStorageAccountID
+	}
+	if imrurpii.TargetNetworkID != nil {
+		objectMap["targetNetworkId"] = imrurpii.TargetNetworkID
+	}
+	if imrurpii.TestNetworkID != nil {
+		objectMap["testNetworkId"] = imrurpii.TestNetworkID
+	}
+	if imrurpii.VMNics != nil {
+		objectMap["vmNics"] = imrurpii.VMNics
+	}
+	if imrurpii.LicenseType != "" {
+		objectMap["licenseType"] = imrurpii.LicenseType
+	}
+	if imrurpii.InstanceType != "" {
+		objectMap["instanceType"] = imrurpii.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AUpdateReplicationProtectedItemInput is the BasicUpdateReplicationProtectedItemProviderInput implementation for InMageRcmUpdateReplicationProtectedItemInput.
+func (imrurpii InMageRcmUpdateReplicationProtectedItemInput) AsA2AUpdateReplicationProtectedItemInput() (*A2AUpdateReplicationProtectedItemInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureUpdateReplicationProtectedItemInput is the BasicUpdateReplicationProtectedItemProviderInput implementation for InMageRcmUpdateReplicationProtectedItemInput.
+func (imrurpii InMageRcmUpdateReplicationProtectedItemInput) AsHyperVReplicaAzureUpdateReplicationProtectedItemInput() (*HyperVReplicaAzureUpdateReplicationProtectedItemInput, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2UpdateReplicationProtectedItemInput is the BasicUpdateReplicationProtectedItemProviderInput implementation for InMageRcmUpdateReplicationProtectedItemInput.
+func (imrurpii InMageRcmUpdateReplicationProtectedItemInput) AsInMageAzureV2UpdateReplicationProtectedItemInput() (*InMageAzureV2UpdateReplicationProtectedItemInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmUpdateReplicationProtectedItemInput is the BasicUpdateReplicationProtectedItemProviderInput implementation for InMageRcmUpdateReplicationProtectedItemInput.
+func (imrurpii InMageRcmUpdateReplicationProtectedItemInput) AsInMageRcmUpdateReplicationProtectedItemInput() (*InMageRcmUpdateReplicationProtectedItemInput, bool) {
+	return &imrurpii, true
+}
+
+// AsUpdateReplicationProtectedItemProviderInput is the BasicUpdateReplicationProtectedItemProviderInput implementation for InMageRcmUpdateReplicationProtectedItemInput.
+func (imrurpii InMageRcmUpdateReplicationProtectedItemInput) AsUpdateReplicationProtectedItemProviderInput() (*UpdateReplicationProtectedItemProviderInput, bool) {
+	return nil, false
+}
+
+// AsBasicUpdateReplicationProtectedItemProviderInput is the BasicUpdateReplicationProtectedItemProviderInput implementation for InMageRcmUpdateReplicationProtectedItemInput.
+func (imrurpii InMageRcmUpdateReplicationProtectedItemInput) AsBasicUpdateReplicationProtectedItemProviderInput() (BasicUpdateReplicationProtectedItemProviderInput, bool) {
+	return &imrurpii, true
 }
 
 // InMageReplicationDetails inMage provider specific settings
@@ -9189,7 +11037,7 @@ type InMageReplicationDetails struct {
 	ReplicaID *string `json:"replicaId,omitempty"`
 	// OsVersion - The OS Version of the protected item.
 	OsVersion *string `json:"osVersion,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageRcm', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
 	InstanceType InstanceTypeBasicReplicationProviderSpecificSettings `json:"instanceType,omitempty"`
 }
 
@@ -9344,6 +11192,11 @@ func (imrd InMageReplicationDetails) AsInMageAzureV2ReplicationDetails() (*InMag
 	return nil, false
 }
 
+// AsInMageRcmReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for InMageReplicationDetails.
+func (imrd InMageReplicationDetails) AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool) {
+	return nil, false
+}
+
 // AsInMageReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for InMageReplicationDetails.
 func (imrd InMageReplicationDetails) AsInMageReplicationDetails() (*InMageReplicationDetails, bool) {
 	return &imrd, true
@@ -9443,6 +11296,128 @@ func (imri InMageReprotectInput) AsReverseReplicationProviderSpecificInput() (*R
 // AsBasicReverseReplicationProviderSpecificInput is the BasicReverseReplicationProviderSpecificInput implementation for InMageReprotectInput.
 func (imri InMageReprotectInput) AsBasicReverseReplicationProviderSpecificInput() (BasicReverseReplicationProviderSpecificInput, bool) {
 	return &imri, true
+}
+
+// InMageTestFailoverInput provider specific input for InMage test failover.
+type InMageTestFailoverInput struct {
+	// RecoveryPointType - The recovery point type. Values from LatestTime, LatestTag or Custom. In the case of custom, the recovery point provided by RecoveryPointId will be used. In the other two cases, recovery point id will be ignored. Possible values include: 'LatestTime', 'LatestTag', 'Custom'
+	RecoveryPointType RecoveryPointType `json:"recoveryPointType,omitempty"`
+	// RecoveryPointID - The recovery point id to be passed to test failover to a particular recovery point. In case of latest recovery point, null should be passed.
+	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeTestFailoverProviderSpecificInput', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMage'
+	InstanceType InstanceTypeBasicTestFailoverProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageTestFailoverInput.
+func (imtfi InMageTestFailoverInput) MarshalJSON() ([]byte, error) {
+	imtfi.InstanceType = InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMage
+	objectMap := make(map[string]interface{})
+	if imtfi.RecoveryPointType != "" {
+		objectMap["recoveryPointType"] = imtfi.RecoveryPointType
+	}
+	if imtfi.RecoveryPointID != nil {
+		objectMap["recoveryPointId"] = imtfi.RecoveryPointID
+	}
+	if imtfi.InstanceType != "" {
+		objectMap["instanceType"] = imtfi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2ATestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageTestFailoverInput.
+func (imtfi InMageTestFailoverInput) AsA2ATestFailoverInput() (*A2ATestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageTestFailoverInput.
+func (imtfi InMageTestFailoverInput) AsHyperVReplicaAzureTestFailoverInput() (*HyperVReplicaAzureTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2TestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageTestFailoverInput.
+func (imtfi InMageTestFailoverInput) AsInMageAzureV2TestFailoverInput() (*InMageAzureV2TestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageTestFailoverInput.
+func (imtfi InMageTestFailoverInput) AsInMageRcmTestFailoverInput() (*InMageRcmTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for InMageTestFailoverInput.
+func (imtfi InMageTestFailoverInput) AsInMageTestFailoverInput() (*InMageTestFailoverInput, bool) {
+	return &imtfi, true
+}
+
+// AsTestFailoverProviderSpecificInput is the BasicTestFailoverProviderSpecificInput implementation for InMageTestFailoverInput.
+func (imtfi InMageTestFailoverInput) AsTestFailoverProviderSpecificInput() (*TestFailoverProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicTestFailoverProviderSpecificInput is the BasicTestFailoverProviderSpecificInput implementation for InMageTestFailoverInput.
+func (imtfi InMageTestFailoverInput) AsBasicTestFailoverProviderSpecificInput() (BasicTestFailoverProviderSpecificInput, bool) {
+	return &imtfi, true
+}
+
+// InMageUnplannedFailoverInput provider specific input for InMage unplanned failover.
+type InMageUnplannedFailoverInput struct {
+	// RecoveryPointType - The recovery point type. Values from LatestTime, LatestTag or Custom. In the case of custom, the recovery point provided by RecoveryPointId will be used. In the other two cases, recovery point id will be ignored. Possible values include: 'LatestTime', 'LatestTag', 'Custom'
+	RecoveryPointType RecoveryPointType `json:"recoveryPointType,omitempty"`
+	// RecoveryPointID - The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should be passed.
+	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeUnplannedFailoverProviderSpecificInput', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMage'
+	InstanceType InstanceTypeBasicUnplannedFailoverProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InMageUnplannedFailoverInput.
+func (imufi InMageUnplannedFailoverInput) MarshalJSON() ([]byte, error) {
+	imufi.InstanceType = InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMage
+	objectMap := make(map[string]interface{})
+	if imufi.RecoveryPointType != "" {
+		objectMap["recoveryPointType"] = imufi.RecoveryPointType
+	}
+	if imufi.RecoveryPointID != nil {
+		objectMap["recoveryPointId"] = imufi.RecoveryPointID
+	}
+	if imufi.InstanceType != "" {
+		objectMap["instanceType"] = imufi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageUnplannedFailoverInput.
+func (imufi InMageUnplannedFailoverInput) AsA2AUnplannedFailoverInput() (*A2AUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageUnplannedFailoverInput.
+func (imufi InMageUnplannedFailoverInput) AsHyperVReplicaAzureUnplannedFailoverInput() (*HyperVReplicaAzureUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2UnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageUnplannedFailoverInput.
+func (imufi InMageUnplannedFailoverInput) AsInMageAzureV2UnplannedFailoverInput() (*InMageAzureV2UnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageUnplannedFailoverInput.
+func (imufi InMageUnplannedFailoverInput) AsInMageRcmUnplannedFailoverInput() (*InMageRcmUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageUnplannedFailoverInput.
+func (imufi InMageUnplannedFailoverInput) AsInMageUnplannedFailoverInput() (*InMageUnplannedFailoverInput, bool) {
+	return &imufi, true
+}
+
+// AsUnplannedFailoverProviderSpecificInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageUnplannedFailoverInput.
+func (imufi InMageUnplannedFailoverInput) AsUnplannedFailoverProviderSpecificInput() (*UnplannedFailoverProviderSpecificInput, bool) {
+	return nil, false
+}
+
+// AsBasicUnplannedFailoverProviderSpecificInput is the BasicUnplannedFailoverProviderSpecificInput implementation for InMageUnplannedFailoverInput.
+func (imufi InMageUnplannedFailoverInput) AsBasicUnplannedFailoverProviderSpecificInput() (BasicUnplannedFailoverProviderSpecificInput, bool) {
+	return &imufi, true
 }
 
 // InMageVolumeExclusionOptions guest disk signature based disk exclusion option when doing enable protection
@@ -10150,9 +12125,9 @@ func (jtd JobTaskDetails) AsBasicTaskTypeDetails() (BasicTaskTypeDetails, bool) 
 
 // KeyEncryptionKeyInfo key Encryption Key (KEK) information.
 type KeyEncryptionKeyInfo struct {
-	// KeyIdentifier - The key url / identifier.
+	// KeyIdentifier - The key URL / identifier.
 	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
-	// KeyVaultResourceArmID - The KeyVault resource ARM id for key.
+	// KeyVaultResourceArmID - The KeyVault resource ARM Id for key.
 	KeyVaultResourceArmID *string `json:"keyVaultResourceArmId,omitempty"`
 }
 
@@ -12293,6 +14268,7 @@ type BasicPolicyProviderSpecificDetails interface {
 	AsInMageAzureV2PolicyDetails() (*InMageAzureV2PolicyDetails, bool)
 	AsInMageBasePolicyDetails() (*InMageBasePolicyDetails, bool)
 	AsInMagePolicyDetails() (*InMagePolicyDetails, bool)
+	AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool)
 	AsRcmAzureMigrationPolicyDetails() (*RcmAzureMigrationPolicyDetails, bool)
 	AsVmwareCbtPolicyDetails() (*VmwareCbtPolicyDetails, bool)
 	AsPolicyProviderSpecificDetails() (*PolicyProviderSpecificDetails, bool)
@@ -12300,7 +14276,7 @@ type BasicPolicyProviderSpecificDetails interface {
 
 // PolicyProviderSpecificDetails base class for Provider specific details for policies.
 type PolicyProviderSpecificDetails struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -12344,6 +14320,10 @@ func unmarshalBasicPolicyProviderSpecificDetails(body []byte) (BasicPolicyProvid
 		var impd InMagePolicyDetails
 		err := json.Unmarshal(body, &impd)
 		return impd, err
+	case string(InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm):
+		var imrpd InMageRcmPolicyDetails
+		err := json.Unmarshal(body, &imrpd)
+		return imrpd, err
 	case string(InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration):
 		var rampd RcmAzureMigrationPolicyDetails
 		err := json.Unmarshal(body, &rampd)
@@ -12427,6 +14407,11 @@ func (ppsd PolicyProviderSpecificDetails) AsInMagePolicyDetails() (*InMagePolicy
 	return nil, false
 }
 
+// AsInMageRcmPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for PolicyProviderSpecificDetails.
+func (ppsd PolicyProviderSpecificDetails) AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool) {
+	return nil, false
+}
+
 // AsRcmAzureMigrationPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for PolicyProviderSpecificDetails.
 func (ppsd PolicyProviderSpecificDetails) AsRcmAzureMigrationPolicyDetails() (*RcmAzureMigrationPolicyDetails, bool) {
 	return nil, false
@@ -12455,13 +14440,14 @@ type BasicPolicyProviderSpecificInput interface {
 	AsHyperVReplicaPolicyInput() (*HyperVReplicaPolicyInput, bool)
 	AsInMageAzureV2PolicyInput() (*InMageAzureV2PolicyInput, bool)
 	AsInMagePolicyInput() (*InMagePolicyInput, bool)
+	AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool)
 	AsVMwareCbtPolicyCreationInput() (*VMwareCbtPolicyCreationInput, bool)
 	AsPolicyProviderSpecificInput() (*PolicyProviderSpecificInput, bool)
 }
 
 // PolicyProviderSpecificInput base class for provider specific input
 type PolicyProviderSpecificInput struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -12497,6 +14483,10 @@ func unmarshalBasicPolicyProviderSpecificInput(body []byte) (BasicPolicyProvider
 		var impi InMagePolicyInput
 		err := json.Unmarshal(body, &impi)
 		return impi, err
+	case string(InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageRcm):
+		var imrpci InMageRcmPolicyCreationInput
+		err := json.Unmarshal(body, &imrpci)
+		return imrpci, err
 	case string(InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt):
 		var vmcpci VMwareCbtPolicyCreationInput
 		err := json.Unmarshal(body, &vmcpci)
@@ -12563,6 +14553,11 @@ func (ppsi PolicyProviderSpecificInput) AsInMageAzureV2PolicyInput() (*InMageAzu
 
 // AsInMagePolicyInput is the BasicPolicyProviderSpecificInput implementation for PolicyProviderSpecificInput.
 func (ppsi PolicyProviderSpecificInput) AsInMagePolicyInput() (*InMagePolicyInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for PolicyProviderSpecificInput.
+func (ppsi PolicyProviderSpecificInput) AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool) {
 	return nil, false
 }
 
@@ -12745,6 +14740,46 @@ func (ps ProcessServer) MarshalJSON() ([]byte, error) {
 		objectMap["agentVersionDetails"] = ps.AgentVersionDetails
 	}
 	return json.Marshal(objectMap)
+}
+
+// ProcessServerDetails process server details.
+type ProcessServerDetails struct {
+	// ID - READ-ONLY; The process server Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The process server name.
+	Name *string `json:"name,omitempty"`
+	// Version - READ-ONLY; The process server version.
+	Version *string `json:"version,omitempty"`
+	// LastHeartbeatUtc - READ-ONLY; The last heartbeat received from the process server.
+	LastHeartbeatUtc *date.Time `json:"lastHeartbeatUtc,omitempty"`
+	// TotalMemoryInBytes - READ-ONLY; The total memory.
+	TotalMemoryInBytes *int64 `json:"totalMemoryInBytes,omitempty"`
+	// AvailableMemoryInBytes - READ-ONLY; The available memory.
+	AvailableMemoryInBytes *int64 `json:"availableMemoryInBytes,omitempty"`
+	// UsedMemoryInBytes - READ-ONLY; The used memory.
+	UsedMemoryInBytes *int64 `json:"usedMemoryInBytes,omitempty"`
+	// MemoryUsagePercentage - READ-ONLY; The memory usage percentage.
+	MemoryUsagePercentage *float64 `json:"memoryUsagePercentage,omitempty"`
+	// TotalSpaceInBytes - READ-ONLY; The total disk space.
+	TotalSpaceInBytes *int64 `json:"totalSpaceInBytes,omitempty"`
+	// AvailableSpaceInBytes - READ-ONLY; The available disk space.
+	AvailableSpaceInBytes *int64 `json:"availableSpaceInBytes,omitempty"`
+	// UsedSpaceInBytes - READ-ONLY; The used disk space.
+	UsedSpaceInBytes *int64 `json:"usedSpaceInBytes,omitempty"`
+	// FreeSpacePercentage - READ-ONLY; The free disk space percentage.
+	FreeSpacePercentage *float64 `json:"freeSpacePercentage,omitempty"`
+	// ThroughputUploadPendingDataInBytes - READ-ONLY; The uploading pending data in bytes.
+	ThroughputUploadPendingDataInBytes *int64 `json:"throughputUploadPendingDataInBytes,omitempty"`
+	// ThroughputInBytes - READ-ONLY; The throughput in bytes.
+	ThroughputInBytes *int64 `json:"throughputInBytes,omitempty"`
+	// ProcessorUsagePercentage - READ-ONLY; The processor usage percentage.
+	ProcessorUsagePercentage *float64 `json:"processorUsagePercentage,omitempty"`
+	// Health - READ-ONLY; The health of the process server. Possible values include: 'ProtectionHealthNone', 'ProtectionHealthNormal', 'ProtectionHealthWarning', 'ProtectionHealthCritical'
+	Health ProtectionHealth `json:"health,omitempty"`
+	// HealthErrors - READ-ONLY; The health errors.
+	HealthErrors *[]HealthError `json:"healthErrors,omitempty"`
+	// HistoricHealth - READ-ONLY; The historic health of the process server based on the health in last 24 hours. Possible values include: 'ProtectionHealthNone', 'ProtectionHealthNormal', 'ProtectionHealthWarning', 'ProtectionHealthCritical'
+	HistoricHealth ProtectionHealth `json:"historicHealth,omitempty"`
 }
 
 // ProtectableItem replication protected item
@@ -13791,12 +15826,13 @@ func (psfi ProviderSpecificFailoverInput) AsBasicProviderSpecificFailoverInput()
 type BasicProviderSpecificRecoveryPointDetails interface {
 	AsA2ARecoveryPointDetails() (*A2ARecoveryPointDetails, bool)
 	AsInMageAzureV2RecoveryPointDetails() (*InMageAzureV2RecoveryPointDetails, bool)
+	AsInMageRcmRecoveryPointDetails() (*InMageRcmRecoveryPointDetails, bool)
 	AsProviderSpecificRecoveryPointDetails() (*ProviderSpecificRecoveryPointDetails, bool)
 }
 
 // ProviderSpecificRecoveryPointDetails replication provider specific recovery point details.
 type ProviderSpecificRecoveryPointDetails struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeProviderSpecificRecoveryPointDetails', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeA2A', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeProviderSpecificRecoveryPointDetails', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeA2A', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicProviderSpecificRecoveryPointDetails `json:"instanceType,omitempty"`
 }
 
@@ -13816,6 +15852,10 @@ func unmarshalBasicProviderSpecificRecoveryPointDetails(body []byte) (BasicProvi
 		var imavrpd InMageAzureV2RecoveryPointDetails
 		err := json.Unmarshal(body, &imavrpd)
 		return imavrpd, err
+	case string(InstanceTypeBasicProviderSpecificRecoveryPointDetailsInstanceTypeInMageRcm):
+		var imrrpd InMageRcmRecoveryPointDetails
+		err := json.Unmarshal(body, &imrrpd)
+		return imrrpd, err
 	default:
 		var psrpd ProviderSpecificRecoveryPointDetails
 		err := json.Unmarshal(body, &psrpd)
@@ -13861,6 +15901,11 @@ func (psrpd ProviderSpecificRecoveryPointDetails) AsInMageAzureV2RecoveryPointDe
 	return nil, false
 }
 
+// AsInMageRcmRecoveryPointDetails is the BasicProviderSpecificRecoveryPointDetails implementation for ProviderSpecificRecoveryPointDetails.
+func (psrpd ProviderSpecificRecoveryPointDetails) AsInMageRcmRecoveryPointDetails() (*InMageRcmRecoveryPointDetails, bool) {
+	return nil, false
+}
+
 // AsProviderSpecificRecoveryPointDetails is the BasicProviderSpecificRecoveryPointDetails implementation for ProviderSpecificRecoveryPointDetails.
 func (psrpd ProviderSpecificRecoveryPointDetails) AsProviderSpecificRecoveryPointDetails() (*ProviderSpecificRecoveryPointDetails, bool) {
 	return &psrpd, true
@@ -13869,6 +15914,22 @@ func (psrpd ProviderSpecificRecoveryPointDetails) AsProviderSpecificRecoveryPoin
 // AsBasicProviderSpecificRecoveryPointDetails is the BasicProviderSpecificRecoveryPointDetails implementation for ProviderSpecificRecoveryPointDetails.
 func (psrpd ProviderSpecificRecoveryPointDetails) AsBasicProviderSpecificRecoveryPointDetails() (BasicProviderSpecificRecoveryPointDetails, bool) {
 	return &psrpd, true
+}
+
+// PushInstallerDetails push installer details.
+type PushInstallerDetails struct {
+	// ID - READ-ONLY; The push installer Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The push installer name.
+	Name *string `json:"name,omitempty"`
+	// Version - READ-ONLY; The push installer version.
+	Version *string `json:"version,omitempty"`
+	// LastHeartbeatUtc - READ-ONLY; The last heartbeat received from the push installer.
+	LastHeartbeatUtc *date.Time `json:"lastHeartbeatUtc,omitempty"`
+	// Health - READ-ONLY; The health of the push installer. Possible values include: 'ProtectionHealthNone', 'ProtectionHealthNormal', 'ProtectionHealthWarning', 'ProtectionHealthCritical'
+	Health ProtectionHealth `json:"health,omitempty"`
+	// HealthErrors - READ-ONLY; The health errors.
+	HealthErrors *[]HealthError `json:"healthErrors,omitempty"`
 }
 
 // RcmAzureMigrationPolicyDetails RCM based Azure migration specific policy details.
@@ -13883,7 +15944,7 @@ type RcmAzureMigrationPolicyDetails struct {
 	MultiVMSyncStatus MultiVMSyncStatus `json:"multiVmSyncStatus,omitempty"`
 	// CrashConsistentFrequencyInMinutes - The crash consistent snapshot frequency in minutes.
 	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -13952,6 +16013,11 @@ func (rampd RcmAzureMigrationPolicyDetails) AsInMagePolicyDetails() (*InMagePoli
 	return nil, false
 }
 
+// AsInMageRcmPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for RcmAzureMigrationPolicyDetails.
+func (rampd RcmAzureMigrationPolicyDetails) AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool) {
+	return nil, false
+}
+
 // AsRcmAzureMigrationPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for RcmAzureMigrationPolicyDetails.
 func (rampd RcmAzureMigrationPolicyDetails) AsRcmAzureMigrationPolicyDetails() (*RcmAzureMigrationPolicyDetails, bool) {
 	return &rampd, true
@@ -13970,6 +16036,22 @@ func (rampd RcmAzureMigrationPolicyDetails) AsPolicyProviderSpecificDetails() (*
 // AsBasicPolicyProviderSpecificDetails is the BasicPolicyProviderSpecificDetails implementation for RcmAzureMigrationPolicyDetails.
 func (rampd RcmAzureMigrationPolicyDetails) AsBasicPolicyProviderSpecificDetails() (BasicPolicyProviderSpecificDetails, bool) {
 	return &rampd, true
+}
+
+// RcmProxyDetails RCM proxy details.
+type RcmProxyDetails struct {
+	// ID - READ-ONLY; The RCM proxy Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The RCM proxy name.
+	Name *string `json:"name,omitempty"`
+	// Version - READ-ONLY; The RCM proxy version.
+	Version *string `json:"version,omitempty"`
+	// LastHeartbeatUtc - READ-ONLY; The last heartbeat received from the RCM proxy.
+	LastHeartbeatUtc *date.Time `json:"lastHeartbeatUtc,omitempty"`
+	// Health - READ-ONLY; The health of the RCM proxy. Possible values include: 'ProtectionHealthNone', 'ProtectionHealthNormal', 'ProtectionHealthWarning', 'ProtectionHealthCritical'
+	Health ProtectionHealth `json:"health,omitempty"`
+	// HealthErrors - READ-ONLY; The health errors.
+	HealthErrors *[]HealthError `json:"healthErrors,omitempty"`
 }
 
 // RecoveryPlan recovery plan details.
@@ -14048,7 +16130,7 @@ type RecoveryPlanA2AFailoverInput struct {
 	CloudServiceCreationOption *string `json:"cloudServiceCreationOption,omitempty"`
 	// MultiVMSyncPointOption - A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover. Possible values include: 'UseMultiVMSyncRecoveryPoint', 'UsePerVMRecoveryPoint'
 	MultiVMSyncPointOption MultiVMSyncPointOption `json:"multiVmSyncPointOption,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage'
+	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput `json:"instanceType,omitempty"`
 }
 
@@ -14093,6 +16175,11 @@ func (rpafi RecoveryPlanA2AFailoverInput) AsRecoveryPlanInMageAzureV2FailoverInp
 
 // AsRecoveryPlanInMageFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanA2AFailoverInput.
 func (rpafi RecoveryPlanA2AFailoverInput) AsRecoveryPlanInMageFailoverInput() (*RecoveryPlanInMageFailoverInput, bool) {
+	return nil, false
+}
+
+// AsRecoveryPlanInMageRcmFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanA2AFailoverInput.
+func (rpafi RecoveryPlanA2AFailoverInput) AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool) {
 	return nil, false
 }
 
@@ -14594,7 +16681,7 @@ type RecoveryPlanHyperVReplicaAzureFailbackInput struct {
 	DataSyncOption DataSyncStatus `json:"dataSyncOption,omitempty"`
 	// RecoveryVMCreationOption - The ALR option. Possible values include: 'CreateVMIfNotFound', 'NoAction'
 	RecoveryVMCreationOption AlternateLocationRecoveryOption `json:"recoveryVmCreationOption,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage'
+	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput `json:"instanceType,omitempty"`
 }
 
@@ -14639,6 +16726,11 @@ func (rphvrafi RecoveryPlanHyperVReplicaAzureFailbackInput) AsRecoveryPlanInMage
 	return nil, false
 }
 
+// AsRecoveryPlanInMageRcmFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanHyperVReplicaAzureFailbackInput.
+func (rphvrafi RecoveryPlanHyperVReplicaAzureFailbackInput) AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool) {
+	return nil, false
+}
+
 // AsRecoveryPlanProviderSpecificFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanHyperVReplicaAzureFailbackInput.
 func (rphvrafi RecoveryPlanHyperVReplicaAzureFailbackInput) AsRecoveryPlanProviderSpecificFailoverInput() (*RecoveryPlanProviderSpecificFailoverInput, bool) {
 	return nil, false
@@ -14659,7 +16751,7 @@ type RecoveryPlanHyperVReplicaAzureFailoverInput struct {
 	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
 	// RecoveryPointType - The recovery point type. Possible values include: 'HyperVReplicaAzureRpRecoveryPointTypeLatest', 'HyperVReplicaAzureRpRecoveryPointTypeLatestApplicationConsistent', 'HyperVReplicaAzureRpRecoveryPointTypeLatestProcessed'
 	RecoveryPointType HyperVReplicaAzureRpRecoveryPointType `json:"recoveryPointType,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage'
+	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput `json:"instanceType,omitempty"`
 }
 
@@ -14710,6 +16802,11 @@ func (rphvrafi RecoveryPlanHyperVReplicaAzureFailoverInput) AsRecoveryPlanInMage
 	return nil, false
 }
 
+// AsRecoveryPlanInMageRcmFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanHyperVReplicaAzureFailoverInput.
+func (rphvrafi RecoveryPlanHyperVReplicaAzureFailoverInput) AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool) {
+	return nil, false
+}
+
 // AsRecoveryPlanProviderSpecificFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanHyperVReplicaAzureFailoverInput.
 func (rphvrafi RecoveryPlanHyperVReplicaAzureFailoverInput) AsRecoveryPlanProviderSpecificFailoverInput() (*RecoveryPlanProviderSpecificFailoverInput, bool) {
 	return nil, false
@@ -14728,7 +16825,7 @@ type RecoveryPlanInMageAzureV2FailoverInput struct {
 	RecoveryPointType InMageV2RpRecoveryPointType `json:"recoveryPointType,omitempty"`
 	// UseMultiVMSyncPoint - A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover.
 	UseMultiVMSyncPoint *string `json:"useMultiVmSyncPoint,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage'
+	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput `json:"instanceType,omitempty"`
 }
 
@@ -14776,6 +16873,11 @@ func (rpimavfi RecoveryPlanInMageAzureV2FailoverInput) AsRecoveryPlanInMageFailo
 	return nil, false
 }
 
+// AsRecoveryPlanInMageRcmFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanInMageAzureV2FailoverInput.
+func (rpimavfi RecoveryPlanInMageAzureV2FailoverInput) AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool) {
+	return nil, false
+}
+
 // AsRecoveryPlanProviderSpecificFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanInMageAzureV2FailoverInput.
 func (rpimavfi RecoveryPlanInMageAzureV2FailoverInput) AsRecoveryPlanProviderSpecificFailoverInput() (*RecoveryPlanProviderSpecificFailoverInput, bool) {
 	return nil, false
@@ -14790,7 +16892,7 @@ func (rpimavfi RecoveryPlanInMageAzureV2FailoverInput) AsBasicRecoveryPlanProvid
 type RecoveryPlanInMageFailoverInput struct {
 	// RecoveryPointType - The recovery point type. Possible values include: 'RpInMageRecoveryPointTypeLatestTime', 'RpInMageRecoveryPointTypeLatestTag', 'RpInMageRecoveryPointTypeCustom'
 	RecoveryPointType RpInMageRecoveryPointType `json:"recoveryPointType,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage'
+	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput `json:"instanceType,omitempty"`
 }
 
@@ -14832,6 +16934,11 @@ func (rpimfi RecoveryPlanInMageFailoverInput) AsRecoveryPlanInMageFailoverInput(
 	return &rpimfi, true
 }
 
+// AsRecoveryPlanInMageRcmFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanInMageFailoverInput.
+func (rpimfi RecoveryPlanInMageFailoverInput) AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool) {
+	return nil, false
+}
+
 // AsRecoveryPlanProviderSpecificFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanInMageFailoverInput.
 func (rpimfi RecoveryPlanInMageFailoverInput) AsRecoveryPlanProviderSpecificFailoverInput() (*RecoveryPlanProviderSpecificFailoverInput, bool) {
 	return nil, false
@@ -14840,6 +16947,72 @@ func (rpimfi RecoveryPlanInMageFailoverInput) AsRecoveryPlanProviderSpecificFail
 // AsBasicRecoveryPlanProviderSpecificFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanInMageFailoverInput.
 func (rpimfi RecoveryPlanInMageFailoverInput) AsBasicRecoveryPlanProviderSpecificFailoverInput() (BasicRecoveryPlanProviderSpecificFailoverInput, bool) {
 	return &rpimfi, true
+}
+
+// RecoveryPlanInMageRcmFailoverInput recovery plan InMageRcm failover input.
+type RecoveryPlanInMageRcmFailoverInput struct {
+	// RecoveryPointType - The recovery point type. Possible values include: 'RecoveryPlanPointTypeLatest', 'RecoveryPlanPointTypeLatestApplicationConsistent', 'RecoveryPlanPointTypeLatestCrashConsistent', 'RecoveryPlanPointTypeLatestProcessed'
+	RecoveryPointType RecoveryPlanPointType `json:"recoveryPointType,omitempty"`
+	// UseMultiVMSyncPoint - A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover.
+	UseMultiVMSyncPoint *string `json:"useMultiVmSyncPoint,omitempty"`
+	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageRcm'
+	InstanceType InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecoveryPlanInMageRcmFailoverInput.
+func (rpimrfi RecoveryPlanInMageRcmFailoverInput) MarshalJSON() ([]byte, error) {
+	rpimrfi.InstanceType = InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageRcm
+	objectMap := make(map[string]interface{})
+	if rpimrfi.RecoveryPointType != "" {
+		objectMap["recoveryPointType"] = rpimrfi.RecoveryPointType
+	}
+	if rpimrfi.UseMultiVMSyncPoint != nil {
+		objectMap["useMultiVmSyncPoint"] = rpimrfi.UseMultiVMSyncPoint
+	}
+	if rpimrfi.InstanceType != "" {
+		objectMap["instanceType"] = rpimrfi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsRecoveryPlanA2AFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanInMageRcmFailoverInput.
+func (rpimrfi RecoveryPlanInMageRcmFailoverInput) AsRecoveryPlanA2AFailoverInput() (*RecoveryPlanA2AFailoverInput, bool) {
+	return nil, false
+}
+
+// AsRecoveryPlanHyperVReplicaAzureFailbackInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanInMageRcmFailoverInput.
+func (rpimrfi RecoveryPlanInMageRcmFailoverInput) AsRecoveryPlanHyperVReplicaAzureFailbackInput() (*RecoveryPlanHyperVReplicaAzureFailbackInput, bool) {
+	return nil, false
+}
+
+// AsRecoveryPlanHyperVReplicaAzureFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanInMageRcmFailoverInput.
+func (rpimrfi RecoveryPlanInMageRcmFailoverInput) AsRecoveryPlanHyperVReplicaAzureFailoverInput() (*RecoveryPlanHyperVReplicaAzureFailoverInput, bool) {
+	return nil, false
+}
+
+// AsRecoveryPlanInMageAzureV2FailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanInMageRcmFailoverInput.
+func (rpimrfi RecoveryPlanInMageRcmFailoverInput) AsRecoveryPlanInMageAzureV2FailoverInput() (*RecoveryPlanInMageAzureV2FailoverInput, bool) {
+	return nil, false
+}
+
+// AsRecoveryPlanInMageFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanInMageRcmFailoverInput.
+func (rpimrfi RecoveryPlanInMageRcmFailoverInput) AsRecoveryPlanInMageFailoverInput() (*RecoveryPlanInMageFailoverInput, bool) {
+	return nil, false
+}
+
+// AsRecoveryPlanInMageRcmFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanInMageRcmFailoverInput.
+func (rpimrfi RecoveryPlanInMageRcmFailoverInput) AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool) {
+	return &rpimrfi, true
+}
+
+// AsRecoveryPlanProviderSpecificFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanInMageRcmFailoverInput.
+func (rpimrfi RecoveryPlanInMageRcmFailoverInput) AsRecoveryPlanProviderSpecificFailoverInput() (*RecoveryPlanProviderSpecificFailoverInput, bool) {
+	return nil, false
+}
+
+// AsBasicRecoveryPlanProviderSpecificFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanInMageRcmFailoverInput.
+func (rpimrfi RecoveryPlanInMageRcmFailoverInput) AsBasicRecoveryPlanProviderSpecificFailoverInput() (BasicRecoveryPlanProviderSpecificFailoverInput, bool) {
+	return &rpimrfi, true
 }
 
 // RecoveryPlanManualActionDetails recovery plan manual action details.
@@ -15268,12 +17441,13 @@ type BasicRecoveryPlanProviderSpecificFailoverInput interface {
 	AsRecoveryPlanHyperVReplicaAzureFailoverInput() (*RecoveryPlanHyperVReplicaAzureFailoverInput, bool)
 	AsRecoveryPlanInMageAzureV2FailoverInput() (*RecoveryPlanInMageAzureV2FailoverInput, bool)
 	AsRecoveryPlanInMageFailoverInput() (*RecoveryPlanInMageFailoverInput, bool)
+	AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool)
 	AsRecoveryPlanProviderSpecificFailoverInput() (*RecoveryPlanProviderSpecificFailoverInput, bool)
 }
 
 // RecoveryPlanProviderSpecificFailoverInput recovery plan provider specific failover input base class.
 type RecoveryPlanProviderSpecificFailoverInput struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage'
+	// InstanceType - Possible values include: 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeRecoveryPlanProviderSpecificFailoverInput', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeA2A', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzureFailback', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMage', 'InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput `json:"instanceType,omitempty"`
 }
 
@@ -15305,6 +17479,10 @@ func unmarshalBasicRecoveryPlanProviderSpecificFailoverInput(body []byte) (Basic
 		var rpimfi RecoveryPlanInMageFailoverInput
 		err := json.Unmarshal(body, &rpimfi)
 		return rpimfi, err
+	case string(InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInputInstanceTypeInMageRcm):
+		var rpimrfi RecoveryPlanInMageRcmFailoverInput
+		err := json.Unmarshal(body, &rpimrfi)
+		return rpimrfi, err
 	default:
 		var rppsfi RecoveryPlanProviderSpecificFailoverInput
 		err := json.Unmarshal(body, &rppsfi)
@@ -15362,6 +17540,11 @@ func (rppsfi RecoveryPlanProviderSpecificFailoverInput) AsRecoveryPlanInMageAzur
 
 // AsRecoveryPlanInMageFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanProviderSpecificFailoverInput.
 func (rppsfi RecoveryPlanProviderSpecificFailoverInput) AsRecoveryPlanInMageFailoverInput() (*RecoveryPlanInMageFailoverInput, bool) {
+	return nil, false
+}
+
+// AsRecoveryPlanInMageRcmFailoverInput is the BasicRecoveryPlanProviderSpecificFailoverInput implementation for RecoveryPlanProviderSpecificFailoverInput.
+func (rppsfi RecoveryPlanProviderSpecificFailoverInput) AsRecoveryPlanInMageRcmFailoverInput() (*RecoveryPlanInMageRcmFailoverInput, bool) {
 	return nil, false
 }
 
@@ -16299,6 +18482,22 @@ type RenewCertificateInput struct {
 type RenewCertificateInputProperties struct {
 	// RenewCertificateType - Renew certificate type.
 	RenewCertificateType *string `json:"renewCertificateType,omitempty"`
+}
+
+// ReplicationAgentDetails replication agent details.
+type ReplicationAgentDetails struct {
+	// ID - READ-ONLY; The replication agent Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The replication agent name.
+	Name *string `json:"name,omitempty"`
+	// Version - READ-ONLY; The replication agent version.
+	Version *string `json:"version,omitempty"`
+	// LastHeartbeatUtc - READ-ONLY; The last heartbeat received from the replication agent.
+	LastHeartbeatUtc *date.Time `json:"lastHeartbeatUtc,omitempty"`
+	// Health - READ-ONLY; The health of the replication agent. Possible values include: 'ProtectionHealthNone', 'ProtectionHealthNormal', 'ProtectionHealthWarning', 'ProtectionHealthCritical'
+	Health ProtectionHealth `json:"health,omitempty"`
+	// HealthErrors - READ-ONLY; The health errors.
+	HealthErrors *[]HealthError `json:"healthErrors,omitempty"`
 }
 
 // ReplicationEligibilityResults replication eligibility results response model.
@@ -18376,13 +20575,14 @@ type BasicReplicationProviderSpecificSettings interface {
 	AsHyperVReplicaBlueReplicationDetails() (*HyperVReplicaBlueReplicationDetails, bool)
 	AsHyperVReplicaReplicationDetails() (*HyperVReplicaReplicationDetails, bool)
 	AsInMageAzureV2ReplicationDetails() (*InMageAzureV2ReplicationDetails, bool)
+	AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool)
 	AsInMageReplicationDetails() (*InMageReplicationDetails, bool)
 	AsReplicationProviderSpecificSettings() (*ReplicationProviderSpecificSettings, bool)
 }
 
 // ReplicationProviderSpecificSettings replication provider specific settings.
 type ReplicationProviderSpecificSettings struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
+	// InstanceType - Possible values include: 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeReplicationProviderSpecificSettings', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeA2A', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplicaBaseReplicationDetails', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageAzureV2', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageRcm', 'InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage'
 	InstanceType InstanceTypeBasicReplicationProviderSpecificSettings `json:"instanceType,omitempty"`
 }
 
@@ -18418,6 +20618,10 @@ func unmarshalBasicReplicationProviderSpecificSettings(body []byte) (BasicReplic
 		var imavrd InMageAzureV2ReplicationDetails
 		err := json.Unmarshal(body, &imavrd)
 		return imavrd, err
+	case string(InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMageRcm):
+		var imrrd InMageRcmReplicationDetails
+		err := json.Unmarshal(body, &imrrd)
+		return imrrd, err
 	case string(InstanceTypeBasicReplicationProviderSpecificSettingsInstanceTypeInMage):
 		var imrd InMageReplicationDetails
 		err := json.Unmarshal(body, &imrd)
@@ -18484,6 +20688,11 @@ func (rpss ReplicationProviderSpecificSettings) AsHyperVReplicaReplicationDetail
 
 // AsInMageAzureV2ReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for ReplicationProviderSpecificSettings.
 func (rpss ReplicationProviderSpecificSettings) AsInMageAzureV2ReplicationDetails() (*InMageAzureV2ReplicationDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmReplicationDetails is the BasicReplicationProviderSpecificSettings implementation for ReplicationProviderSpecificSettings.
+func (rpss ReplicationProviderSpecificSettings) AsInMageRcmReplicationDetails() (*InMageRcmReplicationDetails, bool) {
 	return nil, false
 }
 
@@ -19098,6 +21307,22 @@ func (future *ReplicationvCentersUpdateFuture) Result(client ReplicationvCenters
 	return
 }
 
+// ReprotectAgentDetails reprotect agent details.
+type ReprotectAgentDetails struct {
+	// ID - READ-ONLY; The reprotect agent Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The reprotect agent name.
+	Name *string `json:"name,omitempty"`
+	// Version - READ-ONLY; The version.
+	Version *string `json:"version,omitempty"`
+	// LastHeartbeatUtc - READ-ONLY; The last heartbeat received from the reprotect agent.
+	LastHeartbeatUtc *date.Time `json:"lastHeartbeatUtc,omitempty"`
+	// Health - READ-ONLY; The health of the reprotect agent. Possible values include: 'ProtectionHealthNone', 'ProtectionHealthNormal', 'ProtectionHealthWarning', 'ProtectionHealthCritical'
+	Health ProtectionHealth `json:"health,omitempty"`
+	// HealthErrors - READ-ONLY; The health errors.
+	HealthErrors *[]HealthError `json:"healthErrors,omitempty"`
+}
+
 // ResolveHealthError resolve health errors input properties.
 type ResolveHealthError struct {
 	// HealthErrorID - Health error id.
@@ -19344,7 +21569,7 @@ type RunAsAccount struct {
 
 // SanEnableProtectionInput san enable protection provider specific input.
 type SanEnableProtectionInput struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
+	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
 	InstanceType InstanceTypeBasicEnableProtectionProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -19375,6 +21600,11 @@ func (sepi SanEnableProtectionInput) AsInMageAzureV2EnableProtectionInput() (*In
 
 // AsInMageEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for SanEnableProtectionInput.
 func (sepi SanEnableProtectionInput) AsInMageEnableProtectionInput() (*InMageEnableProtectionInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmEnableProtectionInput is the BasicEnableProtectionProviderSpecificInput implementation for SanEnableProtectionInput.
+func (sepi SanEnableProtectionInput) AsInMageRcmEnableProtectionInput() (*InMageRcmEnableProtectionInput, bool) {
 	return nil, false
 }
 
@@ -20514,15 +22744,15 @@ type TestFailoverCleanupInputProperties struct {
 	Comments *string `json:"comments,omitempty"`
 }
 
-// TestFailoverInput input definition for planned failover.
+// TestFailoverInput input definition for test failover.
 type TestFailoverInput struct {
-	// Properties - Planned failover input properties
+	// Properties - test failover input properties
 	Properties *TestFailoverInputProperties `json:"properties,omitempty"`
 }
 
-// TestFailoverInputProperties input definition for planned failover input properties.
+// TestFailoverInputProperties input definition for test failover input properties.
 type TestFailoverInputProperties struct {
-	// FailoverDirection - Failover direction.
+	// FailoverDirection - Test failover direction.
 	FailoverDirection *string `json:"failoverDirection,omitempty"`
 	// NetworkType - Network type to be used for test failover.
 	NetworkType *string `json:"networkType,omitempty"`
@@ -20531,7 +22761,7 @@ type TestFailoverInputProperties struct {
 	// SkipTestFailoverCleanup - A value indicating whether the test failover cleanup is to be skipped.
 	SkipTestFailoverCleanup *string `json:"skipTestFailoverCleanup,omitempty"`
 	// ProviderSpecificDetails - Provider specific settings
-	ProviderSpecificDetails BasicProviderSpecificFailoverInput `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails BasicTestFailoverProviderSpecificInput `json:"providerSpecificDetails,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for TestFailoverInputProperties struct.
@@ -20581,7 +22811,7 @@ func (tfip *TestFailoverInputProperties) UnmarshalJSON(body []byte) error {
 			}
 		case "providerSpecificDetails":
 			if v != nil {
-				providerSpecificDetails, err := unmarshalBasicProviderSpecificFailoverInput(*v)
+				providerSpecificDetails, err := unmarshalBasicTestFailoverProviderSpecificInput(*v)
 				if err != nil {
 					return err
 				}
@@ -20677,6 +22907,120 @@ func (tfjd TestFailoverJobDetails) AsJobDetails() (*JobDetails, bool) {
 // AsBasicJobDetails is the BasicJobDetails implementation for TestFailoverJobDetails.
 func (tfjd TestFailoverJobDetails) AsBasicJobDetails() (BasicJobDetails, bool) {
 	return &tfjd, true
+}
+
+// BasicTestFailoverProviderSpecificInput provider specific test failover input.
+type BasicTestFailoverProviderSpecificInput interface {
+	AsA2ATestFailoverInput() (*A2ATestFailoverInput, bool)
+	AsHyperVReplicaAzureTestFailoverInput() (*HyperVReplicaAzureTestFailoverInput, bool)
+	AsInMageAzureV2TestFailoverInput() (*InMageAzureV2TestFailoverInput, bool)
+	AsInMageRcmTestFailoverInput() (*InMageRcmTestFailoverInput, bool)
+	AsInMageTestFailoverInput() (*InMageTestFailoverInput, bool)
+	AsTestFailoverProviderSpecificInput() (*TestFailoverProviderSpecificInput, bool)
+}
+
+// TestFailoverProviderSpecificInput provider specific test failover input.
+type TestFailoverProviderSpecificInput struct {
+	// InstanceType - Possible values include: 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeTestFailoverProviderSpecificInput', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMage'
+	InstanceType InstanceTypeBasicTestFailoverProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+func unmarshalBasicTestFailoverProviderSpecificInput(body []byte) (BasicTestFailoverProviderSpecificInput, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["instanceType"] {
+	case string(InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeA2A):
+		var atfi A2ATestFailoverInput
+		err := json.Unmarshal(body, &atfi)
+		return atfi, err
+	case string(InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure):
+		var hvratfi HyperVReplicaAzureTestFailoverInput
+		err := json.Unmarshal(body, &hvratfi)
+		return hvratfi, err
+	case string(InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageAzureV2):
+		var imavtfi InMageAzureV2TestFailoverInput
+		err := json.Unmarshal(body, &imavtfi)
+		return imavtfi, err
+	case string(InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMageRcm):
+		var imrtfi InMageRcmTestFailoverInput
+		err := json.Unmarshal(body, &imrtfi)
+		return imrtfi, err
+	case string(InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeInMage):
+		var imtfi InMageTestFailoverInput
+		err := json.Unmarshal(body, &imtfi)
+		return imtfi, err
+	default:
+		var tfpsi TestFailoverProviderSpecificInput
+		err := json.Unmarshal(body, &tfpsi)
+		return tfpsi, err
+	}
+}
+func unmarshalBasicTestFailoverProviderSpecificInputArray(body []byte) ([]BasicTestFailoverProviderSpecificInput, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	tfpsiArray := make([]BasicTestFailoverProviderSpecificInput, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		tfpsi, err := unmarshalBasicTestFailoverProviderSpecificInput(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		tfpsiArray[index] = tfpsi
+	}
+	return tfpsiArray, nil
+}
+
+// MarshalJSON is the custom marshaler for TestFailoverProviderSpecificInput.
+func (tfpsi TestFailoverProviderSpecificInput) MarshalJSON() ([]byte, error) {
+	tfpsi.InstanceType = InstanceTypeBasicTestFailoverProviderSpecificInputInstanceTypeTestFailoverProviderSpecificInput
+	objectMap := make(map[string]interface{})
+	if tfpsi.InstanceType != "" {
+		objectMap["instanceType"] = tfpsi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2ATestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for TestFailoverProviderSpecificInput.
+func (tfpsi TestFailoverProviderSpecificInput) AsA2ATestFailoverInput() (*A2ATestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for TestFailoverProviderSpecificInput.
+func (tfpsi TestFailoverProviderSpecificInput) AsHyperVReplicaAzureTestFailoverInput() (*HyperVReplicaAzureTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2TestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for TestFailoverProviderSpecificInput.
+func (tfpsi TestFailoverProviderSpecificInput) AsInMageAzureV2TestFailoverInput() (*InMageAzureV2TestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for TestFailoverProviderSpecificInput.
+func (tfpsi TestFailoverProviderSpecificInput) AsInMageRcmTestFailoverInput() (*InMageRcmTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageTestFailoverInput is the BasicTestFailoverProviderSpecificInput implementation for TestFailoverProviderSpecificInput.
+func (tfpsi TestFailoverProviderSpecificInput) AsInMageTestFailoverInput() (*InMageTestFailoverInput, bool) {
+	return nil, false
+}
+
+// AsTestFailoverProviderSpecificInput is the BasicTestFailoverProviderSpecificInput implementation for TestFailoverProviderSpecificInput.
+func (tfpsi TestFailoverProviderSpecificInput) AsTestFailoverProviderSpecificInput() (*TestFailoverProviderSpecificInput, bool) {
+	return &tfpsi, true
+}
+
+// AsBasicTestFailoverProviderSpecificInput is the BasicTestFailoverProviderSpecificInput implementation for TestFailoverProviderSpecificInput.
+func (tfpsi TestFailoverProviderSpecificInput) AsBasicTestFailoverProviderSpecificInput() (BasicTestFailoverProviderSpecificInput, bool) {
+	return &tfpsi, true
 }
 
 // TestMigrateCleanupInput input for test migrate cleanup.
@@ -20800,20 +23144,20 @@ func (tmpsi TestMigrateProviderSpecificInput) AsBasicTestMigrateProviderSpecific
 	return &tmpsi, true
 }
 
-// UnplannedFailoverInput input definition for planned failover.
+// UnplannedFailoverInput input definition for unplanned failover.
 type UnplannedFailoverInput struct {
-	// Properties - Planned failover input properties
+	// Properties - Unplanned failover input properties.
 	Properties *UnplannedFailoverInputProperties `json:"properties,omitempty"`
 }
 
-// UnplannedFailoverInputProperties input definition for planned failover input properties.
+// UnplannedFailoverInputProperties input definition for unplanned failover input properties.
 type UnplannedFailoverInputProperties struct {
 	// FailoverDirection - Failover direction.
 	FailoverDirection *string `json:"failoverDirection,omitempty"`
 	// SourceSiteOperations - Source site operations status
 	SourceSiteOperations *string `json:"sourceSiteOperations,omitempty"`
 	// ProviderSpecificDetails - Provider specific settings
-	ProviderSpecificDetails BasicProviderSpecificFailoverInput `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails BasicUnplannedFailoverProviderSpecificInput `json:"providerSpecificDetails,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for UnplannedFailoverInputProperties struct.
@@ -20845,7 +23189,7 @@ func (ufip *UnplannedFailoverInputProperties) UnmarshalJSON(body []byte) error {
 			}
 		case "providerSpecificDetails":
 			if v != nil {
-				providerSpecificDetails, err := unmarshalBasicProviderSpecificFailoverInput(*v)
+				providerSpecificDetails, err := unmarshalBasicUnplannedFailoverProviderSpecificInput(*v)
 				if err != nil {
 					return err
 				}
@@ -20855,6 +23199,120 @@ func (ufip *UnplannedFailoverInputProperties) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// BasicUnplannedFailoverProviderSpecificInput provider specific unplanned failover input.
+type BasicUnplannedFailoverProviderSpecificInput interface {
+	AsA2AUnplannedFailoverInput() (*A2AUnplannedFailoverInput, bool)
+	AsHyperVReplicaAzureUnplannedFailoverInput() (*HyperVReplicaAzureUnplannedFailoverInput, bool)
+	AsInMageAzureV2UnplannedFailoverInput() (*InMageAzureV2UnplannedFailoverInput, bool)
+	AsInMageRcmUnplannedFailoverInput() (*InMageRcmUnplannedFailoverInput, bool)
+	AsInMageUnplannedFailoverInput() (*InMageUnplannedFailoverInput, bool)
+	AsUnplannedFailoverProviderSpecificInput() (*UnplannedFailoverProviderSpecificInput, bool)
+}
+
+// UnplannedFailoverProviderSpecificInput provider specific unplanned failover input.
+type UnplannedFailoverProviderSpecificInput struct {
+	// InstanceType - Possible values include: 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeUnplannedFailoverProviderSpecificInput', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMage'
+	InstanceType InstanceTypeBasicUnplannedFailoverProviderSpecificInput `json:"instanceType,omitempty"`
+}
+
+func unmarshalBasicUnplannedFailoverProviderSpecificInput(body []byte) (BasicUnplannedFailoverProviderSpecificInput, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["instanceType"] {
+	case string(InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeA2A):
+		var aufi A2AUnplannedFailoverInput
+		err := json.Unmarshal(body, &aufi)
+		return aufi, err
+	case string(InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeHyperVReplicaAzure):
+		var hvraufi HyperVReplicaAzureUnplannedFailoverInput
+		err := json.Unmarshal(body, &hvraufi)
+		return hvraufi, err
+	case string(InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageAzureV2):
+		var imavufi InMageAzureV2UnplannedFailoverInput
+		err := json.Unmarshal(body, &imavufi)
+		return imavufi, err
+	case string(InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMageRcm):
+		var imrufi InMageRcmUnplannedFailoverInput
+		err := json.Unmarshal(body, &imrufi)
+		return imrufi, err
+	case string(InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeInMage):
+		var imufi InMageUnplannedFailoverInput
+		err := json.Unmarshal(body, &imufi)
+		return imufi, err
+	default:
+		var ufpsi UnplannedFailoverProviderSpecificInput
+		err := json.Unmarshal(body, &ufpsi)
+		return ufpsi, err
+	}
+}
+func unmarshalBasicUnplannedFailoverProviderSpecificInputArray(body []byte) ([]BasicUnplannedFailoverProviderSpecificInput, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	ufpsiArray := make([]BasicUnplannedFailoverProviderSpecificInput, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		ufpsi, err := unmarshalBasicUnplannedFailoverProviderSpecificInput(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		ufpsiArray[index] = ufpsi
+	}
+	return ufpsiArray, nil
+}
+
+// MarshalJSON is the custom marshaler for UnplannedFailoverProviderSpecificInput.
+func (ufpsi UnplannedFailoverProviderSpecificInput) MarshalJSON() ([]byte, error) {
+	ufpsi.InstanceType = InstanceTypeBasicUnplannedFailoverProviderSpecificInputInstanceTypeUnplannedFailoverProviderSpecificInput
+	objectMap := make(map[string]interface{})
+	if ufpsi.InstanceType != "" {
+		objectMap["instanceType"] = ufpsi.InstanceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsA2AUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for UnplannedFailoverProviderSpecificInput.
+func (ufpsi UnplannedFailoverProviderSpecificInput) AsA2AUnplannedFailoverInput() (*A2AUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsHyperVReplicaAzureUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for UnplannedFailoverProviderSpecificInput.
+func (ufpsi UnplannedFailoverProviderSpecificInput) AsHyperVReplicaAzureUnplannedFailoverInput() (*HyperVReplicaAzureUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageAzureV2UnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for UnplannedFailoverProviderSpecificInput.
+func (ufpsi UnplannedFailoverProviderSpecificInput) AsInMageAzureV2UnplannedFailoverInput() (*InMageAzureV2UnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for UnplannedFailoverProviderSpecificInput.
+func (ufpsi UnplannedFailoverProviderSpecificInput) AsInMageRcmUnplannedFailoverInput() (*InMageRcmUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsInMageUnplannedFailoverInput is the BasicUnplannedFailoverProviderSpecificInput implementation for UnplannedFailoverProviderSpecificInput.
+func (ufpsi UnplannedFailoverProviderSpecificInput) AsInMageUnplannedFailoverInput() (*InMageUnplannedFailoverInput, bool) {
+	return nil, false
+}
+
+// AsUnplannedFailoverProviderSpecificInput is the BasicUnplannedFailoverProviderSpecificInput implementation for UnplannedFailoverProviderSpecificInput.
+func (ufpsi UnplannedFailoverProviderSpecificInput) AsUnplannedFailoverProviderSpecificInput() (*UnplannedFailoverProviderSpecificInput, bool) {
+	return &ufpsi, true
+}
+
+// AsBasicUnplannedFailoverProviderSpecificInput is the BasicUnplannedFailoverProviderSpecificInput implementation for UnplannedFailoverProviderSpecificInput.
+func (ufpsi UnplannedFailoverProviderSpecificInput) AsBasicUnplannedFailoverProviderSpecificInput() (BasicUnplannedFailoverProviderSpecificInput, bool) {
+	return &ufpsi, true
 }
 
 // UpdateMigrationItemInput update migration item input.
@@ -21256,12 +23714,13 @@ type BasicUpdateReplicationProtectedItemProviderInput interface {
 	AsA2AUpdateReplicationProtectedItemInput() (*A2AUpdateReplicationProtectedItemInput, bool)
 	AsHyperVReplicaAzureUpdateReplicationProtectedItemInput() (*HyperVReplicaAzureUpdateReplicationProtectedItemInput, bool)
 	AsInMageAzureV2UpdateReplicationProtectedItemInput() (*InMageAzureV2UpdateReplicationProtectedItemInput, bool)
+	AsInMageRcmUpdateReplicationProtectedItemInput() (*InMageRcmUpdateReplicationProtectedItemInput, bool)
 	AsUpdateReplicationProtectedItemProviderInput() (*UpdateReplicationProtectedItemProviderInput, bool)
 }
 
 // UpdateReplicationProtectedItemProviderInput update replication protected item provider specific input.
 type UpdateReplicationProtectedItemProviderInput struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeUpdateReplicationProtectedItemProviderInput', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeA2A', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageRcm'
 	InstanceType InstanceTypeBasicUpdateReplicationProtectedItemProviderInput `json:"instanceType,omitempty"`
 }
 
@@ -21285,6 +23744,10 @@ func unmarshalBasicUpdateReplicationProtectedItemProviderInput(body []byte) (Bas
 		var imavurpii InMageAzureV2UpdateReplicationProtectedItemInput
 		err := json.Unmarshal(body, &imavurpii)
 		return imavurpii, err
+	case string(InstanceTypeBasicUpdateReplicationProtectedItemProviderInputInstanceTypeInMageRcm):
+		var imrurpii InMageRcmUpdateReplicationProtectedItemInput
+		err := json.Unmarshal(body, &imrurpii)
+		return imrurpii, err
 	default:
 		var urpipi UpdateReplicationProtectedItemProviderInput
 		err := json.Unmarshal(body, &urpipi)
@@ -21332,6 +23795,11 @@ func (urpipi UpdateReplicationProtectedItemProviderInput) AsHyperVReplicaAzureUp
 
 // AsInMageAzureV2UpdateReplicationProtectedItemInput is the BasicUpdateReplicationProtectedItemProviderInput implementation for UpdateReplicationProtectedItemProviderInput.
 func (urpipi UpdateReplicationProtectedItemProviderInput) AsInMageAzureV2UpdateReplicationProtectedItemInput() (*InMageAzureV2UpdateReplicationProtectedItemInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmUpdateReplicationProtectedItemInput is the BasicUpdateReplicationProtectedItemProviderInput implementation for UpdateReplicationProtectedItemProviderInput.
+func (urpipi UpdateReplicationProtectedItemProviderInput) AsInMageRcmUpdateReplicationProtectedItemInput() (*InMageRcmUpdateReplicationProtectedItemInput, bool) {
 	return nil, false
 }
 
@@ -21907,7 +24375,7 @@ func (vmtd VirtualMachineTaskDetails) AsBasicTaskTypeDetails() (BasicTaskTypeDet
 
 // VmmDetails VMM fabric specific details.
 type VmmDetails struct {
-	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2'
 	InstanceType InstanceTypeBasicFabricSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -21928,6 +24396,11 @@ func (vd VmmDetails) AsAzureFabricSpecificDetails() (*AzureFabricSpecificDetails
 
 // AsHyperVSiteDetails is the BasicFabricSpecificDetails implementation for VmmDetails.
 func (vd VmmDetails) AsHyperVSiteDetails() (*HyperVSiteDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmFabricSpecificDetails is the BasicFabricSpecificDetails implementation for VmmDetails.
+func (vd VmmDetails) AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool) {
 	return nil, false
 }
 
@@ -22215,11 +24688,11 @@ type VmmVirtualMachineDetails struct {
 	OsDetails *OSDetails `json:"osDetails,omitempty"`
 	// DiskDetails - The Last successful failover time.
 	DiskDetails *[]DiskDetails `json:"diskDetails,omitempty"`
-	// HasPhysicalDisk - A value indicating whether the VM has a physical disk attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'Unknown', 'Present', 'NotPresent'
+	// HasPhysicalDisk - A value indicating whether the VM has a physical disk attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'PresenceStatusUnknown', 'PresenceStatusPresent', 'PresenceStatusNotPresent'
 	HasPhysicalDisk PresenceStatus `json:"hasPhysicalDisk,omitempty"`
-	// HasFibreChannelAdapter - A value indicating whether the VM has a fibre channel adapter attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'Unknown', 'Present', 'NotPresent'
+	// HasFibreChannelAdapter - A value indicating whether the VM has a fibre channel adapter attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'PresenceStatusUnknown', 'PresenceStatusPresent', 'PresenceStatusNotPresent'
 	HasFibreChannelAdapter PresenceStatus `json:"hasFibreChannelAdapter,omitempty"`
-	// HasSharedVhd - A value indicating whether the VM has a shared VHD attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'Unknown', 'Present', 'NotPresent'
+	// HasSharedVhd - A value indicating whether the VM has a shared VHD attached. String value of {SrsDataContract.PresenceStatus} enum. Possible values include: 'PresenceStatusUnknown', 'PresenceStatusPresent', 'PresenceStatusNotPresent'
 	HasSharedVhd PresenceStatus `json:"hasSharedVhd,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeConfigurationSettings', 'InstanceTypeHyperVVirtualMachine', 'InstanceTypeReplicationGroupDetails', 'InstanceTypeVmmVirtualMachine', 'InstanceTypeVMwareVirtualMachine'
 	InstanceType InstanceTypeBasicConfigurationSettings `json:"instanceType,omitempty"`
@@ -22863,7 +25336,7 @@ type VMwareCbtPolicyCreationInput struct {
 	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
 	// AppConsistentFrequencyInMinutes - The app consistent snapshot frequency (in minutes).
 	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypePolicyProviderSpecificInput', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificInputInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificInput `json:"instanceType,omitempty"`
 }
 
@@ -22916,6 +25389,11 @@ func (vmcpci VMwareCbtPolicyCreationInput) AsInMagePolicyInput() (*InMagePolicyI
 	return nil, false
 }
 
+// AsInMageRcmPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for VMwareCbtPolicyCreationInput.
+func (vmcpci VMwareCbtPolicyCreationInput) AsInMageRcmPolicyCreationInput() (*InMageRcmPolicyCreationInput, bool) {
+	return nil, false
+}
+
 // AsVMwareCbtPolicyCreationInput is the BasicPolicyProviderSpecificInput implementation for VMwareCbtPolicyCreationInput.
 func (vmcpci VMwareCbtPolicyCreationInput) AsVMwareCbtPolicyCreationInput() (*VMwareCbtPolicyCreationInput, bool) {
 	return &vmcpci, true
@@ -22939,7 +25417,7 @@ type VmwareCbtPolicyDetails struct {
 	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
 	// CrashConsistentFrequencyInMinutes - The crash consistent snapshot frequency in minutes.
 	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
+	// InstanceType - Possible values include: 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypePolicyProviderSpecificDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeA2A', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplicaBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012R2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeHyperVReplica2012', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageAzureV2', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageBasePolicyDetails', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMage', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeRcmAzureMigration', 'InstanceTypeBasicPolicyProviderSpecificDetailsInstanceTypeVMwareCbt'
 	InstanceType InstanceTypeBasicPolicyProviderSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -22999,6 +25477,11 @@ func (vcpd VmwareCbtPolicyDetails) AsInMageBasePolicyDetails() (*InMageBasePolic
 
 // AsInMagePolicyDetails is the BasicPolicyProviderSpecificDetails implementation for VmwareCbtPolicyDetails.
 func (vcpd VmwareCbtPolicyDetails) AsInMagePolicyDetails() (*InMagePolicyDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmPolicyDetails is the BasicPolicyProviderSpecificDetails implementation for VmwareCbtPolicyDetails.
+func (vcpd VmwareCbtPolicyDetails) AsInMageRcmPolicyDetails() (*InMageRcmPolicyDetails, bool) {
 	return nil, false
 }
 
@@ -23281,7 +25764,7 @@ type VMwareDetails struct {
 	AgentExpiryDate *date.Time `json:"agentExpiryDate,omitempty"`
 	// AgentVersionDetails - The agent version details.
 	AgentVersionDetails *VersionDetails `json:"agentVersionDetails,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2'
 	InstanceType InstanceTypeBasicFabricSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -23401,6 +25884,11 @@ func (vmd VMwareDetails) AsHyperVSiteDetails() (*HyperVSiteDetails, bool) {
 	return nil, false
 }
 
+// AsInMageRcmFabricSpecificDetails is the BasicFabricSpecificDetails implementation for VMwareDetails.
+func (vmd VMwareDetails) AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool) {
+	return nil, false
+}
+
 // AsVmmDetails is the BasicFabricSpecificDetails implementation for VMwareDetails.
 func (vmd VMwareDetails) AsVmmDetails() (*VmmDetails, bool) {
 	return nil, false
@@ -23432,7 +25920,7 @@ type VMwareV2FabricCreationInput struct {
 	VmwareSiteID *string `json:"vmwareSiteId,omitempty"`
 	// MigrationSolutionID - The ARM Id of the migration solution.
 	MigrationSolutionID *string `json:"migrationSolutionId,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeFabricSpecificCreationInput', 'InstanceTypeAzure', 'InstanceTypeVMwareV2'
+	// InstanceType - Possible values include: 'InstanceTypeFabricSpecificCreationInput', 'InstanceTypeAzure', 'InstanceTypeInMageRcm', 'InstanceTypeVMwareV2'
 	InstanceType InstanceTypeBasicFabricSpecificCreationInput `json:"instanceType,omitempty"`
 }
 
@@ -23454,6 +25942,11 @@ func (vmvfci VMwareV2FabricCreationInput) MarshalJSON() ([]byte, error) {
 
 // AsAzureFabricCreationInput is the BasicFabricSpecificCreationInput implementation for VMwareV2FabricCreationInput.
 func (vmvfci VMwareV2FabricCreationInput) AsAzureFabricCreationInput() (*AzureFabricCreationInput, bool) {
+	return nil, false
+}
+
+// AsInMageRcmFabricCreationInput is the BasicFabricSpecificCreationInput implementation for VMwareV2FabricCreationInput.
+func (vmvfci VMwareV2FabricCreationInput) AsInMageRcmFabricCreationInput() (*InMageRcmFabricCreationInput, bool) {
 	return nil, false
 }
 
@@ -23482,7 +25975,7 @@ type VMwareV2FabricSpecificDetails struct {
 	ServiceEndpoint *string `json:"serviceEndpoint,omitempty"`
 	// ServiceResourceID - READ-ONLY; The service resource Id.
 	ServiceResourceID *string `json:"serviceResourceId,omitempty"`
-	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2'
+	// InstanceType - Possible values include: 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeFabricSpecificDetails', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeAzure', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeHyperVSite', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeInMageRcm', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMM', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMware', 'InstanceTypeBasicFabricSpecificDetailsInstanceTypeVMwareV2'
 	InstanceType InstanceTypeBasicFabricSpecificDetails `json:"instanceType,omitempty"`
 }
 
@@ -23503,6 +25996,11 @@ func (vmvfsd VMwareV2FabricSpecificDetails) AsAzureFabricSpecificDetails() (*Azu
 
 // AsHyperVSiteDetails is the BasicFabricSpecificDetails implementation for VMwareV2FabricSpecificDetails.
 func (vmvfsd VMwareV2FabricSpecificDetails) AsHyperVSiteDetails() (*HyperVSiteDetails, bool) {
+	return nil, false
+}
+
+// AsInMageRcmFabricSpecificDetails is the BasicFabricSpecificDetails implementation for VMwareV2FabricSpecificDetails.
+func (vmvfsd VMwareV2FabricSpecificDetails) AsInMageRcmFabricSpecificDetails() (*InMageRcmFabricSpecificDetails, bool) {
 	return nil, false
 }
 

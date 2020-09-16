@@ -79,6 +79,13 @@ func (client ReplicationRecoveryServicesProvidersClient) Create(ctx context.Cont
 							{Target: "addProviderInput.Properties.ResourceAccessIdentityInput.Audience", Name: validation.Null, Rule: true, Chain: nil},
 							{Target: "addProviderInput.Properties.ResourceAccessIdentityInput.AadAuthority", Name: validation.Null, Rule: true, Chain: nil},
 						}},
+					{Target: "addProviderInput.Properties.DataPlaneAuthenticationIdentityInput", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "addProviderInput.Properties.DataPlaneAuthenticationIdentityInput.TenantID", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "addProviderInput.Properties.DataPlaneAuthenticationIdentityInput.ApplicationID", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "addProviderInput.Properties.DataPlaneAuthenticationIdentityInput.ObjectID", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "addProviderInput.Properties.DataPlaneAuthenticationIdentityInput.Audience", Name: validation.Null, Rule: true, Chain: nil},
+							{Target: "addProviderInput.Properties.DataPlaneAuthenticationIdentityInput.AadAuthority", Name: validation.Null, Rule: true, Chain: nil},
+						}},
 				}}}}}); err != nil {
 		return result, validation.NewError("siterecovery.ReplicationRecoveryServicesProvidersClient", "Create", err.Error())
 	}

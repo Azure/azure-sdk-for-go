@@ -70,6 +70,7 @@ type PrivateEndpointConnectionsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties cognitiveservices.PrivateEndpointConnection) (result cognitiveservices.PrivateEndpointConnection, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result cognitiveservices.PrivateEndpointConnection, err error)
+	List(ctx context.Context, resourceGroupName string, accountName string) (result cognitiveservices.PrivateEndpointConnectionListResult, err error)
 }
 
 var _ PrivateEndpointConnectionsClientAPI = (*cognitiveservices.PrivateEndpointConnectionsClient)(nil)

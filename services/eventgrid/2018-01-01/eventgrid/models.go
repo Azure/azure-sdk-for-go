@@ -63,6 +63,188 @@ type AppServicePlanEventTypeDetail struct {
 	Status AsyncStatus `json:"status,omitempty"`
 }
 
+// CloudEventEvent properties of an event published to an Event Grid topic using the CloudEvent 1.0 Schema
+type CloudEventEvent struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// ID - An identifier for the event. The combination of id and source must be unique for each distinct event.
+	ID *string `json:"id,omitempty"`
+	// Source - Identifies the context in which an event happened. The combination of id and source must be unique for each distinct event.
+	Source *string `json:"source,omitempty"`
+	// Data - Event data specific to the event type.
+	Data interface{} `json:"data,omitempty"`
+	// DataBase64 - Event data specific to the event type, encoded as a base64 string.
+	DataBase64 *[]byte `json:"data_base64,omitempty"`
+	// Type - Type of event related to the originating occurrence.
+	Type *string `json:"type,omitempty"`
+	// Time - The time (in UTC) the event was generated, in RFC3339 format.
+	Time *date.Time `json:"time,omitempty"`
+	// Specversion - The version of the CloudEvents specification which the event uses.
+	Specversion *string `json:"specversion,omitempty"`
+	// Dataschema - Identifies the schema that data adheres to.
+	Dataschema *string `json:"dataschema,omitempty"`
+	// Datacontenttype - Content type of data value.
+	Datacontenttype *string `json:"datacontenttype,omitempty"`
+	// Subject - This describes the subject of the event in the context of the event producer (identified by source).
+	Subject *string `json:"subject,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudEventEvent.
+func (cee CloudEventEvent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cee.ID != nil {
+		objectMap["id"] = cee.ID
+	}
+	if cee.Source != nil {
+		objectMap["source"] = cee.Source
+	}
+	if cee.Data != nil {
+		objectMap["data"] = cee.Data
+	}
+	if cee.DataBase64 != nil {
+		objectMap["data_base64"] = cee.DataBase64
+	}
+	if cee.Type != nil {
+		objectMap["type"] = cee.Type
+	}
+	if cee.Time != nil {
+		objectMap["time"] = cee.Time
+	}
+	if cee.Specversion != nil {
+		objectMap["specversion"] = cee.Specversion
+	}
+	if cee.Dataschema != nil {
+		objectMap["dataschema"] = cee.Dataschema
+	}
+	if cee.Datacontenttype != nil {
+		objectMap["datacontenttype"] = cee.Datacontenttype
+	}
+	if cee.Subject != nil {
+		objectMap["subject"] = cee.Subject
+	}
+	for k, v := range cee.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CloudEventEvent struct.
+func (cee *CloudEventEvent) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if cee.AdditionalProperties == nil {
+					cee.AdditionalProperties = make(map[string]interface{})
+				}
+				cee.AdditionalProperties[k] = additionalProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				cee.ID = &ID
+			}
+		case "source":
+			if v != nil {
+				var source string
+				err = json.Unmarshal(*v, &source)
+				if err != nil {
+					return err
+				}
+				cee.Source = &source
+			}
+		case "data":
+			if v != nil {
+				var data interface{}
+				err = json.Unmarshal(*v, &data)
+				if err != nil {
+					return err
+				}
+				cee.Data = data
+			}
+		case "data_base64":
+			if v != nil {
+				var dataBase64 []byte
+				err = json.Unmarshal(*v, &dataBase64)
+				if err != nil {
+					return err
+				}
+				cee.DataBase64 = &dataBase64
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cee.Type = &typeVar
+			}
+		case "time":
+			if v != nil {
+				var timeVar date.Time
+				err = json.Unmarshal(*v, &timeVar)
+				if err != nil {
+					return err
+				}
+				cee.Time = &timeVar
+			}
+		case "specversion":
+			if v != nil {
+				var specversion string
+				err = json.Unmarshal(*v, &specversion)
+				if err != nil {
+					return err
+				}
+				cee.Specversion = &specversion
+			}
+		case "dataschema":
+			if v != nil {
+				var dataschema string
+				err = json.Unmarshal(*v, &dataschema)
+				if err != nil {
+					return err
+				}
+				cee.Dataschema = &dataschema
+			}
+		case "datacontenttype":
+			if v != nil {
+				var datacontenttype string
+				err = json.Unmarshal(*v, &datacontenttype)
+				if err != nil {
+					return err
+				}
+				cee.Datacontenttype = &datacontenttype
+			}
+		case "subject":
+			if v != nil {
+				var subject string
+				err = json.Unmarshal(*v, &subject)
+				if err != nil {
+					return err
+				}
+				cee.Subject = &subject
+			}
+		}
+	}
+
+	return nil
+}
+
 // ContainerRegistryArtifactEventData the content of the event request message.
 type ContainerRegistryArtifactEventData struct {
 	// ID - The event ID.
@@ -339,7 +521,7 @@ type DeviceTwinProperties struct {
 	Version *float64 `json:"version,omitempty"`
 }
 
-// Event properties of an event published to an Event Grid topic.
+// Event properties of an event published to an Event Grid topic using the EventGrid Schema.
 type Event struct {
 	// ID - An unique identifier for the event.
 	ID *string `json:"id,omitempty"`
@@ -630,6 +812,25 @@ type KeyVaultSecretNearExpiryEventData struct {
 // KeyVaultSecretNewVersionCreatedEventData schema of the Data property of an EventGridEvent for an
 // SecretNewVersionCreated event.
 type KeyVaultSecretNewVersionCreatedEventData struct {
+	// ID - The id of the object that triggered this event.
+	ID *string `json:"id,omitempty"`
+	// VaultName - Key vault name of the object that triggered this event.
+	VaultName *string `json:"vaultName,omitempty"`
+	// ObjectType - The type of the object that triggered this event
+	ObjectType *string `json:"objectType,omitempty"`
+	// ObjectName - The name of the object that triggered this event
+	ObjectName *string `json:"objectName,omitempty"`
+	// Version - The version of the object that triggered this event
+	Version *string `json:"version,omitempty"`
+	// Nbf - Not before date of the object that triggered this event
+	Nbf *float64 `json:"nbf,omitempty"`
+	// Exp - The expiration date of the object that triggered this event
+	Exp *float64 `json:"exp,omitempty"`
+}
+
+// KeyVaultVaultAccessPolicyChangedEventData schema of the Data property of an EventGridEvent for an
+// VaultAccessPolicyChanged event.
+type KeyVaultVaultAccessPolicyChangedEventData struct {
 	// ID - The id of the object that triggered this event.
 	ID *string `json:"id,omitempty"`
 	// VaultName - Key vault name of the object that triggered this event.

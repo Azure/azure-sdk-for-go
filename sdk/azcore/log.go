@@ -32,6 +32,10 @@ const (
 
 	// LogSlowResponse entries contain information for responses that take longer than the specified threshold.
 	LogSlowResponse LogClassification = "SlowResponse"
+
+	// LogLongRunningOperation entries contain information specific to long-running operations.
+	// This includes information like polling location, operation state and sleep intervals.
+	LogLongRunningOperation LogClassification = "LongRunningOperation"
 )
 
 // Listener is the function signature invoked when writing log entries.

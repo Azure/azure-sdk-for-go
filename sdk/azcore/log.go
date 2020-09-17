@@ -5,6 +5,12 @@
 
 package azcore
 
+import (
+	"fmt"
+	"os"
+	"time"
+)
+
 // LogClassification is used to group entries.  Each group can be toggled on or off.
 type LogClassification string
 
@@ -80,6 +86,15 @@ func (l *Logger) Write(cls LogClassification, message string) {
 	l.lst(cls, message)
 }
 
+// Writef invokes the underlying Listener with the specified classification and formatted message.
+// If the classification shouldn't be logged or there is no listener then Writef does nothing.
+func (l *Logger) Writef(cls LogClassification, format string, a ...interface{}) {
+	if l.lst == nil || !l.Should(cls) {
+		return
+	}
+	l.lst(cls, fmt.Sprintf(format, a...))
+}
+
 // for testing purposes
 func (l *Logger) resetClassifications() {
 	l.cls = nil
@@ -90,4 +105,17 @@ var log Logger
 // Log returns the process-wide logger.
 func Log() *Logger {
 	return &log
+}
+
+// simple console logger, it writes to stderr in the following format:
+// [time-stamp] Classification: message
+func consoleLogger(cls LogClassification, msg string) {
+	fmt.Fprintf(os.Stderr, "[%s] %s: %s\n", time.Now().Format(time.StampMicro), cls, msg)
+}
+
+func init() {
+	if cls := os.Getenv("AZURE_SDK_GO_LOGGING"); cls == "all" {
+		// cls could be enhanced to support a comma-delimited list of log classifications
+		log.lst = consoleLogger
+	}
 }

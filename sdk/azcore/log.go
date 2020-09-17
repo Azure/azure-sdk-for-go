@@ -107,15 +107,13 @@ func Log() *Logger {
 	return &log
 }
 
-// simple console logger, it writes to stderr in the following format:
-// [time-stamp] Classification: message
-func consoleLogger(cls LogClassification, msg string) {
-	fmt.Fprintf(os.Stderr, "[%s] %s: %s\n", time.Now().Format(time.StampMicro), cls, msg)
-}
-
 func init() {
 	if cls := os.Getenv("AZURE_SDK_GO_LOGGING"); cls == "all" {
 		// cls could be enhanced to support a comma-delimited list of log classifications
-		log.lst = consoleLogger
+		log.lst = func(cls LogClassification, msg string) {
+			// simple console logger, it writes to stderr in the following format:
+			// [time-stamp] Classification: message
+			fmt.Fprintf(os.Stderr, "[%s] %s: %s\n", time.Now().Format(time.StampMicro), cls, msg)
+		}
 	}
 }

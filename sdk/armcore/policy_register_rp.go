@@ -127,7 +127,10 @@ func (r *rpRegistrationPolicy) Do(req *azcore.Request) (*azcore.Response, error)
 		if err != nil {
 			return resp, newFrameError(err)
 		}
-		azcore.Log().Write(LogRPRegistration, fmt.Sprintf("begin registration for %s", rp))
+		logRegistrationExit := func(v interface{}) {
+			azcore.Log().Writef(LogRPRegistration, "END registration for %s: %v", rp, v)
+		}
+		azcore.Log().Writef(LogRPRegistration, "BEGIN registration for %s", rp)
 		// create client and make the registration request
 		// we use the scheme and host from the original request
 		rpOps := &providersOperations{
@@ -136,6 +139,7 @@ func (r *rpRegistrationPolicy) Do(req *azcore.Request) (*azcore.Response, error)
 			subID: subID,
 		}
 		if _, err = rpOps.Register(req.Context(), rp); err != nil {
+			logRegistrationExit(err)
 			return resp, err
 		}
 		// RP was registered, however we need to wait for the registration to complete
@@ -146,16 +150,18 @@ func (r *rpRegistrationPolicy) Do(req *azcore.Request) (*azcore.Response, error)
 			getResp, err := rpOps.Get(pollCtx, rp)
 			if err != nil {
 				pollCancel()
+				logRegistrationExit(err)
 				return resp, err
 			}
 			if getResp.Provider.RegistrationState != nil && !strings.EqualFold(*getResp.Provider.RegistrationState, lastRegState) {
 				// registration state has changed, or was updated for the first time
 				lastRegState = *getResp.Provider.RegistrationState
-				azcore.Log().Write(LogRPRegistration, fmt.Sprintf("registration state is %s", lastRegState))
+				azcore.Log().Writef(LogRPRegistration, "registration state is %s", lastRegState)
 			}
 			if strings.EqualFold(lastRegState, registeredState) {
 				// registration complete
 				pollCancel()
+				logRegistrationExit(lastRegState)
 				break
 			}
 			// wait before trying again
@@ -164,6 +170,7 @@ func (r *rpRegistrationPolicy) Do(req *azcore.Request) (*azcore.Response, error)
 				// continue polling
 			case <-pollCtx.Done():
 				pollCancel()
+				logRegistrationExit(pollCtx.Err())
 				return resp, pollCtx.Err()
 			}
 		}

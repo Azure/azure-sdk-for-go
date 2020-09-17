@@ -98,8 +98,8 @@ func TestDefaultAzureCredential_NilOptions(t *testing.T) {
 		t.Fatalf("Did not expect to receive an error in creating the credential")
 	}
 	c := newManagedIdentityClient(nil)
-	// if the test is running in a MSI environment then the length of sources would be two since it will include environmnet credential and managed identity credential
-	if msiType, err := c.getMSIType(context.Background()); msiType == msiTypeIMDS || msiType == msiTypeCloudShell || msiType == msiTypeAppService {
+	// if the test is running in a MSI environment then the length of sources would be two since it will include environment credential and managed identity credential
+	if msiType, err := c.getMSIType(context.Background()); !(msiType == msiTypeUnavailable || msiType == msiTypeUnknown) {
 		if len(cred.sources) != lengthOfChainFull {
 			t.Fatalf("Length of ChainedTokenCredential sources for DefaultAzureCredential. Expected: %d, Received: %d", lengthOfChainFull, len(cred.sources))
 		}

@@ -170,9 +170,10 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 	var statusCodes []int
 	// retry policy for MSI is not end-user configurable
 	retryOpts := azcore.RetryOptions{
-		MaxRetries: 4,
-		RetryDelay: 2 * time.Second,
-		TryTimeout: 1 * time.Minute,
+		MaxRetries:    5,
+		MaxRetryDelay: 1 * time.Minute,
+		RetryDelay:    2 * time.Second,
+		TryTimeout:    1 * time.Minute,
 		StatusCodes: append(statusCodes,
 			// The following status codes are a subset of those found in azcore.StatusCodesForRetry, these are the only ones specifically needed for MSI scenarios
 			http.StatusRequestTimeout,      // 408
@@ -180,16 +181,16 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 			http.StatusInternalServerError, // 500
 			http.StatusBadGateway,          // 502
 			http.StatusGatewayTimeout,      // 504
-			http.StatusNotFound,
-			http.StatusGone,
+			http.StatusNotFound,            //404
+			http.StatusGone,                //410
 			// all remaining 5xx
-			http.StatusNotImplemented,
-			http.StatusHTTPVersionNotSupported,
-			http.StatusVariantAlsoNegotiates,
-			http.StatusInsufficientStorage,
-			http.StatusLoopDetected,
-			http.StatusNotExtended,
-			http.StatusNetworkAuthenticationRequired),
+			http.StatusNotImplemented,                 // 501
+			http.StatusHTTPVersionNotSupported,        // 505
+			http.StatusVariantAlsoNegotiates,          // 506
+			http.StatusInsufficientStorage,            // 507
+			http.StatusLoopDetected,                   // 508
+			http.StatusNotExtended,                    // 510
+			http.StatusNetworkAuthenticationRequired), // 511
 	}
 
 	return azcore.NewPipeline(

@@ -73,7 +73,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellMockFail(t *testing.T) {
 	}
 }
 
-func TestManagedIdentityCredential_GetTokenInAppServiceMock(t *testing.T) {
+func TestManagedIdentityCredential_GetTokenInAppServiceV20170901Mock(t *testing.T) {
 	err := resetEnvironmentVarsForTest()
 	if err != nil {
 		t.Fatalf("Unable to set environment variables")
@@ -87,9 +87,41 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMock(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	tk, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to retrieve a token")
+	}
+	if tk.Token != "new_token" {
+		t.Fatalf("Did not receive the correct token. Expected \"new_token\", Received: %s", tk.Token)
+	}
+	if msiCred.client.msiType != msiTypeAppServiceV20170901 {
+		t.Fatalf("Failed to detect the correct MSI Environment. Expected: %d, Received: %d", msiTypeAppServiceV20170901, msiCred.client.msiType)
+	}
+}
+
+func TestManagedIdentityCredential_GetTokenInAppServiceV20190801Mock(t *testing.T) {
+	err := resetEnvironmentVarsForTest()
+	if err != nil {
+		t.Fatalf("Unable to set environment variables")
+	}
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(appServiceTokenSuccessResp)))
+	_ = os.Setenv("IDENTITY_ENDPOINT", srv.URL())
+	_ = os.Setenv("IDENTITY_HEADER", "header")
+	msiCred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	tk, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	if err != nil {
+		t.Fatalf("Received an error when attempting to retrieve a token")
+	}
+	if tk.Token != "new_token" {
+		t.Fatalf("Did not receive the correct token. Expected \"new_token\", Received: %s", tk.Token)
+	}
+	if msiCred.client.msiType != msiTypeAppServiceV20190801 {
+		t.Fatalf("Failed to detect the correct MSI Environment. Expected: %d, Received: %d", msiTypeAppServiceV20190801, msiCred.client.msiType)
 	}
 }
 

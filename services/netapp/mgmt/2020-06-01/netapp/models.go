@@ -1714,7 +1714,7 @@ type ReplicationObject struct {
 	ReplicationID *string `json:"replicationId,omitempty"`
 	// EndpointType - Indicates whether the local volume is the source or destination for the Volume Replication. Possible values include: 'Src', 'Dst'
 	EndpointType EndpointType `json:"endpointType,omitempty"`
-	// ReplicationSchedule - Schedule. Possible values include: '10minutely', 'Hourly', 'Daily', 'Weekly', 'Monthly'
+	// ReplicationSchedule - Schedule. Possible values include: '10minutely', 'Hourly', 'Daily'
 	ReplicationSchedule ReplicationSchedule `json:"replicationSchedule,omitempty"`
 	// RemoteVolumeResourceID - The resource ID of the remote volume.
 	RemoteVolumeResourceID *string `json:"remoteVolumeResourceId,omitempty"`
@@ -2173,16 +2173,41 @@ func (spp *SnapshotPolicyPatch) UnmarshalJSON(body []byte) error {
 
 // SnapshotPolicyProperties snapshot policy properties
 type SnapshotPolicyProperties struct {
+	// Name - READ-ONLY; Snapshot policy name
+	Name *string `json:"name,omitempty"`
 	// HourlySchedule - Schedule for hourly snapshots
-	HourlySchedule interface{} `json:"hourlySchedule,omitempty"`
+	HourlySchedule *HourlySchedule `json:"hourlySchedule,omitempty"`
 	// DailySchedule - Schedule for daily snapshots
-	DailySchedule interface{} `json:"dailySchedule,omitempty"`
+	DailySchedule *DailySchedule `json:"dailySchedule,omitempty"`
 	// WeeklySchedule - Schedule for weekly snapshots
-	WeeklySchedule interface{} `json:"weeklySchedule,omitempty"`
+	WeeklySchedule *WeeklySchedule `json:"weeklySchedule,omitempty"`
 	// MonthlySchedule - Schedule for monthly snapshots
-	MonthlySchedule interface{} `json:"monthlySchedule,omitempty"`
+	MonthlySchedule *MonthlySchedule `json:"monthlySchedule,omitempty"`
 	// Enabled - The property to decide policy is enabled or not
 	Enabled *bool `json:"enabled,omitempty"`
+	// ProvisioningState - READ-ONLY; Azure lifecycle management
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SnapshotPolicyProperties.
+func (spp SnapshotPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if spp.HourlySchedule != nil {
+		objectMap["hourlySchedule"] = spp.HourlySchedule
+	}
+	if spp.DailySchedule != nil {
+		objectMap["dailySchedule"] = spp.DailySchedule
+	}
+	if spp.WeeklySchedule != nil {
+		objectMap["weeklySchedule"] = spp.WeeklySchedule
+	}
+	if spp.MonthlySchedule != nil {
+		objectMap["monthlySchedule"] = spp.MonthlySchedule
+	}
+	if spp.Enabled != nil {
+		objectMap["enabled"] = spp.Enabled
+	}
+	return json.Marshal(objectMap)
 }
 
 // SnapshotPolicyVolumeList volumes associated with snapshot policy

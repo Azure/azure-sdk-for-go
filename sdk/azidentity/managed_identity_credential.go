@@ -47,9 +47,7 @@ type ManagedIdentityCredential struct {
 func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
 	// Create a new Managed Identity Client with default options
 	client := newManagedIdentityClient(options)
-	// The context passed in here will only be used to check for the IMDS endpoint and will be set to timeout after
-	// 500 milliseconds in imdsAvailable()
-	msiType, err := client.getMSIType(context.Background())
+	msiType, err := client.getMSIType()
 	// If there is an error that means that the code is not running in a Managed Identity environment
 	if err != nil {
 		credErr := &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}

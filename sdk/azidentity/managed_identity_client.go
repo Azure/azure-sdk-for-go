@@ -90,20 +90,6 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *manage
 // clientID: The client (application) ID of the service principal.
 // scopes: The scopes required for the token.
 func (c *managedIdentityClient) authenticate(ctx context.Context, clientID string, scopes []string) (*azcore.AccessToken, error) {
-	// This condition should never be true since getMSIType returns an error in these cases
-	// if MSI is unavailable or we were unable to determine the type return a nil access token
-	if c.msiType == msiTypeUnavailable || c.msiType == msiTypeUnknown {
-		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
-	}
-
-	AT, err := c.sendAuthRequest(ctx, clientID, scopes)
-	if err != nil {
-		return nil, err
-	}
-	return AT, nil
-}
-
-func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.AccessToken, error) {
 	msg, err := c.createAuthRequest(ctx, clientID, scopes)
 	if err != nil {
 		return nil, err
@@ -228,7 +214,7 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 	return request, nil
 }
 
-func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error) {
+func (c *managedIdentityClient) getMSIType() (msiType, error) {
 	if c.msiType == msiTypeUnknown { // if we haven't already determined the msiType
 		if endpointEnvVar := os.Getenv(identityEndpoint); endpointEnvVar != "" { // check for IDENTITY_ENDPOINT
 			c.endpoint = endpointEnvVar
@@ -245,7 +231,7 @@ func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error)
 			} else { // if ONLY the env var MSI_ENDPOINT is set the msiType is CloudShell
 				c.msiType = msiTypeCloudShell
 			}
-		} else if c.imdsAvailable(ctx) { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the msiType is IMDS. This will timeout after 500 milliseconds
+		} else if c.imdsAvailable() { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the msiType is IMDS. This will timeout after 500 milliseconds
 			c.endpoint = imdsEndpoint
 			c.msiType = msiTypeIMDS
 		} else { // if MSI_ENDPOINT is NOT set and IMDS endpoint is not available Managed Identity is not available
@@ -256,8 +242,9 @@ func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error)
 	return c.msiType, nil
 }
 
-func (c *managedIdentityClient) imdsAvailable(ctx context.Context) bool {
-	tempCtx, cancel := context.WithTimeout(ctx, c.imdsAvailableTimeoutMS*time.Millisecond)
+// performs an I/O request that has a timeout of 500 milliseconds
+func (c *managedIdentityClient) imdsAvailable() bool {
+	tempCtx, cancel := context.WithTimeout(context.Background(), c.imdsAvailableTimeoutMS*time.Millisecond)
 	defer cancel()
 	// this should never fail
 	request, _ := azcore.NewRequest(tempCtx, http.MethodGet, imdsEndpoint)

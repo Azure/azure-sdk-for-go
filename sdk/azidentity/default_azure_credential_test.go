@@ -4,7 +4,6 @@
 package azidentity
 
 import (
-	"context"
 	"errors"
 	"os"
 	"testing"
@@ -90,7 +89,7 @@ func TestDefaultAzureCredential_NilOptions(t *testing.T) {
 	}
 	c := newManagedIdentityClient(nil)
 	// if the test is running in a MSI environment then the length of sources would be two since it will include environment credential and managed identity credential
-	if msiType, err := c.getMSIType(context.Background()); !(msiType == msiTypeUnavailable || msiType == msiTypeUnknown) {
+	if msiType, err := c.getMSIType(); !(msiType == msiTypeUnavailable || msiType == msiTypeUnknown) {
 		if len(cred.sources) != lengthOfChainFull {
 			t.Fatalf("Length of ChainedTokenCredential sources for DefaultAzureCredential. Expected: %d, Received: %d", lengthOfChainFull, len(cred.sources))
 		}

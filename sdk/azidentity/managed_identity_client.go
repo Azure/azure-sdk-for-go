@@ -142,9 +142,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID 
 	switch c.msiType {
 	case msiTypeIMDS:
 		return c.createIMDSAuthRequest(ctx, scopes)
-	case msiTypeAppServiceV20170901:
-		return c.createAppServiceAuthRequest(ctx, clientID, scopes)
-	case msiTypeAppServiceV20190801:
+	case msiTypeAppServiceV20170901, msiTypeAppServiceV20190801:
 		return c.createAppServiceAuthRequest(ctx, clientID, scopes)
 	case msiTypeCloudShell:
 		return c.createCloudShellAuthRequest(ctx, clientID, scopes)

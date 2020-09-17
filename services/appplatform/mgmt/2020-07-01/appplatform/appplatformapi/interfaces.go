@@ -135,6 +135,13 @@ type OperationsClientAPI interface {
 
 var _ OperationsClientAPI = (*appplatform.OperationsClient)(nil)
 
+// RuntimeVersionsClientAPI contains the set of methods on the RuntimeVersionsClient type.
+type RuntimeVersionsClientAPI interface {
+	ListRuntimeVersions(ctx context.Context) (result appplatform.AvailableRuntimeVersions, err error)
+}
+
+var _ RuntimeVersionsClientAPI = (*appplatform.RuntimeVersionsClient)(nil)
+
 // SkusClientAPI contains the set of methods on the SkusClient type.
 type SkusClientAPI interface {
 	List(ctx context.Context) (result appplatform.ResourceSkuCollectionPage, err error)

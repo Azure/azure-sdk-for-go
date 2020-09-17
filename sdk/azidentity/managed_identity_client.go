@@ -22,20 +22,22 @@ const (
 )
 
 const (
-	msiEndpointEnvironemntVariable = "MSI_ENDPOINT"
-	msiSecretEnvironemntVariable   = "MSI_SECRET"
-	appServiceMsiAPIVersion        = "2017-09-01"
-	imdsAPIVersion                 = "2018-02-01"
+	identityEndpoint = "IDENTITY_ENDPOINT"
+	identityHeader   = "IDENTITY_HEADER"
+	msiEndpoint      = "MSI_ENDPOINT"
+	msiSecret        = "MSI_SECRET"
+	imdsAPIVersion   = "2018-02-01"
 )
 
 type msiType int
 
 const (
-	msiTypeUnknown     msiType = 0
-	msiTypeIMDS        msiType = 1
-	msiTypeAppService  msiType = 2
-	msiTypeCloudShell  msiType = 3
-	msiTypeUnavailable msiType = 4
+	msiTypeUnknown             msiType = 0
+	msiTypeIMDS                msiType = 1
+	msiTypeAppServiceV20170901 msiType = 2
+	msiTypeCloudShell          msiType = 3
+	msiTypeUnavailable         msiType = 4
+	msiTypeAppServiceV20190801 msiType = 5
 )
 
 // managedIdentityClient provides the base for authenticating in managed identity environments
@@ -88,25 +90,7 @@ func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *manage
 // clientID: The client (application) ID of the service principal.
 // scopes: The scopes required for the token.
 func (c *managedIdentityClient) authenticate(ctx context.Context, clientID string, scopes []string) (*azcore.AccessToken, error) {
-	currentMSI, err := c.getMSIType(ctx)
-	if err != nil {
-		return nil, err
-	}
-	// This condition should never be true since getMSIType returns an error in these cases
-	// if MSI is unavailable or we were unable to determine the type return a nil access token
-	if currentMSI == msiTypeUnavailable || currentMSI == msiTypeUnknown {
-		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
-	}
-
-	AT, err := c.sendAuthRequest(ctx, currentMSI, clientID, scopes)
-	if err != nil {
-		return nil, err
-	}
-	return AT, nil
-}
-
-func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, msiType msiType, clientID string, scopes []string) (*azcore.AccessToken, error) {
-	msg, err := c.createAuthRequest(ctx, msiType, clientID, scopes)
+	msg, err := c.createAuthRequest(ctx, clientID, scopes)
 	if err != nil {
 		return nil, err
 	}
@@ -154,23 +138,22 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 	}
 }
 
-func (c *managedIdentityClient) createAuthRequest(ctx context.Context, msiType msiType, clientID string, scopes []string) (*azcore.Request, error) {
-	switch msiType {
+func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.Request, error) {
+	switch c.msiType {
 	case msiTypeIMDS:
 		return c.createIMDSAuthRequest(ctx, scopes)
-	case msiTypeAppService:
+	case msiTypeAppServiceV20170901, msiTypeAppServiceV20190801:
 		return c.createAppServiceAuthRequest(ctx, clientID, scopes)
 	case msiTypeCloudShell:
 		return c.createCloudShellAuthRequest(ctx, clientID, scopes)
 	default:
 		errorMsg := ""
-		switch msiType {
+		switch c.msiType {
 		case msiTypeUnavailable:
 			errorMsg = "unavailable"
 		default:
 			errorMsg = "unknown"
 		}
-
 		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Make sure you are running in a valid Managed Identity Environment. Status: " + errorMsg}
 	}
 }
@@ -193,10 +176,16 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-	request.Header.Set("secret", os.Getenv(msiSecretEnvironemntVariable))
 	q := request.URL.Query()
-	q.Add("api-version", appServiceMsiAPIVersion)
-	q.Add("resource", strings.Join(scopes, " "))
+	if c.msiType == msiTypeAppServiceV20170901 {
+		request.Header.Set("secret", os.Getenv(msiSecret))
+		q.Add("api-version", "2017-09-01")
+		q.Add("resource", strings.Join(scopes, " "))
+	} else if c.msiType == msiTypeAppServiceV20190801 {
+		request.Header.Set("X-IDENTITY-HEADER", os.Getenv(identityHeader))
+		q.Add("api-version", "2019-08-01")
+		q.Add("resource", scopes[0])
+	}
 	if clientID != "" {
 		q.Add(qpClientID, clientID)
 	}
@@ -223,19 +212,27 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 	return request, nil
 }
 
-func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error) {
-	if c.msiType == msiTypeUnknown { // if we haven't already determined the msi type
-		if endpointEnvVar := os.Getenv(msiEndpointEnvironemntVariable); endpointEnvVar != "" { // if the env var MSI_ENDPOINT is set
+func (c *managedIdentityClient) getMSIType() (msiType, error) {
+	if c.msiType == msiTypeUnknown { // if we haven't already determined the msiType
+		if endpointEnvVar := os.Getenv(identityEndpoint); endpointEnvVar != "" { // check for IDENTITY_ENDPOINT
 			c.endpoint = endpointEnvVar
-			if secretEnvVar := os.Getenv(msiSecretEnvironemntVariable); secretEnvVar != "" { // if BOTH the env vars MSI_ENDPOINT and MSI_SECRET are set the MsiType is AppService
-				c.msiType = msiTypeAppService
-			} else { // if ONLY the env var MSI_ENDPOINT is set the MsiType is CloudShell
+			if header := os.Getenv(identityHeader); header != "" { // if BOTH the env vars IDENTITY_ENDPOINT and IDENTITY_HEADER are set the msiType is AppService
+				c.msiType = msiTypeAppServiceV20190801
+			} else { // if ONLY the env var IDENTITY_ENDPOINT is set the msiType is Azure Functions
+				c.msiType = msiTypeUnavailable
+				return c.msiType, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "This Managed Identity Environment is not supported yet"}
+			}
+		} else if endpointEnvVar := os.Getenv(msiEndpoint); endpointEnvVar != "" { // if the env var MSI_ENDPOINT is set
+			c.endpoint = endpointEnvVar
+			if secretEnvVar := os.Getenv(msiSecret); secretEnvVar != "" { // if BOTH the env vars MSI_ENDPOINT and MSI_SECRET are set the msiType is AppService
+				c.msiType = msiTypeAppServiceV20170901
+			} else { // if ONLY the env var MSI_ENDPOINT is set the msiType is CloudShell
 				c.msiType = msiTypeCloudShell
 			}
-		} else if c.imdsAvailable(ctx) { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the MsiType is Imds. This will timeout after 500 milliseconds
+		} else if c.imdsAvailable() { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the msiType is IMDS. This will timeout after 500 milliseconds
 			c.endpoint = imdsEndpoint
 			c.msiType = msiTypeIMDS
-		} else { // if MSI_ENDPOINT is NOT set and IMDS enpoint is not available ManagedIdentity is not available
+		} else { // if MSI_ENDPOINT is NOT set and IMDS endpoint is not available Managed Identity is not available
 			c.msiType = msiTypeUnavailable
 			return c.msiType, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Make sure you are running in a valid Managed Identity Environment"}
 		}
@@ -243,8 +240,9 @@ func (c *managedIdentityClient) getMSIType(ctx context.Context) (msiType, error)
 	return c.msiType, nil
 }
 
-func (c *managedIdentityClient) imdsAvailable(ctx context.Context) bool {
-	tempCtx, cancel := context.WithTimeout(ctx, c.imdsAvailableTimeoutMS*time.Millisecond)
+// performs an I/O request that has a timeout of 500 milliseconds
+func (c *managedIdentityClient) imdsAvailable() bool {
+	tempCtx, cancel := context.WithTimeout(context.Background(), c.imdsAvailableTimeoutMS*time.Millisecond)
 	defer cancel()
 	// this should never fail
 	request, _ := azcore.NewRequest(tempCtx, http.MethodGet, imdsEndpoint)

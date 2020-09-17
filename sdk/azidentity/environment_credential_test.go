@@ -25,28 +25,13 @@ func initEnvironmentVarsForTest() error {
 	return nil
 }
 
-func resetEnvironmentVarsForTest() error {
-	err := os.Setenv("AZURE_TENANT_ID", "")
-	if err != nil {
-		return err
-	}
-	err = os.Setenv("AZURE_CLIENT_ID", "")
-	if err != nil {
-		return err
-	}
-	err = os.Setenv("AZURE_CLIENT_SECRET", "")
-	if err != nil {
-		return err
-	}
-	return nil
+func resetEnvironmentVarsForTest() {
+	clearEnvVars("AZURE_TENANT_ID", "AZURE_CLIENT_ID", "AZURE_CLIENT_SECRET")
 }
 
 func TestEnvironmentCredential_TenantIDNotSet(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
-	}
-	err = os.Setenv("AZURE_CLIENT_ID", clientID)
+	resetEnvironmentVarsForTest()
+	err := os.Setenv("AZURE_CLIENT_ID", clientID)
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}
@@ -65,11 +50,8 @@ func TestEnvironmentCredential_TenantIDNotSet(t *testing.T) {
 }
 
 func TestEnvironmentCredential_ClientIDNotSet(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
-	}
-	err = os.Setenv("AZURE_TENANT_ID", tenantID)
+	resetEnvironmentVarsForTest()
+	err := os.Setenv("AZURE_TENANT_ID", tenantID)
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}
@@ -88,11 +70,8 @@ func TestEnvironmentCredential_ClientIDNotSet(t *testing.T) {
 }
 
 func TestEnvironmentCredential_ClientSecretNotSet(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
-	}
-	err = os.Setenv("AZURE_TENANT_ID", tenantID)
+	resetEnvironmentVarsForTest()
+	err := os.Setenv("AZURE_TENANT_ID", tenantID)
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}

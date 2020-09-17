@@ -134,6 +134,66 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20190801Mock(t *testing.
 	}
 }
 
+func TestManagedIdentityCredential_CreateAppServiceAuthRequestV20170901(t *testing.T) {
+	// setting a dummy value for MSI_ENDPOINT in order to be able to get a ManagedIdentityCredential type in order
+	// to test App Service authentication request creation.
+	_ = os.Setenv("IDENTITY_ENDPOINT", "somevalue")
+	_ = os.Setenv("IDENTITY_HEADER", "header")
+	defer clearEnvVars("IDENTITY_ENDPOINT", "IDENTITY_HEADER")
+	cred, err := NewManagedIdentityCredential(clientID, nil)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	cred.client.endpoint = imdsEndpoint
+	req, err := cred.client.createAuthRequest(context.Background(), "", []string{msiScope})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if req.Request.Header.Get("X-IDENTITY-HEADER") != "header" {
+		t.Fatalf("Unexpected value for secret header")
+	}
+	reqQueryParams, err := url.ParseQuery(req.URL.RawQuery)
+	if err != nil {
+		t.Fatalf("Unable to parse App Service request query params: %v", err)
+	}
+	if reqQueryParams["api-version"][0] != "2019-08-01" {
+		t.Fatalf("Unexpected App Service API version")
+	}
+	if reqQueryParams["resource"][0] != msiScope {
+		t.Fatalf("Unexpected resource in resource query param")
+	}
+}
+
+func TestManagedIdentityCredential_CreateAppServiceAuthRequestV20190801(t *testing.T) {
+	// setting a dummy value for MSI_ENDPOINT in order to be able to get a ManagedIdentityCredential type in order
+	// to test App Service authentication request creation.
+	_ = os.Setenv("MSI_ENDPOINT", "somevalue")
+	_ = os.Setenv("MSI_SECRET", "secret")
+	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
+	cred, err := NewManagedIdentityCredential(clientID, nil)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	cred.client.endpoint = imdsEndpoint
+	req, err := cred.client.createAuthRequest(context.Background(), "", []string{msiScope})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if req.Request.Header.Get("secret") != "secret" {
+		t.Fatalf("Unexpected value for secret header")
+	}
+	reqQueryParams, err := url.ParseQuery(req.URL.RawQuery)
+	if err != nil {
+		t.Fatalf("Unable to parse App Service request query params: %v", err)
+	}
+	if reqQueryParams["api-version"][0] != "2017-09-01" {
+		t.Fatalf("Unexpected App Service API version")
+	}
+	if reqQueryParams["resource"][0] != msiScope {
+		t.Fatalf("Unexpected resource in resource query param")
+	}
+}
+
 func TestManagedIdentityCredential_CreateAccessTokenExpiresOnInt(t *testing.T) {
 	err := resetEnvironmentVarsForTest()
 	if err != nil {

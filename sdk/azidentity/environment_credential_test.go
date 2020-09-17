@@ -26,18 +26,7 @@ func initEnvironmentVarsForTest() error {
 }
 
 func resetEnvironmentVarsForTest() error {
-	err := os.Setenv("AZURE_TENANT_ID", "")
-	if err != nil {
-		return err
-	}
-	err = os.Setenv("AZURE_CLIENT_ID", "")
-	if err != nil {
-		return err
-	}
-	err = os.Setenv("AZURE_CLIENT_SECRET", "")
-	if err != nil {
-		return err
-	}
+	clearEnvVars("AZURE_TENANT_ID", "AZURE_CLIENT_ID", "AZURE_CLIENT_SECRET")
 	return nil
 }
 

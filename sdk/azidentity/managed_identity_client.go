@@ -104,7 +104,7 @@ func (c *managedIdentityClient) authenticate(ctx context.Context, clientID strin
 }
 
 func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.AccessToken, error) {
-	msg, err := c.createAuthRequest(ctx, c.msiType, clientID, scopes)
+	msg, err := c.createAuthRequest(ctx, clientID, scopes)
 	if err != nil {
 		return nil, err
 	}
@@ -152,8 +152,8 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 	}
 }
 
-func (c *managedIdentityClient) createAuthRequest(ctx context.Context, msiType msiType, clientID string, scopes []string) (*azcore.Request, error) {
-	switch msiType {
+func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.Request, error) {
+	switch c.msiType {
 	case msiTypeIMDS:
 		return c.createIMDSAuthRequest(ctx, scopes)
 	case msiTypeAppServiceV20170901:
@@ -164,7 +164,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, msiType m
 		return c.createCloudShellAuthRequest(ctx, clientID, scopes)
 	default:
 		errorMsg := ""
-		switch msiType {
+		switch c.msiType {
 		case msiTypeUnavailable:
 			errorMsg = "unavailable"
 		default:

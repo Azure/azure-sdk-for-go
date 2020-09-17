@@ -8,7 +8,6 @@ package azcore
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
 	"math/rand"
 	"net/http"
@@ -129,12 +128,9 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 		defer rwbody.realClose()
 	}
 	try := int32(1)
-	shouldLog := Log().Should(LogRetryPolicy)
 	for {
 		resp = nil // reset
-		if shouldLog {
-			Log().Write(LogRetryPolicy, fmt.Sprintf("\n=====> Try=%d\n", try))
-		}
+		Log().Writef(LogRetryPolicy, "\n=====> Try=%d\n", try)
 
 		// For each try, seek to the beginning of the Body stream. We do this even for the 1st try because
 		// the stream may not be at offset 0 when we first get it and we want the same behavior for the
@@ -149,9 +145,7 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 		clone := req.clone(tryCtx)
 		resp, err = clone.Next() // Make the request
 		tryCancel()
-		if shouldLog {
-			Log().Write(LogRetryPolicy, fmt.Sprintf("Err=%v, response=%v\n", err, resp))
-		}
+		Log().Writef(LogRetryPolicy, "Err=%v, response=%v\n", err, resp)
 
 		if err == nil && !resp.HasStatusCode(options.StatusCodes...) {
 			// if there is no error and the response code isn't in the list of retry codes then we're done.
@@ -182,9 +176,7 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 		if delay <= 0 {
 			delay = options.calcDelay(try)
 		}
-		if shouldLog {
-			Log().Write(LogRetryPolicy, fmt.Sprintf("Try=%d, Delay=%v\n", try, delay))
-		}
+		Log().Writef(LogRetryPolicy, "Try=%d, Delay=%v\n", try, delay)
 		select {
 		case <-time.After(delay):
 			try++

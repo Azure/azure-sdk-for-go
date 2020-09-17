@@ -41,10 +41,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellLive(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_GetTokenInCloudShellMock(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unable to set environment variables")
-	}
+	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
@@ -61,10 +58,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellMock(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_GetTokenInCloudShellMockFail(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unable to set environment variables")
-	}
+	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
@@ -81,10 +75,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellMockFail(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_GetTokenInAppServiceV20170901Mock(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unable to set environment variables")
-	}
+	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(appServiceTokenSuccessResp)))
@@ -108,10 +99,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20170901Mock(t *testing.
 }
 
 func TestManagedIdentityCredential_GetTokenInAppServiceV20190801Mock(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unable to set environment variables")
-	}
+	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(appServiceTokenSuccessResp)))
@@ -195,10 +183,7 @@ func TestManagedIdentityCredential_CreateAppServiceAuthRequestV20190801(t *testi
 }
 
 func TestManagedIdentityCredential_CreateAccessTokenExpiresOnInt(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unable to set environment variables")
-	}
+	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(expiresOnIntResp)))
@@ -216,10 +201,7 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnInt(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_GetTokenInAppServiceMockFail(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unable to set environment variables")
-	}
+	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
@@ -264,10 +246,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMockFail(t *testing.T) {
 // }
 
 func TestManagedIdentityCredential_NewManagedIdentityCredentialFail(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unable to set environment variables")
-	}
+	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
@@ -312,10 +291,7 @@ func TestBearerPolicy_ManagedIdentityCredential(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_GetTokenUnexpectedJSON(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unable to set environment variables")
-	}
+	resetEnvironmentVarsForTest()
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
@@ -367,11 +343,8 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 }
 
 func TestManagedIdentityCredential_GetTokenEnvVar(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unable to set environment variables")
-	}
-	err = os.Setenv("AZURE_CLIENT_ID", "test_client_id")
+	resetEnvironmentVarsForTest()
+	err := os.Setenv("AZURE_CLIENT_ID", "test_client_id")
 	if err != nil {
 		t.Fatal(err)
 	}

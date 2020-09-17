@@ -16,10 +16,7 @@ const (
 )
 
 func TestDefaultAzureCredential_ExcludeEnvCredential(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unable to set environment variables")
-	}
+	resetEnvironmentVarsForTest()
 	_ = os.Setenv("MSI_ENDPOINT", "http://localhost:3000")
 	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{ExcludeEnvironmentCredential: true})
 	if err != nil {
@@ -60,17 +57,14 @@ func TestDefaultAzureCredential_ExcludeAzureCLICredential(t *testing.T) {
 	if len(cred.sources) != lengthOfChainOneExcluded {
 		t.Fatalf("Length of ChainedTokenCredential sources for DefaultAzureCredential. Expected: %d, Received: %d", lengthOfChainOneExcluded, len(cred.sources))
 	}
-	_ = os.Setenv("MSI_ENDPOINT", "")
-	_ = resetEnvironmentVarsForTest()
+	clearEnvVars("MSI_ENDPOINT")
+	resetEnvironmentVarsForTest()
 }
 
 func TestDefaultAzureCredential_ExcludeAllCredentials(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
-	}
+	resetEnvironmentVarsForTest()
 	var credUnavailable *CredentialUnavailableError
-	_, err = NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+	_, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
 		ExcludeEnvironmentCredential: true,
 		ExcludeMSICredential:         true,
 		ExcludeAzureCLICredential:    true,
@@ -85,11 +79,8 @@ func TestDefaultAzureCredential_ExcludeAllCredentials(t *testing.T) {
 }
 
 func TestDefaultAzureCredential_NilOptions(t *testing.T) {
-	err := resetEnvironmentVarsForTest()
-	if err != nil {
-		t.Fatalf("Unable to set environment variables")
-	}
-	err = initEnvironmentVarsForTest()
+	resetEnvironmentVarsForTest()
+	err := initEnvironmentVarsForTest()
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}

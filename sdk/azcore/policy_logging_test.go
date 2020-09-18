@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -23,7 +24,7 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse()
-	pl := NewPipeline(srv, NewRequestLogPolicy(RequestLogOptions{}))
+	pl := NewPipeline(srv, NewRequestLogPolicy(nil))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -76,7 +77,7 @@ func TestPolicyLoggingError(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetError(errors.New("bogus error"))
-	pl := NewPipeline(srv, NewRequestLogPolicy(RequestLogOptions{}))
+	pl := NewPipeline(srv, NewRequestLogPolicy(nil))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -101,8 +102,8 @@ func TestPolicyLoggingError(t *testing.T) {
 	} else {
 		t.Fatal("missing LogRequest")
 	}
-	if logError, ok := log[LogError]; ok {
-		// Error ==> REQUEST/RESPONSE (Try=1/0s, OpTime=0s) -- REQUEST ERROR
+	if logResponse, ok := log[LogResponse]; ok {
+		// Response ==> REQUEST/RESPONSE (Try=1/0s, OpTime=0s) -- REQUEST ERROR
 		// 	GET http://127.0.0.1:50057
 		// 	Authorization: REDACTED
 		// 	Header: [one]
@@ -110,15 +111,69 @@ func TestPolicyLoggingError(t *testing.T) {
 		// 	ERROR:
 		// 	bogus error
 		// 	 ...stack track...
-		if !strings.Contains(logError, "Authorization: REDACTED") {
+		if !strings.Contains(logResponse, "Authorization: REDACTED") {
 			t.Fatal("missing redacted authorization header")
 		}
-		if !strings.Contains(logError, "bogus error") {
+		if !strings.Contains(logResponse, "bogus error") {
 			t.Fatal("missing error message")
 		}
 	} else {
-		t.Fatal("missing LogError")
+		t.Fatal("missing LogResponse")
 	}
 }
 
-// TODO: add test for slow response
+func TestPolicyLoggingSlowResponse(t *testing.T) {
+	log := map[LogClassification]string{}
+	Log().SetListener(func(cls LogClassification, s string) {
+		log[cls] = s
+	})
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithSlowResponse(4 * time.Second))
+	pl := NewPipeline(srv, NewRequestLogPolicy(nil))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	qp := req.URL.Query()
+	qp.Set("one", "fish")
+	qp.Set("sig", "redact")
+	req.URL.RawQuery = qp.Encode()
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if logReq, ok := log[LogRequest]; ok {
+		// Request ==> OUTGOING REQUEST (Try=1)
+		// 	GET http://127.0.0.1:49475?one=fish&sig=REDACTED
+		// 	(no headers)
+		if !strings.Contains(logReq, "sig=REDACTED") {
+			t.Fatal("missing redacted sig query param")
+		}
+		if !strings.Contains(logReq, "(no headers)") {
+			t.Fatal("missing (no headers)")
+		}
+	} else {
+		t.Fatal("missing LogRequest")
+	}
+	if logResp, ok := log[LogResponse]; ok {
+		// Response ==> REQUEST/RESPONSE (Try=1/1.0034ms, OpTime=1.0034ms) -- RESPONSE SUCCESSFULLY RECEIVED
+		// 	GET http://127.0.0.1:49475?one=fish&sig=REDACTED
+		// 	(no headers)
+		// 	--------------------------------------------------------------------------------
+		// 	RESPONSE Status: 200 OK
+		// 	Content-Length: [0]
+		// 	Date: [Fri, 22 Nov 2019 23:48:02 GMT]
+		if !strings.Contains(logResp, "RESPONSE Status: 200 OK") {
+			t.Fatal("missing response status")
+		}
+		if !strings.Contains(logResp, "[SLOW >") {
+			t.Fatal("missing slow response marker")
+		}
+	} else {
+		t.Fatal("missing LogResponse")
+	}
+}

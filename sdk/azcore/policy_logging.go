@@ -8,27 +8,26 @@ package azcore
 import (
 	"bytes"
 	"fmt"
-	"net/http"
 	"net/url"
-	"runtime"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 )
 
 // RequestLogOptions configures the retry policy's behavior.
 type RequestLogOptions struct {
-	// LogWarningIfTryOverThreshold logs a warning if a tried operation takes longer than the specified
-	// duration (-1=no logging; 0=default threshold).
-	LogWarningIfTryOverThreshold time.Duration
+	// LogSlowResponse adds a marker to the log entry if a request takes longer than the specified duration.
+	// The marker format is [SLOW >%v], where %v is the value of LogSlowResponse.
+	// The zero-value uses the default threshold.  Specify -1 to disable.
+	LogSlowResponse time.Duration
 }
 
-func (o RequestLogOptions) defaults() RequestLogOptions {
-	if o.LogWarningIfTryOverThreshold == 0 {
-		// It would be good to relate this to https://azure.microsoft.com/en-us/support/legal/sla/storage/v1_2/
-		// But this monitors the time to get the HTTP response; NOT the time to download the response body.
-		o.LogWarningIfTryOverThreshold = 3 * time.Second // Default to 3 seconds
+// DefaultRequestLogOptions returns an instance of RequestLogOptions initialized with default values.
+func DefaultRequestLogOptions() RequestLogOptions {
+	return RequestLogOptions{
+		LogSlowResponse: 3 * time.Second,
 	}
-	return o
 }
 
 type requestLogPolicy struct {
@@ -36,9 +35,14 @@ type requestLogPolicy struct {
 }
 
 // NewRequestLogPolicy creates a RequestLogPolicy object configured using the specified options.
-func NewRequestLogPolicy(o RequestLogOptions) Policy {
-	o = o.defaults() // Force defaults to be calculated
-	return &requestLogPolicy{options: o}
+// Pass nil to accept the default values; this is the same as passing the result
+// from a call to DefaultRequestLogOptions().
+func NewRequestLogPolicy(o *RequestLogOptions) Policy {
+	if o == nil {
+		def := DefaultRequestLogOptions()
+		o = &def
+	}
+	return &requestLogPolicy{options: *o}
 }
 
 // logPolicyOpValues is the struct containing the per-operation values
@@ -71,48 +75,26 @@ func (p *requestLogPolicy) Do(req *Request) (*Response, error) {
 	tryDuration := tryEnd.Sub(tryStart)
 	opDuration := tryEnd.Sub(opValues.start)
 
-	logClass := LogResponse // Default logging information
-
-	// If the response took too long, we'll upgrade to warning.
-	if p.options.LogWarningIfTryOverThreshold > 0 && tryDuration > p.options.LogWarningIfTryOverThreshold {
-		// Log a warning if the try duration exceeded the specified threshold
-		logClass = LogSlowResponse
-	}
-
-	if err == nil { // We got a response from the service
-		sc := response.StatusCode
-		// Promote to Error any 4xx (except those listed is an error) or any 5xx.
-		// For other status codes, we leave the level as is.
-		if ((sc >= 400 && sc <= 499) && sc != http.StatusNotFound && sc != http.StatusConflict && sc != http.StatusPreconditionFailed && sc != http.StatusRequestedRangeNotSatisfiable) || (sc >= 500 && sc <= 599) {
-			logClass = LogError
-		}
-	} else { // This error did not get an HTTP response from the service; upgrade the severity to Error
-		logClass = LogError
-	}
-
-	if Log().Should(logClass) {
+	if Log().Should(LogResponse) {
 		// We're going to log this; build the string to log
 		b := &bytes.Buffer{}
 		slow := ""
-		if p.options.LogWarningIfTryOverThreshold > 0 && tryDuration > p.options.LogWarningIfTryOverThreshold {
-			slow = fmt.Sprintf("[SLOW >%v]", p.options.LogWarningIfTryOverThreshold)
+		if p.options.LogSlowResponse > 0 && tryDuration > p.options.LogSlowResponse {
+			slow = fmt.Sprintf("[SLOW >%v]", p.options.LogSlowResponse)
 		}
 		fmt.Fprintf(b, "==> REQUEST/RESPONSE (Try=%d/%v%s, OpTime=%v) -- ", opValues.try, tryDuration, slow, opDuration)
 		if err != nil { // This HTTP request did not get a response from the service
 			fmt.Fprint(b, "REQUEST ERROR\n")
 		} else {
-			if logClass == LogError {
-				fmt.Fprint(b, "RESPONSE STATUS CODE ERROR\n")
-			} else {
-				fmt.Fprint(b, "RESPONSE SUCCESSFULLY RECEIVED\n")
-			}
+			fmt.Fprint(b, "RESPONSE SUCCESSFULLY RECEIVED\n")
 		}
 
 		WriteRequestWithResponse(b, prepareRequestForLogging(req), response, err)
-		if logClass == LogError {
-			b.Write(stack()) // For errors (or lower levels), we append the stack trace (an expensive operation)
+		if err != nil {
+			// skip frames runtime.Callers() and runtime.StackTrace()
+			b.WriteString(runtime.StackTrace(2, StackFrameCount))
 		}
-		Log().Write(logClass, b.String())
+		Log().Write(LogResponse, b.String())
 	}
 	return response, err
 }
@@ -145,15 +127,4 @@ func prepareRequestForLogging(req *Request) *Request {
 		request.URL.RawQuery = rawQuery
 	}
 	return request
-}
-
-func stack() []byte {
-	buf := make([]byte, 1024)
-	for {
-		n := runtime.Stack(buf, false)
-		if n < len(buf) {
-			return buf[:n]
-		}
-		buf = make([]byte, 2*len(buf))
-	}
 }

@@ -452,6 +452,14 @@ type AmlUserFeature struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// AssignedUser a user that can be assigned to a compute instance.
+type AssignedUser struct {
+	// ObjectID - User’s AAD Object Id.
+	ObjectID *string `json:"objectId,omitempty"`
+	// TenantID - User’s AAD Tenant Id.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
 // ClusterUpdateParameters amlCompute update parameters.
 type ClusterUpdateParameters struct {
 	// ClusterUpdateProperties - The properties of the amlCompute.
@@ -809,6 +817,10 @@ type ComputeInstanceProperties struct {
 	Errors *[]Error `json:"errors,omitempty"`
 	// State - READ-ONLY; The current state of this ComputeInstance. Possible values include: 'Creating', 'CreateFailed', 'Deleting', 'Running', 'Restarting', 'RestartFailed', 'JobRunning', 'SettingUp', 'Starting', 'StartFailed', 'StopFailed', 'Stopped', 'Stopping', 'UserSettingUp', 'Unknown', 'Unusable'
 	State ComputeInstanceState `json:"state,omitempty"`
+	// ComputeInstanceAuthorizationType - The Compute Instance Authorization type. Available values are personal (default). Possible values include: 'ComputeInstanceAuthorizationTypePersonal'
+	ComputeInstanceAuthorizationType ComputeInstanceAuthorizationType `json:"computeInstanceAuthorizationType,omitempty"`
+	// PersonalComputeInstanceSettings - Settings for a personal compute instance.
+	PersonalComputeInstanceSettings *PersonalComputeInstanceSettings `json:"personalComputeInstanceSettings,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ComputeInstanceProperties.
@@ -825,6 +837,12 @@ func (ci ComputeInstanceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ci.SSHSettings != nil {
 		objectMap["sshSettings"] = ci.SSHSettings
+	}
+	if ci.ComputeInstanceAuthorizationType != "" {
+		objectMap["computeInstanceAuthorizationType"] = ci.ComputeInstanceAuthorizationType
+	}
+	if ci.PersonalComputeInstanceSettings != nil {
+		objectMap["personalComputeInstanceSettings"] = ci.PersonalComputeInstanceSettings
 	}
 	return json.Marshal(objectMap)
 }
@@ -2442,6 +2460,12 @@ type Password struct {
 	Name *string `json:"name,omitempty"`
 	// Value - READ-ONLY
 	Value *string `json:"value,omitempty"`
+}
+
+// PersonalComputeInstanceSettings settings for a personal compute instance.
+type PersonalComputeInstanceSettings struct {
+	// AssignedUser - A user explicitly assigned to a personal compute instance.
+	AssignedUser *AssignedUser `json:"assignedUser,omitempty"`
 }
 
 // PrivateEndpoint the Private Endpoint resource.

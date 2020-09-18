@@ -30,6 +30,28 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hybridkubernetes/mgmt/2020-01-01-preview/hybridkubernetes"
 
+// AuthenticationCertificateDetails ...
+type AuthenticationCertificateDetails struct {
+	// CertificateData - Base64 encoded client certificate data.
+	CertificateData *string `json:"certificateData,omitempty"`
+	// KeyData - Base64 encoded key data.
+	KeyData *string `json:"keyData,omitempty"`
+}
+
+// AuthenticationDetails ...
+type AuthenticationDetails struct {
+	// AuthenticationMethod - The mode of client authentication. Possible values include: 'Token', 'ClientCertificate'
+	AuthenticationMethod AuthenticationMethod        `json:"authenticationMethod,omitempty"`
+	Value                *AuthenticationDetailsValue `json:"value,omitempty"`
+}
+
+// AuthenticationDetailsValue ...
+type AuthenticationDetailsValue struct {
+	// Token - Authentication token.
+	Token             *string                           `json:"token,omitempty"`
+	ClientCertificate *AuthenticationCertificateDetails `json:"clientCertificate,omitempty"`
+}
+
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.

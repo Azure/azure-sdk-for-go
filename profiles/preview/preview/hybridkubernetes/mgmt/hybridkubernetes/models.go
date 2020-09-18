@@ -29,6 +29,13 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type AuthenticationMethod = original.AuthenticationMethod
+
+const (
+	ClientCertificate AuthenticationMethod = original.ClientCertificate
+	Token             AuthenticationMethod = original.Token
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -48,6 +55,9 @@ const (
 	SystemAssigned ResourceIdentityType = original.SystemAssigned
 )
 
+type AuthenticationCertificateDetails = original.AuthenticationCertificateDetails
+type AuthenticationDetails = original.AuthenticationDetails
+type AuthenticationDetailsValue = original.AuthenticationDetailsValue
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type ConnectedCluster = original.ConnectedCluster
@@ -105,6 +115,9 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAuthenticationMethodValues() []AuthenticationMethod {
+	return original.PossibleAuthenticationMethodValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

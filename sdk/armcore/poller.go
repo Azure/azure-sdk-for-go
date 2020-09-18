@@ -139,6 +139,7 @@ func (p *poller) FinalResponse(ctx context.Context, pipeline azcore.Pipeline, re
 			return res, nil
 		}
 	}
+	azcore.Log().Writef(azcore.LogLongRunningOperation, "performing final GET for %s", p.pt.pollerType())
 	// checking if there was a FinalStateVia configuration to re-route the final GET
 	// request to the value specified in the FinalStateVia property on the poller
 	err := p.pt.setFinalState()
@@ -198,12 +199,18 @@ func (p *poller) Poll(ctx context.Context, pipeline azcore.Pipeline) (*http.Resp
 }
 
 func (p *poller) PollUntilDone(ctx context.Context, frequency time.Duration, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error) {
+	logPollUntilDoneExit := func(v interface{}) {
+		azcore.Log().Writef(azcore.LogLongRunningOperation, "END PollUntilDone() for %s: %v", p.pt.pollerType(), v)
+	}
+	azcore.Log().Writef(azcore.LogLongRunningOperation, "BEGIN PollUntilDone() for %s", p.pt.pollerType())
 	// p.resp should only be nil when calling PollUntilDone from a poller that was instantiated from a resume token string
 	if resp := p.pt.latestResponse(); resp != nil {
 		// initial check for a retry-after header existing on the initial response
 		if retryAfter := azcore.RetryAfter(resp.Response); retryAfter > 0 {
+			azcore.Log().Writef(azcore.LogLongRunningOperation, "initial Retry-After delay for %s", retryAfter.String())
 			err := delay(ctx, retryAfter)
 			if err != nil {
+				logPollUntilDoneExit(err)
 				return nil, err
 			}
 		}
@@ -212,6 +219,7 @@ func (p *poller) PollUntilDone(ctx context.Context, frequency time.Duration, pip
 	for {
 		resp, err := p.Poll(ctx, pipeline)
 		if err != nil {
+			logPollUntilDoneExit(err)
 			return nil, err
 		}
 		if p.pt.hasTerminated() {
@@ -219,13 +227,18 @@ func (p *poller) PollUntilDone(ctx context.Context, frequency time.Duration, pip
 		}
 		d := frequency
 		if retryAfter := azcore.RetryAfter(resp); retryAfter > 0 {
+			azcore.Log().Writef(azcore.LogLongRunningOperation, "Retry-After delay for %s", retryAfter.String())
 			d = retryAfter
+		} else {
+			azcore.Log().Writef(azcore.LogLongRunningOperation, "delay for %s", d.String())
 		}
 		err = delay(ctx, d)
 		if err != nil {
+			logPollUntilDoneExit(err)
 			return nil, err
 		}
 	}
+	logPollUntilDoneExit(p.pt.pollingStatus())
 	return p.FinalResponse(ctx, pipeline, respType)
 }
 
@@ -258,6 +271,9 @@ func (p *poller) pollForStatus(ctx context.Context, pl azcore.Pipeline, pt polli
 	if err := pt.updatePollingMethod(); err != nil {
 		return true
 	}
+	// VERB status method URL
+	azcore.Log().Writef(azcore.LogLongRunningOperation, "%s %s %s %s",
+		strings.ToUpper(pt.pollerMethodVerb()), pt.pollingStatus(), pt.pollingMethod(), pt.pollingURL())
 	return pt.hasTerminated()
 }
 
@@ -290,6 +306,18 @@ type pollingTracker interface {
 
 	// returns the error response from the service, can be nil
 	pollingError() error
+
+	// returns the polling method being used
+	pollingMethod() pollingMethodType
+
+	// returns the state of the LRO as returned from the service
+	pollingStatus() string
+
+	// returns the URL used for polling status
+	pollingURL() string
+
+	// returns the client poller type
+	pollerType() string
 
 	// returns the URL used for the final GET to retrieve the resource
 	finalGetURL() string
@@ -493,6 +521,22 @@ func (pt *pollingTrackerBase) updatePollingState(provStateApl bool) error {
 
 func (pt *pollingTrackerBase) pollingError() error {
 	return pt.Err
+}
+
+func (pt *pollingTrackerBase) pollingMethod() pollingMethodType {
+	return pt.Pm
+}
+
+func (pt *pollingTrackerBase) pollingStatus() string {
+	return pt.State
+}
+
+func (pt *pollingTrackerBase) pollingURL() string {
+	return pt.URI
+}
+
+func (pt *pollingTrackerBase) pollerType() string {
+	return pt.PollerType
 }
 
 func (pt *pollingTrackerBase) finalGetURL() string {

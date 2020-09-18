@@ -93,12 +93,13 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	if resp.Request.URL.Path != requestEndpoint {
 		t.Fatalf("unexpected path in response %s", resp.Request.URL.Path)
 	}
-	// should be three entries
+	// should be four entries
 	// 1st is for start
 	// 2nd is for first response to get state
 	// 3rd is when state transitions to success
-	if logEntries != 3 {
-		t.Fatalf("expected 3 log entries, got %d", logEntries)
+	// 4th is for end
+	if logEntries != 4 {
+		t.Fatalf("expected 4 log entries, got %d", logEntries)
 	}
 }
 
@@ -196,11 +197,12 @@ func TestRPRegistrationPolicyTimesOut(t *testing.T) {
 	if !errors.Is(err, context.DeadlineExceeded) {
 		t.Fatalf("expected DeadlineExceeded, got %v", err)
 	}
-	// should be two entries
+	// should be three entries
 	// 1st is for start
 	// 2nd is for first response to get state
-	if logEntries != 2 {
-		t.Fatalf("expected 2 log entries, got %d", logEntries)
+	// 3rd is the deadline exceeded error
+	if logEntries != 3 {
+		t.Fatalf("expected 3 log entries, got %d", logEntries)
 	}
 	// we should get the response from the original request
 	if resp.StatusCode != http.StatusConflict {
@@ -248,12 +250,13 @@ func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
 	if resp.Request.URL.Path != requestEndpoint {
 		t.Fatalf("unexpected path in response %s", resp.Request.URL.Path)
 	}
-	// should be 3 entries for each attempt, total 9 entries
+	// should be 4 entries for each attempt, total 12 entries
 	// 1st is for start
 	// 2nd is for first response to get state
 	// 3rd is when state transitions to success
-	if logEntries != 9 {
-		t.Fatalf("expected 9 log entries, got %d", logEntries)
+	// 4th is for end
+	if logEntries != 12 {
+		t.Fatalf("expected 12 log entries, got %d", logEntries)
 	}
 }
 

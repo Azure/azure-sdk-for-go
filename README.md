@@ -162,7 +162,7 @@ Authorization header and bearer token received from Azure AD.
 
 The SDK itself provides a simple way to get an authorizer which first checks
 for OAuth client credentials in environment variables and then falls back to
-Azure's [Managed Service Identity]() when available, e.g. when on an Azure
+Azure's [Managed Service Identity](https://github.com/Azure/azure-sdk-for-go/) when available, e.g. when on an Azure
 VM. The following snippet from [the previous section](#use) demonstrates
 this helper.
 
@@ -206,7 +206,7 @@ below.
 > for more info. Copy the new principal's ID, secret, and tenant ID for use in
 > your app, or consider the `--sdk-auth` parameter for serialized output.
 
-[azure managed service identity]: https://docs.microsoft.com/en-us/azure/active-directory/msi-overview
+[azure managed service identity]: https://docs.microsoft.com/azure/active-directory/msi-overview
 
 - The `auth.NewAuthorizerFromEnvironment()` described above creates an authorizer
   from the first available of the following configuration:
@@ -235,7 +235,7 @@ below.
       4. **Azure Managed Service Identity**: Delegate credential management to the
          platform. Requires that code is running in Azure, e.g. on a VM. All
          configuration is handled by Azure. See [Azure Managed Service
-         Identity](https://docs.microsoft.com/en-us/azure/active-directory/msi-overview)
+         Identity](https://docs.microsoft.com/azure/active-directory/msi-overview)
          for more details.
 
 - The `auth.NewAuthorizerFromFile()` method creates an authorizer using
@@ -268,7 +268,7 @@ below.
 
   To use `NewAuthorizerFromCLI()` or `NewAuthorizerFromCLIWithResource()`, follow these steps:
 
-  1. Install [Azure CLI v2.0.12](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) or later. Upgrade earlier versions.
+  1. Install [Azure CLI v2.0.12](https://docs.microsoft.com/cli/azure/install-azure-cli) or later. Upgrade earlier versions.
   2. Use `az login` to sign in to Azure.
 
   If you receive an error, use `az account get-access-token` to verify access.
@@ -485,7 +485,7 @@ To hook up a tracer simply call `tracing.Register()` passing in a type that sati
 
 ### Usage
 
-Once enabled, all SDK calls will emit traces and metrics and the traces will correlate the SDK calls with the raw http calls made to Azure API's. To consume those traces, if are not doing it yet, you need to register an exporter of your choice such as [Azure App Insights](https://docs.microsoft.com/en-us/azure/application-insights/opencensus-local-forwarder) or [Zipkin](https://opencensus.io/quickstart/go/tracing/#exporting-traces).
+Once enabled, all SDK calls will emit traces and metrics and the traces will correlate the SDK calls with the raw http calls made to Azure API's. To consume those traces, if are not doing it yet, you need to register an exporter of your choice such as [Azure App Insights](https://docs.microsoft.com/azure/application-insights/opencensus-local-forwarder) or [Zipkin](https://opencensus.io/quickstart/go/tracing/#exporting-traces).
 
 To correlate the SDK calls between them and with the rest of your code, pass in a context that has a span initiated using the [opencensus-go library](https://github.com/census-instrumentation/opencensus-go) using the `trace.Startspan(ctx context.Context, name string, o ...StartOption)` function. Here is an example:
 
@@ -587,6 +587,6 @@ Security issues and bugs should be reported privately, via email, to the Microso
 
 ## Contribute
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-go/blob/master/CONTRIBUTING.md).
 
 [samples_repo]: https://github.com/Azure-Samples/azure-sdk-for-go-samples

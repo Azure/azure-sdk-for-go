@@ -70,23 +70,13 @@ func (client *NetworkInterfacesClient) Do(req *azcore.Request) (*azcore.Response
 	return client.p.Do(req)
 }
 
-// CreateOrUpdate - Creates or updates a network interface.
 func (client *NetworkInterfacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters NetworkInterface) (*NetworkInterfacePollerResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, networkInterfaceName, parameters)
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, networkInterfaceName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &NetworkInterfacePollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkInterfacesClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
 	if err != nil {
@@ -114,6 +104,22 @@ func (client *NetworkInterfacesClient) ResumeCreateOrUpdate(token string) (Netwo
 	}, nil
 }
 
+// CreateOrUpdate - Creates or updates a network interface.
+func (client *NetworkInterfacesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters NetworkInterface) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, networkInterfaceName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateOrUpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *NetworkInterfacesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string, parameters NetworkInterface) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}"
@@ -132,8 +138,9 @@ func (client *NetworkInterfacesClient) CreateOrUpdateCreateRequest(ctx context.C
 }
 
 // CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *NetworkInterfacesClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*NetworkInterfacePollerResponse, error) {
-	return &NetworkInterfacePollerResponse{RawResponse: resp.Response}, nil
+func (client *NetworkInterfacesClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*NetworkInterfaceResponse, error) {
+	result := NetworkInterfaceResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.NetworkInterface)
 }
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -145,23 +152,13 @@ func (client *NetworkInterfacesClient) CreateOrUpdateHandleError(resp *azcore.Re
 	return err
 }
 
-// Delete - Deletes the specified network interface.
 func (client *NetworkInterfacesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, networkInterfaceName)
+	resp, err := client.Delete(ctx, resourceGroupName, networkInterfaceName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkInterfacesClient.Delete", "location", resp, client.DeleteHandleError)
 	if err != nil {
@@ -189,6 +186,22 @@ func (client *NetworkInterfacesClient) ResumeDelete(token string) (HTTPPoller, e
 	}, nil
 }
 
+// Delete - Deletes the specified network interface.
+func (client *NetworkInterfacesClient) Delete(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, networkInterfaceName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *NetworkInterfacesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}"
@@ -204,11 +217,6 @@ func (client *NetworkInterfacesClient) DeleteCreateRequest(ctx context.Context, 
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// DeleteHandleResponse handles the Delete response.
-func (client *NetworkInterfacesClient) DeleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // DeleteHandleError handles the Delete error response.
@@ -275,23 +283,13 @@ func (client *NetworkInterfacesClient) GetHandleError(resp *azcore.Response) err
 	return err
 }
 
-// GetEffectiveRouteTable - Gets all route tables applied to a network interface.
 func (client *NetworkInterfacesClient) BeginGetEffectiveRouteTable(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*EffectiveRouteListResultPollerResponse, error) {
-	req, err := client.GetEffectiveRouteTableCreateRequest(ctx, resourceGroupName, networkInterfaceName)
+	resp, err := client.GetEffectiveRouteTable(ctx, resourceGroupName, networkInterfaceName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.GetEffectiveRouteTableHandleError(resp)
-	}
-	result, err := client.GetEffectiveRouteTableHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &EffectiveRouteListResultPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkInterfacesClient.GetEffectiveRouteTable", "location", resp, client.GetEffectiveRouteTableHandleError)
 	if err != nil {
@@ -319,6 +317,22 @@ func (client *NetworkInterfacesClient) ResumeGetEffectiveRouteTable(token string
 	}, nil
 }
 
+// GetEffectiveRouteTable - Gets all route tables applied to a network interface.
+func (client *NetworkInterfacesClient) GetEffectiveRouteTable(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*azcore.Response, error) {
+	req, err := client.GetEffectiveRouteTableCreateRequest(ctx, resourceGroupName, networkInterfaceName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+		return nil, client.GetEffectiveRouteTableHandleError(resp)
+	}
+	return resp, nil
+}
+
 // GetEffectiveRouteTableCreateRequest creates the GetEffectiveRouteTable request.
 func (client *NetworkInterfacesClient) GetEffectiveRouteTableCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/effectiveRouteTable"
@@ -337,8 +351,9 @@ func (client *NetworkInterfacesClient) GetEffectiveRouteTableCreateRequest(ctx c
 }
 
 // GetEffectiveRouteTableHandleResponse handles the GetEffectiveRouteTable response.
-func (client *NetworkInterfacesClient) GetEffectiveRouteTableHandleResponse(resp *azcore.Response) (*EffectiveRouteListResultPollerResponse, error) {
-	return &EffectiveRouteListResultPollerResponse{RawResponse: resp.Response}, nil
+func (client *NetworkInterfacesClient) GetEffectiveRouteTableHandleResponse(resp *azcore.Response) (*EffectiveRouteListResultResponse, error) {
+	result := EffectiveRouteListResultResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.EffectiveRouteListResult)
 }
 
 // GetEffectiveRouteTableHandleError handles the GetEffectiveRouteTable error response.
@@ -556,23 +571,13 @@ func (client *NetworkInterfacesClient) ListAllHandleError(resp *azcore.Response)
 	return err
 }
 
-// ListEffectiveNetworkSecurityGroups - Gets all network security groups applied to a network interface.
 func (client *NetworkInterfacesClient) BeginListEffectiveNetworkSecurityGroups(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*EffectiveNetworkSecurityGroupListResultPollerResponse, error) {
-	req, err := client.ListEffectiveNetworkSecurityGroupsCreateRequest(ctx, resourceGroupName, networkInterfaceName)
+	resp, err := client.ListEffectiveNetworkSecurityGroups(ctx, resourceGroupName, networkInterfaceName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.ListEffectiveNetworkSecurityGroupsHandleError(resp)
-	}
-	result, err := client.ListEffectiveNetworkSecurityGroupsHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &EffectiveNetworkSecurityGroupListResultPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkInterfacesClient.ListEffectiveNetworkSecurityGroups", "location", resp, client.ListEffectiveNetworkSecurityGroupsHandleError)
 	if err != nil {
@@ -600,6 +605,22 @@ func (client *NetworkInterfacesClient) ResumeListEffectiveNetworkSecurityGroups(
 	}, nil
 }
 
+// ListEffectiveNetworkSecurityGroups - Gets all network security groups applied to a network interface.
+func (client *NetworkInterfacesClient) ListEffectiveNetworkSecurityGroups(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*azcore.Response, error) {
+	req, err := client.ListEffectiveNetworkSecurityGroupsCreateRequest(ctx, resourceGroupName, networkInterfaceName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+		return nil, client.ListEffectiveNetworkSecurityGroupsHandleError(resp)
+	}
+	return resp, nil
+}
+
 // ListEffectiveNetworkSecurityGroupsCreateRequest creates the ListEffectiveNetworkSecurityGroups request.
 func (client *NetworkInterfacesClient) ListEffectiveNetworkSecurityGroupsCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/effectiveNetworkSecurityGroups"
@@ -618,8 +639,9 @@ func (client *NetworkInterfacesClient) ListEffectiveNetworkSecurityGroupsCreateR
 }
 
 // ListEffectiveNetworkSecurityGroupsHandleResponse handles the ListEffectiveNetworkSecurityGroups response.
-func (client *NetworkInterfacesClient) ListEffectiveNetworkSecurityGroupsHandleResponse(resp *azcore.Response) (*EffectiveNetworkSecurityGroupListResultPollerResponse, error) {
-	return &EffectiveNetworkSecurityGroupListResultPollerResponse{RawResponse: resp.Response}, nil
+func (client *NetworkInterfacesClient) ListEffectiveNetworkSecurityGroupsHandleResponse(resp *azcore.Response) (*EffectiveNetworkSecurityGroupListResultResponse, error) {
+	result := EffectiveNetworkSecurityGroupListResultResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.EffectiveNetworkSecurityGroupListResult)
 }
 
 // ListEffectiveNetworkSecurityGroupsHandleError handles the ListEffectiveNetworkSecurityGroups error response.

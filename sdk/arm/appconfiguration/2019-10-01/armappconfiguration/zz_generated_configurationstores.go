@@ -60,23 +60,13 @@ func (client *ConfigurationStoresClient) Do(req *azcore.Request) (*azcore.Respon
 	return client.p.Do(req)
 }
 
-// Create - Creates a configuration store with the specified parameters.
 func (client *ConfigurationStoresClient) BeginCreate(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters ConfigurationStore) (*ConfigurationStorePollerResponse, error) {
-	req, err := client.CreateCreateRequest(ctx, resourceGroupName, configStoreName, configStoreCreationParameters)
+	resp, err := client.Create(ctx, resourceGroupName, configStoreName, configStoreCreationParameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateHandleError(resp)
-	}
-	result, err := client.CreateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &ConfigurationStorePollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ConfigurationStoresClient.Create", "", resp, client.CreateHandleError)
 	if err != nil {
@@ -104,6 +94,22 @@ func (client *ConfigurationStoresClient) ResumeCreate(token string) (Configurati
 	}, nil
 }
 
+// Create - Creates a configuration store with the specified parameters.
+func (client *ConfigurationStoresClient) Create(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters ConfigurationStore) (*azcore.Response, error) {
+	req, err := client.CreateCreateRequest(ctx, resourceGroupName, configStoreName, configStoreCreationParameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateCreateRequest creates the Create request.
 func (client *ConfigurationStoresClient) CreateCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters ConfigurationStore) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}"
@@ -122,8 +128,9 @@ func (client *ConfigurationStoresClient) CreateCreateRequest(ctx context.Context
 }
 
 // CreateHandleResponse handles the Create response.
-func (client *ConfigurationStoresClient) CreateHandleResponse(resp *azcore.Response) (*ConfigurationStorePollerResponse, error) {
-	return &ConfigurationStorePollerResponse{RawResponse: resp.Response}, nil
+func (client *ConfigurationStoresClient) CreateHandleResponse(resp *azcore.Response) (*ConfigurationStoreResponse, error) {
+	result := ConfigurationStoreResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.ConfigurationStore)
 }
 
 // CreateHandleError handles the Create error response.
@@ -135,23 +142,13 @@ func (client *ConfigurationStoresClient) CreateHandleError(resp *azcore.Response
 	return err
 }
 
-// Delete - Deletes a configuration store.
 func (client *ConfigurationStoresClient) BeginDelete(ctx context.Context, resourceGroupName string, configStoreName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, configStoreName)
+	resp, err := client.Delete(ctx, resourceGroupName, configStoreName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ConfigurationStoresClient.Delete", "", resp, client.DeleteHandleError)
 	if err != nil {
@@ -179,6 +176,22 @@ func (client *ConfigurationStoresClient) ResumeDelete(token string) (HTTPPoller,
 	}, nil
 }
 
+// Delete - Deletes a configuration store.
+func (client *ConfigurationStoresClient) Delete(ctx context.Context, resourceGroupName string, configStoreName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, configStoreName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *ConfigurationStoresClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}"
@@ -194,11 +207,6 @@ func (client *ConfigurationStoresClient) DeleteCreateRequest(ctx context.Context
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// DeleteHandleResponse handles the Delete response.
-func (client *ConfigurationStoresClient) DeleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // DeleteHandleError handles the Delete error response.
@@ -513,23 +521,13 @@ func (client *ConfigurationStoresClient) RegenerateKeyHandleError(resp *azcore.R
 	return err
 }
 
-// Update - Updates a configuration store with the specified parameters.
 func (client *ConfigurationStoresClient) BeginUpdate(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters ConfigurationStoreUpdateParameters) (*ConfigurationStorePollerResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, configStoreName, configStoreUpdateParameters)
+	resp, err := client.Update(ctx, resourceGroupName, configStoreName, configStoreUpdateParameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.UpdateHandleError(resp)
-	}
-	result, err := client.UpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &ConfigurationStorePollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ConfigurationStoresClient.Update", "", resp, client.UpdateHandleError)
 	if err != nil {
@@ -557,6 +555,22 @@ func (client *ConfigurationStoresClient) ResumeUpdate(token string) (Configurati
 	}, nil
 }
 
+// Update - Updates a configuration store with the specified parameters.
+func (client *ConfigurationStoresClient) Update(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters ConfigurationStoreUpdateParameters) (*azcore.Response, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, configStoreName, configStoreUpdateParameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.UpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // UpdateCreateRequest creates the Update request.
 func (client *ConfigurationStoresClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters ConfigurationStoreUpdateParameters) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}"
@@ -575,8 +589,9 @@ func (client *ConfigurationStoresClient) UpdateCreateRequest(ctx context.Context
 }
 
 // UpdateHandleResponse handles the Update response.
-func (client *ConfigurationStoresClient) UpdateHandleResponse(resp *azcore.Response) (*ConfigurationStorePollerResponse, error) {
-	return &ConfigurationStorePollerResponse{RawResponse: resp.Response}, nil
+func (client *ConfigurationStoresClient) UpdateHandleResponse(resp *azcore.Response) (*ConfigurationStoreResponse, error) {
+	result := ConfigurationStoreResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.ConfigurationStore)
 }
 
 // UpdateHandleError handles the Update error response.

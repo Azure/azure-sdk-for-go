@@ -411,23 +411,13 @@ func (client *DeploymentsClient) CheckExistenceAtSubscriptionScopeHandleError(re
 	return errors.New(string(body))
 }
 
-// CreateOrUpdate - You can provide the template and parameters directly in the request or link to JSON files.
 func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment) (*DeploymentExtendedPollerResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, deploymentName, parameters)
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, deploymentName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &DeploymentExtendedPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DeploymentsClient.CreateOrUpdate", "", resp, client.CreateOrUpdateHandleError)
 	if err != nil {
@@ -455,6 +445,22 @@ func (client *DeploymentsClient) ResumeCreateOrUpdate(token string) (DeploymentE
 	}, nil
 }
 
+// CreateOrUpdate - You can provide the template and parameters directly in the request or link to JSON files.
+func (client *DeploymentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, deploymentName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateOrUpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DeploymentsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, parameters Deployment) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}"
@@ -473,8 +479,9 @@ func (client *DeploymentsClient) CreateOrUpdateCreateRequest(ctx context.Context
 }
 
 // CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DeploymentsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*DeploymentExtendedPollerResponse, error) {
-	return &DeploymentExtendedPollerResponse{RawResponse: resp.Response}, nil
+func (client *DeploymentsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*DeploymentExtendedResponse, error) {
+	result := DeploymentExtendedResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.DeploymentExtended)
 }
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -489,23 +496,13 @@ func (client *DeploymentsClient) CreateOrUpdateHandleError(resp *azcore.Response
 	return errors.New(string(body))
 }
 
-// CreateOrUpdateAtManagementGroupScope - You can provide the template and parameters directly in the request or link to JSON files.
 func (client *DeploymentsClient) BeginCreateOrUpdateAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters Deployment) (*DeploymentExtendedPollerResponse, error) {
-	req, err := client.CreateOrUpdateAtManagementGroupScopeCreateRequest(ctx, groupId, deploymentName, parameters)
+	resp, err := client.CreateOrUpdateAtManagementGroupScope(ctx, groupId, deploymentName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateAtManagementGroupScopeHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateAtManagementGroupScopeHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &DeploymentExtendedPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DeploymentsClient.CreateOrUpdateAtManagementGroupScope", "", resp, client.CreateOrUpdateAtManagementGroupScopeHandleError)
 	if err != nil {
@@ -533,6 +530,22 @@ func (client *DeploymentsClient) ResumeCreateOrUpdateAtManagementGroupScope(toke
 	}, nil
 }
 
+// CreateOrUpdateAtManagementGroupScope - You can provide the template and parameters directly in the request or link to JSON files.
+func (client *DeploymentsClient) CreateOrUpdateAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, parameters Deployment) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateAtManagementGroupScopeCreateRequest(ctx, groupId, deploymentName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateOrUpdateAtManagementGroupScopeHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateAtManagementGroupScopeCreateRequest creates the CreateOrUpdateAtManagementGroupScope request.
 func (client *DeploymentsClient) CreateOrUpdateAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, parameters Deployment) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}"
@@ -550,8 +563,9 @@ func (client *DeploymentsClient) CreateOrUpdateAtManagementGroupScopeCreateReque
 }
 
 // CreateOrUpdateAtManagementGroupScopeHandleResponse handles the CreateOrUpdateAtManagementGroupScope response.
-func (client *DeploymentsClient) CreateOrUpdateAtManagementGroupScopeHandleResponse(resp *azcore.Response) (*DeploymentExtendedPollerResponse, error) {
-	return &DeploymentExtendedPollerResponse{RawResponse: resp.Response}, nil
+func (client *DeploymentsClient) CreateOrUpdateAtManagementGroupScopeHandleResponse(resp *azcore.Response) (*DeploymentExtendedResponse, error) {
+	result := DeploymentExtendedResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.DeploymentExtended)
 }
 
 // CreateOrUpdateAtManagementGroupScopeHandleError handles the CreateOrUpdateAtManagementGroupScope error response.
@@ -566,23 +580,13 @@ func (client *DeploymentsClient) CreateOrUpdateAtManagementGroupScopeHandleError
 	return errors.New(string(body))
 }
 
-// CreateOrUpdateAtSubscriptionScope - You can provide the template and parameters directly in the request or link to JSON files.
 func (client *DeploymentsClient) BeginCreateOrUpdateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment) (*DeploymentExtendedPollerResponse, error) {
-	req, err := client.CreateOrUpdateAtSubscriptionScopeCreateRequest(ctx, deploymentName, parameters)
+	resp, err := client.CreateOrUpdateAtSubscriptionScope(ctx, deploymentName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateAtSubscriptionScopeHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateAtSubscriptionScopeHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &DeploymentExtendedPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DeploymentsClient.CreateOrUpdateAtSubscriptionScope", "", resp, client.CreateOrUpdateAtSubscriptionScopeHandleError)
 	if err != nil {
@@ -610,6 +614,22 @@ func (client *DeploymentsClient) ResumeCreateOrUpdateAtSubscriptionScope(token s
 	}, nil
 }
 
+// CreateOrUpdateAtSubscriptionScope - You can provide the template and parameters directly in the request or link to JSON files.
+func (client *DeploymentsClient) CreateOrUpdateAtSubscriptionScope(ctx context.Context, deploymentName string, parameters Deployment) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateAtSubscriptionScopeCreateRequest(ctx, deploymentName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateOrUpdateAtSubscriptionScopeHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateAtSubscriptionScopeCreateRequest creates the CreateOrUpdateAtSubscriptionScope request.
 func (client *DeploymentsClient) CreateOrUpdateAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, parameters Deployment) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}"
@@ -627,8 +647,9 @@ func (client *DeploymentsClient) CreateOrUpdateAtSubscriptionScopeCreateRequest(
 }
 
 // CreateOrUpdateAtSubscriptionScopeHandleResponse handles the CreateOrUpdateAtSubscriptionScope response.
-func (client *DeploymentsClient) CreateOrUpdateAtSubscriptionScopeHandleResponse(resp *azcore.Response) (*DeploymentExtendedPollerResponse, error) {
-	return &DeploymentExtendedPollerResponse{RawResponse: resp.Response}, nil
+func (client *DeploymentsClient) CreateOrUpdateAtSubscriptionScopeHandleResponse(resp *azcore.Response) (*DeploymentExtendedResponse, error) {
+	result := DeploymentExtendedResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.DeploymentExtended)
 }
 
 // CreateOrUpdateAtSubscriptionScopeHandleError handles the CreateOrUpdateAtSubscriptionScope error response.
@@ -643,23 +664,13 @@ func (client *DeploymentsClient) CreateOrUpdateAtSubscriptionScopeHandleError(re
 	return errors.New(string(body))
 }
 
-// Delete - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
 func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, deploymentName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, deploymentName)
+	resp, err := client.Delete(ctx, resourceGroupName, deploymentName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DeploymentsClient.Delete", "", resp, client.DeleteHandleError)
 	if err != nil {
@@ -687,6 +698,22 @@ func (client *DeploymentsClient) ResumeDelete(token string) (HTTPPoller, error) 
 	}, nil
 }
 
+// Delete - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
+func (client *DeploymentsClient) Delete(ctx context.Context, resourceGroupName string, deploymentName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, deploymentName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *DeploymentsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}"
@@ -703,11 +730,6 @@ func (client *DeploymentsClient) DeleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// DeleteHandleResponse handles the Delete response.
-func (client *DeploymentsClient) DeleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
-}
-
 // DeleteHandleError handles the Delete error response.
 func (client *DeploymentsClient) DeleteHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
@@ -720,23 +742,13 @@ func (client *DeploymentsClient) DeleteHandleError(resp *azcore.Response) error 
 	return errors.New(string(body))
 }
 
-// DeleteAtManagementGroupScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
 func (client *DeploymentsClient) BeginDeleteAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteAtManagementGroupScopeCreateRequest(ctx, groupId, deploymentName)
+	resp, err := client.DeleteAtManagementGroupScope(ctx, groupId, deploymentName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteAtManagementGroupScopeHandleError(resp)
-	}
-	result, err := client.DeleteAtManagementGroupScopeHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DeploymentsClient.DeleteAtManagementGroupScope", "", resp, client.DeleteAtManagementGroupScopeHandleError)
 	if err != nil {
@@ -764,6 +776,22 @@ func (client *DeploymentsClient) ResumeDeleteAtManagementGroupScope(token string
 	}, nil
 }
 
+// DeleteAtManagementGroupScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
+func (client *DeploymentsClient) DeleteAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string) (*azcore.Response, error) {
+	req, err := client.DeleteAtManagementGroupScopeCreateRequest(ctx, groupId, deploymentName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteAtManagementGroupScopeHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteAtManagementGroupScopeCreateRequest creates the DeleteAtManagementGroupScope request.
 func (client *DeploymentsClient) DeleteAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}"
@@ -779,11 +807,6 @@ func (client *DeploymentsClient) DeleteAtManagementGroupScopeCreateRequest(ctx c
 	return req, nil
 }
 
-// DeleteAtManagementGroupScopeHandleResponse handles the DeleteAtManagementGroupScope response.
-func (client *DeploymentsClient) DeleteAtManagementGroupScopeHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
-}
-
 // DeleteAtManagementGroupScopeHandleError handles the DeleteAtManagementGroupScope error response.
 func (client *DeploymentsClient) DeleteAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
@@ -796,23 +819,13 @@ func (client *DeploymentsClient) DeleteAtManagementGroupScopeHandleError(resp *a
 	return errors.New(string(body))
 }
 
-// DeleteAtSubscriptionScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
 func (client *DeploymentsClient) BeginDeleteAtSubscriptionScope(ctx context.Context, deploymentName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteAtSubscriptionScopeCreateRequest(ctx, deploymentName)
+	resp, err := client.DeleteAtSubscriptionScope(ctx, deploymentName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteAtSubscriptionScopeHandleError(resp)
-	}
-	result, err := client.DeleteAtSubscriptionScopeHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DeploymentsClient.DeleteAtSubscriptionScope", "", resp, client.DeleteAtSubscriptionScopeHandleError)
 	if err != nil {
@@ -840,6 +853,22 @@ func (client *DeploymentsClient) ResumeDeleteAtSubscriptionScope(token string) (
 	}, nil
 }
 
+// DeleteAtSubscriptionScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
+func (client *DeploymentsClient) DeleteAtSubscriptionScope(ctx context.Context, deploymentName string) (*azcore.Response, error) {
+	req, err := client.DeleteAtSubscriptionScopeCreateRequest(ctx, deploymentName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteAtSubscriptionScopeHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteAtSubscriptionScopeCreateRequest creates the DeleteAtSubscriptionScope request.
 func (client *DeploymentsClient) DeleteAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}"
@@ -853,11 +882,6 @@ func (client *DeploymentsClient) DeleteAtSubscriptionScopeCreateRequest(ctx cont
 	query.Set("api-version", "2019-05-01")
 	req.URL.RawQuery = query.Encode()
 	return req, nil
-}
-
-// DeleteAtSubscriptionScopeHandleResponse handles the DeleteAtSubscriptionScope response.
-func (client *DeploymentsClient) DeleteAtSubscriptionScopeHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // DeleteAtSubscriptionScopeHandleError handles the DeleteAtSubscriptionScope error response.

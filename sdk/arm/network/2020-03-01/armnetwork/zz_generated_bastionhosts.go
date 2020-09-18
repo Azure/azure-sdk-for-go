@@ -50,23 +50,13 @@ func (client *BastionHostsClient) Do(req *azcore.Request) (*azcore.Response, err
 	return client.p.Do(req)
 }
 
-// CreateOrUpdate - Creates or updates the specified Bastion Host.
 func (client *BastionHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost) (*BastionHostPollerResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, bastionHostName, parameters)
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, bastionHostName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &BastionHostPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("BastionHostsClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
 	if err != nil {
@@ -94,6 +84,22 @@ func (client *BastionHostsClient) ResumeCreateOrUpdate(token string) (BastionHos
 	}, nil
 }
 
+// CreateOrUpdate - Creates or updates the specified Bastion Host.
+func (client *BastionHostsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, bastionHostName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateOrUpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *BastionHostsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}"
@@ -112,8 +118,9 @@ func (client *BastionHostsClient) CreateOrUpdateCreateRequest(ctx context.Contex
 }
 
 // CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *BastionHostsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*BastionHostPollerResponse, error) {
-	return &BastionHostPollerResponse{RawResponse: resp.Response}, nil
+func (client *BastionHostsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*BastionHostResponse, error) {
+	result := BastionHostResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.BastionHost)
 }
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -125,23 +132,13 @@ func (client *BastionHostsClient) CreateOrUpdateHandleError(resp *azcore.Respons
 	return err
 }
 
-// Delete - Deletes the specified Bastion Host.
 func (client *BastionHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, bastionHostName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, bastionHostName)
+	resp, err := client.Delete(ctx, resourceGroupName, bastionHostName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("BastionHostsClient.Delete", "location", resp, client.DeleteHandleError)
 	if err != nil {
@@ -169,6 +166,22 @@ func (client *BastionHostsClient) ResumeDelete(token string) (HTTPPoller, error)
 	}, nil
 }
 
+// Delete - Deletes the specified Bastion Host.
+func (client *BastionHostsClient) Delete(ctx context.Context, resourceGroupName string, bastionHostName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, bastionHostName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *BastionHostsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}"
@@ -184,11 +197,6 @@ func (client *BastionHostsClient) DeleteCreateRequest(ctx context.Context, resou
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// DeleteHandleResponse handles the Delete response.
-func (client *BastionHostsClient) DeleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // DeleteHandleError handles the Delete error response.

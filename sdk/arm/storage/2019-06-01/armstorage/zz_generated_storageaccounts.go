@@ -126,23 +126,13 @@ func (client *StorageAccountsClient) CheckNameAvailabilityHandleError(resp *azco
 	return errors.New(string(body))
 }
 
-// Create - Asynchronously creates a new storage account with the specified parameters. If an account is already created and a subsequent create request is issued with different properties, the account properties will be updated. If an account is already created and a subsequent create or update request is issued with the exact same set of properties, the request will succeed.
 func (client *StorageAccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters) (*StorageAccountPollerResponse, error) {
-	req, err := client.CreateCreateRequest(ctx, resourceGroupName, accountName, parameters)
+	resp, err := client.Create(ctx, resourceGroupName, accountName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.CreateHandleError(resp)
-	}
-	result, err := client.CreateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &StorageAccountPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("StorageAccountsClient.Create", "", resp, client.CreateHandleError)
 	if err != nil {
@@ -170,6 +160,22 @@ func (client *StorageAccountsClient) ResumeCreate(token string) (StorageAccountP
 	}, nil
 }
 
+// Create - Asynchronously creates a new storage account with the specified parameters. If an account is already created and a subsequent create request is issued with different properties, the account properties will be updated. If an account is already created and a subsequent create or update request is issued with the exact same set of properties, the request will succeed.
+func (client *StorageAccountsClient) Create(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters) (*azcore.Response, error) {
+	req, err := client.CreateCreateRequest(ctx, resourceGroupName, accountName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+		return nil, client.CreateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateCreateRequest creates the Create request.
 func (client *StorageAccountsClient) CreateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters StorageAccountCreateParameters) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}"
@@ -188,8 +194,9 @@ func (client *StorageAccountsClient) CreateCreateRequest(ctx context.Context, re
 }
 
 // CreateHandleResponse handles the Create response.
-func (client *StorageAccountsClient) CreateHandleResponse(resp *azcore.Response) (*StorageAccountPollerResponse, error) {
-	return &StorageAccountPollerResponse{RawResponse: resp.Response}, nil
+func (client *StorageAccountsClient) CreateHandleResponse(resp *azcore.Response) (*StorageAccountResponse, error) {
+	result := StorageAccountResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.StorageAccount)
 }
 
 // CreateHandleError handles the Create error response.
@@ -248,23 +255,13 @@ func (client *StorageAccountsClient) DeleteHandleError(resp *azcore.Response) er
 	return errors.New(string(body))
 }
 
-// Failover - Failover request can be triggered for a storage account in case of availability issues. The failover occurs from the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become primary after failover.
 func (client *StorageAccountsClient) BeginFailover(ctx context.Context, resourceGroupName string, accountName string) (*HTTPPollerResponse, error) {
-	req, err := client.FailoverCreateRequest(ctx, resourceGroupName, accountName)
+	resp, err := client.Failover(ctx, resourceGroupName, accountName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.FailoverHandleError(resp)
-	}
-	result, err := client.FailoverHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("StorageAccountsClient.Failover", "location", resp, client.FailoverHandleError)
 	if err != nil {
@@ -292,6 +289,22 @@ func (client *StorageAccountsClient) ResumeFailover(token string) (HTTPPoller, e
 	}, nil
 }
 
+// Failover - Failover request can be triggered for a storage account in case of availability issues. The failover occurs from the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become primary after failover.
+func (client *StorageAccountsClient) Failover(ctx context.Context, resourceGroupName string, accountName string) (*azcore.Response, error) {
+	req, err := client.FailoverCreateRequest(ctx, resourceGroupName, accountName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+		return nil, client.FailoverHandleError(resp)
+	}
+	return resp, nil
+}
+
 // FailoverCreateRequest creates the Failover request.
 func (client *StorageAccountsClient) FailoverCreateRequest(ctx context.Context, resourceGroupName string, accountName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/failover"
@@ -306,11 +319,6 @@ func (client *StorageAccountsClient) FailoverCreateRequest(ctx context.Context, 
 	query.Set("api-version", "2019-06-01")
 	req.URL.RawQuery = query.Encode()
 	return req, nil
-}
-
-// FailoverHandleResponse handles the Failover response.
-func (client *StorageAccountsClient) FailoverHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // FailoverHandleError handles the Failover error response.
@@ -708,23 +716,13 @@ func (client *StorageAccountsClient) RegenerateKeyHandleError(resp *azcore.Respo
 	return errors.New(string(body))
 }
 
-// RestoreBlobRanges - Restore blobs in the specified blob ranges
 func (client *StorageAccountsClient) BeginRestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters) (*BlobRestoreStatusPollerResponse, error) {
-	req, err := client.RestoreBlobRangesCreateRequest(ctx, resourceGroupName, accountName, parameters)
+	resp, err := client.RestoreBlobRanges(ctx, resourceGroupName, accountName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.RestoreBlobRangesHandleError(resp)
-	}
-	result, err := client.RestoreBlobRangesHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &BlobRestoreStatusPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("StorageAccountsClient.RestoreBlobRanges", "location", resp, client.RestoreBlobRangesHandleError)
 	if err != nil {
@@ -752,6 +750,22 @@ func (client *StorageAccountsClient) ResumeRestoreBlobRanges(token string) (Blob
 	}, nil
 }
 
+// RestoreBlobRanges - Restore blobs in the specified blob ranges
+func (client *StorageAccountsClient) RestoreBlobRanges(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters) (*azcore.Response, error) {
+	req, err := client.RestoreBlobRangesCreateRequest(ctx, resourceGroupName, accountName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+		return nil, client.RestoreBlobRangesHandleError(resp)
+	}
+	return resp, nil
+}
+
 // RestoreBlobRangesCreateRequest creates the RestoreBlobRanges request.
 func (client *StorageAccountsClient) RestoreBlobRangesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters BlobRestoreParameters) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/restoreBlobRanges"
@@ -770,8 +784,9 @@ func (client *StorageAccountsClient) RestoreBlobRangesCreateRequest(ctx context.
 }
 
 // RestoreBlobRangesHandleResponse handles the RestoreBlobRanges response.
-func (client *StorageAccountsClient) RestoreBlobRangesHandleResponse(resp *azcore.Response) (*BlobRestoreStatusPollerResponse, error) {
-	return &BlobRestoreStatusPollerResponse{RawResponse: resp.Response}, nil
+func (client *StorageAccountsClient) RestoreBlobRangesHandleResponse(resp *azcore.Response) (*BlobRestoreStatusResponse, error) {
+	result := BlobRestoreStatusResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.BlobRestoreStatus)
 }
 
 // RestoreBlobRangesHandleError handles the RestoreBlobRanges error response.

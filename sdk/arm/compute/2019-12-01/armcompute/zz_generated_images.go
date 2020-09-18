@@ -57,23 +57,13 @@ func (client *ImagesClient) Do(req *azcore.Request) (*azcore.Response, error) {
 	return client.p.Do(req)
 }
 
-// CreateOrUpdate - Create or update an image.
 func (client *ImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image) (*ImagePollerResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, imageName, parameters)
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, imageName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &ImagePollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ImagesClient.CreateOrUpdate", "", resp, client.CreateOrUpdateHandleError)
 	if err != nil {
@@ -101,6 +91,22 @@ func (client *ImagesClient) ResumeCreateOrUpdate(token string) (ImagePoller, err
 	}, nil
 }
 
+// CreateOrUpdate - Create or update an image.
+func (client *ImagesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters Image) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, imageName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateOrUpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ImagesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, imageName string, parameters Image) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}"
@@ -119,8 +125,9 @@ func (client *ImagesClient) CreateOrUpdateCreateRequest(ctx context.Context, res
 }
 
 // CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ImagesClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*ImagePollerResponse, error) {
-	return &ImagePollerResponse{RawResponse: resp.Response}, nil
+func (client *ImagesClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*ImageResponse, error) {
+	result := ImageResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.Image)
 }
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -135,23 +142,13 @@ func (client *ImagesClient) CreateOrUpdateHandleError(resp *azcore.Response) err
 	return errors.New(string(body))
 }
 
-// Delete - Deletes an Image.
 func (client *ImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, imageName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, imageName)
+	resp, err := client.Delete(ctx, resourceGroupName, imageName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ImagesClient.Delete", "", resp, client.DeleteHandleError)
 	if err != nil {
@@ -179,6 +176,22 @@ func (client *ImagesClient) ResumeDelete(token string) (HTTPPoller, error) {
 	}, nil
 }
 
+// Delete - Deletes an Image.
+func (client *ImagesClient) Delete(ctx context.Context, resourceGroupName string, imageName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, imageName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *ImagesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, imageName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}"
@@ -193,11 +206,6 @@ func (client *ImagesClient) DeleteCreateRequest(ctx context.Context, resourceGro
 	query.Set("api-version", "2019-12-01")
 	req.URL.RawQuery = query.Encode()
 	return req, nil
-}
-
-// DeleteHandleResponse handles the Delete response.
-func (client *ImagesClient) DeleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // DeleteHandleError handles the Delete error response.
@@ -367,23 +375,13 @@ func (client *ImagesClient) ListByResourceGroupHandleError(resp *azcore.Response
 	return errors.New(string(body))
 }
 
-// Update - Update an image.
 func (client *ImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate) (*ImagePollerResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, imageName, parameters)
+	resp, err := client.Update(ctx, resourceGroupName, imageName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.UpdateHandleError(resp)
-	}
-	result, err := client.UpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &ImagePollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ImagesClient.Update", "", resp, client.UpdateHandleError)
 	if err != nil {
@@ -411,6 +409,22 @@ func (client *ImagesClient) ResumeUpdate(token string) (ImagePoller, error) {
 	}, nil
 }
 
+// Update - Update an image.
+func (client *ImagesClient) Update(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate) (*azcore.Response, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, imageName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.UpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // UpdateCreateRequest creates the Update request.
 func (client *ImagesClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, imageName string, parameters ImageUpdate) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}"
@@ -429,8 +443,9 @@ func (client *ImagesClient) UpdateCreateRequest(ctx context.Context, resourceGro
 }
 
 // UpdateHandleResponse handles the Update response.
-func (client *ImagesClient) UpdateHandleResponse(resp *azcore.Response) (*ImagePollerResponse, error) {
-	return &ImagePollerResponse{RawResponse: resp.Response}, nil
+func (client *ImagesClient) UpdateHandleResponse(resp *azcore.Response) (*ImageResponse, error) {
+	result := ImageResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.Image)
 }
 
 // UpdateHandleError handles the Update error response.

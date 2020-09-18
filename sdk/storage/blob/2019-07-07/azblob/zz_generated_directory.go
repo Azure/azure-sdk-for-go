@@ -13,30 +13,9 @@ import (
 	"time"
 )
 
-// DirectoryOperations contains the methods for the Directory group.
-type DirectoryOperations interface {
-	// Create - Create a directory. By default, the destination is overwritten and if the destination already exists and has a lease the lease is broken. This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).  To fail if the destination already exists, use a conditional request with If-None-Match: "*".
-	Create(ctx context.Context, directoryCreateOptions *DirectoryCreateOptions, directoryHttpHeaders *DirectoryHttpHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*DirectoryCreateResponse, error)
-	// Delete - Deletes the directory
-	Delete(ctx context.Context, recursiveDirectoryDelete bool, directoryDeleteOptions *DirectoryDeleteOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*DirectoryDeleteResponse, error)
-	// GetAccessControl - Get the owner, group, permissions, or access control list for a directory.
-	GetAccessControl(ctx context.Context, directoryGetAccessControlOptions *DirectoryGetAccessControlOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*DirectoryGetAccessControlResponse, error)
-	// Rename - Rename a directory. By default, the destination is overwritten and if the destination already exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations). To fail if the destination already exists, use a conditional request with If-None-Match: "*".
-	Rename(ctx context.Context, renameSource string, directoryRenameOptions *DirectoryRenameOptions, directoryHttpHeaders *DirectoryHttpHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions) (*DirectoryRenameResponse, error)
-	// SetAccessControl - Set the owner, group, permissions, or access control list for a directory.
-	SetAccessControl(ctx context.Context, directorySetAccessControlOptions *DirectorySetAccessControlOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*DirectorySetAccessControlResponse, error)
-}
-
-// directoryClient implements the DirectoryOperations interface.
-// Don't use this type directly, use newDirectoryClient() instead.
 type directoryClient struct {
 	*client
 	pathRenameMode *PathRenameMode
-}
-
-// newDirectoryClient creates a new instance of directoryClient with the specified values.
-func newDirectoryClient(c *client, pathRenameMode *PathRenameMode) DirectoryOperations {
-	return &directoryClient{client: c, pathRenameMode: pathRenameMode}
 }
 
 // Do invokes the Do() method on the pipeline associated with this client.

@@ -124,23 +124,13 @@ func (client *NamespacesClient) CheckNameAvailabilityHandleError(resp *azcore.Re
 	return err
 }
 
-// CreateOrUpdate - Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is idempotent.
 func (client *NamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace) (*EhNamespacePollerResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, parameters)
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, namespaceName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.CreateOrUpdateHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &EhNamespacePollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NamespacesClient.CreateOrUpdate", "", resp, client.CreateOrUpdateHandleError)
 	if err != nil {
@@ -168,6 +158,22 @@ func (client *NamespacesClient) ResumeCreateOrUpdate(token string) (EhNamespaceP
 	}, nil
 }
 
+// CreateOrUpdate - Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is idempotent.
+func (client *NamespacesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+		return nil, client.CreateOrUpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *NamespacesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}"
@@ -186,8 +192,9 @@ func (client *NamespacesClient) CreateOrUpdateCreateRequest(ctx context.Context,
 }
 
 // CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *NamespacesClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*EhNamespacePollerResponse, error) {
-	return &EhNamespacePollerResponse{RawResponse: resp.Response}, nil
+func (client *NamespacesClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*EhNamespaceResponse, error) {
+	result := EhNamespaceResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.EhNamespace)
 }
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -304,23 +311,13 @@ func (client *NamespacesClient) CreateOrUpdateNetworkRuleSetHandleError(resp *az
 	return err
 }
 
-// Delete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
 func (client *NamespacesClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, namespaceName)
+	resp, err := client.Delete(ctx, resourceGroupName, namespaceName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NamespacesClient.Delete", "", resp, client.DeleteHandleError)
 	if err != nil {
@@ -348,6 +345,22 @@ func (client *NamespacesClient) ResumeDelete(token string) (HTTPPoller, error) {
 	}, nil
 }
 
+// Delete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
+func (client *NamespacesClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, namespaceName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *NamespacesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}"
@@ -363,11 +376,6 @@ func (client *NamespacesClient) DeleteCreateRequest(ctx context.Context, resourc
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// DeleteHandleResponse handles the Delete response.
-func (client *NamespacesClient) DeleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // DeleteHandleError handles the Delete error response.

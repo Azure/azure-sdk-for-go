@@ -52,23 +52,13 @@ func (client *VirtualHubsClient) Do(req *azcore.Request) (*azcore.Response, erro
 	return client.p.Do(req)
 }
 
-// CreateOrUpdate - Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
 func (client *VirtualHubsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub) (*VirtualHubPollerResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, virtualHubParameters)
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, virtualHubName, virtualHubParameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &VirtualHubPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VirtualHubsClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
 	if err != nil {
@@ -96,6 +86,22 @@ func (client *VirtualHubsClient) ResumeCreateOrUpdate(token string) (VirtualHubP
 	}, nil
 }
 
+// CreateOrUpdate - Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
+func (client *VirtualHubsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, virtualHubParameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateOrUpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *VirtualHubsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}"
@@ -114,8 +120,9 @@ func (client *VirtualHubsClient) CreateOrUpdateCreateRequest(ctx context.Context
 }
 
 // CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *VirtualHubsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*VirtualHubPollerResponse, error) {
-	return &VirtualHubPollerResponse{RawResponse: resp.Response}, nil
+func (client *VirtualHubsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*VirtualHubResponse, error) {
+	result := VirtualHubResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.VirtualHub)
 }
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -127,23 +134,13 @@ func (client *VirtualHubsClient) CreateOrUpdateHandleError(resp *azcore.Response
 	return err
 }
 
-// Delete - Deletes a VirtualHub.
 func (client *VirtualHubsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, virtualHubName)
+	resp, err := client.Delete(ctx, resourceGroupName, virtualHubName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VirtualHubsClient.Delete", "location", resp, client.DeleteHandleError)
 	if err != nil {
@@ -171,6 +168,22 @@ func (client *VirtualHubsClient) ResumeDelete(token string) (HTTPPoller, error) 
 	}, nil
 }
 
+// Delete - Deletes a VirtualHub.
+func (client *VirtualHubsClient) Delete(ctx context.Context, resourceGroupName string, virtualHubName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, virtualHubName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *VirtualHubsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}"
@@ -186,11 +199,6 @@ func (client *VirtualHubsClient) DeleteCreateRequest(ctx context.Context, resour
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// DeleteHandleResponse handles the Delete response.
-func (client *VirtualHubsClient) DeleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // DeleteHandleError handles the Delete error response.

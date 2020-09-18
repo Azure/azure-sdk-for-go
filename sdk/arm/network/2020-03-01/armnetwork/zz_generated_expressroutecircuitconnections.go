@@ -48,23 +48,13 @@ func (client *ExpressRouteCircuitConnectionsClient) Do(req *azcore.Request) (*az
 	return client.p.Do(req)
 }
 
-// CreateOrUpdate - Creates or updates a Express Route Circuit Connection in the specified express route circuits.
 func (client *ExpressRouteCircuitConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, expressRouteCircuitConnectionParameters ExpressRouteCircuitConnection) (*ExpressRouteCircuitConnectionPollerResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, circuitName, peeringName, connectionName, expressRouteCircuitConnectionParameters)
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, circuitName, peeringName, connectionName, expressRouteCircuitConnectionParameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &ExpressRouteCircuitConnectionPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ExpressRouteCircuitConnectionsClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
 	if err != nil {
@@ -92,6 +82,22 @@ func (client *ExpressRouteCircuitConnectionsClient) ResumeCreateOrUpdate(token s
 	}, nil
 }
 
+// CreateOrUpdate - Creates or updates a Express Route Circuit Connection in the specified express route circuits.
+func (client *ExpressRouteCircuitConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, expressRouteCircuitConnectionParameters ExpressRouteCircuitConnection) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, circuitName, peeringName, connectionName, expressRouteCircuitConnectionParameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateOrUpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ExpressRouteCircuitConnectionsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, expressRouteCircuitConnectionParameters ExpressRouteCircuitConnection) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/connections/{connectionName}"
@@ -112,8 +118,9 @@ func (client *ExpressRouteCircuitConnectionsClient) CreateOrUpdateCreateRequest(
 }
 
 // CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ExpressRouteCircuitConnectionsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitConnectionPollerResponse, error) {
-	return &ExpressRouteCircuitConnectionPollerResponse{RawResponse: resp.Response}, nil
+func (client *ExpressRouteCircuitConnectionsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitConnectionResponse, error) {
+	result := ExpressRouteCircuitConnectionResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCircuitConnection)
 }
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -125,23 +132,13 @@ func (client *ExpressRouteCircuitConnectionsClient) CreateOrUpdateHandleError(re
 	return err
 }
 
-// Delete - Deletes the specified Express Route Circuit Connection from the specified express route circuit.
 func (client *ExpressRouteCircuitConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, circuitName, peeringName, connectionName)
+	resp, err := client.Delete(ctx, resourceGroupName, circuitName, peeringName, connectionName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ExpressRouteCircuitConnectionsClient.Delete", "location", resp, client.DeleteHandleError)
 	if err != nil {
@@ -169,6 +166,22 @@ func (client *ExpressRouteCircuitConnectionsClient) ResumeDelete(token string) (
 	}, nil
 }
 
+// Delete - Deletes the specified Express Route Circuit Connection from the specified express route circuit.
+func (client *ExpressRouteCircuitConnectionsClient) Delete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, circuitName, peeringName, connectionName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *ExpressRouteCircuitConnectionsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/connections/{connectionName}"
@@ -186,11 +199,6 @@ func (client *ExpressRouteCircuitConnectionsClient) DeleteCreateRequest(ctx cont
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// DeleteHandleResponse handles the Delete response.
-func (client *ExpressRouteCircuitConnectionsClient) DeleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // DeleteHandleError handles the Delete error response.

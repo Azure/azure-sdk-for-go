@@ -50,23 +50,13 @@ func (client *VirtualRoutersClient) Do(req *azcore.Request) (*azcore.Response, e
 	return client.p.Do(req)
 }
 
-// CreateOrUpdate - Creates or updates the specified Virtual Router.
 func (client *VirtualRoutersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualRouterName string, parameters VirtualRouter) (*VirtualRouterPollerResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, virtualRouterName, parameters)
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, virtualRouterName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &VirtualRouterPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VirtualRoutersClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
 	if err != nil {
@@ -94,6 +84,22 @@ func (client *VirtualRoutersClient) ResumeCreateOrUpdate(token string) (VirtualR
 	}, nil
 }
 
+// CreateOrUpdate - Creates or updates the specified Virtual Router.
+func (client *VirtualRoutersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualRouterName string, parameters VirtualRouter) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, virtualRouterName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateOrUpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *VirtualRoutersClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualRouterName string, parameters VirtualRouter) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualRouters/{virtualRouterName}"
@@ -112,8 +118,9 @@ func (client *VirtualRoutersClient) CreateOrUpdateCreateRequest(ctx context.Cont
 }
 
 // CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *VirtualRoutersClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*VirtualRouterPollerResponse, error) {
-	return &VirtualRouterPollerResponse{RawResponse: resp.Response}, nil
+func (client *VirtualRoutersClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*VirtualRouterResponse, error) {
+	result := VirtualRouterResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.VirtualRouter)
 }
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -125,23 +132,13 @@ func (client *VirtualRoutersClient) CreateOrUpdateHandleError(resp *azcore.Respo
 	return err
 }
 
-// Delete - Deletes the specified Virtual Router.
 func (client *VirtualRoutersClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualRouterName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, virtualRouterName)
+	resp, err := client.Delete(ctx, resourceGroupName, virtualRouterName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VirtualRoutersClient.Delete", "location", resp, client.DeleteHandleError)
 	if err != nil {
@@ -169,6 +166,22 @@ func (client *VirtualRoutersClient) ResumeDelete(token string) (HTTPPoller, erro
 	}, nil
 }
 
+// Delete - Deletes the specified Virtual Router.
+func (client *VirtualRoutersClient) Delete(ctx context.Context, resourceGroupName string, virtualRouterName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, virtualRouterName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *VirtualRoutersClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, virtualRouterName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualRouters/{virtualRouterName}"
@@ -184,11 +197,6 @@ func (client *VirtualRoutersClient) DeleteCreateRequest(ctx context.Context, res
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// DeleteHandleResponse handles the Delete response.
-func (client *VirtualRoutersClient) DeleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // DeleteHandleError handles the Delete error response.

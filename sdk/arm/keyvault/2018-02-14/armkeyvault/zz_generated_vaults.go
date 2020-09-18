@@ -121,23 +121,13 @@ func (client *VaultsClient) CheckNameAvailabilityHandleError(resp *azcore.Respon
 	return errors.New(string(body))
 }
 
-// CreateOrUpdate - Create or update a key vault in the specified subscription.
 func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters) (*VaultPollerResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, vaultName, parameters)
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, vaultName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &VaultPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VaultsClient.CreateOrUpdate", "", resp, client.CreateOrUpdateHandleError)
 	if err != nil {
@@ -165,6 +155,22 @@ func (client *VaultsClient) ResumeCreateOrUpdate(token string) (VaultPoller, err
 	}, nil
 }
 
+// CreateOrUpdate - Create or update a key vault in the specified subscription.
+func (client *VaultsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, vaultName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateOrUpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *VaultsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}"
@@ -183,8 +189,9 @@ func (client *VaultsClient) CreateOrUpdateCreateRequest(ctx context.Context, res
 }
 
 // CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *VaultsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*VaultPollerResponse, error) {
-	return &VaultPollerResponse{RawResponse: resp.Response}, nil
+func (client *VaultsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*VaultResponse, error) {
+	result := VaultResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.Vault)
 }
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -556,23 +563,13 @@ func (client *VaultsClient) ListDeletedHandleError(resp *azcore.Response) error 
 	return errors.New(string(body))
 }
 
-// PurgeDeleted - Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
 func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName string, location string) (*HTTPPollerResponse, error) {
-	req, err := client.PurgeDeletedCreateRequest(ctx, vaultName, location)
+	resp, err := client.PurgeDeleted(ctx, vaultName, location)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.PurgeDeletedHandleError(resp)
-	}
-	result, err := client.PurgeDeletedHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("VaultsClient.PurgeDeleted", "", resp, client.PurgeDeletedHandleError)
 	if err != nil {
@@ -600,6 +597,22 @@ func (client *VaultsClient) ResumePurgeDeleted(token string) (HTTPPoller, error)
 	}, nil
 }
 
+// PurgeDeleted - Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
+func (client *VaultsClient) PurgeDeleted(ctx context.Context, vaultName string, location string) (*azcore.Response, error) {
+	req, err := client.PurgeDeletedCreateRequest(ctx, vaultName, location)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+		return nil, client.PurgeDeletedHandleError(resp)
+	}
+	return resp, nil
+}
+
 // PurgeDeletedCreateRequest creates the PurgeDeleted request.
 func (client *VaultsClient) PurgeDeletedCreateRequest(ctx context.Context, vaultName string, location string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/locations/{location}/deletedVaults/{vaultName}/purge"
@@ -614,11 +627,6 @@ func (client *VaultsClient) PurgeDeletedCreateRequest(ctx context.Context, vault
 	query.Set("api-version", "2018-02-14")
 	req.URL.RawQuery = query.Encode()
 	return req, nil
-}
-
-// PurgeDeletedHandleResponse handles the PurgeDeleted response.
-func (client *VaultsClient) PurgeDeletedHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // PurgeDeletedHandleError handles the PurgeDeleted error response.

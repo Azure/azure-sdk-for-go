@@ -13,33 +13,8 @@ import (
 	"time"
 )
 
-// ServiceOperations contains the methods for the Service group.
-type ServiceOperations interface {
-	// GetAccountInfo - Returns the sku name and account kind
-	GetAccountInfo(ctx context.Context) (*ServiceGetAccountInfoResponse, error)
-	// GetProperties - gets the properties of a storage account's Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
-	GetProperties(ctx context.Context, serviceGetPropertiesOptions *ServiceGetPropertiesOptions) (*StorageServicePropertiesResponse, error)
-	// GetStatistics - Retrieves statistics related to replication for the Blob service. It is only available on the secondary location endpoint when read-access geo-redundant replication is enabled for the storage account.
-	GetStatistics(ctx context.Context, serviceGetStatisticsOptions *ServiceGetStatisticsOptions) (*StorageServiceStatsResponse, error)
-	// GetUserDelegationKey - Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token authentication.
-	GetUserDelegationKey(ctx context.Context, keyInfo KeyInfo, serviceGetUserDelegationKeyOptions *ServiceGetUserDelegationKeyOptions) (*UserDelegationKeyResponse, error)
-	// ListContainersSegment - The List Containers Segment operation returns a list of the containers under the specified account
-	ListContainersSegment(serviceListContainersSegmentOptions *ServiceListContainersSegmentOptions) ListContainersSegmentResponsePager
-	// SetProperties - Sets properties for a storage account's Blob service endpoint, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules
-	SetProperties(ctx context.Context, storageServiceProperties StorageServiceProperties, serviceSetPropertiesOptions *ServiceSetPropertiesOptions) (*ServiceSetPropertiesResponse, error)
-	// SubmitBatch - The Batch operation allows multiple API calls to be embedded into a single HTTP request.
-	SubmitBatch(ctx context.Context, contentLength int64, multipartContentType string, body azcore.ReadSeekCloser, serviceSubmitBatchOptions *ServiceSubmitBatchOptions) (*ServiceSubmitBatchResponse, error)
-}
-
-// serviceClient implements the ServiceOperations interface.
-// Don't use this type directly, use newServiceClient() instead.
 type serviceClient struct {
 	*client
-}
-
-// newServiceClient creates a new instance of serviceClient with the specified values.
-func newServiceClient(c *client) ServiceOperations {
-	return &serviceClient{client: c}
 }
 
 // Do invokes the Do() method on the pipeline associated with this client.

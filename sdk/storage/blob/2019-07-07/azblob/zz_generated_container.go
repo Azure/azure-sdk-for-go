@@ -16,47 +16,8 @@ import (
 	"time"
 )
 
-// ContainerOperations contains the methods for the Container group.
-type ContainerOperations interface {
-	// AcquireLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-	AcquireLease(ctx context.Context, containerAcquireLeaseOptions *ContainerAcquireLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerAcquireLeaseResponse, error)
-	// BreakLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-	BreakLease(ctx context.Context, containerBreakLeaseOptions *ContainerBreakLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerBreakLeaseResponse, error)
-	// ChangeLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-	ChangeLease(ctx context.Context, leaseId string, proposedLeaseId string, containerChangeLeaseOptions *ContainerChangeLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerChangeLeaseResponse, error)
-	// Create - creates a new container under the specified account. If the container with the same name already exists, the operation fails
-	Create(ctx context.Context, containerCreateOptions *ContainerCreateOptions, containerCpkScopeInfo *ContainerCpkScopeInfo) (*ContainerCreateResponse, error)
-	// Delete - operation marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection
-	Delete(ctx context.Context, containerDeleteOptions *ContainerDeleteOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerDeleteResponse, error)
-	// GetAccessPolicy - gets the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
-	GetAccessPolicy(ctx context.Context, containerGetAccessPolicyOptions *ContainerGetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*SignedIDentifierArrayResponse, error)
-	// GetAccountInfo - Returns the sku name and account kind
-	GetAccountInfo(ctx context.Context) (*ContainerGetAccountInfoResponse, error)
-	// GetProperties - returns all user-defined metadata and system properties for the specified container. The data returned does not include the container's list of blobs
-	GetProperties(ctx context.Context, containerGetPropertiesOptions *ContainerGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (*ContainerGetPropertiesResponse, error)
-	// ListBlobFlatSegment - [Update] The List Blobs operation returns a list of the blobs under the specified container
-	ListBlobFlatSegment(containerListBlobFlatSegmentOptions *ContainerListBlobFlatSegmentOptions) ListBlobsFlatSegmentResponsePager
-	// ListBlobHierarchySegment - [Update] The List Blobs operation returns a list of the blobs under the specified container
-	ListBlobHierarchySegment(delimiter string, containerListBlobHierarchySegmentOptions *ContainerListBlobHierarchySegmentOptions) ListBlobsHierarchySegmentResponsePager
-	// ReleaseLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-	ReleaseLease(ctx context.Context, leaseId string, containerReleaseLeaseOptions *ContainerReleaseLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerReleaseLeaseResponse, error)
-	// RenewLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
-	RenewLease(ctx context.Context, leaseId string, containerRenewLeaseOptions *ContainerRenewLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerRenewLeaseResponse, error)
-	// SetAccessPolicy - sets the permissions for the specified container. The permissions indicate whether blobs in a container may be accessed publicly.
-	SetAccessPolicy(ctx context.Context, containerSetAccessPolicyOptions *ContainerSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerSetAccessPolicyResponse, error)
-	// SetMetadata - operation sets one or more user-defined name-value pairs for the specified container.
-	SetMetadata(ctx context.Context, containerSetMetadataOptions *ContainerSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*ContainerSetMetadataResponse, error)
-}
-
-// containerClient implements the ContainerOperations interface.
-// Don't use this type directly, use newContainerClient() instead.
 type containerClient struct {
 	*client
-}
-
-// newContainerClient creates a new instance of containerClient with the specified values.
-func newContainerClient(c *client) ContainerOperations {
-	return &containerClient{client: c}
 }
 
 // Do invokes the Do() method on the pipeline associated with this client.

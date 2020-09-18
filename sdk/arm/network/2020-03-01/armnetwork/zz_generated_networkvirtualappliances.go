@@ -52,23 +52,13 @@ func (client *NetworkVirtualAppliancesClient) Do(req *azcore.Request) (*azcore.R
 	return client.p.Do(req)
 }
 
-// CreateOrUpdate - Creates or updates the specified Network Virtual Appliance.
 func (client *NetworkVirtualAppliancesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance) (*NetworkVirtualAppliancePollerResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, parameters)
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, networkVirtualApplianceName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &NetworkVirtualAppliancePollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkVirtualAppliancesClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
 	if err != nil {
@@ -96,6 +86,22 @@ func (client *NetworkVirtualAppliancesClient) ResumeCreateOrUpdate(token string)
 	}, nil
 }
 
+// CreateOrUpdate - Creates or updates the specified Network Virtual Appliance.
+func (client *NetworkVirtualAppliancesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateOrUpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *NetworkVirtualAppliancesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}"
@@ -114,8 +120,9 @@ func (client *NetworkVirtualAppliancesClient) CreateOrUpdateCreateRequest(ctx co
 }
 
 // CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *NetworkVirtualAppliancesClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*NetworkVirtualAppliancePollerResponse, error) {
-	return &NetworkVirtualAppliancePollerResponse{RawResponse: resp.Response}, nil
+func (client *NetworkVirtualAppliancesClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*NetworkVirtualApplianceResponse, error) {
+	result := NetworkVirtualApplianceResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.NetworkVirtualAppliance)
 }
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -127,23 +134,13 @@ func (client *NetworkVirtualAppliancesClient) CreateOrUpdateHandleError(resp *az
 	return err
 }
 
-// Delete - Deletes the specified Network Virtual Appliance.
 func (client *NetworkVirtualAppliancesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName)
+	resp, err := client.Delete(ctx, resourceGroupName, networkVirtualApplianceName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("NetworkVirtualAppliancesClient.Delete", "location", resp, client.DeleteHandleError)
 	if err != nil {
@@ -171,6 +168,22 @@ func (client *NetworkVirtualAppliancesClient) ResumeDelete(token string) (HTTPPo
 	}, nil
 }
 
+// Delete - Deletes the specified Network Virtual Appliance.
+func (client *NetworkVirtualAppliancesClient) Delete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *NetworkVirtualAppliancesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}"
@@ -186,11 +199,6 @@ func (client *NetworkVirtualAppliancesClient) DeleteCreateRequest(ctx context.Co
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// DeleteHandleResponse handles the Delete response.
-func (client *NetworkVirtualAppliancesClient) DeleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // DeleteHandleError handles the Delete error response.

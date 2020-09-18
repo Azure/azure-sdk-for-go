@@ -153,23 +153,13 @@ func (client *ResourceGroupsClient) CreateOrUpdateHandleError(resp *azcore.Respo
 	return errors.New(string(body))
 }
 
-// Delete - When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
 func (client *ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName)
+	resp, err := client.Delete(ctx, resourceGroupName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ResourceGroupsClient.Delete", "", resp, client.DeleteHandleError)
 	if err != nil {
@@ -197,6 +187,22 @@ func (client *ResourceGroupsClient) ResumeDelete(token string) (HTTPPoller, erro
 	}, nil
 }
 
+// Delete - When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
+func (client *ResourceGroupsClient) Delete(ctx context.Context, resourceGroupName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *ResourceGroupsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}"
@@ -210,11 +216,6 @@ func (client *ResourceGroupsClient) DeleteCreateRequest(ctx context.Context, res
 	query.Set("api-version", "2019-05-01")
 	req.URL.RawQuery = query.Encode()
 	return req, nil
-}
-
-// DeleteHandleResponse handles the Delete response.
-func (client *ResourceGroupsClient) DeleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // DeleteHandleError handles the Delete error response.

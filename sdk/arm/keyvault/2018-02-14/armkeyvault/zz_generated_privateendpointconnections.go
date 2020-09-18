@@ -45,23 +45,13 @@ func (client *PrivateEndpointConnectionsClient) Do(req *azcore.Request) (*azcore
 	return client.p.Do(req)
 }
 
-// Delete - Deletes the specified private endpoint connection associated with the key vault.
 func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (*PrivateEndpointConnectionPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, vaultName, privateEndpointConnectionName)
+	resp, err := client.Delete(ctx, resourceGroupName, vaultName, privateEndpointConnectionName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &PrivateEndpointConnectionPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("PrivateEndpointConnectionsClient.Delete", "", resp, client.DeleteHandleError)
 	if err != nil {
@@ -89,6 +79,22 @@ func (client *PrivateEndpointConnectionsClient) ResumeDelete(token string) (Priv
 	}, nil
 }
 
+// Delete - Deletes the specified private endpoint connection associated with the key vault.
+func (client *PrivateEndpointConnectionsClient) Delete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, vaultName, privateEndpointConnectionName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *PrivateEndpointConnectionsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}"
@@ -108,8 +114,20 @@ func (client *PrivateEndpointConnectionsClient) DeleteCreateRequest(ctx context.
 }
 
 // DeleteHandleResponse handles the Delete response.
-func (client *PrivateEndpointConnectionsClient) DeleteHandleResponse(resp *azcore.Response) (*PrivateEndpointConnectionPollerResponse, error) {
-	return &PrivateEndpointConnectionPollerResponse{RawResponse: resp.Response}, nil
+func (client *PrivateEndpointConnectionsClient) DeleteHandleResponse(resp *azcore.Response) (*PrivateEndpointConnectionResponse, error) {
+	result := PrivateEndpointConnectionResponse{RawResponse: resp.Response}
+	if val := resp.Header.Get("Retry-After"); val != "" {
+		retryAfter32, err := strconv.ParseInt(val, 10, 32)
+		retryAfter := int32(retryAfter32)
+		if err != nil {
+			return nil, err
+		}
+		result.RetryAfter = &retryAfter
+	}
+	if val := resp.Header.Get("Azure-AsyncOperation"); val != "" {
+		result.AzureAsyncOperation = &val
+	}
+	return &result, resp.UnmarshalAsJSON(&result.PrivateEndpointConnection)
 }
 
 // DeleteHandleError handles the Delete error response.

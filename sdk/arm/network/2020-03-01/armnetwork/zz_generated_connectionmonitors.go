@@ -62,23 +62,13 @@ func (client *ConnectionMonitorsClient) Do(req *azcore.Request) (*azcore.Respons
 	return client.p.Do(req)
 }
 
-// CreateOrUpdate - Create or update a connection monitor.
 func (client *ConnectionMonitorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor) (*ConnectionMonitorResultPollerResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &ConnectionMonitorResultPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ConnectionMonitorsClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
 	if err != nil {
@@ -106,6 +96,22 @@ func (client *ConnectionMonitorsClient) ResumeCreateOrUpdate(token string) (Conn
 	}, nil
 }
 
+// CreateOrUpdate - Create or update a connection monitor.
+func (client *ConnectionMonitorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateOrUpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ConnectionMonitorsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}"
@@ -125,8 +131,9 @@ func (client *ConnectionMonitorsClient) CreateOrUpdateCreateRequest(ctx context.
 }
 
 // CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ConnectionMonitorsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*ConnectionMonitorResultPollerResponse, error) {
-	return &ConnectionMonitorResultPollerResponse{RawResponse: resp.Response}, nil
+func (client *ConnectionMonitorsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*ConnectionMonitorResultResponse, error) {
+	result := ConnectionMonitorResultResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.ConnectionMonitorResult)
 }
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -138,23 +145,13 @@ func (client *ConnectionMonitorsClient) CreateOrUpdateHandleError(resp *azcore.R
 	return err
 }
 
-// Delete - Deletes the specified connection monitor.
 func (client *ConnectionMonitorsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+	resp, err := client.Delete(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ConnectionMonitorsClient.Delete", "location", resp, client.DeleteHandleError)
 	if err != nil {
@@ -182,6 +179,22 @@ func (client *ConnectionMonitorsClient) ResumeDelete(token string) (HTTPPoller, 
 	}, nil
 }
 
+// Delete - Deletes the specified connection monitor.
+func (client *ConnectionMonitorsClient) Delete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *ConnectionMonitorsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}"
@@ -198,11 +211,6 @@ func (client *ConnectionMonitorsClient) DeleteCreateRequest(ctx context.Context,
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// DeleteHandleResponse handles the Delete response.
-func (client *ConnectionMonitorsClient) DeleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // DeleteHandleError handles the Delete error response.
@@ -319,23 +327,13 @@ func (client *ConnectionMonitorsClient) ListHandleError(resp *azcore.Response) e
 	return err
 }
 
-// Query - Query a snapshot of the most recent connection states.
 func (client *ConnectionMonitorsClient) BeginQuery(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*ConnectionMonitorQueryResultPollerResponse, error) {
-	req, err := client.QueryCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+	resp, err := client.Query(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.QueryHandleError(resp)
-	}
-	result, err := client.QueryHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &ConnectionMonitorQueryResultPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ConnectionMonitorsClient.Query", "location", resp, client.QueryHandleError)
 	if err != nil {
@@ -363,6 +361,22 @@ func (client *ConnectionMonitorsClient) ResumeQuery(token string) (ConnectionMon
 	}, nil
 }
 
+// Query - Query a snapshot of the most recent connection states.
+func (client *ConnectionMonitorsClient) Query(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Response, error) {
+	req, err := client.QueryCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+		return nil, client.QueryHandleError(resp)
+	}
+	return resp, nil
+}
+
 // QueryCreateRequest creates the Query request.
 func (client *ConnectionMonitorsClient) QueryCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/query"
@@ -382,8 +396,9 @@ func (client *ConnectionMonitorsClient) QueryCreateRequest(ctx context.Context, 
 }
 
 // QueryHandleResponse handles the Query response.
-func (client *ConnectionMonitorsClient) QueryHandleResponse(resp *azcore.Response) (*ConnectionMonitorQueryResultPollerResponse, error) {
-	return &ConnectionMonitorQueryResultPollerResponse{RawResponse: resp.Response}, nil
+func (client *ConnectionMonitorsClient) QueryHandleResponse(resp *azcore.Response) (*ConnectionMonitorQueryResultResponse, error) {
+	result := ConnectionMonitorQueryResultResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.ConnectionMonitorQueryResult)
 }
 
 // QueryHandleError handles the Query error response.
@@ -395,23 +410,13 @@ func (client *ConnectionMonitorsClient) QueryHandleError(resp *azcore.Response) 
 	return err
 }
 
-// Start - Starts the specified connection monitor.
 func (client *ConnectionMonitorsClient) BeginStart(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error) {
-	req, err := client.StartCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+	resp, err := client.Start(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.StartHandleError(resp)
-	}
-	result, err := client.StartHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ConnectionMonitorsClient.Start", "location", resp, client.StartHandleError)
 	if err != nil {
@@ -439,6 +444,22 @@ func (client *ConnectionMonitorsClient) ResumeStart(token string) (HTTPPoller, e
 	}, nil
 }
 
+// Start - Starts the specified connection monitor.
+func (client *ConnectionMonitorsClient) Start(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Response, error) {
+	req, err := client.StartCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+		return nil, client.StartHandleError(resp)
+	}
+	return resp, nil
+}
+
 // StartCreateRequest creates the Start request.
 func (client *ConnectionMonitorsClient) StartCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/start"
@@ -457,11 +478,6 @@ func (client *ConnectionMonitorsClient) StartCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// StartHandleResponse handles the Start response.
-func (client *ConnectionMonitorsClient) StartHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
-}
-
 // StartHandleError handles the Start error response.
 func (client *ConnectionMonitorsClient) StartHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
@@ -471,23 +487,13 @@ func (client *ConnectionMonitorsClient) StartHandleError(resp *azcore.Response) 
 	return err
 }
 
-// Stop - Stops the specified connection monitor.
 func (client *ConnectionMonitorsClient) BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error) {
-	req, err := client.StopCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+	resp, err := client.Stop(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.StopHandleError(resp)
-	}
-	result, err := client.StopHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("ConnectionMonitorsClient.Stop", "location", resp, client.StopHandleError)
 	if err != nil {
@@ -515,6 +521,22 @@ func (client *ConnectionMonitorsClient) ResumeStop(token string) (HTTPPoller, er
 	}, nil
 }
 
+// Stop - Stops the specified connection monitor.
+func (client *ConnectionMonitorsClient) Stop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Response, error) {
+	req, err := client.StopCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+		return nil, client.StopHandleError(resp)
+	}
+	return resp, nil
+}
+
 // StopCreateRequest creates the Stop request.
 func (client *ConnectionMonitorsClient) StopCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/stop"
@@ -531,11 +553,6 @@ func (client *ConnectionMonitorsClient) StopCreateRequest(ctx context.Context, r
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// StopHandleResponse handles the Stop response.
-func (client *ConnectionMonitorsClient) StopHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // StopHandleError handles the Stop error response.

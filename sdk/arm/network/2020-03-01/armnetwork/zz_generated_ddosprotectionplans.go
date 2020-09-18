@@ -52,23 +52,13 @@ func (client *DdosProtectionPlansClient) Do(req *azcore.Request) (*azcore.Respon
 	return client.p.Do(req)
 }
 
-// CreateOrUpdate - Creates or updates a DDoS protection plan.
 func (client *DdosProtectionPlansClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters DdosProtectionPlan) (*DdosProtectionPlanPollerResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, ddosProtectionPlanName, parameters)
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, ddosProtectionPlanName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &DdosProtectionPlanPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DdosProtectionPlansClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
 	if err != nil {
@@ -96,6 +86,22 @@ func (client *DdosProtectionPlansClient) ResumeCreateOrUpdate(token string) (Ddo
 	}, nil
 }
 
+// CreateOrUpdate - Creates or updates a DDoS protection plan.
+func (client *DdosProtectionPlansClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters DdosProtectionPlan) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, ddosProtectionPlanName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateOrUpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DdosProtectionPlansClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string, parameters DdosProtectionPlan) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ddosProtectionPlans/{ddosProtectionPlanName}"
@@ -114,8 +120,9 @@ func (client *DdosProtectionPlansClient) CreateOrUpdateCreateRequest(ctx context
 }
 
 // CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DdosProtectionPlansClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*DdosProtectionPlanPollerResponse, error) {
-	return &DdosProtectionPlanPollerResponse{RawResponse: resp.Response}, nil
+func (client *DdosProtectionPlansClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*DdosProtectionPlanResponse, error) {
+	result := DdosProtectionPlanResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.DdosProtectionPlan)
 }
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -127,23 +134,13 @@ func (client *DdosProtectionPlansClient) CreateOrUpdateHandleError(resp *azcore.
 	return err
 }
 
-// Delete - Deletes the specified DDoS protection plan.
 func (client *DdosProtectionPlansClient) BeginDelete(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, ddosProtectionPlanName)
+	resp, err := client.Delete(ctx, resourceGroupName, ddosProtectionPlanName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("DdosProtectionPlansClient.Delete", "location", resp, client.DeleteHandleError)
 	if err != nil {
@@ -171,6 +168,22 @@ func (client *DdosProtectionPlansClient) ResumeDelete(token string) (HTTPPoller,
 	}, nil
 }
 
+// Delete - Deletes the specified DDoS protection plan.
+func (client *DdosProtectionPlansClient) Delete(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, ddosProtectionPlanName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *DdosProtectionPlansClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, ddosProtectionPlanName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ddosProtectionPlans/{ddosProtectionPlanName}"
@@ -186,11 +199,6 @@ func (client *DdosProtectionPlansClient) DeleteCreateRequest(ctx context.Context
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// DeleteHandleResponse handles the Delete response.
-func (client *DdosProtectionPlansClient) DeleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // DeleteHandleError handles the Delete error response.

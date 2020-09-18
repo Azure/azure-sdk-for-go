@@ -52,23 +52,13 @@ func (client *IPAllocationsClient) Do(req *azcore.Request) (*azcore.Response, er
 	return client.p.Do(req)
 }
 
-// CreateOrUpdate - Creates or updates an IpAllocation in the specified resource group.
 func (client *IPAllocationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ipAllocationName string, parameters IPAllocation) (*IPAllocationPollerResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, ipAllocationName, parameters)
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, ipAllocationName, parameters)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
-	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &IPAllocationPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("IPAllocationsClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
 	if err != nil {
@@ -96,6 +86,22 @@ func (client *IPAllocationsClient) ResumeCreateOrUpdate(token string) (IPAllocat
 	}, nil
 }
 
+// CreateOrUpdate - Creates or updates an IpAllocation in the specified resource group.
+func (client *IPAllocationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, ipAllocationName string, parameters IPAllocation) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, ipAllocationName, parameters)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		return nil, client.CreateOrUpdateHandleError(resp)
+	}
+	return resp, nil
+}
+
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *IPAllocationsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ipAllocationName string, parameters IPAllocation) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/IpAllocations/{ipAllocationName}"
@@ -114,8 +120,9 @@ func (client *IPAllocationsClient) CreateOrUpdateCreateRequest(ctx context.Conte
 }
 
 // CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IPAllocationsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*IPAllocationPollerResponse, error) {
-	return &IPAllocationPollerResponse{RawResponse: resp.Response}, nil
+func (client *IPAllocationsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*IPAllocationResponse, error) {
+	result := IPAllocationResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.IPAllocation)
 }
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -127,23 +134,13 @@ func (client *IPAllocationsClient) CreateOrUpdateHandleError(resp *azcore.Respon
 	return err
 }
 
-// Delete - Deletes the specified IpAllocation.
 func (client *IPAllocationsClient) BeginDelete(ctx context.Context, resourceGroupName string, ipAllocationName string) (*HTTPPollerResponse, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, ipAllocationName)
+	resp, err := client.Delete(ctx, resourceGroupName, ipAllocationName)
 	if err != nil {
 		return nil, err
 	}
-	// send the first request to initialize the poller
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
-	}
-	result, err := client.DeleteHandleResponse(resp)
-	if err != nil {
-		return nil, err
+	result := &HTTPPollerResponse{
+		RawResponse: resp.Response,
 	}
 	pt, err := armcore.NewPoller("IPAllocationsClient.Delete", "location", resp, client.DeleteHandleError)
 	if err != nil {
@@ -171,6 +168,22 @@ func (client *IPAllocationsClient) ResumeDelete(token string) (HTTPPoller, error
 	}, nil
 }
 
+// Delete - Deletes the specified IpAllocation.
+func (client *IPAllocationsClient) Delete(ctx context.Context, resourceGroupName string, ipAllocationName string) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, ipAllocationName)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		return nil, client.DeleteHandleError(resp)
+	}
+	return resp, nil
+}
+
 // DeleteCreateRequest creates the Delete request.
 func (client *IPAllocationsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, ipAllocationName string) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/IpAllocations/{ipAllocationName}"
@@ -186,11 +199,6 @@ func (client *IPAllocationsClient) DeleteCreateRequest(ctx context.Context, reso
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
-}
-
-// DeleteHandleResponse handles the Delete response.
-func (client *IPAllocationsClient) DeleteHandleResponse(resp *azcore.Response) (*HTTPPollerResponse, error) {
-	return &HTTPPollerResponse{RawResponse: resp.Response}, nil
 }
 
 // DeleteHandleError handles the Delete error response.

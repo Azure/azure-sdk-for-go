@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## `v46.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| containerservice | 2020-09-01 |
+| digitaltwins | 2020-10-31 |
+| streamanalytics | 2020-03-01-preview |
+
+### Breaking Changes
+
+| Package Name | API Version |
+| ---: | :---: |
+| hybridkubernetes | 2020-01-01-preview |
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/1b04f5fce19cd330dcc0eec11a98e499c0cda50d
+
 ## `v46.1.0`
 
 ### New Packages

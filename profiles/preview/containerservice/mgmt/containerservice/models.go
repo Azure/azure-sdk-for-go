@@ -22,7 +22,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-07-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-09-01/containerservice"
 )
 
 const (
@@ -43,6 +43,13 @@ const (
 	VirtualMachineScaleSets AgentPoolType = original.VirtualMachineScaleSets
 )
 
+type Code = original.Code
+
+const (
+	Running Code = original.Running
+	Stopped Code = original.Stopped
+)
+
 type ConnectionStatus = original.ConnectionStatus
 
 const (
@@ -50,6 +57,14 @@ const (
 	Disconnected ConnectionStatus = original.Disconnected
 	Pending      ConnectionStatus = original.Pending
 	Rejected     ConnectionStatus = original.Rejected
+)
+
+type Expander = original.Expander
+
+const (
+	LeastWaste Expander = original.LeastWaste
+	MostPods   Expander = original.MostPods
+	Random     Expander = original.Random
 )
 
 type Kind = original.Kind
@@ -105,6 +120,13 @@ type NetworkPolicy = original.NetworkPolicy
 const (
 	NetworkPolicyAzure  NetworkPolicy = original.NetworkPolicyAzure
 	NetworkPolicyCalico NetworkPolicy = original.NetworkPolicyCalico
+)
+
+type OSDiskType = original.OSDiskType
+
+const (
+	Ephemeral OSDiskType = original.Ephemeral
+	Managed   OSDiskType = original.Managed
 )
 
 type OSType = original.OSType
@@ -459,6 +481,8 @@ type ManagedClustersDeleteFuture = original.ManagedClustersDeleteFuture
 type ManagedClustersResetAADProfileFuture = original.ManagedClustersResetAADProfileFuture
 type ManagedClustersResetServicePrincipalProfileFuture = original.ManagedClustersResetServicePrincipalProfileFuture
 type ManagedClustersRotateClusterCertificatesFuture = original.ManagedClustersRotateClusterCertificatesFuture
+type ManagedClustersStartFuture = original.ManagedClustersStartFuture
+type ManagedClustersStopFuture = original.ManagedClustersStopFuture
 type ManagedClustersUpdateTagsFuture = original.ManagedClustersUpdateTagsFuture
 type ManagedClustersUpgradeNodeImageVersionFuture = original.ManagedClustersUpgradeNodeImageVersionFuture
 type MasterProfile = original.MasterProfile
@@ -489,15 +513,20 @@ type OrchestratorProfileType = original.OrchestratorProfileType
 type OrchestratorVersionProfile = original.OrchestratorVersionProfile
 type OrchestratorVersionProfileListResult = original.OrchestratorVersionProfileListResult
 type OrchestratorVersionProfileProperties = original.OrchestratorVersionProfileProperties
+type PowerState = original.PowerState
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
 type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
 type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
 type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
 type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkResourcesListResult = original.PrivateLinkResourcesListResult
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type Properties = original.Properties
 type PurchasePlan = original.PurchasePlan
+type ResolvePrivateLinkServiceIDClient = original.ResolvePrivateLinkServiceIDClient
 type Resource = original.Resource
 type ResourceReference = original.ResourceReference
 type SSHConfiguration = original.SSHConfiguration
@@ -572,6 +601,18 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointC
 func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResolvePrivateLinkServiceIDClient(subscriptionID string) ResolvePrivateLinkServiceIDClient {
+	return original.NewResolvePrivateLinkServiceIDClient(subscriptionID)
+}
+func NewResolvePrivateLinkServiceIDClientWithBaseURI(baseURI string, subscriptionID string) ResolvePrivateLinkServiceIDClient {
+	return original.NewResolvePrivateLinkServiceIDClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -581,8 +622,14 @@ func PossibleAgentPoolModeValues() []AgentPoolMode {
 func PossibleAgentPoolTypeValues() []AgentPoolType {
 	return original.PossibleAgentPoolTypeValues()
 }
+func PossibleCodeValues() []Code {
+	return original.PossibleCodeValues()
+}
 func PossibleConnectionStatusValues() []ConnectionStatus {
 	return original.PossibleConnectionStatusValues()
+}
+func PossibleExpanderValues() []Expander {
+	return original.PossibleExpanderValues()
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
@@ -607,6 +654,9 @@ func PossibleNetworkPluginValues() []NetworkPlugin {
 }
 func PossibleNetworkPolicyValues() []NetworkPolicy {
 	return original.PossibleNetworkPolicyValues()
+}
+func PossibleOSDiskTypeValues() []OSDiskType {
+	return original.PossibleOSDiskTypeValues()
 }
 func PossibleOSTypeValues() []OSType {
 	return original.PossibleOSTypeValues()

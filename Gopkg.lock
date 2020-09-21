@@ -165,6 +165,42 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:5e5cd6013a1d667dfd96de1d9f02a01db382d4d25d1a2aebc451689fdaa230b0"
+  name = "golang.org/x/net"
+  packages = [
+    "http/httpguts",
+    "idna",
+  ]
+  pruneopts = "UT"
+  revision = "62affa334b73ec65ed44a326519ac12c421905e3"
+
+[[projects]]
+  digest = "1:fa940333c48808b0d86ef21f412ffcfd0e5084a82f13905c028a404803b1908f"
+  name = "golang.org/x/text"
+  packages = [
+    "collate",
+    "collate/build",
+    "internal/colltab",
+    "internal/gen",
+    "internal/language",
+    "internal/language/compact",
+    "internal/tag",
+    "internal/triegen",
+    "internal/ucd",
+    "language",
+    "secure/bidirule",
+    "transform",
+    "unicode/bidi",
+    "unicode/cldr",
+    "unicode/norm",
+    "unicode/rangetable",
+  ]
+  pruneopts = "UT"
+  revision = "23ae387dee1f90d29a23c0e87ee0b46038fbed0e"
+  version = "v0.3.3"
+
+[[projects]]
+  branch = "master"
   digest = "1:d85ff5b2e5b485021f821f10030cdf46f723c3c84c9482835a4c9c462a7edfba"
   name = "golang.org/x/tools"
   packages = [
@@ -225,6 +261,7 @@
     "github.com/shopspring/decimal",
     "github.com/spf13/cobra",
     "golang.org/x/crypto/pkcs12",
+    "golang.org/x/net/http/httpguts",
     "golang.org/x/tools/imports",
     "gopkg.in/check.v1",
   ]

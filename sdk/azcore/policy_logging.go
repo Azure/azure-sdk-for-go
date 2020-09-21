@@ -86,7 +86,7 @@ func (p *requestLogPolicy) Do(req *Request) (*Response, error) {
 		if err != nil { // This HTTP request did not get a response from the service
 			fmt.Fprint(b, "REQUEST ERROR\n")
 		} else {
-			fmt.Fprint(b, "RESPONSE SUCCESSFULLY RECEIVED\n")
+			fmt.Fprint(b, "RESPONSE RECEIVED\n")
 		}
 
 		WriteRequestWithResponse(b, prepareRequestForLogging(req), response, err)

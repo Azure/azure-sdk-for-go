@@ -47,9 +47,6 @@ type RegistrationOptions struct {
 	// Defaults to azcore.DefaultHTTPClientTransport()
 	HTTPClient azcore.Transport
 
-	// LogOptions configures the built-in request logging policy behavior.
-	LogOptions azcore.RequestLogOptions
-
 	// Retry configures the built-in retry policy behavior.
 	// Defaults to azcore.DefaultRetryOptions()
 	Retry azcore.RetryOptions
@@ -80,7 +77,7 @@ func NewRPRegistrationPolicy(cred azcore.Credential, o *RegistrationOptions) azc
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(&o.Retry),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(o.LogOptions))
+		azcore.NewRequestLogPolicy(nil))
 	return &rpRegistrationPolicy{pipeline: p, options: *o}
 }
 

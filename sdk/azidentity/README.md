@@ -62,7 +62,7 @@ the Azure Cloud because it combines common production credentials with
 development credentials. `DefaultAzureCredential` attempts to authenticate via
 the following mechanisms in this order, stopping when one succeeds:
 
-![DefaultAzureCredential authentication flow](./img/DAC_flow.PNG)
+![DefaultAzureCredential authentication flow](img/DAC_flow.PNG)
 
 - Environment - `DefaultAzureCredential` will read account information specified
   via [environment variables](#environment-variables "environment variables")

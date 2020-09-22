@@ -17,17 +17,7 @@ import (
 
 // RequestLogOptions configures the retry policy's behavior.
 type RequestLogOptions struct {
-	// LogSlowResponse adds a marker to the log entry if a request takes longer than the specified duration.
-	// The marker format is [SLOW >%v], where %v is the value of LogSlowResponse.
-	// The zero-value uses the default threshold.  Specify -1 to disable.
-	LogSlowResponse time.Duration
-}
-
-// DefaultRequestLogOptions returns an instance of RequestLogOptions initialized with default values.
-func DefaultRequestLogOptions() RequestLogOptions {
-	return RequestLogOptions{
-		LogSlowResponse: 3 * time.Second,
-	}
+	// placeholder for future configuration options
 }
 
 type requestLogPolicy struct {
@@ -35,14 +25,8 @@ type requestLogPolicy struct {
 }
 
 // NewRequestLogPolicy creates a RequestLogPolicy object configured using the specified options.
-// Pass nil to accept the default values; this is the same as passing the result
-// from a call to DefaultRequestLogOptions().
 func NewRequestLogPolicy(o *RequestLogOptions) Policy {
-	if o == nil {
-		def := DefaultRequestLogOptions()
-		o = &def
-	}
-	return &requestLogPolicy{options: *o}
+	return &requestLogPolicy{}
 }
 
 // logPolicyOpValues is the struct containing the per-operation values
@@ -78,11 +62,7 @@ func (p *requestLogPolicy) Do(req *Request) (*Response, error) {
 	if Log().Should(LogResponse) {
 		// We're going to log this; build the string to log
 		b := &bytes.Buffer{}
-		slow := ""
-		if p.options.LogSlowResponse > 0 && tryDuration > p.options.LogSlowResponse {
-			slow = fmt.Sprintf("[SLOW >%v]", p.options.LogSlowResponse)
-		}
-		fmt.Fprintf(b, "==> REQUEST/RESPONSE (Try=%d/%v%s, OpTime=%v) -- ", opValues.try, tryDuration, slow, opDuration)
+		fmt.Fprintf(b, "==> REQUEST/RESPONSE (Try=%d/%v, OpTime=%v) -- ", opValues.try, tryDuration, opDuration)
 		if err != nil { // This HTTP request did not get a response from the service
 			fmt.Fprint(b, "REQUEST ERROR\n")
 		} else {

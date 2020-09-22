@@ -37,13 +37,13 @@ func NewClientCertificateCredential(tenantID string, clientID string, clientCert
 	_, err := os.Stat(clientCertificate)
 	if err != nil {
 		credErr := &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: "Certificate file not found in path: " + clientCertificate}
-		azcore.Log().Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
+		logCredentialError(credErr.CredentialType, credErr)
 		return nil, credErr
 	}
 	certData, err := ioutil.ReadFile(clientCertificate)
 	if err != nil {
 		credErr := &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: err.Error()}
-		azcore.Log().Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
+		logCredentialError(credErr.CredentialType, credErr)
 		return nil, credErr
 	}
 	var cert *certContents
@@ -57,7 +57,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, clientCert
 	}
 	if err != nil {
 		credErr := &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: err.Error()}
-		azcore.Log().Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
+		logCredentialError(credErr.CredentialType, credErr)
 		return nil, credErr
 	}
 	c, err := newAADIdentityClient(options)
@@ -171,10 +171,10 @@ func extractFromPFXFile(certData []byte, password *string) (*certContents, error
 func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.cert, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Client Certificate Credential", err)
+		addGetTokenFailureLogs("Client Certificate Credential", err, true)
 		return nil, err
 	}
-	azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
+	logGetTokenSuccess(c, opts)
 	return tk, nil
 }
 

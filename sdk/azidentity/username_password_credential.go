@@ -42,10 +42,10 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticateUsernamePassword(ctx, c.tenantID, c.clientID, c.username, c.password, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Username Password Credential", err)
+		addGetTokenFailureLogs("Username Password Credential", err, true)
 		return nil, err
 	}
-	azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
+	logGetTokenSuccess(c, opts)
 	return tk, err
 }
 

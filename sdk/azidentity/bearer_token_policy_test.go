@@ -35,7 +35,7 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(nil),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
+		azcore.NewRequestLogPolicy(nil))
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -65,7 +65,7 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(nil),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
+		azcore.NewRequestLogPolicy(nil))
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -100,7 +100,7 @@ func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(nil),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
+		azcore.NewRequestLogPolicy(nil))
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -131,7 +131,7 @@ func TestRetryPolicy_NonRetriable(t *testing.T) {
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(nil),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
+		azcore.NewRequestLogPolicy(nil))
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -157,7 +157,7 @@ func TestRetryPolicy_HTTPRequest(t *testing.T) {
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(nil),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
+		azcore.NewRequestLogPolicy(nil))
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)

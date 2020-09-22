@@ -275,7 +275,7 @@ func TestBearerPolicy_DeviceCodeCredential(t *testing.T) {
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(nil),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{deviceCodeScopes}}}),
-		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
+		azcore.NewRequestLogPolicy(nil))
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)

@@ -16,21 +16,21 @@ func NewEnvironmentCredential(options *TokenCredentialOptions) (*ClientSecretCre
 	tenantID := os.Getenv("AZURE_TENANT_ID")
 	if tenantID == "" {
 		err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_TENANT_ID"}
-		azcore.Log().Write(azcore.LogError, logCredentialError(err.CredentialType, err))
+		logCredentialError(err.CredentialType, err)
 		return nil, err
 	}
 
 	clientID := os.Getenv("AZURE_CLIENT_ID")
 	if clientID == "" {
 		err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_CLIENT_ID"}
-		azcore.Log().Write(azcore.LogError, logCredentialError(err.CredentialType, err))
+		logCredentialError(err.CredentialType, err)
 		return nil, err
 	}
 
 	clientSecret := os.Getenv("AZURE_CLIENT_SECRET")
 	if clientSecret == "" {
 		err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_CLIENT_SECRET"}
-		azcore.Log().Write(azcore.LogError, logCredentialError(err.CredentialType, err))
+		logCredentialError(err.CredentialType, err)
 		return nil, err
 	}
 	azcore.Log().Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientSecretCredential")

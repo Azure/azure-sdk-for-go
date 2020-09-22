@@ -22,6 +22,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/preview/alertsmanagement/mgmt/2019-05-05/alertsmanagement"
 )
 
+// ActionRulesClientAPI contains the set of methods on the ActionRulesClient type.
+type ActionRulesClientAPI interface {
+	CreateUpdate(ctx context.Context, resourceGroupName string, actionRuleName string, actionRule alertsmanagement.ActionRule) (result alertsmanagement.ActionRule, err error)
+	Delete(ctx context.Context, resourceGroupName string, actionRuleName string) (result alertsmanagement.Bool, err error)
+	GetByName(ctx context.Context, resourceGroupName string, actionRuleName string) (result alertsmanagement.ActionRule, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, targetResourceGroup string, targetResourceType string, targetResource string, severity alertsmanagement.Severity, monitorService alertsmanagement.MonitorService, impactedScope string, description string, alertRuleID string, actionGroup string, name string) (result alertsmanagement.ActionRulesListPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, targetResourceGroup string, targetResourceType string, targetResource string, severity alertsmanagement.Severity, monitorService alertsmanagement.MonitorService, impactedScope string, description string, alertRuleID string, actionGroup string, name string) (result alertsmanagement.ActionRulesListIterator, err error)
+	ListBySubscription(ctx context.Context, targetResourceGroup string, targetResourceType string, targetResource string, severity alertsmanagement.Severity, monitorService alertsmanagement.MonitorService, impactedScope string, description string, alertRuleID string, actionGroup string, name string) (result alertsmanagement.ActionRulesListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, targetResourceGroup string, targetResourceType string, targetResource string, severity alertsmanagement.Severity, monitorService alertsmanagement.MonitorService, impactedScope string, description string, alertRuleID string, actionGroup string, name string) (result alertsmanagement.ActionRulesListIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, actionRuleName string, actionRulePatch alertsmanagement.PatchObject) (result alertsmanagement.ActionRule, err error)
+}
+
+var _ ActionRulesClientAPI = (*alertsmanagement.ActionRulesClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result alertsmanagement.OperationsListPage, err error)
@@ -53,17 +67,3 @@ type SmartGroupsClientAPI interface {
 }
 
 var _ SmartGroupsClientAPI = (*alertsmanagement.SmartGroupsClient)(nil)
-
-// ActionRulesClientAPI contains the set of methods on the ActionRulesClient type.
-type ActionRulesClientAPI interface {
-	CreateUpdate(ctx context.Context, resourceGroupName string, actionRuleName string, actionRule alertsmanagement.ActionRule) (result alertsmanagement.ActionRule, err error)
-	Delete(ctx context.Context, resourceGroupName string, actionRuleName string) (result alertsmanagement.Bool, err error)
-	GetByName(ctx context.Context, resourceGroupName string, actionRuleName string) (result alertsmanagement.ActionRule, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string, targetResourceGroup string, targetResourceType string, targetResource string, severity alertsmanagement.Severity, monitorService alertsmanagement.MonitorService, impactedScope string, description string, alertRuleID string, actionGroup string, name string) (result alertsmanagement.ActionRulesListPage, err error)
-	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string, targetResourceGroup string, targetResourceType string, targetResource string, severity alertsmanagement.Severity, monitorService alertsmanagement.MonitorService, impactedScope string, description string, alertRuleID string, actionGroup string, name string) (result alertsmanagement.ActionRulesListIterator, err error)
-	ListBySubscription(ctx context.Context, targetResourceGroup string, targetResourceType string, targetResource string, severity alertsmanagement.Severity, monitorService alertsmanagement.MonitorService, impactedScope string, description string, alertRuleID string, actionGroup string, name string) (result alertsmanagement.ActionRulesListPage, err error)
-	ListBySubscriptionComplete(ctx context.Context, targetResourceGroup string, targetResourceType string, targetResource string, severity alertsmanagement.Severity, monitorService alertsmanagement.MonitorService, impactedScope string, description string, alertRuleID string, actionGroup string, name string) (result alertsmanagement.ActionRulesListIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, actionRuleName string, actionRulePatch alertsmanagement.PatchObject) (result alertsmanagement.ActionRule, err error)
-}
-
-var _ ActionRulesClientAPI = (*alertsmanagement.ActionRulesClient)(nil)

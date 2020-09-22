@@ -62,7 +62,7 @@ the Azure Cloud because it combines common production credentials with
 development credentials. `DefaultAzureCredential` attempts to authenticate via
 the following mechanisms in this order, stopping when one succeeds:
 
-![DefaultAzureCredential authentication flow]()
+![DefaultAzureCredential authentication flow](./img/DAC_flow.PNG)
 
 - Environment - `DefaultAzureCredential` will read account information specified
   via [environment variables](#environment-variables "environment variables")
@@ -82,7 +82,7 @@ The following examples are provided below:
 ## Authenticating with `DefaultAzureCredential`
 
 This example demonstrates authenticating the `BlobClient` from the
-[azure-storage-blob][azure_storage_blob] library using
+[azblob][azblob] library using
 `DefaultAzureCredential`.
 
 ```go
@@ -239,7 +239,7 @@ This is an incomplete list of client libraries accepting Azure Identity
 credentials. You can learn more about these libraries, and find additional
 documentation of them, at the links below.
 
-- [azure-storage-blob][azure_storage_blob]
+- [azblob][azblob]
 
 ## Provide Feedback
 

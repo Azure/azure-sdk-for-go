@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## `v46.3.0`
+
+### New Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| communication | 2020-08-20-preview |
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/be39f5abd3dc4cf6db384f688e0dd18dd907d04b
+
 ## `v46.2.0`
 
 ### New Packages

@@ -90,7 +90,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 
 defaultCredential, err := azidentity.NewDefaultAzureCredential(nil)
 if err != nil {
-    // do something with error...
+    // process error...
 }
 
 client, err := BlobClient("endpoint", defaultCredential)
@@ -116,22 +116,22 @@ import (
   "github.com/Azure/azure-sdk-for-go/sdk/azblob"
 )
 
-managedIdentity, err := azidentity.NewManagedIdentityCredential(nil)
+managedIdentity, err := azidentity.NewManagedIdentityCredential("clientID", nil)
 if err != nil {
-  // do something with error
+  // process error
 }
 azureCLI, err := azidentity.NewAzureCLICredential(nil)
 if err != nil {
-  // do something with error
+  // process error
 }
 credentialChain, err := ChainedTokenCredential(managedIdentity, azureCLI)
 if err != nil {
-  // do something with error
+  // process error
 }
 
 client, err := BlobClient(host, credentialChain)
 if err != nil {
-  // do something with error
+  // process error
 }
 ```
 
@@ -141,36 +141,36 @@ if err != nil {
 
 |credential|usage
 |-|-
-|[DefaultAzureCredential][default_cred_ref]|simplified authentication to get started developing applications for the Azure cloud
-|[ChainedTokenCredential][chain_cred_ref]|define custom authentication flows composing multiple credentials
-|[EnvironmentCredential][environment_cred_ref]|authenticate a service principal or user configured by environment variables
-|[ManagedIdentityCredential][managed_id_cred_ref]|authenticate the managed identity of an Azure resource
+|DefaultAzureCredential|simplified authentication to get started developing applications for the Azure cloud
+|ChainedTokenCredential|define custom authentication flows composing multiple credentials
+|EnvironmentCredential|authenticate a service principal or user configured by environment variables
+|ManagedIdentityCredential|authenticate the managed identity of an Azure resource
 
 ### Authenticating Service Principals
 
 |credential|usage
 |-|-
-|[ClientSecretCredential][client_secret_cred_ref]| authenticate a service principal using a secret
-|[CertificateCredential][cert_cred_ref]| authenticate a service principal using a certificate
+|ClientSecretCredential| authenticate a service principal using a secret
+|CertificateCredential| authenticate a service principal using a certificate
 
 ### Authenticating Users
 
 |credential|usage
 |-|-
-|[InteractiveBrowserCredential][interactive_cred_ref]|interactively authenticate a user with the default web browser
-|[DeviceCodeCredential][device_code_cred_ref]| interactively authenticate a user on a device with limited UI
-|[UsernamePasswordCredential][userpass_cred_ref]| authenticate a user with a username and password
+|InteractiveBrowserCredential|interactively authenticate a user with the default web browser
+|DeviceCodeCredential| interactively authenticate a user on a device with limited UI
+|UsernamePasswordCredential| authenticate a user with a username and password
 
 ### Authenticating via Development Tools
 
 |credential|usage
 |-|-
-|[AzureCLICredential][cli_cred_ref]|authenticate as the user signed in to the Azure CLI
+|AzureCLICredential|authenticate as the user signed in to the Azure CLI
 
 ## Environment Variables
 
-[DefaultAzureCredential][default_cred_ref] and 
-[EnvironmentCredential][environment_cred_ref] can be configured with
+DefaultAzureCredential] and 
+EnvironmentCredential can be configured with
 environment variables. Each type of authentication requires values for specific
 variables:
 
@@ -204,7 +204,7 @@ client secret and certificate are both present, the client secret will be used.
 
 Credentials return `CredentialUnavailableError` when they're unable to attempt
 authentication because they lack required data or state. For example,
-[EnvironmentCredential][environment_cred_ref] will raise this exception when
+`NewEnvironmentCredential` will raise this exception when
 [its configuration](#environment-variables "its configuration") is incomplete.
 
 Credentials raise `AuthenticationFailedError` when they fail
@@ -224,7 +224,15 @@ Credentials log basic information only, including `GetToken` success or failure 
 To obtain more detailed logging, including request/response bodies and header values, make sure to leave the logger as default or enable the `LogRequest` and/or `LogResponse` classificatons. A logger that only includes credential logs can be like the following:
 
 ```go
+// Set log to output to the console
 log := azcore.Log()
+log.SetListener(func(cls LogClassification, s string) {
+		fmt.Println(s) // printing log out to the console
+  })
+  
+// Include only azidentity credential logs
+log.SetClassifications(azidentity.LogCredential)
+defer log.resetClassifications()
 
 ```
 

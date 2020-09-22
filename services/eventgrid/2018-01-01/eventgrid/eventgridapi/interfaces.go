@@ -25,6 +25,8 @@ import (
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
+	PublishCloudEventEvents(ctx context.Context, topicHostname string, events []eventgrid.CloudEventEvent) (result autorest.Response, err error)
+	PublishCustomEventEvents(ctx context.Context, topicHostname string, events []interface{}) (result autorest.Response, err error)
 	PublishEvents(ctx context.Context, topicHostname string, events []eventgrid.Event) (result autorest.Response, err error)
 }
 

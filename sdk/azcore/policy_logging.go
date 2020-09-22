@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 )
 
-// RequestLogOptions configures the retry policy's behavior.
+// RequestLogOptions configures the logging policy's behavior.
 type RequestLogOptions struct {
 	// placeholder for future configuration options
 }

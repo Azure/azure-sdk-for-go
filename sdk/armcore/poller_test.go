@@ -30,7 +30,7 @@ func getPipeline(srv *mock.Server) azcore.Pipeline {
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(nil),
-		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
+		azcore.NewRequestLogPolicy(nil))
 }
 
 func handleError(resp *azcore.Response) error {

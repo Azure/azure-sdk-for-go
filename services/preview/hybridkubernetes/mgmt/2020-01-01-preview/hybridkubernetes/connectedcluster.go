@@ -579,12 +579,8 @@ func (client ConnectedClusterClient) ListClusterUserCredentials(ctx context.Cont
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: clientAuthenticationDetails,
 			Constraints: []validation.Constraint{{Target: "clientAuthenticationDetails", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "clientAuthenticationDetails.Value", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "clientAuthenticationDetails.Value.ClientCertificate", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "clientAuthenticationDetails.Value.ClientCertificate.CertificateData", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "clientAuthenticationDetails.Value.ClientCertificate.KeyData", Name: validation.Null, Rule: true, Chain: nil},
-						}},
-					}},
+				Chain: []validation.Constraint{{Target: "clientAuthenticationDetails.AuthenticationMethod", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "clientAuthenticationDetails.Value", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
 		return result, validation.NewError("hybridkubernetes.ConnectedClusterClient", "ListClusterUserCredentials", err.Error())
 	}

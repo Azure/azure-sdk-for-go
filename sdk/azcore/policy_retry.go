@@ -130,7 +130,7 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 	try := int32(1)
 	for {
 		resp = nil // reset
-		Log().Writef(LogRetryPolicy, "\n=====> Try=%d\n", try)
+		Log().Writef(LogRetryPolicy, "\n=====> Try=%d", try)
 
 		// For each try, seek to the beginning of the Body stream. We do this even for the 1st try because
 		// the stream may not be at offset 0 when we first get it and we want the same behavior for the
@@ -145,7 +145,11 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 		clone := req.clone(tryCtx)
 		resp, err = clone.Next() // Make the request
 		tryCancel()
-		Log().Writef(LogRetryPolicy, "Err=%v, response=%v\n", err, resp)
+		if err == nil {
+			Log().Writef(LogRetryPolicy, "response %d", resp.StatusCode)
+		} else {
+			Log().Writef(LogRetryPolicy, "error %v", err)
+		}
 
 		if err == nil && !resp.HasStatusCode(options.StatusCodes...) {
 			// if there is no error and the response code isn't in the list of retry codes then we're done.
@@ -160,11 +164,13 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 		var nre NonRetriableError
 		if errors.As(err, &nre) {
 			// the error says it's not retriable so don't retry
+			Log().Writef(LogRetryPolicy, "non-retriable error %T", nre)
 			return
 		}
 
 		if try == options.MaxRetries+1 {
 			// max number of tries has been reached, don't sleep again
+			Log().Writef(LogRetryPolicy, "MaxRetries %d exceeded", options.MaxRetries)
 			return
 		}
 
@@ -176,7 +182,7 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 		if delay <= 0 {
 			delay = options.calcDelay(try)
 		}
-		Log().Writef(LogRetryPolicy, "Try=%d, Delay=%v\n", try, delay)
+		Log().Writef(LogRetryPolicy, "Try=%d, Delay=%v", try, delay)
 		select {
 		case <-time.After(delay):
 			try++

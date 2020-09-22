@@ -15,10 +15,6 @@ import (
 type LogClassification string
 
 const (
-	// LogError entries contain detailed error information.
-	// This includes the error message and stack trace.
-	LogError LogClassification = "Error"
-
 	// LogRequest entries contain information about HTTP requests.
 	// This includes information like the URL, query parameters, and headers.
 	LogRequest LogClassification = "Request"
@@ -29,9 +25,6 @@ const (
 
 	// LogRetryPolicy entries contain information specific to the retry policy in use.
 	LogRetryPolicy LogClassification = "RetryPolicy"
-
-	// LogSlowResponse entries contain information for responses that take longer than the specified threshold.
-	LogSlowResponse LogClassification = "SlowResponse"
 
 	// LogLongRunningOperation entries contain information specific to long-running operations.
 	// This includes information like polling location, operation state and sleep intervals.

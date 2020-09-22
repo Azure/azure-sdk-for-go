@@ -120,6 +120,21 @@ func PossibleAlertStateValues() []AlertState {
 	return []AlertState{AlertStateAcknowledged, AlertStateClosed, AlertStateNew}
 }
 
+// MetadataIdentifier enumerates the values for metadata identifier.
+type MetadataIdentifier string
+
+const (
+	// MetadataIdentifierAlertsMetaDataProperties ...
+	MetadataIdentifierAlertsMetaDataProperties MetadataIdentifier = "alertsMetaDataProperties"
+	// MetadataIdentifierMonitorServiceList ...
+	MetadataIdentifierMonitorServiceList MetadataIdentifier = "MonitorServiceList"
+)
+
+// PossibleMetadataIdentifierValues returns an array of possible values for the MetadataIdentifier const type.
+func PossibleMetadataIdentifierValues() []MetadataIdentifier {
+	return []MetadataIdentifier{MetadataIdentifierAlertsMetaDataProperties, MetadataIdentifierMonitorServiceList}
+}
+
 // MonitorCondition enumerates the values for monitor condition.
 type MonitorCondition string
 

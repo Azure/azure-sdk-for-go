@@ -31,14 +31,14 @@ type InvoiceSectionsClient struct {
 }
 
 // NewInvoiceSectionsClient creates an instance of the InvoiceSectionsClient client.
-func NewInvoiceSectionsClient(subscriptionID string, subscriptionID1 string) InvoiceSectionsClient {
-	return NewInvoiceSectionsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewInvoiceSectionsClient(subscriptionID string) InvoiceSectionsClient {
+	return NewInvoiceSectionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewInvoiceSectionsClientWithBaseURI creates an instance of the InvoiceSectionsClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewInvoiceSectionsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) InvoiceSectionsClient {
-	return InvoiceSectionsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewInvoiceSectionsClientWithBaseURI(baseURI string, subscriptionID string) InvoiceSectionsClient {
+	return InvoiceSectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate creates or updates an invoice section. The operation is supported only for billing accounts with

@@ -31,14 +31,14 @@ type AgreementsClient struct {
 }
 
 // NewAgreementsClient creates an instance of the AgreementsClient client.
-func NewAgreementsClient(subscriptionID string, subscriptionID1 string) AgreementsClient {
-	return NewAgreementsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewAgreementsClient(subscriptionID string) AgreementsClient {
+	return NewAgreementsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewAgreementsClientWithBaseURI creates an instance of the AgreementsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewAgreementsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) AgreementsClient {
-	return AgreementsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewAgreementsClientWithBaseURI(baseURI string, subscriptionID string) AgreementsClient {
+	return AgreementsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets an agreement by ID.

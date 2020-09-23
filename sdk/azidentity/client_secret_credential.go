@@ -39,10 +39,10 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 func (c *ClientSecretCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticate(ctx, c.tenantID, c.clientID, c.clientSecret, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Client Secret Credential", err)
+		addGetTokenFailureLogs("Client Secret Credential", err, true)
 		return nil, err
 	}
-	azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
+	logGetTokenSuccess(c, opts)
 	return tk, nil
 }
 

@@ -17,9 +17,6 @@ type ManagedIdentityCredentialOptions struct {
 	// Leave this as nil to use the default HTTP transport.
 	HTTPClient azcore.Transport
 
-	// LogOptions configures the built-in request logging policy behavior.
-	LogOptions azcore.RequestLogOptions
-
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry azcore.TelemetryOptions
 }
@@ -51,7 +48,7 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 	// If there is an error that means that the code is not running in a Managed Identity environment
 	if err != nil {
 		credErr := &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
-		azcore.Log().Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
+		logCredentialError(credErr.CredentialType, credErr)
 		return nil, credErr
 	}
 	// Assign the msiType discovered onto the client
@@ -69,11 +66,11 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticate(ctx, c.clientID, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Managed Identity Credential", err)
+		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err
 	}
-	azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
-	azcore.Log().Write(LogCredential, logMSIEnv(c.client.msiType))
+	logGetTokenSuccess(c, opts)
+	logMSIEnv(c.client.msiType)
 	return tk, err
 }
 

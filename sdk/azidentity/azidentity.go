@@ -119,9 +119,6 @@ type TokenCredentialOptions struct {
 	// Leave this as nil to use the default HTTP transport
 	HTTPClient azcore.Transport
 
-	// LogOptions configures the built-in request logging policy behavior
-	LogOptions azcore.RequestLogOptions
-
 	// Retry configures the built-in retry policy behavior
 	Retry *azcore.RetryOptions
 
@@ -158,7 +155,7 @@ func newDefaultPipeline(o TokenCredentialOptions) azcore.Pipeline {
 		azcore.NewTelemetryPolicy(o.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(o.Retry),
-		azcore.NewRequestLogPolicy(o.LogOptions))
+		azcore.NewRequestLogPolicy(nil))
 }
 
 // newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
@@ -198,5 +195,5 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 		azcore.NewTelemetryPolicy(o.Telemetry),
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(&retryOpts),
-		azcore.NewRequestLogPolicy(o.LogOptions))
+		azcore.NewRequestLogPolicy(nil))
 }

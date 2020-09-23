@@ -1,6 +1,6 @@
 # Azure Identity client library for Go
 
-The Azure Identity library provides a set of credential classes for use with
+The Azure Identity library provides a set of credential types for use with
 Azure SDK clients which support Azure Active Directory (AAD) token authentication.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/azidentity)
@@ -53,7 +53,7 @@ to authenticate requests.
 
 The Azure Identity library focuses on OAuth authentication with Azure Active
 Directory (AAD). It offers a variety of credential types capable of acquiring
-an AAD access token. See [Credential Classes](#credential-classes "Credential Classes") below for a list of this library's credential classes.
+an AAD access token. See [Credential Types](#credential-types "Credential Types") below for a list of this library's credential types.
 
 ### DefaultAzureCredential
 
@@ -135,7 +135,7 @@ if err != nil {
 }
 ```
 
-## Credential Classes
+## Credential Types
 
 ### Authenticating Azure Hosted Applications
 

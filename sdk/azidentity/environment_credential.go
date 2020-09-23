@@ -9,7 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// NewEnvironmentCredential creates an instance of azcore.TokenCredential type and reads credential details from environment variables.
+// NewEnvironmentCredential creates an instance that implements the azcore.TokenCredential interface and reads credential details from environment variables.
 // If the expected environment variables are not found at this time, then a CredentialUnavailableError will be returned.
 // options: The options used to configure the management of the requests sent to Azure Active Directory.
 func NewEnvironmentCredential(options *TokenCredentialOptions) (azcore.TokenCredential, error) {
@@ -40,7 +40,7 @@ func NewEnvironmentCredential(options *TokenCredentialOptions) (azcore.TokenCred
 		}
 	}
 	err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH or AZURE_USERNAME and AZURE_PASSWORD"}
-	azcore.Log().Write(azcore.LogError, logCredentialError(err.CredentialType, err))
+	logCredentialError(err.CredentialType, err)
 	return nil, err
 
 }

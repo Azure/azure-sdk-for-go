@@ -108,7 +108,7 @@ an error.
 The following example demonstrates creating a credential which will attempt to
 authenticate using managed identity, and fall back to authenticating via the
 Azure CLI when a managed identity is unavailable. This example uses the
-`BlobClient` from the [azblob][] client library.
+`BlobClient` from the [azblob][azblob] client library.
 
 ```go
 import (
@@ -219,7 +219,7 @@ Azure Active Directory
 ### Logging
 
 This library uses the classification based logging implementation in azcore. To turn on logging set `AZURE_SDK_GO_LOGGING` to `all`. If you only want to include logs for azidentity, you must create you own logger and set the log classification as `LogCredential`.
-Credentials log basic information only, including `GetToken` success or failure and errors. These log entries do not contain authentication secrets.
+Credentials log basic information only, including `GetToken` success or failure and errors. These log entries do not contain authentication secrets but may contain sensitive information.
 
 To obtain more detailed logging, including request/response bodies and header values, make sure to leave the logger as default or enable the `LogRequest` and/or `LogResponse` classificatons. A logger that only includes credential logs can be like the following:
 
@@ -272,6 +272,6 @@ or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[azure_storage_blob]: https://github.com/Azure/azure-sdk-for-go
+[azblob]: https://github.com/Azure/azure-sdk-for-go/sdk
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)

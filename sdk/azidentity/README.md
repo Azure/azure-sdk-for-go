@@ -204,10 +204,10 @@ client secret and certificate are both present, the client secret will be used.
 
 Credentials return `CredentialUnavailableError` when they're unable to attempt
 authentication because they lack required data or state. For example,
-`NewEnvironmentCredential` will raise this exception when
+`NewEnvironmentCredential` will return an error when
 [its configuration](#environment-variables "its configuration") is incomplete.
 
-Credentials raise `AuthenticationFailedError` when they fail
+Credentials return `AuthenticationFailedError` when they fail
 to authenticate. Call `Error()` on `AuthenticationFailedError` to see why authentication failed. When returned by
 `DefaultAzureCredential` or `ChainedTokenCredential`,
 the message collects error messages from each credential in the chain.
@@ -218,7 +218,7 @@ Azure Active Directory
 
 ### Logging
 
-This library uses the classification based logging implementation in azcore. To turn on logging set `AZURE_SDK_GO_LOG` to `all`. If you only want to include logs for azidentity, you must create you own logger and set the log classification as `LogCredential`.
+This library uses the classification based logging implementation in azcore. To turn on logging set `AZURE_SDK_GO_LOGGING` to `all`. If you only want to include logs for azidentity, you must create you own logger and set the log classification as `LogCredential`.
 Credentials log basic information only, including `GetToken` success or failure and errors. These log entries do not contain authentication secrets.
 
 To obtain more detailed logging, including request/response bodies and header values, make sure to leave the logger as default or enable the `LogRequest` and/or `LogResponse` classificatons. A logger that only includes credential logs can be like the following:
@@ -232,8 +232,6 @@ log.SetListener(func(cls LogClassification, s string) {
   
 // Include only azidentity credential logs
 log.SetClassifications(azidentity.LogCredential)
-defer log.resetClassifications()
-
 ```
 
 > CAUTION: logs from credentials contain sensitive information.

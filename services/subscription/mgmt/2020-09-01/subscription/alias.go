@@ -58,10 +58,7 @@ func (client AliasClient) Create(ctx context.Context, aliasName string, body Put
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: body,
-			Constraints: []validation.Constraint{{Target: "body.Properties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "body.Properties.DisplayName", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "body.Properties.BillingScope", Name: validation.Null, Rule: true, Chain: nil},
-				}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "body.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("subscription.AliasClient", "Create", err.Error())
 	}
 

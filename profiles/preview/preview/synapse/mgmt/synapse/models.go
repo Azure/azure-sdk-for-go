@@ -220,10 +220,12 @@ const (
 type NodeSize = original.NodeSize
 
 const (
-	NodeSizeLarge  NodeSize = original.NodeSizeLarge
-	NodeSizeMedium NodeSize = original.NodeSizeMedium
-	NodeSizeNone   NodeSize = original.NodeSizeNone
-	NodeSizeSmall  NodeSize = original.NodeSizeSmall
+	NodeSizeLarge   NodeSize = original.NodeSizeLarge
+	NodeSizeMedium  NodeSize = original.NodeSizeMedium
+	NodeSizeNone    NodeSize = original.NodeSizeNone
+	NodeSizeSmall   NodeSize = original.NodeSizeSmall
+	NodeSizeXLarge  NodeSize = original.NodeSizeXLarge
+	NodeSizeXXLarge NodeSize = original.NodeSizeXXLarge
 )
 
 type NodeSizeFamily = original.NodeSizeFamily
@@ -521,6 +523,8 @@ type IntegrationRuntimeStatusClient = original.IntegrationRuntimeStatusClient
 type IntegrationRuntimeStatusResponse = original.IntegrationRuntimeStatusResponse
 type IntegrationRuntimeVNetProperties = original.IntegrationRuntimeVNetProperties
 type IntegrationRuntimesClient = original.IntegrationRuntimesClient
+type IntegrationRuntimesCreateFuture = original.IntegrationRuntimesCreateFuture
+type IntegrationRuntimesDeleteFuture = original.IntegrationRuntimesDeleteFuture
 type LibraryRequirements = original.LibraryRequirements
 type LicensedComponentSetupTypeProperties = original.LicensedComponentSetupTypeProperties
 type LinkedIntegrationRuntime = original.LinkedIntegrationRuntime

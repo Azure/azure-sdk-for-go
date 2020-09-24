@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## `v46.4.0`
+
+### Updated Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| compute | 2020-06-01 |
+
+### Breaking Changes
+
+| Package Name | API Version |
+| ---: | :---: |
+| synapse | 2019-06-01-preview |
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/2a4dc288266c1f1829d6c1d5ef877b120fa2abd7
+
 ## `v46.3.0`
 
 ### New Packages

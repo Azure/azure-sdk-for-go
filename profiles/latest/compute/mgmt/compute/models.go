@@ -415,6 +415,16 @@ const (
 	Ultra    ProximityPlacementGroupType = original.Ultra
 )
 
+type RebootStatus = original.RebootStatus
+
+const (
+	RebootStatusCompleted RebootStatus = original.RebootStatusCompleted
+	RebootStatusFailed    RebootStatus = original.RebootStatusFailed
+	RebootStatusNotNeeded RebootStatus = original.RebootStatusNotNeeded
+	RebootStatusRequired  RebootStatus = original.RebootStatusRequired
+	RebootStatusStarted   RebootStatus = original.RebootStatusStarted
+)
+
 type ReplicationState = original.ReplicationState
 
 const (
@@ -774,6 +784,7 @@ type AvailabilitySetListResultPage = original.AvailabilitySetListResultPage
 type AvailabilitySetProperties = original.AvailabilitySetProperties
 type AvailabilitySetUpdate = original.AvailabilitySetUpdate
 type AvailabilitySetsClient = original.AvailabilitySetsClient
+type AvailablePatchSummary = original.AvailablePatchSummary
 type BaseClient = original.BaseClient
 type BillingProfile = original.BillingProfile
 type BootDiagnostics = original.BootDiagnostics
@@ -958,6 +969,7 @@ type KeyVaultAndKeyReference = original.KeyVaultAndKeyReference
 type KeyVaultAndSecretReference = original.KeyVaultAndSecretReference
 type KeyVaultKeyReference = original.KeyVaultKeyReference
 type KeyVaultSecretReference = original.KeyVaultSecretReference
+type LastPatchInstallationSummary = original.LastPatchInstallationSummary
 type LinuxConfiguration = original.LinuxConfiguration
 type ListUsagesResult = original.ListUsagesResult
 type ListUsagesResultIterator = original.ListUsagesResultIterator
@@ -1119,6 +1131,7 @@ type VirtualMachineInstanceView = original.VirtualMachineInstanceView
 type VirtualMachineListResult = original.VirtualMachineListResult
 type VirtualMachineListResultIterator = original.VirtualMachineListResultIterator
 type VirtualMachineListResultPage = original.VirtualMachineListResultPage
+type VirtualMachinePatchStatus = original.VirtualMachinePatchStatus
 type VirtualMachineProperties = original.VirtualMachineProperties
 type VirtualMachineReimageParameters = original.VirtualMachineReimageParameters
 type VirtualMachineRunCommandsClient = original.VirtualMachineRunCommandsClient
@@ -1729,6 +1742,9 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossibleProximityPlacementGroupTypeValues() []ProximityPlacementGroupType {
 	return original.PossibleProximityPlacementGroupTypeValues()
+}
+func PossibleRebootStatusValues() []RebootStatus {
+	return original.PossibleRebootStatusValues()
 }
 func PossibleReplicationStateValues() []ReplicationState {
 	return original.PossibleReplicationStateValues()

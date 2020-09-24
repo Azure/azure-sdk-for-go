@@ -30,6 +30,16 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/azurestackhci/mgmt/2020-03-01-preview/azurestackhci"
 
+// AvailableOperations available operations of the service
+type AvailableOperations struct {
+	autorest.Response `json:"-"`
+	// Value - Collection of available operation details
+	Value *[]OperationDetail `json:"value,omitempty"`
+	// NextLink - URL client should use to fetch the next page (per server side paging).
+	// It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
@@ -334,7 +344,7 @@ type ClusterNode struct {
 type ClusterProperties struct {
 	// ProvisioningState - READ-ONLY; Provisioning state. Possible values include: 'Succeeded', 'Failed', 'Canceled', 'Accepted', 'Provisioning'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// Status - READ-ONLY; Status of the cluster agent. Possible values include: 'NeverConnected', 'ConnectedRecently', 'NotConnectedRecently', 'Expired', 'Error'
+	// Status - READ-ONLY; Status of the cluster agent. Possible values include: 'NotYetRegistered', 'ConnectedRecently', 'NotConnectedRecently', 'Disconnected', 'Error'
 	Status Status `json:"status,omitempty"`
 	// CloudID - READ-ONLY; Unique, immutable resource id.
 	CloudID *string `json:"cloudId,omitempty"`
@@ -348,6 +358,12 @@ type ClusterProperties struct {
 	TrialDaysRemaining *float64 `json:"trialDaysRemaining,omitempty"`
 	// BillingModel - READ-ONLY; Type of billing applied to the resource.
 	BillingModel *string `json:"billingModel,omitempty"`
+	// RegistrationTimestamp - READ-ONLY; First cluster sync timestamp.
+	RegistrationTimestamp *date.Time `json:"registrationTimestamp,omitempty"`
+	// LastSyncTimestamp - READ-ONLY; Most recent cluster sync timestamp.
+	LastSyncTimestamp *date.Time `json:"lastSyncTimestamp,omitempty"`
+	// LastBillingTimestamp - READ-ONLY; Most recent billing meter timestamp.
+	LastBillingTimestamp *date.Time `json:"lastBillingTimestamp,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ClusterProperties.
@@ -422,51 +438,30 @@ type ErrorResponseError struct {
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
-// Operation operation details.
-type Operation struct {
-	// Name - READ-ONLY; Name of the operation.
+// OperationDetail operation detail payload
+type OperationDetail struct {
+	// Name - Name of the operation
 	Name *string `json:"name,omitempty"`
-	// Display - Operation properties.
+	// IsDataAction - Indicates whether the operation is a data action
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+	// Display - Display of the operation
 	Display *OperationDisplay `json:"display,omitempty"`
+	// Origin - Origin of the operation
+	Origin *string `json:"origin,omitempty"`
+	// Properties - Properties of the operation
+	Properties interface{} `json:"properties,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for Operation.
-func (o Operation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if o.Display != nil {
-		objectMap["display"] = o.Display
-	}
-	return json.Marshal(objectMap)
-}
-
-// OperationDisplay operation properties.
+// OperationDisplay operation display payload
 type OperationDisplay struct {
-	// Provider - Resource provider name.
+	// Provider - Resource provider of the operation
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource type name.
+	// Resource - Resource of the operation
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation name.
+	// Operation - Localized friendly name for the operation
 	Operation *string `json:"operation,omitempty"`
-	// Description - Operation description.
+	// Description - Localized friendly description for the operation
 	Description *string `json:"description,omitempty"`
-}
-
-// OperationList list of available operations.
-type OperationList struct {
-	autorest.Response `json:"-"`
-	// Value - List of operations.
-	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - READ-ONLY; Link to the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for OperationList.
-func (ol OperationList) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ol.Value != nil {
-		objectMap["value"] = ol.Value
-	}
-	return json.Marshal(objectMap)
 }
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than

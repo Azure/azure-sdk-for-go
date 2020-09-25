@@ -85,7 +85,8 @@ func getGroupsClientWithEnvironmentCredential() resources.GroupsClient {
 	return groupsClient
 }
 
-// ExampleSDKV1ResourcesCreateOrUpdate creates a new resource group
+// ExampleSDKV1ResourcesCreateOrUpdate creates a new resource group using the DefaultAzureCredential through the
+// getGroupsClientWithDefaultAzureCredential function.
 func ExampleSDKV1ResourcesCreateOrUpdate() {
 	// CreateGroup creates a new resource group named by env var
 	groupsClient := getGroupsClientWithDefaultAzureCredential()
@@ -103,7 +104,8 @@ func ExampleSDKV1ResourcesCreateOrUpdate() {
 	// samplegroup
 }
 
-// ExampleSDKV1ResourcesListGroups gets an iterator that gets all resource groups in the subscription
+// ExampleSDKV1ResourcesListGroups gets an iterator that gets all resource groups in the subscription using the
+// ClientSecretCredential through the getGroupsClientWithClientSecretCredential function.
 func ExampleSDKV1ResourcesListGroups() {
 	groupsClient := getGroupsClientWithClientSecretCredential()
 	list, err := groupsClient.ListComplete(context.Background(), "", nil)
@@ -118,7 +120,8 @@ func ExampleSDKV1ResourcesListGroups() {
 	// samplegroup
 }
 
-// ExampleSDKV1ResourcesDeleteGroup removes the resource group
+// ExampleSDKV1ResourcesDeleteGroup removes the resource group using the EnvironmentCredential through the
+// getGroupsClientWithEnvironmentCredential function.
 func ExampleSDKV1ResourcesDeleteGroup() {
 	groupsClient := getGroupsClientWithEnvironmentCredential()
 	_, err := groupsClient.Delete(context.Background(), groupName)

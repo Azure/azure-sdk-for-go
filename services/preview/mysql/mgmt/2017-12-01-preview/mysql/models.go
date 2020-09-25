@@ -32,6 +32,18 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/mysql/mgmt/2017-12-01-preview/mysql"
 
+// AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
+type AzureEntityResource struct {
+	// Etag - READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
 // CloudError an error response from the Batch service.
 type CloudError struct {
 	Error *CloudErrorBody `json:"error,omitempty"`
@@ -54,11 +66,11 @@ type Configuration struct {
 	autorest.Response `json:"-"`
 	// ConfigurationProperties - The properties of a configuration.
 	*ConfigurationProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource ID
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -191,11 +203,11 @@ type Database struct {
 	autorest.Response `json:"-"`
 	// DatabaseProperties - The properties of a database.
 	*DatabaseProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource ID
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -330,11 +342,11 @@ type FirewallRule struct {
 	autorest.Response `json:"-"`
 	// FirewallRuleProperties - The properties of a firewall rule.
 	*FirewallRuleProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource ID
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -469,11 +481,11 @@ func (future *FirewallRulesDeleteFuture) Result(client FirewallRulesClient) (ar 
 type LogFile struct {
 	// LogFileProperties - The properties of the log file.
 	*LogFileProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource ID
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -714,13 +726,24 @@ func (plscsp PrivateLinkServiceConnectionStateProperty) MarshalJSON() ([]byte, e
 	return json.Marshal(objectMap)
 }
 
-// ProxyResource resource properties.
+// ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
+// required location and tags
 type ProxyResource struct {
-	// ID - READ-ONLY; Resource ID
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// Resource ...
+type Resource struct {
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -770,15 +793,15 @@ type Server struct {
 	Sku *Sku `json:"sku,omitempty"`
 	// ServerProperties - Properties of the server.
 	*ServerProperties `json:"properties,omitempty"`
-	// Location - The location the resource resides in.
-	Location *string `json:"location,omitempty"`
-	// Tags - Application-specific metadata in the form of key-value pairs.
+	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - READ-ONLY; Resource ID
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -794,11 +817,11 @@ func (s Server) MarshalJSON() ([]byte, error) {
 	if s.ServerProperties != nil {
 		objectMap["properties"] = s.ServerProperties
 	}
-	if s.Location != nil {
-		objectMap["location"] = s.Location
-	}
 	if s.Tags != nil {
 		objectMap["tags"] = s.Tags
+	}
+	if s.Location != nil {
+		objectMap["location"] = s.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -839,15 +862,6 @@ func (s *Server) UnmarshalJSON(body []byte) error {
 				}
 				s.ServerProperties = &serverProperties
 			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				s.Location = &location
-			}
 		case "tags":
 			if v != nil {
 				var tags map[string]*string
@@ -856,6 +870,15 @@ func (s *Server) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				s.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				s.Location = &location
 			}
 		case "id":
 			if v != nil {
@@ -907,11 +930,11 @@ type ServerAdministratorResource struct {
 	autorest.Response `json:"-"`
 	// ServerAdministratorProperties - Properties of the server AAD administrator.
 	*ServerAdministratorProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource ID
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1709,11 +1732,11 @@ type ServerSecurityAlertPolicy struct {
 	autorest.Response `json:"-"`
 	// SecurityAlertPolicyProperties - Resource properties.
 	*SecurityAlertPolicyProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource ID
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -1936,28 +1959,28 @@ type StorageProfile struct {
 	StorageAutogrow StorageAutogrow `json:"storageAutogrow,omitempty"`
 }
 
-// TrackedResource resource properties including location and tags for track resources.
+// TrackedResource the resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
-	// Location - The location the resource resides in.
-	Location *string `json:"location,omitempty"`
-	// Tags - Application-specific metadata in the form of key-value pairs.
+	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - READ-ONLY; Resource ID
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for TrackedResource.
 func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if tr.Location != nil {
-		objectMap["location"] = tr.Location
-	}
 	if tr.Tags != nil {
 		objectMap["tags"] = tr.Tags
+	}
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -1967,11 +1990,11 @@ type VirtualNetworkRule struct {
 	autorest.Response `json:"-"`
 	// VirtualNetworkRuleProperties - Resource properties.
 	*VirtualNetworkRuleProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource ID
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name.
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type.
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
 }
 

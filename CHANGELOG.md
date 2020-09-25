@@ -2,6 +2,12 @@
 
 ## `v46.4.0`
 
+### New Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| postgresqlflexibleservers | 2020-02-14-preview |
+
 ### Updated Packages
 
 | Package Name | API Version |

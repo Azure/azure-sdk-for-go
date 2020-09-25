@@ -7,6 +7,7 @@
 | Package Name | API Version |
 | ---: | :---: |
 | compute | 2020-06-01 |
+| subscription | 2020-09-01 |
 
 ### Breaking Changes
 

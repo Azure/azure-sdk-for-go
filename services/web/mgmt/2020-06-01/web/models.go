@@ -20846,6 +20846,8 @@ type SiteConfig struct {
 	HTTP20Enabled *bool `json:"http20Enabled,omitempty"`
 	// MinTLSVersion - MinTlsVersion: configures the minimum version of TLS required for SSL requests. Possible values include: 'OneFullStopZero', 'OneFullStopOne', 'OneFullStopTwo'
 	MinTLSVersion SupportedTLSVersions `json:"minTlsVersion,omitempty"`
+	// ScmMinTLSVersion - ScmMinTlsVersion: configures the minimum version of TLS required for SSL requests for SCM site. Possible values include: 'OneFullStopZero', 'OneFullStopOne', 'OneFullStopTwo'
+	ScmMinTLSVersion SupportedTLSVersions `json:"scmMinTlsVersion,omitempty"`
 	// FtpsState - State of FTP / FTPS service. Possible values include: 'AllAllowed', 'FtpsOnly', 'Disabled'
 	FtpsState FtpsState `json:"ftpsState,omitempty"`
 	// PreWarmedInstanceCount - Number of preWarmed instances.
@@ -21010,6 +21012,9 @@ func (sc SiteConfig) MarshalJSON() ([]byte, error) {
 	}
 	if sc.MinTLSVersion != "" {
 		objectMap["minTlsVersion"] = sc.MinTLSVersion
+	}
+	if sc.ScmMinTLSVersion != "" {
+		objectMap["scmMinTlsVersion"] = sc.ScmMinTLSVersion
 	}
 	if sc.FtpsState != "" {
 		objectMap["ftpsState"] = sc.FtpsState

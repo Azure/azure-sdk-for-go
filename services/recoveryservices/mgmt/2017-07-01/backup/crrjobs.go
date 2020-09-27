@@ -73,6 +73,9 @@ func (client CrrJobsClient) List(ctx context.Context, azureRegion string) (resul
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.CrrJobsClient", "List", resp, "Failure responding to request")
 	}
+	if result.jrl.hasNextLink() && result.jrl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -108,7 +111,6 @@ func (client CrrJobsClient) ListSender(req *http.Request) (*http.Response, error
 func (client CrrJobsClient) ListResponder(resp *http.Response) (result JobResourceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -31,124 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/provisioningservices/mgmt/2017-08-21-preview/iothub"
 
-// AccessRightsDescription enumerates the values for access rights description.
-type AccessRightsDescription string
-
-const (
-	// DeviceConnect ...
-	DeviceConnect AccessRightsDescription = "DeviceConnect"
-	// EnrollmentRead ...
-	EnrollmentRead AccessRightsDescription = "EnrollmentRead"
-	// EnrollmentWrite ...
-	EnrollmentWrite AccessRightsDescription = "EnrollmentWrite"
-	// RegistrationStatusRead ...
-	RegistrationStatusRead AccessRightsDescription = "RegistrationStatusRead"
-	// RegistrationStatusWrite ...
-	RegistrationStatusWrite AccessRightsDescription = "RegistrationStatusWrite"
-	// ServiceConfig ...
-	ServiceConfig AccessRightsDescription = "ServiceConfig"
-)
-
-// PossibleAccessRightsDescriptionValues returns an array of possible values for the AccessRightsDescription const type.
-func PossibleAccessRightsDescriptionValues() []AccessRightsDescription {
-	return []AccessRightsDescription{DeviceConnect, EnrollmentRead, EnrollmentWrite, RegistrationStatusRead, RegistrationStatusWrite, ServiceConfig}
-}
-
-// AllocationPolicy enumerates the values for allocation policy.
-type AllocationPolicy string
-
-const (
-	// GeoLatency ...
-	GeoLatency AllocationPolicy = "GeoLatency"
-	// Hashed ...
-	Hashed AllocationPolicy = "Hashed"
-	// Static ...
-	Static AllocationPolicy = "Static"
-)
-
-// PossibleAllocationPolicyValues returns an array of possible values for the AllocationPolicy const type.
-func PossibleAllocationPolicyValues() []AllocationPolicy {
-	return []AllocationPolicy{GeoLatency, Hashed, Static}
-}
-
-// CertificatePurpose enumerates the values for certificate purpose.
-type CertificatePurpose string
-
-const (
-	// ClientAuthentication ...
-	ClientAuthentication CertificatePurpose = "clientAuthentication"
-	// ServerAuthentication ...
-	ServerAuthentication CertificatePurpose = "serverAuthentication"
-)
-
-// PossibleCertificatePurposeValues returns an array of possible values for the CertificatePurpose const type.
-func PossibleCertificatePurposeValues() []CertificatePurpose {
-	return []CertificatePurpose{ClientAuthentication, ServerAuthentication}
-}
-
-// IotDpsSku enumerates the values for iot dps sku.
-type IotDpsSku string
-
-const (
-	// S1 ...
-	S1 IotDpsSku = "S1"
-)
-
-// PossibleIotDpsSkuValues returns an array of possible values for the IotDpsSku const type.
-func PossibleIotDpsSkuValues() []IotDpsSku {
-	return []IotDpsSku{S1}
-}
-
-// NameUnavailabilityReason enumerates the values for name unavailability reason.
-type NameUnavailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists NameUnavailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid NameUnavailabilityReason = "Invalid"
-)
-
-// PossibleNameUnavailabilityReasonValues returns an array of possible values for the NameUnavailabilityReason const type.
-func PossibleNameUnavailabilityReasonValues() []NameUnavailabilityReason {
-	return []NameUnavailabilityReason{AlreadyExists, Invalid}
-}
-
-// State enumerates the values for state.
-type State string
-
-const (
-	// Activating ...
-	Activating State = "Activating"
-	// ActivationFailed ...
-	ActivationFailed State = "ActivationFailed"
-	// Active ...
-	Active State = "Active"
-	// Deleted ...
-	Deleted State = "Deleted"
-	// Deleting ...
-	Deleting State = "Deleting"
-	// DeletionFailed ...
-	DeletionFailed State = "DeletionFailed"
-	// FailingOver ...
-	FailingOver State = "FailingOver"
-	// FailoverFailed ...
-	FailoverFailed State = "FailoverFailed"
-	// Resuming ...
-	Resuming State = "Resuming"
-	// Suspended ...
-	Suspended State = "Suspended"
-	// Suspending ...
-	Suspending State = "Suspending"
-	// Transitioning ...
-	Transitioning State = "Transitioning"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{Activating, ActivationFailed, Active, Deleted, Deleting, DeletionFailed, FailingOver, FailoverFailed, Resuming, Suspended, Suspending, Transitioning}
-}
-
 // AsyncOperationResult result of a long running operation.
 type AsyncOperationResult struct {
 	autorest.Response `json:"-"`
@@ -199,6 +81,15 @@ type CertificateResponse struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CertificateResponse.
+func (cr CertificateResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cr.Properties != nil {
+		objectMap["properties"] = cr.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // DefinitionDescription description of the IoT hub.
 type DefinitionDescription struct {
 	ApplyAllocationPolicy *bool  `json:"applyAllocationPolicy,omitempty"`
@@ -211,6 +102,24 @@ type DefinitionDescription struct {
 	Location *string `json:"location,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DefinitionDescription.
+func (dd DefinitionDescription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dd.ApplyAllocationPolicy != nil {
+		objectMap["applyAllocationPolicy"] = dd.ApplyAllocationPolicy
+	}
+	if dd.AllocationWeight != nil {
+		objectMap["allocationWeight"] = dd.AllocationWeight
+	}
+	if dd.ConnectionString != nil {
+		objectMap["connectionString"] = dd.ConnectionString
+	}
+	if dd.Location != nil {
+		objectMap["location"] = dd.Location
+	}
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetails ...
 type ErrorDetails struct {
 	// Code - READ-ONLY; error code.
@@ -219,6 +128,18 @@ type ErrorDetails struct {
 	HTTPStatusCode *string `json:"httpStatusCode,omitempty"`
 	Message        *string `json:"message,omitempty"`
 	Details        *string `json:"details,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ed.Message != nil {
+		objectMap["message"] = ed.Message
+	}
+	if ed.Details != nil {
+		objectMap["details"] = ed.Details
+	}
+	return json.Marshal(objectMap)
 }
 
 // ErrorMesssage error response containing message and code.
@@ -245,6 +166,27 @@ type IotDpsPropertiesDescription struct {
 	// IDScope - READ-ONLY; Unique identifier of this provisioning service.
 	IDScope               *string                                                          `json:"idScope,omitempty"`
 	AuthorizationPolicies *[]SharedAccessSignatureAuthorizationRuleAccessRightsDescription `json:"authorizationPolicies,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IotDpsPropertiesDescription.
+func (idpd IotDpsPropertiesDescription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if idpd.State != "" {
+		objectMap["state"] = idpd.State
+	}
+	if idpd.ProvisioningState != nil {
+		objectMap["provisioningState"] = idpd.ProvisioningState
+	}
+	if idpd.IotHubs != nil {
+		objectMap["iotHubs"] = idpd.IotHubs
+	}
+	if idpd.AllocationPolicy != "" {
+		objectMap["allocationPolicy"] = idpd.AllocationPolicy
+	}
+	if idpd.AuthorizationPolicies != nil {
+		objectMap["authorizationPolicies"] = idpd.AuthorizationPolicies
+	}
+	return json.Marshal(objectMap)
 }
 
 // IotDpsResourceCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -313,8 +255,16 @@ type IotDpsSkuDefinitionListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// IotDpsSkuDefinitionListResultIterator provides access to a complete listing of IotDpsSkuDefinition
-// values.
+// MarshalJSON is the custom marshaler for IotDpsSkuDefinitionListResult.
+func (idsdlr IotDpsSkuDefinitionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if idsdlr.Value != nil {
+		objectMap["value"] = idsdlr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// IotDpsSkuDefinitionListResultIterator provides access to a complete listing of IotDpsSkuDefinition values.
 type IotDpsSkuDefinitionListResultIterator struct {
 	i    int
 	page IotDpsSkuDefinitionListResultPage
@@ -382,10 +332,15 @@ func (idsdlr IotDpsSkuDefinitionListResult) IsEmpty() bool {
 	return idsdlr.Value == nil || len(*idsdlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (idsdlr IotDpsSkuDefinitionListResult) hasNextLink() bool {
+	return idsdlr.NextLink != nil && len(*idsdlr.NextLink) != 0
+}
+
 // iotDpsSkuDefinitionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (idsdlr IotDpsSkuDefinitionListResult) iotDpsSkuDefinitionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if idsdlr.NextLink == nil || len(to.String(idsdlr.NextLink)) < 1 {
+	if !idsdlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -413,11 +368,16 @@ func (page *IotDpsSkuDefinitionListResultPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.idsdlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.idsdlr)
+		if err != nil {
+			return err
+		}
+		page.idsdlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.idsdlr = next
 	return nil
 }
 
@@ -461,6 +421,18 @@ type IotDpsSkuInfo struct {
 	Capacity *int64 `json:"capacity,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IotDpsSkuInfo.
+func (idsi IotDpsSkuInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if idsi.Name != "" {
+		objectMap["name"] = idsi.Name
+	}
+	if idsi.Capacity != nil {
+		objectMap["capacity"] = idsi.Capacity
+	}
+	return json.Marshal(objectMap)
+}
+
 // NameAvailabilityInfo description of name availability.
 type NameAvailabilityInfo struct {
 	autorest.Response `json:"-"`
@@ -476,6 +448,15 @@ type Operation struct {
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the object that represents the operation.
@@ -494,8 +475,8 @@ type OperationInputs struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// OperationListResult result of the request to list IoT Hub operations. It contains a list of operations
-// and a URL link to get the next set of results.
+// OperationListResult result of the request to list IoT Hub operations. It contains a list of operations and a
+// URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of IoT Hub operations supported by the Microsoft.Devices resource provider.
@@ -572,10 +553,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -603,11 +589,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -689,6 +680,15 @@ type ProvisioningServiceDescriptionListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProvisioningServiceDescriptionListResult.
+func (psdlr ProvisioningServiceDescriptionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if psdlr.Value != nil {
+		objectMap["value"] = psdlr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProvisioningServiceDescriptionListResultIterator provides access to a complete listing of
 // ProvisioningServiceDescription values.
 type ProvisioningServiceDescriptionListResultIterator struct {
@@ -758,10 +758,15 @@ func (psdlr ProvisioningServiceDescriptionListResult) IsEmpty() bool {
 	return psdlr.Value == nil || len(*psdlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (psdlr ProvisioningServiceDescriptionListResult) hasNextLink() bool {
+	return psdlr.NextLink != nil && len(*psdlr.NextLink) != 0
+}
+
 // provisioningServiceDescriptionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (psdlr ProvisioningServiceDescriptionListResult) provisioningServiceDescriptionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if psdlr.NextLink == nil || len(to.String(psdlr.NextLink)) < 1 {
+	if !psdlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -789,11 +794,16 @@ func (page *ProvisioningServiceDescriptionListResultPage) NextWithContext(ctx co
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.psdlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.psdlr)
+		if err != nil {
+			return err
+		}
+		page.psdlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.psdlr = next
 	return nil
 }
 
@@ -874,6 +884,15 @@ type SharedAccessSignatureAuthorizationRuleListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SharedAccessSignatureAuthorizationRuleListResult.
+func (sasarlr SharedAccessSignatureAuthorizationRuleListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sasarlr.Value != nil {
+		objectMap["value"] = sasarlr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
 // SharedAccessSignatureAuthorizationRuleListResultIterator provides access to a complete listing of
 // SharedAccessSignatureAuthorizationRuleAccessRightsDescription values.
 type SharedAccessSignatureAuthorizationRuleListResultIterator struct {
@@ -943,10 +962,15 @@ func (sasarlr SharedAccessSignatureAuthorizationRuleListResult) IsEmpty() bool {
 	return sasarlr.Value == nil || len(*sasarlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sasarlr SharedAccessSignatureAuthorizationRuleListResult) hasNextLink() bool {
+	return sasarlr.NextLink != nil && len(*sasarlr.NextLink) != 0
+}
+
 // sharedAccessSignatureAuthorizationRuleListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sasarlr SharedAccessSignatureAuthorizationRuleListResult) sharedAccessSignatureAuthorizationRuleListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if sasarlr.NextLink == nil || len(to.String(sasarlr.NextLink)) < 1 {
+	if !sasarlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -975,11 +999,16 @@ func (page *SharedAccessSignatureAuthorizationRuleListResultPage) NextWithContex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sasarlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sasarlr)
+		if err != nil {
+			return err
+		}
+		page.sasarlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sasarlr = next
 	return nil
 }
 

@@ -125,7 +125,6 @@ func (client VirtualMachineImageTemplateClient) CreateOrUpdateSender(req *http.R
 func (client VirtualMachineImageTemplateClient) CreateOrUpdateResponder(resp *http.Response) (result ImageTemplate, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -207,7 +206,6 @@ func (client VirtualMachineImageTemplateClient) DeleteSender(req *http.Request) 
 func (client VirtualMachineImageTemplateClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -288,7 +286,6 @@ func (client VirtualMachineImageTemplateClient) GetSender(req *http.Request) (*h
 func (client VirtualMachineImageTemplateClient) GetResponder(resp *http.Response) (result ImageTemplate, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -374,7 +371,6 @@ func (client VirtualMachineImageTemplateClient) GetRunOutputSender(req *http.Req
 func (client VirtualMachineImageTemplateClient) GetRunOutputResponder(resp *http.Response) (result RunOutput, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -412,6 +408,9 @@ func (client VirtualMachineImageTemplateClient) List(ctx context.Context) (resul
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "List", resp, "Failure responding to request")
 	}
+	if result.itlr.hasNextLink() && result.itlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -446,7 +445,6 @@ func (client VirtualMachineImageTemplateClient) ListSender(req *http.Request) (*
 func (client VirtualMachineImageTemplateClient) ListResponder(resp *http.Response) (result ImageTemplateListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -523,6 +521,9 @@ func (client VirtualMachineImageTemplateClient) ListByResourceGroup(ctx context.
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.itlr.hasNextLink() && result.itlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -558,7 +559,6 @@ func (client VirtualMachineImageTemplateClient) ListByResourceGroupSender(req *h
 func (client VirtualMachineImageTemplateClient) ListByResourceGroupResponder(resp *http.Response) (result ImageTemplateListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -642,6 +642,9 @@ func (client VirtualMachineImageTemplateClient) ListRunOutputs(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "ListRunOutputs", resp, "Failure responding to request")
 	}
+	if result.roc.hasNextLink() && result.roc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -678,7 +681,6 @@ func (client VirtualMachineImageTemplateClient) ListRunOutputsSender(req *http.R
 func (client VirtualMachineImageTemplateClient) ListRunOutputsResponder(resp *http.Response) (result RunOutputCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -797,7 +799,6 @@ func (client VirtualMachineImageTemplateClient) RunSender(req *http.Request) (fu
 func (client VirtualMachineImageTemplateClient) RunResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -881,7 +882,6 @@ func (client VirtualMachineImageTemplateClient) UpdateSender(req *http.Request) 
 func (client VirtualMachineImageTemplateClient) UpdateResponder(resp *http.Response) (result ImageTemplate, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

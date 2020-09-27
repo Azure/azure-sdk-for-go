@@ -30,42 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/devops/mgmt/2019-07-01-preview/devops"
 
-// CodeRepositoryType enumerates the values for code repository type.
-type CodeRepositoryType string
-
-const (
-	// GitHub ...
-	GitHub CodeRepositoryType = "gitHub"
-	// VstsGit ...
-	VstsGit CodeRepositoryType = "vstsGit"
-)
-
-// PossibleCodeRepositoryTypeValues returns an array of possible values for the CodeRepositoryType const type.
-func PossibleCodeRepositoryTypeValues() []CodeRepositoryType {
-	return []CodeRepositoryType{GitHub, VstsGit}
-}
-
-// InputDataType enumerates the values for input data type.
-type InputDataType string
-
-const (
-	// InputDataTypeAuthorization ...
-	InputDataTypeAuthorization InputDataType = "Authorization"
-	// InputDataTypeBool ...
-	InputDataTypeBool InputDataType = "Bool"
-	// InputDataTypeInt ...
-	InputDataTypeInt InputDataType = "Int"
-	// InputDataTypeSecureString ...
-	InputDataTypeSecureString InputDataType = "SecureString"
-	// InputDataTypeString ...
-	InputDataTypeString InputDataType = "String"
-)
-
-// PossibleInputDataTypeValues returns an array of possible values for the InputDataType const type.
-func PossibleInputDataTypeValues() []InputDataType {
-	return []InputDataType{InputDataTypeAuthorization, InputDataTypeBool, InputDataTypeInt, InputDataTypeSecureString, InputDataTypeString}
-}
-
 // Authorization authorization info used to access a resource (like code repository).
 type Authorization struct {
 	// AuthorizationType - Type of authorization.
@@ -253,6 +217,15 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if olr.NextLink != nil {
+		objectMap["nextLink"] = olr.NextLink
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationListResultIterator provides access to a complete listing of Operation values.
 type OperationListResultIterator struct {
 	i    int
@@ -321,10 +294,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -352,11 +330,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -398,8 +381,17 @@ type OrganizationReference struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// Pipeline azure DevOps Pipeline used to configure Continuous Integration (CI) & Continuous Delivery (CD)
-// for Azure resources.
+// MarshalJSON is the custom marshaler for OrganizationReference.
+func (or OrganizationReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if or.Name != nil {
+		objectMap["name"] = or.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// Pipeline azure DevOps Pipeline used to configure Continuous Integration (CI) & Continuous Delivery (CD) for
+// Azure resources.
 type Pipeline struct {
 	autorest.Response `json:"-"`
 	// PipelineProperties - Custom properties of the Pipeline.
@@ -577,10 +569,15 @@ func (plr PipelineListResult) IsEmpty() bool {
 	return plr.Value == nil || len(*plr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (plr PipelineListResult) hasNextLink() bool {
+	return plr.NextLink != nil && len(*plr.NextLink) != 0
+}
+
 // pipelineListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (plr PipelineListResult) pipelineListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if plr.NextLink == nil || len(to.String(plr.NextLink)) < 1 {
+	if !plr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -608,11 +605,16 @@ func (page *PipelineListResultPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.plr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.plr)
+		if err != nil {
+			return err
+		}
+		page.plr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.plr = next
 	return nil
 }
 
@@ -656,6 +658,21 @@ type PipelineProperties struct {
 	Project *ProjectReference `json:"project,omitempty"`
 	// BootstrapConfiguration - Configuration used to bootstrap the Pipeline.
 	BootstrapConfiguration *BootstrapConfiguration `json:"bootstrapConfiguration,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PipelineProperties.
+func (pp PipelineProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pp.Organization != nil {
+		objectMap["organization"] = pp.Organization
+	}
+	if pp.Project != nil {
+		objectMap["project"] = pp.Project
+	}
+	if pp.BootstrapConfiguration != nil {
+		objectMap["bootstrapConfiguration"] = pp.BootstrapConfiguration
+	}
+	return json.Marshal(objectMap)
 }
 
 // PipelinesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -795,10 +812,15 @@ func (ptdlr PipelineTemplateDefinitionListResult) IsEmpty() bool {
 	return ptdlr.Value == nil || len(*ptdlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ptdlr PipelineTemplateDefinitionListResult) hasNextLink() bool {
+	return ptdlr.NextLink != nil && len(*ptdlr.NextLink) != 0
+}
+
 // pipelineTemplateDefinitionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ptdlr PipelineTemplateDefinitionListResult) pipelineTemplateDefinitionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if ptdlr.NextLink == nil || len(to.String(ptdlr.NextLink)) < 1 {
+	if !ptdlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -826,11 +848,16 @@ func (page *PipelineTemplateDefinitionListResultPage) NextWithContext(ctx contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ptdlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ptdlr)
+		if err != nil {
+			return err
+		}
+		page.ptdlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ptdlr = next
 	return nil
 }
 
@@ -885,6 +912,15 @@ type ProjectReference struct {
 	ID *string `json:"id,omitempty"`
 	// Name - Name of the Azure DevOps Project.
 	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProjectReference.
+func (pr ProjectReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pr.Name != nil {
+		objectMap["name"] = pr.Name
+	}
+	return json.Marshal(objectMap)
 }
 
 // Resource an Azure Resource Manager (ARM) resource.

@@ -126,7 +126,6 @@ func (client WebhookClient) CreateOrUpdateSender(req *http.Request) (*http.Respo
 func (client WebhookClient) CreateOrUpdateResponder(resp *http.Response) (result Webhook, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -212,7 +211,6 @@ func (client WebhookClient) DeleteSender(req *http.Request) (*http.Response, err
 func (client WebhookClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -295,7 +293,6 @@ func (client WebhookClient) GenerateURISender(req *http.Request) (*http.Response
 func (client WebhookClient) GenerateURIResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -381,7 +378,6 @@ func (client WebhookClient) GetSender(req *http.Request) (*http.Response, error)
 func (client WebhookClient) GetResponder(resp *http.Response) (result Webhook, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -431,6 +427,9 @@ func (client WebhookClient) ListByAutomationAccount(ctx context.Context, resourc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.WebhookClient", "ListByAutomationAccount", resp, "Failure responding to request")
 	}
+	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -470,7 +469,6 @@ func (client WebhookClient) ListByAutomationAccountSender(req *http.Request) (*h
 func (client WebhookClient) ListByAutomationAccountResponder(resp *http.Response) (result WebhookListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -596,7 +594,6 @@ func (client WebhookClient) UpdateSender(req *http.Request) (*http.Response, err
 func (client WebhookClient) UpdateResponder(resp *http.Response) (result Webhook, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

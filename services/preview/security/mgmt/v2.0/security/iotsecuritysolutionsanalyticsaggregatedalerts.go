@@ -90,6 +90,9 @@ func (client IoTSecuritySolutionsAnalyticsAggregatedAlertsClient) List(ctx conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsAnalyticsAggregatedAlertsClient", "List", resp, "Failure responding to request")
 	}
+	if result.itsaal.hasNextLink() && result.itsaal.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -129,7 +132,6 @@ func (client IoTSecuritySolutionsAnalyticsAggregatedAlertsClient) ListSender(req
 func (client IoTSecuritySolutionsAnalyticsAggregatedAlertsClient) ListResponder(resp *http.Response) (result IoTSecurityAggregatedAlertList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

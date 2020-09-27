@@ -116,7 +116,6 @@ func (client FilesClient) CreateOrUpdateSender(req *http.Request) (*http.Respons
 func (client FilesClient) CreateOrUpdateResponder(resp *http.Response) (result ProjectFile, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -196,7 +195,6 @@ func (client FilesClient) DeleteSender(req *http.Request) (*http.Response, error
 func (client FilesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -276,7 +274,6 @@ func (client FilesClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client FilesClient) GetResponder(resp *http.Response) (result ProjectFile, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -319,6 +316,9 @@ func (client FilesClient) List(ctx context.Context, groupName string, serviceNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.FilesClient", "List", resp, "Failure responding to request")
 	}
+	if result.fl.hasNextLink() && result.fl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -356,7 +356,6 @@ func (client FilesClient) ListSender(req *http.Request) (*http.Response, error) 
 func (client FilesClient) ListResponder(resp *http.Response) (result FileList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -473,7 +472,6 @@ func (client FilesClient) ReadSender(req *http.Request) (*http.Response, error) 
 func (client FilesClient) ReadResponder(resp *http.Response) (result FileStorageInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -553,7 +551,6 @@ func (client FilesClient) ReadWriteSender(req *http.Request) (*http.Response, er
 func (client FilesClient) ReadWriteResponder(resp *http.Response) (result FileStorageInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -636,7 +633,6 @@ func (client FilesClient) UpdateSender(req *http.Request) (*http.Response, error
 func (client FilesClient) UpdateResponder(resp *http.Response) (result ProjectFile, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

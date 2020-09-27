@@ -129,7 +129,6 @@ func (client LabAccountsClient) CreateLabSender(req *http.Request) (*http.Respon
 func (client LabAccountsClient) CreateLabResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -207,7 +206,6 @@ func (client LabAccountsClient) CreateOrUpdateSender(req *http.Request) (*http.R
 func (client LabAccountsClient) CreateOrUpdateResponder(resp *http.Response) (result LabAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -283,7 +281,6 @@ func (client LabAccountsClient) DeleteSender(req *http.Request) (future LabAccou
 func (client LabAccountsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -362,7 +359,6 @@ func (client LabAccountsClient) GetSender(req *http.Request) (*http.Response, er
 func (client LabAccountsClient) GetResponder(resp *http.Response) (result LabAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -438,7 +434,6 @@ func (client LabAccountsClient) GetRegionalAvailabilitySender(req *http.Request)
 func (client LabAccountsClient) GetRegionalAvailabilityResponder(resp *http.Response) (result GetRegionalAvailabilityResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -481,6 +476,9 @@ func (client LabAccountsClient) ListByResourceGroup(ctx context.Context, resourc
 	result.rwcla, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.rwcla.hasNextLink() && result.rwcla.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -529,7 +527,6 @@ func (client LabAccountsClient) ListByResourceGroupSender(req *http.Request) (*h
 func (client LabAccountsClient) ListByResourceGroupResponder(resp *http.Response) (result ResponseWithContinuationLabAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -609,6 +606,9 @@ func (client LabAccountsClient) ListBySubscription(ctx context.Context, expand s
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.LabAccountsClient", "ListBySubscription", resp, "Failure responding to request")
 	}
+	if result.rwcla.hasNextLink() && result.rwcla.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -655,7 +655,6 @@ func (client LabAccountsClient) ListBySubscriptionSender(req *http.Request) (*ht
 func (client LabAccountsClient) ListBySubscriptionResponder(resp *http.Response) (result ResponseWithContinuationLabAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -771,7 +770,6 @@ func (client LabAccountsClient) UpdateSender(req *http.Request) (*http.Response,
 func (client LabAccountsClient) UpdateResponder(resp *http.Response) (result LabAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

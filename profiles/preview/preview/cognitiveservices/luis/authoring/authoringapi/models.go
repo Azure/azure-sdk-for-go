@@ -27,7 +27,6 @@ type ExamplesClientAPI = original.ExamplesClientAPI
 type FeaturesClientAPI = original.FeaturesClientAPI
 type ModelClientAPI = original.ModelClientAPI
 type PatternClientAPI = original.PatternClientAPI
-type PermissionsClientAPI = original.PermissionsClientAPI
 type SettingsClientAPI = original.SettingsClientAPI
 type TrainClientAPI = original.TrainClientAPI
 type VersionsClientAPI = original.VersionsClientAPI

@@ -28,478 +28,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v3.0/luis/authoring"
 
-// OperationStatusType enumerates the values for operation status type.
-type OperationStatusType string
-
-const (
-	// Failed ...
-	Failed OperationStatusType = "Failed"
-	// FAILED ...
-	FAILED OperationStatusType = "FAILED"
-	// Success ...
-	Success OperationStatusType = "Success"
-)
-
-// PossibleOperationStatusTypeValues returns an array of possible values for the OperationStatusType const type.
-func PossibleOperationStatusTypeValues() []OperationStatusType {
-	return []OperationStatusType{Failed, FAILED, Success}
-}
-
-// ReadableType enumerates the values for readable type.
-type ReadableType string
-
-const (
-	// ReadableTypeChildEntityExtractor ...
-	ReadableTypeChildEntityExtractor ReadableType = "Child Entity Extractor"
-	// ReadableTypeClosedListEntityExtractor ...
-	ReadableTypeClosedListEntityExtractor ReadableType = "Closed List Entity Extractor"
-	// ReadableTypeCompositeEntityExtractor ...
-	ReadableTypeCompositeEntityExtractor ReadableType = "Composite Entity Extractor"
-	// ReadableTypeEntityExtractor ...
-	ReadableTypeEntityExtractor ReadableType = "Entity Extractor"
-	// ReadableTypeHierarchicalChildEntityExtractor ...
-	ReadableTypeHierarchicalChildEntityExtractor ReadableType = "Hierarchical Child Entity Extractor"
-	// ReadableTypeHierarchicalEntityExtractor ...
-	ReadableTypeHierarchicalEntityExtractor ReadableType = "Hierarchical Entity Extractor"
-	// ReadableTypeIntentClassifier ...
-	ReadableTypeIntentClassifier ReadableType = "Intent Classifier"
-	// ReadableTypeListEntityExtractor ...
-	ReadableTypeListEntityExtractor ReadableType = "List Entity Extractor"
-	// ReadableTypePatternAnyEntityExtractor ...
-	ReadableTypePatternAnyEntityExtractor ReadableType = "Pattern.Any Entity Extractor"
-	// ReadableTypePrebuiltEntityExtractor ...
-	ReadableTypePrebuiltEntityExtractor ReadableType = "Prebuilt Entity Extractor"
-	// ReadableTypeRegexEntityExtractor ...
-	ReadableTypeRegexEntityExtractor ReadableType = "Regex Entity Extractor"
-)
-
-// PossibleReadableTypeValues returns an array of possible values for the ReadableType const type.
-func PossibleReadableTypeValues() []ReadableType {
-	return []ReadableType{ReadableTypeChildEntityExtractor, ReadableTypeClosedListEntityExtractor, ReadableTypeCompositeEntityExtractor, ReadableTypeEntityExtractor, ReadableTypeHierarchicalChildEntityExtractor, ReadableTypeHierarchicalEntityExtractor, ReadableTypeIntentClassifier, ReadableTypeListEntityExtractor, ReadableTypePatternAnyEntityExtractor, ReadableTypePrebuiltEntityExtractor, ReadableTypeRegexEntityExtractor}
-}
-
-// ReadableType1 enumerates the values for readable type 1.
-type ReadableType1 string
-
-const (
-	// ReadableType1ChildEntityExtractor ...
-	ReadableType1ChildEntityExtractor ReadableType1 = "Child Entity Extractor"
-	// ReadableType1ClosedListEntityExtractor ...
-	ReadableType1ClosedListEntityExtractor ReadableType1 = "Closed List Entity Extractor"
-	// ReadableType1CompositeEntityExtractor ...
-	ReadableType1CompositeEntityExtractor ReadableType1 = "Composite Entity Extractor"
-	// ReadableType1EntityExtractor ...
-	ReadableType1EntityExtractor ReadableType1 = "Entity Extractor"
-	// ReadableType1HierarchicalChildEntityExtractor ...
-	ReadableType1HierarchicalChildEntityExtractor ReadableType1 = "Hierarchical Child Entity Extractor"
-	// ReadableType1HierarchicalEntityExtractor ...
-	ReadableType1HierarchicalEntityExtractor ReadableType1 = "Hierarchical Entity Extractor"
-	// ReadableType1IntentClassifier ...
-	ReadableType1IntentClassifier ReadableType1 = "Intent Classifier"
-	// ReadableType1ListEntityExtractor ...
-	ReadableType1ListEntityExtractor ReadableType1 = "List Entity Extractor"
-	// ReadableType1PatternAnyEntityExtractor ...
-	ReadableType1PatternAnyEntityExtractor ReadableType1 = "Pattern.Any Entity Extractor"
-	// ReadableType1PrebuiltEntityExtractor ...
-	ReadableType1PrebuiltEntityExtractor ReadableType1 = "Prebuilt Entity Extractor"
-	// ReadableType1RegexEntityExtractor ...
-	ReadableType1RegexEntityExtractor ReadableType1 = "Regex Entity Extractor"
-)
-
-// PossibleReadableType1Values returns an array of possible values for the ReadableType1 const type.
-func PossibleReadableType1Values() []ReadableType1 {
-	return []ReadableType1{ReadableType1ChildEntityExtractor, ReadableType1ClosedListEntityExtractor, ReadableType1CompositeEntityExtractor, ReadableType1EntityExtractor, ReadableType1HierarchicalChildEntityExtractor, ReadableType1HierarchicalEntityExtractor, ReadableType1IntentClassifier, ReadableType1ListEntityExtractor, ReadableType1PatternAnyEntityExtractor, ReadableType1PrebuiltEntityExtractor, ReadableType1RegexEntityExtractor}
-}
-
-// ReadableType10 enumerates the values for readable type 10.
-type ReadableType10 string
-
-const (
-	// ReadableType10ChildEntityExtractor ...
-	ReadableType10ChildEntityExtractor ReadableType10 = "Child Entity Extractor"
-	// ReadableType10ClosedListEntityExtractor ...
-	ReadableType10ClosedListEntityExtractor ReadableType10 = "Closed List Entity Extractor"
-	// ReadableType10CompositeEntityExtractor ...
-	ReadableType10CompositeEntityExtractor ReadableType10 = "Composite Entity Extractor"
-	// ReadableType10EntityExtractor ...
-	ReadableType10EntityExtractor ReadableType10 = "Entity Extractor"
-	// ReadableType10HierarchicalChildEntityExtractor ...
-	ReadableType10HierarchicalChildEntityExtractor ReadableType10 = "Hierarchical Child Entity Extractor"
-	// ReadableType10HierarchicalEntityExtractor ...
-	ReadableType10HierarchicalEntityExtractor ReadableType10 = "Hierarchical Entity Extractor"
-	// ReadableType10IntentClassifier ...
-	ReadableType10IntentClassifier ReadableType10 = "Intent Classifier"
-	// ReadableType10ListEntityExtractor ...
-	ReadableType10ListEntityExtractor ReadableType10 = "List Entity Extractor"
-	// ReadableType10PatternAnyEntityExtractor ...
-	ReadableType10PatternAnyEntityExtractor ReadableType10 = "Pattern.Any Entity Extractor"
-	// ReadableType10PrebuiltEntityExtractor ...
-	ReadableType10PrebuiltEntityExtractor ReadableType10 = "Prebuilt Entity Extractor"
-	// ReadableType10RegexEntityExtractor ...
-	ReadableType10RegexEntityExtractor ReadableType10 = "Regex Entity Extractor"
-)
-
-// PossibleReadableType10Values returns an array of possible values for the ReadableType10 const type.
-func PossibleReadableType10Values() []ReadableType10 {
-	return []ReadableType10{ReadableType10ChildEntityExtractor, ReadableType10ClosedListEntityExtractor, ReadableType10CompositeEntityExtractor, ReadableType10EntityExtractor, ReadableType10HierarchicalChildEntityExtractor, ReadableType10HierarchicalEntityExtractor, ReadableType10IntentClassifier, ReadableType10ListEntityExtractor, ReadableType10PatternAnyEntityExtractor, ReadableType10PrebuiltEntityExtractor, ReadableType10RegexEntityExtractor}
-}
-
-// ReadableType11 enumerates the values for readable type 11.
-type ReadableType11 string
-
-const (
-	// ReadableType11ChildEntityExtractor ...
-	ReadableType11ChildEntityExtractor ReadableType11 = "Child Entity Extractor"
-	// ReadableType11ClosedListEntityExtractor ...
-	ReadableType11ClosedListEntityExtractor ReadableType11 = "Closed List Entity Extractor"
-	// ReadableType11CompositeEntityExtractor ...
-	ReadableType11CompositeEntityExtractor ReadableType11 = "Composite Entity Extractor"
-	// ReadableType11EntityExtractor ...
-	ReadableType11EntityExtractor ReadableType11 = "Entity Extractor"
-	// ReadableType11HierarchicalChildEntityExtractor ...
-	ReadableType11HierarchicalChildEntityExtractor ReadableType11 = "Hierarchical Child Entity Extractor"
-	// ReadableType11HierarchicalEntityExtractor ...
-	ReadableType11HierarchicalEntityExtractor ReadableType11 = "Hierarchical Entity Extractor"
-	// ReadableType11IntentClassifier ...
-	ReadableType11IntentClassifier ReadableType11 = "Intent Classifier"
-	// ReadableType11ListEntityExtractor ...
-	ReadableType11ListEntityExtractor ReadableType11 = "List Entity Extractor"
-	// ReadableType11PatternAnyEntityExtractor ...
-	ReadableType11PatternAnyEntityExtractor ReadableType11 = "Pattern.Any Entity Extractor"
-	// ReadableType11PrebuiltEntityExtractor ...
-	ReadableType11PrebuiltEntityExtractor ReadableType11 = "Prebuilt Entity Extractor"
-	// ReadableType11RegexEntityExtractor ...
-	ReadableType11RegexEntityExtractor ReadableType11 = "Regex Entity Extractor"
-)
-
-// PossibleReadableType11Values returns an array of possible values for the ReadableType11 const type.
-func PossibleReadableType11Values() []ReadableType11 {
-	return []ReadableType11{ReadableType11ChildEntityExtractor, ReadableType11ClosedListEntityExtractor, ReadableType11CompositeEntityExtractor, ReadableType11EntityExtractor, ReadableType11HierarchicalChildEntityExtractor, ReadableType11HierarchicalEntityExtractor, ReadableType11IntentClassifier, ReadableType11ListEntityExtractor, ReadableType11PatternAnyEntityExtractor, ReadableType11PrebuiltEntityExtractor, ReadableType11RegexEntityExtractor}
-}
-
-// ReadableType2 enumerates the values for readable type 2.
-type ReadableType2 string
-
-const (
-	// ReadableType2ChildEntityExtractor ...
-	ReadableType2ChildEntityExtractor ReadableType2 = "Child Entity Extractor"
-	// ReadableType2ClosedListEntityExtractor ...
-	ReadableType2ClosedListEntityExtractor ReadableType2 = "Closed List Entity Extractor"
-	// ReadableType2CompositeEntityExtractor ...
-	ReadableType2CompositeEntityExtractor ReadableType2 = "Composite Entity Extractor"
-	// ReadableType2EntityExtractor ...
-	ReadableType2EntityExtractor ReadableType2 = "Entity Extractor"
-	// ReadableType2HierarchicalChildEntityExtractor ...
-	ReadableType2HierarchicalChildEntityExtractor ReadableType2 = "Hierarchical Child Entity Extractor"
-	// ReadableType2HierarchicalEntityExtractor ...
-	ReadableType2HierarchicalEntityExtractor ReadableType2 = "Hierarchical Entity Extractor"
-	// ReadableType2IntentClassifier ...
-	ReadableType2IntentClassifier ReadableType2 = "Intent Classifier"
-	// ReadableType2ListEntityExtractor ...
-	ReadableType2ListEntityExtractor ReadableType2 = "List Entity Extractor"
-	// ReadableType2PatternAnyEntityExtractor ...
-	ReadableType2PatternAnyEntityExtractor ReadableType2 = "Pattern.Any Entity Extractor"
-	// ReadableType2PrebuiltEntityExtractor ...
-	ReadableType2PrebuiltEntityExtractor ReadableType2 = "Prebuilt Entity Extractor"
-	// ReadableType2RegexEntityExtractor ...
-	ReadableType2RegexEntityExtractor ReadableType2 = "Regex Entity Extractor"
-)
-
-// PossibleReadableType2Values returns an array of possible values for the ReadableType2 const type.
-func PossibleReadableType2Values() []ReadableType2 {
-	return []ReadableType2{ReadableType2ChildEntityExtractor, ReadableType2ClosedListEntityExtractor, ReadableType2CompositeEntityExtractor, ReadableType2EntityExtractor, ReadableType2HierarchicalChildEntityExtractor, ReadableType2HierarchicalEntityExtractor, ReadableType2IntentClassifier, ReadableType2ListEntityExtractor, ReadableType2PatternAnyEntityExtractor, ReadableType2PrebuiltEntityExtractor, ReadableType2RegexEntityExtractor}
-}
-
-// ReadableType3 enumerates the values for readable type 3.
-type ReadableType3 string
-
-const (
-	// ReadableType3ChildEntityExtractor ...
-	ReadableType3ChildEntityExtractor ReadableType3 = "Child Entity Extractor"
-	// ReadableType3ClosedListEntityExtractor ...
-	ReadableType3ClosedListEntityExtractor ReadableType3 = "Closed List Entity Extractor"
-	// ReadableType3CompositeEntityExtractor ...
-	ReadableType3CompositeEntityExtractor ReadableType3 = "Composite Entity Extractor"
-	// ReadableType3EntityExtractor ...
-	ReadableType3EntityExtractor ReadableType3 = "Entity Extractor"
-	// ReadableType3HierarchicalChildEntityExtractor ...
-	ReadableType3HierarchicalChildEntityExtractor ReadableType3 = "Hierarchical Child Entity Extractor"
-	// ReadableType3HierarchicalEntityExtractor ...
-	ReadableType3HierarchicalEntityExtractor ReadableType3 = "Hierarchical Entity Extractor"
-	// ReadableType3IntentClassifier ...
-	ReadableType3IntentClassifier ReadableType3 = "Intent Classifier"
-	// ReadableType3ListEntityExtractor ...
-	ReadableType3ListEntityExtractor ReadableType3 = "List Entity Extractor"
-	// ReadableType3PatternAnyEntityExtractor ...
-	ReadableType3PatternAnyEntityExtractor ReadableType3 = "Pattern.Any Entity Extractor"
-	// ReadableType3PrebuiltEntityExtractor ...
-	ReadableType3PrebuiltEntityExtractor ReadableType3 = "Prebuilt Entity Extractor"
-	// ReadableType3RegexEntityExtractor ...
-	ReadableType3RegexEntityExtractor ReadableType3 = "Regex Entity Extractor"
-)
-
-// PossibleReadableType3Values returns an array of possible values for the ReadableType3 const type.
-func PossibleReadableType3Values() []ReadableType3 {
-	return []ReadableType3{ReadableType3ChildEntityExtractor, ReadableType3ClosedListEntityExtractor, ReadableType3CompositeEntityExtractor, ReadableType3EntityExtractor, ReadableType3HierarchicalChildEntityExtractor, ReadableType3HierarchicalEntityExtractor, ReadableType3IntentClassifier, ReadableType3ListEntityExtractor, ReadableType3PatternAnyEntityExtractor, ReadableType3PrebuiltEntityExtractor, ReadableType3RegexEntityExtractor}
-}
-
-// ReadableType4 enumerates the values for readable type 4.
-type ReadableType4 string
-
-const (
-	// ReadableType4ChildEntityExtractor ...
-	ReadableType4ChildEntityExtractor ReadableType4 = "Child Entity Extractor"
-	// ReadableType4ClosedListEntityExtractor ...
-	ReadableType4ClosedListEntityExtractor ReadableType4 = "Closed List Entity Extractor"
-	// ReadableType4CompositeEntityExtractor ...
-	ReadableType4CompositeEntityExtractor ReadableType4 = "Composite Entity Extractor"
-	// ReadableType4EntityExtractor ...
-	ReadableType4EntityExtractor ReadableType4 = "Entity Extractor"
-	// ReadableType4HierarchicalChildEntityExtractor ...
-	ReadableType4HierarchicalChildEntityExtractor ReadableType4 = "Hierarchical Child Entity Extractor"
-	// ReadableType4HierarchicalEntityExtractor ...
-	ReadableType4HierarchicalEntityExtractor ReadableType4 = "Hierarchical Entity Extractor"
-	// ReadableType4IntentClassifier ...
-	ReadableType4IntentClassifier ReadableType4 = "Intent Classifier"
-	// ReadableType4ListEntityExtractor ...
-	ReadableType4ListEntityExtractor ReadableType4 = "List Entity Extractor"
-	// ReadableType4PatternAnyEntityExtractor ...
-	ReadableType4PatternAnyEntityExtractor ReadableType4 = "Pattern.Any Entity Extractor"
-	// ReadableType4PrebuiltEntityExtractor ...
-	ReadableType4PrebuiltEntityExtractor ReadableType4 = "Prebuilt Entity Extractor"
-	// ReadableType4RegexEntityExtractor ...
-	ReadableType4RegexEntityExtractor ReadableType4 = "Regex Entity Extractor"
-)
-
-// PossibleReadableType4Values returns an array of possible values for the ReadableType4 const type.
-func PossibleReadableType4Values() []ReadableType4 {
-	return []ReadableType4{ReadableType4ChildEntityExtractor, ReadableType4ClosedListEntityExtractor, ReadableType4CompositeEntityExtractor, ReadableType4EntityExtractor, ReadableType4HierarchicalChildEntityExtractor, ReadableType4HierarchicalEntityExtractor, ReadableType4IntentClassifier, ReadableType4ListEntityExtractor, ReadableType4PatternAnyEntityExtractor, ReadableType4PrebuiltEntityExtractor, ReadableType4RegexEntityExtractor}
-}
-
-// ReadableType5 enumerates the values for readable type 5.
-type ReadableType5 string
-
-const (
-	// ReadableType5ChildEntityExtractor ...
-	ReadableType5ChildEntityExtractor ReadableType5 = "Child Entity Extractor"
-	// ReadableType5ClosedListEntityExtractor ...
-	ReadableType5ClosedListEntityExtractor ReadableType5 = "Closed List Entity Extractor"
-	// ReadableType5CompositeEntityExtractor ...
-	ReadableType5CompositeEntityExtractor ReadableType5 = "Composite Entity Extractor"
-	// ReadableType5EntityExtractor ...
-	ReadableType5EntityExtractor ReadableType5 = "Entity Extractor"
-	// ReadableType5HierarchicalChildEntityExtractor ...
-	ReadableType5HierarchicalChildEntityExtractor ReadableType5 = "Hierarchical Child Entity Extractor"
-	// ReadableType5HierarchicalEntityExtractor ...
-	ReadableType5HierarchicalEntityExtractor ReadableType5 = "Hierarchical Entity Extractor"
-	// ReadableType5IntentClassifier ...
-	ReadableType5IntentClassifier ReadableType5 = "Intent Classifier"
-	// ReadableType5ListEntityExtractor ...
-	ReadableType5ListEntityExtractor ReadableType5 = "List Entity Extractor"
-	// ReadableType5PatternAnyEntityExtractor ...
-	ReadableType5PatternAnyEntityExtractor ReadableType5 = "Pattern.Any Entity Extractor"
-	// ReadableType5PrebuiltEntityExtractor ...
-	ReadableType5PrebuiltEntityExtractor ReadableType5 = "Prebuilt Entity Extractor"
-	// ReadableType5RegexEntityExtractor ...
-	ReadableType5RegexEntityExtractor ReadableType5 = "Regex Entity Extractor"
-)
-
-// PossibleReadableType5Values returns an array of possible values for the ReadableType5 const type.
-func PossibleReadableType5Values() []ReadableType5 {
-	return []ReadableType5{ReadableType5ChildEntityExtractor, ReadableType5ClosedListEntityExtractor, ReadableType5CompositeEntityExtractor, ReadableType5EntityExtractor, ReadableType5HierarchicalChildEntityExtractor, ReadableType5HierarchicalEntityExtractor, ReadableType5IntentClassifier, ReadableType5ListEntityExtractor, ReadableType5PatternAnyEntityExtractor, ReadableType5PrebuiltEntityExtractor, ReadableType5RegexEntityExtractor}
-}
-
-// ReadableType6 enumerates the values for readable type 6.
-type ReadableType6 string
-
-const (
-	// ReadableType6ChildEntityExtractor ...
-	ReadableType6ChildEntityExtractor ReadableType6 = "Child Entity Extractor"
-	// ReadableType6ClosedListEntityExtractor ...
-	ReadableType6ClosedListEntityExtractor ReadableType6 = "Closed List Entity Extractor"
-	// ReadableType6CompositeEntityExtractor ...
-	ReadableType6CompositeEntityExtractor ReadableType6 = "Composite Entity Extractor"
-	// ReadableType6EntityExtractor ...
-	ReadableType6EntityExtractor ReadableType6 = "Entity Extractor"
-	// ReadableType6HierarchicalChildEntityExtractor ...
-	ReadableType6HierarchicalChildEntityExtractor ReadableType6 = "Hierarchical Child Entity Extractor"
-	// ReadableType6HierarchicalEntityExtractor ...
-	ReadableType6HierarchicalEntityExtractor ReadableType6 = "Hierarchical Entity Extractor"
-	// ReadableType6IntentClassifier ...
-	ReadableType6IntentClassifier ReadableType6 = "Intent Classifier"
-	// ReadableType6ListEntityExtractor ...
-	ReadableType6ListEntityExtractor ReadableType6 = "List Entity Extractor"
-	// ReadableType6PatternAnyEntityExtractor ...
-	ReadableType6PatternAnyEntityExtractor ReadableType6 = "Pattern.Any Entity Extractor"
-	// ReadableType6PrebuiltEntityExtractor ...
-	ReadableType6PrebuiltEntityExtractor ReadableType6 = "Prebuilt Entity Extractor"
-	// ReadableType6RegexEntityExtractor ...
-	ReadableType6RegexEntityExtractor ReadableType6 = "Regex Entity Extractor"
-)
-
-// PossibleReadableType6Values returns an array of possible values for the ReadableType6 const type.
-func PossibleReadableType6Values() []ReadableType6 {
-	return []ReadableType6{ReadableType6ChildEntityExtractor, ReadableType6ClosedListEntityExtractor, ReadableType6CompositeEntityExtractor, ReadableType6EntityExtractor, ReadableType6HierarchicalChildEntityExtractor, ReadableType6HierarchicalEntityExtractor, ReadableType6IntentClassifier, ReadableType6ListEntityExtractor, ReadableType6PatternAnyEntityExtractor, ReadableType6PrebuiltEntityExtractor, ReadableType6RegexEntityExtractor}
-}
-
-// ReadableType7 enumerates the values for readable type 7.
-type ReadableType7 string
-
-const (
-	// ReadableType7ChildEntityExtractor ...
-	ReadableType7ChildEntityExtractor ReadableType7 = "Child Entity Extractor"
-	// ReadableType7ClosedListEntityExtractor ...
-	ReadableType7ClosedListEntityExtractor ReadableType7 = "Closed List Entity Extractor"
-	// ReadableType7CompositeEntityExtractor ...
-	ReadableType7CompositeEntityExtractor ReadableType7 = "Composite Entity Extractor"
-	// ReadableType7EntityExtractor ...
-	ReadableType7EntityExtractor ReadableType7 = "Entity Extractor"
-	// ReadableType7HierarchicalChildEntityExtractor ...
-	ReadableType7HierarchicalChildEntityExtractor ReadableType7 = "Hierarchical Child Entity Extractor"
-	// ReadableType7HierarchicalEntityExtractor ...
-	ReadableType7HierarchicalEntityExtractor ReadableType7 = "Hierarchical Entity Extractor"
-	// ReadableType7IntentClassifier ...
-	ReadableType7IntentClassifier ReadableType7 = "Intent Classifier"
-	// ReadableType7ListEntityExtractor ...
-	ReadableType7ListEntityExtractor ReadableType7 = "List Entity Extractor"
-	// ReadableType7PatternAnyEntityExtractor ...
-	ReadableType7PatternAnyEntityExtractor ReadableType7 = "Pattern.Any Entity Extractor"
-	// ReadableType7PrebuiltEntityExtractor ...
-	ReadableType7PrebuiltEntityExtractor ReadableType7 = "Prebuilt Entity Extractor"
-	// ReadableType7RegexEntityExtractor ...
-	ReadableType7RegexEntityExtractor ReadableType7 = "Regex Entity Extractor"
-)
-
-// PossibleReadableType7Values returns an array of possible values for the ReadableType7 const type.
-func PossibleReadableType7Values() []ReadableType7 {
-	return []ReadableType7{ReadableType7ChildEntityExtractor, ReadableType7ClosedListEntityExtractor, ReadableType7CompositeEntityExtractor, ReadableType7EntityExtractor, ReadableType7HierarchicalChildEntityExtractor, ReadableType7HierarchicalEntityExtractor, ReadableType7IntentClassifier, ReadableType7ListEntityExtractor, ReadableType7PatternAnyEntityExtractor, ReadableType7PrebuiltEntityExtractor, ReadableType7RegexEntityExtractor}
-}
-
-// ReadableType8 enumerates the values for readable type 8.
-type ReadableType8 string
-
-const (
-	// ReadableType8ChildEntityExtractor ...
-	ReadableType8ChildEntityExtractor ReadableType8 = "Child Entity Extractor"
-	// ReadableType8ClosedListEntityExtractor ...
-	ReadableType8ClosedListEntityExtractor ReadableType8 = "Closed List Entity Extractor"
-	// ReadableType8CompositeEntityExtractor ...
-	ReadableType8CompositeEntityExtractor ReadableType8 = "Composite Entity Extractor"
-	// ReadableType8EntityExtractor ...
-	ReadableType8EntityExtractor ReadableType8 = "Entity Extractor"
-	// ReadableType8HierarchicalChildEntityExtractor ...
-	ReadableType8HierarchicalChildEntityExtractor ReadableType8 = "Hierarchical Child Entity Extractor"
-	// ReadableType8HierarchicalEntityExtractor ...
-	ReadableType8HierarchicalEntityExtractor ReadableType8 = "Hierarchical Entity Extractor"
-	// ReadableType8IntentClassifier ...
-	ReadableType8IntentClassifier ReadableType8 = "Intent Classifier"
-	// ReadableType8ListEntityExtractor ...
-	ReadableType8ListEntityExtractor ReadableType8 = "List Entity Extractor"
-	// ReadableType8PatternAnyEntityExtractor ...
-	ReadableType8PatternAnyEntityExtractor ReadableType8 = "Pattern.Any Entity Extractor"
-	// ReadableType8PrebuiltEntityExtractor ...
-	ReadableType8PrebuiltEntityExtractor ReadableType8 = "Prebuilt Entity Extractor"
-	// ReadableType8RegexEntityExtractor ...
-	ReadableType8RegexEntityExtractor ReadableType8 = "Regex Entity Extractor"
-)
-
-// PossibleReadableType8Values returns an array of possible values for the ReadableType8 const type.
-func PossibleReadableType8Values() []ReadableType8 {
-	return []ReadableType8{ReadableType8ChildEntityExtractor, ReadableType8ClosedListEntityExtractor, ReadableType8CompositeEntityExtractor, ReadableType8EntityExtractor, ReadableType8HierarchicalChildEntityExtractor, ReadableType8HierarchicalEntityExtractor, ReadableType8IntentClassifier, ReadableType8ListEntityExtractor, ReadableType8PatternAnyEntityExtractor, ReadableType8PrebuiltEntityExtractor, ReadableType8RegexEntityExtractor}
-}
-
-// ReadableType9 enumerates the values for readable type 9.
-type ReadableType9 string
-
-const (
-	// ReadableType9ChildEntityExtractor ...
-	ReadableType9ChildEntityExtractor ReadableType9 = "Child Entity Extractor"
-	// ReadableType9ClosedListEntityExtractor ...
-	ReadableType9ClosedListEntityExtractor ReadableType9 = "Closed List Entity Extractor"
-	// ReadableType9CompositeEntityExtractor ...
-	ReadableType9CompositeEntityExtractor ReadableType9 = "Composite Entity Extractor"
-	// ReadableType9EntityExtractor ...
-	ReadableType9EntityExtractor ReadableType9 = "Entity Extractor"
-	// ReadableType9HierarchicalChildEntityExtractor ...
-	ReadableType9HierarchicalChildEntityExtractor ReadableType9 = "Hierarchical Child Entity Extractor"
-	// ReadableType9HierarchicalEntityExtractor ...
-	ReadableType9HierarchicalEntityExtractor ReadableType9 = "Hierarchical Entity Extractor"
-	// ReadableType9IntentClassifier ...
-	ReadableType9IntentClassifier ReadableType9 = "Intent Classifier"
-	// ReadableType9ListEntityExtractor ...
-	ReadableType9ListEntityExtractor ReadableType9 = "List Entity Extractor"
-	// ReadableType9PatternAnyEntityExtractor ...
-	ReadableType9PatternAnyEntityExtractor ReadableType9 = "Pattern.Any Entity Extractor"
-	// ReadableType9PrebuiltEntityExtractor ...
-	ReadableType9PrebuiltEntityExtractor ReadableType9 = "Prebuilt Entity Extractor"
-	// ReadableType9RegexEntityExtractor ...
-	ReadableType9RegexEntityExtractor ReadableType9 = "Regex Entity Extractor"
-)
-
-// PossibleReadableType9Values returns an array of possible values for the ReadableType9 const type.
-func PossibleReadableType9Values() []ReadableType9 {
-	return []ReadableType9{ReadableType9ChildEntityExtractor, ReadableType9ClosedListEntityExtractor, ReadableType9CompositeEntityExtractor, ReadableType9EntityExtractor, ReadableType9HierarchicalChildEntityExtractor, ReadableType9HierarchicalEntityExtractor, ReadableType9IntentClassifier, ReadableType9ListEntityExtractor, ReadableType9PatternAnyEntityExtractor, ReadableType9PrebuiltEntityExtractor, ReadableType9RegexEntityExtractor}
-}
-
-// Status enumerates the values for status.
-type Status string
-
-const (
-	// StatusFail ...
-	StatusFail Status = "Fail"
-	// StatusInProgress ...
-	StatusInProgress Status = "InProgress"
-	// StatusQueued ...
-	StatusQueued Status = "Queued"
-	// StatusSuccess ...
-	StatusSuccess Status = "Success"
-	// StatusUpToDate ...
-	StatusUpToDate Status = "UpToDate"
-)
-
-// PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{StatusFail, StatusInProgress, StatusQueued, StatusSuccess, StatusUpToDate}
-}
-
-// Status1 enumerates the values for status 1.
-type Status1 string
-
-const (
-	// Status1Fail ...
-	Status1Fail Status1 = "Fail"
-	// Status1InProgress ...
-	Status1InProgress Status1 = "InProgress"
-	// Status1Queued ...
-	Status1Queued Status1 = "Queued"
-	// Status1Success ...
-	Status1Success Status1 = "Success"
-	// Status1UpToDate ...
-	Status1UpToDate Status1 = "UpToDate"
-)
-
-// PossibleStatus1Values returns an array of possible values for the Status1 const type.
-func PossibleStatus1Values() []Status1 {
-	return []Status1{Status1Fail, Status1InProgress, Status1Queued, Status1Success, Status1UpToDate}
-}
-
-// TrainingStatus enumerates the values for training status.
-type TrainingStatus string
-
-const (
-	// InProgress ...
-	InProgress TrainingStatus = "InProgress"
-	// NeedsTraining ...
-	NeedsTraining TrainingStatus = "NeedsTraining"
-	// Trained ...
-	Trained TrainingStatus = "Trained"
-)
-
-// PossibleTrainingStatusValues returns an array of possible values for the TrainingStatus const type.
-func PossibleTrainingStatusValues() []TrainingStatus {
-	return []TrainingStatus{InProgress, NeedsTraining, Trained}
-}
-
 // ApplicationCreateObject properties for creating a new LUIS Application
 type ApplicationCreateObject struct {
 	// Culture - The culture for the new application. It is the language that your app understands and speaks. E.g.: "en-us". Note: the culture cannot be changed after the app is created.
@@ -811,7 +339,8 @@ type EntityLabel struct {
 	// Role - The role of the predicted entity.
 	Role *string `json:"role,omitempty"`
 	// RoleID - The role id for the predicted entity.
-	RoleID *uuid.UUID `json:"roleId,omitempty"`
+	RoleID   *uuid.UUID     `json:"roleId,omitempty"`
+	Children *[]EntityLabel `json:"children,omitempty"`
 }
 
 // EntityLabelObject defines the entity type and position of the extracted entity within the example.
@@ -824,6 +353,8 @@ type EntityLabelObject struct {
 	EndCharIndex *int32 `json:"endCharIndex,omitempty"`
 	// Role - The role the entity plays in the utterance.
 	Role *string `json:"role,omitempty"`
+	// Children - The identified entities within the example utterance.
+	Children *[]EntityLabelObject `json:"children,omitempty"`
 }
 
 // EntityModelCreateObject an entity extractor create object.
@@ -864,7 +395,8 @@ type EntityPrediction struct {
 	// EndTokenIndex - The index within the utterance where the extracted entity ends.
 	EndTokenIndex *int32 `json:"endTokenIndex,omitempty"`
 	// Phrase - The actual token(s) that comprise the entity.
-	Phrase *string `json:"phrase,omitempty"`
+	Phrase   *string             `json:"phrase,omitempty"`
+	Children *[]EntityPrediction `json:"children,omitempty"`
 }
 
 // EntityRole entity extractor role
@@ -1040,6 +572,14 @@ type HierarchicalModel struct {
 	Inherits *PrebuiltDomainObject          `json:"inherits,omitempty"`
 }
 
+// HierarchicalModelV2 ...
+type HierarchicalModelV2 struct {
+	Name     *string               `json:"name,omitempty"`
+	Children *[]string             `json:"children,omitempty"`
+	Inherits *PrebuiltDomainObject `json:"inherits,omitempty"`
+	Roles    *[]string             `json:"roles,omitempty"`
+}
+
 // Int32 ...
 type Int32 struct {
 	autorest.Response `json:"-"`
@@ -1106,7 +646,8 @@ type JSONEntity struct {
 	// Entity - The entity name.
 	Entity *string `json:"entity,omitempty"`
 	// Role - The role the entity plays in the utterance.
-	Role *string `json:"role,omitempty"`
+	Role     *string       `json:"role,omitempty"`
+	Children *[]JSONEntity `json:"children,omitempty"`
 }
 
 // JSONModelFeature exported Model - Phraselist Model Feature.
@@ -1640,19 +1181,286 @@ func (la *LuisApp) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// LuisAppV2 exported Model - An exported LUIS Application.
+type LuisAppV2 struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// LuisSchemaVersion - Luis schema deserialization version.
+	LuisSchemaVersion *string `json:"luis_schema_version,omitempty"`
+	// Name - The name of the application.
+	Name *string `json:"name,omitempty"`
+	// VersionID - The version ID of the application that was exported.
+	VersionID *string `json:"versionId,omitempty"`
+	// Desc - The description of the application.
+	Desc *string `json:"desc,omitempty"`
+	// Culture - The culture of the application. E.g.: en-us.
+	Culture *string `json:"culture,omitempty"`
+	// Intents - List of intents.
+	Intents *[]HierarchicalModelV2 `json:"intents,omitempty"`
+	// Entities - List of entities.
+	Entities *[]HierarchicalModelV2 `json:"entities,omitempty"`
+	// ClosedLists - List of list entities.
+	ClosedLists *[]ClosedList `json:"closedLists,omitempty"`
+	// Composites - List of composite entities.
+	Composites *[]HierarchicalModelV2 `json:"composites,omitempty"`
+	// PatternAnyEntities - List of Pattern.Any entities.
+	PatternAnyEntities *[]PatternAny `json:"patternAnyEntities,omitempty"`
+	// RegexEntities - List of regular expression entities.
+	RegexEntities *[]RegexEntity `json:"regex_entities,omitempty"`
+	// PrebuiltEntities - List of prebuilt entities.
+	PrebuiltEntities *[]PrebuiltEntity `json:"prebuiltEntities,omitempty"`
+	// RegexFeatures - List of pattern features.
+	RegexFeatures *[]JSONRegexFeature `json:"regex_features,omitempty"`
+	// ModelFeatures - List of model features.
+	ModelFeatures *[]JSONModelFeature `json:"model_features,omitempty"`
+	// Patterns - List of patterns.
+	Patterns *[]PatternRule `json:"patterns,omitempty"`
+	// Utterances - List of example utterances.
+	Utterances *[]JSONUtterance `json:"utterances,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LuisAppV2.
+func (lav LuisAppV2) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lav.LuisSchemaVersion != nil {
+		objectMap["luis_schema_version"] = lav.LuisSchemaVersion
+	}
+	if lav.Name != nil {
+		objectMap["name"] = lav.Name
+	}
+	if lav.VersionID != nil {
+		objectMap["versionId"] = lav.VersionID
+	}
+	if lav.Desc != nil {
+		objectMap["desc"] = lav.Desc
+	}
+	if lav.Culture != nil {
+		objectMap["culture"] = lav.Culture
+	}
+	if lav.Intents != nil {
+		objectMap["intents"] = lav.Intents
+	}
+	if lav.Entities != nil {
+		objectMap["entities"] = lav.Entities
+	}
+	if lav.ClosedLists != nil {
+		objectMap["closedLists"] = lav.ClosedLists
+	}
+	if lav.Composites != nil {
+		objectMap["composites"] = lav.Composites
+	}
+	if lav.PatternAnyEntities != nil {
+		objectMap["patternAnyEntities"] = lav.PatternAnyEntities
+	}
+	if lav.RegexEntities != nil {
+		objectMap["regex_entities"] = lav.RegexEntities
+	}
+	if lav.PrebuiltEntities != nil {
+		objectMap["prebuiltEntities"] = lav.PrebuiltEntities
+	}
+	if lav.RegexFeatures != nil {
+		objectMap["regex_features"] = lav.RegexFeatures
+	}
+	if lav.ModelFeatures != nil {
+		objectMap["model_features"] = lav.ModelFeatures
+	}
+	if lav.Patterns != nil {
+		objectMap["patterns"] = lav.Patterns
+	}
+	if lav.Utterances != nil {
+		objectMap["utterances"] = lav.Utterances
+	}
+	for k, v := range lav.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for LuisAppV2 struct.
+func (lav *LuisAppV2) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if lav.AdditionalProperties == nil {
+					lav.AdditionalProperties = make(map[string]interface{})
+				}
+				lav.AdditionalProperties[k] = additionalProperties
+			}
+		case "luis_schema_version":
+			if v != nil {
+				var luisSchemaVersion string
+				err = json.Unmarshal(*v, &luisSchemaVersion)
+				if err != nil {
+					return err
+				}
+				lav.LuisSchemaVersion = &luisSchemaVersion
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				lav.Name = &name
+			}
+		case "versionId":
+			if v != nil {
+				var versionID string
+				err = json.Unmarshal(*v, &versionID)
+				if err != nil {
+					return err
+				}
+				lav.VersionID = &versionID
+			}
+		case "desc":
+			if v != nil {
+				var desc string
+				err = json.Unmarshal(*v, &desc)
+				if err != nil {
+					return err
+				}
+				lav.Desc = &desc
+			}
+		case "culture":
+			if v != nil {
+				var culture string
+				err = json.Unmarshal(*v, &culture)
+				if err != nil {
+					return err
+				}
+				lav.Culture = &culture
+			}
+		case "intents":
+			if v != nil {
+				var intents []HierarchicalModelV2
+				err = json.Unmarshal(*v, &intents)
+				if err != nil {
+					return err
+				}
+				lav.Intents = &intents
+			}
+		case "entities":
+			if v != nil {
+				var entities []HierarchicalModelV2
+				err = json.Unmarshal(*v, &entities)
+				if err != nil {
+					return err
+				}
+				lav.Entities = &entities
+			}
+		case "closedLists":
+			if v != nil {
+				var closedLists []ClosedList
+				err = json.Unmarshal(*v, &closedLists)
+				if err != nil {
+					return err
+				}
+				lav.ClosedLists = &closedLists
+			}
+		case "composites":
+			if v != nil {
+				var composites []HierarchicalModelV2
+				err = json.Unmarshal(*v, &composites)
+				if err != nil {
+					return err
+				}
+				lav.Composites = &composites
+			}
+		case "patternAnyEntities":
+			if v != nil {
+				var patternAnyEntities []PatternAny
+				err = json.Unmarshal(*v, &patternAnyEntities)
+				if err != nil {
+					return err
+				}
+				lav.PatternAnyEntities = &patternAnyEntities
+			}
+		case "regex_entities":
+			if v != nil {
+				var regexEntities []RegexEntity
+				err = json.Unmarshal(*v, &regexEntities)
+				if err != nil {
+					return err
+				}
+				lav.RegexEntities = &regexEntities
+			}
+		case "prebuiltEntities":
+			if v != nil {
+				var prebuiltEntities []PrebuiltEntity
+				err = json.Unmarshal(*v, &prebuiltEntities)
+				if err != nil {
+					return err
+				}
+				lav.PrebuiltEntities = &prebuiltEntities
+			}
+		case "regex_features":
+			if v != nil {
+				var regexFeatures []JSONRegexFeature
+				err = json.Unmarshal(*v, &regexFeatures)
+				if err != nil {
+					return err
+				}
+				lav.RegexFeatures = &regexFeatures
+			}
+		case "model_features":
+			if v != nil {
+				var modelFeatures []JSONModelFeature
+				err = json.Unmarshal(*v, &modelFeatures)
+				if err != nil {
+					return err
+				}
+				lav.ModelFeatures = &modelFeatures
+			}
+		case "patterns":
+			if v != nil {
+				var patterns []PatternRule
+				err = json.Unmarshal(*v, &patterns)
+				if err != nil {
+					return err
+				}
+				lav.Patterns = &patterns
+			}
+		case "utterances":
+			if v != nil {
+				var utterances []JSONUtterance
+				err = json.Unmarshal(*v, &utterances)
+				if err != nil {
+					return err
+				}
+				lav.Utterances = &utterances
+			}
+		}
+	}
+
+	return nil
+}
+
 // ModelCreateObject object model for creating a new entity extractor.
 type ModelCreateObject struct {
 	// Name - Name of the new entity extractor.
 	Name *string `json:"name,omitempty"`
 }
 
-// ModelFeatureInformation an object containing the model feature information either the model name or
-// feature name.
+// ModelFeatureInformation an object containing the model feature information either the model name or feature
+// name.
 type ModelFeatureInformation struct {
 	// ModelName - The name of the model used.
 	ModelName *string `json:"modelName,omitempty"`
 	// FeatureName - The name of the feature used.
 	FeatureName *string `json:"featureName,omitempty"`
+	IsRequired  *bool   `json:"isRequired,omitempty"`
 }
 
 // ModelInfo base type used in entity types.
@@ -1841,8 +1649,8 @@ type PatternRuleUpdateObject struct {
 	Intent *string `json:"intent,omitempty"`
 }
 
-// PersonalAssistantsResponse response containing user's endpoint keys and the endpoint URLs of the
-// prebuilt Cortana applications.
+// PersonalAssistantsResponse response containing user's endpoint keys and the endpoint URLs of the prebuilt
+// Cortana applications.
 type PersonalAssistantsResponse struct {
 	autorest.Response `json:"-"`
 	EndpointKeys      *[]uuid.UUID       `json:"endpointKeys,omitempty"`
@@ -1914,15 +1722,14 @@ type PrebuiltDomain struct {
 	Entities    *[]PrebuiltDomainItem `json:"entities,omitempty"`
 }
 
-// PrebuiltDomainCreateBaseObject a model object containing the name of the custom prebuilt entity and the
-// name of the domain to which this model belongs.
+// PrebuiltDomainCreateBaseObject a model object containing the name of the custom prebuilt entity and the name
+// of the domain to which this model belongs.
 type PrebuiltDomainCreateBaseObject struct {
 	// DomainName - The domain name.
 	DomainName *string `json:"domainName,omitempty"`
 }
 
-// PrebuiltDomainCreateObject a prebuilt domain create object containing the name and culture of the
-// domain.
+// PrebuiltDomainCreateObject a prebuilt domain create object containing the name and culture of the domain.
 type PrebuiltDomainCreateObject struct {
 	// DomainName - The domain name.
 	DomainName *string `json:"domainName,omitempty"`
@@ -1937,8 +1744,8 @@ type PrebuiltDomainItem struct {
 	Examples    *string `json:"examples,omitempty"`
 }
 
-// PrebuiltDomainModelCreateObject a model object containing the name of the custom prebuilt intent or
-// entity and the name of the domain to which this model belongs.
+// PrebuiltDomainModelCreateObject a model object containing the name of the custom prebuilt intent or entity
+// and the name of the domain to which this model belongs.
 type PrebuiltDomainModelCreateObject struct {
 	// DomainName - The domain name.
 	DomainName *string `json:"domainName,omitempty"`
@@ -2108,7 +1915,6 @@ type TaskUpdateObject struct {
 
 // UserAccessList list of user permissions.
 type UserAccessList struct {
-	autorest.Response `json:"-"`
 	// Owner - The email address of owner of the application.
 	Owner  *string   `json:"owner,omitempty"`
 	Emails *[]string `json:"emails,omitempty"`

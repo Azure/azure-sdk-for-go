@@ -107,7 +107,6 @@ func (client AppsClient) AddSender(req *http.Request) (*http.Response, error) {
 func (client AppsClient) AddResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -176,7 +175,6 @@ func (client AppsClient) AddCustomPrebuiltDomainSender(req *http.Request) (*http
 func (client AppsClient) AddCustomPrebuiltDomainResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -256,7 +254,6 @@ func (client AppsClient) DeleteSender(req *http.Request) (*http.Response, error)
 func (client AppsClient) DeleteResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -328,7 +325,6 @@ func (client AppsClient) DownloadQueryLogsResponder(resp *http.Response) (result
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -397,7 +393,6 @@ func (client AppsClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client AppsClient) GetResponder(resp *http.Response) (result ApplicationInfoResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -468,7 +463,6 @@ func (client AppsClient) GetPublishSettingsSender(req *http.Request) (*http.Resp
 func (client AppsClient) GetPublishSettingsResponder(resp *http.Response) (result PublishSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -539,7 +533,6 @@ func (client AppsClient) GetSettingsSender(req *http.Request) (*http.Response, e
 func (client AppsClient) GetSettingsResponder(resp *http.Response) (result ApplicationSettings, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -616,7 +609,158 @@ func (client AppsClient) ImportSender(req *http.Request) (*http.Response, error)
 func (client AppsClient) ImportResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ImportLuFormat imports an application to LUIS, the application's structure is included in the request body.
+// Parameters:
+// luisAppLu - a LUIS application structure.
+// appName - the application name to create. If not specified, the application name will be read from the
+// imported object. If the application name already exists, an error is returned.
+func (client AppsClient) ImportLuFormat(ctx context.Context, luisAppLu string, appName string) (result UUID, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ImportLuFormat")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ImportLuFormatPreparer(ctx, luisAppLu, appName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ImportLuFormat", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ImportLuFormatSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ImportLuFormat", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ImportLuFormatResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ImportLuFormat", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ImportLuFormatPreparer prepares the ImportLuFormat request.
+func (client AppsClient) ImportLuFormatPreparer(ctx context.Context, luisAppLu string, appName string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(appName) > 0 {
+		queryParameters["appName"] = autorest.Encode("query", appName)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("text/plain"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
+		autorest.WithPath("/apps/import"),
+		autorest.WithJSON(luisAppLu),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ImportLuFormatSender sends the ImportLuFormat request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ImportLuFormatSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ImportLuFormatResponder handles the response to the ImportLuFormat request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ImportLuFormatResponder(resp *http.Response) (result UUID, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// ImportV2App imports an application to LUIS, the application's structure is included in the request body.
+// Parameters:
+// luisAppV2 - a LUIS application structure.
+// appName - the application name to create. If not specified, the application name will be read from the
+// imported object. If the application name already exists, an error is returned.
+func (client AppsClient) ImportV2App(ctx context.Context, luisAppV2 LuisAppV2, appName string) (result UUID, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ImportV2App")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.ImportV2AppPreparer(ctx, luisAppV2, appName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ImportV2App", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ImportV2AppSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ImportV2App", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.ImportV2AppResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "authoring.AppsClient", "ImportV2App", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// ImportV2AppPreparer prepares the ImportV2App request.
+func (client AppsClient) ImportV2AppPreparer(ctx context.Context, luisAppV2 LuisAppV2, appName string) (*http.Request, error) {
+	urlParameters := map[string]interface{}{
+		"Endpoint": client.Endpoint,
+	}
+
+	queryParameters := map[string]interface{}{}
+	if len(appName) > 0 {
+		queryParameters["appName"] = autorest.Encode("query", appName)
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithCustomBaseURL("{Endpoint}/luis/authoring/v3.0-preview", urlParameters),
+		autorest.WithPath("/apps/import"),
+		autorest.WithJSON(luisAppV2),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ImportV2AppSender sends the ImportV2App request. The method will close the
+// http.Response Body if it receives an error.
+func (client AppsClient) ImportV2AppSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+}
+
+// ImportV2AppResponder handles the response to the ImportV2App request. The method always
+// closes the http.Response Body.
+func (client AppsClient) ImportV2AppResponder(resp *http.Response) (result UUID, err error) {
+	err = autorest.Respond(
+		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -709,7 +853,6 @@ func (client AppsClient) ListSender(req *http.Request) (*http.Response, error) {
 func (client AppsClient) ListResponder(resp *http.Response) (result ListApplicationInfoResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -774,7 +917,6 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsSender(req *http.Requ
 func (client AppsClient) ListAvailableCustomPrebuiltDomainsResponder(resp *http.Response) (result ListPrebuiltDomain, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -845,7 +987,6 @@ func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCultureSender(req 
 func (client AppsClient) ListAvailableCustomPrebuiltDomainsForCultureResponder(resp *http.Response) (result ListPrebuiltDomain, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -910,7 +1051,6 @@ func (client AppsClient) ListCortanaEndpointsSender(req *http.Request) (*http.Re
 func (client AppsClient) ListCortanaEndpointsResponder(resp *http.Response) (result PersonalAssistantsResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -975,7 +1115,6 @@ func (client AppsClient) ListDomainsSender(req *http.Request) (*http.Response, e
 func (client AppsClient) ListDomainsResponder(resp *http.Response) (result ListString, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1046,7 +1185,6 @@ func (client AppsClient) ListEndpointsSender(req *http.Request) (*http.Response,
 func (client AppsClient) ListEndpointsResponder(resp *http.Response) (result SetString, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1112,7 +1250,6 @@ func (client AppsClient) ListSupportedCulturesSender(req *http.Request) (*http.R
 func (client AppsClient) ListSupportedCulturesResponder(resp *http.Response) (result ListAvailableCulture, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1177,7 +1314,6 @@ func (client AppsClient) ListUsageScenariosSender(req *http.Request) (*http.Resp
 func (client AppsClient) ListUsageScenariosResponder(resp *http.Response) (result ListString, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1252,7 +1388,6 @@ func (client AppsClient) PackagePublishedApplicationAsGzipResponder(resp *http.R
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -1324,7 +1459,6 @@ func (client AppsClient) PackageTrainedApplicationAsGzipResponder(resp *http.Res
 	result.Value = &resp.Body
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK))
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -1397,7 +1531,6 @@ func (client AppsClient) PublishSender(req *http.Request) (*http.Response, error
 func (client AppsClient) PublishResponder(resp *http.Response) (result ProductionOrStagingEndpointInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusMultiStatus),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1471,7 +1604,6 @@ func (client AppsClient) UpdateSender(req *http.Request) (*http.Response, error)
 func (client AppsClient) UpdateResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1545,7 +1677,6 @@ func (client AppsClient) UpdatePublishSettingsSender(req *http.Request) (*http.R
 func (client AppsClient) UpdatePublishSettingsResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1619,7 +1750,6 @@ func (client AppsClient) UpdateSettingsSender(req *http.Request) (*http.Response
 func (client AppsClient) UpdateSettingsResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

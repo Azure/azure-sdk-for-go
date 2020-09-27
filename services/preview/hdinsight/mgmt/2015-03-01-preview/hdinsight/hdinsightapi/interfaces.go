@@ -37,6 +37,7 @@ type ClustersClientAPI interface {
 	Resize(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterResizeParameters) (result hdinsight.ClustersResizeFuture, err error)
 	RotateDiskEncryptionKey(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterDiskEncryptionParameters) (result hdinsight.ClustersRotateDiskEncryptionKeyFuture, err error)
 	Update(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterPatchParameters) (result hdinsight.Cluster, err error)
+	UpdateAutoScaleConfiguration(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.AutoscaleConfigurationUpdateParameter) (result hdinsight.ClustersUpdateAutoScaleConfigurationFuture, err error)
 	UpdateGatewaySettings(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.UpdateGatewaySettingsParameters) (result hdinsight.ClustersUpdateGatewaySettingsFuture, err error)
 }
 

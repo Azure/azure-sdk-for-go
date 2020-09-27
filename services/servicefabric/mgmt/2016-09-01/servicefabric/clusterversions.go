@@ -111,7 +111,6 @@ func (client ClusterVersionsClient) GetSender(req *http.Request) (*http.Response
 func (client ClusterVersionsClient) GetResponder(resp *http.Response) (result ClusterCodeVersionsResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -151,6 +150,9 @@ func (client ClusterVersionsClient) List(ctx context.Context, location string) (
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.ccvlr.hasNextLink() && result.ccvlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -186,7 +188,6 @@ func (client ClusterVersionsClient) ListSender(req *http.Request) (*http.Respons
 func (client ClusterVersionsClient) ListResponder(resp *http.Response) (result ClusterCodeVersionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -264,6 +265,9 @@ func (client ClusterVersionsClient) ListByEnvironment(ctx context.Context, locat
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "ListByEnvironment", resp, "Failure responding to request")
 	}
+	if result.ccvlr.hasNextLink() && result.ccvlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -300,7 +304,6 @@ func (client ClusterVersionsClient) ListByEnvironmentSender(req *http.Request) (
 func (client ClusterVersionsClient) ListByEnvironmentResponder(resp *http.Response) (result ClusterCodeVersionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -378,6 +381,9 @@ func (client ClusterVersionsClient) ListByVersion(ctx context.Context, location 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabric.ClusterVersionsClient", "ListByVersion", resp, "Failure responding to request")
 	}
+	if result.ccvlr.hasNextLink() && result.ccvlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -414,7 +420,6 @@ func (client ClusterVersionsClient) ListByVersionSender(req *http.Request) (*htt
 func (client ClusterVersionsClient) ListByVersionResponder(resp *http.Response) (result ClusterCodeVersionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

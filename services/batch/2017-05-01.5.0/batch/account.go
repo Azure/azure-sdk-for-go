@@ -94,6 +94,9 @@ func (client AccountClient) ListNodeAgentSkus(ctx context.Context, filter string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListNodeAgentSkus", resp, "Failure responding to request")
 	}
+	if result.alnasr.hasNextLink() && result.alnasr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -152,7 +155,6 @@ func (client AccountClient) ListNodeAgentSkusSender(req *http.Request) (*http.Re
 func (client AccountClient) ListNodeAgentSkusResponder(resp *http.Response) (result AccountListNodeAgentSkusResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

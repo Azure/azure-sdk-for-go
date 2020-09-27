@@ -130,7 +130,6 @@ func (client StorageInsightsClient) CreateOrUpdateSender(req *http.Request) (*ht
 func (client StorageInsightsClient) CreateOrUpdateResponder(resp *http.Response) (result StorageInsight, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -216,7 +215,6 @@ func (client StorageInsightsClient) DeleteSender(req *http.Request) (*http.Respo
 func (client StorageInsightsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -301,7 +299,6 @@ func (client StorageInsightsClient) GetSender(req *http.Request) (*http.Response
 func (client StorageInsightsClient) GetResponder(resp *http.Response) (result StorageInsight, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -350,6 +347,9 @@ func (client StorageInsightsClient) ListByWorkspace(ctx context.Context, resourc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "operationalinsights.StorageInsightsClient", "ListByWorkspace", resp, "Failure responding to request")
 	}
+	if result.silr.hasNextLink() && result.silr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -386,7 +386,6 @@ func (client StorageInsightsClient) ListByWorkspaceSender(req *http.Request) (*h
 func (client StorageInsightsClient) ListByWorkspaceResponder(resp *http.Response) (result StorageInsightListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

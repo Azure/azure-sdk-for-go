@@ -122,7 +122,6 @@ func (client HybridUseBenefitClient) CreateSender(req *http.Request) (*http.Resp
 func (client HybridUseBenefitClient) CreateResponder(resp *http.Response) (result HybridUseBenefitModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -198,7 +197,6 @@ func (client HybridUseBenefitClient) DeleteSender(req *http.Request) (*http.Resp
 func (client HybridUseBenefitClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -273,7 +271,6 @@ func (client HybridUseBenefitClient) GetSender(req *http.Request) (*http.Respons
 func (client HybridUseBenefitClient) GetResponder(resp *http.Response) (result HybridUseBenefitModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -315,6 +312,9 @@ func (client HybridUseBenefitClient) List(ctx context.Context, scope string, fil
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "softwareplan.HybridUseBenefitClient", "List", resp, "Failure responding to request")
 	}
+	if result.hublr.hasNextLink() && result.hublr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -352,7 +352,6 @@ func (client HybridUseBenefitClient) ListSender(req *http.Request) (*http.Respon
 func (client HybridUseBenefitClient) ListResponder(resp *http.Response) (result HybridUseBenefitListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -469,7 +468,6 @@ func (client HybridUseBenefitClient) UpdateSender(req *http.Request) (*http.Resp
 func (client HybridUseBenefitClient) UpdateResponder(resp *http.Response) (result HybridUseBenefitModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

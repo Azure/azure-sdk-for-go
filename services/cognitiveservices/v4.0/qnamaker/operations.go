@@ -98,7 +98,6 @@ func (client OperationsClient) GetDetailsSender(req *http.Request) (*http.Respon
 func (client OperationsClient) GetDetailsResponder(resp *http.Response) (result Operation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

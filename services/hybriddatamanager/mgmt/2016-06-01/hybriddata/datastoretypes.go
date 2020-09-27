@@ -121,7 +121,6 @@ func (client DataStoreTypesClient) GetSender(req *http.Request) (*http.Response,
 func (client DataStoreTypesClient) GetResponder(resp *http.Response) (result DataStoreType, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -171,6 +170,9 @@ func (client DataStoreTypesClient) ListByDataManager(ctx context.Context, resour
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.DataStoreTypesClient", "ListByDataManager", resp, "Failure responding to request")
 	}
+	if result.dstl.hasNextLink() && result.dstl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -207,7 +209,6 @@ func (client DataStoreTypesClient) ListByDataManagerSender(req *http.Request) (*
 func (client DataStoreTypesClient) ListByDataManagerResponder(resp *http.Response) (result DataStoreTypeList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

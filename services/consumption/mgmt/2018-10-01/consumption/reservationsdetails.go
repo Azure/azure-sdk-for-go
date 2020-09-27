@@ -77,6 +77,9 @@ func (client ReservationsDetailsClient) ListByReservationOrder(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationsDetailsClient", "ListByReservationOrder", resp, "Failure responding to request")
 	}
+	if result.rdlr.hasNextLink() && result.rdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -112,7 +115,6 @@ func (client ReservationsDetailsClient) ListByReservationOrderSender(req *http.R
 func (client ReservationsDetailsClient) ListByReservationOrderResponder(resp *http.Response) (result ReservationDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -192,6 +194,9 @@ func (client ReservationsDetailsClient) ListByReservationOrderAndReservation(ctx
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationsDetailsClient", "ListByReservationOrderAndReservation", resp, "Failure responding to request")
 	}
+	if result.rdlr.hasNextLink() && result.rdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -228,7 +233,6 @@ func (client ReservationsDetailsClient) ListByReservationOrderAndReservationSend
 func (client ReservationsDetailsClient) ListByReservationOrderAndReservationResponder(resp *http.Response) (result ReservationDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

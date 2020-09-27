@@ -87,6 +87,9 @@ func (client SQLPoolReplicationLinksClient) List(ctx context.Context, resourceGr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolReplicationLinksClient", "List", resp, "Failure responding to request")
 	}
+	if result.rllr.hasNextLink() && result.rllr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -124,7 +127,6 @@ func (client SQLPoolReplicationLinksClient) ListSender(req *http.Request) (*http
 func (client SQLPoolReplicationLinksClient) ListResponder(resp *http.Response) (result ReplicationLinkListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

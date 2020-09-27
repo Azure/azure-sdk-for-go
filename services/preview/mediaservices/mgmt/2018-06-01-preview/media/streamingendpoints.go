@@ -128,7 +128,6 @@ func (client StreamingEndpointsClient) CreateSender(req *http.Request) (future S
 func (client StreamingEndpointsClient) CreateResponder(resp *http.Response) (result StreamingEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -214,7 +213,6 @@ func (client StreamingEndpointsClient) DeleteSender(req *http.Request) (future S
 func (client StreamingEndpointsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -299,7 +297,6 @@ func (client StreamingEndpointsClient) GetSender(req *http.Request) (*http.Respo
 func (client StreamingEndpointsClient) GetResponder(resp *http.Response) (result StreamingEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -340,6 +337,9 @@ func (client StreamingEndpointsClient) List(ctx context.Context, resourceGroupNa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "List", resp, "Failure responding to request")
 	}
+	if result.selr.hasNextLink() && result.selr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -376,7 +376,6 @@ func (client StreamingEndpointsClient) ListSender(req *http.Request) (*http.Resp
 func (client StreamingEndpointsClient) ListResponder(resp *http.Response) (result StreamingEndpointListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -502,7 +501,6 @@ func (client StreamingEndpointsClient) ScaleSender(req *http.Request) (future St
 func (client StreamingEndpointsClient) ScaleResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -587,7 +585,6 @@ func (client StreamingEndpointsClient) StartSender(req *http.Request) (future St
 func (client StreamingEndpointsClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -672,7 +669,6 @@ func (client StreamingEndpointsClient) StopSender(req *http.Request) (future Str
 func (client StreamingEndpointsClient) StopResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -760,7 +756,6 @@ func (client StreamingEndpointsClient) UpdateSender(req *http.Request) (future S
 func (client StreamingEndpointsClient) UpdateResponder(resp *http.Response) (result StreamingEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

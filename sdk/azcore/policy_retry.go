@@ -7,7 +7,7 @@ package azcore
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"io"
 	"math/rand"
 	"net/http"
@@ -109,10 +109,10 @@ type retryPolicy struct {
 	options RetryOptions
 }
 
-func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err error) {
+func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 	options := p.options
 	// check if the retry options have been overridden for this call
-	if override := ctx.Value(ctxWithRetryOptionsKey{}); override != nil {
+	if override := req.Context().Value(ctxWithRetryOptionsKey{}); override != nil {
 		options = override.(RetryOptions)
 	}
 	// Exponential retry algorithm: ((2 ^ attempt) - 1) * delay * random(0.8, 1.2)
@@ -128,12 +128,9 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		defer rwbody.realClose()
 	}
 	try := int32(1)
-	shouldLog := Log().Should(LogRetryPolicy)
 	for {
 		resp = nil // reset
-		if shouldLog {
-			Log().Write(LogRetryPolicy, fmt.Sprintf("\n=====> Try=%d\n", try))
-		}
+		Log().Writef(LogRetryPolicy, "\n=====> Try=%d", try)
 
 		// For each try, seek to the beginning of the Body stream. We do this even for the 1st try because
 		// the stream may not be at offset 0 when we first get it and we want the same behavior for the
@@ -144,56 +141,53 @@ func (p *retryPolicy) Do(ctx context.Context, req *Request) (resp *Response, err
 		}
 
 		// Set the per-try time for this particular retry operation and then Do the operation.
-		tryCtx, tryCancel := context.WithTimeout(ctx, options.TryTimeout)
-		resp, err = req.Next(tryCtx) // Make the request
-		if req.bodyDownloadEnabled() || err != nil || resp.Body == nil {
-			// immediately cancel the per-try timeout if any of the following are true
-			// 1.  auto-download of the response body is enabled
-			// 2.  an error was returned
-			// 3.  there is no response body
-			// note that we have to check 2 before 3 as if 2 is true then we can't touch resp
-			tryCancel()
+		tryCtx, tryCancel := context.WithTimeout(req.Context(), options.TryTimeout)
+		clone := req.clone(tryCtx)
+		resp, err = clone.Next() // Make the request
+		tryCancel()
+		if err == nil {
+			Log().Writef(LogRetryPolicy, "response %d", resp.StatusCode)
 		} else {
-			// wrap the response body in a responseBodyReader.
-			// closing the responseBodyReader will cancel the timeout.
-			resp.Body = &responseBodyReader{rb: resp.Body, cancelFunc: tryCancel}
-		}
-		if shouldLog {
-			Log().Write(LogRetryPolicy, fmt.Sprintf("Err=%v, response=%v\n", err, resp))
+			Log().Writef(LogRetryPolicy, "error %v", err)
 		}
 
 		if err == nil && !resp.HasStatusCode(options.StatusCodes...) {
 			// if there is no error and the response code isn't in the list of retry codes then we're done.
 			return
-		} else if ctx.Err() != nil {
+		} else if ctxErr := req.Context().Err(); ctxErr != nil {
 			// don't retry if the parent context has been cancelled or its deadline exceeded
+			err = ctxErr
 			return
-		} else if retrier, ok := err.(Retrier); ok && retrier.IsNotRetriable() {
+		}
+
+		// check if the error is not retriable
+		var nre NonRetriableError
+		if errors.As(err, &nre) {
 			// the error says it's not retriable so don't retry
+			Log().Writef(LogRetryPolicy, "non-retriable error %T", nre)
+			return
+		}
+
+		if try == options.MaxRetries+1 {
+			// max number of tries has been reached, don't sleep again
+			Log().Writef(LogRetryPolicy, "MaxRetries %d exceeded", options.MaxRetries)
 			return
 		}
 
 		// drain before retrying so nothing is leaked
 		resp.Drain()
 
-		if try == options.MaxRetries+1 {
-			// max number of tries has been reached, don't sleep again
-			return
-		}
-
 		// use the delay from retry-after if available
-		delay, ok := resp.RetryAfter()
-		if !ok {
+		delay := resp.retryAfter()
+		if delay <= 0 {
 			delay = options.calcDelay(try)
 		}
-		if shouldLog {
-			Log().Write(LogRetryPolicy, fmt.Sprintf("Try=%d, Delay=%v\n", try, delay))
-		}
+		Log().Writef(LogRetryPolicy, "Try=%d, Delay=%v", try, delay)
 		select {
 		case <-time.After(delay):
 			try++
-		case <-ctx.Done():
-			err = ctx.Err()
+		case <-req.Context().Done():
+			err = req.Context().Err()
 			return
 		}
 	}
@@ -226,19 +220,4 @@ func (b *retryableRequestBody) realClose() error {
 		return c.Close()
 	}
 	return nil
-}
-
-// used when returning the response body to the caller for reading/closing
-type responseBodyReader struct {
-	rb         io.ReadCloser
-	cancelFunc context.CancelFunc
-}
-
-func (r *responseBodyReader) Read(p []byte) (int, error) {
-	return r.rb.Read(p)
-}
-
-func (r *responseBodyReader) Close() error {
-	r.cancelFunc()
-	return r.rb.Close()
 }

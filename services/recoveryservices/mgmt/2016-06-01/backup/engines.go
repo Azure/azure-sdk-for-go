@@ -77,6 +77,9 @@ func (client EnginesClient) Get(ctx context.Context, vaultName string, resourceG
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "backup.EnginesClient", "Get", resp, "Failure responding to request")
 	}
+	if result.ebrl.hasNextLink() && result.ebrl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -119,7 +122,6 @@ func (client EnginesClient) GetSender(req *http.Request) (*http.Response, error)
 func (client EnginesClient) GetResponder(resp *http.Response) (result EngineBaseResourceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

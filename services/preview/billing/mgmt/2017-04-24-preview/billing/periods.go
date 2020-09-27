@@ -110,7 +110,6 @@ func (client PeriodsClient) GetSender(req *http.Request) (*http.Response, error)
 func (client PeriodsClient) GetResponder(resp *http.Response) (result Period, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -164,6 +163,9 @@ func (client PeriodsClient) List(ctx context.Context, filter string, skiptoken s
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PeriodsClient", "List", resp, "Failure responding to request")
 	}
+	if result.plr.hasNextLink() && result.plr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -207,7 +209,6 @@ func (client PeriodsClient) ListSender(req *http.Request) (*http.Response, error
 func (client PeriodsClient) ListResponder(resp *http.Response) (result PeriodsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

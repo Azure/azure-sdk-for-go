@@ -32,131 +32,12 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/mgmt/2015-10-01-preview/account"
 
-// DataLakeStoreAccountState enumerates the values for data lake store account state.
-type DataLakeStoreAccountState string
-
-const (
-	// Active ...
-	Active DataLakeStoreAccountState = "active"
-	// Suspended ...
-	Suspended DataLakeStoreAccountState = "suspended"
-)
-
-// PossibleDataLakeStoreAccountStateValues returns an array of possible values for the DataLakeStoreAccountState const type.
-func PossibleDataLakeStoreAccountStateValues() []DataLakeStoreAccountState {
-	return []DataLakeStoreAccountState{Active, Suspended}
-}
-
-// DataLakeStoreAccountStatus enumerates the values for data lake store account status.
-type DataLakeStoreAccountStatus string
-
-const (
-	// Creating ...
-	Creating DataLakeStoreAccountStatus = "Creating"
-	// Deleted ...
-	Deleted DataLakeStoreAccountStatus = "Deleted"
-	// Deleting ...
-	Deleting DataLakeStoreAccountStatus = "Deleting"
-	// Failed ...
-	Failed DataLakeStoreAccountStatus = "Failed"
-	// Patching ...
-	Patching DataLakeStoreAccountStatus = "Patching"
-	// Resuming ...
-	Resuming DataLakeStoreAccountStatus = "Resuming"
-	// Running ...
-	Running DataLakeStoreAccountStatus = "Running"
-	// Succeeded ...
-	Succeeded DataLakeStoreAccountStatus = "Succeeded"
-	// Suspending ...
-	Suspending DataLakeStoreAccountStatus = "Suspending"
-)
-
-// PossibleDataLakeStoreAccountStatusValues returns an array of possible values for the DataLakeStoreAccountStatus const type.
-func PossibleDataLakeStoreAccountStatusValues() []DataLakeStoreAccountStatus {
-	return []DataLakeStoreAccountStatus{Creating, Deleted, Deleting, Failed, Patching, Resuming, Running, Succeeded, Suspending}
-}
-
-// EncryptionConfigType enumerates the values for encryption config type.
-type EncryptionConfigType string
-
-const (
-	// ServiceManaged ...
-	ServiceManaged EncryptionConfigType = "ServiceManaged"
-	// UserManaged ...
-	UserManaged EncryptionConfigType = "UserManaged"
-)
-
-// PossibleEncryptionConfigTypeValues returns an array of possible values for the EncryptionConfigType const type.
-func PossibleEncryptionConfigTypeValues() []EncryptionConfigType {
-	return []EncryptionConfigType{ServiceManaged, UserManaged}
-}
-
-// EncryptionIdentityType enumerates the values for encryption identity type.
-type EncryptionIdentityType string
-
-const (
-	// SystemAssigned ...
-	SystemAssigned EncryptionIdentityType = "SystemAssigned"
-)
-
-// PossibleEncryptionIdentityTypeValues returns an array of possible values for the EncryptionIdentityType const type.
-func PossibleEncryptionIdentityTypeValues() []EncryptionIdentityType {
-	return []EncryptionIdentityType{SystemAssigned}
-}
-
-// EncryptionProvisioningState enumerates the values for encryption provisioning state.
-type EncryptionProvisioningState string
-
-const (
-	// EncryptionProvisioningStateCreating ...
-	EncryptionProvisioningStateCreating EncryptionProvisioningState = "Creating"
-	// EncryptionProvisioningStateSucceeded ...
-	EncryptionProvisioningStateSucceeded EncryptionProvisioningState = "Succeeded"
-)
-
-// PossibleEncryptionProvisioningStateValues returns an array of possible values for the EncryptionProvisioningState const type.
-func PossibleEncryptionProvisioningStateValues() []EncryptionProvisioningState {
-	return []EncryptionProvisioningState{EncryptionProvisioningStateCreating, EncryptionProvisioningStateSucceeded}
-}
-
-// EncryptionState enumerates the values for encryption state.
-type EncryptionState string
-
-const (
-	// Disabled ...
-	Disabled EncryptionState = "Disabled"
-	// Enabled ...
-	Enabled EncryptionState = "Enabled"
-)
-
-// PossibleEncryptionStateValues returns an array of possible values for the EncryptionState const type.
-func PossibleEncryptionStateValues() []EncryptionState {
-	return []EncryptionState{Disabled, Enabled}
-}
-
-// OperationStatus enumerates the values for operation status.
-type OperationStatus string
-
-const (
-	// OperationStatusFailed ...
-	OperationStatusFailed OperationStatus = "Failed"
-	// OperationStatusInProgress ...
-	OperationStatusInProgress OperationStatus = "InProgress"
-	// OperationStatusSucceeded ...
-	OperationStatusSucceeded OperationStatus = "Succeeded"
-)
-
-// PossibleOperationStatusValues returns an array of possible values for the OperationStatus const type.
-func PossibleOperationStatusValues() []OperationStatus {
-	return []OperationStatus{OperationStatusFailed, OperationStatusInProgress, OperationStatusSucceeded}
-}
-
 // AzureAsyncOperationResult the response body contains the status of the specified asynchronous operation,
-// indicating whether it has succeeded, is in progress, or has failed. Note that this status is distinct
-// from the HTTP status code returned for the Get Operation Status operation itself. If the asynchronous
-// operation succeeded, the response body includes the HTTP status code for the successful request. If the
-// asynchronous operation failed, the response body includes the HTTP status code for the failed request
-// and error information regarding the failure.
+// indicating whether it has succeeded, is in progress, or has failed. Note that this status is distinct from
+// the HTTP status code returned for the Get Operation Status operation itself. If the asynchronous operation
+// succeeded, the response body includes the HTTP status code for the successful request. If the asynchronous
+// operation failed, the response body includes the HTTP status code for the failed request and error
+// information regarding the failure.
 type AzureAsyncOperationResult struct {
 	// Status - READ-ONLY; the status of the AzureAsyncOperation. Possible values include: 'OperationStatusInProgress', 'OperationStatusSucceeded', 'OperationStatusFailed'
 	Status OperationStatus `json:"status,omitempty"`
@@ -243,8 +124,7 @@ type DataLakeStoreAccountListResult struct {
 	Count *int64 `json:"count,omitempty"`
 }
 
-// DataLakeStoreAccountListResultIterator provides access to a complete listing of DataLakeStoreAccount
-// values.
+// DataLakeStoreAccountListResultIterator provides access to a complete listing of DataLakeStoreAccount values.
 type DataLakeStoreAccountListResultIterator struct {
 	i    int
 	page DataLakeStoreAccountListResultPage
@@ -312,10 +192,15 @@ func (dlsalr DataLakeStoreAccountListResult) IsEmpty() bool {
 	return dlsalr.Value == nil || len(*dlsalr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dlsalr DataLakeStoreAccountListResult) hasNextLink() bool {
+	return dlsalr.NextLink != nil && len(*dlsalr.NextLink) != 0
+}
+
 // dataLakeStoreAccountListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dlsalr DataLakeStoreAccountListResult) dataLakeStoreAccountListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dlsalr.NextLink == nil || len(to.String(dlsalr.NextLink)) < 1 {
+	if !dlsalr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -343,11 +228,16 @@ func (page *DataLakeStoreAccountListResultPage) NextWithContext(ctx context.Cont
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dlsalr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dlsalr)
+		if err != nil {
+			return err
+		}
+		page.dlsalr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dlsalr = next
 	return nil
 }
 
@@ -403,6 +293,24 @@ type DataLakeStoreAccountProperties struct {
 	DefaultGroup *string `json:"defaultGroup,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DataLakeStoreAccountProperties.
+func (dlsap DataLakeStoreAccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dlsap.EncryptionState != "" {
+		objectMap["encryptionState"] = dlsap.EncryptionState
+	}
+	if dlsap.EncryptionConfig != nil {
+		objectMap["encryptionConfig"] = dlsap.EncryptionConfig
+	}
+	if dlsap.Endpoint != nil {
+		objectMap["endpoint"] = dlsap.Endpoint
+	}
+	if dlsap.DefaultGroup != nil {
+		objectMap["defaultGroup"] = dlsap.DefaultGroup
+	}
+	return json.Marshal(objectMap)
+}
+
 // DataLakeStoreFirewallRuleListResult data Lake Store firewall rule list information.
 type DataLakeStoreFirewallRuleListResult struct {
 	autorest.Response `json:"-"`
@@ -414,8 +322,7 @@ type DataLakeStoreFirewallRuleListResult struct {
 	Count *int64 `json:"count,omitempty"`
 }
 
-// DataLakeStoreFirewallRuleListResultIterator provides access to a complete listing of FirewallRule
-// values.
+// DataLakeStoreFirewallRuleListResultIterator provides access to a complete listing of FirewallRule values.
 type DataLakeStoreFirewallRuleListResultIterator struct {
 	i    int
 	page DataLakeStoreFirewallRuleListResultPage
@@ -483,10 +390,15 @@ func (dlsfrlr DataLakeStoreFirewallRuleListResult) IsEmpty() bool {
 	return dlsfrlr.Value == nil || len(*dlsfrlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dlsfrlr DataLakeStoreFirewallRuleListResult) hasNextLink() bool {
+	return dlsfrlr.NextLink != nil && len(*dlsfrlr.NextLink) != 0
+}
+
 // dataLakeStoreFirewallRuleListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dlsfrlr DataLakeStoreFirewallRuleListResult) dataLakeStoreFirewallRuleListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dlsfrlr.NextLink == nil || len(to.String(dlsfrlr.NextLink)) < 1 {
+	if !dlsfrlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -514,11 +426,16 @@ func (page *DataLakeStoreFirewallRuleListResultPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dlsfrlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dlsfrlr)
+		if err != nil {
+			return err
+		}
+		page.dlsfrlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dlsfrlr = next
 	return nil
 }
 
@@ -592,6 +509,15 @@ type EncryptionIdentity struct {
 	TenantID *uuid.UUID `json:"tenantId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EncryptionIdentity.
+func (ei EncryptionIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ei.Type != "" {
+		objectMap["type"] = ei.Type
+	}
+	return json.Marshal(objectMap)
+}
+
 // Error data Lake Store error information
 type Error struct {
 	// Code - READ-ONLY; the HTTP status code or error code associated with this error
@@ -629,6 +555,24 @@ type FirewallRule struct {
 	Location *string `json:"location,omitempty"`
 	// Properties - the properties of the firewall rule.
 	Properties *FirewallRuleProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FirewallRule.
+func (fr FirewallRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if fr.Name != nil {
+		objectMap["name"] = fr.Name
+	}
+	if fr.ID != nil {
+		objectMap["id"] = fr.ID
+	}
+	if fr.Location != nil {
+		objectMap["location"] = fr.Location
+	}
+	if fr.Properties != nil {
+		objectMap["properties"] = fr.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // FirewallRuleProperties data Lake Store firewall rule properties information

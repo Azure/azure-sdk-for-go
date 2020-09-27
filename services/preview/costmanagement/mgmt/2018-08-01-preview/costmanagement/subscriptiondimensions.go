@@ -136,7 +136,6 @@ func (client SubscriptionDimensionsClient) ListSender(req *http.Request) (*http.
 func (client SubscriptionDimensionsClient) ListResponder(resp *http.Response) (result DimensionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -111,7 +111,6 @@ func (client CostClient) GetResourceSender(req *http.Request) (*http.Response, e
 func (client CostClient) GetResourceResponder(resp *http.Response) (result Cost, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -152,6 +151,9 @@ func (client CostClient) List(ctx context.Context, resourceGroupName string, lab
 	result.rwcc, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.CostClient", "List", resp, "Failure responding to request")
+	}
+	if result.rwcc.hasNextLink() && result.rwcc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -198,7 +200,6 @@ func (client CostClient) ListSender(req *http.Request) (*http.Response, error) {
 func (client CostClient) ListResponder(resp *http.Response) (result ResponseWithContinuationCost, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -313,7 +314,6 @@ func (client CostClient) RefreshDataSender(req *http.Request) (future CostRefres
 func (client CostClient) RefreshDataResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

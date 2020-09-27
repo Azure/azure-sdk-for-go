@@ -75,6 +75,9 @@ func (client WorkspaceFeaturesClient) List(ctx context.Context, resourceGroupNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.WorkspaceFeaturesClient", "List", resp, "Failure responding to request")
 	}
+	if result.laufr.hasNextLink() && result.laufr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -111,7 +114,6 @@ func (client WorkspaceFeaturesClient) ListSender(req *http.Request) (*http.Respo
 func (client WorkspaceFeaturesClient) ListResponder(resp *http.Response) (result ListAmlUserFeatureResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

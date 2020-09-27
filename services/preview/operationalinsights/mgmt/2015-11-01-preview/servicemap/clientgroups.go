@@ -138,7 +138,6 @@ func (client ClientGroupsClient) GetSender(req *http.Request) (*http.Response, e
 func (client ClientGroupsClient) GetResponder(resp *http.Response) (result ClientGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -241,7 +240,6 @@ func (client ClientGroupsClient) GetMembersCountSender(req *http.Request) (*http
 func (client ClientGroupsClient) GetMembersCountResponder(resp *http.Response) (result ClientGroupMembersCount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -308,6 +306,9 @@ func (client ClientGroupsClient) ListMembers(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.ClientGroupsClient", "ListMembers", resp, "Failure responding to request")
 	}
+	if result.cgmc.hasNextLink() && result.cgmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -354,7 +355,6 @@ func (client ClientGroupsClient) ListMembersSender(req *http.Request) (*http.Res
 func (client ClientGroupsClient) ListMembersResponder(resp *http.Response) (result ClientGroupMembersCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

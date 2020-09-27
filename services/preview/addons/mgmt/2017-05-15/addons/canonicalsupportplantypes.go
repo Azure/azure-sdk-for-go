@@ -108,7 +108,6 @@ func (client CanonicalSupportPlanTypesClient) GetSender(req *http.Request) (*htt
 func (client CanonicalSupportPlanTypesClient) GetResponder(resp *http.Response) (result ListCanonicalSupportPlanStatusItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

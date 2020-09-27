@@ -22,7 +22,7 @@ package timeseriesinsights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2017-11-15/timeseriesinsights"
+	original "github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2020-05-15/timeseriesinsights"
 )
 
 const (
@@ -56,9 +56,25 @@ const (
 type Kind = original.Kind
 
 const (
-	KindEventSourceCreateOrUpdateParameters Kind = original.KindEventSourceCreateOrUpdateParameters
-	KindMicrosoftEventHub                   Kind = original.KindMicrosoftEventHub
-	KindMicrosoftIoTHub                     Kind = original.KindMicrosoftIoTHub
+	KindEnvironmentCreateOrUpdateParameters Kind = original.KindEnvironmentCreateOrUpdateParameters
+	KindGen1                                Kind = original.KindGen1
+	KindGen2                                Kind = original.KindGen2
+)
+
+type KindBasicEnvironmentResource = original.KindBasicEnvironmentResource
+
+const (
+	KindBasicEnvironmentResourceKindEnvironmentResource KindBasicEnvironmentResource = original.KindBasicEnvironmentResourceKindEnvironmentResource
+	KindBasicEnvironmentResourceKindGen1                KindBasicEnvironmentResource = original.KindBasicEnvironmentResourceKindGen1
+	KindBasicEnvironmentResourceKindGen2                KindBasicEnvironmentResource = original.KindBasicEnvironmentResourceKindGen2
+)
+
+type KindBasicEventSourceCreateOrUpdateParameters = original.KindBasicEventSourceCreateOrUpdateParameters
+
+const (
+	KindEventSourceCreateOrUpdateParameters KindBasicEventSourceCreateOrUpdateParameters = original.KindEventSourceCreateOrUpdateParameters
+	KindMicrosoftEventHub                   KindBasicEventSourceCreateOrUpdateParameters = original.KindMicrosoftEventHub
+	KindMicrosoftIoTHub                     KindBasicEventSourceCreateOrUpdateParameters = original.KindMicrosoftIoTHub
 )
 
 type KindBasicEventSourceResource = original.KindBasicEventSourceResource
@@ -66,15 +82,13 @@ type KindBasicEventSourceResource = original.KindBasicEventSourceResource
 const (
 	KindBasicEventSourceResourceKindEventSourceResource KindBasicEventSourceResource = original.KindBasicEventSourceResourceKindEventSourceResource
 	KindBasicEventSourceResourceKindMicrosoftEventHub   KindBasicEventSourceResource = original.KindBasicEventSourceResourceKindMicrosoftEventHub
-	KindBasicEventSourceResourceKindMicrosoftIotHub     KindBasicEventSourceResource = original.KindBasicEventSourceResourceKindMicrosoftIotHub
+	KindBasicEventSourceResourceKindMicrosoftIoTHub     KindBasicEventSourceResource = original.KindBasicEventSourceResourceKindMicrosoftIoTHub
 )
 
 type LocalTimestampFormat = original.LocalTimestampFormat
 
 const (
 	Embedded LocalTimestampFormat = original.Embedded
-	Iana     LocalTimestampFormat = original.Iana
-	TimeSpan LocalTimestampFormat = original.TimeSpan
 )
 
 type PropertyType = original.PropertyType
@@ -106,6 +120,8 @@ const (
 type SkuName = original.SkuName
 
 const (
+	L1 SkuName = original.L1
+	P1 SkuName = original.P1
 	S1 SkuName = original.S1
 	S2 SkuName = original.S2
 )
@@ -117,6 +133,14 @@ const (
 	PurgeOldData StorageLimitExceededBehavior = original.PurgeOldData
 )
 
+type WarmStoragePropertiesState = original.WarmStoragePropertiesState
+
+const (
+	WarmStoragePropertiesStateError   WarmStoragePropertiesState = original.WarmStoragePropertiesStateError
+	WarmStoragePropertiesStateOk      WarmStoragePropertiesState = original.WarmStoragePropertiesStateOk
+	WarmStoragePropertiesStateUnknown WarmStoragePropertiesState = original.WarmStoragePropertiesStateUnknown
+)
+
 type AccessPoliciesClient = original.AccessPoliciesClient
 type AccessPolicyCreateOrUpdateParameters = original.AccessPolicyCreateOrUpdateParameters
 type AccessPolicyListResponse = original.AccessPolicyListResponse
@@ -126,16 +150,17 @@ type AccessPolicyResourceProperties = original.AccessPolicyResourceProperties
 type AccessPolicyUpdateParameters = original.AccessPolicyUpdateParameters
 type AzureEventSourceProperties = original.AzureEventSourceProperties
 type BaseClient = original.BaseClient
+type BasicEnvironmentCreateOrUpdateParameters = original.BasicEnvironmentCreateOrUpdateParameters
+type BasicEnvironmentResource = original.BasicEnvironmentResource
 type BasicEventSourceCreateOrUpdateParameters = original.BasicEventSourceCreateOrUpdateParameters
 type BasicEventSourceResource = original.BasicEventSourceResource
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type CreateOrUpdateTrackedResourceProperties = original.CreateOrUpdateTrackedResourceProperties
 type EnvironmentCreateOrUpdateParameters = original.EnvironmentCreateOrUpdateParameters
-type EnvironmentCreationProperties = original.EnvironmentCreationProperties
 type EnvironmentListResponse = original.EnvironmentListResponse
-type EnvironmentMutableProperties = original.EnvironmentMutableProperties
 type EnvironmentResource = original.EnvironmentResource
+type EnvironmentResourceModel = original.EnvironmentResourceModel
 type EnvironmentResourceProperties = original.EnvironmentResourceProperties
 type EnvironmentStateDetails = original.EnvironmentStateDetails
 type EnvironmentStatus = original.EnvironmentStatus
@@ -158,6 +183,21 @@ type EventSourceResource = original.EventSourceResource
 type EventSourceResourceModel = original.EventSourceResourceModel
 type EventSourceUpdateParameters = original.EventSourceUpdateParameters
 type EventSourcesClient = original.EventSourcesClient
+type Gen1EnvironmentCreateOrUpdateParameters = original.Gen1EnvironmentCreateOrUpdateParameters
+type Gen1EnvironmentCreationProperties = original.Gen1EnvironmentCreationProperties
+type Gen1EnvironmentMutableProperties = original.Gen1EnvironmentMutableProperties
+type Gen1EnvironmentResource = original.Gen1EnvironmentResource
+type Gen1EnvironmentResourceProperties = original.Gen1EnvironmentResourceProperties
+type Gen1EnvironmentUpdateParameters = original.Gen1EnvironmentUpdateParameters
+type Gen2EnvironmentCreateOrUpdateParameters = original.Gen2EnvironmentCreateOrUpdateParameters
+type Gen2EnvironmentCreationProperties = original.Gen2EnvironmentCreationProperties
+type Gen2EnvironmentMutableProperties = original.Gen2EnvironmentMutableProperties
+type Gen2EnvironmentResource = original.Gen2EnvironmentResource
+type Gen2EnvironmentResourceProperties = original.Gen2EnvironmentResourceProperties
+type Gen2EnvironmentUpdateParameters = original.Gen2EnvironmentUpdateParameters
+type Gen2StorageConfigurationInput = original.Gen2StorageConfigurationInput
+type Gen2StorageConfigurationMutableProperties = original.Gen2StorageConfigurationMutableProperties
+type Gen2StorageConfigurationOutput = original.Gen2StorageConfigurationOutput
 type IngressEnvironmentStatus = original.IngressEnvironmentStatus
 type IoTHubEventSourceCommonProperties = original.IoTHubEventSourceCommonProperties
 type IoTHubEventSourceCreateOrUpdateParameters = original.IoTHubEventSourceCreateOrUpdateParameters
@@ -174,7 +214,6 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
-type PartitionKeyProperty = original.PartitionKeyProperty
 type ReferenceDataSetCreateOrUpdateParameters = original.ReferenceDataSetCreateOrUpdateParameters
 type ReferenceDataSetCreationProperties = original.ReferenceDataSetCreationProperties
 type ReferenceDataSetKeyProperty = original.ReferenceDataSetKeyProperty
@@ -186,7 +225,12 @@ type ReferenceDataSetsClient = original.ReferenceDataSetsClient
 type Resource = original.Resource
 type ResourceProperties = original.ResourceProperties
 type Sku = original.Sku
+type TimeSeriesIDProperty = original.TimeSeriesIDProperty
 type TrackedResource = original.TrackedResource
+type WarmStorageEnvironmentStatus = original.WarmStorageEnvironmentStatus
+type WarmStoragePropertiesUsage = original.WarmStoragePropertiesUsage
+type WarmStoragePropertiesUsageStateDetails = original.WarmStoragePropertiesUsageStateDetails
+type WarmStoreConfigurationProperties = original.WarmStoreConfigurationProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -239,6 +283,12 @@ func PossibleDataStringComparisonBehaviorValues() []DataStringComparisonBehavior
 func PossibleIngressStateValues() []IngressState {
 	return original.PossibleIngressStateValues()
 }
+func PossibleKindBasicEnvironmentResourceValues() []KindBasicEnvironmentResource {
+	return original.PossibleKindBasicEnvironmentResourceValues()
+}
+func PossibleKindBasicEventSourceCreateOrUpdateParametersValues() []KindBasicEventSourceCreateOrUpdateParameters {
+	return original.PossibleKindBasicEventSourceCreateOrUpdateParametersValues()
+}
 func PossibleKindBasicEventSourceResourceValues() []KindBasicEventSourceResource {
 	return original.PossibleKindBasicEventSourceResourceValues()
 }
@@ -262,6 +312,9 @@ func PossibleSkuNameValues() []SkuName {
 }
 func PossibleStorageLimitExceededBehaviorValues() []StorageLimitExceededBehavior {
 	return original.PossibleStorageLimitExceededBehaviorValues()
+}
+func PossibleWarmStoragePropertiesStateValues() []WarmStoragePropertiesState {
+	return original.PossibleWarmStoragePropertiesStateValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

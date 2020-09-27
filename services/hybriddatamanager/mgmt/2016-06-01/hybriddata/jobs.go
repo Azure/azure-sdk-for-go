@@ -125,7 +125,6 @@ func (client JobsClient) CancelSender(req *http.Request) (future JobsCancelFutur
 func (client JobsClient) CancelResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -219,7 +218,6 @@ func (client JobsClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client JobsClient) GetResponder(resp *http.Response) (result Job, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -270,6 +268,9 @@ func (client JobsClient) ListByDataManager(ctx context.Context, resourceGroupNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobsClient", "ListByDataManager", resp, "Failure responding to request")
 	}
+	if result.jl.hasNextLink() && result.jl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -309,7 +310,6 @@ func (client JobsClient) ListByDataManagerSender(req *http.Request) (*http.Respo
 func (client JobsClient) ListByDataManagerResponder(resp *http.Response) (result JobList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -398,6 +398,9 @@ func (client JobsClient) ListByDataService(ctx context.Context, dataServiceName 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobsClient", "ListByDataService", resp, "Failure responding to request")
 	}
+	if result.jl.hasNextLink() && result.jl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -438,7 +441,6 @@ func (client JobsClient) ListByDataServiceSender(req *http.Request) (*http.Respo
 func (client JobsClient) ListByDataServiceResponder(resp *http.Response) (result JobList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -528,6 +530,9 @@ func (client JobsClient) ListByJobDefinition(ctx context.Context, dataServiceNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.JobsClient", "ListByJobDefinition", resp, "Failure responding to request")
 	}
+	if result.jl.hasNextLink() && result.jl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -569,7 +574,6 @@ func (client JobsClient) ListByJobDefinitionSender(req *http.Request) (*http.Res
 func (client JobsClient) ListByJobDefinitionResponder(resp *http.Response) (result JobList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -697,7 +701,6 @@ func (client JobsClient) ResumeSender(req *http.Request) (future JobsResumeFutur
 func (client JobsClient) ResumeResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

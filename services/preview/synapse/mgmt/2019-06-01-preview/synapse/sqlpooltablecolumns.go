@@ -90,6 +90,9 @@ func (client SQLPoolTableColumnsClient) ListByTableName(ctx context.Context, res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolTableColumnsClient", "ListByTableName", resp, "Failure responding to request")
 	}
+	if result.spclr.hasNextLink() && result.spclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -132,7 +135,6 @@ func (client SQLPoolTableColumnsClient) ListByTableNameSender(req *http.Request)
 func (client SQLPoolTableColumnsClient) ListByTableNameResponder(resp *http.Response) (result SQLPoolColumnListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

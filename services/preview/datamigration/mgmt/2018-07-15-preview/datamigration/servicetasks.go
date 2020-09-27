@@ -112,7 +112,6 @@ func (client ServiceTasksClient) CancelSender(req *http.Request) (*http.Response
 func (client ServiceTasksClient) CancelResponder(resp *http.Response) (result ProjectTask, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -195,7 +194,6 @@ func (client ServiceTasksClient) CreateOrUpdateSender(req *http.Request) (*http.
 func (client ServiceTasksClient) CreateOrUpdateResponder(resp *http.Response) (result ProjectTask, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -278,7 +276,6 @@ func (client ServiceTasksClient) DeleteSender(req *http.Request) (*http.Response
 func (client ServiceTasksClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -360,7 +357,6 @@ func (client ServiceTasksClient) GetSender(req *http.Request) (*http.Response, e
 func (client ServiceTasksClient) GetResponder(resp *http.Response) (result ProjectTask, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -404,6 +400,9 @@ func (client ServiceTasksClient) List(ctx context.Context, groupName string, ser
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datamigration.ServiceTasksClient", "List", resp, "Failure responding to request")
 	}
+	if result.tl.hasNextLink() && result.tl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -443,7 +442,6 @@ func (client ServiceTasksClient) ListSender(req *http.Request) (*http.Response, 
 func (client ServiceTasksClient) ListResponder(resp *http.Response) (result TaskList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -563,7 +561,6 @@ func (client ServiceTasksClient) UpdateSender(req *http.Request) (*http.Response
 func (client ServiceTasksClient) UpdateResponder(resp *http.Response) (result ProjectTask, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

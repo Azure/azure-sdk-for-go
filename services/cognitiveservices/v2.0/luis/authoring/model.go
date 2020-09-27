@@ -105,7 +105,6 @@ func (client ModelClient) AddClosedListSender(req *http.Request) (*http.Response
 func (client ModelClient) AddClosedListResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -181,7 +180,6 @@ func (client ModelClient) AddCompositeEntitySender(req *http.Request) (*http.Res
 func (client ModelClient) AddCompositeEntityResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -260,7 +258,6 @@ func (client ModelClient) AddCompositeEntityChildSender(req *http.Request) (*htt
 func (client ModelClient) AddCompositeEntityChildResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -337,7 +334,6 @@ func (client ModelClient) AddCustomPrebuiltDomainSender(req *http.Request) (*htt
 func (client ModelClient) AddCustomPrebuiltDomainResponder(resp *http.Response) (result ListUUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -414,7 +410,6 @@ func (client ModelClient) AddCustomPrebuiltEntitySender(req *http.Request) (*htt
 func (client ModelClient) AddCustomPrebuiltEntityResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -491,7 +486,6 @@ func (client ModelClient) AddCustomPrebuiltIntentSender(req *http.Request) (*htt
 func (client ModelClient) AddCustomPrebuiltIntentResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -567,7 +561,6 @@ func (client ModelClient) AddEntitySender(req *http.Request) (*http.Response, er
 func (client ModelClient) AddEntityResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -645,7 +638,6 @@ func (client ModelClient) AddExplicitListItemSender(req *http.Request) (*http.Re
 func (client ModelClient) AddExplicitListItemResponder(resp *http.Response) (result Int32, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -721,7 +713,6 @@ func (client ModelClient) AddHierarchicalEntitySender(req *http.Request) (*http.
 func (client ModelClient) AddHierarchicalEntityResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -800,7 +791,6 @@ func (client ModelClient) AddHierarchicalEntityChildSender(req *http.Request) (*
 func (client ModelClient) AddHierarchicalEntityChildResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -876,7 +866,6 @@ func (client ModelClient) AddIntentSender(req *http.Request) (*http.Response, er
 func (client ModelClient) AddIntentResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -958,7 +947,6 @@ func (client ModelClient) AddPrebuiltSender(req *http.Request) (*http.Response, 
 func (client ModelClient) AddPrebuiltResponder(resp *http.Response) (result ListPrebuiltEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1036,7 +1024,6 @@ func (client ModelClient) AddSubListSender(req *http.Request) (*http.Response, e
 func (client ModelClient) AddSubListResponder(resp *http.Response) (result Int64, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1114,7 +1101,6 @@ func (client ModelClient) CreateClosedListEntityRoleSender(req *http.Request) (*
 func (client ModelClient) CreateClosedListEntityRoleResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1192,7 +1178,6 @@ func (client ModelClient) CreateCompositeEntityRoleSender(req *http.Request) (*h
 func (client ModelClient) CreateCompositeEntityRoleResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1270,7 +1255,6 @@ func (client ModelClient) CreateCustomPrebuiltEntityRoleSender(req *http.Request
 func (client ModelClient) CreateCustomPrebuiltEntityRoleResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1348,7 +1332,6 @@ func (client ModelClient) CreateEntityRoleSender(req *http.Request) (*http.Respo
 func (client ModelClient) CreateEntityRoleResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1426,7 +1409,6 @@ func (client ModelClient) CreateHierarchicalEntityRoleSender(req *http.Request) 
 func (client ModelClient) CreateHierarchicalEntityRoleResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1503,7 +1485,6 @@ func (client ModelClient) CreatePatternAnyEntityModelSender(req *http.Request) (
 func (client ModelClient) CreatePatternAnyEntityModelResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1581,7 +1562,6 @@ func (client ModelClient) CreatePatternAnyEntityRoleSender(req *http.Request) (*
 func (client ModelClient) CreatePatternAnyEntityRoleResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1659,7 +1639,6 @@ func (client ModelClient) CreatePrebuiltEntityRoleSender(req *http.Request) (*ht
 func (client ModelClient) CreatePrebuiltEntityRoleResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1736,7 +1715,6 @@ func (client ModelClient) CreateRegexEntityModelSender(req *http.Request) (*http
 func (client ModelClient) CreateRegexEntityModelResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1814,7 +1792,6 @@ func (client ModelClient) CreateRegexEntityRoleSender(req *http.Request) (*http.
 func (client ModelClient) CreateRegexEntityRoleResponder(resp *http.Response) (result UUID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1889,7 +1866,6 @@ func (client ModelClient) DeleteClosedListSender(req *http.Request) (*http.Respo
 func (client ModelClient) DeleteClosedListResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1966,7 +1942,6 @@ func (client ModelClient) DeleteClosedListEntityRoleSender(req *http.Request) (*
 func (client ModelClient) DeleteClosedListEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2041,7 +2016,6 @@ func (client ModelClient) DeleteCompositeEntitySender(req *http.Request) (*http.
 func (client ModelClient) DeleteCompositeEntityResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2118,7 +2092,6 @@ func (client ModelClient) DeleteCompositeEntityChildSender(req *http.Request) (*
 func (client ModelClient) DeleteCompositeEntityChildResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2195,7 +2168,6 @@ func (client ModelClient) DeleteCompositeEntityRoleSender(req *http.Request) (*h
 func (client ModelClient) DeleteCompositeEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2272,7 +2244,6 @@ func (client ModelClient) DeleteCustomEntityRoleSender(req *http.Request) (*http
 func (client ModelClient) DeleteCustomEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2347,7 +2318,6 @@ func (client ModelClient) DeleteCustomPrebuiltDomainSender(req *http.Request) (*
 func (client ModelClient) DeleteCustomPrebuiltDomainResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2422,7 +2392,6 @@ func (client ModelClient) DeleteEntitySender(req *http.Request) (*http.Response,
 func (client ModelClient) DeleteEntityResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2499,7 +2468,6 @@ func (client ModelClient) DeleteEntityRoleSender(req *http.Request) (*http.Respo
 func (client ModelClient) DeleteEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2576,7 +2544,6 @@ func (client ModelClient) DeleteExplicitListItemSender(req *http.Request) (*http
 func (client ModelClient) DeleteExplicitListItemResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2651,7 +2618,6 @@ func (client ModelClient) DeleteHierarchicalEntitySender(req *http.Request) (*ht
 func (client ModelClient) DeleteHierarchicalEntityResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2728,7 +2694,6 @@ func (client ModelClient) DeleteHierarchicalEntityChildSender(req *http.Request)
 func (client ModelClient) DeleteHierarchicalEntityChildResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2805,7 +2770,6 @@ func (client ModelClient) DeleteHierarchicalEntityRoleSender(req *http.Request) 
 func (client ModelClient) DeleteHierarchicalEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2890,7 +2854,6 @@ func (client ModelClient) DeleteIntentSender(req *http.Request) (*http.Response,
 func (client ModelClient) DeleteIntentResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2965,7 +2928,6 @@ func (client ModelClient) DeletePatternAnyEntityModelSender(req *http.Request) (
 func (client ModelClient) DeletePatternAnyEntityModelResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3042,7 +3004,6 @@ func (client ModelClient) DeletePatternAnyEntityRoleSender(req *http.Request) (*
 func (client ModelClient) DeletePatternAnyEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3117,7 +3078,6 @@ func (client ModelClient) DeletePrebuiltSender(req *http.Request) (*http.Respons
 func (client ModelClient) DeletePrebuiltResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3194,7 +3154,6 @@ func (client ModelClient) DeletePrebuiltEntityRoleSender(req *http.Request) (*ht
 func (client ModelClient) DeletePrebuiltEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3269,7 +3228,6 @@ func (client ModelClient) DeleteRegexEntityModelSender(req *http.Request) (*http
 func (client ModelClient) DeleteRegexEntityModelResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3346,7 +3304,6 @@ func (client ModelClient) DeleteRegexEntityRoleSender(req *http.Request) (*http.
 func (client ModelClient) DeleteRegexEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3423,7 +3380,6 @@ func (client ModelClient) DeleteSubListSender(req *http.Request) (*http.Response
 func (client ModelClient) DeleteSubListResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3525,7 +3481,6 @@ func (client ModelClient) ExamplesMethodSender(req *http.Request) (*http.Respons
 func (client ModelClient) ExamplesMethodResponder(resp *http.Response) (result ListLabelTextObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -3600,7 +3555,6 @@ func (client ModelClient) GetClosedListSender(req *http.Request) (*http.Response
 func (client ModelClient) GetClosedListResponder(resp *http.Response) (result ClosedListEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3677,7 +3631,6 @@ func (client ModelClient) GetClosedListEntityRoleSender(req *http.Request) (*htt
 func (client ModelClient) GetClosedListEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3752,7 +3705,6 @@ func (client ModelClient) GetCompositeEntitySender(req *http.Request) (*http.Res
 func (client ModelClient) GetCompositeEntityResponder(resp *http.Response) (result CompositeEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3829,7 +3781,6 @@ func (client ModelClient) GetCompositeEntityRoleSender(req *http.Request) (*http
 func (client ModelClient) GetCompositeEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3906,7 +3857,6 @@ func (client ModelClient) GetCustomEntityRoleSender(req *http.Request) (*http.Re
 func (client ModelClient) GetCustomEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3981,7 +3931,6 @@ func (client ModelClient) GetEntitySender(req *http.Request) (*http.Response, er
 func (client ModelClient) GetEntityResponder(resp *http.Response) (result EntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4058,7 +4007,6 @@ func (client ModelClient) GetEntityRoleSender(req *http.Request) (*http.Response
 func (client ModelClient) GetEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4133,7 +4081,6 @@ func (client ModelClient) GetExplicitListSender(req *http.Request) (*http.Respon
 func (client ModelClient) GetExplicitListResponder(resp *http.Response) (result ListExplicitListItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -4210,7 +4157,6 @@ func (client ModelClient) GetExplicitListItemSender(req *http.Request) (*http.Re
 func (client ModelClient) GetExplicitListItemResponder(resp *http.Response) (result ExplicitListItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4285,7 +4231,6 @@ func (client ModelClient) GetHierarchicalEntitySender(req *http.Request) (*http.
 func (client ModelClient) GetHierarchicalEntityResponder(resp *http.Response) (result HierarchicalEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4363,7 +4308,6 @@ func (client ModelClient) GetHierarchicalEntityChildSender(req *http.Request) (*
 func (client ModelClient) GetHierarchicalEntityChildResponder(resp *http.Response) (result HierarchicalChildEntity, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4440,7 +4384,6 @@ func (client ModelClient) GetHierarchicalEntityRoleSender(req *http.Request) (*h
 func (client ModelClient) GetHierarchicalEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4515,7 +4458,6 @@ func (client ModelClient) GetIntentSender(req *http.Request) (*http.Response, er
 func (client ModelClient) GetIntentResponder(resp *http.Response) (result IntentClassifier, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4590,7 +4532,6 @@ func (client ModelClient) GetPatternAnyEntityInfoSender(req *http.Request) (*htt
 func (client ModelClient) GetPatternAnyEntityInfoResponder(resp *http.Response) (result PatternAnyEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4667,7 +4608,6 @@ func (client ModelClient) GetPatternAnyEntityRoleSender(req *http.Request) (*htt
 func (client ModelClient) GetPatternAnyEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4742,7 +4682,6 @@ func (client ModelClient) GetPrebuiltSender(req *http.Request) (*http.Response, 
 func (client ModelClient) GetPrebuiltResponder(resp *http.Response) (result PrebuiltEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4819,7 +4758,6 @@ func (client ModelClient) GetPrebuiltEntityRoleSender(req *http.Request) (*http.
 func (client ModelClient) GetPrebuiltEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4894,7 +4832,6 @@ func (client ModelClient) GetRegexEntityEntityInfoSender(req *http.Request) (*ht
 func (client ModelClient) GetRegexEntityEntityInfoResponder(resp *http.Response) (result RegexEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4971,7 +4908,6 @@ func (client ModelClient) GetRegexEntityRoleSender(req *http.Request) (*http.Res
 func (client ModelClient) GetRegexEntityRoleResponder(resp *http.Response) (result EntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -5046,7 +4982,6 @@ func (client ModelClient) ListClosedListEntityRolesSender(req *http.Request) (*h
 func (client ModelClient) ListClosedListEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -5146,7 +5081,6 @@ func (client ModelClient) ListClosedListsSender(req *http.Request) (*http.Respon
 func (client ModelClient) ListClosedListsResponder(resp *http.Response) (result ListClosedListEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -5246,7 +5180,6 @@ func (client ModelClient) ListCompositeEntitiesSender(req *http.Request) (*http.
 func (client ModelClient) ListCompositeEntitiesResponder(resp *http.Response) (result ListCompositeEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -5321,7 +5254,6 @@ func (client ModelClient) ListCompositeEntityRolesSender(req *http.Request) (*ht
 func (client ModelClient) ListCompositeEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -5394,7 +5326,6 @@ func (client ModelClient) ListCustomPrebuiltEntitiesSender(req *http.Request) (*
 func (client ModelClient) ListCustomPrebuiltEntitiesResponder(resp *http.Response) (result ListEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -5469,7 +5400,6 @@ func (client ModelClient) ListCustomPrebuiltEntityRolesSender(req *http.Request)
 func (client ModelClient) ListCustomPrebuiltEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -5543,7 +5473,6 @@ func (client ModelClient) ListCustomPrebuiltIntentsSender(req *http.Request) (*h
 func (client ModelClient) ListCustomPrebuiltIntentsResponder(resp *http.Response) (result ListIntentClassifier, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -5617,7 +5546,6 @@ func (client ModelClient) ListCustomPrebuiltModelsSender(req *http.Request) (*ht
 func (client ModelClient) ListCustomPrebuiltModelsResponder(resp *http.Response) (result ListCustomPrebuiltModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -5717,7 +5645,6 @@ func (client ModelClient) ListEntitiesSender(req *http.Request) (*http.Response,
 func (client ModelClient) ListEntitiesResponder(resp *http.Response) (result ListEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -5792,7 +5719,6 @@ func (client ModelClient) ListEntityRolesSender(req *http.Request) (*http.Respon
 func (client ModelClient) ListEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -5886,7 +5812,6 @@ func (client ModelClient) ListEntitySuggestionsSender(req *http.Request) (*http.
 func (client ModelClient) ListEntitySuggestionsResponder(resp *http.Response) (result ListEntitiesSuggestionExample, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -5986,7 +5911,6 @@ func (client ModelClient) ListHierarchicalEntitiesSender(req *http.Request) (*ht
 func (client ModelClient) ListHierarchicalEntitiesResponder(resp *http.Response) (result ListHierarchicalEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -6061,7 +5985,6 @@ func (client ModelClient) ListHierarchicalEntityRolesSender(req *http.Request) (
 func (client ModelClient) ListHierarchicalEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -6161,7 +6084,6 @@ func (client ModelClient) ListIntentsSender(req *http.Request) (*http.Response, 
 func (client ModelClient) ListIntentsResponder(resp *http.Response) (result ListIntentClassifier, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -6255,7 +6177,6 @@ func (client ModelClient) ListIntentSuggestionsSender(req *http.Request) (*http.
 func (client ModelClient) ListIntentSuggestionsResponder(resp *http.Response) (result ListIntentsSuggestionExample, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -6355,7 +6276,6 @@ func (client ModelClient) ListModelsSender(req *http.Request) (*http.Response, e
 func (client ModelClient) ListModelsResponder(resp *http.Response) (result ListModelInfoResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -6455,7 +6375,6 @@ func (client ModelClient) ListPatternAnyEntityInfosSender(req *http.Request) (*h
 func (client ModelClient) ListPatternAnyEntityInfosResponder(resp *http.Response) (result ListPatternAnyEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -6530,7 +6449,6 @@ func (client ModelClient) ListPatternAnyEntityRolesSender(req *http.Request) (*h
 func (client ModelClient) ListPatternAnyEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -6603,7 +6521,6 @@ func (client ModelClient) ListPrebuiltEntitiesSender(req *http.Request) (*http.R
 func (client ModelClient) ListPrebuiltEntitiesResponder(resp *http.Response) (result ListAvailablePrebuiltEntityModel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -6678,7 +6595,6 @@ func (client ModelClient) ListPrebuiltEntityRolesSender(req *http.Request) (*htt
 func (client ModelClient) ListPrebuiltEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -6778,7 +6694,6 @@ func (client ModelClient) ListPrebuiltsSender(req *http.Request) (*http.Response
 func (client ModelClient) ListPrebuiltsResponder(resp *http.Response) (result ListPrebuiltEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -6878,7 +6793,6 @@ func (client ModelClient) ListRegexEntityInfosSender(req *http.Request) (*http.R
 func (client ModelClient) ListRegexEntityInfosResponder(resp *http.Response) (result ListRegexEntityExtractor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -6953,7 +6867,6 @@ func (client ModelClient) ListRegexEntityRolesSender(req *http.Request) (*http.R
 func (client ModelClient) ListRegexEntityRolesResponder(resp *http.Response) (result ListEntityRole, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -7031,7 +6944,6 @@ func (client ModelClient) PatchClosedListSender(req *http.Request) (*http.Respon
 func (client ModelClient) PatchClosedListResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7109,7 +7021,6 @@ func (client ModelClient) UpdateClosedListSender(req *http.Request) (*http.Respo
 func (client ModelClient) UpdateClosedListResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7189,7 +7100,6 @@ func (client ModelClient) UpdateClosedListEntityRoleSender(req *http.Request) (*
 func (client ModelClient) UpdateClosedListEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7267,7 +7177,6 @@ func (client ModelClient) UpdateCompositeEntitySender(req *http.Request) (*http.
 func (client ModelClient) UpdateCompositeEntityResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7347,7 +7256,6 @@ func (client ModelClient) UpdateCompositeEntityRoleSender(req *http.Request) (*h
 func (client ModelClient) UpdateCompositeEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7427,7 +7335,6 @@ func (client ModelClient) UpdateCustomPrebuiltEntityRoleSender(req *http.Request
 func (client ModelClient) UpdateCustomPrebuiltEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7505,7 +7412,6 @@ func (client ModelClient) UpdateEntitySender(req *http.Request) (*http.Response,
 func (client ModelClient) UpdateEntityResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7585,7 +7491,6 @@ func (client ModelClient) UpdateEntityRoleSender(req *http.Request) (*http.Respo
 func (client ModelClient) UpdateEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7665,7 +7570,6 @@ func (client ModelClient) UpdateExplicitListItemSender(req *http.Request) (*http
 func (client ModelClient) UpdateExplicitListItemResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7744,7 +7648,6 @@ func (client ModelClient) UpdateHierarchicalEntitySender(req *http.Request) (*ht
 func (client ModelClient) UpdateHierarchicalEntityResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7825,7 +7728,6 @@ func (client ModelClient) UpdateHierarchicalEntityChildSender(req *http.Request)
 func (client ModelClient) UpdateHierarchicalEntityChildResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7905,7 +7807,6 @@ func (client ModelClient) UpdateHierarchicalEntityRoleSender(req *http.Request) 
 func (client ModelClient) UpdateHierarchicalEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -7983,7 +7884,6 @@ func (client ModelClient) UpdateIntentSender(req *http.Request) (*http.Response,
 func (client ModelClient) UpdateIntentResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8061,7 +7961,6 @@ func (client ModelClient) UpdatePatternAnyEntityModelSender(req *http.Request) (
 func (client ModelClient) UpdatePatternAnyEntityModelResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8141,7 +8040,6 @@ func (client ModelClient) UpdatePatternAnyEntityRoleSender(req *http.Request) (*
 func (client ModelClient) UpdatePatternAnyEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8221,7 +8119,6 @@ func (client ModelClient) UpdatePrebuiltEntityRoleSender(req *http.Request) (*ht
 func (client ModelClient) UpdatePrebuiltEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8299,7 +8196,6 @@ func (client ModelClient) UpdateRegexEntityModelSender(req *http.Request) (*http
 func (client ModelClient) UpdateRegexEntityModelResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8379,7 +8275,6 @@ func (client ModelClient) UpdateRegexEntityRoleSender(req *http.Request) (*http.
 func (client ModelClient) UpdateRegexEntityRoleResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -8459,7 +8354,6 @@ func (client ModelClient) UpdateSubListSender(req *http.Request) (*http.Response
 func (client ModelClient) UpdateSubListResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

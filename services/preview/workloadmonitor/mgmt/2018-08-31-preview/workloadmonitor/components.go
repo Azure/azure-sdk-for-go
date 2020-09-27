@@ -135,7 +135,6 @@ func (client ComponentsClient) GetSender(req *http.Request) (*http.Response, err
 func (client ComponentsClient) GetResponder(resp *http.Response) (result Component, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -194,6 +193,9 @@ func (client ComponentsClient) ListByResource(ctx context.Context, resourceGroup
 	result.cc, err = client.ListByResourceResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.ComponentsClient", "ListByResource", resp, "Failure responding to request")
+	}
+	if result.cc.hasNextLink() && result.cc.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -254,7 +256,6 @@ func (client ComponentsClient) ListByResourceSender(req *http.Request) (*http.Re
 func (client ComponentsClient) ListByResourceResponder(resp *http.Response) (result ComponentsCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

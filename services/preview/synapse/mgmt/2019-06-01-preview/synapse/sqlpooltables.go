@@ -88,6 +88,9 @@ func (client SQLPoolTablesClient) ListBySchema(ctx context.Context, resourceGrou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolTablesClient", "ListBySchema", resp, "Failure responding to request")
 	}
+	if result.sptlr.hasNextLink() && result.sptlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -129,7 +132,6 @@ func (client SQLPoolTablesClient) ListBySchemaSender(req *http.Request) (*http.R
 func (client SQLPoolTablesClient) ListBySchemaResponder(resp *http.Response) (result SQLPoolTableListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

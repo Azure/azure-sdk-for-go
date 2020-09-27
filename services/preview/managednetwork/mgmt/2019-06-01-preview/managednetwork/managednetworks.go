@@ -116,7 +116,6 @@ func (client ManagedNetworksClient) CreateOrUpdateSender(req *http.Request) (*ht
 func (client ManagedNetworksClient) CreateOrUpdateResponder(resp *http.Response) (result ManagedNetwork, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -193,7 +192,6 @@ func (client ManagedNetworksClient) DeleteSender(req *http.Request) (future Mana
 func (client ManagedNetworksClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -269,7 +267,6 @@ func (client ManagedNetworksClient) GetSender(req *http.Request) (*http.Response
 func (client ManagedNetworksClient) GetResponder(resp *http.Response) (result ManagedNetwork, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -323,6 +320,9 @@ func (client ManagedNetworksClient) ListByResourceGroup(ctx context.Context, res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.lr.hasNextLink() && result.lr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -364,7 +364,6 @@ func (client ManagedNetworksClient) ListByResourceGroupSender(req *http.Request)
 func (client ManagedNetworksClient) ListByResourceGroupResponder(resp *http.Response) (result ListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -454,6 +453,9 @@ func (client ManagedNetworksClient) ListBySubscription(ctx context.Context, top 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managednetwork.ManagedNetworksClient", "ListBySubscription", resp, "Failure responding to request")
 	}
+	if result.lr.hasNextLink() && result.lr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -494,7 +496,6 @@ func (client ManagedNetworksClient) ListBySubscriptionSender(req *http.Request) 
 func (client ManagedNetworksClient) ListBySubscriptionResponder(resp *http.Response) (result ListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -610,7 +611,6 @@ func (client ManagedNetworksClient) UpdateSender(req *http.Request) (future Mana
 func (client ManagedNetworksClient) UpdateResponder(resp *http.Response) (result ManagedNetwork, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

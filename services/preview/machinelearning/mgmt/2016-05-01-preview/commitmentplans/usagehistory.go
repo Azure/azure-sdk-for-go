@@ -78,6 +78,9 @@ func (client UsageHistoryClient) List(ctx context.Context, resourceGroupName str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commitmentplans.UsageHistoryClient", "List", resp, "Failure responding to request")
 	}
+	if result.puhlr.hasNextLink() && result.puhlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -117,7 +120,6 @@ func (client UsageHistoryClient) ListSender(req *http.Request) (*http.Response, 
 func (client UsageHistoryClient) ListResponder(resp *http.Response) (result PlanUsageHistoryListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

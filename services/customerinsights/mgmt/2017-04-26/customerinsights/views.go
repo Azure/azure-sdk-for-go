@@ -127,7 +127,6 @@ func (client ViewsClient) CreateOrUpdateSender(req *http.Request) (*http.Respons
 func (client ViewsClient) CreateOrUpdateResponder(resp *http.Response) (result ViewResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -207,7 +206,6 @@ func (client ViewsClient) DeleteSender(req *http.Request) (*http.Response, error
 func (client ViewsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -286,7 +284,6 @@ func (client ViewsClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client ViewsClient) GetResponder(resp *http.Response) (result ViewResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -328,6 +325,9 @@ func (client ViewsClient) ListByHub(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ViewsClient", "ListByHub", resp, "Failure responding to request")
 	}
+	if result.vlr.hasNextLink() && result.vlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -365,7 +365,6 @@ func (client ViewsClient) ListByHubSender(req *http.Request) (*http.Response, er
 func (client ViewsClient) ListByHubResponder(resp *http.Response) (result ViewListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

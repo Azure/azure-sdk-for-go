@@ -309,7 +309,6 @@ func (client WebClient) SearchSender(req *http.Request) (*http.Response, error) 
 func (client WebClient) SearchResponder(resp *http.Response) (result SearchResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

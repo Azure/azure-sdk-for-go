@@ -78,6 +78,9 @@ func (client AlertsClient) ListAddsAlerts(ctx context.Context, serviceName strin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AlertsClient", "ListAddsAlerts", resp, "Failure responding to request")
 	}
+	if result.a.hasNextLink() && result.a.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -124,7 +127,6 @@ func (client AlertsClient) ListAddsAlertsSender(req *http.Request) (*http.Respon
 func (client AlertsClient) ListAddsAlertsResponder(resp *http.Response) (result Alerts, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

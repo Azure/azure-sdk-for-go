@@ -119,7 +119,6 @@ func (client ResourceHealthMetadataClient) GetBySiteSender(req *http.Request) (*
 func (client ResourceHealthMetadataClient) GetBySiteResponder(resp *http.Response) (result ResourceHealthMetadata, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -205,7 +204,6 @@ func (client ResourceHealthMetadataClient) GetBySiteSlotSender(req *http.Request
 func (client ResourceHealthMetadataClient) GetBySiteSlotResponder(resp *http.Response) (result ResourceHealthMetadata, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -243,6 +241,9 @@ func (client ResourceHealthMetadataClient) List(ctx context.Context) (result Res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "List", resp, "Failure responding to request")
 	}
+	if result.rhmc.hasNextLink() && result.rhmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -277,7 +278,6 @@ func (client ResourceHealthMetadataClient) ListSender(req *http.Request) (*http.
 func (client ResourceHealthMetadataClient) ListResponder(resp *http.Response) (result ResourceHealthMetadataCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -362,6 +362,9 @@ func (client ResourceHealthMetadataClient) ListByResourceGroup(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.rhmc.hasNextLink() && result.rhmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -397,7 +400,6 @@ func (client ResourceHealthMetadataClient) ListByResourceGroupSender(req *http.R
 func (client ResourceHealthMetadataClient) ListByResourceGroupResponder(resp *http.Response) (result ResourceHealthMetadataCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -483,6 +485,9 @@ func (client ResourceHealthMetadataClient) ListBySite(ctx context.Context, resou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "ListBySite", resp, "Failure responding to request")
 	}
+	if result.rhmc.hasNextLink() && result.rhmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -519,7 +524,6 @@ func (client ResourceHealthMetadataClient) ListBySiteSender(req *http.Request) (
 func (client ResourceHealthMetadataClient) ListBySiteResponder(resp *http.Response) (result ResourceHealthMetadataCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -606,6 +610,9 @@ func (client ResourceHealthMetadataClient) ListBySiteSlot(ctx context.Context, r
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.ResourceHealthMetadataClient", "ListBySiteSlot", resp, "Failure responding to request")
 	}
+	if result.rhmc.hasNextLink() && result.rhmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -643,7 +650,6 @@ func (client ResourceHealthMetadataClient) ListBySiteSlotSender(req *http.Reques
 func (client ResourceHealthMetadataClient) ListBySiteSlotResponder(resp *http.Response) (result ResourceHealthMetadataCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

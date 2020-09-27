@@ -122,7 +122,6 @@ func (client TestJobStreamsClient) GetSender(req *http.Request) (*http.Response,
 func (client TestJobStreamsClient) GetResponder(resp *http.Response) (result JobStream, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -173,6 +172,9 @@ func (client TestJobStreamsClient) ListByTestJob(ctx context.Context, resourceGr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.TestJobStreamsClient", "ListByTestJob", resp, "Failure responding to request")
 	}
+	if result.jslr.hasNextLink() && result.jslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -213,7 +215,6 @@ func (client TestJobStreamsClient) ListByTestJobSender(req *http.Request) (*http
 func (client TestJobStreamsClient) ListByTestJobResponder(resp *http.Response) (result JobStreamListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

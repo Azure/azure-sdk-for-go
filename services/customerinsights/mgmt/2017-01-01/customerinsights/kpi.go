@@ -135,7 +135,6 @@ func (client KpiClient) CreateOrUpdateSender(req *http.Request) (future KpiCreat
 func (client KpiClient) CreateOrUpdateResponder(resp *http.Response) (result KpiResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -213,7 +212,6 @@ func (client KpiClient) DeleteSender(req *http.Request) (future KpiDeleteFuture,
 func (client KpiClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -290,7 +288,6 @@ func (client KpiClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client KpiClient) GetResponder(resp *http.Response) (result KpiResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -331,6 +328,9 @@ func (client KpiClient) ListByHub(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "ListByHub", resp, "Failure responding to request")
 	}
+	if result.klr.hasNextLink() && result.klr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -367,7 +367,6 @@ func (client KpiClient) ListByHubSender(req *http.Request) (*http.Response, erro
 func (client KpiClient) ListByHubResponder(resp *http.Response) (result KpiListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -482,7 +481,6 @@ func (client KpiClient) ReprocessSender(req *http.Request) (*http.Response, erro
 func (client KpiClient) ReprocessResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

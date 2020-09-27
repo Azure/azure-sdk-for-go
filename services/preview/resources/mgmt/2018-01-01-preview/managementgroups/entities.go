@@ -76,6 +76,9 @@ func (client EntitiesClient) List(ctx context.Context, groupName string, cacheCo
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.EntitiesClient", "List", resp, "Failure responding to request")
 	}
+	if result.elr.hasNextLink() && result.elr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -119,7 +122,6 @@ func (client EntitiesClient) ListSender(req *http.Request) (*http.Response, erro
 func (client EntitiesClient) ListResponder(resp *http.Response) (result EntityListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

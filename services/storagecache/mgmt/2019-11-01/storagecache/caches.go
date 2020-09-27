@@ -62,7 +62,7 @@ func (client CachesClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: cacheName,
-			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,31}$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,80}$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagecache.CachesClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -127,7 +127,6 @@ func (client CachesClient) CreateOrUpdateSender(req *http.Request) (future Cache
 func (client CachesClient) CreateOrUpdateResponder(resp *http.Response) (result Cache, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -152,7 +151,7 @@ func (client CachesClient) Delete(ctx context.Context, resourceGroupName string,
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: cacheName,
-			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,31}$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,80}$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagecache.CachesClient", "Delete", err.Error())
 	}
 
@@ -209,7 +208,6 @@ func (client CachesClient) DeleteSender(req *http.Request) (future CachesDeleteF
 func (client CachesClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -235,7 +233,7 @@ func (client CachesClient) Flush(ctx context.Context, resourceGroupName string, 
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: cacheName,
-			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,31}$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,80}$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagecache.CachesClient", "Flush", err.Error())
 	}
 
@@ -292,7 +290,6 @@ func (client CachesClient) FlushSender(req *http.Request) (future CachesFlushFut
 func (client CachesClient) FlushResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -317,7 +314,7 @@ func (client CachesClient) Get(ctx context.Context, resourceGroupName string, ca
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: cacheName,
-			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,31}$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,80}$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagecache.CachesClient", "Get", err.Error())
 	}
 
@@ -374,7 +371,6 @@ func (client CachesClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client CachesClient) GetResponder(resp *http.Response) (result Cache, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -412,6 +408,9 @@ func (client CachesClient) List(ctx context.Context) (result CachesListResultPag
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "List", resp, "Failure responding to request")
 	}
+	if result.clr.hasNextLink() && result.clr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -446,7 +445,6 @@ func (client CachesClient) ListSender(req *http.Request) (*http.Response, error)
 func (client CachesClient) ListResponder(resp *http.Response) (result CachesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -523,6 +521,9 @@ func (client CachesClient) ListByResourceGroup(ctx context.Context, resourceGrou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.clr.hasNextLink() && result.clr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -558,7 +559,6 @@ func (client CachesClient) ListByResourceGroupSender(req *http.Request) (*http.R
 func (client CachesClient) ListByResourceGroupResponder(resp *http.Response) (result CachesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -620,7 +620,7 @@ func (client CachesClient) Start(ctx context.Context, resourceGroupName string, 
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: cacheName,
-			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,31}$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,80}$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagecache.CachesClient", "Start", err.Error())
 	}
 
@@ -677,7 +677,6 @@ func (client CachesClient) StartSender(req *http.Request) (future CachesStartFut
 func (client CachesClient) StartResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -702,7 +701,7 @@ func (client CachesClient) Stop(ctx context.Context, resourceGroupName string, c
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: cacheName,
-			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,31}$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,80}$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagecache.CachesClient", "Stop", err.Error())
 	}
 
@@ -759,7 +758,6 @@ func (client CachesClient) StopSender(req *http.Request) (future CachesStopFutur
 func (client CachesClient) StopResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -786,7 +784,7 @@ func (client CachesClient) Update(ctx context.Context, resourceGroupName string,
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: cacheName,
-			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,31}$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,80}$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagecache.CachesClient", "Update", err.Error())
 	}
 
@@ -851,7 +849,6 @@ func (client CachesClient) UpdateSender(req *http.Request) (*http.Response, erro
 func (client CachesClient) UpdateResponder(resp *http.Response) (result Cache, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -876,7 +873,7 @@ func (client CachesClient) UpgradeFirmware(ctx context.Context, resourceGroupNam
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: cacheName,
-			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,31}$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,80}$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagecache.CachesClient", "UpgradeFirmware", err.Error())
 	}
 
@@ -933,7 +930,6 @@ func (client CachesClient) UpgradeFirmwareSender(req *http.Request) (future Cach
 func (client CachesClient) UpgradeFirmwareResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

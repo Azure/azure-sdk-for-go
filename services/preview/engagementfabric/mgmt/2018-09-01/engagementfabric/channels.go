@@ -122,7 +122,6 @@ func (client ChannelsClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 func (client ChannelsClient) CreateOrUpdateResponder(resp *http.Response) (result Channel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -200,7 +199,6 @@ func (client ChannelsClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client ChannelsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -277,7 +275,6 @@ func (client ChannelsClient) GetSender(req *http.Request) (*http.Response, error
 func (client ChannelsClient) GetResponder(resp *http.Response) (result Channel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -353,7 +350,6 @@ func (client ChannelsClient) ListByAccountSender(req *http.Request) (*http.Respo
 func (client ChannelsClient) ListByAccountResponder(resp *http.Response) (result ChannelList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

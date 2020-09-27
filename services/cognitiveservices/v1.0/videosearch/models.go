@@ -25,237 +25,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/videosearch"
 
-// ErrorCode enumerates the values for error code.
-type ErrorCode string
-
-const (
-	// InsufficientAuthorization ...
-	InsufficientAuthorization ErrorCode = "InsufficientAuthorization"
-	// InvalidAuthorization ...
-	InvalidAuthorization ErrorCode = "InvalidAuthorization"
-	// InvalidRequest ...
-	InvalidRequest ErrorCode = "InvalidRequest"
-	// None ...
-	None ErrorCode = "None"
-	// RateLimitExceeded ...
-	RateLimitExceeded ErrorCode = "RateLimitExceeded"
-	// ServerError ...
-	ServerError ErrorCode = "ServerError"
-)
-
-// PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
-func PossibleErrorCodeValues() []ErrorCode {
-	return []ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
-}
-
-// ErrorSubCode enumerates the values for error sub code.
-type ErrorSubCode string
-
-const (
-	// AuthorizationDisabled ...
-	AuthorizationDisabled ErrorSubCode = "AuthorizationDisabled"
-	// AuthorizationExpired ...
-	AuthorizationExpired ErrorSubCode = "AuthorizationExpired"
-	// AuthorizationMissing ...
-	AuthorizationMissing ErrorSubCode = "AuthorizationMissing"
-	// AuthorizationRedundancy ...
-	AuthorizationRedundancy ErrorSubCode = "AuthorizationRedundancy"
-	// Blocked ...
-	Blocked ErrorSubCode = "Blocked"
-	// HTTPNotAllowed ...
-	HTTPNotAllowed ErrorSubCode = "HttpNotAllowed"
-	// NotImplemented ...
-	NotImplemented ErrorSubCode = "NotImplemented"
-	// ParameterInvalidValue ...
-	ParameterInvalidValue ErrorSubCode = "ParameterInvalidValue"
-	// ParameterMissing ...
-	ParameterMissing ErrorSubCode = "ParameterMissing"
-	// ResourceError ...
-	ResourceError ErrorSubCode = "ResourceError"
-	// UnexpectedError ...
-	UnexpectedError ErrorSubCode = "UnexpectedError"
-)
-
-// PossibleErrorSubCodeValues returns an array of possible values for the ErrorSubCode const type.
-func PossibleErrorSubCodeValues() []ErrorSubCode {
-	return []ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
-}
-
-// Freshness enumerates the values for freshness.
-type Freshness string
-
-const (
-	// Day ...
-	Day Freshness = "Day"
-	// Month ...
-	Month Freshness = "Month"
-	// Week ...
-	Week Freshness = "Week"
-)
-
-// PossibleFreshnessValues returns an array of possible values for the Freshness const type.
-func PossibleFreshnessValues() []Freshness {
-	return []Freshness{Day, Month, Week}
-}
-
-// SafeSearch enumerates the values for safe search.
-type SafeSearch string
-
-const (
-	// Moderate ...
-	Moderate SafeSearch = "Moderate"
-	// Off ...
-	Off SafeSearch = "Off"
-	// Strict ...
-	Strict SafeSearch = "Strict"
-)
-
-// PossibleSafeSearchValues returns an array of possible values for the SafeSearch const type.
-func PossibleSafeSearchValues() []SafeSearch {
-	return []SafeSearch{Moderate, Off, Strict}
-}
-
-// TextFormat enumerates the values for text format.
-type TextFormat string
-
-const (
-	// HTML ...
-	HTML TextFormat = "Html"
-	// Raw ...
-	Raw TextFormat = "Raw"
-)
-
-// PossibleTextFormatValues returns an array of possible values for the TextFormat const type.
-func PossibleTextFormatValues() []TextFormat {
-	return []TextFormat{HTML, Raw}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeAnswer ...
-	TypeAnswer Type = "Answer"
-	// TypeCreativeWork ...
-	TypeCreativeWork Type = "CreativeWork"
-	// TypeErrorResponse ...
-	TypeErrorResponse Type = "ErrorResponse"
-	// TypeIdentifiable ...
-	TypeIdentifiable Type = "Identifiable"
-	// TypeImageObject ...
-	TypeImageObject Type = "ImageObject"
-	// TypeMediaObject ...
-	TypeMediaObject Type = "MediaObject"
-	// TypeResponse ...
-	TypeResponse Type = "Response"
-	// TypeResponseBase ...
-	TypeResponseBase Type = "ResponseBase"
-	// TypeSearchResultsAnswer ...
-	TypeSearchResultsAnswer Type = "SearchResultsAnswer"
-	// TypeThing ...
-	TypeThing Type = "Thing"
-	// TypeTrendingVideos ...
-	TypeTrendingVideos Type = "TrendingVideos"
-	// TypeVideoDetails ...
-	TypeVideoDetails Type = "VideoDetails"
-	// TypeVideoObject ...
-	TypeVideoObject Type = "VideoObject"
-	// TypeVideos ...
-	TypeVideos Type = "Videos"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeAnswer, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeImageObject, TypeMediaObject, TypeResponse, TypeResponseBase, TypeSearchResultsAnswer, TypeThing, TypeTrendingVideos, TypeVideoDetails, TypeVideoObject, TypeVideos}
-}
-
-// VideoInsightModule enumerates the values for video insight module.
-type VideoInsightModule string
-
-const (
-	// All ...
-	All VideoInsightModule = "All"
-	// RelatedVideos ...
-	RelatedVideos VideoInsightModule = "RelatedVideos"
-	// VideoResult ...
-	VideoResult VideoInsightModule = "VideoResult"
-)
-
-// PossibleVideoInsightModuleValues returns an array of possible values for the VideoInsightModule const type.
-func PossibleVideoInsightModuleValues() []VideoInsightModule {
-	return []VideoInsightModule{All, RelatedVideos, VideoResult}
-}
-
-// VideoLength enumerates the values for video length.
-type VideoLength string
-
-const (
-	// VideoLengthAll ...
-	VideoLengthAll VideoLength = "All"
-	// VideoLengthLong ...
-	VideoLengthLong VideoLength = "Long"
-	// VideoLengthMedium ...
-	VideoLengthMedium VideoLength = "Medium"
-	// VideoLengthShort ...
-	VideoLengthShort VideoLength = "Short"
-)
-
-// PossibleVideoLengthValues returns an array of possible values for the VideoLength const type.
-func PossibleVideoLengthValues() []VideoLength {
-	return []VideoLength{VideoLengthAll, VideoLengthLong, VideoLengthMedium, VideoLengthShort}
-}
-
-// VideoPricing enumerates the values for video pricing.
-type VideoPricing string
-
-const (
-	// VideoPricingAll ...
-	VideoPricingAll VideoPricing = "All"
-	// VideoPricingFree ...
-	VideoPricingFree VideoPricing = "Free"
-	// VideoPricingPaid ...
-	VideoPricingPaid VideoPricing = "Paid"
-)
-
-// PossibleVideoPricingValues returns an array of possible values for the VideoPricing const type.
-func PossibleVideoPricingValues() []VideoPricing {
-	return []VideoPricing{VideoPricingAll, VideoPricingFree, VideoPricingPaid}
-}
-
-// VideoQueryScenario enumerates the values for video query scenario.
-type VideoQueryScenario string
-
-const (
-	// List ...
-	List VideoQueryScenario = "List"
-	// SingleDominantVideo ...
-	SingleDominantVideo VideoQueryScenario = "SingleDominantVideo"
-)
-
-// PossibleVideoQueryScenarioValues returns an array of possible values for the VideoQueryScenario const type.
-func PossibleVideoQueryScenarioValues() []VideoQueryScenario {
-	return []VideoQueryScenario{List, SingleDominantVideo}
-}
-
-// VideoResolution enumerates the values for video resolution.
-type VideoResolution string
-
-const (
-	// VideoResolutionAll ...
-	VideoResolutionAll VideoResolution = "All"
-	// VideoResolutionHD1080p ...
-	VideoResolutionHD1080p VideoResolution = "HD1080p"
-	// VideoResolutionHD720p ...
-	VideoResolutionHD720p VideoResolution = "HD720p"
-	// VideoResolutionSD480p ...
-	VideoResolutionSD480p VideoResolution = "SD480p"
-)
-
-// PossibleVideoResolutionValues returns an array of possible values for the VideoResolution const type.
-func PossibleVideoResolutionValues() []VideoResolution {
-	return []VideoResolution{VideoResolutionAll, VideoResolutionHD1080p, VideoResolutionHD720p, VideoResolutionSD480p}
-}
-
 // BasicAnswer ...
 type BasicAnswer interface {
 	AsVideos() (*Videos, bool)
@@ -775,6 +544,18 @@ type Error struct {
 	Parameter *string `json:"parameter,omitempty"`
 	// Value - READ-ONLY; The parameter's value in the request that was not valid.
 	Value *string `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if e.Code != "" {
+		objectMap["code"] = e.Code
+	}
+	if e.Message != nil {
+		objectMap["message"] = e.Message
+	}
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse the top-level response that represents a failed request.
@@ -1851,6 +1632,15 @@ type Query struct {
 	Thumbnail *ImageObject `json:"thumbnail,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Query.
+func (q Query) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if q.Text != nil {
+		objectMap["text"] = q.Text
+	}
+	return json.Marshal(objectMap)
+}
+
 // QueryContext defines the query context that Bing used for the request.
 type QueryContext struct {
 	// OriginalQuery - The query string as specified in the request.
@@ -1865,6 +1655,15 @@ type QueryContext struct {
 	AskUserForLocation *bool `json:"askUserForLocation,omitempty"`
 	// IsTransactional - READ-ONLY
 	IsTransactional *bool `json:"isTransactional,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryContext.
+func (qc QueryContext) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if qc.OriginalQuery != nil {
+		objectMap["originalQuery"] = qc.OriginalQuery
+	}
+	return json.Marshal(objectMap)
 }
 
 // BasicResponse defines a response. All schemas that could be returned at the root of a response should inherit from

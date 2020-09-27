@@ -281,16 +281,15 @@ func (pr ProjectResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ProjectResourceListResult the response to a request to list Team Services project resources in a
-// resource group/account.
+// ProjectResourceListResult the response to a request to list Team Services project resources in a resource
+// group/account.
 type ProjectResourceListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of project resource details.
 	Value *[]ProjectResource `json:"value,omitempty"`
 }
 
-// ProjectsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ProjectsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ProjectsCreateFuture struct {
 	azure.Future
 }

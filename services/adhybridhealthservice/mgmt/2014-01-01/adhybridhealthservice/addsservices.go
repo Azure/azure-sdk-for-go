@@ -106,7 +106,6 @@ func (client AddsServicesClient) AddSender(req *http.Request) (*http.Response, e
 func (client AddsServicesClient) AddResponder(resp *http.Response) (result ServiceProperties, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -185,7 +184,6 @@ func (client AddsServicesClient) DeleteSender(req *http.Request) (*http.Response
 func (client AddsServicesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -258,7 +256,6 @@ func (client AddsServicesClient) GetSender(req *http.Request) (*http.Response, e
 func (client AddsServicesClient) GetResponder(resp *http.Response) (result ServiceProperties, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -332,7 +329,6 @@ func (client AddsServicesClient) GetForestSummarySender(req *http.Request) (*htt
 func (client AddsServicesClient) GetForestSummaryResponder(resp *http.Response) (result ForestSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -407,7 +403,6 @@ func (client AddsServicesClient) GetMetricMetadataSender(req *http.Request) (*ht
 func (client AddsServicesClient) GetMetricMetadataResponder(resp *http.Response) (result MetricMetadata, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -496,7 +491,6 @@ func (client AddsServicesClient) GetMetricMetadataForGroupSender(req *http.Reque
 func (client AddsServicesClient) GetMetricMetadataForGroupResponder(resp *http.Response) (result MetricSets, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -543,6 +537,9 @@ func (client AddsServicesClient) List(ctx context.Context, filter string, servic
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "List", resp, "Failure responding to request")
 	}
+	if result.s.hasNextLink() && result.s.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -585,7 +582,6 @@ func (client AddsServicesClient) ListSender(req *http.Request) (*http.Response, 
 func (client AddsServicesClient) ListResponder(resp *http.Response) (result Services, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -664,6 +660,9 @@ func (client AddsServicesClient) ListMetricMetadata(ctx context.Context, service
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListMetricMetadata", resp, "Failure responding to request")
 	}
+	if result.mml.hasNextLink() && result.mml.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -704,7 +703,6 @@ func (client AddsServicesClient) ListMetricMetadataSender(req *http.Request) (*h
 func (client AddsServicesClient) ListMetricMetadataResponder(resp *http.Response) (result MetricMetadataList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -783,6 +781,9 @@ func (client AddsServicesClient) ListMetricsAverage(ctx context.Context, service
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListMetricsAverage", resp, "Failure responding to request")
 	}
+	if result.mVar.hasNextLink() && result.mVar.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -819,7 +820,6 @@ func (client AddsServicesClient) ListMetricsAverageSender(req *http.Request) (*h
 func (client AddsServicesClient) ListMetricsAverageResponder(resp *http.Response) (result Metrics, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -898,6 +898,9 @@ func (client AddsServicesClient) ListMetricsSum(ctx context.Context, serviceName
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListMetricsSum", resp, "Failure responding to request")
 	}
+	if result.mVar.hasNextLink() && result.mVar.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -934,7 +937,6 @@ func (client AddsServicesClient) ListMetricsSumSender(req *http.Request) (*http.
 func (client AddsServicesClient) ListMetricsSumResponder(resp *http.Response) (result Metrics, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1018,6 +1020,9 @@ func (client AddsServicesClient) ListPremiumServices(ctx context.Context, filter
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListPremiumServices", resp, "Failure responding to request")
 	}
+	if result.s.hasNextLink() && result.s.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1060,7 +1065,6 @@ func (client AddsServicesClient) ListPremiumServicesSender(req *http.Request) (*
 func (client AddsServicesClient) ListPremiumServicesResponder(resp *http.Response) (result Services, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1179,7 +1183,6 @@ func (client AddsServicesClient) ListReplicationDetailsSender(req *http.Request)
 func (client AddsServicesClient) ListReplicationDetailsResponder(resp *http.Response) (result ReplicationDetailsList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1267,7 +1270,6 @@ func (client AddsServicesClient) ListReplicationSummarySender(req *http.Request)
 func (client AddsServicesClient) ListReplicationSummaryResponder(resp *http.Response) (result ReplicationSummaryList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1312,6 +1314,9 @@ func (client AddsServicesClient) ListServerAlerts(ctx context.Context, serviceMe
 	result.a, err = client.ListServerAlertsResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesClient", "ListServerAlerts", resp, "Failure responding to request")
+	}
+	if result.a.hasNextLink() && result.a.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -1360,7 +1365,6 @@ func (client AddsServicesClient) ListServerAlertsSender(req *http.Request) (*htt
 func (client AddsServicesClient) ListServerAlertsResponder(resp *http.Response) (result Alerts, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1473,7 +1477,6 @@ func (client AddsServicesClient) UpdateSender(req *http.Request) (*http.Response
 func (client AddsServicesClient) UpdateResponder(resp *http.Response) (result ServiceProperties, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

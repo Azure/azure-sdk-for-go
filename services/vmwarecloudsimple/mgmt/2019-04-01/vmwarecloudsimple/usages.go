@@ -75,6 +75,9 @@ func (client UsagesClient) List(ctx context.Context, regionID string, filter str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.UsagesClient", "List", resp, "Failure responding to request")
 	}
+	if result.ulr.hasNextLink() && result.ulr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -113,7 +116,6 @@ func (client UsagesClient) ListSender(req *http.Request) (*http.Response, error)
 func (client UsagesClient) ListResponder(resp *http.Response) (result UsageListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

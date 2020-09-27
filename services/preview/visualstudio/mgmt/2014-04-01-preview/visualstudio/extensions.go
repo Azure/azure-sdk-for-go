@@ -117,7 +117,6 @@ func (client ExtensionsClient) CreateSender(req *http.Request) (*http.Response, 
 func (client ExtensionsClient) CreateResponder(resp *http.Response) (result ExtensionResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -195,7 +194,6 @@ func (client ExtensionsClient) DeleteSender(req *http.Request) (*http.Response, 
 func (client ExtensionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -272,7 +270,6 @@ func (client ExtensionsClient) GetSender(req *http.Request) (*http.Response, err
 func (client ExtensionsClient) GetResponder(resp *http.Response) (result ExtensionResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -348,7 +345,6 @@ func (client ExtensionsClient) ListByAccountSender(req *http.Request) (*http.Res
 func (client ExtensionsClient) ListByAccountResponder(resp *http.Response) (result ExtensionResourceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -429,7 +425,6 @@ func (client ExtensionsClient) UpdateSender(req *http.Request) (*http.Response, 
 func (client ExtensionsClient) UpdateResponder(resp *http.Response) (result ExtensionResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

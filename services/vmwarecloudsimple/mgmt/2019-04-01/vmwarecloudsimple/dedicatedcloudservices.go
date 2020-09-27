@@ -129,7 +129,6 @@ func (client DedicatedCloudServicesClient) CreateOrUpdateSender(req *http.Reques
 func (client DedicatedCloudServicesClient) CreateOrUpdateResponder(resp *http.Response) (result DedicatedCloudService, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -205,7 +204,6 @@ func (client DedicatedCloudServicesClient) DeleteSender(req *http.Request) (futu
 func (client DedicatedCloudServicesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -280,7 +278,6 @@ func (client DedicatedCloudServicesClient) GetSender(req *http.Request) (*http.R
 func (client DedicatedCloudServicesClient) GetResponder(resp *http.Response) (result DedicatedCloudService, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -322,6 +319,9 @@ func (client DedicatedCloudServicesClient) ListByResourceGroup(ctx context.Conte
 	result.dcslr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.dcslr.hasNextLink() && result.dcslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -367,7 +367,6 @@ func (client DedicatedCloudServicesClient) ListByResourceGroupSender(req *http.R
 func (client DedicatedCloudServicesClient) ListByResourceGroupResponder(resp *http.Response) (result DedicatedCloudServiceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -446,6 +445,9 @@ func (client DedicatedCloudServicesClient) ListBySubscription(ctx context.Contex
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "ListBySubscription", resp, "Failure responding to request")
 	}
+	if result.dcslr.hasNextLink() && result.dcslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -489,7 +491,6 @@ func (client DedicatedCloudServicesClient) ListBySubscriptionSender(req *http.Re
 func (client DedicatedCloudServicesClient) ListBySubscriptionResponder(resp *http.Response) (result DedicatedCloudServiceListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -605,7 +606,6 @@ func (client DedicatedCloudServicesClient) UpdateSender(req *http.Request) (*htt
 func (client DedicatedCloudServicesClient) UpdateResponder(resp *http.Response) (result DedicatedCloudService, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

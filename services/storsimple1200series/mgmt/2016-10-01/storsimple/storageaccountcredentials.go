@@ -130,7 +130,6 @@ func (client StorageAccountCredentialsClient) CreateOrUpdateSender(req *http.Req
 func (client StorageAccountCredentialsClient) CreateOrUpdateResponder(resp *http.Response) (result StorageAccountCredential, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -215,7 +214,6 @@ func (client StorageAccountCredentialsClient) DeleteSender(req *http.Request) (f
 func (client StorageAccountCredentialsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -299,7 +297,6 @@ func (client StorageAccountCredentialsClient) GetSender(req *http.Request) (*htt
 func (client StorageAccountCredentialsClient) GetResponder(resp *http.Response) (result StorageAccountCredential, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -382,7 +379,6 @@ func (client StorageAccountCredentialsClient) ListByManagerSender(req *http.Requ
 func (client StorageAccountCredentialsClient) ListByManagerResponder(resp *http.Response) (result StorageAccountCredentialList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

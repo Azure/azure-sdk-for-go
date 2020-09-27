@@ -93,6 +93,22 @@ const (
 	CriterionTypeStaticThresholdCriterion  CriterionType = original.CriterionTypeStaticThresholdCriterion
 )
 
+type DynamicThresholdOperator = original.DynamicThresholdOperator
+
+const (
+	DynamicThresholdOperatorGreaterOrLessThan DynamicThresholdOperator = original.DynamicThresholdOperatorGreaterOrLessThan
+	DynamicThresholdOperatorGreaterThan       DynamicThresholdOperator = original.DynamicThresholdOperatorGreaterThan
+	DynamicThresholdOperatorLessThan          DynamicThresholdOperator = original.DynamicThresholdOperatorLessThan
+)
+
+type DynamicThresholdSensitivity = original.DynamicThresholdSensitivity
+
+const (
+	High   DynamicThresholdSensitivity = original.High
+	Low    DynamicThresholdSensitivity = original.Low
+	Medium DynamicThresholdSensitivity = original.Medium
+)
+
 type Enabled = original.Enabled
 
 const (
@@ -148,6 +164,7 @@ const (
 	OdataTypeMetricAlertCriteria                                         OdataTypeBasicMetricAlertCriteria = original.OdataTypeMetricAlertCriteria
 	OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria
 	OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria   OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria
+	OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria    OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria
 )
 
 type OdataTypeBasicRuleAction = original.OdataTypeBasicRuleAction
@@ -165,6 +182,17 @@ const (
 	OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition   OdataTypeBasicRuleCondition = original.OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition
 	OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition         OdataTypeBasicRuleCondition = original.OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition
 	OdataTypeRuleCondition                                                        OdataTypeBasicRuleCondition = original.OdataTypeRuleCondition
+)
+
+type Operator = original.Operator
+
+const (
+	OperatorEquals             Operator = original.OperatorEquals
+	OperatorGreaterThan        Operator = original.OperatorGreaterThan
+	OperatorGreaterThanOrEqual Operator = original.OperatorGreaterThanOrEqual
+	OperatorLessThan           Operator = original.OperatorLessThan
+	OperatorLessThanOrEqual    Operator = original.OperatorLessThanOrEqual
+	OperatorNotEquals          Operator = original.OperatorNotEquals
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -218,6 +246,13 @@ const (
 	ScaleDirectionNone     ScaleDirection = original.ScaleDirectionNone
 )
 
+type ScaleRuleMetricDimensionOperationType = original.ScaleRuleMetricDimensionOperationType
+
+const (
+	ScaleRuleMetricDimensionOperationTypeEquals    ScaleRuleMetricDimensionOperationType = original.ScaleRuleMetricDimensionOperationTypeEquals
+	ScaleRuleMetricDimensionOperationTypeNotEquals ScaleRuleMetricDimensionOperationType = original.ScaleRuleMetricDimensionOperationTypeNotEquals
+)
+
 type ScaleType = original.ScaleType
 
 const (
@@ -229,9 +264,9 @@ const (
 type Sensitivity = original.Sensitivity
 
 const (
-	High   Sensitivity = original.High
-	Low    Sensitivity = original.Low
-	Medium Sensitivity = original.Medium
+	SensitivityHigh   Sensitivity = original.SensitivityHigh
+	SensitivityLow    Sensitivity = original.SensitivityLow
+	SensitivityMedium Sensitivity = original.SensitivityMedium
 )
 
 type TimeAggregationOperator = original.TimeAggregationOperator
@@ -415,6 +450,7 @@ type RuleWebhookAction = original.RuleWebhookAction
 type ScaleAction = original.ScaleAction
 type ScaleCapacity = original.ScaleCapacity
 type ScaleRule = original.ScaleRule
+type ScaleRuleMetricDimension = original.ScaleRuleMetricDimension
 type Schedule = original.Schedule
 type ScheduledQueryRulesClient = original.ScheduledQueryRulesClient
 type SenderAuthorization = original.SenderAuthorization
@@ -429,6 +465,7 @@ type TriggerCondition = original.TriggerCondition
 type VoiceReceiver = original.VoiceReceiver
 type WebhookNotification = original.WebhookNotification
 type WebhookReceiver = original.WebhookReceiver
+type WebtestLocationAvailabilityCriteria = original.WebtestLocationAvailabilityCriteria
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -577,6 +614,12 @@ func PossibleConditionalOperatorValues() []ConditionalOperator {
 func PossibleCriterionTypeValues() []CriterionType {
 	return original.PossibleCriterionTypeValues()
 }
+func PossibleDynamicThresholdOperatorValues() []DynamicThresholdOperator {
+	return original.PossibleDynamicThresholdOperatorValues()
+}
+func PossibleDynamicThresholdSensitivityValues() []DynamicThresholdSensitivity {
+	return original.PossibleDynamicThresholdSensitivityValues()
+}
 func PossibleEnabledValues() []Enabled {
 	return original.PossibleEnabledValues()
 }
@@ -604,6 +647,9 @@ func PossibleOdataTypeBasicRuleConditionValues() []OdataTypeBasicRuleCondition {
 func PossibleOdataTypeValues() []OdataType {
 	return original.PossibleOdataTypeValues()
 }
+func PossibleOperatorValues() []Operator {
+	return original.PossibleOperatorValues()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
@@ -621,6 +667,9 @@ func PossibleResultTypeValues() []ResultType {
 }
 func PossibleScaleDirectionValues() []ScaleDirection {
 	return original.PossibleScaleDirectionValues()
+}
+func PossibleScaleRuleMetricDimensionOperationTypeValues() []ScaleRuleMetricDimensionOperationType {
+	return original.PossibleScaleRuleMetricDimensionOperationTypeValues()
 }
 func PossibleScaleTypeValues() []ScaleType {
 	return original.PossibleScaleTypeValues()

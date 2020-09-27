@@ -173,7 +173,6 @@ func (client JobsClient) CreateSender(req *http.Request) (future JobsCreateFutur
 func (client JobsClient) CreateResponder(resp *http.Response) (result Job, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -275,7 +274,6 @@ func (client JobsClient) DeleteSender(req *http.Request) (future JobsDeleteFutur
 func (client JobsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -376,7 +374,6 @@ func (client JobsClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client JobsClient) GetResponder(resp *http.Response) (result Job, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -440,6 +437,9 @@ func (client JobsClient) ListByExperiment(ctx context.Context, resourceGroupName
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "ListByExperiment", resp, "Failure responding to request")
 	}
+	if result.jlr.hasNextLink() && result.jlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -482,7 +482,6 @@ func (client JobsClient) ListByExperimentSender(req *http.Request) (*http.Respon
 func (client JobsClient) ListByExperimentResponder(resp *http.Response) (result JobListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -600,6 +599,9 @@ func (client JobsClient) ListOutputFiles(ctx context.Context, resourceGroupName 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "ListOutputFiles", resp, "Failure responding to request")
 	}
+	if result.flr.hasNextLink() && result.flr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -654,7 +656,6 @@ func (client JobsClient) ListOutputFilesSender(req *http.Request) (*http.Respons
 func (client JobsClient) ListOutputFilesResponder(resp *http.Response) (result FileListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -757,6 +758,9 @@ func (client JobsClient) ListRemoteLoginInformation(ctx context.Context, resourc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "ListRemoteLoginInformation", resp, "Failure responding to request")
 	}
+	if result.rlilr.hasNextLink() && result.rlilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -795,7 +799,6 @@ func (client JobsClient) ListRemoteLoginInformationSender(req *http.Request) (*h
 func (client JobsClient) ListRemoteLoginInformationResponder(resp *http.Response) (result RemoteLoginInformationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -934,7 +937,6 @@ func (client JobsClient) TerminateSender(req *http.Request) (future JobsTerminat
 func (client JobsClient) TerminateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

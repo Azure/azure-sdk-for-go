@@ -80,6 +80,9 @@ func (client UsagesClient) List(ctx context.Context, location string) (result Li
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batchai.UsagesClient", "List", resp, "Failure responding to request")
 	}
+	if result.lur.hasNextLink() && result.lur.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -115,7 +118,6 @@ func (client UsagesClient) ListSender(req *http.Request) (*http.Response, error)
 func (client UsagesClient) ListResponder(resp *http.Response) (result ListUsagesResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

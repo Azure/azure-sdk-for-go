@@ -122,8 +122,7 @@ func (client GroupUsersClient) AddPreparer(ctx context.Context, resourceGroupNam
 // AddSender sends the Add request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupUsersClient) AddSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // AddResponder handles the response to the Add request. The method always
@@ -131,7 +130,6 @@ func (client GroupUsersClient) AddSender(req *http.Request) (*http.Response, err
 func (client GroupUsersClient) AddResponder(resp *http.Response) (result ErrorBodyContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent, http.StatusMethodNotAllowed),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -202,6 +200,9 @@ func (client GroupUsersClient) ListByGroup(ctx context.Context, resourceGroupNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "apimanagement.GroupUsersClient", "ListByGroup", resp, "Failure responding to request")
 	}
+	if result.uc.hasNextLink() && result.uc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -240,8 +241,7 @@ func (client GroupUsersClient) ListByGroupPreparer(ctx context.Context, resource
 // ListByGroupSender sends the ListByGroup request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupUsersClient) ListByGroupSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListByGroupResponder handles the response to the ListByGroup request. The method always
@@ -249,7 +249,6 @@ func (client GroupUsersClient) ListByGroupSender(req *http.Request) (*http.Respo
 func (client GroupUsersClient) ListByGroupResponder(resp *http.Response) (result UserCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -374,8 +373,7 @@ func (client GroupUsersClient) RemovePreparer(ctx context.Context, resourceGroup
 // RemoveSender sends the Remove request. The method will close the
 // http.Response Body if it receives an error.
 func (client GroupUsersClient) RemoveSender(req *http.Request) (*http.Response, error) {
-	sd := autorest.GetSendDecorators(req.Context(), azure.DoRetryWithRegistration(client.Client))
-	return autorest.SendWithSender(client, req, sd...)
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // RemoveResponder handles the response to the Remove request. The method always
@@ -383,7 +381,6 @@ func (client GroupUsersClient) RemoveSender(req *http.Request) (*http.Response, 
 func (client GroupUsersClient) RemoveResponder(resp *http.Response) (result ErrorBodyContract, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusMethodNotAllowed),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

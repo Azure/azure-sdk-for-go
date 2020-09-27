@@ -81,6 +81,9 @@ func (client IoTSecuritySolutionsClient) List(ctx context.Context, filter string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IoTSecuritySolutionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.itssl.hasNextLink() && result.itssl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -118,7 +121,6 @@ func (client IoTSecuritySolutionsClient) ListSender(req *http.Request) (*http.Re
 func (client IoTSecuritySolutionsClient) ListResponder(resp *http.Response) (result IoTSecuritySolutionsList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

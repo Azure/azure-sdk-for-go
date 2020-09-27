@@ -125,7 +125,6 @@ func (client InteractionsClient) CreateOrUpdateSender(req *http.Request) (future
 func (client InteractionsClient) CreateOrUpdateResponder(resp *http.Response) (result InteractionResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -209,7 +208,6 @@ func (client InteractionsClient) GetSender(req *http.Request) (*http.Response, e
 func (client InteractionsClient) GetResponder(resp *http.Response) (result InteractionResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -250,6 +248,9 @@ func (client InteractionsClient) ListByHub(ctx context.Context, resourceGroupNam
 	result.ilr, err = client.ListByHubResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.InteractionsClient", "ListByHub", resp, "Failure responding to request")
+	}
+	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -292,7 +293,6 @@ func (client InteractionsClient) ListByHubSender(req *http.Request) (*http.Respo
 func (client InteractionsClient) ListByHubResponder(resp *http.Response) (result InteractionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -407,7 +407,6 @@ func (client InteractionsClient) SuggestRelationshipLinksSender(req *http.Reques
 func (client InteractionsClient) SuggestRelationshipLinksResponder(resp *http.Response) (result SuggestRelationshipLinksResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

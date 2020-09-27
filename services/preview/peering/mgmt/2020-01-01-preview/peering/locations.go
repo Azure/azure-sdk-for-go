@@ -74,6 +74,9 @@ func (client LocationsClient) List(ctx context.Context, kind string, directPeeri
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.LocationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.llr.hasNextLink() && result.llr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -112,7 +115,6 @@ func (client LocationsClient) ListSender(req *http.Request) (*http.Response, err
 func (client LocationsClient) ListResponder(resp *http.Response) (result LocationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

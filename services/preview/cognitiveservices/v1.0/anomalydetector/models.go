@@ -25,29 +25,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/anomalydetector"
 
-// Granularity enumerates the values for granularity.
-type Granularity string
-
-const (
-	// Daily ...
-	Daily Granularity = "daily"
-	// Hourly ...
-	Hourly Granularity = "hourly"
-	// Minutely ...
-	Minutely Granularity = "minutely"
-	// Monthly ...
-	Monthly Granularity = "monthly"
-	// Weekly ...
-	Weekly Granularity = "weekly"
-	// Yearly ...
-	Yearly Granularity = "yearly"
-)
-
-// PossibleGranularityValues returns an array of possible values for the Granularity const type.
-func PossibleGranularityValues() []Granularity {
-	return []Granularity{Daily, Hourly, Minutely, Monthly, Weekly, Yearly}
-}
-
 // APIError error information returned by the API.
 type APIError struct {
 	// Code - The error code.
@@ -60,7 +37,7 @@ type APIError struct {
 type ChangePointDetectRequest struct {
 	// Series - Time series data points. Points should be sorted by timestamp in ascending order to match the change point detection result.
 	Series *[]Point `json:"series,omitempty"`
-	// Granularity - Can only be one of yearly, monthly, weekly, daily, hourly or minutely. Granularity is used for verify whether input series is valid. Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'Minutely'
+	// Granularity - Can only be one of yearly, monthly, weekly, daily, hourly, minutely or secondly. Granularity is used for verify whether input series is valid. Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'Minutely', 'Secondly'
 	Granularity Granularity `json:"granularity,omitempty"`
 	// CustomInterval - Custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
 	CustomInterval *int32 `json:"customInterval,omitempty"`
@@ -135,7 +112,7 @@ type Point struct {
 type Request struct {
 	// Series - Time series data points. Points should be sorted by timestamp in ascending order to match the anomaly detection result. If the data is not sorted correctly or there is duplicated timestamp, the API will not work. In such case, an error message will be returned.
 	Series *[]Point `json:"series,omitempty"`
-	// Granularity - Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'Minutely'
+	// Granularity - Possible values include: 'Yearly', 'Monthly', 'Weekly', 'Daily', 'Hourly', 'Minutely', 'Secondly'
 	Granularity Granularity `json:"granularity,omitempty"`
 	// CustomInterval - Custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
 	CustomInterval *int32 `json:"customInterval,omitempty"`

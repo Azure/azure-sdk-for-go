@@ -105,7 +105,6 @@ func (client VersionsClient) CloneSender(req *http.Request) (*http.Response, err
 func (client VersionsClient) CloneResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -178,7 +177,6 @@ func (client VersionsClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client VersionsClient) DeleteResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -254,7 +252,6 @@ func (client VersionsClient) DeleteUnlabelledUtteranceSender(req *http.Request) 
 func (client VersionsClient) DeleteUnlabelledUtteranceResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -327,7 +324,6 @@ func (client VersionsClient) ExportSender(req *http.Request) (*http.Response, er
 func (client VersionsClient) ExportResponder(resp *http.Response) (result LuisApp, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -401,7 +397,6 @@ func (client VersionsClient) GetSender(req *http.Request) (*http.Response, error
 func (client VersionsClient) GetResponder(resp *http.Response) (result VersionInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -483,7 +478,6 @@ func (client VersionsClient) ImportSender(req *http.Request) (*http.Response, er
 func (client VersionsClient) ImportResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -581,7 +575,6 @@ func (client VersionsClient) ListSender(req *http.Request) (*http.Response, erro
 func (client VersionsClient) ListResponder(resp *http.Response) (result ListVersionInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -657,7 +650,6 @@ func (client VersionsClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client VersionsClient) UpdateResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

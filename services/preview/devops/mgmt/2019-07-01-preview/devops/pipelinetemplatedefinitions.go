@@ -72,6 +72,9 @@ func (client PipelineTemplateDefinitionsClient) List(ctx context.Context) (resul
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "devops.PipelineTemplateDefinitionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.ptdlr.hasNextLink() && result.ptdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -102,7 +105,6 @@ func (client PipelineTemplateDefinitionsClient) ListSender(req *http.Request) (*
 func (client PipelineTemplateDefinitionsClient) ListResponder(resp *http.Response) (result PipelineTemplateDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

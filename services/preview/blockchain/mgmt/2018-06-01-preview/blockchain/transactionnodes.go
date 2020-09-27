@@ -119,7 +119,6 @@ func (client TransactionNodesClient) CreateSender(req *http.Request) (future Tra
 func (client TransactionNodesClient) CreateResponder(resp *http.Response) (result TransactionNode, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -198,7 +197,6 @@ func (client TransactionNodesClient) DeleteSender(req *http.Request) (future Tra
 func (client TransactionNodesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -276,7 +274,6 @@ func (client TransactionNodesClient) GetSender(req *http.Request) (*http.Respons
 func (client TransactionNodesClient) GetResponder(resp *http.Response) (result TransactionNode, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -318,6 +315,9 @@ func (client TransactionNodesClient) List(ctx context.Context, blockchainMemberN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "List", resp, "Failure responding to request")
 	}
+	if result.tnc.hasNextLink() && result.tnc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -354,7 +354,6 @@ func (client TransactionNodesClient) ListSender(req *http.Request) (*http.Respon
 func (client TransactionNodesClient) ListResponder(resp *http.Response) (result TransactionNodeCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -470,7 +469,6 @@ func (client TransactionNodesClient) ListAPIKeysSender(req *http.Request) (*http
 func (client TransactionNodesClient) ListAPIKeysResponder(resp *http.Response) (result APIKeyCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -555,7 +553,6 @@ func (client TransactionNodesClient) ListRegenerateAPIKeysSender(req *http.Reque
 func (client TransactionNodesClient) ListRegenerateAPIKeysResponder(resp *http.Response) (result APIKeyCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -640,7 +637,6 @@ func (client TransactionNodesClient) UpdateSender(req *http.Request) (*http.Resp
 func (client TransactionNodesClient) UpdateResponder(resp *http.Response) (result TransactionNode, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

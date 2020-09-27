@@ -114,7 +114,6 @@ func (client ReplicaClient) GetSender(req *http.Request) (*http.Response, error)
 func (client ReplicaClient) GetResponder(resp *http.Response) (result ServiceReplicaDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -157,6 +156,9 @@ func (client ReplicaClient) ListByServiceName(ctx context.Context, resourceGroup
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.ReplicaClient", "ListByServiceName", resp, "Failure responding to request")
 	}
+	if result.srl.hasNextLink() && result.srl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -194,7 +196,6 @@ func (client ReplicaClient) ListByServiceNameSender(req *http.Request) (*http.Re
 func (client ReplicaClient) ListByServiceNameResponder(resp *http.Response) (result ServiceReplicaList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -25,11 +25,46 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type MetadataColumnDataType = original.MetadataColumnDataType
+
+const (
+	Bool     MetadataColumnDataType = original.Bool
+	Datetime MetadataColumnDataType = original.Datetime
+	Dynamic  MetadataColumnDataType = original.Dynamic
+	Int      MetadataColumnDataType = original.Int
+	Long     MetadataColumnDataType = original.Long
+	Real     MetadataColumnDataType = original.Real
+	String   MetadataColumnDataType = original.String
+)
+
 type BaseClient = original.BaseClient
 type Column = original.Column
 type ErrorDetail = original.ErrorDetail
 type ErrorInfo = original.ErrorInfo
 type ErrorResponse = original.ErrorResponse
+type MetadataApplication = original.MetadataApplication
+type MetadataApplicationRelated = original.MetadataApplicationRelated
+type MetadataCategory = original.MetadataCategory
+type MetadataCategoryRelated = original.MetadataCategoryRelated
+type MetadataClient = original.MetadataClient
+type MetadataFunction = original.MetadataFunction
+type MetadataFunctionRelated = original.MetadataFunctionRelated
+type MetadataPermissions = original.MetadataPermissions
+type MetadataPermissionsApplicationsItem = original.MetadataPermissionsApplicationsItem
+type MetadataPermissionsResourcesItem = original.MetadataPermissionsResourcesItem
+type MetadataPermissionsWorkspacesItem = original.MetadataPermissionsWorkspacesItem
+type MetadataQuery = original.MetadataQuery
+type MetadataQueryRelated = original.MetadataQueryRelated
+type MetadataResourceType = original.MetadataResourceType
+type MetadataResourceTypeRelated = original.MetadataResourceTypeRelated
+type MetadataResults = original.MetadataResults
+type MetadataSolution = original.MetadataSolution
+type MetadataSolutionRelated = original.MetadataSolutionRelated
+type MetadataTable = original.MetadataTable
+type MetadataTableColumnsItem = original.MetadataTableColumnsItem
+type MetadataTableRelated = original.MetadataTableRelated
+type MetadataWorkspace = original.MetadataWorkspace
+type MetadataWorkspaceRelated = original.MetadataWorkspaceRelated
 type QueryBody = original.QueryBody
 type QueryClient = original.QueryClient
 type QueryResults = original.QueryResults
@@ -37,6 +72,12 @@ type Table = original.Table
 
 func New() BaseClient {
 	return original.New()
+}
+func NewMetadataClient() MetadataClient {
+	return original.NewMetadataClient()
+}
+func NewMetadataClientWithBaseURI(baseURI string) MetadataClient {
+	return original.NewMetadataClientWithBaseURI(baseURI)
 }
 func NewQueryClient() QueryClient {
 	return original.NewQueryClient()
@@ -46,6 +87,9 @@ func NewQueryClientWithBaseURI(baseURI string) QueryClient {
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func PossibleMetadataColumnDataTypeValues() []MetadataColumnDataType {
+	return original.PossibleMetadataColumnDataTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

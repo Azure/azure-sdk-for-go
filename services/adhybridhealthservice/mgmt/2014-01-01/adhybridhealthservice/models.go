@@ -31,245 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice"
 
-// AlgorithmStepType enumerates the values for algorithm step type.
-type AlgorithmStepType string
-
-const (
-	// ConnectorFilter ...
-	ConnectorFilter AlgorithmStepType = "ConnectorFilter"
-	// Deprovisioning ...
-	Deprovisioning AlgorithmStepType = "Deprovisioning"
-	// ExportFlow ...
-	ExportFlow AlgorithmStepType = "ExportFlow"
-	// ImportFlow ...
-	ImportFlow AlgorithmStepType = "ImportFlow"
-	// Join ...
-	Join AlgorithmStepType = "Join"
-	// MvDeletion ...
-	MvDeletion AlgorithmStepType = "MvDeletion"
-	// MvObjectTypeChange ...
-	MvObjectTypeChange AlgorithmStepType = "MvObjectTypeChange"
-	// Projection ...
-	Projection AlgorithmStepType = "Projection"
-	// Provisioning ...
-	Provisioning AlgorithmStepType = "Provisioning"
-	// Recall ...
-	Recall AlgorithmStepType = "Recall"
-	// Staging ...
-	Staging AlgorithmStepType = "Staging"
-	// Undefined ...
-	Undefined AlgorithmStepType = "Undefined"
-	// ValidateConnectorFilter ...
-	ValidateConnectorFilter AlgorithmStepType = "ValidateConnectorFilter"
-)
-
-// PossibleAlgorithmStepTypeValues returns an array of possible values for the AlgorithmStepType const type.
-func PossibleAlgorithmStepTypeValues() []AlgorithmStepType {
-	return []AlgorithmStepType{ConnectorFilter, Deprovisioning, ExportFlow, ImportFlow, Join, MvDeletion, MvObjectTypeChange, Projection, Provisioning, Recall, Staging, Undefined, ValidateConnectorFilter}
-}
-
-// AttributeDeltaOperationType enumerates the values for attribute delta operation type.
-type AttributeDeltaOperationType string
-
-const (
-	// AttributeDeltaOperationTypeAdd ...
-	AttributeDeltaOperationTypeAdd AttributeDeltaOperationType = "Add"
-	// AttributeDeltaOperationTypeDelete ...
-	AttributeDeltaOperationTypeDelete AttributeDeltaOperationType = "Delete"
-	// AttributeDeltaOperationTypeReplace ...
-	AttributeDeltaOperationTypeReplace AttributeDeltaOperationType = "Replace"
-	// AttributeDeltaOperationTypeUndefined ...
-	AttributeDeltaOperationTypeUndefined AttributeDeltaOperationType = "Undefined"
-	// AttributeDeltaOperationTypeUpdate ...
-	AttributeDeltaOperationTypeUpdate AttributeDeltaOperationType = "Update"
-)
-
-// PossibleAttributeDeltaOperationTypeValues returns an array of possible values for the AttributeDeltaOperationType const type.
-func PossibleAttributeDeltaOperationTypeValues() []AttributeDeltaOperationType {
-	return []AttributeDeltaOperationType{AttributeDeltaOperationTypeAdd, AttributeDeltaOperationTypeDelete, AttributeDeltaOperationTypeReplace, AttributeDeltaOperationTypeUndefined, AttributeDeltaOperationTypeUpdate}
-}
-
-// AttributeMappingType enumerates the values for attribute mapping type.
-type AttributeMappingType string
-
-const (
-	// Constant ...
-	Constant AttributeMappingType = "Constant"
-	// Direct ...
-	Direct AttributeMappingType = "Direct"
-	// DnPart ...
-	DnPart AttributeMappingType = "DnPart"
-	// Script ...
-	Script AttributeMappingType = "Script"
-)
-
-// PossibleAttributeMappingTypeValues returns an array of possible values for the AttributeMappingType const type.
-func PossibleAttributeMappingTypeValues() []AttributeMappingType {
-	return []AttributeMappingType{Constant, Direct, DnPart, Script}
-}
-
-// DeltaOperationType enumerates the values for delta operation type.
-type DeltaOperationType string
-
-const (
-	// DeltaOperationTypeAdd ...
-	DeltaOperationTypeAdd DeltaOperationType = "Add"
-	// DeltaOperationTypeDelete ...
-	DeltaOperationTypeDelete DeltaOperationType = "Delete"
-	// DeltaOperationTypeDeleteAdd ...
-	DeltaOperationTypeDeleteAdd DeltaOperationType = "DeleteAdd"
-	// DeltaOperationTypeNone ...
-	DeltaOperationTypeNone DeltaOperationType = "None"
-	// DeltaOperationTypeObsolete ...
-	DeltaOperationTypeObsolete DeltaOperationType = "Obsolete"
-	// DeltaOperationTypeReplace ...
-	DeltaOperationTypeReplace DeltaOperationType = "Replace"
-	// DeltaOperationTypeUndefined ...
-	DeltaOperationTypeUndefined DeltaOperationType = "Undefined"
-	// DeltaOperationTypeUpdate ...
-	DeltaOperationTypeUpdate DeltaOperationType = "Update"
-)
-
-// PossibleDeltaOperationTypeValues returns an array of possible values for the DeltaOperationType const type.
-func PossibleDeltaOperationTypeValues() []DeltaOperationType {
-	return []DeltaOperationType{DeltaOperationTypeAdd, DeltaOperationTypeDelete, DeltaOperationTypeDeleteAdd, DeltaOperationTypeNone, DeltaOperationTypeObsolete, DeltaOperationTypeReplace, DeltaOperationTypeUndefined, DeltaOperationTypeUpdate}
-}
-
-// HealthStatus enumerates the values for health status.
-type HealthStatus string
-
-const (
-	// Error ...
-	Error HealthStatus = "Error"
-	// Healthy ...
-	Healthy HealthStatus = "Healthy"
-	// Missing ...
-	Missing HealthStatus = "Missing"
-	// NotMonitored ...
-	NotMonitored HealthStatus = "NotMonitored"
-	// Warning ...
-	Warning HealthStatus = "Warning"
-)
-
-// PossibleHealthStatusValues returns an array of possible values for the HealthStatus const type.
-func PossibleHealthStatusValues() []HealthStatus {
-	return []HealthStatus{Error, Healthy, Missing, NotMonitored, Warning}
-}
-
-// Level enumerates the values for level.
-type Level string
-
-const (
-	// LevelError ...
-	LevelError Level = "Error"
-	// LevelPreWarning ...
-	LevelPreWarning Level = "PreWarning"
-	// LevelWarning ...
-	LevelWarning Level = "Warning"
-)
-
-// PossibleLevelValues returns an array of possible values for the Level const type.
-func PossibleLevelValues() []Level {
-	return []Level{LevelError, LevelPreWarning, LevelWarning}
-}
-
-// MonitoringLevel enumerates the values for monitoring level.
-type MonitoringLevel string
-
-const (
-	// Full ...
-	Full MonitoringLevel = "Full"
-	// Off ...
-	Off MonitoringLevel = "Off"
-	// Partial ...
-	Partial MonitoringLevel = "Partial"
-)
-
-// PossibleMonitoringLevelValues returns an array of possible values for the MonitoringLevel const type.
-func PossibleMonitoringLevelValues() []MonitoringLevel {
-	return []MonitoringLevel{Full, Off, Partial}
-}
-
-// PasswordOperationTypes enumerates the values for password operation types.
-type PasswordOperationTypes string
-
-const (
-	// PasswordOperationTypesChange ...
-	PasswordOperationTypesChange PasswordOperationTypes = "Change"
-	// PasswordOperationTypesSet ...
-	PasswordOperationTypesSet PasswordOperationTypes = "Set"
-	// PasswordOperationTypesUndefined ...
-	PasswordOperationTypesUndefined PasswordOperationTypes = "Undefined"
-)
-
-// PossiblePasswordOperationTypesValues returns an array of possible values for the PasswordOperationTypes const type.
-func PossiblePasswordOperationTypesValues() []PasswordOperationTypes {
-	return []PasswordOperationTypes{PasswordOperationTypesChange, PasswordOperationTypesSet, PasswordOperationTypesUndefined}
-}
-
-// State enumerates the values for state.
-type State string
-
-const (
-	// Active ...
-	Active State = "Active"
-	// ResolvedByPositiveResult ...
-	ResolvedByPositiveResult State = "ResolvedByPositiveResult"
-	// ResolvedByStateChange ...
-	ResolvedByStateChange State = "ResolvedByStateChange"
-	// ResolvedByTimer ...
-	ResolvedByTimer State = "ResolvedByTimer"
-	// ResolvedManually ...
-	ResolvedManually State = "ResolvedManually"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{Active, ResolvedByPositiveResult, ResolvedByStateChange, ResolvedByTimer, ResolvedManually}
-}
-
-// ValueDeltaOperationType enumerates the values for value delta operation type.
-type ValueDeltaOperationType string
-
-const (
-	// ValueDeltaOperationTypeAdd ...
-	ValueDeltaOperationTypeAdd ValueDeltaOperationType = "Add"
-	// ValueDeltaOperationTypeDelete ...
-	ValueDeltaOperationTypeDelete ValueDeltaOperationType = "Delete"
-	// ValueDeltaOperationTypeUndefined ...
-	ValueDeltaOperationTypeUndefined ValueDeltaOperationType = "Undefined"
-	// ValueDeltaOperationTypeUpdate ...
-	ValueDeltaOperationTypeUpdate ValueDeltaOperationType = "Update"
-)
-
-// PossibleValueDeltaOperationTypeValues returns an array of possible values for the ValueDeltaOperationType const type.
-func PossibleValueDeltaOperationTypeValues() []ValueDeltaOperationType {
-	return []ValueDeltaOperationType{ValueDeltaOperationTypeAdd, ValueDeltaOperationTypeDelete, ValueDeltaOperationTypeUndefined, ValueDeltaOperationTypeUpdate}
-}
-
-// ValueType enumerates the values for value type.
-type ValueType string
-
-const (
-	// ValueTypeBinary ...
-	ValueTypeBinary ValueType = "Binary"
-	// ValueTypeBoolean ...
-	ValueTypeBoolean ValueType = "Boolean"
-	// ValueTypeDn ...
-	ValueTypeDn ValueType = "Dn"
-	// ValueTypeInteger ...
-	ValueTypeInteger ValueType = "Integer"
-	// ValueTypeString ...
-	ValueTypeString ValueType = "String"
-	// ValueTypeUndefined ...
-	ValueTypeUndefined ValueType = "Undefined"
-)
-
-// PossibleValueTypeValues returns an array of possible values for the ValueType const type.
-func PossibleValueTypeValues() []ValueType {
-	return []ValueType{ValueTypeBinary, ValueTypeBoolean, ValueTypeDn, ValueTypeInteger, ValueTypeString, ValueTypeUndefined}
-}
-
 // AdditionalInformation the additional information for a property.
 type AdditionalInformation struct {
 	// TitleName - The title name for the property.
@@ -363,10 +124,15 @@ func (ac AddsConfiguration) IsEmpty() bool {
 	return ac.Value == nil || len(*ac.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ac AddsConfiguration) hasNextLink() bool {
+	return ac.NextLink != nil && len(*ac.NextLink) != 0
+}
+
 // addsConfigurationPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ac AddsConfiguration) addsConfigurationPreparer(ctx context.Context) (*http.Request, error) {
-	if ac.NextLink == nil || len(to.String(ac.NextLink)) < 1 {
+	if !ac.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -394,11 +160,16 @@ func (page *AddsConfigurationPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ac)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ac)
+		if err != nil {
+			return err
+		}
+		page.ac = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ac = next
 	return nil
 }
 
@@ -585,10 +356,15 @@ func (asm AddsServiceMembers) IsEmpty() bool {
 	return asm.Value == nil || len(*asm.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (asm AddsServiceMembers) hasNextLink() bool {
+	return asm.NextLink != nil && len(*asm.NextLink) != 0
+}
+
 // addsServiceMembersPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (asm AddsServiceMembers) addsServiceMembersPreparer(ctx context.Context) (*http.Request, error) {
-	if asm.NextLink == nil || len(to.String(asm.NextLink)) < 1 {
+	if !asm.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -616,11 +392,16 @@ func (page *AddsServiceMembersPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.asm)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.asm)
+		if err != nil {
+			return err
+		}
+		page.asm = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.asm = next
 	return nil
 }
 
@@ -823,10 +604,15 @@ func (a Alerts) IsEmpty() bool {
 	return a.Value == nil || len(*a.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (a Alerts) hasNextLink() bool {
+	return a.NextLink != nil && len(*a.NextLink) != 0
+}
+
 // alertsPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (a Alerts) alertsPreparer(ctx context.Context) (*http.Request, error) {
-	if a.NextLink == nil || len(to.String(a.NextLink)) < 1 {
+	if !a.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -854,11 +640,16 @@ func (page *AlertsPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.a)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.a)
+		if err != nil {
+			return err
+		}
+		page.a = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.a = next
 	return nil
 }
 
@@ -1245,10 +1036,15 @@ func (d Dimensions) IsEmpty() bool {
 	return d.Value == nil || len(*d.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (d Dimensions) hasNextLink() bool {
+	return d.NextLink != nil && len(*d.NextLink) != 0
+}
+
 // dimensionsPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (d Dimensions) dimensionsPreparer(ctx context.Context) (*http.Request, error) {
-	if d.NextLink == nil || len(to.String(d.NextLink)) < 1 {
+	if !d.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1276,11 +1072,16 @@ func (page *DimensionsPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.d)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.d)
+		if err != nil {
+			return err
+		}
+		page.d = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.d = next
 	return nil
 }
 
@@ -1366,7 +1167,7 @@ type ErrorReportUsersEntries struct {
 type ErrorReportUsersEntry struct {
 	// UserID - The user ID value.
 	UserID *string `json:"userId,omitempty"`
-	// IPAddress - The Ip address corresponding to the last error event.
+	// IPAddress - The IP address corresponding to the last error event.
 	IPAddress *string `json:"ipAddress,omitempty"`
 	// LastUpdated - The date and time when the last error event was logged.
 	LastUpdated *date.Time `json:"lastUpdated,omitempty"`
@@ -1553,10 +1354,15 @@ func (es ExportStatuses) IsEmpty() bool {
 	return es.Value == nil || len(*es.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (es ExportStatuses) hasNextLink() bool {
+	return es.NextLink != nil && len(*es.NextLink) != 0
+}
+
 // exportStatusesPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (es ExportStatuses) exportStatusesPreparer(ctx context.Context) (*http.Request, error) {
-	if es.NextLink == nil || len(to.String(es.NextLink)) < 1 {
+	if !es.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1584,11 +1390,16 @@ func (page *ExportStatusesPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.es)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.es)
+		if err != nil {
+			return err
+		}
+		page.es = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.es = next
 	return nil
 }
 
@@ -1766,6 +1577,221 @@ type InboundReplicationNeighbor struct {
 type InboundReplicationNeighbors struct {
 	// Value - The details of inbound replication neighbors.
 	Value *[]InboundReplicationNeighbor `json:"value,omitempty"`
+}
+
+// IPAddressAggregate the key value pair for properties.
+type IPAddressAggregate struct {
+	// ID - Unique ID for the entree
+	ID *string `json:"id,omitempty"`
+	// TenantID - The tenant ID
+	TenantID *string `json:"tenantId,omitempty"`
+	// ServiceID - The service ID
+	ServiceID *string `json:"serviceId,omitempty"`
+	// IPAddress - The IP address from where the attempted login originated from.
+	IPAddress *string `json:"ipAddress,omitempty"`
+	// Timestamp - When the event occurred
+	Timestamp *string `json:"timestamp,omitempty"`
+	// FirstAuditTimestamp - The first audit timestamp
+	FirstAuditTimestamp *string `json:"firstAuditTimestamp,omitempty"`
+	// LastAuditTimestamp - The last audit timestamp
+	LastAuditTimestamp *string `json:"lastAuditTimestamp,omitempty"`
+	// ExtranetLockoutErrorCount - The extranet lockout error count
+	ExtranetLockoutErrorCount *int32 `json:"extranetLockoutErrorCount,omitempty"`
+	// BadPasswordErrorCount - The bad password error count
+	BadPasswordErrorCount *int32 `json:"badPasswordErrorCount,omitempty"`
+	// UniqueUsernamesAttemptedCount - The unique usernames attempted
+	UniqueUsernamesAttemptedCount *int32 `json:"uniqueUsernamesAttemptedCount,omitempty"`
+	// AttemptCountThresholdIsExceeded - A value indicating whether the attempt count threshold been exceeded
+	AttemptCountThresholdIsExceeded *bool `json:"attemptCountThresholdIsExceeded,omitempty"`
+	// TimeSpan - The duration of the event
+	TimeSpan *string `json:"timeSpan,omitempty"`
+	// IsWhitelistedIPAddress - A value indicating whether the IP address has been whitelisted.
+	IsWhitelistedIPAddress *bool `json:"isWhitelistedIpAddress,omitempty"`
+	// NetworkLocation - The network location
+	NetworkLocation *string `json:"networkLocation,omitempty"`
+	// AttemptCountThresholdOnTrigger - The attempted count threshold on trigger.
+	AttemptCountThresholdOnTrigger *int32 `json:"attemptCountThresholdOnTrigger,omitempty"`
+	// AttemptThresholdTypeOnTrigger - The attempted threshold type on trigger.
+	AttemptThresholdTypeOnTrigger *string `json:"attemptThresholdTypeOnTrigger,omitempty"`
+	// GeographicLocation - The geographic location.
+	GeographicLocation *string `json:"geographicLocation,omitempty"`
+}
+
+// IPAddressAggregates IP address aggregates.
+type IPAddressAggregates struct {
+	autorest.Response `json:"-"`
+	// Value - The value returned by the operation.
+	Value *[]IPAddressAggregate `json:"value,omitempty"`
+	// NextLink - URL to get the next set of IP Aggregate list results if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
+	// TotalCount - The number of results.
+	TotalCount *int32 `json:"totalCount,omitempty"`
+	// ContinuationToken - The continuation token for paginated calls.
+	ContinuationToken *string `json:"continuationToken,omitempty"`
+}
+
+// IPAddressAggregateSetting the key value pair for IP aggregate thresholds.
+type IPAddressAggregateSetting struct {
+	autorest.Response `json:"-"`
+	// ID - Unique ID for the entree
+	ID *string `json:"id,omitempty"`
+	// BadPasswordAndExtranetLockoutCombinedDailyThreshold - This threshold setting defines the per day trigger for a new event to be generated in the report.
+	BadPasswordAndExtranetLockoutCombinedDailyThreshold *int32 `json:"badPasswordAndExtranetLockoutCombinedDailyThreshold,omitempty"`
+	// BadPasswordAndExtranetLockoutCombinedHourlyThreshold - This threshold setting defines the per hour trigger for a new event to be generated in the report.
+	BadPasswordAndExtranetLockoutCombinedHourlyThreshold *int32 `json:"badPasswordAndExtranetLockoutCombinedHourlyThreshold,omitempty"`
+	// ExtranetLockoutDailyThreshold - This threshold setting defines the per hour trigger for a new event to be generated in the report.
+	ExtranetLockoutDailyThreshold *int32 `json:"extranetLockoutDailyThreshold,omitempty"`
+	// ExtranetLockoutHourlyThreshold - This threshold setting defines the per hour trigger for a new event to be generated in the report.
+	ExtranetLockoutHourlyThreshold *int32 `json:"extranetLockoutHourlyThreshold,omitempty"`
+	// EmailNotificationEnabled - A value indicating whether email notification has been enabled.
+	EmailNotificationEnabled *bool `json:"emailNotificationEnabled,omitempty"`
+}
+
+// IPAddressAggregatesIterator provides access to a complete listing of IPAddressAggregate values.
+type IPAddressAggregatesIterator struct {
+	i    int
+	page IPAddressAggregatesPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IPAddressAggregatesIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPAddressAggregatesIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IPAddressAggregatesIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IPAddressAggregatesIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IPAddressAggregatesIterator) Response() IPAddressAggregates {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IPAddressAggregatesIterator) Value() IPAddressAggregate {
+	if !iter.page.NotDone() {
+		return IPAddressAggregate{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IPAddressAggregatesIterator type.
+func NewIPAddressAggregatesIterator(page IPAddressAggregatesPage) IPAddressAggregatesIterator {
+	return IPAddressAggregatesIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (iaa IPAddressAggregates) IsEmpty() bool {
+	return iaa.Value == nil || len(*iaa.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (iaa IPAddressAggregates) hasNextLink() bool {
+	return iaa.NextLink != nil && len(*iaa.NextLink) != 0
+}
+
+// iPAddressAggregatesPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (iaa IPAddressAggregates) iPAddressAggregatesPreparer(ctx context.Context) (*http.Request, error) {
+	if !iaa.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(iaa.NextLink)))
+}
+
+// IPAddressAggregatesPage contains a page of IPAddressAggregate values.
+type IPAddressAggregatesPage struct {
+	fn  func(context.Context, IPAddressAggregates) (IPAddressAggregates, error)
+	iaa IPAddressAggregates
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IPAddressAggregatesPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IPAddressAggregatesPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.iaa)
+		if err != nil {
+			return err
+		}
+		page.iaa = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IPAddressAggregatesPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IPAddressAggregatesPage) NotDone() bool {
+	return !page.iaa.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IPAddressAggregatesPage) Response() IPAddressAggregates {
+	return page.iaa
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IPAddressAggregatesPage) Values() []IPAddressAggregate {
+	if page.iaa.IsEmpty() {
+		return nil
+	}
+	return *page.iaa.Value
+}
+
+// Creates a new instance of the IPAddressAggregatesPage type.
+func NewIPAddressAggregatesPage(getNextPage func(context.Context, IPAddressAggregates) (IPAddressAggregates, error)) IPAddressAggregatesPage {
+	return IPAddressAggregatesPage{fn: getNextPage}
 }
 
 // Item the key value pair for properties.
@@ -1956,10 +1982,15 @@ func (mml MetricMetadataList) IsEmpty() bool {
 	return mml.Value == nil || len(*mml.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mml MetricMetadataList) hasNextLink() bool {
+	return mml.NextLink != nil && len(*mml.NextLink) != 0
+}
+
 // metricMetadataListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mml MetricMetadataList) metricMetadataListPreparer(ctx context.Context) (*http.Request, error) {
-	if mml.NextLink == nil || len(to.String(mml.NextLink)) < 1 {
+	if !mml.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1987,11 +2018,16 @@ func (page *MetricMetadataListPage) NextWithContext(ctx context.Context) (err er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mml)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mml)
+		if err != nil {
+			return err
+		}
+		page.mml = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mml = next
 	return nil
 }
 
@@ -2124,10 +2160,15 @@ func (mVar Metrics) IsEmpty() bool {
 	return mVar.Value == nil || len(*mVar.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (mVar Metrics) hasNextLink() bool {
+	return mVar.NextLink != nil && len(*mVar.NextLink) != 0
+}
+
 // metricsPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (mVar Metrics) metricsPreparer(ctx context.Context) (*http.Request, error) {
-	if mVar.NextLink == nil || len(to.String(mVar.NextLink)) < 1 {
+	if !mVar.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2155,11 +2196,16 @@ func (page *MetricsPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.mVar)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.mVar)
+		if err != nil {
+			return err
+		}
+		page.mVar = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.mVar = next
 	return nil
 }
 
@@ -2282,6 +2328,18 @@ type OperationListResponse struct {
 	ContinuationToken *string `json:"continuationToken,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationListResponse.
+func (olr OperationListResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if olr.TotalCount != nil {
+		objectMap["totalCount"] = olr.TotalCount
+	}
+	if olr.ContinuationToken != nil {
+		objectMap["continuationToken"] = olr.ContinuationToken
+	}
+	return json.Marshal(objectMap)
+}
+
 // OperationListResponseIterator provides access to a complete listing of Operation values.
 type OperationListResponseIterator struct {
 	i    int
@@ -2350,10 +2408,15 @@ func (olr OperationListResponse) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResponse) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResponsePreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResponse) operationListResponsePreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2381,11 +2444,16 @@ func (page *OperationListResponsePage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -2773,10 +2841,15 @@ func (sm ServiceMembers) IsEmpty() bool {
 	return sm.Value == nil || len(*sm.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (sm ServiceMembers) hasNextLink() bool {
+	return sm.NextLink != nil && len(*sm.NextLink) != 0
+}
+
 // serviceMembersPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (sm ServiceMembers) serviceMembersPreparer(ctx context.Context) (*http.Request, error) {
-	if sm.NextLink == nil || len(to.String(sm.NextLink)) < 1 {
+	if !sm.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2804,11 +2877,16 @@ func (page *ServiceMembersPage) NextWithContext(ctx context.Context) (err error)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.sm)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.sm)
+		if err != nil {
+			return err
+		}
+		page.sm = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.sm = next
 	return nil
 }
 
@@ -2976,10 +3054,15 @@ func (s Services) IsEmpty() bool {
 	return s.Value == nil || len(*s.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (s Services) hasNextLink() bool {
+	return s.NextLink != nil && len(*s.NextLink) != 0
+}
+
 // servicesPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (s Services) servicesPreparer(ctx context.Context) (*http.Request, error) {
-	if s.NextLink == nil || len(to.String(s.NextLink)) < 1 {
+	if !s.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -3007,11 +3090,16 @@ func (page *ServicesPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.s)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.s)
+		if err != nil {
+			return err
+		}
+		page.s = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.s = next
 	return nil
 }
 

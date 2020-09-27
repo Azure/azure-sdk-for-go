@@ -31,98 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-06-01/containerinstance"
 
-// ContainerGroupNetworkProtocol enumerates the values for container group network protocol.
-type ContainerGroupNetworkProtocol string
-
-const (
-	// TCP ...
-	TCP ContainerGroupNetworkProtocol = "TCP"
-	// UDP ...
-	UDP ContainerGroupNetworkProtocol = "UDP"
-)
-
-// PossibleContainerGroupNetworkProtocolValues returns an array of possible values for the ContainerGroupNetworkProtocol const type.
-func PossibleContainerGroupNetworkProtocolValues() []ContainerGroupNetworkProtocol {
-	return []ContainerGroupNetworkProtocol{TCP, UDP}
-}
-
-// ContainerGroupRestartPolicy enumerates the values for container group restart policy.
-type ContainerGroupRestartPolicy string
-
-const (
-	// Always ...
-	Always ContainerGroupRestartPolicy = "Always"
-	// Never ...
-	Never ContainerGroupRestartPolicy = "Never"
-	// OnFailure ...
-	OnFailure ContainerGroupRestartPolicy = "OnFailure"
-)
-
-// PossibleContainerGroupRestartPolicyValues returns an array of possible values for the ContainerGroupRestartPolicy const type.
-func PossibleContainerGroupRestartPolicyValues() []ContainerGroupRestartPolicy {
-	return []ContainerGroupRestartPolicy{Always, Never, OnFailure}
-}
-
-// ContainerNetworkProtocol enumerates the values for container network protocol.
-type ContainerNetworkProtocol string
-
-const (
-	// ContainerNetworkProtocolTCP ...
-	ContainerNetworkProtocolTCP ContainerNetworkProtocol = "TCP"
-	// ContainerNetworkProtocolUDP ...
-	ContainerNetworkProtocolUDP ContainerNetworkProtocol = "UDP"
-)
-
-// PossibleContainerNetworkProtocolValues returns an array of possible values for the ContainerNetworkProtocol const type.
-func PossibleContainerNetworkProtocolValues() []ContainerNetworkProtocol {
-	return []ContainerNetworkProtocol{ContainerNetworkProtocolTCP, ContainerNetworkProtocolUDP}
-}
-
-// OperatingSystemTypes enumerates the values for operating system types.
-type OperatingSystemTypes string
-
-const (
-	// Linux ...
-	Linux OperatingSystemTypes = "Linux"
-	// Windows ...
-	Windows OperatingSystemTypes = "Windows"
-)
-
-// PossibleOperatingSystemTypesValues returns an array of possible values for the OperatingSystemTypes const type.
-func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
-	return []OperatingSystemTypes{Linux, Windows}
-}
-
-// OperationsOrigin enumerates the values for operations origin.
-type OperationsOrigin string
-
-const (
-	// System ...
-	System OperationsOrigin = "System"
-	// User ...
-	User OperationsOrigin = "User"
-)
-
-// PossibleOperationsOriginValues returns an array of possible values for the OperationsOrigin const type.
-func PossibleOperationsOriginValues() []OperationsOrigin {
-	return []OperationsOrigin{System, User}
-}
-
-// Scheme enumerates the values for scheme.
-type Scheme string
-
-const (
-	// HTTP ...
-	HTTP Scheme = "http"
-	// HTTPS ...
-	HTTPS Scheme = "https"
-)
-
-// PossibleSchemeValues returns an array of possible values for the Scheme const type.
-func PossibleSchemeValues() []Scheme {
-	return []Scheme{HTTP, HTTPS}
-}
-
 // AzureFileVolume the properties of the Azure File volume. Azure File shares are mounted as volumes.
 type AzureFileVolume struct {
 	// ShareName - The name of the Azure File share to be mounted as a volume.
@@ -402,10 +310,15 @@ func (cglr ContainerGroupListResult) IsEmpty() bool {
 	return cglr.Value == nil || len(*cglr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (cglr ContainerGroupListResult) hasNextLink() bool {
+	return cglr.NextLink != nil && len(*cglr.NextLink) != 0
+}
+
 // containerGroupListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (cglr ContainerGroupListResult) containerGroupListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if cglr.NextLink == nil || len(to.String(cglr.NextLink)) < 1 {
+	if !cglr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -433,11 +346,16 @@ func (page *ContainerGroupListResultPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.cglr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.cglr)
+		if err != nil {
+			return err
+		}
+		page.cglr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.cglr = next
 	return nil
 }
 
@@ -495,6 +413,33 @@ type ContainerGroupProperties struct {
 	InstanceView *ContainerGroupPropertiesInstanceView `json:"instanceView,omitempty"`
 	// Diagnostics - The diagnostic information for a container group.
 	Diagnostics *ContainerGroupDiagnostics `json:"diagnostics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerGroupProperties.
+func (cg ContainerGroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cg.Containers != nil {
+		objectMap["containers"] = cg.Containers
+	}
+	if cg.ImageRegistryCredentials != nil {
+		objectMap["imageRegistryCredentials"] = cg.ImageRegistryCredentials
+	}
+	if cg.RestartPolicy != "" {
+		objectMap["restartPolicy"] = cg.RestartPolicy
+	}
+	if cg.IPAddress != nil {
+		objectMap["ipAddress"] = cg.IPAddress
+	}
+	if cg.OsType != "" {
+		objectMap["osType"] = cg.OsType
+	}
+	if cg.Volumes != nil {
+		objectMap["volumes"] = cg.Volumes
+	}
+	if cg.Diagnostics != nil {
+		objectMap["diagnostics"] = cg.Diagnostics
+	}
+	return json.Marshal(objectMap)
 }
 
 // ContainerGroupPropertiesInstanceView the instance view of the container group. Only valid in response.
@@ -615,6 +560,36 @@ type ContainerProperties struct {
 	ReadinessProbe *ContainerProbe `json:"readinessProbe,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ContainerProperties.
+func (cp ContainerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.Image != nil {
+		objectMap["image"] = cp.Image
+	}
+	if cp.Command != nil {
+		objectMap["command"] = cp.Command
+	}
+	if cp.Ports != nil {
+		objectMap["ports"] = cp.Ports
+	}
+	if cp.EnvironmentVariables != nil {
+		objectMap["environmentVariables"] = cp.EnvironmentVariables
+	}
+	if cp.Resources != nil {
+		objectMap["resources"] = cp.Resources
+	}
+	if cp.VolumeMounts != nil {
+		objectMap["volumeMounts"] = cp.VolumeMounts
+	}
+	if cp.LivenessProbe != nil {
+		objectMap["livenessProbe"] = cp.LivenessProbe
+	}
+	if cp.ReadinessProbe != nil {
+		objectMap["readinessProbe"] = cp.ReadinessProbe
+	}
+	return json.Marshal(objectMap)
+}
+
 // ContainerPropertiesInstanceView the instance view of the container instance. Only valid in response.
 type ContainerPropertiesInstanceView struct {
 	// RestartCount - READ-ONLY; The number of times that the container instance has been restarted.
@@ -701,6 +676,24 @@ type IPAddress struct {
 	Fqdn *string `json:"fqdn,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IPAddress.
+func (ia IPAddress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ia.Ports != nil {
+		objectMap["ports"] = ia.Ports
+	}
+	if ia.Type != nil {
+		objectMap["type"] = ia.Type
+	}
+	if ia.IP != nil {
+		objectMap["ip"] = ia.IP
+	}
+	if ia.DNSNameLabel != nil {
+		objectMap["dnsNameLabel"] = ia.DNSNameLabel
+	}
+	return json.Marshal(objectMap)
+}
+
 // LogAnalytics container group log analytics information.
 type LogAnalytics struct {
 	// WorkspaceID - The workspace id for log analytics
@@ -738,8 +731,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult the operation list response that contains all operations for Azure Container
-// Instance service.
+// OperationListResult the operation list response that contains all operations for Azure Container Instance
+// service.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of operations.

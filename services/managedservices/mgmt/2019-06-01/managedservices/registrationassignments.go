@@ -132,7 +132,6 @@ func (client RegistrationAssignmentsClient) CreateOrUpdateSender(req *http.Reque
 func (client RegistrationAssignmentsClient) CreateOrUpdateResponder(resp *http.Response) (result RegistrationAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -207,7 +206,6 @@ func (client RegistrationAssignmentsClient) DeleteSender(req *http.Request) (fut
 func (client RegistrationAssignmentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -286,7 +284,6 @@ func (client RegistrationAssignmentsClient) GetSender(req *http.Request) (*http.
 func (client RegistrationAssignmentsClient) GetResponder(resp *http.Response) (result RegistrationAssignment, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -328,6 +325,9 @@ func (client RegistrationAssignmentsClient) List(ctx context.Context, scope stri
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsClient", "List", resp, "Failure responding to request")
 	}
+	if result.ral.hasNextLink() && result.ral.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -365,7 +365,6 @@ func (client RegistrationAssignmentsClient) ListSender(req *http.Request) (*http
 func (client RegistrationAssignmentsClient) ListResponder(resp *http.Response) (result RegistrationAssignmentList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

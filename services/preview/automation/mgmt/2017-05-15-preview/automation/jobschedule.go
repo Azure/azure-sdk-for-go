@@ -129,7 +129,6 @@ func (client JobScheduleClient) CreateSender(req *http.Request) (*http.Response,
 func (client JobScheduleClient) CreateResponder(resp *http.Response) (result JobSchedule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -215,7 +214,6 @@ func (client JobScheduleClient) DeleteSender(req *http.Request) (*http.Response,
 func (client JobScheduleClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -300,7 +298,6 @@ func (client JobScheduleClient) GetSender(req *http.Request) (*http.Response, er
 func (client JobScheduleClient) GetResponder(resp *http.Response) (result JobSchedule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -350,6 +347,9 @@ func (client JobScheduleClient) ListByAutomationAccount(ctx context.Context, res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.JobScheduleClient", "ListByAutomationAccount", resp, "Failure responding to request")
 	}
+	if result.jslr.hasNextLink() && result.jslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -389,7 +389,6 @@ func (client JobScheduleClient) ListByAutomationAccountSender(req *http.Request)
 func (client JobScheduleClient) ListByAutomationAccountResponder(resp *http.Response) (result JobScheduleListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -246,7 +246,6 @@ func (client EntitiesClient) SearchSender(req *http.Request) (*http.Response, er
 func (client EntitiesClient) SearchResponder(resp *http.Response) (result SearchResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

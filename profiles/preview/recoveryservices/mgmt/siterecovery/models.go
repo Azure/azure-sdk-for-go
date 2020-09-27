@@ -361,8 +361,8 @@ const (
 type InstanceTypeBasicRecoveryPlanProviderSpecificDetails = original.InstanceTypeBasicRecoveryPlanProviderSpecificDetails
 
 const (
-	InstanceTypeRecoveryPlanA2ADetails              InstanceTypeBasicRecoveryPlanProviderSpecificDetails = original.InstanceTypeRecoveryPlanA2ADetails
-	InstanceTypeRecoveryPlanProviderSpecificDetails InstanceTypeBasicRecoveryPlanProviderSpecificDetails = original.InstanceTypeRecoveryPlanProviderSpecificDetails
+	InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A                                 InstanceTypeBasicRecoveryPlanProviderSpecificDetails = original.InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeA2A
+	InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails InstanceTypeBasicRecoveryPlanProviderSpecificDetails = original.InstanceTypeBasicRecoveryPlanProviderSpecificDetailsInstanceTypeRecoveryPlanProviderSpecificDetails
 )
 
 type InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput = original.InstanceTypeBasicRecoveryPlanProviderSpecificFailoverInput
@@ -555,6 +555,15 @@ const (
 	NotPresent PresenceStatus = original.NotPresent
 	Present    PresenceStatus = original.Present
 	Unknown    PresenceStatus = original.Unknown
+)
+
+type ProtectionHealth = original.ProtectionHealth
+
+const (
+	ProtectionHealthCritical ProtectionHealth = original.ProtectionHealthCritical
+	ProtectionHealthNone     ProtectionHealth = original.ProtectionHealthNone
+	ProtectionHealthNormal   ProtectionHealth = original.ProtectionHealthNormal
+	ProtectionHealthWarning  ProtectionHealth = original.ProtectionHealthWarning
 )
 
 type RecoveryPlanActionLocation = original.RecoveryPlanActionLocation
@@ -1005,8 +1014,6 @@ type ReplicationEligibilityResults = original.ReplicationEligibilityResults
 type ReplicationEligibilityResultsClient = original.ReplicationEligibilityResultsClient
 type ReplicationEligibilityResultsCollection = original.ReplicationEligibilityResultsCollection
 type ReplicationEligibilityResultsErrorInfo = original.ReplicationEligibilityResultsErrorInfo
-type ReplicationEligibilityResultsGetFuture = original.ReplicationEligibilityResultsGetFuture
-type ReplicationEligibilityResultsListFuture = original.ReplicationEligibilityResultsListFuture
 type ReplicationEligibilityResultsProperties = original.ReplicationEligibilityResultsProperties
 type ReplicationEventsClient = original.ReplicationEventsClient
 type ReplicationFabricsCheckConsistencyFuture = original.ReplicationFabricsCheckConsistencyFuture
@@ -1704,6 +1711,9 @@ func PossiblePossibleOperationsDirectionsValues() []PossibleOperationsDirections
 }
 func PossiblePresenceStatusValues() []PresenceStatus {
 	return original.PossiblePresenceStatusValues()
+}
+func PossibleProtectionHealthValues() []ProtectionHealth {
+	return original.PossibleProtectionHealthValues()
 }
 func PossibleRecoveryPlanActionLocationValues() []RecoveryPlanActionLocation {
 	return original.PossibleRecoveryPlanActionLocationValues()

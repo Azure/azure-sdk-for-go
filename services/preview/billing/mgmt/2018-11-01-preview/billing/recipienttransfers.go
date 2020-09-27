@@ -104,7 +104,6 @@ func (client RecipientTransfersClient) AcceptSender(req *http.Request) (*http.Re
 func (client RecipientTransfersClient) AcceptResponder(resp *http.Response) (result RecipientTransferDetails, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -171,7 +170,6 @@ func (client RecipientTransfersClient) DeclineSender(req *http.Request) (*http.R
 func (client RecipientTransfersClient) DeclineResponder(resp *http.Response) (result RecipientTransferDetails, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -238,7 +236,6 @@ func (client RecipientTransfersClient) GetSender(req *http.Request) (*http.Respo
 func (client RecipientTransfersClient) GetResponder(resp *http.Response) (result RecipientTransferDetails, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -276,6 +273,9 @@ func (client RecipientTransfersClient) List(ctx context.Context) (result Recipie
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.RecipientTransfersClient", "List", resp, "Failure responding to request")
 	}
+	if result.rtdlr.hasNextLink() && result.rtdlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -300,7 +300,6 @@ func (client RecipientTransfersClient) ListSender(req *http.Request) (*http.Resp
 func (client RecipientTransfersClient) ListResponder(resp *http.Response) (result RecipientTransferDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

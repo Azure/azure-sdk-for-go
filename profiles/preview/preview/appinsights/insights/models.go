@@ -41,6 +41,18 @@ const (
 	Traces              EventType = original.Traces
 )
 
+type MetadataColumnDataType = original.MetadataColumnDataType
+
+const (
+	Bool     MetadataColumnDataType = original.Bool
+	Datetime MetadataColumnDataType = original.Datetime
+	Dynamic  MetadataColumnDataType = original.Dynamic
+	Int      MetadataColumnDataType = original.Int
+	Long     MetadataColumnDataType = original.Long
+	Real     MetadataColumnDataType = original.Real
+	String   MetadataColumnDataType = original.String
+)
+
 type MetricID = original.MetricID
 
 const (
@@ -169,6 +181,13 @@ type EventsTraceInfo = original.EventsTraceInfo
 type EventsTraceResult = original.EventsTraceResult
 type EventsUserInfo = original.EventsUserInfo
 type ListMetricsResultsItem = original.ListMetricsResultsItem
+type MetadataApplication = original.MetadataApplication
+type MetadataClient = original.MetadataClient
+type MetadataFunction = original.MetadataFunction
+type MetadataResults = original.MetadataResults
+type MetadataTable = original.MetadataTable
+type MetadataTableColumnsItem = original.MetadataTableColumnsItem
+type MetadataTableGroup = original.MetadataTableGroup
 type MetricsClient = original.MetricsClient
 type MetricsPostBodySchema = original.MetricsPostBodySchema
 type MetricsPostBodySchemaParameters = original.MetricsPostBodySchemaParameters
@@ -191,6 +210,12 @@ func NewEventsClient() EventsClient {
 func NewEventsClientWithBaseURI(baseURI string) EventsClient {
 	return original.NewEventsClientWithBaseURI(baseURI)
 }
+func NewMetadataClient() MetadataClient {
+	return original.NewMetadataClient()
+}
+func NewMetadataClientWithBaseURI(baseURI string) MetadataClient {
+	return original.NewMetadataClientWithBaseURI(baseURI)
+}
 func NewMetricsClient() MetricsClient {
 	return original.NewMetricsClient()
 }
@@ -208,6 +233,9 @@ func NewWithBaseURI(baseURI string) BaseClient {
 }
 func PossibleEventTypeValues() []EventType {
 	return original.PossibleEventTypeValues()
+}
+func PossibleMetadataColumnDataTypeValues() []MetadataColumnDataType {
+	return original.PossibleMetadataColumnDataTypeValues()
 }
 func PossibleMetricIDValues() []MetricID {
 	return original.PossibleMetricIDValues()

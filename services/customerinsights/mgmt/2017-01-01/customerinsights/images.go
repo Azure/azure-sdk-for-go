@@ -114,7 +114,6 @@ func (client ImagesClient) GetUploadURLForDataSender(req *http.Request) (*http.R
 func (client ImagesClient) GetUploadURLForDataResponder(resp *http.Response) (result ImageDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -193,7 +192,6 @@ func (client ImagesClient) GetUploadURLForEntityTypeSender(req *http.Request) (*
 func (client ImagesClient) GetUploadURLForEntityTypeResponder(resp *http.Response) (result ImageDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

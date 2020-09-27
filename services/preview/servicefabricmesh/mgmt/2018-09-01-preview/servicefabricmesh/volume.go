@@ -126,7 +126,6 @@ func (client VolumeClient) CreateSender(req *http.Request) (*http.Response, erro
 func (client VolumeClient) CreateResponder(resp *http.Response) (result VolumeResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -202,7 +201,6 @@ func (client VolumeClient) DeleteSender(req *http.Request) (*http.Response, erro
 func (client VolumeClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -278,7 +276,6 @@ func (client VolumeClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client VolumeClient) GetResponder(resp *http.Response) (result VolumeResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -319,6 +316,9 @@ func (client VolumeClient) ListByResourceGroup(ctx context.Context, resourceGrou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.VolumeClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.vrdl.hasNextLink() && result.vrdl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -354,7 +354,6 @@ func (client VolumeClient) ListByResourceGroupSender(req *http.Request) (*http.R
 func (client VolumeClient) ListByResourceGroupResponder(resp *http.Response) (result VolumeResourceDescriptionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -430,6 +429,9 @@ func (client VolumeClient) ListBySubscription(ctx context.Context) (result Volum
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.VolumeClient", "ListBySubscription", resp, "Failure responding to request")
 	}
+	if result.vrdl.hasNextLink() && result.vrdl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -464,7 +466,6 @@ func (client VolumeClient) ListBySubscriptionSender(req *http.Request) (*http.Re
 func (client VolumeClient) ListBySubscriptionResponder(resp *http.Response) (result VolumeResourceDescriptionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

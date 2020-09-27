@@ -72,6 +72,9 @@ func (client SkusClient) List(ctx context.Context) (result ResourceSkusResultPag
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagecache.SkusClient", "List", resp, "Failure responding to request")
 	}
+	if result.rsr.hasNextLink() && result.rsr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -106,7 +109,6 @@ func (client SkusClient) ListSender(req *http.Request) (*http.Response, error) {
 func (client SkusClient) ListResponder(resp *http.Response) (result ResourceSkusResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

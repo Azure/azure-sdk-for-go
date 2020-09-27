@@ -59,12 +59,6 @@ const (
 	PaaS ComputeRole = original.PaaS
 )
 
-type Location = original.Location
-
-const (
-	Global Location = original.Global
-)
-
 type OperatingSystem = original.OperatingSystem
 
 const (
@@ -84,6 +78,11 @@ const (
 
 type ActivationKeyResult = original.ActivationKeyResult
 type BaseClient = original.BaseClient
+type CloudManifestFileClient = original.CloudManifestFileClient
+type CloudManifestFileDeploymentData = original.CloudManifestFileDeploymentData
+type CloudManifestFileEnvironmentEndpoints = original.CloudManifestFileEnvironmentEndpoints
+type CloudManifestFileProperties = original.CloudManifestFileProperties
+type CloudManifestFileResponse = original.CloudManifestFileResponse
 type Compatibility = original.Compatibility
 type CustomerSubscription = original.CustomerSubscription
 type CustomerSubscriptionList = original.CustomerSubscriptionList
@@ -131,6 +130,12 @@ type VirtualMachineProductProperties = original.VirtualMachineProductProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewCloudManifestFileClient(subscriptionID string) CloudManifestFileClient {
+	return original.NewCloudManifestFileClient(subscriptionID)
+}
+func NewCloudManifestFileClientWithBaseURI(baseURI string, subscriptionID string) CloudManifestFileClient {
+	return original.NewCloudManifestFileClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCustomerSubscriptionListIterator(page CustomerSubscriptionListPage) CustomerSubscriptionListIterator {
 	return original.NewCustomerSubscriptionListIterator(page)
@@ -191,9 +196,6 @@ func PossibleCompatibilityIssueValues() []CompatibilityIssue {
 }
 func PossibleComputeRoleValues() []ComputeRole {
 	return original.PossibleComputeRoleValues()
-}
-func PossibleLocationValues() []Location {
-	return original.PossibleLocationValues()
 }
 func PossibleOperatingSystemValues() []OperatingSystem {
 	return original.PossibleOperatingSystemValues()

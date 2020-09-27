@@ -22,11 +22,57 @@ package resources
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-05-01/resources"
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-06-01/resources"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type AliasPathAttributes = original.AliasPathAttributes
+
+const (
+	Modifiable AliasPathAttributes = original.Modifiable
+	None       AliasPathAttributes = original.None
+)
+
+type AliasPathTokenType = original.AliasPathTokenType
+
+const (
+	Any          AliasPathTokenType = original.Any
+	Array        AliasPathTokenType = original.Array
+	Boolean      AliasPathTokenType = original.Boolean
+	Integer      AliasPathTokenType = original.Integer
+	NotSpecified AliasPathTokenType = original.NotSpecified
+	Number       AliasPathTokenType = original.Number
+	Object       AliasPathTokenType = original.Object
+	String       AliasPathTokenType = original.String
+)
+
+type AliasPatternType = original.AliasPatternType
+
+const (
+	AliasPatternTypeExtract      AliasPatternType = original.AliasPatternTypeExtract
+	AliasPatternTypeNotSpecified AliasPatternType = original.AliasPatternTypeNotSpecified
+)
+
+type AliasType = original.AliasType
+
+const (
+	AliasTypeMask         AliasType = original.AliasTypeMask
+	AliasTypeNotSpecified AliasType = original.AliasTypeNotSpecified
+	AliasTypePlainText    AliasType = original.AliasTypePlainText
+)
+
+type ChangeType = original.ChangeType
+
+const (
+	Create   ChangeType = original.Create
+	Delete   ChangeType = original.Delete
+	Deploy   ChangeType = original.Deploy
+	Ignore   ChangeType = original.Ignore
+	Modify   ChangeType = original.Modify
+	NoChange ChangeType = original.NoChange
 )
 
 type DeploymentMode = original.DeploymentMode
@@ -43,17 +89,76 @@ const (
 	SpecificDeployment OnErrorDeploymentType = original.SpecificDeployment
 )
 
+type PropertyChangeType = original.PropertyChangeType
+
+const (
+	PropertyChangeTypeArray  PropertyChangeType = original.PropertyChangeTypeArray
+	PropertyChangeTypeCreate PropertyChangeType = original.PropertyChangeTypeCreate
+	PropertyChangeTypeDelete PropertyChangeType = original.PropertyChangeTypeDelete
+	PropertyChangeTypeModify PropertyChangeType = original.PropertyChangeTypeModify
+)
+
+type ProvisioningOperation = original.ProvisioningOperation
+
+const (
+	ProvisioningOperationAction                     ProvisioningOperation = original.ProvisioningOperationAction
+	ProvisioningOperationAzureAsyncOperationWaiting ProvisioningOperation = original.ProvisioningOperationAzureAsyncOperationWaiting
+	ProvisioningOperationCreate                     ProvisioningOperation = original.ProvisioningOperationCreate
+	ProvisioningOperationDelete                     ProvisioningOperation = original.ProvisioningOperationDelete
+	ProvisioningOperationDeploymentCleanup          ProvisioningOperation = original.ProvisioningOperationDeploymentCleanup
+	ProvisioningOperationEvaluateDeploymentOutput   ProvisioningOperation = original.ProvisioningOperationEvaluateDeploymentOutput
+	ProvisioningOperationNotSpecified               ProvisioningOperation = original.ProvisioningOperationNotSpecified
+	ProvisioningOperationRead                       ProvisioningOperation = original.ProvisioningOperationRead
+	ProvisioningOperationResourceCacheWaiting       ProvisioningOperation = original.ProvisioningOperationResourceCacheWaiting
+	ProvisioningOperationWaiting                    ProvisioningOperation = original.ProvisioningOperationWaiting
+)
+
+type ProvisioningState = original.ProvisioningState
+
+const (
+	ProvisioningStateAccepted     ProvisioningState = original.ProvisioningStateAccepted
+	ProvisioningStateCanceled     ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreated      ProvisioningState = original.ProvisioningStateCreated
+	ProvisioningStateCreating     ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleted      ProvisioningState = original.ProvisioningStateDeleted
+	ProvisioningStateDeleting     ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed       ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateNotSpecified ProvisioningState = original.ProvisioningStateNotSpecified
+	ProvisioningStateReady        ProvisioningState = original.ProvisioningStateReady
+	ProvisioningStateRunning      ProvisioningState = original.ProvisioningStateRunning
+	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUpdating     ProvisioningState = original.ProvisioningStateUpdating
+)
+
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	None                       ResourceIdentityType = original.None
-	SystemAssigned             ResourceIdentityType = original.SystemAssigned
-	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
-	UserAssigned               ResourceIdentityType = original.UserAssigned
+	ResourceIdentityTypeNone                       ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
-type AliasPathType = original.AliasPathType
-type AliasType = original.AliasType
+type TagsPatchOperation = original.TagsPatchOperation
+
+const (
+	TagsPatchOperationDelete  TagsPatchOperation = original.TagsPatchOperationDelete
+	TagsPatchOperationMerge   TagsPatchOperation = original.TagsPatchOperationMerge
+	TagsPatchOperationReplace TagsPatchOperation = original.TagsPatchOperationReplace
+)
+
+type WhatIfResultFormat = original.WhatIfResultFormat
+
+const (
+	FullResourcePayloads WhatIfResultFormat = original.FullResourcePayloads
+	ResourceIDOnly       WhatIfResultFormat = original.ResourceIDOnly
+)
+
+type APIProfile = original.APIProfile
+type Alias = original.Alias
+type AliasPath = original.AliasPath
+type AliasPathMetadata = original.AliasPathMetadata
+type AliasPattern = original.AliasPattern
 type BaseClient = original.BaseClient
 type BasicDependency = original.BasicDependency
 type Client = original.Client
@@ -80,13 +185,29 @@ type DeploymentOperationsListResultPage = original.DeploymentOperationsListResul
 type DeploymentProperties = original.DeploymentProperties
 type DeploymentPropertiesExtended = original.DeploymentPropertiesExtended
 type DeploymentValidateResult = original.DeploymentValidateResult
+type DeploymentWhatIf = original.DeploymentWhatIf
+type DeploymentWhatIfProperties = original.DeploymentWhatIfProperties
+type DeploymentWhatIfSettings = original.DeploymentWhatIfSettings
 type DeploymentsClient = original.DeploymentsClient
 type DeploymentsCreateOrUpdateAtManagementGroupScopeFuture = original.DeploymentsCreateOrUpdateAtManagementGroupScopeFuture
+type DeploymentsCreateOrUpdateAtScopeFuture = original.DeploymentsCreateOrUpdateAtScopeFuture
 type DeploymentsCreateOrUpdateAtSubscriptionScopeFuture = original.DeploymentsCreateOrUpdateAtSubscriptionScopeFuture
+type DeploymentsCreateOrUpdateAtTenantScopeFuture = original.DeploymentsCreateOrUpdateAtTenantScopeFuture
 type DeploymentsCreateOrUpdateFuture = original.DeploymentsCreateOrUpdateFuture
 type DeploymentsDeleteAtManagementGroupScopeFuture = original.DeploymentsDeleteAtManagementGroupScopeFuture
+type DeploymentsDeleteAtScopeFuture = original.DeploymentsDeleteAtScopeFuture
 type DeploymentsDeleteAtSubscriptionScopeFuture = original.DeploymentsDeleteAtSubscriptionScopeFuture
+type DeploymentsDeleteAtTenantScopeFuture = original.DeploymentsDeleteAtTenantScopeFuture
 type DeploymentsDeleteFuture = original.DeploymentsDeleteFuture
+type DeploymentsValidateAtManagementGroupScopeFuture = original.DeploymentsValidateAtManagementGroupScopeFuture
+type DeploymentsValidateAtScopeFuture = original.DeploymentsValidateAtScopeFuture
+type DeploymentsValidateAtSubscriptionScopeFuture = original.DeploymentsValidateAtSubscriptionScopeFuture
+type DeploymentsValidateAtTenantScopeFuture = original.DeploymentsValidateAtTenantScopeFuture
+type DeploymentsValidateFuture = original.DeploymentsValidateFuture
+type DeploymentsWhatIfAtManagementGroupScopeFuture = original.DeploymentsWhatIfAtManagementGroupScopeFuture
+type DeploymentsWhatIfAtSubscriptionScopeFuture = original.DeploymentsWhatIfAtSubscriptionScopeFuture
+type DeploymentsWhatIfAtTenantScopeFuture = original.DeploymentsWhatIfAtTenantScopeFuture
+type DeploymentsWhatIfFuture = original.DeploymentsWhatIfFuture
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorResponse = original.ErrorResponse
 type ExportTemplateRequest = original.ExportTemplateRequest
@@ -103,13 +224,13 @@ type GroupPatchable = original.GroupPatchable
 type GroupProperties = original.GroupProperties
 type GroupsClient = original.GroupsClient
 type GroupsDeleteFuture = original.GroupsDeleteFuture
+type GroupsExportTemplateFuture = original.GroupsExportTemplateFuture
 type HTTPMessage = original.HTTPMessage
 type Identity = original.Identity
 type IdentityUserAssignedIdentitiesValue = original.IdentityUserAssignedIdentitiesValue
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
-type ManagementErrorWithDetails = original.ManagementErrorWithDetails
 type MoveInfo = original.MoveInfo
 type MoveResourcesFuture = original.MoveResourcesFuture
 type OnErrorDeployment = original.OnErrorDeployment
@@ -129,22 +250,33 @@ type ProviderListResultPage = original.ProviderListResultPage
 type ProviderOperationDisplayProperties = original.ProviderOperationDisplayProperties
 type ProviderResourceType = original.ProviderResourceType
 type ProvidersClient = original.ProvidersClient
+type Reference = original.Reference
 type Resource = original.Resource
+type ScopedDeployment = original.ScopedDeployment
+type ScopedDeploymentWhatIf = original.ScopedDeploymentWhatIf
 type Sku = original.Sku
+type StatusMessage = original.StatusMessage
 type SubResource = original.SubResource
 type TagCount = original.TagCount
 type TagDetails = original.TagDetails
 type TagValue = original.TagValue
+type Tags = original.Tags
 type TagsClient = original.TagsClient
 type TagsListResult = original.TagsListResult
 type TagsListResultIterator = original.TagsListResultIterator
 type TagsListResultPage = original.TagsListResultPage
+type TagsPatchResource = original.TagsPatchResource
+type TagsResource = original.TagsResource
 type TargetResource = original.TargetResource
 type TemplateHashResult = original.TemplateHashResult
 type TemplateLink = original.TemplateLink
 type UpdateByIDFuture = original.UpdateByIDFuture
 type UpdateFuture = original.UpdateFuture
 type ValidateMoveResourcesFuture = original.ValidateMoveResourcesFuture
+type WhatIfChange = original.WhatIfChange
+type WhatIfOperationProperties = original.WhatIfOperationProperties
+type WhatIfOperationResult = original.WhatIfOperationResult
+type WhatIfPropertyChange = original.WhatIfPropertyChange
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -236,14 +368,44 @@ func NewTagsListResultPage(getNextPage func(context.Context, TagsListResult) (Ta
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleAliasPathAttributesValues() []AliasPathAttributes {
+	return original.PossibleAliasPathAttributesValues()
+}
+func PossibleAliasPathTokenTypeValues() []AliasPathTokenType {
+	return original.PossibleAliasPathTokenTypeValues()
+}
+func PossibleAliasPatternTypeValues() []AliasPatternType {
+	return original.PossibleAliasPatternTypeValues()
+}
+func PossibleAliasTypeValues() []AliasType {
+	return original.PossibleAliasTypeValues()
+}
+func PossibleChangeTypeValues() []ChangeType {
+	return original.PossibleChangeTypeValues()
+}
 func PossibleDeploymentModeValues() []DeploymentMode {
 	return original.PossibleDeploymentModeValues()
 }
 func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
 	return original.PossibleOnErrorDeploymentTypeValues()
 }
+func PossiblePropertyChangeTypeValues() []PropertyChangeType {
+	return original.PossiblePropertyChangeTypeValues()
+}
+func PossibleProvisioningOperationValues() []ProvisioningOperation {
+	return original.PossibleProvisioningOperationValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleTagsPatchOperationValues() []TagsPatchOperation {
+	return original.PossibleTagsPatchOperationValues()
+}
+func PossibleWhatIfResultFormatValues() []WhatIfResultFormat {
+	return original.PossibleWhatIfResultFormatValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

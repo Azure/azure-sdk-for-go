@@ -22,7 +22,7 @@ package devices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2018-04-01/devices"
+	original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2020-03-01/devices"
 )
 
 const (
@@ -49,11 +49,26 @@ const (
 	ServiceConnectDeviceConnect                          AccessRights = original.ServiceConnectDeviceConnect
 )
 
+type AuthenticationType = original.AuthenticationType
+
+const (
+	IdentityBased AuthenticationType = original.IdentityBased
+	KeyBased      AuthenticationType = original.KeyBased
+)
+
 type Capabilities = original.Capabilities
 
 const (
 	DeviceManagement Capabilities = original.DeviceManagement
 	None             Capabilities = original.None
+)
+
+type Encoding = original.Encoding
+
+const (
+	Avro        Encoding = original.Avro
+	AvroDeflate Encoding = original.AvroDeflate
+	JSON        Encoding = original.JSON
 )
 
 type EndpointHealthStatus = original.EndpointHealthStatus
@@ -77,6 +92,13 @@ type IotHubNameUnavailabilityReason = original.IotHubNameUnavailabilityReason
 const (
 	AlreadyExists IotHubNameUnavailabilityReason = original.AlreadyExists
 	Invalid       IotHubNameUnavailabilityReason = original.Invalid
+)
+
+type IotHubReplicaRoleType = original.IotHubReplicaRoleType
+
+const (
+	Primary   IotHubReplicaRoleType = original.Primary
+	Secondary IotHubReplicaRoleType = original.Secondary
 )
 
 type IotHubScaleType = original.IotHubScaleType
@@ -133,13 +155,20 @@ const (
 	JobTypeWriteDeviceProperties     JobType = original.JobTypeWriteDeviceProperties
 )
 
-type OperationMonitoringLevel = original.OperationMonitoringLevel
+type PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatus
 
 const (
-	OperationMonitoringLevelError            OperationMonitoringLevel = original.OperationMonitoringLevelError
-	OperationMonitoringLevelErrorInformation OperationMonitoringLevel = original.OperationMonitoringLevelErrorInformation
-	OperationMonitoringLevelInformation      OperationMonitoringLevel = original.OperationMonitoringLevelInformation
-	OperationMonitoringLevelNone             OperationMonitoringLevel = original.OperationMonitoringLevelNone
+	Approved     PrivateLinkServiceConnectionStatus = original.Approved
+	Disconnected PrivateLinkServiceConnectionStatus = original.Disconnected
+	Pending      PrivateLinkServiceConnectionStatus = original.Pending
+	Rejected     PrivateLinkServiceConnectionStatus = original.Rejected
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	Disabled PublicNetworkAccess = original.Disabled
+	Enabled  PublicNetworkAccess = original.Enabled
 )
 
 type RouteErrorSeverity = original.RouteErrorSeverity
@@ -181,6 +210,7 @@ type EndpointHealthData = original.EndpointHealthData
 type EndpointHealthDataListResult = original.EndpointHealthDataListResult
 type EndpointHealthDataListResultIterator = original.EndpointHealthDataListResultIterator
 type EndpointHealthDataListResultPage = original.EndpointHealthDataListResultPage
+type EnrichmentProperties = original.EnrichmentProperties
 type ErrorDetails = original.ErrorDetails
 type EventHubConsumerGroupInfo = original.EventHubConsumerGroupInfo
 type EventHubConsumerGroupsListResult = original.EventHubConsumerGroupsListResult
@@ -188,15 +218,21 @@ type EventHubConsumerGroupsListResultIterator = original.EventHubConsumerGroupsL
 type EventHubConsumerGroupsListResultPage = original.EventHubConsumerGroupsListResultPage
 type EventHubProperties = original.EventHubProperties
 type ExportDevicesRequest = original.ExportDevicesRequest
+type FailoverInput = original.FailoverInput
 type FallbackRouteProperties = original.FallbackRouteProperties
 type FeedbackProperties = original.FeedbackProperties
+type GroupIDInformation = original.GroupIDInformation
+type GroupIDInformationProperties = original.GroupIDInformationProperties
 type IPFilterRule = original.IPFilterRule
 type ImportDevicesRequest = original.ImportDevicesRequest
 type IotHubCapacity = original.IotHubCapacity
+type IotHubClient = original.IotHubClient
 type IotHubDescription = original.IotHubDescription
 type IotHubDescriptionListResult = original.IotHubDescriptionListResult
 type IotHubDescriptionListResultIterator = original.IotHubDescriptionListResultIterator
 type IotHubDescriptionListResultPage = original.IotHubDescriptionListResultPage
+type IotHubLocationDescription = original.IotHubLocationDescription
+type IotHubManualFailoverFuture = original.IotHubManualFailoverFuture
 type IotHubNameAvailabilityInfo = original.IotHubNameAvailabilityInfo
 type IotHubProperties = original.IotHubProperties
 type IotHubQuotaMetricInfo = original.IotHubQuotaMetricInfo
@@ -216,6 +252,7 @@ type JobResponse = original.JobResponse
 type JobResponseListResult = original.JobResponseListResult
 type JobResponseListResultIterator = original.JobResponseListResultIterator
 type JobResponseListResultPage = original.JobResponseListResultPage
+type ListPrivateEndpointConnection = original.ListPrivateEndpointConnection
 type MatchedRoute = original.MatchedRoute
 type MessagingEndpointProperties = original.MessagingEndpointProperties
 type Name = original.Name
@@ -226,7 +263,15 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
-type OperationsMonitoringProperties = original.OperationsMonitoringProperties
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateEndpointConnectionsUpdateFuture = original.PrivateEndpointConnectionsUpdateFuture
+type PrivateLinkResources = original.PrivateLinkResources
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type RegistryStatistics = original.RegistryStatistics
 type Resource = original.Resource
 type ResourceProviderCommonClient = original.ResourceProviderCommonClient
@@ -279,6 +324,12 @@ func NewEventHubConsumerGroupsListResultIterator(page EventHubConsumerGroupsList
 func NewEventHubConsumerGroupsListResultPage(getNextPage func(context.Context, EventHubConsumerGroupsListResult) (EventHubConsumerGroupsListResult, error)) EventHubConsumerGroupsListResultPage {
 	return original.NewEventHubConsumerGroupsListResultPage(getNextPage)
 }
+func NewIotHubClient(subscriptionID string) IotHubClient {
+	return original.NewIotHubClient(subscriptionID)
+}
+func NewIotHubClientWithBaseURI(baseURI string, subscriptionID string) IotHubClient {
+	return original.NewIotHubClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewIotHubDescriptionListResultIterator(page IotHubDescriptionListResultPage) IotHubDescriptionListResultIterator {
 	return original.NewIotHubDescriptionListResultIterator(page)
 }
@@ -321,6 +372,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewResourceProviderCommonClient(subscriptionID string) ResourceProviderCommonClient {
 	return original.NewResourceProviderCommonClient(subscriptionID)
 }
@@ -339,8 +402,14 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()
 }
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return original.PossibleAuthenticationTypeValues()
+}
 func PossibleCapabilitiesValues() []Capabilities {
 	return original.PossibleCapabilitiesValues()
+}
+func PossibleEncodingValues() []Encoding {
+	return original.PossibleEncodingValues()
 }
 func PossibleEndpointHealthStatusValues() []EndpointHealthStatus {
 	return original.PossibleEndpointHealthStatusValues()
@@ -350,6 +419,9 @@ func PossibleIPFilterActionTypeValues() []IPFilterActionType {
 }
 func PossibleIotHubNameUnavailabilityReasonValues() []IotHubNameUnavailabilityReason {
 	return original.PossibleIotHubNameUnavailabilityReasonValues()
+}
+func PossibleIotHubReplicaRoleTypeValues() []IotHubReplicaRoleType {
+	return original.PossibleIotHubReplicaRoleTypeValues()
 }
 func PossibleIotHubScaleTypeValues() []IotHubScaleType {
 	return original.PossibleIotHubScaleTypeValues()
@@ -366,8 +438,11 @@ func PossibleJobStatusValues() []JobStatus {
 func PossibleJobTypeValues() []JobType {
 	return original.PossibleJobTypeValues()
 }
-func PossibleOperationMonitoringLevelValues() []OperationMonitoringLevel {
-	return original.PossibleOperationMonitoringLevelValues()
+func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
+	return original.PossiblePrivateLinkServiceConnectionStatusValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func PossibleRouteErrorSeverityValues() []RouteErrorSeverity {
 	return original.PossibleRouteErrorSeverityValues()

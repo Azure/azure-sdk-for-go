@@ -120,7 +120,6 @@ func (client AssessedMachinesClient) GetSender(req *http.Request) (*http.Respons
 func (client AssessedMachinesClient) GetResponder(resp *http.Response) (result AssessedMachine, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -210,7 +209,6 @@ func (client AssessedMachinesClient) ListByAssessmentSender(req *http.Request) (
 func (client AssessedMachinesClient) ListByAssessmentResponder(resp *http.Response) (result AssessedMachineResultList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

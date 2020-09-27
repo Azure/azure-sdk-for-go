@@ -32,15 +32,15 @@ type MongoDBResourcesClient struct {
 }
 
 // NewMongoDBResourcesClient creates an instance of the MongoDBResourcesClient client.
-func NewMongoDBResourcesClient(subscriptionID string) MongoDBResourcesClient {
-	return NewMongoDBResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewMongoDBResourcesClient(subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
+	return NewMongoDBResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
 }
 
 // NewMongoDBResourcesClientWithBaseURI creates an instance of the MongoDBResourcesClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string) MongoDBResourcesClient {
-	return MongoDBResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
+	return MongoDBResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
 }
 
 // CreateUpdateMongoDBCollection create or update an Azure Cosmos DB MongoDB Collection
@@ -136,7 +136,6 @@ func (client MongoDBResourcesClient) CreateUpdateMongoDBCollectionSender(req *ht
 func (client MongoDBResourcesClient) CreateUpdateMongoDBCollectionResponder(resp *http.Response) (result MongoDBCollectionGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -235,7 +234,6 @@ func (client MongoDBResourcesClient) CreateUpdateMongoDBDatabaseSender(req *http
 func (client MongoDBResourcesClient) CreateUpdateMongoDBDatabaseResponder(resp *http.Response) (result MongoDBDatabaseGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -327,7 +325,6 @@ func (client MongoDBResourcesClient) DeleteMongoDBCollectionSender(req *http.Req
 func (client MongoDBResourcesClient) DeleteMongoDBCollectionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -416,7 +413,6 @@ func (client MongoDBResourcesClient) DeleteMongoDBDatabaseSender(req *http.Reque
 func (client MongoDBResourcesClient) DeleteMongoDBDatabaseResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -507,7 +503,6 @@ func (client MongoDBResourcesClient) GetMongoDBCollectionSender(req *http.Reques
 func (client MongoDBResourcesClient) GetMongoDBCollectionResponder(resp *http.Response) (result MongoDBCollectionGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -600,7 +595,6 @@ func (client MongoDBResourcesClient) GetMongoDBCollectionThroughputSender(req *h
 func (client MongoDBResourcesClient) GetMongoDBCollectionThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -691,7 +685,6 @@ func (client MongoDBResourcesClient) GetMongoDBDatabaseSender(req *http.Request)
 func (client MongoDBResourcesClient) GetMongoDBDatabaseResponder(resp *http.Response) (result MongoDBDatabaseGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -782,7 +775,6 @@ func (client MongoDBResourcesClient) GetMongoDBDatabaseThroughputSender(req *htt
 func (client MongoDBResourcesClient) GetMongoDBDatabaseThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -872,7 +864,6 @@ func (client MongoDBResourcesClient) ListMongoDBCollectionsSender(req *http.Requ
 func (client MongoDBResourcesClient) ListMongoDBCollectionsResponder(resp *http.Response) (result MongoDBCollectionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -960,7 +951,6 @@ func (client MongoDBResourcesClient) ListMongoDBDatabasesSender(req *http.Reques
 func (client MongoDBResourcesClient) ListMongoDBDatabasesResponder(resp *http.Response) (result MongoDBDatabaseListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1061,7 +1051,6 @@ func (client MongoDBResourcesClient) UpdateMongoDBCollectionThroughputSender(req
 func (client MongoDBResourcesClient) UpdateMongoDBCollectionThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1160,7 +1149,6 @@ func (client MongoDBResourcesClient) UpdateMongoDBDatabaseThroughputSender(req *
 func (client MongoDBResourcesClient) UpdateMongoDBDatabaseThroughputResponder(resp *http.Response) (result ThroughputSettingsGetResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

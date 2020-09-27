@@ -110,7 +110,6 @@ func (client SupportPlanTypesClient) CreateOrUpdateSender(req *http.Request) (fu
 func (client SupportPlanTypesClient) CreateOrUpdateResponder(resp *http.Response) (result CanonicalSupportPlanResponseEnvelope, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -186,7 +185,6 @@ func (client SupportPlanTypesClient) DeleteSender(req *http.Request) (future Sup
 func (client SupportPlanTypesClient) DeleteResponder(resp *http.Response) (result CanonicalSupportPlanResponseEnvelope, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -262,7 +260,6 @@ func (client SupportPlanTypesClient) GetSender(req *http.Request) (*http.Respons
 func (client SupportPlanTypesClient) GetResponder(resp *http.Response) (result CanonicalSupportPlanResponseEnvelope, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -333,7 +330,6 @@ func (client SupportPlanTypesClient) ListInfoSender(req *http.Request) (*http.Re
 func (client SupportPlanTypesClient) ListInfoResponder(resp *http.Response) (result ListCanonicalSupportPlanInfoDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

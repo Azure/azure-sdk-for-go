@@ -111,7 +111,6 @@ func (client Client) RegisterSender(req *http.Request) (*http.Response, error) {
 func (client Client) RegisterResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

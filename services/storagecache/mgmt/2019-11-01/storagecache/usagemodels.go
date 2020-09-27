@@ -72,6 +72,9 @@ func (client UsageModelsClient) List(ctx context.Context) (result UsageModelsRes
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagecache.UsageModelsClient", "List", resp, "Failure responding to request")
 	}
+	if result.umr.hasNextLink() && result.umr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -106,7 +109,6 @@ func (client UsageModelsClient) ListSender(req *http.Request) (*http.Response, e
 func (client UsageModelsClient) ListResponder(resp *http.Response) (result UsageModelsResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

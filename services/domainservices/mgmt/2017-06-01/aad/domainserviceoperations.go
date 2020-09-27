@@ -72,6 +72,9 @@ func (client DomainServiceOperationsClient) List(ctx context.Context) (result Op
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "aad.DomainServiceOperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.oelr.hasNextLink() && result.oelr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -102,7 +105,6 @@ func (client DomainServiceOperationsClient) ListSender(req *http.Request) (*http
 func (client DomainServiceOperationsClient) ListResponder(resp *http.Response) (result OperationEntityListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -72,6 +72,9 @@ func (client ServiceCountriesClient) List(ctx context.Context) (result ServiceCo
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.ServiceCountriesClient", "List", resp, "Failure responding to request")
 	}
+	if result.sclr.hasNextLink() && result.sclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -106,7 +109,6 @@ func (client ServiceCountriesClient) ListSender(req *http.Request) (*http.Respon
 func (client ServiceCountriesClient) ListResponder(resp *http.Response) (result ServiceCountryListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

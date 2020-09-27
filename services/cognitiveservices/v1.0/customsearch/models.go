@@ -25,127 +25,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/customsearch"
 
-// ErrorCode enumerates the values for error code.
-type ErrorCode string
-
-const (
-	// InsufficientAuthorization ...
-	InsufficientAuthorization ErrorCode = "InsufficientAuthorization"
-	// InvalidAuthorization ...
-	InvalidAuthorization ErrorCode = "InvalidAuthorization"
-	// InvalidRequest ...
-	InvalidRequest ErrorCode = "InvalidRequest"
-	// None ...
-	None ErrorCode = "None"
-	// RateLimitExceeded ...
-	RateLimitExceeded ErrorCode = "RateLimitExceeded"
-	// ServerError ...
-	ServerError ErrorCode = "ServerError"
-)
-
-// PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
-func PossibleErrorCodeValues() []ErrorCode {
-	return []ErrorCode{InsufficientAuthorization, InvalidAuthorization, InvalidRequest, None, RateLimitExceeded, ServerError}
-}
-
-// ErrorSubCode enumerates the values for error sub code.
-type ErrorSubCode string
-
-const (
-	// AuthorizationDisabled ...
-	AuthorizationDisabled ErrorSubCode = "AuthorizationDisabled"
-	// AuthorizationExpired ...
-	AuthorizationExpired ErrorSubCode = "AuthorizationExpired"
-	// AuthorizationMissing ...
-	AuthorizationMissing ErrorSubCode = "AuthorizationMissing"
-	// AuthorizationRedundancy ...
-	AuthorizationRedundancy ErrorSubCode = "AuthorizationRedundancy"
-	// Blocked ...
-	Blocked ErrorSubCode = "Blocked"
-	// HTTPNotAllowed ...
-	HTTPNotAllowed ErrorSubCode = "HttpNotAllowed"
-	// NotImplemented ...
-	NotImplemented ErrorSubCode = "NotImplemented"
-	// ParameterInvalidValue ...
-	ParameterInvalidValue ErrorSubCode = "ParameterInvalidValue"
-	// ParameterMissing ...
-	ParameterMissing ErrorSubCode = "ParameterMissing"
-	// ResourceError ...
-	ResourceError ErrorSubCode = "ResourceError"
-	// UnexpectedError ...
-	UnexpectedError ErrorSubCode = "UnexpectedError"
-)
-
-// PossibleErrorSubCodeValues returns an array of possible values for the ErrorSubCode const type.
-func PossibleErrorSubCodeValues() []ErrorSubCode {
-	return []ErrorSubCode{AuthorizationDisabled, AuthorizationExpired, AuthorizationMissing, AuthorizationRedundancy, Blocked, HTTPNotAllowed, NotImplemented, ParameterInvalidValue, ParameterMissing, ResourceError, UnexpectedError}
-}
-
-// SafeSearch enumerates the values for safe search.
-type SafeSearch string
-
-const (
-	// Moderate ...
-	Moderate SafeSearch = "Moderate"
-	// Off ...
-	Off SafeSearch = "Off"
-	// Strict ...
-	Strict SafeSearch = "Strict"
-)
-
-// PossibleSafeSearchValues returns an array of possible values for the SafeSearch const type.
-func PossibleSafeSearchValues() []SafeSearch {
-	return []SafeSearch{Moderate, Off, Strict}
-}
-
-// TextFormat enumerates the values for text format.
-type TextFormat string
-
-const (
-	// HTML ...
-	HTML TextFormat = "Html"
-	// Raw ...
-	Raw TextFormat = "Raw"
-)
-
-// PossibleTextFormatValues returns an array of possible values for the TextFormat const type.
-func PossibleTextFormatValues() []TextFormat {
-	return []TextFormat{HTML, Raw}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeAnswer ...
-	TypeAnswer Type = "Answer"
-	// TypeCreativeWork ...
-	TypeCreativeWork Type = "CreativeWork"
-	// TypeErrorResponse ...
-	TypeErrorResponse Type = "ErrorResponse"
-	// TypeIdentifiable ...
-	TypeIdentifiable Type = "Identifiable"
-	// TypeResponse ...
-	TypeResponse Type = "Response"
-	// TypeResponseBase ...
-	TypeResponseBase Type = "ResponseBase"
-	// TypeSearchResponse ...
-	TypeSearchResponse Type = "SearchResponse"
-	// TypeSearchResultsAnswer ...
-	TypeSearchResultsAnswer Type = "SearchResultsAnswer"
-	// TypeThing ...
-	TypeThing Type = "Thing"
-	// TypeWebPage ...
-	TypeWebPage Type = "WebPage"
-	// TypeWebWebAnswer ...
-	TypeWebWebAnswer Type = "Web/WebAnswer"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeAnswer, TypeCreativeWork, TypeErrorResponse, TypeIdentifiable, TypeResponse, TypeResponseBase, TypeSearchResponse, TypeSearchResultsAnswer, TypeThing, TypeWebPage, TypeWebWebAnswer}
-}
-
 // BasicAnswer ...
 type BasicAnswer interface {
 	AsWebWebAnswer() (*WebWebAnswer, bool)
@@ -594,6 +473,18 @@ type Error struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if e.Code != "" {
+		objectMap["code"] = e.Code
+	}
+	if e.Message != nil {
+		objectMap["message"] = e.Message
+	}
+	return json.Marshal(objectMap)
+}
+
 // ErrorResponse the top-level response that represents a failed request.
 type ErrorResponse struct {
 	// Errors - A list of errors that describe the reasons why the request failed.
@@ -917,6 +808,15 @@ type Query struct {
 	SearchLink *string `json:"searchLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Query.
+func (q Query) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if q.Text != nil {
+		objectMap["text"] = q.Text
+	}
+	return json.Marshal(objectMap)
+}
+
 // QueryContext defines the query context that Bing used for the request.
 type QueryContext struct {
 	// OriginalQuery - The query string as specified in the request.
@@ -927,6 +827,15 @@ type QueryContext struct {
 	AlterationOverrideQuery *string `json:"alterationOverrideQuery,omitempty"`
 	// AdultIntent - READ-ONLY; A Boolean value that indicates whether the specified query has adult intent. The value is true if the query has adult intent; otherwise, false.
 	AdultIntent *bool `json:"adultIntent,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryContext.
+func (qc QueryContext) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if qc.OriginalQuery != nil {
+		objectMap["originalQuery"] = qc.OriginalQuery
+	}
+	return json.Marshal(objectMap)
 }
 
 // BasicResponse defines a response. All schemas that could be returned at the root of a response should inherit from

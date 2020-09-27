@@ -128,7 +128,6 @@ func (client PrivateAtlasesClient) CreateOrUpdateSender(req *http.Request) (*htt
 func (client PrivateAtlasesClient) CreateOrUpdateResponder(resp *http.Response) (result PrivateAtlas, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -216,7 +215,6 @@ func (client PrivateAtlasesClient) DeleteSender(req *http.Request) (*http.Respon
 func (client PrivateAtlasesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -303,7 +301,6 @@ func (client PrivateAtlasesClient) GetSender(req *http.Request) (*http.Response,
 func (client PrivateAtlasesClient) GetResponder(resp *http.Response) (result PrivateAtlas, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -389,7 +386,6 @@ func (client PrivateAtlasesClient) ListByAccountSender(req *http.Request) (*http
 func (client PrivateAtlasesClient) ListByAccountResponder(resp *http.Response) (result PrivateAtlasList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -481,7 +477,6 @@ func (client PrivateAtlasesClient) UpdateSender(req *http.Request) (*http.Respon
 func (client PrivateAtlasesClient) UpdateResponder(resp *http.Response) (result PrivateAtlas, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

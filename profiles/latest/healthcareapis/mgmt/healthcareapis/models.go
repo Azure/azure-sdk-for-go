@@ -93,6 +93,7 @@ type ServiceAccessPolicyEntry = original.ServiceAccessPolicyEntry
 type ServiceAuthenticationConfigurationInfo = original.ServiceAuthenticationConfigurationInfo
 type ServiceCorsConfigurationInfo = original.ServiceCorsConfigurationInfo
 type ServiceCosmosDbConfigurationInfo = original.ServiceCosmosDbConfigurationInfo
+type ServiceExportConfigurationInfo = original.ServiceExportConfigurationInfo
 type ServicesClient = original.ServicesClient
 type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
 type ServicesDeleteFuture = original.ServicesDeleteFuture

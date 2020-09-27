@@ -115,7 +115,6 @@ func (client StartContainerClient) LaunchExecSender(req *http.Request) (*http.Re
 func (client StartContainerClient) LaunchExecResponder(resp *http.Response) (result ContainerExecResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

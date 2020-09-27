@@ -125,7 +125,6 @@ func (client MapsClient) GenerateSender(req *http.Request) (*http.Response, erro
 func (client MapsClient) GenerateResponder(resp *http.Response) (result MapResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

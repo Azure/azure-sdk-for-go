@@ -116,7 +116,6 @@ func (client ResourceGroupsClient) CheckExistenceSender(req *http.Request) (*htt
 func (client ResourceGroupsClient) CheckExistenceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusNotFound),
 		autorest.ByClosing())
 	result.Response = resp
@@ -207,7 +206,6 @@ func (client ResourceGroupsClient) CreateOrUpdateSender(req *http.Request) (*htt
 func (client ResourceGroupsClient) CreateOrUpdateResponder(resp *http.Response) (result ResourceGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -290,7 +288,6 @@ func (client ResourceGroupsClient) DeleteSender(req *http.Request) (future Resou
 func (client ResourceGroupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -374,7 +371,6 @@ func (client ResourceGroupsClient) ExportTemplateSender(req *http.Request) (*htt
 func (client ResourceGroupsClient) ExportTemplateResponder(resp *http.Response) (result ResourceGroupExportResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -456,7 +452,6 @@ func (client ResourceGroupsClient) GetSender(req *http.Request) (*http.Response,
 func (client ResourceGroupsClient) GetResponder(resp *http.Response) (result ResourceGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -498,6 +493,9 @@ func (client ResourceGroupsClient) List(ctx context.Context, filter string, top 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.ResourceGroupsClient", "List", resp, "Failure responding to request")
 	}
+	if result.rglr.hasNextLink() && result.rglr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -538,7 +536,6 @@ func (client ResourceGroupsClient) ListSender(req *http.Request) (*http.Response
 func (client ResourceGroupsClient) ListResponder(resp *http.Response) (result ResourceGroupListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -661,7 +658,6 @@ func (client ResourceGroupsClient) UpdateSender(req *http.Request) (*http.Respon
 func (client ResourceGroupsClient) UpdateResponder(resp *http.Response) (result ResourceGroup, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

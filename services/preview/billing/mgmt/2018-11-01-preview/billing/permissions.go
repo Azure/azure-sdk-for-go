@@ -106,7 +106,6 @@ func (client PermissionsClient) ListByBillingAccountSender(req *http.Request) (*
 func (client PermissionsClient) ListByBillingAccountResponder(resp *http.Response) (result PermissionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -181,7 +180,6 @@ func (client PermissionsClient) ListByBillingProfileSender(req *http.Request) (*
 func (client PermissionsClient) ListByBillingProfileResponder(resp *http.Response) (result PermissionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -256,7 +254,6 @@ func (client PermissionsClient) ListByCustomersSender(req *http.Request) (*http.
 func (client PermissionsClient) ListByCustomersResponder(resp *http.Response) (result PermissionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -331,7 +328,6 @@ func (client PermissionsClient) ListByInvoiceSectionsSender(req *http.Request) (
 func (client PermissionsClient) ListByInvoiceSectionsResponder(resp *http.Response) (result PermissionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -1,0 +1,375 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package azidentity
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"net/url"
+	"strings"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+)
+
+const (
+	clientAssertionType = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
+	tokenEndpoint       = "/oauth2/v2.0/token"
+)
+
+const (
+	qpClientAssertionType = "client_assertion_type"
+	qpClientAssertion     = "client_assertion"
+	qpClientID            = "client_id"
+	qpClientSecret        = "client_secret"
+	qpDeviceCode          = "device_code"
+	qpGrantType           = "grant_type"
+	qpPassword            = "password"
+	qpRefreshToken        = "refresh_token"
+	qpResponseType        = "response_type"
+	qpScope               = "scope"
+	qpUsername            = "username"
+)
+
+// aadIdentityClient provides the base for authenticating with Client Secret Credentials, Client Certificate Credentials
+// and Environment Credentials. This type inlcudes an azcore.Pipeline and TokenCredentialOptions.
+type aadIdentityClient struct {
+	options  TokenCredentialOptions
+	pipeline azcore.Pipeline
+}
+
+// newAADIdentityClient creates a new instance of the aadIdentityClient with the TokenCredentialOptions
+// that are passed into it along with a default pipeline.
+// options: TokenCredentialOptions that can configure policies for the pipeline and the authority host that
+// will be used to retrieve tokens and authenticate
+func newAADIdentityClient(options *TokenCredentialOptions) (*aadIdentityClient, error) {
+	logEnvVars()
+	options, err := options.setDefaultValues()
+	if err != nil {
+		return nil, err
+	}
+	return &aadIdentityClient{options: *options, pipeline: newDefaultPipeline(*options)}, nil
+}
+
+// refreshAccessToken creates a refresh token request and returns the resulting Access Token or
+// an error in case of an authentication failure.
+// ctx: The current request context
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal
+// clientID: The client (application) ID of the service principal
+// clientSecret: A client secret that was generated for the App Registration used to authenticate the client
+// scopes: The scopes for the given access token
+func (c *aadIdentityClient) refreshAccessToken(ctx context.Context, tenantID string, clientID string, clientSecret string, refreshToken string, scopes []string) (*tokenResponse, error) {
+	req, err := c.createRefreshTokenRequest(ctx, tenantID, clientID, clientSecret, refreshToken, scopes)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := c.pipeline.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.HasStatusCode(successStatusCodes[:]...) {
+		return c.createRefreshAccessToken(resp)
+	}
+
+	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+}
+
+// authenticate creates a client secret authentication request and returns the resulting Access Token or
+// an error in case of authentication failure.
+// ctx: The current request context
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal
+// clientID: The client (application) ID of the service principal
+// clientSecret: A client secret that was generated for the App Registration used to authenticate the client
+// scopes: The scopes required for the token
+func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.AccessToken, error) {
+	req, err := c.createClientSecretAuthRequest(ctx, tenantID, clientID, clientSecret, scopes)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := c.pipeline.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.HasStatusCode(successStatusCodes[:]...) {
+		return c.createAccessToken(resp)
+	}
+
+	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+}
+
+// authenticateCertificate creates a client certificate authentication request and returns an Access Token or
+// an error.
+// ctx: The current request context
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal
+// clientID: The client (application) ID of the service principal
+// clientCertificatePath: The path to the client certificate PEM file
+// scopes: The scopes required for the token
+func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantID string, clientID string, cert *certContents, scopes []string) (*azcore.AccessToken, error) {
+	req, err := c.createClientCertificateAuthRequest(ctx, tenantID, clientID, cert, scopes)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := c.pipeline.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.HasStatusCode(successStatusCodes[:]...) {
+		return c.createAccessToken(resp)
+	}
+
+	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+}
+
+func (c *aadIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {
+	value := struct {
+		Token     string      `json:"access_token"`
+		ExpiresIn json.Number `json:"expires_in"`
+		ExpiresOn string      `json:"expires_on"`
+	}{}
+	if err := res.UnmarshalAsJSON(&value); err != nil {
+		return nil, fmt.Errorf("internal AccessToken: %w", err)
+	}
+	t, err := value.ExpiresIn.Int64()
+	if err != nil {
+		return nil, err
+	}
+	return &azcore.AccessToken{
+		Token:     value.Token,
+		ExpiresOn: time.Now().Add(time.Second * time.Duration(t)).UTC(),
+	}, nil
+}
+
+func (c *aadIdentityClient) createRefreshAccessToken(res *azcore.Response) (*tokenResponse, error) {
+	// To know more about refreshing access tokens please see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v1-protocols-oauth-code#refreshing-the-access-tokens
+	// DeviceCodeCredential uses refresh token, please see the authentication flow here: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code
+	value := struct {
+		Token        string      `json:"access_token"`
+		RefreshToken string      `json:"refresh_token"`
+		ExpiresIn    json.Number `json:"expires_in"`
+		ExpiresOn    string      `json:"expires_on"`
+	}{}
+	if err := res.UnmarshalAsJSON(&value); err != nil {
+		return nil, fmt.Errorf("internal AccessToken: %w", err)
+	}
+	t, err := value.ExpiresIn.Int64()
+	if err != nil {
+		return nil, err
+	}
+	accessToken := &azcore.AccessToken{
+		Token:     value.Token,
+		ExpiresOn: time.Now().Add(time.Second * time.Duration(t)).UTC(),
+	}
+	return &tokenResponse{token: accessToken, refreshToken: value.RefreshToken}, nil
+}
+
+func (c *aadIdentityClient) createRefreshTokenRequest(ctx context.Context, tenantID, clientID, clientSecret, refreshToken string, scopes []string) (*azcore.Request, error) {
+	data := url.Values{}
+	data.Set(qpGrantType, "refresh_token")
+	data.Set(qpClientID, clientID)
+	// clientSecret is only required for web apps. To know more about refreshing access tokens please see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v1-protocols-oauth-code#refreshing-the-access-tokens
+	if len(clientSecret) != 0 {
+		data.Set(qpClientSecret, clientSecret)
+	}
+	data.Set(qpRefreshToken, refreshToken)
+	data.Set(qpScope, strings.Join(scopes, " "))
+	dataEncoded := data.Encode()
+	body := azcore.NopCloser(strings.NewReader(dataEncoded))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, tokenEndpoint))
+	if err != nil {
+		return nil, err
+	}
+	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+func (c *aadIdentityClient) createClientSecretAuthRequest(ctx context.Context, tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.Request, error) {
+	data := url.Values{}
+	data.Set(qpGrantType, "client_credentials")
+	data.Set(qpClientID, clientID)
+	data.Set(qpClientSecret, clientSecret)
+	data.Set(qpScope, strings.Join(scopes, " "))
+	dataEncoded := data.Encode()
+	body := azcore.NopCloser(strings.NewReader(dataEncoded))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, tokenEndpoint))
+	if err != nil {
+		return nil, err
+	}
+	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+func (c *aadIdentityClient) createClientCertificateAuthRequest(ctx context.Context, tenantID string, clientID string, cert *certContents, scopes []string) (*azcore.Request, error) {
+	u := azcore.JoinPaths(c.options.AuthorityHost, tenantID, tokenEndpoint)
+	clientAssertion, err := createClientAssertionJWT(clientID, u, cert)
+	if err != nil {
+		return nil, err
+	}
+	data := url.Values{}
+	data.Set(qpGrantType, "client_credentials")
+	data.Set(qpResponseType, "token")
+	data.Set(qpClientID, clientID)
+	data.Set(qpClientAssertionType, clientAssertionType)
+	data.Set(qpClientAssertion, clientAssertion)
+	data.Set(qpScope, strings.Join(scopes, " "))
+	dataEncoded := data.Encode()
+	body := azcore.NopCloser(strings.NewReader(dataEncoded))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, u)
+	if err != nil {
+		return nil, err
+	}
+	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// authenticateUsernamePassword creates a client username and password authentication request and returns an Access Token or
+// an error.
+// ctx: The current request context
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal
+// clientID: The client (application) ID of the service principal
+// username: User's account username
+// password: User's account password
+// scopes: The scopes required for the token
+func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, tenantID string, clientID string, username string, password string, scopes []string) (*azcore.AccessToken, error) {
+	req, err := c.createUsernamePasswordAuthRequest(ctx, tenantID, clientID, username, password, scopes)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := c.pipeline.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.HasStatusCode(successStatusCodes[:]...) {
+		return c.createAccessToken(resp)
+	}
+
+	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+}
+
+func (c *aadIdentityClient) createUsernamePasswordAuthRequest(ctx context.Context, tenantID string, clientID string, username string, password string, scopes []string) (*azcore.Request, error) {
+	data := url.Values{}
+	data.Set(qpResponseType, "token")
+	data.Set(qpGrantType, "password")
+	data.Set(qpClientID, clientID)
+	data.Set(qpUsername, username)
+	data.Set(qpPassword, password)
+	data.Set(qpScope, strings.Join(scopes, " "))
+	dataEncoded := data.Encode()
+	body := azcore.NopCloser(strings.NewReader(dataEncoded))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, tokenEndpoint))
+	if err != nil {
+		return nil, err
+	}
+	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+func createDeviceCodeResult(res *azcore.Response) (*deviceCodeResult, error) {
+	value := &deviceCodeResult{}
+	if err := res.UnmarshalAsJSON(&value); err != nil {
+		return nil, fmt.Errorf("DeviceCodeResult: %w", err)
+	}
+	return value, nil
+}
+
+// authenticateDeviceCode creates a device code authentication request and returns an Access Token or
+// an error in case of failure.
+// ctx: The current request context
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal
+// clientID: The client (application) ID of the service principal
+// deviceCode: The device code associated with the request
+// scopes: The scopes required for the token
+func (c *aadIdentityClient) authenticateDeviceCode(ctx context.Context, tenantID string, clientID string, deviceCode string, scopes []string) (*tokenResponse, error) {
+	req, err := c.createDeviceCodeAuthRequest(ctx, tenantID, clientID, deviceCode, scopes)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := c.pipeline.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.HasStatusCode(successStatusCodes[:]...) {
+		return c.createRefreshAccessToken(resp)
+	}
+
+	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+}
+
+func (c *aadIdentityClient) createDeviceCodeAuthRequest(ctx context.Context, tenantID string, clientID string, deviceCode string, scopes []string) (*azcore.Request, error) {
+	if len(tenantID) == 0 { // if the user did not pass in a tenantID then the default value is set
+		tenantID = "organizations"
+	}
+	data := url.Values{}
+	data.Set(qpGrantType, deviceCodeGrantType)
+	data.Set(qpClientID, clientID)
+	data.Set(qpDeviceCode, deviceCode)
+	data.Set(qpScope, strings.Join(scopes, " "))
+	dataEncoded := data.Encode()
+	body := azcore.NopCloser(strings.NewReader(dataEncoded))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, tokenEndpoint))
+	if err != nil {
+		return nil, err
+	}
+	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, clientID string, scopes []string) (*deviceCodeResult, error) {
+	req, err := c.createDeviceCodeNumberRequest(ctx, tenantID, clientID, scopes)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := c.pipeline.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.HasStatusCode(successStatusCodes[:]...) {
+		return createDeviceCodeResult(resp)
+	}
+	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+}
+
+func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, tenantID string, clientID string, scopes []string) (*azcore.Request, error) {
+	if len(tenantID) == 0 { // if the user did not pass in a tenantID then the default value is set
+		tenantID = "organizations"
+	}
+	data := url.Values{}
+	data.Set(qpClientID, clientID)
+	data.Set(qpScope, strings.Join(scopes, " "))
+	dataEncoded := data.Encode()
+	body := azcore.NopCloser(strings.NewReader(dataEncoded))
+	// endpoint that will return a device code along with the other necessary authentication flow parameters in the DeviceCodeResult struct
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, "/oauth2/v2.0/devicecode"))
+	if err != nil {
+		return nil, err
+	}
+	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+		return nil, err
+	}
+	return req, nil
+}

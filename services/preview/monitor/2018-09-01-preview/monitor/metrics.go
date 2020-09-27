@@ -129,7 +129,6 @@ func (client MetricsClient) CreateSender(req *http.Request) (*http.Response, err
 func (client MetricsClient) CreateResponder(resp *http.Response) (result AzureMetricsResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -80,6 +80,9 @@ func (client QuotasClient) List(ctx context.Context, location string) (result Li
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "machinelearningservices.QuotasClient", "List", resp, "Failure responding to request")
 	}
+	if result.lwq.hasNextLink() && result.lwq.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -115,7 +118,6 @@ func (client QuotasClient) ListSender(req *http.Request) (*http.Response, error)
 func (client QuotasClient) ListResponder(resp *http.Response) (result ListWorkspaceQuotas, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -235,7 +237,6 @@ func (client QuotasClient) UpdateSender(req *http.Request) (*http.Response, erro
 func (client QuotasClient) UpdateResponder(resp *http.Response) (result UpdateWorkspaceQuotasResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

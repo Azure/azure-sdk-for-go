@@ -25,38 +25,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0/contentmoderator"
 
-// StatusEnum enumerates the values for status enum.
-type StatusEnum string
-
-const (
-	// Complete ...
-	Complete StatusEnum = "Complete"
-	// Pending ...
-	Pending StatusEnum = "Pending"
-	// Unpublished ...
-	Unpublished StatusEnum = "Unpublished"
-)
-
-// PossibleStatusEnumValues returns an array of possible values for the StatusEnum const type.
-func PossibleStatusEnumValues() []StatusEnum {
-	return []StatusEnum{Complete, Pending, Unpublished}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeImage ...
-	TypeImage Type = "Image"
-	// TypeText ...
-	TypeText Type = "Text"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeImage, TypeText}
-}
-
 // Address address details.
 type Address struct {
 	// Text - Detected Address.

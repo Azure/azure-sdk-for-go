@@ -122,7 +122,6 @@ func (client AlertsClient) ClearSender(req *http.Request) (*http.Response, error
 func (client AlertsClient) ClearResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -170,6 +169,9 @@ func (client AlertsClient) ListByManager(ctx context.Context, resourceGroupName 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.AlertsClient", "ListByManager", resp, "Failure responding to request")
 	}
+	if result.al.hasNextLink() && result.al.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -209,7 +211,6 @@ func (client AlertsClient) ListByManagerSender(req *http.Request) (*http.Respons
 func (client AlertsClient) ListByManagerResponder(resp *http.Response) (result AlertList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -336,7 +337,6 @@ func (client AlertsClient) SendTestEmailSender(req *http.Request) (*http.Respons
 func (client AlertsClient) SendTestEmailResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp

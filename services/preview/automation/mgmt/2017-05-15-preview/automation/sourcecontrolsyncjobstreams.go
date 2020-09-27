@@ -126,7 +126,6 @@ func (client SourceControlSyncJobStreamsClient) GetSender(req *http.Request) (*h
 func (client SourceControlSyncJobStreamsClient) GetResponder(resp *http.Response) (result SourceControlSyncJobStreamByID, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -178,6 +177,9 @@ func (client SourceControlSyncJobStreamsClient) ListBySyncJob(ctx context.Contex
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.SourceControlSyncJobStreamsClient", "ListBySyncJob", resp, "Failure responding to request")
 	}
+	if result.scsjslbsj.hasNextLink() && result.scsjslbsj.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -219,7 +221,6 @@ func (client SourceControlSyncJobStreamsClient) ListBySyncJobSender(req *http.Re
 func (client SourceControlSyncJobStreamsClient) ListBySyncJobResponder(resp *http.Response) (result SourceControlSyncJobStreamsListBySyncJob, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

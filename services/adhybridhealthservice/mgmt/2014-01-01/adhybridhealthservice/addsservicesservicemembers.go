@@ -111,7 +111,6 @@ func (client AddsServicesServiceMembersClient) AddSender(req *http.Request) (*ht
 func (client AddsServicesServiceMembersClient) AddResponder(resp *http.Response) (result ServiceMember, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -154,6 +153,9 @@ func (client AddsServicesServiceMembersClient) List(ctx context.Context, service
 	result.sm, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AddsServicesServiceMembersClient", "List", resp, "Failure responding to request")
+	}
+	if result.sm.hasNextLink() && result.sm.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -198,7 +200,6 @@ func (client AddsServicesServiceMembersClient) ListSender(req *http.Request) (*h
 func (client AddsServicesServiceMembersClient) ListResponder(resp *http.Response) (result ServiceMembers, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

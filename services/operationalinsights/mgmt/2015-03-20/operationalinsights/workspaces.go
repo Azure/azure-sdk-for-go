@@ -118,7 +118,6 @@ func (client WorkspacesClient) AvailableServiceTiersSender(req *http.Request) (*
 func (client WorkspacesClient) AvailableServiceTiersResponder(resp *http.Response) (result ListAvailableServiceTier, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -204,7 +203,6 @@ func (client WorkspacesClient) DeleteGatewaysSender(req *http.Request) (*http.Re
 func (client WorkspacesClient) DeleteGatewaysResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -288,7 +286,6 @@ func (client WorkspacesClient) GetPurgeStatusSender(req *http.Request) (*http.Re
 func (client WorkspacesClient) GetPurgeStatusResponder(resp *http.Response) (result WorkspacePurgeStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -372,7 +369,6 @@ func (client WorkspacesClient) GetSchemaSender(req *http.Request) (*http.Respons
 func (client WorkspacesClient) GetSchemaResponder(resp *http.Response) (result SearchGetSchemaResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -457,7 +453,6 @@ func (client WorkspacesClient) ListKeysSender(req *http.Request) (*http.Response
 func (client WorkspacesClient) ListKeysResponder(resp *http.Response) (result SharedKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -529,7 +524,6 @@ func (client WorkspacesClient) ListLinkTargetsSender(req *http.Request) (*http.R
 func (client WorkspacesClient) ListLinkTargetsResponder(resp *http.Response) (result ListLinkTarget, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -624,7 +618,6 @@ func (client WorkspacesClient) PurgeSender(req *http.Request) (*http.Response, e
 func (client WorkspacesClient) PurgeResponder(resp *http.Response) (result WorkspacePurgeResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -709,7 +702,6 @@ func (client WorkspacesClient) RegenerateSharedKeysSender(req *http.Request) (*h
 func (client WorkspacesClient) RegenerateSharedKeysResponder(resp *http.Response) (result SharedKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -107,7 +107,6 @@ func (client LocationClient) GetQuotasSender(req *http.Request) (*http.Response,
 func (client LocationClient) GetQuotasResponder(resp *http.Response) (result LocationQuota, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

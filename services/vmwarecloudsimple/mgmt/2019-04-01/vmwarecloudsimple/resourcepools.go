@@ -111,7 +111,6 @@ func (client ResourcePoolsClient) GetSender(req *http.Request) (*http.Response, 
 func (client ResourcePoolsClient) GetResponder(resp *http.Response) (result ResourcePool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -152,6 +151,9 @@ func (client ResourcePoolsClient) List(ctx context.Context, regionID string, pcN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.ResourcePoolsClient", "List", resp, "Failure responding to request")
 	}
+	if result.rplr.hasNextLink() && result.rplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -188,7 +190,6 @@ func (client ResourcePoolsClient) ListSender(req *http.Request) (*http.Response,
 func (client ResourcePoolsClient) ListResponder(resp *http.Response) (result ResourcePoolsListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

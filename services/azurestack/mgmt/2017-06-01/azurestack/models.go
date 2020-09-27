@@ -29,123 +29,121 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/azurestack/mgmt/2017-06-01/azurestack"
 
-// Category enumerates the values for category.
-type Category string
-
-const (
-	// ADFS ...
-	ADFS Category = "ADFS"
-	// AzureAD ...
-	AzureAD Category = "AzureAD"
-)
-
-// PossibleCategoryValues returns an array of possible values for the Category const type.
-func PossibleCategoryValues() []Category {
-	return []Category{ADFS, AzureAD}
-}
-
-// CompatibilityIssue enumerates the values for compatibility issue.
-type CompatibilityIssue string
-
-const (
-	// ADFSIdentitySystemRequired ...
-	ADFSIdentitySystemRequired CompatibilityIssue = "ADFSIdentitySystemRequired"
-	// AzureADIdentitySystemRequired ...
-	AzureADIdentitySystemRequired CompatibilityIssue = "AzureADIdentitySystemRequired"
-	// CapacityBillingModelRequired ...
-	CapacityBillingModelRequired CompatibilityIssue = "CapacityBillingModelRequired"
-	// ConnectionToAzureRequired ...
-	ConnectionToAzureRequired CompatibilityIssue = "ConnectionToAzureRequired"
-	// ConnectionToInternetRequired ...
-	ConnectionToInternetRequired CompatibilityIssue = "ConnectionToInternetRequired"
-	// DevelopmentBillingModelRequired ...
-	DevelopmentBillingModelRequired CompatibilityIssue = "DevelopmentBillingModelRequired"
-	// DisconnectedEnvironmentRequired ...
-	DisconnectedEnvironmentRequired CompatibilityIssue = "DisconnectedEnvironmentRequired"
-	// HigherDeviceVersionRequired ...
-	HigherDeviceVersionRequired CompatibilityIssue = "HigherDeviceVersionRequired"
-	// LowerDeviceVersionRequired ...
-	LowerDeviceVersionRequired CompatibilityIssue = "LowerDeviceVersionRequired"
-	// PayAsYouGoBillingModelRequired ...
-	PayAsYouGoBillingModelRequired CompatibilityIssue = "PayAsYouGoBillingModelRequired"
-)
-
-// PossibleCompatibilityIssueValues returns an array of possible values for the CompatibilityIssue const type.
-func PossibleCompatibilityIssueValues() []CompatibilityIssue {
-	return []CompatibilityIssue{ADFSIdentitySystemRequired, AzureADIdentitySystemRequired, CapacityBillingModelRequired, ConnectionToAzureRequired, ConnectionToInternetRequired, DevelopmentBillingModelRequired, DisconnectedEnvironmentRequired, HigherDeviceVersionRequired, LowerDeviceVersionRequired, PayAsYouGoBillingModelRequired}
-}
-
-// ComputeRole enumerates the values for compute role.
-type ComputeRole string
-
-const (
-	// IaaS ...
-	IaaS ComputeRole = "IaaS"
-	// None ...
-	None ComputeRole = "None"
-	// PaaS ...
-	PaaS ComputeRole = "PaaS"
-)
-
-// PossibleComputeRoleValues returns an array of possible values for the ComputeRole const type.
-func PossibleComputeRoleValues() []ComputeRole {
-	return []ComputeRole{IaaS, None, PaaS}
-}
-
-// Location enumerates the values for location.
-type Location string
-
-const (
-	// Global ...
-	Global Location = "global"
-)
-
-// PossibleLocationValues returns an array of possible values for the Location const type.
-func PossibleLocationValues() []Location {
-	return []Location{Global}
-}
-
-// OperatingSystem enumerates the values for operating system.
-type OperatingSystem string
-
-const (
-	// OperatingSystemLinux ...
-	OperatingSystemLinux OperatingSystem = "Linux"
-	// OperatingSystemNone ...
-	OperatingSystemNone OperatingSystem = "None"
-	// OperatingSystemWindows ...
-	OperatingSystemWindows OperatingSystem = "Windows"
-)
-
-// PossibleOperatingSystemValues returns an array of possible values for the OperatingSystem const type.
-func PossibleOperatingSystemValues() []OperatingSystem {
-	return []OperatingSystem{OperatingSystemLinux, OperatingSystemNone, OperatingSystemWindows}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Canceled, Creating, Failed, Succeeded}
-}
-
 // ActivationKeyResult the resource containing the Azure Stack activation key.
 type ActivationKeyResult struct {
 	autorest.Response `json:"-"`
 	// ActivationKey - Azure Stack activation key.
 	ActivationKey *string `json:"activationKey,omitempty"`
+}
+
+// CloudManifestFileDeploymentData cloud specific manifest data for AzureStack deployment.
+type CloudManifestFileDeploymentData struct {
+	// ExternalDsmsCertificates - Dsms external certificates.
+	ExternalDsmsCertificates *string `json:"externalDsmsCertificates,omitempty"`
+	// CustomCloudVerificationKey - Signing verification public key.
+	CustomCloudVerificationKey *string `json:"customCloudVerificationKey,omitempty"`
+	// CloudManifestFileEnvironmentEndpoints - Environment endpoints.
+	*CloudManifestFileEnvironmentEndpoints `json:"customEnvironmentEndpoints,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudManifestFileDeploymentData.
+func (cmfdd CloudManifestFileDeploymentData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cmfdd.ExternalDsmsCertificates != nil {
+		objectMap["externalDsmsCertificates"] = cmfdd.ExternalDsmsCertificates
+	}
+	if cmfdd.CustomCloudVerificationKey != nil {
+		objectMap["customCloudVerificationKey"] = cmfdd.CustomCloudVerificationKey
+	}
+	if cmfdd.CloudManifestFileEnvironmentEndpoints != nil {
+		objectMap["customEnvironmentEndpoints"] = cmfdd.CloudManifestFileEnvironmentEndpoints
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CloudManifestFileDeploymentData struct.
+func (cmfdd *CloudManifestFileDeploymentData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "externalDsmsCertificates":
+			if v != nil {
+				var externalDsmsCertificates string
+				err = json.Unmarshal(*v, &externalDsmsCertificates)
+				if err != nil {
+					return err
+				}
+				cmfdd.ExternalDsmsCertificates = &externalDsmsCertificates
+			}
+		case "customCloudVerificationKey":
+			if v != nil {
+				var customCloudVerificationKey string
+				err = json.Unmarshal(*v, &customCloudVerificationKey)
+				if err != nil {
+					return err
+				}
+				cmfdd.CustomCloudVerificationKey = &customCloudVerificationKey
+			}
+		case "customEnvironmentEndpoints":
+			if v != nil {
+				var cloudManifestFileEnvironmentEndpoints CloudManifestFileEnvironmentEndpoints
+				err = json.Unmarshal(*v, &cloudManifestFileEnvironmentEndpoints)
+				if err != nil {
+					return err
+				}
+				cmfdd.CloudManifestFileEnvironmentEndpoints = &cloudManifestFileEnvironmentEndpoints
+			}
+		}
+	}
+
+	return nil
+}
+
+// CloudManifestFileEnvironmentEndpoints cloud specific environment endpoints for AzureStack deployment.
+type CloudManifestFileEnvironmentEndpoints struct {
+	// CustomCloudArmEndpoint - ARM endpoint.
+	CustomCloudArmEndpoint *string `json:"customCloudArmEndpoint,omitempty"`
+	// ExternalDsmsEndpoint - Dsms endpoint.
+	ExternalDsmsEndpoint *string `json:"externalDsmsEndpoint,omitempty"`
+}
+
+// CloudManifestFileProperties cloud specific manifest JSON properties.
+type CloudManifestFileProperties struct {
+	// DeploymentData - Cloud specific manifest data.
+	DeploymentData *CloudManifestFileDeploymentData `json:"deploymentData,omitempty"`
+	// Signature - Signature of the cloud specific manifest data.
+	Signature *string `json:"signature,omitempty"`
+}
+
+// CloudManifestFileResponse cloud specific manifest GET response.
+type CloudManifestFileResponse struct {
+	autorest.Response `json:"-"`
+	// Properties - Cloud specific manifest data.
+	Properties *CloudManifestFileProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; ID of the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Type of Resource.
+	Type *string `json:"type,omitempty"`
+	// Etag - The entity tag used for optimistic concurrency when modifying the resource.
+	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudManifestFileResponse.
+func (cmfr CloudManifestFileResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cmfr.Properties != nil {
+		objectMap["properties"] = cmfr.Properties
+	}
+	if cmfr.Etag != nil {
+		objectMap["etag"] = cmfr.Etag
+	}
+	return json.Marshal(objectMap)
 }
 
 // Compatibility product compatibility
@@ -324,10 +322,15 @@ func (csl CustomerSubscriptionList) IsEmpty() bool {
 	return csl.Value == nil || len(*csl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (csl CustomerSubscriptionList) hasNextLink() bool {
+	return csl.NextLink != nil && len(*csl.NextLink) != 0
+}
+
 // customerSubscriptionListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (csl CustomerSubscriptionList) customerSubscriptionListPreparer(ctx context.Context) (*http.Request, error) {
-	if csl.NextLink == nil || len(to.String(csl.NextLink)) < 1 {
+	if !csl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -355,11 +358,16 @@ func (page *CustomerSubscriptionListPage) NextWithContext(ctx context.Context) (
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.csl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.csl)
+		if err != nil {
+			return err
+		}
+		page.csl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.csl = next
 	return nil
 }
 
@@ -740,10 +748,15 @@ func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OperationList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // operationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OperationList) operationListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -771,11 +784,16 @@ func (page *OperationListPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 
@@ -989,10 +1007,15 @@ func (pl ProductList) IsEmpty() bool {
 	return pl.Value == nil || len(*pl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pl ProductList) hasNextLink() bool {
+	return pl.NextLink != nil && len(*pl.NextLink) != 0
+}
+
 // productListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pl ProductList) productListPreparer(ctx context.Context) (*http.Request, error) {
-	if pl.NextLink == nil || len(to.String(pl.NextLink)) < 1 {
+	if !pl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1020,11 +1043,16 @@ func (page *ProductListPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pl)
+		if err != nil {
+			return err
+		}
+		page.pl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pl = next
 	return nil
 }
 
@@ -1323,10 +1351,15 @@ func (rl RegistrationList) IsEmpty() bool {
 	return rl.Value == nil || len(*rl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rl RegistrationList) hasNextLink() bool {
+	return rl.NextLink != nil && len(*rl.NextLink) != 0
+}
+
 // registrationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rl RegistrationList) registrationListPreparer(ctx context.Context) (*http.Request, error) {
-	if rl.NextLink == nil || len(to.String(rl.NextLink)) < 1 {
+	if !rl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1354,11 +1387,16 @@ func (page *RegistrationListPage) NextWithContext(ctx context.Context) (err erro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rl)
+		if err != nil {
+			return err
+		}
+		page.rl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rl = next
 	return nil
 }
 
@@ -1396,8 +1434,8 @@ func NewRegistrationListPage(getNextPage func(context.Context, RegistrationList)
 type RegistrationParameter struct {
 	// RegistrationParameterProperties - Properties of the Azure Stack registration resource
 	*RegistrationParameterProperties `json:"properties,omitempty"`
-	// Location - Location of the resource. Possible values include: 'Global'
-	Location Location `json:"location,omitempty"`
+	// Location - Location of the resource.
+	Location *string `json:"location,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RegistrationParameter.
@@ -1406,7 +1444,7 @@ func (rp RegistrationParameter) MarshalJSON() ([]byte, error) {
 	if rp.RegistrationParameterProperties != nil {
 		objectMap["properties"] = rp.RegistrationParameterProperties
 	}
-	if rp.Location != "" {
+	if rp.Location != nil {
 		objectMap["location"] = rp.Location
 	}
 	return json.Marshal(objectMap)
@@ -1432,12 +1470,12 @@ func (rp *RegistrationParameter) UnmarshalJSON(body []byte) error {
 			}
 		case "location":
 			if v != nil {
-				var location Location
+				var location string
 				err = json.Unmarshal(*v, &location)
 				if err != nil {
 					return err
 				}
-				rp.Location = location
+				rp.Location = &location
 			}
 		}
 	}
@@ -1471,6 +1509,15 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - The entity tag used for optimistic concurrency when modifying the resource.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.Etag != nil {
+		objectMap["etag"] = r.Etag
+	}
+	return json.Marshal(objectMap)
 }
 
 // TrackedResource base resource object.

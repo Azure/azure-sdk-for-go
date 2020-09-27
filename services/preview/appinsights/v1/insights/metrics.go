@@ -158,7 +158,6 @@ func (client MetricsClient) GetSender(req *http.Request) (*http.Response, error)
 func (client MetricsClient) GetResponder(resp *http.Response) (result MetricsResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -226,7 +225,6 @@ func (client MetricsClient) GetMetadataSender(req *http.Request) (*http.Response
 func (client MetricsClient) GetMetadataResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -303,7 +301,6 @@ func (client MetricsClient) GetMultipleSender(req *http.Request) (*http.Response
 func (client MetricsClient) GetMultipleResponder(resp *http.Response) (result ListMetricsResultsItem, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

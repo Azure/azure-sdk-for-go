@@ -72,6 +72,9 @@ func (client ServiceProvidersClient) List(ctx context.Context) (result ServicePr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.ServiceProvidersClient", "List", resp, "Failure responding to request")
 	}
+	if result.splr.hasNextLink() && result.splr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -106,7 +109,6 @@ func (client ServiceProvidersClient) ListSender(req *http.Request) (*http.Respon
 func (client ServiceProvidersClient) ListResponder(resp *http.Response) (result ServiceProviderListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

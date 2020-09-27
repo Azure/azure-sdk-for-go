@@ -106,7 +106,6 @@ func (client ListManagementImageListsClient) CreateSender(req *http.Request) (*h
 func (client ListManagementImageListsClient) CreateResponder(resp *http.Response) (result ImageList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -177,7 +176,6 @@ func (client ListManagementImageListsClient) DeleteSender(req *http.Request) (*h
 func (client ListManagementImageListsClient) DeleteResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -242,7 +240,6 @@ func (client ListManagementImageListsClient) GetAllImageListsSender(req *http.Re
 func (client ListManagementImageListsClient) GetAllImageListsResponder(resp *http.Response) (result ListImageList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -313,7 +310,6 @@ func (client ListManagementImageListsClient) GetDetailsSender(req *http.Request)
 func (client ListManagementImageListsClient) GetDetailsResponder(resp *http.Response) (result ImageList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -384,7 +380,6 @@ func (client ListManagementImageListsClient) RefreshIndexMethodSender(req *http.
 func (client ListManagementImageListsClient) RefreshIndexMethodResponder(resp *http.Response) (result RefreshIndex, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -460,7 +455,6 @@ func (client ListManagementImageListsClient) UpdateSender(req *http.Request) (*h
 func (client ListManagementImageListsClient) UpdateResponder(resp *http.Response) (result ImageList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

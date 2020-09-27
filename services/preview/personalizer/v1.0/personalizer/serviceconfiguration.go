@@ -97,7 +97,6 @@ func (client ServiceConfigurationClient) GetSender(req *http.Request) (*http.Res
 func (client ServiceConfigurationClient) GetResponder(resp *http.Response) (result ServiceConfiguration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -187,7 +186,6 @@ func (client ServiceConfigurationClient) UpdateSender(req *http.Request) (*http.
 func (client ServiceConfigurationClient) UpdateResponder(resp *http.Response) (result ServiceConfiguration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -127,7 +127,6 @@ func (client OperationalizationClustersClient) CheckSystemServicesUpdatesAvailab
 func (client OperationalizationClustersClient) CheckSystemServicesUpdatesAvailableResponder(resp *http.Response) (result CheckSystemServicesUpdatesAvailableResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -249,7 +248,6 @@ func (client OperationalizationClustersClient) CreateOrUpdateSender(req *http.Re
 func (client OperationalizationClustersClient) CreateOrUpdateResponder(resp *http.Response) (result OperationalizationCluster, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -341,7 +339,6 @@ func (client OperationalizationClustersClient) DeleteSender(req *http.Request) (
 func (client OperationalizationClustersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -429,7 +426,6 @@ func (client OperationalizationClustersClient) GetSender(req *http.Request) (*ht
 func (client OperationalizationClustersClient) GetResponder(resp *http.Response) (result OperationalizationCluster, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -478,6 +474,9 @@ func (client OperationalizationClustersClient) ListByResourceGroup(ctx context.C
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.pocl.hasNextLink() && result.pocl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -516,7 +515,6 @@ func (client OperationalizationClustersClient) ListByResourceGroupSender(req *ht
 func (client OperationalizationClustersClient) ListByResourceGroupResponder(resp *http.Response) (result PaginatedOperationalizationClustersList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -593,6 +591,9 @@ func (client OperationalizationClustersClient) ListBySubscriptionID(ctx context.
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "ListBySubscriptionID", resp, "Failure responding to request")
 	}
+	if result.pocl.hasNextLink() && result.pocl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -630,7 +631,6 @@ func (client OperationalizationClustersClient) ListBySubscriptionIDSender(req *h
 func (client OperationalizationClustersClient) ListBySubscriptionIDResponder(resp *http.Response) (result PaginatedOperationalizationClustersList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -756,7 +756,6 @@ func (client OperationalizationClustersClient) ListKeysSender(req *http.Request)
 func (client OperationalizationClustersClient) ListKeysResponder(resp *http.Response) (result OperationalizationClusterCredentials, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -848,7 +847,6 @@ func (client OperationalizationClustersClient) UpdateSender(req *http.Request) (
 func (client OperationalizationClustersClient) UpdateResponder(resp *http.Response) (result OperationalizationCluster, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -936,7 +934,6 @@ func (client OperationalizationClustersClient) UpdateSystemServicesSender(req *h
 func (client OperationalizationClustersClient) UpdateSystemServicesResponder(resp *http.Response) (result UpdateSystemServicesResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -75,6 +75,9 @@ func (client SkusAvailabilityClient) List(ctx context.Context, regionID string, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.SkusAvailabilityClient", "List", resp, "Failure responding to request")
 	}
+	if result.salr.hasNextLink() && result.salr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -113,7 +116,6 @@ func (client SkusAvailabilityClient) ListSender(req *http.Request) (*http.Respon
 func (client SkusAvailabilityClient) ListResponder(resp *http.Response) (result SkuAvailabilityListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -113,7 +113,6 @@ func (client TopicsClient) CreateOrUpdateSender(req *http.Request) (future Topic
 func (client TopicsClient) CreateOrUpdateResponder(resp *http.Response) (result Topic, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -189,7 +188,6 @@ func (client TopicsClient) DeleteSender(req *http.Request) (future TopicsDeleteF
 func (client TopicsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -264,7 +262,6 @@ func (client TopicsClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client TopicsClient) GetResponder(resp *http.Response) (result Topic, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -305,6 +302,9 @@ func (client TopicsClient) ListByResourceGroup(ctx context.Context, resourceGrou
 	result.tlr, err = client.ListByResourceGroupResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "ListByResourceGroup", resp, "Failure responding to request")
+	}
+	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -347,7 +347,6 @@ func (client TopicsClient) ListByResourceGroupSender(req *http.Request) (*http.R
 func (client TopicsClient) ListByResourceGroupResponder(resp *http.Response) (result TopicsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -425,6 +424,9 @@ func (client TopicsClient) ListBySubscription(ctx context.Context, filter string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "eventgrid.TopicsClient", "ListBySubscription", resp, "Failure responding to request")
 	}
+	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -465,7 +467,6 @@ func (client TopicsClient) ListBySubscriptionSender(req *http.Request) (*http.Re
 func (client TopicsClient) ListBySubscriptionResponder(resp *http.Response) (result TopicsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -582,7 +583,6 @@ func (client TopicsClient) ListEventTypesSender(req *http.Request) (*http.Respon
 func (client TopicsClient) ListEventTypesResponder(resp *http.Response) (result EventTypesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -658,7 +658,6 @@ func (client TopicsClient) ListSharedAccessKeysSender(req *http.Request) (*http.
 func (client TopicsClient) ListSharedAccessKeysResponder(resp *http.Response) (result TopicSharedAccessKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -743,7 +742,6 @@ func (client TopicsClient) RegenerateKeySender(req *http.Request) (*http.Respons
 func (client TopicsClient) RegenerateKeyResponder(resp *http.Response) (result TopicSharedAccessKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -822,7 +820,6 @@ func (client TopicsClient) UpdateSender(req *http.Request) (future TopicsUpdateF
 func (client TopicsClient) UpdateResponder(resp *http.Response) (result Topic, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

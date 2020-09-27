@@ -22,7 +22,7 @@ package batch
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2019-08-01/batch"
+	original "github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2020-03-01/batch"
 )
 
 const (
@@ -112,11 +112,26 @@ const (
 	TaskWorkingDirectory  ContainerWorkingDirectory = original.TaskWorkingDirectory
 )
 
+type DiskEncryptionTarget = original.DiskEncryptionTarget
+
+const (
+	OsDisk        DiskEncryptionTarget = original.OsDisk
+	TemporaryDisk DiskEncryptionTarget = original.TemporaryDisk
+)
+
 type ElevationLevel = original.ElevationLevel
 
 const (
 	Admin    ElevationLevel = original.Admin
 	NonAdmin ElevationLevel = original.NonAdmin
+)
+
+type IPAddressProvisioningType = original.IPAddressProvisioningType
+
+const (
+	BatchManaged        IPAddressProvisioningType = original.BatchManaged
+	NoPublicIPAddresses IPAddressProvisioningType = original.NoPublicIPAddresses
+	UserManaged         IPAddressProvisioningType = original.UserManaged
 )
 
 type InboundEndpointProtocol = original.InboundEndpointProtocol
@@ -131,6 +146,13 @@ type InterNodeCommunicationState = original.InterNodeCommunicationState
 const (
 	Disabled InterNodeCommunicationState = original.Disabled
 	Enabled  InterNodeCommunicationState = original.Enabled
+)
+
+type KeySource = original.KeySource
+
+const (
+	MicrosoftBatch    KeySource = original.MicrosoftBatch
+	MicrosoftKeyVault KeySource = original.MicrosoftKeyVault
 )
 
 type LoginMode = original.LoginMode
@@ -175,6 +197,23 @@ const (
 	PoolProvisioningStateSucceeded PoolProvisioningState = original.PoolProvisioningStateSucceeded
 )
 
+type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
+
+const (
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateFailed
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
+	PrivateEndpointConnectionProvisioningStateUpdating  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateUpdating
+)
+
+type PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatus
+
+const (
+	PrivateLinkServiceConnectionStatusApproved     PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusApproved
+	PrivateLinkServiceConnectionStatusDisconnected PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusDisconnected
+	PrivateLinkServiceConnectionStatusPending      PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusPending
+	PrivateLinkServiceConnectionStatusRejected     PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusRejected
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -184,6 +223,13 @@ const (
 	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
 	ProvisioningStateInvalid   ProvisioningState = original.ProvisioningStateInvalid
 	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+)
+
+type PublicNetworkAccessType = original.PublicNetworkAccessType
+
+const (
+	PublicNetworkAccessTypeDisabled PublicNetworkAccessType = original.PublicNetworkAccessTypeDisabled
+	PublicNetworkAccessTypeEnabled  PublicNetworkAccessType = original.PublicNetworkAccessTypeEnabled
 )
 
 type StorageAccountType = original.StorageAccountType
@@ -244,10 +290,13 @@ type ContainerRegistry = original.ContainerRegistry
 type DataDisk = original.DataDisk
 type DeleteCertificateError = original.DeleteCertificateError
 type DeploymentConfiguration = original.DeploymentConfiguration
+type DiskEncryptionConfiguration = original.DiskEncryptionConfiguration
+type EncryptionProperties = original.EncryptionProperties
 type EnvironmentSetting = original.EnvironmentSetting
 type FixedScaleSettings = original.FixedScaleSettings
 type ImageReference = original.ImageReference
 type InboundNatPool = original.InboundNatPool
+type KeyVaultProperties = original.KeyVaultProperties
 type KeyVaultReference = original.KeyVaultReference
 type LinuxUserConfiguration = original.LinuxUserConfiguration
 type ListApplicationPackagesResult = original.ListApplicationPackagesResult
@@ -262,6 +311,12 @@ type ListCertificatesResultPage = original.ListCertificatesResultPage
 type ListPoolsResult = original.ListPoolsResult
 type ListPoolsResultIterator = original.ListPoolsResultIterator
 type ListPoolsResultPage = original.ListPoolsResultPage
+type ListPrivateEndpointConnectionsResult = original.ListPrivateEndpointConnectionsResult
+type ListPrivateEndpointConnectionsResultIterator = original.ListPrivateEndpointConnectionsResultIterator
+type ListPrivateEndpointConnectionsResultPage = original.ListPrivateEndpointConnectionsResultPage
+type ListPrivateLinkResourcesResult = original.ListPrivateLinkResourcesResult
+type ListPrivateLinkResourcesResultIterator = original.ListPrivateLinkResourcesResultIterator
+type ListPrivateLinkResourcesResultPage = original.ListPrivateLinkResourcesResultPage
 type LocationClient = original.LocationClient
 type LocationQuota = original.LocationQuota
 type MetadataItem = original.MetadataItem
@@ -281,7 +336,16 @@ type PoolCreateFuture = original.PoolCreateFuture
 type PoolDeleteFuture = original.PoolDeleteFuture
 type PoolEndpointConfiguration = original.PoolEndpointConfiguration
 type PoolProperties = original.PoolProperties
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionClient = original.PrivateEndpointConnectionClient
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceClient = original.PrivateLinkResourceClient
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProxyResource = original.ProxyResource
+type PublicIPAddressConfiguration = original.PublicIPAddressConfiguration
 type ResizeError = original.ResizeError
 type ResizeOperationStatus = original.ResizeOperationStatus
 type Resource = original.Resource
@@ -354,6 +418,18 @@ func NewListPoolsResultIterator(page ListPoolsResultPage) ListPoolsResultIterato
 func NewListPoolsResultPage(getNextPage func(context.Context, ListPoolsResult) (ListPoolsResult, error)) ListPoolsResultPage {
 	return original.NewListPoolsResultPage(getNextPage)
 }
+func NewListPrivateEndpointConnectionsResultIterator(page ListPrivateEndpointConnectionsResultPage) ListPrivateEndpointConnectionsResultIterator {
+	return original.NewListPrivateEndpointConnectionsResultIterator(page)
+}
+func NewListPrivateEndpointConnectionsResultPage(getNextPage func(context.Context, ListPrivateEndpointConnectionsResult) (ListPrivateEndpointConnectionsResult, error)) ListPrivateEndpointConnectionsResultPage {
+	return original.NewListPrivateEndpointConnectionsResultPage(getNextPage)
+}
+func NewListPrivateLinkResourcesResultIterator(page ListPrivateLinkResourcesResultPage) ListPrivateLinkResourcesResultIterator {
+	return original.NewListPrivateLinkResourcesResultIterator(page)
+}
+func NewListPrivateLinkResourcesResultPage(getNextPage func(context.Context, ListPrivateLinkResourcesResult) (ListPrivateLinkResourcesResult, error)) ListPrivateLinkResourcesResultPage {
+	return original.NewListPrivateLinkResourcesResultPage(getNextPage)
+}
 func NewLocationClient(subscriptionID string) LocationClient {
 	return original.NewLocationClient(subscriptionID)
 }
@@ -377,6 +453,18 @@ func NewPoolClient(subscriptionID string) PoolClient {
 }
 func NewPoolClientWithBaseURI(baseURI string, subscriptionID string) PoolClient {
 	return original.NewPoolClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateEndpointConnectionClient(subscriptionID string) PrivateEndpointConnectionClient {
+	return original.NewPrivateEndpointConnectionClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionClient {
+	return original.NewPrivateEndpointConnectionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourceClient(subscriptionID string) PrivateLinkResourceClient {
+	return original.NewPrivateLinkResourceClient(subscriptionID)
+}
+func NewPrivateLinkResourceClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourceClient {
+	return original.NewPrivateLinkResourceClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -414,14 +502,23 @@ func PossibleComputeNodeFillTypeValues() []ComputeNodeFillType {
 func PossibleContainerWorkingDirectoryValues() []ContainerWorkingDirectory {
 	return original.PossibleContainerWorkingDirectoryValues()
 }
+func PossibleDiskEncryptionTargetValues() []DiskEncryptionTarget {
+	return original.PossibleDiskEncryptionTargetValues()
+}
 func PossibleElevationLevelValues() []ElevationLevel {
 	return original.PossibleElevationLevelValues()
+}
+func PossibleIPAddressProvisioningTypeValues() []IPAddressProvisioningType {
+	return original.PossibleIPAddressProvisioningTypeValues()
 }
 func PossibleInboundEndpointProtocolValues() []InboundEndpointProtocol {
 	return original.PossibleInboundEndpointProtocolValues()
 }
 func PossibleInterNodeCommunicationStateValues() []InterNodeCommunicationState {
 	return original.PossibleInterNodeCommunicationStateValues()
+}
+func PossibleKeySourceValues() []KeySource {
+	return original.PossibleKeySourceValues()
 }
 func PossibleLoginModeValues() []LoginMode {
 	return original.PossibleLoginModeValues()
@@ -441,8 +538,17 @@ func PossiblePoolAllocationModeValues() []PoolAllocationMode {
 func PossiblePoolProvisioningStateValues() []PoolProvisioningState {
 	return original.PossiblePoolProvisioningStateValues()
 }
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
+}
+func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
+	return original.PossiblePrivateLinkServiceConnectionStatusValues()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossiblePublicNetworkAccessTypeValues() []PublicNetworkAccessType {
+	return original.PossiblePublicNetworkAccessTypeValues()
 }
 func PossibleStorageAccountTypeValues() []StorageAccountType {
 	return original.PossibleStorageAccountTypeValues()

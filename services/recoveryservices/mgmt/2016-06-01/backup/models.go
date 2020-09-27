@@ -30,809 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2016-06-01/backup"
 
-// DataSourceType enumerates the values for data source type.
-type DataSourceType string
-
-const (
-	// AzureSQLDb ...
-	AzureSQLDb DataSourceType = "AzureSqlDb"
-	// DPMUnknown ...
-	DPMUnknown DataSourceType = "DPMUnknown"
-	// Exchange ...
-	Exchange DataSourceType = "Exchange"
-	// FileFolder ...
-	FileFolder DataSourceType = "FileFolder"
-	// Invalid ...
-	Invalid DataSourceType = "Invalid"
-	// Sharepoint ...
-	Sharepoint DataSourceType = "Sharepoint"
-	// SQLDB ...
-	SQLDB DataSourceType = "SQLDB"
-	// VM ...
-	VM DataSourceType = "VM"
-)
-
-// PossibleDataSourceTypeValues returns an array of possible values for the DataSourceType const type.
-func PossibleDataSourceTypeValues() []DataSourceType {
-	return []DataSourceType{AzureSQLDb, DPMUnknown, Exchange, FileFolder, Invalid, Sharepoint, SQLDB, VM}
-}
-
-// DayOfWeek enumerates the values for day of week.
-type DayOfWeek string
-
-const (
-	// Friday ...
-	Friday DayOfWeek = "Friday"
-	// Monday ...
-	Monday DayOfWeek = "Monday"
-	// Saturday ...
-	Saturday DayOfWeek = "Saturday"
-	// Sunday ...
-	Sunday DayOfWeek = "Sunday"
-	// Thursday ...
-	Thursday DayOfWeek = "Thursday"
-	// Tuesday ...
-	Tuesday DayOfWeek = "Tuesday"
-	// Wednesday ...
-	Wednesday DayOfWeek = "Wednesday"
-)
-
-// PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
-func PossibleDayOfWeekValues() []DayOfWeek {
-	return []DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
-}
-
-// EngineType enumerates the values for engine type.
-type EngineType string
-
-const (
-	// BackupEngineTypeAzureBackupServerEngine ...
-	BackupEngineTypeAzureBackupServerEngine EngineType = "AzureBackupServerEngine"
-	// BackupEngineTypeBackupEngineBase ...
-	BackupEngineTypeBackupEngineBase EngineType = "BackupEngineBase"
-	// BackupEngineTypeDpmBackupEngine ...
-	BackupEngineTypeDpmBackupEngine EngineType = "DpmBackupEngine"
-)
-
-// PossibleEngineTypeValues returns an array of possible values for the EngineType const type.
-func PossibleEngineTypeValues() []EngineType {
-	return []EngineType{BackupEngineTypeAzureBackupServerEngine, BackupEngineTypeBackupEngineBase, BackupEngineTypeDpmBackupEngine}
-}
-
-// HTTPStatusCode enumerates the values for http status code.
-type HTTPStatusCode string
-
-const (
-	// Accepted ...
-	Accepted HTTPStatusCode = "Accepted"
-	// Ambiguous ...
-	Ambiguous HTTPStatusCode = "Ambiguous"
-	// BadGateway ...
-	BadGateway HTTPStatusCode = "BadGateway"
-	// BadRequest ...
-	BadRequest HTTPStatusCode = "BadRequest"
-	// Conflict ...
-	Conflict HTTPStatusCode = "Conflict"
-	// Continue ...
-	Continue HTTPStatusCode = "Continue"
-	// Created ...
-	Created HTTPStatusCode = "Created"
-	// ExpectationFailed ...
-	ExpectationFailed HTTPStatusCode = "ExpectationFailed"
-	// Forbidden ...
-	Forbidden HTTPStatusCode = "Forbidden"
-	// Found ...
-	Found HTTPStatusCode = "Found"
-	// GatewayTimeout ...
-	GatewayTimeout HTTPStatusCode = "GatewayTimeout"
-	// Gone ...
-	Gone HTTPStatusCode = "Gone"
-	// HTTPVersionNotSupported ...
-	HTTPVersionNotSupported HTTPStatusCode = "HttpVersionNotSupported"
-	// InternalServerError ...
-	InternalServerError HTTPStatusCode = "InternalServerError"
-	// LengthRequired ...
-	LengthRequired HTTPStatusCode = "LengthRequired"
-	// MethodNotAllowed ...
-	MethodNotAllowed HTTPStatusCode = "MethodNotAllowed"
-	// Moved ...
-	Moved HTTPStatusCode = "Moved"
-	// MovedPermanently ...
-	MovedPermanently HTTPStatusCode = "MovedPermanently"
-	// MultipleChoices ...
-	MultipleChoices HTTPStatusCode = "MultipleChoices"
-	// NoContent ...
-	NoContent HTTPStatusCode = "NoContent"
-	// NonAuthoritativeInformation ...
-	NonAuthoritativeInformation HTTPStatusCode = "NonAuthoritativeInformation"
-	// NotAcceptable ...
-	NotAcceptable HTTPStatusCode = "NotAcceptable"
-	// NotFound ...
-	NotFound HTTPStatusCode = "NotFound"
-	// NotImplemented ...
-	NotImplemented HTTPStatusCode = "NotImplemented"
-	// NotModified ...
-	NotModified HTTPStatusCode = "NotModified"
-	// OK ...
-	OK HTTPStatusCode = "OK"
-	// PartialContent ...
-	PartialContent HTTPStatusCode = "PartialContent"
-	// PaymentRequired ...
-	PaymentRequired HTTPStatusCode = "PaymentRequired"
-	// PreconditionFailed ...
-	PreconditionFailed HTTPStatusCode = "PreconditionFailed"
-	// ProxyAuthenticationRequired ...
-	ProxyAuthenticationRequired HTTPStatusCode = "ProxyAuthenticationRequired"
-	// Redirect ...
-	Redirect HTTPStatusCode = "Redirect"
-	// RedirectKeepVerb ...
-	RedirectKeepVerb HTTPStatusCode = "RedirectKeepVerb"
-	// RedirectMethod ...
-	RedirectMethod HTTPStatusCode = "RedirectMethod"
-	// RequestedRangeNotSatisfiable ...
-	RequestedRangeNotSatisfiable HTTPStatusCode = "RequestedRangeNotSatisfiable"
-	// RequestEntityTooLarge ...
-	RequestEntityTooLarge HTTPStatusCode = "RequestEntityTooLarge"
-	// RequestTimeout ...
-	RequestTimeout HTTPStatusCode = "RequestTimeout"
-	// RequestURITooLong ...
-	RequestURITooLong HTTPStatusCode = "RequestUriTooLong"
-	// ResetContent ...
-	ResetContent HTTPStatusCode = "ResetContent"
-	// SeeOther ...
-	SeeOther HTTPStatusCode = "SeeOther"
-	// ServiceUnavailable ...
-	ServiceUnavailable HTTPStatusCode = "ServiceUnavailable"
-	// SwitchingProtocols ...
-	SwitchingProtocols HTTPStatusCode = "SwitchingProtocols"
-	// TemporaryRedirect ...
-	TemporaryRedirect HTTPStatusCode = "TemporaryRedirect"
-	// Unauthorized ...
-	Unauthorized HTTPStatusCode = "Unauthorized"
-	// UnsupportedMediaType ...
-	UnsupportedMediaType HTTPStatusCode = "UnsupportedMediaType"
-	// Unused ...
-	Unused HTTPStatusCode = "Unused"
-	// UpgradeRequired ...
-	UpgradeRequired HTTPStatusCode = "UpgradeRequired"
-	// UseProxy ...
-	UseProxy HTTPStatusCode = "UseProxy"
-)
-
-// PossibleHTTPStatusCodeValues returns an array of possible values for the HTTPStatusCode const type.
-func PossibleHTTPStatusCodeValues() []HTTPStatusCode {
-	return []HTTPStatusCode{Accepted, Ambiguous, BadGateway, BadRequest, Conflict, Continue, Created, ExpectationFailed, Forbidden, Found, GatewayTimeout, Gone, HTTPVersionNotSupported, InternalServerError, LengthRequired, MethodNotAllowed, Moved, MovedPermanently, MultipleChoices, NoContent, NonAuthoritativeInformation, NotAcceptable, NotFound, NotImplemented, NotModified, OK, PartialContent, PaymentRequired, PreconditionFailed, ProxyAuthenticationRequired, Redirect, RedirectKeepVerb, RedirectMethod, RequestedRangeNotSatisfiable, RequestEntityTooLarge, RequestTimeout, RequestURITooLong, ResetContent, SeeOther, ServiceUnavailable, SwitchingProtocols, TemporaryRedirect, Unauthorized, UnsupportedMediaType, Unused, UpgradeRequired, UseProxy}
-}
-
-// ItemType enumerates the values for item type.
-type ItemType string
-
-const (
-	// ItemTypeAzureSQLDb ...
-	ItemTypeAzureSQLDb ItemType = "AzureSqlDb"
-	// ItemTypeDPMUnknown ...
-	ItemTypeDPMUnknown ItemType = "DPMUnknown"
-	// ItemTypeExchange ...
-	ItemTypeExchange ItemType = "Exchange"
-	// ItemTypeFileFolder ...
-	ItemTypeFileFolder ItemType = "FileFolder"
-	// ItemTypeInvalid ...
-	ItemTypeInvalid ItemType = "Invalid"
-	// ItemTypeSharepoint ...
-	ItemTypeSharepoint ItemType = "Sharepoint"
-	// ItemTypeSQLDB ...
-	ItemTypeSQLDB ItemType = "SQLDB"
-	// ItemTypeVM ...
-	ItemTypeVM ItemType = "VM"
-)
-
-// PossibleItemTypeValues returns an array of possible values for the ItemType const type.
-func PossibleItemTypeValues() []ItemType {
-	return []ItemType{ItemTypeAzureSQLDb, ItemTypeDPMUnknown, ItemTypeExchange, ItemTypeFileFolder, ItemTypeInvalid, ItemTypeSharepoint, ItemTypeSQLDB, ItemTypeVM}
-}
-
-// JobOperationType enumerates the values for job operation type.
-type JobOperationType string
-
-const (
-	// JobOperationTypeBackup ...
-	JobOperationTypeBackup JobOperationType = "Backup"
-	// JobOperationTypeConfigureBackup ...
-	JobOperationTypeConfigureBackup JobOperationType = "ConfigureBackup"
-	// JobOperationTypeDeleteBackupData ...
-	JobOperationTypeDeleteBackupData JobOperationType = "DeleteBackupData"
-	// JobOperationTypeDisableBackup ...
-	JobOperationTypeDisableBackup JobOperationType = "DisableBackup"
-	// JobOperationTypeInvalid ...
-	JobOperationTypeInvalid JobOperationType = "Invalid"
-	// JobOperationTypeRestore ...
-	JobOperationTypeRestore JobOperationType = "Restore"
-)
-
-// PossibleJobOperationTypeValues returns an array of possible values for the JobOperationType const type.
-func PossibleJobOperationTypeValues() []JobOperationType {
-	return []JobOperationType{JobOperationTypeBackup, JobOperationTypeConfigureBackup, JobOperationTypeDeleteBackupData, JobOperationTypeDisableBackup, JobOperationTypeInvalid, JobOperationTypeRestore}
-}
-
-// JobStatus enumerates the values for job status.
-type JobStatus string
-
-const (
-	// JobStatusCancelled ...
-	JobStatusCancelled JobStatus = "Cancelled"
-	// JobStatusCancelling ...
-	JobStatusCancelling JobStatus = "Cancelling"
-	// JobStatusCompleted ...
-	JobStatusCompleted JobStatus = "Completed"
-	// JobStatusCompletedWithWarnings ...
-	JobStatusCompletedWithWarnings JobStatus = "CompletedWithWarnings"
-	// JobStatusFailed ...
-	JobStatusFailed JobStatus = "Failed"
-	// JobStatusInProgress ...
-	JobStatusInProgress JobStatus = "InProgress"
-	// JobStatusInvalid ...
-	JobStatusInvalid JobStatus = "Invalid"
-)
-
-// PossibleJobStatusValues returns an array of possible values for the JobStatus const type.
-func PossibleJobStatusValues() []JobStatus {
-	return []JobStatus{JobStatusCancelled, JobStatusCancelling, JobStatusCompleted, JobStatusCompletedWithWarnings, JobStatusFailed, JobStatusInProgress, JobStatusInvalid}
-}
-
-// JobSupportedAction enumerates the values for job supported action.
-type JobSupportedAction string
-
-const (
-	// JobSupportedActionCancellable ...
-	JobSupportedActionCancellable JobSupportedAction = "Cancellable"
-	// JobSupportedActionInvalid ...
-	JobSupportedActionInvalid JobSupportedAction = "Invalid"
-	// JobSupportedActionRetriable ...
-	JobSupportedActionRetriable JobSupportedAction = "Retriable"
-)
-
-// PossibleJobSupportedActionValues returns an array of possible values for the JobSupportedAction const type.
-func PossibleJobSupportedActionValues() []JobSupportedAction {
-	return []JobSupportedAction{JobSupportedActionCancellable, JobSupportedActionInvalid, JobSupportedActionRetriable}
-}
-
-// JobType enumerates the values for job type.
-type JobType string
-
-const (
-	// JobTypeAzureIaaSVMJob ...
-	JobTypeAzureIaaSVMJob JobType = "AzureIaaSVMJob"
-	// JobTypeDpmJob ...
-	JobTypeDpmJob JobType = "DpmJob"
-	// JobTypeJob ...
-	JobTypeJob JobType = "Job"
-	// JobTypeMabJob ...
-	JobTypeMabJob JobType = "MabJob"
-)
-
-// PossibleJobTypeValues returns an array of possible values for the JobType const type.
-func PossibleJobTypeValues() []JobType {
-	return []JobType{JobTypeAzureIaaSVMJob, JobTypeDpmJob, JobTypeJob, JobTypeMabJob}
-}
-
-// MabServerType enumerates the values for mab server type.
-type MabServerType string
-
-const (
-	// MabServerTypeAzureSQLContainer ...
-	MabServerTypeAzureSQLContainer MabServerType = "AzureSqlContainer"
-	// MabServerTypeClusterResource ...
-	MabServerTypeClusterResource MabServerType = "ClusterResource"
-	// MabServerTypeDPMContainer ...
-	MabServerTypeDPMContainer MabServerType = "DPMContainer"
-	// MabServerTypeDPMVenusContainer ...
-	MabServerTypeDPMVenusContainer MabServerType = "DPMVenusContainer"
-	// MabServerTypeIaasVMContainer ...
-	MabServerTypeIaasVMContainer MabServerType = "IaasVMContainer"
-	// MabServerTypeIaasVMServiceContainer ...
-	MabServerTypeIaasVMServiceContainer MabServerType = "IaasVMServiceContainer"
-	// MabServerTypeInvalid ...
-	MabServerTypeInvalid MabServerType = "Invalid"
-	// MabServerTypeMABContainer ...
-	MabServerTypeMABContainer MabServerType = "MABContainer"
-	// MabServerTypeUnknown ...
-	MabServerTypeUnknown MabServerType = "Unknown"
-	// MabServerTypeWindows ...
-	MabServerTypeWindows MabServerType = "Windows"
-	// MabServerTypeWindowsServer ...
-	MabServerTypeWindowsServer MabServerType = "WindowsServer"
-)
-
-// PossibleMabServerTypeValues returns an array of possible values for the MabServerType const type.
-func PossibleMabServerTypeValues() []MabServerType {
-	return []MabServerType{MabServerTypeAzureSQLContainer, MabServerTypeClusterResource, MabServerTypeDPMContainer, MabServerTypeDPMVenusContainer, MabServerTypeIaasVMContainer, MabServerTypeIaasVMServiceContainer, MabServerTypeInvalid, MabServerTypeMABContainer, MabServerTypeUnknown, MabServerTypeWindows, MabServerTypeWindowsServer}
-}
-
-// ManagementType enumerates the values for management type.
-type ManagementType string
-
-const (
-	// ManagementTypeAzureBackupServer ...
-	ManagementTypeAzureBackupServer ManagementType = "AzureBackupServer"
-	// ManagementTypeAzureIaasVM ...
-	ManagementTypeAzureIaasVM ManagementType = "AzureIaasVM"
-	// ManagementTypeAzureSQL ...
-	ManagementTypeAzureSQL ManagementType = "AzureSql"
-	// ManagementTypeDPM ...
-	ManagementTypeDPM ManagementType = "DPM"
-	// ManagementTypeInvalid ...
-	ManagementTypeInvalid ManagementType = "Invalid"
-	// ManagementTypeMAB ...
-	ManagementTypeMAB ManagementType = "MAB"
-)
-
-// PossibleManagementTypeValues returns an array of possible values for the ManagementType const type.
-func PossibleManagementTypeValues() []ManagementType {
-	return []ManagementType{ManagementTypeAzureBackupServer, ManagementTypeAzureIaasVM, ManagementTypeAzureSQL, ManagementTypeDPM, ManagementTypeInvalid, ManagementTypeMAB}
-}
-
-// ManagementTypeBasicProtectionPolicy enumerates the values for management type basic protection policy.
-type ManagementTypeBasicProtectionPolicy string
-
-const (
-	// BackupManagementTypeAzureIaasVM ...
-	BackupManagementTypeAzureIaasVM ManagementTypeBasicProtectionPolicy = "AzureIaasVM"
-	// BackupManagementTypeAzureSQL ...
-	BackupManagementTypeAzureSQL ManagementTypeBasicProtectionPolicy = "AzureSql"
-	// BackupManagementTypeMAB ...
-	BackupManagementTypeMAB ManagementTypeBasicProtectionPolicy = "MAB"
-	// BackupManagementTypeProtectionPolicy ...
-	BackupManagementTypeProtectionPolicy ManagementTypeBasicProtectionPolicy = "ProtectionPolicy"
-)
-
-// PossibleManagementTypeBasicProtectionPolicyValues returns an array of possible values for the ManagementTypeBasicProtectionPolicy const type.
-func PossibleManagementTypeBasicProtectionPolicyValues() []ManagementTypeBasicProtectionPolicy {
-	return []ManagementTypeBasicProtectionPolicy{BackupManagementTypeAzureIaasVM, BackupManagementTypeAzureSQL, BackupManagementTypeMAB, BackupManagementTypeProtectionPolicy}
-}
-
-// MonthOfYear enumerates the values for month of year.
-type MonthOfYear string
-
-const (
-	// MonthOfYearApril ...
-	MonthOfYearApril MonthOfYear = "April"
-	// MonthOfYearAugust ...
-	MonthOfYearAugust MonthOfYear = "August"
-	// MonthOfYearDecember ...
-	MonthOfYearDecember MonthOfYear = "December"
-	// MonthOfYearFebruary ...
-	MonthOfYearFebruary MonthOfYear = "February"
-	// MonthOfYearInvalid ...
-	MonthOfYearInvalid MonthOfYear = "Invalid"
-	// MonthOfYearJanuary ...
-	MonthOfYearJanuary MonthOfYear = "January"
-	// MonthOfYearJuly ...
-	MonthOfYearJuly MonthOfYear = "July"
-	// MonthOfYearJune ...
-	MonthOfYearJune MonthOfYear = "June"
-	// MonthOfYearMarch ...
-	MonthOfYearMarch MonthOfYear = "March"
-	// MonthOfYearMay ...
-	MonthOfYearMay MonthOfYear = "May"
-	// MonthOfYearNovember ...
-	MonthOfYearNovember MonthOfYear = "November"
-	// MonthOfYearOctober ...
-	MonthOfYearOctober MonthOfYear = "October"
-	// MonthOfYearSeptember ...
-	MonthOfYearSeptember MonthOfYear = "September"
-)
-
-// PossibleMonthOfYearValues returns an array of possible values for the MonthOfYear const type.
-func PossibleMonthOfYearValues() []MonthOfYear {
-	return []MonthOfYear{MonthOfYearApril, MonthOfYearAugust, MonthOfYearDecember, MonthOfYearFebruary, MonthOfYearInvalid, MonthOfYearJanuary, MonthOfYearJuly, MonthOfYearJune, MonthOfYearMarch, MonthOfYearMay, MonthOfYearNovember, MonthOfYearOctober, MonthOfYearSeptember}
-}
-
-// ObjectType enumerates the values for object type.
-type ObjectType string
-
-const (
-	// ObjectTypeOperationStatusExtendedInfo ...
-	ObjectTypeOperationStatusExtendedInfo ObjectType = "OperationStatusExtendedInfo"
-	// ObjectTypeOperationStatusJobExtendedInfo ...
-	ObjectTypeOperationStatusJobExtendedInfo ObjectType = "OperationStatusJobExtendedInfo"
-	// ObjectTypeOperationStatusJobsExtendedInfo ...
-	ObjectTypeOperationStatusJobsExtendedInfo ObjectType = "OperationStatusJobsExtendedInfo"
-	// ObjectTypeOperationStatusProvisionILRExtendedInfo ...
-	ObjectTypeOperationStatusProvisionILRExtendedInfo ObjectType = "OperationStatusProvisionILRExtendedInfo"
-)
-
-// PossibleObjectTypeValues returns an array of possible values for the ObjectType const type.
-func PossibleObjectTypeValues() []ObjectType {
-	return []ObjectType{ObjectTypeOperationStatusExtendedInfo, ObjectTypeOperationStatusJobExtendedInfo, ObjectTypeOperationStatusJobsExtendedInfo, ObjectTypeOperationStatusProvisionILRExtendedInfo}
-}
-
-// ObjectTypeBasicILRRequest enumerates the values for object type basic ilr request.
-type ObjectTypeBasicILRRequest string
-
-const (
-	// ObjectTypeIaasVMILRRegistrationRequest ...
-	ObjectTypeIaasVMILRRegistrationRequest ObjectTypeBasicILRRequest = "IaasVMILRRegistrationRequest"
-	// ObjectTypeILRRequest ...
-	ObjectTypeILRRequest ObjectTypeBasicILRRequest = "ILRRequest"
-)
-
-// PossibleObjectTypeBasicILRRequestValues returns an array of possible values for the ObjectTypeBasicILRRequest const type.
-func PossibleObjectTypeBasicILRRequestValues() []ObjectTypeBasicILRRequest {
-	return []ObjectTypeBasicILRRequest{ObjectTypeIaasVMILRRegistrationRequest, ObjectTypeILRRequest}
-}
-
-// ObjectTypeBasicOperationResultInfoBase enumerates the values for object type basic operation result info
-// base.
-type ObjectTypeBasicOperationResultInfoBase string
-
-const (
-	// ObjectTypeExportJobsOperationResultInfo ...
-	ObjectTypeExportJobsOperationResultInfo ObjectTypeBasicOperationResultInfoBase = "ExportJobsOperationResultInfo"
-	// ObjectTypeOperationResultInfo ...
-	ObjectTypeOperationResultInfo ObjectTypeBasicOperationResultInfoBase = "OperationResultInfo"
-	// ObjectTypeOperationResultInfoBase ...
-	ObjectTypeOperationResultInfoBase ObjectTypeBasicOperationResultInfoBase = "OperationResultInfoBase"
-)
-
-// PossibleObjectTypeBasicOperationResultInfoBaseValues returns an array of possible values for the ObjectTypeBasicOperationResultInfoBase const type.
-func PossibleObjectTypeBasicOperationResultInfoBaseValues() []ObjectTypeBasicOperationResultInfoBase {
-	return []ObjectTypeBasicOperationResultInfoBase{ObjectTypeExportJobsOperationResultInfo, ObjectTypeOperationResultInfo, ObjectTypeOperationResultInfoBase}
-}
-
-// ObjectTypeBasicRecoveryPoint enumerates the values for object type basic recovery point.
-type ObjectTypeBasicRecoveryPoint string
-
-const (
-	// ObjectTypeGenericRecoveryPoint ...
-	ObjectTypeGenericRecoveryPoint ObjectTypeBasicRecoveryPoint = "GenericRecoveryPoint"
-	// ObjectTypeIaasVMRecoveryPoint ...
-	ObjectTypeIaasVMRecoveryPoint ObjectTypeBasicRecoveryPoint = "IaasVMRecoveryPoint"
-	// ObjectTypeRecoveryPoint ...
-	ObjectTypeRecoveryPoint ObjectTypeBasicRecoveryPoint = "RecoveryPoint"
-)
-
-// PossibleObjectTypeBasicRecoveryPointValues returns an array of possible values for the ObjectTypeBasicRecoveryPoint const type.
-func PossibleObjectTypeBasicRecoveryPointValues() []ObjectTypeBasicRecoveryPoint {
-	return []ObjectTypeBasicRecoveryPoint{ObjectTypeGenericRecoveryPoint, ObjectTypeIaasVMRecoveryPoint, ObjectTypeRecoveryPoint}
-}
-
-// ObjectTypeBasicRequest enumerates the values for object type basic request.
-type ObjectTypeBasicRequest string
-
-const (
-	// ObjectTypeBackupRequest ...
-	ObjectTypeBackupRequest ObjectTypeBasicRequest = "BackupRequest"
-	// ObjectTypeIaasVMBackupRequest ...
-	ObjectTypeIaasVMBackupRequest ObjectTypeBasicRequest = "IaasVMBackupRequest"
-)
-
-// PossibleObjectTypeBasicRequestValues returns an array of possible values for the ObjectTypeBasicRequest const type.
-func PossibleObjectTypeBasicRequestValues() []ObjectTypeBasicRequest {
-	return []ObjectTypeBasicRequest{ObjectTypeBackupRequest, ObjectTypeIaasVMBackupRequest}
-}
-
-// ObjectTypeBasicRestoreRequest enumerates the values for object type basic restore request.
-type ObjectTypeBasicRestoreRequest string
-
-const (
-	// ObjectTypeIaasVMRestoreRequest ...
-	ObjectTypeIaasVMRestoreRequest ObjectTypeBasicRestoreRequest = "IaasVMRestoreRequest"
-	// ObjectTypeRestoreRequest ...
-	ObjectTypeRestoreRequest ObjectTypeBasicRestoreRequest = "RestoreRequest"
-)
-
-// PossibleObjectTypeBasicRestoreRequestValues returns an array of possible values for the ObjectTypeBasicRestoreRequest const type.
-func PossibleObjectTypeBasicRestoreRequestValues() []ObjectTypeBasicRestoreRequest {
-	return []ObjectTypeBasicRestoreRequest{ObjectTypeIaasVMRestoreRequest, ObjectTypeRestoreRequest}
-}
-
-// OperationStatusValues enumerates the values for operation status values.
-type OperationStatusValues string
-
-const (
-	// OperationStatusValuesCanceled ...
-	OperationStatusValuesCanceled OperationStatusValues = "Canceled"
-	// OperationStatusValuesFailed ...
-	OperationStatusValuesFailed OperationStatusValues = "Failed"
-	// OperationStatusValuesInProgress ...
-	OperationStatusValuesInProgress OperationStatusValues = "InProgress"
-	// OperationStatusValuesInvalid ...
-	OperationStatusValuesInvalid OperationStatusValues = "Invalid"
-	// OperationStatusValuesSucceeded ...
-	OperationStatusValuesSucceeded OperationStatusValues = "Succeeded"
-)
-
-// PossibleOperationStatusValuesValues returns an array of possible values for the OperationStatusValues const type.
-func PossibleOperationStatusValuesValues() []OperationStatusValues {
-	return []OperationStatusValues{OperationStatusValuesCanceled, OperationStatusValuesFailed, OperationStatusValuesInProgress, OperationStatusValuesInvalid, OperationStatusValuesSucceeded}
-}
-
-// ProtectableItemType enumerates the values for protectable item type.
-type ProtectableItemType string
-
-const (
-	// ProtectableItemTypeIaaSVMProtectableItem ...
-	ProtectableItemTypeIaaSVMProtectableItem ProtectableItemType = "IaaSVMProtectableItem"
-	// ProtectableItemTypeMicrosoftClassicComputevirtualMachines ...
-	ProtectableItemTypeMicrosoftClassicComputevirtualMachines ProtectableItemType = "Microsoft.ClassicCompute/virtualMachines"
-	// ProtectableItemTypeMicrosoftComputevirtualMachines ...
-	ProtectableItemTypeMicrosoftComputevirtualMachines ProtectableItemType = "Microsoft.Compute/virtualMachines"
-	// ProtectableItemTypeWorkloadProtectableItem ...
-	ProtectableItemTypeWorkloadProtectableItem ProtectableItemType = "WorkloadProtectableItem"
-)
-
-// PossibleProtectableItemTypeValues returns an array of possible values for the ProtectableItemType const type.
-func PossibleProtectableItemTypeValues() []ProtectableItemType {
-	return []ProtectableItemType{ProtectableItemTypeIaaSVMProtectableItem, ProtectableItemTypeMicrosoftClassicComputevirtualMachines, ProtectableItemTypeMicrosoftComputevirtualMachines, ProtectableItemTypeWorkloadProtectableItem}
-}
-
-// ProtectableObjectType enumerates the values for protectable object type.
-type ProtectableObjectType string
-
-const (
-	// ProtectableObjectTypeAzureSQLContainer ...
-	ProtectableObjectTypeAzureSQLContainer ProtectableObjectType = "AzureSqlContainer"
-	// ProtectableObjectTypeIaaSVMContainer ...
-	ProtectableObjectTypeIaaSVMContainer ProtectableObjectType = "IaaSVMContainer"
-	// ProtectableObjectTypeMABWindowsContainer ...
-	ProtectableObjectTypeMABWindowsContainer ProtectableObjectType = "MABWindowsContainer"
-	// ProtectableObjectTypeMicrosoftClassicComputevirtualMachines ...
-	ProtectableObjectTypeMicrosoftClassicComputevirtualMachines ProtectableObjectType = "Microsoft.ClassicCompute/virtualMachines"
-	// ProtectableObjectTypeMicrosoftComputevirtualMachines ...
-	ProtectableObjectTypeMicrosoftComputevirtualMachines ProtectableObjectType = "Microsoft.Compute/virtualMachines"
-	// ProtectableObjectTypeProtectionContainer ...
-	ProtectableObjectTypeProtectionContainer ProtectableObjectType = "ProtectionContainer"
-)
-
-// PossibleProtectableObjectTypeValues returns an array of possible values for the ProtectableObjectType const type.
-func PossibleProtectableObjectTypeValues() []ProtectableObjectType {
-	return []ProtectableObjectType{ProtectableObjectTypeAzureSQLContainer, ProtectableObjectTypeIaaSVMContainer, ProtectableObjectTypeMABWindowsContainer, ProtectableObjectTypeMicrosoftClassicComputevirtualMachines, ProtectableObjectTypeMicrosoftComputevirtualMachines, ProtectableObjectTypeProtectionContainer}
-}
-
-// ProtectedItemState enumerates the values for protected item state.
-type ProtectedItemState string
-
-const (
-	// ProtectedItemStateInvalid ...
-	ProtectedItemStateInvalid ProtectedItemState = "Invalid"
-	// ProtectedItemStateIRPending ...
-	ProtectedItemStateIRPending ProtectedItemState = "IRPending"
-	// ProtectedItemStateProtected ...
-	ProtectedItemStateProtected ProtectedItemState = "Protected"
-	// ProtectedItemStateProtectionError ...
-	ProtectedItemStateProtectionError ProtectedItemState = "ProtectionError"
-	// ProtectedItemStateProtectionPaused ...
-	ProtectedItemStateProtectionPaused ProtectedItemState = "ProtectionPaused"
-	// ProtectedItemStateProtectionStopped ...
-	ProtectedItemStateProtectionStopped ProtectedItemState = "ProtectionStopped"
-)
-
-// PossibleProtectedItemStateValues returns an array of possible values for the ProtectedItemState const type.
-func PossibleProtectedItemStateValues() []ProtectedItemState {
-	return []ProtectedItemState{ProtectedItemStateInvalid, ProtectedItemStateIRPending, ProtectedItemStateProtected, ProtectedItemStateProtectionError, ProtectedItemStateProtectionPaused, ProtectedItemStateProtectionStopped}
-}
-
-// ProtectedItemType enumerates the values for protected item type.
-type ProtectedItemType string
-
-const (
-	// ProtectedItemTypeAzureIaaSVMProtectedItem ...
-	ProtectedItemTypeAzureIaaSVMProtectedItem ProtectedItemType = "AzureIaaSVMProtectedItem"
-	// ProtectedItemTypeMabFileFolderProtectedItem ...
-	ProtectedItemTypeMabFileFolderProtectedItem ProtectedItemType = "MabFileFolderProtectedItem"
-	// ProtectedItemTypeMicrosoftClassicComputevirtualMachines ...
-	ProtectedItemTypeMicrosoftClassicComputevirtualMachines ProtectedItemType = "Microsoft.ClassicCompute/virtualMachines"
-	// ProtectedItemTypeMicrosoftComputevirtualMachines ...
-	ProtectedItemTypeMicrosoftComputevirtualMachines ProtectedItemType = "Microsoft.Compute/virtualMachines"
-	// ProtectedItemTypeMicrosoftSqlserversdatabases ...
-	ProtectedItemTypeMicrosoftSqlserversdatabases ProtectedItemType = "Microsoft.Sql/servers/databases"
-	// ProtectedItemTypeProtectedItem ...
-	ProtectedItemTypeProtectedItem ProtectedItemType = "ProtectedItem"
-)
-
-// PossibleProtectedItemTypeValues returns an array of possible values for the ProtectedItemType const type.
-func PossibleProtectedItemTypeValues() []ProtectedItemType {
-	return []ProtectedItemType{ProtectedItemTypeAzureIaaSVMProtectedItem, ProtectedItemTypeMabFileFolderProtectedItem, ProtectedItemTypeMicrosoftClassicComputevirtualMachines, ProtectedItemTypeMicrosoftComputevirtualMachines, ProtectedItemTypeMicrosoftSqlserversdatabases, ProtectedItemTypeProtectedItem}
-}
-
-// ProtectionState enumerates the values for protection state.
-type ProtectionState string
-
-const (
-	// ProtectionStateInvalid ...
-	ProtectionStateInvalid ProtectionState = "Invalid"
-	// ProtectionStateIRPending ...
-	ProtectionStateIRPending ProtectionState = "IRPending"
-	// ProtectionStateProtected ...
-	ProtectionStateProtected ProtectionState = "Protected"
-	// ProtectionStateProtectionError ...
-	ProtectionStateProtectionError ProtectionState = "ProtectionError"
-	// ProtectionStateProtectionPaused ...
-	ProtectionStateProtectionPaused ProtectionState = "ProtectionPaused"
-	// ProtectionStateProtectionStopped ...
-	ProtectionStateProtectionStopped ProtectionState = "ProtectionStopped"
-)
-
-// PossibleProtectionStateValues returns an array of possible values for the ProtectionState const type.
-func PossibleProtectionStateValues() []ProtectionState {
-	return []ProtectionState{ProtectionStateInvalid, ProtectionStateIRPending, ProtectionStateProtected, ProtectionStateProtectionError, ProtectionStateProtectionPaused, ProtectionStateProtectionStopped}
-}
-
-// ProtectionStatus enumerates the values for protection status.
-type ProtectionStatus string
-
-const (
-	// ProtectionStatusInvalid ...
-	ProtectionStatusInvalid ProtectionStatus = "Invalid"
-	// ProtectionStatusNotProtected ...
-	ProtectionStatusNotProtected ProtectionStatus = "NotProtected"
-	// ProtectionStatusProtected ...
-	ProtectionStatusProtected ProtectionStatus = "Protected"
-	// ProtectionStatusProtecting ...
-	ProtectionStatusProtecting ProtectionStatus = "Protecting"
-)
-
-// PossibleProtectionStatusValues returns an array of possible values for the ProtectionStatus const type.
-func PossibleProtectionStatusValues() []ProtectionStatus {
-	return []ProtectionStatus{ProtectionStatusInvalid, ProtectionStatusNotProtected, ProtectionStatusProtected, ProtectionStatusProtecting}
-}
-
-// RecoveryType enumerates the values for recovery type.
-type RecoveryType string
-
-const (
-	// RecoveryTypeAlternateLocation ...
-	RecoveryTypeAlternateLocation RecoveryType = "AlternateLocation"
-	// RecoveryTypeInvalid ...
-	RecoveryTypeInvalid RecoveryType = "Invalid"
-	// RecoveryTypeOriginalLocation ...
-	RecoveryTypeOriginalLocation RecoveryType = "OriginalLocation"
-	// RecoveryTypeRestoreDisks ...
-	RecoveryTypeRestoreDisks RecoveryType = "RestoreDisks"
-)
-
-// PossibleRecoveryTypeValues returns an array of possible values for the RecoveryType const type.
-func PossibleRecoveryTypeValues() []RecoveryType {
-	return []RecoveryType{RecoveryTypeAlternateLocation, RecoveryTypeInvalid, RecoveryTypeOriginalLocation, RecoveryTypeRestoreDisks}
-}
-
-// RetentionDurationType enumerates the values for retention duration type.
-type RetentionDurationType string
-
-const (
-	// RetentionDurationTypeDays ...
-	RetentionDurationTypeDays RetentionDurationType = "Days"
-	// RetentionDurationTypeInvalid ...
-	RetentionDurationTypeInvalid RetentionDurationType = "Invalid"
-	// RetentionDurationTypeMonths ...
-	RetentionDurationTypeMonths RetentionDurationType = "Months"
-	// RetentionDurationTypeWeeks ...
-	RetentionDurationTypeWeeks RetentionDurationType = "Weeks"
-	// RetentionDurationTypeYears ...
-	RetentionDurationTypeYears RetentionDurationType = "Years"
-)
-
-// PossibleRetentionDurationTypeValues returns an array of possible values for the RetentionDurationType const type.
-func PossibleRetentionDurationTypeValues() []RetentionDurationType {
-	return []RetentionDurationType{RetentionDurationTypeDays, RetentionDurationTypeInvalid, RetentionDurationTypeMonths, RetentionDurationTypeWeeks, RetentionDurationTypeYears}
-}
-
-// RetentionPolicyType enumerates the values for retention policy type.
-type RetentionPolicyType string
-
-const (
-	// RetentionPolicyTypeLongTermRetentionPolicy ...
-	RetentionPolicyTypeLongTermRetentionPolicy RetentionPolicyType = "LongTermRetentionPolicy"
-	// RetentionPolicyTypeRetentionPolicy ...
-	RetentionPolicyTypeRetentionPolicy RetentionPolicyType = "RetentionPolicy"
-	// RetentionPolicyTypeSimpleRetentionPolicy ...
-	RetentionPolicyTypeSimpleRetentionPolicy RetentionPolicyType = "SimpleRetentionPolicy"
-)
-
-// PossibleRetentionPolicyTypeValues returns an array of possible values for the RetentionPolicyType const type.
-func PossibleRetentionPolicyTypeValues() []RetentionPolicyType {
-	return []RetentionPolicyType{RetentionPolicyTypeLongTermRetentionPolicy, RetentionPolicyTypeRetentionPolicy, RetentionPolicyTypeSimpleRetentionPolicy}
-}
-
-// RetentionScheduleFormat enumerates the values for retention schedule format.
-type RetentionScheduleFormat string
-
-const (
-	// RetentionScheduleFormatDaily ...
-	RetentionScheduleFormatDaily RetentionScheduleFormat = "Daily"
-	// RetentionScheduleFormatInvalid ...
-	RetentionScheduleFormatInvalid RetentionScheduleFormat = "Invalid"
-	// RetentionScheduleFormatWeekly ...
-	RetentionScheduleFormatWeekly RetentionScheduleFormat = "Weekly"
-)
-
-// PossibleRetentionScheduleFormatValues returns an array of possible values for the RetentionScheduleFormat const type.
-func PossibleRetentionScheduleFormatValues() []RetentionScheduleFormat {
-	return []RetentionScheduleFormat{RetentionScheduleFormatDaily, RetentionScheduleFormatInvalid, RetentionScheduleFormatWeekly}
-}
-
-// SchedulePolicyType enumerates the values for schedule policy type.
-type SchedulePolicyType string
-
-const (
-	// SchedulePolicyTypeLongTermSchedulePolicy ...
-	SchedulePolicyTypeLongTermSchedulePolicy SchedulePolicyType = "LongTermSchedulePolicy"
-	// SchedulePolicyTypeSchedulePolicy ...
-	SchedulePolicyTypeSchedulePolicy SchedulePolicyType = "SchedulePolicy"
-	// SchedulePolicyTypeSimpleSchedulePolicy ...
-	SchedulePolicyTypeSimpleSchedulePolicy SchedulePolicyType = "SimpleSchedulePolicy"
-)
-
-// PossibleSchedulePolicyTypeValues returns an array of possible values for the SchedulePolicyType const type.
-func PossibleSchedulePolicyTypeValues() []SchedulePolicyType {
-	return []SchedulePolicyType{SchedulePolicyTypeLongTermSchedulePolicy, SchedulePolicyTypeSchedulePolicy, SchedulePolicyTypeSimpleSchedulePolicy}
-}
-
-// ScheduleRunType enumerates the values for schedule run type.
-type ScheduleRunType string
-
-const (
-	// ScheduleRunTypeDaily ...
-	ScheduleRunTypeDaily ScheduleRunType = "Daily"
-	// ScheduleRunTypeInvalid ...
-	ScheduleRunTypeInvalid ScheduleRunType = "Invalid"
-	// ScheduleRunTypeWeekly ...
-	ScheduleRunTypeWeekly ScheduleRunType = "Weekly"
-)
-
-// PossibleScheduleRunTypeValues returns an array of possible values for the ScheduleRunType const type.
-func PossibleScheduleRunTypeValues() []ScheduleRunType {
-	return []ScheduleRunType{ScheduleRunTypeDaily, ScheduleRunTypeInvalid, ScheduleRunTypeWeekly}
-}
-
-// WeekOfMonth enumerates the values for week of month.
-type WeekOfMonth string
-
-const (
-	// First ...
-	First WeekOfMonth = "First"
-	// Fourth ...
-	Fourth WeekOfMonth = "Fourth"
-	// Last ...
-	Last WeekOfMonth = "Last"
-	// Second ...
-	Second WeekOfMonth = "Second"
-	// Third ...
-	Third WeekOfMonth = "Third"
-)
-
-// PossibleWeekOfMonthValues returns an array of possible values for the WeekOfMonth const type.
-func PossibleWeekOfMonthValues() []WeekOfMonth {
-	return []WeekOfMonth{First, Fourth, Last, Second, Third}
-}
-
-// WorkloadType enumerates the values for workload type.
-type WorkloadType string
-
-const (
-	// WorkloadTypeAzureSQLDb ...
-	WorkloadTypeAzureSQLDb WorkloadType = "AzureSqlDb"
-	// WorkloadTypeDPMUnknown ...
-	WorkloadTypeDPMUnknown WorkloadType = "DPMUnknown"
-	// WorkloadTypeExchange ...
-	WorkloadTypeExchange WorkloadType = "Exchange"
-	// WorkloadTypeFileFolder ...
-	WorkloadTypeFileFolder WorkloadType = "FileFolder"
-	// WorkloadTypeInvalid ...
-	WorkloadTypeInvalid WorkloadType = "Invalid"
-	// WorkloadTypeSharepoint ...
-	WorkloadTypeSharepoint WorkloadType = "Sharepoint"
-	// WorkloadTypeSQLDB ...
-	WorkloadTypeSQLDB WorkloadType = "SQLDB"
-	// WorkloadTypeVM ...
-	WorkloadTypeVM WorkloadType = "VM"
-)
-
-// PossibleWorkloadTypeValues returns an array of possible values for the WorkloadType const type.
-func PossibleWorkloadTypeValues() []WorkloadType {
-	return []WorkloadType{WorkloadTypeAzureSQLDb, WorkloadTypeDPMUnknown, WorkloadTypeExchange, WorkloadTypeFileFolder, WorkloadTypeInvalid, WorkloadTypeSharepoint, WorkloadTypeSQLDB, WorkloadTypeVM}
-}
-
 // AzureBackupServerEngine the backup engine type when Azure Backup Server is used to manage the backups.
 type AzureBackupServerEngine struct {
 	// FriendlyName - The friendly name of the backup engine.
@@ -993,8 +190,7 @@ func (aisccvc AzureIaaSClassicComputeVMContainer) AsBasicProtectionContainer() (
 	return &aisccvc, true
 }
 
-// AzureIaaSClassicComputeVMProtectableItem iaaS VM workload-specific backup item representing a classic
-// VM.
+// AzureIaaSClassicComputeVMProtectableItem iaaS VM workload-specific backup item representing a classic VM.
 type AzureIaaSClassicComputeVMProtectableItem struct {
 	// VirtualMachineID - The fully qualified Resource Manager ID of the virtual machine.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
@@ -1060,8 +256,7 @@ func (aisccvpi AzureIaaSClassicComputeVMProtectableItem) AsBasicWorkloadProtecta
 	return &aisccvpi, true
 }
 
-// AzureIaaSClassicComputeVMProtectedItem iaaS VM workload-specific backup item representing the classic
-// VM.
+// AzureIaaSClassicComputeVMProtectedItem iaaS VM workload-specific backup item representing the classic VM.
 type AzureIaaSClassicComputeVMProtectedItem struct {
 	// FriendlyName - The friendly name of the VM represented by this backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -1177,8 +372,8 @@ func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) AsBasicProtectedItem() (B
 	return &aisccvpi, true
 }
 
-// AzureIaaSComputeVMContainer iaaS VM workload-specific backup item representing a Resource
-// Manager-deployed virtual machine.
+// AzureIaaSComputeVMContainer iaaS VM workload-specific backup item representing a Resource Manager-deployed
+// virtual machine.
 type AzureIaaSComputeVMContainer struct {
 	// VirtualMachineID - The fully qualified Resource Manager URL of the virtual machine represented by this Azure IaaS VM container.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
@@ -1271,8 +466,7 @@ func (aiscvc AzureIaaSComputeVMContainer) AsBasicProtectionContainer() (BasicPro
 	return &aiscvc, true
 }
 
-// AzureIaaSComputeVMProtectableItem iaaS VM workload-specific backup item representing a Resource Manager
-// VM.
+// AzureIaaSComputeVMProtectableItem iaaS VM workload-specific backup item representing a Resource Manager VM.
 type AzureIaaSComputeVMProtectableItem struct {
 	// VirtualMachineID - The fully qualified Resource Manager ID of the virtual machine.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
@@ -1338,8 +532,7 @@ func (aiscvpi AzureIaaSComputeVMProtectableItem) AsBasicWorkloadProtectableItem(
 	return &aiscvpi, true
 }
 
-// AzureIaaSComputeVMProtectedItem iaaS VM workload-specific backup item representing the Resource Manager
-// VM.
+// AzureIaaSComputeVMProtectedItem iaaS VM workload-specific backup item representing the Resource Manager VM.
 type AzureIaaSComputeVMProtectedItem struct {
 	// FriendlyName - The friendly name of the VM represented by this backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -2796,10 +1989,15 @@ func (ebrl EngineBaseResourceList) IsEmpty() bool {
 	return ebrl.Value == nil || len(*ebrl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ebrl EngineBaseResourceList) hasNextLink() bool {
+	return ebrl.NextLink != nil && len(*ebrl.NextLink) != 0
+}
+
 // engineBaseResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ebrl EngineBaseResourceList) engineBaseResourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if ebrl.NextLink == nil || len(to.String(ebrl.NextLink)) < 1 {
+	if !ebrl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2827,11 +2025,16 @@ func (page *EngineBaseResourceListPage) NextWithContext(ctx context.Context) (er
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ebrl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ebrl)
+		if err != nil {
+			return err
+		}
+		page.ebrl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ebrl = next
 	return nil
 }
 
@@ -3150,8 +2353,8 @@ func (isc IaaSVMContainer) AsBasicProtectionContainer() (BasicProtectionContaine
 	return &isc, true
 }
 
-// IaasVMILRRegistrationRequest restore files or folders from a backup copy, or recovery point, of an IaaS
-// (or Azure) VM.
+// IaasVMILRRegistrationRequest restore files or folders from a backup copy, or recovery point, of an IaaS (or
+// Azure) VM.
 type IaasVMILRRegistrationRequest struct {
 	// RecoveryPointID - The ID of the IaaS VM recovery point used to restore the files or folders.
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
@@ -4029,10 +3232,15 @@ func (jrl JobResourceList) IsEmpty() bool {
 	return jrl.Value == nil || len(*jrl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (jrl JobResourceList) hasNextLink() bool {
+	return jrl.NextLink != nil && len(*jrl.NextLink) != 0
+}
+
 // jobResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (jrl JobResourceList) jobResourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if jrl.NextLink == nil || len(to.String(jrl.NextLink)) < 1 {
+	if !jrl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -4060,11 +3268,16 @@ func (page *JobResourceListPage) NextWithContext(ctx context.Context) (err error
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.jrl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.jrl)
+		if err != nil {
+			return err
+		}
+		page.jrl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.jrl = next
 	return nil
 }
 
@@ -5207,8 +4420,8 @@ func (osjei OperationStatusJobsExtendedInfo) AsBasicOperationStatusExtendedInfo(
 	return &osjei, true
 }
 
-// OperationStatusProvisionILRExtendedInfo extended information about the Item Level Recovery (ILR)
-// provision action, operation status.
+// OperationStatusProvisionILRExtendedInfo extended information about the Item Level Recovery (ILR) provision
+// action, operation status.
 type OperationStatusProvisionILRExtendedInfo struct {
 	// RecoveryTarget - Target details for the file or folder restore.
 	RecoveryTarget *InstantItemRecoveryTarget `json:"recoveryTarget,omitempty"`
@@ -5628,10 +4841,15 @@ func (pirl ProtectedItemResourceList) IsEmpty() bool {
 	return pirl.Value == nil || len(*pirl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (pirl ProtectedItemResourceList) hasNextLink() bool {
+	return pirl.NextLink != nil && len(*pirl.NextLink) != 0
+}
+
 // protectedItemResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (pirl ProtectedItemResourceList) protectedItemResourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if pirl.NextLink == nil || len(to.String(pirl.NextLink)) < 1 {
+	if !pirl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -5659,11 +4877,16 @@ func (page *ProtectedItemResourceListPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.pirl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.pirl)
+		if err != nil {
+			return err
+		}
+		page.pirl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.pirl = next
 	return nil
 }
 
@@ -5841,8 +5064,8 @@ func (pc ProtectionContainer) AsBasicProtectionContainer() (BasicProtectionConta
 	return &pc, true
 }
 
-// ProtectionContainerResource base class for a container with backup items. Containers with specific
-// workloads are derived from this class.
+// ProtectionContainerResource base class for a container with backup items. Containers with specific workloads
+// are derived from this class.
 type ProtectionContainerResource struct {
 	autorest.Response `json:"-"`
 	Properties        BasicProtectionContainer `json:"properties,omitempty"`
@@ -6496,8 +5719,8 @@ func (r Request) AsBasicRequest() (BasicRequest, bool) {
 	return &r, true
 }
 
-// RequestResource base class for the backup request. Workload-specific backup requests are derived from
-// this class.
+// RequestResource base class for the backup request. Workload-specific backup requests are derived from this
+// class.
 type RequestResource struct {
 	Properties BasicRequest `json:"properties,omitempty"`
 	// ID - Resource ID represents the complete path to the resource.
@@ -6738,8 +5961,8 @@ func (rr RestoreRequest) AsBasicRestoreRequest() (BasicRestoreRequest, bool) {
 	return &rr, true
 }
 
-// RestoreRequestResource the base class for a restore request. Workload-specific restore requests are
-// derived from this class.
+// RestoreRequestResource the base class for a restore request. Workload-specific restore requests are derived
+// from this class.
 type RestoreRequestResource struct {
 	Properties BasicRestoreRequest `json:"properties,omitempty"`
 	// ID - Resource ID represents the complete path to the resource.
@@ -7465,10 +6688,15 @@ func (wpirl WorkloadProtectableItemResourceList) IsEmpty() bool {
 	return wpirl.Value == nil || len(*wpirl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (wpirl WorkloadProtectableItemResourceList) hasNextLink() bool {
+	return wpirl.NextLink != nil && len(*wpirl.NextLink) != 0
+}
+
 // workloadProtectableItemResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (wpirl WorkloadProtectableItemResourceList) workloadProtectableItemResourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if wpirl.NextLink == nil || len(to.String(wpirl.NextLink)) < 1 {
+	if !wpirl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -7496,11 +6724,16 @@ func (page *WorkloadProtectableItemResourceListPage) NextWithContext(ctx context
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.wpirl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.wpirl)
+		if err != nil {
+			return err
+		}
+		page.wpirl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.wpirl = next
 	return nil
 }
 

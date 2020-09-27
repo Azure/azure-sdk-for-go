@@ -74,6 +74,9 @@ func (client LegacyPeeringsClient) List(ctx context.Context, peeringLocation str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.LegacyPeeringsClient", "List", resp, "Failure responding to request")
 	}
+	if result.lr.hasNextLink() && result.lr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -110,7 +113,6 @@ func (client LegacyPeeringsClient) ListSender(req *http.Request) (*http.Response
 func (client LegacyPeeringsClient) ListResponder(resp *http.Response) (result ListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

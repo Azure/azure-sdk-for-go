@@ -23,7 +23,6 @@ import (
 	"context"
 
 	original "github.com/Azure/azure-sdk-for-go/services/preview/digitaltwins/mgmt/2020-03-01-preview/digitaltwins"
-	uuid "github.com/satori/go.uuid"
 )
 
 const (
@@ -47,16 +46,6 @@ const (
 	EndpointTypeEventGrid                              EndpointType = original.EndpointTypeEventGrid
 	EndpointTypeEventHub                               EndpointType = original.EndpointTypeEventHub
 	EndpointTypeServiceBus                             EndpointType = original.EndpointTypeServiceBus
-)
-
-type IntegrationResourceState = original.IntegrationResourceState
-
-const (
-	IntegrationResourceStateCanceled     IntegrationResourceState = original.IntegrationResourceStateCanceled
-	IntegrationResourceStateDeleting     IntegrationResourceState = original.IntegrationResourceStateDeleting
-	IntegrationResourceStateFailed       IntegrationResourceState = original.IntegrationResourceStateFailed
-	IntegrationResourceStateProvisioning IntegrationResourceState = original.IntegrationResourceStateProvisioning
-	IntegrationResourceStateSucceeded    IntegrationResourceState = original.IntegrationResourceStateSucceeded
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -100,17 +89,6 @@ type ErrorResponse = original.ErrorResponse
 type EventGrid = original.EventGrid
 type EventHub = original.EventHub
 type ExternalResource = original.ExternalResource
-type IntegrationResource = original.IntegrationResource
-type IntegrationResourceListResult = original.IntegrationResourceListResult
-type IntegrationResourceListResultIterator = original.IntegrationResourceListResultIterator
-type IntegrationResourceListResultPage = original.IntegrationResourceListResultPage
-type IntegrationResourceProperties = original.IntegrationResourceProperties
-type IntegrationResourceState1 = original.IntegrationResourceState1
-type IntegrationResourceUpdateInfo = original.IntegrationResourceUpdateInfo
-type IntegrationResourceUpdateProperties = original.IntegrationResourceUpdateProperties
-type IoTHubClient = original.IoTHubClient
-type IoTHubDeleteFuture = original.IoTHubDeleteFuture
-type IoTHubsClient = original.IoTHubsClient
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -124,13 +102,13 @@ type ServiceBus = original.ServiceBus
 type SkuInfo = original.SkuInfo
 type UpdateFuture = original.UpdateFuture
 
-func New(subscriptionID uuid.UUID) BaseClient {
+func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
-func NewClient(subscriptionID uuid.UUID) Client {
+func NewClient(subscriptionID string) Client {
 	return original.NewClient(subscriptionID)
 }
-func NewClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) Client {
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 	return original.NewClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDescriptionListResultIterator(page DescriptionListResultPage) DescriptionListResultIterator {
@@ -139,10 +117,10 @@ func NewDescriptionListResultIterator(page DescriptionListResultPage) Descriptio
 func NewDescriptionListResultPage(getNextPage func(context.Context, DescriptionListResult) (DescriptionListResult, error)) DescriptionListResultPage {
 	return original.NewDescriptionListResultPage(getNextPage)
 }
-func NewEndpointClient(subscriptionID uuid.UUID) EndpointClient {
+func NewEndpointClient(subscriptionID string) EndpointClient {
 	return original.NewEndpointClient(subscriptionID)
 }
-func NewEndpointClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) EndpointClient {
+func NewEndpointClientWithBaseURI(baseURI string, subscriptionID string) EndpointClient {
 	return original.NewEndpointClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewEndpointResourceListResultIterator(page EndpointResourceListResultPage) EndpointResourceListResultIterator {
@@ -151,37 +129,19 @@ func NewEndpointResourceListResultIterator(page EndpointResourceListResultPage) 
 func NewEndpointResourceListResultPage(getNextPage func(context.Context, EndpointResourceListResult) (EndpointResourceListResult, error)) EndpointResourceListResultPage {
 	return original.NewEndpointResourceListResultPage(getNextPage)
 }
-func NewIntegrationResourceListResultIterator(page IntegrationResourceListResultPage) IntegrationResourceListResultIterator {
-	return original.NewIntegrationResourceListResultIterator(page)
-}
-func NewIntegrationResourceListResultPage(getNextPage func(context.Context, IntegrationResourceListResult) (IntegrationResourceListResult, error)) IntegrationResourceListResultPage {
-	return original.NewIntegrationResourceListResultPage(getNextPage)
-}
-func NewIoTHubClient(subscriptionID uuid.UUID) IoTHubClient {
-	return original.NewIoTHubClient(subscriptionID)
-}
-func NewIoTHubClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) IoTHubClient {
-	return original.NewIoTHubClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewIoTHubsClient(subscriptionID uuid.UUID) IoTHubsClient {
-	return original.NewIoTHubsClient(subscriptionID)
-}
-func NewIoTHubsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) IoTHubsClient {
-	return original.NewIoTHubsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
-func NewOperationsClient(subscriptionID uuid.UUID) OperationsClient {
+func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID uuid.UUID) OperationsClient {
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewWithBaseURI(baseURI string, subscriptionID uuid.UUID) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleEndpointProvisioningStateValues() []EndpointProvisioningState {
@@ -189,9 +149,6 @@ func PossibleEndpointProvisioningStateValues() []EndpointProvisioningState {
 }
 func PossibleEndpointTypeValues() []EndpointType {
 	return original.PossibleEndpointTypeValues()
-}
-func PossibleIntegrationResourceStateValues() []IntegrationResourceState {
-	return original.PossibleIntegrationResourceStateValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()

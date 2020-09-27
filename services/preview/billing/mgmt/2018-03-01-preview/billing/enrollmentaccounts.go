@@ -107,7 +107,6 @@ func (client EnrollmentAccountsClient) GetSender(req *http.Request) (*http.Respo
 func (client EnrollmentAccountsClient) GetResponder(resp *http.Response) (result EnrollmentAccount, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -145,6 +144,9 @@ func (client EnrollmentAccountsClient) List(ctx context.Context) (result Enrollm
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.EnrollmentAccountsClient", "List", resp, "Failure responding to request")
 	}
+	if result.ealr.hasNextLink() && result.ealr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -175,7 +177,6 @@ func (client EnrollmentAccountsClient) ListSender(req *http.Request) (*http.Resp
 func (client EnrollmentAccountsClient) ListResponder(resp *http.Response) (result EnrollmentAccountListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

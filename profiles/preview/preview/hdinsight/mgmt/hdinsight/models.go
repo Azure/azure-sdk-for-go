@@ -87,6 +87,20 @@ const (
 	Windows OSType = original.Windows
 )
 
+type OutboundOnlyPublicNetworkAccessType = original.OutboundOnlyPublicNetworkAccessType
+
+const (
+	PublicLoadBalancer OutboundOnlyPublicNetworkAccessType = original.PublicLoadBalancer
+	UDR                OutboundOnlyPublicNetworkAccessType = original.UDR
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	InboundAndOutbound PublicNetworkAccess = original.InboundAndOutbound
+	OutboundOnly       PublicNetworkAccess = original.OutboundOnly
+)
+
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
@@ -115,6 +129,7 @@ type ApplicationsCreateFuture = original.ApplicationsCreateFuture
 type ApplicationsDeleteFuture = original.ApplicationsDeleteFuture
 type Autoscale = original.Autoscale
 type AutoscaleCapacity = original.AutoscaleCapacity
+type AutoscaleConfigurationUpdateParameter = original.AutoscaleConfigurationUpdateParameter
 type AutoscaleRecurrence = original.AutoscaleRecurrence
 type AutoscaleSchedule = original.AutoscaleSchedule
 type AutoscaleTimeAndCapacity = original.AutoscaleTimeAndCapacity
@@ -148,6 +163,7 @@ type ClustersDeleteFuture = original.ClustersDeleteFuture
 type ClustersExecuteScriptActionsFuture = original.ClustersExecuteScriptActionsFuture
 type ClustersResizeFuture = original.ClustersResizeFuture
 type ClustersRotateDiskEncryptionKeyFuture = original.ClustersRotateDiskEncryptionKeyFuture
+type ClustersUpdateAutoScaleConfigurationFuture = original.ClustersUpdateAutoScaleConfigurationFuture
 type ClustersUpdateGatewaySettingsFuture = original.ClustersUpdateGatewaySettingsFuture
 type ComputeProfile = original.ComputeProfile
 type ConfigurationsClient = original.ConfigurationsClient
@@ -156,6 +172,7 @@ type ConnectivityEndpoint = original.ConnectivityEndpoint
 type DataDisksGroups = original.DataDisksGroups
 type DiskBillingMeters = original.DiskBillingMeters
 type DiskEncryptionProperties = original.DiskEncryptionProperties
+type EncryptionInTransitProperties = original.EncryptionInTransitProperties
 type ErrorResponse = original.ErrorResponse
 type Errors = original.Errors
 type ExecuteScriptActionParameters = original.ExecuteScriptActionParameters
@@ -167,10 +184,13 @@ type ExtensionsDisableMonitoringFuture = original.ExtensionsDisableMonitoringFut
 type ExtensionsEnableMonitoringFuture = original.ExtensionsEnableMonitoringFuture
 type GatewaySettings = original.GatewaySettings
 type HardwareProfile = original.HardwareProfile
+type HostInfo = original.HostInfo
 type KafkaRestProperties = original.KafkaRestProperties
 type LinuxOperatingSystemProfile = original.LinuxOperatingSystemProfile
+type ListHostInfo = original.ListHostInfo
 type LocalizedName = original.LocalizedName
 type LocationsClient = original.LocationsClient
+type NetworkSettings = original.NetworkSettings
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -214,6 +234,8 @@ type VMSizeCompatibilityFilterV2 = original.VMSizeCompatibilityFilterV2
 type VMSizesCapability = original.VMSizesCapability
 type VersionSpec = original.VersionSpec
 type VersionsCapability = original.VersionsCapability
+type VirtualMachinesClient = original.VirtualMachinesClient
+type VirtualMachinesRestartHostsFuture = original.VirtualMachinesRestartHostsFuture
 type VirtualNetworkProfile = original.VirtualNetworkProfile
 
 func New(subscriptionID string) BaseClient {
@@ -297,6 +319,12 @@ func NewScriptExecutionHistoryClient(subscriptionID string) ScriptExecutionHisto
 func NewScriptExecutionHistoryClientWithBaseURI(baseURI string, subscriptionID string) ScriptExecutionHistoryClient {
 	return original.NewScriptExecutionHistoryClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClient(subscriptionID)
+}
+func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -320,6 +348,12 @@ func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorit
 }
 func PossibleOSTypeValues() []OSType {
 	return original.PossibleOSTypeValues()
+}
+func PossibleOutboundOnlyPublicNetworkAccessTypeValues() []OutboundOnlyPublicNetworkAccessType {
+	return original.PossibleOutboundOnlyPublicNetworkAccessTypeValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()

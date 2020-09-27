@@ -28,178 +28,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2018-05-01-preview/eventgrid"
 
-// EndpointType enumerates the values for endpoint type.
-type EndpointType string
-
-const (
-	// EndpointTypeEventHub ...
-	EndpointTypeEventHub EndpointType = "EventHub"
-	// EndpointTypeEventSubscriptionDestination ...
-	EndpointTypeEventSubscriptionDestination EndpointType = "EventSubscriptionDestination"
-	// EndpointTypeHybridConnection ...
-	EndpointTypeHybridConnection EndpointType = "HybridConnection"
-	// EndpointTypeStorageQueue ...
-	EndpointTypeStorageQueue EndpointType = "StorageQueue"
-	// EndpointTypeWebHook ...
-	EndpointTypeWebHook EndpointType = "WebHook"
-)
-
-// PossibleEndpointTypeValues returns an array of possible values for the EndpointType const type.
-func PossibleEndpointTypeValues() []EndpointType {
-	return []EndpointType{EndpointTypeEventHub, EndpointTypeEventSubscriptionDestination, EndpointTypeHybridConnection, EndpointTypeStorageQueue, EndpointTypeWebHook}
-}
-
-// EndpointTypeBasicDeadLetterDestination enumerates the values for endpoint type basic dead letter
-// destination.
-type EndpointTypeBasicDeadLetterDestination string
-
-const (
-	// EndpointTypeDeadLetterDestination ...
-	EndpointTypeDeadLetterDestination EndpointTypeBasicDeadLetterDestination = "DeadLetterDestination"
-	// EndpointTypeStorageBlob ...
-	EndpointTypeStorageBlob EndpointTypeBasicDeadLetterDestination = "StorageBlob"
-)
-
-// PossibleEndpointTypeBasicDeadLetterDestinationValues returns an array of possible values for the EndpointTypeBasicDeadLetterDestination const type.
-func PossibleEndpointTypeBasicDeadLetterDestinationValues() []EndpointTypeBasicDeadLetterDestination {
-	return []EndpointTypeBasicDeadLetterDestination{EndpointTypeDeadLetterDestination, EndpointTypeStorageBlob}
-}
-
-// EventDeliverySchema enumerates the values for event delivery schema.
-type EventDeliverySchema string
-
-const (
-	// CloudEventV01Schema ...
-	CloudEventV01Schema EventDeliverySchema = "CloudEventV01Schema"
-	// EventGridSchema ...
-	EventGridSchema EventDeliverySchema = "EventGridSchema"
-	// InputEventSchema ...
-	InputEventSchema EventDeliverySchema = "InputEventSchema"
-)
-
-// PossibleEventDeliverySchemaValues returns an array of possible values for the EventDeliverySchema const type.
-func PossibleEventDeliverySchemaValues() []EventDeliverySchema {
-	return []EventDeliverySchema{CloudEventV01Schema, EventGridSchema, InputEventSchema}
-}
-
-// EventSubscriptionProvisioningState enumerates the values for event subscription provisioning state.
-type EventSubscriptionProvisioningState string
-
-const (
-	// AwaitingManualAction ...
-	AwaitingManualAction EventSubscriptionProvisioningState = "AwaitingManualAction"
-	// Canceled ...
-	Canceled EventSubscriptionProvisioningState = "Canceled"
-	// Creating ...
-	Creating EventSubscriptionProvisioningState = "Creating"
-	// Deleting ...
-	Deleting EventSubscriptionProvisioningState = "Deleting"
-	// Failed ...
-	Failed EventSubscriptionProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded EventSubscriptionProvisioningState = "Succeeded"
-	// Updating ...
-	Updating EventSubscriptionProvisioningState = "Updating"
-)
-
-// PossibleEventSubscriptionProvisioningStateValues returns an array of possible values for the EventSubscriptionProvisioningState const type.
-func PossibleEventSubscriptionProvisioningStateValues() []EventSubscriptionProvisioningState {
-	return []EventSubscriptionProvisioningState{AwaitingManualAction, Canceled, Creating, Deleting, Failed, Succeeded, Updating}
-}
-
-// InputSchema enumerates the values for input schema.
-type InputSchema string
-
-const (
-	// InputSchemaCloudEventV01Schema ...
-	InputSchemaCloudEventV01Schema InputSchema = "CloudEventV01Schema"
-	// InputSchemaCustomEventSchema ...
-	InputSchemaCustomEventSchema InputSchema = "CustomEventSchema"
-	// InputSchemaEventGridSchema ...
-	InputSchemaEventGridSchema InputSchema = "EventGridSchema"
-)
-
-// PossibleInputSchemaValues returns an array of possible values for the InputSchema const type.
-func PossibleInputSchemaValues() []InputSchema {
-	return []InputSchema{InputSchemaCloudEventV01Schema, InputSchemaCustomEventSchema, InputSchemaEventGridSchema}
-}
-
-// InputSchemaMappingType enumerates the values for input schema mapping type.
-type InputSchemaMappingType string
-
-const (
-	// InputSchemaMappingTypeInputSchemaMapping ...
-	InputSchemaMappingTypeInputSchemaMapping InputSchemaMappingType = "InputSchemaMapping"
-	// InputSchemaMappingTypeJSON ...
-	InputSchemaMappingTypeJSON InputSchemaMappingType = "Json"
-)
-
-// PossibleInputSchemaMappingTypeValues returns an array of possible values for the InputSchemaMappingType const type.
-func PossibleInputSchemaMappingTypeValues() []InputSchemaMappingType {
-	return []InputSchemaMappingType{InputSchemaMappingTypeInputSchemaMapping, InputSchemaMappingTypeJSON}
-}
-
-// ResourceRegionType enumerates the values for resource region type.
-type ResourceRegionType string
-
-const (
-	// GlobalResource ...
-	GlobalResource ResourceRegionType = "GlobalResource"
-	// RegionalResource ...
-	RegionalResource ResourceRegionType = "RegionalResource"
-)
-
-// PossibleResourceRegionTypeValues returns an array of possible values for the ResourceRegionType const type.
-func PossibleResourceRegionTypeValues() []ResourceRegionType {
-	return []ResourceRegionType{GlobalResource, RegionalResource}
-}
-
-// TopicProvisioningState enumerates the values for topic provisioning state.
-type TopicProvisioningState string
-
-const (
-	// TopicProvisioningStateCanceled ...
-	TopicProvisioningStateCanceled TopicProvisioningState = "Canceled"
-	// TopicProvisioningStateCreating ...
-	TopicProvisioningStateCreating TopicProvisioningState = "Creating"
-	// TopicProvisioningStateDeleting ...
-	TopicProvisioningStateDeleting TopicProvisioningState = "Deleting"
-	// TopicProvisioningStateFailed ...
-	TopicProvisioningStateFailed TopicProvisioningState = "Failed"
-	// TopicProvisioningStateSucceeded ...
-	TopicProvisioningStateSucceeded TopicProvisioningState = "Succeeded"
-	// TopicProvisioningStateUpdating ...
-	TopicProvisioningStateUpdating TopicProvisioningState = "Updating"
-)
-
-// PossibleTopicProvisioningStateValues returns an array of possible values for the TopicProvisioningState const type.
-func PossibleTopicProvisioningStateValues() []TopicProvisioningState {
-	return []TopicProvisioningState{TopicProvisioningStateCanceled, TopicProvisioningStateCreating, TopicProvisioningStateDeleting, TopicProvisioningStateFailed, TopicProvisioningStateSucceeded, TopicProvisioningStateUpdating}
-}
-
-// TopicTypeProvisioningState enumerates the values for topic type provisioning state.
-type TopicTypeProvisioningState string
-
-const (
-	// TopicTypeProvisioningStateCanceled ...
-	TopicTypeProvisioningStateCanceled TopicTypeProvisioningState = "Canceled"
-	// TopicTypeProvisioningStateCreating ...
-	TopicTypeProvisioningStateCreating TopicTypeProvisioningState = "Creating"
-	// TopicTypeProvisioningStateDeleting ...
-	TopicTypeProvisioningStateDeleting TopicTypeProvisioningState = "Deleting"
-	// TopicTypeProvisioningStateFailed ...
-	TopicTypeProvisioningStateFailed TopicTypeProvisioningState = "Failed"
-	// TopicTypeProvisioningStateSucceeded ...
-	TopicTypeProvisioningStateSucceeded TopicTypeProvisioningState = "Succeeded"
-	// TopicTypeProvisioningStateUpdating ...
-	TopicTypeProvisioningStateUpdating TopicTypeProvisioningState = "Updating"
-)
-
-// PossibleTopicTypeProvisioningStateValues returns an array of possible values for the TopicTypeProvisioningState const type.
-func PossibleTopicTypeProvisioningStateValues() []TopicTypeProvisioningState {
-	return []TopicTypeProvisioningState{TopicTypeProvisioningStateCanceled, TopicTypeProvisioningStateCreating, TopicTypeProvisioningStateDeleting, TopicTypeProvisioningStateFailed, TopicTypeProvisioningStateSucceeded, TopicTypeProvisioningStateUpdating}
-}
-
 // BasicDeadLetterDestination information about the dead letter destination for an event subscription. To configure a
 // deadletter destination, do not directly instantiate an object of this class. Instead, instantiate an object of a
 // derived class. Currently, StorageBlobDeadLetterDestination is the only class that derives from this class.
@@ -279,8 +107,7 @@ func (dld DeadLetterDestination) AsBasicDeadLetterDestination() (BasicDeadLetter
 	return &dld, true
 }
 
-// EventHubEventSubscriptionDestination information about the event hub destination for an event
-// subscription
+// EventHubEventSubscriptionDestination information about the event hub destination for an event subscription
 type EventHubEventSubscriptionDestination struct {
 	// EventHubEventSubscriptionDestinationProperties - Event Hub Properties of the event subscription destination
 	*EventHubEventSubscriptionDestinationProperties `json:"properties,omitempty"`
@@ -591,6 +418,26 @@ type EventSubscriptionProperties struct {
 	DeadLetterDestination BasicDeadLetterDestination `json:"deadLetterDestination,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EventSubscriptionProperties.
+func (esp EventSubscriptionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	objectMap["destination"] = esp.Destination
+	if esp.Filter != nil {
+		objectMap["filter"] = esp.Filter
+	}
+	if esp.Labels != nil {
+		objectMap["labels"] = esp.Labels
+	}
+	if esp.EventDeliverySchema != "" {
+		objectMap["eventDeliverySchema"] = esp.EventDeliverySchema
+	}
+	if esp.RetryPolicy != nil {
+		objectMap["retryPolicy"] = esp.RetryPolicy
+	}
+	objectMap["deadLetterDestination"] = esp.DeadLetterDestination
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for EventSubscriptionProperties struct.
 func (esp *EventSubscriptionProperties) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -705,8 +552,8 @@ func (future *EventSubscriptionsCreateOrUpdateFuture) Result(client EventSubscri
 	return
 }
 
-// EventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// EventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EventSubscriptionsDeleteFuture struct {
 	azure.Future
 }
@@ -735,8 +582,8 @@ type EventSubscriptionsListResult struct {
 	Value *[]EventSubscription `json:"value,omitempty"`
 }
 
-// EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EventSubscriptionsUpdateFuture struct {
 	azure.Future
 }
@@ -936,8 +783,8 @@ type EventTypesListResult struct {
 	Value *[]EventType `json:"value,omitempty"`
 }
 
-// HybridConnectionEventSubscriptionDestination information about the HybridConnection destination for an
-// event subscription.
+// HybridConnectionEventSubscriptionDestination information about the HybridConnection destination for an event
+// subscription.
 type HybridConnectionEventSubscriptionDestination struct {
 	// HybridConnectionEventSubscriptionDestinationProperties - Hybrid connection Properties of the event subscription destination
 	*HybridConnectionEventSubscriptionDestinationProperties `json:"properties,omitempty"`
@@ -1021,8 +868,7 @@ func (hcesd *HybridConnectionEventSubscriptionDestination) UnmarshalJSON(body []
 	return nil
 }
 
-// HybridConnectionEventSubscriptionDestinationProperties the properties for a hybrid connection
-// destination.
+// HybridConnectionEventSubscriptionDestinationProperties the properties for a hybrid connection destination.
 type HybridConnectionEventSubscriptionDestinationProperties struct {
 	// ResourceID - The Azure Resource ID of an hybrid connection that is the destination of an event subscription.
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -1114,10 +960,10 @@ type JSONField struct {
 	SourceField *string `json:"sourceField,omitempty"`
 }
 
-// JSONFieldWithDefault this is used to express the source of an input schema mapping for a single target
-// field in the Event Grid Event schema. This is currently used in the mappings for the
-// 'subject','eventType' and 'dataVersion' properties. This represents a field in the input event schema
-// along with a default value to be used, and at least one of these two properties should be provided.
+// JSONFieldWithDefault this is used to express the source of an input schema mapping for a single target field
+// in the Event Grid Event schema. This is currently used in the mappings for the 'subject','eventType' and
+// 'dataVersion' properties. This represents a field in the input event schema along with a default value to be
+// used, and at least one of these two properties should be provided.
 type JSONFieldWithDefault struct {
 	// SourceField - Name of a field in the input event schema that's to be used as the source of a mapping.
 	SourceField *string `json:"sourceField,omitempty"`
@@ -1125,8 +971,8 @@ type JSONFieldWithDefault struct {
 	DefaultValue *string `json:"defaultValue,omitempty"`
 }
 
-// JSONInputSchemaMapping this enables publishing to Event Grid using a custom input schema. This can be
-// used to map properties from a custom input JSON schema to the Event Grid event schema.
+// JSONInputSchemaMapping this enables publishing to Event Grid using a custom input schema. This can be used
+// to map properties from a custom input JSON schema to the Event Grid event schema.
 type JSONInputSchemaMapping struct {
 	// JSONInputSchemaMappingProperties - JSON Properties of the input schema mapping
 	*JSONInputSchemaMappingProperties `json:"properties,omitempty"`
@@ -1195,8 +1041,8 @@ func (jism *JSONInputSchemaMapping) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// JSONInputSchemaMappingProperties this can be used to map properties of a source schema (or default
-// values, for certain supported properties) to properties of the EventGridEvent schema.
+// JSONInputSchemaMappingProperties this can be used to map properties of a source schema (or default values,
+// for certain supported properties) to properties of the EventGridEvent schema.
 type JSONInputSchemaMappingProperties struct {
 	// ID - The mapping information for the Id property of the Event Grid Event.
 	ID *JSONField `json:"id,omitempty"`
@@ -1542,6 +1388,16 @@ type TopicProperties struct {
 	InputSchema InputSchema `json:"inputSchema,omitempty"`
 	// InputSchemaMapping - This enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various properties of a source schema to various required properties of the EventGridEvent schema.
 	InputSchemaMapping BasicInputSchemaMapping `json:"inputSchemaMapping,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TopicProperties.
+func (tp TopicProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tp.InputSchema != "" {
+		objectMap["inputSchema"] = tp.InputSchema
+	}
+	objectMap["inputSchemaMapping"] = tp.InputSchemaMapping
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for TopicProperties struct.
@@ -1916,11 +1772,20 @@ func (whesd *WebHookEventSubscriptionDestination) UnmarshalJSON(body []byte) err
 	return nil
 }
 
-// WebHookEventSubscriptionDestinationProperties information about the webhook destination properties for
-// an event subscription.
+// WebHookEventSubscriptionDestinationProperties information about the webhook destination properties for an
+// event subscription.
 type WebHookEventSubscriptionDestinationProperties struct {
 	// EndpointURL - The URL that represents the endpoint of the destination of an event subscription.
 	EndpointURL *string `json:"endpointUrl,omitempty"`
 	// EndpointBaseURL - READ-ONLY; The base URL that represents the endpoint of the destination of an event subscription.
 	EndpointBaseURL *string `json:"endpointBaseUrl,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WebHookEventSubscriptionDestinationProperties.
+func (whesdp WebHookEventSubscriptionDestinationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if whesdp.EndpointURL != nil {
+		objectMap["endpointUrl"] = whesdp.EndpointURL
+	}
+	return json.Marshal(objectMap)
 }

@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:0f5cec94ea46ab37f6b95e52a4b70761ada57b809059aba2d332ec0813416920"
+  digest = "1:69b95736654c490366f5c1322f08b88c6ca7a324fb5a7cd48d4cdeea32dd4f17"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
@@ -17,8 +17,8 @@
     "tracing",
   ]
   pruneopts = "UT"
-  revision = "327ff6ce8b902f9afe648d5ea8ff6dc26c26f150"
-  version = "v13.4.0"
+  revision = "2368760b211997f3c5dd61e85e8665a523a09247"
+  version = "v14.0.0"
 
 [[projects]]
   digest = "1:f313598719f69ec4edbcd75b0f2ef1c8ed9e00f6ff3d7583ac3966db2d70d326"
@@ -165,6 +165,42 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:5e5cd6013a1d667dfd96de1d9f02a01db382d4d25d1a2aebc451689fdaa230b0"
+  name = "golang.org/x/net"
+  packages = [
+    "http/httpguts",
+    "idna",
+  ]
+  pruneopts = "UT"
+  revision = "62affa334b73ec65ed44a326519ac12c421905e3"
+
+[[projects]]
+  digest = "1:fa940333c48808b0d86ef21f412ffcfd0e5084a82f13905c028a404803b1908f"
+  name = "golang.org/x/text"
+  packages = [
+    "collate",
+    "collate/build",
+    "internal/colltab",
+    "internal/gen",
+    "internal/language",
+    "internal/language/compact",
+    "internal/tag",
+    "internal/triegen",
+    "internal/ucd",
+    "language",
+    "secure/bidirule",
+    "transform",
+    "unicode/bidi",
+    "unicode/cldr",
+    "unicode/norm",
+    "unicode/rangetable",
+  ]
+  pruneopts = "UT"
+  revision = "23ae387dee1f90d29a23c0e87ee0b46038fbed0e"
+  version = "v0.3.3"
+
+[[projects]]
+  branch = "master"
   digest = "1:d85ff5b2e5b485021f821f10030cdf46f723c3c84c9482835a4c9c462a7edfba"
   name = "golang.org/x/tools"
   packages = [
@@ -225,6 +261,7 @@
     "github.com/shopspring/decimal",
     "github.com/spf13/cobra",
     "golang.org/x/crypto/pkcs12",
+    "golang.org/x/net/http/httpguts",
     "golang.org/x/tools/imports",
     "gopkg.in/check.v1",
   ]

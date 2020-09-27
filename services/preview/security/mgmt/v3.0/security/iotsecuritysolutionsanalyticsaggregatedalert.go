@@ -126,7 +126,6 @@ func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) DismissSender(r
 func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) DismissResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -215,7 +214,6 @@ func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) GetSender(req *
 func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) GetResponder(resp *http.Response) (result IoTSecurityAggregatedAlert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -268,6 +266,9 @@ func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) List(ctx contex
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "security.IotSecuritySolutionsAnalyticsAggregatedAlertClient", "List", resp, "Failure responding to request")
 	}
+	if result.itsaal.hasNextLink() && result.itsaal.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -307,7 +308,6 @@ func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) ListSender(req 
 func (client IotSecuritySolutionsAnalyticsAggregatedAlertClient) ListResponder(resp *http.Response) (result IoTSecurityAggregatedAlertList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

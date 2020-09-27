@@ -22,7 +22,7 @@ package machinelearningservices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2020-01-01/machinelearningservices"
+	original "github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2020-04-01/machinelearningservices"
 )
 
 const (
@@ -34,6 +34,14 @@ type AllocationState = original.AllocationState
 const (
 	Resizing AllocationState = original.Resizing
 	Steady   AllocationState = original.Steady
+)
+
+type ClusterPurpose = original.ClusterPurpose
+
+const (
+	DenseProd ClusterPurpose = original.DenseProd
+	DevTest   ClusterPurpose = original.DevTest
+	FastProd  ClusterPurpose = original.FastProd
 )
 
 type ComputeType = original.ComputeType
@@ -107,9 +115,11 @@ const (
 type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
 
 const (
-	Approved PrivateEndpointServiceConnectionStatus = original.Approved
-	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
-	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
+	Approved     PrivateEndpointServiceConnectionStatus = original.Approved
+	Disconnected PrivateEndpointServiceConnectionStatus = original.Disconnected
+	Pending      PrivateEndpointServiceConnectionStatus = original.Pending
+	Rejected     PrivateEndpointServiceConnectionStatus = original.Rejected
+	Timeout      PrivateEndpointServiceConnectionStatus = original.Timeout
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -149,7 +159,10 @@ const (
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	SystemAssigned ResourceIdentityType = original.SystemAssigned
+	None                       ResourceIdentityType = original.None
+	SystemAssigned             ResourceIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               ResourceIdentityType = original.UserAssigned
 )
 
 type Status = original.Status
@@ -168,6 +181,7 @@ const (
 type Status1 = original.Status1
 
 const (
+	Status1Auto     Status1 = original.Status1Auto
 	Status1Disabled Status1 = original.Status1Disabled
 	Status1Enabled  Status1 = original.Status1Enabled
 )
@@ -225,6 +239,7 @@ type ErrorResponse = original.ErrorResponse
 type HDInsight = original.HDInsight
 type HDInsightProperties = original.HDInsightProperties
 type Identity = original.Identity
+type IdentityUserAssignedIdentitiesValue = original.IdentityUserAssignedIdentitiesValue
 type KeyVaultProperties = original.KeyVaultProperties
 type ListAmlUserFeatureResult = original.ListAmlUserFeatureResult
 type ListAmlUserFeatureResultIterator = original.ListAmlUserFeatureResultIterator
@@ -241,6 +256,11 @@ type MachineLearningComputeCreateOrUpdateFuture = original.MachineLearningComput
 type MachineLearningComputeDeleteFuture = original.MachineLearningComputeDeleteFuture
 type MachineLearningComputeUpdateFuture = original.MachineLearningComputeUpdateFuture
 type NodeStateCounts = original.NodeStateCounts
+type NotebookListCredentialsResult = original.NotebookListCredentialsResult
+type NotebookPreparationError = original.NotebookPreparationError
+type NotebookResourceInfo = original.NotebookResourceInfo
+type NotebooksClient = original.NotebooksClient
+type NotebooksPrepareFuture = original.NotebooksPrepareFuture
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -272,6 +292,8 @@ type Restriction = original.Restriction
 type SKUCapability = original.SKUCapability
 type ScaleSettings = original.ScaleSettings
 type ServicePrincipalCredentials = original.ServicePrincipalCredentials
+type SharedPrivateLinkResource = original.SharedPrivateLinkResource
+type SharedPrivateLinkResourceProperty = original.SharedPrivateLinkResourceProperty
 type Sku = original.Sku
 type SkuListResult = original.SkuListResult
 type SkuListResultIterator = original.SkuListResultIterator
@@ -302,6 +324,7 @@ type WorkspaceSku = original.WorkspaceSku
 type WorkspaceUpdateParameters = original.WorkspaceUpdateParameters
 type WorkspacesClient = original.WorkspacesClient
 type WorkspacesCreateOrUpdateFuture = original.WorkspacesCreateOrUpdateFuture
+type WorkspacesDeleteFuture = original.WorkspacesDeleteFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -329,6 +352,12 @@ func NewMachineLearningComputeClient(subscriptionID string) MachineLearningCompu
 }
 func NewMachineLearningComputeClientWithBaseURI(baseURI string, subscriptionID string) MachineLearningComputeClient {
 	return original.NewMachineLearningComputeClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewNotebooksClient(subscriptionID string) NotebooksClient {
+	return original.NewNotebooksClient(subscriptionID)
+}
+func NewNotebooksClientWithBaseURI(baseURI string, subscriptionID string) NotebooksClient {
+	return original.NewNotebooksClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -401,6 +430,9 @@ func NewWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) Works
 }
 func PossibleAllocationStateValues() []AllocationState {
 	return original.PossibleAllocationStateValues()
+}
+func PossibleClusterPurposeValues() []ClusterPurpose {
+	return original.PossibleClusterPurposeValues()
 }
 func PossibleComputeTypeBasicComputeNodesInformationValues() []ComputeTypeBasicComputeNodesInformation {
 	return original.PossibleComputeTypeBasicComputeNodesInformationValues()

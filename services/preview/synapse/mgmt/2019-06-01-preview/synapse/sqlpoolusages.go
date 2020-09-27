@@ -86,6 +86,9 @@ func (client SQLPoolUsagesClient) List(ctx context.Context, resourceGroupName st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolUsagesClient", "List", resp, "Failure responding to request")
 	}
+	if result.spulr.hasNextLink() && result.spulr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -123,7 +126,6 @@ func (client SQLPoolUsagesClient) ListSender(req *http.Request) (*http.Response,
 func (client SQLPoolUsagesClient) ListResponder(resp *http.Response) (result SQLPoolUsageListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

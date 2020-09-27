@@ -396,7 +396,6 @@ func (client CustomInstanceClient) ImageSearchSender(req *http.Request) (*http.R
 func (client CustomInstanceClient) ImageSearchResponder(resp *http.Response) (result Images, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -7,6 +7,7 @@ package azcore
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
@@ -49,6 +50,37 @@ func (r *Response) HasStatusCode(statusCodes ...int) bool {
 	return false
 }
 
+// UnmarshalAsByteArray will base-64 decode the received payload and place the result into the value pointed to by v.
+func (r *Response) UnmarshalAsByteArray(v **[]byte, format Base64Encoding) error {
+	if len(r.payload()) == 0 {
+		return nil
+	}
+	payload := string(r.payload())
+	if payload[0] == '"' {
+		// remove surrounding quotes
+		payload = payload[1 : len(payload)-1]
+	}
+	switch format {
+	case Base64StdFormat:
+		decoded, err := base64.StdEncoding.DecodeString(payload)
+		if err == nil {
+			*v = &decoded
+			return nil
+		}
+		return err
+	case Base64URLFormat:
+		// use raw encoding as URL format should not contain any '=' characters
+		decoded, err := base64.RawURLEncoding.DecodeString(payload)
+		if err == nil {
+			*v = &decoded
+			return nil
+		}
+		return err
+	default:
+		return fmt.Errorf("unrecognized byte array format: %d", format)
+	}
+}
+
 // UnmarshalAsJSON calls json.Unmarshal() to unmarshal the received payload into the value pointed to by v.
 // If no payload was received a RequestError is returned.  If json.Unmarshal fails a UnmarshalError is returned.
 func (r *Response) UnmarshalAsJSON(v interface{}) error {
@@ -82,7 +114,7 @@ func (r *Response) UnmarshalAsXML(v interface{}) error {
 // Drain reads the response body to completion then closes it.  The bytes read are discarded.
 func (r *Response) Drain() {
 	if r != nil && r.Body != nil {
-		io.Copy(ioutil.Discard, r.Body)
+		_, _ = io.Copy(ioutil.Discard, r.Body)
 		r.Body.Close()
 	}
 }
@@ -96,23 +128,31 @@ func (r *Response) removeBOM() {
 	}
 }
 
-// RetryAfter returns (non-zero, true) if the response contains a Retry-After header value.
-func (r *Response) RetryAfter() (time.Duration, bool) {
+// helper to reduce nil Response checks
+func (r *Response) retryAfter() time.Duration {
 	if r == nil {
-		return 0, false
+		return 0
 	}
-	ra := r.Header.Get(HeaderRetryAfter)
+	return RetryAfter(r.Response)
+}
+
+// RetryAfter returns non-zero if the response contains a Retry-After header value.
+func RetryAfter(resp *http.Response) time.Duration {
+	if resp == nil {
+		return 0
+	}
+	ra := resp.Header.Get(HeaderRetryAfter)
 	if ra == "" {
-		return 0, false
+		return 0
 	}
 	// retry-after values are expressed in either number of
 	// seconds or an HTTP-date indicating when to try again
 	if retryAfter, _ := strconv.Atoi(ra); retryAfter > 0 {
-		return time.Duration(retryAfter) * time.Second, true
+		return time.Duration(retryAfter) * time.Second
 	} else if t, err := time.Parse(time.RFC1123, ra); err == nil {
-		return t.Sub(time.Now()), true
+		return time.Until(t)
 	}
-	return 0, false
+	return 0
 }
 
 // WriteRequestWithResponse appends a formatted HTTP request into a Buffer. If request and/or err are

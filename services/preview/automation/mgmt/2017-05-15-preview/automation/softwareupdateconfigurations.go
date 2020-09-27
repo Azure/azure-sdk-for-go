@@ -137,7 +137,6 @@ func (client SoftwareUpdateConfigurationsClient) CreateSender(req *http.Request)
 func (client SoftwareUpdateConfigurationsClient) CreateResponder(resp *http.Response) (result SoftwareUpdateConfiguration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -228,7 +227,6 @@ func (client SoftwareUpdateConfigurationsClient) DeleteSender(req *http.Request)
 func (client SoftwareUpdateConfigurationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -318,7 +316,6 @@ func (client SoftwareUpdateConfigurationsClient) GetByNameSender(req *http.Reque
 func (client SoftwareUpdateConfigurationsClient) GetByNameResponder(resp *http.Response) (result SoftwareUpdateConfiguration, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -411,7 +408,6 @@ func (client SoftwareUpdateConfigurationsClient) ListSender(req *http.Request) (
 func (client SoftwareUpdateConfigurationsClient) ListResponder(resp *http.Response) (result SoftwareUpdateConfigurationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

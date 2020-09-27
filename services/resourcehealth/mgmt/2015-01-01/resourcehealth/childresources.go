@@ -79,6 +79,9 @@ func (client ChildResourcesClient) List(ctx context.Context, resourceURI string,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resourcehealth.ChildResourcesClient", "List", resp, "Failure responding to request")
 	}
+	if result.aslr.hasNextLink() && result.aslr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -119,7 +122,6 @@ func (client ChildResourcesClient) ListSender(req *http.Request) (*http.Response
 func (client ChildResourcesClient) ListResponder(resp *http.Response) (result AvailabilityStatusListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

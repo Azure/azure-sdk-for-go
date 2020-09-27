@@ -119,7 +119,6 @@ func (client MachinesClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 func (client MachinesClient) CreateOrUpdateResponder(resp *http.Response) (result Machine, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -201,7 +200,6 @@ func (client MachinesClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client MachinesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -286,7 +284,6 @@ func (client MachinesClient) GetSender(req *http.Request) (*http.Response, error
 func (client MachinesClient) GetResponder(resp *http.Response) (result Machine, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -333,6 +330,9 @@ func (client MachinesClient) ListByResourceGroup(ctx context.Context, resourceGr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridcompute.MachinesClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.mlr.hasNextLink() && result.mlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -368,7 +368,6 @@ func (client MachinesClient) ListByResourceGroupSender(req *http.Request) (*http
 func (client MachinesClient) ListByResourceGroupResponder(resp *http.Response) (result MachineListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -450,6 +449,9 @@ func (client MachinesClient) ListBySubscription(ctx context.Context) (result Mac
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridcompute.MachinesClient", "ListBySubscription", resp, "Failure responding to request")
 	}
+	if result.mlr.hasNextLink() && result.mlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -484,7 +486,6 @@ func (client MachinesClient) ListBySubscriptionSender(req *http.Request) (*http.
 func (client MachinesClient) ListBySubscriptionResponder(resp *http.Response) (result MachineListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -606,7 +607,6 @@ func (client MachinesClient) ReconnectSender(req *http.Request) (*http.Response,
 func (client MachinesClient) ReconnectResponder(resp *http.Response) (result Machine, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -691,7 +691,6 @@ func (client MachinesClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client MachinesClient) UpdateResponder(resp *http.Response) (result Machine, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

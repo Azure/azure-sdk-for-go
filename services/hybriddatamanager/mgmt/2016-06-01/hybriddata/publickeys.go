@@ -121,7 +121,6 @@ func (client PublicKeysClient) GetSender(req *http.Request) (*http.Response, err
 func (client PublicKeysClient) GetResponder(resp *http.Response) (result PublicKey, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -171,6 +170,9 @@ func (client PublicKeysClient) ListByDataManager(ctx context.Context, resourceGr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybriddata.PublicKeysClient", "ListByDataManager", resp, "Failure responding to request")
 	}
+	if result.pkl.hasNextLink() && result.pkl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -207,7 +209,6 @@ func (client PublicKeysClient) ListByDataManagerSender(req *http.Request) (*http
 func (client PublicKeysClient) ListByDataManagerResponder(resp *http.Response) (result PublicKeyList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

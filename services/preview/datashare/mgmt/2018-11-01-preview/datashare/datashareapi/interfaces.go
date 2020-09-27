@@ -52,8 +52,8 @@ type DataSetsClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string, dataSet datashare.BasicDataSet) (result datashare.DataSetModel, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string) (result datashare.DataSetsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, dataSetName string) (result datashare.DataSetModel, err error)
-	ListByShare(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string) (result datashare.DataSetListPage, err error)
-	ListByShareComplete(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string) (result datashare.DataSetListIterator, err error)
+	ListByShare(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string, filter string, orderby string) (result datashare.DataSetListPage, err error)
+	ListByShareComplete(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string, filter string, orderby string) (result datashare.DataSetListIterator, err error)
 }
 
 var _ DataSetsClientAPI = (*datashare.DataSetsClient)(nil)
@@ -63,8 +63,8 @@ type DataSetMappingsClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string, dataSetMapping datashare.BasicDataSetMapping) (result datashare.DataSetMappingModel, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, dataSetMappingName string) (result datashare.DataSetMappingModel, err error)
-	ListByShareSubscription(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, skipToken string) (result datashare.DataSetMappingListPage, err error)
-	ListByShareSubscriptionComplete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, skipToken string) (result datashare.DataSetMappingListIterator, err error)
+	ListByShareSubscription(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, skipToken string, filter string, orderby string) (result datashare.DataSetMappingListPage, err error)
+	ListByShareSubscriptionComplete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, skipToken string, filter string, orderby string) (result datashare.DataSetMappingListIterator, err error)
 }
 
 var _ DataSetMappingsClientAPI = (*datashare.DataSetMappingsClient)(nil)
@@ -74,8 +74,8 @@ type InvitationsClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string, invitation datashare.Invitation) (result datashare.Invitation, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, invitationName string) (result datashare.Invitation, err error)
-	ListByShare(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string) (result datashare.InvitationListPage, err error)
-	ListByShareComplete(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string) (result datashare.InvitationListIterator, err error)
+	ListByShare(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string, filter string, orderby string) (result datashare.InvitationListPage, err error)
+	ListByShareComplete(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string, filter string, orderby string) (result datashare.InvitationListIterator, err error)
 }
 
 var _ InvitationsClientAPI = (*datashare.InvitationsClient)(nil)
@@ -93,12 +93,12 @@ type SharesClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, share datashare.Share) (result datashare.Share, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string) (result datashare.SharesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, shareName string) (result datashare.Share, err error)
-	ListByAccount(ctx context.Context, resourceGroupName string, accountName string, skipToken string) (result datashare.ShareListPage, err error)
-	ListByAccountComplete(ctx context.Context, resourceGroupName string, accountName string, skipToken string) (result datashare.ShareListIterator, err error)
-	ListSynchronizationDetails(ctx context.Context, resourceGroupName string, accountName string, shareName string, shareSynchronization datashare.ShareSynchronization, skipToken string) (result datashare.SynchronizationDetailsListPage, err error)
-	ListSynchronizationDetailsComplete(ctx context.Context, resourceGroupName string, accountName string, shareName string, shareSynchronization datashare.ShareSynchronization, skipToken string) (result datashare.SynchronizationDetailsListIterator, err error)
-	ListSynchronizations(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string) (result datashare.ShareSynchronizationListPage, err error)
-	ListSynchronizationsComplete(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string) (result datashare.ShareSynchronizationListIterator, err error)
+	ListByAccount(ctx context.Context, resourceGroupName string, accountName string, skipToken string, filter string, orderby string) (result datashare.ShareListPage, err error)
+	ListByAccountComplete(ctx context.Context, resourceGroupName string, accountName string, skipToken string, filter string, orderby string) (result datashare.ShareListIterator, err error)
+	ListSynchronizationDetails(ctx context.Context, resourceGroupName string, accountName string, shareName string, shareSynchronization datashare.ShareSynchronization, skipToken string, filter string, orderby string) (result datashare.SynchronizationDetailsListPage, err error)
+	ListSynchronizationDetailsComplete(ctx context.Context, resourceGroupName string, accountName string, shareName string, shareSynchronization datashare.ShareSynchronization, skipToken string, filter string, orderby string) (result datashare.SynchronizationDetailsListIterator, err error)
+	ListSynchronizations(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string, filter string, orderby string) (result datashare.ShareSynchronizationListPage, err error)
+	ListSynchronizationsComplete(ctx context.Context, resourceGroupName string, accountName string, shareName string, skipToken string, filter string, orderby string) (result datashare.ShareSynchronizationListIterator, err error)
 }
 
 var _ SharesClientAPI = (*datashare.SharesClient)(nil)
@@ -120,14 +120,14 @@ type ShareSubscriptionsClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, shareSubscription datashare.ShareSubscription) (result datashare.ShareSubscription, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string) (result datashare.ShareSubscriptionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string) (result datashare.ShareSubscription, err error)
-	ListByAccount(ctx context.Context, resourceGroupName string, accountName string, skipToken string) (result datashare.ShareSubscriptionListPage, err error)
-	ListByAccountComplete(ctx context.Context, resourceGroupName string, accountName string, skipToken string) (result datashare.ShareSubscriptionListIterator, err error)
+	ListByAccount(ctx context.Context, resourceGroupName string, accountName string, skipToken string, filter string, orderby string) (result datashare.ShareSubscriptionListPage, err error)
+	ListByAccountComplete(ctx context.Context, resourceGroupName string, accountName string, skipToken string, filter string, orderby string) (result datashare.ShareSubscriptionListIterator, err error)
 	ListSourceShareSynchronizationSettings(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, skipToken string) (result datashare.SourceShareSynchronizationSettingListPage, err error)
 	ListSourceShareSynchronizationSettingsComplete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, skipToken string) (result datashare.SourceShareSynchronizationSettingListIterator, err error)
-	ListSynchronizationDetails(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, shareSubscriptionSynchronization datashare.ShareSubscriptionSynchronization, skipToken string) (result datashare.SynchronizationDetailsListPage, err error)
-	ListSynchronizationDetailsComplete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, shareSubscriptionSynchronization datashare.ShareSubscriptionSynchronization, skipToken string) (result datashare.SynchronizationDetailsListIterator, err error)
-	ListSynchronizations(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, skipToken string) (result datashare.ShareSubscriptionSynchronizationListPage, err error)
-	ListSynchronizationsComplete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, skipToken string) (result datashare.ShareSubscriptionSynchronizationListIterator, err error)
+	ListSynchronizationDetails(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, shareSubscriptionSynchronization datashare.ShareSubscriptionSynchronization, skipToken string, filter string, orderby string) (result datashare.SynchronizationDetailsListPage, err error)
+	ListSynchronizationDetailsComplete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, shareSubscriptionSynchronization datashare.ShareSubscriptionSynchronization, skipToken string, filter string, orderby string) (result datashare.SynchronizationDetailsListIterator, err error)
+	ListSynchronizations(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, skipToken string, filter string, orderby string) (result datashare.ShareSubscriptionSynchronizationListPage, err error)
+	ListSynchronizationsComplete(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, skipToken string, filter string, orderby string) (result datashare.ShareSubscriptionSynchronizationListIterator, err error)
 	SynchronizeMethod(ctx context.Context, resourceGroupName string, accountName string, shareSubscriptionName string, synchronize datashare.Synchronize) (result datashare.ShareSubscriptionsSynchronizeMethodFuture, err error)
 }
 

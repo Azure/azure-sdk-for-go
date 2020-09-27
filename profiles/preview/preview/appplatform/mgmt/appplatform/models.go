@@ -69,6 +69,15 @@ const (
 	DeploymentResourceStatusUpgrading  DeploymentResourceStatus = original.DeploymentResourceStatusUpgrading
 )
 
+type ManagedIdentityType = original.ManagedIdentityType
+
+const (
+	None                       ManagedIdentityType = original.None
+	SystemAssigned             ManagedIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned ManagedIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               ManagedIdentityType = original.UserAssigned
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -83,11 +92,33 @@ const (
 	ProvisioningStateUpdating   ProvisioningState = original.ProvisioningStateUpdating
 )
 
+type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
+
+const (
+	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = original.NotAvailableForSubscription
+	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
+)
+
+type ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsType
+
+const (
+	Location ResourceSkuRestrictionsType = original.Location
+	Zone     ResourceSkuRestrictionsType = original.Zone
+)
+
 type RuntimeVersion = original.RuntimeVersion
 
 const (
 	Java11 RuntimeVersion = original.Java11
 	Java8  RuntimeVersion = original.Java8
+)
+
+type SkuScaleType = original.SkuScaleType
+
+const (
+	SkuScaleTypeAutomatic SkuScaleType = original.SkuScaleTypeAutomatic
+	SkuScaleTypeManual    SkuScaleType = original.SkuScaleTypeManual
+	SkuScaleTypeNone      SkuScaleType = original.SkuScaleTypeNone
 )
 
 type TestKeyType = original.TestKeyType
@@ -131,12 +162,26 @@ type BindingResourceCollectionIterator = original.BindingResourceCollectionItera
 type BindingResourceCollectionPage = original.BindingResourceCollectionPage
 type BindingResourceProperties = original.BindingResourceProperties
 type BindingsClient = original.BindingsClient
+type CertificateProperties = original.CertificateProperties
+type CertificateResource = original.CertificateResource
+type CertificateResourceCollection = original.CertificateResourceCollection
+type CertificateResourceCollectionIterator = original.CertificateResourceCollectionIterator
+type CertificateResourceCollectionPage = original.CertificateResourceCollectionPage
+type CertificatesClient = original.CertificatesClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type ClusterResourceProperties = original.ClusterResourceProperties
 type ConfigServerGitProperty = original.ConfigServerGitProperty
 type ConfigServerProperties = original.ConfigServerProperties
 type ConfigServerSettings = original.ConfigServerSettings
+type CustomDomainProperties = original.CustomDomainProperties
+type CustomDomainResource = original.CustomDomainResource
+type CustomDomainResourceCollection = original.CustomDomainResourceCollection
+type CustomDomainResourceCollectionIterator = original.CustomDomainResourceCollectionIterator
+type CustomDomainResourceCollectionPage = original.CustomDomainResourceCollectionPage
+type CustomDomainValidatePayload = original.CustomDomainValidatePayload
+type CustomDomainValidateResult = original.CustomDomainValidateResult
+type CustomDomainsClient = original.CustomDomainsClient
 type DeploymentInstance = original.DeploymentInstance
 type DeploymentResource = original.DeploymentResource
 type DeploymentResourceCollection = original.DeploymentResourceCollection
@@ -154,10 +199,12 @@ type Error = original.Error
 type GitPatternRepository = original.GitPatternRepository
 type LogFileURLResponse = original.LogFileURLResponse
 type LogSpecification = original.LogSpecification
+type ManagedIdentityProperties = original.ManagedIdentityProperties
 type MetricDimension = original.MetricDimension
 type MetricSpecification = original.MetricSpecification
 type NameAvailability = original.NameAvailability
 type NameAvailabilityParameters = original.NameAvailabilityParameters
+type NetworkProfile = original.NetworkProfile
 type OperationDetail = original.OperationDetail
 type OperationDisplay = original.OperationDisplay
 type OperationProperties = original.OperationProperties
@@ -166,6 +213,15 @@ type PersistentDisk = original.PersistentDisk
 type ProxyResource = original.ProxyResource
 type RegenerateTestKeyRequestPayload = original.RegenerateTestKeyRequestPayload
 type Resource = original.Resource
+type ResourceSku = original.ResourceSku
+type ResourceSkuCapabilities = original.ResourceSkuCapabilities
+type ResourceSkuCollection = original.ResourceSkuCollection
+type ResourceSkuCollectionIterator = original.ResourceSkuCollectionIterator
+type ResourceSkuCollectionPage = original.ResourceSkuCollectionPage
+type ResourceSkuLocationInfo = original.ResourceSkuLocationInfo
+type ResourceSkuRestrictionInfo = original.ResourceSkuRestrictionInfo
+type ResourceSkuRestrictions = original.ResourceSkuRestrictions
+type ResourceSkuZoneDetails = original.ResourceSkuZoneDetails
 type ResourceUploadDefinition = original.ResourceUploadDefinition
 type ServiceResource = original.ServiceResource
 type ServiceResourceList = original.ServiceResourceList
@@ -176,6 +232,9 @@ type ServicesClient = original.ServicesClient
 type ServicesCreateOrUpdateFuture = original.ServicesCreateOrUpdateFuture
 type ServicesDeleteFuture = original.ServicesDeleteFuture
 type ServicesUpdateFuture = original.ServicesUpdateFuture
+type Sku = original.Sku
+type SkuCapacity = original.SkuCapacity
+type SkuClient = original.SkuClient
 type TemporaryDisk = original.TemporaryDisk
 type TestKeys = original.TestKeys
 type TraceProperties = original.TraceProperties
@@ -215,6 +274,30 @@ func NewBindingsClient(subscriptionID string) BindingsClient {
 func NewBindingsClientWithBaseURI(baseURI string, subscriptionID string) BindingsClient {
 	return original.NewBindingsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewCertificateResourceCollectionIterator(page CertificateResourceCollectionPage) CertificateResourceCollectionIterator {
+	return original.NewCertificateResourceCollectionIterator(page)
+}
+func NewCertificateResourceCollectionPage(getNextPage func(context.Context, CertificateResourceCollection) (CertificateResourceCollection, error)) CertificateResourceCollectionPage {
+	return original.NewCertificateResourceCollectionPage(getNextPage)
+}
+func NewCertificatesClient(subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClient(subscriptionID)
+}
+func NewCertificatesClientWithBaseURI(baseURI string, subscriptionID string) CertificatesClient {
+	return original.NewCertificatesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCustomDomainResourceCollectionIterator(page CustomDomainResourceCollectionPage) CustomDomainResourceCollectionIterator {
+	return original.NewCustomDomainResourceCollectionIterator(page)
+}
+func NewCustomDomainResourceCollectionPage(getNextPage func(context.Context, CustomDomainResourceCollection) (CustomDomainResourceCollection, error)) CustomDomainResourceCollectionPage {
+	return original.NewCustomDomainResourceCollectionPage(getNextPage)
+}
+func NewCustomDomainsClient(subscriptionID string) CustomDomainsClient {
+	return original.NewCustomDomainsClient(subscriptionID)
+}
+func NewCustomDomainsClientWithBaseURI(baseURI string, subscriptionID string) CustomDomainsClient {
+	return original.NewCustomDomainsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewDeploymentResourceCollectionIterator(page DeploymentResourceCollectionPage) DeploymentResourceCollectionIterator {
 	return original.NewDeploymentResourceCollectionIterator(page)
 }
@@ -233,6 +316,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewResourceSkuCollectionIterator(page ResourceSkuCollectionPage) ResourceSkuCollectionIterator {
+	return original.NewResourceSkuCollectionIterator(page)
+}
+func NewResourceSkuCollectionPage(getNextPage func(context.Context, ResourceSkuCollection) (ResourceSkuCollection, error)) ResourceSkuCollectionPage {
+	return original.NewResourceSkuCollectionPage(getNextPage)
+}
 func NewServiceResourceListIterator(page ServiceResourceListPage) ServiceResourceListIterator {
 	return original.NewServiceResourceListIterator(page)
 }
@@ -244,6 +333,12 @@ func NewServicesClient(subscriptionID string) ServicesClient {
 }
 func NewServicesClientWithBaseURI(baseURI string, subscriptionID string) ServicesClient {
 	return original.NewServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSkuClient(subscriptionID string) SkuClient {
+	return original.NewSkuClient(subscriptionID)
+}
+func NewSkuClientWithBaseURI(baseURI string, subscriptionID string) SkuClient {
+	return original.NewSkuClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -260,11 +355,23 @@ func PossibleDeploymentResourceProvisioningStateValues() []DeploymentResourcePro
 func PossibleDeploymentResourceStatusValues() []DeploymentResourceStatus {
 	return original.PossibleDeploymentResourceStatusValues()
 }
+func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
+	return original.PossibleManagedIdentityTypeValues()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
 }
+func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictionsReasonCode {
+	return original.PossibleResourceSkuRestrictionsReasonCodeValues()
+}
+func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
+	return original.PossibleResourceSkuRestrictionsTypeValues()
+}
 func PossibleRuntimeVersionValues() []RuntimeVersion {
 	return original.PossibleRuntimeVersionValues()
+}
+func PossibleSkuScaleTypeValues() []SkuScaleType {
+	return original.PossibleSkuScaleTypeValues()
 }
 func PossibleTestKeyTypeValues() []TestKeyType {
 	return original.PossibleTestKeyTypeValues()

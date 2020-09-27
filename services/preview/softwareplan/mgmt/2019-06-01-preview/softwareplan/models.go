@@ -30,38 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/softwareplan/mgmt/2019-06-01-preview/softwareplan"
 
-// ErrorCode enumerates the values for error code.
-type ErrorCode string
-
-const (
-	// InvalidRequestParameter ...
-	InvalidRequestParameter ErrorCode = "InvalidRequestParameter"
-	// MissingRequestParameter ...
-	MissingRequestParameter ErrorCode = "MissingRequestParameter"
-)
-
-// PossibleErrorCodeValues returns an array of possible values for the ErrorCode const type.
-func PossibleErrorCodeValues() []ErrorCode {
-	return []ErrorCode{InvalidRequestParameter, MissingRequestParameter}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Cancelled ...
-	Cancelled ProvisioningState = "Cancelled"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Cancelled, Failed, Succeeded}
-}
-
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
@@ -91,8 +59,7 @@ type HybridUseBenefitListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// HybridUseBenefitListResultIterator provides access to a complete listing of HybridUseBenefitModel
-// values.
+// HybridUseBenefitListResultIterator provides access to a complete listing of HybridUseBenefitModel values.
 type HybridUseBenefitListResultIterator struct {
 	i    int
 	page HybridUseBenefitListResultPage
@@ -160,10 +127,15 @@ func (hublr HybridUseBenefitListResult) IsEmpty() bool {
 	return hublr.Value == nil || len(*hublr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (hublr HybridUseBenefitListResult) hasNextLink() bool {
+	return hublr.NextLink != nil && len(*hublr.NextLink) != 0
+}
+
 // hybridUseBenefitListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (hublr HybridUseBenefitListResult) hybridUseBenefitListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if hublr.NextLink == nil || len(to.String(hublr.NextLink)) < 1 {
+	if !hublr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -191,11 +163,16 @@ func (page *HybridUseBenefitListResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.hublr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.hublr)
+		if err != nil {
+			return err
+		}
+		page.hublr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.hublr = next
 	return nil
 }
 
@@ -426,10 +403,15 @@ func (ol OperationList) IsEmpty() bool {
 	return ol.Value == nil || len(*ol.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ol OperationList) hasNextLink() bool {
+	return ol.NextLink != nil && len(*ol.NextLink) != 0
+}
+
 // operationListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ol OperationList) operationListPreparer(ctx context.Context) (*http.Request, error) {
-	if ol.NextLink == nil || len(to.String(ol.NextLink)) < 1 {
+	if !ol.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -457,11 +439,16 @@ func (page *OperationListPage) NextWithContext(ctx context.Context) (err error) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ol)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ol)
+		if err != nil {
+			return err
+		}
+		page.ol = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ol = next
 	return nil
 }
 

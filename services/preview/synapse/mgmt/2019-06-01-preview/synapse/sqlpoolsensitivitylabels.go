@@ -133,7 +133,6 @@ func (client SQLPoolSensitivityLabelsClient) CreateOrUpdateSender(req *http.Requ
 func (client SQLPoolSensitivityLabelsClient) CreateOrUpdateResponder(resp *http.Response) (result SensitivityLabel, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -228,7 +227,6 @@ func (client SQLPoolSensitivityLabelsClient) DeleteSender(req *http.Request) (*h
 func (client SQLPoolSensitivityLabelsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -322,7 +320,6 @@ func (client SQLPoolSensitivityLabelsClient) DisableRecommendationSender(req *ht
 func (client SQLPoolSensitivityLabelsClient) DisableRecommendationResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -417,7 +414,6 @@ func (client SQLPoolSensitivityLabelsClient) EnableRecommendationSender(req *htt
 func (client SQLPoolSensitivityLabelsClient) EnableRecommendationResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -469,6 +465,9 @@ func (client SQLPoolSensitivityLabelsClient) ListCurrent(ctx context.Context, re
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolSensitivityLabelsClient", "ListCurrent", resp, "Failure responding to request")
 	}
+	if result.sllr.hasNextLink() && result.sllr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -509,7 +508,6 @@ func (client SQLPoolSensitivityLabelsClient) ListCurrentSender(req *http.Request
 func (client SQLPoolSensitivityLabelsClient) ListCurrentResponder(resp *http.Response) (result SensitivityLabelListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -601,6 +599,9 @@ func (client SQLPoolSensitivityLabelsClient) ListRecommended(ctx context.Context
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolSensitivityLabelsClient", "ListRecommended", resp, "Failure responding to request")
 	}
+	if result.sllr.hasNextLink() && result.sllr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -647,7 +648,6 @@ func (client SQLPoolSensitivityLabelsClient) ListRecommendedSender(req *http.Req
 func (client SQLPoolSensitivityLabelsClient) ListRecommendedResponder(resp *http.Response) (result SensitivityLabelListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

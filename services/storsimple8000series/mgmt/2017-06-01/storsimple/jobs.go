@@ -121,7 +121,6 @@ func (client JobsClient) CancelSender(req *http.Request) (future JobsCancelFutur
 func (client JobsClient) CancelResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -207,7 +206,6 @@ func (client JobsClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client JobsClient) GetResponder(resp *http.Response) (result Job, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -258,6 +256,9 @@ func (client JobsClient) ListByDevice(ctx context.Context, deviceName string, re
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.JobsClient", "ListByDevice", resp, "Failure responding to request")
 	}
+	if result.jl.hasNextLink() && result.jl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -298,7 +299,6 @@ func (client JobsClient) ListByDeviceSender(req *http.Request) (*http.Response, 
 func (client JobsClient) ListByDeviceResponder(resp *http.Response) (result JobList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -385,6 +385,9 @@ func (client JobsClient) ListByManager(ctx context.Context, resourceGroupName st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.JobsClient", "ListByManager", resp, "Failure responding to request")
 	}
+	if result.jl.hasNextLink() && result.jl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -424,7 +427,6 @@ func (client JobsClient) ListByManagerSender(req *http.Request) (*http.Response,
 func (client JobsClient) ListByManagerResponder(resp *http.Response) (result JobList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

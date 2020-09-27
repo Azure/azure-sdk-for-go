@@ -129,7 +129,6 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateSender(req *http.Reques
 func (client AppServiceEnvironmentsClient) CreateOrUpdateResponder(resp *http.Response) (result AppServiceEnvironmentResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -216,7 +215,6 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req
 func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolResponder(resp *http.Response) (result WorkerPoolResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -305,7 +303,6 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *h
 func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolResponder(resp *http.Response) (result WorkerPoolResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -394,7 +391,6 @@ func (client AppServiceEnvironmentsClient) DeleteSender(req *http.Request) (futu
 func (client AppServiceEnvironmentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByClosing())
 	result.Response = resp
@@ -477,7 +473,6 @@ func (client AppServiceEnvironmentsClient) GetSender(req *http.Request) (*http.R
 func (client AppServiceEnvironmentsClient) GetResponder(resp *http.Response) (result AppServiceEnvironmentResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -563,7 +558,6 @@ func (client AppServiceEnvironmentsClient) GetDiagnosticsItemSender(req *http.Re
 func (client AppServiceEnvironmentsClient) GetDiagnosticsItemResponder(resp *http.Response) (result HostingEnvironmentDiagnostics, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -647,7 +641,6 @@ func (client AppServiceEnvironmentsClient) GetMultiRolePoolSender(req *http.Requ
 func (client AppServiceEnvironmentsClient) GetMultiRolePoolResponder(resp *http.Response) (result WorkerPoolResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -733,7 +726,6 @@ func (client AppServiceEnvironmentsClient) GetWorkerPoolSender(req *http.Request
 func (client AppServiceEnvironmentsClient) GetWorkerPoolResponder(resp *http.Response) (result WorkerPoolResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -771,6 +763,9 @@ func (client AppServiceEnvironmentsClient) List(ctx context.Context) (result App
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "List", resp, "Failure responding to request")
 	}
+	if result.asec.hasNextLink() && result.asec.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -805,7 +800,6 @@ func (client AppServiceEnvironmentsClient) ListSender(req *http.Request) (*http.
 func (client AppServiceEnvironmentsClient) ListResponder(resp *http.Response) (result AppServiceEnvironmentCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -891,6 +885,9 @@ func (client AppServiceEnvironmentsClient) ListAppServicePlans(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListAppServicePlans", resp, "Failure responding to request")
 	}
+	if result.aspc.hasNextLink() && result.aspc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -927,7 +924,6 @@ func (client AppServiceEnvironmentsClient) ListAppServicePlansSender(req *http.R
 func (client AppServiceEnvironmentsClient) ListAppServicePlansResponder(resp *http.Response) (result AppServicePlanCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1012,6 +1008,9 @@ func (client AppServiceEnvironmentsClient) ListByResourceGroup(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.asec.hasNextLink() && result.asec.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1047,7 +1046,6 @@ func (client AppServiceEnvironmentsClient) ListByResourceGroupSender(req *http.R
 func (client AppServiceEnvironmentsClient) ListByResourceGroupResponder(resp *http.Response) (result AppServiceEnvironmentCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1133,6 +1131,9 @@ func (client AppServiceEnvironmentsClient) ListCapacities(ctx context.Context, r
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListCapacities", resp, "Failure responding to request")
 	}
+	if result.scc.hasNextLink() && result.scc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1169,7 +1170,6 @@ func (client AppServiceEnvironmentsClient) ListCapacitiesSender(req *http.Reques
 func (client AppServiceEnvironmentsClient) ListCapacitiesResponder(resp *http.Response) (result StampCapacityCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1290,7 +1290,6 @@ func (client AppServiceEnvironmentsClient) ListDiagnosticsSender(req *http.Reque
 func (client AppServiceEnvironmentsClient) ListDiagnosticsResponder(resp *http.Response) (result ListHostingEnvironmentDiagnostics, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -1374,7 +1373,6 @@ func (client AppServiceEnvironmentsClient) ListMetricDefinitionsSender(req *http
 func (client AppServiceEnvironmentsClient) ListMetricDefinitionsResponder(resp *http.Response) (result MetricDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1427,6 +1425,9 @@ func (client AppServiceEnvironmentsClient) ListMetrics(ctx context.Context, reso
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMetrics", resp, "Failure responding to request")
 	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1469,7 +1470,6 @@ func (client AppServiceEnvironmentsClient) ListMetricsSender(req *http.Request) 
 func (client AppServiceEnvironmentsClient) ListMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1555,6 +1555,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitions(ctx co
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleMetricDefinitions", resp, "Failure responding to request")
 	}
+	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1591,7 +1594,6 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitionsSender(
 func (client AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitionsResponder(resp *http.Response) (result ResourceMetricDefinitionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1684,6 +1686,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleMetrics(ctx context.Cont
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleMetrics", resp, "Failure responding to request")
 	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1735,7 +1740,6 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleMetricsSender(req *http.
 func (client AppServiceEnvironmentsClient) ListMultiRoleMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1823,6 +1827,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefini
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolInstanceMetricDefinitions", resp, "Failure responding to request")
 	}
+	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1860,7 +1867,6 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefini
 func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefinitionsResponder(resp *http.Response) (result ResourceMetricDefinitionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -1949,6 +1955,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetrics(ctx 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolInstanceMetrics", resp, "Failure responding to request")
 	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -1989,7 +1998,6 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricsSende
 func (client AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2075,6 +2083,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePools(ctx context.Contex
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePools", resp, "Failure responding to request")
 	}
+	if result.wpc.hasNextLink() && result.wpc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2111,7 +2122,6 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolsSender(req *http.Re
 func (client AppServiceEnvironmentsClient) ListMultiRolePoolsResponder(resp *http.Response) (result WorkerPoolCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2197,6 +2207,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolSkus(ctx context.Con
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRolePoolSkus", resp, "Failure responding to request")
 	}
+	if result.sic.hasNextLink() && result.sic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2233,7 +2246,6 @@ func (client AppServiceEnvironmentsClient) ListMultiRolePoolSkusSender(req *http
 func (client AppServiceEnvironmentsClient) ListMultiRolePoolSkusResponder(resp *http.Response) (result SkuInfoCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2319,6 +2331,9 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleUsages(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListMultiRoleUsages", resp, "Failure responding to request")
 	}
+	if result.uc.hasNextLink() && result.uc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2355,7 +2370,6 @@ func (client AppServiceEnvironmentsClient) ListMultiRoleUsagesSender(req *http.R
 func (client AppServiceEnvironmentsClient) ListMultiRoleUsagesResponder(resp *http.Response) (result UsageCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2476,7 +2490,6 @@ func (client AppServiceEnvironmentsClient) ListOperationsSender(req *http.Reques
 func (client AppServiceEnvironmentsClient) ListOperationsResponder(resp *http.Response) (result ListOperation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -2528,6 +2541,9 @@ func (client AppServiceEnvironmentsClient) ListUsages(ctx context.Context, resou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListUsages", resp, "Failure responding to request")
 	}
+	if result.cuqc.hasNextLink() && result.cuqc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2567,7 +2583,6 @@ func (client AppServiceEnvironmentsClient) ListUsagesSender(req *http.Request) (
 func (client AppServiceEnvironmentsClient) ListUsagesResponder(resp *http.Response) (result CsmUsageQuotaCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2688,7 +2703,6 @@ func (client AppServiceEnvironmentsClient) ListVipsSender(req *http.Request) (*h
 func (client AppServiceEnvironmentsClient) ListVipsResponder(resp *http.Response) (result AddressResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2738,6 +2752,9 @@ func (client AppServiceEnvironmentsClient) ListWebApps(ctx context.Context, reso
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebApps", resp, "Failure responding to request")
 	}
+	if result.ac.hasNextLink() && result.ac.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2777,7 +2794,6 @@ func (client AppServiceEnvironmentsClient) ListWebAppsSender(req *http.Request) 
 func (client AppServiceEnvironmentsClient) ListWebAppsResponder(resp *http.Response) (result AppCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2864,6 +2880,9 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitions(ctx co
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerMetricDefinitions", resp, "Failure responding to request")
 	}
+	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -2901,7 +2920,6 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitionsSender(
 func (client AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitionsResponder(resp *http.Response) (result ResourceMetricDefinitionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -2992,6 +3010,9 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerMetrics(ctx context.Cont
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerMetrics", resp, "Failure responding to request")
 	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3035,7 +3056,6 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerMetricsSender(req *http.
 func (client AppServiceEnvironmentsClient) ListWebWorkerMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3122,6 +3142,9 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerUsages(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWebWorkerUsages", resp, "Failure responding to request")
 	}
+	if result.uc.hasNextLink() && result.uc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3159,7 +3182,6 @@ func (client AppServiceEnvironmentsClient) ListWebWorkerUsagesSender(req *http.R
 func (client AppServiceEnvironmentsClient) ListWebWorkerUsagesResponder(resp *http.Response) (result UsageCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3248,6 +3270,9 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitio
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolInstanceMetricDefinitions", resp, "Failure responding to request")
 	}
+	if result.rmdc.hasNextLink() && result.rmdc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3286,7 +3311,6 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitio
 func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitionsResponder(resp *http.Response) (result ResourceMetricDefinitionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3378,6 +3402,9 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetrics(ctx con
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolInstanceMetrics", resp, "Failure responding to request")
 	}
+	if result.rmc.hasNextLink() && result.rmc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3422,7 +3449,6 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricsSender(r
 func (client AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricsResponder(resp *http.Response) (result ResourceMetricCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3508,6 +3534,9 @@ func (client AppServiceEnvironmentsClient) ListWorkerPools(ctx context.Context, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPools", resp, "Failure responding to request")
 	}
+	if result.wpc.hasNextLink() && result.wpc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3544,7 +3573,6 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolsSender(req *http.Reque
 func (client AppServiceEnvironmentsClient) ListWorkerPoolsResponder(resp *http.Response) (result WorkerPoolCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3631,6 +3659,9 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolSkus(ctx context.Contex
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ListWorkerPoolSkus", resp, "Failure responding to request")
 	}
+	if result.sic.hasNextLink() && result.sic.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -3668,7 +3699,6 @@ func (client AppServiceEnvironmentsClient) ListWorkerPoolSkusSender(req *http.Re
 func (client AppServiceEnvironmentsClient) ListWorkerPoolSkusResponder(resp *http.Response) (result SkuInfoCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -3789,7 +3819,6 @@ func (client AppServiceEnvironmentsClient) RebootSender(req *http.Request) (*htt
 func (client AppServiceEnvironmentsClient) RebootResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByClosing())
 	result.Response = resp
@@ -3878,7 +3907,6 @@ func (client AppServiceEnvironmentsClient) ResumeResponder(resp *http.Response) 
 func (client AppServiceEnvironmentsClient) resumeResponder(resp *http.Response) (result AppCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4003,7 +4031,6 @@ func (client AppServiceEnvironmentsClient) SuspendResponder(resp *http.Response)
 func (client AppServiceEnvironmentsClient) suspendResponder(resp *http.Response) (result AppCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4125,7 +4152,6 @@ func (client AppServiceEnvironmentsClient) UpdateSender(req *http.Request) (*htt
 func (client AppServiceEnvironmentsClient) UpdateResponder(resp *http.Response) (result AppServiceEnvironmentResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4212,7 +4238,6 @@ func (client AppServiceEnvironmentsClient) UpdateMultiRolePoolSender(req *http.R
 func (client AppServiceEnvironmentsClient) UpdateMultiRolePoolResponder(resp *http.Response) (result WorkerPoolResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -4301,7 +4326,6 @@ func (client AppServiceEnvironmentsClient) UpdateWorkerPoolSender(req *http.Requ
 func (client AppServiceEnvironmentsClient) UpdateWorkerPoolResponder(resp *http.Response) (result WorkerPoolResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

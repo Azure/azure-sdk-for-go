@@ -111,7 +111,6 @@ func (client AlertsClient) GetSender(req *http.Request) (*http.Response, error) 
 func (client AlertsClient) GetResponder(resp *http.Response) (result Alert, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -152,6 +151,9 @@ func (client AlertsClient) ListByDataBoxEdgeDevice(ctx context.Context, deviceNa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "databoxedge.AlertsClient", "ListByDataBoxEdgeDevice", resp, "Failure responding to request")
 	}
+	if result.al.hasNextLink() && result.al.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -188,7 +190,6 @@ func (client AlertsClient) ListByDataBoxEdgeDeviceSender(req *http.Request) (*ht
 func (client AlertsClient) ListByDataBoxEdgeDeviceResponder(resp *http.Response) (result AlertList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

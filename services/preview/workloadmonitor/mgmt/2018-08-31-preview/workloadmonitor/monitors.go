@@ -126,7 +126,6 @@ func (client MonitorsClient) GetSender(req *http.Request) (*http.Response, error
 func (client MonitorsClient) GetResponder(resp *http.Response) (result Monitor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -181,6 +180,9 @@ func (client MonitorsClient) ListByResource(ctx context.Context, resourceGroupNa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.MonitorsClient", "ListByResource", resp, "Failure responding to request")
 	}
+	if result.mc.hasNextLink() && result.mc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -225,7 +227,6 @@ func (client MonitorsClient) ListByResourceSender(req *http.Request) (*http.Resp
 func (client MonitorsClient) ListByResourceResponder(resp *http.Response) (result MonitorsCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -359,7 +360,6 @@ func (client MonitorsClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client MonitorsClient) UpdateResponder(resp *http.Response) (result Monitor, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -27,20 +27,20 @@ import (
 // BaseClient is the base client for Hdinsight.
 type BaseClient struct {
 	autorest.Client
-	ClusterDNSName string
-	UserName       string
+	Endpoint string
+	UserName string
 }
 
 // New creates an instance of the BaseClient client.
-func New(clusterDNSName string, userName string) BaseClient {
-	return NewWithoutDefaults(clusterDNSName, userName)
+func New(endpoint string, userName string) BaseClient {
+	return NewWithoutDefaults(endpoint, userName)
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
-func NewWithoutDefaults(clusterDNSName string, userName string) BaseClient {
+func NewWithoutDefaults(endpoint string, userName string) BaseClient {
 	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		ClusterDNSName: clusterDNSName,
-		UserName:       userName,
+		Client:   autorest.NewClientWithUserAgent(UserAgent()),
+		Endpoint: endpoint,
+		UserName: userName,
 	}
 }

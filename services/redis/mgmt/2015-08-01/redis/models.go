@@ -29,70 +29,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2015-08-01/redis"
 
-// KeyType enumerates the values for key type.
-type KeyType string
-
-const (
-	// Primary ...
-	Primary KeyType = "Primary"
-	// Secondary ...
-	Secondary KeyType = "Secondary"
-)
-
-// PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
-func PossibleKeyTypeValues() []KeyType {
-	return []KeyType{Primary, Secondary}
-}
-
-// RebootType enumerates the values for reboot type.
-type RebootType string
-
-const (
-	// AllNodes ...
-	AllNodes RebootType = "AllNodes"
-	// PrimaryNode ...
-	PrimaryNode RebootType = "PrimaryNode"
-	// SecondaryNode ...
-	SecondaryNode RebootType = "SecondaryNode"
-)
-
-// PossibleRebootTypeValues returns an array of possible values for the RebootType const type.
-func PossibleRebootTypeValues() []RebootType {
-	return []RebootType{AllNodes, PrimaryNode, SecondaryNode}
-}
-
-// SkuFamily enumerates the values for sku family.
-type SkuFamily string
-
-const (
-	// C ...
-	C SkuFamily = "C"
-	// P ...
-	P SkuFamily = "P"
-)
-
-// PossibleSkuFamilyValues returns an array of possible values for the SkuFamily const type.
-func PossibleSkuFamilyValues() []SkuFamily {
-	return []SkuFamily{C, P}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// Basic ...
-	Basic SkuName = "Basic"
-	// Premium ...
-	Premium SkuName = "Premium"
-	// Standard ...
-	Standard SkuName = "Standard"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{Basic, Premium, Standard}
-}
-
 // AccessKeys redis cache access keys.
 type AccessKeys struct {
 	// PrimaryKey - The current primary key that clients can use to authenticate with Redis cache.
@@ -287,10 +223,15 @@ func (lr ListResult) IsEmpty() bool {
 	return lr.Value == nil || len(*lr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (lr ListResult) hasNextLink() bool {
+	return lr.NextLink != nil && len(*lr.NextLink) != 0
+}
+
 // listResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (lr ListResult) listResultPreparer(ctx context.Context) (*http.Request, error) {
-	if lr.NextLink == nil || len(to.String(lr.NextLink)) < 1 {
+	if !lr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -318,11 +259,16 @@ func (page *ListResultPage) NextWithContext(ctx context.Context) (err error) {
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.lr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.lr)
+		if err != nil {
+			return err
+		}
+		page.lr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.lr = next
 	return nil
 }
 

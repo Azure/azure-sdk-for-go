@@ -101,6 +101,9 @@ func (client ActivityRunsClient) ListByPipelineRun(ctx context.Context, resource
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "datafactory.ActivityRunsClient", "ListByPipelineRun", resp, "Failure responding to request")
 	}
+	if result.arlr.hasNextLink() && result.arlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -149,7 +152,6 @@ func (client ActivityRunsClient) ListByPipelineRunSender(req *http.Request) (*ht
 func (client ActivityRunsClient) ListByPipelineRunResponder(resp *http.Response) (result ActivityRunsListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

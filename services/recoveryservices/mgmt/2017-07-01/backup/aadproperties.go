@@ -107,7 +107,6 @@ func (client AadPropertiesClient) GetSender(req *http.Request) (*http.Response, 
 func (client AadPropertiesClient) GetResponder(resp *http.Response) (result AADPropertiesResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

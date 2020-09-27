@@ -122,7 +122,6 @@ func (client NodeReportsClient) GetSender(req *http.Request) (*http.Response, er
 func (client NodeReportsClient) GetResponder(resp *http.Response) (result DscNodeReport, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -210,7 +209,6 @@ func (client NodeReportsClient) GetContentSender(req *http.Request) (*http.Respo
 func (client NodeReportsClient) GetContentResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -261,6 +259,9 @@ func (client NodeReportsClient) ListByNode(ctx context.Context, resourceGroupNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.NodeReportsClient", "ListByNode", resp, "Failure responding to request")
 	}
+	if result.dnrlr.hasNextLink() && result.dnrlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -301,7 +302,6 @@ func (client NodeReportsClient) ListByNodeSender(req *http.Request) (*http.Respo
 func (client NodeReportsClient) ListByNodeResponder(resp *http.Response) (result DscNodeReportListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

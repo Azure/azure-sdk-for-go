@@ -110,7 +110,6 @@ func (client SubscriptionsClient) GetSender(req *http.Request) (*http.Response, 
 func (client SubscriptionsClient) GetResponder(resp *http.Response) (result SubscriptionSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -187,7 +186,6 @@ func (client SubscriptionsClient) GetByCustomerNameSender(req *http.Request) (*h
 func (client SubscriptionsClient) GetByCustomerNameResponder(resp *http.Response) (result SubscriptionSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -227,6 +225,9 @@ func (client SubscriptionsClient) ListByBillingAccountName(ctx context.Context, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByBillingAccountName", resp, "Failure responding to request")
 	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -261,7 +262,6 @@ func (client SubscriptionsClient) ListByBillingAccountNameSender(req *http.Reque
 func (client SubscriptionsClient) ListByBillingAccountNameResponder(resp *http.Response) (result SubscriptionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -339,6 +339,9 @@ func (client SubscriptionsClient) ListByBillingProfileName(ctx context.Context, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByBillingProfileName", resp, "Failure responding to request")
 	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -374,7 +377,6 @@ func (client SubscriptionsClient) ListByBillingProfileNameSender(req *http.Reque
 func (client SubscriptionsClient) ListByBillingProfileNameResponder(resp *http.Response) (result SubscriptionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -452,6 +454,9 @@ func (client SubscriptionsClient) ListByCustomerName(ctx context.Context, billin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByCustomerName", resp, "Failure responding to request")
 	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -487,7 +492,6 @@ func (client SubscriptionsClient) ListByCustomerNameSender(req *http.Request) (*
 func (client SubscriptionsClient) ListByCustomerNameResponder(resp *http.Response) (result SubscriptionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -565,6 +569,9 @@ func (client SubscriptionsClient) ListByInvoiceSectionName(ctx context.Context, 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "ListByInvoiceSectionName", resp, "Failure responding to request")
 	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -600,7 +607,6 @@ func (client SubscriptionsClient) ListByInvoiceSectionNameSender(req *http.Reque
 func (client SubscriptionsClient) ListByInvoiceSectionNameResponder(resp *http.Response) (result SubscriptionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -711,7 +717,6 @@ func (client SubscriptionsClient) TransferSender(req *http.Request) (future Subs
 func (client SubscriptionsClient) TransferResponder(resp *http.Response) (result TransferBillingSubscriptionResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -785,7 +790,6 @@ func (client SubscriptionsClient) ValidateTransferSender(req *http.Request) (*ht
 func (client SubscriptionsClient) ValidateTransferResponder(resp *http.Response) (result ValidateSubscriptionTransferEligibilityResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

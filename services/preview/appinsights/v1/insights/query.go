@@ -114,7 +114,6 @@ func (client QueryClient) ExecuteSender(req *http.Request) (*http.Response, erro
 func (client QueryClient) ExecuteResponder(resp *http.Response) (result QueryResults, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

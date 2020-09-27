@@ -136,7 +136,6 @@ func (client SavedSearchesClient) CreateOrUpdateSender(req *http.Request) (*http
 func (client SavedSearchesClient) CreateOrUpdateResponder(resp *http.Response) (result SavedSearch, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -222,7 +221,6 @@ func (client SavedSearchesClient) DeleteSender(req *http.Request) (*http.Respons
 func (client SavedSearchesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -307,7 +305,6 @@ func (client SavedSearchesClient) GetSender(req *http.Request) (*http.Response, 
 func (client SavedSearchesClient) GetResponder(resp *http.Response) (result SavedSearch, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -391,7 +388,6 @@ func (client SavedSearchesClient) ListByWorkspaceSender(req *http.Request) (*htt
 func (client SavedSearchesClient) ListByWorkspaceResponder(resp *http.Response) (result SavedSearchesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

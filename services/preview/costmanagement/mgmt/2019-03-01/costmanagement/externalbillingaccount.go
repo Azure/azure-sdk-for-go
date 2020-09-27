@@ -111,7 +111,6 @@ func (client ExternalBillingAccountClient) GetSender(req *http.Request) (*http.R
 func (client ExternalBillingAccountClient) GetResponder(resp *http.Response) (result ExternalBillingAccountDefinition, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -178,7 +177,6 @@ func (client ExternalBillingAccountClient) ListSender(req *http.Request) (*http.
 func (client ExternalBillingAccountClient) ListResponder(resp *http.Response) (result ExternalBillingAccountDefinitionListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

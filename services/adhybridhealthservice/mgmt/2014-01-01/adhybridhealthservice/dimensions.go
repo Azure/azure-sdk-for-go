@@ -74,6 +74,9 @@ func (client DimensionsClient) ListAddsDimensions(ctx context.Context, serviceNa
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.DimensionsClient", "ListAddsDimensions", resp, "Failure responding to request")
 	}
+	if result.d.hasNextLink() && result.d.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -109,7 +112,6 @@ func (client DimensionsClient) ListAddsDimensionsSender(req *http.Request) (*htt
 func (client DimensionsClient) ListAddsDimensionsResponder(resp *http.Response) (result Dimensions, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

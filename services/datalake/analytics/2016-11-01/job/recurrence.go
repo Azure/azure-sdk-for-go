@@ -118,7 +118,6 @@ func (client RecurrenceClient) GetSender(req *http.Request) (*http.Response, err
 func (client RecurrenceClient) GetResponder(resp *http.Response) (result RecurrenceInformation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -162,6 +161,9 @@ func (client RecurrenceClient) List(ctx context.Context, accountName string, sta
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.RecurrenceClient", "List", resp, "Failure responding to request")
 	}
+	if result.rilr.hasNextLink() && result.rilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -203,7 +205,6 @@ func (client RecurrenceClient) ListSender(req *http.Request) (*http.Response, er
 func (client RecurrenceClient) ListResponder(resp *http.Response) (result RecurrenceInformationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

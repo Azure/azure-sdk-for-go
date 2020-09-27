@@ -29,6 +29,14 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type IdentityType = original.IdentityType
+
+const (
+	None           IdentityType = original.None
+	SystemAssigned IdentityType = original.SystemAssigned
+	UserAssigned   IdentityType = original.UserAssigned
+)
+
 type KeyName = original.KeyName
 
 const (
@@ -36,11 +44,27 @@ const (
 	Key2 KeyName = original.Key2
 )
 
+type KeySource = original.KeySource
+
+const (
+	MicrosoftCognitiveServices KeySource = original.MicrosoftCognitiveServices
+	MicrosoftKeyVault          KeySource = original.MicrosoftKeyVault
+)
+
 type NetworkRuleAction = original.NetworkRuleAction
 
 const (
 	Allow NetworkRuleAction = original.Allow
 	Deny  NetworkRuleAction = original.Deny
+)
+
+type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
+
+const (
+	Approved     PrivateEndpointServiceConnectionStatus = original.Approved
+	Disconnected PrivateEndpointServiceConnectionStatus = original.Disconnected
+	Pending      PrivateEndpointServiceConnectionStatus = original.Pending
+	Rejected     PrivateEndpointServiceConnectionStatus = original.Rejected
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -52,6 +76,13 @@ const (
 	Moving       ProvisioningState = original.Moving
 	ResolvingDNS ProvisioningState = original.ResolvingDNS
 	Succeeded    ProvisioningState = original.Succeeded
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	Disabled PublicNetworkAccess = original.Disabled
+	Enabled  PublicNetworkAccess = original.Enabled
 )
 
 type QuotaUsageStatus = original.QuotaUsageStatus
@@ -106,15 +137,19 @@ type AccountListResultIterator = original.AccountListResultIterator
 type AccountListResultPage = original.AccountListResultPage
 type AccountProperties = original.AccountProperties
 type AccountsClient = original.AccountsClient
+type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type CheckDomainAvailabilityParameter = original.CheckDomainAvailabilityParameter
 type CheckDomainAvailabilityResult = original.CheckDomainAvailabilityResult
 type CheckSkuAvailabilityParameter = original.CheckSkuAvailabilityParameter
 type CheckSkuAvailabilityResult = original.CheckSkuAvailabilityResult
 type CheckSkuAvailabilityResultList = original.CheckSkuAvailabilityResultList
+type Encryption = original.Encryption
 type Error = original.Error
 type ErrorBody = original.ErrorBody
 type IPRule = original.IPRule
+type Identity = original.Identity
+type KeyVaultProperties = original.KeyVaultProperties
 type MetricName = original.MetricName
 type NetworkRuleSet = original.NetworkRuleSet
 type OperationDisplayInfo = original.OperationDisplayInfo
@@ -123,7 +158,18 @@ type OperationEntityListResult = original.OperationEntityListResult
 type OperationEntityListResultIterator = original.OperationEntityListResultIterator
 type OperationEntityListResultPage = original.OperationEntityListResultPage
 type OperationsClient = original.OperationsClient
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
+type ProxyResource = original.ProxyResource
 type RegenerateKeyParameters = original.RegenerateKeyParameters
+type Resource = original.Resource
 type ResourceAndSku = original.ResourceAndSku
 type ResourceSku = original.ResourceSku
 type ResourceSkuRestrictionInfo = original.ResourceSkuRestrictionInfo
@@ -133,8 +179,12 @@ type ResourceSkusResult = original.ResourceSkusResult
 type ResourceSkusResultIterator = original.ResourceSkusResultIterator
 type ResourceSkusResultPage = original.ResourceSkusResultPage
 type Sku = original.Sku
+type SkuCapability = original.SkuCapability
+type TrackedResource = original.TrackedResource
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
+type UserAssignedIdentity = original.UserAssignedIdentity
+type UserOwnedStorage = original.UserOwnedStorage
 type VirtualNetworkRule = original.VirtualNetworkRule
 
 func New(subscriptionID string) BaseClient {
@@ -164,6 +214,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewResourceSkusClient(subscriptionID string) ResourceSkusClient {
 	return original.NewResourceSkusClient(subscriptionID)
 }
@@ -179,14 +241,26 @@ func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusRes
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
+}
 func PossibleKeyNameValues() []KeyName {
 	return original.PossibleKeyNameValues()
+}
+func PossibleKeySourceValues() []KeySource {
+	return original.PossibleKeySourceValues()
 }
 func PossibleNetworkRuleActionValues() []NetworkRuleAction {
 	return original.PossibleNetworkRuleActionValues()
 }
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
 	return original.PossibleQuotaUsageStatusValues()

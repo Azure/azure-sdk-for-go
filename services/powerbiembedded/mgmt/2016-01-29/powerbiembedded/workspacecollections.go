@@ -113,7 +113,6 @@ func (client WorkspaceCollectionsClient) CheckNameAvailabilitySender(req *http.R
 func (client WorkspaceCollectionsClient) CheckNameAvailabilityResponder(resp *http.Response) (result CheckNameResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -202,7 +201,6 @@ func (client WorkspaceCollectionsClient) CreateSender(req *http.Request) (*http.
 func (client WorkspaceCollectionsClient) CreateResponder(resp *http.Response) (result WorkspaceCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -278,7 +276,6 @@ func (client WorkspaceCollectionsClient) DeleteSender(req *http.Request) (future
 func (client WorkspaceCollectionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -353,7 +350,6 @@ func (client WorkspaceCollectionsClient) GetAccessKeysSender(req *http.Request) 
 func (client WorkspaceCollectionsClient) GetAccessKeysResponder(resp *http.Response) (result WorkspaceCollectionAccessKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -429,7 +425,6 @@ func (client WorkspaceCollectionsClient) GetByNameSender(req *http.Request) (*ht
 func (client WorkspaceCollectionsClient) GetByNameResponder(resp *http.Response) (result WorkspaceCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -503,7 +498,6 @@ func (client WorkspaceCollectionsClient) ListByResourceGroupSender(req *http.Req
 func (client WorkspaceCollectionsClient) ListByResourceGroupResponder(resp *http.Response) (result WorkspaceCollectionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -574,7 +568,6 @@ func (client WorkspaceCollectionsClient) ListBySubscriptionSender(req *http.Requ
 func (client WorkspaceCollectionsClient) ListBySubscriptionResponder(resp *http.Response) (result WorkspaceCollectionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -651,7 +644,6 @@ func (client WorkspaceCollectionsClient) MigrateSender(req *http.Request) (*http
 func (client WorkspaceCollectionsClient) MigrateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -729,7 +721,6 @@ func (client WorkspaceCollectionsClient) RegenerateKeySender(req *http.Request) 
 func (client WorkspaceCollectionsClient) RegenerateKeyResponder(resp *http.Response) (result WorkspaceCollectionAccessKeys, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -808,7 +799,6 @@ func (client WorkspaceCollectionsClient) UpdateSender(req *http.Request) (*http.
 func (client WorkspaceCollectionsClient) UpdateResponder(resp *http.Response) (result WorkspaceCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

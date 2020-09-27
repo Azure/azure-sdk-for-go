@@ -128,7 +128,6 @@ func (client DscCompilationJobClient) CreateSender(req *http.Request) (*http.Res
 func (client DscCompilationJobClient) CreateResponder(resp *http.Response) (result DscCompilationJob, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -214,7 +213,6 @@ func (client DscCompilationJobClient) GetSender(req *http.Request) (*http.Respon
 func (client DscCompilationJobClient) GetResponder(resp *http.Response) (result DscCompilationJob, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -302,7 +300,6 @@ func (client DscCompilationJobClient) GetStreamSender(req *http.Request) (*http.
 func (client DscCompilationJobClient) GetStreamResponder(resp *http.Response) (result JobStream, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -352,6 +349,9 @@ func (client DscCompilationJobClient) ListByAutomationAccount(ctx context.Contex
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscCompilationJobClient", "ListByAutomationAccount", resp, "Failure responding to request")
 	}
+	if result.dcjlr.hasNextLink() && result.dcjlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -391,7 +391,6 @@ func (client DscCompilationJobClient) ListByAutomationAccountSender(req *http.Re
 func (client DscCompilationJobClient) ListByAutomationAccountResponder(resp *http.Response) (result DscCompilationJobListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

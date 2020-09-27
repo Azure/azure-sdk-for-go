@@ -115,7 +115,6 @@ func (client MachinesClient) GetSender(req *http.Request) (*http.Response, error
 func (client MachinesClient) GetResponder(resp *http.Response) (result Machine, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -196,7 +195,6 @@ func (client MachinesClient) ListByProjectSender(req *http.Request) (*http.Respo
 func (client MachinesClient) ListByProjectResponder(resp *http.Response) (result MachineResultList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

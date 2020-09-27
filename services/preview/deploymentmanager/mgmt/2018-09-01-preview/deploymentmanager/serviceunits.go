@@ -129,7 +129,6 @@ func (client ServiceUnitsClient) CreateOrUpdateSender(req *http.Request) (future
 func (client ServiceUnitsClient) CreateOrUpdateResponder(resp *http.Response) (result ServiceUnitResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -217,7 +216,6 @@ func (client ServiceUnitsClient) DeleteSender(req *http.Request) (*http.Response
 func (client ServiceUnitsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -304,7 +302,6 @@ func (client ServiceUnitsClient) GetSender(req *http.Request) (*http.Response, e
 func (client ServiceUnitsClient) GetResponder(resp *http.Response) (result ServiceUnitResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -111,7 +111,6 @@ func (client PeerAsnsClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 func (client PeerAsnsClient) CreateOrUpdateResponder(resp *http.Response) (result PeerAsn, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -185,7 +184,6 @@ func (client PeerAsnsClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client PeerAsnsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -258,7 +256,6 @@ func (client PeerAsnsClient) GetSender(req *http.Request) (*http.Response, error
 func (client PeerAsnsClient) GetResponder(resp *http.Response) (result PeerAsn, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -296,6 +293,9 @@ func (client PeerAsnsClient) ListBySubscription(ctx context.Context) (result Pee
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.PeerAsnsClient", "ListBySubscription", resp, "Failure responding to request")
 	}
+	if result.palr.hasNextLink() && result.palr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -330,7 +330,6 @@ func (client PeerAsnsClient) ListBySubscriptionSender(req *http.Request) (*http.
 func (client PeerAsnsClient) ListBySubscriptionResponder(resp *http.Response) (result PeerAsnListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

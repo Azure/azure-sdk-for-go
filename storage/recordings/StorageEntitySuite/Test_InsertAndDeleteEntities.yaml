@@ -213,7 +213,7 @@ interactions:
       - Tue, 28 May 2019 22:36:04 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.table.core.windows.net/table47storageentitysuitetestins%28PartitionKey=%27mypartitionkey%27,%20RowKey=%27200%27%29
+    url: https://golangrocksonazure.table.core.windows.net/table47storageentitysuitetestins%28PartitionKey=%27mypartitionkey%27,RowKey=%27200%27%29
     method: DELETE
   response:
     body: ""

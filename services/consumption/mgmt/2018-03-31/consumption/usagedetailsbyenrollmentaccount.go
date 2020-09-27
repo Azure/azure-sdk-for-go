@@ -97,6 +97,9 @@ func (client UsageDetailsByEnrollmentAccountClient) List(ctx context.Context, en
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsByEnrollmentAccountClient", "List", resp, "Failure responding to request")
 	}
+	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -146,7 +149,6 @@ func (client UsageDetailsByEnrollmentAccountClient) ListSender(req *http.Request
 func (client UsageDetailsByEnrollmentAccountClient) ListResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -246,6 +248,9 @@ func (client UsageDetailsByEnrollmentAccountClient) ListByBillingPeriod(ctx cont
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsByEnrollmentAccountClient", "ListByBillingPeriod", resp, "Failure responding to request")
 	}
+	if result.udlr.hasNextLink() && result.udlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -296,7 +301,6 @@ func (client UsageDetailsByEnrollmentAccountClient) ListByBillingPeriodSender(re
 func (client UsageDetailsByEnrollmentAccountClient) ListByBillingPeriodResponder(resp *http.Response) (result UsageDetailsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -56,10 +56,10 @@ interactions:
 - request:
     body: "--batch_882751a7-e115-4b8c-a9f2-8f9e603a54fb\r\nContent-Type: multipart/mixed;
       boundary=changeset_2187ca22-66ec-4b68-bafc-632bc3427155\r\n\r\n\r\n--changeset_2187ca22-66ec-4b68-bafc-632bc3427155\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPUT https://golangrocksonazure.table.core.windows.net/tableme48tablebatchsuitetestbatc%28PartitionKey=%27mypartitionkey%27,%20RowKey=%27myrowkey%27%29
+      binary\r\nContent-Type: application/http\r\n\r\nPUT https://golangrocksonazure.table.core.windows.net/tableme48tablebatchsuitetestbatc%28PartitionKey=%27mypartitionkey%27,RowKey=%27myrowkey%27%29
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Type:
       application/json\r\nPrefer: return-no-content\r\n\r\n{\"AmountDue\":\"200.23\",\"AmountDue@odata.type\":\"Edm.Double\",\"CustomerCode\":\"c9da6455-213d-42c9-9a79-3e9149a57833\",\"CustomerCode@odata.type\":\"Edm.Guid\",\"CustomerSince\":\"1992-12-20T21:55:00Z\",\"CustomerSince@odata.type\":\"Edm.DateTime\",\"IsActive\":true,\"NumberOfOrders\":\"255\",\"NumberOfOrders@odata.type\":\"Edm.Int64\",\"PartitionKey\":\"mypartitionkey\",\"RowKey\":\"myrowkey\"}\r\n--changeset_2187ca22-66ec-4b68-bafc-632bc3427155\r\nContent-Transfer-Encoding:
-      binary\r\nContent-Type: application/http\r\n\r\nPUT https://golangrocksonazure.table.core.windows.net/tableme48tablebatchsuitetestbatc%28PartitionKey=%27mypartitionkey%27,%20RowKey=%27myrowkey2%27%29
+      binary\r\nContent-Type: application/http\r\n\r\nPUT https://golangrocksonazure.table.core.windows.net/tableme48tablebatchsuitetestbatc%28PartitionKey=%27mypartitionkey%27,RowKey=%27myrowkey2%27%29
       HTTP/1.1\r\nAccept: application/json;odata=minimalmetadata\r\nContent-Type:
       application/json\r\nPrefer: return-no-content\r\n\r\n{\"AmountDue\":\"111.23\",\"AmountDue@odata.type\":\"Edm.Double\",\"CustomerCode\":\"c9da6455-213d-42c9-9a79-3e9149a57833\",\"CustomerCode@odata.type\":\"Edm.Guid\",\"CustomerSince\":\"1992-12-20T21:55:00Z\",\"CustomerSince@odata.type\":\"Edm.DateTime\",\"IsActive\":true,\"NumberOfOrders\":\"255\",\"NumberOfOrders@odata.type\":\"Edm.Int64\",\"PartitionKey\":\"mypartitionkey\",\"RowKey\":\"myrowkey2\"}\r\n--changeset_2187ca22-66ec-4b68-bafc-632bc3427155--\r\n\r\n--batch_882751a7-e115-4b8c-a9f2-8f9e603a54fb--\r\n"
     form: {}

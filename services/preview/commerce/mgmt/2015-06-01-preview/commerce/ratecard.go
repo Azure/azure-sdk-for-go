@@ -114,7 +114,6 @@ func (client RateCardClient) GetSender(req *http.Request) (*http.Response, error
 func (client RateCardClient) GetResponder(resp *http.Response) (result ResourceRateCardInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

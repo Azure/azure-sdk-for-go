@@ -110,14 +110,6 @@ type CheckNameAvailabilityClientAPI interface {
 
 var _ CheckNameAvailabilityClientAPI = (*mariadb.CheckNameAvailabilityClient)(nil)
 
-// ServerSecurityAlertPoliciesClientAPI contains the set of methods on the ServerSecurityAlertPoliciesClient type.
-type ServerSecurityAlertPoliciesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters mariadb.ServerSecurityAlertPolicy) (result mariadb.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string) (result mariadb.ServerSecurityAlertPolicy, err error)
-}
-
-var _ ServerSecurityAlertPoliciesClientAPI = (*mariadb.ServerSecurityAlertPoliciesClient)(nil)
-
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result mariadb.OperationListResult, err error)
@@ -205,3 +197,11 @@ type PrivateLinkResourcesClientAPI interface {
 }
 
 var _ PrivateLinkResourcesClientAPI = (*mariadb.PrivateLinkResourcesClient)(nil)
+
+// ServerSecurityAlertPoliciesClientAPI contains the set of methods on the ServerSecurityAlertPoliciesClient type.
+type ServerSecurityAlertPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters mariadb.ServerSecurityAlertPolicy) (result mariadb.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string) (result mariadb.ServerSecurityAlertPolicy, err error)
+}
+
+var _ ServerSecurityAlertPoliciesClientAPI = (*mariadb.ServerSecurityAlertPoliciesClient)(nil)

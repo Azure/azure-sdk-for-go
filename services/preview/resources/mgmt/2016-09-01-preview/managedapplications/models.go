@@ -30,84 +30,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2016-09-01-preview/managedapplications"
 
-// ApplianceArtifactType enumerates the values for appliance artifact type.
-type ApplianceArtifactType string
-
-const (
-	// Custom ...
-	Custom ApplianceArtifactType = "Custom"
-	// Template ...
-	Template ApplianceArtifactType = "Template"
-)
-
-// PossibleApplianceArtifactTypeValues returns an array of possible values for the ApplianceArtifactType const type.
-func PossibleApplianceArtifactTypeValues() []ApplianceArtifactType {
-	return []ApplianceArtifactType{Custom, Template}
-}
-
-// ApplianceLockLevel enumerates the values for appliance lock level.
-type ApplianceLockLevel string
-
-const (
-	// CanNotDelete ...
-	CanNotDelete ApplianceLockLevel = "CanNotDelete"
-	// None ...
-	None ApplianceLockLevel = "None"
-	// ReadOnly ...
-	ReadOnly ApplianceLockLevel = "ReadOnly"
-)
-
-// PossibleApplianceLockLevelValues returns an array of possible values for the ApplianceLockLevel const type.
-func PossibleApplianceLockLevelValues() []ApplianceLockLevel {
-	return []ApplianceLockLevel{CanNotDelete, None, ReadOnly}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Accepted ...
-	Accepted ProvisioningState = "Accepted"
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Created ...
-	Created ProvisioningState = "Created"
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleted ...
-	Deleted ProvisioningState = "Deleted"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Ready ...
-	Ready ProvisioningState = "Ready"
-	// Running ...
-	Running ProvisioningState = "Running"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Accepted, Canceled, Created, Creating, Deleted, Deleting, Failed, Ready, Running, Succeeded, Updating}
-}
-
-// ResourceIdentityType enumerates the values for resource identity type.
-type ResourceIdentityType string
-
-const (
-	// SystemAssigned ...
-	SystemAssigned ResourceIdentityType = "SystemAssigned"
-)
-
-// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
-func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{SystemAssigned}
-}
-
 // Appliance information about appliance.
 type Appliance struct {
 	autorest.Response `json:"-"`
@@ -441,8 +363,7 @@ type ApplianceDefinitionListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ApplianceDefinitionListResultIterator provides access to a complete listing of ApplianceDefinition
-// values.
+// ApplianceDefinitionListResultIterator provides access to a complete listing of ApplianceDefinition values.
 type ApplianceDefinitionListResultIterator struct {
 	i    int
 	page ApplianceDefinitionListResultPage
@@ -510,10 +431,15 @@ func (adlr ApplianceDefinitionListResult) IsEmpty() bool {
 	return adlr.Value == nil || len(*adlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (adlr ApplianceDefinitionListResult) hasNextLink() bool {
+	return adlr.NextLink != nil && len(*adlr.NextLink) != 0
+}
+
 // applianceDefinitionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (adlr ApplianceDefinitionListResult) applianceDefinitionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if adlr.NextLink == nil || len(to.String(adlr.NextLink)) < 1 {
+	if !adlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -541,11 +467,16 @@ func (page *ApplianceDefinitionListResultPage) NextWithContext(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.adlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.adlr)
+		if err != nil {
+			return err
+		}
+		page.adlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.adlr = next
 	return nil
 }
 
@@ -595,8 +526,8 @@ type ApplianceDefinitionProperties struct {
 	PackageFileURI *string `json:"packageFileUri,omitempty"`
 }
 
-// ApplianceDefinitionsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// ApplianceDefinitionsCreateOrUpdateByIDFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type ApplianceDefinitionsCreateOrUpdateByIDFuture struct {
 	azure.Future
 }
@@ -676,8 +607,8 @@ func (future *ApplianceDefinitionsDeleteByIDFuture) Result(client ApplianceDefin
 	return
 }
 
-// ApplianceDefinitionsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// ApplianceDefinitionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ApplianceDefinitionsDeleteFuture struct {
 	azure.Future
 }
@@ -776,10 +707,15 @@ func (alr ApplianceListResult) IsEmpty() bool {
 	return alr.Value == nil || len(*alr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (alr ApplianceListResult) hasNextLink() bool {
+	return alr.NextLink != nil && len(*alr.NextLink) != 0
+}
+
 // applianceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (alr ApplianceListResult) applianceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if alr.NextLink == nil || len(to.String(alr.NextLink)) < 1 {
+	if !alr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -807,11 +743,16 @@ func (page *ApplianceListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.alr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.alr)
+		if err != nil {
+			return err
+		}
+		page.alr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.alr = next
 	return nil
 }
 
@@ -1031,6 +972,24 @@ type ApplianceProperties struct {
 	UIDefinitionURI *string `json:"uiDefinitionUri,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ApplianceProperties.
+func (ap ApplianceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ap.ManagedResourceGroupID != nil {
+		objectMap["managedResourceGroupId"] = ap.ManagedResourceGroupID
+	}
+	if ap.ApplianceDefinitionID != nil {
+		objectMap["applianceDefinitionId"] = ap.ApplianceDefinitionID
+	}
+	if ap.Parameters != nil {
+		objectMap["parameters"] = ap.Parameters
+	}
+	if ap.UIDefinitionURI != nil {
+		objectMap["uiDefinitionUri"] = ap.UIDefinitionURI
+	}
+	return json.Marshal(objectMap)
+}
+
 // AppliancePropertiesPatchable the appliance properties.
 type AppliancePropertiesPatchable struct {
 	// ManagedResourceGroupID - The managed resource group Id.
@@ -1045,6 +1004,24 @@ type AppliancePropertiesPatchable struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// UIDefinitionURI - The blob URI where the UI definition file is located.
 	UIDefinitionURI *string `json:"uiDefinitionUri,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppliancePropertiesPatchable.
+func (app AppliancePropertiesPatchable) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if app.ManagedResourceGroupID != nil {
+		objectMap["managedResourceGroupId"] = app.ManagedResourceGroupID
+	}
+	if app.ApplianceDefinitionID != nil {
+		objectMap["applianceDefinitionId"] = app.ApplianceDefinitionID
+	}
+	if app.Parameters != nil {
+		objectMap["parameters"] = app.Parameters
+	}
+	if app.UIDefinitionURI != nil {
+		objectMap["uiDefinitionUri"] = app.UIDefinitionURI
+	}
+	return json.Marshal(objectMap)
 }
 
 // ApplianceProviderAuthorization the appliance provider authorization.
@@ -1084,8 +1061,8 @@ func (future *AppliancesCreateOrUpdateByIDFuture) Result(client AppliancesClient
 	return
 }
 
-// AppliancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// AppliancesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AppliancesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1136,8 +1113,7 @@ func (future *AppliancesDeleteByIDFuture) Result(client AppliancesClient) (ar au
 	return
 }
 
-// AppliancesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// AppliancesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type AppliancesDeleteFuture struct {
 	azure.Future
 }
@@ -1159,8 +1135,8 @@ func (future *AppliancesDeleteFuture) Result(client AppliancesClient) (ar autore
 	return
 }
 
-// ErrorResponse error response indicates ARM appliance is not able to process the incoming request. The
-// reason is provided in the error message.
+// ErrorResponse error response indicates ARM appliance is not able to process the incoming request. The reason
+// is provided in the error message.
 type ErrorResponse struct {
 	// HTTPStatus - Http status code.
 	HTTPStatus *string `json:"httpStatus,omitempty"`
@@ -1219,6 +1195,15 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Type - The identity type. Possible values include: 'SystemAssigned'
 	Type ResourceIdentityType `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	return json.Marshal(objectMap)
 }
 
 // Operation microsoft.Solutions operation
@@ -1317,10 +1302,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1348,11 +1338,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 

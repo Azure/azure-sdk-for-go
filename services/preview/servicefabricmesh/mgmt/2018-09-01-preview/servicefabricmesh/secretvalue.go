@@ -123,7 +123,6 @@ func (client SecretValueClient) CreateSender(req *http.Request) (*http.Response,
 func (client SecretValueClient) CreateResponder(resp *http.Response) (result SecretValueResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -203,7 +202,6 @@ func (client SecretValueClient) DeleteSender(req *http.Request) (*http.Response,
 func (client SecretValueClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -282,7 +280,6 @@ func (client SecretValueClient) GetSender(req *http.Request) (*http.Response, er
 func (client SecretValueClient) GetResponder(resp *http.Response) (result SecretValueResourceDescription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -324,6 +321,9 @@ func (client SecretValueClient) List(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicefabricmesh.SecretValueClient", "List", resp, "Failure responding to request")
 	}
+	if result.svrdl.hasNextLink() && result.svrdl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -360,7 +360,6 @@ func (client SecretValueClient) ListSender(req *http.Request) (*http.Response, e
 func (client SecretValueClient) ListResponder(resp *http.Response) (result SecretValueResourceDescriptionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -477,7 +476,6 @@ func (client SecretValueClient) ListValueSender(req *http.Request) (*http.Respon
 func (client SecretValueClient) ListValueResponder(resp *http.Response) (result SecretValue, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -19,6 +19,7 @@ package customerlockbox
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
@@ -28,58 +29,6 @@ import (
 
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/customerlockbox/mgmt/2018-02-28-preview/customerlockbox"
-
-// Decision enumerates the values for decision.
-type Decision string
-
-const (
-	// Approve ...
-	Approve Decision = "Approve"
-	// Deny ...
-	Deny Decision = "Deny"
-)
-
-// PossibleDecisionValues returns an array of possible values for the Decision const type.
-func PossibleDecisionValues() []Decision {
-	return []Decision{Approve, Deny}
-}
-
-// Status enumerates the values for status.
-type Status string
-
-const (
-	// Approved ...
-	Approved Status = "Approved"
-	// Approving ...
-	Approving Status = "Approving"
-	// Completed ...
-	Completed Status = "Completed"
-	// Completing ...
-	Completing Status = "Completing"
-	// Denied ...
-	Denied Status = "Denied"
-	// Denying ...
-	Denying Status = "Denying"
-	// Error ...
-	Error Status = "Error"
-	// Expired ...
-	Expired Status = "Expired"
-	// Initializing ...
-	Initializing Status = "Initializing"
-	// Pending ...
-	Pending Status = "Pending"
-	// Revoked ...
-	Revoked Status = "Revoked"
-	// Revoking ...
-	Revoking Status = "Revoking"
-	// Unknown ...
-	Unknown Status = "Unknown"
-)
-
-// PossibleStatusValues returns an array of possible values for the Status const type.
-func PossibleStatusValues() []Status {
-	return []Status{Approved, Approving, Completed, Completing, Denied, Denying, Error, Expired, Initializing, Pending, Revoked, Revoking, Unknown}
-}
 
 // Approval request content object, in the use of Approve or Deny a Lockbox request.
 type Approval struct {
@@ -134,6 +83,15 @@ type LockboxRequestResponse struct {
 	Properties *LockboxRequestResponseProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LockboxRequestResponse.
+func (lrr LockboxRequestResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lrr.Properties != nil {
+		objectMap["properties"] = lrr.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
 // LockboxRequestResponseProperties the properties that are associated with a lockbox request.
 type LockboxRequestResponseProperties struct {
 	// RequestID - READ-ONLY; The Lockbox request ID.
@@ -158,6 +116,15 @@ type LockboxRequestResponseProperties struct {
 	SupportCaseURL *string `json:"supportCaseUrl,omitempty"`
 	// SubscriptionID - READ-ONLY; The subscription ID.
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LockboxRequestResponseProperties.
+func (lrrp LockboxRequestResponseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lrrp.Status != "" {
+		objectMap["status"] = lrrp.Status
+	}
+	return json.Marshal(objectMap)
 }
 
 // Operation operation result model for ARM RP
@@ -264,10 +231,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -295,11 +267,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -410,10 +387,15 @@ func (rlr RequestListResult) IsEmpty() bool {
 	return rlr.Value == nil || len(*rlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rlr RequestListResult) hasNextLink() bool {
+	return rlr.NextLink != nil && len(*rlr.NextLink) != 0
+}
+
 // requestListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rlr RequestListResult) requestListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rlr.NextLink == nil || len(to.String(rlr.NextLink)) < 1 {
+	if !rlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -441,11 +423,16 @@ func (page *RequestListResultPage) NextWithContext(ctx context.Context) (err err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rlr)
+		if err != nil {
+			return err
+		}
+		page.rlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rlr = next
 	return nil
 }
 

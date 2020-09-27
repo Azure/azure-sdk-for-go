@@ -30,63 +30,7 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/iotspaces/mgmt/2017-10-01-preview/iotspaces"
 
-// NameUnavailabilityReason enumerates the values for name unavailability reason.
-type NameUnavailabilityReason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists NameUnavailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid NameUnavailabilityReason = "Invalid"
-)
-
-// PossibleNameUnavailabilityReasonValues returns an array of possible values for the NameUnavailabilityReason const type.
-func PossibleNameUnavailabilityReasonValues() []NameUnavailabilityReason {
-	return []NameUnavailabilityReason{AlreadyExists, Invalid}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Provisioning ...
-	Provisioning ProvisioningState = "Provisioning"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Canceled, Deleting, Failed, Provisioning, Succeeded}
-}
-
-// Sku enumerates the values for sku.
-type Sku string
-
-const (
-	// F1 ...
-	F1 Sku = "F1"
-	// S1 ...
-	S1 Sku = "S1"
-	// S2 ...
-	S2 Sku = "S2"
-	// S3 ...
-	S3 Sku = "S3"
-)
-
-// PossibleSkuValues returns an array of possible values for the Sku const type.
-func PossibleSkuValues() []Sku {
-	return []Sku{F1, S1, S2, S3}
-}
-
-// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -256,10 +200,15 @@ func (dlr DescriptionListResult) IsEmpty() bool {
 	return dlr.Value == nil || len(*dlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dlr DescriptionListResult) hasNextLink() bool {
+	return dlr.NextLink != nil && len(*dlr.NextLink) != 0
+}
+
 // descriptionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dlr DescriptionListResult) descriptionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dlr.NextLink == nil || len(to.String(dlr.NextLink)) < 1 {
+	if !dlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -287,11 +236,16 @@ func (page *DescriptionListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dlr)
+		if err != nil {
+			return err
+		}
+		page.dlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dlr = next
 	return nil
 }
 
@@ -346,11 +300,29 @@ type NameAvailabilityInfo struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NameAvailabilityInfo.
+func (nai NameAvailabilityInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nai.Message != nil {
+		objectMap["message"] = nai.Message
+	}
+	return json.Marshal(objectMap)
+}
+
 // Operation ioTSpaces service REST API operation
 type Operation struct {
 	// Name - READ-ONLY; Operation name: {provider}/{resource}/{read | write | action | delete}
 	Name    *string           `json:"name,omitempty"`
 	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the object that represents the operation.
@@ -371,14 +343,23 @@ type OperationInputs struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// OperationListResult a list of IoTSpaces service operations. It contains a list of operations and a URL
-// link to get the next set of results.
+// OperationListResult a list of IoTSpaces service operations. It contains a list of operations and a URL link
+// to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// NextLink - The link used to get the next page of IoTSpaces description objects.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; A list of IoT spaces operations supported by the Microsoft.IoTSpaces resource provider.
 	Value *[]Operation `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if olr.NextLink != nil {
+		objectMap["nextLink"] = olr.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -449,10 +430,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -480,11 +466,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -548,6 +539,15 @@ type Properties struct {
 	WebPortalURL *string `json:"webPortalUrl,omitempty"`
 	// StorageContainer - The properties of the designated storage container.
 	StorageContainer *StorageContainerProperties `json:"storageContainer,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Properties.
+func (p Properties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if p.StorageContainer != nil {
+		objectMap["storageContainer"] = p.StorageContainer
+	}
+	return json.Marshal(objectMap)
 }
 
 // Resource the common properties of an IoTSpaces service.

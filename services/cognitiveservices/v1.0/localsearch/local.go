@@ -268,7 +268,6 @@ func (client LocalClient) SearchSender(req *http.Request) (*http.Response, error
 func (client LocalClient) SearchResponder(resp *http.Response) (result SearchResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

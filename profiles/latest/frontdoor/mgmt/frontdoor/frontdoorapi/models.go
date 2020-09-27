@@ -19,14 +19,15 @@
 
 package frontdoorapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-01-01/frontdoor/frontdoorapi"
+import original "github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-05-01/frontdoor/frontdoorapi"
 
-type BaseClientAPI = original.BaseClientAPI
 type EndpointsClientAPI = original.EndpointsClientAPI
 type ExperimentsClientAPI = original.ExperimentsClientAPI
 type FrontDoorsClientAPI = original.FrontDoorsClientAPI
 type FrontendEndpointsClientAPI = original.FrontendEndpointsClientAPI
 type ManagedRuleSetsClientAPI = original.ManagedRuleSetsClientAPI
+type NameAvailabilityClientAPI = original.NameAvailabilityClientAPI
+type NameAvailabilityWithSubscriptionClientAPI = original.NameAvailabilityWithSubscriptionClientAPI
 type NetworkExperimentProfilesClientAPI = original.NetworkExperimentProfilesClientAPI
 type PoliciesClientAPI = original.PoliciesClientAPI
 type PreconfiguredEndpointsClientAPI = original.PreconfiguredEndpointsClientAPI

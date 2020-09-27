@@ -103,7 +103,6 @@ func (client ManifestsClient) CreateSender(req *http.Request) (*http.Response, e
 func (client ManifestsClient) CreateResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -177,7 +176,6 @@ func (client ManifestsClient) DeleteSender(req *http.Request) (*http.Response, e
 func (client ManifestsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -255,7 +253,6 @@ func (client ManifestsClient) GetSender(req *http.Request) (*http.Response, erro
 func (client ManifestsClient) GetResponder(resp *http.Response) (result ManifestWrapper, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -328,7 +325,6 @@ func (client ManifestsClient) GetAttributesSender(req *http.Request) (*http.Resp
 func (client ManifestsClient) GetAttributesResponder(resp *http.Response) (result ManifestAttributes, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -415,7 +411,6 @@ func (client ManifestsClient) GetListSender(req *http.Request) (*http.Response, 
 func (client ManifestsClient) GetListResponder(resp *http.Response) (result AcrManifests, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -494,7 +489,6 @@ func (client ManifestsClient) UpdateAttributesSender(req *http.Request) (*http.R
 func (client ManifestsClient) UpdateAttributesResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

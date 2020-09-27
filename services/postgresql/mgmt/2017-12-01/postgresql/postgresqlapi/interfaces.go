@@ -89,6 +89,16 @@ type LogFilesClientAPI interface {
 
 var _ LogFilesClientAPI = (*postgresql.LogFilesClient)(nil)
 
+// ServerAdministratorsClientAPI contains the set of methods on the ServerAdministratorsClient type.
+type ServerAdministratorsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, properties postgresql.ServerAdministratorResource) (result postgresql.ServerAdministratorsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerAdministratorsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerAdministratorResource, err error)
+	List(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ServerAdministratorResourceListResult, err error)
+}
+
+var _ ServerAdministratorsClientAPI = (*postgresql.ServerAdministratorsClient)(nil)
+
 // LocationBasedPerformanceTierClientAPI contains the set of methods on the LocationBasedPerformanceTierClient type.
 type LocationBasedPerformanceTierClientAPI interface {
 	List(ctx context.Context, locationName string) (result postgresql.PerformanceTierListResult, err error)
@@ -103,6 +113,13 @@ type CheckNameAvailabilityClientAPI interface {
 
 var _ CheckNameAvailabilityClientAPI = (*postgresql.CheckNameAvailabilityClient)(nil)
 
+// OperationsClientAPI contains the set of methods on the OperationsClient type.
+type OperationsClientAPI interface {
+	List(ctx context.Context) (result postgresql.OperationListResult, err error)
+}
+
+var _ OperationsClientAPI = (*postgresql.OperationsClient)(nil)
+
 // ServerSecurityAlertPoliciesClientAPI contains the set of methods on the ServerSecurityAlertPoliciesClient type.
 type ServerSecurityAlertPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters postgresql.ServerSecurityAlertPolicy) (result postgresql.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
@@ -110,10 +127,3 @@ type ServerSecurityAlertPoliciesClientAPI interface {
 }
 
 var _ ServerSecurityAlertPoliciesClientAPI = (*postgresql.ServerSecurityAlertPoliciesClient)(nil)
-
-// OperationsClientAPI contains the set of methods on the OperationsClient type.
-type OperationsClientAPI interface {
-	List(ctx context.Context) (result postgresql.OperationListResult, err error)
-}
-
-var _ OperationsClientAPI = (*postgresql.OperationsClient)(nil)

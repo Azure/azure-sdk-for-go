@@ -112,7 +112,6 @@ func (client CustomizationPoliciesClient) GetSender(req *http.Request) (*http.Re
 func (client CustomizationPoliciesClient) GetResponder(resp *http.Response) (result CustomizationPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -155,6 +154,9 @@ func (client CustomizationPoliciesClient) List(ctx context.Context, regionID str
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.CustomizationPoliciesClient", "List", resp, "Failure responding to request")
 	}
+	if result.cplr.hasNextLink() && result.cplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -194,7 +196,6 @@ func (client CustomizationPoliciesClient) ListSender(req *http.Request) (*http.R
 func (client CustomizationPoliciesClient) ListResponder(resp *http.Response) (result CustomizationPoliciesListResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

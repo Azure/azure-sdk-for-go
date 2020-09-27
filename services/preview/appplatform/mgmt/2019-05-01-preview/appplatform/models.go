@@ -31,194 +31,36 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2019-05-01-preview/appplatform"
 
-// AppResourceProvisioningState enumerates the values for app resource provisioning state.
-type AppResourceProvisioningState string
-
-const (
-	// Creating ...
-	Creating AppResourceProvisioningState = "Creating"
-	// Failed ...
-	Failed AppResourceProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded AppResourceProvisioningState = "Succeeded"
-	// Updating ...
-	Updating AppResourceProvisioningState = "Updating"
-)
-
-// PossibleAppResourceProvisioningStateValues returns an array of possible values for the AppResourceProvisioningState const type.
-func PossibleAppResourceProvisioningStateValues() []AppResourceProvisioningState {
-	return []AppResourceProvisioningState{Creating, Failed, Succeeded, Updating}
-}
-
-// ConfigServerState enumerates the values for config server state.
-type ConfigServerState string
-
-const (
-	// ConfigServerStateDeleted ...
-	ConfigServerStateDeleted ConfigServerState = "Deleted"
-	// ConfigServerStateFailed ...
-	ConfigServerStateFailed ConfigServerState = "Failed"
-	// ConfigServerStateNotAvailable ...
-	ConfigServerStateNotAvailable ConfigServerState = "NotAvailable"
-	// ConfigServerStateSucceeded ...
-	ConfigServerStateSucceeded ConfigServerState = "Succeeded"
-	// ConfigServerStateUpdating ...
-	ConfigServerStateUpdating ConfigServerState = "Updating"
-)
-
-// PossibleConfigServerStateValues returns an array of possible values for the ConfigServerState const type.
-func PossibleConfigServerStateValues() []ConfigServerState {
-	return []ConfigServerState{ConfigServerStateDeleted, ConfigServerStateFailed, ConfigServerStateNotAvailable, ConfigServerStateSucceeded, ConfigServerStateUpdating}
-}
-
-// DeploymentResourceProvisioningState enumerates the values for deployment resource provisioning state.
-type DeploymentResourceProvisioningState string
-
-const (
-	// DeploymentResourceProvisioningStateCreating ...
-	DeploymentResourceProvisioningStateCreating DeploymentResourceProvisioningState = "Creating"
-	// DeploymentResourceProvisioningStateFailed ...
-	DeploymentResourceProvisioningStateFailed DeploymentResourceProvisioningState = "Failed"
-	// DeploymentResourceProvisioningStateSucceeded ...
-	DeploymentResourceProvisioningStateSucceeded DeploymentResourceProvisioningState = "Succeeded"
-	// DeploymentResourceProvisioningStateUpdating ...
-	DeploymentResourceProvisioningStateUpdating DeploymentResourceProvisioningState = "Updating"
-)
-
-// PossibleDeploymentResourceProvisioningStateValues returns an array of possible values for the DeploymentResourceProvisioningState const type.
-func PossibleDeploymentResourceProvisioningStateValues() []DeploymentResourceProvisioningState {
-	return []DeploymentResourceProvisioningState{DeploymentResourceProvisioningStateCreating, DeploymentResourceProvisioningStateFailed, DeploymentResourceProvisioningStateSucceeded, DeploymentResourceProvisioningStateUpdating}
-}
-
-// DeploymentResourceStatus enumerates the values for deployment resource status.
-type DeploymentResourceStatus string
-
-const (
-	// DeploymentResourceStatusAllocating ...
-	DeploymentResourceStatusAllocating DeploymentResourceStatus = "Allocating"
-	// DeploymentResourceStatusCompiling ...
-	DeploymentResourceStatusCompiling DeploymentResourceStatus = "Compiling"
-	// DeploymentResourceStatusFailed ...
-	DeploymentResourceStatusFailed DeploymentResourceStatus = "Failed"
-	// DeploymentResourceStatusRunning ...
-	DeploymentResourceStatusRunning DeploymentResourceStatus = "Running"
-	// DeploymentResourceStatusStopped ...
-	DeploymentResourceStatusStopped DeploymentResourceStatus = "Stopped"
-	// DeploymentResourceStatusUnknown ...
-	DeploymentResourceStatusUnknown DeploymentResourceStatus = "Unknown"
-	// DeploymentResourceStatusUpgrading ...
-	DeploymentResourceStatusUpgrading DeploymentResourceStatus = "Upgrading"
-)
-
-// PossibleDeploymentResourceStatusValues returns an array of possible values for the DeploymentResourceStatus const type.
-func PossibleDeploymentResourceStatusValues() []DeploymentResourceStatus {
-	return []DeploymentResourceStatus{DeploymentResourceStatusAllocating, DeploymentResourceStatusCompiling, DeploymentResourceStatusFailed, DeploymentResourceStatusRunning, DeploymentResourceStatusStopped, DeploymentResourceStatusUnknown, DeploymentResourceStatusUpgrading}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// ProvisioningStateCreating ...
-	ProvisioningStateCreating ProvisioningState = "Creating"
-	// ProvisioningStateDeleted ...
-	ProvisioningStateDeleted ProvisioningState = "Deleted"
-	// ProvisioningStateDeleting ...
-	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed ...
-	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateMoved ...
-	ProvisioningStateMoved ProvisioningState = "Moved"
-	// ProvisioningStateMoveFailed ...
-	ProvisioningStateMoveFailed ProvisioningState = "MoveFailed"
-	// ProvisioningStateMoving ...
-	ProvisioningStateMoving ProvisioningState = "Moving"
-	// ProvisioningStateSucceeded ...
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	// ProvisioningStateUpdating ...
-	ProvisioningStateUpdating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateCreating, ProvisioningStateDeleted, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateMoved, ProvisioningStateMoveFailed, ProvisioningStateMoving, ProvisioningStateSucceeded, ProvisioningStateUpdating}
-}
-
-// RuntimeVersion enumerates the values for runtime version.
-type RuntimeVersion string
-
-const (
-	// Java11 ...
-	Java11 RuntimeVersion = "Java_11"
-	// Java8 ...
-	Java8 RuntimeVersion = "Java_8"
-)
-
-// PossibleRuntimeVersionValues returns an array of possible values for the RuntimeVersion const type.
-func PossibleRuntimeVersionValues() []RuntimeVersion {
-	return []RuntimeVersion{Java11, Java8}
-}
-
-// TestKeyType enumerates the values for test key type.
-type TestKeyType string
-
-const (
-	// Primary ...
-	Primary TestKeyType = "Primary"
-	// Secondary ...
-	Secondary TestKeyType = "Secondary"
-)
-
-// PossibleTestKeyTypeValues returns an array of possible values for the TestKeyType const type.
-func PossibleTestKeyTypeValues() []TestKeyType {
-	return []TestKeyType{Primary, Secondary}
-}
-
-// TraceProxyState enumerates the values for trace proxy state.
-type TraceProxyState string
-
-const (
-	// TraceProxyStateFailed ...
-	TraceProxyStateFailed TraceProxyState = "Failed"
-	// TraceProxyStateNotAvailable ...
-	TraceProxyStateNotAvailable TraceProxyState = "NotAvailable"
-	// TraceProxyStateSucceeded ...
-	TraceProxyStateSucceeded TraceProxyState = "Succeeded"
-	// TraceProxyStateUpdating ...
-	TraceProxyStateUpdating TraceProxyState = "Updating"
-)
-
-// PossibleTraceProxyStateValues returns an array of possible values for the TraceProxyState const type.
-func PossibleTraceProxyStateValues() []TraceProxyState {
-	return []TraceProxyState{TraceProxyStateFailed, TraceProxyStateNotAvailable, TraceProxyStateSucceeded, TraceProxyStateUpdating}
-}
-
-// UserSourceType enumerates the values for user source type.
-type UserSourceType string
-
-const (
-	// Jar ...
-	Jar UserSourceType = "Jar"
-	// Source ...
-	Source UserSourceType = "Source"
-)
-
-// PossibleUserSourceTypeValues returns an array of possible values for the UserSourceType const type.
-func PossibleUserSourceTypeValues() []UserSourceType {
-	return []UserSourceType{Jar, Source}
-}
-
 // AppResource app resource payload
 type AppResource struct {
 	autorest.Response `json:"-"`
 	// Properties - Properties of the App resource
 	Properties *AppResourceProperties `json:"properties,omitempty"`
+	// Identity - The Managed Identity type of the app resource
+	Identity *ManagedIdentityProperties `json:"identity,omitempty"`
+	// Location - The GEO location of the application, always the same with its parent resource
+	Location *string `json:"location,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource.
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppResource.
+func (ar AppResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ar.Properties != nil {
+		objectMap["properties"] = ar.Properties
+	}
+	if ar.Identity != nil {
+		objectMap["identity"] = ar.Identity
+	}
+	if ar.Location != nil {
+		objectMap["location"] = ar.Location
+	}
+	return json.Marshal(objectMap)
 }
 
 // AppResourceCollection object that includes an array of App resources and a possible link for next set
@@ -299,10 +141,15 @@ func (arc AppResourceCollection) IsEmpty() bool {
 	return arc.Value == nil || len(*arc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (arc AppResourceCollection) hasNextLink() bool {
+	return arc.NextLink != nil && len(*arc.NextLink) != 0
+}
+
 // appResourceCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (arc AppResourceCollection) appResourceCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if arc.NextLink == nil || len(to.String(arc.NextLink)) < 1 {
+	if !arc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -330,11 +177,16 @@ func (page *AppResourceCollectionPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.arc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.arc)
+		if err != nil {
+			return err
+		}
+		page.arc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.arc = next
 	return nil
 }
 
@@ -378,12 +230,40 @@ type AppResourceProperties struct {
 	ProvisioningState AppResourceProvisioningState `json:"provisioningState,omitempty"`
 	// ActiveDeploymentName - Name of the active deployment of the App
 	ActiveDeploymentName *string `json:"activeDeploymentName,omitempty"`
+	// Fqdn - Fully qualified dns Name.
+	Fqdn *string `json:"fqdn,omitempty"`
+	// HTTPSOnly - Indicate if only https is allowed.
+	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
 	// CreatedTime - READ-ONLY; Date time when the resource is created
 	CreatedTime *date.Time `json:"createdTime,omitempty"`
 	// TemporaryDisk - Temporary disk settings
 	TemporaryDisk *TemporaryDisk `json:"temporaryDisk,omitempty"`
 	// PersistentDisk - Persistent disk settings
 	PersistentDisk *PersistentDisk `json:"persistentDisk,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppResourceProperties.
+func (arp AppResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if arp.Public != nil {
+		objectMap["public"] = arp.Public
+	}
+	if arp.ActiveDeploymentName != nil {
+		objectMap["activeDeploymentName"] = arp.ActiveDeploymentName
+	}
+	if arp.Fqdn != nil {
+		objectMap["fqdn"] = arp.Fqdn
+	}
+	if arp.HTTPSOnly != nil {
+		objectMap["httpsOnly"] = arp.HTTPSOnly
+	}
+	if arp.TemporaryDisk != nil {
+		objectMap["temporaryDisk"] = arp.TemporaryDisk
+	}
+	if arp.PersistentDisk != nil {
+		objectMap["persistentDisk"] = arp.PersistentDisk
+	}
+	return json.Marshal(objectMap)
 }
 
 // AppsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -521,10 +401,15 @@ func (ao AvailableOperations) IsEmpty() bool {
 	return ao.Value == nil || len(*ao.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (ao AvailableOperations) hasNextLink() bool {
+	return ao.NextLink != nil && len(*ao.NextLink) != 0
+}
+
 // availableOperationsPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (ao AvailableOperations) availableOperationsPreparer(ctx context.Context) (*http.Request, error) {
-	if ao.NextLink == nil || len(to.String(ao.NextLink)) < 1 {
+	if !ao.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -552,11 +437,16 @@ func (page *AvailableOperationsPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.ao)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.ao)
+		if err != nil {
+			return err
+		}
+		page.ao = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.ao = next
 	return nil
 }
 
@@ -603,8 +493,17 @@ type BindingResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// BindingResourceCollection object that includes an array of Binding resources and a possible link for
-// next set
+// MarshalJSON is the custom marshaler for BindingResource.
+func (br BindingResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if br.Properties != nil {
+		objectMap["properties"] = br.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// BindingResourceCollection object that includes an array of Binding resources and a possible link for next
+// set
 type BindingResourceCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of Binding resources
@@ -682,10 +581,15 @@ func (brc BindingResourceCollection) IsEmpty() bool {
 	return brc.Value == nil || len(*brc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (brc BindingResourceCollection) hasNextLink() bool {
+	return brc.NextLink != nil && len(*brc.NextLink) != 0
+}
+
 // bindingResourceCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (brc BindingResourceCollection) bindingResourceCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if brc.NextLink == nil || len(to.String(brc.NextLink)) < 1 {
+	if !brc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -713,11 +617,16 @@ func (page *BindingResourceCollectionPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.brc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.brc)
+		if err != nil {
+			return err
+		}
+		page.brc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.brc = next
 	return nil
 }
 
@@ -753,9 +662,9 @@ func NewBindingResourceCollectionPage(getNextPage func(context.Context, BindingR
 
 // BindingResourceProperties binding resource properties payload
 type BindingResourceProperties struct {
-	// ResourceName - The name of the bound resource
+	// ResourceName - READ-ONLY; The name of the bound resource
 	ResourceName *string `json:"resourceName,omitempty"`
-	// ResourceType - The standard Azure resource type of the bound resource
+	// ResourceType - READ-ONLY; The standard Azure resource type of the bound resource
 	ResourceType *string `json:"resourceType,omitempty"`
 	// ResourceID - The Azure resource id of the bound resource
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -774,12 +683,6 @@ type BindingResourceProperties struct {
 // MarshalJSON is the custom marshaler for BindingResourceProperties.
 func (brp BindingResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if brp.ResourceName != nil {
-		objectMap["resourceName"] = brp.ResourceName
-	}
-	if brp.ResourceType != nil {
-		objectMap["resourceType"] = brp.ResourceType
-	}
 	if brp.ResourceID != nil {
 		objectMap["resourceId"] = brp.ResourceID
 	}
@@ -790,6 +693,224 @@ func (brp BindingResourceProperties) MarshalJSON() ([]byte, error) {
 		objectMap["bindingParameters"] = brp.BindingParameters
 	}
 	return json.Marshal(objectMap)
+}
+
+// CertificateProperties certificate resource payload.
+type CertificateProperties struct {
+	// Thumbprint - READ-ONLY; The thumbprint of certificate.
+	Thumbprint *string `json:"thumbprint,omitempty"`
+	// VaultURI - The vault uri of user key vault.
+	VaultURI *string `json:"vaultUri,omitempty"`
+	// KeyVaultCertName - The certificate name of key vault.
+	KeyVaultCertName *string `json:"keyVaultCertName,omitempty"`
+	// CertVersion - The certificate version of key vault.
+	CertVersion *string `json:"certVersion,omitempty"`
+	// Issuer - READ-ONLY; The issuer of certificate.
+	Issuer *string `json:"issuer,omitempty"`
+	// IssuedDate - READ-ONLY; The issue date of certificate.
+	IssuedDate *string `json:"issuedDate,omitempty"`
+	// ExpirationDate - READ-ONLY; The expiration date of certificate.
+	ExpirationDate *string `json:"expirationDate,omitempty"`
+	// ActivateDate - READ-ONLY; The activate date of certificate.
+	ActivateDate *string `json:"activateDate,omitempty"`
+	// SubjectName - READ-ONLY; The subject name of certificate.
+	SubjectName *string `json:"subjectName,omitempty"`
+	// DNSNames - READ-ONLY; The domain list of certificate.
+	DNSNames *[]string `json:"dnsNames,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CertificateProperties.
+func (cp CertificateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cp.VaultURI != nil {
+		objectMap["vaultUri"] = cp.VaultURI
+	}
+	if cp.KeyVaultCertName != nil {
+		objectMap["keyVaultCertName"] = cp.KeyVaultCertName
+	}
+	if cp.CertVersion != nil {
+		objectMap["certVersion"] = cp.CertVersion
+	}
+	return json.Marshal(objectMap)
+}
+
+// CertificateResource certificate resource payload.
+type CertificateResource struct {
+	autorest.Response `json:"-"`
+	// Properties - Properties of the certificate resource payload.
+	Properties *CertificateProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CertificateResource.
+func (cr CertificateResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cr.Properties != nil {
+		objectMap["properties"] = cr.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// CertificateResourceCollection collection compose of certificate resources list and a possible link for next
+// page.
+type CertificateResourceCollection struct {
+	autorest.Response `json:"-"`
+	// Value - The certificate resources list.
+	Value *[]CertificateResource `json:"value,omitempty"`
+	// NextLink - The link to next page of certificate list.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// CertificateResourceCollectionIterator provides access to a complete listing of CertificateResource values.
+type CertificateResourceCollectionIterator struct {
+	i    int
+	page CertificateResourceCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CertificateResourceCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateResourceCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CertificateResourceCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CertificateResourceCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter CertificateResourceCollectionIterator) Response() CertificateResourceCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CertificateResourceCollectionIterator) Value() CertificateResource {
+	if !iter.page.NotDone() {
+		return CertificateResource{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CertificateResourceCollectionIterator type.
+func NewCertificateResourceCollectionIterator(page CertificateResourceCollectionPage) CertificateResourceCollectionIterator {
+	return CertificateResourceCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (crc CertificateResourceCollection) IsEmpty() bool {
+	return crc.Value == nil || len(*crc.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (crc CertificateResourceCollection) hasNextLink() bool {
+	return crc.NextLink != nil && len(*crc.NextLink) != 0
+}
+
+// certificateResourceCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (crc CertificateResourceCollection) certificateResourceCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if !crc.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(crc.NextLink)))
+}
+
+// CertificateResourceCollectionPage contains a page of CertificateResource values.
+type CertificateResourceCollectionPage struct {
+	fn  func(context.Context, CertificateResourceCollection) (CertificateResourceCollection, error)
+	crc CertificateResourceCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CertificateResourceCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CertificateResourceCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.crc)
+		if err != nil {
+			return err
+		}
+		page.crc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CertificateResourceCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CertificateResourceCollectionPage) NotDone() bool {
+	return !page.crc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CertificateResourceCollectionPage) Response() CertificateResourceCollection {
+	return page.crc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CertificateResourceCollectionPage) Values() []CertificateResource {
+	if page.crc.IsEmpty() {
+		return nil
+	}
+	return *page.crc.Value
+}
+
+// Creates a new instance of the CertificateResourceCollectionPage type.
+func NewCertificateResourceCollectionPage(getNextPage func(context.Context, CertificateResourceCollection) (CertificateResourceCollection, error)) CertificateResourceCollectionPage {
+	return CertificateResourceCollectionPage{fn: getNextPage}
 }
 
 // CloudError an error response from the service.
@@ -817,10 +938,27 @@ type ClusterResourceProperties struct {
 	ConfigServerProperties *ConfigServerProperties `json:"configServerProperties,omitempty"`
 	// Trace - Trace properties of the Service
 	Trace *TraceProperties `json:"trace,omitempty"`
+	// NetworkProfile - Network profile of the Service
+	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
 	// Version - READ-ONLY; Version of the Service
 	Version *int32 `json:"version,omitempty"`
 	// ServiceID - READ-ONLY; ServiceInstanceEntity GUID which uniquely identifies a created resource
 	ServiceID *string `json:"serviceId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ClusterResourceProperties.
+func (crp ClusterResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if crp.ConfigServerProperties != nil {
+		objectMap["configServerProperties"] = crp.ConfigServerProperties
+	}
+	if crp.Trace != nil {
+		objectMap["trace"] = crp.Trace
+	}
+	if crp.NetworkProfile != nil {
+		objectMap["networkProfile"] = crp.NetworkProfile
+	}
+	return json.Marshal(objectMap)
 }
 
 // ConfigServerGitProperty property of git.
@@ -857,10 +995,238 @@ type ConfigServerProperties struct {
 	ConfigServer *ConfigServerSettings `json:"configServer,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ConfigServerProperties.
+func (csp ConfigServerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if csp.Error != nil {
+		objectMap["error"] = csp.Error
+	}
+	if csp.ConfigServer != nil {
+		objectMap["configServer"] = csp.ConfigServer
+	}
+	return json.Marshal(objectMap)
+}
+
 // ConfigServerSettings the settings of config server.
 type ConfigServerSettings struct {
 	// GitProperty - Property of git environment.
 	GitProperty *ConfigServerGitProperty `json:"gitProperty,omitempty"`
+}
+
+// CustomDomainProperties custom domain of app resource payload.
+type CustomDomainProperties struct {
+	// Thumbprint - The thumbprint of bound certificate.
+	Thumbprint *string `json:"thumbprint,omitempty"`
+	// AppName - READ-ONLY; The app name of domain.
+	AppName *string `json:"appName,omitempty"`
+	// CertName - The bound certificate name of domain.
+	CertName *string `json:"certName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomDomainProperties.
+func (cdp CustomDomainProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cdp.Thumbprint != nil {
+		objectMap["thumbprint"] = cdp.Thumbprint
+	}
+	if cdp.CertName != nil {
+		objectMap["certName"] = cdp.CertName
+	}
+	return json.Marshal(objectMap)
+}
+
+// CustomDomainResource custom domain resource payload.
+type CustomDomainResource struct {
+	autorest.Response `json:"-"`
+	// Properties - Properties of the custom domain resource.
+	Properties *CustomDomainProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomDomainResource.
+func (cdr CustomDomainResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cdr.Properties != nil {
+		objectMap["properties"] = cdr.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// CustomDomainResourceCollection collection compose of a custom domain resources list and a possible link for
+// next page.
+type CustomDomainResourceCollection struct {
+	autorest.Response `json:"-"`
+	// Value - The custom domain resources list.
+	Value *[]CustomDomainResource `json:"value,omitempty"`
+	// NextLink - The link to next page of custom domain list.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// CustomDomainResourceCollectionIterator provides access to a complete listing of CustomDomainResource values.
+type CustomDomainResourceCollectionIterator struct {
+	i    int
+	page CustomDomainResourceCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CustomDomainResourceCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomDomainResourceCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CustomDomainResourceCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CustomDomainResourceCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter CustomDomainResourceCollectionIterator) Response() CustomDomainResourceCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CustomDomainResourceCollectionIterator) Value() CustomDomainResource {
+	if !iter.page.NotDone() {
+		return CustomDomainResource{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CustomDomainResourceCollectionIterator type.
+func NewCustomDomainResourceCollectionIterator(page CustomDomainResourceCollectionPage) CustomDomainResourceCollectionIterator {
+	return CustomDomainResourceCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (cdrc CustomDomainResourceCollection) IsEmpty() bool {
+	return cdrc.Value == nil || len(*cdrc.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (cdrc CustomDomainResourceCollection) hasNextLink() bool {
+	return cdrc.NextLink != nil && len(*cdrc.NextLink) != 0
+}
+
+// customDomainResourceCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (cdrc CustomDomainResourceCollection) customDomainResourceCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if !cdrc.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(cdrc.NextLink)))
+}
+
+// CustomDomainResourceCollectionPage contains a page of CustomDomainResource values.
+type CustomDomainResourceCollectionPage struct {
+	fn   func(context.Context, CustomDomainResourceCollection) (CustomDomainResourceCollection, error)
+	cdrc CustomDomainResourceCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CustomDomainResourceCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CustomDomainResourceCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.cdrc)
+		if err != nil {
+			return err
+		}
+		page.cdrc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CustomDomainResourceCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CustomDomainResourceCollectionPage) NotDone() bool {
+	return !page.cdrc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CustomDomainResourceCollectionPage) Response() CustomDomainResourceCollection {
+	return page.cdrc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CustomDomainResourceCollectionPage) Values() []CustomDomainResource {
+	if page.cdrc.IsEmpty() {
+		return nil
+	}
+	return *page.cdrc.Value
+}
+
+// Creates a new instance of the CustomDomainResourceCollectionPage type.
+func NewCustomDomainResourceCollectionPage(getNextPage func(context.Context, CustomDomainResourceCollection) (CustomDomainResourceCollection, error)) CustomDomainResourceCollectionPage {
+	return CustomDomainResourceCollectionPage{fn: getNextPage}
+}
+
+// CustomDomainValidatePayload custom domain validate payload.
+type CustomDomainValidatePayload struct {
+	// Name - Name to be validated
+	Name *string `json:"name,omitempty"`
+}
+
+// CustomDomainValidateResult validation result for custom domain.
+type CustomDomainValidateResult struct {
+	autorest.Response `json:"-"`
+	// IsValid - Indicates if domain name is valid.
+	IsValid *bool `json:"isValid,omitempty"`
+	// Message - Message of why domain name is invalid.
+	Message *string `json:"message,omitempty"`
 }
 
 // DeploymentInstance deployment instance payload
@@ -888,8 +1254,16 @@ type DeploymentResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// DeploymentResourceCollection object that includes an array of App resources and a possible link for next
-// set
+// MarshalJSON is the custom marshaler for DeploymentResource.
+func (dr DeploymentResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dr.Properties != nil {
+		objectMap["properties"] = dr.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// DeploymentResourceCollection object that includes an array of App resources and a possible link for next set
 type DeploymentResourceCollection struct {
 	autorest.Response `json:"-"`
 	// Value - Collection of Deployment resources
@@ -967,10 +1341,15 @@ func (drc DeploymentResourceCollection) IsEmpty() bool {
 	return drc.Value == nil || len(*drc.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (drc DeploymentResourceCollection) hasNextLink() bool {
+	return drc.NextLink != nil && len(*drc.NextLink) != 0
+}
+
 // deploymentResourceCollectionPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (drc DeploymentResourceCollection) deploymentResourceCollectionPreparer(ctx context.Context) (*http.Request, error) {
-	if drc.NextLink == nil || len(to.String(drc.NextLink)) < 1 {
+	if !drc.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -998,11 +1377,16 @@ func (page *DeploymentResourceCollectionPage) NextWithContext(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.drc)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.drc)
+		if err != nil {
+			return err
+		}
+		page.drc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.drc = next
 	return nil
 }
 
@@ -1042,10 +1426,10 @@ type DeploymentResourceProperties struct {
 	Source *UserSourceInfo `json:"source,omitempty"`
 	// AppName - READ-ONLY; App name of the deployment
 	AppName *string `json:"appName,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the Deployment. Possible values include: 'DeploymentResourceProvisioningStateCreating', 'DeploymentResourceProvisioningStateUpdating', 'DeploymentResourceProvisioningStateSucceeded', 'DeploymentResourceProvisioningStateFailed'
-	ProvisioningState DeploymentResourceProvisioningState `json:"provisioningState,omitempty"`
 	// DeploymentSettings - Deployment settings of the Deployment
 	DeploymentSettings *DeploymentSettings `json:"deploymentSettings,omitempty"`
+	// ProvisioningState - READ-ONLY; Provisioning state of the Deployment. Possible values include: 'DeploymentResourceProvisioningStateCreating', 'DeploymentResourceProvisioningStateUpdating', 'DeploymentResourceProvisioningStateSucceeded', 'DeploymentResourceProvisioningStateFailed'
+	ProvisioningState DeploymentResourceProvisioningState `json:"provisioningState,omitempty"`
 	// Status - READ-ONLY; Status of the Deployment. Possible values include: 'DeploymentResourceStatusUnknown', 'DeploymentResourceStatusStopped', 'DeploymentResourceStatusRunning', 'DeploymentResourceStatusFailed', 'DeploymentResourceStatusAllocating', 'DeploymentResourceStatusUpgrading', 'DeploymentResourceStatusCompiling'
 	Status DeploymentResourceStatus `json:"status,omitempty"`
 	// Active - READ-ONLY; Indicates whether the Deployment is active
@@ -1056,8 +1440,20 @@ type DeploymentResourceProperties struct {
 	Instances *[]DeploymentInstance `json:"instances,omitempty"`
 }
 
-// DeploymentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// MarshalJSON is the custom marshaler for DeploymentResourceProperties.
+func (drp DeploymentResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if drp.Source != nil {
+		objectMap["source"] = drp.Source
+	}
+	if drp.DeploymentSettings != nil {
+		objectMap["deploymentSettings"] = drp.DeploymentSettings
+	}
+	return json.Marshal(objectMap)
+}
+
+// DeploymentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DeploymentsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -1087,13 +1483,13 @@ func (future *DeploymentsCreateOrUpdateFuture) Result(client DeploymentsClient) 
 
 // DeploymentSettings deployment settings payload
 type DeploymentSettings struct {
-	// CPU - Required CPU
+	// CPU - Required CPU, basic tier should be 1, standard tier should be in range (1, 4)
 	CPU *int32 `json:"cpu,omitempty"`
-	// MemoryInGB - Required Memory size in GB
+	// MemoryInGB - Required Memory size in GB, basic tier should be in range (1, 2), standard tier should be in range (1, 8)
 	MemoryInGB *int32 `json:"memoryInGB,omitempty"`
 	// JvmOptions - JVM parameter
 	JvmOptions *string `json:"jvmOptions,omitempty"`
-	// InstanceCount - Instance count
+	// InstanceCount - Instance count, basic tier should be in range (1, 25), standard tier should be in range (1, 500)
 	InstanceCount *int32 `json:"instanceCount,omitempty"`
 	// EnvironmentVariables - Collection of environment variables
 	EnvironmentVariables map[string]*string `json:"environmentVariables"`
@@ -1148,8 +1544,7 @@ func (future *DeploymentsRestartFuture) Result(client DeploymentsClient) (ar aut
 	return
 }
 
-// DeploymentsStartFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DeploymentsStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DeploymentsStartFuture struct {
 	azure.Future
 }
@@ -1171,8 +1566,7 @@ func (future *DeploymentsStartFuture) Result(client DeploymentsClient) (ar autor
 	return
 }
 
-// DeploymentsStopFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DeploymentsStopFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DeploymentsStopFuture struct {
 	azure.Future
 }
@@ -1274,6 +1668,14 @@ type LogSpecification struct {
 	BlobDuration *string `json:"blobDuration,omitempty"`
 }
 
+// ManagedIdentityProperties managed identity properties retrieved from ARM request headers.
+type ManagedIdentityProperties struct {
+	// Type - Possible values include: 'None', 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned'
+	Type        ManagedIdentityType `json:"type,omitempty"`
+	PrincipalID *string             `json:"principalId,omitempty"`
+	TenantID    *string             `json:"tenantId,omitempty"`
+}
+
 // MetricDimension specifications of the Dimension of metrics
 type MetricDimension struct {
 	// Name - Name of the dimension
@@ -1325,12 +1727,26 @@ type NameAvailabilityParameters struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// NetworkProfile service network profile payload
+type NetworkProfile struct {
+	// ServiceRuntimeSubnetID - Fully qualified resource Id of the subnet to host Azure Spring Cloud Service Runtime
+	ServiceRuntimeSubnetID *string `json:"serviceRuntimeSubnetId,omitempty"`
+	// AppSubnetID - Fully qualified resource Id of the subnet to host Azure Spring Cloud Apps
+	AppSubnetID *string `json:"appSubnetId,omitempty"`
+	// ServiceCidr - Azure Spring Cloud service reserved CIDR
+	ServiceCidr *string `json:"serviceCidr,omitempty"`
+	// ServiceRuntimeNetworkResourceGroup - Name of the resource group containing network resources of Azure Spring Cloud Service Runtime
+	ServiceRuntimeNetworkResourceGroup *string `json:"serviceRuntimeNetworkResourceGroup,omitempty"`
+	// AppNetworkResourceGroup - Name of the resource group containing network resources of Azure Spring Cloud Apps
+	AppNetworkResourceGroup *string `json:"appNetworkResourceGroup,omitempty"`
+}
+
 // OperationDetail operation detail payload
 type OperationDetail struct {
 	// Name - Name of the operation
 	Name *string `json:"name,omitempty"`
-	// DataAction - Indicates whether the operation is a data action
-	DataAction *bool `json:"dataAction,omitempty"`
+	// IsDataAction - Indicates whether the operation is a data action
+	IsDataAction *bool `json:"isDataAction,omitempty"`
 	// Display - Display of the operation
 	Display *OperationDisplay `json:"display,omitempty"`
 	// Origin - Origin of the operation
@@ -1367,6 +1783,18 @@ type PersistentDisk struct {
 	MountPath *string `json:"mountPath,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PersistentDisk.
+func (pd PersistentDisk) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pd.SizeInGB != nil {
+		objectMap["sizeInGB"] = pd.SizeInGB
+	}
+	if pd.MountPath != nil {
+		objectMap["mountPath"] = pd.MountPath
+	}
+	return json.Marshal(objectMap)
+}
+
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
 // required location and tags.
 type ProxyResource struct {
@@ -1394,6 +1822,231 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// ResourceSku describes an available Azure Spring Cloud SKU.
+type ResourceSku struct {
+	// ResourceType - Gets the type of resource the SKU applies to.
+	ResourceType *string `json:"resourceType,omitempty"`
+	// Name - Gets the name of SKU.
+	Name *string `json:"name,omitempty"`
+	// Tier - Gets the tier of SKU.
+	Tier *string `json:"tier,omitempty"`
+	// Capacity - Gets the capacity of SKU.
+	Capacity *SkuCapacity `json:"capacity,omitempty"`
+	// Locations - Gets the set of locations that the SKU is available.
+	Locations *[]string `json:"locations,omitempty"`
+	// LocationInfo - Gets a list of locations and availability zones in those locations where the SKU is available.
+	LocationInfo *[]ResourceSkuLocationInfo `json:"locationInfo,omitempty"`
+	// Restrictions - Gets the restrictions because of which SKU cannot be used. This is
+	// empty if there are no restrictions.
+	Restrictions *[]ResourceSkuRestrictions `json:"restrictions,omitempty"`
+}
+
+// ResourceSkuCapabilities ...
+type ResourceSkuCapabilities struct {
+	// Name - Gets an invariant to describe the feature.
+	Name *string `json:"name,omitempty"`
+	// Value - Gets an invariant if the feature is measured by quantity.
+	Value *string `json:"value,omitempty"`
+}
+
+// ResourceSkuCollection ...
+type ResourceSkuCollection struct {
+	autorest.Response `json:"-"`
+	// Value - Collection of resource SKU
+	Value *[]ResourceSku `json:"value,omitempty"`
+	// NextLink - URL client should use to fetch the next page (per server side paging).
+	// It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ResourceSkuCollectionIterator provides access to a complete listing of ResourceSku values.
+type ResourceSkuCollectionIterator struct {
+	i    int
+	page ResourceSkuCollectionPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ResourceSkuCollectionIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceSkuCollectionIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ResourceSkuCollectionIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ResourceSkuCollectionIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ResourceSkuCollectionIterator) Response() ResourceSkuCollection {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ResourceSkuCollectionIterator) Value() ResourceSku {
+	if !iter.page.NotDone() {
+		return ResourceSku{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ResourceSkuCollectionIterator type.
+func NewResourceSkuCollectionIterator(page ResourceSkuCollectionPage) ResourceSkuCollectionIterator {
+	return ResourceSkuCollectionIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rsc ResourceSkuCollection) IsEmpty() bool {
+	return rsc.Value == nil || len(*rsc.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (rsc ResourceSkuCollection) hasNextLink() bool {
+	return rsc.NextLink != nil && len(*rsc.NextLink) != 0
+}
+
+// resourceSkuCollectionPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rsc ResourceSkuCollection) resourceSkuCollectionPreparer(ctx context.Context) (*http.Request, error) {
+	if !rsc.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rsc.NextLink)))
+}
+
+// ResourceSkuCollectionPage contains a page of ResourceSku values.
+type ResourceSkuCollectionPage struct {
+	fn  func(context.Context, ResourceSkuCollection) (ResourceSkuCollection, error)
+	rsc ResourceSkuCollection
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ResourceSkuCollectionPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ResourceSkuCollectionPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.rsc)
+		if err != nil {
+			return err
+		}
+		page.rsc = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ResourceSkuCollectionPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ResourceSkuCollectionPage) NotDone() bool {
+	return !page.rsc.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ResourceSkuCollectionPage) Response() ResourceSkuCollection {
+	return page.rsc
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ResourceSkuCollectionPage) Values() []ResourceSku {
+	if page.rsc.IsEmpty() {
+		return nil
+	}
+	return *page.rsc.Value
+}
+
+// Creates a new instance of the ResourceSkuCollectionPage type.
+func NewResourceSkuCollectionPage(getNextPage func(context.Context, ResourceSkuCollection) (ResourceSkuCollection, error)) ResourceSkuCollectionPage {
+	return ResourceSkuCollectionPage{fn: getNextPage}
+}
+
+// ResourceSkuLocationInfo ...
+type ResourceSkuLocationInfo struct {
+	// Location - Gets location of the SKU
+	Location *string `json:"location,omitempty"`
+	// Zones - Gets list of availability zones where the SKU is supported.
+	Zones *[]string `json:"zones,omitempty"`
+	// ZoneDetails - Gets details of capabilities available to a SKU in specific zones.
+	ZoneDetails *[]ResourceSkuZoneDetails `json:"zoneDetails,omitempty"`
+}
+
+// ResourceSkuRestrictionInfo ...
+type ResourceSkuRestrictionInfo struct {
+	// Locations - Gets locations where the SKU is restricted
+	Locations *[]string `json:"locations,omitempty"`
+	// Zones - Gets list of availability zones where the SKU is restricted.
+	Zones *[]string `json:"zones,omitempty"`
+}
+
+// ResourceSkuRestrictions ...
+type ResourceSkuRestrictions struct {
+	// Type - Gets the type of restrictions. Possible values include: 'Location', 'Zone'
+	Type ResourceSkuRestrictionsType `json:"type,omitempty"`
+	// Values - Gets the value of restrictions. If the restriction type is set to
+	// location. This would be different locations where the SKU is restricted.
+	Values *[]string `json:"values,omitempty"`
+	// RestrictionInfo - Gets the information about the restriction where the SKU cannot be used.
+	RestrictionInfo *ResourceSkuRestrictionInfo `json:"restrictionInfo,omitempty"`
+	// ReasonCode - Gets the reason for restriction. Possible values include: 'QuotaId', 'NotAvailableForSubscription'. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
+	ReasonCode ResourceSkuRestrictionsReasonCode `json:"reasonCode,omitempty"`
+}
+
+// ResourceSkuZoneDetails ...
+type ResourceSkuZoneDetails struct {
+	// Name - Gets the set of zones that the SKU is available in with the
+	// specified capabilities.
+	Name *[]string `json:"name,omitempty"`
+	// Capabilities - Gets a list of capabilities that are available for the SKU in the
+	// specified list of zones.
+	Capabilities *[]ResourceSkuCapabilities `json:"capabilities,omitempty"`
+}
+
 // ResourceUploadDefinition resource upload definition payload
 type ResourceUploadDefinition struct {
 	autorest.Response `json:"-"`
@@ -1408,6 +2061,8 @@ type ServiceResource struct {
 	autorest.Response `json:"-"`
 	// Properties - Properties of the Service resource
 	Properties *ClusterResourceProperties `json:"properties,omitempty"`
+	// Sku - Sku of the Service resource
+	Sku *Sku `json:"sku,omitempty"`
 	// Location - The GEO location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the service which is a list of key value pairs that describe the resource.
@@ -1425,6 +2080,9 @@ func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if sr.Properties != nil {
 		objectMap["properties"] = sr.Properties
+	}
+	if sr.Sku != nil {
+		objectMap["sku"] = sr.Sku
 	}
 	if sr.Location != nil {
 		objectMap["location"] = sr.Location
@@ -1513,10 +2171,15 @@ func (srl ServiceResourceList) IsEmpty() bool {
 	return srl.Value == nil || len(*srl.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (srl ServiceResourceList) hasNextLink() bool {
+	return srl.NextLink != nil && len(*srl.NextLink) != 0
+}
+
 // serviceResourceListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (srl ServiceResourceList) serviceResourceListPreparer(ctx context.Context) (*http.Request, error) {
-	if srl.NextLink == nil || len(to.String(srl.NextLink)) < 1 {
+	if !srl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1544,11 +2207,16 @@ func (page *ServiceResourceListPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.srl)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.srl)
+		if err != nil {
+			return err
+		}
+		page.srl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.srl = next
 	return nil
 }
 
@@ -1611,8 +2279,7 @@ func (future *ServicesCreateOrUpdateFuture) Result(client ServicesClient) (sr Se
 	return
 }
 
-// ServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServicesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServicesDeleteFuture struct {
 	azure.Future
 }
@@ -1642,8 +2309,7 @@ type ServiceSpecification struct {
 	MetricSpecifications *[]MetricSpecification `json:"metricSpecifications,omitempty"`
 }
 
-// ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// ServicesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServicesUpdateFuture struct {
 	azure.Future
 }
@@ -1669,6 +2335,28 @@ func (future *ServicesUpdateFuture) Result(client ServicesClient) (sr ServiceRes
 		}
 	}
 	return
+}
+
+// Sku sku of Azure Spring Cloud
+type Sku struct {
+	// Name - Name of the Sku
+	Name *string `json:"name,omitempty"`
+	// Tier - Tier of the Sku
+	Tier *string `json:"tier,omitempty"`
+	// Capacity - Current capacity of the target resource
+	Capacity *int32 `json:"capacity,omitempty"`
+}
+
+// SkuCapacity the SKU capacity
+type SkuCapacity struct {
+	// Minimum - Gets or sets the minimum.
+	Minimum *int32 `json:"minimum,omitempty"`
+	// Maximum - Gets or sets the maximum.
+	Maximum *int32 `json:"maximum,omitempty"`
+	// Default - Gets or sets the default.
+	Default *int32 `json:"default,omitempty"`
+	// ScaleType - Gets or sets the type of the scale. Possible values include: 'SkuScaleTypeNone', 'SkuScaleTypeManual', 'SkuScaleTypeAutomatic'
+	ScaleType SkuScaleType `json:"scaleType,omitempty"`
 }
 
 // TemporaryDisk temporary disk payload
@@ -1704,6 +2392,21 @@ type TraceProperties struct {
 	Enabled *bool `json:"enabled,omitempty"`
 	// AppInsightInstrumentationKey - Target application insight instrumentation key
 	AppInsightInstrumentationKey *string `json:"appInsightInstrumentationKey,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TraceProperties.
+func (tp TraceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tp.Error != nil {
+		objectMap["error"] = tp.Error
+	}
+	if tp.Enabled != nil {
+		objectMap["enabled"] = tp.Enabled
+	}
+	if tp.AppInsightInstrumentationKey != nil {
+		objectMap["appInsightInstrumentationKey"] = tp.AppInsightInstrumentationKey
+	}
+	return json.Marshal(objectMap)
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource.

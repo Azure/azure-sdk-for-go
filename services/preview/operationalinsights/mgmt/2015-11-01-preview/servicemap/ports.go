@@ -144,7 +144,6 @@ func (client PortsClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client PortsClient) GetResponder(resp *http.Response) (result Port, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -252,7 +251,6 @@ func (client PortsClient) GetLivenessSender(req *http.Request) (*http.Response, 
 func (client PortsClient) GetLivenessResponder(resp *http.Response) (result Liveness, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -317,6 +315,9 @@ func (client PortsClient) ListAcceptingProcesses(ctx context.Context, resourceGr
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.PortsClient", "ListAcceptingProcesses", resp, "Failure responding to request")
 	}
+	if result.pc.hasNextLink() && result.pc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -361,7 +362,6 @@ func (client PortsClient) ListAcceptingProcessesSender(req *http.Request) (*http
 func (client PortsClient) ListAcceptingProcessesResponder(resp *http.Response) (result ProcessCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -463,6 +463,9 @@ func (client PortsClient) ListConnections(ctx context.Context, resourceGroupName
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.PortsClient", "ListConnections", resp, "Failure responding to request")
 	}
+	if result.cc.hasNextLink() && result.cc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -507,7 +510,6 @@ func (client PortsClient) ListConnectionsSender(req *http.Request) (*http.Respon
 func (client PortsClient) ListConnectionsResponder(resp *http.Response) (result ConnectionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

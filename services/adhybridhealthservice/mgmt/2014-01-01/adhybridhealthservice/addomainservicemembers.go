@@ -79,6 +79,9 @@ func (client AdDomainServiceMembersClient) List(ctx context.Context, serviceName
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "adhybridhealthservice.AdDomainServiceMembersClient", "List", resp, "Failure responding to request")
 	}
+	if result.asm.hasNextLink() && result.asm.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -125,7 +128,6 @@ func (client AdDomainServiceMembersClient) ListSender(req *http.Request) (*http.
 func (client AdDomainServiceMembersClient) ListResponder(resp *http.Response) (result AddsServiceMembers, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

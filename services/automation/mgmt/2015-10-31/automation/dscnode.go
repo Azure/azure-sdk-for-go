@@ -120,7 +120,6 @@ func (client DscNodeClient) DeleteSender(req *http.Request) (*http.Response, err
 func (client DscNodeClient) DeleteResponder(resp *http.Response) (result DscNode, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -206,7 +205,6 @@ func (client DscNodeClient) GetSender(req *http.Request) (*http.Response, error)
 func (client DscNodeClient) GetResponder(resp *http.Response) (result DscNode, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -256,6 +254,9 @@ func (client DscNodeClient) ListByAutomationAccount(ctx context.Context, resourc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.DscNodeClient", "ListByAutomationAccount", resp, "Failure responding to request")
 	}
+	if result.dnlr.hasNextLink() && result.dnlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -295,7 +296,6 @@ func (client DscNodeClient) ListByAutomationAccountSender(req *http.Request) (*h
 func (client DscNodeClient) ListByAutomationAccountResponder(resp *http.Response) (result DscNodeListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -421,7 +421,6 @@ func (client DscNodeClient) UpdateSender(req *http.Request) (*http.Response, err
 func (client DscNodeClient) UpdateResponder(resp *http.Response) (result DscNode, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

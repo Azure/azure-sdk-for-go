@@ -100,7 +100,6 @@ func (client ReportsClient) GetDevOpsSender(req *http.Request) (*http.Response, 
 func (client ReportsClient) GetDevOpsResponder(resp *http.Response) (result Result, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

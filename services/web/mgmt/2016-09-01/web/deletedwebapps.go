@@ -71,6 +71,9 @@ func (client DeletedWebAppsClient) List(ctx context.Context) (result DeletedWebA
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "web.DeletedWebAppsClient", "List", resp, "Failure responding to request")
 	}
+	if result.dwac.hasNextLink() && result.dwac.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -105,7 +108,6 @@ func (client DeletedWebAppsClient) ListSender(req *http.Request) (*http.Response
 func (client DeletedWebAppsClient) ListResponder(resp *http.Response) (result DeletedWebAppCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

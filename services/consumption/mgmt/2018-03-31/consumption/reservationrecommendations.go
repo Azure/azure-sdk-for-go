@@ -75,6 +75,9 @@ func (client ReservationRecommendationsClient) List(ctx context.Context, filter 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.ReservationRecommendationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.rrlr.hasNextLink() && result.rrlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -112,7 +115,6 @@ func (client ReservationRecommendationsClient) ListSender(req *http.Request) (*h
 func (client ReservationRecommendationsClient) ListResponder(resp *http.Response) (result ReservationRecommendationsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

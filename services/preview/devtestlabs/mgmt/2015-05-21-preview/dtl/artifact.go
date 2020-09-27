@@ -116,7 +116,6 @@ func (client ArtifactClient) GenerateArmTemplateSender(req *http.Request) (*http
 func (client ArtifactClient) GenerateArmTemplateResponder(resp *http.Response) (result ArmTemplateInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -196,7 +195,6 @@ func (client ArtifactClient) GetResourceSender(req *http.Request) (*http.Respons
 func (client ArtifactClient) GetResourceResponder(resp *http.Response) (result Artifact, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -238,6 +236,9 @@ func (client ArtifactClient) List(ctx context.Context, resourceGroupName string,
 	result.rwca, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.ArtifactClient", "List", resp, "Failure responding to request")
+	}
+	if result.rwca.hasNextLink() && result.rwca.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -285,7 +286,6 @@ func (client ArtifactClient) ListSender(req *http.Request) (*http.Response, erro
 func (client ArtifactClient) ListResponder(resp *http.Response) (result ResponseWithContinuationArtifact, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

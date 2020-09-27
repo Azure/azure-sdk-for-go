@@ -73,6 +73,9 @@ func (client AvailableProviderOperationsClient) List(ctx context.Context) (resul
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.AvailableProviderOperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.apo.hasNextLink() && result.apo.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -103,7 +106,6 @@ func (client AvailableProviderOperationsClient) ListSender(req *http.Request) (*
 func (client AvailableProviderOperationsClient) ListResponder(resp *http.Response) (result AvailableProviderOperations, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -80,6 +80,19 @@ type WebhooksClientAPI interface {
 
 var _ WebhooksClientAPI = (*containerregistry.WebhooksClient)(nil)
 
+// AgentPoolsClientAPI contains the set of methods on the AgentPoolsClient type.
+type AgentPoolsClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, agentPool containerregistry.AgentPool) (result containerregistry.AgentPoolsCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string) (result containerregistry.AgentPoolsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string) (result containerregistry.AgentPool, err error)
+	GetQueueStatus(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string) (result containerregistry.AgentPoolQueueStatus, err error)
+	List(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.AgentPoolListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.AgentPoolListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, updateParameters containerregistry.AgentPoolUpdateParameters) (result containerregistry.AgentPoolsUpdateFuture, err error)
+}
+
+var _ AgentPoolsClientAPI = (*containerregistry.AgentPoolsClient)(nil)
+
 // RunsClientAPI contains the set of methods on the RunsClient type.
 type RunsClientAPI interface {
 	Cancel(ctx context.Context, resourceGroupName string, registryName string, runID string) (result containerregistry.RunsCancelFuture, err error)
@@ -97,6 +110,7 @@ type TaskRunsClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun containerregistry.TaskRun) (result containerregistry.TaskRunsCreateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (result containerregistry.TaskRunsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (result containerregistry.TaskRun, err error)
+	GetDetails(ctx context.Context, resourceGroupName string, registryName string, taskRunName string) (result containerregistry.TaskRun, err error)
 	List(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.TaskRunListResultPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, registryName string) (result containerregistry.TaskRunListResultIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters containerregistry.TaskRunUpdateParameters) (result containerregistry.TaskRunsUpdateFuture, err error)

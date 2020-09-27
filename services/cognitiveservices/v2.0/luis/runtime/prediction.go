@@ -137,7 +137,6 @@ func (client PredictionClient) ResolveSender(req *http.Request) (*http.Response,
 func (client PredictionClient) ResolveResponder(resp *http.Response) (result LuisResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

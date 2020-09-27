@@ -71,6 +71,9 @@ func (client OperationsClient) List(ctx context.Context) (result ResourceProvide
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "blockchain.OperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.rpoc.hasNextLink() && result.rpoc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -101,7 +104,6 @@ func (client OperationsClient) ListSender(req *http.Request) (*http.Response, er
 func (client OperationsClient) ListResponder(resp *http.Response) (result ResourceProviderOperationCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

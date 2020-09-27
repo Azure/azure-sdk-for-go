@@ -73,6 +73,9 @@ func (client PaymentMethodsClient) ListByBillingAccountName(ctx context.Context,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PaymentMethodsClient", "ListByBillingAccountName", resp, "Failure responding to request")
 	}
+	if result.pmlr.hasNextLink() && result.pmlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -107,7 +110,6 @@ func (client PaymentMethodsClient) ListByBillingAccountNameSender(req *http.Requ
 func (client PaymentMethodsClient) ListByBillingAccountNameResponder(resp *http.Response) (result PaymentMethodsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -185,6 +187,9 @@ func (client PaymentMethodsClient) ListByBillingProfileName(ctx context.Context,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.PaymentMethodsClient", "ListByBillingProfileName", resp, "Failure responding to request")
 	}
+	if result.pmlr.hasNextLink() && result.pmlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -220,7 +225,6 @@ func (client PaymentMethodsClient) ListByBillingProfileNameSender(req *http.Requ
 func (client PaymentMethodsClient) ListByBillingProfileNameResponder(resp *http.Response) (result PaymentMethodsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

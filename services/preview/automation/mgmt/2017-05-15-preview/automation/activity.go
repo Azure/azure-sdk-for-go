@@ -122,7 +122,6 @@ func (client ActivityClient) GetSender(req *http.Request) (*http.Response, error
 func (client ActivityClient) GetResponder(resp *http.Response) (result Activity, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -172,6 +171,9 @@ func (client ActivityClient) ListByModule(ctx context.Context, resourceGroupName
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.ActivityClient", "ListByModule", resp, "Failure responding to request")
 	}
+	if result.alr.hasNextLink() && result.alr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -209,7 +211,6 @@ func (client ActivityClient) ListByModuleSender(req *http.Request) (*http.Respon
 func (client ActivityClient) ListByModuleResponder(resp *http.Response) (result ActivityListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

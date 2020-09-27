@@ -123,7 +123,6 @@ func (client WatcherClient) CreateOrUpdateSender(req *http.Request) (*http.Respo
 func (client WatcherClient) CreateOrUpdateResponder(resp *http.Response) (result Watcher, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -209,7 +208,6 @@ func (client WatcherClient) DeleteSender(req *http.Request) (*http.Response, err
 func (client WatcherClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -294,7 +292,6 @@ func (client WatcherClient) GetSender(req *http.Request) (*http.Response, error)
 func (client WatcherClient) GetResponder(resp *http.Response) (result Watcher, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -344,6 +341,9 @@ func (client WatcherClient) ListByAutomationAccount(ctx context.Context, resourc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.WatcherClient", "ListByAutomationAccount", resp, "Failure responding to request")
 	}
+	if result.wlr.hasNextLink() && result.wlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -383,7 +383,6 @@ func (client WatcherClient) ListByAutomationAccountSender(req *http.Request) (*h
 func (client WatcherClient) ListByAutomationAccountResponder(resp *http.Response) (result WatcherListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -506,7 +505,6 @@ func (client WatcherClient) StartSender(req *http.Request) (*http.Response, erro
 func (client WatcherClient) StartResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -591,7 +589,6 @@ func (client WatcherClient) StopSender(req *http.Request) (*http.Response, error
 func (client WatcherClient) StopResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -679,7 +676,6 @@ func (client WatcherClient) UpdateSender(req *http.Request) (*http.Response, err
 func (client WatcherClient) UpdateResponder(resp *http.Response) (result Watcher, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

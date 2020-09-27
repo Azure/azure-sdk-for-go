@@ -105,7 +105,6 @@ func (client ListManagementTermListsClient) CreateSender(req *http.Request) (*ht
 func (client ListManagementTermListsClient) CreateResponder(resp *http.Response) (result TermList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -176,7 +175,6 @@ func (client ListManagementTermListsClient) DeleteSender(req *http.Request) (*ht
 func (client ListManagementTermListsClient) DeleteResponder(resp *http.Response) (result String, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -241,7 +239,6 @@ func (client ListManagementTermListsClient) GetAllTermListsSender(req *http.Requ
 func (client ListManagementTermListsClient) GetAllTermListsResponder(resp *http.Response) (result ListTermList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -312,7 +309,6 @@ func (client ListManagementTermListsClient) GetDetailsSender(req *http.Request) 
 func (client ListManagementTermListsClient) GetDetailsResponder(resp *http.Response) (result TermList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -389,7 +385,6 @@ func (client ListManagementTermListsClient) RefreshIndexMethodSender(req *http.R
 func (client ListManagementTermListsClient) RefreshIndexMethodResponder(resp *http.Response) (result RefreshIndex, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -465,7 +460,6 @@ func (client ListManagementTermListsClient) UpdateSender(req *http.Request) (*ht
 func (client ListManagementTermListsClient) UpdateResponder(resp *http.Response) (result TermList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

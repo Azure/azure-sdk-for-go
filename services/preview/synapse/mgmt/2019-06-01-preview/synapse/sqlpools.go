@@ -125,7 +125,6 @@ func (client SQLPoolsClient) CreateSender(req *http.Request) (future SQLPoolsCre
 func (client SQLPoolsClient) CreateResponder(resp *http.Response) (result SQLPool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNotFound),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -213,7 +212,6 @@ func (client SQLPoolsClient) DeleteSender(req *http.Request) (future SQLPoolsDel
 func (client SQLPoolsClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -301,7 +299,6 @@ func (client SQLPoolsClient) GetSender(req *http.Request) (*http.Response, error
 func (client SQLPoolsClient) GetResponder(resp *http.Response) (result SQLPool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -352,6 +349,9 @@ func (client SQLPoolsClient) ListByWorkspace(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolsClient", "ListByWorkspace", resp, "Failure responding to request")
 	}
+	if result.spilr.hasNextLink() && result.spilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -388,7 +388,6 @@ func (client SQLPoolsClient) ListByWorkspaceSender(req *http.Request) (*http.Res
 func (client SQLPoolsClient) ListByWorkspaceResponder(resp *http.Response) (result SQLPoolInfoListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -513,7 +512,6 @@ func (client SQLPoolsClient) PauseSender(req *http.Request) (future SQLPoolsPaus
 func (client SQLPoolsClient) PauseResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -606,7 +604,6 @@ func (client SQLPoolsClient) RenameSender(req *http.Request) (*http.Response, er
 func (client SQLPoolsClient) RenameResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -693,7 +690,6 @@ func (client SQLPoolsClient) ResumeSender(req *http.Request) (future SQLPoolsRes
 func (client SQLPoolsClient) ResumeResponder(resp *http.Response) (result SetObject, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -784,8 +780,7 @@ func (client SQLPoolsClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client SQLPoolsClient) UpdateResponder(resp *http.Response) (result SQLPool, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

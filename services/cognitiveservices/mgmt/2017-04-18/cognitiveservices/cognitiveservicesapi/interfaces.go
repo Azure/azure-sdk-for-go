@@ -64,3 +64,19 @@ type OperationsClientAPI interface {
 }
 
 var _ OperationsClientAPI = (*cognitiveservices.OperationsClient)(nil)
+
+// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
+type PrivateEndpointConnectionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties cognitiveservices.PrivateEndpointConnection) (result cognitiveservices.PrivateEndpointConnection, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result cognitiveservices.PrivateEndpointConnection, err error)
+}
+
+var _ PrivateEndpointConnectionsClientAPI = (*cognitiveservices.PrivateEndpointConnectionsClient)(nil)
+
+// PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
+type PrivateLinkResourcesClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, accountName string) (result cognitiveservices.PrivateLinkResourceListResult, err error)
+}
+
+var _ PrivateLinkResourcesClientAPI = (*cognitiveservices.PrivateLinkResourcesClient)(nil)

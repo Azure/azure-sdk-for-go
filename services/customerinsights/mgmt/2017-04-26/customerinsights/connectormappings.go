@@ -141,7 +141,6 @@ func (client ConnectorMappingsClient) CreateOrUpdateSender(req *http.Request) (*
 func (client ConnectorMappingsClient) CreateOrUpdateResponder(resp *http.Response) (result ConnectorMappingResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -221,7 +220,6 @@ func (client ConnectorMappingsClient) DeleteSender(req *http.Request) (*http.Res
 func (client ConnectorMappingsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -300,7 +298,6 @@ func (client ConnectorMappingsClient) GetSender(req *http.Request) (*http.Respon
 func (client ConnectorMappingsClient) GetResponder(resp *http.Response) (result ConnectorMappingResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -342,6 +339,9 @@ func (client ConnectorMappingsClient) ListByConnector(ctx context.Context, resou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.ConnectorMappingsClient", "ListByConnector", resp, "Failure responding to request")
 	}
+	if result.cmlr.hasNextLink() && result.cmlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -379,7 +379,6 @@ func (client ConnectorMappingsClient) ListByConnectorSender(req *http.Request) (
 func (client ConnectorMappingsClient) ListByConnectorResponder(resp *http.Response) (result ConnectorMappingListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

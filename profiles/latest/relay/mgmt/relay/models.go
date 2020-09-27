@@ -32,9 +32,9 @@ const (
 type AccessRights = original.AccessRights
 
 const (
-	Listen AccessRights = original.Listen
-	Manage AccessRights = original.Manage
-	Send   AccessRights = original.Send
+	Listen        AccessRights = original.Listen
+	Manage        AccessRights = original.Manage
+	SendEnumValue AccessRights = original.SendEnumValue
 )
 
 type KeyType = original.KeyType

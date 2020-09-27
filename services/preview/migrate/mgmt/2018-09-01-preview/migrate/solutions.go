@@ -111,7 +111,6 @@ func (client SolutionsClient) CleanupSolutionDataSender(req *http.Request) (*htt
 func (client SolutionsClient) CleanupSolutionDataResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -192,7 +191,6 @@ func (client SolutionsClient) DeleteSolutionSender(req *http.Request) (*http.Res
 func (client SolutionsClient) DeleteSolutionResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -267,7 +265,6 @@ func (client SolutionsClient) EnumerateSolutionsSender(req *http.Request) (*http
 func (client SolutionsClient) EnumerateSolutionsResponder(resp *http.Response) (result SolutionsCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -345,7 +342,6 @@ func (client SolutionsClient) GetConfigSender(req *http.Request) (*http.Response
 func (client SolutionsClient) GetConfigResponder(resp *http.Response) (result SolutionConfig, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -423,7 +419,6 @@ func (client SolutionsClient) GetSolutionSender(req *http.Request) (*http.Respon
 func (client SolutionsClient) GetSolutionResponder(resp *http.Response) (result Solution, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -508,7 +503,6 @@ func (client SolutionsClient) PatchSolutionSender(req *http.Request) (*http.Resp
 func (client SolutionsClient) PatchSolutionResponder(resp *http.Response) (result Solution, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -592,7 +586,6 @@ func (client SolutionsClient) PutSolutionSender(req *http.Request) (*http.Respon
 func (client SolutionsClient) PutSolutionResponder(resp *http.Response) (result Solution, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

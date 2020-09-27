@@ -131,7 +131,6 @@ func (client AuthorizationPoliciesClient) CreateOrUpdateSender(req *http.Request
 func (client AuthorizationPoliciesClient) CreateOrUpdateResponder(resp *http.Response) (result AuthorizationPolicyResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -209,7 +208,6 @@ func (client AuthorizationPoliciesClient) GetSender(req *http.Request) (*http.Re
 func (client AuthorizationPoliciesClient) GetResponder(resp *http.Response) (result AuthorizationPolicyResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -250,6 +248,9 @@ func (client AuthorizationPoliciesClient) ListByHub(ctx context.Context, resourc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.AuthorizationPoliciesClient", "ListByHub", resp, "Failure responding to request")
 	}
+	if result.aplr.hasNextLink() && result.aplr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -286,7 +287,6 @@ func (client AuthorizationPoliciesClient) ListByHubSender(req *http.Request) (*h
 func (client AuthorizationPoliciesClient) ListByHubResponder(resp *http.Response) (result AuthorizationPolicyListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -401,7 +401,6 @@ func (client AuthorizationPoliciesClient) RegeneratePrimaryKeySender(req *http.R
 func (client AuthorizationPoliciesClient) RegeneratePrimaryKeyResponder(resp *http.Response) (result AuthorizationPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -479,7 +478,6 @@ func (client AuthorizationPoliciesClient) RegenerateSecondaryKeySender(req *http
 func (client AuthorizationPoliciesClient) RegenerateSecondaryKeyResponder(resp *http.Response) (result AuthorizationPolicy, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

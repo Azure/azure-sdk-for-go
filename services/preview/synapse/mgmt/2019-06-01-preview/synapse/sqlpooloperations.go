@@ -87,6 +87,9 @@ func (client SQLPoolOperationsClient) List(ctx context.Context, resourceGroupNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "synapse.SQLPoolOperationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.spbapspolr.hasNextLink() && result.spbapspolr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -124,7 +127,6 @@ func (client SQLPoolOperationsClient) ListSender(req *http.Request) (*http.Respo
 func (client SQLPoolOperationsClient) ListResponder(resp *http.Response) (result SQLPoolBlobAuditingPolicySQLPoolOperationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

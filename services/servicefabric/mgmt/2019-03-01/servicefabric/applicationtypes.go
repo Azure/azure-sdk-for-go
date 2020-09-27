@@ -115,7 +115,6 @@ func (client ApplicationTypesClient) CreateOrUpdateSender(req *http.Request) (*h
 func (client ApplicationTypesClient) CreateOrUpdateResponder(resp *http.Response) (result ApplicationTypeResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -193,7 +192,6 @@ func (client ApplicationTypesClient) DeleteSender(req *http.Request) (future App
 func (client ApplicationTypesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -271,7 +269,6 @@ func (client ApplicationTypesClient) GetSender(req *http.Request) (*http.Respons
 func (client ApplicationTypesClient) GetResponder(resp *http.Response) (result ApplicationTypeResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -348,7 +345,6 @@ func (client ApplicationTypesClient) ListSender(req *http.Request) (*http.Respon
 func (client ApplicationTypesClient) ListResponder(resp *http.Response) (result ApplicationTypeResourceList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

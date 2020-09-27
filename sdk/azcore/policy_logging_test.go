@@ -23,13 +23,16 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse()
-	pl := NewPipeline(srv, NewRequestLogPolicy(RequestLogOptions{}))
-	req := NewRequest(http.MethodGet, srv.URL())
+	pl := NewPipeline(srv, NewRequestLogPolicy(nil))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 	qp := req.URL.Query()
 	qp.Set("one", "fish")
 	qp.Set("sig", "redact")
 	req.URL.RawQuery = qp.Encode()
-	resp, err := pl.Do(context.Background(), req)
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -73,11 +76,14 @@ func TestPolicyLoggingError(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetError(errors.New("bogus error"))
-	pl := NewPipeline(srv, NewRequestLogPolicy(RequestLogOptions{}))
-	req := NewRequest(http.MethodGet, srv.URL())
+	pl := NewPipeline(srv, NewRequestLogPolicy(nil))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 	req.Header.Add("header", "one")
 	req.Header.Add("Authorization", "redact")
-	resp, err := pl.Do(context.Background(), req)
+	resp, err := pl.Do(req)
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -95,8 +101,8 @@ func TestPolicyLoggingError(t *testing.T) {
 	} else {
 		t.Fatal("missing LogRequest")
 	}
-	if logError, ok := log[LogError]; ok {
-		// Error ==> REQUEST/RESPONSE (Try=1/0s, OpTime=0s) -- REQUEST ERROR
+	if logResponse, ok := log[LogResponse]; ok {
+		// Response ==> REQUEST/RESPONSE (Try=1/0s, OpTime=0s) -- REQUEST ERROR
 		// 	GET http://127.0.0.1:50057
 		// 	Authorization: REDACTED
 		// 	Header: [one]
@@ -104,15 +110,13 @@ func TestPolicyLoggingError(t *testing.T) {
 		// 	ERROR:
 		// 	bogus error
 		// 	 ...stack track...
-		if !strings.Contains(logError, "Authorization: REDACTED") {
+		if !strings.Contains(logResponse, "Authorization: REDACTED") {
 			t.Fatal("missing redacted authorization header")
 		}
-		if !strings.Contains(logError, "bogus error") {
+		if !strings.Contains(logResponse, "bogus error") {
 			t.Fatal("missing error message")
 		}
 	} else {
-		t.Fatal("missing LogError")
+		t.Fatal("missing LogResponse")
 	}
 }
-
-// TODO: add test for slow response

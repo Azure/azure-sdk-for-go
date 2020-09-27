@@ -114,7 +114,6 @@ func (client ServicePrefixesClient) CreateOrUpdateSender(req *http.Request) (*ht
 func (client ServicePrefixesClient) CreateOrUpdateResponder(resp *http.Response) (result ServicePrefix, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -192,7 +191,6 @@ func (client ServicePrefixesClient) DeleteSender(req *http.Request) (*http.Respo
 func (client ServicePrefixesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -269,7 +267,6 @@ func (client ServicePrefixesClient) GetSender(req *http.Request) (*http.Response
 func (client ServicePrefixesClient) GetResponder(resp *http.Response) (result ServicePrefix, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

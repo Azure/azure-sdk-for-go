@@ -113,7 +113,6 @@ func (client WidgetTypesClient) GetSender(req *http.Request) (*http.Response, er
 func (client WidgetTypesClient) GetResponder(resp *http.Response) (result WidgetTypeResourceFormat, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -154,6 +153,9 @@ func (client WidgetTypesClient) ListByHub(ctx context.Context, resourceGroupName
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "customerinsights.WidgetTypesClient", "ListByHub", resp, "Failure responding to request")
 	}
+	if result.wtlr.hasNextLink() && result.wtlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -190,7 +192,6 @@ func (client WidgetTypesClient) ListByHubSender(req *http.Request) (*http.Respon
 func (client WidgetTypesClient) ListByHubResponder(resp *http.Response) (result WidgetTypeListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

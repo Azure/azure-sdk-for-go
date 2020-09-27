@@ -22,11 +22,32 @@ package subscriptions
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-06-01/subscriptions"
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-11-01/subscriptions"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type RegionCategory = original.RegionCategory
+
+const (
+	Other       RegionCategory = original.Other
+	Recommended RegionCategory = original.Recommended
+)
+
+type RegionType = original.RegionType
+
+const (
+	Logical  RegionType = original.Logical
+	Physical RegionType = original.Physical
+)
+
+type ResourceNameStatus = original.ResourceNameStatus
+
+const (
+	Allowed  ResourceNameStatus = original.Allowed
+	Reserved ResourceNameStatus = original.Reserved
 )
 
 type SpendingLimit = original.SpendingLimit
@@ -56,12 +77,16 @@ const (
 )
 
 type BaseClient = original.BaseClient
+type CheckResourceNameResult = original.CheckResourceNameResult
 type Client = original.Client
+type ErrorDefinition = original.ErrorDefinition
+type ErrorResponse = original.ErrorResponse
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
 type Location = original.Location
 type LocationListResult = original.LocationListResult
+type LocationMetadata = original.LocationMetadata
 type ManagedByTenant = original.ManagedByTenant
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -69,7 +94,9 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type PairedRegion = original.PairedRegion
 type Policies = original.Policies
+type ResourceName = original.ResourceName
 type Subscription = original.Subscription
 type TenantIDDescription = original.TenantIDDescription
 type TenantListResult = original.TenantListResult
@@ -118,6 +145,15 @@ func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func PossibleRegionCategoryValues() []RegionCategory {
+	return original.PossibleRegionCategoryValues()
+}
+func PossibleRegionTypeValues() []RegionType {
+	return original.PossibleRegionTypeValues()
+}
+func PossibleResourceNameStatusValues() []ResourceNameStatus {
+	return original.PossibleResourceNameStatusValues()
 }
 func PossibleSpendingLimitValues() []SpendingLimit {
 	return original.PossibleSpendingLimitValues()

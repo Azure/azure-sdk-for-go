@@ -206,6 +206,15 @@ const (
 	PartnerTopicProvisioningStateUpdating  PartnerTopicProvisioningState = original.PartnerTopicProvisioningStateUpdating
 )
 
+type PartnerTopicReadinessState = original.PartnerTopicReadinessState
+
+const (
+	ActivatedByUser       PartnerTopicReadinessState = original.ActivatedByUser
+	DeactivatedByUser     PartnerTopicReadinessState = original.DeactivatedByUser
+	DeletedByUser         PartnerTopicReadinessState = original.DeletedByUser
+	NotActivatedByUserYet PartnerTopicReadinessState = original.NotActivatedByUserYet
+)
+
 type PartnerTopicTypeAuthorizationState = original.PartnerTopicTypeAuthorizationState
 
 const (
@@ -313,9 +322,11 @@ type DomainsListResultPage = original.DomainsListResultPage
 type DomainsUpdateFuture = original.DomainsUpdateFuture
 type EventChannel = original.EventChannel
 type EventChannelDestination = original.EventChannelDestination
+type EventChannelFilter = original.EventChannelFilter
 type EventChannelProperties = original.EventChannelProperties
 type EventChannelSource = original.EventChannelSource
 type EventChannelsClient = original.EventChannelsClient
+type EventChannelsDeleteFuture = original.EventChannelsDeleteFuture
 type EventChannelsListResult = original.EventChannelsListResult
 type EventChannelsListResultIterator = original.EventChannelsListResultIterator
 type EventChannelsListResultPage = original.EventChannelsListResultPage
@@ -417,8 +428,6 @@ type ServiceBusQueueEventSubscriptionDestination = original.ServiceBusQueueEvent
 type ServiceBusQueueEventSubscriptionDestinationProperties = original.ServiceBusQueueEventSubscriptionDestinationProperties
 type ServiceBusTopicEventSubscriptionDestination = original.ServiceBusTopicEventSubscriptionDestination
 type ServiceBusTopicEventSubscriptionDestinationProperties = original.ServiceBusTopicEventSubscriptionDestinationProperties
-type SkuDefinitionsForResourceType = original.SkuDefinitionsForResourceType
-type SkuDefinitionsForResourceTypeListResult = original.SkuDefinitionsForResourceTypeListResult
 type StorageBlobDeadLetterDestination = original.StorageBlobDeadLetterDestination
 type StorageBlobDeadLetterDestinationProperties = original.StorageBlobDeadLetterDestinationProperties
 type StorageQueueEventSubscriptionDestination = original.StorageQueueEventSubscriptionDestination
@@ -685,6 +694,9 @@ func PossiblePartnerTopicActivationStateValues() []PartnerTopicActivationState {
 }
 func PossiblePartnerTopicProvisioningStateValues() []PartnerTopicProvisioningState {
 	return original.PossiblePartnerTopicProvisioningStateValues()
+}
+func PossiblePartnerTopicReadinessStateValues() []PartnerTopicReadinessState {
+	return original.PossiblePartnerTopicReadinessStateValues()
 }
 func PossiblePartnerTopicTypeAuthorizationStateValues() []PartnerTopicTypeAuthorizationState {
 	return original.PossiblePartnerTopicTypeAuthorizationStateValues()

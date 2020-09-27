@@ -138,7 +138,6 @@ func (client BackupsClient) CloneSender(req *http.Request) (future BackupsCloneF
 func (client BackupsClient) CloneResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -224,7 +223,6 @@ func (client BackupsClient) DeleteSender(req *http.Request) (future BackupsDelet
 func (client BackupsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -273,6 +271,9 @@ func (client BackupsClient) ListByDevice(ctx context.Context, deviceName string,
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "ListByDevice", resp, "Failure responding to request")
 	}
+	if result.bl.hasNextLink() && result.bl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -313,7 +314,6 @@ func (client BackupsClient) ListByDeviceSender(req *http.Request) (*http.Respons
 func (client BackupsClient) ListByDeviceResponder(resp *http.Response) (result BackupList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -437,7 +437,6 @@ func (client BackupsClient) RestoreSender(req *http.Request) (future BackupsRest
 func (client BackupsClient) RestoreResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp

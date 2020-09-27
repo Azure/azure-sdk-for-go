@@ -121,7 +121,6 @@ func (client IscsiServersClient) BackupNowSender(req *http.Request) (future Iscs
 func (client IscsiServersClient) BackupNowResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -215,7 +214,6 @@ func (client IscsiServersClient) CreateOrUpdateSender(req *http.Request) (future
 func (client IscsiServersClient) CreateOrUpdateResponder(resp *http.Response) (result ISCSIServer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -302,7 +300,6 @@ func (client IscsiServersClient) DeleteSender(req *http.Request) (future IscsiSe
 func (client IscsiServersClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -388,7 +385,6 @@ func (client IscsiServersClient) GetSender(req *http.Request) (*http.Response, e
 func (client IscsiServersClient) GetResponder(resp *http.Response) (result ISCSIServer, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -473,7 +469,6 @@ func (client IscsiServersClient) ListByDeviceSender(req *http.Request) (*http.Re
 func (client IscsiServersClient) ListByDeviceResponder(resp *http.Response) (result ISCSIServerList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -556,7 +551,6 @@ func (client IscsiServersClient) ListByManagerSender(req *http.Request) (*http.R
 func (client IscsiServersClient) ListByManagerResponder(resp *http.Response) (result ISCSIServerList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -643,7 +637,6 @@ func (client IscsiServersClient) ListMetricDefinitionSender(req *http.Request) (
 func (client IscsiServersClient) ListMetricDefinitionResponder(resp *http.Response) (result MetricDefinitionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -734,7 +727,6 @@ func (client IscsiServersClient) ListMetricsSender(req *http.Request) (*http.Res
 func (client IscsiServersClient) ListMetricsResponder(resp *http.Response) (result MetricList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

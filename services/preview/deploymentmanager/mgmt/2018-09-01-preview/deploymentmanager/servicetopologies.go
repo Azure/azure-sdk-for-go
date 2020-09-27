@@ -125,7 +125,6 @@ func (client ServiceTopologiesClient) CreateOrUpdateSender(req *http.Request) (*
 func (client ServiceTopologiesClient) CreateOrUpdateResponder(resp *http.Response) (result ServiceTopologyResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -209,7 +208,6 @@ func (client ServiceTopologiesClient) DeleteSender(req *http.Request) (*http.Res
 func (client ServiceTopologiesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -292,7 +290,6 @@ func (client ServiceTopologiesClient) GetSender(req *http.Request) (*http.Respon
 func (client ServiceTopologiesClient) GetResponder(resp *http.Response) (result ServiceTopologyResource, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

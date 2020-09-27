@@ -114,7 +114,6 @@ func (client GalleryImagesClient) CreateOrUpdateSender(req *http.Request) (*http
 func (client GalleryImagesClient) CreateOrUpdateResponder(resp *http.Response) (result GalleryImage, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -192,7 +191,6 @@ func (client GalleryImagesClient) DeleteSender(req *http.Request) (*http.Respons
 func (client GalleryImagesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -273,7 +271,6 @@ func (client GalleryImagesClient) GetSender(req *http.Request) (*http.Response, 
 func (client GalleryImagesClient) GetResponder(resp *http.Response) (result GalleryImage, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -317,6 +314,9 @@ func (client GalleryImagesClient) List(ctx context.Context, resourceGroupName st
 	result.rwcgi, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "labservices.GalleryImagesClient", "List", resp, "Failure responding to request")
+	}
+	if result.rwcgi.hasNextLink() && result.rwcgi.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -366,7 +366,6 @@ func (client GalleryImagesClient) ListSender(req *http.Request) (*http.Response,
 func (client GalleryImagesClient) ListResponder(resp *http.Response) (result ResponseWithContinuationGalleryImage, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -484,7 +483,6 @@ func (client GalleryImagesClient) UpdateSender(req *http.Request) (*http.Respons
 func (client GalleryImagesClient) UpdateResponder(resp *http.Response) (result GalleryImage, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

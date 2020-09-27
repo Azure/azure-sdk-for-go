@@ -32,249 +32,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2018-08-15-preview/timeseriesinsights"
 
-// AccessPolicyRole enumerates the values for access policy role.
-type AccessPolicyRole string
-
-const (
-	// Contributor ...
-	Contributor AccessPolicyRole = "Contributor"
-	// Reader ...
-	Reader AccessPolicyRole = "Reader"
-)
-
-// PossibleAccessPolicyRoleValues returns an array of possible values for the AccessPolicyRole const type.
-func PossibleAccessPolicyRoleValues() []AccessPolicyRole {
-	return []AccessPolicyRole{Contributor, Reader}
-}
-
-// DataStringComparisonBehavior enumerates the values for data string comparison behavior.
-type DataStringComparisonBehavior string
-
-const (
-	// Ordinal ...
-	Ordinal DataStringComparisonBehavior = "Ordinal"
-	// OrdinalIgnoreCase ...
-	OrdinalIgnoreCase DataStringComparisonBehavior = "OrdinalIgnoreCase"
-)
-
-// PossibleDataStringComparisonBehaviorValues returns an array of possible values for the DataStringComparisonBehavior const type.
-func PossibleDataStringComparisonBehaviorValues() []DataStringComparisonBehavior {
-	return []DataStringComparisonBehavior{Ordinal, OrdinalIgnoreCase}
-}
-
-// IngressState enumerates the values for ingress state.
-type IngressState string
-
-const (
-	// Disabled ...
-	Disabled IngressState = "Disabled"
-	// Paused ...
-	Paused IngressState = "Paused"
-	// Ready ...
-	Ready IngressState = "Ready"
-	// Running ...
-	Running IngressState = "Running"
-	// Unknown ...
-	Unknown IngressState = "Unknown"
-)
-
-// PossibleIngressStateValues returns an array of possible values for the IngressState const type.
-func PossibleIngressStateValues() []IngressState {
-	return []IngressState{Disabled, Paused, Ready, Running, Unknown}
-}
-
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// KindEnvironmentCreateOrUpdateParameters ...
-	KindEnvironmentCreateOrUpdateParameters Kind = "EnvironmentCreateOrUpdateParameters"
-	// KindLongTerm ...
-	KindLongTerm Kind = "LongTerm"
-	// KindStandard ...
-	KindStandard Kind = "Standard"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{KindEnvironmentCreateOrUpdateParameters, KindLongTerm, KindStandard}
-}
-
-// KindBasicEnvironmentResource enumerates the values for kind basic environment resource.
-type KindBasicEnvironmentResource string
-
-const (
-	// KindBasicEnvironmentResourceKindEnvironmentResource ...
-	KindBasicEnvironmentResourceKindEnvironmentResource KindBasicEnvironmentResource = "EnvironmentResource"
-	// KindBasicEnvironmentResourceKindLongTerm ...
-	KindBasicEnvironmentResourceKindLongTerm KindBasicEnvironmentResource = "LongTerm"
-	// KindBasicEnvironmentResourceKindStandard ...
-	KindBasicEnvironmentResourceKindStandard KindBasicEnvironmentResource = "Standard"
-)
-
-// PossibleKindBasicEnvironmentResourceValues returns an array of possible values for the KindBasicEnvironmentResource const type.
-func PossibleKindBasicEnvironmentResourceValues() []KindBasicEnvironmentResource {
-	return []KindBasicEnvironmentResource{KindBasicEnvironmentResourceKindEnvironmentResource, KindBasicEnvironmentResourceKindLongTerm, KindBasicEnvironmentResourceKindStandard}
-}
-
-// KindBasicEventSourceCreateOrUpdateParameters enumerates the values for kind basic event source create or
-// update parameters.
-type KindBasicEventSourceCreateOrUpdateParameters string
-
-const (
-	// KindEventSourceCreateOrUpdateParameters ...
-	KindEventSourceCreateOrUpdateParameters KindBasicEventSourceCreateOrUpdateParameters = "EventSourceCreateOrUpdateParameters"
-	// KindMicrosoftEventHub ...
-	KindMicrosoftEventHub KindBasicEventSourceCreateOrUpdateParameters = "Microsoft.EventHub"
-	// KindMicrosoftIoTHub ...
-	KindMicrosoftIoTHub KindBasicEventSourceCreateOrUpdateParameters = "Microsoft.IoTHub"
-)
-
-// PossibleKindBasicEventSourceCreateOrUpdateParametersValues returns an array of possible values for the KindBasicEventSourceCreateOrUpdateParameters const type.
-func PossibleKindBasicEventSourceCreateOrUpdateParametersValues() []KindBasicEventSourceCreateOrUpdateParameters {
-	return []KindBasicEventSourceCreateOrUpdateParameters{KindEventSourceCreateOrUpdateParameters, KindMicrosoftEventHub, KindMicrosoftIoTHub}
-}
-
-// KindBasicEventSourceResource enumerates the values for kind basic event source resource.
-type KindBasicEventSourceResource string
-
-const (
-	// KindBasicEventSourceResourceKindEventSourceResource ...
-	KindBasicEventSourceResourceKindEventSourceResource KindBasicEventSourceResource = "EventSourceResource"
-	// KindBasicEventSourceResourceKindMicrosoftEventHub ...
-	KindBasicEventSourceResourceKindMicrosoftEventHub KindBasicEventSourceResource = "Microsoft.EventHub"
-	// KindBasicEventSourceResourceKindMicrosoftIotHub ...
-	KindBasicEventSourceResourceKindMicrosoftIotHub KindBasicEventSourceResource = "Microsoft.IotHub"
-)
-
-// PossibleKindBasicEventSourceResourceValues returns an array of possible values for the KindBasicEventSourceResource const type.
-func PossibleKindBasicEventSourceResourceValues() []KindBasicEventSourceResource {
-	return []KindBasicEventSourceResource{KindBasicEventSourceResourceKindEventSourceResource, KindBasicEventSourceResourceKindMicrosoftEventHub, KindBasicEventSourceResourceKindMicrosoftIotHub}
-}
-
-// LocalTimestampFormat enumerates the values for local timestamp format.
-type LocalTimestampFormat string
-
-const (
-	// Embedded ...
-	Embedded LocalTimestampFormat = "Embedded"
-	// Iana ...
-	Iana LocalTimestampFormat = "Iana"
-	// TimeSpan ...
-	TimeSpan LocalTimestampFormat = "TimeSpan"
-)
-
-// PossibleLocalTimestampFormatValues returns an array of possible values for the LocalTimestampFormat const type.
-func PossibleLocalTimestampFormatValues() []LocalTimestampFormat {
-	return []LocalTimestampFormat{Embedded, Iana, TimeSpan}
-}
-
-// PropertyType enumerates the values for property type.
-type PropertyType string
-
-const (
-	// String ...
-	String PropertyType = "String"
-)
-
-// PossiblePropertyTypeValues returns an array of possible values for the PropertyType const type.
-func PossiblePropertyTypeValues() []PropertyType {
-	return []PropertyType{String}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// Accepted ...
-	Accepted ProvisioningState = "Accepted"
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Accepted, Creating, Deleting, Failed, Succeeded, Updating}
-}
-
-// ReferenceDataKeyPropertyType enumerates the values for reference data key property type.
-type ReferenceDataKeyPropertyType string
-
-const (
-	// ReferenceDataKeyPropertyTypeBool ...
-	ReferenceDataKeyPropertyTypeBool ReferenceDataKeyPropertyType = "Bool"
-	// ReferenceDataKeyPropertyTypeDateTime ...
-	ReferenceDataKeyPropertyTypeDateTime ReferenceDataKeyPropertyType = "DateTime"
-	// ReferenceDataKeyPropertyTypeDouble ...
-	ReferenceDataKeyPropertyTypeDouble ReferenceDataKeyPropertyType = "Double"
-	// ReferenceDataKeyPropertyTypeString ...
-	ReferenceDataKeyPropertyTypeString ReferenceDataKeyPropertyType = "String"
-)
-
-// PossibleReferenceDataKeyPropertyTypeValues returns an array of possible values for the ReferenceDataKeyPropertyType const type.
-func PossibleReferenceDataKeyPropertyTypeValues() []ReferenceDataKeyPropertyType {
-	return []ReferenceDataKeyPropertyType{ReferenceDataKeyPropertyTypeBool, ReferenceDataKeyPropertyTypeDateTime, ReferenceDataKeyPropertyTypeDouble, ReferenceDataKeyPropertyTypeString}
-}
-
-// SkuName enumerates the values for sku name.
-type SkuName string
-
-const (
-	// L1 ...
-	L1 SkuName = "L1"
-	// P1 ...
-	P1 SkuName = "P1"
-	// S1 ...
-	S1 SkuName = "S1"
-	// S2 ...
-	S2 SkuName = "S2"
-)
-
-// PossibleSkuNameValues returns an array of possible values for the SkuName const type.
-func PossibleSkuNameValues() []SkuName {
-	return []SkuName{L1, P1, S1, S2}
-}
-
-// StorageLimitExceededBehavior enumerates the values for storage limit exceeded behavior.
-type StorageLimitExceededBehavior string
-
-const (
-	// PauseIngress ...
-	PauseIngress StorageLimitExceededBehavior = "PauseIngress"
-	// PurgeOldData ...
-	PurgeOldData StorageLimitExceededBehavior = "PurgeOldData"
-)
-
-// PossibleStorageLimitExceededBehaviorValues returns an array of possible values for the StorageLimitExceededBehavior const type.
-func PossibleStorageLimitExceededBehaviorValues() []StorageLimitExceededBehavior {
-	return []StorageLimitExceededBehavior{PauseIngress, PurgeOldData}
-}
-
-// WarmStoragePropertiesState enumerates the values for warm storage properties state.
-type WarmStoragePropertiesState string
-
-const (
-	// WarmStoragePropertiesStateError ...
-	WarmStoragePropertiesStateError WarmStoragePropertiesState = "Error"
-	// WarmStoragePropertiesStateOk ...
-	WarmStoragePropertiesStateOk WarmStoragePropertiesState = "Ok"
-	// WarmStoragePropertiesStateUnknown ...
-	WarmStoragePropertiesStateUnknown WarmStoragePropertiesState = "Unknown"
-)
-
-// PossibleWarmStoragePropertiesStateValues returns an array of possible values for the WarmStoragePropertiesState const type.
-func PossibleWarmStoragePropertiesStateValues() []WarmStoragePropertiesState {
-	return []WarmStoragePropertiesState{WarmStoragePropertiesStateError, WarmStoragePropertiesStateOk, WarmStoragePropertiesStateUnknown}
-}
-
 // AccessPolicyCreateOrUpdateParameters ...
 type AccessPolicyCreateOrUpdateParameters struct {
 	*AccessPolicyResourceProperties `json:"properties,omitempty"`
@@ -320,8 +77,7 @@ type AccessPolicyListResponse struct {
 	Value *[]AccessPolicyResource `json:"value,omitempty"`
 }
 
-// AccessPolicyMutableProperties an object that represents a set of mutable access policy resource
-// properties.
+// AccessPolicyMutableProperties an object that represents a set of mutable access policy resource properties.
 type AccessPolicyMutableProperties struct {
 	// Description - An description of the access policy.
 	Description *string `json:"description,omitempty"`
@@ -451,8 +207,7 @@ func (apup *AccessPolicyUpdateParameters) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AzureEventSourceProperties properties of an event source that reads events from an event broker in
-// Azure.
+// AzureEventSourceProperties properties of an event source that reads events from an event broker in Azure.
 type AzureEventSourceProperties struct {
 	// EventSourceResourceID - The resource id of the event source in Azure Resource Manager.
 	EventSourceResourceID *string `json:"eventSourceResourceId,omitempty"`
@@ -462,6 +217,21 @@ type AzureEventSourceProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureEventSourceProperties.
+func (aesp AzureEventSourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aesp.EventSourceResourceID != nil {
+		objectMap["eventSourceResourceId"] = aesp.EventSourceResourceID
+	}
+	if aesp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = aesp.TimestampPropertyName
+	}
+	if aesp.ProvisioningState != "" {
+		objectMap["provisioningState"] = aesp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
 }
 
 // CloudError contains information about an API error.
@@ -482,8 +252,8 @@ type CloudErrorBody struct {
 	Details *[]CloudErrorBody `json:"details,omitempty"`
 }
 
-// CreateOrUpdateTrackedResourceProperties properties required to create any resource tracked by Azure
-// Resource Manager.
+// CreateOrUpdateTrackedResourceProperties properties required to create any resource tracked by Azure Resource
+// Manager.
 type CreateOrUpdateTrackedResourceProperties struct {
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -771,8 +541,20 @@ type EnvironmentResourceProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
-// EnvironmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// MarshalJSON is the custom marshaler for EnvironmentResourceProperties.
+func (erp EnvironmentResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if erp.Status != nil {
+		objectMap["status"] = erp.Status
+	}
+	if erp.ProvisioningState != "" {
+		objectMap["provisioningState"] = erp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
+// EnvironmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type EnvironmentsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -881,10 +663,39 @@ type EventHubEventSourceCommonProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EventHubEventSourceCommonProperties.
+func (ehescp EventHubEventSourceCommonProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ehescp.ServiceBusNamespace != nil {
+		objectMap["serviceBusNamespace"] = ehescp.ServiceBusNamespace
+	}
+	if ehescp.EventHubName != nil {
+		objectMap["eventHubName"] = ehescp.EventHubName
+	}
+	if ehescp.ConsumerGroupName != nil {
+		objectMap["consumerGroupName"] = ehescp.ConsumerGroupName
+	}
+	if ehescp.KeyName != nil {
+		objectMap["keyName"] = ehescp.KeyName
+	}
+	if ehescp.EventSourceResourceID != nil {
+		objectMap["eventSourceResourceId"] = ehescp.EventSourceResourceID
+	}
+	if ehescp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = ehescp.TimestampPropertyName
+	}
+	if ehescp.ProvisioningState != "" {
+		objectMap["provisioningState"] = ehescp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
 // EventHubEventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source
 // operation for an EventHub event source.
 type EventHubEventSourceCreateOrUpdateParameters struct {
 	*EventHubEventSourceCreationProperties `json:"properties,omitempty"`
+	// LocalTimestamp - An object that represents the local timestamp property. It contains the format of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
+	LocalTimestamp *LocalTimestamp `json:"localTimestamp,omitempty"`
 	// Location - The location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Key-value pairs of additional properties for the resource.
@@ -899,6 +710,9 @@ func (ehescoup EventHubEventSourceCreateOrUpdateParameters) MarshalJSON() ([]byt
 	objectMap := make(map[string]interface{})
 	if ehescoup.EventHubEventSourceCreationProperties != nil {
 		objectMap["properties"] = ehescoup.EventHubEventSourceCreationProperties
+	}
+	if ehescoup.LocalTimestamp != nil {
+		objectMap["localTimestamp"] = ehescoup.LocalTimestamp
 	}
 	if ehescoup.Kind != "" {
 		objectMap["kind"] = ehescoup.Kind
@@ -950,6 +764,15 @@ func (ehescoup *EventHubEventSourceCreateOrUpdateParameters) UnmarshalJSON(body 
 				}
 				ehescoup.EventHubEventSourceCreationProperties = &eventHubEventSourceCreationProperties
 			}
+		case "localTimestamp":
+			if v != nil {
+				var localTimestamp LocalTimestamp
+				err = json.Unmarshal(*v, &localTimestamp)
+				if err != nil {
+					return err
+				}
+				ehescoup.LocalTimestamp = &localTimestamp
+			}
 		case "kind":
 			if v != nil {
 				var kind KindBasicEventSourceCreateOrUpdateParameters
@@ -983,8 +806,8 @@ func (ehescoup *EventHubEventSourceCreateOrUpdateParameters) UnmarshalJSON(body 
 	return nil
 }
 
-// EventHubEventSourceCreationProperties properties of the EventHub event source that are required on
-// create or update requests.
+// EventHubEventSourceCreationProperties properties of the EventHub event source that are required on create or
+// update requests.
 type EventHubEventSourceCreationProperties struct {
 	// SharedAccessKey - The value of the shared access key that grants the Time Series Insights service read access to the event hub. This property is not shown in event source responses.
 	SharedAccessKey *string `json:"sharedAccessKey,omitempty"`
@@ -1004,6 +827,36 @@ type EventHubEventSourceCreationProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EventHubEventSourceCreationProperties.
+func (ehescp EventHubEventSourceCreationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ehescp.SharedAccessKey != nil {
+		objectMap["sharedAccessKey"] = ehescp.SharedAccessKey
+	}
+	if ehescp.ServiceBusNamespace != nil {
+		objectMap["serviceBusNamespace"] = ehescp.ServiceBusNamespace
+	}
+	if ehescp.EventHubName != nil {
+		objectMap["eventHubName"] = ehescp.EventHubName
+	}
+	if ehescp.ConsumerGroupName != nil {
+		objectMap["consumerGroupName"] = ehescp.ConsumerGroupName
+	}
+	if ehescp.KeyName != nil {
+		objectMap["keyName"] = ehescp.KeyName
+	}
+	if ehescp.EventSourceResourceID != nil {
+		objectMap["eventSourceResourceId"] = ehescp.EventSourceResourceID
+	}
+	if ehescp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = ehescp.TimestampPropertyName
+	}
+	if ehescp.ProvisioningState != "" {
+		objectMap["provisioningState"] = ehescp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
 }
 
 // EventHubEventSourceMutableProperties an object that represents a set of mutable EventHub event source
@@ -1030,7 +883,7 @@ type EventHubEventSourceResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
-	// Kind - Possible values include: 'KindBasicEventSourceResourceKindEventSourceResource', 'KindBasicEventSourceResourceKindMicrosoftEventHub', 'KindBasicEventSourceResourceKindMicrosoftIotHub'
+	// Kind - Possible values include: 'KindBasicEventSourceResourceKindEventSourceResource', 'KindBasicEventSourceResourceKindMicrosoftEventHub', 'KindBasicEventSourceResourceKindMicrosoftIoTHub'
 	Kind KindBasicEventSourceResource `json:"kind,omitempty"`
 }
 
@@ -1171,8 +1024,35 @@ type EventHubEventSourceResourceProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
-// EventHubEventSourceUpdateParameters parameters supplied to the Update Event Source operation to update
-// an EventHub event source.
+// MarshalJSON is the custom marshaler for EventHubEventSourceResourceProperties.
+func (ehesrp EventHubEventSourceResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ehesrp.ServiceBusNamespace != nil {
+		objectMap["serviceBusNamespace"] = ehesrp.ServiceBusNamespace
+	}
+	if ehesrp.EventHubName != nil {
+		objectMap["eventHubName"] = ehesrp.EventHubName
+	}
+	if ehesrp.ConsumerGroupName != nil {
+		objectMap["consumerGroupName"] = ehesrp.ConsumerGroupName
+	}
+	if ehesrp.KeyName != nil {
+		objectMap["keyName"] = ehesrp.KeyName
+	}
+	if ehesrp.EventSourceResourceID != nil {
+		objectMap["eventSourceResourceId"] = ehesrp.EventSourceResourceID
+	}
+	if ehesrp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = ehesrp.TimestampPropertyName
+	}
+	if ehesrp.ProvisioningState != "" {
+		objectMap["provisioningState"] = ehesrp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
+// EventHubEventSourceUpdateParameters parameters supplied to the Update Event Source operation to update an
+// EventHub event source.
 type EventHubEventSourceUpdateParameters struct {
 	// EventHubEventSourceMutableProperties - Properties of the EventHub event source.
 	*EventHubEventSourceMutableProperties `json:"properties,omitempty"`
@@ -1235,6 +1115,18 @@ type EventSourceCommonProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EventSourceCommonProperties.
+func (escp EventSourceCommonProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if escp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = escp.TimestampPropertyName
+	}
+	if escp.ProvisioningState != "" {
+		objectMap["provisioningState"] = escp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
 // BasicEventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source operation.
 type BasicEventSourceCreateOrUpdateParameters interface {
 	AsEventHubEventSourceCreateOrUpdateParameters() (*EventHubEventSourceCreateOrUpdateParameters, bool)
@@ -1244,6 +1136,8 @@ type BasicEventSourceCreateOrUpdateParameters interface {
 
 // EventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source operation.
 type EventSourceCreateOrUpdateParameters struct {
+	// LocalTimestamp - An object that represents the local timestamp property. It contains the format of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
+	LocalTimestamp *LocalTimestamp `json:"localTimestamp,omitempty"`
 	// Kind - Possible values include: 'KindEventSourceCreateOrUpdateParameters', 'KindMicrosoftEventHub', 'KindMicrosoftIoTHub'
 	Kind KindBasicEventSourceCreateOrUpdateParameters `json:"kind,omitempty"`
 	// Location - The location of the resource.
@@ -1297,6 +1191,9 @@ func unmarshalBasicEventSourceCreateOrUpdateParametersArray(body []byte) ([]Basi
 func (escoup EventSourceCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
 	escoup.Kind = KindEventSourceCreateOrUpdateParameters
 	objectMap := make(map[string]interface{})
+	if escoup.LocalTimestamp != nil {
+		objectMap["localTimestamp"] = escoup.LocalTimestamp
+	}
 	if escoup.Kind != "" {
 		objectMap["kind"] = escoup.Kind
 	}
@@ -1359,8 +1256,7 @@ func (eslr *EventSourceListResponse) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// EventSourceMutableProperties an object that represents a set of mutable event source resource
-// properties.
+// EventSourceMutableProperties an object that represents a set of mutable event source resource properties.
 type EventSourceMutableProperties struct {
 	// TimestampPropertyName - The event property that will be used as the event source's timestamp. If a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation time will be used.
 	TimestampPropertyName *string `json:"timestampPropertyName,omitempty"`
@@ -1382,7 +1278,7 @@ type BasicEventSourceResource interface {
 // from the event source
 type EventSourceResource struct {
 	autorest.Response `json:"-"`
-	// Kind - Possible values include: 'KindBasicEventSourceResourceKindEventSourceResource', 'KindBasicEventSourceResourceKindMicrosoftEventHub', 'KindBasicEventSourceResourceKindMicrosoftIotHub'
+	// Kind - Possible values include: 'KindBasicEventSourceResourceKindEventSourceResource', 'KindBasicEventSourceResourceKindMicrosoftEventHub', 'KindBasicEventSourceResourceKindMicrosoftIoTHub'
 	Kind KindBasicEventSourceResource `json:"kind,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -1408,7 +1304,7 @@ func unmarshalBasicEventSourceResource(body []byte) (BasicEventSourceResource, e
 		var ehesr EventHubEventSourceResource
 		err := json.Unmarshal(body, &ehesr)
 		return ehesr, err
-	case string(KindBasicEventSourceResourceKindMicrosoftIotHub):
+	case string(KindBasicEventSourceResourceKindMicrosoftIoTHub):
 		var ithesr IoTHubEventSourceResource
 		err := json.Unmarshal(body, &ithesr)
 		return ithesr, err
@@ -1531,10 +1427,36 @@ type IoTHubEventSourceCommonProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
-// IoTHubEventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source
-// operation for an IoTHub event source.
+// MarshalJSON is the custom marshaler for IoTHubEventSourceCommonProperties.
+func (ithescp IoTHubEventSourceCommonProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ithescp.IotHubName != nil {
+		objectMap["iotHubName"] = ithescp.IotHubName
+	}
+	if ithescp.ConsumerGroupName != nil {
+		objectMap["consumerGroupName"] = ithescp.ConsumerGroupName
+	}
+	if ithescp.KeyName != nil {
+		objectMap["keyName"] = ithescp.KeyName
+	}
+	if ithescp.EventSourceResourceID != nil {
+		objectMap["eventSourceResourceId"] = ithescp.EventSourceResourceID
+	}
+	if ithescp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = ithescp.TimestampPropertyName
+	}
+	if ithescp.ProvisioningState != "" {
+		objectMap["provisioningState"] = ithescp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
+// IoTHubEventSourceCreateOrUpdateParameters parameters supplied to the Create or Update Event Source operation
+// for an IoTHub event source.
 type IoTHubEventSourceCreateOrUpdateParameters struct {
 	*IoTHubEventSourceCreationProperties `json:"properties,omitempty"`
+	// LocalTimestamp - An object that represents the local timestamp property. It contains the format of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
+	LocalTimestamp *LocalTimestamp `json:"localTimestamp,omitempty"`
 	// Kind - Possible values include: 'KindEventSourceCreateOrUpdateParameters', 'KindMicrosoftEventHub', 'KindMicrosoftIoTHub'
 	Kind KindBasicEventSourceCreateOrUpdateParameters `json:"kind,omitempty"`
 	// Location - The location of the resource.
@@ -1549,6 +1471,9 @@ func (ithescoup IoTHubEventSourceCreateOrUpdateParameters) MarshalJSON() ([]byte
 	objectMap := make(map[string]interface{})
 	if ithescoup.IoTHubEventSourceCreationProperties != nil {
 		objectMap["properties"] = ithescoup.IoTHubEventSourceCreationProperties
+	}
+	if ithescoup.LocalTimestamp != nil {
+		objectMap["localTimestamp"] = ithescoup.LocalTimestamp
 	}
 	if ithescoup.Kind != "" {
 		objectMap["kind"] = ithescoup.Kind
@@ -1599,6 +1524,15 @@ func (ithescoup *IoTHubEventSourceCreateOrUpdateParameters) UnmarshalJSON(body [
 					return err
 				}
 				ithescoup.IoTHubEventSourceCreationProperties = &ioTHubEventSourceCreationProperties
+			}
+		case "localTimestamp":
+			if v != nil {
+				var localTimestamp LocalTimestamp
+				err = json.Unmarshal(*v, &localTimestamp)
+				if err != nil {
+					return err
+				}
+				ithescoup.LocalTimestamp = &localTimestamp
 			}
 		case "kind":
 			if v != nil {
@@ -1654,8 +1588,35 @@ type IoTHubEventSourceCreationProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
-// IoTHubEventSourceMutableProperties an object that represents a set of mutable IoTHub event source
-// resource properties.
+// MarshalJSON is the custom marshaler for IoTHubEventSourceCreationProperties.
+func (ithescp IoTHubEventSourceCreationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ithescp.SharedAccessKey != nil {
+		objectMap["sharedAccessKey"] = ithescp.SharedAccessKey
+	}
+	if ithescp.IotHubName != nil {
+		objectMap["iotHubName"] = ithescp.IotHubName
+	}
+	if ithescp.ConsumerGroupName != nil {
+		objectMap["consumerGroupName"] = ithescp.ConsumerGroupName
+	}
+	if ithescp.KeyName != nil {
+		objectMap["keyName"] = ithescp.KeyName
+	}
+	if ithescp.EventSourceResourceID != nil {
+		objectMap["eventSourceResourceId"] = ithescp.EventSourceResourceID
+	}
+	if ithescp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = ithescp.TimestampPropertyName
+	}
+	if ithescp.ProvisioningState != "" {
+		objectMap["provisioningState"] = ithescp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
+// IoTHubEventSourceMutableProperties an object that represents a set of mutable IoTHub event source resource
+// properties.
 type IoTHubEventSourceMutableProperties struct {
 	// SharedAccessKey - The value of the shared access key that grants the Time Series Insights service read access to the iot hub. This property is not shown in event source responses.
 	SharedAccessKey *string `json:"sharedAccessKey,omitempty"`
@@ -1668,7 +1629,7 @@ type IoTHubEventSourceMutableProperties struct {
 // IoTHubEventSourceResource an event source that receives its data from an Azure IoTHub.
 type IoTHubEventSourceResource struct {
 	*IoTHubEventSourceResourceProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindBasicEventSourceResourceKindEventSourceResource', 'KindBasicEventSourceResourceKindMicrosoftEventHub', 'KindBasicEventSourceResourceKindMicrosoftIotHub'
+	// Kind - Possible values include: 'KindBasicEventSourceResourceKindEventSourceResource', 'KindBasicEventSourceResourceKindMicrosoftEventHub', 'KindBasicEventSourceResourceKindMicrosoftIoTHub'
 	Kind KindBasicEventSourceResource `json:"kind,omitempty"`
 	// Location - Resource location
 	Location *string `json:"location,omitempty"`
@@ -1684,7 +1645,7 @@ type IoTHubEventSourceResource struct {
 
 // MarshalJSON is the custom marshaler for IoTHubEventSourceResource.
 func (ithesr IoTHubEventSourceResource) MarshalJSON() ([]byte, error) {
-	ithesr.Kind = KindBasicEventSourceResourceKindMicrosoftIotHub
+	ithesr.Kind = KindBasicEventSourceResourceKindMicrosoftIoTHub
 	objectMap := make(map[string]interface{})
 	if ithesr.IoTHubEventSourceResourceProperties != nil {
 		objectMap["properties"] = ithesr.IoTHubEventSourceResourceProperties
@@ -1817,6 +1778,30 @@ type IoTHubEventSourceResourceProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IoTHubEventSourceResourceProperties.
+func (ithesrp IoTHubEventSourceResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ithesrp.IotHubName != nil {
+		objectMap["iotHubName"] = ithesrp.IotHubName
+	}
+	if ithesrp.ConsumerGroupName != nil {
+		objectMap["consumerGroupName"] = ithesrp.ConsumerGroupName
+	}
+	if ithesrp.KeyName != nil {
+		objectMap["keyName"] = ithesrp.KeyName
+	}
+	if ithesrp.EventSourceResourceID != nil {
+		objectMap["eventSourceResourceId"] = ithesrp.EventSourceResourceID
+	}
+	if ithesrp.TimestampPropertyName != nil {
+		objectMap["timestampPropertyName"] = ithesrp.TimestampPropertyName
+	}
+	if ithesrp.ProvisioningState != "" {
+		objectMap["provisioningState"] = ithesrp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
 // IoTHubEventSourceUpdateParameters parameters supplied to the Update Event Source operation to update an
 // IoTHub event source.
 type IoTHubEventSourceUpdateParameters struct {
@@ -1873,17 +1858,16 @@ func (ithesup *IoTHubEventSourceUpdateParameters) UnmarshalJSON(body []byte) err
 
 // LocalTimestamp an object that represents the local timestamp property. It contains the format of local
 // timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
-// specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the
-// events.
+// specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
 type LocalTimestamp struct {
-	// Format - An enum that represents the format of the local timestamp property that needs to be set. Possible values include: 'Embedded', 'Iana', 'TimeSpan'
+	// Format - An enum that represents the format of the local timestamp property that needs to be set. Possible values include: 'Embedded'
 	Format LocalTimestampFormat `json:"format,omitempty"`
 	// TimeZoneOffset - An object that represents the offset information for the local timestamp format specified. Should not be specified for LocalTimestampFormat - Embedded.
 	TimeZoneOffset *LocalTimestampTimeZoneOffset `json:"timeZoneOffset,omitempty"`
 }
 
-// LocalTimestampTimeZoneOffset an object that represents the offset information for the local timestamp
-// format specified. Should not be specified for LocalTimestampFormat - Embedded.
+// LocalTimestampTimeZoneOffset an object that represents the offset information for the local timestamp format
+// specified. Should not be specified for LocalTimestampFormat - Embedded.
 type LocalTimestampTimeZoneOffset struct {
 	// PropertyName - The event property that will be contain the offset information to calculate the local timestamp. When the LocalTimestampFormat is Iana, the property name will contain the name of the column which contains IANA Timezone Name (eg: Americas/Los Angeles). When LocalTimestampFormat is Timespan, it contains the name of property which contains values representing the offset (eg: P1D or 1.00:00:00)
 	PropertyName *string `json:"propertyName,omitempty"`
@@ -2011,65 +1995,8 @@ type LongTermEnvironmentCreationProperties struct {
 	TimeSeriesIDProperties *[]TimeSeriesIDProperty `json:"timeSeriesIdProperties,omitempty"`
 	// StorageConfiguration - The storage configuration provides the connection details that allows the Time Series Insights service to connect to the customer storage account that is used to store the environment's data.
 	StorageConfiguration *LongTermStorageConfigurationInput `json:"storageConfiguration,omitempty"`
-	// WarmStoreConfigurationProperties - The warm store configuration provides the details to create a warm store cache that will retain a copy of the environment's data available for faster query.
-	*WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for LongTermEnvironmentCreationProperties.
-func (ltecp LongTermEnvironmentCreationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ltecp.TimeSeriesIDProperties != nil {
-		objectMap["timeSeriesIdProperties"] = ltecp.TimeSeriesIDProperties
-	}
-	if ltecp.StorageConfiguration != nil {
-		objectMap["storageConfiguration"] = ltecp.StorageConfiguration
-	}
-	if ltecp.WarmStoreConfigurationProperties != nil {
-		objectMap["warmStoreConfiguration"] = ltecp.WarmStoreConfigurationProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for LongTermEnvironmentCreationProperties struct.
-func (ltecp *LongTermEnvironmentCreationProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "timeSeriesIdProperties":
-			if v != nil {
-				var timeSeriesIDProperties []TimeSeriesIDProperty
-				err = json.Unmarshal(*v, &timeSeriesIDProperties)
-				if err != nil {
-					return err
-				}
-				ltecp.TimeSeriesIDProperties = &timeSeriesIDProperties
-			}
-		case "storageConfiguration":
-			if v != nil {
-				var storageConfiguration LongTermStorageConfigurationInput
-				err = json.Unmarshal(*v, &storageConfiguration)
-				if err != nil {
-					return err
-				}
-				ltecp.StorageConfiguration = &storageConfiguration
-			}
-		case "warmStoreConfiguration":
-			if v != nil {
-				var warmStoreConfigurationProperties WarmStoreConfigurationProperties
-				err = json.Unmarshal(*v, &warmStoreConfigurationProperties)
-				if err != nil {
-					return err
-				}
-				ltecp.WarmStoreConfigurationProperties = &warmStoreConfigurationProperties
-			}
-		}
-	}
-
-	return nil
+	// WarmStoreConfiguration - The warm store configuration provides the details to create a warm store cache that will retain a copy of the environment's data available for faster query.
+	WarmStoreConfiguration *WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
 }
 
 // LongTermEnvironmentMutableProperties an object that represents a set of mutable long-term environment
@@ -2077,58 +2004,12 @@ func (ltecp *LongTermEnvironmentCreationProperties) UnmarshalJSON(body []byte) e
 type LongTermEnvironmentMutableProperties struct {
 	// StorageConfiguration - The storage configuration provides the connection details that allows the Time Series Insights service to connect to the customer storage account that is used to store the environment's data.
 	StorageConfiguration *LongTermStorageConfigurationMutableProperties `json:"storageConfiguration,omitempty"`
-	// WarmStoreConfigurationProperties - The warm store configuration provides the details to create a warm store cache that will retain a copy of the environment's data available for faster query.
-	*WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
+	// WarmStoreConfiguration - The warm store configuration provides the details to create a warm store cache that will retain a copy of the environment's data available for faster query.
+	WarmStoreConfiguration *WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for LongTermEnvironmentMutableProperties.
-func (ltemp LongTermEnvironmentMutableProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ltemp.StorageConfiguration != nil {
-		objectMap["storageConfiguration"] = ltemp.StorageConfiguration
-	}
-	if ltemp.WarmStoreConfigurationProperties != nil {
-		objectMap["warmStoreConfiguration"] = ltemp.WarmStoreConfigurationProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for LongTermEnvironmentMutableProperties struct.
-func (ltemp *LongTermEnvironmentMutableProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "storageConfiguration":
-			if v != nil {
-				var storageConfiguration LongTermStorageConfigurationMutableProperties
-				err = json.Unmarshal(*v, &storageConfiguration)
-				if err != nil {
-					return err
-				}
-				ltemp.StorageConfiguration = &storageConfiguration
-			}
-		case "warmStoreConfiguration":
-			if v != nil {
-				var warmStoreConfigurationProperties WarmStoreConfigurationProperties
-				err = json.Unmarshal(*v, &warmStoreConfigurationProperties)
-				if err != nil {
-					return err
-				}
-				ltemp.WarmStoreConfigurationProperties = &warmStoreConfigurationProperties
-			}
-		}
-	}
-
-	return nil
-}
-
-// LongTermEnvironmentResource an environment is a set of time-series data available for query, and is the
-// top level Azure Time Series Insights resource. LongTerm environments do not have set data retention
-// limits.
+// LongTermEnvironmentResource an environment is a set of time-series data available for query, and is the top
+// level Azure Time Series Insights resource. LongTerm environments do not have set data retention limits.
 type LongTermEnvironmentResource struct {
 	*LongTermEnvironmentResourceProperties `json:"properties,omitempty"`
 	// Sku - The sku determines the type of environment, either standard (S1 or S2) or long-term (L1). For standard environments the sku determines the capacity of the environment, the ingress rate, and the billing rate.
@@ -2292,8 +2173,8 @@ type LongTermEnvironmentResourceProperties struct {
 	TimeSeriesIDProperties *[]TimeSeriesIDProperty `json:"timeSeriesIdProperties,omitempty"`
 	// StorageConfiguration - The storage configuration provides the connection details that allows the Time Series Insights service to connect to the customer storage account that is used to store the environment's data.
 	StorageConfiguration *LongTermStorageConfigurationOutput `json:"storageConfiguration,omitempty"`
-	// WarmStoreConfigurationProperties - The warm store configuration provides the details to create a warm store cache that will retain a copy of the environment's data available for faster query.
-	*WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
+	// WarmStoreConfiguration - The warm store configuration provides the details to create a warm store cache that will retain a copy of the environment's data available for faster query.
+	WarmStoreConfiguration *WarmStoreConfigurationProperties `json:"warmStoreConfiguration,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for LongTermEnvironmentResourceProperties.
@@ -2311,97 +2192,10 @@ func (lterp LongTermEnvironmentResourceProperties) MarshalJSON() ([]byte, error)
 	if lterp.StorageConfiguration != nil {
 		objectMap["storageConfiguration"] = lterp.StorageConfiguration
 	}
-	if lterp.WarmStoreConfigurationProperties != nil {
-		objectMap["warmStoreConfiguration"] = lterp.WarmStoreConfigurationProperties
+	if lterp.WarmStoreConfiguration != nil {
+		objectMap["warmStoreConfiguration"] = lterp.WarmStoreConfiguration
 	}
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for LongTermEnvironmentResourceProperties struct.
-func (lterp *LongTermEnvironmentResourceProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "dataAccessId":
-			if v != nil {
-				var dataAccessID uuid.UUID
-				err = json.Unmarshal(*v, &dataAccessID)
-				if err != nil {
-					return err
-				}
-				lterp.DataAccessID = &dataAccessID
-			}
-		case "dataAccessFqdn":
-			if v != nil {
-				var dataAccessFqdn string
-				err = json.Unmarshal(*v, &dataAccessFqdn)
-				if err != nil {
-					return err
-				}
-				lterp.DataAccessFqdn = &dataAccessFqdn
-			}
-		case "status":
-			if v != nil {
-				var status EnvironmentStatus
-				err = json.Unmarshal(*v, &status)
-				if err != nil {
-					return err
-				}
-				lterp.Status = &status
-			}
-		case "provisioningState":
-			if v != nil {
-				var provisioningState ProvisioningState
-				err = json.Unmarshal(*v, &provisioningState)
-				if err != nil {
-					return err
-				}
-				lterp.ProvisioningState = provisioningState
-			}
-		case "creationTime":
-			if v != nil {
-				var creationTime date.Time
-				err = json.Unmarshal(*v, &creationTime)
-				if err != nil {
-					return err
-				}
-				lterp.CreationTime = &creationTime
-			}
-		case "timeSeriesIdProperties":
-			if v != nil {
-				var timeSeriesIDProperties []TimeSeriesIDProperty
-				err = json.Unmarshal(*v, &timeSeriesIDProperties)
-				if err != nil {
-					return err
-				}
-				lterp.TimeSeriesIDProperties = &timeSeriesIDProperties
-			}
-		case "storageConfiguration":
-			if v != nil {
-				var storageConfiguration LongTermStorageConfigurationOutput
-				err = json.Unmarshal(*v, &storageConfiguration)
-				if err != nil {
-					return err
-				}
-				lterp.StorageConfiguration = &storageConfiguration
-			}
-		case "warmStoreConfiguration":
-			if v != nil {
-				var warmStoreConfigurationProperties WarmStoreConfigurationProperties
-				err = json.Unmarshal(*v, &warmStoreConfigurationProperties)
-				if err != nil {
-					return err
-				}
-				lterp.WarmStoreConfigurationProperties = &warmStoreConfigurationProperties
-			}
-		}
-	}
-
-	return nil
 }
 
 // LongTermEnvironmentUpdateParameters parameters supplied to the Update Environment operation to update a
@@ -2458,8 +2252,8 @@ func (lteup *LongTermEnvironmentUpdateParameters) UnmarshalJSON(body []byte) err
 	return nil
 }
 
-// LongTermStorageConfigurationInput the storage configuration provides the connection details that allows
-// the Time Series Insights service to connect to the customer storage account that is used to store the
+// LongTermStorageConfigurationInput the storage configuration provides the connection details that allows the
+// Time Series Insights service to connect to the customer storage account that is used to store the
 // environment's data.
 type LongTermStorageConfigurationInput struct {
 	// AccountName - The name of the storage account that will hold the environment's long term data.
@@ -2468,9 +2262,9 @@ type LongTermStorageConfigurationInput struct {
 	ManagementKey *string `json:"managementKey,omitempty"`
 }
 
-// LongTermStorageConfigurationMutableProperties the storage configuration provides the connection details
-// that allows the Time Series Insights service to connect to the customer storage account that is used to
-// store the environment's data.
+// LongTermStorageConfigurationMutableProperties the storage configuration provides the connection details that
+// allows the Time Series Insights service to connect to the customer storage account that is used to store the
+// environment's data.
 type LongTermStorageConfigurationMutableProperties struct {
 	// ManagementKey - The value of the management key that grants the Time Series Insights service write access to the storage account. This property is not shown in environment responses.
 	ManagementKey *string `json:"managementKey,omitempty"`
@@ -2581,10 +2375,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -2612,11 +2411,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -2740,10 +2544,9 @@ type ReferenceDataSetListResponse struct {
 	Value *[]ReferenceDataSetResource `json:"value,omitempty"`
 }
 
-// ReferenceDataSetResource a reference data set provides metadata about the events in an environment.
-// Metadata in the reference data set will be joined with events as they are read from event sources. The
-// metadata that makes up the reference data set is uploaded or modified through the Time Series Insights
-// data plane APIs.
+// ReferenceDataSetResource a reference data set provides metadata about the events in an environment. Metadata
+// in the reference data set will be joined with events as they are read from event sources. The metadata that
+// makes up the reference data set is uploaded or modified through the Time Series Insights data plane APIs.
 type ReferenceDataSetResource struct {
 	autorest.Response                   `json:"-"`
 	*ReferenceDataSetResourceProperties `json:"properties,omitempty"`
@@ -2855,6 +2658,21 @@ type ReferenceDataSetResourceProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ReferenceDataSetResourceProperties.
+func (rdsrp ReferenceDataSetResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rdsrp.KeyProperties != nil {
+		objectMap["keyProperties"] = rdsrp.KeyProperties
+	}
+	if rdsrp.DataStringComparisonBehavior != "" {
+		objectMap["dataStringComparisonBehavior"] = rdsrp.DataStringComparisonBehavior
+	}
+	if rdsrp.ProvisioningState != "" {
+		objectMap["provisioningState"] = rdsrp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
 // ReferenceDataSetUpdateParameters parameters supplied to the Update Reference Data Set operation.
 type ReferenceDataSetUpdateParameters struct {
 	// Tags - Key-value pairs of additional properties for the reference data set.
@@ -2888,9 +2706,17 @@ type ResourceProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 }
 
-// Sku the sku determines the type of environment, either standard (S1 or S2) or long-term (L1). For
-// standard environments the sku determines the capacity of the environment, the ingress rate, and the
-// billing rate.
+// MarshalJSON is the custom marshaler for ResourceProperties.
+func (rp ResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rp.ProvisioningState != "" {
+		objectMap["provisioningState"] = rp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
+// Sku the sku determines the type of environment, either standard (S1 or S2) or long-term (L1). For standard
+// environments the sku determines the capacity of the environment, the ingress rate, and the billing rate.
 type Sku struct {
 	// Name - The name of this SKU. Possible values include: 'S1', 'S2', 'P1', 'L1'
 	Name SkuName `json:"name,omitempty"`
@@ -3020,7 +2846,7 @@ type StandardEnvironmentCreationProperties struct {
 	DataRetentionTime *string `json:"dataRetentionTime,omitempty"`
 	// StorageLimitExceededBehavior - The behavior the Time Series Insights service should take when the environment's capacity has been exceeded. If "PauseIngress" is specified, new events will not be read from the event source. If "PurgeOldData" is specified, new events will continue to be read and old events will be deleted from the environment. The default behavior is PurgeOldData. Possible values include: 'PurgeOldData', 'PauseIngress'
 	StorageLimitExceededBehavior StorageLimitExceededBehavior `json:"storageLimitExceededBehavior,omitempty"`
-	// PartitionKeyProperties - The list of event properties which will be used to partition data in the environment.
+	// PartitionKeyProperties - The list of event properties which will be used to partition data in the environment. Currently, only a single partition key property is supported.
 	PartitionKeyProperties *[]TimeSeriesIDProperty `json:"partitionKeyProperties,omitempty"`
 }
 
@@ -3031,12 +2857,10 @@ type StandardEnvironmentMutableProperties struct {
 	DataRetentionTime *string `json:"dataRetentionTime,omitempty"`
 	// StorageLimitExceededBehavior - The behavior the Time Series Insights service should take when the environment's capacity has been exceeded. If "PauseIngress" is specified, new events will not be read from the event source. If "PurgeOldData" is specified, new events will continue to be read and old events will be deleted from the environment. The default behavior is PurgeOldData. Possible values include: 'PurgeOldData', 'PauseIngress'
 	StorageLimitExceededBehavior StorageLimitExceededBehavior `json:"storageLimitExceededBehavior,omitempty"`
-	// PartitionKeyProperties - The list of event properties which will be used to partition data in the environment.
-	PartitionKeyProperties *[]TimeSeriesIDProperty `json:"partitionKeyProperties,omitempty"`
 }
 
-// StandardEnvironmentResource an environment is a set of time-series data available for query, and is the
-// top level Azure Time Series Insights resource. Standard environments have data retention limits.
+// StandardEnvironmentResource an environment is a set of time-series data available for query, and is the top
+// level Azure Time Series Insights resource. Standard environments have data retention limits.
 type StandardEnvironmentResource struct {
 	*StandardEnvironmentResourceProperties `json:"properties,omitempty"`
 	// Sku - The sku determines the type of environment, either standard (S1 or S2) or long-term (L1). For standard environments the sku determines the capacity of the environment, the ingress rate, and the billing rate.
@@ -3190,7 +3014,7 @@ type StandardEnvironmentResourceProperties struct {
 	DataRetentionTime *string `json:"dataRetentionTime,omitempty"`
 	// StorageLimitExceededBehavior - The behavior the Time Series Insights service should take when the environment's capacity has been exceeded. If "PauseIngress" is specified, new events will not be read from the event source. If "PurgeOldData" is specified, new events will continue to be read and old events will be deleted from the environment. The default behavior is PurgeOldData. Possible values include: 'PurgeOldData', 'PauseIngress'
 	StorageLimitExceededBehavior StorageLimitExceededBehavior `json:"storageLimitExceededBehavior,omitempty"`
-	// PartitionKeyProperties - The list of event properties which will be used to partition data in the environment.
+	// PartitionKeyProperties - The list of event properties which will be used to partition data in the environment. Currently, only a single partition key property is supported.
 	PartitionKeyProperties *[]TimeSeriesIDProperty `json:"partitionKeyProperties,omitempty"`
 	// DataAccessID - READ-ONLY; An id used to access the environment data, e.g. to query the environment's events or upload reference data for the environment.
 	DataAccessID *uuid.UUID `json:"dataAccessId,omitempty"`
@@ -3202,6 +3026,27 @@ type StandardEnvironmentResourceProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// CreationTime - READ-ONLY; The time the resource was created.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StandardEnvironmentResourceProperties.
+func (serp StandardEnvironmentResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if serp.DataRetentionTime != nil {
+		objectMap["dataRetentionTime"] = serp.DataRetentionTime
+	}
+	if serp.StorageLimitExceededBehavior != "" {
+		objectMap["storageLimitExceededBehavior"] = serp.StorageLimitExceededBehavior
+	}
+	if serp.PartitionKeyProperties != nil {
+		objectMap["partitionKeyProperties"] = serp.PartitionKeyProperties
+	}
+	if serp.Status != nil {
+		objectMap["status"] = serp.Status
+	}
+	if serp.ProvisioningState != "" {
+		objectMap["provisioningState"] = serp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
 }
 
 // StandardEnvironmentUpdateParameters parameters supplied to the Update Environment operation to update a
@@ -3272,8 +3117,8 @@ func (seup *StandardEnvironmentUpdateParameters) UnmarshalJSON(body []byte) erro
 	return nil
 }
 
-// TimeSeriesIDProperty the structure of the property that a time series id can have. An environment can
-// have multiple such properties.
+// TimeSeriesIDProperty the structure of the property that a time series id can have. An environment can have
+// multiple such properties.
 type TimeSeriesIDProperty struct {
 	// Name - The name of the property.
 	Name *string `json:"name,omitempty"`
@@ -3408,8 +3253,8 @@ type WarmStoragePropertiesUsageStateDetails struct {
 	MaxCount *int32 `json:"maxCount,omitempty"`
 }
 
-// WarmStoreConfigurationProperties the warm store configuration provides the details to create a warm
-// store cache that will retain a copy of the environment's data available for faster query.
+// WarmStoreConfigurationProperties the warm store configuration provides the details to create a warm store
+// cache that will retain a copy of the environment's data available for faster query.
 type WarmStoreConfigurationProperties struct {
 	// DataRetention - ISO8601 timespan specifying the number of days the environment's events will be available for query from the warm store.
 	DataRetention *string `json:"dataRetention,omitempty"`

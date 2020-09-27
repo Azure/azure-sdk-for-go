@@ -115,7 +115,6 @@ func (client CustomerSubscriptionsClient) CreateSender(req *http.Request) (*http
 func (client CustomerSubscriptionsClient) CreateResponder(resp *http.Response) (result CustomerSubscription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -193,7 +192,6 @@ func (client CustomerSubscriptionsClient) DeleteSender(req *http.Request) (*http
 func (client CustomerSubscriptionsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -270,7 +268,6 @@ func (client CustomerSubscriptionsClient) GetSender(req *http.Request) (*http.Re
 func (client CustomerSubscriptionsClient) GetResponder(resp *http.Response) (result CustomerSubscription, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -311,6 +308,9 @@ func (client CustomerSubscriptionsClient) List(ctx context.Context, resourceGrou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "azurestack.CustomerSubscriptionsClient", "List", resp, "Failure responding to request")
 	}
+	if result.csl.hasNextLink() && result.csl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -347,7 +347,6 @@ func (client CustomerSubscriptionsClient) ListSender(req *http.Request) (*http.R
 func (client CustomerSubscriptionsClient) ListResponder(resp *http.Response) (result CustomerSubscriptionList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

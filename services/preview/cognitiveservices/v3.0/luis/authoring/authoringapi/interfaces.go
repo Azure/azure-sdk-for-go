@@ -39,10 +39,10 @@ var _ FeaturesClientAPI = (*authoring.FeaturesClient)(nil)
 
 // ExamplesClientAPI contains the set of methods on the ExamplesClient type.
 type ExamplesClientAPI interface {
-	Add(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObject authoring.ExampleLabelObject) (result authoring.LabelExampleResponse, err error)
-	Batch(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObjectArray []authoring.ExampleLabelObject) (result authoring.ListBatchLabelExample, err error)
+	Add(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObject authoring.ExampleLabelObject, enableNestedChildren *bool) (result authoring.LabelExampleResponse, err error)
+	Batch(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObjectArray []authoring.ExampleLabelObject, enableNestedChildren *bool) (result authoring.ListBatchLabelExample, err error)
 	Delete(ctx context.Context, appID uuid.UUID, versionID string, exampleID int32) (result authoring.OperationStatus, err error)
-	List(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result authoring.ListLabeledUtterance, err error)
+	List(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32, enableNestedChildren *bool) (result authoring.ListLabeledUtterance, err error)
 }
 
 var _ ExamplesClientAPI = (*authoring.ExamplesClient)(nil)
@@ -125,11 +125,11 @@ type ModelClientAPI interface {
 	ListCustomPrebuiltModels(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.ListCustomPrebuiltModel, err error)
 	ListEntities(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result authoring.ListNDepthEntityExtractor, err error)
 	ListEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result authoring.ListEntityRole, err error)
-	ListEntitySuggestions(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32) (result authoring.ListEntitiesSuggestionExample, err error)
+	ListEntitySuggestions(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID, take *int32, enableNestedChildren *bool) (result authoring.ListEntitiesSuggestionExample, err error)
 	ListHierarchicalEntities(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result authoring.ListHierarchicalEntityExtractor, err error)
 	ListHierarchicalEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, hEntityID uuid.UUID) (result authoring.ListEntityRole, err error)
 	ListIntents(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result authoring.ListIntentClassifier, err error)
-	ListIntentSuggestions(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32) (result authoring.ListIntentsSuggestionExample, err error)
+	ListIntentSuggestions(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, take *int32, enableNestedChildren *bool) (result authoring.ListIntentsSuggestionExample, err error)
 	ListModels(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result authoring.ListModelInfoResponse, err error)
 	ListPatternAnyEntityInfos(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (result authoring.ListPatternAnyEntityExtractor, err error)
 	ListPatternAnyEntityRoles(ctx context.Context, appID uuid.UUID, versionID string, entityID uuid.UUID) (result authoring.ListEntityRole, err error)
@@ -173,6 +173,8 @@ type AppsClientAPI interface {
 	GetPublishSettings(ctx context.Context, appID uuid.UUID) (result authoring.PublishSettings, err error)
 	GetSettings(ctx context.Context, appID uuid.UUID) (result authoring.ApplicationSettings, err error)
 	Import(ctx context.Context, luisApp authoring.LuisApp, appName string) (result authoring.UUID, err error)
+	ImportLuFormat(ctx context.Context, luisAppLu string, appName string) (result authoring.UUID, err error)
+	ImportV2App(ctx context.Context, luisAppV2 authoring.LuisAppV2, appName string) (result authoring.UUID, err error)
 	List(ctx context.Context, skip *int32, take *int32) (result authoring.ListApplicationInfoResponse, err error)
 	ListAvailableCustomPrebuiltDomains(ctx context.Context) (result authoring.ListPrebuiltDomain, err error)
 	ListAvailableCustomPrebuiltDomainsForCulture(ctx context.Context, culture string) (result authoring.ListPrebuiltDomain, err error)
@@ -197,8 +199,11 @@ type VersionsClientAPI interface {
 	Delete(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.OperationStatus, err error)
 	DeleteUnlabelledUtterance(ctx context.Context, appID uuid.UUID, versionID string, utterance string) (result authoring.OperationStatus, err error)
 	Export(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.LuisApp, err error)
+	ExportLuFormat(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.ReadCloser, err error)
 	Get(ctx context.Context, appID uuid.UUID, versionID string) (result authoring.VersionInfo, err error)
 	Import(ctx context.Context, appID uuid.UUID, luisApp authoring.LuisApp, versionID string) (result authoring.String, err error)
+	ImportLuFormat(ctx context.Context, appID uuid.UUID, luisAppLu string, versionID string) (result authoring.String, err error)
+	ImportV2App(ctx context.Context, appID uuid.UUID, luisAppV2 authoring.LuisAppV2, versionID string) (result authoring.String, err error)
 	List(ctx context.Context, appID uuid.UUID, skip *int32, take *int32) (result authoring.ListVersionInfo, err error)
 	Update(ctx context.Context, appID uuid.UUID, versionID string, versionUpdateObject authoring.TaskUpdateObject) (result authoring.OperationStatus, err error)
 }
@@ -212,16 +217,6 @@ type TrainClientAPI interface {
 }
 
 var _ TrainClientAPI = (*authoring.TrainClient)(nil)
-
-// PermissionsClientAPI contains the set of methods on the PermissionsClient type.
-type PermissionsClientAPI interface {
-	Add(ctx context.Context, appID uuid.UUID, userToAdd authoring.UserCollaborator) (result authoring.OperationStatus, err error)
-	Delete(ctx context.Context, appID uuid.UUID, userToDelete authoring.UserCollaborator) (result authoring.OperationStatus, err error)
-	List(ctx context.Context, appID uuid.UUID) (result authoring.UserAccessList, err error)
-	Update(ctx context.Context, appID uuid.UUID, collaborators authoring.CollaboratorsArray) (result authoring.OperationStatus, err error)
-}
-
-var _ PermissionsClientAPI = (*authoring.PermissionsClient)(nil)
 
 // PatternClientAPI contains the set of methods on the PatternClient type.
 type PatternClientAPI interface {
@@ -247,10 +242,10 @@ var _ SettingsClientAPI = (*authoring.SettingsClient)(nil)
 
 // AzureAccountsClientAPI contains the set of methods on the AzureAccountsClient type.
 type AzureAccountsClientAPI interface {
-	AssignToApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.OperationStatus, err error)
-	GetAssigned(ctx context.Context, appID uuid.UUID) (result authoring.ListAzureAccountInfoObject, err error)
-	ListUserLUISAccounts(ctx context.Context) (result authoring.ListAzureAccountInfoObject, err error)
-	RemoveFromApp(ctx context.Context, appID uuid.UUID, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.OperationStatus, err error)
+	AssignToApp(ctx context.Context, appID uuid.UUID, armToken string, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.OperationStatus, err error)
+	GetAssigned(ctx context.Context, appID uuid.UUID, armToken string) (result authoring.ListAzureAccountInfoObject, err error)
+	ListUserLUISAccounts(ctx context.Context, armToken string) (result authoring.ListAzureAccountInfoObject, err error)
+	RemoveFromApp(ctx context.Context, appID uuid.UUID, armToken string, azureAccountInfoObject *authoring.AzureAccountInfoObject) (result authoring.OperationStatus, err error)
 }
 
 var _ AzureAccountsClientAPI = (*authoring.AzureAccountsClient)(nil)

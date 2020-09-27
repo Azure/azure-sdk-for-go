@@ -110,7 +110,6 @@ func (client InvoicesClient) GetSender(req *http.Request) (*http.Response, error
 func (client InvoicesClient) GetResponder(resp *http.Response) (result InvoiceSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -152,6 +151,9 @@ func (client InvoicesClient) ListByBillingAccountName(ctx context.Context, billi
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "ListByBillingAccountName", resp, "Failure responding to request")
 	}
+	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -188,7 +190,6 @@ func (client InvoicesClient) ListByBillingAccountNameSender(req *http.Request) (
 func (client InvoicesClient) ListByBillingAccountNameResponder(resp *http.Response) (result InvoiceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -268,6 +269,9 @@ func (client InvoicesClient) ListByBillingProfile(ctx context.Context, billingAc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "ListByBillingProfile", resp, "Failure responding to request")
 	}
+	if result.ilr.hasNextLink() && result.ilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -305,7 +309,6 @@ func (client InvoicesClient) ListByBillingProfileSender(req *http.Request) (*htt
 func (client InvoicesClient) ListByBillingProfileResponder(resp *http.Response) (result InvoiceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -74,6 +74,9 @@ func (client ServiceLocationsClient) List(ctx context.Context, country string) (
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "peering.ServiceLocationsClient", "List", resp, "Failure responding to request")
 	}
+	if result.sllr.hasNextLink() && result.sllr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -111,7 +114,6 @@ func (client ServiceLocationsClient) ListSender(req *http.Request) (*http.Respon
 func (client ServiceLocationsClient) ListResponder(resp *http.Response) (result ServiceLocationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

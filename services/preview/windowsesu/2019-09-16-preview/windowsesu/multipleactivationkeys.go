@@ -132,7 +132,6 @@ func (client MultipleActivationKeysClient) CreateSender(req *http.Request) (futu
 func (client MultipleActivationKeysClient) CreateResponder(resp *http.Response) (result MultipleActivationKey, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -218,7 +217,6 @@ func (client MultipleActivationKeysClient) DeleteSender(req *http.Request) (*htt
 func (client MultipleActivationKeysClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -303,7 +301,6 @@ func (client MultipleActivationKeysClient) GetSender(req *http.Request) (*http.R
 func (client MultipleActivationKeysClient) GetResponder(resp *http.Response) (result MultipleActivationKey, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -347,6 +344,9 @@ func (client MultipleActivationKeysClient) List(ctx context.Context) (result Mul
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "List", resp, "Failure responding to request")
 	}
+	if result.makl.hasNextLink() && result.makl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -381,7 +381,6 @@ func (client MultipleActivationKeysClient) ListSender(req *http.Request) (*http.
 func (client MultipleActivationKeysClient) ListResponder(resp *http.Response) (result MultipleActivationKeyList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -468,6 +467,9 @@ func (client MultipleActivationKeysClient) ListByResourceGroup(ctx context.Conte
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysClient", "ListByResourceGroup", resp, "Failure responding to request")
 	}
+	if result.makl.hasNextLink() && result.makl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -503,7 +505,6 @@ func (client MultipleActivationKeysClient) ListByResourceGroupSender(req *http.R
 func (client MultipleActivationKeysClient) ListByResourceGroupResponder(resp *http.Response) (result MultipleActivationKeyList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -629,7 +630,6 @@ func (client MultipleActivationKeysClient) UpdateSender(req *http.Request) (*htt
 func (client MultipleActivationKeysClient) UpdateResponder(resp *http.Response) (result MultipleActivationKey, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

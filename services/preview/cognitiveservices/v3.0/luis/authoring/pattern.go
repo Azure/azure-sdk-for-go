@@ -105,7 +105,6 @@ func (client PatternClient) AddPatternSender(req *http.Request) (*http.Response,
 func (client PatternClient) AddPatternResponder(resp *http.Response) (result PatternRuleInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -187,7 +186,6 @@ func (client PatternClient) BatchAddPatternsSender(req *http.Request) (*http.Res
 func (client PatternClient) BatchAddPatternsResponder(resp *http.Response) (result ListPatternRuleInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -262,7 +260,6 @@ func (client PatternClient) DeletePatternSender(req *http.Request) (*http.Respon
 func (client PatternClient) DeletePatternResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -344,7 +341,6 @@ func (client PatternClient) DeletePatternsSender(req *http.Request) (*http.Respo
 func (client PatternClient) DeletePatternsResponder(resp *http.Response) (result OperationStatus, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -446,7 +442,6 @@ func (client PatternClient) ListIntentPatternsSender(req *http.Request) (*http.R
 func (client PatternClient) ListIntentPatternsResponder(resp *http.Response) (result ListPatternRuleInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -546,7 +541,6 @@ func (client PatternClient) ListPatternsSender(req *http.Request) (*http.Respons
 func (client PatternClient) ListPatternsResponder(resp *http.Response) (result ListPatternRuleInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
@@ -624,7 +618,6 @@ func (client PatternClient) UpdatePatternSender(req *http.Request) (*http.Respon
 func (client PatternClient) UpdatePatternResponder(resp *http.Response) (result PatternRuleInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -706,7 +699,6 @@ func (client PatternClient) UpdatePatternsSender(req *http.Request) (*http.Respo
 func (client PatternClient) UpdatePatternsResponder(resp *http.Response) (result ListPatternRuleInfo, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())

@@ -133,7 +133,6 @@ func (client BuildStepsClient) CreateSender(req *http.Request) (future BuildStep
 func (client BuildStepsClient) CreateResponder(resp *http.Response) (result BuildStep, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -229,7 +228,6 @@ func (client BuildStepsClient) DeleteSender(req *http.Request) (future BuildStep
 func (client BuildStepsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -324,7 +322,6 @@ func (client BuildStepsClient) GetSender(req *http.Request) (*http.Response, err
 func (client BuildStepsClient) GetResponder(resp *http.Response) (result BuildStep, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -378,6 +375,9 @@ func (client BuildStepsClient) List(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "List", resp, "Failure responding to request")
 	}
+	if result.bsl.hasNextLink() && result.bsl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -415,7 +415,6 @@ func (client BuildStepsClient) ListSender(req *http.Request) (*http.Response, er
 func (client BuildStepsClient) ListResponder(resp *http.Response) (result BuildStepList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -511,6 +510,9 @@ func (client BuildStepsClient) ListBuildArguments(ctx context.Context, resourceG
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "ListBuildArguments", resp, "Failure responding to request")
 	}
+	if result.bal.hasNextLink() && result.bal.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -549,7 +551,6 @@ func (client BuildStepsClient) ListBuildArgumentsSender(req *http.Request) (*htt
 func (client BuildStepsClient) ListBuildArgumentsResponder(resp *http.Response) (result BuildArgumentList, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -685,7 +686,6 @@ func (client BuildStepsClient) UpdateSender(req *http.Request) (future BuildStep
 func (client BuildStepsClient) UpdateResponder(resp *http.Response) (result BuildStep, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

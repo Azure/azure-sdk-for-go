@@ -127,7 +127,6 @@ func (client ScheduleClient) CreateOrUpdateSender(req *http.Request) (*http.Resp
 func (client ScheduleClient) CreateOrUpdateResponder(resp *http.Response) (result Schedule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusConflict),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -213,7 +212,6 @@ func (client ScheduleClient) DeleteSender(req *http.Request) (*http.Response, er
 func (client ScheduleClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -298,7 +296,6 @@ func (client ScheduleClient) GetSender(req *http.Request) (*http.Response, error
 func (client ScheduleClient) GetResponder(resp *http.Response) (result Schedule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -347,6 +344,9 @@ func (client ScheduleClient) ListByAutomationAccount(ctx context.Context, resour
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "automation.ScheduleClient", "ListByAutomationAccount", resp, "Failure responding to request")
 	}
+	if result.slr.hasNextLink() && result.slr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -383,7 +383,6 @@ func (client ScheduleClient) ListByAutomationAccountSender(req *http.Request) (*
 func (client ScheduleClient) ListByAutomationAccountResponder(resp *http.Response) (result ScheduleListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -509,7 +508,6 @@ func (client ScheduleClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client ScheduleClient) UpdateResponder(resp *http.Response) (result Schedule, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

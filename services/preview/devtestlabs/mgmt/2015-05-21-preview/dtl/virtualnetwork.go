@@ -113,7 +113,6 @@ func (client VirtualNetworkClient) CreateOrUpdateResourceSender(req *http.Reques
 func (client VirtualNetworkClient) CreateOrUpdateResourceResponder(resp *http.Response) (result VirtualNetwork, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -191,7 +190,6 @@ func (client VirtualNetworkClient) DeleteResourceSender(req *http.Request) (futu
 func (client VirtualNetworkClient) DeleteResourceResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -268,7 +266,6 @@ func (client VirtualNetworkClient) GetResourceSender(req *http.Request) (*http.R
 func (client VirtualNetworkClient) GetResourceResponder(resp *http.Response) (result VirtualNetwork, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -309,6 +306,9 @@ func (client VirtualNetworkClient) List(ctx context.Context, resourceGroupName s
 	result.rwcvn, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dtl.VirtualNetworkClient", "List", resp, "Failure responding to request")
+	}
+	if result.rwcvn.hasNextLink() && result.rwcvn.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -355,7 +355,6 @@ func (client VirtualNetworkClient) ListSender(req *http.Request) (*http.Response
 func (client VirtualNetworkClient) ListResponder(resp *http.Response) (result ResponseWithContinuationVirtualNetwork, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -472,7 +471,6 @@ func (client VirtualNetworkClient) PatchResourceSender(req *http.Request) (*http
 func (client VirtualNetworkClient) PatchResourceResponder(resp *http.Response) (result VirtualNetwork, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

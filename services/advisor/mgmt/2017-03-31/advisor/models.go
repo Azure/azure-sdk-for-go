@@ -31,61 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2017-03-31/advisor"
 
-// Category enumerates the values for category.
-type Category string
-
-const (
-	// Cost ...
-	Cost Category = "Cost"
-	// HighAvailability ...
-	HighAvailability Category = "HighAvailability"
-	// OperationalExcellence ...
-	OperationalExcellence Category = "OperationalExcellence"
-	// Performance ...
-	Performance Category = "Performance"
-	// Security ...
-	Security Category = "Security"
-)
-
-// PossibleCategoryValues returns an array of possible values for the Category const type.
-func PossibleCategoryValues() []Category {
-	return []Category{Cost, HighAvailability, OperationalExcellence, Performance, Security}
-}
-
-// Impact enumerates the values for impact.
-type Impact string
-
-const (
-	// High ...
-	High Impact = "High"
-	// Low ...
-	Low Impact = "Low"
-	// Medium ...
-	Medium Impact = "Medium"
-)
-
-// PossibleImpactValues returns an array of possible values for the Impact const type.
-func PossibleImpactValues() []Impact {
-	return []Impact{High, Low, Medium}
-}
-
-// Risk enumerates the values for risk.
-type Risk string
-
-const (
-	// Error ...
-	Error Risk = "Error"
-	// None ...
-	None Risk = "None"
-	// Warning ...
-	Warning Risk = "Warning"
-)
-
-// PossibleRiskValues returns an array of possible values for the Risk const type.
-func PossibleRiskValues() []Risk {
-	return []Risk{Error, None, Warning}
-}
-
 // ListSuppressionContract ...
 type ListSuppressionContract struct {
 	autorest.Response `json:"-"`
@@ -189,10 +134,15 @@ func (oelr OperationEntityListResult) IsEmpty() bool {
 	return oelr.Value == nil || len(*oelr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (oelr OperationEntityListResult) hasNextLink() bool {
+	return oelr.NextLink != nil && len(*oelr.NextLink) != 0
+}
+
 // operationEntityListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (oelr OperationEntityListResult) operationEntityListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if oelr.NextLink == nil || len(to.String(oelr.NextLink)) < 1 {
+	if !oelr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -220,11 +170,16 @@ func (page *OperationEntityListResultPage) NextWithContext(ctx context.Context) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.oelr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.oelr)
+		if err != nil {
+			return err
+		}
+		page.oelr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.oelr = next
 	return nil
 }
 
@@ -479,10 +434,15 @@ func (rrblr ResourceRecommendationBaseListResult) IsEmpty() bool {
 	return rrblr.Value == nil || len(*rrblr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (rrblr ResourceRecommendationBaseListResult) hasNextLink() bool {
+	return rrblr.NextLink != nil && len(*rrblr.NextLink) != 0
+}
+
 // resourceRecommendationBaseListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (rrblr ResourceRecommendationBaseListResult) resourceRecommendationBaseListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if rrblr.NextLink == nil || len(to.String(rrblr.NextLink)) < 1 {
+	if !rrblr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -510,11 +470,16 @@ func (page *ResourceRecommendationBaseListResultPage) NextWithContext(ctx contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.rrblr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.rrblr)
+		if err != nil {
+			return err
+		}
+		page.rrblr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.rrblr = next
 	return nil
 }
 
@@ -556,8 +521,8 @@ type ShortDescription struct {
 	Solution *string `json:"solution,omitempty"`
 }
 
-// SuppressionContract the details of the snoozed or dismissed rule; for example, the duration, name, and
-// GUID associated with the rule.
+// SuppressionContract the details of the snoozed or dismissed rule; for example, the duration, name, and GUID
+// associated with the rule.
 type SuppressionContract struct {
 	autorest.Response `json:"-"`
 	// SuppressionProperties - The properties of the suppression.

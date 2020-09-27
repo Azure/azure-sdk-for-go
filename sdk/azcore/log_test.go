@@ -5,12 +5,16 @@
 
 package azcore
 
-import "testing"
+import (
+	"fmt"
+	"net/http"
+	"testing"
+)
 
 func TestLoggingDefault(t *testing.T) {
 	// ensure logging with nil listener doesn't fail
 	Log().SetListener(nil)
-	Log().Write(LogError, "this should work just fine")
+	Log().Write(LogRequest, "this should work just fine")
 
 	log := map[LogClassification]string{}
 	Log().SetListener(func(cls LogClassification, msg string) {
@@ -18,15 +22,15 @@ func TestLoggingDefault(t *testing.T) {
 	})
 	const req = "this is a request"
 	Log().Write(LogRequest, req)
-	const resp = "this is a response"
-	Log().Write(LogResponse, resp)
+	const resp = "this is a response: %d"
+	Log().Writef(LogResponse, resp, http.StatusOK)
 	if l := len(log); l != 2 {
 		t.Fatalf("unexpected log entry count: %d", l)
 	}
 	if log[LogRequest] != req {
 		t.Fatalf("unexpected log request: %s", log[LogRequest])
 	}
-	if log[LogResponse] != resp {
+	if log[LogResponse] != fmt.Sprintf(resp, http.StatusOK) {
 		t.Fatalf("unexpected log response: %s", log[LogResponse])
 	}
 }
@@ -36,15 +40,15 @@ func TestLoggingClassification(t *testing.T) {
 	Log().SetListener(func(cls LogClassification, msg string) {
 		log[cls] = msg
 	})
-	Log().SetClassifications(LogError)
+	Log().SetClassifications(LogRequest)
 	defer Log().resetClassifications()
-	Log().Write(LogSlowResponse, "this shouldn't be in the log")
-	if s, ok := log[LogSlowResponse]; ok {
+	Log().Write(LogResponse, "this shouldn't be in the log")
+	if s, ok := log[LogResponse]; ok {
 		t.Fatalf("unexpected log entry %s", s)
 	}
-	const err = "this is an error"
-	Log().Write(LogError, err)
-	if log[LogError] != err {
-		t.Fatalf("unexpected log entry: %s", log[LogError])
+	const req = "this is a request"
+	Log().Write(LogRequest, req)
+	if log[LogRequest] != req {
+		t.Fatalf("unexpected log entry: %s", log[LogRequest])
 	}
 }

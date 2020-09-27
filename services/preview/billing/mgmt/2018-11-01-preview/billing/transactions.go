@@ -78,6 +78,9 @@ func (client TransactionsClient) ListByBillingAccountName(ctx context.Context, b
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransactionsClient", "ListByBillingAccountName", resp, "Failure responding to request")
 	}
+	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -117,7 +120,6 @@ func (client TransactionsClient) ListByBillingAccountNameSender(req *http.Reques
 func (client TransactionsClient) ListByBillingAccountNameResponder(resp *http.Response) (result TransactionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -200,6 +202,9 @@ func (client TransactionsClient) ListByBillingProfileName(ctx context.Context, b
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransactionsClient", "ListByBillingProfileName", resp, "Failure responding to request")
 	}
+	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -240,7 +245,6 @@ func (client TransactionsClient) ListByBillingProfileNameSender(req *http.Reques
 func (client TransactionsClient) ListByBillingProfileNameResponder(resp *http.Response) (result TransactionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -323,6 +327,9 @@ func (client TransactionsClient) ListByCustomerName(ctx context.Context, billing
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransactionsClient", "ListByCustomerName", resp, "Failure responding to request")
 	}
+	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -363,7 +370,6 @@ func (client TransactionsClient) ListByCustomerNameSender(req *http.Request) (*h
 func (client TransactionsClient) ListByCustomerNameResponder(resp *http.Response) (result TransactionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -446,6 +452,9 @@ func (client TransactionsClient) ListByInvoiceSectionName(ctx context.Context, b
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "billing.TransactionsClient", "ListByInvoiceSectionName", resp, "Failure responding to request")
 	}
+	if result.tlr.hasNextLink() && result.tlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -486,7 +495,6 @@ func (client TransactionsClient) ListByInvoiceSectionNameSender(req *http.Reques
 func (client TransactionsClient) ListByInvoiceSectionNameResponder(resp *http.Response) (result TransactionsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

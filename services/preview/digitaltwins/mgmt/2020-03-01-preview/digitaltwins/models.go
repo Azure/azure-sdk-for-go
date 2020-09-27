@@ -31,103 +31,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/digitaltwins/mgmt/2020-03-01-preview/digitaltwins"
 
-// EndpointProvisioningState enumerates the values for endpoint provisioning state.
-type EndpointProvisioningState string
-
-const (
-	// Canceled ...
-	Canceled EndpointProvisioningState = "Canceled"
-	// Deleting ...
-	Deleting EndpointProvisioningState = "Deleting"
-	// Failed ...
-	Failed EndpointProvisioningState = "Failed"
-	// Provisioning ...
-	Provisioning EndpointProvisioningState = "Provisioning"
-	// Succeeded ...
-	Succeeded EndpointProvisioningState = "Succeeded"
-)
-
-// PossibleEndpointProvisioningStateValues returns an array of possible values for the EndpointProvisioningState const type.
-func PossibleEndpointProvisioningStateValues() []EndpointProvisioningState {
-	return []EndpointProvisioningState{Canceled, Deleting, Failed, Provisioning, Succeeded}
-}
-
-// EndpointType enumerates the values for endpoint type.
-type EndpointType string
-
-const (
-	// EndpointTypeDigitalTwinsEndpointResourceProperties ...
-	EndpointTypeDigitalTwinsEndpointResourceProperties EndpointType = "DigitalTwinsEndpointResourceProperties"
-	// EndpointTypeEventGrid ...
-	EndpointTypeEventGrid EndpointType = "EventGrid"
-	// EndpointTypeEventHub ...
-	EndpointTypeEventHub EndpointType = "EventHub"
-	// EndpointTypeServiceBus ...
-	EndpointTypeServiceBus EndpointType = "ServiceBus"
-)
-
-// PossibleEndpointTypeValues returns an array of possible values for the EndpointType const type.
-func PossibleEndpointTypeValues() []EndpointType {
-	return []EndpointType{EndpointTypeDigitalTwinsEndpointResourceProperties, EndpointTypeEventGrid, EndpointTypeEventHub, EndpointTypeServiceBus}
-}
-
-// IntegrationResourceState enumerates the values for integration resource state.
-type IntegrationResourceState string
-
-const (
-	// IntegrationResourceStateCanceled ...
-	IntegrationResourceStateCanceled IntegrationResourceState = "Canceled"
-	// IntegrationResourceStateDeleting ...
-	IntegrationResourceStateDeleting IntegrationResourceState = "Deleting"
-	// IntegrationResourceStateFailed ...
-	IntegrationResourceStateFailed IntegrationResourceState = "Failed"
-	// IntegrationResourceStateProvisioning ...
-	IntegrationResourceStateProvisioning IntegrationResourceState = "Provisioning"
-	// IntegrationResourceStateSucceeded ...
-	IntegrationResourceStateSucceeded IntegrationResourceState = "Succeeded"
-)
-
-// PossibleIntegrationResourceStateValues returns an array of possible values for the IntegrationResourceState const type.
-func PossibleIntegrationResourceStateValues() []IntegrationResourceState {
-	return []IntegrationResourceState{IntegrationResourceStateCanceled, IntegrationResourceStateDeleting, IntegrationResourceStateFailed, IntegrationResourceStateProvisioning, IntegrationResourceStateSucceeded}
-}
-
-// ProvisioningState enumerates the values for provisioning state.
-type ProvisioningState string
-
-const (
-	// ProvisioningStateCanceled ...
-	ProvisioningStateCanceled ProvisioningState = "Canceled"
-	// ProvisioningStateDeleting ...
-	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed ...
-	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateProvisioning ...
-	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
-	// ProvisioningStateSucceeded ...
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-)
-
-// PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{ProvisioningStateCanceled, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateProvisioning, ProvisioningStateSucceeded}
-}
-
-// Reason enumerates the values for reason.
-type Reason string
-
-const (
-	// AlreadyExists ...
-	AlreadyExists Reason = "AlreadyExists"
-	// Invalid ...
-	Invalid Reason = "Invalid"
-)
-
-// PossibleReasonValues returns an array of possible values for the Reason const type.
-func PossibleReasonValues() []Reason {
-	return []Reason{AlreadyExists, Invalid}
-}
-
 // CheckNameRequest the result returned from a database check name availability request.
 type CheckNameRequest struct {
 	// Name - Resource name.
@@ -149,8 +52,7 @@ type CheckNameResult struct {
 	Reason Reason `json:"reason,omitempty"`
 }
 
-// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// CreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -221,7 +123,7 @@ type Description struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
 	Tags map[string]*string `json:"tags"`
-	// Sku - The resource sku.
+	// Sku - This property is reserved for future use, and will be ignored/omitted
 	Sku *SkuInfo `json:"sku,omitempty"`
 }
 
@@ -398,10 +300,15 @@ func (dlr DescriptionListResult) IsEmpty() bool {
 	return dlr.Value == nil || len(*dlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (dlr DescriptionListResult) hasNextLink() bool {
+	return dlr.NextLink != nil && len(*dlr.NextLink) != 0
+}
+
 // descriptionListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (dlr DescriptionListResult) descriptionListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if dlr.NextLink == nil || len(to.String(dlr.NextLink)) < 1 {
+	if !dlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -429,11 +336,16 @@ func (page *DescriptionListResultPage) NextWithContext(ctx context.Context) (err
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.dlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.dlr)
+		if err != nil {
+			return err
+		}
+		page.dlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.dlr = next
 	return nil
 }
 
@@ -496,8 +408,7 @@ func (future *EndpointCreateOrUpdateFuture) Result(client EndpointClient) (er En
 	return
 }
 
-// EndpointDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// EndpointDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type EndpointDeleteFuture struct {
 	azure.Future
 }
@@ -528,8 +439,8 @@ func (future *EndpointDeleteFuture) Result(client EndpointClient) (er EndpointRe
 // EndpointResource digitalTwinsInstance endpoint resource.
 type EndpointResource struct {
 	autorest.Response `json:"-"`
-	// BasicEndpointResourceProperties - DigitalTwinsInstance endpoint resource properties.
-	BasicEndpointResourceProperties `json:"properties,omitempty"`
+	// Properties - DigitalTwinsInstance endpoint resource properties.
+	Properties BasicEndpointResourceProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Extension resource name.
@@ -541,7 +452,7 @@ type EndpointResource struct {
 // MarshalJSON is the custom marshaler for EndpointResource.
 func (er EndpointResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["properties"] = er.BasicEndpointResourceProperties
+	objectMap["properties"] = er.Properties
 	return json.Marshal(objectMap)
 }
 
@@ -556,11 +467,11 @@ func (er *EndpointResource) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				basicEndpointResourceProperties, err := unmarshalBasicEndpointResourceProperties(*v)
+				properties, err := unmarshalBasicEndpointResourceProperties(*v)
 				if err != nil {
 					return err
 				}
-				er.BasicEndpointResourceProperties = basicEndpointResourceProperties
+				er.Properties = properties
 			}
 		case "id":
 			if v != nil {
@@ -672,10 +583,15 @@ func (erlr EndpointResourceListResult) IsEmpty() bool {
 	return erlr.Value == nil || len(*erlr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (erlr EndpointResourceListResult) hasNextLink() bool {
+	return erlr.NextLink != nil && len(*erlr.NextLink) != 0
+}
+
 // endpointResourceListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (erlr EndpointResourceListResult) endpointResourceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if erlr.NextLink == nil || len(to.String(erlr.NextLink)) < 1 {
+	if !erlr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -703,11 +619,16 @@ func (page *EndpointResourceListResultPage) NextWithContext(ctx context.Context)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.erlr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.erlr)
+		if err != nil {
+			return err
+		}
+		page.erlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.erlr = next
 	return nil
 }
 
@@ -995,356 +916,21 @@ type ExternalResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// IntegrationResource ioTHub integration resource.
-type IntegrationResource struct {
-	autorest.Response `json:"-"`
-	// IntegrationResourceProperties - IoTHub integration resource properties.
-	*IntegrationResourceProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Extension resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IntegrationResource.
-func (ir IntegrationResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ir.IntegrationResourceProperties != nil {
-		objectMap["properties"] = ir.IntegrationResourceProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IntegrationResource struct.
-func (ir *IntegrationResource) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var integrationResourceProperties IntegrationResourceProperties
-				err = json.Unmarshal(*v, &integrationResourceProperties)
-				if err != nil {
-					return err
-				}
-				ir.IntegrationResourceProperties = &integrationResourceProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				ir.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				ir.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				ir.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// IntegrationResourceListResult a list of DigitalTwinsInstance IoTHubs with a next link.
-type IntegrationResourceListResult struct {
-	autorest.Response `json:"-"`
-	// NextLink - The link used to get the next page of DigitalTwinsInstance IoTHubs.
-	NextLink *string `json:"nextLink,omitempty"`
-	// Value - A list of DigitalTwinsInstance IoTHubs.
-	Value *[]IntegrationResource `json:"value,omitempty"`
-}
-
-// IntegrationResourceListResultIterator provides access to a complete listing of IntegrationResource
-// values.
-type IntegrationResourceListResultIterator struct {
-	i    int
-	page IntegrationResourceListResultPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *IntegrationResourceListResultIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationResourceListResultIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *IntegrationResourceListResultIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter IntegrationResourceListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter IntegrationResourceListResultIterator) Response() IntegrationResourceListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter IntegrationResourceListResultIterator) Value() IntegrationResource {
-	if !iter.page.NotDone() {
-		return IntegrationResource{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the IntegrationResourceListResultIterator type.
-func NewIntegrationResourceListResultIterator(page IntegrationResourceListResultPage) IntegrationResourceListResultIterator {
-	return IntegrationResourceListResultIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (irlr IntegrationResourceListResult) IsEmpty() bool {
-	return irlr.Value == nil || len(*irlr.Value) == 0
-}
-
-// integrationResourceListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (irlr IntegrationResourceListResult) integrationResourceListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if irlr.NextLink == nil || len(to.String(irlr.NextLink)) < 1 {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(irlr.NextLink)))
-}
-
-// IntegrationResourceListResultPage contains a page of IntegrationResource values.
-type IntegrationResourceListResultPage struct {
-	fn   func(context.Context, IntegrationResourceListResult) (IntegrationResourceListResult, error)
-	irlr IntegrationResourceListResult
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *IntegrationResourceListResultPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationResourceListResultPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	next, err := page.fn(ctx, page.irlr)
-	if err != nil {
-		return err
-	}
-	page.irlr = next
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *IntegrationResourceListResultPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page IntegrationResourceListResultPage) NotDone() bool {
-	return !page.irlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page IntegrationResourceListResultPage) Response() IntegrationResourceListResult {
-	return page.irlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page IntegrationResourceListResultPage) Values() []IntegrationResource {
-	if page.irlr.IsEmpty() {
-		return nil
-	}
-	return *page.irlr.Value
-}
-
-// Creates a new instance of the IntegrationResourceListResultPage type.
-func NewIntegrationResourceListResultPage(getNextPage func(context.Context, IntegrationResourceListResult) (IntegrationResourceListResult, error)) IntegrationResourceListResultPage {
-	return IntegrationResourceListResultPage{fn: getNextPage}
-}
-
-// IntegrationResourceProperties properties related to the IoTHub DigitalTwinsInstance Integration
-// Resource.
-type IntegrationResourceProperties struct {
-	// ResourceID - Fully qualified resource identifier of the DigitalTwins Azure resource.
-	ResourceID *string `json:"resourceId,omitempty"`
-	// CreatedTime - READ-ONLY; Time when the IoTHub was added to DigitalTwinsInstance.
-	CreatedTime *date.Time `json:"createdTime,omitempty"`
-	// ProvisioningState - READ-ONLY; DigitalTwinsInstance - IoTHub link state. Possible values include: 'IntegrationResourceStateProvisioning', 'IntegrationResourceStateDeleting', 'IntegrationResourceStateSucceeded', 'IntegrationResourceStateFailed', 'IntegrationResourceStateCanceled'
-	ProvisioningState IntegrationResourceState `json:"provisioningState,omitempty"`
-}
-
-// IntegrationResourceState1 properties related to the IoTHub DigitalTwinsInstance Integration Resource.
-type IntegrationResourceState1 struct {
-	// ProvisioningState - READ-ONLY; DigitalTwinsInstance - IoTHub link state. Possible values include: 'IntegrationResourceStateProvisioning', 'IntegrationResourceStateDeleting', 'IntegrationResourceStateSucceeded', 'IntegrationResourceStateFailed', 'IntegrationResourceStateCanceled'
-	ProvisioningState IntegrationResourceState `json:"provisioningState,omitempty"`
-}
-
-// IntegrationResourceUpdateInfo ioTHub integration resource.
-type IntegrationResourceUpdateInfo struct {
-	// IntegrationResourceUpdateProperties - IoTHub integration resource properties to be updated.
-	*IntegrationResourceUpdateProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Extension resource name.
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for IntegrationResourceUpdateInfo.
-func (irui IntegrationResourceUpdateInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if irui.IntegrationResourceUpdateProperties != nil {
-		objectMap["properties"] = irui.IntegrationResourceUpdateProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for IntegrationResourceUpdateInfo struct.
-func (irui *IntegrationResourceUpdateInfo) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var integrationResourceUpdateProperties IntegrationResourceUpdateProperties
-				err = json.Unmarshal(*v, &integrationResourceUpdateProperties)
-				if err != nil {
-					return err
-				}
-				irui.IntegrationResourceUpdateProperties = &integrationResourceUpdateProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				irui.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				irui.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				irui.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// IntegrationResourceUpdateProperties updatable properties related to the IoTHub DigitalTwinsInstance
-// Integration Resource.
-type IntegrationResourceUpdateProperties struct {
-	// ProvisioningState - READ-ONLY; DigitalTwinsInstance - IoTHub link state. Possible values include: 'IntegrationResourceStateProvisioning', 'IntegrationResourceStateDeleting', 'IntegrationResourceStateSucceeded', 'IntegrationResourceStateFailed', 'IntegrationResourceStateCanceled'
-	ProvisioningState IntegrationResourceState `json:"provisioningState,omitempty"`
-}
-
-// IoTHubDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type IoTHubDeleteFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *IoTHubDeleteFuture) Result(client IoTHubClient) (ir IntegrationResource, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "digitaltwins.IoTHubDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("digitaltwins.IoTHubDeleteFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ir.Response.Response, err = future.GetResult(sender); err == nil && ir.Response.Response.StatusCode != http.StatusNoContent {
-		ir, err = client.DeleteResponder(ir.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "digitaltwins.IoTHubDeleteFuture", "Result", ir.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // Operation digitalTwins service REST API operation
 type Operation struct {
 	// Name - READ-ONLY; Operation name: {provider}/{resource}/{read | write | action | delete}
 	Name *string `json:"name,omitempty"`
 	// Display - Operation properties display
 	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.Display != nil {
+		objectMap["display"] = o.Display
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the object that represents the operation.
@@ -1359,14 +945,23 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult a list of DigitalTwins service operations. It contains a list of operations and a
-// URL link to get the next set of results.
+// OperationListResult a list of DigitalTwins service operations. It contains a list of operations and a URL
+// link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// NextLink - The link used to get the next page of DigitalTwins description objects.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; A list of DigitalTwins operations supported by the Microsoft.DigitalTwins resource provider.
 	Value *[]Operation `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if olr.NextLink != nil {
+		objectMap["nextLink"] = olr.NextLink
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -1437,10 +1032,15 @@ func (olr OperationListResult) IsEmpty() bool {
 	return olr.Value == nil || len(*olr.Value) == 0
 }
 
+// hasNextLink returns true if the NextLink is not empty.
+func (olr OperationListResult) hasNextLink() bool {
+	return olr.NextLink != nil && len(*olr.NextLink) != 0
+}
+
 // operationListResultPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
 func (olr OperationListResult) operationListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if olr.NextLink == nil || len(to.String(olr.NextLink)) < 1 {
+	if !olr.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
@@ -1468,11 +1068,16 @@ func (page *OperationListResultPage) NextWithContext(ctx context.Context) (err e
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	next, err := page.fn(ctx, page.olr)
-	if err != nil {
-		return err
+	for {
+		next, err := page.fn(ctx, page.olr)
+		if err != nil {
+			return err
+		}
+		page.olr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
 	}
-	page.olr = next
 	return nil
 }
 
@@ -1545,7 +1150,7 @@ type Resource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
 	Tags map[string]*string `json:"tags"`
-	// Sku - The resource sku.
+	// Sku - This property is reserved for future use, and will be ignored/omitted
 	Sku *SkuInfo `json:"sku,omitempty"`
 }
 

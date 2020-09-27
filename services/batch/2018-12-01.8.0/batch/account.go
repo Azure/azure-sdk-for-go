@@ -89,6 +89,9 @@ func (client AccountClient) ListNodeAgentSkus(ctx context.Context, filter string
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListNodeAgentSkus", resp, "Failure responding to request")
 	}
+	if result.alnasr.hasNextLink() && result.alnasr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -151,7 +154,6 @@ func (client AccountClient) ListNodeAgentSkusSender(req *http.Request) (*http.Re
 func (client AccountClient) ListNodeAgentSkusResponder(resp *http.Response) (result AccountListNodeAgentSkusResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -246,6 +248,9 @@ func (client AccountClient) ListPoolNodeCounts(ctx context.Context, filter strin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.AccountClient", "ListPoolNodeCounts", resp, "Failure responding to request")
 	}
+	if result.pnclr.hasNextLink() && result.pnclr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -308,7 +313,6 @@ func (client AccountClient) ListPoolNodeCountsSender(req *http.Request) (*http.R
 func (client AccountClient) ListPoolNodeCountsResponder(resp *http.Response) (result PoolNodeCountsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

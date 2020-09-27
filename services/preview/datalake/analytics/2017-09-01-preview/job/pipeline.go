@@ -118,7 +118,6 @@ func (client PipelineClient) GetSender(req *http.Request) (*http.Response, error
 func (client PipelineClient) GetResponder(resp *http.Response) (result PipelineInformation, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -162,6 +161,9 @@ func (client PipelineClient) List(ctx context.Context, accountName string, start
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "job.PipelineClient", "List", resp, "Failure responding to request")
 	}
+	if result.pilr.hasNextLink() && result.pilr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -203,7 +205,6 @@ func (client PipelineClient) ListSender(req *http.Request) (*http.Response, erro
 func (client PipelineClient) ListResponder(resp *http.Response) (result PipelineInformationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

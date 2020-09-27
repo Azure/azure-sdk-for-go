@@ -134,7 +134,6 @@ func (client ZonesClient) CreateOrUpdateSender(req *http.Request) (*http.Respons
 func (client ZonesClient) CreateOrUpdateResponder(resp *http.Response) (result Zone, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -226,7 +225,6 @@ func (client ZonesClient) DeleteSender(req *http.Request) (*http.Response, error
 func (client ZonesClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -311,7 +309,6 @@ func (client ZonesClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client ZonesClient) GetResponder(resp *http.Response) (result Zone, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -363,6 +360,9 @@ func (client ZonesClient) ListZonesInResourceGroup(ctx context.Context, resource
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInResourceGroup", resp, "Failure responding to request")
 	}
+	if result.zlr.hasNextLink() && result.zlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -404,7 +404,6 @@ func (client ZonesClient) ListZonesInResourceGroupSender(req *http.Request) (*ht
 func (client ZonesClient) ListZonesInResourceGroupResponder(resp *http.Response) (result ZoneListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -488,6 +487,9 @@ func (client ZonesClient) ListZonesInSubscription(ctx context.Context, top strin
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "dns.ZonesClient", "ListZonesInSubscription", resp, "Failure responding to request")
 	}
+	if result.zlr.hasNextLink() && result.zlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -528,7 +530,6 @@ func (client ZonesClient) ListZonesInSubscriptionSender(req *http.Request) (*htt
 func (client ZonesClient) ListZonesInSubscriptionResponder(resp *http.Response) (result ZoneListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

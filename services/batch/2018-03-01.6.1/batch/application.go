@@ -138,7 +138,6 @@ func (client ApplicationClient) GetSender(req *http.Request) (*http.Response, er
 func (client ApplicationClient) GetResponder(resp *http.Response) (result ApplicationSummary, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -197,6 +196,9 @@ func (client ApplicationClient) List(ctx context.Context, maxResults *int32, tim
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.ApplicationClient", "List", resp, "Failure responding to request")
 	}
+	if result.alr.hasNextLink() && result.alr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -252,7 +254,6 @@ func (client ApplicationClient) ListSender(req *http.Request) (*http.Response, e
 func (client ApplicationClient) ListResponder(resp *http.Response) (result ApplicationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

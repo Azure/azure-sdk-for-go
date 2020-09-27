@@ -138,7 +138,6 @@ func (client BudgetsClient) CreateOrUpdateSender(req *http.Request) (*http.Respo
 func (client BudgetsClient) CreateOrUpdateResponder(resp *http.Response) (result Budget, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -243,7 +242,6 @@ func (client BudgetsClient) CreateOrUpdateByResourceGroupNameSender(req *http.Re
 func (client BudgetsClient) CreateOrUpdateByResourceGroupNameResponder(resp *http.Response) (result Budget, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -317,7 +315,6 @@ func (client BudgetsClient) DeleteSender(req *http.Request) (*http.Response, err
 func (client BudgetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -392,7 +389,6 @@ func (client BudgetsClient) DeleteByResourceGroupNameSender(req *http.Request) (
 func (client BudgetsClient) DeleteByResourceGroupNameResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -465,7 +461,6 @@ func (client BudgetsClient) GetSender(req *http.Request) (*http.Response, error)
 func (client BudgetsClient) GetResponder(resp *http.Response) (result Budget, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -541,7 +536,6 @@ func (client BudgetsClient) GetByResourceGroupNameSender(req *http.Request) (*ht
 func (client BudgetsClient) GetByResourceGroupNameResponder(resp *http.Response) (result Budget, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -579,6 +573,9 @@ func (client BudgetsClient) List(ctx context.Context) (result BudgetsListResultP
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "List", resp, "Failure responding to request")
 	}
+	if result.blr.hasNextLink() && result.blr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -613,7 +610,6 @@ func (client BudgetsClient) ListSender(req *http.Request) (*http.Response, error
 func (client BudgetsClient) ListResponder(resp *http.Response) (result BudgetsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -690,6 +686,9 @@ func (client BudgetsClient) ListByResourceGroupName(ctx context.Context, resourc
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.BudgetsClient", "ListByResourceGroupName", resp, "Failure responding to request")
 	}
+	if result.blr.hasNextLink() && result.blr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -725,7 +724,6 @@ func (client BudgetsClient) ListByResourceGroupNameSender(req *http.Request) (*h
 func (client BudgetsClient) ListByResourceGroupNameResponder(resp *http.Response) (result BudgetsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

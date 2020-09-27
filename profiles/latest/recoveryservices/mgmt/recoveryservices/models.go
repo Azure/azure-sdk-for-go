@@ -47,6 +47,31 @@ const (
 	AuthTypeResourceCertificateDetails AuthTypeBasicResourceCertificateDetails = original.AuthTypeResourceCertificateDetails
 )
 
+type PrivateEndpointConnectionStatus = original.PrivateEndpointConnectionStatus
+
+const (
+	Approved     PrivateEndpointConnectionStatus = original.Approved
+	Disconnected PrivateEndpointConnectionStatus = original.Disconnected
+	Pending      PrivateEndpointConnectionStatus = original.Pending
+	Rejected     PrivateEndpointConnectionStatus = original.Rejected
+)
+
+type ProvisioningState = original.ProvisioningState
+
+const (
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStatePending   ProvisioningState = original.ProvisioningStatePending
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+)
+
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	None           ResourceIdentityType = original.None
+	SystemAssigned ResourceIdentityType = original.SystemAssigned
+)
+
 type SkuName = original.SkuName
 
 const (
@@ -72,6 +97,13 @@ const (
 	Seconds        UsagesUnit = original.Seconds
 )
 
+type VaultPrivateEndpointState = original.VaultPrivateEndpointState
+
+const (
+	VaultPrivateEndpointStateEnabled VaultPrivateEndpointState = original.VaultPrivateEndpointStateEnabled
+	VaultPrivateEndpointStateNone    VaultPrivateEndpointState = original.VaultPrivateEndpointStateNone
+)
+
 type VaultUpgradeState = original.VaultUpgradeState
 
 const (
@@ -86,7 +118,6 @@ type BasicResourceCertificateDetails = original.BasicResourceCertificateDetails
 type CertificateRequest = original.CertificateRequest
 type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
-type CheckNameAvailabilityResultResource = original.CheckNameAvailabilityResultResource
 type Client = original.Client
 type ClientDiscoveryDisplay = original.ClientDiscoveryDisplay
 type ClientDiscoveryForLogSpecification = original.ClientDiscoveryForLogSpecification
@@ -96,12 +127,23 @@ type ClientDiscoveryResponse = original.ClientDiscoveryResponse
 type ClientDiscoveryResponseIterator = original.ClientDiscoveryResponseIterator
 type ClientDiscoveryResponsePage = original.ClientDiscoveryResponsePage
 type ClientDiscoveryValueForSingleAPI = original.ClientDiscoveryValueForSingleAPI
+type IdentityData = original.IdentityData
 type JobsSummary = original.JobsSummary
 type MonitoringSummary = original.MonitoringSummary
 type NameInfo = original.NameInfo
 type OperationsClient = original.OperationsClient
 type PatchTrackedResource = original.PatchTrackedResource
 type PatchVault = original.PatchVault
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionVaultProperties = original.PrivateEndpointConnectionVaultProperties
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResources = original.PrivateLinkResources
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkResourcesIterator = original.PrivateLinkResourcesIterator
+type PrivateLinkResourcesPage = original.PrivateLinkResourcesPage
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type RawCertificateData = original.RawCertificateData
 type RegisteredIdentitiesClient = original.RegisteredIdentitiesClient
 type ReplicationUsage = original.ReplicationUsage
@@ -149,6 +191,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesIterator(page PrivateLinkResourcesPage) PrivateLinkResourcesIterator {
+	return original.NewPrivateLinkResourcesIterator(page)
+}
+func NewPrivateLinkResourcesPage(getNextPage func(context.Context, PrivateLinkResources) (PrivateLinkResources, error)) PrivateLinkResourcesPage {
+	return original.NewPrivateLinkResourcesPage(getNextPage)
 }
 func NewRegisteredIdentitiesClient(subscriptionID string) RegisteredIdentitiesClient {
 	return original.NewRegisteredIdentitiesClient(subscriptionID)
@@ -201,6 +255,15 @@ func PossibleAuthTypeBasicResourceCertificateDetailsValues() []AuthTypeBasicReso
 func PossibleAuthTypeValues() []AuthType {
 	return original.PossibleAuthTypeValues()
 }
+func PossiblePrivateEndpointConnectionStatusValues() []PrivateEndpointConnectionStatus {
+	return original.PossiblePrivateEndpointConnectionStatusValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
+}
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
@@ -209,6 +272,9 @@ func PossibleTriggerTypeValues() []TriggerType {
 }
 func PossibleUsagesUnitValues() []UsagesUnit {
 	return original.PossibleUsagesUnitValues()
+}
+func PossibleVaultPrivateEndpointStateValues() []VaultPrivateEndpointState {
+	return original.PossibleVaultPrivateEndpointStateValues()
 }
 func PossibleVaultUpgradeStateValues() []VaultUpgradeState {
 	return original.PossibleVaultUpgradeStateValues()

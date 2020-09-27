@@ -110,7 +110,6 @@ func (client ConfigurationsClient) CreateInResourceGroupSender(req *http.Request
 func (client ConfigurationsClient) CreateInResourceGroupResponder(resp *http.Response) (result ARMErrorResponseBody, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -186,7 +185,6 @@ func (client ConfigurationsClient) CreateInSubscriptionSender(req *http.Request)
 func (client ConfigurationsClient) CreateInSubscriptionResponder(resp *http.Response) (result ARMErrorResponseBody, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent, http.StatusBadRequest),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -260,7 +258,6 @@ func (client ConfigurationsClient) ListByResourceGroupSender(req *http.Request) 
 func (client ConfigurationsClient) ListByResourceGroupResponder(resp *http.Response) (result ConfigurationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -299,6 +296,9 @@ func (client ConfigurationsClient) ListBySubscription(ctx context.Context) (resu
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "advisor.ConfigurationsClient", "ListBySubscription", resp, "Failure responding to request")
 	}
+	if result.clr.hasNextLink() && result.clr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -333,7 +333,6 @@ func (client ConfigurationsClient) ListBySubscriptionSender(req *http.Request) (
 func (client ConfigurationsClient) ListBySubscriptionResponder(resp *http.Response) (result ConfigurationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

@@ -93,6 +93,9 @@ func (client MarketplacesByBillingAccountClient) List(ctx context.Context, billi
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByBillingAccountClient", "List", resp, "Failure responding to request")
 	}
+	if result.mlr.hasNextLink() && result.mlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -136,7 +139,6 @@ func (client MarketplacesByBillingAccountClient) ListSender(req *http.Request) (
 func (client MarketplacesByBillingAccountClient) ListResponder(resp *http.Response) (result MarketplacesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -231,6 +233,9 @@ func (client MarketplacesByBillingAccountClient) ListByBillingPeriod(ctx context
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.MarketplacesByBillingAccountClient", "ListByBillingPeriod", resp, "Failure responding to request")
 	}
+	if result.mlr.hasNextLink() && result.mlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -275,7 +280,6 @@ func (client MarketplacesByBillingAccountClient) ListByBillingPeriodSender(req *
 func (client MarketplacesByBillingAccountClient) ListByBillingPeriodResponder(resp *http.Response) (result MarketplacesListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

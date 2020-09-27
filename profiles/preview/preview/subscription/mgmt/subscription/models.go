@@ -22,7 +22,7 @@ package subscription
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2018-03-01-preview/subscription"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2019-10-01-preview/subscription"
 )
 
 const (
@@ -56,21 +56,31 @@ const (
 
 type AdPrincipal = original.AdPrincipal
 type BaseClient = original.BaseClient
+type CanceledSubscriptionID = original.CanceledSubscriptionID
+type Client = original.Client
+type CreateCspSubscriptionFuture = original.CreateCspSubscriptionFuture
+type CreateSubscriptionFuture = original.CreateSubscriptionFuture
+type CreateSubscriptionInEnrollmentAccountFuture = original.CreateSubscriptionInEnrollmentAccountFuture
 type CreationParameters = original.CreationParameters
 type CreationResult = original.CreationResult
+type EnabledSubscriptionID = original.EnabledSubscriptionID
 type ErrorResponse = original.ErrorResponse
-type FactoryClient = original.FactoryClient
-type FactoryCreateSubscriptionInEnrollmentAccountFuture = original.FactoryCreateSubscriptionInEnrollmentAccountFuture
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
 type ListResultPage = original.ListResultPage
 type Location = original.Location
 type LocationListResult = original.LocationListResult
 type Model = original.Model
+type ModernCspSubscriptionCreationParameters = original.ModernCspSubscriptionCreationParameters
+type ModernSubscriptionCreationParameters = original.ModernSubscriptionCreationParameters
+type Name = original.Name
 type Operation = original.Operation
+type OperationClient = original.OperationClient
+type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationsClient = original.OperationsClient
 type Policies = original.Policies
+type RenamedSubscriptionID = original.RenamedSubscriptionID
 type SubscriptionsClient = original.SubscriptionsClient
 type TenantIDDescription = original.TenantIDDescription
 type TenantListResult = original.TenantListResult
@@ -81,17 +91,23 @@ type TenantsClient = original.TenantsClient
 func New() BaseClient {
 	return original.New()
 }
-func NewFactoryClient() FactoryClient {
-	return original.NewFactoryClient()
+func NewClient() Client {
+	return original.NewClient()
 }
-func NewFactoryClientWithBaseURI(baseURI string) FactoryClient {
-	return original.NewFactoryClientWithBaseURI(baseURI)
+func NewClientWithBaseURI(baseURI string) Client {
+	return original.NewClientWithBaseURI(baseURI)
 }
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
 }
 func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
 	return original.NewListResultPage(getNextPage)
+}
+func NewOperationClient() OperationClient {
+	return original.NewOperationClient()
+}
+func NewOperationClientWithBaseURI(baseURI string) OperationClient {
+	return original.NewOperationClientWithBaseURI(baseURI)
 }
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()

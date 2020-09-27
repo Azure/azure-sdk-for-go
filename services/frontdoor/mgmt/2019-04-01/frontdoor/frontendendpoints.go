@@ -129,7 +129,6 @@ func (client FrontendEndpointsClient) DisableHTTPSSender(req *http.Request) (fut
 func (client FrontendEndpointsClient) DisableHTTPSResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -225,7 +224,6 @@ func (client FrontendEndpointsClient) EnableHTTPSSender(req *http.Request) (futu
 func (client FrontendEndpointsClient) EnableHTTPSResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
 	result.Response = resp
@@ -318,7 +316,6 @@ func (client FrontendEndpointsClient) GetSender(req *http.Request) (*http.Respon
 func (client FrontendEndpointsClient) GetResponder(resp *http.Response) (result FrontendEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -371,6 +368,9 @@ func (client FrontendEndpointsClient) ListByFrontDoor(ctx context.Context, resou
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "frontdoor.FrontendEndpointsClient", "ListByFrontDoor", resp, "Failure responding to request")
 	}
+	if result.felr.hasNextLink() && result.felr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -407,7 +407,6 @@ func (client FrontendEndpointsClient) ListByFrontDoorSender(req *http.Request) (
 func (client FrontendEndpointsClient) ListByFrontDoorResponder(resp *http.Response) (result FrontendEndpointsListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

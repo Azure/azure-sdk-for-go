@@ -27,3110 +27,6 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/servicefabric/6.2/servicefabric"
 
-// ApplicationDefinitionKind enumerates the values for application definition kind.
-type ApplicationDefinitionKind string
-
-const (
-	// Compose Indicates the application is defined by compose file(s). The value is 1.
-	Compose ApplicationDefinitionKind = "Compose"
-	// Invalid Indicates the application definition kind is invalid. All Service Fabric enumerations have the
-	// invalid type. The value is 65535.
-	Invalid ApplicationDefinitionKind = "Invalid"
-	// ServiceFabricApplicationDescription Indicates the application is defined by a Service Fabric application
-	// description. The value is 0.
-	ServiceFabricApplicationDescription ApplicationDefinitionKind = "ServiceFabricApplicationDescription"
-)
-
-// PossibleApplicationDefinitionKindValues returns an array of possible values for the ApplicationDefinitionKind const type.
-func PossibleApplicationDefinitionKindValues() []ApplicationDefinitionKind {
-	return []ApplicationDefinitionKind{Compose, Invalid, ServiceFabricApplicationDescription}
-}
-
-// ApplicationPackageCleanupPolicy enumerates the values for application package cleanup policy.
-type ApplicationPackageCleanupPolicy string
-
-const (
-	// ApplicationPackageCleanupPolicyAutomatic Indicates that the service fabric runtime determines when to do
-	// the application package cleanup. By default, cleanup is done on successful provision. The value is 2.
-	ApplicationPackageCleanupPolicyAutomatic ApplicationPackageCleanupPolicy = "Automatic"
-	// ApplicationPackageCleanupPolicyDefault Indicates that the cleanup policy of application packages is
-	// based on the cluster setting "CleanupApplicationPackageOnProvisionSuccess." The value is 1.
-	ApplicationPackageCleanupPolicyDefault ApplicationPackageCleanupPolicy = "Default"
-	// ApplicationPackageCleanupPolicyInvalid Indicates that the application package cleanup policy is invalid.
-	// This value is default. The value is zero.
-	ApplicationPackageCleanupPolicyInvalid ApplicationPackageCleanupPolicy = "Invalid"
-	// ApplicationPackageCleanupPolicyManual Indicates that the user has to explicitly clean up the application
-	// package. The value is 3.
-	ApplicationPackageCleanupPolicyManual ApplicationPackageCleanupPolicy = "Manual"
-)
-
-// PossibleApplicationPackageCleanupPolicyValues returns an array of possible values for the ApplicationPackageCleanupPolicy const type.
-func PossibleApplicationPackageCleanupPolicyValues() []ApplicationPackageCleanupPolicy {
-	return []ApplicationPackageCleanupPolicy{ApplicationPackageCleanupPolicyAutomatic, ApplicationPackageCleanupPolicyDefault, ApplicationPackageCleanupPolicyInvalid, ApplicationPackageCleanupPolicyManual}
-}
-
-// ApplicationStatus enumerates the values for application status.
-type ApplicationStatus string
-
-const (
-	// ApplicationStatusCreating Indicates the application status is creating. The value is 3.
-	ApplicationStatusCreating ApplicationStatus = "Creating"
-	// ApplicationStatusDeleting Indicates the application status is deleting. The value is 4.
-	ApplicationStatusDeleting ApplicationStatus = "Deleting"
-	// ApplicationStatusFailed Indicates the creation or deletion of application was terminated due to
-	// persistent failures. Another create/delete request can be accepted to resume a failed application. The
-	// value is 5.
-	ApplicationStatusFailed ApplicationStatus = "Failed"
-	// ApplicationStatusInvalid Indicates the application status is invalid. All Service Fabric enumerations
-	// have the invalid type. The value is zero.
-	ApplicationStatusInvalid ApplicationStatus = "Invalid"
-	// ApplicationStatusReady Indicates the application status is ready. The value is 1.
-	ApplicationStatusReady ApplicationStatus = "Ready"
-	// ApplicationStatusUpgrading Indicates the application status is upgrading. The value is 2.
-	ApplicationStatusUpgrading ApplicationStatus = "Upgrading"
-)
-
-// PossibleApplicationStatusValues returns an array of possible values for the ApplicationStatus const type.
-func PossibleApplicationStatusValues() []ApplicationStatus {
-	return []ApplicationStatus{ApplicationStatusCreating, ApplicationStatusDeleting, ApplicationStatusFailed, ApplicationStatusInvalid, ApplicationStatusReady, ApplicationStatusUpgrading}
-}
-
-// ApplicationTypeDefinitionKind enumerates the values for application type definition kind.
-type ApplicationTypeDefinitionKind string
-
-const (
-	// ApplicationTypeDefinitionKindCompose Indicates the application type is defined and created implicitly as
-	// part of a compose deployment. The value is 2.
-	ApplicationTypeDefinitionKindCompose ApplicationTypeDefinitionKind = "Compose"
-	// ApplicationTypeDefinitionKindInvalid Indicates the application type definition kind is invalid. All
-	// Service Fabric enumerations have the invalid type. The value is 0.
-	ApplicationTypeDefinitionKindInvalid ApplicationTypeDefinitionKind = "Invalid"
-	// ApplicationTypeDefinitionKindServiceFabricApplicationPackage Indicates the application type is defined
-	// and created by a Service Fabric application package provided by the user. The value is 1.
-	ApplicationTypeDefinitionKindServiceFabricApplicationPackage ApplicationTypeDefinitionKind = "ServiceFabricApplicationPackage"
-)
-
-// PossibleApplicationTypeDefinitionKindValues returns an array of possible values for the ApplicationTypeDefinitionKind const type.
-func PossibleApplicationTypeDefinitionKindValues() []ApplicationTypeDefinitionKind {
-	return []ApplicationTypeDefinitionKind{ApplicationTypeDefinitionKindCompose, ApplicationTypeDefinitionKindInvalid, ApplicationTypeDefinitionKindServiceFabricApplicationPackage}
-}
-
-// ApplicationTypeStatus enumerates the values for application type status.
-type ApplicationTypeStatus string
-
-const (
-	// ApplicationTypeStatusAvailable Indicates that the application type is fully provisioned and is available
-	// for use. An application of this type and version can be created. The value is 2.
-	ApplicationTypeStatusAvailable ApplicationTypeStatus = "Available"
-	// ApplicationTypeStatusFailed Indicates that the application type provisioning failed and it is
-	// unavailable for use. The failure details can be obtained from the application type information query.
-	// The failed application type information remains in the cluster until it is unprovisioned or
-	// reprovisioned successfully. The value is 4.
-	ApplicationTypeStatusFailed ApplicationTypeStatus = "Failed"
-	// ApplicationTypeStatusInvalid Indicates the application type status is invalid. All Service Fabric
-	// enumerations have the invalid type. The value is zero.
-	ApplicationTypeStatusInvalid ApplicationTypeStatus = "Invalid"
-	// ApplicationTypeStatusProvisioning Indicates that the application type is being provisioned in the
-	// cluster. The value is 1.
-	ApplicationTypeStatusProvisioning ApplicationTypeStatus = "Provisioning"
-	// ApplicationTypeStatusUnprovisioning Indicates that the application type is in process of being
-	// unprovisioned from the cluster. The value is 3.
-	ApplicationTypeStatusUnprovisioning ApplicationTypeStatus = "Unprovisioning"
-)
-
-// PossibleApplicationTypeStatusValues returns an array of possible values for the ApplicationTypeStatus const type.
-func PossibleApplicationTypeStatusValues() []ApplicationTypeStatus {
-	return []ApplicationTypeStatus{ApplicationTypeStatusAvailable, ApplicationTypeStatusFailed, ApplicationTypeStatusInvalid, ApplicationTypeStatusProvisioning, ApplicationTypeStatusUnprovisioning}
-}
-
-// BackupEntityKind enumerates the values for backup entity kind.
-type BackupEntityKind string
-
-const (
-	// BackupEntityKindApplication Indicates the entity is a Service Fabric application.
-	BackupEntityKindApplication BackupEntityKind = "Application"
-	// BackupEntityKindInvalid Indicates an invalid entity kind. All Service Fabric enumerations have the
-	// invalid type.
-	BackupEntityKindInvalid BackupEntityKind = "Invalid"
-	// BackupEntityKindPartition Indicates the entity is a Service Fabric partition.
-	BackupEntityKindPartition BackupEntityKind = "Partition"
-	// BackupEntityKindService Indicates the entity is a Service Fabric service.
-	BackupEntityKindService BackupEntityKind = "Service"
-)
-
-// PossibleBackupEntityKindValues returns an array of possible values for the BackupEntityKind const type.
-func PossibleBackupEntityKindValues() []BackupEntityKind {
-	return []BackupEntityKind{BackupEntityKindApplication, BackupEntityKindInvalid, BackupEntityKindPartition, BackupEntityKindService}
-}
-
-// BackupPolicyScope enumerates the values for backup policy scope.
-type BackupPolicyScope string
-
-const (
-	// BackupPolicyScopeApplication Indicates the backup policy is applied at application level. All services
-	// and partitions of the application inherit this policy unless explicitly overridden at service or
-	// partition level.
-	BackupPolicyScopeApplication BackupPolicyScope = "Application"
-	// BackupPolicyScopeInvalid Indicates an invalid backup policy scope type. All Service Fabric enumerations
-	// have the invalid type.
-	BackupPolicyScopeInvalid BackupPolicyScope = "Invalid"
-	// BackupPolicyScopePartition Indicates the backup policy is applied at partition level. Hence overriding
-	// any policy which may have applied at partition's service or application level.
-	BackupPolicyScopePartition BackupPolicyScope = "Partition"
-	// BackupPolicyScopeService Indicates the backup policy is applied at service level. All partitions of the
-	// service inherit this policy unless explicitly overridden at partition level.
-	BackupPolicyScopeService BackupPolicyScope = "Service"
-)
-
-// PossibleBackupPolicyScopeValues returns an array of possible values for the BackupPolicyScope const type.
-func PossibleBackupPolicyScopeValues() []BackupPolicyScope {
-	return []BackupPolicyScope{BackupPolicyScopeApplication, BackupPolicyScopeInvalid, BackupPolicyScopePartition, BackupPolicyScopeService}
-}
-
-// BackupScheduleFrequencyType enumerates the values for backup schedule frequency type.
-type BackupScheduleFrequencyType string
-
-const (
-	// BackupScheduleFrequencyTypeDaily Indicates that the time based backup schedule is repeated at a daily
-	// frequency.
-	BackupScheduleFrequencyTypeDaily BackupScheduleFrequencyType = "Daily"
-	// BackupScheduleFrequencyTypeInvalid Indicates an invalid backup schedule frequency type. All Service
-	// Fabric enumerations have the invalid type.
-	BackupScheduleFrequencyTypeInvalid BackupScheduleFrequencyType = "Invalid"
-	// BackupScheduleFrequencyTypeWeekly Indicates that the time based backup schedule is repeated at a weekly
-	// frequency.
-	BackupScheduleFrequencyTypeWeekly BackupScheduleFrequencyType = "Weekly"
-)
-
-// PossibleBackupScheduleFrequencyTypeValues returns an array of possible values for the BackupScheduleFrequencyType const type.
-func PossibleBackupScheduleFrequencyTypeValues() []BackupScheduleFrequencyType {
-	return []BackupScheduleFrequencyType{BackupScheduleFrequencyTypeDaily, BackupScheduleFrequencyTypeInvalid, BackupScheduleFrequencyTypeWeekly}
-}
-
-// BackupScheduleKind enumerates the values for backup schedule kind.
-type BackupScheduleKind string
-
-const (
-	// BackupScheduleKindFrequencyBased Indicates a frequency-based backup schedule.
-	BackupScheduleKindFrequencyBased BackupScheduleKind = "FrequencyBased"
-	// BackupScheduleKindInvalid Indicates an invalid backup schedule kind. All Service Fabric enumerations
-	// have the invalid type.
-	BackupScheduleKindInvalid BackupScheduleKind = "Invalid"
-	// BackupScheduleKindTimeBased Indicates a time-based backup schedule.
-	BackupScheduleKindTimeBased BackupScheduleKind = "TimeBased"
-)
-
-// PossibleBackupScheduleKindValues returns an array of possible values for the BackupScheduleKind const type.
-func PossibleBackupScheduleKindValues() []BackupScheduleKind {
-	return []BackupScheduleKind{BackupScheduleKindFrequencyBased, BackupScheduleKindInvalid, BackupScheduleKindTimeBased}
-}
-
-// BackupState enumerates the values for backup state.
-type BackupState string
-
-const (
-	// BackupStateAccepted Operation has been validated and accepted. Backup is yet to be triggered.
-	BackupStateAccepted BackupState = "Accepted"
-	// BackupStateBackupInProgress Backup operation has been triggered and is under process.
-	BackupStateBackupInProgress BackupState = "BackupInProgress"
-	// BackupStateFailure Operation completed with failure.
-	BackupStateFailure BackupState = "Failure"
-	// BackupStateInvalid Indicates an invalid backup state. All Service Fabric enumerations have the invalid
-	// type.
-	BackupStateInvalid BackupState = "Invalid"
-	// BackupStateSuccess Operation completed with success.
-	BackupStateSuccess BackupState = "Success"
-	// BackupStateTimeout Operation timed out.
-	BackupStateTimeout BackupState = "Timeout"
-)
-
-// PossibleBackupStateValues returns an array of possible values for the BackupState const type.
-func PossibleBackupStateValues() []BackupState {
-	return []BackupState{BackupStateAccepted, BackupStateBackupInProgress, BackupStateFailure, BackupStateInvalid, BackupStateSuccess, BackupStateTimeout}
-}
-
-// BackupStorageKind enumerates the values for backup storage kind.
-type BackupStorageKind string
-
-const (
-	// BackupStorageKindAzureBlobStore Indicates Azure blob store to be used as backup storage.
-	BackupStorageKindAzureBlobStore BackupStorageKind = "AzureBlobStore"
-	// BackupStorageKindFileShare Indicates file/ SMB share to be used as backup storage.
-	BackupStorageKindFileShare BackupStorageKind = "FileShare"
-	// BackupStorageKindInvalid Indicates an invalid backup storage kind. All Service Fabric enumerations have
-	// the invalid type.
-	BackupStorageKindInvalid BackupStorageKind = "Invalid"
-)
-
-// PossibleBackupStorageKindValues returns an array of possible values for the BackupStorageKind const type.
-func PossibleBackupStorageKindValues() []BackupStorageKind {
-	return []BackupStorageKind{BackupStorageKindAzureBlobStore, BackupStorageKindFileShare, BackupStorageKindInvalid}
-}
-
-// BackupSuspensionScope enumerates the values for backup suspension scope.
-type BackupSuspensionScope string
-
-const (
-	// BackupSuspensionScopeApplication Indicates the backup suspension is applied at application level. All
-	// services and partitions of the application are hence suspended for backup.
-	BackupSuspensionScopeApplication BackupSuspensionScope = "Application"
-	// BackupSuspensionScopeInvalid Indicates an invalid backup suspension scope type also indicating entity is
-	// not suspended. All Service Fabric enumerations have the invalid type.
-	BackupSuspensionScopeInvalid BackupSuspensionScope = "Invalid"
-	// BackupSuspensionScopePartition Indicates the backup suspension is applied at partition level.
-	BackupSuspensionScopePartition BackupSuspensionScope = "Partition"
-	// BackupSuspensionScopeService Indicates the backup suspension is applied at service level. All partitions
-	// of the service are hence suspended for backup.
-	BackupSuspensionScopeService BackupSuspensionScope = "Service"
-)
-
-// PossibleBackupSuspensionScopeValues returns an array of possible values for the BackupSuspensionScope const type.
-func PossibleBackupSuspensionScopeValues() []BackupSuspensionScope {
-	return []BackupSuspensionScope{BackupSuspensionScopeApplication, BackupSuspensionScopeInvalid, BackupSuspensionScopePartition, BackupSuspensionScopeService}
-}
-
-// BackupType enumerates the values for backup type.
-type BackupType string
-
-const (
-	// BackupTypeFull Indicates a full backup.
-	BackupTypeFull BackupType = "Full"
-	// BackupTypeIncremental Indicates an incremental backup. A backup chain is comprised of a full backup
-	// followed by 0 or more incremental backups.
-	BackupTypeIncremental BackupType = "Incremental"
-	// BackupTypeInvalid Indicates an invalid backup type. All Service Fabric enumerations have the invalid
-	// type.
-	BackupTypeInvalid BackupType = "Invalid"
-)
-
-// PossibleBackupTypeValues returns an array of possible values for the BackupType const type.
-func PossibleBackupTypeValues() []BackupType {
-	return []BackupType{BackupTypeFull, BackupTypeIncremental, BackupTypeInvalid}
-}
-
-// ChaosEventKind enumerates the values for chaos event kind.
-type ChaosEventKind string
-
-const (
-	// ChaosEventKindExecutingFaults Indicates a Chaos event that gets generated when Chaos has decided on the
-	// faults for an iteration. This Chaos event contains the details of the faults as a list of strings.
-	ChaosEventKindExecutingFaults ChaosEventKind = "ExecutingFaults"
-	// ChaosEventKindInvalid Indicates an invalid Chaos event kind. All Service Fabric enumerations have the
-	// invalid type.
-	ChaosEventKindInvalid ChaosEventKind = "Invalid"
-	// ChaosEventKindStarted Indicates a Chaos event that gets generated when Chaos is started.
-	ChaosEventKindStarted ChaosEventKind = "Started"
-	// ChaosEventKindStopped Indicates a Chaos event that gets generated when Chaos stops because either the
-	// user issued a stop or the time to run was up.
-	ChaosEventKindStopped ChaosEventKind = "Stopped"
-	// ChaosEventKindTestError Indicates a Chaos event that gets generated when an unexpected event has
-	// occurred in the Chaos engine, for example, due to the cluster snapshot being inconsistent, while
-	// faulting a faultable entity Chaos found that the entity was already faulted.
-	ChaosEventKindTestError ChaosEventKind = "TestError"
-	// ChaosEventKindValidationFailed Indicates a Chaos event that gets generated when the cluster entities do
-	// not become stable and healthy within ChaosParameters.MaxClusterStabilizationTimeoutInSeconds.
-	ChaosEventKindValidationFailed ChaosEventKind = "ValidationFailed"
-	// ChaosEventKindWaiting Indicates a Chaos event that gets generated when Chaos is waiting for the cluster
-	// to become ready for faulting, for example, Chaos may be waiting for the on-going upgrade to finish.
-	ChaosEventKindWaiting ChaosEventKind = "Waiting"
-)
-
-// PossibleChaosEventKindValues returns an array of possible values for the ChaosEventKind const type.
-func PossibleChaosEventKindValues() []ChaosEventKind {
-	return []ChaosEventKind{ChaosEventKindExecutingFaults, ChaosEventKindInvalid, ChaosEventKindStarted, ChaosEventKindStopped, ChaosEventKindTestError, ChaosEventKindValidationFailed, ChaosEventKindWaiting}
-}
-
-// ChaosScheduleStatus enumerates the values for chaos schedule status.
-type ChaosScheduleStatus string
-
-const (
-	// ChaosScheduleStatusActive Indicates that the schedule is active and is being used to schedule runs of
-	// Chaos. The value is two.
-	ChaosScheduleStatusActive ChaosScheduleStatus = "Active"
-	// ChaosScheduleStatusExpired Indicates that the schedule is expired and will no longer be used to schedule
-	// runs of Chaos. The value is three.
-	ChaosScheduleStatusExpired ChaosScheduleStatus = "Expired"
-	// ChaosScheduleStatusInvalid Indicates an invalid Chaos Schedule status. All Service Fabric enumerations
-	// have the invalid type. The value is zero.
-	ChaosScheduleStatusInvalid ChaosScheduleStatus = "Invalid"
-	// ChaosScheduleStatusPending Indicates that the schedule is pending and is not yet being used to schedule
-	// runs of Chaos but will be used when the start time is passed. The value is four.
-	ChaosScheduleStatusPending ChaosScheduleStatus = "Pending"
-	// ChaosScheduleStatusStopped Indicates that the schedule is stopped and not being used to schedule runs of
-	// chaos. The value is one.
-	ChaosScheduleStatusStopped ChaosScheduleStatus = "Stopped"
-)
-
-// PossibleChaosScheduleStatusValues returns an array of possible values for the ChaosScheduleStatus const type.
-func PossibleChaosScheduleStatusValues() []ChaosScheduleStatus {
-	return []ChaosScheduleStatus{ChaosScheduleStatusActive, ChaosScheduleStatusExpired, ChaosScheduleStatusInvalid, ChaosScheduleStatusPending, ChaosScheduleStatusStopped}
-}
-
-// ChaosStatus enumerates the values for chaos status.
-type ChaosStatus string
-
-const (
-	// ChaosStatusInvalid Indicates an invalid Chaos status. All Service Fabric enumerations have the invalid
-	// type. The value is zero.
-	ChaosStatusInvalid ChaosStatus = "Invalid"
-	// ChaosStatusRunning Indicates that Chaos is not stopped. The value is one.
-	ChaosStatusRunning ChaosStatus = "Running"
-	// ChaosStatusStopped Indicates that Chaos is not scheduling further faults. The value is two.
-	ChaosStatusStopped ChaosStatus = "Stopped"
-)
-
-// PossibleChaosStatusValues returns an array of possible values for the ChaosStatus const type.
-func PossibleChaosStatusValues() []ChaosStatus {
-	return []ChaosStatus{ChaosStatusInvalid, ChaosStatusRunning, ChaosStatusStopped}
-}
-
-// ComposeDeploymentStatus enumerates the values for compose deployment status.
-type ComposeDeploymentStatus string
-
-const (
-	// ComposeDeploymentStatusCreating Indicates that the compose deployment is being created in background.
-	// The value is 2.
-	ComposeDeploymentStatusCreating ComposeDeploymentStatus = "Creating"
-	// ComposeDeploymentStatusDeleting Indicates that the compose deployment is being deleted in background.
-	// The value is 5.
-	ComposeDeploymentStatusDeleting ComposeDeploymentStatus = "Deleting"
-	// ComposeDeploymentStatusFailed Indicates that the compose deployment was terminated due to persistent
-	// failures. The value is 6.
-	ComposeDeploymentStatusFailed ComposeDeploymentStatus = "Failed"
-	// ComposeDeploymentStatusInvalid Indicates that the compose deployment status is invalid. The value is
-	// zero.
-	ComposeDeploymentStatusInvalid ComposeDeploymentStatus = "Invalid"
-	// ComposeDeploymentStatusProvisioning Indicates that the compose deployment is being provisioned in
-	// background. The value is 1.
-	ComposeDeploymentStatusProvisioning ComposeDeploymentStatus = "Provisioning"
-	// ComposeDeploymentStatusReady Indicates that the compose deployment has been successfully created or
-	// upgraded. The value is 3.
-	ComposeDeploymentStatusReady ComposeDeploymentStatus = "Ready"
-	// ComposeDeploymentStatusUnprovisioning Indicates that the compose deployment is being unprovisioned in
-	// background. The value is 4.
-	ComposeDeploymentStatusUnprovisioning ComposeDeploymentStatus = "Unprovisioning"
-	// ComposeDeploymentStatusUpgrading Indicates that the compose deployment is being upgraded in the
-	// background. The value is 7.
-	ComposeDeploymentStatusUpgrading ComposeDeploymentStatus = "Upgrading"
-)
-
-// PossibleComposeDeploymentStatusValues returns an array of possible values for the ComposeDeploymentStatus const type.
-func PossibleComposeDeploymentStatusValues() []ComposeDeploymentStatus {
-	return []ComposeDeploymentStatus{ComposeDeploymentStatusCreating, ComposeDeploymentStatusDeleting, ComposeDeploymentStatusFailed, ComposeDeploymentStatusInvalid, ComposeDeploymentStatusProvisioning, ComposeDeploymentStatusReady, ComposeDeploymentStatusUnprovisioning, ComposeDeploymentStatusUpgrading}
-}
-
-// ComposeDeploymentUpgradeState enumerates the values for compose deployment upgrade state.
-type ComposeDeploymentUpgradeState string
-
-const (
-	// ComposeDeploymentUpgradeStateFailed The upgrade has failed and is unable to execute FailureAction. The
-	// value is 9.
-	ComposeDeploymentUpgradeStateFailed ComposeDeploymentUpgradeState = "Failed"
-	// ComposeDeploymentUpgradeStateInvalid Indicates the upgrade state is invalid. All Service Fabric
-	// enumerations have the invalid type. The value is zero.
-	ComposeDeploymentUpgradeStateInvalid ComposeDeploymentUpgradeState = "Invalid"
-	// ComposeDeploymentUpgradeStateProvisioningTarget The upgrade is in the progress of provisioning target
-	// application type version. The value is 1.
-	ComposeDeploymentUpgradeStateProvisioningTarget ComposeDeploymentUpgradeState = "ProvisioningTarget"
-	// ComposeDeploymentUpgradeStateRollingBackCompleted The upgrade has finished rolling back. The value is 8.
-	ComposeDeploymentUpgradeStateRollingBackCompleted ComposeDeploymentUpgradeState = "RollingBackCompleted"
-	// ComposeDeploymentUpgradeStateRollingBackInProgress The upgrade is rolling back to the previous version
-	// but is not complete yet. The value is 6.
-	ComposeDeploymentUpgradeStateRollingBackInProgress ComposeDeploymentUpgradeState = "RollingBackInProgress"
-	// ComposeDeploymentUpgradeStateRollingForwardCompleted The upgrade has finished rolling forward. The value
-	// is 5.
-	ComposeDeploymentUpgradeStateRollingForwardCompleted ComposeDeploymentUpgradeState = "RollingForwardCompleted"
-	// ComposeDeploymentUpgradeStateRollingForwardInProgress The upgrade is rolling forward to the target
-	// version but is not complete yet. The value is 2.
-	ComposeDeploymentUpgradeStateRollingForwardInProgress ComposeDeploymentUpgradeState = "RollingForwardInProgress"
-	// ComposeDeploymentUpgradeStateRollingForwardPending The current upgrade domain has finished upgrading.
-	// The overall upgrade is waiting for an explicit move next request in UnmonitoredManual mode or performing
-	// health checks in Monitored mode. The value is 3
-	ComposeDeploymentUpgradeStateRollingForwardPending ComposeDeploymentUpgradeState = "RollingForwardPending"
-	// ComposeDeploymentUpgradeStateUnprovisioningCurrent The upgrade is in the progress of unprovisioning
-	// current application type version and rolling forward to the target version is completed. The value is 4.
-	ComposeDeploymentUpgradeStateUnprovisioningCurrent ComposeDeploymentUpgradeState = "UnprovisioningCurrent"
-	// ComposeDeploymentUpgradeStateUnprovisioningTarget The upgrade is in the progress of unprovisioning
-	// target application type version and rolling back to the current version is completed. The value is 7.
-	ComposeDeploymentUpgradeStateUnprovisioningTarget ComposeDeploymentUpgradeState = "UnprovisioningTarget"
-)
-
-// PossibleComposeDeploymentUpgradeStateValues returns an array of possible values for the ComposeDeploymentUpgradeState const type.
-func PossibleComposeDeploymentUpgradeStateValues() []ComposeDeploymentUpgradeState {
-	return []ComposeDeploymentUpgradeState{ComposeDeploymentUpgradeStateFailed, ComposeDeploymentUpgradeStateInvalid, ComposeDeploymentUpgradeStateProvisioningTarget, ComposeDeploymentUpgradeStateRollingBackCompleted, ComposeDeploymentUpgradeStateRollingBackInProgress, ComposeDeploymentUpgradeStateRollingForwardCompleted, ComposeDeploymentUpgradeStateRollingForwardInProgress, ComposeDeploymentUpgradeStateRollingForwardPending, ComposeDeploymentUpgradeStateUnprovisioningCurrent, ComposeDeploymentUpgradeStateUnprovisioningTarget}
-}
-
-// CreateFabricDump enumerates the values for create fabric dump.
-type CreateFabricDump string
-
-const (
-	// False ...
-	False CreateFabricDump = "False"
-	// True ...
-	True CreateFabricDump = "True"
-)
-
-// PossibleCreateFabricDumpValues returns an array of possible values for the CreateFabricDump const type.
-func PossibleCreateFabricDumpValues() []CreateFabricDump {
-	return []CreateFabricDump{False, True}
-}
-
-// DataLossMode enumerates the values for data loss mode.
-type DataLossMode string
-
-const (
-	// DataLossModeFullDataLoss FullDataLoss option will drop all the replicas which means that all the data
-	// will be lost.
-	DataLossModeFullDataLoss DataLossMode = "FullDataLoss"
-	// DataLossModeInvalid Reserved.  Do not pass into API.
-	DataLossModeInvalid DataLossMode = "Invalid"
-	// DataLossModePartialDataLoss PartialDataLoss option will cause a quorum of replicas to go down,
-	// triggering an OnDataLoss event in the system for the given partition.
-	DataLossModePartialDataLoss DataLossMode = "PartialDataLoss"
-)
-
-// PossibleDataLossModeValues returns an array of possible values for the DataLossMode const type.
-func PossibleDataLossModeValues() []DataLossMode {
-	return []DataLossMode{DataLossModeFullDataLoss, DataLossModeInvalid, DataLossModePartialDataLoss}
-}
-
-// DayOfWeek enumerates the values for day of week.
-type DayOfWeek string
-
-const (
-	// Friday Indicates the Day referred is Friday.
-	Friday DayOfWeek = "Friday"
-	// Monday Indicates the Day referred is Monday.
-	Monday DayOfWeek = "Monday"
-	// Saturday Indicates the Day referred is Saturday.
-	Saturday DayOfWeek = "Saturday"
-	// Sunday Indicates the Day referred is Sunday.
-	Sunday DayOfWeek = "Sunday"
-	// Thursday Indicates the Day referred is Thursday.
-	Thursday DayOfWeek = "Thursday"
-	// Tuesday Indicates the Day referred is Tuesday.
-	Tuesday DayOfWeek = "Tuesday"
-	// Wednesday Indicates the Day referred is Wednesday.
-	Wednesday DayOfWeek = "Wednesday"
-)
-
-// PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
-func PossibleDayOfWeekValues() []DayOfWeek {
-	return []DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
-}
-
-// DeactivationIntent enumerates the values for deactivation intent.
-type DeactivationIntent string
-
-const (
-	// Pause Indicates that the node should be paused. The value is 1.
-	Pause DeactivationIntent = "Pause"
-	// RemoveData Indicates the intent is for the node to remove data. The value is 3.
-	RemoveData DeactivationIntent = "RemoveData"
-	// Restart Indicates that the intent is for the node to be restarted after a short period of time. The
-	// value is 2.
-	Restart DeactivationIntent = "Restart"
-)
-
-// PossibleDeactivationIntentValues returns an array of possible values for the DeactivationIntent const type.
-func PossibleDeactivationIntentValues() []DeactivationIntent {
-	return []DeactivationIntent{Pause, RemoveData, Restart}
-}
-
-// DeployedApplicationStatus enumerates the values for deployed application status.
-type DeployedApplicationStatus string
-
-const (
-	// DeployedApplicationStatusActivating Indicates that the package is activating. The value is 2.
-	DeployedApplicationStatusActivating DeployedApplicationStatus = "Activating"
-	// DeployedApplicationStatusActive Indicates that the package is active. The value is 3.
-	DeployedApplicationStatusActive DeployedApplicationStatus = "Active"
-	// DeployedApplicationStatusDeactivating Indicates that the package is deactivating. The value is 5.
-	DeployedApplicationStatusDeactivating DeployedApplicationStatus = "Deactivating"
-	// DeployedApplicationStatusDownloading Indicates that the package is downloading from the ImageStore. The
-	// value is 1.
-	DeployedApplicationStatusDownloading DeployedApplicationStatus = "Downloading"
-	// DeployedApplicationStatusInvalid Indicates that deployment status is not valid. All Service Fabric
-	// enumerations have the invalid type. The value is zero.
-	DeployedApplicationStatusInvalid DeployedApplicationStatus = "Invalid"
-	// DeployedApplicationStatusUpgrading Indicates that the package is upgrading. The value is 4.
-	DeployedApplicationStatusUpgrading DeployedApplicationStatus = "Upgrading"
-)
-
-// PossibleDeployedApplicationStatusValues returns an array of possible values for the DeployedApplicationStatus const type.
-func PossibleDeployedApplicationStatusValues() []DeployedApplicationStatus {
-	return []DeployedApplicationStatus{DeployedApplicationStatusActivating, DeployedApplicationStatusActive, DeployedApplicationStatusDeactivating, DeployedApplicationStatusDownloading, DeployedApplicationStatusInvalid, DeployedApplicationStatusUpgrading}
-}
-
-// DeploymentStatus enumerates the values for deployment status.
-type DeploymentStatus string
-
-const (
-	// DeploymentStatusActivating Indicates the application or service package is being activated. The value is
-	// 2.
-	DeploymentStatusActivating DeploymentStatus = "Activating"
-	// DeploymentStatusActive Indicates the application or service package is active the node. The value is 3.
-	DeploymentStatusActive DeploymentStatus = "Active"
-	// DeploymentStatusDeactivating Indicates the application or service package is being deactivated. The
-	// value is 5.
-	DeploymentStatusDeactivating DeploymentStatus = "Deactivating"
-	// DeploymentStatusDownloading Indicates the application or service package is being downloaded to the node
-	// from the ImageStore. The value is 1.
-	DeploymentStatusDownloading DeploymentStatus = "Downloading"
-	// DeploymentStatusInvalid Indicates status of the application or service package is not known or invalid.
-	// The value is 0.
-	DeploymentStatusInvalid DeploymentStatus = "Invalid"
-	// DeploymentStatusUpgrading Indicates the application or service package is being upgraded. The value is
-	// 4.
-	DeploymentStatusUpgrading DeploymentStatus = "Upgrading"
-)
-
-// PossibleDeploymentStatusValues returns an array of possible values for the DeploymentStatus const type.
-func PossibleDeploymentStatusValues() []DeploymentStatus {
-	return []DeploymentStatus{DeploymentStatusActivating, DeploymentStatusActive, DeploymentStatusDeactivating, DeploymentStatusDownloading, DeploymentStatusInvalid, DeploymentStatusUpgrading}
-}
-
-// EntityKind enumerates the values for entity kind.
-type EntityKind string
-
-const (
-	// EntityKindApplication Indicates the entity is a Service Fabric application. The value is 4.
-	EntityKindApplication EntityKind = "Application"
-	// EntityKindCluster Indicates the entity is a Service Fabric cluster. The value is 8.
-	EntityKindCluster EntityKind = "Cluster"
-	// EntityKindDeployedApplication Indicates the entity is a Service Fabric deployed application. The value
-	// is 6.
-	EntityKindDeployedApplication EntityKind = "DeployedApplication"
-	// EntityKindDeployedServicePackage Indicates the entity is a Service Fabric deployed service package. The
-	// value is 7.
-	EntityKindDeployedServicePackage EntityKind = "DeployedServicePackage"
-	// EntityKindInvalid Indicates an invalid entity kind. All Service Fabric enumerations have the invalid
-	// type. The value is zero.
-	EntityKindInvalid EntityKind = "Invalid"
-	// EntityKindNode Indicates the entity is a Service Fabric node. The value is 1.
-	EntityKindNode EntityKind = "Node"
-	// EntityKindPartition Indicates the entity is a Service Fabric partition. The value is 2.
-	EntityKindPartition EntityKind = "Partition"
-	// EntityKindReplica Indicates the entity is a Service Fabric replica. The value is 5.
-	EntityKindReplica EntityKind = "Replica"
-	// EntityKindService Indicates the entity is a Service Fabric service. The value is 3.
-	EntityKindService EntityKind = "Service"
-)
-
-// PossibleEntityKindValues returns an array of possible values for the EntityKind const type.
-func PossibleEntityKindValues() []EntityKind {
-	return []EntityKind{EntityKindApplication, EntityKindCluster, EntityKindDeployedApplication, EntityKindDeployedServicePackage, EntityKindInvalid, EntityKindNode, EntityKindPartition, EntityKindReplica, EntityKindService}
-}
-
-// EntityKindBasicBackupEntity enumerates the values for entity kind basic backup entity.
-type EntityKindBasicBackupEntity string
-
-const (
-	// EntityKindApplication1 ...
-	EntityKindApplication1 EntityKindBasicBackupEntity = "Application"
-	// EntityKindBackupEntity ...
-	EntityKindBackupEntity EntityKindBasicBackupEntity = "BackupEntity"
-	// EntityKindPartition1 ...
-	EntityKindPartition1 EntityKindBasicBackupEntity = "Partition"
-	// EntityKindService1 ...
-	EntityKindService1 EntityKindBasicBackupEntity = "Service"
-)
-
-// PossibleEntityKindBasicBackupEntityValues returns an array of possible values for the EntityKindBasicBackupEntity const type.
-func PossibleEntityKindBasicBackupEntityValues() []EntityKindBasicBackupEntity {
-	return []EntityKindBasicBackupEntity{EntityKindApplication1, EntityKindBackupEntity, EntityKindPartition1, EntityKindService1}
-}
-
-// EntryPointStatus enumerates the values for entry point status.
-type EntryPointStatus string
-
-const (
-	// EntryPointStatusInvalid Indicates status of entry point is not known or invalid. The value is 0.
-	EntryPointStatusInvalid EntryPointStatus = "Invalid"
-	// EntryPointStatusPending Indicates the entry point is scheduled to be started. The value is 1.
-	EntryPointStatusPending EntryPointStatus = "Pending"
-	// EntryPointStatusStarted Indicates the entry point was started successfully and is running. The value is
-	// 3.
-	EntryPointStatusStarted EntryPointStatus = "Started"
-	// EntryPointStatusStarting Indicates the entry point is being started. The value is 2.
-	EntryPointStatusStarting EntryPointStatus = "Starting"
-	// EntryPointStatusStopped Indicates the entry point is not running. The value is 5.
-	EntryPointStatusStopped EntryPointStatus = "Stopped"
-	// EntryPointStatusStopping Indicates the entry point is being stopped. The value is 4.
-	EntryPointStatusStopping EntryPointStatus = "Stopping"
-)
-
-// PossibleEntryPointStatusValues returns an array of possible values for the EntryPointStatus const type.
-func PossibleEntryPointStatusValues() []EntryPointStatus {
-	return []EntryPointStatus{EntryPointStatusInvalid, EntryPointStatusPending, EntryPointStatusStarted, EntryPointStatusStarting, EntryPointStatusStopped, EntryPointStatusStopping}
-}
-
-// FabricErrorCodes enumerates the values for fabric error codes.
-type FabricErrorCodes string
-
-const (
-	// EABORT ...
-	EABORT FabricErrorCodes = "E_ABORT"
-	// EFAIL ...
-	EFAIL FabricErrorCodes = "E_FAIL"
-	// EINVALIDARG ...
-	EINVALIDARG FabricErrorCodes = "E_INVALIDARG"
-	// FABRICEAPPLICATIONALREADYEXISTS ...
-	FABRICEAPPLICATIONALREADYEXISTS FabricErrorCodes = "FABRIC_E_APPLICATION_ALREADY_EXISTS"
-	// FABRICEAPPLICATIONALREADYINTARGETVERSION ...
-	FABRICEAPPLICATIONALREADYINTARGETVERSION FabricErrorCodes = "FABRIC_E_APPLICATION_ALREADY_IN_TARGET_VERSION"
-	// FABRICEAPPLICATIONNOTFOUND ...
-	FABRICEAPPLICATIONNOTFOUND FabricErrorCodes = "FABRIC_E_APPLICATION_NOT_FOUND"
-	// FABRICEAPPLICATIONNOTUPGRADING ...
-	FABRICEAPPLICATIONNOTUPGRADING FabricErrorCodes = "FABRIC_E_APPLICATION_NOT_UPGRADING"
-	// FABRICEAPPLICATIONTYPEALREADYEXISTS ...
-	FABRICEAPPLICATIONTYPEALREADYEXISTS FabricErrorCodes = "FABRIC_E_APPLICATION_TYPE_ALREADY_EXISTS"
-	// FABRICEAPPLICATIONTYPEINUSE ...
-	FABRICEAPPLICATIONTYPEINUSE FabricErrorCodes = "FABRIC_E_APPLICATION_TYPE_IN_USE"
-	// FABRICEAPPLICATIONTYPENOTFOUND ...
-	FABRICEAPPLICATIONTYPENOTFOUND FabricErrorCodes = "FABRIC_E_APPLICATION_TYPE_NOT_FOUND"
-	// FABRICEAPPLICATIONTYPEPROVISIONINPROGRESS ...
-	FABRICEAPPLICATIONTYPEPROVISIONINPROGRESS FabricErrorCodes = "FABRIC_E_APPLICATION_TYPE_PROVISION_IN_PROGRESS"
-	// FABRICEAPPLICATIONUPGRADEINPROGRESS ...
-	FABRICEAPPLICATIONUPGRADEINPROGRESS FabricErrorCodes = "FABRIC_E_APPLICATION_UPGRADE_IN_PROGRESS"
-	// FABRICEAPPLICATIONUPGRADEVALIDATIONERROR ...
-	FABRICEAPPLICATIONUPGRADEVALIDATIONERROR FabricErrorCodes = "FABRIC_E_APPLICATION_UPGRADE_VALIDATION_ERROR"
-	// FABRICEBACKUPINPROGRESS ...
-	FABRICEBACKUPINPROGRESS FabricErrorCodes = "FABRIC_E_BACKUP_IN_PROGRESS"
-	// FABRICEBACKUPISENABLED ...
-	FABRICEBACKUPISENABLED FabricErrorCodes = "FABRIC_E_BACKUP_IS_ENABLED"
-	// FABRICEBACKUPNOTENABLED ...
-	FABRICEBACKUPNOTENABLED FabricErrorCodes = "FABRIC_E_BACKUP_NOT_ENABLED"
-	// FABRICEBACKUPPOLICYALREADYEXISTING ...
-	FABRICEBACKUPPOLICYALREADYEXISTING FabricErrorCodes = "FABRIC_E_BACKUP_POLICY_ALREADY_EXISTING"
-	// FABRICEBACKUPPOLICYNOTEXISTING ...
-	FABRICEBACKUPPOLICYNOTEXISTING FabricErrorCodes = "FABRIC_E_BACKUP_POLICY_NOT_EXISTING"
-	// FABRICECOMMUNICATIONERROR ...
-	FABRICECOMMUNICATIONERROR FabricErrorCodes = "FABRIC_E_COMMUNICATION_ERROR"
-	// FABRICECONFIGURATIONPARAMETERNOTFOUND ...
-	FABRICECONFIGURATIONPARAMETERNOTFOUND FabricErrorCodes = "FABRIC_E_CONFIGURATION_PARAMETER_NOT_FOUND"
-	// FABRICECONFIGURATIONSECTIONNOTFOUND ...
-	FABRICECONFIGURATIONSECTIONNOTFOUND FabricErrorCodes = "FABRIC_E_CONFIGURATION_SECTION_NOT_FOUND"
-	// FABRICEDIRECTORYNOTFOUND ...
-	FABRICEDIRECTORYNOTFOUND FabricErrorCodes = "FABRIC_E_DIRECTORY_NOT_FOUND"
-	// FABRICEENUMERATIONCOMPLETED ...
-	FABRICEENUMERATIONCOMPLETED FabricErrorCodes = "FABRIC_E_ENUMERATION_COMPLETED"
-	// FABRICEFABRICALREADYINTARGETVERSION ...
-	FABRICEFABRICALREADYINTARGETVERSION FabricErrorCodes = "FABRIC_E_FABRIC_ALREADY_IN_TARGET_VERSION"
-	// FABRICEFABRICNOTUPGRADING ...
-	FABRICEFABRICNOTUPGRADING FabricErrorCodes = "FABRIC_E_FABRIC_NOT_UPGRADING"
-	// FABRICEFABRICUPGRADEINPROGRESS ...
-	FABRICEFABRICUPGRADEINPROGRESS FabricErrorCodes = "FABRIC_E_FABRIC_UPGRADE_IN_PROGRESS"
-	// FABRICEFABRICUPGRADEVALIDATIONERROR ...
-	FABRICEFABRICUPGRADEVALIDATIONERROR FabricErrorCodes = "FABRIC_E_FABRIC_UPGRADE_VALIDATION_ERROR"
-	// FABRICEFABRICVERSIONALREADYEXISTS ...
-	FABRICEFABRICVERSIONALREADYEXISTS FabricErrorCodes = "FABRIC_E_FABRIC_VERSION_ALREADY_EXISTS"
-	// FABRICEFABRICVERSIONINUSE ...
-	FABRICEFABRICVERSIONINUSE FabricErrorCodes = "FABRIC_E_FABRIC_VERSION_IN_USE"
-	// FABRICEFABRICVERSIONNOTFOUND ...
-	FABRICEFABRICVERSIONNOTFOUND FabricErrorCodes = "FABRIC_E_FABRIC_VERSION_NOT_FOUND"
-	// FABRICEFAULTANALYSISSERVICENOTEXISTING ...
-	FABRICEFAULTANALYSISSERVICENOTEXISTING FabricErrorCodes = "FABRIC_E_FAULT_ANALYSIS_SERVICE_NOT_EXISTING"
-	// FABRICEFILENOTFOUND ...
-	FABRICEFILENOTFOUND FabricErrorCodes = "FABRIC_E_FILE_NOT_FOUND"
-	// FABRICEHEALTHENTITYNOTFOUND ...
-	FABRICEHEALTHENTITYNOTFOUND FabricErrorCodes = "FABRIC_E_HEALTH_ENTITY_NOT_FOUND"
-	// FABRICEHEALTHSTALEREPORT ...
-	FABRICEHEALTHSTALEREPORT FabricErrorCodes = "FABRIC_E_HEALTH_STALE_REPORT"
-	// FABRICEIMAGEBUILDERVALIDATIONERROR ...
-	FABRICEIMAGEBUILDERVALIDATIONERROR FabricErrorCodes = "FABRIC_E_IMAGEBUILDER_VALIDATION_ERROR"
-	// FABRICEINSTANCEIDMISMATCH ...
-	FABRICEINSTANCEIDMISMATCH FabricErrorCodes = "FABRIC_E_INSTANCE_ID_MISMATCH"
-	// FABRICEINVALIDADDRESS ...
-	FABRICEINVALIDADDRESS FabricErrorCodes = "FABRIC_E_INVALID_ADDRESS"
-	// FABRICEINVALIDATOMICGROUP ...
-	FABRICEINVALIDATOMICGROUP FabricErrorCodes = "FABRIC_E_INVALID_ATOMIC_GROUP"
-	// FABRICEINVALIDCONFIGURATION ...
-	FABRICEINVALIDCONFIGURATION FabricErrorCodes = "FABRIC_E_INVALID_CONFIGURATION"
-	// FABRICEINVALIDFORSTATELESSSERVICES ...
-	FABRICEINVALIDFORSTATELESSSERVICES FabricErrorCodes = "FABRIC_E_INVALID_FOR_STATELESS_SERVICES"
-	// FABRICEINVALIDNAMEURI ...
-	FABRICEINVALIDNAMEURI FabricErrorCodes = "FABRIC_E_INVALID_NAME_URI"
-	// FABRICEINVALIDPARTITIONKEY ...
-	FABRICEINVALIDPARTITIONKEY FabricErrorCodes = "FABRIC_E_INVALID_PARTITION_KEY"
-	// FABRICEINVALIDSERVICESCALINGPOLICY ...
-	FABRICEINVALIDSERVICESCALINGPOLICY FabricErrorCodes = "FABRIC_E_INVALID_SERVICE_SCALING_POLICY"
-	// FABRICEKEYNOTFOUND ...
-	FABRICEKEYNOTFOUND FabricErrorCodes = "FABRIC_E_KEY_NOT_FOUND"
-	// FABRICEKEYTOOLARGE ...
-	FABRICEKEYTOOLARGE FabricErrorCodes = "FABRIC_E_KEY_TOO_LARGE"
-	// FABRICENAMEALREADYEXISTS ...
-	FABRICENAMEALREADYEXISTS FabricErrorCodes = "FABRIC_E_NAME_ALREADY_EXISTS"
-	// FABRICENAMEDOESNOTEXIST ...
-	FABRICENAMEDOESNOTEXIST FabricErrorCodes = "FABRIC_E_NAME_DOES_NOT_EXIST"
-	// FABRICENAMENOTEMPTY ...
-	FABRICENAMENOTEMPTY FabricErrorCodes = "FABRIC_E_NAME_NOT_EMPTY"
-	// FABRICENODEHASNOTSTOPPEDYET ...
-	FABRICENODEHASNOTSTOPPEDYET FabricErrorCodes = "FABRIC_E_NODE_HAS_NOT_STOPPED_YET"
-	// FABRICENODEISUP ...
-	FABRICENODEISUP FabricErrorCodes = "FABRIC_E_NODE_IS_UP"
-	// FABRICENODENOTFOUND ...
-	FABRICENODENOTFOUND FabricErrorCodes = "FABRIC_E_NODE_NOT_FOUND"
-	// FABRICENOTPRIMARY ...
-	FABRICENOTPRIMARY FabricErrorCodes = "FABRIC_E_NOT_PRIMARY"
-	// FABRICENOTREADY ...
-	FABRICENOTREADY FabricErrorCodes = "FABRIC_E_NOT_READY"
-	// FABRICENOWRITEQUORUM ...
-	FABRICENOWRITEQUORUM FabricErrorCodes = "FABRIC_E_NO_WRITE_QUORUM"
-	// FABRICEOPERATIONNOTCOMPLETE ...
-	FABRICEOPERATIONNOTCOMPLETE FabricErrorCodes = "FABRIC_E_OPERATION_NOT_COMPLETE"
-	// FABRICEPARTITIONNOTFOUND ...
-	FABRICEPARTITIONNOTFOUND FabricErrorCodes = "FABRIC_E_PARTITION_NOT_FOUND"
-	// FABRICEPATHTOOLONG ...
-	FABRICEPATHTOOLONG FabricErrorCodes = "FABRIC_E_PATH_TOO_LONG"
-	// FABRICEPROPERTYCHECKFAILED ...
-	FABRICEPROPERTYCHECKFAILED FabricErrorCodes = "FABRIC_E_PROPERTY_CHECK_FAILED"
-	// FABRICEPROPERTYDOESNOTEXIST ...
-	FABRICEPROPERTYDOESNOTEXIST FabricErrorCodes = "FABRIC_E_PROPERTY_DOES_NOT_EXIST"
-	// FABRICERECONFIGURATIONPENDING ...
-	FABRICERECONFIGURATIONPENDING FabricErrorCodes = "FABRIC_E_RECONFIGURATION_PENDING"
-	// FABRICEREPLICADOESNOTEXIST ...
-	FABRICEREPLICADOESNOTEXIST FabricErrorCodes = "FABRIC_E_REPLICA_DOES_NOT_EXIST"
-	// FABRICERESTOREINPROGRESS ...
-	FABRICERESTOREINPROGRESS FabricErrorCodes = "FABRIC_E_RESTORE_IN_PROGRESS"
-	// FABRICERESTORESOURCETARGETPARTITIONMISMATCH ...
-	FABRICERESTORESOURCETARGETPARTITIONMISMATCH FabricErrorCodes = "FABRIC_E_RESTORE_SOURCE_TARGET_PARTITION_MISMATCH"
-	// FABRICESEQUENCENUMBERCHECKFAILED ...
-	FABRICESEQUENCENUMBERCHECKFAILED FabricErrorCodes = "FABRIC_E_SEQUENCE_NUMBER_CHECK_FAILED"
-	// FABRICESERVICEAFFINITYCHAINNOTSUPPORTED ...
-	FABRICESERVICEAFFINITYCHAINNOTSUPPORTED FabricErrorCodes = "FABRIC_E_SERVICE_AFFINITY_CHAIN_NOT_SUPPORTED"
-	// FABRICESERVICEALREADYEXISTS ...
-	FABRICESERVICEALREADYEXISTS FabricErrorCodes = "FABRIC_E_SERVICE_ALREADY_EXISTS"
-	// FABRICESERVICEDOESNOTEXIST ...
-	FABRICESERVICEDOESNOTEXIST FabricErrorCodes = "FABRIC_E_SERVICE_DOES_NOT_EXIST"
-	// FABRICESERVICEGROUPALREADYEXISTS ...
-	FABRICESERVICEGROUPALREADYEXISTS FabricErrorCodes = "FABRIC_E_SERVICE_GROUP_ALREADY_EXISTS"
-	// FABRICESERVICEGROUPDOESNOTEXIST ...
-	FABRICESERVICEGROUPDOESNOTEXIST FabricErrorCodes = "FABRIC_E_SERVICE_GROUP_DOES_NOT_EXIST"
-	// FABRICESERVICEMANIFESTNOTFOUND ...
-	FABRICESERVICEMANIFESTNOTFOUND FabricErrorCodes = "FABRIC_E_SERVICE_MANIFEST_NOT_FOUND"
-	// FABRICESERVICEMETADATAMISMATCH ...
-	FABRICESERVICEMETADATAMISMATCH FabricErrorCodes = "FABRIC_E_SERVICE_METADATA_MISMATCH"
-	// FABRICESERVICEOFFLINE ...
-	FABRICESERVICEOFFLINE FabricErrorCodes = "FABRIC_E_SERVICE_OFFLINE"
-	// FABRICESERVICETYPEMISMATCH ...
-	FABRICESERVICETYPEMISMATCH FabricErrorCodes = "FABRIC_E_SERVICE_TYPE_MISMATCH"
-	// FABRICESERVICETYPENOTFOUND ...
-	FABRICESERVICETYPENOTFOUND FabricErrorCodes = "FABRIC_E_SERVICE_TYPE_NOT_FOUND"
-	// FABRICESERVICETYPETEMPLATENOTFOUND ...
-	FABRICESERVICETYPETEMPLATENOTFOUND FabricErrorCodes = "FABRIC_E_SERVICE_TYPE_TEMPLATE_NOT_FOUND"
-	// FABRICETIMEOUT ...
-	FABRICETIMEOUT FabricErrorCodes = "FABRIC_E_TIMEOUT"
-	// FABRICEVALUEEMPTY ...
-	FABRICEVALUEEMPTY FabricErrorCodes = "FABRIC_E_VALUE_EMPTY"
-	// FABRICEVALUETOOLARGE ...
-	FABRICEVALUETOOLARGE FabricErrorCodes = "FABRIC_E_VALUE_TOO_LARGE"
-)
-
-// PossibleFabricErrorCodesValues returns an array of possible values for the FabricErrorCodes const type.
-func PossibleFabricErrorCodesValues() []FabricErrorCodes {
-	return []FabricErrorCodes{EABORT, EFAIL, EINVALIDARG, FABRICEAPPLICATIONALREADYEXISTS, FABRICEAPPLICATIONALREADYINTARGETVERSION, FABRICEAPPLICATIONNOTFOUND, FABRICEAPPLICATIONNOTUPGRADING, FABRICEAPPLICATIONTYPEALREADYEXISTS, FABRICEAPPLICATIONTYPEINUSE, FABRICEAPPLICATIONTYPENOTFOUND, FABRICEAPPLICATIONTYPEPROVISIONINPROGRESS, FABRICEAPPLICATIONUPGRADEINPROGRESS, FABRICEAPPLICATIONUPGRADEVALIDATIONERROR, FABRICEBACKUPINPROGRESS, FABRICEBACKUPISENABLED, FABRICEBACKUPNOTENABLED, FABRICEBACKUPPOLICYALREADYEXISTING, FABRICEBACKUPPOLICYNOTEXISTING, FABRICECOMMUNICATIONERROR, FABRICECONFIGURATIONPARAMETERNOTFOUND, FABRICECONFIGURATIONSECTIONNOTFOUND, FABRICEDIRECTORYNOTFOUND, FABRICEENUMERATIONCOMPLETED, FABRICEFABRICALREADYINTARGETVERSION, FABRICEFABRICNOTUPGRADING, FABRICEFABRICUPGRADEINPROGRESS, FABRICEFABRICUPGRADEVALIDATIONERROR, FABRICEFABRICVERSIONALREADYEXISTS, FABRICEFABRICVERSIONINUSE, FABRICEFABRICVERSIONNOTFOUND, FABRICEFAULTANALYSISSERVICENOTEXISTING, FABRICEFILENOTFOUND, FABRICEHEALTHENTITYNOTFOUND, FABRICEHEALTHSTALEREPORT, FABRICEIMAGEBUILDERVALIDATIONERROR, FABRICEINSTANCEIDMISMATCH, FABRICEINVALIDADDRESS, FABRICEINVALIDATOMICGROUP, FABRICEINVALIDCONFIGURATION, FABRICEINVALIDFORSTATELESSSERVICES, FABRICEINVALIDNAMEURI, FABRICEINVALIDPARTITIONKEY, FABRICEINVALIDSERVICESCALINGPOLICY, FABRICEKEYNOTFOUND, FABRICEKEYTOOLARGE, FABRICENAMEALREADYEXISTS, FABRICENAMEDOESNOTEXIST, FABRICENAMENOTEMPTY, FABRICENODEHASNOTSTOPPEDYET, FABRICENODEISUP, FABRICENODENOTFOUND, FABRICENOTPRIMARY, FABRICENOTREADY, FABRICENOWRITEQUORUM, FABRICEOPERATIONNOTCOMPLETE, FABRICEPARTITIONNOTFOUND, FABRICEPATHTOOLONG, FABRICEPROPERTYCHECKFAILED, FABRICEPROPERTYDOESNOTEXIST, FABRICERECONFIGURATIONPENDING, FABRICEREPLICADOESNOTEXIST, FABRICERESTOREINPROGRESS, FABRICERESTORESOURCETARGETPARTITIONMISMATCH, FABRICESEQUENCENUMBERCHECKFAILED, FABRICESERVICEAFFINITYCHAINNOTSUPPORTED, FABRICESERVICEALREADYEXISTS, FABRICESERVICEDOESNOTEXIST, FABRICESERVICEGROUPALREADYEXISTS, FABRICESERVICEGROUPDOESNOTEXIST, FABRICESERVICEMANIFESTNOTFOUND, FABRICESERVICEMETADATAMISMATCH, FABRICESERVICEOFFLINE, FABRICESERVICETYPEMISMATCH, FABRICESERVICETYPENOTFOUND, FABRICESERVICETYPETEMPLATENOTFOUND, FABRICETIMEOUT, FABRICEVALUEEMPTY, FABRICEVALUETOOLARGE}
-}
-
-// FabricEventKind enumerates the values for fabric event kind.
-type FabricEventKind string
-
-const (
-	// FabricEventKindApplicationCreated ...
-	FabricEventKindApplicationCreated FabricEventKind = "ApplicationCreated"
-	// FabricEventKindApplicationDeleted ...
-	FabricEventKindApplicationDeleted FabricEventKind = "ApplicationDeleted"
-	// FabricEventKindApplicationEvent ...
-	FabricEventKindApplicationEvent FabricEventKind = "ApplicationEvent"
-	// FabricEventKindApplicationHealthReportCreated ...
-	FabricEventKindApplicationHealthReportCreated FabricEventKind = "ApplicationHealthReportCreated"
-	// FabricEventKindApplicationHealthReportExpired ...
-	FabricEventKindApplicationHealthReportExpired FabricEventKind = "ApplicationHealthReportExpired"
-	// FabricEventKindApplicationUpgradeComplete ...
-	FabricEventKindApplicationUpgradeComplete FabricEventKind = "ApplicationUpgradeComplete"
-	// FabricEventKindApplicationUpgradeDomainComplete ...
-	FabricEventKindApplicationUpgradeDomainComplete FabricEventKind = "ApplicationUpgradeDomainComplete"
-	// FabricEventKindApplicationUpgradeRollbackComplete ...
-	FabricEventKindApplicationUpgradeRollbackComplete FabricEventKind = "ApplicationUpgradeRollbackComplete"
-	// FabricEventKindApplicationUpgradeRollbackStart ...
-	FabricEventKindApplicationUpgradeRollbackStart FabricEventKind = "ApplicationUpgradeRollbackStart"
-	// FabricEventKindApplicationUpgradeStart ...
-	FabricEventKindApplicationUpgradeStart FabricEventKind = "ApplicationUpgradeStart"
-	// FabricEventKindChaosMovePrimaryFaultScheduled ...
-	FabricEventKindChaosMovePrimaryFaultScheduled FabricEventKind = "ChaosMovePrimaryFaultScheduled"
-	// FabricEventKindChaosMoveSecondaryFaultScheduled ...
-	FabricEventKindChaosMoveSecondaryFaultScheduled FabricEventKind = "ChaosMoveSecondaryFaultScheduled"
-	// FabricEventKindChaosRemoveReplicaFaultCompleted ...
-	FabricEventKindChaosRemoveReplicaFaultCompleted FabricEventKind = "ChaosRemoveReplicaFaultCompleted"
-	// FabricEventKindChaosRemoveReplicaFaultScheduled ...
-	FabricEventKindChaosRemoveReplicaFaultScheduled FabricEventKind = "ChaosRemoveReplicaFaultScheduled"
-	// FabricEventKindChaosRestartCodePackageFaultCompleted ...
-	FabricEventKindChaosRestartCodePackageFaultCompleted FabricEventKind = "ChaosRestartCodePackageFaultCompleted"
-	// FabricEventKindChaosRestartCodePackageFaultScheduled ...
-	FabricEventKindChaosRestartCodePackageFaultScheduled FabricEventKind = "ChaosRestartCodePackageFaultScheduled"
-	// FabricEventKindChaosRestartNodeFaultCompleted ...
-	FabricEventKindChaosRestartNodeFaultCompleted FabricEventKind = "ChaosRestartNodeFaultCompleted"
-	// FabricEventKindChaosRestartNodeFaultScheduled ...
-	FabricEventKindChaosRestartNodeFaultScheduled FabricEventKind = "ChaosRestartNodeFaultScheduled"
-	// FabricEventKindChaosRestartReplicaFaultScheduled ...
-	FabricEventKindChaosRestartReplicaFaultScheduled FabricEventKind = "ChaosRestartReplicaFaultScheduled"
-	// FabricEventKindChaosStarted ...
-	FabricEventKindChaosStarted FabricEventKind = "ChaosStarted"
-	// FabricEventKindChaosStopped ...
-	FabricEventKindChaosStopped FabricEventKind = "ChaosStopped"
-	// FabricEventKindClusterEvent ...
-	FabricEventKindClusterEvent FabricEventKind = "ClusterEvent"
-	// FabricEventKindClusterHealthReportCreated ...
-	FabricEventKindClusterHealthReportCreated FabricEventKind = "ClusterHealthReportCreated"
-	// FabricEventKindClusterHealthReportExpired ...
-	FabricEventKindClusterHealthReportExpired FabricEventKind = "ClusterHealthReportExpired"
-	// FabricEventKindClusterUpgradeComplete ...
-	FabricEventKindClusterUpgradeComplete FabricEventKind = "ClusterUpgradeComplete"
-	// FabricEventKindClusterUpgradeDomainComplete ...
-	FabricEventKindClusterUpgradeDomainComplete FabricEventKind = "ClusterUpgradeDomainComplete"
-	// FabricEventKindClusterUpgradeRollbackComplete ...
-	FabricEventKindClusterUpgradeRollbackComplete FabricEventKind = "ClusterUpgradeRollbackComplete"
-	// FabricEventKindClusterUpgradeRollbackStart ...
-	FabricEventKindClusterUpgradeRollbackStart FabricEventKind = "ClusterUpgradeRollbackStart"
-	// FabricEventKindClusterUpgradeStart ...
-	FabricEventKindClusterUpgradeStart FabricEventKind = "ClusterUpgradeStart"
-	// FabricEventKindContainerDeactivated ...
-	FabricEventKindContainerDeactivated FabricEventKind = "ContainerDeactivated"
-	// FabricEventKindContainerInstanceEvent ...
-	FabricEventKindContainerInstanceEvent FabricEventKind = "ContainerInstanceEvent"
-	// FabricEventKindDeployedApplicationHealthReportCreated ...
-	FabricEventKindDeployedApplicationHealthReportCreated FabricEventKind = "DeployedApplicationHealthReportCreated"
-	// FabricEventKindDeployedApplicationHealthReportExpired ...
-	FabricEventKindDeployedApplicationHealthReportExpired FabricEventKind = "DeployedApplicationHealthReportExpired"
-	// FabricEventKindDeployedServiceHealthReportCreated ...
-	FabricEventKindDeployedServiceHealthReportCreated FabricEventKind = "DeployedServiceHealthReportCreated"
-	// FabricEventKindDeployedServiceHealthReportExpired ...
-	FabricEventKindDeployedServiceHealthReportExpired FabricEventKind = "DeployedServiceHealthReportExpired"
-	// FabricEventKindNodeAborted ...
-	FabricEventKindNodeAborted FabricEventKind = "NodeAborted"
-	// FabricEventKindNodeAborting ...
-	FabricEventKindNodeAborting FabricEventKind = "NodeAborting"
-	// FabricEventKindNodeAdded ...
-	FabricEventKindNodeAdded FabricEventKind = "NodeAdded"
-	// FabricEventKindNodeClose ...
-	FabricEventKindNodeClose FabricEventKind = "NodeClose"
-	// FabricEventKindNodeClosing ...
-	FabricEventKindNodeClosing FabricEventKind = "NodeClosing"
-	// FabricEventKindNodeDeactivateComplete ...
-	FabricEventKindNodeDeactivateComplete FabricEventKind = "NodeDeactivateComplete"
-	// FabricEventKindNodeDeactivateStart ...
-	FabricEventKindNodeDeactivateStart FabricEventKind = "NodeDeactivateStart"
-	// FabricEventKindNodeDown ...
-	FabricEventKindNodeDown FabricEventKind = "NodeDown"
-	// FabricEventKindNodeEvent ...
-	FabricEventKindNodeEvent FabricEventKind = "NodeEvent"
-	// FabricEventKindNodeHealthReportCreated ...
-	FabricEventKindNodeHealthReportCreated FabricEventKind = "NodeHealthReportCreated"
-	// FabricEventKindNodeHealthReportExpired ...
-	FabricEventKindNodeHealthReportExpired FabricEventKind = "NodeHealthReportExpired"
-	// FabricEventKindNodeOpenedSuccess ...
-	FabricEventKindNodeOpenedSuccess FabricEventKind = "NodeOpenedSuccess"
-	// FabricEventKindNodeOpenFailed ...
-	FabricEventKindNodeOpenFailed FabricEventKind = "NodeOpenFailed"
-	// FabricEventKindNodeOpening ...
-	FabricEventKindNodeOpening FabricEventKind = "NodeOpening"
-	// FabricEventKindNodeRemoved ...
-	FabricEventKindNodeRemoved FabricEventKind = "NodeRemoved"
-	// FabricEventKindNodeUp ...
-	FabricEventKindNodeUp FabricEventKind = "NodeUp"
-	// FabricEventKindPartitionAnalysisEvent ...
-	FabricEventKindPartitionAnalysisEvent FabricEventKind = "PartitionAnalysisEvent"
-	// FabricEventKindPartitionEvent ...
-	FabricEventKindPartitionEvent FabricEventKind = "PartitionEvent"
-	// FabricEventKindPartitionHealthReportCreated ...
-	FabricEventKindPartitionHealthReportCreated FabricEventKind = "PartitionHealthReportCreated"
-	// FabricEventKindPartitionHealthReportExpired ...
-	FabricEventKindPartitionHealthReportExpired FabricEventKind = "PartitionHealthReportExpired"
-	// FabricEventKindPartitionPrimaryMoveAnalysis ...
-	FabricEventKindPartitionPrimaryMoveAnalysis FabricEventKind = "PartitionPrimaryMoveAnalysis"
-	// FabricEventKindPartitionReconfigurationCompleted ...
-	FabricEventKindPartitionReconfigurationCompleted FabricEventKind = "PartitionReconfigurationCompleted"
-	// FabricEventKindProcessDeactivated ...
-	FabricEventKindProcessDeactivated FabricEventKind = "ProcessDeactivated"
-	// FabricEventKindReplicaEvent ...
-	FabricEventKindReplicaEvent FabricEventKind = "ReplicaEvent"
-	// FabricEventKindServiceCreated ...
-	FabricEventKindServiceCreated FabricEventKind = "ServiceCreated"
-	// FabricEventKindServiceDeleted ...
-	FabricEventKindServiceDeleted FabricEventKind = "ServiceDeleted"
-	// FabricEventKindServiceEvent ...
-	FabricEventKindServiceEvent FabricEventKind = "ServiceEvent"
-	// FabricEventKindServiceHealthReportCreated ...
-	FabricEventKindServiceHealthReportCreated FabricEventKind = "ServiceHealthReportCreated"
-	// FabricEventKindServiceHealthReportExpired ...
-	FabricEventKindServiceHealthReportExpired FabricEventKind = "ServiceHealthReportExpired"
-	// FabricEventKindStatefulReplicaHealthReportCreated ...
-	FabricEventKindStatefulReplicaHealthReportCreated FabricEventKind = "StatefulReplicaHealthReportCreated"
-	// FabricEventKindStatefulReplicaHealthReportExpired ...
-	FabricEventKindStatefulReplicaHealthReportExpired FabricEventKind = "StatefulReplicaHealthReportExpired"
-	// FabricEventKindStatelessReplicaHealthReportCreated ...
-	FabricEventKindStatelessReplicaHealthReportCreated FabricEventKind = "StatelessReplicaHealthReportCreated"
-	// FabricEventKindStatelessReplicaHealthReportExpired ...
-	FabricEventKindStatelessReplicaHealthReportExpired FabricEventKind = "StatelessReplicaHealthReportExpired"
-)
-
-// PossibleFabricEventKindValues returns an array of possible values for the FabricEventKind const type.
-func PossibleFabricEventKindValues() []FabricEventKind {
-	return []FabricEventKind{FabricEventKindApplicationCreated, FabricEventKindApplicationDeleted, FabricEventKindApplicationEvent, FabricEventKindApplicationHealthReportCreated, FabricEventKindApplicationHealthReportExpired, FabricEventKindApplicationUpgradeComplete, FabricEventKindApplicationUpgradeDomainComplete, FabricEventKindApplicationUpgradeRollbackComplete, FabricEventKindApplicationUpgradeRollbackStart, FabricEventKindApplicationUpgradeStart, FabricEventKindChaosMovePrimaryFaultScheduled, FabricEventKindChaosMoveSecondaryFaultScheduled, FabricEventKindChaosRemoveReplicaFaultCompleted, FabricEventKindChaosRemoveReplicaFaultScheduled, FabricEventKindChaosRestartCodePackageFaultCompleted, FabricEventKindChaosRestartCodePackageFaultScheduled, FabricEventKindChaosRestartNodeFaultCompleted, FabricEventKindChaosRestartNodeFaultScheduled, FabricEventKindChaosRestartReplicaFaultScheduled, FabricEventKindChaosStarted, FabricEventKindChaosStopped, FabricEventKindClusterEvent, FabricEventKindClusterHealthReportCreated, FabricEventKindClusterHealthReportExpired, FabricEventKindClusterUpgradeComplete, FabricEventKindClusterUpgradeDomainComplete, FabricEventKindClusterUpgradeRollbackComplete, FabricEventKindClusterUpgradeRollbackStart, FabricEventKindClusterUpgradeStart, FabricEventKindContainerDeactivated, FabricEventKindContainerInstanceEvent, FabricEventKindDeployedApplicationHealthReportCreated, FabricEventKindDeployedApplicationHealthReportExpired, FabricEventKindDeployedServiceHealthReportCreated, FabricEventKindDeployedServiceHealthReportExpired, FabricEventKindNodeAborted, FabricEventKindNodeAborting, FabricEventKindNodeAdded, FabricEventKindNodeClose, FabricEventKindNodeClosing, FabricEventKindNodeDeactivateComplete, FabricEventKindNodeDeactivateStart, FabricEventKindNodeDown, FabricEventKindNodeEvent, FabricEventKindNodeHealthReportCreated, FabricEventKindNodeHealthReportExpired, FabricEventKindNodeOpenedSuccess, FabricEventKindNodeOpenFailed, FabricEventKindNodeOpening, FabricEventKindNodeRemoved, FabricEventKindNodeUp, FabricEventKindPartitionAnalysisEvent, FabricEventKindPartitionEvent, FabricEventKindPartitionHealthReportCreated, FabricEventKindPartitionHealthReportExpired, FabricEventKindPartitionPrimaryMoveAnalysis, FabricEventKindPartitionReconfigurationCompleted, FabricEventKindProcessDeactivated, FabricEventKindReplicaEvent, FabricEventKindServiceCreated, FabricEventKindServiceDeleted, FabricEventKindServiceEvent, FabricEventKindServiceHealthReportCreated, FabricEventKindServiceHealthReportExpired, FabricEventKindStatefulReplicaHealthReportCreated, FabricEventKindStatefulReplicaHealthReportExpired, FabricEventKindStatelessReplicaHealthReportCreated, FabricEventKindStatelessReplicaHealthReportExpired}
-}
-
-// FabricReplicaStatus enumerates the values for fabric replica status.
-type FabricReplicaStatus string
-
-const (
-	// FabricReplicaStatusDown Indicates that the replica is down.
-	FabricReplicaStatusDown FabricReplicaStatus = "Down"
-	// FabricReplicaStatusInvalid Indicates that the read or write operation access status is not valid. This
-	// value is not returned to the caller.
-	FabricReplicaStatusInvalid FabricReplicaStatus = "Invalid"
-	// FabricReplicaStatusUp Indicates that the replica is up.
-	FabricReplicaStatusUp FabricReplicaStatus = "Up"
-)
-
-// PossibleFabricReplicaStatusValues returns an array of possible values for the FabricReplicaStatus const type.
-func PossibleFabricReplicaStatusValues() []FabricReplicaStatus {
-	return []FabricReplicaStatus{FabricReplicaStatusDown, FabricReplicaStatusInvalid, FabricReplicaStatusUp}
-}
-
-// FailureAction enumerates the values for failure action.
-type FailureAction string
-
-const (
-	// FailureActionInvalid Indicates the failure action is invalid. All Service Fabric enumerations have the
-	// invalid type. The value is zero.
-	FailureActionInvalid FailureAction = "Invalid"
-	// FailureActionManual The upgrade will switch to UnmonitoredManual upgrade mode. The value is 2
-	FailureActionManual FailureAction = "Manual"
-	// FailureActionRollback The upgrade will start rolling back automatically. The value is 1
-	FailureActionRollback FailureAction = "Rollback"
-)
-
-// PossibleFailureActionValues returns an array of possible values for the FailureAction const type.
-func PossibleFailureActionValues() []FailureAction {
-	return []FailureAction{FailureActionInvalid, FailureActionManual, FailureActionRollback}
-}
-
-// FailureReason enumerates the values for failure reason.
-type FailureReason string
-
-const (
-	// HealthCheck The upgrade failed due to health policy violations. The value is 2
-	HealthCheck FailureReason = "HealthCheck"
-	// Interrupted There was an external request to rollback the upgrade. The value is 1
-	Interrupted FailureReason = "Interrupted"
-	// None Indicates the reason is invalid or unknown. All Service Fabric enumerations have the invalid type.
-	// The value is zero.
-	None FailureReason = "None"
-	// OverallUpgradeTimeout The overall upgrade took longer than the allowed upgrade timeout to process. The
-	// value is 4
-	OverallUpgradeTimeout FailureReason = "OverallUpgradeTimeout"
-	// UpgradeDomainTimeout An upgrade domain took longer than the allowed upgrade domain timeout to process.
-	// The value is 3
-	UpgradeDomainTimeout FailureReason = "UpgradeDomainTimeout"
-)
-
-// PossibleFailureReasonValues returns an array of possible values for the FailureReason const type.
-func PossibleFailureReasonValues() []FailureReason {
-	return []FailureReason{HealthCheck, Interrupted, None, OverallUpgradeTimeout, UpgradeDomainTimeout}
-}
-
-// HealthEvaluationKind enumerates the values for health evaluation kind.
-type HealthEvaluationKind string
-
-const (
-	// HealthEvaluationKindApplication Indicates that the health evaluation is for an application. The value is
-	// 18.
-	HealthEvaluationKindApplication HealthEvaluationKind = "Application"
-	// HealthEvaluationKindApplications Indicates that the health evaluation is for the cluster applications.
-	// The value is 8.
-	HealthEvaluationKindApplications HealthEvaluationKind = "Applications"
-	// HealthEvaluationKindApplicationTypeApplications – Indicates that the health evaluation is for
-	// applications of an application type. The value is 21.
-	HealthEvaluationKindApplicationTypeApplications HealthEvaluationKind = "ApplicationTypeApplications"
-	// HealthEvaluationKindDeltaNodesCheck Indicates that the health evaluation is for the delta of unhealthy
-	// cluster nodes. The value is 19.
-	HealthEvaluationKindDeltaNodesCheck HealthEvaluationKind = "DeltaNodesCheck"
-	// HealthEvaluationKindDeployedApplication Indicates that the health evaluation is for a deployed
-	// application. The value is 17.
-	HealthEvaluationKindDeployedApplication HealthEvaluationKind = "DeployedApplication"
-	// HealthEvaluationKindDeployedApplications Indicates that the health evaluation is for the deployed
-	// applications of an application. The value is 5.
-	HealthEvaluationKindDeployedApplications HealthEvaluationKind = "DeployedApplications"
-	// HealthEvaluationKindDeployedServicePackage Indicates that the health evaluation is for a deployed
-	// service package. The value is 16.
-	HealthEvaluationKindDeployedServicePackage HealthEvaluationKind = "DeployedServicePackage"
-	// HealthEvaluationKindDeployedServicePackages Indicates that the health evaluation is for the deployed
-	// service packages of a deployed application. The value is 4.
-	HealthEvaluationKindDeployedServicePackages HealthEvaluationKind = "DeployedServicePackages"
-	// HealthEvaluationKindEvent Indicates that the health evaluation is for a health event. The value is 1.
-	HealthEvaluationKindEvent HealthEvaluationKind = "Event"
-	// HealthEvaluationKindInvalid Indicates that the health evaluation is invalid. The value is zero.
-	HealthEvaluationKindInvalid HealthEvaluationKind = "Invalid"
-	// HealthEvaluationKindNode Indicates that the health evaluation is for a node. The value is 12.
-	HealthEvaluationKindNode HealthEvaluationKind = "Node"
-	// HealthEvaluationKindNodes Indicates that the health evaluation is for the cluster nodes. The value is 7.
-	HealthEvaluationKindNodes HealthEvaluationKind = "Nodes"
-	// HealthEvaluationKindPartition Indicates that the health evaluation is for a partition. The value is 14.
-	HealthEvaluationKindPartition HealthEvaluationKind = "Partition"
-	// HealthEvaluationKindPartitions Indicates that the health evaluation is for the partitions of a service.
-	// The value is 3.
-	HealthEvaluationKindPartitions HealthEvaluationKind = "Partitions"
-	// HealthEvaluationKindReplica Indicates that the health evaluation is for a replica. The value is 13.
-	HealthEvaluationKindReplica HealthEvaluationKind = "Replica"
-	// HealthEvaluationKindReplicas Indicates that the health evaluation is for the replicas of a partition.
-	// The value is 2.
-	HealthEvaluationKindReplicas HealthEvaluationKind = "Replicas"
-	// HealthEvaluationKindService Indicates that the health evaluation is for a service. The value is 15.
-	HealthEvaluationKindService HealthEvaluationKind = "Service"
-	// HealthEvaluationKindServices Indicates that the health evaluation is for services of an application. The
-	// value is 6.
-	HealthEvaluationKindServices HealthEvaluationKind = "Services"
-	// HealthEvaluationKindSystemApplication Indicates that the health evaluation is for the system
-	// application. The value is 9.
-	HealthEvaluationKindSystemApplication HealthEvaluationKind = "SystemApplication"
-	// HealthEvaluationKindUpgradeDomainDeltaNodesCheck Indicates that the health evaluation is for the delta
-	// of unhealthy upgrade domain cluster nodes. The value is 20.
-	HealthEvaluationKindUpgradeDomainDeltaNodesCheck HealthEvaluationKind = "UpgradeDomainDeltaNodesCheck"
-	// HealthEvaluationKindUpgradeDomainDeployedApplications Indicates that the health evaluation is for the
-	// deployed applications of an application in an upgrade domain. The value is 10.
-	HealthEvaluationKindUpgradeDomainDeployedApplications HealthEvaluationKind = "UpgradeDomainDeployedApplications"
-	// HealthEvaluationKindUpgradeDomainNodes Indicates that the health evaluation is for the cluster nodes in
-	// an upgrade domain. The value is 11.
-	HealthEvaluationKindUpgradeDomainNodes HealthEvaluationKind = "UpgradeDomainNodes"
-)
-
-// PossibleHealthEvaluationKindValues returns an array of possible values for the HealthEvaluationKind const type.
-func PossibleHealthEvaluationKindValues() []HealthEvaluationKind {
-	return []HealthEvaluationKind{HealthEvaluationKindApplication, HealthEvaluationKindApplications, HealthEvaluationKindApplicationTypeApplications, HealthEvaluationKindDeltaNodesCheck, HealthEvaluationKindDeployedApplication, HealthEvaluationKindDeployedApplications, HealthEvaluationKindDeployedServicePackage, HealthEvaluationKindDeployedServicePackages, HealthEvaluationKindEvent, HealthEvaluationKindInvalid, HealthEvaluationKindNode, HealthEvaluationKindNodes, HealthEvaluationKindPartition, HealthEvaluationKindPartitions, HealthEvaluationKindReplica, HealthEvaluationKindReplicas, HealthEvaluationKindService, HealthEvaluationKindServices, HealthEvaluationKindSystemApplication, HealthEvaluationKindUpgradeDomainDeltaNodesCheck, HealthEvaluationKindUpgradeDomainDeployedApplications, HealthEvaluationKindUpgradeDomainNodes}
-}
-
-// HealthState enumerates the values for health state.
-type HealthState string
-
-const (
-	// HealthStateError Indicates the health state is at an error level. Error health state should be
-	// investigated, as they can impact the correct functionality of the cluster. The value is 3.
-	HealthStateError HealthState = "Error"
-	// HealthStateInvalid Indicates an invalid health state. All Service Fabric enumerations have the invalid
-	// type. The value is zero.
-	HealthStateInvalid HealthState = "Invalid"
-	// HealthStateOk Indicates the health state is okay. The value is 1.
-	HealthStateOk HealthState = "Ok"
-	// HealthStateUnknown Indicates an unknown health status. The value is 65535.
-	HealthStateUnknown HealthState = "Unknown"
-	// HealthStateWarning Indicates the health state is at a warning level. The value is 2.
-	HealthStateWarning HealthState = "Warning"
-)
-
-// PossibleHealthStateValues returns an array of possible values for the HealthState const type.
-func PossibleHealthStateValues() []HealthState {
-	return []HealthState{HealthStateError, HealthStateInvalid, HealthStateOk, HealthStateUnknown, HealthStateWarning}
-}
-
-// HostIsolationMode enumerates the values for host isolation mode.
-type HostIsolationMode string
-
-const (
-	// HostIsolationModeHyperV Indicates the ContainerHost is a Hyper-V container. This applies to only Windows
-	// containers. The value is 2.
-	HostIsolationModeHyperV HostIsolationMode = "HyperV"
-	// HostIsolationModeNone Indicates the isolation mode is not applicable for given HostType. The value is 0.
-	HostIsolationModeNone HostIsolationMode = "None"
-	// HostIsolationModeProcess This is the default isolation mode for a ContainerHost. The value is 1.
-	HostIsolationModeProcess HostIsolationMode = "Process"
-)
-
-// PossibleHostIsolationModeValues returns an array of possible values for the HostIsolationMode const type.
-func PossibleHostIsolationModeValues() []HostIsolationMode {
-	return []HostIsolationMode{HostIsolationModeHyperV, HostIsolationModeNone, HostIsolationModeProcess}
-}
-
-// HostType enumerates the values for host type.
-type HostType string
-
-const (
-	// HostTypeContainerHost Indicates the host is a container. The value is 2.
-	HostTypeContainerHost HostType = "ContainerHost"
-	// HostTypeExeHost Indicates the host is an executable. The value is 1.
-	HostTypeExeHost HostType = "ExeHost"
-	// HostTypeInvalid Indicates the type of host is not known or invalid. The value is 0.
-	HostTypeInvalid HostType = "Invalid"
-)
-
-// PossibleHostTypeValues returns an array of possible values for the HostType const type.
-func PossibleHostTypeValues() []HostType {
-	return []HostType{HostTypeContainerHost, HostTypeExeHost, HostTypeInvalid}
-}
-
-// ImpactLevel enumerates the values for impact level.
-type ImpactLevel string
-
-const (
-	// ImpactLevelInvalid ...
-	ImpactLevelInvalid ImpactLevel = "Invalid"
-	// ImpactLevelNone ...
-	ImpactLevelNone ImpactLevel = "None"
-	// ImpactLevelRemoveData ...
-	ImpactLevelRemoveData ImpactLevel = "RemoveData"
-	// ImpactLevelRemoveNode ...
-	ImpactLevelRemoveNode ImpactLevel = "RemoveNode"
-	// ImpactLevelRestart ...
-	ImpactLevelRestart ImpactLevel = "Restart"
-)
-
-// PossibleImpactLevelValues returns an array of possible values for the ImpactLevel const type.
-func PossibleImpactLevelValues() []ImpactLevel {
-	return []ImpactLevel{ImpactLevelInvalid, ImpactLevelNone, ImpactLevelRemoveData, ImpactLevelRemoveNode, ImpactLevelRestart}
-}
-
-// Kind enumerates the values for kind.
-type Kind string
-
-const (
-	// KindApplication ...
-	KindApplication Kind = "Application"
-	// KindApplications ...
-	KindApplications Kind = "Applications"
-	// KindApplicationTypeApplications ...
-	KindApplicationTypeApplications Kind = "ApplicationTypeApplications"
-	// KindDeltaNodesCheck ...
-	KindDeltaNodesCheck Kind = "DeltaNodesCheck"
-	// KindDeployedApplication ...
-	KindDeployedApplication Kind = "DeployedApplication"
-	// KindDeployedApplications ...
-	KindDeployedApplications Kind = "DeployedApplications"
-	// KindDeployedServicePackage ...
-	KindDeployedServicePackage Kind = "DeployedServicePackage"
-	// KindDeployedServicePackages ...
-	KindDeployedServicePackages Kind = "DeployedServicePackages"
-	// KindEvent ...
-	KindEvent Kind = "Event"
-	// KindHealthEvaluation ...
-	KindHealthEvaluation Kind = "HealthEvaluation"
-	// KindNode ...
-	KindNode Kind = "Node"
-	// KindNodes ...
-	KindNodes Kind = "Nodes"
-	// KindPartition ...
-	KindPartition Kind = "Partition"
-	// KindPartitions ...
-	KindPartitions Kind = "Partitions"
-	// KindReplica ...
-	KindReplica Kind = "Replica"
-	// KindReplicas ...
-	KindReplicas Kind = "Replicas"
-	// KindService ...
-	KindService Kind = "Service"
-	// KindServices ...
-	KindServices Kind = "Services"
-	// KindSystemApplication ...
-	KindSystemApplication Kind = "SystemApplication"
-	// KindUpgradeDomainDeltaNodesCheck ...
-	KindUpgradeDomainDeltaNodesCheck Kind = "UpgradeDomainDeltaNodesCheck"
-	// KindUpgradeDomainNodes ...
-	KindUpgradeDomainNodes Kind = "UpgradeDomainNodes"
-)
-
-// PossibleKindValues returns an array of possible values for the Kind const type.
-func PossibleKindValues() []Kind {
-	return []Kind{KindApplication, KindApplications, KindApplicationTypeApplications, KindDeltaNodesCheck, KindDeployedApplication, KindDeployedApplications, KindDeployedServicePackage, KindDeployedServicePackages, KindEvent, KindHealthEvaluation, KindNode, KindNodes, KindPartition, KindPartitions, KindReplica, KindReplicas, KindService, KindServices, KindSystemApplication, KindUpgradeDomainDeltaNodesCheck, KindUpgradeDomainNodes}
-}
-
-// KindBasicBackupConfigurationInfo enumerates the values for kind basic backup configuration info.
-type KindBasicBackupConfigurationInfo string
-
-const (
-	// KindBasicBackupConfigurationInfoKindApplication ...
-	KindBasicBackupConfigurationInfoKindApplication KindBasicBackupConfigurationInfo = "Application"
-	// KindBasicBackupConfigurationInfoKindBackupConfigurationInfo ...
-	KindBasicBackupConfigurationInfoKindBackupConfigurationInfo KindBasicBackupConfigurationInfo = "BackupConfigurationInfo"
-	// KindBasicBackupConfigurationInfoKindPartition ...
-	KindBasicBackupConfigurationInfoKindPartition KindBasicBackupConfigurationInfo = "Partition"
-	// KindBasicBackupConfigurationInfoKindService ...
-	KindBasicBackupConfigurationInfoKindService KindBasicBackupConfigurationInfo = "Service"
-)
-
-// PossibleKindBasicBackupConfigurationInfoValues returns an array of possible values for the KindBasicBackupConfigurationInfo const type.
-func PossibleKindBasicBackupConfigurationInfoValues() []KindBasicBackupConfigurationInfo {
-	return []KindBasicBackupConfigurationInfo{KindBasicBackupConfigurationInfoKindApplication, KindBasicBackupConfigurationInfoKindBackupConfigurationInfo, KindBasicBackupConfigurationInfoKindPartition, KindBasicBackupConfigurationInfoKindService}
-}
-
-// KindBasicChaosEvent enumerates the values for kind basic chaos event.
-type KindBasicChaosEvent string
-
-const (
-	// KindChaosEvent ...
-	KindChaosEvent KindBasicChaosEvent = "ChaosEvent"
-	// KindExecutingFaults ...
-	KindExecutingFaults KindBasicChaosEvent = "ExecutingFaults"
-	// KindStarted ...
-	KindStarted KindBasicChaosEvent = "Started"
-	// KindStopped ...
-	KindStopped KindBasicChaosEvent = "Stopped"
-	// KindTestError ...
-	KindTestError KindBasicChaosEvent = "TestError"
-	// KindValidationFailed ...
-	KindValidationFailed KindBasicChaosEvent = "ValidationFailed"
-	// KindWaiting ...
-	KindWaiting KindBasicChaosEvent = "Waiting"
-)
-
-// PossibleKindBasicChaosEventValues returns an array of possible values for the KindBasicChaosEvent const type.
-func PossibleKindBasicChaosEventValues() []KindBasicChaosEvent {
-	return []KindBasicChaosEvent{KindChaosEvent, KindExecutingFaults, KindStarted, KindStopped, KindTestError, KindValidationFailed, KindWaiting}
-}
-
-// KindBasicFabricEvent enumerates the values for kind basic fabric event.
-type KindBasicFabricEvent string
-
-const (
-	// KindApplicationCreated ...
-	KindApplicationCreated KindBasicFabricEvent = "ApplicationCreated"
-	// KindApplicationDeleted ...
-	KindApplicationDeleted KindBasicFabricEvent = "ApplicationDeleted"
-	// KindApplicationEvent ...
-	KindApplicationEvent KindBasicFabricEvent = "ApplicationEvent"
-	// KindApplicationHealthReportCreated ...
-	KindApplicationHealthReportCreated KindBasicFabricEvent = "ApplicationHealthReportCreated"
-	// KindApplicationHealthReportExpired ...
-	KindApplicationHealthReportExpired KindBasicFabricEvent = "ApplicationHealthReportExpired"
-	// KindApplicationUpgradeComplete ...
-	KindApplicationUpgradeComplete KindBasicFabricEvent = "ApplicationUpgradeComplete"
-	// KindApplicationUpgradeDomainComplete ...
-	KindApplicationUpgradeDomainComplete KindBasicFabricEvent = "ApplicationUpgradeDomainComplete"
-	// KindApplicationUpgradeRollbackComplete ...
-	KindApplicationUpgradeRollbackComplete KindBasicFabricEvent = "ApplicationUpgradeRollbackComplete"
-	// KindApplicationUpgradeRollbackStart ...
-	KindApplicationUpgradeRollbackStart KindBasicFabricEvent = "ApplicationUpgradeRollbackStart"
-	// KindApplicationUpgradeStart ...
-	KindApplicationUpgradeStart KindBasicFabricEvent = "ApplicationUpgradeStart"
-	// KindChaosMovePrimaryFaultScheduled ...
-	KindChaosMovePrimaryFaultScheduled KindBasicFabricEvent = "ChaosMovePrimaryFaultScheduled"
-	// KindChaosMoveSecondaryFaultScheduled ...
-	KindChaosMoveSecondaryFaultScheduled KindBasicFabricEvent = "ChaosMoveSecondaryFaultScheduled"
-	// KindChaosRemoveReplicaFaultCompleted ...
-	KindChaosRemoveReplicaFaultCompleted KindBasicFabricEvent = "ChaosRemoveReplicaFaultCompleted"
-	// KindChaosRemoveReplicaFaultScheduled ...
-	KindChaosRemoveReplicaFaultScheduled KindBasicFabricEvent = "ChaosRemoveReplicaFaultScheduled"
-	// KindChaosRestartCodePackageFaultCompleted ...
-	KindChaosRestartCodePackageFaultCompleted KindBasicFabricEvent = "ChaosRestartCodePackageFaultCompleted"
-	// KindChaosRestartCodePackageFaultScheduled ...
-	KindChaosRestartCodePackageFaultScheduled KindBasicFabricEvent = "ChaosRestartCodePackageFaultScheduled"
-	// KindChaosRestartNodeFaultCompleted ...
-	KindChaosRestartNodeFaultCompleted KindBasicFabricEvent = "ChaosRestartNodeFaultCompleted"
-	// KindChaosRestartNodeFaultScheduled ...
-	KindChaosRestartNodeFaultScheduled KindBasicFabricEvent = "ChaosRestartNodeFaultScheduled"
-	// KindChaosRestartReplicaFaultScheduled ...
-	KindChaosRestartReplicaFaultScheduled KindBasicFabricEvent = "ChaosRestartReplicaFaultScheduled"
-	// KindChaosStarted ...
-	KindChaosStarted KindBasicFabricEvent = "ChaosStarted"
-	// KindChaosStopped ...
-	KindChaosStopped KindBasicFabricEvent = "ChaosStopped"
-	// KindClusterEvent ...
-	KindClusterEvent KindBasicFabricEvent = "ClusterEvent"
-	// KindClusterHealthReportCreated ...
-	KindClusterHealthReportCreated KindBasicFabricEvent = "ClusterHealthReportCreated"
-	// KindClusterHealthReportExpired ...
-	KindClusterHealthReportExpired KindBasicFabricEvent = "ClusterHealthReportExpired"
-	// KindClusterUpgradeComplete ...
-	KindClusterUpgradeComplete KindBasicFabricEvent = "ClusterUpgradeComplete"
-	// KindClusterUpgradeDomainComplete ...
-	KindClusterUpgradeDomainComplete KindBasicFabricEvent = "ClusterUpgradeDomainComplete"
-	// KindClusterUpgradeRollbackComplete ...
-	KindClusterUpgradeRollbackComplete KindBasicFabricEvent = "ClusterUpgradeRollbackComplete"
-	// KindClusterUpgradeRollbackStart ...
-	KindClusterUpgradeRollbackStart KindBasicFabricEvent = "ClusterUpgradeRollbackStart"
-	// KindClusterUpgradeStart ...
-	KindClusterUpgradeStart KindBasicFabricEvent = "ClusterUpgradeStart"
-	// KindContainerDeactivated ...
-	KindContainerDeactivated KindBasicFabricEvent = "ContainerDeactivated"
-	// KindContainerInstanceEvent ...
-	KindContainerInstanceEvent KindBasicFabricEvent = "ContainerInstanceEvent"
-	// KindDeployedApplicationHealthReportCreated ...
-	KindDeployedApplicationHealthReportCreated KindBasicFabricEvent = "DeployedApplicationHealthReportCreated"
-	// KindDeployedApplicationHealthReportExpired ...
-	KindDeployedApplicationHealthReportExpired KindBasicFabricEvent = "DeployedApplicationHealthReportExpired"
-	// KindDeployedServiceHealthReportCreated ...
-	KindDeployedServiceHealthReportCreated KindBasicFabricEvent = "DeployedServiceHealthReportCreated"
-	// KindDeployedServiceHealthReportExpired ...
-	KindDeployedServiceHealthReportExpired KindBasicFabricEvent = "DeployedServiceHealthReportExpired"
-	// KindFabricEvent ...
-	KindFabricEvent KindBasicFabricEvent = "FabricEvent"
-	// KindNodeAborted ...
-	KindNodeAborted KindBasicFabricEvent = "NodeAborted"
-	// KindNodeAborting ...
-	KindNodeAborting KindBasicFabricEvent = "NodeAborting"
-	// KindNodeAdded ...
-	KindNodeAdded KindBasicFabricEvent = "NodeAdded"
-	// KindNodeClose ...
-	KindNodeClose KindBasicFabricEvent = "NodeClose"
-	// KindNodeClosing ...
-	KindNodeClosing KindBasicFabricEvent = "NodeClosing"
-	// KindNodeDeactivateComplete ...
-	KindNodeDeactivateComplete KindBasicFabricEvent = "NodeDeactivateComplete"
-	// KindNodeDeactivateStart ...
-	KindNodeDeactivateStart KindBasicFabricEvent = "NodeDeactivateStart"
-	// KindNodeDown ...
-	KindNodeDown KindBasicFabricEvent = "NodeDown"
-	// KindNodeEvent ...
-	KindNodeEvent KindBasicFabricEvent = "NodeEvent"
-	// KindNodeHealthReportCreated ...
-	KindNodeHealthReportCreated KindBasicFabricEvent = "NodeHealthReportCreated"
-	// KindNodeHealthReportExpired ...
-	KindNodeHealthReportExpired KindBasicFabricEvent = "NodeHealthReportExpired"
-	// KindNodeOpenedSuccess ...
-	KindNodeOpenedSuccess KindBasicFabricEvent = "NodeOpenedSuccess"
-	// KindNodeOpenFailed ...
-	KindNodeOpenFailed KindBasicFabricEvent = "NodeOpenFailed"
-	// KindNodeOpening ...
-	KindNodeOpening KindBasicFabricEvent = "NodeOpening"
-	// KindNodeRemoved ...
-	KindNodeRemoved KindBasicFabricEvent = "NodeRemoved"
-	// KindNodeUp ...
-	KindNodeUp KindBasicFabricEvent = "NodeUp"
-	// KindPartitionAnalysisEvent ...
-	KindPartitionAnalysisEvent KindBasicFabricEvent = "PartitionAnalysisEvent"
-	// KindPartitionEvent ...
-	KindPartitionEvent KindBasicFabricEvent = "PartitionEvent"
-	// KindPartitionHealthReportCreated ...
-	KindPartitionHealthReportCreated KindBasicFabricEvent = "PartitionHealthReportCreated"
-	// KindPartitionHealthReportExpired ...
-	KindPartitionHealthReportExpired KindBasicFabricEvent = "PartitionHealthReportExpired"
-	// KindPartitionPrimaryMoveAnalysis ...
-	KindPartitionPrimaryMoveAnalysis KindBasicFabricEvent = "PartitionPrimaryMoveAnalysis"
-	// KindPartitionReconfigurationCompleted ...
-	KindPartitionReconfigurationCompleted KindBasicFabricEvent = "PartitionReconfigurationCompleted"
-	// KindProcessDeactivated ...
-	KindProcessDeactivated KindBasicFabricEvent = "ProcessDeactivated"
-	// KindReplicaEvent ...
-	KindReplicaEvent KindBasicFabricEvent = "ReplicaEvent"
-	// KindServiceCreated ...
-	KindServiceCreated KindBasicFabricEvent = "ServiceCreated"
-	// KindServiceDeleted ...
-	KindServiceDeleted KindBasicFabricEvent = "ServiceDeleted"
-	// KindServiceEvent ...
-	KindServiceEvent KindBasicFabricEvent = "ServiceEvent"
-	// KindServiceHealthReportCreated ...
-	KindServiceHealthReportCreated KindBasicFabricEvent = "ServiceHealthReportCreated"
-	// KindServiceHealthReportExpired ...
-	KindServiceHealthReportExpired KindBasicFabricEvent = "ServiceHealthReportExpired"
-	// KindStatefulReplicaHealthReportCreated ...
-	KindStatefulReplicaHealthReportCreated KindBasicFabricEvent = "StatefulReplicaHealthReportCreated"
-	// KindStatefulReplicaHealthReportExpired ...
-	KindStatefulReplicaHealthReportExpired KindBasicFabricEvent = "StatefulReplicaHealthReportExpired"
-	// KindStatelessReplicaHealthReportCreated ...
-	KindStatelessReplicaHealthReportCreated KindBasicFabricEvent = "StatelessReplicaHealthReportCreated"
-	// KindStatelessReplicaHealthReportExpired ...
-	KindStatelessReplicaHealthReportExpired KindBasicFabricEvent = "StatelessReplicaHealthReportExpired"
-)
-
-// PossibleKindBasicFabricEventValues returns an array of possible values for the KindBasicFabricEvent const type.
-func PossibleKindBasicFabricEventValues() []KindBasicFabricEvent {
-	return []KindBasicFabricEvent{KindApplicationCreated, KindApplicationDeleted, KindApplicationEvent, KindApplicationHealthReportCreated, KindApplicationHealthReportExpired, KindApplicationUpgradeComplete, KindApplicationUpgradeDomainComplete, KindApplicationUpgradeRollbackComplete, KindApplicationUpgradeRollbackStart, KindApplicationUpgradeStart, KindChaosMovePrimaryFaultScheduled, KindChaosMoveSecondaryFaultScheduled, KindChaosRemoveReplicaFaultCompleted, KindChaosRemoveReplicaFaultScheduled, KindChaosRestartCodePackageFaultCompleted, KindChaosRestartCodePackageFaultScheduled, KindChaosRestartNodeFaultCompleted, KindChaosRestartNodeFaultScheduled, KindChaosRestartReplicaFaultScheduled, KindChaosStarted, KindChaosStopped, KindClusterEvent, KindClusterHealthReportCreated, KindClusterHealthReportExpired, KindClusterUpgradeComplete, KindClusterUpgradeDomainComplete, KindClusterUpgradeRollbackComplete, KindClusterUpgradeRollbackStart, KindClusterUpgradeStart, KindContainerDeactivated, KindContainerInstanceEvent, KindDeployedApplicationHealthReportCreated, KindDeployedApplicationHealthReportExpired, KindDeployedServiceHealthReportCreated, KindDeployedServiceHealthReportExpired, KindFabricEvent, KindNodeAborted, KindNodeAborting, KindNodeAdded, KindNodeClose, KindNodeClosing, KindNodeDeactivateComplete, KindNodeDeactivateStart, KindNodeDown, KindNodeEvent, KindNodeHealthReportCreated, KindNodeHealthReportExpired, KindNodeOpenedSuccess, KindNodeOpenFailed, KindNodeOpening, KindNodeRemoved, KindNodeUp, KindPartitionAnalysisEvent, KindPartitionEvent, KindPartitionHealthReportCreated, KindPartitionHealthReportExpired, KindPartitionPrimaryMoveAnalysis, KindPartitionReconfigurationCompleted, KindProcessDeactivated, KindReplicaEvent, KindServiceCreated, KindServiceDeleted, KindServiceEvent, KindServiceHealthReportCreated, KindServiceHealthReportExpired, KindStatefulReplicaHealthReportCreated, KindStatefulReplicaHealthReportExpired, KindStatelessReplicaHealthReportCreated, KindStatelessReplicaHealthReportExpired}
-}
-
-// KindBasicPropertyBatchInfo enumerates the values for kind basic property batch info.
-type KindBasicPropertyBatchInfo string
-
-const (
-	// KindFailed ...
-	KindFailed KindBasicPropertyBatchInfo = "Failed"
-	// KindPropertyBatchInfo ...
-	KindPropertyBatchInfo KindBasicPropertyBatchInfo = "PropertyBatchInfo"
-	// KindSuccessful ...
-	KindSuccessful KindBasicPropertyBatchInfo = "Successful"
-)
-
-// PossibleKindBasicPropertyBatchInfoValues returns an array of possible values for the KindBasicPropertyBatchInfo const type.
-func PossibleKindBasicPropertyBatchInfoValues() []KindBasicPropertyBatchInfo {
-	return []KindBasicPropertyBatchInfo{KindFailed, KindPropertyBatchInfo, KindSuccessful}
-}
-
-// KindBasicPropertyBatchOperation enumerates the values for kind basic property batch operation.
-type KindBasicPropertyBatchOperation string
-
-const (
-	// KindCheckExists ...
-	KindCheckExists KindBasicPropertyBatchOperation = "CheckExists"
-	// KindCheckSequence ...
-	KindCheckSequence KindBasicPropertyBatchOperation = "CheckSequence"
-	// KindCheckValue ...
-	KindCheckValue KindBasicPropertyBatchOperation = "CheckValue"
-	// KindDelete ...
-	KindDelete KindBasicPropertyBatchOperation = "Delete"
-	// KindGet ...
-	KindGet KindBasicPropertyBatchOperation = "Get"
-	// KindPropertyBatchOperation ...
-	KindPropertyBatchOperation KindBasicPropertyBatchOperation = "PropertyBatchOperation"
-	// KindPut ...
-	KindPut KindBasicPropertyBatchOperation = "Put"
-)
-
-// PossibleKindBasicPropertyBatchOperationValues returns an array of possible values for the KindBasicPropertyBatchOperation const type.
-func PossibleKindBasicPropertyBatchOperationValues() []KindBasicPropertyBatchOperation {
-	return []KindBasicPropertyBatchOperation{KindCheckExists, KindCheckSequence, KindCheckValue, KindDelete, KindGet, KindPropertyBatchOperation, KindPut}
-}
-
-// KindBasicPropertyValue enumerates the values for kind basic property value.
-type KindBasicPropertyValue string
-
-const (
-	// KindBinary ...
-	KindBinary KindBasicPropertyValue = "Binary"
-	// KindDouble ...
-	KindDouble KindBasicPropertyValue = "Double"
-	// KindGUID ...
-	KindGUID KindBasicPropertyValue = "Guid"
-	// KindInt64 ...
-	KindInt64 KindBasicPropertyValue = "Int64"
-	// KindPropertyValue ...
-	KindPropertyValue KindBasicPropertyValue = "PropertyValue"
-	// KindString ...
-	KindString KindBasicPropertyValue = "String"
-)
-
-// PossibleKindBasicPropertyValueValues returns an array of possible values for the KindBasicPropertyValue const type.
-func PossibleKindBasicPropertyValueValues() []KindBasicPropertyValue {
-	return []KindBasicPropertyValue{KindBinary, KindDouble, KindGUID, KindInt64, KindPropertyValue, KindString}
-}
-
-// KindBasicProvisionApplicationTypeDescriptionBase enumerates the values for kind basic provision application
-// type description base.
-type KindBasicProvisionApplicationTypeDescriptionBase string
-
-const (
-	// KindExternalStore ...
-	KindExternalStore KindBasicProvisionApplicationTypeDescriptionBase = "ExternalStore"
-	// KindImageStorePath ...
-	KindImageStorePath KindBasicProvisionApplicationTypeDescriptionBase = "ImageStorePath"
-	// KindProvisionApplicationTypeDescriptionBase ...
-	KindProvisionApplicationTypeDescriptionBase KindBasicProvisionApplicationTypeDescriptionBase = "ProvisionApplicationTypeDescriptionBase"
-)
-
-// PossibleKindBasicProvisionApplicationTypeDescriptionBaseValues returns an array of possible values for the KindBasicProvisionApplicationTypeDescriptionBase const type.
-func PossibleKindBasicProvisionApplicationTypeDescriptionBaseValues() []KindBasicProvisionApplicationTypeDescriptionBase {
-	return []KindBasicProvisionApplicationTypeDescriptionBase{KindExternalStore, KindImageStorePath, KindProvisionApplicationTypeDescriptionBase}
-}
-
-// KindBasicRepairImpactDescriptionBase enumerates the values for kind basic repair impact description base.
-type KindBasicRepairImpactDescriptionBase string
-
-const (
-	// KindBasicRepairImpactDescriptionBaseKindNode ...
-	KindBasicRepairImpactDescriptionBaseKindNode KindBasicRepairImpactDescriptionBase = "Node"
-	// KindBasicRepairImpactDescriptionBaseKindRepairImpactDescriptionBase ...
-	KindBasicRepairImpactDescriptionBaseKindRepairImpactDescriptionBase KindBasicRepairImpactDescriptionBase = "RepairImpactDescriptionBase"
-)
-
-// PossibleKindBasicRepairImpactDescriptionBaseValues returns an array of possible values for the KindBasicRepairImpactDescriptionBase const type.
-func PossibleKindBasicRepairImpactDescriptionBaseValues() []KindBasicRepairImpactDescriptionBase {
-	return []KindBasicRepairImpactDescriptionBase{KindBasicRepairImpactDescriptionBaseKindNode, KindBasicRepairImpactDescriptionBaseKindRepairImpactDescriptionBase}
-}
-
-// KindBasicRepairTargetDescriptionBase enumerates the values for kind basic repair target description base.
-type KindBasicRepairTargetDescriptionBase string
-
-const (
-	// KindBasicRepairTargetDescriptionBaseKindNode ...
-	KindBasicRepairTargetDescriptionBaseKindNode KindBasicRepairTargetDescriptionBase = "Node"
-	// KindBasicRepairTargetDescriptionBaseKindRepairTargetDescriptionBase ...
-	KindBasicRepairTargetDescriptionBaseKindRepairTargetDescriptionBase KindBasicRepairTargetDescriptionBase = "RepairTargetDescriptionBase"
-)
-
-// PossibleKindBasicRepairTargetDescriptionBaseValues returns an array of possible values for the KindBasicRepairTargetDescriptionBase const type.
-func PossibleKindBasicRepairTargetDescriptionBaseValues() []KindBasicRepairTargetDescriptionBase {
-	return []KindBasicRepairTargetDescriptionBase{KindBasicRepairTargetDescriptionBaseKindNode, KindBasicRepairTargetDescriptionBaseKindRepairTargetDescriptionBase}
-}
-
-// KindBasicReplicaStatusBase enumerates the values for kind basic replica status base.
-type KindBasicReplicaStatusBase string
-
-const (
-	// KindKeyValueStore ...
-	KindKeyValueStore KindBasicReplicaStatusBase = "KeyValueStore"
-	// KindReplicaStatusBase ...
-	KindReplicaStatusBase KindBasicReplicaStatusBase = "ReplicaStatusBase"
-)
-
-// PossibleKindBasicReplicaStatusBaseValues returns an array of possible values for the KindBasicReplicaStatusBase const type.
-func PossibleKindBasicReplicaStatusBaseValues() []KindBasicReplicaStatusBase {
-	return []KindBasicReplicaStatusBase{KindKeyValueStore, KindReplicaStatusBase}
-}
-
-// KindBasicReplicatorStatus enumerates the values for kind basic replicator status.
-type KindBasicReplicatorStatus string
-
-const (
-	// KindActiveSecondary ...
-	KindActiveSecondary KindBasicReplicatorStatus = "ActiveSecondary"
-	// KindIdleSecondary ...
-	KindIdleSecondary KindBasicReplicatorStatus = "IdleSecondary"
-	// KindPrimary ...
-	KindPrimary KindBasicReplicatorStatus = "Primary"
-	// KindReplicatorStatus ...
-	KindReplicatorStatus KindBasicReplicatorStatus = "ReplicatorStatus"
-	// KindSecondaryReplicatorStatus ...
-	KindSecondaryReplicatorStatus KindBasicReplicatorStatus = "SecondaryReplicatorStatus"
-)
-
-// PossibleKindBasicReplicatorStatusValues returns an array of possible values for the KindBasicReplicatorStatus const type.
-func PossibleKindBasicReplicatorStatusValues() []KindBasicReplicatorStatus {
-	return []KindBasicReplicatorStatus{KindActiveSecondary, KindIdleSecondary, KindPrimary, KindReplicatorStatus, KindSecondaryReplicatorStatus}
-}
-
-// KindBasicSafetyCheck enumerates the values for kind basic safety check.
-type KindBasicSafetyCheck string
-
-const (
-	// KindEnsureAvailability ...
-	KindEnsureAvailability KindBasicSafetyCheck = "EnsureAvailability"
-	// KindEnsurePartitionQuorum ...
-	KindEnsurePartitionQuorum KindBasicSafetyCheck = "EnsurePartitionQuorum"
-	// KindEnsureSeedNodeQuorum ...
-	KindEnsureSeedNodeQuorum KindBasicSafetyCheck = "EnsureSeedNodeQuorum"
-	// KindPartitionSafetyCheck ...
-	KindPartitionSafetyCheck KindBasicSafetyCheck = "PartitionSafetyCheck"
-	// KindSafetyCheck ...
-	KindSafetyCheck KindBasicSafetyCheck = "SafetyCheck"
-	// KindWaitForInbuildReplica ...
-	KindWaitForInbuildReplica KindBasicSafetyCheck = "WaitForInbuildReplica"
-	// KindWaitForPrimaryPlacement ...
-	KindWaitForPrimaryPlacement KindBasicSafetyCheck = "WaitForPrimaryPlacement"
-	// KindWaitForPrimarySwap ...
-	KindWaitForPrimarySwap KindBasicSafetyCheck = "WaitForPrimarySwap"
-	// KindWaitForReconfiguration ...
-	KindWaitForReconfiguration KindBasicSafetyCheck = "WaitForReconfiguration"
-)
-
-// PossibleKindBasicSafetyCheckValues returns an array of possible values for the KindBasicSafetyCheck const type.
-func PossibleKindBasicSafetyCheckValues() []KindBasicSafetyCheck {
-	return []KindBasicSafetyCheck{KindEnsureAvailability, KindEnsurePartitionQuorum, KindEnsureSeedNodeQuorum, KindPartitionSafetyCheck, KindSafetyCheck, KindWaitForInbuildReplica, KindWaitForPrimaryPlacement, KindWaitForPrimarySwap, KindWaitForReconfiguration}
-}
-
-// KindBasicScalingMechanismDescription enumerates the values for kind basic scaling mechanism description.
-type KindBasicScalingMechanismDescription string
-
-const (
-	// KindAddRemoveIncrementalNamedPartition ...
-	KindAddRemoveIncrementalNamedPartition KindBasicScalingMechanismDescription = "AddRemoveIncrementalNamedPartition"
-	// KindPartitionInstanceCount ...
-	KindPartitionInstanceCount KindBasicScalingMechanismDescription = "PartitionInstanceCount"
-	// KindScalingMechanismDescription ...
-	KindScalingMechanismDescription KindBasicScalingMechanismDescription = "ScalingMechanismDescription"
-)
-
-// PossibleKindBasicScalingMechanismDescriptionValues returns an array of possible values for the KindBasicScalingMechanismDescription const type.
-func PossibleKindBasicScalingMechanismDescriptionValues() []KindBasicScalingMechanismDescription {
-	return []KindBasicScalingMechanismDescription{KindAddRemoveIncrementalNamedPartition, KindPartitionInstanceCount, KindScalingMechanismDescription}
-}
-
-// KindBasicScalingTriggerDescription enumerates the values for kind basic scaling trigger description.
-type KindBasicScalingTriggerDescription string
-
-const (
-	// KindAveragePartitionLoad ...
-	KindAveragePartitionLoad KindBasicScalingTriggerDescription = "AveragePartitionLoad"
-	// KindAverageServiceLoad ...
-	KindAverageServiceLoad KindBasicScalingTriggerDescription = "AverageServiceLoad"
-	// KindScalingTriggerDescription ...
-	KindScalingTriggerDescription KindBasicScalingTriggerDescription = "ScalingTriggerDescription"
-)
-
-// PossibleKindBasicScalingTriggerDescriptionValues returns an array of possible values for the KindBasicScalingTriggerDescription const type.
-func PossibleKindBasicScalingTriggerDescriptionValues() []KindBasicScalingTriggerDescription {
-	return []KindBasicScalingTriggerDescription{KindAveragePartitionLoad, KindAverageServiceLoad, KindScalingTriggerDescription}
-}
-
-// KindBasicServiceTypeDescription enumerates the values for kind basic service type description.
-type KindBasicServiceTypeDescription string
-
-const (
-	// KindServiceTypeDescription ...
-	KindServiceTypeDescription KindBasicServiceTypeDescription = "ServiceTypeDescription"
-	// KindStateful ...
-	KindStateful KindBasicServiceTypeDescription = "Stateful"
-	// KindStateless ...
-	KindStateless KindBasicServiceTypeDescription = "Stateless"
-)
-
-// PossibleKindBasicServiceTypeDescriptionValues returns an array of possible values for the KindBasicServiceTypeDescription const type.
-func PossibleKindBasicServiceTypeDescriptionValues() []KindBasicServiceTypeDescription {
-	return []KindBasicServiceTypeDescription{KindServiceTypeDescription, KindStateful, KindStateless}
-}
-
-// MoveCost enumerates the values for move cost.
-type MoveCost string
-
-const (
-	// High Specifies the move cost of the service as High. The value is 3.
-	High MoveCost = "High"
-	// Low Specifies the move cost of the service as Low. The value is 1.
-	Low MoveCost = "Low"
-	// Medium Specifies the move cost of the service as Medium. The value is 2.
-	Medium MoveCost = "Medium"
-	// Zero Zero move cost. This value is zero.
-	Zero MoveCost = "Zero"
-)
-
-// PossibleMoveCostValues returns an array of possible values for the MoveCost const type.
-func PossibleMoveCostValues() []MoveCost {
-	return []MoveCost{High, Low, Medium, Zero}
-}
-
-// NodeDeactivationIntent enumerates the values for node deactivation intent.
-type NodeDeactivationIntent string
-
-const (
-	// NodeDeactivationIntentInvalid Indicates the node deactivation intent is invalid. All Service Fabric
-	// enumerations have the invalid type. The value is zero. This value is not used.
-	NodeDeactivationIntentInvalid NodeDeactivationIntent = "Invalid"
-	// NodeDeactivationIntentPause Indicates that the node should be paused. The value is 1.
-	NodeDeactivationIntentPause NodeDeactivationIntent = "Pause"
-	// NodeDeactivationIntentRemoveData Indicates that the intent is to reimage the node. Service Fabric does
-	// not reimage the node, this action is done outside of Service Fabric. The value is 3.
-	NodeDeactivationIntentRemoveData NodeDeactivationIntent = "RemoveData"
-	// NodeDeactivationIntentRemoveNode Indicates that the node is being decommissioned and is not expected to
-	// return. Service Fabric does not decommission the node, this action is done outside of Service Fabric.
-	// The value is 4.
-	NodeDeactivationIntentRemoveNode NodeDeactivationIntent = "RemoveNode"
-	// NodeDeactivationIntentRestart Indicates that the intent is for the node to be restarted after a short
-	// period of time. Service Fabric does not restart the node, this action is done outside of Service Fabric.
-	// The value is 2.
-	NodeDeactivationIntentRestart NodeDeactivationIntent = "Restart"
-)
-
-// PossibleNodeDeactivationIntentValues returns an array of possible values for the NodeDeactivationIntent const type.
-func PossibleNodeDeactivationIntentValues() []NodeDeactivationIntent {
-	return []NodeDeactivationIntent{NodeDeactivationIntentInvalid, NodeDeactivationIntentPause, NodeDeactivationIntentRemoveData, NodeDeactivationIntentRemoveNode, NodeDeactivationIntentRestart}
-}
-
-// NodeDeactivationStatus enumerates the values for node deactivation status.
-type NodeDeactivationStatus string
-
-const (
-	// NodeDeactivationStatusCompleted The task is completed. The value is 3.
-	NodeDeactivationStatusCompleted NodeDeactivationStatus = "Completed"
-	// NodeDeactivationStatusNone No status is associated with the task. The value is zero.
-	NodeDeactivationStatusNone NodeDeactivationStatus = "None"
-	// NodeDeactivationStatusSafetyCheckComplete When a node is deactivated Service Fabric performs checks to
-	// ensure that the operation is safe to proceed to ensure availability of the service and reliability of
-	// the state. This value indicates that all safety checks have been completed. The value is 2.
-	NodeDeactivationStatusSafetyCheckComplete NodeDeactivationStatus = "SafetyCheckComplete"
-	// NodeDeactivationStatusSafetyCheckInProgress When a node is deactivated Service Fabric performs checks to
-	// ensure that the operation is safe to proceed to ensure availability of the service and reliability of
-	// the state. This value indicates that one or more safety checks are in progress. The value is 1.
-	NodeDeactivationStatusSafetyCheckInProgress NodeDeactivationStatus = "SafetyCheckInProgress"
-)
-
-// PossibleNodeDeactivationStatusValues returns an array of possible values for the NodeDeactivationStatus const type.
-func PossibleNodeDeactivationStatusValues() []NodeDeactivationStatus {
-	return []NodeDeactivationStatus{NodeDeactivationStatusCompleted, NodeDeactivationStatusNone, NodeDeactivationStatusSafetyCheckComplete, NodeDeactivationStatusSafetyCheckInProgress}
-}
-
-// NodeDeactivationTaskType enumerates the values for node deactivation task type.
-type NodeDeactivationTaskType string
-
-const (
-	// NodeDeactivationTaskTypeClient Specifies that the task was created by using the public API. The value is
-	// 3.
-	NodeDeactivationTaskTypeClient NodeDeactivationTaskType = "Client"
-	// NodeDeactivationTaskTypeInfrastructure Specifies the task created by Infrastructure hosting the nodes.
-	// The value is 1.
-	NodeDeactivationTaskTypeInfrastructure NodeDeactivationTaskType = "Infrastructure"
-	// NodeDeactivationTaskTypeInvalid Indicates the node deactivation task type is invalid. All Service Fabric
-	// enumerations have the invalid type. The value is zero. This value is not used.
-	NodeDeactivationTaskTypeInvalid NodeDeactivationTaskType = "Invalid"
-	// NodeDeactivationTaskTypeRepair Specifies the task that was created by the Repair Manager service. The
-	// value is 2.
-	NodeDeactivationTaskTypeRepair NodeDeactivationTaskType = "Repair"
-)
-
-// PossibleNodeDeactivationTaskTypeValues returns an array of possible values for the NodeDeactivationTaskType const type.
-func PossibleNodeDeactivationTaskTypeValues() []NodeDeactivationTaskType {
-	return []NodeDeactivationTaskType{NodeDeactivationTaskTypeClient, NodeDeactivationTaskTypeInfrastructure, NodeDeactivationTaskTypeInvalid, NodeDeactivationTaskTypeRepair}
-}
-
-// NodeStatus enumerates the values for node status.
-type NodeStatus string
-
-const (
-	// NodeStatusDisabled Indicates the node is disabled. The value is 5.
-	NodeStatusDisabled NodeStatus = "Disabled"
-	// NodeStatusDisabling Indicates the node is in the process of being disabled. The value is 4.
-	NodeStatusDisabling NodeStatus = "Disabling"
-	// NodeStatusDown Indicates the node is down. The value is 2.
-	NodeStatusDown NodeStatus = "Down"
-	// NodeStatusEnabling Indicates the node is in process of being enabled. The value is 3.
-	NodeStatusEnabling NodeStatus = "Enabling"
-	// NodeStatusInvalid Indicates the node status is invalid. All Service Fabric enumerations have the invalid
-	// type. The value is zero.
-	NodeStatusInvalid NodeStatus = "Invalid"
-	// NodeStatusRemoved Indicates the node is removed. A node would be in Removed state if NodeStateRemoved
-	// API has been called for this node. In other words, Service Fabric has been informed that the persisted
-	// state on the node has been permanently lost. The value is 7.
-	NodeStatusRemoved NodeStatus = "Removed"
-	// NodeStatusUnknown Indicates the node is unknown. A node would be in Unknown state if Service Fabric does
-	// not have authoritative information about that node. This can happen if the system learns about a node at
-	// runtime.The value is 6.
-	NodeStatusUnknown NodeStatus = "Unknown"
-	// NodeStatusUp Indicates the node is up. The value is 1.
-	NodeStatusUp NodeStatus = "Up"
-)
-
-// PossibleNodeStatusValues returns an array of possible values for the NodeStatus const type.
-func PossibleNodeStatusValues() []NodeStatus {
-	return []NodeStatus{NodeStatusDisabled, NodeStatusDisabling, NodeStatusDown, NodeStatusEnabling, NodeStatusInvalid, NodeStatusRemoved, NodeStatusUnknown, NodeStatusUp}
-}
-
-// NodeStatusFilter enumerates the values for node status filter.
-type NodeStatusFilter string
-
-const (
-	// All This filter value will match all of the nodes.
-	All NodeStatusFilter = "all"
-	// Default This filter value will match all of the nodes excepts the ones with status as Unknown or
-	// Removed.
-	Default NodeStatusFilter = "default"
-	// Disabled This filter value will match nodes that are Disabled.
-	Disabled NodeStatusFilter = "disabled"
-	// Disabling This filter value will match nodes that are in the process of being disabled with status as
-	// Disabling.
-	Disabling NodeStatusFilter = "disabling"
-	// Down This filter value will match nodes that are Down.
-	Down NodeStatusFilter = "down"
-	// Enabling This filter value will match nodes that are in the process of being enabled with status as
-	// Enabling.
-	Enabling NodeStatusFilter = "enabling"
-	// Removed This filter value will match nodes whose status is Removed. These are the nodes that are removed
-	// from the cluster using the RemoveNodeState API.
-	Removed NodeStatusFilter = "removed"
-	// Unknown This filter value will match nodes whose status is Unknown. A node would be in Unknown state if
-	// Service Fabric does not have authoritative information about that node. This can happen if the system
-	// learns about a node at runtime.
-	Unknown NodeStatusFilter = "unknown"
-	// Up This filter value will match nodes that are Up.
-	Up NodeStatusFilter = "up"
-)
-
-// PossibleNodeStatusFilterValues returns an array of possible values for the NodeStatusFilter const type.
-func PossibleNodeStatusFilterValues() []NodeStatusFilter {
-	return []NodeStatusFilter{All, Default, Disabled, Disabling, Down, Enabling, Removed, Unknown, Up}
-}
-
-// NodeTransitionType enumerates the values for node transition type.
-type NodeTransitionType string
-
-const (
-	// NodeTransitionTypeInvalid Reserved.  Do not pass into API.
-	NodeTransitionTypeInvalid NodeTransitionType = "Invalid"
-	// NodeTransitionTypeStart Transition a stopped node to up.
-	NodeTransitionTypeStart NodeTransitionType = "Start"
-	// NodeTransitionTypeStop Transition an up node to stopped.
-	NodeTransitionTypeStop NodeTransitionType = "Stop"
-)
-
-// PossibleNodeTransitionTypeValues returns an array of possible values for the NodeTransitionType const type.
-func PossibleNodeTransitionTypeValues() []NodeTransitionType {
-	return []NodeTransitionType{NodeTransitionTypeInvalid, NodeTransitionTypeStart, NodeTransitionTypeStop}
-}
-
-// NodeUpgradePhase enumerates the values for node upgrade phase.
-type NodeUpgradePhase string
-
-const (
-	// NodeUpgradePhaseInvalid Indicates the upgrade state is invalid. All Service Fabric enumerations have the
-	// invalid type. The value is zero.
-	NodeUpgradePhaseInvalid NodeUpgradePhase = "Invalid"
-	// NodeUpgradePhasePostUpgradeSafetyCheck The upgrade has completed and post upgrade safety checks are
-	// being performed. The value is 3
-	NodeUpgradePhasePostUpgradeSafetyCheck NodeUpgradePhase = "PostUpgradeSafetyCheck"
-	// NodeUpgradePhasePreUpgradeSafetyCheck The upgrade has not started yet due to pending safety checks. The
-	// value is 1
-	NodeUpgradePhasePreUpgradeSafetyCheck NodeUpgradePhase = "PreUpgradeSafetyCheck"
-	// NodeUpgradePhaseUpgrading The upgrade is in progress. The value is 2
-	NodeUpgradePhaseUpgrading NodeUpgradePhase = "Upgrading"
-)
-
-// PossibleNodeUpgradePhaseValues returns an array of possible values for the NodeUpgradePhase const type.
-func PossibleNodeUpgradePhaseValues() []NodeUpgradePhase {
-	return []NodeUpgradePhase{NodeUpgradePhaseInvalid, NodeUpgradePhasePostUpgradeSafetyCheck, NodeUpgradePhasePreUpgradeSafetyCheck, NodeUpgradePhaseUpgrading}
-}
-
-// OperationState enumerates the values for operation state.
-type OperationState string
-
-const (
-	// OperationStateCancelled The operation was cancelled by the user using CancelOperation, and is no longer
-	// running.
-	OperationStateCancelled OperationState = "Cancelled"
-	// OperationStateCompleted The operation has completed successfully and is no longer running.
-	OperationStateCompleted OperationState = "Completed"
-	// OperationStateFaulted The operation has failed and is no longer running.
-	OperationStateFaulted OperationState = "Faulted"
-	// OperationStateForceCancelled The operation was cancelled by the user using CancelOperation, with the
-	// force parameter set to true.  It is no longer running.  Refer to CancelOperation for more details.
-	OperationStateForceCancelled OperationState = "ForceCancelled"
-	// OperationStateInvalid The operation state is invalid.
-	OperationStateInvalid OperationState = "Invalid"
-	// OperationStateRollingBack The operation is rolling back internal system state because it encountered a
-	// fatal error or was cancelled by the user.  "RollingBack"     does not refer to user state.  For example,
-	// if CancelOperation is called on a command of type PartitionDataLoss, state of "RollingBack" does not
-	// mean service data is being restored (assuming the command has progressed far enough to cause data loss).
-	// It means the system is rolling back/cleaning up internal system state associated with the command.
-	OperationStateRollingBack OperationState = "RollingBack"
-	// OperationStateRunning The operation is in progress.
-	OperationStateRunning OperationState = "Running"
-)
-
-// PossibleOperationStateValues returns an array of possible values for the OperationState const type.
-func PossibleOperationStateValues() []OperationState {
-	return []OperationState{OperationStateCancelled, OperationStateCompleted, OperationStateFaulted, OperationStateForceCancelled, OperationStateInvalid, OperationStateRollingBack, OperationStateRunning}
-}
-
-// OperationType enumerates the values for operation type.
-type OperationType string
-
-const (
-	// OperationTypeInvalid The operation state is invalid.
-	OperationTypeInvalid OperationType = "Invalid"
-	// OperationTypeNodeTransition An operation started using the StartNodeTransition API.
-	OperationTypeNodeTransition OperationType = "NodeTransition"
-	// OperationTypePartitionDataLoss An operation started using the StartDataLoss API.
-	OperationTypePartitionDataLoss OperationType = "PartitionDataLoss"
-	// OperationTypePartitionQuorumLoss An operation started using the StartQuorumLoss API.
-	OperationTypePartitionQuorumLoss OperationType = "PartitionQuorumLoss"
-	// OperationTypePartitionRestart An operation started using the StartPartitionRestart API.
-	OperationTypePartitionRestart OperationType = "PartitionRestart"
-)
-
-// PossibleOperationTypeValues returns an array of possible values for the OperationType const type.
-func PossibleOperationTypeValues() []OperationType {
-	return []OperationType{OperationTypeInvalid, OperationTypeNodeTransition, OperationTypePartitionDataLoss, OperationTypePartitionQuorumLoss, OperationTypePartitionRestart}
-}
-
-// PackageSharingPolicyScope enumerates the values for package sharing policy scope.
-type PackageSharingPolicyScope string
-
-const (
-	// PackageSharingPolicyScopeAll Share all code, config and data packages from corresponding service
-	// manifest. The value is 1.
-	PackageSharingPolicyScopeAll PackageSharingPolicyScope = "All"
-	// PackageSharingPolicyScopeCode Share all code packages from corresponding service manifest. The value is
-	// 2.
-	PackageSharingPolicyScopeCode PackageSharingPolicyScope = "Code"
-	// PackageSharingPolicyScopeConfig Share all config packages from corresponding service manifest. The value
-	// is 3.
-	PackageSharingPolicyScopeConfig PackageSharingPolicyScope = "Config"
-	// PackageSharingPolicyScopeData Share all data packages from corresponding service manifest. The value is
-	// 4.
-	PackageSharingPolicyScopeData PackageSharingPolicyScope = "Data"
-	// PackageSharingPolicyScopeNone No package sharing policy scope. The value is 0.
-	PackageSharingPolicyScopeNone PackageSharingPolicyScope = "None"
-)
-
-// PossiblePackageSharingPolicyScopeValues returns an array of possible values for the PackageSharingPolicyScope const type.
-func PossiblePackageSharingPolicyScopeValues() []PackageSharingPolicyScope {
-	return []PackageSharingPolicyScope{PackageSharingPolicyScopeAll, PackageSharingPolicyScopeCode, PackageSharingPolicyScopeConfig, PackageSharingPolicyScopeData, PackageSharingPolicyScopeNone}
-}
-
-// PartitionAccessStatus enumerates the values for partition access status.
-type PartitionAccessStatus string
-
-const (
-	// PartitionAccessStatusGranted Indicates that the read or write operation access is granted and the
-	// operation is allowed.
-	PartitionAccessStatusGranted PartitionAccessStatus = "Granted"
-	// PartitionAccessStatusInvalid Indicates that the read or write operation access status is not valid. This
-	// value is not returned to the caller.
-	PartitionAccessStatusInvalid PartitionAccessStatus = "Invalid"
-	// PartitionAccessStatusNotPrimary Indicates that this client request was received by a replica that is not
-	// a Primary replica.
-	PartitionAccessStatusNotPrimary PartitionAccessStatus = "NotPrimary"
-	// PartitionAccessStatusNoWriteQuorum Indicates that no write quorum is available and, therefore, no write
-	// operation can be accepted.
-	PartitionAccessStatusNoWriteQuorum PartitionAccessStatus = "NoWriteQuorum"
-	// PartitionAccessStatusReconfigurationPending Indicates that the client should try again later, because a
-	// reconfiguration is in progress.
-	PartitionAccessStatusReconfigurationPending PartitionAccessStatus = "ReconfigurationPending"
-)
-
-// PossiblePartitionAccessStatusValues returns an array of possible values for the PartitionAccessStatus const type.
-func PossiblePartitionAccessStatusValues() []PartitionAccessStatus {
-	return []PartitionAccessStatus{PartitionAccessStatusGranted, PartitionAccessStatusInvalid, PartitionAccessStatusNotPrimary, PartitionAccessStatusNoWriteQuorum, PartitionAccessStatusReconfigurationPending}
-}
-
-// PartitionScheme enumerates the values for partition scheme.
-type PartitionScheme string
-
-const (
-	// PartitionSchemeInvalid Indicates the partition kind is invalid. All Service Fabric enumerations have the
-	// invalid type. The value is zero.
-	PartitionSchemeInvalid PartitionScheme = "Invalid"
-	// PartitionSchemeNamed Indicates that the partition is based on string names, and is a
-	// NamedPartitionSchemeDescription object. The value is 3
-	PartitionSchemeNamed PartitionScheme = "Named"
-	// PartitionSchemeSingleton Indicates that the partition is based on string names, and is a
-	// SingletonPartitionSchemeDescription object, The value is 1.
-	PartitionSchemeSingleton PartitionScheme = "Singleton"
-	// PartitionSchemeUniformInt64Range Indicates that the partition is based on Int64 key ranges, and is a
-	// UniformInt64RangePartitionSchemeDescription object. The value is 2.
-	PartitionSchemeUniformInt64Range PartitionScheme = "UniformInt64Range"
-)
-
-// PossiblePartitionSchemeValues returns an array of possible values for the PartitionScheme const type.
-func PossiblePartitionSchemeValues() []PartitionScheme {
-	return []PartitionScheme{PartitionSchemeInvalid, PartitionSchemeNamed, PartitionSchemeSingleton, PartitionSchemeUniformInt64Range}
-}
-
-// PartitionSchemeBasicPartitionSchemeDescription enumerates the values for partition scheme basic partition
-// scheme description.
-type PartitionSchemeBasicPartitionSchemeDescription string
-
-const (
-	// PartitionSchemeNamed1 ...
-	PartitionSchemeNamed1 PartitionSchemeBasicPartitionSchemeDescription = "Named"
-	// PartitionSchemePartitionSchemeDescription ...
-	PartitionSchemePartitionSchemeDescription PartitionSchemeBasicPartitionSchemeDescription = "PartitionSchemeDescription"
-	// PartitionSchemeSingleton1 ...
-	PartitionSchemeSingleton1 PartitionSchemeBasicPartitionSchemeDescription = "Singleton"
-	// PartitionSchemeUniformInt64Range1 ...
-	PartitionSchemeUniformInt64Range1 PartitionSchemeBasicPartitionSchemeDescription = "UniformInt64Range"
-)
-
-// PossiblePartitionSchemeBasicPartitionSchemeDescriptionValues returns an array of possible values for the PartitionSchemeBasicPartitionSchemeDescription const type.
-func PossiblePartitionSchemeBasicPartitionSchemeDescriptionValues() []PartitionSchemeBasicPartitionSchemeDescription {
-	return []PartitionSchemeBasicPartitionSchemeDescription{PartitionSchemeNamed1, PartitionSchemePartitionSchemeDescription, PartitionSchemeSingleton1, PartitionSchemeUniformInt64Range1}
-}
-
-// PropertyBatchInfoKind enumerates the values for property batch info kind.
-type PropertyBatchInfoKind string
-
-const (
-	// PropertyBatchInfoKindFailed The property batch failed.
-	PropertyBatchInfoKindFailed PropertyBatchInfoKind = "Failed"
-	// PropertyBatchInfoKindInvalid Indicates the property batch info is invalid. All Service Fabric
-	// enumerations have the invalid type.
-	PropertyBatchInfoKindInvalid PropertyBatchInfoKind = "Invalid"
-	// PropertyBatchInfoKindSuccessful The property batch succeeded.
-	PropertyBatchInfoKindSuccessful PropertyBatchInfoKind = "Successful"
-)
-
-// PossiblePropertyBatchInfoKindValues returns an array of possible values for the PropertyBatchInfoKind const type.
-func PossiblePropertyBatchInfoKindValues() []PropertyBatchInfoKind {
-	return []PropertyBatchInfoKind{PropertyBatchInfoKindFailed, PropertyBatchInfoKindInvalid, PropertyBatchInfoKindSuccessful}
-}
-
-// PropertyBatchOperationKind enumerates the values for property batch operation kind.
-type PropertyBatchOperationKind string
-
-const (
-	// PropertyBatchOperationKindCheckExists The operation will check that a property exists or doesn't exists,
-	// depending on the provided value. The value is 3.
-	PropertyBatchOperationKindCheckExists PropertyBatchOperationKind = "CheckExists"
-	// PropertyBatchOperationKindCheckSequence The operation will ensure that the sequence number is equal to
-	// the provided value. The value is 4.
-	PropertyBatchOperationKindCheckSequence PropertyBatchOperationKind = "CheckSequence"
-	// PropertyBatchOperationKindCheckValue The operation will ensure that the value of a property is equal to
-	// the provided value. The value is 7.
-	PropertyBatchOperationKindCheckValue PropertyBatchOperationKind = "CheckValue"
-	// PropertyBatchOperationKindDelete The operation will delete a property. The value is 5.
-	PropertyBatchOperationKindDelete PropertyBatchOperationKind = "Delete"
-	// PropertyBatchOperationKindGet The operation will get a property. The value is 2.
-	PropertyBatchOperationKindGet PropertyBatchOperationKind = "Get"
-	// PropertyBatchOperationKindInvalid Indicates the property operation is invalid. All Service Fabric
-	// enumerations have the invalid type. The value is zero.
-	PropertyBatchOperationKindInvalid PropertyBatchOperationKind = "Invalid"
-	// PropertyBatchOperationKindPut The operation will create or edit a property. The value is 1.
-	PropertyBatchOperationKindPut PropertyBatchOperationKind = "Put"
-)
-
-// PossiblePropertyBatchOperationKindValues returns an array of possible values for the PropertyBatchOperationKind const type.
-func PossiblePropertyBatchOperationKindValues() []PropertyBatchOperationKind {
-	return []PropertyBatchOperationKind{PropertyBatchOperationKindCheckExists, PropertyBatchOperationKindCheckSequence, PropertyBatchOperationKindCheckValue, PropertyBatchOperationKindDelete, PropertyBatchOperationKindGet, PropertyBatchOperationKindInvalid, PropertyBatchOperationKindPut}
-}
-
-// PropertyValueKind enumerates the values for property value kind.
-type PropertyValueKind string
-
-const (
-	// PropertyValueKindBinary The data inside the property is a binary blob. The value is 1.
-	PropertyValueKindBinary PropertyValueKind = "Binary"
-	// PropertyValueKindDouble The data inside the property is a double. The value is 3.
-	PropertyValueKindDouble PropertyValueKind = "Double"
-	// PropertyValueKindGUID The data inside the property is a guid. The value is 5.
-	PropertyValueKindGUID PropertyValueKind = "Guid"
-	// PropertyValueKindInt64 The data inside the property is an int64. The value is 2.
-	PropertyValueKindInt64 PropertyValueKind = "Int64"
-	// PropertyValueKindInvalid Indicates the property is invalid. All Service Fabric enumerations have the
-	// invalid type. The value is zero.
-	PropertyValueKindInvalid PropertyValueKind = "Invalid"
-	// PropertyValueKindString The data inside the property is a string. The value is 4.
-	PropertyValueKindString PropertyValueKind = "String"
-)
-
-// PossiblePropertyValueKindValues returns an array of possible values for the PropertyValueKind const type.
-func PossiblePropertyValueKindValues() []PropertyValueKind {
-	return []PropertyValueKind{PropertyValueKindBinary, PropertyValueKindDouble, PropertyValueKindGUID, PropertyValueKindInt64, PropertyValueKindInvalid, PropertyValueKindString}
-}
-
-// ProvisionApplicationTypeKind enumerates the values for provision application type kind.
-type ProvisionApplicationTypeKind string
-
-const (
-	// ProvisionApplicationTypeKindExternalStore Indicates that the provision is for an application package
-	// that was previously uploaded to an external store. The application package ends with the extension
-	// *.sfpkg. The value is 2.
-	ProvisionApplicationTypeKindExternalStore ProvisionApplicationTypeKind = "ExternalStore"
-	// ProvisionApplicationTypeKindImageStorePath Indicates that the provision is for a package that was
-	// previously uploaded to the image store. The value is 1.
-	ProvisionApplicationTypeKindImageStorePath ProvisionApplicationTypeKind = "ImageStorePath"
-	// ProvisionApplicationTypeKindInvalid Indicates that the provision kind is invalid. This value is default
-	// and should not be used. The value is zero.
-	ProvisionApplicationTypeKindInvalid ProvisionApplicationTypeKind = "Invalid"
-)
-
-// PossibleProvisionApplicationTypeKindValues returns an array of possible values for the ProvisionApplicationTypeKind const type.
-func PossibleProvisionApplicationTypeKindValues() []ProvisionApplicationTypeKind {
-	return []ProvisionApplicationTypeKind{ProvisionApplicationTypeKindExternalStore, ProvisionApplicationTypeKindImageStorePath, ProvisionApplicationTypeKindInvalid}
-}
-
-// QuorumLossMode enumerates the values for quorum loss mode.
-type QuorumLossMode string
-
-const (
-	// QuorumLossModeAllReplicas ...
-	QuorumLossModeAllReplicas QuorumLossMode = "AllReplicas"
-	// QuorumLossModeInvalid Reserved.  Do not pass into API.
-	QuorumLossModeInvalid QuorumLossMode = "Invalid"
-	// QuorumLossModeQuorumReplicas Partial Quorum loss mode : Minimum number of replicas for a partition will
-	// be down that will cause a quorum loss.
-	QuorumLossModeQuorumReplicas QuorumLossMode = "QuorumReplicas"
-)
-
-// PossibleQuorumLossModeValues returns an array of possible values for the QuorumLossMode const type.
-func PossibleQuorumLossModeValues() []QuorumLossMode {
-	return []QuorumLossMode{QuorumLossModeAllReplicas, QuorumLossModeInvalid, QuorumLossModeQuorumReplicas}
-}
-
-// ReconfigurationPhase enumerates the values for reconfiguration phase.
-type ReconfigurationPhase string
-
-const (
-	// ReconfigurationPhaseAbortPhaseZero This phase is for internal use only.
-	ReconfigurationPhaseAbortPhaseZero ReconfigurationPhase = "AbortPhaseZero"
-	// ReconfigurationPhaseNone Specifies that there is no reconfiguration in progress.
-	ReconfigurationPhaseNone ReconfigurationPhase = "None"
-	// ReconfigurationPhasePhase0 Refers to the phase where the reconfiguration is transferring data from the
-	// previous primary to the new primary.
-	ReconfigurationPhasePhase0 ReconfigurationPhase = "Phase0"
-	// ReconfigurationPhasePhase1 Refers to the phase where the reconfiguration is querying the replica set for
-	// the progress.
-	ReconfigurationPhasePhase1 ReconfigurationPhase = "Phase1"
-	// ReconfigurationPhasePhase2 Refers to the phase where the reconfiguration is ensuring that data from the
-	// current primary is present in a majority of the replica set.
-	ReconfigurationPhasePhase2 ReconfigurationPhase = "Phase2"
-	// ReconfigurationPhasePhase3 This phase is for internal use only.
-	ReconfigurationPhasePhase3 ReconfigurationPhase = "Phase3"
-	// ReconfigurationPhasePhase4 This phase is for internal use only.
-	ReconfigurationPhasePhase4 ReconfigurationPhase = "Phase4"
-	// ReconfigurationPhaseUnknown Indicates the invalid reconfiguration phase.
-	ReconfigurationPhaseUnknown ReconfigurationPhase = "Unknown"
-)
-
-// PossibleReconfigurationPhaseValues returns an array of possible values for the ReconfigurationPhase const type.
-func PossibleReconfigurationPhaseValues() []ReconfigurationPhase {
-	return []ReconfigurationPhase{ReconfigurationPhaseAbortPhaseZero, ReconfigurationPhaseNone, ReconfigurationPhasePhase0, ReconfigurationPhasePhase1, ReconfigurationPhasePhase2, ReconfigurationPhasePhase3, ReconfigurationPhasePhase4, ReconfigurationPhaseUnknown}
-}
-
-// ReconfigurationType enumerates the values for reconfiguration type.
-type ReconfigurationType string
-
-const (
-	// ReconfigurationTypeFailover Reconfiguration triggered in response to a primary going down. This could be
-	// due to many reasons such as primary replica crashing etc.
-	ReconfigurationTypeFailover ReconfigurationType = "Failover"
-	// ReconfigurationTypeOther Reconfigurations where the primary replica is not changing.
-	ReconfigurationTypeOther ReconfigurationType = "Other"
-	// ReconfigurationTypeSwapPrimary Specifies that the primary replica is being swapped with a different
-	// replica.
-	ReconfigurationTypeSwapPrimary ReconfigurationType = "SwapPrimary"
-	// ReconfigurationTypeUnknown Indicates the invalid reconfiguration type.
-	ReconfigurationTypeUnknown ReconfigurationType = "Unknown"
-)
-
-// PossibleReconfigurationTypeValues returns an array of possible values for the ReconfigurationType const type.
-func PossibleReconfigurationTypeValues() []ReconfigurationType {
-	return []ReconfigurationType{ReconfigurationTypeFailover, ReconfigurationTypeOther, ReconfigurationTypeSwapPrimary, ReconfigurationTypeUnknown}
-}
-
-// RepairImpactKind enumerates the values for repair impact kind.
-type RepairImpactKind string
-
-const (
-	// RepairImpactKindInvalid The repair impact is not valid or is of an unknown type.
-	RepairImpactKindInvalid RepairImpactKind = "Invalid"
-	// RepairImpactKindNode The repair impact affects a set of Service Fabric nodes.
-	RepairImpactKindNode RepairImpactKind = "Node"
-)
-
-// PossibleRepairImpactKindValues returns an array of possible values for the RepairImpactKind const type.
-func PossibleRepairImpactKindValues() []RepairImpactKind {
-	return []RepairImpactKind{RepairImpactKindInvalid, RepairImpactKindNode}
-}
-
-// RepairTargetKind enumerates the values for repair target kind.
-type RepairTargetKind string
-
-const (
-	// RepairTargetKindInvalid The repair target is not valid or is of an unknown type.
-	RepairTargetKindInvalid RepairTargetKind = "Invalid"
-	// RepairTargetKindNode The repair target is a set of Service Fabric nodes.
-	RepairTargetKindNode RepairTargetKind = "Node"
-)
-
-// PossibleRepairTargetKindValues returns an array of possible values for the RepairTargetKind const type.
-func PossibleRepairTargetKindValues() []RepairTargetKind {
-	return []RepairTargetKind{RepairTargetKindInvalid, RepairTargetKindNode}
-}
-
-// RepairTaskHealthCheckState enumerates the values for repair task health check state.
-type RepairTaskHealthCheckState string
-
-const (
-	// InProgress Indicates that the health check is in progress.
-	InProgress RepairTaskHealthCheckState = "InProgress"
-	// NotStarted Indicates that the health check has not started.
-	NotStarted RepairTaskHealthCheckState = "NotStarted"
-	// Skipped Indicates that the health check was skipped.
-	Skipped RepairTaskHealthCheckState = "Skipped"
-	// Succeeded Indicates that the health check succeeded.
-	Succeeded RepairTaskHealthCheckState = "Succeeded"
-	// TimedOut Indicates that the health check timed out.
-	TimedOut RepairTaskHealthCheckState = "TimedOut"
-)
-
-// PossibleRepairTaskHealthCheckStateValues returns an array of possible values for the RepairTaskHealthCheckState const type.
-func PossibleRepairTaskHealthCheckStateValues() []RepairTaskHealthCheckState {
-	return []RepairTaskHealthCheckState{InProgress, NotStarted, Skipped, Succeeded, TimedOut}
-}
-
-// ReplicaHealthReportServiceKind enumerates the values for replica health report service kind.
-type ReplicaHealthReportServiceKind string
-
-const (
-	// Stateful Uses Service Fabric to make its state or part of its state highly available and reliable. The
-	// value is 2.
-	Stateful ReplicaHealthReportServiceKind = "Stateful"
-	// Stateless Does not use Service Fabric to make its state highly available or reliable. The value is 1
-	Stateless ReplicaHealthReportServiceKind = "Stateless"
-)
-
-// PossibleReplicaHealthReportServiceKindValues returns an array of possible values for the ReplicaHealthReportServiceKind const type.
-func PossibleReplicaHealthReportServiceKindValues() []ReplicaHealthReportServiceKind {
-	return []ReplicaHealthReportServiceKind{Stateful, Stateless}
-}
-
-// ReplicaKind enumerates the values for replica kind.
-type ReplicaKind string
-
-const (
-	// ReplicaKindInvalid Represents an invalid replica kind. The value is zero.
-	ReplicaKindInvalid ReplicaKind = "Invalid"
-	// ReplicaKindKeyValueStore Represents a key value store replica. The value is 1
-	ReplicaKindKeyValueStore ReplicaKind = "KeyValueStore"
-)
-
-// PossibleReplicaKindValues returns an array of possible values for the ReplicaKind const type.
-func PossibleReplicaKindValues() []ReplicaKind {
-	return []ReplicaKind{ReplicaKindInvalid, ReplicaKindKeyValueStore}
-}
-
-// ReplicaRole enumerates the values for replica role.
-type ReplicaRole string
-
-const (
-	// ReplicaRoleActiveSecondary Refers to a replica in the set that receives state updates from the Primary
-	// replica, applies them, and sends acknowledgements back. Secondary replicas must participate in the write
-	// quorum for a replica set. There can be multiple active Secondary replicas in a replica set at a time.
-	// The number of active Secondary replicas is configurable that the reliability subsystem should maintain.
-	// The value is 4.
-	ReplicaRoleActiveSecondary ReplicaRole = "ActiveSecondary"
-	// ReplicaRoleIdleSecondary Refers to a replica in the set that receives a state transfer from the Primary
-	// replica to prepare for becoming an active Secondary replica. There can be multiple Idle Secondary
-	// replicas in a replica set at a time. Idle Secondary replicas do not count as a part of a write quorum.
-	// The value is 3.
-	ReplicaRoleIdleSecondary ReplicaRole = "IdleSecondary"
-	// ReplicaRoleNone Specifies that the replica has no responsibility in regard to the replica set. The value
-	// is 1
-	ReplicaRoleNone ReplicaRole = "None"
-	// ReplicaRolePrimary Refers to the replica in the set on which all read and write operations are complete
-	// in order to enforce strong consistency semantics. Read operations are handled directly by the Primary
-	// replica, while write operations must be acknowledged by a quorum of the replicas in the replica set.
-	// There can only be one Primary replica in a replica set at a time. The value is 2.
-	ReplicaRolePrimary ReplicaRole = "Primary"
-	// ReplicaRoleUnknown Indicates the initial role that a replica is created in. The value is zero.
-	ReplicaRoleUnknown ReplicaRole = "Unknown"
-)
-
-// PossibleReplicaRoleValues returns an array of possible values for the ReplicaRole const type.
-func PossibleReplicaRoleValues() []ReplicaRole {
-	return []ReplicaRole{ReplicaRoleActiveSecondary, ReplicaRoleIdleSecondary, ReplicaRoleNone, ReplicaRolePrimary, ReplicaRoleUnknown}
-}
-
-// ReplicaStatus enumerates the values for replica status.
-type ReplicaStatus string
-
-const (
-	// ReplicaStatusDown The replica is down. The value is 4.
-	ReplicaStatusDown ReplicaStatus = "Down"
-	// ReplicaStatusDropped Replica is dropped. This means that the replica has been removed from the replica
-	// set. If it is persisted, its state has been deleted. The value is 5.
-	ReplicaStatusDropped ReplicaStatus = "Dropped"
-	// ReplicaStatusInBuild The replica is being built. This means that a primary replica is seeding this
-	// replica. The value is 1.
-	ReplicaStatusInBuild ReplicaStatus = "InBuild"
-	// ReplicaStatusInvalid Indicates the replica status is invalid. All Service Fabric enumerations have the
-	// invalid type. The value is zero.
-	ReplicaStatusInvalid ReplicaStatus = "Invalid"
-	// ReplicaStatusReady The replica is ready. The value is 3.
-	ReplicaStatusReady ReplicaStatus = "Ready"
-	// ReplicaStatusStandby The replica is in standby. The value is 2.
-	ReplicaStatusStandby ReplicaStatus = "Standby"
-)
-
-// PossibleReplicaStatusValues returns an array of possible values for the ReplicaStatus const type.
-func PossibleReplicaStatusValues() []ReplicaStatus {
-	return []ReplicaStatus{ReplicaStatusDown, ReplicaStatusDropped, ReplicaStatusInBuild, ReplicaStatusInvalid, ReplicaStatusReady, ReplicaStatusStandby}
-}
-
-// ReplicatorOperationName enumerates the values for replicator operation name.
-type ReplicatorOperationName string
-
-const (
-	// ReplicatorOperationNameAbort Replicator is being aborted.
-	ReplicatorOperationNameAbort ReplicatorOperationName = "Abort"
-	// ReplicatorOperationNameBuild Replicator is in the process of building one or more replicas.
-	ReplicatorOperationNameBuild ReplicatorOperationName = "Build"
-	// ReplicatorOperationNameChangeRole Replicator is in the process of changing its role.
-	ReplicatorOperationNameChangeRole ReplicatorOperationName = "ChangeRole"
-	// ReplicatorOperationNameClose Replicator is closing.
-	ReplicatorOperationNameClose ReplicatorOperationName = "Close"
-	// ReplicatorOperationNameInvalid Default value if the replicator is not yet ready.
-	ReplicatorOperationNameInvalid ReplicatorOperationName = "Invalid"
-	// ReplicatorOperationNameNone Replicator is not running any operation from Service Fabric perspective.
-	ReplicatorOperationNameNone ReplicatorOperationName = "None"
-	// ReplicatorOperationNameOnDataLoss Replicator is handling the data loss condition, where the user service
-	// may potentially be recovering state from an external source.
-	ReplicatorOperationNameOnDataLoss ReplicatorOperationName = "OnDataLoss"
-	// ReplicatorOperationNameOpen Replicator is opening.
-	ReplicatorOperationNameOpen ReplicatorOperationName = "Open"
-	// ReplicatorOperationNameUpdateEpoch Due to a change in the replica set, replicator is being updated with
-	// its Epoch.
-	ReplicatorOperationNameUpdateEpoch ReplicatorOperationName = "UpdateEpoch"
-	// ReplicatorOperationNameWaitForCatchup Replicator is waiting for a quorum of replicas to be caught up to
-	// the latest state.
-	ReplicatorOperationNameWaitForCatchup ReplicatorOperationName = "WaitForCatchup"
-)
-
-// PossibleReplicatorOperationNameValues returns an array of possible values for the ReplicatorOperationName const type.
-func PossibleReplicatorOperationNameValues() []ReplicatorOperationName {
-	return []ReplicatorOperationName{ReplicatorOperationNameAbort, ReplicatorOperationNameBuild, ReplicatorOperationNameChangeRole, ReplicatorOperationNameClose, ReplicatorOperationNameInvalid, ReplicatorOperationNameNone, ReplicatorOperationNameOnDataLoss, ReplicatorOperationNameOpen, ReplicatorOperationNameUpdateEpoch, ReplicatorOperationNameWaitForCatchup}
-}
-
-// RestartPartitionMode enumerates the values for restart partition mode.
-type RestartPartitionMode string
-
-const (
-	// RestartPartitionModeAllReplicasOrInstances All replicas or instances in the partition are restarted at
-	// once.
-	RestartPartitionModeAllReplicasOrInstances RestartPartitionMode = "AllReplicasOrInstances"
-	// RestartPartitionModeInvalid Reserved.  Do not pass into API.
-	RestartPartitionModeInvalid RestartPartitionMode = "Invalid"
-	// RestartPartitionModeOnlyActiveSecondaries Only the secondary replicas are restarted.
-	RestartPartitionModeOnlyActiveSecondaries RestartPartitionMode = "OnlyActiveSecondaries"
-)
-
-// PossibleRestartPartitionModeValues returns an array of possible values for the RestartPartitionMode const type.
-func PossibleRestartPartitionModeValues() []RestartPartitionMode {
-	return []RestartPartitionMode{RestartPartitionModeAllReplicasOrInstances, RestartPartitionModeInvalid, RestartPartitionModeOnlyActiveSecondaries}
-}
-
-// RestoreState enumerates the values for restore state.
-type RestoreState string
-
-const (
-	// RestoreStateAccepted Operation has been validated and accepted. Restore is yet to be triggered.
-	RestoreStateAccepted RestoreState = "Accepted"
-	// RestoreStateFailure Operation completed with failure.
-	RestoreStateFailure RestoreState = "Failure"
-	// RestoreStateInvalid Indicates an invalid restore state. All Service Fabric enumerations have the invalid
-	// type.
-	RestoreStateInvalid RestoreState = "Invalid"
-	// RestoreStateRestoreInProgress Restore operation has been triggered and is under process.
-	RestoreStateRestoreInProgress RestoreState = "RestoreInProgress"
-	// RestoreStateSuccess Operation completed with success.
-	RestoreStateSuccess RestoreState = "Success"
-	// RestoreStateTimeout Operation timed out.
-	RestoreStateTimeout RestoreState = "Timeout"
-)
-
-// PossibleRestoreStateValues returns an array of possible values for the RestoreState const type.
-func PossibleRestoreStateValues() []RestoreState {
-	return []RestoreState{RestoreStateAccepted, RestoreStateFailure, RestoreStateInvalid, RestoreStateRestoreInProgress, RestoreStateSuccess, RestoreStateTimeout}
-}
-
-// ResultStatus enumerates the values for result status.
-type ResultStatus string
-
-const (
-	// ResultStatusCancelled Indicates that the repair task was cancelled prior to execution.
-	ResultStatusCancelled ResultStatus = "Cancelled"
-	// ResultStatusFailed Indicates that there was a failure during execution of the repair task. Some work may
-	// have been performed.
-	ResultStatusFailed ResultStatus = "Failed"
-	// ResultStatusInterrupted Indicates that execution of the repair task was interrupted by a cancellation
-	// request after some work had already been performed.
-	ResultStatusInterrupted ResultStatus = "Interrupted"
-	// ResultStatusInvalid Indicates that the repair task result is invalid. All Service Fabric enumerations
-	// have the invalid value.
-	ResultStatusInvalid ResultStatus = "Invalid"
-	// ResultStatusPending Indicates that the repair task result is not yet available, because the repair task
-	// has not finished executing.
-	ResultStatusPending ResultStatus = "Pending"
-	// ResultStatusSucceeded Indicates that the repair task completed execution successfully.
-	ResultStatusSucceeded ResultStatus = "Succeeded"
-)
-
-// PossibleResultStatusValues returns an array of possible values for the ResultStatus const type.
-func PossibleResultStatusValues() []ResultStatus {
-	return []ResultStatus{ResultStatusCancelled, ResultStatusFailed, ResultStatusInterrupted, ResultStatusInvalid, ResultStatusPending, ResultStatusSucceeded}
-}
-
-// SafetyCheckKind enumerates the values for safety check kind.
-type SafetyCheckKind string
-
-const (
-	// SafetyCheckKindEnsureAvailability Indicates that there is either a stateless service partition on the
-	// node having exactly one instance, or there is a primary replica on the node for which the partition is
-	// quorum loss. In both cases, bringing down the replicas due to upgrade will result in loss of
-	// availability. The value is 7.
-	SafetyCheckKindEnsureAvailability SafetyCheckKind = "EnsureAvailability"
-	// SafetyCheckKindEnsurePartitionQuorum Indicates that there is some partition for which if we bring down
-	// the replica on the node, it will result in quorum loss for that partition. The value is 2.
-	SafetyCheckKindEnsurePartitionQuorum SafetyCheckKind = "EnsurePartitionQuorum"
-	// SafetyCheckKindEnsureSeedNodeQuorum Indicates that if we bring down the node then this will result in
-	// global seed node quorum loss. The value is 1.
-	SafetyCheckKindEnsureSeedNodeQuorum SafetyCheckKind = "EnsureSeedNodeQuorum"
-	// SafetyCheckKindInvalid Indicates that the upgrade safety check kind is invalid. All Service Fabric
-	// enumerations have the invalid type. The value is zero.
-	SafetyCheckKindInvalid SafetyCheckKind = "Invalid"
-	// SafetyCheckKindWaitForInbuildReplica Indicates that there is either a replica on the node that is going
-	// through copy, or there is a primary replica on the node that is copying data to some other replica. In
-	// both cases, bringing down the replica on the node due to upgrade will abort the copy. The value is 6.
-	SafetyCheckKindWaitForInbuildReplica SafetyCheckKind = "WaitForInbuildReplica"
-	// SafetyCheckKindWaitForPrimaryPlacement Indicates that there is some replica on the node that was moved
-	// out of this node due to upgrade. Service Fabric is now waiting for the primary to be moved back to this
-	// node. The value is 3.
-	SafetyCheckKindWaitForPrimaryPlacement SafetyCheckKind = "WaitForPrimaryPlacement"
-	// SafetyCheckKindWaitForPrimarySwap Indicates that Service Fabric is waiting for a primary replica to be
-	// moved out of the node before starting upgrade on that node. The value is 4.
-	SafetyCheckKindWaitForPrimarySwap SafetyCheckKind = "WaitForPrimarySwap"
-	// SafetyCheckKindWaitForReconfiguration Indicates that there is some replica on the node that is involved
-	// in a reconfiguration. Service Fabric is waiting for the reconfiguration to be complete before staring
-	// upgrade on that node. The value is 5.
-	SafetyCheckKindWaitForReconfiguration SafetyCheckKind = "WaitForReconfiguration"
-)
-
-// PossibleSafetyCheckKindValues returns an array of possible values for the SafetyCheckKind const type.
-func PossibleSafetyCheckKindValues() []SafetyCheckKind {
-	return []SafetyCheckKind{SafetyCheckKindEnsureAvailability, SafetyCheckKindEnsurePartitionQuorum, SafetyCheckKindEnsureSeedNodeQuorum, SafetyCheckKindInvalid, SafetyCheckKindWaitForInbuildReplica, SafetyCheckKindWaitForPrimaryPlacement, SafetyCheckKindWaitForPrimarySwap, SafetyCheckKindWaitForReconfiguration}
-}
-
-// ScalingMechanismKind enumerates the values for scaling mechanism kind.
-type ScalingMechanismKind string
-
-const (
-	// ScalingMechanismKindAddRemoveIncrementalNamedPartition Indicates a mechanism for scaling where new named
-	// partitions are added or removed from a service. The value is 2.
-	ScalingMechanismKindAddRemoveIncrementalNamedPartition ScalingMechanismKind = "AddRemoveIncrementalNamedPartition"
-	// ScalingMechanismKindInvalid Indicates the scaling mechanism is invalid. All Service Fabric enumerations
-	// have the invalid type. The value is zero.
-	ScalingMechanismKindInvalid ScalingMechanismKind = "Invalid"
-	// ScalingMechanismKindPartitionInstanceCount Indicates a mechanism for scaling where new instances are
-	// added or removed from a partition. The value is 1.
-	ScalingMechanismKindPartitionInstanceCount ScalingMechanismKind = "PartitionInstanceCount"
-)
-
-// PossibleScalingMechanismKindValues returns an array of possible values for the ScalingMechanismKind const type.
-func PossibleScalingMechanismKindValues() []ScalingMechanismKind {
-	return []ScalingMechanismKind{ScalingMechanismKindAddRemoveIncrementalNamedPartition, ScalingMechanismKindInvalid, ScalingMechanismKindPartitionInstanceCount}
-}
-
-// ScalingTriggerKind enumerates the values for scaling trigger kind.
-type ScalingTriggerKind string
-
-const (
-	// ScalingTriggerKindAveragePartitionLoad Indicates a trigger where scaling decisions are made based on
-	// average load of a partition. The value is 1.
-	ScalingTriggerKindAveragePartitionLoad ScalingTriggerKind = "AveragePartitionLoad"
-	// ScalingTriggerKindAverageServiceLoad Indicates a trigger where scaling decisions are made based on
-	// average load of a service. The value is 2.
-	ScalingTriggerKindAverageServiceLoad ScalingTriggerKind = "AverageServiceLoad"
-	// ScalingTriggerKindInvalid Indicates the scaling trigger is invalid. All Service Fabric enumerations have
-	// the invalid type. The value is zero.
-	ScalingTriggerKindInvalid ScalingTriggerKind = "Invalid"
-)
-
-// PossibleScalingTriggerKindValues returns an array of possible values for the ScalingTriggerKind const type.
-func PossibleScalingTriggerKindValues() []ScalingTriggerKind {
-	return []ScalingTriggerKind{ScalingTriggerKindAveragePartitionLoad, ScalingTriggerKindAverageServiceLoad, ScalingTriggerKindInvalid}
-}
-
-// ScheduleKind enumerates the values for schedule kind.
-type ScheduleKind string
-
-const (
-	// ScheduleKindBackupScheduleDescription ...
-	ScheduleKindBackupScheduleDescription ScheduleKind = "BackupScheduleDescription"
-	// ScheduleKindFrequencyBased ...
-	ScheduleKindFrequencyBased ScheduleKind = "FrequencyBased"
-	// ScheduleKindTimeBased ...
-	ScheduleKindTimeBased ScheduleKind = "TimeBased"
-)
-
-// PossibleScheduleKindValues returns an array of possible values for the ScheduleKind const type.
-func PossibleScheduleKindValues() []ScheduleKind {
-	return []ScheduleKind{ScheduleKindBackupScheduleDescription, ScheduleKindFrequencyBased, ScheduleKindTimeBased}
-}
-
-// ServiceCorrelationScheme enumerates the values for service correlation scheme.
-type ServiceCorrelationScheme string
-
-const (
-	// ServiceCorrelationSchemeAffinity Indicates that this service has an affinity relationship with another
-	// service. Provided for backwards compatibility, consider preferring the Aligned or NonAlignedAffinity
-	// options. The value is 1.
-	ServiceCorrelationSchemeAffinity ServiceCorrelationScheme = "Affinity"
-	// ServiceCorrelationSchemeAlignedAffinity Aligned affinity ensures that the primaries of the partitions of
-	// the affinitized services are collocated on the same nodes. This is the default and is the same as
-	// selecting the Affinity scheme. The value is 2.
-	ServiceCorrelationSchemeAlignedAffinity ServiceCorrelationScheme = "AlignedAffinity"
-	// ServiceCorrelationSchemeInvalid An invalid correlation scheme. Cannot be used. The value is zero.
-	ServiceCorrelationSchemeInvalid ServiceCorrelationScheme = "Invalid"
-	// ServiceCorrelationSchemeNonAlignedAffinity Non-Aligned affinity guarantees that all replicas of each
-	// service will be placed on the same nodes. Unlike Aligned Affinity, this does not guarantee that replicas
-	// of particular role will be collocated. The value is 3.
-	ServiceCorrelationSchemeNonAlignedAffinity ServiceCorrelationScheme = "NonAlignedAffinity"
-)
-
-// PossibleServiceCorrelationSchemeValues returns an array of possible values for the ServiceCorrelationScheme const type.
-func PossibleServiceCorrelationSchemeValues() []ServiceCorrelationScheme {
-	return []ServiceCorrelationScheme{ServiceCorrelationSchemeAffinity, ServiceCorrelationSchemeAlignedAffinity, ServiceCorrelationSchemeInvalid, ServiceCorrelationSchemeNonAlignedAffinity}
-}
-
-// ServiceEndpointRole enumerates the values for service endpoint role.
-type ServiceEndpointRole string
-
-const (
-	// ServiceEndpointRoleInvalid Indicates the service endpoint role is invalid. All Service Fabric
-	// enumerations have the invalid type. The value is zero.
-	ServiceEndpointRoleInvalid ServiceEndpointRole = "Invalid"
-	// ServiceEndpointRoleStatefulPrimary Indicates that the service endpoint is of a primary replica of a
-	// stateful service. The value is 2.
-	ServiceEndpointRoleStatefulPrimary ServiceEndpointRole = "StatefulPrimary"
-	// ServiceEndpointRoleStatefulSecondary Indicates that the service endpoint is of a secondary replica of a
-	// stateful service. The value is 3.
-	ServiceEndpointRoleStatefulSecondary ServiceEndpointRole = "StatefulSecondary"
-	// ServiceEndpointRoleStateless Indicates that the service endpoint is of a stateless service. The value is
-	// 1.
-	ServiceEndpointRoleStateless ServiceEndpointRole = "Stateless"
-)
-
-// PossibleServiceEndpointRoleValues returns an array of possible values for the ServiceEndpointRole const type.
-func PossibleServiceEndpointRoleValues() []ServiceEndpointRole {
-	return []ServiceEndpointRole{ServiceEndpointRoleInvalid, ServiceEndpointRoleStatefulPrimary, ServiceEndpointRoleStatefulSecondary, ServiceEndpointRoleStateless}
-}
-
-// ServiceKind enumerates the values for service kind.
-type ServiceKind string
-
-const (
-	// ServiceKindInvalid Indicates the service kind is invalid. All Service Fabric enumerations have the
-	// invalid type. The value is zero.
-	ServiceKindInvalid ServiceKind = "Invalid"
-	// ServiceKindStateful Uses Service Fabric to make its state or part of its state highly available and
-	// reliable. The value is 2.
-	ServiceKindStateful ServiceKind = "Stateful"
-	// ServiceKindStateless Does not use Service Fabric to make its state highly available or reliable. The
-	// value is 1.
-	ServiceKindStateless ServiceKind = "Stateless"
-)
-
-// PossibleServiceKindValues returns an array of possible values for the ServiceKind const type.
-func PossibleServiceKindValues() []ServiceKind {
-	return []ServiceKind{ServiceKindInvalid, ServiceKindStateful, ServiceKindStateless}
-}
-
-// ServiceKindBasicDeployedServiceReplicaDetailInfo enumerates the values for service kind basic deployed
-// service replica detail info.
-type ServiceKindBasicDeployedServiceReplicaDetailInfo string
-
-const (
-	// ServiceKindDeployedServiceReplicaDetailInfo ...
-	ServiceKindDeployedServiceReplicaDetailInfo ServiceKindBasicDeployedServiceReplicaDetailInfo = "DeployedServiceReplicaDetailInfo"
-	// ServiceKindStateful1 ...
-	ServiceKindStateful1 ServiceKindBasicDeployedServiceReplicaDetailInfo = "Stateful"
-	// ServiceKindStateless1 ...
-	ServiceKindStateless1 ServiceKindBasicDeployedServiceReplicaDetailInfo = "Stateless"
-)
-
-// PossibleServiceKindBasicDeployedServiceReplicaDetailInfoValues returns an array of possible values for the ServiceKindBasicDeployedServiceReplicaDetailInfo const type.
-func PossibleServiceKindBasicDeployedServiceReplicaDetailInfoValues() []ServiceKindBasicDeployedServiceReplicaDetailInfo {
-	return []ServiceKindBasicDeployedServiceReplicaDetailInfo{ServiceKindDeployedServiceReplicaDetailInfo, ServiceKindStateful1, ServiceKindStateless1}
-}
-
-// ServiceKindBasicDeployedServiceReplicaInfo enumerates the values for service kind basic deployed service
-// replica info.
-type ServiceKindBasicDeployedServiceReplicaInfo string
-
-const (
-	// ServiceKindBasicDeployedServiceReplicaInfoServiceKindDeployedServiceReplicaInfo ...
-	ServiceKindBasicDeployedServiceReplicaInfoServiceKindDeployedServiceReplicaInfo ServiceKindBasicDeployedServiceReplicaInfo = "DeployedServiceReplicaInfo"
-	// ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateful ...
-	ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateful ServiceKindBasicDeployedServiceReplicaInfo = "Stateful"
-	// ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateless ...
-	ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateless ServiceKindBasicDeployedServiceReplicaInfo = "Stateless"
-)
-
-// PossibleServiceKindBasicDeployedServiceReplicaInfoValues returns an array of possible values for the ServiceKindBasicDeployedServiceReplicaInfo const type.
-func PossibleServiceKindBasicDeployedServiceReplicaInfoValues() []ServiceKindBasicDeployedServiceReplicaInfo {
-	return []ServiceKindBasicDeployedServiceReplicaInfo{ServiceKindBasicDeployedServiceReplicaInfoServiceKindDeployedServiceReplicaInfo, ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateful, ServiceKindBasicDeployedServiceReplicaInfoServiceKindStateless}
-}
-
-// ServiceKindBasicReplicaHealth enumerates the values for service kind basic replica health.
-type ServiceKindBasicReplicaHealth string
-
-const (
-	// ServiceKindBasicReplicaHealthServiceKindReplicaHealth ...
-	ServiceKindBasicReplicaHealthServiceKindReplicaHealth ServiceKindBasicReplicaHealth = "ReplicaHealth"
-	// ServiceKindBasicReplicaHealthServiceKindStateful ...
-	ServiceKindBasicReplicaHealthServiceKindStateful ServiceKindBasicReplicaHealth = "Stateful"
-	// ServiceKindBasicReplicaHealthServiceKindStateless ...
-	ServiceKindBasicReplicaHealthServiceKindStateless ServiceKindBasicReplicaHealth = "Stateless"
-)
-
-// PossibleServiceKindBasicReplicaHealthValues returns an array of possible values for the ServiceKindBasicReplicaHealth const type.
-func PossibleServiceKindBasicReplicaHealthValues() []ServiceKindBasicReplicaHealth {
-	return []ServiceKindBasicReplicaHealth{ServiceKindBasicReplicaHealthServiceKindReplicaHealth, ServiceKindBasicReplicaHealthServiceKindStateful, ServiceKindBasicReplicaHealthServiceKindStateless}
-}
-
-// ServiceKindBasicReplicaHealthState enumerates the values for service kind basic replica health state.
-type ServiceKindBasicReplicaHealthState string
-
-const (
-	// ServiceKindBasicReplicaHealthStateServiceKindReplicaHealthState ...
-	ServiceKindBasicReplicaHealthStateServiceKindReplicaHealthState ServiceKindBasicReplicaHealthState = "ReplicaHealthState"
-	// ServiceKindBasicReplicaHealthStateServiceKindStateful ...
-	ServiceKindBasicReplicaHealthStateServiceKindStateful ServiceKindBasicReplicaHealthState = "Stateful"
-	// ServiceKindBasicReplicaHealthStateServiceKindStateless ...
-	ServiceKindBasicReplicaHealthStateServiceKindStateless ServiceKindBasicReplicaHealthState = "Stateless"
-)
-
-// PossibleServiceKindBasicReplicaHealthStateValues returns an array of possible values for the ServiceKindBasicReplicaHealthState const type.
-func PossibleServiceKindBasicReplicaHealthStateValues() []ServiceKindBasicReplicaHealthState {
-	return []ServiceKindBasicReplicaHealthState{ServiceKindBasicReplicaHealthStateServiceKindReplicaHealthState, ServiceKindBasicReplicaHealthStateServiceKindStateful, ServiceKindBasicReplicaHealthStateServiceKindStateless}
-}
-
-// ServiceKindBasicReplicaInfo enumerates the values for service kind basic replica info.
-type ServiceKindBasicReplicaInfo string
-
-const (
-	// ServiceKindBasicReplicaInfoServiceKindReplicaInfo ...
-	ServiceKindBasicReplicaInfoServiceKindReplicaInfo ServiceKindBasicReplicaInfo = "ReplicaInfo"
-	// ServiceKindBasicReplicaInfoServiceKindStateful ...
-	ServiceKindBasicReplicaInfoServiceKindStateful ServiceKindBasicReplicaInfo = "Stateful"
-	// ServiceKindBasicReplicaInfoServiceKindStateless ...
-	ServiceKindBasicReplicaInfoServiceKindStateless ServiceKindBasicReplicaInfo = "Stateless"
-)
-
-// PossibleServiceKindBasicReplicaInfoValues returns an array of possible values for the ServiceKindBasicReplicaInfo const type.
-func PossibleServiceKindBasicReplicaInfoValues() []ServiceKindBasicReplicaInfo {
-	return []ServiceKindBasicReplicaInfo{ServiceKindBasicReplicaInfoServiceKindReplicaInfo, ServiceKindBasicReplicaInfoServiceKindStateful, ServiceKindBasicReplicaInfoServiceKindStateless}
-}
-
-// ServiceKindBasicServiceDescription enumerates the values for service kind basic service description.
-type ServiceKindBasicServiceDescription string
-
-const (
-	// ServiceKindBasicServiceDescriptionServiceKindServiceDescription ...
-	ServiceKindBasicServiceDescriptionServiceKindServiceDescription ServiceKindBasicServiceDescription = "ServiceDescription"
-	// ServiceKindBasicServiceDescriptionServiceKindStateful ...
-	ServiceKindBasicServiceDescriptionServiceKindStateful ServiceKindBasicServiceDescription = "Stateful"
-	// ServiceKindBasicServiceDescriptionServiceKindStateless ...
-	ServiceKindBasicServiceDescriptionServiceKindStateless ServiceKindBasicServiceDescription = "Stateless"
-)
-
-// PossibleServiceKindBasicServiceDescriptionValues returns an array of possible values for the ServiceKindBasicServiceDescription const type.
-func PossibleServiceKindBasicServiceDescriptionValues() []ServiceKindBasicServiceDescription {
-	return []ServiceKindBasicServiceDescription{ServiceKindBasicServiceDescriptionServiceKindServiceDescription, ServiceKindBasicServiceDescriptionServiceKindStateful, ServiceKindBasicServiceDescriptionServiceKindStateless}
-}
-
-// ServiceKindBasicServiceInfo enumerates the values for service kind basic service info.
-type ServiceKindBasicServiceInfo string
-
-const (
-	// ServiceKindBasicServiceInfoServiceKindServiceInfo ...
-	ServiceKindBasicServiceInfoServiceKindServiceInfo ServiceKindBasicServiceInfo = "ServiceInfo"
-	// ServiceKindBasicServiceInfoServiceKindStateful ...
-	ServiceKindBasicServiceInfoServiceKindStateful ServiceKindBasicServiceInfo = "Stateful"
-	// ServiceKindBasicServiceInfoServiceKindStateless ...
-	ServiceKindBasicServiceInfoServiceKindStateless ServiceKindBasicServiceInfo = "Stateless"
-)
-
-// PossibleServiceKindBasicServiceInfoValues returns an array of possible values for the ServiceKindBasicServiceInfo const type.
-func PossibleServiceKindBasicServiceInfoValues() []ServiceKindBasicServiceInfo {
-	return []ServiceKindBasicServiceInfo{ServiceKindBasicServiceInfoServiceKindServiceInfo, ServiceKindBasicServiceInfoServiceKindStateful, ServiceKindBasicServiceInfoServiceKindStateless}
-}
-
-// ServiceKindBasicServicePartitionInfo enumerates the values for service kind basic service partition info.
-type ServiceKindBasicServicePartitionInfo string
-
-const (
-	// ServiceKindBasicServicePartitionInfoServiceKindServicePartitionInfo ...
-	ServiceKindBasicServicePartitionInfoServiceKindServicePartitionInfo ServiceKindBasicServicePartitionInfo = "ServicePartitionInfo"
-	// ServiceKindBasicServicePartitionInfoServiceKindStateful ...
-	ServiceKindBasicServicePartitionInfoServiceKindStateful ServiceKindBasicServicePartitionInfo = "Stateful"
-	// ServiceKindBasicServicePartitionInfoServiceKindStateless ...
-	ServiceKindBasicServicePartitionInfoServiceKindStateless ServiceKindBasicServicePartitionInfo = "Stateless"
-)
-
-// PossibleServiceKindBasicServicePartitionInfoValues returns an array of possible values for the ServiceKindBasicServicePartitionInfo const type.
-func PossibleServiceKindBasicServicePartitionInfoValues() []ServiceKindBasicServicePartitionInfo {
-	return []ServiceKindBasicServicePartitionInfo{ServiceKindBasicServicePartitionInfoServiceKindServicePartitionInfo, ServiceKindBasicServicePartitionInfoServiceKindStateful, ServiceKindBasicServicePartitionInfoServiceKindStateless}
-}
-
-// ServiceKindBasicServiceUpdateDescription enumerates the values for service kind basic service update
-// description.
-type ServiceKindBasicServiceUpdateDescription string
-
-const (
-	// ServiceKindBasicServiceUpdateDescriptionServiceKindServiceUpdateDescription ...
-	ServiceKindBasicServiceUpdateDescriptionServiceKindServiceUpdateDescription ServiceKindBasicServiceUpdateDescription = "ServiceUpdateDescription"
-	// ServiceKindBasicServiceUpdateDescriptionServiceKindStateful ...
-	ServiceKindBasicServiceUpdateDescriptionServiceKindStateful ServiceKindBasicServiceUpdateDescription = "Stateful"
-	// ServiceKindBasicServiceUpdateDescriptionServiceKindStateless ...
-	ServiceKindBasicServiceUpdateDescriptionServiceKindStateless ServiceKindBasicServiceUpdateDescription = "Stateless"
-)
-
-// PossibleServiceKindBasicServiceUpdateDescriptionValues returns an array of possible values for the ServiceKindBasicServiceUpdateDescription const type.
-func PossibleServiceKindBasicServiceUpdateDescriptionValues() []ServiceKindBasicServiceUpdateDescription {
-	return []ServiceKindBasicServiceUpdateDescription{ServiceKindBasicServiceUpdateDescriptionServiceKindServiceUpdateDescription, ServiceKindBasicServiceUpdateDescriptionServiceKindStateful, ServiceKindBasicServiceUpdateDescriptionServiceKindStateless}
-}
-
-// ServiceLoadMetricWeight enumerates the values for service load metric weight.
-type ServiceLoadMetricWeight string
-
-const (
-	// ServiceLoadMetricWeightHigh Specifies the metric weight of the service load as High. The value is 3.
-	ServiceLoadMetricWeightHigh ServiceLoadMetricWeight = "High"
-	// ServiceLoadMetricWeightLow Specifies the metric weight of the service load as Low. The value is 1.
-	ServiceLoadMetricWeightLow ServiceLoadMetricWeight = "Low"
-	// ServiceLoadMetricWeightMedium Specifies the metric weight of the service load as Medium. The value is 2.
-	ServiceLoadMetricWeightMedium ServiceLoadMetricWeight = "Medium"
-	// ServiceLoadMetricWeightZero Disables resource balancing for this metric. This value is zero.
-	ServiceLoadMetricWeightZero ServiceLoadMetricWeight = "Zero"
-)
-
-// PossibleServiceLoadMetricWeightValues returns an array of possible values for the ServiceLoadMetricWeight const type.
-func PossibleServiceLoadMetricWeightValues() []ServiceLoadMetricWeight {
-	return []ServiceLoadMetricWeight{ServiceLoadMetricWeightHigh, ServiceLoadMetricWeightLow, ServiceLoadMetricWeightMedium, ServiceLoadMetricWeightZero}
-}
-
-// ServiceOperationName enumerates the values for service operation name.
-type ServiceOperationName string
-
-const (
-	// ServiceOperationNameAbort The service replica or instance is being aborted.
-	ServiceOperationNameAbort ServiceOperationName = "Abort"
-	// ServiceOperationNameChangeRole The service replica is changing roles.
-	ServiceOperationNameChangeRole ServiceOperationName = "ChangeRole"
-	// ServiceOperationNameClose The service replica or instance is being closed.
-	ServiceOperationNameClose ServiceOperationName = "Close"
-	// ServiceOperationNameNone The service replica or instance is not going through any life-cycle changes.
-	ServiceOperationNameNone ServiceOperationName = "None"
-	// ServiceOperationNameOpen The service replica or instance is being opened.
-	ServiceOperationNameOpen ServiceOperationName = "Open"
-	// ServiceOperationNameUnknown Reserved for future use.
-	ServiceOperationNameUnknown ServiceOperationName = "Unknown"
-)
-
-// PossibleServiceOperationNameValues returns an array of possible values for the ServiceOperationName const type.
-func PossibleServiceOperationNameValues() []ServiceOperationName {
-	return []ServiceOperationName{ServiceOperationNameAbort, ServiceOperationNameChangeRole, ServiceOperationNameClose, ServiceOperationNameNone, ServiceOperationNameOpen, ServiceOperationNameUnknown}
-}
-
-// ServicePackageActivationMode enumerates the values for service package activation mode.
-type ServicePackageActivationMode string
-
-const (
-	// ExclusiveProcess With this activation mode, each replica or instance of service, on a given node, will
-	// have its own dedicated activation of service package on a node. The value is 1.
-	ExclusiveProcess ServicePackageActivationMode = "ExclusiveProcess"
-	// SharedProcess This is the default activation mode. With this activation mode, replicas or instances from
-	// different partition(s) of service, on a given node, will share same activation of service package on a
-	// node. The value is zero.
-	SharedProcess ServicePackageActivationMode = "SharedProcess"
-)
-
-// PossibleServicePackageActivationModeValues returns an array of possible values for the ServicePackageActivationMode const type.
-func PossibleServicePackageActivationModeValues() []ServicePackageActivationMode {
-	return []ServicePackageActivationMode{ExclusiveProcess, SharedProcess}
-}
-
-// ServicePartitionKind enumerates the values for service partition kind.
-type ServicePartitionKind string
-
-const (
-	// ServicePartitionKindInt64Range Indicates that the partition is based on Int64 key ranges, and
-	// UniformInt64RangePartitionSchemeDescription was specified while creating the service. The value is 2.
-	ServicePartitionKindInt64Range ServicePartitionKind = "Int64Range"
-	// ServicePartitionKindInvalid Indicates the partition kind is invalid. All Service Fabric enumerations
-	// have the invalid type. The value is zero.
-	ServicePartitionKindInvalid ServicePartitionKind = "Invalid"
-	// ServicePartitionKindNamed Indicates that the partition is based on string names, and
-	// NamedPartitionInformation  was specified while creating the service. The value is 3.
-	ServicePartitionKindNamed ServicePartitionKind = "Named"
-	// ServicePartitionKindSingleton Indicates that there is only one partition, and
-	// SingletonPartitionSchemeDescription was specified while creating the service. The value is 1.
-	ServicePartitionKindSingleton ServicePartitionKind = "Singleton"
-)
-
-// PossibleServicePartitionKindValues returns an array of possible values for the ServicePartitionKind const type.
-func PossibleServicePartitionKindValues() []ServicePartitionKind {
-	return []ServicePartitionKind{ServicePartitionKindInt64Range, ServicePartitionKindInvalid, ServicePartitionKindNamed, ServicePartitionKindSingleton}
-}
-
-// ServicePartitionKindBasicPartitionInformation enumerates the values for service partition kind basic
-// partition information.
-type ServicePartitionKindBasicPartitionInformation string
-
-const (
-	// ServicePartitionKindInt64Range1 ...
-	ServicePartitionKindInt64Range1 ServicePartitionKindBasicPartitionInformation = "Int64Range"
-	// ServicePartitionKindNamed1 ...
-	ServicePartitionKindNamed1 ServicePartitionKindBasicPartitionInformation = "Named"
-	// ServicePartitionKindPartitionInformation ...
-	ServicePartitionKindPartitionInformation ServicePartitionKindBasicPartitionInformation = "PartitionInformation"
-	// ServicePartitionKindSingleton1 ...
-	ServicePartitionKindSingleton1 ServicePartitionKindBasicPartitionInformation = "Singleton"
-)
-
-// PossibleServicePartitionKindBasicPartitionInformationValues returns an array of possible values for the ServicePartitionKindBasicPartitionInformation const type.
-func PossibleServicePartitionKindBasicPartitionInformationValues() []ServicePartitionKindBasicPartitionInformation {
-	return []ServicePartitionKindBasicPartitionInformation{ServicePartitionKindInt64Range1, ServicePartitionKindNamed1, ServicePartitionKindPartitionInformation, ServicePartitionKindSingleton1}
-}
-
-// ServicePartitionStatus enumerates the values for service partition status.
-type ServicePartitionStatus string
-
-const (
-	// ServicePartitionStatusDeleting Indicates that the partition is being deleted. The value is 5.
-	ServicePartitionStatusDeleting ServicePartitionStatus = "Deleting"
-	// ServicePartitionStatusInQuorumLoss Indicates that the partition is in quorum loss. This means that
-	// number of replicas that are up and participating in a replica set is less than MinReplicaSetSize for
-	// this partition. The value is 3.
-	ServicePartitionStatusInQuorumLoss ServicePartitionStatus = "InQuorumLoss"
-	// ServicePartitionStatusInvalid Indicates the partition status is invalid. All Service Fabric enumerations
-	// have the invalid type. The value is zero.
-	ServicePartitionStatusInvalid ServicePartitionStatus = "Invalid"
-	// ServicePartitionStatusNotReady Indicates that the partition is not ready. This status is returned when
-	// none of the other states apply. The value is 2.
-	ServicePartitionStatusNotReady ServicePartitionStatus = "NotReady"
-	// ServicePartitionStatusReady Indicates that the partition is ready. This means that for a stateless
-	// service partition there is at least one instance that is up and for a stateful service partition the
-	// number of ready replicas is greater than or equal to the MinReplicaSetSize. The value is 1.
-	ServicePartitionStatusReady ServicePartitionStatus = "Ready"
-	// ServicePartitionStatusReconfiguring Indicates that the partition is undergoing reconfiguration of its
-	// replica sets. This can happen due to failover, upgrade, load balancing or addition or removal of
-	// replicas from the replica set. The value is 4.
-	ServicePartitionStatusReconfiguring ServicePartitionStatus = "Reconfiguring"
-)
-
-// PossibleServicePartitionStatusValues returns an array of possible values for the ServicePartitionStatus const type.
-func PossibleServicePartitionStatusValues() []ServicePartitionStatus {
-	return []ServicePartitionStatus{ServicePartitionStatusDeleting, ServicePartitionStatusInQuorumLoss, ServicePartitionStatusInvalid, ServicePartitionStatusNotReady, ServicePartitionStatusReady, ServicePartitionStatusReconfiguring}
-}
-
-// ServicePlacementPolicyType enumerates the values for service placement policy type.
-type ServicePlacementPolicyType string
-
-const (
-	// ServicePlacementPolicyTypeInvalid Indicates the type of the placement policy is invalid. All Service
-	// Fabric enumerations have the invalid type. The value is zero.
-	ServicePlacementPolicyTypeInvalid ServicePlacementPolicyType = "Invalid"
-	// ServicePlacementPolicyTypeInvalidDomain Indicates that the ServicePlacementPolicyDescription is of type
-	// ServicePlacementInvalidDomainPolicyDescription, which indicates that a particular fault or upgrade
-	// domain cannot be used for placement of this service. The value is 1.
-	ServicePlacementPolicyTypeInvalidDomain ServicePlacementPolicyType = "InvalidDomain"
-	// ServicePlacementPolicyTypeNonPartiallyPlaceService Indicates that the ServicePlacementPolicyDescription
-	// is of type ServicePlacementNonPartiallyPlaceServicePolicyDescription, which indicates that if possible
-	// all replicas of a particular partition of the service should be placed atomically. The value is 5.
-	ServicePlacementPolicyTypeNonPartiallyPlaceService ServicePlacementPolicyType = "NonPartiallyPlaceService"
-	// ServicePlacementPolicyTypePreferredPrimaryDomain Indicates that the ServicePlacementPolicyDescription is
-	// of type ServicePlacementPreferPrimaryDomainPolicyDescription, which indicates that if possible the
-	// Primary replica for the partitions of the service should be located in a particular domain as an
-	// optimization. The value is 3.
-	ServicePlacementPolicyTypePreferredPrimaryDomain ServicePlacementPolicyType = "PreferredPrimaryDomain"
-	// ServicePlacementPolicyTypeRequiredDomain Indicates that the ServicePlacementPolicyDescription is of type
-	// ServicePlacementRequireDomainDistributionPolicyDescription indicating that the replicas of the service
-	// must be placed in a specific domain. The value is 2.
-	ServicePlacementPolicyTypeRequiredDomain ServicePlacementPolicyType = "RequiredDomain"
-	// ServicePlacementPolicyTypeRequiredDomainDistribution Indicates that the
-	// ServicePlacementPolicyDescription is of type ServicePlacementRequireDomainDistributionPolicyDescription,
-	// indicating that the system will disallow placement of any two replicas from the same partition in the
-	// same domain at any time. The value is 4.
-	ServicePlacementPolicyTypeRequiredDomainDistribution ServicePlacementPolicyType = "RequiredDomainDistribution"
-)
-
-// PossibleServicePlacementPolicyTypeValues returns an array of possible values for the ServicePlacementPolicyType const type.
-func PossibleServicePlacementPolicyTypeValues() []ServicePlacementPolicyType {
-	return []ServicePlacementPolicyType{ServicePlacementPolicyTypeInvalid, ServicePlacementPolicyTypeInvalidDomain, ServicePlacementPolicyTypeNonPartiallyPlaceService, ServicePlacementPolicyTypePreferredPrimaryDomain, ServicePlacementPolicyTypeRequiredDomain, ServicePlacementPolicyTypeRequiredDomainDistribution}
-}
-
-// ServiceStatus enumerates the values for service status.
-type ServiceStatus string
-
-const (
-	// ServiceStatusActive Indicates the service status is active. The value is 1.
-	ServiceStatusActive ServiceStatus = "Active"
-	// ServiceStatusCreating Indicates the service is being created. The value is 4.
-	ServiceStatusCreating ServiceStatus = "Creating"
-	// ServiceStatusDeleting Indicates the service is being deleted. The value is 3.
-	ServiceStatusDeleting ServiceStatus = "Deleting"
-	// ServiceStatusFailed Indicates creation or deletion was terminated due to persistent failures. Another
-	// create/delete request can be accepted. The value is 5.
-	ServiceStatusFailed ServiceStatus = "Failed"
-	// ServiceStatusUnknown Indicates the service status is unknown. The value is zero.
-	ServiceStatusUnknown ServiceStatus = "Unknown"
-	// ServiceStatusUpgrading Indicates the service is upgrading. The value is 2.
-	ServiceStatusUpgrading ServiceStatus = "Upgrading"
-)
-
-// PossibleServiceStatusValues returns an array of possible values for the ServiceStatus const type.
-func PossibleServiceStatusValues() []ServiceStatus {
-	return []ServiceStatus{ServiceStatusActive, ServiceStatusCreating, ServiceStatusDeleting, ServiceStatusFailed, ServiceStatusUnknown, ServiceStatusUpgrading}
-}
-
-// ServiceTypeRegistrationStatus enumerates the values for service type registration status.
-type ServiceTypeRegistrationStatus string
-
-const (
-	// ServiceTypeRegistrationStatusDisabled Indicates that the service type is disabled on this node. A type
-	// gets disabled when there are too many failures of the code package hosting the service type. If the
-	// service type is disabled, new replicas of that service type will not be placed on the node until it is
-	// enabled again. The service type is enabled again after the process hosting it comes up and re-registers
-	// the type or a preconfigured time interval has passed. The value is 1.
-	ServiceTypeRegistrationStatusDisabled ServiceTypeRegistrationStatus = "Disabled"
-	// ServiceTypeRegistrationStatusEnabled Indicates that the service type is enabled on this node. Replicas
-	// of this service type can be placed on this node when the code package registers the service type. The
-	// value is 2.
-	ServiceTypeRegistrationStatusEnabled ServiceTypeRegistrationStatus = "Enabled"
-	// ServiceTypeRegistrationStatusInvalid Indicates the registration status is invalid. All Service Fabric
-	// enumerations have the invalid type. The value is zero.
-	ServiceTypeRegistrationStatusInvalid ServiceTypeRegistrationStatus = "Invalid"
-	// ServiceTypeRegistrationStatusRegistered Indicates that the service type is enabled and registered on the
-	// node by a code package. Replicas of this service type can now be placed on this node. The value is 3.
-	ServiceTypeRegistrationStatusRegistered ServiceTypeRegistrationStatus = "Registered"
-)
-
-// PossibleServiceTypeRegistrationStatusValues returns an array of possible values for the ServiceTypeRegistrationStatus const type.
-func PossibleServiceTypeRegistrationStatusValues() []ServiceTypeRegistrationStatus {
-	return []ServiceTypeRegistrationStatus{ServiceTypeRegistrationStatusDisabled, ServiceTypeRegistrationStatusEnabled, ServiceTypeRegistrationStatusInvalid, ServiceTypeRegistrationStatusRegistered}
-}
-
-// State enumerates the values for state.
-type State string
-
-const (
-	// StateApproved Indicates that the repair task has been approved by the Repair Manager and is safe to
-	// execute.
-	StateApproved State = "Approved"
-	// StateClaimed Indicates that the repair task has been claimed by a repair executor.
-	StateClaimed State = "Claimed"
-	// StateCompleted Indicates that the repair task has completed, and no further state changes will occur.
-	StateCompleted State = "Completed"
-	// StateCreated Indicates that the repair task has been created.
-	StateCreated State = "Created"
-	// StateExecuting Indicates that execution of the repair task is in progress.
-	StateExecuting State = "Executing"
-	// StateInvalid Indicates that the repair task state is invalid. All Service Fabric enumerations have the
-	// invalid value.
-	StateInvalid State = "Invalid"
-	// StatePreparing Indicates that the Repair Manager is preparing the system to handle the impact of the
-	// repair task, usually by taking resources offline gracefully.
-	StatePreparing State = "Preparing"
-	// StateRestoring Indicates that the Repair Manager is restoring the system to its pre-repair state,
-	// usually by bringing resources back online.
-	StateRestoring State = "Restoring"
-)
-
-// PossibleStateValues returns an array of possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{StateApproved, StateClaimed, StateCompleted, StateCreated, StateExecuting, StateInvalid, StatePreparing, StateRestoring}
-}
-
-// StorageKind enumerates the values for storage kind.
-type StorageKind string
-
-const (
-	// StorageKindAzureBlobStore ...
-	StorageKindAzureBlobStore StorageKind = "AzureBlobStore"
-	// StorageKindBackupStorageDescription ...
-	StorageKindBackupStorageDescription StorageKind = "BackupStorageDescription"
-	// StorageKindFileShare ...
-	StorageKindFileShare StorageKind = "FileShare"
-)
-
-// PossibleStorageKindValues returns an array of possible values for the StorageKind const type.
-func PossibleStorageKindValues() []StorageKind {
-	return []StorageKind{StorageKindAzureBlobStore, StorageKindBackupStorageDescription, StorageKindFileShare}
-}
-
-// Type enumerates the values for type.
-type Type string
-
-const (
-	// TypeInvalidDomain ...
-	TypeInvalidDomain Type = "InvalidDomain"
-	// TypeNonPartiallyPlaceService ...
-	TypeNonPartiallyPlaceService Type = "NonPartiallyPlaceService"
-	// TypePreferredPrimaryDomain ...
-	TypePreferredPrimaryDomain Type = "PreferredPrimaryDomain"
-	// TypeRequiredDomain ...
-	TypeRequiredDomain Type = "RequiredDomain"
-	// TypeRequiredDomainDistribution ...
-	TypeRequiredDomainDistribution Type = "RequiredDomainDistribution"
-	// TypeServicePlacementPolicyDescription ...
-	TypeServicePlacementPolicyDescription Type = "ServicePlacementPolicyDescription"
-)
-
-// PossibleTypeValues returns an array of possible values for the Type const type.
-func PossibleTypeValues() []Type {
-	return []Type{TypeInvalidDomain, TypeNonPartiallyPlaceService, TypePreferredPrimaryDomain, TypeRequiredDomain, TypeRequiredDomainDistribution, TypeServicePlacementPolicyDescription}
-}
-
-// UpgradeDomainState enumerates the values for upgrade domain state.
-type UpgradeDomainState string
-
-const (
-	// UpgradeDomainStateCompleted The upgrade domain has completed upgrade. The value is 3
-	UpgradeDomainStateCompleted UpgradeDomainState = "Completed"
-	// UpgradeDomainStateInProgress The upgrade domain is being upgraded but not complete yet. The value is 2
-	UpgradeDomainStateInProgress UpgradeDomainState = "InProgress"
-	// UpgradeDomainStateInvalid Indicates the upgrade domain state is invalid. All Service Fabric enumerations
-	// have the invalid type. The value is zero.
-	UpgradeDomainStateInvalid UpgradeDomainState = "Invalid"
-	// UpgradeDomainStatePending The upgrade domain has not started upgrading yet. The value is 1
-	UpgradeDomainStatePending UpgradeDomainState = "Pending"
-)
-
-// PossibleUpgradeDomainStateValues returns an array of possible values for the UpgradeDomainState const type.
-func PossibleUpgradeDomainStateValues() []UpgradeDomainState {
-	return []UpgradeDomainState{UpgradeDomainStateCompleted, UpgradeDomainStateInProgress, UpgradeDomainStateInvalid, UpgradeDomainStatePending}
-}
-
-// UpgradeKind enumerates the values for upgrade kind.
-type UpgradeKind string
-
-const (
-	// UpgradeKindInvalid Indicates the upgrade kind is invalid. All Service Fabric enumerations have the
-	// invalid type. The value is zero.
-	UpgradeKindInvalid UpgradeKind = "Invalid"
-	// UpgradeKindRolling The upgrade progresses one upgrade domain at a time. The value is 1
-	UpgradeKindRolling UpgradeKind = "Rolling"
-)
-
-// PossibleUpgradeKindValues returns an array of possible values for the UpgradeKind const type.
-func PossibleUpgradeKindValues() []UpgradeKind {
-	return []UpgradeKind{UpgradeKindInvalid, UpgradeKindRolling}
-}
-
-// UpgradeMode enumerates the values for upgrade mode.
-type UpgradeMode string
-
-const (
-	// UpgradeModeInvalid Indicates the upgrade mode is invalid. All Service Fabric enumerations have the
-	// invalid type. The value is zero.
-	UpgradeModeInvalid UpgradeMode = "Invalid"
-	// UpgradeModeMonitored The upgrade will stop after completing each upgrade domain and automatically
-	// monitor health before proceeding. The value is 3
-	UpgradeModeMonitored UpgradeMode = "Monitored"
-	// UpgradeModeUnmonitoredAuto The upgrade will proceed automatically without performing any health
-	// monitoring. The value is 1
-	UpgradeModeUnmonitoredAuto UpgradeMode = "UnmonitoredAuto"
-	// UpgradeModeUnmonitoredManual The upgrade will stop after completing each upgrade domain, giving the
-	// opportunity to manually monitor health before proceeding. The value is 2
-	UpgradeModeUnmonitoredManual UpgradeMode = "UnmonitoredManual"
-)
-
-// PossibleUpgradeModeValues returns an array of possible values for the UpgradeMode const type.
-func PossibleUpgradeModeValues() []UpgradeMode {
-	return []UpgradeMode{UpgradeModeInvalid, UpgradeModeMonitored, UpgradeModeUnmonitoredAuto, UpgradeModeUnmonitoredManual}
-}
-
-// UpgradeState enumerates the values for upgrade state.
-type UpgradeState string
-
-const (
-	// UpgradeStateFailed The upgrade has failed and is unable to execute FailureAction. The value is 6
-	UpgradeStateFailed UpgradeState = "Failed"
-	// UpgradeStateInvalid Indicates the upgrade state is invalid. All Service Fabric enumerations have the
-	// invalid type. The value is zero.
-	UpgradeStateInvalid UpgradeState = "Invalid"
-	// UpgradeStateRollingBackCompleted The upgrade has finished rolling back. The value is 2
-	UpgradeStateRollingBackCompleted UpgradeState = "RollingBackCompleted"
-	// UpgradeStateRollingBackInProgress The upgrade is rolling back to the previous version but is not
-	// complete yet. The value is 1
-	UpgradeStateRollingBackInProgress UpgradeState = "RollingBackInProgress"
-	// UpgradeStateRollingForwardCompleted The upgrade has finished rolling forward. The value is 5
-	UpgradeStateRollingForwardCompleted UpgradeState = "RollingForwardCompleted"
-	// UpgradeStateRollingForwardInProgress The upgrade is rolling forward to the target version but is not
-	// complete yet. The value is 4
-	UpgradeStateRollingForwardInProgress UpgradeState = "RollingForwardInProgress"
-	// UpgradeStateRollingForwardPending The current upgrade domain has finished upgrading. The overall upgrade
-	// is waiting for an explicit move next request in UnmonitoredManual mode or performing health checks in
-	// Monitored mode. The value is 3
-	UpgradeStateRollingForwardPending UpgradeState = "RollingForwardPending"
-)
-
-// PossibleUpgradeStateValues returns an array of possible values for the UpgradeState const type.
-func PossibleUpgradeStateValues() []UpgradeState {
-	return []UpgradeState{UpgradeStateFailed, UpgradeStateInvalid, UpgradeStateRollingBackCompleted, UpgradeStateRollingBackInProgress, UpgradeStateRollingForwardCompleted, UpgradeStateRollingForwardInProgress, UpgradeStateRollingForwardPending}
-}
-
-// UpgradeType enumerates the values for upgrade type.
-type UpgradeType string
-
-const (
-	// UpgradeTypeInvalid Indicates the upgrade kind is invalid. All Service Fabric enumerations have the
-	// invalid type. The value is zero.
-	UpgradeTypeInvalid UpgradeType = "Invalid"
-	// UpgradeTypeRolling The upgrade progresses one upgrade domain at a time. The value is 1.
-	UpgradeTypeRolling UpgradeType = "Rolling"
-	// UpgradeTypeRollingForceRestart The upgrade gets restarted by force. The value is 2.
-	UpgradeTypeRollingForceRestart UpgradeType = "Rolling_ForceRestart"
-)
-
-// PossibleUpgradeTypeValues returns an array of possible values for the UpgradeType const type.
-func PossibleUpgradeTypeValues() []UpgradeType {
-	return []UpgradeType{UpgradeTypeInvalid, UpgradeTypeRolling, UpgradeTypeRollingForceRestart}
-}
-
 // AadMetadata azure Active Directory metadata used for secured connection to cluster.
 type AadMetadata struct {
 	// Authority - The AAD authority url.
@@ -3328,8 +224,8 @@ func (abe ApplicationBackupEntity) AsBasicBackupEntity() (BasicBackupEntity, boo
 // description can be used for describing the following.
 // - Reserving the capacity for the services on the nodes
 // - Limiting the total number of nodes that services of this application can run on
-// - Limiting the custom capacity metrics to limit the total consumption of this metric by the services of
-// this application
+// - Limiting the custom capacity metrics to limit the total consumption of this metric by the services of this
+// application
 type ApplicationCapacityDescription struct {
 	// MinimumNodes - The minimum number of nodes where Service Fabric will reserve capacity for this application. Note that this does not mean that the services of this application will be placed on all of those nodes. If this property is set to zero, no capacity will be reserved. The value of this property cannot be more than the value of the MaximumNodes property.
 	MinimumNodes *int64 `json:"MinimumNodes,omitempty"`
@@ -4773,8 +1669,8 @@ func (ae ApplicationEvent) AsBasicFabricEvent() (BasicFabricEvent, bool) {
 	return &ae, true
 }
 
-// ApplicationHealth represents the health of the application. Contains the application aggregated health
-// state and the service and deployed application health states.
+// ApplicationHealth represents the health of the application. Contains the application aggregated health state
+// and the service and deployed application health states.
 type ApplicationHealth struct {
 	autorest.Response `json:"-"`
 	// Name - The name of the application, including the 'fabric:' URI scheme.
@@ -4795,8 +1691,8 @@ type ApplicationHealth struct {
 	HealthStatistics *HealthStatistics `json:"HealthStatistics,omitempty"`
 }
 
-// ApplicationHealthEvaluation represents health evaluation for an application, containing information
-// about the data and the algorithm used by the health store to evaluate health.
+// ApplicationHealthEvaluation represents health evaluation for an application, containing information about
+// the data and the algorithm used by the health store to evaluate health.
 type ApplicationHealthEvaluation struct {
 	// ApplicationName - The name of the application, including the 'fabric:' URI scheme.
 	ApplicationName *string `json:"ApplicationName,omitempty"`
@@ -4949,8 +1845,8 @@ type ApplicationHealthPolicies struct {
 	ApplicationHealthPolicyMap *[]ApplicationHealthPolicyMapItem `json:"ApplicationHealthPolicyMap,omitempty"`
 }
 
-// ApplicationHealthPolicy defines a health policy used to evaluate the health of an application or one of
-// its children entities.
+// ApplicationHealthPolicy defines a health policy used to evaluate the health of an application or one of its
+// children entities.
 type ApplicationHealthPolicy struct {
 	// ConsiderWarningAsError - Indicates whether warnings are treated with the same severity as errors.
 	ConsiderWarningAsError *bool `json:"ConsiderWarningAsError,omitempty"`
@@ -5935,8 +2831,8 @@ type ApplicationHealthStateChunk struct {
 	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
-// ApplicationHealthStateChunkList the list of application health state chunks in the cluster that respect
-// the input filters in the chunk query. Returned by get cluster health state chunks query.
+// ApplicationHealthStateChunkList the list of application health state chunks in the cluster that respect the
+// input filters in the chunk query. Returned by get cluster health state chunks query.
 type ApplicationHealthStateChunkList struct {
 	// Items - The list of application health state chunks that respect the input filters in the chunk query.
 	Items *[]ApplicationHealthStateChunk `json:"Items,omitempty"`
@@ -5944,8 +2840,8 @@ type ApplicationHealthStateChunkList struct {
 	TotalCount *int64 `json:"TotalCount,omitempty"`
 }
 
-// ApplicationHealthStateFilter defines matching criteria to determine whether a application should be
-// included in the cluster health chunk.
+// ApplicationHealthStateFilter defines matching criteria to determine whether a application should be included
+// in the cluster health chunk.
 // One filter can match zero, one or multiple applications, depending on its properties.
 type ApplicationHealthStateFilter struct {
 	// ApplicationNameFilter - The name of the application that matches the filter, as a fabric uri. The filter is applied only to the specified application, if it exists.
@@ -6028,8 +2924,8 @@ type ApplicationLoadInfo struct {
 	ApplicationLoadMetricInformation *[]ApplicationMetricDescription `json:"ApplicationLoadMetricInformation,omitempty"`
 }
 
-// ApplicationMetricDescription describes capacity information for a custom resource balancing metric. This
-// can be used to limit the total consumption of this metric by the services of this application.
+// ApplicationMetricDescription describes capacity information for a custom resource balancing metric. This can
+// be used to limit the total consumption of this metric by the services of this application.
 type ApplicationMetricDescription struct {
 	// Name - The name of the metric.
 	Name *string `json:"Name,omitempty"`
@@ -6062,8 +2958,8 @@ type ApplicationNameInfo struct {
 	Name *string `json:"Name,omitempty"`
 }
 
-// ApplicationParameter describes an application parameter override to be applied when creating or
-// upgrading an application.
+// ApplicationParameter describes an application parameter override to be applied when creating or upgrading an
+// application.
 type ApplicationParameter struct {
 	// Key - The name of the parameter.
 	Key *string `json:"Key,omitempty"`
@@ -6071,8 +2967,8 @@ type ApplicationParameter struct {
 	Value *string `json:"Value,omitempty"`
 }
 
-// ApplicationsHealthEvaluation represents health evaluation for applications, containing health
-// evaluations for each unhealthy application that impacted current aggregated health state.
+// ApplicationsHealthEvaluation represents health evaluation for applications, containing health evaluations
+// for each unhealthy application that impacted current aggregated health state.
 type ApplicationsHealthEvaluation struct {
 	// MaxPercentUnhealthyApplications - Maximum allowed percentage of unhealthy applications from the ClusterHealthPolicy.
 	MaxPercentUnhealthyApplications *int32 `json:"MaxPercentUnhealthyApplications,omitempty"`
@@ -6223,11 +3119,11 @@ func (ahe ApplicationsHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEv
 	return &ahe, true
 }
 
-// ApplicationTypeApplicationsHealthEvaluation represents health evaluation for applications of a
-// particular application type. The application type applications evaluation can be returned when cluster
-// health evaluation returns unhealthy aggregated health state, either Error or Warning. It contains health
-// evaluations for each unhealthy application of the included application type that impacted current
-// aggregated health state.
+// ApplicationTypeApplicationsHealthEvaluation represents health evaluation for applications of a particular
+// application type. The application type applications evaluation can be returned when cluster health
+// evaluation returns unhealthy aggregated health state, either Error or Warning. It contains health
+// evaluations for each unhealthy application of the included application type that impacted current aggregated
+// health state.
 type ApplicationTypeApplicationsHealthEvaluation struct {
 	// ApplicationTypeName - The application type name as defined in the application manifest.
 	ApplicationTypeName *string `json:"ApplicationTypeName,omitempty"`
@@ -6415,8 +3311,8 @@ type ApplicationTypeInfo struct {
 	ApplicationTypeDefinitionKind ApplicationTypeDefinitionKind `json:"ApplicationTypeDefinitionKind,omitempty"`
 }
 
-// ApplicationTypeManifest contains the manifest describing an application type registered in a Service
-// Fabric cluster.
+// ApplicationTypeManifest contains the manifest describing an application type registered in a Service Fabric
+// cluster.
 type ApplicationTypeManifest struct {
 	autorest.Response `json:"-"`
 	// Manifest - The XML manifest as a string.
@@ -6861,12 +3757,12 @@ func (auce ApplicationUpgradeCompleteEvent) AsBasicFabricEvent() (BasicFabricEve
 	return &auce, true
 }
 
-// ApplicationUpgradeDescription describes the parameters for an application upgrade. Please note that
-// upgrade description replaces the existing application description. This means that if the parameters are
-// not specified, the existing parameters on the applications will be overwritten with the empty parameters
-// list. This would results in application using the default value of the parameters from the application
-// manifest. If you do not want to change any existing parameter values, please get the application
-// parameters first using the GetApplicationInfo query and then supply those values as Parameters in this
+// ApplicationUpgradeDescription describes the parameters for an application upgrade. Please note that upgrade
+// description replaces the existing application description. This means that if the parameters are not
+// specified, the existing parameters on the applications will be overwritten with the empty parameters list.
+// This would results in application using the default value of the parameters from the application manifest.
+// If you do not want to change any existing parameter values, please get the application parameters first
+// using the GetApplicationInfo query and then supply those values as Parameters in this
 // ApplicationUpgradeDescription.
 type ApplicationUpgradeDescription struct {
 	// Name - The name of the target application, including the 'fabric:' URI scheme.
@@ -8725,8 +5621,7 @@ func (ause ApplicationUpgradeStartEvent) AsBasicFabricEvent() (BasicFabricEvent,
 	return &ause, true
 }
 
-// ApplicationUpgradeUpdateDescription describes the parameters for updating an ongoing application
-// upgrade.
+// ApplicationUpgradeUpdateDescription describes the parameters for updating an ongoing application upgrade.
 type ApplicationUpgradeUpdateDescription struct {
 	// Name - The name of the application, including the 'fabric:' URI scheme.
 	Name *string `json:"Name,omitempty"`
@@ -8795,8 +5690,8 @@ func (aplst AveragePartitionLoadScalingTrigger) AsBasicScalingTriggerDescription
 	return &aplst, true
 }
 
-// AverageServiceLoadScalingTrigger represents a scaling policy related to an average load of a
-// metric/resource of a service.
+// AverageServiceLoadScalingTrigger represents a scaling policy related to an average load of a metric/resource
+// of a service.
 type AverageServiceLoadScalingTrigger struct {
 	// MetricName - The name of the metric for which usage should be tracked.
 	MetricName *string `json:"MetricName,omitempty"`
@@ -9107,10 +6002,9 @@ func (be BackupEntity) AsBasicBackupEntity() (BasicBackupEntity, bool) {
 	return &be, true
 }
 
-// BackupEpoch an Epoch is a configuration number for the partition as a whole. When the configuration of
-// the replica set changes, for example when the Primary replica changes, the operations that are
-// replicated from the new Primary replica are said to be a new Epoch from the ones which were sent by the
-// old Primary replica.
+// BackupEpoch an Epoch is a configuration number for the partition as a whole. When the configuration of the
+// replica set changes, for example when the Primary replica changes, the operations that are replicated from
+// the new Primary replica are said to be a new Epoch from the ones which were sent by the old Primary replica.
 type BackupEpoch struct {
 	// ConfigurationNumber - The current configuration number of this Epoch. The configuration number is an increasing value that is updated whenever the configuration of this replica set changes.
 	ConfigurationNumber *string `json:"ConfigurationNumber,omitempty"`
@@ -9629,10 +6523,10 @@ type Chaos struct {
 	ScheduleStatus ChaosScheduleStatus `json:"ScheduleStatus,omitempty"`
 }
 
-// ChaosContext describes a map, which is a collection of (string, string) type key-value pairs. The map
-// can be used to record information about
-// the Chaos run. There cannot be more than 100 such pairs and each string (key or value) can be at most
-// 4095 characters long.
+// ChaosContext describes a map, which is a collection of (string, string) type key-value pairs. The map can be
+// used to record information about
+// the Chaos run. There cannot be more than 100 such pairs and each string (key or value) can be at most 4095
+// characters long.
 // This map is set by the starter of the Chaos run to optionally store the context about the specific run.
 type ChaosContext struct {
 	// Map - Describes a map that contains a collection of ChaosContextMapItem's.
@@ -13866,8 +10760,8 @@ type ChaosSchedule struct {
 	Jobs *[]ChaosScheduleJob `json:"Jobs,omitempty"`
 }
 
-// ChaosScheduleDescription defines the Chaos Schedule used by Chaos and the version of the Chaos Schedule.
-// The version value wraps back to 0 after surpassing 2,147,483,647.
+// ChaosScheduleDescription defines the Chaos Schedule used by Chaos and the version of the Chaos Schedule. The
+// version value wraps back to 0 after surpassing 2,147,483,647.
 type ChaosScheduleDescription struct {
 	autorest.Response `json:"-"`
 	// Version - The version number of the Schedule.
@@ -14795,16 +11689,16 @@ func (cse ChaosStoppedEvent) AsBasicFabricEvent() (BasicFabricEvent, bool) {
 // types or faulting only certain applications.
 // If ChaosTargetFilter is not used, Chaos faults all cluster entities. If ChaosTargetFilter is used, Chaos
 // faults only the entities that meet the ChaosTargetFilter
-// specification. NodeTypeInclusionList and ApplicationInclusionList allow a union semantics only. It is
-// not possible to specify an intersection
+// specification. NodeTypeInclusionList and ApplicationInclusionList allow a union semantics only. It is not
+// possible to specify an intersection
 // of NodeTypeInclusionList and ApplicationInclusionList. For example, it is not possible to specify "fault
 // this application only when it is on that node type."
-// Once an entity is included in either NodeTypeInclusionList or ApplicationInclusionList, that entity
-// cannot be excluded using ChaosTargetFilter. Even if
+// Once an entity is included in either NodeTypeInclusionList or ApplicationInclusionList, that entity cannot
+// be excluded using ChaosTargetFilter. Even if
 // applicationX does not appear in ApplicationInclusionList, in some Chaos iteration applicationX can be
 // faulted because it happens to be on a node of nodeTypeY that is included
-// in NodeTypeInclusionList. If both NodeTypeInclusionList and ApplicationInclusionList are null or empty,
-// an ArgumentException is thrown.
+// in NodeTypeInclusionList. If both NodeTypeInclusionList and ApplicationInclusionList are null or empty, an
+// ArgumentException is thrown.
 type ChaosTargetFilter struct {
 	// NodeTypeInclusionList - A list of node types to include in Chaos faults.
 	// All types of faults (restart node, restart code package, remove replica, restart replica, move primary, and move secondary) are enabled for the nodes of these node types.
@@ -14822,12 +11716,11 @@ type ChaosTargetFilter struct {
 	ApplicationInclusionList *[]string `json:"ApplicationInclusionList,omitempty"`
 }
 
-// CheckExistsPropertyBatchOperation represents a PropertyBatchOperation that compares the Boolean
-// existence of a property with the Exists argument.
-// The PropertyBatchOperation operation fails if the property's existence is not equal to the Exists
-// argument.
-// The CheckExistsPropertyBatchOperation is generally used as a precondition for the write operations in
-// the batch.
+// CheckExistsPropertyBatchOperation represents a PropertyBatchOperation that compares the Boolean existence of
+// a property with the Exists argument.
+// The PropertyBatchOperation operation fails if the property's existence is not equal to the Exists argument.
+// The CheckExistsPropertyBatchOperation is generally used as a precondition for the write operations in the
+// batch.
 // Note that if one PropertyBatchOperation in a PropertyBatch fails,
 // the entire batch fails and cannot be committed in a transactional manner.
 type CheckExistsPropertyBatchOperation struct {
@@ -14970,8 +11863,8 @@ func (cspbo CheckSequencePropertyBatchOperation) AsBasicPropertyBatchOperation()
 	return &cspbo, true
 }
 
-// CheckValuePropertyBatchOperation represents a PropertyBatchOperation that compares the value of the
-// property with the expected value.
+// CheckValuePropertyBatchOperation represents a PropertyBatchOperation that compares the value of the property
+// with the expected value.
 // The CheckValuePropertyBatchOperation is generally used as a precondition for the write operations in the
 // batch.
 // Note that if one PropertyBatchOperation in a PropertyBatch fails,
@@ -15112,8 +12005,7 @@ type ClusterConfigurationUpgradeDescription struct {
 	MaxPercentUpgradeDomainDeltaUnhealthyNodes *int32 `json:"MaxPercentUpgradeDomainDeltaUnhealthyNodes,omitempty"`
 }
 
-// ClusterConfigurationUpgradeStatusInfo information about a standalone cluster configuration upgrade
-// status.
+// ClusterConfigurationUpgradeStatusInfo information about a standalone cluster configuration upgrade status.
 type ClusterConfigurationUpgradeStatusInfo struct {
 	autorest.Response `json:"-"`
 	// UpgradeState - The state of the upgrade domain. Possible values include: 'UpgradeStateInvalid', 'UpgradeStateRollingBackInProgress', 'UpgradeStateRollingBackCompleted', 'UpgradeStateRollingForwardPending', 'UpgradeStateRollingForwardInProgress', 'UpgradeStateRollingForwardCompleted', 'UpgradeStateFailed'
@@ -15626,8 +12518,8 @@ func (ce ClusterEvent) AsBasicFabricEvent() (BasicFabricEvent, bool) {
 }
 
 // ClusterHealth represents the health of the cluster.
-// Contains the cluster aggregated health state, the cluster application and node health states as well as
-// the health events and the unhealthy evaluations.
+// Contains the cluster aggregated health state, the cluster application and node health states as well as the
+// health events and the unhealthy evaluations.
 type ClusterHealth struct {
 	autorest.Response `json:"-"`
 	// NodeHealthStates - Cluster node health states as found in the health store.
@@ -15660,9 +12552,9 @@ type ClusterHealthChunk struct {
 	ApplicationHealthStateChunks *ApplicationHealthStateChunkList `json:"ApplicationHealthStateChunks,omitempty"`
 }
 
-// ClusterHealthChunkQueryDescription the cluster health chunk query description, which can specify the
-// health policies to evaluate cluster health and very expressive filters to select which cluster entities
-// to include in response.
+// ClusterHealthChunkQueryDescription the cluster health chunk query description, which can specify the health
+// policies to evaluate cluster health and very expressive filters to select which cluster entities to include
+// in response.
 type ClusterHealthChunkQueryDescription struct {
 	// NodeFilters - Defines a list of filters that specify which nodes to be included in the returned cluster health chunk.
 	// If no filters are specified, no nodes are returned. All the nodes are used to evaluate the cluster's aggregated health state, regardless of the input filters.
@@ -15691,8 +12583,7 @@ type ClusterHealthPolicies struct {
 	ClusterHealthPolicy *ClusterHealthPolicy `json:"ClusterHealthPolicy,omitempty"`
 }
 
-// ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster
-// node.
+// ClusterHealthPolicy defines a health policy used to evaluate the health of the cluster or of a cluster node.
 type ClusterHealthPolicy struct {
 	// ConsiderWarningAsError - Indicates whether warnings are treated with the same severity as errors.
 	ConsiderWarningAsError *bool `json:"ConsiderWarningAsError,omitempty"`
@@ -17531,8 +14422,8 @@ func (cudce ClusterUpgradeDomainCompleteEvent) AsBasicFabricEvent() (BasicFabric
 	return &cudce, true
 }
 
-// ClusterUpgradeHealthPolicyObject defines a health policy used to evaluate the health of the cluster
-// during a cluster upgrade.
+// ClusterUpgradeHealthPolicyObject defines a health policy used to evaluate the health of the cluster during a
+// cluster upgrade.
 type ClusterUpgradeHealthPolicyObject struct {
 	// MaxPercentDeltaUnhealthyNodes - The maximum allowed percentage of nodes health degradation allowed during cluster upgrades. The delta is measured between the state of the nodes at the beginning of upgrade and the state of the nodes at the time of the health evaluation. The check is performed after every upgrade domain upgrade completion to make sure the global state of the cluster is within tolerated limits. The default value is 10%.
 	MaxPercentDeltaUnhealthyNodes *int32 `json:"MaxPercentDeltaUnhealthyNodes,omitempty"`
@@ -18878,8 +15769,8 @@ func (cuse ClusterUpgradeStartEvent) AsBasicFabricEvent() (BasicFabricEvent, boo
 	return &cuse, true
 }
 
-// CodePackageEntryPoint information about setup or main entry point of a code package deployed on a
-// Service Fabric node.
+// CodePackageEntryPoint information about setup or main entry point of a code package deployed on a Service
+// Fabric node.
 type CodePackageEntryPoint struct {
 	// EntryPointLocation - The location of entry point executable on the node.
 	EntryPointLocation *string `json:"EntryPointLocation,omitempty"`
@@ -18897,8 +15788,8 @@ type CodePackageEntryPoint struct {
 	InstanceID *string `json:"InstanceId,omitempty"`
 }
 
-// CodePackageEntryPointStatistics statistics about setup or main entry point  of a code package deployed
-// on a Service Fabric node.
+// CodePackageEntryPointStatistics statistics about setup or main entry point  of a code package deployed on a
+// Service Fabric node.
 type CodePackageEntryPointStatistics struct {
 	// LastExitCode - The last exit code of the entry point.
 	LastExitCode *string `json:"LastExitCode,omitempty"`
@@ -20029,10 +16920,9 @@ func (dpbo DeletePropertyBatchOperation) AsBasicPropertyBatchOperation() (BasicP
 	return &dpbo, true
 }
 
-// DeltaNodesCheckHealthEvaluation represents health evaluation for delta nodes, containing health
-// evaluations for each unhealthy node that impacted current aggregated health state.
-// Can be returned during cluster upgrade when the aggregated health state of the cluster is Warning or
-// Error.
+// DeltaNodesCheckHealthEvaluation represents health evaluation for delta nodes, containing health evaluations
+// for each unhealthy node that impacted current aggregated health state.
+// Can be returned during cluster upgrade when the aggregated health state of the cluster is Warning or Error.
 type DeltaNodesCheckHealthEvaluation struct {
 	// BaselineErrorCount - Number of nodes with aggregated heath state Error in the health store at the beginning of the cluster upgrade.
 	BaselineErrorCount *int64 `json:"BaselineErrorCount,omitempty"`
@@ -20194,8 +17084,7 @@ func (dnche DeltaNodesCheckHealthEvaluation) AsBasicHealthEvaluation() (BasicHea
 	return &dnche, true
 }
 
-// DeployedApplicationHealth information about the health of an application deployed on a Service Fabric
-// node.
+// DeployedApplicationHealth information about the health of an application deployed on a Service Fabric node.
 type DeployedApplicationHealth struct {
 	autorest.Response `json:"-"`
 	// Name - Name of the application deployed on the node whose health information is described by this object.
@@ -21327,8 +18216,8 @@ type DeployedApplicationHealthState struct {
 }
 
 // DeployedApplicationHealthStateChunk represents the health state chunk of a deployed application, which
-// contains the node where the application is deployed, the aggregated health state and any deployed
-// service packages that respect the chunk query description filters.
+// contains the node where the application is deployed, the aggregated health state and any deployed service
+// packages that respect the chunk query description filters.
 type DeployedApplicationHealthStateChunk struct {
 	// NodeName - The name of node where the application is deployed.
 	NodeName *string `json:"NodeName,omitempty"`
@@ -21338,15 +18227,15 @@ type DeployedApplicationHealthStateChunk struct {
 	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
-// DeployedApplicationHealthStateChunkList the list of deployed application health state chunks that
-// respect the input filters in the chunk query. Returned by get cluster health state chunks query.
+// DeployedApplicationHealthStateChunkList the list of deployed application health state chunks that respect
+// the input filters in the chunk query. Returned by get cluster health state chunks query.
 type DeployedApplicationHealthStateChunkList struct {
 	// Items - The list of deployed application health state chunks that respect the input filters in the chunk query.
 	Items *[]DeployedApplicationHealthStateChunk `json:"Items,omitempty"`
 }
 
-// DeployedApplicationHealthStateFilter defines matching criteria to determine whether a deployed
-// application should be included as a child of an application in the cluster health chunk.
+// DeployedApplicationHealthStateFilter defines matching criteria to determine whether a deployed application
+// should be included as a child of an application in the cluster health chunk.
 // The deployed applications are only returned if the parent application matches a filter specified in the
 // cluster health chunk query description.
 // One filter can match zero, one or multiple deployed applications, depending on its properties.
@@ -21400,8 +18289,7 @@ type DeployedApplicationInfo struct {
 }
 
 // DeployedApplicationsHealthEvaluation represents health evaluation for deployed applications, containing
-// health evaluations for each unhealthy deployed application that impacted current aggregated health
-// state.
+// health evaluations for each unhealthy deployed application that impacted current aggregated health state.
 // Can be returned when evaluating application health and the aggregated health state is either Error or
 // Warning.
 type DeployedApplicationsHealthEvaluation struct {
@@ -22546,8 +19434,8 @@ func (dshree DeployedServiceHealthReportExpiredEvent) AsBasicFabricEvent() (Basi
 	return &dshree, true
 }
 
-// DeployedServicePackageHealth information about the health of a service package for a specific
-// application deployed on a Service Fabric node.
+// DeployedServicePackageHealth information about the health of a service package for a specific application
+// deployed on a Service Fabric node.
 type DeployedServicePackageHealth struct {
 	autorest.Response `json:"-"`
 	// ApplicationName - The name of the application, including the 'fabric:' URI scheme.
@@ -22726,8 +19614,8 @@ func (dsphe DeployedServicePackageHealthEvaluation) AsBasicHealthEvaluation() (B
 	return &dsphe, true
 }
 
-// DeployedServicePackageHealthState represents the health state of a deployed service package, containing
-// the entity identifier and the aggregated health state.
+// DeployedServicePackageHealthState represents the health state of a deployed service package, containing the
+// entity identifier and the aggregated health state.
 type DeployedServicePackageHealthState struct {
 	// NodeName - Name of the node on which the service package is deployed.
 	NodeName *string `json:"NodeName,omitempty"`
@@ -22763,11 +19651,11 @@ type DeployedServicePackageHealthStateChunkList struct {
 	Items *[]DeployedServicePackageHealthStateChunk `json:"Items,omitempty"`
 }
 
-// DeployedServicePackageHealthStateFilter defines matching criteria to determine whether a deployed
-// service package should be included as a child of a deployed application in the cluster health chunk.
+// DeployedServicePackageHealthStateFilter defines matching criteria to determine whether a deployed service
+// package should be included as a child of a deployed application in the cluster health chunk.
 // The deployed service packages are only returned if the parent entities match a filter specified in the
-// cluster health chunk query description. The parent deployed application and its parent application must
-// be included in the cluster health chunk.
+// cluster health chunk query description. The parent deployed application and its parent application must be
+// included in the cluster health chunk.
 // One filter can match zero, one or multiple deployed service packages, depending on its properties.
 type DeployedServicePackageHealthStateFilter struct {
 	// ServiceManifestNameFilter - The name of the service manifest which identifies the deployed service packages that matches the filter.
@@ -22809,9 +19697,9 @@ type DeployedServicePackageInfo struct {
 }
 
 // DeployedServicePackagesHealthEvaluation represents health evaluation for deployed service packages,
-// containing health evaluations for each unhealthy deployed service package that impacted current
-// aggregated health state. Can be returned when evaluating deployed application health and the aggregated
-// health state is either Error or Warning.
+// containing health evaluations for each unhealthy deployed service package that impacted current aggregated
+// health state. Can be returned when evaluating deployed application health and the aggregated health state is
+// either Error or Warning.
 type DeployedServicePackagesHealthEvaluation struct {
 	// TotalCount - Total number of deployed service packages of the deployed application in the health store.
 	TotalCount *int64 `json:"TotalCount,omitempty"`
@@ -23215,8 +20103,8 @@ func (dsri DeployedServiceReplicaInfo) AsBasicDeployedServiceReplicaInfo() (Basi
 	return &dsri, true
 }
 
-// DeployedServiceTypeInfo information about service type deployed on a node, information such as the
-// status of the service type registration on a node.
+// DeployedServiceTypeInfo information about service type deployed on a node, information such as the status of
+// the service type registration on a node.
 type DeployedServiceTypeInfo struct {
 	// ServiceTypeName - Name of the service type as specified in the service manifest.
 	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
@@ -23558,9 +20446,9 @@ func (dssri DeployedStatefulServiceReplicaInfo) AsBasicDeployedServiceReplicaInf
 	return &dssri, true
 }
 
-// DeployedStatelessServiceInstanceDetailInfo information about a stateless instance running in a code
-// package. Please note that DeployedServiceReplicaQueryResult will contain duplicate data like
-// ServiceKind, ServiceName, PartitionId and InstanceId.
+// DeployedStatelessServiceInstanceDetailInfo information about a stateless instance running in a code package.
+// Please note that DeployedServiceReplicaQueryResult will contain duplicate data like ServiceKind,
+// ServiceName, PartitionId and InstanceId.
 type DeployedStatelessServiceInstanceDetailInfo struct {
 	// InstanceID - Id of a stateless service instance. InstanceId is used by Service Fabric to uniquely identify an instance of a partition of a stateless service. It is unique within a partition and does not change for the lifetime of the instance. If the instance has failed over on the same or different node, it will get a different value for the InstanceId.
 	InstanceID *string `json:"InstanceId,omitempty"`
@@ -23719,8 +20607,8 @@ func (dssii DeployedStatelessServiceInstanceInfo) AsBasicDeployedServiceReplicaI
 	return &dssii, true
 }
 
-// DeployServicePackageToNodeDescription defines description for downloading packages associated with a
-// service manifest to image cache on a Service Fabric node.
+// DeployServicePackageToNodeDescription defines description for downloading packages associated with a service
+// manifest to image cache on a Service Fabric node.
 type DeployServicePackageToNodeDescription struct {
 	// ServiceManifestName - The name of service manifest whose packages need to be downloaded.
 	ServiceManifestName *string `json:"ServiceManifestName,omitempty"`
@@ -23796,9 +20684,9 @@ type EnableBackupDescription struct {
 	BackupPolicyName *string `json:"BackupPolicyName,omitempty"`
 }
 
-// EnsureAvailabilitySafetyCheck safety check that waits to ensure the availability of the partition. It
-// waits until there are replicas available such that bringing down this replica will not cause
-// availability loss for the partition.
+// EnsureAvailabilitySafetyCheck safety check that waits to ensure the availability of the partition. It waits
+// until there are replicas available such that bringing down this replica will not cause availability loss for
+// the partition.
 type EnsureAvailabilitySafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
@@ -23980,8 +20868,8 @@ type EntityHealthStateChunk struct {
 	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
-// EntityHealthStateChunkList a base type for the list of health state chunks found in the cluster. It
-// contains the total number of health states that match the input filters.
+// EntityHealthStateChunkList a base type for the list of health state chunks found in the cluster. It contains
+// the total number of health states that match the input filters.
 type EntityHealthStateChunkList struct {
 	// TotalCount - Total number of entity health state objects that match the specified filters from the cluster health chunk query description.
 	TotalCount *int64 `json:"TotalCount,omitempty"`
@@ -23995,10 +20883,9 @@ type EntityKindHealthStateCount struct {
 	HealthStateCount *HealthStateCount `json:"HealthStateCount,omitempty"`
 }
 
-// Epoch an Epoch is a configuration number for the partition as a whole. When the configuration of the
-// replica set changes, for example when the Primary replica changes, the operations that are replicated
-// from the new Primary replica are said to be a new Epoch from the ones which were sent by the old Primary
-// replica.
+// Epoch an Epoch is a configuration number for the partition as a whole. When the configuration of the replica
+// set changes, for example when the Primary replica changes, the operations that are replicated from the new
+// Primary replica are said to be a new Epoch from the ones which were sent by the old Primary replica.
 type Epoch struct {
 	// ConfigurationVersion - The current configuration number of this Epoch. The configuration number is an increasing value that is updated whenever the configuration of this replica set changes.
 	ConfigurationVersion *string `json:"ConfigurationVersion,omitempty"`
@@ -24153,8 +21040,8 @@ func (ehe EventHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEvaluatio
 	return &ehe, true
 }
 
-// ExecutingFaultsChaosEvent describes a Chaos event that gets generated when Chaos has decided on the
-// faults for an iteration. This Chaos event contains the details of the faults as a list of strings.
+// ExecutingFaultsChaosEvent describes a Chaos event that gets generated when Chaos has decided on the faults
+// for an iteration. This Chaos event contains the details of the faults as a list of strings.
 type ExecutingFaultsChaosEvent struct {
 	// Faults - List of string description of the faults that Chaos decided to execute in an iteration.
 	Faults *[]string `json:"Faults,omitempty"`
@@ -24221,8 +21108,8 @@ func (efce ExecutingFaultsChaosEvent) AsBasicChaosEvent() (BasicChaosEvent, bool
 }
 
 // ExternalStoreProvisionApplicationTypeDescription describes the operation to register or provision an
-// application type using an application package from an external store instead of a package uploaded to
-// the Service Fabric image store.
+// application type using an application package from an external store instead of a package uploaded to the
+// Service Fabric image store.
 type ExternalStoreProvisionApplicationTypeDescription struct {
 	// ApplicationPackageDownloadURI - The path to the '.sfpkg' application package from where the application package can be downloaded using HTTP or HTTPS protocols. The application package can be stored in an external store that provides GET operation to download the file. Supported protocols are HTTP and HTTPS, and the path must allow READ access.
 	ApplicationPackageDownloadURI *string `json:"ApplicationPackageDownloadUri,omitempty"`
@@ -24290,9 +21177,8 @@ type FabricConfigVersionInfo struct {
 	ConfigVersion *string `json:"ConfigVersion,omitempty"`
 }
 
-// FabricError the REST API operations for Service Fabric return standard HTTP status codes. This type
-// defines the additional information returned from the Service Fabric API operations that are not
-// successful.
+// FabricError the REST API operations for Service Fabric return standard HTTP status codes. This type defines
+// the additional information returned from the Service Fabric API operations that are not successful.
 type FabricError struct {
 	// Error - Error object containing error code and error message.
 	Error *FabricErrorError `json:"Error,omitempty"`
@@ -25240,8 +22126,8 @@ func (fpbi FailedPropertyBatchInfo) AsBasicPropertyBatchInfo() (BasicPropertyBat
 	return &fpbi, true
 }
 
-// FailedUpgradeDomainProgressObject the detailed upgrade progress for nodes in the current upgrade domain
-// at the point of failure.
+// FailedUpgradeDomainProgressObject the detailed upgrade progress for nodes in the current upgrade domain at
+// the point of failure.
 type FailedUpgradeDomainProgressObject struct {
 	// DomainName - The name of the upgrade domain
 	DomainName *string `json:"DomainName,omitempty"`
@@ -25347,8 +22233,8 @@ type FileVersion struct {
 	EpochConfigurationNumber *string `json:"EpochConfigurationNumber,omitempty"`
 }
 
-// FolderInfo information about a image store folder. It includes how many files this folder contains and
-// its image store relative path.
+// FolderInfo information about a image store folder. It includes how many files this folder contains and its
+// image store relative path.
 type FolderInfo struct {
 	// StoreRelativePath - The remote location within image store. This path is relative to the image store root.
 	StoreRelativePath *string `json:"StoreRelativePath,omitempty"`
@@ -25397,8 +22283,8 @@ func (fbbsd FrequencyBasedBackupScheduleDescription) AsBasicBackupScheduleDescri
 	return &fbbsd, true
 }
 
-// GetBackupByStorageQueryDescription describes additional filters to be applied, while listing backups,
-// and backup storage details from where to fetch the backups.
+// GetBackupByStorageQueryDescription describes additional filters to be applied, while listing backups, and
+// backup storage details from where to fetch the backups.
 type GetBackupByStorageQueryDescription struct {
 	// StartDateTimeFilter - Specifies the start date time in ISO8601 from which to enumerate backups. If not specified, backups are enumerated from the beginning.
 	StartDateTimeFilter *date.Time `json:"StartDateTimeFilter,omitempty"`
@@ -25470,8 +22356,7 @@ func (gbbsqd *GetBackupByStorageQueryDescription) UnmarshalJSON(body []byte) err
 	return nil
 }
 
-// GetPropertyBatchOperation represents a PropertyBatchOperation that gets the specified property if it
-// exists.
+// GetPropertyBatchOperation represents a PropertyBatchOperation that gets the specified property if it exists.
 // Note that if one PropertyBatchOperation in a PropertyBatch fails,
 // the entire batch fails and cannot be committed in a transactional manner.
 type GetPropertyBatchOperation struct {
@@ -25901,8 +22786,8 @@ func (hew *HealthEvaluationWrapper) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// HealthEvent represents health information reported on a health entity, such as cluster, application or
-// node, with additional metadata added by the Health Manager.
+// HealthEvent represents health information reported on a health entity, such as cluster, application or node,
+// with additional metadata added by the Health Manager.
 type HealthEvent struct {
 	// IsExpired - Returns true if the health event is expired, otherwise false.
 	IsExpired *bool `json:"IsExpired,omitempty"`
@@ -25963,8 +22848,8 @@ type HealthEvent struct {
 	RemoveWhenExpired *bool `json:"RemoveWhenExpired,omitempty"`
 }
 
-// HealthInformation represents common health report information. It is included in all health reports sent
-// to health store and in all health events returned by health queries.
+// HealthInformation represents common health report information. It is included in all health reports sent to
+// health store and in all health events returned by health queries.
 type HealthInformation struct {
 	// SourceID - The source name which identifies the client/watchdog/system component which generated the health information.
 	SourceID *string `json:"SourceId,omitempty"`
@@ -26005,8 +22890,8 @@ type HealthInformation struct {
 	RemoveWhenExpired *bool `json:"RemoveWhenExpired,omitempty"`
 }
 
-// HealthStateCount represents information about how many health entities are in Ok, Warning and Error
-// health state.
+// HealthStateCount represents information about how many health entities are in Ok, Warning and Error health
+// state.
 type HealthStateCount struct {
 	// OkCount - The number of health entities with aggregated health state Ok.
 	OkCount *int64 `json:"OkCount,omitempty"`
@@ -26016,8 +22901,8 @@ type HealthStateCount struct {
 	ErrorCount *int64 `json:"ErrorCount,omitempty"`
 }
 
-// HealthStatistics the health statistics of an entity, returned as part of the health query result when
-// the query description is configured to include statistics.
+// HealthStatistics the health statistics of an entity, returned as part of the health query result when the
+// query description is configured to include statistics.
 // The statistics include health state counts for all children types of the current entity.
 // For example, for cluster, the health statistics include health state counts for nodes, applications,
 // services, partitions, replicas, deployed applications and deployed service packages.
@@ -26036,8 +22921,8 @@ type ImageStoreContent struct {
 	StoreFolders *[]FolderInfo `json:"StoreFolders,omitempty"`
 }
 
-// ImageStoreCopyDescription information about how to copy image store content from one image store
-// relative path to another image store relative path.
+// ImageStoreCopyDescription information about how to copy image store content from one image store relative
+// path to another image store relative path.
 type ImageStoreCopyDescription struct {
 	// RemoteSource - The relative path of source image store content to be copied from.
 	RemoteSource *string `json:"RemoteSource,omitempty"`
@@ -26105,8 +22990,8 @@ func (i6pv Int64PropertyValue) AsBasicPropertyValue() (BasicPropertyValue, bool)
 	return &i6pv, true
 }
 
-// Int64RangePartitionInformation describes the partition information for the integer range that is based
-// on partition schemes.
+// Int64RangePartitionInformation describes the partition information for the integer range that is based on
+// partition schemes.
 type Int64RangePartitionInformation struct {
 	// LowKey - Specifies the minimum key value handled by this partition.
 	LowKey *string `json:"LowKey,omitempty"`
@@ -26162,8 +23047,7 @@ func (i6rpi Int64RangePartitionInformation) AsBasicPartitionInformation() (Basic
 	return &i6rpi, true
 }
 
-// InvokeDataLossResult represents information about an operation in a terminal state (Completed or
-// Faulted).
+// InvokeDataLossResult represents information about an operation in a terminal state (Completed or Faulted).
 type InvokeDataLossResult struct {
 	// ErrorCode - If OperationState is Completed, this is 0.  If OperationState is Faulted, this is an error code indicating the reason.
 	ErrorCode *int32 `json:"ErrorCode,omitempty"`
@@ -26171,8 +23055,7 @@ type InvokeDataLossResult struct {
 	SelectedPartition *SelectedPartition `json:"SelectedPartition,omitempty"`
 }
 
-// InvokeQuorumLossResult represents information about an operation in a terminal state (Completed or
-// Faulted).
+// InvokeQuorumLossResult represents information about an operation in a terminal state (Completed or Faulted).
 type InvokeQuorumLossResult struct {
 	// ErrorCode - If OperationState is Completed, this is 0.  If OperationState is Faulted, this is an error code indicating the reason.
 	ErrorCode *int32 `json:"ErrorCode,omitempty"`
@@ -26426,8 +23309,8 @@ type ListServiceTypeInfo struct {
 	Value             *[]ServiceTypeInfo `json:"value,omitempty"`
 }
 
-// LoadMetricReport represents the load metric report which contains the time metric was reported, its name
-// and value.
+// LoadMetricReport represents the load metric report which contains the time metric was reported, its name and
+// value.
 type LoadMetricReport struct {
 	// LastReportedUtc - Gets the UTC time when the load was reported.
 	LastReportedUtc *date.Time `json:"LastReportedUtc,omitempty"`
@@ -29721,8 +26604,8 @@ func (ndse NodeDeactivateStartEvent) AsBasicFabricEvent() (BasicFabricEvent, boo
 	return &ndse, true
 }
 
-// NodeDeactivationInfo information about the node deactivation. This information is valid for a node that
-// is undergoing deactivation or has already been deactivated.
+// NodeDeactivationInfo information about the node deactivation. This information is valid for a node that is
+// undergoing deactivation or has already been deactivated.
 type NodeDeactivationInfo struct {
 	// NodeDeactivationIntent - The intent or the reason for deactivating the node. Following are the possible values for it. Possible values include: 'NodeDeactivationIntentInvalid', 'NodeDeactivationIntentPause', 'NodeDeactivationIntentRestart', 'NodeDeactivationIntentRemoveData', 'NodeDeactivationIntentRemoveNode'
 	NodeDeactivationIntent NodeDeactivationIntent `json:"NodeDeactivationIntent,omitempty"`
@@ -30742,9 +27625,9 @@ type NodeHealth struct {
 	HealthStatistics *HealthStatistics `json:"HealthStatistics,omitempty"`
 }
 
-// NodeHealthEvaluation represents health evaluation for a node, containing information about the data and
-// the algorithm used by health store to evaluate health. The evaluation is returned only when the
-// aggregated health state is either Error or Warning.
+// NodeHealthEvaluation represents health evaluation for a node, containing information about the data and the
+// algorithm used by health store to evaluate health. The evaluation is returned only when the aggregated
+// health state is either Error or Warning.
 type NodeHealthEvaluation struct {
 	// NodeName - The name of a Service Fabric node.
 	NodeName *string `json:"NodeName,omitempty"`
@@ -31822,8 +28705,8 @@ func (nhree NodeHealthReportExpiredEvent) AsBasicFabricEvent() (BasicFabricEvent
 	return &nhree, true
 }
 
-// NodeHealthState represents the health state of a node, which contains the node identifier and its
-// aggregated health state.
+// NodeHealthState represents the health state of a node, which contains the node identifier and its aggregated
+// health state.
 type NodeHealthState struct {
 	// Name - The name of a Service Fabric node.
 	Name *string `json:"Name,omitempty"`
@@ -31842,8 +28725,8 @@ type NodeHealthStateChunk struct {
 	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
-// NodeHealthStateChunkList the list of node health state chunks in the cluster that respect the input
-// filters in the chunk query. Returned by get cluster health state chunks query.
+// NodeHealthStateChunkList the list of node health state chunks in the cluster that respect the input filters
+// in the chunk query. Returned by get cluster health state chunks query.
 type NodeHealthStateChunkList struct {
 	// Items - The list of node health state chunks that respect the input filters in the chunk query.
 	Items *[]NodeHealthStateChunk `json:"Items,omitempty"`
@@ -31933,8 +28816,8 @@ type NodeInfo struct {
 	NodeDownAt *date.Time `json:"NodeDownAt,omitempty"`
 }
 
-// NodeLoadInfo information about load on a Service Fabric node. It holds a summary of all metrics and
-// their load on a node.
+// NodeLoadInfo information about load on a Service Fabric node. It holds a summary of all metrics and their
+// load on a node.
 type NodeLoadInfo struct {
 	autorest.Response `json:"-"`
 	// NodeName - Name of the node for which the load information is provided by this object.
@@ -31943,8 +28826,8 @@ type NodeLoadInfo struct {
 	NodeLoadMetricInformation *[]NodeLoadMetricInformation `json:"NodeLoadMetricInformation,omitempty"`
 }
 
-// NodeLoadMetricInformation represents data structure that contains load information for a certain metric
-// on a node.
+// NodeLoadMetricInformation represents data structure that contains load information for a certain metric on a
+// node.
 type NodeLoadMetricInformation struct {
 	// Name - Name of the metric for which this load information is provided.
 	Name *string `json:"Name,omitempty"`
@@ -33886,8 +30769,8 @@ type NodeResult struct {
 }
 
 // NodesHealthEvaluation represents health evaluation for nodes, containing health evaluations for each
-// unhealthy node that impacted current aggregated health state. Can be returned when evaluating cluster
-// health and the aggregated health state is either Error or Warning.
+// unhealthy node that impacted current aggregated health state. Can be returned when evaluating cluster health
+// and the aggregated health state is either Error or Warning.
 type NodesHealthEvaluation struct {
 	// MaxPercentUnhealthyNodes - Maximum allowed percentage of unhealthy nodes from the ClusterHealthPolicy.
 	MaxPercentUnhealthyNodes *int32 `json:"MaxPercentUnhealthyNodes,omitempty"`
@@ -34038,8 +30921,8 @@ func (nhe NodesHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEvaluatio
 	return &nhe, true
 }
 
-// NodeTransitionProgress information about an NodeTransition operation.  This class contains an
-// OperationState and a NodeTransitionResult.  The NodeTransitionResult is not valid until OperationState
+// NodeTransitionProgress information about an NodeTransition operation.  This class contains an OperationState
+// and a NodeTransitionResult.  The NodeTransitionResult is not valid until OperationState
 // is Completed or Faulted.
 type NodeTransitionProgress struct {
 	autorest.Response `json:"-"`
@@ -34049,8 +30932,7 @@ type NodeTransitionProgress struct {
 	NodeTransitionResult *NodeTransitionResult `json:"NodeTransitionResult,omitempty"`
 }
 
-// NodeTransitionResult represents information about an operation in a terminal state (Completed or
-// Faulted).
+// NodeTransitionResult represents information about an operation in a terminal state (Completed or Faulted).
 type NodeTransitionResult struct {
 	// ErrorCode - If OperationState is Completed, this is 0.  If OperationState is Faulted, this is an error code indicating the reason.
 	ErrorCode *int32 `json:"ErrorCode,omitempty"`
@@ -34517,9 +31399,9 @@ type PackageSharingPolicyInfo struct {
 	PackageSharingScope PackageSharingPolicyScope `json:"PackageSharingScope,omitempty"`
 }
 
-// PagedApplicationInfoList the list of applications in the cluster. The list is paged when all of the
-// results cannot fit in a single message. The next set of results can be obtained by executing the same
-// query with the continuation token provided in this list.
+// PagedApplicationInfoList the list of applications in the cluster. The list is paged when all of the results
+// cannot fit in a single message. The next set of results can be obtained by executing the same query with the
+// continuation token provided in this list.
 type PagedApplicationInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results then the continuation token is not included in the response.
@@ -34528,9 +31410,9 @@ type PagedApplicationInfoList struct {
 	Items *[]ApplicationInfo `json:"Items,omitempty"`
 }
 
-// PagedApplicationTypeInfoList the list of application types that are provisioned or being provisioned in
-// the cluster. The list is paged when all of the results cannot fit in a single message. The next set of
-// results can be obtained by executing the same query with the continuation token provided in this list.
+// PagedApplicationTypeInfoList the list of application types that are provisioned or being provisioned in the
+// cluster. The list is paged when all of the results cannot fit in a single message. The next set of results
+// can be obtained by executing the same query with the continuation token provided in this list.
 type PagedApplicationTypeInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results then the continuation token is not included in the response.
@@ -34539,9 +31421,9 @@ type PagedApplicationTypeInfoList struct {
 	Items *[]ApplicationTypeInfo `json:"Items,omitempty"`
 }
 
-// PagedBackupConfigurationInfoList the list of backup configuration information. The list is paged when
-// all of the results cannot fit in a single message. The next set of results can be obtained by executing
-// the same query with the continuation token provided in this list.
+// PagedBackupConfigurationInfoList the list of backup configuration information. The list is paged when all of
+// the results cannot fit in a single message. The next set of results can be obtained by executing the same
+// query with the continuation token provided in this list.
 type PagedBackupConfigurationInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results then the continuation token is not included in the response.
@@ -34582,9 +31464,9 @@ func (pbcil *PagedBackupConfigurationInfoList) UnmarshalJSON(body []byte) error 
 	return nil
 }
 
-// PagedBackupEntityList the list of backup entities that are being periodically backed. The list is paged
-// when all of the results cannot fit in a single message. The next set of results can be obtained by
-// executing the same query with the continuation token provided in this list.
+// PagedBackupEntityList the list of backup entities that are being periodically backed. The list is paged when
+// all of the results cannot fit in a single message. The next set of results can be obtained by executing the
+// same query with the continuation token provided in this list.
 type PagedBackupEntityList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results then the continuation token is not included in the response.
@@ -34625,9 +31507,9 @@ func (pbel *PagedBackupEntityList) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PagedBackupInfoList the list of backups. The list is paged when all of the results cannot fit in a
-// single message. The next set of results can be obtained by executing the same query with the
-// continuation token provided in this list.
+// PagedBackupInfoList the list of backups. The list is paged when all of the results cannot fit in a single
+// message. The next set of results can be obtained by executing the same query with the continuation token
+// provided in this list.
 type PagedBackupInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results then the continuation token is not included in the response.
@@ -34636,9 +31518,9 @@ type PagedBackupInfoList struct {
 	Items *[]BackupInfo `json:"Items,omitempty"`
 }
 
-// PagedBackupPolicyDescriptionList the list of backup policies configured in the cluster. The list is
-// paged when all of the results cannot fit in a single message. The next set of results can be obtained by
-// executing the same query with the continuation token provided in this list.
+// PagedBackupPolicyDescriptionList the list of backup policies configured in the cluster. The list is paged
+// when all of the results cannot fit in a single message. The next set of results can be obtained by executing
+// the same query with the continuation token provided in this list.
 type PagedBackupPolicyDescriptionList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results then the continuation token is not included in the response.
@@ -34647,9 +31529,9 @@ type PagedBackupPolicyDescriptionList struct {
 	Items *[]BackupPolicyDescription `json:"Items,omitempty"`
 }
 
-// PagedComposeDeploymentStatusInfoList the list of compose deployments in the cluster. The list is paged
-// when all of the results cannot fit in a single message. The next set of results can be obtained by
-// executing the same query with the continuation token provided in this list.
+// PagedComposeDeploymentStatusInfoList the list of compose deployments in the cluster. The list is paged when
+// all of the results cannot fit in a single message. The next set of results can be obtained by executing the
+// same query with the continuation token provided in this list.
 type PagedComposeDeploymentStatusInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results then the continuation token is not included in the response.
@@ -34661,8 +31543,8 @@ type PagedComposeDeploymentStatusInfoList struct {
 // PagedDeployedApplicationInfoList the list of deployed applications in activating, downloading, or active
 // states on a node.
 // The list is paged when all of the results cannot fit in a single message.
-// The next set of results can be obtained by executing the same query with the continuation token provided
-// in this list.
+// The next set of results can be obtained by executing the same query with the continuation token provided in
+// this list.
 type PagedDeployedApplicationInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results then the continuation token is not included in the response.
@@ -34671,9 +31553,9 @@ type PagedDeployedApplicationInfoList struct {
 	Items *[]DeployedApplicationInfo `json:"Items,omitempty"`
 }
 
-// PagedNodeInfoList the list of nodes in the cluster. The list is paged when all of the results cannot fit
-// in a single message. The next set of results can be obtained by executing the same query with the
-// continuation token provided in this list.
+// PagedNodeInfoList the list of nodes in the cluster. The list is paged when all of the results cannot fit in
+// a single message. The next set of results can be obtained by executing the same query with the continuation
+// token provided in this list.
 type PagedNodeInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results then the continuation token is not included in the response.
@@ -34682,9 +31564,9 @@ type PagedNodeInfoList struct {
 	Items *[]NodeInfo `json:"Items,omitempty"`
 }
 
-// PagedPropertyInfoList the paged list of Service Fabric properties under a given name. The list is paged
-// when all of the results cannot fit in a single message. The next set of results can be obtained by
-// executing the same query with the continuation token provided in this list.
+// PagedPropertyInfoList the paged list of Service Fabric properties under a given name. The list is paged when
+// all of the results cannot fit in a single message. The next set of results can be obtained by executing the
+// same query with the continuation token provided in this list.
 type PagedPropertyInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results then the continuation token is not included in the response.
@@ -34695,9 +31577,9 @@ type PagedPropertyInfoList struct {
 	Properties *[]PropertyInfo `json:"Properties,omitempty"`
 }
 
-// PagedReplicaInfoList the list of replicas in the cluster for a given partition. The list is paged when
-// all of the results cannot fit in a single message. The next set of results can be obtained by executing
-// the same query with the continuation token provided in this list.
+// PagedReplicaInfoList the list of replicas in the cluster for a given partition. The list is paged when all
+// of the results cannot fit in a single message. The next set of results can be obtained by executing the same
+// query with the continuation token provided in this list.
 type PagedReplicaInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results then the continuation token is not included in the response.
@@ -34738,9 +31620,9 @@ func (pril *PagedReplicaInfoList) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PagedServiceInfoList the list of services in the cluster for an application. The list is paged when all
-// of the results cannot fit in a single message. The next set of results can be obtained by executing the
-// same query with the continuation token provided in this list.
+// PagedServiceInfoList the list of services in the cluster for an application. The list is paged when all of
+// the results cannot fit in a single message. The next set of results can be obtained by executing the same
+// query with the continuation token provided in this list.
 type PagedServiceInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results then the continuation token is not included in the response.
@@ -34781,9 +31663,9 @@ func (psil *PagedServiceInfoList) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PagedServicePartitionInfoList the list of partition in the cluster for a service. The list is paged when
-// all of the results cannot fit in a single message. The next set of results can be obtained by executing
-// the same query with the continuation token provided in this list.
+// PagedServicePartitionInfoList the list of partition in the cluster for a service. The list is paged when all
+// of the results cannot fit in a single message. The next set of results can be obtained by executing the same
+// query with the continuation token provided in this list.
 type PagedServicePartitionInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results then the continuation token is not included in the response.
@@ -34824,9 +31706,9 @@ func (pspil *PagedServicePartitionInfoList) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PagedSubNameInfoList a paged list of Service Fabric names. The list is paged when all of the results
-// cannot fit in a single message. The next set of results can be obtained by executing the same query with
-// the continuation token provided in this list.
+// PagedSubNameInfoList a paged list of Service Fabric names. The list is paged when all of the results cannot
+// fit in a single message. The next set of results can be obtained by executing the same query with the
+// continuation token provided in this list.
 type PagedSubNameInfoList struct {
 	autorest.Response `json:"-"`
 	// ContinuationToken - The continuation token parameter is used to obtain next set of results. The continuation token is included in the response of the API when the results from the system do not fit in a single response. When this value is passed to the next API call, the API returns next set of results. If there are no further results then the continuation token is not included in the response.
@@ -35306,8 +32188,8 @@ func (pae PartitionAnalysisEvent) AsBasicFabricEvent() (BasicFabricEvent, bool) 
 	return &pae, true
 }
 
-// PartitionBackupConfigurationInfo backup configuration information, for a specific partition, specifying
-// what backup policy is being applied and suspend description, if any.
+// PartitionBackupConfigurationInfo backup configuration information, for a specific partition, specifying what
+// backup policy is being applied and suspend description, if any.
 type PartitionBackupConfigurationInfo struct {
 	autorest.Response `json:"-"`
 	// ServiceName - The full name of the service with 'fabric:' URI scheme.
@@ -37086,8 +33968,8 @@ func (phree PartitionHealthReportExpiredEvent) AsBasicFabricEvent() (BasicFabric
 	return &phree, true
 }
 
-// PartitionHealthState represents the health state of a partition, which contains the partition identifier
-// and its aggregated health state.
+// PartitionHealthState represents the health state of a partition, which contains the partition identifier and
+// its aggregated health state.
 type PartitionHealthState struct {
 	// PartitionID - Id of the partition whose health state is described by this object.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
@@ -37095,9 +33977,9 @@ type PartitionHealthState struct {
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 }
 
-// PartitionHealthStateChunk represents the health state chunk of a partition, which contains the partition
-// ID, its aggregated health state and any replicas that respect the filters in the cluster health chunk
-// query description.
+// PartitionHealthStateChunk represents the health state chunk of a partition, which contains the partition ID,
+// its aggregated health state and any replicas that respect the filters in the cluster health chunk query
+// description.
 type PartitionHealthStateChunk struct {
 	// PartitionID - The Id of the partition.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
@@ -37107,19 +33989,18 @@ type PartitionHealthStateChunk struct {
 	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
-// PartitionHealthStateChunkList the list of partition health state chunks that respect the input filters
-// in the chunk query description.
+// PartitionHealthStateChunkList the list of partition health state chunks that respect the input filters in
+// the chunk query description.
 // Returned by get cluster health state chunks query as part of the parent application hierarchy.
 type PartitionHealthStateChunkList struct {
 	// Items - The list of partition health state chunks that respect the input filters in the chunk query.
 	Items *[]PartitionHealthStateChunk `json:"Items,omitempty"`
 }
 
-// PartitionHealthStateFilter defines matching criteria to determine whether a partition should be included
-// as a child of a service in the cluster health chunk.
-// The partitions are only returned if the parent entities match a filter specified in the cluster health
-// chunk query description. The parent service and application must be included in the cluster health
-// chunk.
+// PartitionHealthStateFilter defines matching criteria to determine whether a partition should be included as
+// a child of a service in the cluster health chunk.
+// The partitions are only returned if the parent entities match a filter specified in the cluster health chunk
+// query description. The parent service and application must be included in the cluster health chunk.
 // One filter can match zero, one or multiple partitions, depending on its properties.
 type PartitionHealthStateFilter struct {
 	// PartitionIDFilter - ID of the partition that matches the filter. The filter is applied only to the specified partition, if it exists.
@@ -37299,8 +34180,8 @@ func (picsm PartitionInstanceCountScaleMechanism) AsBasicScalingMechanismDescrip
 
 // PartitionLoadInformation represents load information for a partition, which contains the primary and
 // secondary reported load metrics.
-// In case there is no load reported, PartitionLoadInformation will contain the default load for the
-// service of the partition.
+// In case there is no load reported, PartitionLoadInformation will contain the default load for the service of
+// the partition.
 // For default loads, LoadMetricReport's LastReportedUtc is set to 0.
 type PartitionLoadInformation struct {
 	autorest.Response `json:"-"`
@@ -38508,9 +35389,9 @@ func (psd PartitionSchemeDescription) AsBasicPartitionSchemeDescription() (Basic
 	return &psd, true
 }
 
-// PartitionsHealthEvaluation represents health evaluation for the partitions of a service, containing
-// health evaluations for each unhealthy partition that impacts current aggregated health state. Can be
-// returned when evaluating service health and the aggregated health state is either Error or Warning.
+// PartitionsHealthEvaluation represents health evaluation for the partitions of a service, containing health
+// evaluations for each unhealthy partition that impacts current aggregated health state. Can be returned when
+// evaluating service health and the aggregated health state is either Error or Warning.
 type PartitionsHealthEvaluation struct {
 	// MaxPercentUnhealthyPartitionsPerService - Maximum allowed percentage of unhealthy partitions per service from the ServiceTypeHealthPolicy.
 	MaxPercentUnhealthyPartitionsPerService *int32 `json:"MaxPercentUnhealthyPartitionsPerService,omitempty"`
@@ -38661,8 +35542,8 @@ func (phe PartitionsHealthEvaluation) AsBasicHealthEvaluation() (BasicHealthEval
 	return &phe, true
 }
 
-// PrimaryReplicatorStatus provides statistics about the Service Fabric Replicator, when it is functioning
-// in a Primary role.
+// PrimaryReplicatorStatus provides statistics about the Service Fabric Replicator, when it is functioning in a
+// Primary role.
 type PrimaryReplicatorStatus struct {
 	// ReplicationQueueStatus - Details about the replication queue on the primary replicator.
 	ReplicationQueueStatus *ReplicatorQueueStatus `json:"ReplicationQueueStatus,omitempty"`
@@ -40021,8 +36902,8 @@ type RemoteReplicatorAcknowledgementStatus struct {
 	CopyStreamAcknowledgementDetail *RemoteReplicatorAcknowledgementDetail `json:"CopyStreamAcknowledgementDetail,omitempty"`
 }
 
-// RemoteReplicatorStatus represents the state of the secondary replicator from the primary replicator’s
-// point of view.
+// RemoteReplicatorStatus represents the state of the secondary replicator from the primary replicator’s point
+// of view.
 type RemoteReplicatorStatus struct {
 	// ReplicaID - Represents the replica ID of the remote secondary replicator.
 	ReplicaID *string `json:"ReplicaId,omitempty"`
@@ -40492,8 +37373,7 @@ type RepairTaskHistory struct {
 	RestoringHealthCheckEndUtcTimestamp *date.Time `json:"RestoringHealthCheckEndUtcTimestamp,omitempty"`
 }
 
-// RepairTaskUpdateHealthPolicyDescription describes a request to update the health policy of a repair
-// task.
+// RepairTaskUpdateHealthPolicyDescription describes a request to update the health policy of a repair task.
 //
 // This type supports the Service Fabric platform; it is not meant to be used directly from your code.
 type RepairTaskUpdateHealthPolicyDescription struct {
@@ -41129,8 +38009,8 @@ func (rh ReplicaHealth) AsBasicReplicaHealth() (BasicReplicaHealth, bool) {
 	return &rh, true
 }
 
-// ReplicaHealthEvaluation represents health evaluation for a replica, containing information about the
-// data and the algorithm used by health store to evaluate health. The evaluation is returned only when the
+// ReplicaHealthEvaluation represents health evaluation for a replica, containing information about the data
+// and the algorithm used by health store to evaluate health. The evaluation is returned only when the
 // aggregated health state is either Error or Warning.
 type ReplicaHealthEvaluation struct {
 	// PartitionID - Id of the partition to which the replica belongs.
@@ -41405,18 +38285,18 @@ type ReplicaHealthStateChunk struct {
 	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
-// ReplicaHealthStateChunkList the list of replica health state chunks that respect the input filters in
-// the chunk query. Returned by get cluster health state chunks query.
+// ReplicaHealthStateChunkList the list of replica health state chunks that respect the input filters in the
+// chunk query. Returned by get cluster health state chunks query.
 type ReplicaHealthStateChunkList struct {
 	// Items - The list of replica health state chunks that respect the input filters in the chunk query.
 	Items *[]ReplicaHealthStateChunk `json:"Items,omitempty"`
 }
 
-// ReplicaHealthStateFilter defines matching criteria to determine whether a replica should be included as
-// a child of a partition in the cluster health chunk.
-// The replicas are only returned if the parent entities match a filter specified in the cluster health
-// chunk query description. The parent partition, service and application must be included in the cluster
-// health chunk.
+// ReplicaHealthStateFilter defines matching criteria to determine whether a replica should be included as a
+// child of a partition in the cluster health chunk.
+// The replicas are only returned if the parent entities match a filter specified in the cluster health chunk
+// query description. The parent partition, service and application must be included in the cluster health
+// chunk.
 // One filter can match zero, one or multiple replicas, depending on its properties.
 type ReplicaHealthStateFilter struct {
 	// ReplicaOrInstanceIDFilter - Id of the stateful service replica or stateless service instance that matches the filter. The filter is applied only to the specified replica, if it exists.
@@ -41567,9 +38447,9 @@ func (rim *ReplicaInfoModel) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ReplicasHealthEvaluation represents health evaluation for replicas, containing health evaluations for
-// each unhealthy replica that impacted current aggregated health state. Can be returned when evaluating
-// partition health and the aggregated health state is either Error or Warning.
+// ReplicasHealthEvaluation represents health evaluation for replicas, containing health evaluations for each
+// unhealthy replica that impacted current aggregated health state. Can be returned when evaluating partition
+// health and the aggregated health state is either Error or Warning.
 type ReplicasHealthEvaluation struct {
 	// MaxPercentUnhealthyReplicasPerPartition - Maximum allowed percentage of unhealthy replicas per partition from the ApplicationHealthPolicy.
 	MaxPercentUnhealthyReplicasPerPartition *int32 `json:"MaxPercentUnhealthyReplicasPerPartition,omitempty"`
@@ -41795,8 +38675,8 @@ func (rsb ReplicaStatusBase) AsBasicReplicaStatusBase() (BasicReplicaStatusBase,
 }
 
 // ReplicatorQueueStatus provides various statistics of the queue used in the service fabric replicator.
-// Contains information about the service fabric replicator like the replication/copy queue utilization,
-// last acknowledgement received timestamp, etc.
+// Contains information about the service fabric replicator like the replication/copy queue utilization, last
+// acknowledgement received timestamp, etc.
 // Depending on the role of the replicator, the properties in this type imply different meanings.
 type ReplicatorQueueStatus struct {
 	// QueueUtilizationPercentage - Represents the utilization of the queue. A value of 0 indicates that the queue is empty and a value of 100 indicates the queue is full.
@@ -42001,8 +38881,8 @@ func (rsp *ResolvedServicePartition) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// RestartDeployedCodePackageDescription defines description for restarting a deployed code package on
-// Service Fabric node.
+// RestartDeployedCodePackageDescription defines description for restarting a deployed code package on Service
+// Fabric node.
 type RestartDeployedCodePackageDescription struct {
 	// ServiceManifestName - The name of service manifest that specified this code package.
 	ServiceManifestName *string `json:"ServiceManifestName,omitempty"`
@@ -42027,8 +38907,7 @@ type RestartNodeDescription struct {
 	CreateFabricDump CreateFabricDump `json:"CreateFabricDump,omitempty"`
 }
 
-// RestartPartitionResult represents information about an operation in a terminal state (Completed or
-// Faulted).
+// RestartPartitionResult represents information about an operation in a terminal state (Completed or Faulted).
 type RestartPartitionResult struct {
 	// ErrorCode - If OperationState is Completed, this is 0.  If OperationState is Faulted, this is an error code indicating the reason.
 	ErrorCode *int32 `json:"ErrorCode,omitempty"`
@@ -42036,8 +38915,7 @@ type RestartPartitionResult struct {
 	SelectedPartition *SelectedPartition `json:"SelectedPartition,omitempty"`
 }
 
-// RestorePartitionDescription specifies the parameters needed to trigger a restore of a specific
-// partition.
+// RestorePartitionDescription specifies the parameters needed to trigger a restore of a specific partition.
 type RestorePartitionDescription struct {
 	// BackupID - Unique backup ID.
 	BackupID *uuid.UUID `json:"BackupId,omitempty"`
@@ -42116,8 +38994,8 @@ type ResumeClusterUpgradeDescription struct {
 	UpgradeDomain *string `json:"UpgradeDomain,omitempty"`
 }
 
-// RollingUpgradeUpdateDescription describes the parameters for updating a rolling upgrade of application
-// or cluster.
+// RollingUpgradeUpdateDescription describes the parameters for updating a rolling upgrade of application or
+// cluster.
 type RollingUpgradeUpdateDescription struct {
 	// RollingUpgradeMode - The mode used to monitor health during a rolling upgrade. The values are UnmonitoredAuto, UnmonitoredManual, and Monitored. Possible values include: 'UpgradeModeInvalid', 'UpgradeModeUnmonitoredAuto', 'UpgradeModeUnmonitoredManual', 'UpgradeModeMonitored'
 	RollingUpgradeMode UpgradeMode `json:"RollingUpgradeMode,omitempty"`
@@ -42531,8 +39409,8 @@ func (std ScalingTriggerDescription) AsBasicScalingTriggerDescription() (BasicSc
 	return &std, true
 }
 
-// SecondaryActiveReplicatorStatus status of the secondary replicator when it is in active mode and is part
-// of the replica set.
+// SecondaryActiveReplicatorStatus status of the secondary replicator when it is in active mode and is part of
+// the replica set.
 type SecondaryActiveReplicatorStatus struct {
 	// ReplicationQueueStatus - Details about the replication queue on the secondary replicator.
 	ReplicationQueueStatus *ReplicatorQueueStatus `json:"ReplicationQueueStatus,omitempty"`
@@ -42616,8 +39494,8 @@ func (sars SecondaryActiveReplicatorStatus) AsBasicReplicatorStatus() (BasicRepl
 	return &sars, true
 }
 
-// SecondaryIdleReplicatorStatus status of the secondary replicator when it is in idle mode and is being
-// built by the primary.
+// SecondaryIdleReplicatorStatus status of the secondary replicator when it is in idle mode and is being built
+// by the primary.
 type SecondaryIdleReplicatorStatus struct {
 	// ReplicationQueueStatus - Details about the replication queue on the secondary replicator.
 	ReplicationQueueStatus *ReplicatorQueueStatus `json:"ReplicationQueueStatus,omitempty"`
@@ -42835,8 +39713,8 @@ func (srs SecondaryReplicatorStatus) AsBasicReplicatorStatus() (BasicReplicatorS
 	return &srs, true
 }
 
-// SeedNodeSafetyCheck represents a safety check for the seed nodes being performed by service fabric
-// before continuing with node level operations.
+// SeedNodeSafetyCheck represents a safety check for the seed nodes being performed by service fabric before
+// continuing with node level operations.
 type SeedNodeSafetyCheck struct {
 	// Kind - Possible values include: 'KindSafetyCheck', 'KindPartitionSafetyCheck', 'KindEnsureAvailability', 'KindEnsurePartitionQuorum', 'KindEnsureSeedNodeQuorum', 'KindWaitForInbuildReplica', 'KindWaitForPrimaryPlacement', 'KindWaitForPrimarySwap', 'KindWaitForReconfiguration'
 	Kind KindBasicSafetyCheck `json:"Kind,omitempty"`
@@ -42907,8 +39785,8 @@ func (snsc SeedNodeSafetyCheck) AsBasicSafetyCheck() (BasicSafetyCheck, bool) {
 	return &snsc, true
 }
 
-// SelectedPartition this class returns information about the partition that the user-induced operation
-// acted upon.
+// SelectedPartition this class returns information about the partition that the user-induced operation acted
+// upon.
 type SelectedPartition struct {
 	// ServiceName - The name of the service the partition belongs to.
 	ServiceName *string `json:"ServiceName,omitempty"`
@@ -44808,8 +41686,8 @@ type ServiceHealth struct {
 	HealthStatistics *HealthStatistics `json:"HealthStatistics,omitempty"`
 }
 
-// ServiceHealthEvaluation represents health evaluation for a service, containing information about the
-// data and the algorithm used by health store to evaluate health. The evaluation is returned only when the
+// ServiceHealthEvaluation represents health evaluation for a service, containing information about the data
+// and the algorithm used by health store to evaluate health. The evaluation is returned only when the
 // aggregated health state is either Error or Warning.
 type ServiceHealthEvaluation struct {
 	// ServiceName - Name of the service whose health evaluation is described by this object.
@@ -45892,8 +42770,8 @@ func (shree ServiceHealthReportExpiredEvent) AsBasicFabricEvent() (BasicFabricEv
 	return &shree, true
 }
 
-// ServiceHealthState represents the health state of a service, which contains the service identifier and
-// its aggregated health state.
+// ServiceHealthState represents the health state of a service, which contains the service identifier and its
+// aggregated health state.
 type ServiceHealthState struct {
 	// ServiceName - Name of the service whose health state is represented by this object.
 	ServiceName *string `json:"ServiceName,omitempty"`
@@ -45901,9 +42779,9 @@ type ServiceHealthState struct {
 	AggregatedHealthState HealthState `json:"AggregatedHealthState,omitempty"`
 }
 
-// ServiceHealthStateChunk represents the health state chunk of a service, which contains the service name,
-// its aggregated health state and any partitions that respect the filters in the cluster health chunk
-// query description.
+// ServiceHealthStateChunk represents the health state chunk of a service, which contains the service name, its
+// aggregated health state and any partitions that respect the filters in the cluster health chunk query
+// description.
 type ServiceHealthStateChunk struct {
 	// ServiceName - The name of the service whose health state chunk is provided in this object.
 	ServiceName *string `json:"ServiceName,omitempty"`
@@ -45913,17 +42791,17 @@ type ServiceHealthStateChunk struct {
 	HealthState HealthState `json:"HealthState,omitempty"`
 }
 
-// ServiceHealthStateChunkList the list of service health state chunks that respect the input filters in
-// the chunk query. Returned by get cluster health state chunks query.
+// ServiceHealthStateChunkList the list of service health state chunks that respect the input filters in the
+// chunk query. Returned by get cluster health state chunks query.
 type ServiceHealthStateChunkList struct {
 	// Items - The list of service health state chunks that respect the input filters in the chunk query.
 	Items *[]ServiceHealthStateChunk `json:"Items,omitempty"`
 }
 
-// ServiceHealthStateFilter defines matching criteria to determine whether a service should be included as
-// a child of an application in the cluster health chunk.
-// The services are only returned if the parent application matches a filter specified in the cluster
-// health chunk query description.
+// ServiceHealthStateFilter defines matching criteria to determine whether a service should be included as a
+// child of an application in the cluster health chunk.
+// The services are only returned if the parent application matches a filter specified in the cluster health
+// chunk query description.
 // One filter can match zero, one or multiple services, depending on its properties.
 type ServiceHealthStateFilter struct {
 	// ServiceNameFilter - The name of the service that matches the filter. The filter is applied only to the specified service, if it exists.
@@ -46279,9 +43157,9 @@ func (spim *ServicePartitionInfoModel) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServicePlacementInvalidDomainPolicyDescription describes the policy to be used for placement of a
-// Service Fabric service where a particular fault or upgrade domain should not be used for placement of
-// the instances or replicas of that service.
+// ServicePlacementInvalidDomainPolicyDescription describes the policy to be used for placement of a Service
+// Fabric service where a particular fault or upgrade domain should not be used for placement of the instances
+// or replicas of that service.
 type ServicePlacementInvalidDomainPolicyDescription struct {
 	// DomainName - The name of the domain that should not be used for placement.
 	DomainName *string `json:"DomainName,omitempty"`
@@ -46337,9 +43215,8 @@ func (spidpd ServicePlacementInvalidDomainPolicyDescription) AsBasicServicePlace
 	return &spidpd, true
 }
 
-// ServicePlacementNonPartiallyPlaceServicePolicyDescription describes the policy to be used for placement
-// of a Service Fabric service where all replicas must be able to be placed in order for any replicas to be
-// created.
+// ServicePlacementNonPartiallyPlaceServicePolicyDescription describes the policy to be used for placement of a
+// Service Fabric service where all replicas must be able to be placed in order for any replicas to be created.
 type ServicePlacementNonPartiallyPlaceServicePolicyDescription struct {
 	// Type - Possible values include: 'TypeServicePlacementPolicyDescription', 'TypeInvalidDomain', 'TypeNonPartiallyPlaceService', 'TypePreferredPrimaryDomain', 'TypeRequiredDomain', 'TypeRequiredDomainDistribution'
 	Type Type `json:"Type,omitempty"`
@@ -46508,11 +43385,11 @@ func (sppd ServicePlacementPolicyDescription) AsBasicServicePlacementPolicyDescr
 // Service Fabric service where the service's Primary replicas should optimally be placed in a particular
 // domain.
 //
-// This placement policy is usually used with fault domains in scenarios where the Service Fabric cluster
-// is geographically distributed in order to indicate that a service's primary replica should be located in
-// a particular fault domain, which in geo-distributed scenarios usually aligns with regional or datacenter
-// boundaries. Note that since this is an optimization it is possible that the Primary replica may not end
-// up located in this domain due to failures, capacity limits, or other constraints.
+// This placement policy is usually used with fault domains in scenarios where the Service Fabric cluster is
+// geographically distributed in order to indicate that a service's primary replica should be located in a
+// particular fault domain, which in geo-distributed scenarios usually aligns with regional or datacenter
+// boundaries. Note that since this is an optimization it is possible that the Primary replica may not end up
+// located in this domain due to failures, capacity limits, or other constraints.
 type ServicePlacementPreferPrimaryDomainPolicyDescription struct {
 	// DomainName - The name of the domain that should used for placement as per this policy.
 	DomainName *string `json:"DomainName,omitempty"`
@@ -46568,9 +43445,8 @@ func (spppdpd ServicePlacementPreferPrimaryDomainPolicyDescription) AsBasicServi
 	return &spppdpd, true
 }
 
-// ServicePlacementRequiredDomainPolicyDescription describes the policy to be used for placement of a
-// Service Fabric service where the instances or replicas of that service must be placed in a particular
-// domain
+// ServicePlacementRequiredDomainPolicyDescription describes the policy to be used for placement of a Service
+// Fabric service where the instances or replicas of that service must be placed in a particular domain
 type ServicePlacementRequiredDomainPolicyDescription struct {
 	// DomainName - The name of the domain that should used for placement as per this policy.
 	DomainName *string `json:"DomainName,omitempty"`
@@ -46626,15 +43502,15 @@ func (sprdpd ServicePlacementRequiredDomainPolicyDescription) AsBasicServicePlac
 	return &sprdpd, true
 }
 
-// ServicePlacementRequireDomainDistributionPolicyDescription describes the policy to be used for placement
-// of a Service Fabric service where two replicas from the same partition should never be placed in the
-// same fault or upgrade domain.
+// ServicePlacementRequireDomainDistributionPolicyDescription describes the policy to be used for placement of
+// a Service Fabric service where two replicas from the same partition should never be placed in the same fault
+// or upgrade domain.
 //
 // While this is not common it can expose the service to an increased risk of concurrent failures due to
 // unplanned outages or other cases of subsequent/concurrent failures. As an example, consider a case where
-// replicas are deployed across different data center, with one replica per location. In the event that one
-// of the datacenters goes offline, normally the replica that was placed in that datacenter will be packed
-// into one of the remaining datacenters. If this is not desirable then this policy should be set.
+// replicas are deployed across different data center, with one replica per location. In the event that one of
+// the datacenters goes offline, normally the replica that was placed in that datacenter will be packed into
+// one of the remaining datacenters. If this is not desirable then this policy should be set.
 type ServicePlacementRequireDomainDistributionPolicyDescription struct {
 	// DomainName - The name of the domain that should used for placement as per this policy.
 	DomainName *string `json:"DomainName,omitempty"`
@@ -46690,10 +43566,10 @@ func (sprddpd ServicePlacementRequireDomainDistributionPolicyDescription) AsBasi
 	return &sprddpd, true
 }
 
-// ServicesHealthEvaluation represents health evaluation for services of a certain service type belonging
-// to an application, containing health evaluations for each unhealthy service that impacted current
-// aggregated health state. Can be returned when evaluating application health and the aggregated health
-// state is either Error or Warning.
+// ServicesHealthEvaluation represents health evaluation for services of a certain service type belonging to an
+// application, containing health evaluations for each unhealthy service that impacted current aggregated
+// health state. Can be returned when evaluating application health and the aggregated health state is either
+// Error or Warning.
 type ServicesHealthEvaluation struct {
 	// ServiceTypeName - Name of the service type of the services.
 	ServiceTypeName *string `json:"ServiceTypeName,omitempty"`
@@ -47050,8 +43926,8 @@ type ServiceTypeExtensionDescription struct {
 	Value *string `json:"Value,omitempty"`
 }
 
-// ServiceTypeHealthPolicy represents the health policy used to evaluate the health of services belonging
-// to a service type.
+// ServiceTypeHealthPolicy represents the health policy used to evaluate the health of services belonging to a
+// service type.
 type ServiceTypeHealthPolicy struct {
 	// MaxPercentUnhealthyPartitionsPerService - The maximum allowed percentage of unhealthy partitions per service. Allowed values are Byte values from zero to 100
 	// The percentage represents the maximum tolerated percentage of partitions that can be unhealthy before the service is considered in error.
@@ -47145,8 +44021,8 @@ func (sti *ServiceTypeInfo) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ServiceTypeManifest contains the manifest describing a service type registered as part of an application
-// in a Service Fabric cluster.
+// ServiceTypeManifest contains the manifest describing a service type registered as part of an application in
+// a Service Fabric cluster.
 type ServiceTypeManifest struct {
 	autorest.Response `json:"-"`
 	// Manifest - The XML manifest as a string.
@@ -47374,8 +44250,8 @@ func (sud *ServiceUpdateDescription) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// SingletonPartitionInformation information about a partition that is singleton. The services with
-// singleton partitioning scheme are effectively non-partitioned. They only have one partition.
+// SingletonPartitionInformation information about a partition that is singleton. The services with singleton
+// partitioning scheme are effectively non-partitioned. They only have one partition.
 type SingletonPartitionInformation struct {
 	// ID - An internal ID used by Service Fabric to uniquely identify a partition. This is a randomly generated GUID when the service was created. The partition ID is unique and does not change for the lifetime of the service. If the same service was deleted and recreated the IDs of its partitions would be different.
 	ID *uuid.UUID `json:"Id,omitempty"`
@@ -51070,8 +47946,8 @@ func (ssihs StatelessServiceInstanceHealthState) AsBasicReplicaHealthState() (Ba
 	return &ssihs, true
 }
 
-// StatelessServiceInstanceInfo represents a stateless service instance. This includes information about
-// the identity, status, health, node name, uptime, and other details about the instance.
+// StatelessServiceInstanceInfo represents a stateless service instance. This includes information about the
+// identity, status, health, node name, uptime, and other details about the instance.
 type StatelessServiceInstanceInfo struct {
 	// InstanceID - Id of a stateless service instance. InstanceId is used by Service Fabric to uniquely identify an instance of a partition of a stateless service. It is unique within a partition and does not change for the lifetime of the instance. If the instance has failed over on the same or different node, it will get a different value for the InstanceId.
 	InstanceID *string `json:"InstanceId,omitempty"`
@@ -51907,10 +48783,10 @@ func (sahe SystemApplicationHealthEvaluation) AsBasicHealthEvaluation() (BasicHe
 	return &sahe, true
 }
 
-// TestErrorChaosEvent describes a Chaos event that gets generated when an unexpected event occurs in the
-// Chaos engine.
-// For example, due to the cluster snapshot being inconsistent, while faulting an entity, Chaos found that
-// the entity was already faulted -- which would be an unexpected event.
+// TestErrorChaosEvent describes a Chaos event that gets generated when an unexpected event occurs in the Chaos
+// engine.
+// For example, due to the cluster snapshot being inconsistent, while faulting an entity, Chaos found that the
+// entity was already faulted -- which would be an unexpected event.
 type TestErrorChaosEvent struct {
 	// Reason - Describes why TestErrorChaosEvent was generated. For example, Chaos tries to fault a partition but finds that the partition is no longer fault tolerant, then a TestErrorEvent gets generated with the reason stating that the partition is not fault tolerant.
 	Reason *string `json:"Reason,omitempty"`
@@ -52135,9 +49011,9 @@ type UpdateClusterUpgradeDescription struct {
 	ApplicationHealthPolicyMap *ApplicationHealthPolicies `json:"ApplicationHealthPolicyMap,omitempty"`
 }
 
-// UpgradeDomainDeltaNodesCheckHealthEvaluation represents health evaluation for delta unhealthy cluster
-// nodes in an upgrade domain, containing health evaluations for each unhealthy node that impacted current
-// aggregated health state.
+// UpgradeDomainDeltaNodesCheckHealthEvaluation represents health evaluation for delta unhealthy cluster nodes
+// in an upgrade domain, containing health evaluations for each unhealthy node that impacted current aggregated
+// health state.
 // Can be returned during cluster upgrade when cluster aggregated health state is Warning or Error.
 type UpgradeDomainDeltaNodesCheckHealthEvaluation struct {
 	// UpgradeDomainName - Name of the upgrade domain where nodes health is currently evaluated.
@@ -52313,9 +49189,9 @@ type UpgradeDomainInfo struct {
 }
 
 // UpgradeDomainNodesHealthEvaluation represents health evaluation for cluster nodes in an upgrade domain,
-// containing health evaluations for each unhealthy node that impacted current aggregated health state. Can
-// be returned when evaluating cluster health during cluster upgrade and the aggregated health state is
-// either Error or Warning.
+// containing health evaluations for each unhealthy node that impacted current aggregated health state. Can be
+// returned when evaluating cluster health during cluster upgrade and the aggregated health state is either
+// Error or Warning.
 type UpgradeDomainNodesHealthEvaluation struct {
 	// UpgradeDomainName - Name of the upgrade domain where nodes health is currently evaluated.
 	UpgradeDomainName *string `json:"UpgradeDomainName,omitempty"`
@@ -52509,8 +49385,8 @@ type UploadSession struct {
 	UploadSessions *[]UploadSessionInfo `json:"UploadSessions,omitempty"`
 }
 
-// UploadSessionInfo information about an image store upload session. A session is associated with a
-// relative path in the image store.
+// UploadSessionInfo information about an image store upload session. A session is associated with a relative
+// path in the image store.
 type UploadSessionInfo struct {
 	// StoreRelativePath - The remote location within image store. This path is relative to the image store root.
 	StoreRelativePath *string `json:"StoreRelativePath,omitempty"`
@@ -52591,9 +49467,9 @@ func (vfce ValidationFailedChaosEvent) AsBasicChaosEvent() (BasicChaosEvent, boo
 }
 
 // WaitForInbuildReplicaSafetyCheck safety check that waits for the replica build operation to finish. This
-// indicates that there is a replica that is going through the copy or is providing data for building
-// another replica. Bring the node down will abort this copy operation which are typically expensive
-// involving data movements.
+// indicates that there is a replica that is going through the copy or is providing data for building another
+// replica. Bring the node down will abort this copy operation which are typically expensive involving data
+// movements.
 type WaitForInbuildReplicaSafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
@@ -52669,8 +49545,8 @@ func (wfirsc WaitForInbuildReplicaSafetyCheck) AsBasicSafetyCheck() (BasicSafety
 	return &wfirsc, true
 }
 
-// WaitForPrimaryPlacementSafetyCheck safety check that waits for the primary replica that was moved out of
-// the node due to upgrade to be placed back again on that node.
+// WaitForPrimaryPlacementSafetyCheck safety check that waits for the primary replica that was moved out of the
+// node due to upgrade to be placed back again on that node.
 type WaitForPrimaryPlacementSafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
@@ -52746,8 +49622,8 @@ func (wfppsc WaitForPrimaryPlacementSafetyCheck) AsBasicSafetyCheck() (BasicSafe
 	return &wfppsc, true
 }
 
-// WaitForPrimarySwapSafetyCheck safety check that waits for the primary replica to be moved out of the
-// node before starting an upgrade to ensure the availability of the primary replica for the partition.
+// WaitForPrimarySwapSafetyCheck safety check that waits for the primary replica to be moved out of the node
+// before starting an upgrade to ensure the availability of the primary replica for the partition.
 type WaitForPrimarySwapSafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`
@@ -52823,8 +49699,8 @@ func (wfpssc WaitForPrimarySwapSafetyCheck) AsBasicSafetyCheck() (BasicSafetyChe
 	return &wfpssc, true
 }
 
-// WaitForReconfigurationSafetyCheck safety check that waits for the current reconfiguration of the
-// partition to be completed before starting an upgrade.
+// WaitForReconfigurationSafetyCheck safety check that waits for the current reconfiguration of the partition
+// to be completed before starting an upgrade.
 type WaitForReconfigurationSafetyCheck struct {
 	// PartitionID - Id of the partition which is undergoing the safety check.
 	PartitionID *uuid.UUID `json:"PartitionId,omitempty"`

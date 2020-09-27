@@ -158,7 +158,6 @@ func (client TaskClient) AddSender(req *http.Request) (*http.Response, error) {
 func (client TaskClient) AddResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByClosing())
 	result.Response = resp
@@ -276,7 +275,6 @@ func (client TaskClient) AddCollectionSender(req *http.Request) (*http.Response,
 func (client TaskClient) AddCollectionResponder(resp *http.Response) (result TaskAddCollectionResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -407,7 +405,6 @@ func (client TaskClient) DeleteSender(req *http.Request) (*http.Response, error)
 func (client TaskClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp
@@ -544,7 +541,6 @@ func (client TaskClient) GetSender(req *http.Request) (*http.Response, error) {
 func (client TaskClient) GetResponder(resp *http.Response) (result CloudTask, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -605,6 +601,9 @@ func (client TaskClient) List(ctx context.Context, jobID string, filter string, 
 	result.ctlr, err = client.ListResponder(resp)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "batch.TaskClient", "List", resp, "Failure responding to request")
+	}
+	if result.ctlr.hasNextLink() && result.ctlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
 	}
 
 	return
@@ -674,7 +673,6 @@ func (client TaskClient) ListSender(req *http.Request) (*http.Response, error) {
 func (client TaskClient) ListResponder(resp *http.Response) (result CloudTaskListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -817,7 +815,6 @@ func (client TaskClient) ListSubtasksSender(req *http.Request) (*http.Response, 
 func (client TaskClient) ListSubtasksResponder(resp *http.Response) (result CloudTaskListSubtasksResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -950,7 +947,6 @@ func (client TaskClient) ReactivateSender(req *http.Request) (*http.Response, er
 func (client TaskClient) ReactivateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1080,7 +1076,6 @@ func (client TaskClient) TerminateSender(req *http.Request) (*http.Response, err
 func (client TaskClient) TerminateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
@@ -1211,7 +1206,6 @@ func (client TaskClient) UpdateSender(req *http.Request) (*http.Response, error)
 func (client TaskClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByClosing())
 	result.Response = resp

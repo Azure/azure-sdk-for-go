@@ -85,6 +85,9 @@ func (client UsageAggregatesClient) List(ctx context.Context, reportedStartTime 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "commerce.UsageAggregatesClient", "List", resp, "Failure responding to request")
 	}
+	if result.ualr.hasNextLink() && result.ualr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -132,7 +135,6 @@ func (client UsageAggregatesClient) ListSender(req *http.Request) (*http.Respons
 func (client UsageAggregatesClient) ListResponder(resp *http.Response) (result UsageAggregationListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

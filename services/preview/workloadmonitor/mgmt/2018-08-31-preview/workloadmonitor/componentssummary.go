@@ -87,6 +87,9 @@ func (client ComponentsSummaryClient) List(ctx context.Context, selectParameter 
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "workloadmonitor.ComponentsSummaryClient", "List", resp, "Failure responding to request")
 	}
+	if result.cc.hasNextLink() && result.cc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -142,7 +145,6 @@ func (client ComponentsSummaryClient) ListSender(req *http.Request) (*http.Respo
 func (client ComponentsSummaryClient) ListResponder(resp *http.Response) (result ComponentsCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

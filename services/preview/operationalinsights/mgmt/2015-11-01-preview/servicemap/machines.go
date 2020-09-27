@@ -133,7 +133,6 @@ func (client MachinesClient) GetSender(req *http.Request) (*http.Response, error
 func (client MachinesClient) GetResponder(resp *http.Response) (result Machine, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -236,7 +235,6 @@ func (client MachinesClient) GetLivenessSender(req *http.Request) (*http.Respons
 func (client MachinesClient) GetLivenessResponder(resp *http.Response) (result Liveness, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -309,6 +307,9 @@ func (client MachinesClient) ListByWorkspace(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListByWorkspace", resp, "Failure responding to request")
 	}
+	if result.mc.hasNextLink() && result.mc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -362,7 +363,6 @@ func (client MachinesClient) ListByWorkspaceSender(req *http.Request) (*http.Res
 func (client MachinesClient) ListByWorkspaceResponder(resp *http.Response) (result MachineCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -460,6 +460,9 @@ func (client MachinesClient) ListConnections(ctx context.Context, resourceGroupN
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListConnections", resp, "Failure responding to request")
 	}
+	if result.cc.hasNextLink() && result.cc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -503,7 +506,6 @@ func (client MachinesClient) ListConnectionsSender(req *http.Request) (*http.Res
 func (client MachinesClient) ListConnectionsResponder(resp *http.Response) (result ConnectionCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -602,6 +604,9 @@ func (client MachinesClient) ListMachineGroupMembership(ctx context.Context, res
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListMachineGroupMembership", resp, "Failure responding to request")
 	}
+	if result.mgc.hasNextLink() && result.mgc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -645,7 +650,6 @@ func (client MachinesClient) ListMachineGroupMembershipSender(req *http.Request)
 func (client MachinesClient) ListMachineGroupMembershipResponder(resp *http.Response) (result MachineGroupCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -743,6 +747,9 @@ func (client MachinesClient) ListPorts(ctx context.Context, resourceGroupName st
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListPorts", resp, "Failure responding to request")
 	}
+	if result.pc.hasNextLink() && result.pc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -786,7 +793,6 @@ func (client MachinesClient) ListPortsSender(req *http.Request) (*http.Response,
 func (client MachinesClient) ListPortsResponder(resp *http.Response) (result PortCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
@@ -894,6 +900,9 @@ func (client MachinesClient) ListProcesses(ctx context.Context, resourceGroupNam
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "servicemap.MachinesClient", "ListProcesses", resp, "Failure responding to request")
 	}
+	if result.pc.hasNextLink() && result.pc.IsEmpty() {
+		err = result.NextWithContext(ctx)
+	}
 
 	return
 }
@@ -945,7 +954,6 @@ func (client MachinesClient) ListProcessesSender(req *http.Request) (*http.Respo
 func (client MachinesClient) ListProcessesResponder(resp *http.Response) (result ProcessCollection, err error) {
 	err = autorest.Respond(
 		resp,
-		client.ByInspecting(),
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())

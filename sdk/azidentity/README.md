@@ -35,12 +35,12 @@ signed in to the [Azure CLI][azure_cli]. To sign in to the Azure CLI, run
 `az login`. On a system with a default web browser, the Azure CLI will launch
 the browser to authenticate a user.
 
-![Azure CLI Account Sign In](https://raw.githubusercontent.com/Azure/azure-sdk-for-python/master/sdk/identity/azure-identity/images/AzureCliLogin.png)
+![Azure CLI Account Sign In](img/AzureCLILogin.png)
 
 When no default browser is available, `az login` will use the device code
 authentication flow. This can also be selected manually by running `az login --use-device-code`.
 
-![Azure CLI Account Device Code Sign In](https://raw.githubusercontent.com/Azure/azure-sdk-for-python/master/sdk/identity/azure-identity/images/AzureCliLoginDeviceCode.png)
+![Azure CLI Account Device Code Sign In](img/AzureCLILoginDeviceCode.png)
 
 ## Key concepts
 

@@ -45,13 +45,11 @@ var (
 func ExampleGroupsClientWithDefaultAzureCredential() {
 	groupsClient := resources.NewGroupsClient(subscriptionID)
 	// call azidext.NewDefaultAzureCredentialAdapter in order to get an authorizer with a DefaultAzureCredential
-	// NOTE: Scopes define the set of resource and permissions that the credential will have assigned to it.
+	// leave azidext.DefaultAzureCredentialOptions as nil to get the default scope for management APIs.
+	// The default scope is: https://management.azure.com//.default.
+	// NOTE: Scopes define the set of resources and permissions that the credential will have assigned to it.
 	// 		 To read more about scopes, see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent
-	a, err := azidext.NewDefaultAzureCredentialAdapter(
-		&azidext.DefaultAzureCredentialOptions{
-			AuthenticationPolicy: &azcore.AuthenticationPolicyOptions{
-				Options: azcore.TokenRequestOptions{
-					Scopes: []string{"https://management.azure.com/.default"}}}})
+	a, err := azidext.NewDefaultAzureCredentialAdapter(nil)
 	if err != nil {
 		panic("failed to get credential")
 	}
@@ -84,7 +82,7 @@ func ExampleGroupsClientWithClientSecretCredential() {
 		panic(err)
 	}
 	// call azidext.NewAzureIdentityCredentialAdapter with the azidentity credential and necessary scope
-	// NOTE: Scopes define the set of resource and permissions that the credential will have assigned to it.
+	// NOTE: Scopes define the set of resources and permissions that the credential will have assigned to it.
 	// 		 To read more about scopes, see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent
 	a := azidext.NewAzureIdentityCredentialAdapter(
 		cred,

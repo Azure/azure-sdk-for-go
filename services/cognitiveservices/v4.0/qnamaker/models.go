@@ -288,12 +288,6 @@ type ReplaceKbDTO struct {
 	QnAList *[]QnADTO `json:"qnAList,omitempty"`
 }
 
-// String ...
-type String struct {
-	autorest.Response `json:"-"`
-	Value             *string `json:"value,omitempty"`
-}
-
 // UpdateContextDTO update Body schema to represent context to be updated
 type UpdateContextDTO struct {
 	// PromptsToDelete - List of prompts associated with qna to be deleted

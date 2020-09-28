@@ -38,58 +38,23 @@ var (
 	userAgent = "azidentitysample"
 )
 
-// Example for using the DefaultAzureCredential through the NewDefaultAzureCredentialAdapter and assigning the credential to the
+// ExampleGroupsClientWithDefaultAzureCredential for using the DefaultAzureCredential through the NewDefaultAzureCredentialAdapter and assigning the credential to the
 // SDK V1 authorizer.
-func getGroupsClientWithDefaultAzureCredential() resources.GroupsClient {
+func ExampleGroupsClientWithDefaultAzureCredential() {
 	groupsClient := resources.NewGroupsClient(subscriptionID)
-	a, err := azidext.NewDefaultAzureCredentialAdapter(nil)
+	// call azidext.NewDefaultAzureCredentialAdapter in order to get an authorizer with a DefaultAzureCredential
+	// NOTE: Scopes define the set of resource and permissions that the credential will have assigned to it.
+	// 		 To read more about scopes, see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent
+	a, err := azidext.NewDefaultAzureCredentialAdapter(
+		&azidext.DefaultAzureCredentialOptions{
+			AuthenticationPolicy: &azcore.AuthenticationPolicyOptions{
+				Options: azcore.TokenRequestOptions{
+					Scopes: []string{"https://management.azure.com/.default"}}}})
 	if err != nil {
 		panic("failed to get credential")
 	}
 	groupsClient.Authorizer = a
-	groupsClient.AddToUserAgent(userAgent)
-	return groupsClient
-}
-
-// Example for using the ClientSecretCredential with the NewAzureIdentityCredentialAdapter and assigning the credential to the
-// SDK V1 authorizer.
-func getGroupsClientWithClientSecretCredential() resources.GroupsClient {
-	groupsClient := resources.NewGroupsClient(subscriptionID)
-	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
-	if err != nil {
-		panic(err)
-	}
-	a := azidext.NewAzureIdentityCredentialAdapter(cred, azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{"https://management.azure.com/.default"}}})
-	if err != nil {
-		panic("failed to get credential")
-	}
-	groupsClient.Authorizer = a
-	groupsClient.AddToUserAgent(userAgent)
-	return groupsClient
-}
-
-// Example for using the EnvironmentCredential with the NewAzureIdentityCredentialAdapter and assigning the credential to the
-// SDK V1 authorizer.
-func getGroupsClientWithEnvironmentCredential() resources.GroupsClient {
-	groupsClient := resources.NewGroupsClient(subscriptionID)
-	cred, err := azidentity.NewEnvironmentCredential(nil)
-	if err != nil {
-		panic(err)
-	}
-	a := azidext.NewAzureIdentityCredentialAdapter(cred, azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{"https://management.azure.com/.default"}}})
-	if err != nil {
-		panic("failed to get credential")
-	}
-	groupsClient.Authorizer = a
-	groupsClient.AddToUserAgent(userAgent)
-	return groupsClient
-}
-
-// ExampleSDKV1ResourcesCreateOrUpdate creates a new resource group using the DefaultAzureCredential through the
-// getGroupsClientWithDefaultAzureCredential function.
-func ExampleSDKV1ResourcesCreateOrUpdate() {
-	// CreateGroup creates a new resource group named by env var
-	groupsClient := getGroupsClientWithDefaultAzureCredential()
+	// use the groups client with the azidentity credential in the authorizer
 	group, err := groupsClient.CreateOrUpdate(
 		context.Background(),
 		groupName,
@@ -104,10 +69,29 @@ func ExampleSDKV1ResourcesCreateOrUpdate() {
 	// samplegroup
 }
 
-// ExampleSDKV1ResourcesListGroups gets an iterator that gets all resource groups in the subscription using the
-// ClientSecretCredential through the getGroupsClientWithClientSecretCredential function.
-func ExampleSDKV1ResourcesListGroups() {
-	groupsClient := getGroupsClientWithClientSecretCredential()
+// ExampleGroupsClientWithClientSecretCredential for using the ClientSecretCredential with the NewAzureIdentityCredentialAdapter and assigning the credential to the
+// SDK V1 authorizer.
+func ExampleGroupsClientWithClientSecretCredential() {
+	groupsClient := resources.NewGroupsClient(subscriptionID)
+	// instantiate a new ClientSecretCredential as specified in the documentation
+	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
+	if err != nil {
+		panic(err)
+	}
+	// call azidext.NewAzureIdentityCredentialAdapter with the azidentity credential and necessary scope
+	// NOTE: Scopes define the set of resource and permissions that the credential will have assigned to it.
+	// 		 To read more about scopes, see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent
+	a := azidext.NewAzureIdentityCredentialAdapter(
+		cred,
+		azcore.AuthenticationPolicyOptions{
+			Options: azcore.TokenRequestOptions{
+				Scopes: []string{"https://management.azure.com/.default"}}})
+	if err != nil {
+		panic("failed to get credential")
+	}
+	// assign the authorizer to your client's authorizer
+	groupsClient.Authorizer = a
+	// perform an operation with the complete client
 	list, err := groupsClient.ListComplete(context.Background(), "", nil)
 	if err != nil {
 		panic(err)
@@ -120,11 +104,29 @@ func ExampleSDKV1ResourcesListGroups() {
 	// samplegroup
 }
 
-// ExampleSDKV1ResourcesDeleteGroup removes the resource group using the EnvironmentCredential through the
-// getGroupsClientWithEnvironmentCredential function.
-func ExampleSDKV1ResourcesDeleteGroup() {
-	groupsClient := getGroupsClientWithEnvironmentCredential()
-	_, err := groupsClient.Delete(context.Background(), groupName)
+// ExampleGroupsClientWithEnvironmentCredential for using the EnvironmentCredential with the NewAzureIdentityCredentialAdapter and assigning the credential to the
+// SDK V1 authorizer.
+func ExampleGroupsClientWithEnvironmentCredential() {
+	groupsClient := resources.NewGroupsClient(subscriptionID)
+	cred, err := azidentity.NewEnvironmentCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+	// call azidext.NewAzureIdentityCredentialAdapter with the azidentity credential and necessary scopes
+	// NOTE: Scopes define the set of resources and/or permissions that the credential will have assigned to it.
+	// 		 To read more about scopes, see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent
+	a := azidext.NewAzureIdentityCredentialAdapter(
+		cred,
+		azcore.AuthenticationPolicyOptions{
+			Options: azcore.TokenRequestOptions{
+				Scopes: []string{"https://management.azure.com/.default"}}})
+	if err != nil {
+		panic("failed to get credential")
+	}
+	// assign the authorizer to your client's authorizer
+	groupsClient.Authorizer = a
+	// perform an operation with the complete client
+	_, err = groupsClient.Delete(context.Background(), groupName)
 	if err == nil {
 		fmt.Println("Delete in progress..")
 	}

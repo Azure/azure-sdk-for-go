@@ -26,7 +26,7 @@ import (
 // EndpointSettingsClientAPI contains the set of methods on the EndpointSettingsClient type.
 type EndpointSettingsClientAPI interface {
 	GetSettings(ctx context.Context) (result qnamaker.EndpointSettingsDTO, err error)
-	UpdateSettings(ctx context.Context, endpointSettingsPayload qnamaker.EndpointSettingsDTO) (result qnamaker.String, err error)
+	UpdateSettings(ctx context.Context, endpointSettingsPayload qnamaker.EndpointSettingsDTO) (result autorest.Response, err error)
 }
 
 var _ EndpointSettingsClientAPI = (*qnamaker.EndpointSettingsClient)(nil)

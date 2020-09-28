@@ -239,14 +239,6 @@ log.SetClassifications(azidentity.LogCredential)
 
 # Next steps
 
-## Client library support
-
-This is an incomplete list of client libraries accepting Azure Identity
-credentials. You can learn more about these libraries, and find additional
-documentation of them, at the links below.
-
-- [azblob][azblob]
-
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
@@ -272,6 +264,6 @@ or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[azblob]: https://github.com/Azure/azure-sdk-for-go/sdk
+[azblob]: https://github.com/Azure/azure-sdk-for-go/tree/master/sdk
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)

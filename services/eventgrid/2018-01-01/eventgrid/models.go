@@ -25,6 +25,354 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid"
 
+// ACSChatEventBaseProperties schema of common properties of all chat events
+type ACSChatEventBaseProperties struct {
+	// RecipientID - The MRI of the target user
+	RecipientID *string `json:"recipientId,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// ACSChatMemberAddedToThreadWithUserEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Communication.ChatMemberAddedToThreadWithUser event.
+type ACSChatMemberAddedToThreadWithUserEventData struct {
+	// Time - The time at which the user was added to the thread
+	Time *date.Time `json:"time,omitempty"`
+	// AddedBy - The MRI of the user who added the user
+	AddedBy *string `json:"addedBy,omitempty"`
+	// MemberAdded - The details of the user who was added
+	MemberAdded *ACSChatThreadMemberProperties `json:"memberAdded,omitempty"`
+	// CreateTime - The original creation time of the thread
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// Version - The version of the thread
+	Version *int64 `json:"version,omitempty"`
+	// RecipientID - The MRI of the target user
+	RecipientID *string `json:"recipientId,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// ACSChatMemberRemovedFromThreadWithUserEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Communication.ChatMemberRemovedFromThreadWithUser event.
+type ACSChatMemberRemovedFromThreadWithUserEventData struct {
+	// Time - The time at which the user was removed to the thread
+	Time *date.Time `json:"time,omitempty"`
+	// RemovedBy - The MRI of the user who removed the user
+	RemovedBy *string `json:"removedBy,omitempty"`
+	// MemberRemoved - The details of the user who was removed
+	MemberRemoved *ACSChatThreadMemberProperties `json:"memberRemoved,omitempty"`
+	// CreateTime - The original creation time of the thread
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// Version - The version of the thread
+	Version *int64 `json:"version,omitempty"`
+	// RecipientID - The MRI of the target user
+	RecipientID *string `json:"recipientId,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// ACSChatMessageDeletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Communication.ChatMessageDeleted event.
+type ACSChatMessageDeletedEventData struct {
+	// DeleteTime - The time at which the message was deleted
+	DeleteTime *date.Time `json:"deleteTime,omitempty"`
+	// MessageID - The chat message id
+	MessageID *string `json:"messageId,omitempty"`
+	// SenderID - The MRI of the sender
+	SenderID *string `json:"senderId,omitempty"`
+	// SenderDisplayName - The display name of the sender
+	SenderDisplayName *string `json:"senderDisplayName,omitempty"`
+	// ComposeTime - The original compose time of the message
+	ComposeTime *date.Time `json:"composeTime,omitempty"`
+	// Type - The type of the message
+	Type *string `json:"type,omitempty"`
+	// Version - The version of the message
+	Version *int64 `json:"version,omitempty"`
+	// RecipientID - The MRI of the target user
+	RecipientID *string `json:"recipientId,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// ACSChatMessageEditedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Communication.ChatMessageEdited event.
+type ACSChatMessageEditedEventData struct {
+	// MessageBody - The body of the chat message
+	MessageBody *string `json:"messageBody,omitempty"`
+	// EditTime - The time at which the message was edited
+	EditTime *date.Time `json:"editTime,omitempty"`
+	// MessageID - The chat message id
+	MessageID *string `json:"messageId,omitempty"`
+	// SenderID - The MRI of the sender
+	SenderID *string `json:"senderId,omitempty"`
+	// SenderDisplayName - The display name of the sender
+	SenderDisplayName *string `json:"senderDisplayName,omitempty"`
+	// ComposeTime - The original compose time of the message
+	ComposeTime *date.Time `json:"composeTime,omitempty"`
+	// Type - The type of the message
+	Type *string `json:"type,omitempty"`
+	// Version - The version of the message
+	Version *int64 `json:"version,omitempty"`
+	// RecipientID - The MRI of the target user
+	RecipientID *string `json:"recipientId,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// ACSChatMessageEventBaseProperties schema of common properties of all chat message events
+type ACSChatMessageEventBaseProperties struct {
+	// MessageID - The chat message id
+	MessageID *string `json:"messageId,omitempty"`
+	// SenderID - The MRI of the sender
+	SenderID *string `json:"senderId,omitempty"`
+	// SenderDisplayName - The display name of the sender
+	SenderDisplayName *string `json:"senderDisplayName,omitempty"`
+	// ComposeTime - The original compose time of the message
+	ComposeTime *date.Time `json:"composeTime,omitempty"`
+	// Type - The type of the message
+	Type *string `json:"type,omitempty"`
+	// Version - The version of the message
+	Version *int64 `json:"version,omitempty"`
+	// RecipientID - The MRI of the target user
+	RecipientID *string `json:"recipientId,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// ACSChatMessageReceivedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Communication.ChatMessageReceived event.
+type ACSChatMessageReceivedEventData struct {
+	// MessageBody - The body of the chat message
+	MessageBody *string `json:"messageBody,omitempty"`
+	// MessageID - The chat message id
+	MessageID *string `json:"messageId,omitempty"`
+	// SenderID - The MRI of the sender
+	SenderID *string `json:"senderId,omitempty"`
+	// SenderDisplayName - The display name of the sender
+	SenderDisplayName *string `json:"senderDisplayName,omitempty"`
+	// ComposeTime - The original compose time of the message
+	ComposeTime *date.Time `json:"composeTime,omitempty"`
+	// Type - The type of the message
+	Type *string `json:"type,omitempty"`
+	// Version - The version of the message
+	Version *int64 `json:"version,omitempty"`
+	// RecipientID - The MRI of the target user
+	RecipientID *string `json:"recipientId,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// ACSChatThreadCreatedWithUserEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Communication.ChatThreadCreatedWithUser event.
+type ACSChatThreadCreatedWithUserEventData struct {
+	// CreatedBy - The MRI of the creator of the thread
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// Properties - The thread properties
+	Properties map[string]interface{} `json:"properties"`
+	// Members - The list of properties of users who are part of the thread
+	Members *[]ACSChatThreadMemberProperties `json:"members,omitempty"`
+	// CreateTime - The original creation time of the thread
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// Version - The version of the thread
+	Version *int64 `json:"version,omitempty"`
+	// RecipientID - The MRI of the target user
+	RecipientID *string `json:"recipientId,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ACSChatThreadCreatedWithUserEventData.
+func (actcwued ACSChatThreadCreatedWithUserEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if actcwued.CreatedBy != nil {
+		objectMap["createdBy"] = actcwued.CreatedBy
+	}
+	if actcwued.Properties != nil {
+		objectMap["properties"] = actcwued.Properties
+	}
+	if actcwued.Members != nil {
+		objectMap["members"] = actcwued.Members
+	}
+	if actcwued.CreateTime != nil {
+		objectMap["createTime"] = actcwued.CreateTime
+	}
+	if actcwued.Version != nil {
+		objectMap["version"] = actcwued.Version
+	}
+	if actcwued.RecipientID != nil {
+		objectMap["recipientId"] = actcwued.RecipientID
+	}
+	if actcwued.TransactionID != nil {
+		objectMap["transactionId"] = actcwued.TransactionID
+	}
+	if actcwued.ThreadID != nil {
+		objectMap["threadId"] = actcwued.ThreadID
+	}
+	return json.Marshal(objectMap)
+}
+
+// ACSChatThreadEventBaseProperties schema of common properties of all chat thread events
+type ACSChatThreadEventBaseProperties struct {
+	// CreateTime - The original creation time of the thread
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// Version - The version of the thread
+	Version *int64 `json:"version,omitempty"`
+	// RecipientID - The MRI of the target user
+	RecipientID *string `json:"recipientId,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// ACSChatThreadMemberProperties schema of the chat thread member
+type ACSChatThreadMemberProperties struct {
+	// DisplayName - The name of the user
+	DisplayName *string `json:"displayName,omitempty"`
+	// MemberID - The MRI of the user
+	MemberID *string `json:"memberId,omitempty"`
+}
+
+// ACSChatThreadPropertiesUpdatedPerUserEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Communication.ChatThreadPropertiesUpdatedPerUser event.
+type ACSChatThreadPropertiesUpdatedPerUserEventData struct {
+	// EditedBy - The MRI of the user who updated the thread properties
+	EditedBy *string `json:"editedBy,omitempty"`
+	// EditTime - The time at which the properties of the thread were updated
+	EditTime *date.Time `json:"editTime,omitempty"`
+	// Properties - The updated thread properties
+	Properties map[string]interface{} `json:"properties"`
+	// CreateTime - The original creation time of the thread
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// Version - The version of the thread
+	Version *int64 `json:"version,omitempty"`
+	// RecipientID - The MRI of the target user
+	RecipientID *string `json:"recipientId,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ACSChatThreadPropertiesUpdatedPerUserEventData.
+func (actpupued ACSChatThreadPropertiesUpdatedPerUserEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if actpupued.EditedBy != nil {
+		objectMap["editedBy"] = actpupued.EditedBy
+	}
+	if actpupued.EditTime != nil {
+		objectMap["editTime"] = actpupued.EditTime
+	}
+	if actpupued.Properties != nil {
+		objectMap["properties"] = actpupued.Properties
+	}
+	if actpupued.CreateTime != nil {
+		objectMap["createTime"] = actpupued.CreateTime
+	}
+	if actpupued.Version != nil {
+		objectMap["version"] = actpupued.Version
+	}
+	if actpupued.RecipientID != nil {
+		objectMap["recipientId"] = actpupued.RecipientID
+	}
+	if actpupued.TransactionID != nil {
+		objectMap["transactionId"] = actpupued.TransactionID
+	}
+	if actpupued.ThreadID != nil {
+		objectMap["threadId"] = actpupued.ThreadID
+	}
+	return json.Marshal(objectMap)
+}
+
+// ACSChatThreadWithUserDeletedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Communication.ChatThreadWithUserDeleted event.
+type ACSChatThreadWithUserDeletedEventData struct {
+	// DeletedBy - The MRI of the user who deleted the thread
+	DeletedBy *string `json:"deletedBy,omitempty"`
+	// DeleteTime - The deletion time of the thread
+	DeleteTime *date.Time `json:"deleteTime,omitempty"`
+	// CreateTime - The original creation time of the thread
+	CreateTime *date.Time `json:"createTime,omitempty"`
+	// Version - The version of the thread
+	Version *int64 `json:"version,omitempty"`
+	// RecipientID - The MRI of the target user
+	RecipientID *string `json:"recipientId,omitempty"`
+	// TransactionID - The transaction id will be used as co-relation vector
+	TransactionID *string `json:"transactionId,omitempty"`
+	// ThreadID - The chat thread id
+	ThreadID *string `json:"threadId,omitempty"`
+}
+
+// ACSSMSDeliveryAttemptProperties schema for details of a delivery attempt
+type ACSSMSDeliveryAttemptProperties struct {
+	// Timestamp - TimeStamp when delivery was attempted
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// SegmentsSucceeded - Number of segments that were successfully delivered
+	SegmentsSucceeded *int32 `json:"segmentsSucceeded,omitempty"`
+	// SegmentsFailed - Number of segments whose delivery failed
+	SegmentsFailed *int32 `json:"segmentsFailed,omitempty"`
+}
+
+// ACSSMSDeliveryReportReceivedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Communication.SMSDeliveryReportReceived event.
+type ACSSMSDeliveryReportReceivedEventData struct {
+	// DeliveryStatus - Status of Delivery
+	DeliveryStatus *string `json:"deliveryStatus,omitempty"`
+	// DeliveryStatusDetails - Details about Delivery Status
+	DeliveryStatusDetails *string `json:"deliveryStatusDetails,omitempty"`
+	// DeliveryAttempts - List of details of delivery attempts made
+	DeliveryAttempts *[]ACSSMSDeliveryAttemptProperties `json:"deliveryAttempts,omitempty"`
+	// ReceivedTimestamp - The time at which the SMS delivery report was received
+	ReceivedTimestamp *date.Time `json:"receivedTimestamp,omitempty"`
+	// MessageID - The identity of the SMS message
+	MessageID *string `json:"messageId,omitempty"`
+	// From - The identity of SMS message sender
+	From *string `json:"from,omitempty"`
+	// To - The identity of SMS message receiver
+	To *string `json:"to,omitempty"`
+}
+
+// ACSSMSEventBaseProperties schema of common properties of all SMS events
+type ACSSMSEventBaseProperties struct {
+	// MessageID - The identity of the SMS message
+	MessageID *string `json:"messageId,omitempty"`
+	// From - The identity of SMS message sender
+	From *string `json:"from,omitempty"`
+	// To - The identity of SMS message receiver
+	To *string `json:"to,omitempty"`
+}
+
+// ACSSMSReceivedEventData schema of the Data property of an EventGridEvent for an
+// Microsoft.Communication.SMSReceived event.
+type ACSSMSReceivedEventData struct {
+	// Message - The SMS content
+	Message *string `json:"message,omitempty"`
+	// ReceivedTimestamp - The time at which the SMS was received
+	ReceivedTimestamp *date.Time `json:"receivedTimestamp,omitempty"`
+	// MessageID - The identity of the SMS message
+	MessageID *string `json:"messageId,omitempty"`
+	// From - The identity of SMS message sender
+	From *string `json:"from,omitempty"`
+	// To - The identity of SMS message receiver
+	To *string `json:"to,omitempty"`
+}
+
 // AppConfigurationKeyValueDeletedEventData schema of the Data property of an EventGridEvent for an
 // Microsoft.AppConfiguration.KeyValueDeleted event.
 type AppConfigurationKeyValueDeletedEventData struct {
@@ -61,6 +409,188 @@ type AppServicePlanEventTypeDetail struct {
 	Action AppServicePlanAction `json:"action,omitempty"`
 	// Status - Possible values include: 'AsyncStatusStarted', 'AsyncStatusCompleted', 'AsyncStatusFailed'
 	Status AsyncStatus `json:"status,omitempty"`
+}
+
+// CloudEventEvent properties of an event published to an Event Grid topic using the CloudEvent 1.0 Schema
+type CloudEventEvent struct {
+	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
+	AdditionalProperties map[string]interface{} `json:""`
+	// ID - An identifier for the event. The combination of id and source must be unique for each distinct event.
+	ID *string `json:"id,omitempty"`
+	// Source - Identifies the context in which an event happened. The combination of id and source must be unique for each distinct event.
+	Source *string `json:"source,omitempty"`
+	// Data - Event data specific to the event type.
+	Data interface{} `json:"data,omitempty"`
+	// DataBase64 - Event data specific to the event type, encoded as a base64 string.
+	DataBase64 *[]byte `json:"data_base64,omitempty"`
+	// Type - Type of event related to the originating occurrence.
+	Type *string `json:"type,omitempty"`
+	// Time - The time (in UTC) the event was generated, in RFC3339 format.
+	Time *date.Time `json:"time,omitempty"`
+	// Specversion - The version of the CloudEvents specification which the event uses.
+	Specversion *string `json:"specversion,omitempty"`
+	// Dataschema - Identifies the schema that data adheres to.
+	Dataschema *string `json:"dataschema,omitempty"`
+	// Datacontenttype - Content type of data value.
+	Datacontenttype *string `json:"datacontenttype,omitempty"`
+	// Subject - This describes the subject of the event in the context of the event producer (identified by source).
+	Subject *string `json:"subject,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudEventEvent.
+func (cee CloudEventEvent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cee.ID != nil {
+		objectMap["id"] = cee.ID
+	}
+	if cee.Source != nil {
+		objectMap["source"] = cee.Source
+	}
+	if cee.Data != nil {
+		objectMap["data"] = cee.Data
+	}
+	if cee.DataBase64 != nil {
+		objectMap["data_base64"] = cee.DataBase64
+	}
+	if cee.Type != nil {
+		objectMap["type"] = cee.Type
+	}
+	if cee.Time != nil {
+		objectMap["time"] = cee.Time
+	}
+	if cee.Specversion != nil {
+		objectMap["specversion"] = cee.Specversion
+	}
+	if cee.Dataschema != nil {
+		objectMap["dataschema"] = cee.Dataschema
+	}
+	if cee.Datacontenttype != nil {
+		objectMap["datacontenttype"] = cee.Datacontenttype
+	}
+	if cee.Subject != nil {
+		objectMap["subject"] = cee.Subject
+	}
+	for k, v := range cee.AdditionalProperties {
+		objectMap[k] = v
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CloudEventEvent struct.
+func (cee *CloudEventEvent) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		default:
+			if v != nil {
+				var additionalProperties interface{}
+				err = json.Unmarshal(*v, &additionalProperties)
+				if err != nil {
+					return err
+				}
+				if cee.AdditionalProperties == nil {
+					cee.AdditionalProperties = make(map[string]interface{})
+				}
+				cee.AdditionalProperties[k] = additionalProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				cee.ID = &ID
+			}
+		case "source":
+			if v != nil {
+				var source string
+				err = json.Unmarshal(*v, &source)
+				if err != nil {
+					return err
+				}
+				cee.Source = &source
+			}
+		case "data":
+			if v != nil {
+				var data interface{}
+				err = json.Unmarshal(*v, &data)
+				if err != nil {
+					return err
+				}
+				cee.Data = data
+			}
+		case "data_base64":
+			if v != nil {
+				var dataBase64 []byte
+				err = json.Unmarshal(*v, &dataBase64)
+				if err != nil {
+					return err
+				}
+				cee.DataBase64 = &dataBase64
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cee.Type = &typeVar
+			}
+		case "time":
+			if v != nil {
+				var timeVar date.Time
+				err = json.Unmarshal(*v, &timeVar)
+				if err != nil {
+					return err
+				}
+				cee.Time = &timeVar
+			}
+		case "specversion":
+			if v != nil {
+				var specversion string
+				err = json.Unmarshal(*v, &specversion)
+				if err != nil {
+					return err
+				}
+				cee.Specversion = &specversion
+			}
+		case "dataschema":
+			if v != nil {
+				var dataschema string
+				err = json.Unmarshal(*v, &dataschema)
+				if err != nil {
+					return err
+				}
+				cee.Dataschema = &dataschema
+			}
+		case "datacontenttype":
+			if v != nil {
+				var datacontenttype string
+				err = json.Unmarshal(*v, &datacontenttype)
+				if err != nil {
+					return err
+				}
+				cee.Datacontenttype = &datacontenttype
+			}
+		case "subject":
+			if v != nil {
+				var subject string
+				err = json.Unmarshal(*v, &subject)
+				if err != nil {
+					return err
+				}
+				cee.Subject = &subject
+			}
+		}
+	}
+
+	return nil
 }
 
 // ContainerRegistryArtifactEventData the content of the event request message.
@@ -339,7 +869,7 @@ type DeviceTwinProperties struct {
 	Version *float64 `json:"version,omitempty"`
 }
 
-// Event properties of an event published to an Event Grid topic.
+// Event properties of an event published to an Event Grid topic using the EventGrid Schema.
 type Event struct {
 	// ID - An unique identifier for the event.
 	ID *string `json:"id,omitempty"`
@@ -630,6 +1160,25 @@ type KeyVaultSecretNearExpiryEventData struct {
 // KeyVaultSecretNewVersionCreatedEventData schema of the Data property of an EventGridEvent for an
 // SecretNewVersionCreated event.
 type KeyVaultSecretNewVersionCreatedEventData struct {
+	// ID - The id of the object that triggered this event.
+	ID *string `json:"id,omitempty"`
+	// VaultName - Key vault name of the object that triggered this event.
+	VaultName *string `json:"vaultName,omitempty"`
+	// ObjectType - The type of the object that triggered this event
+	ObjectType *string `json:"objectType,omitempty"`
+	// ObjectName - The name of the object that triggered this event
+	ObjectName *string `json:"objectName,omitempty"`
+	// Version - The version of the object that triggered this event
+	Version *string `json:"version,omitempty"`
+	// Nbf - Not before date of the object that triggered this event
+	Nbf *float64 `json:"nbf,omitempty"`
+	// Exp - The expiration date of the object that triggered this event
+	Exp *float64 `json:"exp,omitempty"`
+}
+
+// KeyVaultVaultAccessPolicyChangedEventData schema of the Data property of an EventGridEvent for an
+// VaultAccessPolicyChanged event.
+type KeyVaultVaultAccessPolicyChangedEventData struct {
 	// ID - The id of the object that triggered this event.
 	ID *string `json:"id,omitempty"`
 	// VaultName - Key vault name of the object that triggered this event.

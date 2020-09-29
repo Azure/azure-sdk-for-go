@@ -1,6 +1,3 @@
-// Package securityinsight implements the Azure ARM Securityinsight service API version 2019-01-01-preview.
-//
-// API spec for Microsoft.SecurityInsights (Azure Security Insights) resource provider
 package securityinsight
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
@@ -29,44 +26,37 @@ import (
 	"net/http"
 )
 
-const (
-	// DefaultBaseURI is the default URI used for the service Securityinsight
-	DefaultBaseURI = "https://management.azure.com"
-)
-
-// BaseClient is the base client for Securityinsight.
-type BaseClient struct {
-	autorest.Client
-	BaseURI        string
-	SubscriptionID string
+// ThreatIntelligenceIndicatorUpsertClient is the API spec for Microsoft.SecurityInsights (Azure Security Insights)
+// resource provider
+type ThreatIntelligenceIndicatorUpsertClient struct {
+	BaseClient
 }
 
-// New creates an instance of the BaseClient client.
-func New(subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewThreatIntelligenceIndicatorUpsertClient creates an instance of the ThreatIntelligenceIndicatorUpsertClient
+// client.
+func NewThreatIntelligenceIndicatorUpsertClient(subscriptionID string) ThreatIntelligenceIndicatorUpsertClient {
+	return NewThreatIntelligenceIndicatorUpsertClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWithBaseURI creates an instance of the BaseClient client using a custom endpoint.  Use this when interacting with
-// an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
-	}
+// NewThreatIntelligenceIndicatorUpsertClientWithBaseURI creates an instance of the
+// ThreatIntelligenceIndicatorUpsertClient client using a custom endpoint.  Use this when interacting with an Azure
+// cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewThreatIntelligenceIndicatorUpsertClientWithBaseURI(baseURI string, subscriptionID string) ThreatIntelligenceIndicatorUpsertClient {
+	return ThreatIntelligenceIndicatorUpsertClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateThreatIntelligence create a threat intelligence.
+// Create upsert a threat intelligence.
 // Parameters:
 // resourceGroupName - the name of the resource group within the user's subscription. The name is case
 // insensitive.
 // operationalInsightsResourceProvider - the namespace of workspaces resource provider-
 // Microsoft.OperationalInsights.
 // workspaceName - the name of the workspace.
+// name - threat Intelligence Identifier
 // threatIntelligenceIndicatorObjectToUpsert - the threat intelligence entity properties for upsert
-func (client BaseClient) CreateThreatIntelligence(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, threatIntelligenceIndicatorObjectToUpsert ThreatIntelligenceIndicatorWithoutReadOnlyFields) (result ThreatIntelligenceResourceModel, err error) {
+func (client ThreatIntelligenceIndicatorUpsertClient) Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string, threatIntelligenceIndicatorObjectToUpsert ThreatIntelligenceIndicatorWithoutReadOnlyFields) (result ThreatIntelligenceResourceModel, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.CreateThreatIntelligence")
+		ctx = tracing.StartSpan(ctx, fqdn+"/ThreatIntelligenceIndicatorUpsertClient.Create")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -85,33 +75,34 @@ func (client BaseClient) CreateThreatIntelligence(ctx context.Context, resourceG
 		{TargetValue: workspaceName,
 			Constraints: []validation.Constraint{{Target: "workspaceName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "workspaceName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("securityinsight.BaseClient", "CreateThreatIntelligence", err.Error())
+		return result, validation.NewError("securityinsight.ThreatIntelligenceIndicatorUpsertClient", "Create", err.Error())
 	}
 
-	req, err := client.CreateThreatIntelligencePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, threatIntelligenceIndicatorObjectToUpsert)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, operationalInsightsResourceProvider, workspaceName, name, threatIntelligenceIndicatorObjectToUpsert)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.BaseClient", "CreateThreatIntelligence", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorUpsertClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateThreatIntelligenceSender(req)
+	resp, err := client.CreateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "securityinsight.BaseClient", "CreateThreatIntelligence", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorUpsertClient", "Create", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateThreatIntelligenceResponder(resp)
+	result, err = client.CreateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "securityinsight.BaseClient", "CreateThreatIntelligence", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "securityinsight.ThreatIntelligenceIndicatorUpsertClient", "Create", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// CreateThreatIntelligencePreparer prepares the CreateThreatIntelligence request.
-func (client BaseClient) CreateThreatIntelligencePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, threatIntelligenceIndicatorObjectToUpsert ThreatIntelligenceIndicatorWithoutReadOnlyFields) (*http.Request, error) {
+// CreatePreparer prepares the Create request.
+func (client ThreatIntelligenceIndicatorUpsertClient) CreatePreparer(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string, threatIntelligenceIndicatorObjectToUpsert ThreatIntelligenceIndicatorWithoutReadOnlyFields) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"name":                                autorest.Encode("path", name),
 		"operationalInsightsResourceProvider": autorest.Encode("path", operationalInsightsResourceProvider),
 		"resourceGroupName":                   autorest.Encode("path", resourceGroupName),
 		"subscriptionId":                      autorest.Encode("path", client.SubscriptionID),
@@ -125,23 +116,23 @@ func (client BaseClient) CreateThreatIntelligencePreparer(ctx context.Context, r
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
+		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/createIndicator", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{operationalInsightsResourceProvider}/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}", pathParameters),
 		autorest.WithJSON(threatIntelligenceIndicatorObjectToUpsert),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateThreatIntelligenceSender sends the CreateThreatIntelligence request. The method will close the
+// CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client BaseClient) CreateThreatIntelligenceSender(req *http.Request) (*http.Response, error) {
+func (client ThreatIntelligenceIndicatorUpsertClient) CreateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
-// CreateThreatIntelligenceResponder handles the response to the CreateThreatIntelligence request. The method always
+// CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client BaseClient) CreateThreatIntelligenceResponder(resp *http.Response) (result ThreatIntelligenceResourceModel, err error) {
+func (client ThreatIntelligenceIndicatorUpsertClient) CreateResponder(resp *http.Response) (result ThreatIntelligenceResourceModel, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),

@@ -4,35 +4,85 @@
 package azidentity
 
 import (
+	"context"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// NewEnvironmentCredential creates an instance of the ClientSecretCredential type and reads credential details from environment variables.
+// EnvironmentCredential enables authentication to Azure Active Directory using either ClientSecretCredential, ClientCertificateCredential or UsernamePasswordCredential.
+// This credential type will check for the following environment variables in the same order as listed:
+// - AZURE_TENANT_ID
+// - AZURE_CLIENT_ID
+// - AZURE_CLIENT_SECRET
+// - AZURE_CLIENT_CERTIFICATE_PATH
+// - AZURE_USERNAME
+// - AZURE_PASSWORD
+// NOTE: EnvironmentCredential will stop checking environment variables as soon as it finds enough environment variables to
+// create a credential type.
+type EnvironmentCredential struct {
+	cred azcore.TokenCredential
+}
+
+// NewEnvironmentCredential creates an instance that implements the azcore.TokenCredential interface and reads credential details from environment variables.
 // If the expected environment variables are not found at this time, then a CredentialUnavailableError will be returned.
 // options: The options used to configure the management of the requests sent to Azure Active Directory.
-func NewEnvironmentCredential(options *TokenCredentialOptions) (*ClientSecretCredential, error) {
+func NewEnvironmentCredential(options *TokenCredentialOptions) (*EnvironmentCredential, error) {
 	tenantID := os.Getenv("AZURE_TENANT_ID")
 	if tenantID == "" {
 		err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_TENANT_ID"}
 		logCredentialError(err.CredentialType, err)
 		return nil, err
 	}
-
 	clientID := os.Getenv("AZURE_CLIENT_ID")
 	if clientID == "" {
 		err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_CLIENT_ID"}
 		logCredentialError(err.CredentialType, err)
 		return nil, err
 	}
-
-	clientSecret := os.Getenv("AZURE_CLIENT_SECRET")
-	if clientSecret == "" {
-		err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_CLIENT_SECRET"}
-		logCredentialError(err.CredentialType, err)
-		return nil, err
+	if clientSecret := os.Getenv("AZURE_CLIENT_SECRET"); clientSecret != "" {
+		azcore.Log().Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientSecretCredential")
+		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, options)
+		if err != nil {
+			return nil, err
+		}
+		return &EnvironmentCredential{cred: cred}, nil
 	}
-	azcore.Log().Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientSecretCredential")
-	return NewClientSecretCredential(tenantID, clientID, clientSecret, options)
+	if clientCertificate := os.Getenv("AZURE_CLIENT_CERTIFICATE_PATH"); clientCertificate != "" {
+		azcore.Log().Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientCertificateCredential")
+		cred, err := NewClientCertificateCredential(tenantID, clientID, clientCertificate, nil, options)
+		if err != nil {
+			return nil, err
+		}
+		return &EnvironmentCredential{cred: cred}, nil
+	}
+	if username := os.Getenv("AZURE_USERNAME"); username != "" {
+		if password := os.Getenv("AZURE_PASSWORD"); password != "" {
+			azcore.Log().Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking UsernamePasswordCredential")
+			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, options)
+			if err != nil {
+				return nil, err
+			}
+			return &EnvironmentCredential{cred: cred}, nil
+		}
+	}
+	err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH or AZURE_USERNAME and AZURE_PASSWORD"}
+	logCredentialError(err.CredentialType, err)
+	return nil, err
 }
+
+// GetToken obtains a token from Azure Active Directory, using the underlying credential's GetToken method.
+// ctx: Context used to control the request lifetime.
+// opts: TokenRequestOptions contains the list of scopes for which the token will have access.
+// Returns an AccessToken which can be used to authenticate service client calls.
+func (c *EnvironmentCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+	return c.cred.GetToken(ctx, opts)
+}
+
+// AuthenticationPolicy implements the azcore.Credential interface on EnvironmentCredential and calls the Bearer Token policy
+// to get the bearer token.
+func (c *EnvironmentCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+	return newBearerTokenPolicy(c.cred, options)
+}
+
+var _ azcore.TokenCredential = (*EnvironmentCredential)(nil)

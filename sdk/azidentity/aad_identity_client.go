@@ -7,10 +7,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/pkg/browser"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -25,14 +28,22 @@ const (
 	qpClientAssertion     = "client_assertion"
 	qpClientID            = "client_id"
 	qpClientSecret        = "client_secret"
+	qpCode                = "code"
 	qpDeviceCode          = "device_code"
 	qpGrantType           = "grant_type"
 	qpPassword            = "password"
+	qpRedirectURI         = "redirect_uri"
 	qpRefreshToken        = "refresh_token"
 	qpResponseType        = "response_type"
 	qpScope               = "scope"
 	qpUsername            = "username"
 )
+
+// interactiveConfig stores the authorization code obtained from the interactive browser and redirect URI used in the initial request
+type interactiveConfig struct {
+	authCode    string
+	redirectURI string
+}
 
 // aadIdentityClient provides the base for authenticating with Client Secret Credentials, Client Certificate Credentials
 // and Environment Credentials. This type inlcudes an azcore.Pipeline and TokenCredentialOptions.
@@ -365,6 +376,102 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, t
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
 	// endpoint that will return a device code along with the other necessary authentication flow parameters in the DeviceCodeResult struct
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, "/oauth2/v2.0/devicecode"))
+	if err != nil {
+		return nil, err
+	}
+	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// authenticateInteractiveBrowser opens an interactive browser window, gets the authorization code and requests an Access Token with the
+// authorization code and returns the token or an error in case of authentication failure.
+// ctx: The current request context
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal
+// clientID: The client (application) ID of the service principal
+// clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
+// scopes: The scopes required for the token
+func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.AccessToken, error) {
+	cfg, err := c.interactiveBrowserLogin(tenantID, clientID, scopes)
+	if err != nil {
+		return nil, err
+	}
+	req, err := c.createAuthorizationCodeAuthRequest(ctx, *cfg, tenantID, clientID, clientSecret, scopes)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := c.pipeline.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.HasStatusCode(successStatusCodes[:]...) {
+		return c.createAccessToken(resp)
+	}
+
+	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+}
+
+// interactiveBrowserLogin opens an interactive browser with the specified tenant and client IDs provided then returns the authorization code
+// received or an error.
+func (c *aadIdentityClient) interactiveBrowserLogin(tenantID string, clientID string, scopes []string) (*interactiveConfig, error) {
+	const authURLFormat = "https://login.microsoftonline.com/%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&client_id=%s&redirect_uri=%s&state=%s&scope=%s&prompt=select_account"
+	if tenantID == "" {
+		tenantID = "common"
+	}
+	if clientID == "" {
+		clientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
+	}
+	state := func() string {
+		// generate a 20-char random alpha-numeric string
+		const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+		buff := make([]byte, 20)
+		for i := range buff {
+			buff[i] = charset[rand.Intn(len(charset))]
+		}
+		return string(buff)
+	}()
+	// start local redirect server so login can call us back
+	rs := newServer()
+	redirectURL := rs.Start(state)
+	defer rs.Stop()
+	authURL := fmt.Sprintf(authURLFormat, tenantID, clientID, redirectURL, state, strings.Join(scopes, " "))
+	fmt.Println(authURL)
+	// open browser window so user can select credentials
+	err := browser.OpenURL(authURL)
+	if err != nil {
+		return nil, err
+	}
+	// now wait until the logic calls us back
+	rs.WaitForCallback()
+
+	authCode, err := rs.AuthorizationCode()
+	if err != nil {
+		return nil, err
+	}
+	return &interactiveConfig{
+		authCode:    authCode,
+		redirectURI: redirectURL,
+	}, nil
+}
+
+// createAuthorizationCodeAuthRequest creates a request for an Access Token for authorization_code grant types.
+func (c *aadIdentityClient) createAuthorizationCodeAuthRequest(ctx context.Context, config interactiveConfig, tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.Request, error) {
+	if len(tenantID) == 0 { // if the user did not pass in a tenantID then the default value is set
+		tenantID = "organizations"
+	}
+	data := url.Values{}
+	data.Set(qpGrantType, "authorization_code")
+	data.Set(qpClientID, clientID)
+	data.Set(qpClientSecret, clientSecret) // only for web apps
+	data.Set(qpRedirectURI, config.redirectURI)
+	data.Set(qpScope, strings.Join(scopes, " "))
+	data.Set(qpCode, config.authCode)
+	dataEncoded := data.Encode()
+	body := azcore.NopCloser(strings.NewReader(dataEncoded))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, tokenEndpoint))
 	if err != nil {
 		return nil, err
 	}

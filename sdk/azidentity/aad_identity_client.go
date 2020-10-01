@@ -419,7 +419,9 @@ func (c *aadIdentityClient) createAuthorizationCodeAuthRequest(ctx context.Conte
 	data := url.Values{}
 	data.Set(qpGrantType, "authorization_code")
 	data.Set(qpClientID, clientID)
-	data.Set(qpClientSecret, clientSecret) // only for web apps
+	if clientSecret != "" {
+		data.Set(qpClientSecret, clientSecret) // only for web apps
+	}
 	data.Set(qpRedirectURI, config.redirectURI)
 	data.Set(qpScope, strings.Join(scopes, " "))
 	data.Set(qpCode, config.authCode)

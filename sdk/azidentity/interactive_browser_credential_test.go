@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-func TestInteractiveBrowserCredential_GetTokenSuccessMock(t *testing.T) {
+func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))

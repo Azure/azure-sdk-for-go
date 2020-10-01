@@ -27,13 +27,24 @@ type TelemetryOptions struct {
 	Disabled bool
 }
 
+// DefaultTelemetryOptions returns an instance of TelemetryOptions initialized with default values.
+func DefaultTelemetryOptions() TelemetryOptions {
+	return TelemetryOptions{}
+}
+
 type telemetryPolicy struct {
 	telemetryValue string
 }
 
 // NewTelemetryPolicy creates a telemetry policy object that adds telemetry information to outgoing HTTP requests.
 // The format is [<application_id> ]azsdk-<sdk_language>-<package_name>/<package_version> <platform_info> [<custom>].
-func NewTelemetryPolicy(o TelemetryOptions) Policy {
+// Pass nil to accept the default values; this is the same as passing the result
+// from a call to DefaultTelemetryOptions().
+func NewTelemetryPolicy(o *TelemetryOptions) Policy {
+	if o == nil {
+		def := DefaultTelemetryOptions()
+		o = &def
+	}
 	tp := telemetryPolicy{}
 	if o.Disabled {
 		return &tp

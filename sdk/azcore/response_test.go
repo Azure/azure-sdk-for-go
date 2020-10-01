@@ -19,7 +19,7 @@ func TestResponseUnmarshalXML(t *testing.T) {
 	defer close()
 	// include UTF8 BOM
 	srv.SetResponse(mock.WithBody([]byte("\xef\xbb\xbf<testXML><SomeInt>1</SomeInt><SomeString>s</SomeString></testXML>")))
-	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
+	pl := NewPipeline(srv)
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -44,7 +44,7 @@ func TestResponseFailureStatusCode(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusForbidden))
-	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
+	pl := NewPipeline(srv)
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -62,7 +62,7 @@ func TestResponseUnmarshalJSON(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(`{ "someInt": 1, "someString": "s" }`)))
-	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
+	pl := NewPipeline(srv)
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -87,7 +87,7 @@ func TestResponseUnmarshalJSONNoBody(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte{}))
-	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
+	pl := NewPipeline(srv)
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -108,7 +108,7 @@ func TestResponseUnmarshalXMLNoBody(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte{}))
-	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
+	pl := NewPipeline(srv)
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -157,7 +157,7 @@ func TestResponseUnmarshalAsByteArrayURLFormat(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(`"YSBzdHJpbmcgdGhhdCBnZXRzIGVuY29kZWQgd2l0aCBiYXNlNjR1cmw"`)))
-	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
+	pl := NewPipeline(srv)
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -182,7 +182,7 @@ func TestResponseUnmarshalAsByteArrayStdFormat(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(`"YSBzdHJpbmcgdGhhdCBnZXRzIGVuY29kZWQgd2l0aCBiYXNlNjR1cmw="`)))
-	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
+	pl := NewPipeline(srv)
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

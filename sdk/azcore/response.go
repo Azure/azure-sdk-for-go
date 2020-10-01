@@ -155,9 +155,9 @@ func RetryAfter(resp *http.Response) time.Duration {
 	return 0
 }
 
-// WriteRequestWithResponse appends a formatted HTTP request into a Buffer. If request and/or err are
+// writeRequestWithResponse appends a formatted HTTP request into a Buffer. If request and/or err are
 // not nil, then these are also written into the Buffer.
-func WriteRequestWithResponse(b *bytes.Buffer, request *Request, response *Response, err error) {
+func writeRequestWithResponse(b *bytes.Buffer, request *Request, response *Response, err error) {
 	// Write the request into the buffer.
 	fmt.Fprint(b, "   "+request.Method+" "+request.URL.String()+"\n")
 	writeHeader(b, request.Header)

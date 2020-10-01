@@ -26,7 +26,7 @@ func TestProgressReporting(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody(content))
-	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
+	pl := NewPipeline(srv)
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

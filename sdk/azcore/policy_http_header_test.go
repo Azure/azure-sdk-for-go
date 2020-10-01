@@ -47,9 +47,10 @@ func TestAddCustomHTTPHeaderSuccess(t *testing.T) {
 func TestAddCustomHTTPHeaderFail(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
+	const customHeader = "custom-header"
 	const customValue = "custom-value"
 	srv.AppendResponse(mock.WithPredicate(func(r *http.Request) bool {
-		return r.Header.Get(xMsClientRequestID) == customValue
+		return r.Header.Get(customHeader) == customValue
 	}), mock.WithStatusCode(http.StatusOK))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 	// HTTP header policy is automatically added during pipeline construction
@@ -70,16 +71,17 @@ func TestAddCustomHTTPHeaderFail(t *testing.T) {
 func TestAddCustomHTTPHeaderOverwrite(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
+	const customHeader = "custom-header"
 	const customValue = "custom-value"
 	srv.AppendResponse(mock.WithPredicate(func(r *http.Request) bool {
-		return r.Header.Get(xMsClientRequestID) == customValue
+		return r.Header.Get(customHeader) == customValue
 	}), mock.WithStatusCode(http.StatusOK))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 	// HTTP header policy is automatically added during pipeline construction
 	pl := NewPipeline(srv)
 	// overwrite the request ID with our own value
 	req, err := NewRequest(WithHTTPHeader(context.Background(), http.Header{
-		xMsClientRequestID: []string{customValue},
+		customHeader: []string{customValue},
 	}), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

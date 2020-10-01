@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"math/rand"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/pkg/browser"
@@ -71,6 +72,7 @@ func interactiveBrowserLogin(tenantID string, clientID string, scopes []string) 
 		clientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 	}
 	state := func() string {
+		rand.Seed(time.Now().Unix())
 		// generate a 20-char random alpha-numeric string
 		const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 		buff := make([]byte, 20)

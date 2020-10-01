@@ -5,8 +5,12 @@ package azidentity
 
 import (
 	"context"
+	"fmt"
+	"math/rand"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/pkg/browser"
 )
 
 // InteractiveBrowserCredential enables authentication to Azure Active Directory using an interactive browser to log in.
@@ -51,3 +55,50 @@ func (c *InteractiveBrowserCredential) AuthenticationPolicy(options azcore.Authe
 }
 
 var _ azcore.TokenCredential = (*InteractiveBrowserCredential)(nil)
+
+var authCodeReceiver = func(tenantID string, clientID string, scopes []string) (*interactiveConfig, error) {
+	return interactiveBrowserLogin(tenantID, clientID, scopes)
+}
+
+// interactiveBrowserLogin opens an interactive browser with the specified tenant and client IDs provided then returns the authorization code
+// received or an error.
+func interactiveBrowserLogin(tenantID string, clientID string, scopes []string) (*interactiveConfig, error) {
+	const authURLFormat = "https://login.microsoftonline.com/%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&client_id=%s&redirect_uri=%s&state=%s&scope=%s&prompt=select_account"
+	if tenantID == "" {
+		tenantID = "common"
+	}
+	if clientID == "" {
+		clientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
+	}
+	state := func() string {
+		// generate a 20-char random alpha-numeric string
+		const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+		buff := make([]byte, 20)
+		for i := range buff {
+			buff[i] = charset[rand.Intn(len(charset))]
+		}
+		return string(buff)
+	}()
+	// start local redirect server so login can call us back
+	rs := newServer()
+	redirectURL := rs.Start(state)
+	defer rs.Stop()
+	authURL := fmt.Sprintf(authURLFormat, tenantID, clientID, redirectURL, state, strings.Join(scopes, " "))
+	fmt.Println(authURL)
+	// open browser window so user can select credentials
+	err := browser.OpenURL(authURL)
+	if err != nil {
+		return nil, err
+	}
+	// now wait until the logic calls us back
+	rs.WaitForCallback()
+
+	authCode, err := rs.AuthorizationCode()
+	if err != nil {
+		return nil, err
+	}
+	return &interactiveConfig{
+		authCode:    authCode,
+		redirectURI: redirectURL,
+	}, nil
+}

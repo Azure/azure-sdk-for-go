@@ -7,13 +7,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"math/rand"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
-
-	"github.com/pkg/browser"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -393,7 +390,7 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, t
 // clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
 // scopes: The scopes required for the token
 func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.AccessToken, error) {
-	cfg, err := c.interactiveBrowserLogin(tenantID, clientID, scopes)
+	cfg, err := authCodeReceiver(tenantID, clientID, scopes)
 	if err != nil {
 		return nil, err
 	}
@@ -412,49 +409,6 @@ func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, 
 	}
 
 	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
-}
-
-// interactiveBrowserLogin opens an interactive browser with the specified tenant and client IDs provided then returns the authorization code
-// received or an error.
-func (c *aadIdentityClient) interactiveBrowserLogin(tenantID string, clientID string, scopes []string) (*interactiveConfig, error) {
-	const authURLFormat = "https://login.microsoftonline.com/%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&client_id=%s&redirect_uri=%s&state=%s&scope=%s&prompt=select_account"
-	if tenantID == "" {
-		tenantID = "common"
-	}
-	if clientID == "" {
-		clientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
-	}
-	state := func() string {
-		// generate a 20-char random alpha-numeric string
-		const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-		buff := make([]byte, 20)
-		for i := range buff {
-			buff[i] = charset[rand.Intn(len(charset))]
-		}
-		return string(buff)
-	}()
-	// start local redirect server so login can call us back
-	rs := newServer()
-	redirectURL := rs.Start(state)
-	defer rs.Stop()
-	authURL := fmt.Sprintf(authURLFormat, tenantID, clientID, redirectURL, state, strings.Join(scopes, " "))
-	fmt.Println(authURL)
-	// open browser window so user can select credentials
-	err := browser.OpenURL(authURL)
-	if err != nil {
-		return nil, err
-	}
-	// now wait until the logic calls us back
-	rs.WaitForCallback()
-
-	authCode, err := rs.AuthorizationCode()
-	if err != nil {
-		return nil, err
-	}
-	return &interactiveConfig{
-		authCode:    authCode,
-		redirectURI: redirectURL,
-	}, nil
 }
 
 // createAuthorizationCodeAuthRequest creates a request for an Access Token for authorization_code grant types.

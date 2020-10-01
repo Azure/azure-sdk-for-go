@@ -64,9 +64,12 @@ func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) Usa
 // skiptoken - skiptoken is only used if a previous operation returned a partial result. If a previous response
 // contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
 // specifies a starting point to use for subsequent calls.
+// id - id is only used if a previous operation returned a partial result. If a previous response
+// contains a nextLink element, the value of the nextLink element will include a id parameter that
+// specifies a starting point to use for subsequent calls.
 // top - may be used to limit the number of results to the most recent N usageDetails.
 // apply - oData apply expression to aggregate usageDetails by tags or (tags and properties/usageStart)
-func (client UsageDetailsClient) List(ctx context.Context, scope string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
+func (client UsageDetailsClient) List(ctx context.Context, scope string, expand string, filter string, skiptoken string, id string, top *int32, apply string) (result UsageDetailsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/UsageDetailsClient.List")
 		defer func() {
@@ -87,7 +90,7 @@ func (client UsageDetailsClient) List(ctx context.Context, scope string, expand 
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, scope, expand, filter, skiptoken, top, apply)
+	req, err := client.ListPreparer(ctx, scope, expand, filter, skiptoken, id, top, apply)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "consumption.UsageDetailsClient", "List", nil, "Failure preparing request")
 		return
@@ -112,7 +115,7 @@ func (client UsageDetailsClient) List(ctx context.Context, scope string, expand 
 }
 
 // ListPreparer prepares the List request.
-func (client UsageDetailsClient) ListPreparer(ctx context.Context, scope string, expand string, filter string, skiptoken string, top *int32, apply string) (*http.Request, error) {
+func (client UsageDetailsClient) ListPreparer(ctx context.Context, scope string, expand string, filter string, skiptoken string, id string, top *int32, apply string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"scope": scope,
 	}
@@ -129,6 +132,9 @@ func (client UsageDetailsClient) ListPreparer(ctx context.Context, scope string,
 	}
 	if len(skiptoken) > 0 {
 		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
+	}
+	if len(id) > 0 {
+		queryParameters["id"] = autorest.Encode("query", id)
 	}
 	if top != nil {
 		queryParameters["$top"] = autorest.Encode("query", *top)
@@ -185,7 +191,7 @@ func (client UsageDetailsClient) listNextResults(ctx context.Context, lastResult
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client UsageDetailsClient) ListComplete(ctx context.Context, scope string, expand string, filter string, skiptoken string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
+func (client UsageDetailsClient) ListComplete(ctx context.Context, scope string, expand string, filter string, skiptoken string, id string, top *int32, apply string) (result UsageDetailsListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/UsageDetailsClient.List")
 		defer func() {
@@ -196,6 +202,6 @@ func (client UsageDetailsClient) ListComplete(ctx context.Context, scope string,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, scope, expand, filter, skiptoken, top, apply)
+	result.page, err = client.List(ctx, scope, expand, filter, skiptoken, id, top, apply)
 	return
 }

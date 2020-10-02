@@ -384,10 +384,11 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, t
 
 // authenticateInteractiveBrowser opens an interactive browser window, gets the authorization code and requests an Access Token with the
 // authorization code and returns the token or an error in case of authentication failure.
-// ctx: The current request context
-// tenantID: The Azure Active Directory tenant (directory) ID of the service principal
-// clientID: The client (application) ID of the service principal
+// ctx: The current request context.
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
+// clientID: The client (application) ID of the service principal.
 // clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
+// redirectURI: The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
 // scopes: The scopes required for the token
 func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, tenantID string, clientID string, clientSecret string, redirectURI string, scopes []string) (*azcore.AccessToken, error) {
 	cfg, err := authCodeReceiver(c.options.AuthorityHost, tenantID, clientID, redirectURI, scopes)
@@ -398,10 +399,12 @@ func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, 
 }
 
 // authenticateAuthCode requests an Access Token with the authorization code and returns the token or an error in case of authentication failure.
-// ctx: The current request context
-// tenantID: The Azure Active Directory tenant (directory) ID of the service principal
-// clientID: The client (application) ID of the service principal
+// ctx: The current request context.
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
+// clientID: The client (application) ID of the service principal.
+// authCode: The authorization code received from the authorization code flow. The authorization code must not have been used to obtain another token.
 // clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
+// redirectURI: The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
 // scopes: The scopes required for the token
 func (c *aadIdentityClient) authenticateAuthCode(ctx context.Context, tenantID string, clientID string, authCode string, clientSecret string, redirectURI string, scopes []string) (*azcore.AccessToken, error) {
 	req, err := c.createAuthorizationCodeAuthRequest(ctx, tenantID, clientID, authCode, clientSecret, redirectURI, scopes)

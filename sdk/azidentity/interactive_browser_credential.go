@@ -14,8 +14,10 @@ import (
 	"github.com/pkg/browser"
 )
 
+// InteractiveBrowserCredentialOptions can be used when providing additional credential information, such as a client secret.
+// Also use these options to modify the default pipeline behavior through the TokenCredentialOptions.
 type InteractiveBrowserCredentialOptions struct {
-	ClientSecret *string                 // Gets the client secret that was generated for the App Registration used to authenticate the client.
+	ClientSecret *string                 // Gets the client secret that was generated for the App Registration used to authenticate the client. Only applies for web apps.
 	Options      *TokenCredentialOptions // Options allow to configure the management of the requests sent to Azure Active Directory.
 }
 
@@ -78,7 +80,7 @@ func interactiveBrowserLogin(tenantID string, clientID string, scopes []string) 
 		tenantID = "common"
 	}
 	if clientID == "" {
-		clientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
+		clientID = developerSignOnClientID
 	}
 	state := func() string {
 		rand.Seed(time.Now().Unix())

@@ -364,6 +364,8 @@ type PutAliasRequestProperties struct {
 	BillingScope *string `json:"billingScope,omitempty"`
 	// SubscriptionID - This parameter can be used to create alias for existing subscription Id
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	// ResellerID - Reseller ID, basically MPN Id
+	ResellerID *string `json:"resellerId,omitempty"`
 }
 
 // PutAliasResponse subscription Information with the alias.

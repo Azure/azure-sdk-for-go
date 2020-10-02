@@ -325,9 +325,6 @@ func (c *aadIdentityClient) authenticateDeviceCode(ctx context.Context, tenantID
 }
 
 func (c *aadIdentityClient) createDeviceCodeAuthRequest(ctx context.Context, tenantID string, clientID string, deviceCode string, scopes []string) (*azcore.Request, error) {
-	if len(tenantID) == 0 { // if the user did not pass in a tenantID then the default value is set
-		tenantID = "organizations"
-	}
 	data := url.Values{}
 	data.Set(qpGrantType, deviceCodeGrantType)
 	data.Set(qpClientID, clientID)
@@ -363,9 +360,6 @@ func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, 
 }
 
 func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, tenantID string, clientID string, scopes []string) (*azcore.Request, error) {
-	if len(tenantID) == 0 { // if the user did not pass in a tenantID then the default value is set
-		tenantID = "organizations"
-	}
 	data := url.Values{}
 	data.Set(qpClientID, clientID)
 	data.Set(qpScope, strings.Join(scopes, " "))

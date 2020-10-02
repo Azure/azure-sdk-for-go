@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -15,27 +16,43 @@ const (
 	deviceCodeGrantType = "urn:ietf:params:oauth:grant-type:device_code"
 )
 
+type DeviceCodeCredentialOptions struct {
+	TenantID   *string                 // Gets the Azure Active Directory tenant (directory) ID of the service principal
+	ClientID   *string                 // Gets the client (application) ID of the service principal
+	UserPrompt *func(string)           // The callback function used to send the login message back to the user
+	Options    *TokenCredentialOptions // Options used to configure the management of the requests sent to Azure Active Directory.
+}
+
 // DeviceCodeCredential authenticates a user using the device code flow, and provides access tokens for that user account.
 // For more information on the device code authentication flow see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code.
 type DeviceCodeCredential struct {
 	client       *aadIdentityClient
 	tenantID     string       // Gets the Azure Active Directory tenant (directory) ID of the service principal
 	clientID     string       // Gets the client (application) ID of the service principal
-	callback     func(string) // Sends the user a message with a verification URL and device code to sign in to the login server
+	userPrompt   func(string) // Sends the user a message with a verification URL and device code to sign in to the login server
 	refreshToken string       // Gets the refresh token sent from the service and will be used to retreive new access tokens after the initial request for a token. Thread safety for updates is handled in the AuthenticationPolicy since only one goroutine will be updating at a time
 }
 
 // NewDeviceCodeCredential constructs a new DeviceCodeCredential used to authenticate against Azure Active Directory with a device code.
-// tenantID: The Azure Active Directory tenant (directory) ID of the service principal. If none is set then the default value ("organizations") will be used in place of the tenantID.
-// clientID: The client (application) ID of the service principal.
-// callback: The callback function used to send the login message back to the user
-// options: Options used to configure the management of the requests sent to Azure Active Directory.
-func NewDeviceCodeCredential(tenantID string, clientID string, callback func(string), options *TokenCredentialOptions) (*DeviceCodeCredential, error) {
-	c, err := newAADIdentityClient(options)
+// options: Options used to configure the management of the requests sent to Azure Active Directory, please see DeviceCodeCredentialOptions for a description of each field.
+func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeCredential, error) {
+	c, err := newAADIdentityClient(options.Options)
 	if err != nil {
 		return nil, err
 	}
-	return &DeviceCodeCredential{tenantID: tenantID, clientID: clientID, callback: callback, client: c}, nil
+	tenantID := "organizations"
+	clientID := developerSignOnClientID
+	userPrompt := handler
+	if options.TenantID != nil {
+		tenantID = *options.TenantID
+	}
+	if options.ClientID != nil {
+		clientID = *options.ClientID
+	}
+	if options.UserPrompt != nil {
+		userPrompt = *options.UserPrompt
+	}
+	return &DeviceCodeCredential{tenantID: tenantID, clientID: clientID, userPrompt: userPrompt, client: c}, nil
 }
 
 // GetToken obtains a token from Azure Active Directory, following the device code authentication
@@ -73,7 +90,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 		return nil, err // TODO check what error type to return here
 	}
 	// send authentication flow instructions back to the user to log in and authorize the device
-	c.callback(dc.Message)
+	c.userPrompt(dc.Message)
 	// poll the token endpoint until a valid access token is received or until authentication fails
 	for {
 		tk, err := c.client.authenticateDeviceCode(ctx, c.tenantID, c.clientID, dc.DeviceCode, opts.Scopes)
@@ -109,4 +126,8 @@ type deviceCodeResult struct {
 	VerificationURL string `json:"verification_uri"` // Verification URL where the user must navigate to authenticate using the device code and credentials.
 	Interval        int64  `json:"interval"`         // Polling interval time to check for completion of authentication flow.
 	Message         string `json:"message"`          // User friendly text response that can be used for display purpose.
+}
+
+var handler func(string) = func(s string) {
+	fmt.Println(s)
 }

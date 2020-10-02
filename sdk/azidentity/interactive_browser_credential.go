@@ -17,16 +17,25 @@ import (
 // InteractiveBrowserCredentialOptions can be used when providing additional credential information, such as a client secret.
 // Also use these options to modify the default pipeline behavior through the TokenCredentialOptions.
 type InteractiveBrowserCredentialOptions struct {
-	ClientSecret *string                 // Gets the client secret that was generated for the App Registration used to authenticate the client. Only applies for web apps.
-	Options      *TokenCredentialOptions // Options allow to configure the management of the requests sent to Azure Active Directory.
+	// The Azure Active Directory tenant (directory) ID of the service principal.
+	TenantID *string
+	// The client (application) ID of the service principal.
+	ClientID *string
+	// The client secret that was generated for the App Registration used to authenticate the client. Only applies for web apps.
+	ClientSecret *string
+	// Options allows configuring the management of the requests sent to Azure Active Directory.
+	Options *TokenCredentialOptions
 }
 
 // InteractiveBrowserCredential enables authentication to Azure Active Directory using an interactive browser to log in.
 type InteractiveBrowserCredential struct {
-	client       *aadIdentityClient
-	tenantID     string  // Gets the Azure Active Directory tenant (directory) ID of the service principal
-	clientID     string  // Gets the client (application) ID of the service principal
-	clientSecret *string // Gets the client secret that was generated for the App Registration used to authenticate the client.
+	client *aadIdentityClient
+	// Gets the Azure Active Directory tenant (directory) ID of the service principal.
+	tenantID string
+	// Gets the client (application) ID of the service principal.
+	clientID string
+	// Gets the client secret that was generated for the App Registration used to authenticate the client.
+	clientSecret string
 }
 
 // NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential with the details needed to authenticate against Azure Active Directory through an interactive browser window.
@@ -34,14 +43,28 @@ type InteractiveBrowserCredential struct {
 // clientID: The client (application) ID of the service principal.
 // clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
 // options: allow to configure the management of the requests sent to Azure Active Directory.
-func NewInteractiveBrowserCredential(tenantID string, clientID string, options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
-	c, err := newAADIdentityClient(options.Options)
+func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
+	var credentialOptions *TokenCredentialOptions
+	tenantID := "organizations"
+	clientID := developerSignOnClientID
+	var clientSecret string
+	if options != nil {
+		if options.Options != nil {
+			credentialOptions = options.Options
+		}
+		if options.TenantID != nil {
+			tenantID = *options.TenantID
+		}
+		if options.ClientID != nil {
+			clientID = *options.ClientID
+		}
+		if options.ClientSecret != nil {
+			clientSecret = *options.ClientSecret
+		}
+	}
+	c, err := newAADIdentityClient(credentialOptions)
 	if err != nil {
 		return nil, err
-	}
-	var clientSecret *string
-	if options.ClientSecret != nil {
-		clientSecret = options.ClientSecret
 	}
 	return &InteractiveBrowserCredential{tenantID: tenantID, clientID: clientID, clientSecret: clientSecret, client: c}, nil
 }
@@ -77,7 +100,7 @@ var authCodeReceiver = func(tenantID string, clientID string, scopes []string) (
 func interactiveBrowserLogin(tenantID string, clientID string, scopes []string) (*interactiveConfig, error) {
 	const authURLFormat = "https://login.microsoftonline.com/%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&client_id=%s&redirect_uri=%s&state=%s&scope=%s&prompt=select_account"
 	if tenantID == "" {
-		tenantID = "common"
+		tenantID = "organizations"
 	}
 	if clientID == "" {
 		clientID = developerSignOnClientID

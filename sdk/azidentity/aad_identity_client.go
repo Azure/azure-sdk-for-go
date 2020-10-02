@@ -389,7 +389,7 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, t
 // clientID: The client (application) ID of the service principal
 // clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
 // scopes: The scopes required for the token
-func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, tenantID string, clientID string, clientSecret *string, scopes []string) (*azcore.AccessToken, error) {
+func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.AccessToken, error) {
 	cfg, err := authCodeReceiver(tenantID, clientID, scopes)
 	if err != nil {
 		return nil, err
@@ -412,15 +412,12 @@ func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, 
 }
 
 // createAuthorizationCodeAuthRequest creates a request for an Access Token for authorization_code grant types.
-func (c *aadIdentityClient) createAuthorizationCodeAuthRequest(ctx context.Context, config interactiveConfig, tenantID string, clientID string, clientSecret *string, scopes []string) (*azcore.Request, error) {
-	if len(tenantID) == 0 { // if the user did not pass in a tenantID then the default value is set
-		tenantID = "organizations"
-	}
+func (c *aadIdentityClient) createAuthorizationCodeAuthRequest(ctx context.Context, config interactiveConfig, tenantID string, clientID string, clientSecret string, scopes []string) (*azcore.Request, error) {
 	data := url.Values{}
 	data.Set(qpGrantType, "authorization_code")
 	data.Set(qpClientID, clientID)
-	if clientSecret != nil {
-		data.Set(qpClientSecret, *clientSecret) // only for web apps
+	if clientSecret != "" {
+		data.Set(qpClientSecret, clientSecret) // only for web apps
 	}
 	data.Set(qpRedirectURI, config.redirectURI)
 	data.Set(qpScope, strings.Join(scopes, " "))

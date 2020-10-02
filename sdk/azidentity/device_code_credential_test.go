@@ -25,8 +25,7 @@ const (
 )
 
 func TestDeviceCodeCredential_CreateAuthRequestSuccess(t *testing.T) {
-	handler := func(s string) {}
-	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: to.StringPtr(tenantID), ClientID: to.StringPtr(clientID), UserPrompt: &handler, Options: nil})
+	cred, err := NewDeviceCodeCredential(nil)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -49,7 +48,7 @@ func TestDeviceCodeCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if reqQueryParams[qpGrantType][0] != deviceCodeGrantType {
 		t.Fatalf("Unexpected grant type")
 	}
-	if reqQueryParams[qpClientID][0] != clientID {
+	if reqQueryParams[qpClientID][0] != developerSignOnClientID {
 		t.Fatalf("Unexpected client ID in the client_id header")
 	}
 	if reqQueryParams[qpDeviceCode][0] != deviceCode {
@@ -66,9 +65,9 @@ func TestDeviceCodeCredential_CreateAuthRequestSuccess(t *testing.T) {
 	}
 }
 
-func TestDeviceCodeCredential_CreateAuthRequestEmptyTenant(t *testing.T) {
+func TestDeviceCodeCredential_CreateAuthRequestCustomClientID(t *testing.T) {
 	handler := func(s string) {}
-	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: to.StringPtr(""), ClientID: to.StringPtr(clientID), UserPrompt: &handler, Options: nil})
+	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{ClientID: to.StringPtr(clientID), UserPrompt: &handler, Options: nil})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -111,9 +110,9 @@ func TestDeviceCodeCredential_CreateAuthRequestEmptyTenant(t *testing.T) {
 	}
 }
 
-func TestDeviceCodeCredential_RequestNewDeviceCodeEmptyTenant(t *testing.T) {
+func TestDeviceCodeCredential_RequestNewDeviceCodeCustomTenantIDClientID(t *testing.T) {
 	handler := func(s string) {}
-	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: to.StringPtr(""), ClientID: to.StringPtr(clientID), UserPrompt: &handler, Options: nil})
+	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: to.StringPtr(tenantID), ClientID: to.StringPtr(clientID), UserPrompt: &handler, Options: nil})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -145,7 +144,7 @@ func TestDeviceCodeCredential_RequestNewDeviceCodeEmptyTenant(t *testing.T) {
 	if req.Request.URL.Scheme != "https" {
 		t.Fatalf("Wrong request scheme")
 	}
-	if req.Request.URL.Path != "/organizations/oauth2/v2.0/devicecode" {
+	if req.Request.URL.Path != "/expected_tenant/oauth2/v2.0/devicecode" {
 		t.Fatalf("Did not set the right path when passing in an empty tenant ID")
 	}
 }
@@ -156,8 +155,7 @@ func TestDeviceCodeCredential_GetTokenSuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(deviceCodeResponse)))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	handler := func(string) {}
-	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: to.StringPtr(tenantID), ClientID: to.StringPtr(clientID), UserPrompt: &handler, Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
+	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}

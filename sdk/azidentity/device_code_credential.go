@@ -36,21 +36,25 @@ type DeviceCodeCredential struct {
 // NewDeviceCodeCredential constructs a new DeviceCodeCredential used to authenticate against Azure Active Directory with a device code.
 // options: Options used to configure the management of the requests sent to Azure Active Directory, please see DeviceCodeCredentialOptions for a description of each field.
 func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeCredential, error) {
-	c, err := newAADIdentityClient(options.Options)
-	if err != nil {
-		return nil, err
-	}
 	tenantID := "organizations"
 	clientID := developerSignOnClientID
 	userPrompt := handler
-	if options.TenantID != nil {
-		tenantID = *options.TenantID
+	var credentialOptions *TokenCredentialOptions = nil
+	if options != nil {
+		credentialOptions = options.Options
+		if options.TenantID != nil {
+			tenantID = *options.TenantID
+		}
+		if options.ClientID != nil {
+			clientID = *options.ClientID
+		}
+		if options.UserPrompt != nil {
+			userPrompt = *options.UserPrompt
+		}
 	}
-	if options.ClientID != nil {
-		clientID = *options.ClientID
-	}
-	if options.UserPrompt != nil {
-		userPrompt = *options.UserPrompt
+	c, err := newAADIdentityClient(credentialOptions)
+	if err != nil {
+		return nil, err
 	}
 	return &DeviceCodeCredential{tenantID: tenantID, clientID: clientID, userPrompt: userPrompt, client: c}, nil
 }

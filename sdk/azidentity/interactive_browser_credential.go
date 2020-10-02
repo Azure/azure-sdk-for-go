@@ -15,8 +15,8 @@ import (
 )
 
 type InteractiveBrowserCredentialOptions struct {
-	clientSecret *string                 // Gets the client secret that was generated for the App Registration used to authenticate the client.
-	options      *TokenCredentialOptions // Options allow to configure the management of the requests sent to Azure Active Directory.
+	ClientSecret *string                 // Gets the client secret that was generated for the App Registration used to authenticate the client.
+	Options      *TokenCredentialOptions // Options allow to configure the management of the requests sent to Azure Active Directory.
 }
 
 // InteractiveBrowserCredential enables authentication to Azure Active Directory using an interactive browser to log in.
@@ -33,13 +33,13 @@ type InteractiveBrowserCredential struct {
 // clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
 // options: allow to configure the management of the requests sent to Azure Active Directory.
 func NewInteractiveBrowserCredential(tenantID string, clientID string, options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
-	c, err := newAADIdentityClient(options.options)
+	c, err := newAADIdentityClient(options.Options)
 	if err != nil {
 		return nil, err
 	}
 	var clientSecret *string
-	if options.clientSecret != nil {
-		clientSecret = options.clientSecret
+	if options.ClientSecret != nil {
+		clientSecret = options.ClientSecret
 	}
 	return &InteractiveBrowserCredential{tenantID: tenantID, clientID: clientID, clientSecret: clientSecret, client: c}, nil
 }

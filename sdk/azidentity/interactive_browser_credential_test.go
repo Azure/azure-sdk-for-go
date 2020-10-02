@@ -18,7 +18,7 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	cred, err := NewInteractiveBrowserCredential(tenantID, clientID, &InteractiveBrowserCredentialOptions{clientSecret: to.StringPtr(secret), options: &TokenCredentialOptions{AuthorityHost: srv.URL()}})
+	cred, err := NewInteractiveBrowserCredential(tenantID, clientID, &InteractiveBrowserCredentialOptions{ClientSecret: to.StringPtr(secret), Options: &TokenCredentialOptions{AuthorityHost: srv.URL()}})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -41,7 +41,7 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
-	cred, err := NewInteractiveBrowserCredential(tenantID, clientID, &InteractiveBrowserCredentialOptions{clientSecret: to.StringPtr(wrongSecret), options: &TokenCredentialOptions{AuthorityHost: srv.URL()}})
+	cred, err := NewInteractiveBrowserCredential(tenantID, clientID, &InteractiveBrowserCredentialOptions{ClientSecret: to.StringPtr(wrongSecret), Options: &TokenCredentialOptions{AuthorityHost: srv.URL()}})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}

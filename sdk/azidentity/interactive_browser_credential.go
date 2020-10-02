@@ -14,12 +14,17 @@ import (
 	"github.com/pkg/browser"
 )
 
+type InteractiveBrowserCredentialOptions struct {
+	clientSecret *string                 // Gets the client secret that was generated for the App Registration used to authenticate the client.
+	options      *TokenCredentialOptions // Options allow to configure the management of the requests sent to Azure Active Directory.
+}
+
 // InteractiveBrowserCredential enables authentication to Azure Active Directory using an interactive browser to log in.
 type InteractiveBrowserCredential struct {
 	client       *aadIdentityClient
-	tenantID     string // Gets the Azure Active Directory tenant (directory) ID of the service principal
-	clientID     string // Gets the client (application) ID of the service principal
-	clientSecret string // Gets the client secret that was generated for the App Registration used to authenticate the client.
+	tenantID     string  // Gets the Azure Active Directory tenant (directory) ID of the service principal
+	clientID     string  // Gets the client (application) ID of the service principal
+	clientSecret *string // Gets the client secret that was generated for the App Registration used to authenticate the client.
 }
 
 // NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential with the details needed to authenticate against Azure Active Directory through an interactive browser window.
@@ -27,10 +32,14 @@ type InteractiveBrowserCredential struct {
 // clientID: The client (application) ID of the service principal.
 // clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
 // options: allow to configure the management of the requests sent to Azure Active Directory.
-func NewInteractiveBrowserCredential(tenantID string, clientID string, clientSecret string, options *TokenCredentialOptions) (*InteractiveBrowserCredential, error) {
-	c, err := newAADIdentityClient(options)
+func NewInteractiveBrowserCredential(tenantID string, clientID string, options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
+	c, err := newAADIdentityClient(options.options)
 	if err != nil {
 		return nil, err
+	}
+	var clientSecret *string
+	if options.clientSecret != nil {
+		clientSecret = options.clientSecret
 	}
 	return &InteractiveBrowserCredential{tenantID: tenantID, clientID: clientID, clientSecret: clientSecret, client: c}, nil
 }

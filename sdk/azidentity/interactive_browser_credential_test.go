@@ -11,13 +11,14 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
 func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	cred, err := NewInteractiveBrowserCredential(tenantID, clientID, secret, &TokenCredentialOptions{AuthorityHost: srv.URL()})
+	cred, err := NewInteractiveBrowserCredential(tenantID, clientID, &InteractiveBrowserCredentialOptions{clientSecret: to.StringPtr(secret), options: &TokenCredentialOptions{AuthorityHost: srv.URL()}})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -40,7 +41,7 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
-	cred, err := NewInteractiveBrowserCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{AuthorityHost: srv.URL()})
+	cred, err := NewInteractiveBrowserCredential(tenantID, clientID, &InteractiveBrowserCredentialOptions{clientSecret: to.StringPtr(wrongSecret), options: &TokenCredentialOptions{AuthorityHost: srv.URL()}})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}

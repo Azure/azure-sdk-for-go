@@ -162,13 +162,12 @@ To obtain more detailed logging, including request/response bodies and header va
 
 ```go
 // Set log to output to the console
-log := azcore.Log()
-log.SetListener(func(cls LogClassification, s string) {
+azcore.Log().SetListener(func(cls LogClassification, s string) {
 		fmt.Println(s) // printing log out to the console
   })
   
 // Include only azidentity credential logs
-log.SetClassifications(azidentity.LogCredential)
+azcore.Log().SetClassifications(azidentity.LogCredential)
 ```
 
 > CAUTION: logs from credentials contain sensitive information.
@@ -179,7 +178,7 @@ log.SetClassifications(azidentity.LogCredential)
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues).
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Azure.Identity` label.
 
 # Contributing
 

@@ -43,10 +43,7 @@ type InteractiveBrowserCredential struct {
 }
 
 // NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential with the details needed to authenticate against Azure Active Directory through an interactive browser window.
-// tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
-// clientID: The client (application) ID of the service principal.
-// clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
-// options: allow to configure the management of the requests sent to Azure Active Directory.
+// options: allow to configure the management of the requests sent to Azure Active Directory, leave as nil for default behavior.
 func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
 	var credentialOptions *TokenCredentialOptions
 	tenantID := "organizations"

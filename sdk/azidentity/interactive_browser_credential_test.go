@@ -63,32 +63,30 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	var authFailed *AuthenticationFailedError
 	if !errors.As(err, &authFailed) {
 		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
-	} else {
-		var respError *AADAuthenticationFailedError
-		if !errors.As(authFailed.Unwrap(), &respError) {
-			t.Fatalf("Expected: AADAuthenticationFailedError, Received: %T", err)
-		} else {
-			if len(respError.Message) == 0 {
-				t.Fatalf("Did not receive an error message")
-			}
-			if len(respError.Description) == 0 {
-				t.Fatalf("Did not receive an error description")
-			}
-			if len(respError.Timestamp) == 0 {
-				t.Fatalf("Did not receive a timestamp")
-			}
-			if len(respError.TraceID) == 0 {
-				t.Fatalf("Did not receive a TraceID")
-			}
-			if len(respError.CorrelationID) == 0 {
-				t.Fatalf("Did not receive a CorrelationID")
-			}
-			if len(respError.URI) == 0 {
-				t.Fatalf("Did not receive an error URI")
-			}
-			if respError.Response == nil {
-				t.Fatalf("Did not receive an error response")
-			}
-		}
+	}
+	var respError *AADAuthenticationFailedError
+	if !errors.As(authFailed.Unwrap(), &respError) {
+		t.Fatalf("Expected: AADAuthenticationFailedError, Received: %T", err)
+	}
+	if len(respError.Message) == 0 {
+		t.Fatalf("Did not receive an error message")
+	}
+	if len(respError.Description) == 0 {
+		t.Fatalf("Did not receive an error description")
+	}
+	if len(respError.Timestamp) == 0 {
+		t.Fatalf("Did not receive a timestamp")
+	}
+	if len(respError.TraceID) == 0 {
+		t.Fatalf("Did not receive a TraceID")
+	}
+	if len(respError.CorrelationID) == 0 {
+		t.Fatalf("Did not receive a CorrelationID")
+	}
+	if len(respError.URI) == 0 {
+		t.Fatalf("Did not receive an error URI")
+	}
+	if respError.Response == nil {
+		t.Fatalf("Did not receive an error response")
 	}
 }

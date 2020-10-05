@@ -42,36 +42,29 @@ type InteractiveBrowserCredential struct {
 	redirectURI string
 }
 
-// NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential with the details needed to authenticate against Azure Active Directory through an interactive browser window.
-// options: allow to configure the management of the requests sent to Azure Active Directory, leave as nil for default behavior.
-func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
-	var credentialOptions *TokenCredentialOptions
-	tenantID := "organizations"
-	clientID := developerSignOnClientID
-	redirectURI := ""
-	var clientSecret string
-	if options != nil {
-		if options.Options != nil {
-			credentialOptions = options.Options
-		}
-		if options.TenantID != nil {
-			tenantID = *options.TenantID
-		}
-		if options.ClientID != nil {
-			clientID = *options.ClientID
-		}
-		if options.ClientSecret != nil {
-			clientSecret = *options.ClientSecret
-		}
-		if options.RedirectURI != nil {
-			redirectURI = *options.RedirectURI
-		}
+// DefaultInteractiveBrowserCredentialOptions use this function to get the default values for logging in with
+// an interactive browser window.
+func DefaultInteractiveBrowserCredentialOptions() *InteractiveBrowserCredentialOptions {
+	tenantID, clientID, clientSecret, redirectURI := organizationsTenantID, developerSignOnClientID, "", ""
+	return &InteractiveBrowserCredentialOptions{
+		TenantID:     &tenantID,
+		ClientID:     &clientID,
+		ClientSecret: &clientSecret,
+		RedirectURI:  &redirectURI,
 	}
-	c, err := newAADIdentityClient(credentialOptions)
+}
+
+// NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential with the details needed to authenticate against Azure Active Directory through an interactive browser window.
+// options: allow to configure the management of the requests sent to Azure Active Directory, pass in nil for default behavior.
+func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
+	if options == nil {
+		options = DefaultInteractiveBrowserCredentialOptions()
+	}
+	c, err := newAADIdentityClient(options.Options)
 	if err != nil {
 		return nil, err
 	}
-	return &InteractiveBrowserCredential{tenantID: tenantID, clientID: clientID, clientSecret: clientSecret, redirectURI: redirectURI, client: c}, nil
+	return &InteractiveBrowserCredential{tenantID: *options.TenantID, clientID: *options.ClientID, clientSecret: *options.ClientSecret, redirectURI: *options.RedirectURI, client: c}, nil
 }
 
 // GetToken obtains a token from Azure Active Directory using an interactive browser to authenticate.
@@ -96,6 +89,7 @@ func (c *InteractiveBrowserCredential) AuthenticationPolicy(options azcore.Authe
 
 var _ azcore.TokenCredential = (*InteractiveBrowserCredential)(nil)
 
+// authCodeReceiver is used to allow for testing without opening an interactive browser window. Allows mocking a response authorization code and redirect URI.
 var authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI string, scopes []string) (*interactiveConfig, error) {
 	return interactiveBrowserLogin(authorityHost, tenantID, clientID, redirectURI, scopes)
 }
@@ -104,12 +98,6 @@ var authCodeReceiver = func(authorityHost string, tenantID string, clientID stri
 // received or an error.
 func interactiveBrowserLogin(authorityHost string, tenantID string, clientID string, redirectURL string, scopes []string) (*interactiveConfig, error) {
 	const authURLFormat = "%s/%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&client_id=%s&redirect_uri=%s&state=%s&scope=%s&prompt=select_account"
-	if tenantID == "" {
-		tenantID = "organizations"
-	}
-	if clientID == "" {
-		clientID = developerSignOnClientID
-	}
 	state := func() string {
 		rand.Seed(time.Now().Unix())
 		// generate a 20-char random alpha-numeric string

@@ -8,6 +8,7 @@ import (
 )
 
 const (
+	organizationsTenantID   = "organizations"
 	developerSignOnClientID = "04b07795-8ddb-461a-bbee-02f9e1bf7b46"
 )
 

@@ -42,7 +42,7 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 
 // List list all available Microsoft.AzureStackHCI provider operations
-func (client OperationsClient) List(ctx context.Context) (result OperationList, err error) {
+func (client OperationsClient) List(ctx context.Context) (result AvailableOperations, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsClient.List")
 		defer func() {
@@ -97,7 +97,7 @@ func (client OperationsClient) ListSender(req *http.Request) (*http.Response, er
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client OperationsClient) ListResponder(resp *http.Response) (result OperationList, err error) {
+func (client OperationsClient) ListResponder(resp *http.Response) (result AvailableOperations, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

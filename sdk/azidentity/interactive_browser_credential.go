@@ -110,7 +110,6 @@ func interactiveBrowserLogin(authorityHost string, tenantID string, clientID str
 	}
 	defer rs.Stop()
 	authURL := fmt.Sprintf(authURLFormat, authorityHost, tenantID, clientID, *redirectURL, state, strings.Join(scopes, " "))
-	fmt.Println(authURL)
 	// open browser window so user can select credentials
 	err := browser.OpenURL(authURL)
 	if err != nil {

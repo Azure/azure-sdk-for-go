@@ -18,10 +18,14 @@ const (
 
 // DeviceCodeCredentialOptions provide options that can configure DeviceCodeCredential instead of using the default values.
 type DeviceCodeCredentialOptions struct {
-	TenantID   string                  // Gets the Azure Active Directory tenant (directory) ID of the service principal
-	ClientID   string                  // Gets the client (application) ID of the service principal
-	UserPrompt func(string)            // The callback function used to send the login message back to the user
-	Options    *TokenCredentialOptions // Options used to configure the management of the requests sent to Azure Active Directory.
+	// Gets the Azure Active Directory tenant (directory) ID of the service principal
+	TenantID string
+	// Gets the client (application) ID of the service principal
+	ClientID string
+	// The callback function used to send the login message back to the user
+	UserPrompt func(string)
+	// Options used to configure the management of the requests sent to Azure Active Directory.
+	Options *TokenCredentialOptions
 }
 
 // DeviceCodeCredential authenticates a user using the device code flow, and provides access tokens for that user account.

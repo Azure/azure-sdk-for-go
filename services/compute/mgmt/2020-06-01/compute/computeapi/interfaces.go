@@ -146,7 +146,7 @@ type VirtualMachinesClientAPI interface {
 	ConvertToManagedDisks(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesConvertToManagedDisksFuture, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, VMName string, parameters compute.VirtualMachine) (result compute.VirtualMachinesCreateOrUpdateFuture, err error)
 	Deallocate(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesDeallocateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesDeleteFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, VMName string, forceDeletion *bool) (result compute.VirtualMachinesDeleteFuture, err error)
 	Generalize(ctx context.Context, resourceGroupName string, VMName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, VMName string, expand compute.InstanceViewTypes) (result compute.VirtualMachine, err error)
 	InstanceView(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachineInstanceView, err error)

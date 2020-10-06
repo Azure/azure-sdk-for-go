@@ -135,3 +135,5 @@ type deviceCodeResult struct {
 	Interval        int64  `json:"interval"`         // Polling interval time to check for completion of authentication flow.
 	Message         string `json:"message"`          // User friendly text response that can be used for display purpose.
 }
+
+var _ azcore.TokenCredential = (*DeviceCodeCredential)(nil)

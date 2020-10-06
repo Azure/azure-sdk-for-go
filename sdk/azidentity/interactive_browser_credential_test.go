@@ -20,11 +20,11 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := DefaultInteractiveBrowserCredentialOptions()
 	options.Options = &TokenCredentialOptions{AuthorityHost: srv.URL()}
-	cred, err := NewInteractiveBrowserCredential(options)
+	cred, err := NewInteractiveBrowserCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI string, scopes []string) (*interactiveConfig, error) {
+	authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI *string, scopes []string) (*interactiveConfig, error) {
 		return &interactiveConfig{
 			authCode:    "12345",
 			redirectURI: srv.URL(),
@@ -46,11 +46,11 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	options := DefaultInteractiveBrowserCredentialOptions()
 	options.ClientSecret = to.StringPtr(wrongSecret)
 	options.Options = &TokenCredentialOptions{AuthorityHost: srv.URL()}
-	cred, err := NewInteractiveBrowserCredential(options)
+	cred, err := NewInteractiveBrowserCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI string, scopes []string) (*interactiveConfig, error) {
+	authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI *string, scopes []string) (*interactiveConfig, error) {
 		return &interactiveConfig{
 			authCode:    "12345",
 			redirectURI: srv.URL(),

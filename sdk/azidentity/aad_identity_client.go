@@ -25,14 +25,22 @@ const (
 	qpClientAssertion     = "client_assertion"
 	qpClientID            = "client_id"
 	qpClientSecret        = "client_secret"
+	qpCode                = "code"
 	qpDeviceCode          = "device_code"
 	qpGrantType           = "grant_type"
 	qpPassword            = "password"
+	qpRedirectURI         = "redirect_uri"
 	qpRefreshToken        = "refresh_token"
 	qpResponseType        = "response_type"
 	qpScope               = "scope"
 	qpUsername            = "username"
 )
+
+// interactiveConfig stores the authorization code obtained from the interactive browser and redirect URI used in the initial request
+type interactiveConfig struct {
+	authCode    string
+	redirectURI string
+}
 
 // aadIdentityClient provides the base for authenticating with Client Secret Credentials, Client Certificate Credentials
 // and Environment Credentials. This type inlcudes an azcore.Pipeline and TokenCredentialOptions.
@@ -365,6 +373,71 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, t
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
 	// endpoint that will return a device code along with the other necessary authentication flow parameters in the DeviceCodeResult struct
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, "/oauth2/v2.0/devicecode"))
+	if err != nil {
+		return nil, err
+	}
+	if err := req.SetBody(body, azcore.HeaderURLEncoded); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// authenticateInteractiveBrowser opens an interactive browser window, gets the authorization code and requests an Access Token with the
+// authorization code and returns the token or an error in case of authentication failure.
+// ctx: The current request context.
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
+// clientID: The client (application) ID of the service principal.
+// clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
+// redirectURI: The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
+// scopes: The scopes required for the token
+func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, tenantID string, clientID string, clientSecret *string, redirectURI *string, scopes []string) (*azcore.AccessToken, error) {
+	cfg, err := authCodeReceiver(c.options.AuthorityHost, tenantID, clientID, redirectURI, scopes)
+	if err != nil {
+		return nil, err
+	}
+	return c.authenticateAuthCode(ctx, tenantID, clientID, cfg.authCode, clientSecret, cfg.redirectURI, scopes)
+}
+
+// authenticateAuthCode requests an Access Token with the authorization code and returns the token or an error in case of authentication failure.
+// ctx: The current request context.
+// tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
+// clientID: The client (application) ID of the service principal.
+// authCode: The authorization code received from the authorization code flow. The authorization code must not have been used to obtain another token.
+// clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
+// redirectURI: The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
+// scopes: The scopes required for the token
+func (c *aadIdentityClient) authenticateAuthCode(ctx context.Context, tenantID string, clientID string, authCode string, clientSecret *string, redirectURI string, scopes []string) (*azcore.AccessToken, error) {
+	req, err := c.createAuthorizationCodeAuthRequest(ctx, tenantID, clientID, authCode, clientSecret, redirectURI, scopes)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := c.pipeline.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.HasStatusCode(successStatusCodes[:]...) {
+		return c.createAccessToken(resp)
+	}
+
+	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+}
+
+// createAuthorizationCodeAuthRequest creates a request for an Access Token for authorization_code grant types.
+func (c *aadIdentityClient) createAuthorizationCodeAuthRequest(ctx context.Context, tenantID string, clientID string, authCode string, clientSecret *string, redirectURI string, scopes []string) (*azcore.Request, error) {
+	data := url.Values{}
+	data.Set(qpGrantType, "authorization_code")
+	data.Set(qpClientID, clientID)
+	if clientSecret != nil {
+		data.Set(qpClientSecret, *clientSecret) // only for web apps
+	}
+	data.Set(qpRedirectURI, redirectURI)
+	data.Set(qpScope, strings.Join(scopes, " "))
+	data.Set(qpCode, authCode)
+	dataEncoded := data.Encode()
+	body := azcore.NopCloser(strings.NewReader(dataEncoded))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.options.AuthorityHost, tenantID, tokenEndpoint))
 	if err != nil {
 		return nil, err
 	}

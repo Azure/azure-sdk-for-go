@@ -29,7 +29,7 @@ type AuthorizationCodeCredential struct {
 	redirectURI  string  // The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
 }
 
-// DefaultAuthorizationCodeCredentialOptions provides the default implementation for AuthorizationCodeCredentialOptions.
+// DefaultAuthorizationCodeCredentialOptions provides the default implementation for AuthorizationCodeCredentialOptions that is necessary for AuthorizationCodeCredential.
 func DefaultAuthorizationCodeCredentialOptions() AuthorizationCodeCredentialOptions {
 	return AuthorizationCodeCredentialOptions{}
 }
@@ -38,9 +38,8 @@ func DefaultAuthorizationCodeCredentialOptions() AuthorizationCodeCredentialOpti
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
 // authCode: The authorization code received from the authorization code flow. The authorization code must not have been used to obtain another token.
-// clientSecret: A client secret that was generated for the App Registration used to authenticate the client.
 // redirectURI: The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
-// options: allow to configure the management of the requests sent to Azure Active Directory.
+// options: Manage the configuration of the requests sent to Azure Active Directory, they can also include a client secret for web app authentication.
 func NewAuthorizationCodeCredential(tenantID string, clientID string, authCode string, redirectURI string, options *AuthorizationCodeCredentialOptions) (*AuthorizationCodeCredential, error) {
 	if options == nil {
 		temp := DefaultAuthorizationCodeCredentialOptions()

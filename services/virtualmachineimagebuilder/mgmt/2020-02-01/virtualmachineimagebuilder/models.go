@@ -847,6 +847,8 @@ type ImageTemplatePowerShellCustomizer struct {
 	Inline *[]string `json:"inline,omitempty"`
 	// RunElevated - If specified, the PowerShell script will be run with elevated privileges
 	RunElevated *bool `json:"runElevated,omitempty"`
+	// RunAsSystem - If specified, the PowerShell script will be run with elevated privileges using the Local System user. Can only be true when the runElevated field above is set to true.
+	RunAsSystem *bool `json:"runAsSystem,omitempty"`
 	// ValidExitCodes - Valid exit codes for the PowerShell script. [Default: 0]
 	ValidExitCodes *[]int32 `json:"validExitCodes,omitempty"`
 	// Name - Friendly Name to provide context on what this customization step does
@@ -870,6 +872,9 @@ func (itpsc ImageTemplatePowerShellCustomizer) MarshalJSON() ([]byte, error) {
 	}
 	if itpsc.RunElevated != nil {
 		objectMap["runElevated"] = itpsc.RunElevated
+	}
+	if itpsc.RunAsSystem != nil {
+		objectMap["runAsSystem"] = itpsc.RunAsSystem
 	}
 	if itpsc.ValidExitCodes != nil {
 		objectMap["validExitCodes"] = itpsc.ValidExitCodes

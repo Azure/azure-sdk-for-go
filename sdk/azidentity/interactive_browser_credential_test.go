@@ -14,6 +14,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
+func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
+	cred, err := NewInteractiveBrowserCredential(nil)
+	if err != nil {
+		t.Fatalf("Failed to create interactive browser credential: %v", err)
+	}
+	if cred.client.options.AuthorityHost != AzurePublicCloud {
+		t.Fatalf("Wrong authority host set. Expected: %s, Received: %s", AzurePublicCloud, cred.client.options.AuthorityHost)
+	}
+	if cred.options.ClientID != developerSignOnClientID {
+		t.Fatalf("Wrong clientID set. Expected: %s, Received: %s", developerSignOnClientID, cred.options.ClientID)
+	}
+	if cred.options.TenantID != organizationsTenantID {
+		t.Fatalf("Wrong tenantID set. Expected: %s, Received: %s", organizationsTenantID, cred.options.TenantID)
+	}
+}
+
 func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()

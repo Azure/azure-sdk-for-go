@@ -51,7 +51,8 @@ func DefaultInteractiveBrowserCredentialOptions() InteractiveBrowserCredentialOp
 // options: allow to configure the management of the requests sent to Azure Active Directory, pass in nil for default behavior.
 func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOptions) (*InteractiveBrowserCredential, error) {
 	if options == nil {
-		*options = DefaultInteractiveBrowserCredentialOptions()
+		temp := DefaultInteractiveBrowserCredentialOptions()
+		options = &temp
 	}
 	c, err := newAADIdentityClient(options.Options)
 	if err != nil {
@@ -104,7 +105,8 @@ func interactiveBrowserLogin(authorityHost string, tenantID string, clientID str
 	// start local redirect server so login can call us back
 	rs := newServer()
 	if redirectURL == nil {
-		*redirectURL = rs.Start(state)
+		temp := rs.Start(state)
+		redirectURL = &temp
 	}
 	defer rs.Stop()
 	authURL := fmt.Sprintf(authURLFormat, authorityHost, tenantID, clientID, *redirectURL, state, strings.Join(scopes, " "))

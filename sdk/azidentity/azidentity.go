@@ -4,7 +4,9 @@
 package azidentity
 
 import (
+	"errors"
 	"net/http"
+	"net/url"
 	"os"
 	"time"
 
@@ -140,7 +142,13 @@ func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, er
 	if c.AuthorityHost == "" {
 		c.AuthorityHost = authorityHost
 	}
-
+	u, err := url.Parse(c.AuthorityHost)
+	if err != nil {
+		return nil, err
+	}
+	if u.Scheme != "https" {
+		return nil, errors.New("cannot use an authority host without https")
+	}
 	return c, nil
 }
 

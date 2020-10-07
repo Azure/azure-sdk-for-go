@@ -41,7 +41,7 @@ type DeviceCodeCredential struct {
 // DefaultDeviceCodeCredentialOptions provides the default settings for DeviceCodeCredential.
 func DefaultDeviceCodeCredentialOptions() DeviceCodeCredentialOptions {
 	return DeviceCodeCredentialOptions{
-		TenantID: "organizations",
+		TenantID: organizationsTenantID,
 		ClientID: developerSignOnClientID,
 		UserPrompt: func(s string) {
 			fmt.Println(s)

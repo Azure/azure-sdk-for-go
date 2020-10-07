@@ -96,6 +96,7 @@ type ProvidersClientAPI interface {
 	ListAtTenantScope(ctx context.Context, top *int32, expand string) (result resources.ProviderListResultPage, err error)
 	ListAtTenantScopeComplete(ctx context.Context, top *int32, expand string) (result resources.ProviderListResultIterator, err error)
 	Register(ctx context.Context, resourceProviderNamespace string) (result resources.Provider, err error)
+	RegisterAtManagementGroupScope(ctx context.Context, resourceProviderNamespace string, groupID string) (result autorest.Response, err error)
 	Unregister(ctx context.Context, resourceProviderNamespace string) (result resources.Provider, err error)
 }
 

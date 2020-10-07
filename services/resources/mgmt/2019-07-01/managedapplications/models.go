@@ -887,8 +887,8 @@ type ApplicationPackageSupportUrls struct {
 
 // ApplicationPatchable information about managed application.
 type ApplicationPatchable struct {
-	// ApplicationPropertiesPatchable - The managed application properties.
-	*ApplicationPropertiesPatchable `json:"properties,omitempty"`
+	// ApplicationProperties - The managed application properties.
+	*ApplicationProperties `json:"properties,omitempty"`
 	// Plan - The plan information.
 	Plan *PlanPatchable `json:"plan,omitempty"`
 	// Kind - The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
@@ -914,8 +914,8 @@ type ApplicationPatchable struct {
 // MarshalJSON is the custom marshaler for ApplicationPatchable.
 func (ap ApplicationPatchable) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ap.ApplicationPropertiesPatchable != nil {
-		objectMap["properties"] = ap.ApplicationPropertiesPatchable
+	if ap.ApplicationProperties != nil {
+		objectMap["properties"] = ap.ApplicationProperties
 	}
 	if ap.Plan != nil {
 		objectMap["plan"] = ap.Plan
@@ -952,12 +952,12 @@ func (ap *ApplicationPatchable) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var applicationPropertiesPatchable ApplicationPropertiesPatchable
-				err = json.Unmarshal(*v, &applicationPropertiesPatchable)
+				var applicationProperties ApplicationProperties
+				err = json.Unmarshal(*v, &applicationProperties)
 				if err != nil {
 					return err
 				}
-				ap.ApplicationPropertiesPatchable = &applicationPropertiesPatchable
+				ap.ApplicationProperties = &applicationProperties
 			}
 		case "plan":
 			if v != nil {

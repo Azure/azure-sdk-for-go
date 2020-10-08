@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -111,8 +112,7 @@ func TestDeviceCodeCredential_CreateAuthRequestCustomClientID(t *testing.T) {
 }
 
 func TestDeviceCodeCredential_RequestNewDeviceCodeCustomTenantIDClientID(t *testing.T) {
-	handler := func(s string) {}
-	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: tenantID, ClientID: clientID, UserPrompt: handler, Options: nil})
+	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: tenantID, ClientID: clientID, Options: nil})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -174,8 +174,7 @@ func TestDeviceCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	handler := func(string) {}
-	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: tenantID, ClientID: clientID, UserPrompt: handler, Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
+	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: tenantID, ClientID: clientID, Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -192,7 +191,10 @@ func TestDeviceCodeCredential_GetTokenAuthorizationPending(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(authorizationPendingResponse)), mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithBody([]byte(authorizationPendingResponse)), mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	handler := func(string) {}
+	handler := func(dc DeviceCodeMessage) {
+		fmt.Println(fmt.Sprintf("Verification URL: %s", dc.VerificationURL))
+		fmt.Println(fmt.Sprintf("User Code: %s", dc.UserCode))
+	}
 	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: tenantID, ClientID: clientID, UserPrompt: handler, Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -209,7 +211,10 @@ func TestDeviceCodeCredential_GetTokenExpiredToken(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(deviceCodeResponse)))
 	srv.AppendResponse(mock.WithBody([]byte(authorizationPendingResponse)), mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithBody([]byte(expiredTokenResponse)), mock.WithStatusCode(http.StatusUnauthorized))
-	handler := func(string) {}
+	handler := func(dc DeviceCodeMessage) {
+		fmt.Println(dc.Message)
+		return
+	}
 	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: tenantID, ClientID: clientID, UserPrompt: handler, Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -224,8 +229,7 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenFailure(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
-	handler := func(string) {}
-	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: tenantID, ClientID: clientID, UserPrompt: handler, Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
+	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: tenantID, ClientID: clientID, Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -244,7 +248,7 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	handler := func(string) {}
+	handler := func(DeviceCodeMessage) {}
 	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: tenantID, ClientID: clientID, UserPrompt: handler, Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -265,7 +269,7 @@ func TestBearerPolicy_DeviceCodeCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(deviceCodeResponse)))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	handler := func(string) {}
+	handler := func(DeviceCodeMessage) {}
 	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: tenantID, ClientID: clientID, UserPrompt: handler, Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)

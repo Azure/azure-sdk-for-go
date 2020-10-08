@@ -50,6 +50,10 @@ type DeviceCodeMessage struct {
 }
 
 // DefaultDeviceCodeCredentialOptions provides the default settings for DeviceCodeCredential.
+// It will set the following default values:
+// TenantID set to "organizations".
+// ClientID set to the default developer sign on client ID "04b07795-8ddb-461a-bbee-02f9e1bf7b46".
+// UserPrompt set to output login information for the user to stdout.
 func DefaultDeviceCodeCredentialOptions() DeviceCodeCredentialOptions {
 	return DeviceCodeCredentialOptions{
 		TenantID: organizationsTenantID,

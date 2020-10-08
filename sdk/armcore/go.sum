@@ -1,5 +1,5 @@
-github.com/Azure/azure-sdk-for-go/sdk/azcore v0.11.0 h1:OhkQQEj0+3Kq3ufXVRggYeJ7dPECSjK1JR+wCsdLBfw=
-github.com/Azure/azure-sdk-for-go/sdk/azcore v0.11.0/go.mod h1:R+GJZ0mj7yxXtTENNLTzwkwro5zWzrEiZOdpIiN7Ypc=
+github.com/Azure/azure-sdk-for-go/sdk/azcore v0.12.0 h1:weap5lumRwv92BJjxQWroM1XXWpPEU/JSssoljj4EVc=
+github.com/Azure/azure-sdk-for-go/sdk/azcore v0.12.0/go.mod h1:R+GJZ0mj7yxXtTENNLTzwkwro5zWzrEiZOdpIiN7Ypc=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.3.0 h1:l7b+GcynB+tNmqq4yrQG2mMzp34gNu65CC5iGTKVlOA=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.3.0/go.mod h1:Q+TCQnSr+clUU0JU+xrHZ3slYCxw17AOFdvWFpQXjAY=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=

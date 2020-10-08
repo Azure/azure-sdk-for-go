@@ -74,10 +74,9 @@ func NewRPRegistrationPolicy(cred azcore.Credential, o *RegistrationOptions) azc
 		o = &def
 	}
 	p := azcore.NewPipeline(o.HTTPClient,
-		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(&o.Retry),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(nil))
+		azcore.NewLogPolicy(nil))
 	return &rpRegistrationPolicy{pipeline: p, options: *o}
 }
 

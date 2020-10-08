@@ -27,10 +27,8 @@ type mockType struct {
 func getPipeline(srv *mock.Server) azcore.Pipeline {
 	return azcore.NewPipeline(
 		srv,
-		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
-		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(nil),
-		azcore.NewRequestLogPolicy(nil))
+		azcore.NewLogPolicy(nil))
 }
 
 func handleError(resp *azcore.Response) error {

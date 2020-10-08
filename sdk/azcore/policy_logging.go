@@ -8,25 +8,34 @@ package azcore
 import (
 	"bytes"
 	"fmt"
-	"net/url"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 )
 
-// RequestLogOptions configures the logging policy's behavior.
-type RequestLogOptions struct {
+// LogOptions configures the logging policy's behavior.
+type LogOptions struct {
 	// placeholder for future configuration options
 }
 
-type requestLogPolicy struct {
-	options RequestLogOptions
+// DefaultLogOptions returns an instance of LogOptions initialized with default values.
+func DefaultLogOptions() LogOptions {
+	return LogOptions{}
 }
 
-// NewRequestLogPolicy creates a RequestLogPolicy object configured using the specified options.
-func NewRequestLogPolicy(o *RequestLogOptions) Policy {
-	return &requestLogPolicy{}
+type logPolicy struct {
+	options LogOptions
+}
+
+// NewLogPolicy creates a RequestLogPolicy object configured using the specified options.
+// Pass nil to accept the default values; this is the same as passing the result
+// from a call to DefaultLogOptions().
+func NewLogPolicy(o *LogOptions) Policy {
+	if o == nil {
+		def := DefaultLogOptions()
+		o = &def
+	}
+	return &logPolicy{options: *o}
 }
 
 // logPolicyOpValues is the struct containing the per-operation values
@@ -35,7 +44,7 @@ type logPolicyOpValues struct {
 	start time.Time
 }
 
-func (p *requestLogPolicy) Do(req *Request) (*Response, error) {
+func (p *logPolicy) Do(req *Request) (*Response, error) {
 	// Get the per-operation values. These are saved in the Message's map so that they persist across each retry calling into this policy object.
 	var opValues logPolicyOpValues
 	if req.OperationValue(&opValues); opValues.start.IsZero() {
@@ -48,7 +57,7 @@ func (p *requestLogPolicy) Do(req *Request) (*Response, error) {
 	if Log().Should(LogRequest) {
 		b := &bytes.Buffer{}
 		fmt.Fprintf(b, "==> OUTGOING REQUEST (Try=%d)\n", opValues.try)
-		WriteRequestWithResponse(b, prepareRequestForLogging(req), nil, nil)
+		writeRequestWithResponse(b, req, nil, nil)
 		Log().Write(LogRequest, b.String())
 	}
 
@@ -69,7 +78,7 @@ func (p *requestLogPolicy) Do(req *Request) (*Response, error) {
 			fmt.Fprint(b, "RESPONSE RECEIVED\n")
 		}
 
-		WriteRequestWithResponse(b, prepareRequestForLogging(req), response, err)
+		writeRequestWithResponse(b, req, response, err)
 		if err != nil {
 			// skip frames runtime.Callers() and runtime.StackTrace()
 			b.WriteString(runtime.StackTrace(2, StackFrameCount))
@@ -77,34 +86,4 @@ func (p *requestLogPolicy) Do(req *Request) (*Response, error) {
 		Log().Write(LogResponse, b.String())
 	}
 	return response, err
-}
-
-// RedactSigQueryParam redacts the 'sig' query parameter in URL's raw query to protect secret.
-func RedactSigQueryParam(rawQuery string) (bool, string) {
-	rawQuery = strings.ToLower(rawQuery) // lowercase the string so we can look for ?sig= and &sig=
-	sigFound := strings.Contains(rawQuery, "?sig=")
-	if !sigFound {
-		sigFound = strings.Contains(rawQuery, "&sig=")
-		if !sigFound {
-			return sigFound, rawQuery // [?|&]sig= not found; return same rawQuery passed in (no memory allocation)
-		}
-	}
-	// [?|&]sig= found, redact its value
-	values, _ := url.ParseQuery(rawQuery)
-	for name := range values {
-		if strings.EqualFold(name, "sig") {
-			values[name] = []string{"REDACTED"}
-		}
-	}
-	return sigFound, values.Encode()
-}
-
-func prepareRequestForLogging(req *Request) *Request {
-	request := req
-	if sigFound, rawQuery := RedactSigQueryParam(request.URL.RawQuery); sigFound {
-		// Make copy so we don't destroy the query parameters we actually need to send in the request
-		request = req.copy()
-		request.URL.RawQuery = rawQuery
-	}
-	return request
 }

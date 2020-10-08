@@ -23,7 +23,7 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse()
-	pl := NewPipeline(srv, NewRequestLogPolicy(nil))
+	pl := NewPipeline(srv, NewLogPolicy(nil))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -43,9 +43,6 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 		// Request ==> OUTGOING REQUEST (Try=1)
 		// 	GET http://127.0.0.1:49475?one=fish&sig=REDACTED
 		// 	(no headers)
-		if !strings.Contains(logReq, "sig=REDACTED") {
-			t.Fatal("missing redacted sig query param")
-		}
 		if !strings.Contains(logReq, "(no headers)") {
 			t.Fatal("missing (no headers)")
 		}
@@ -76,7 +73,7 @@ func TestPolicyLoggingError(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetError(errors.New("bogus error"))
-	pl := NewPipeline(srv, NewRequestLogPolicy(nil))
+	pl := NewPipeline(srv, NewLogPolicy(nil))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

@@ -211,26 +211,6 @@ func (req *Request) Close() error {
 	return req.Body.Close()
 }
 
-// copy returns a shallow copy of the request
-func (req *Request) copy() *Request {
-	clonedURL := *req.URL
-	// Copy the values and immutable references
-	return &Request{
-		Request: &http.Request{
-			Method:        req.Method,
-			URL:           &clonedURL,
-			Proto:         req.Proto,
-			ProtoMajor:    req.ProtoMajor,
-			ProtoMinor:    req.ProtoMinor,
-			Header:        req.Header.Clone(),
-			Host:          req.URL.Host,
-			Body:          req.Body, // shallow copy
-			ContentLength: req.ContentLength,
-			GetBody:       req.GetBody,
-		},
-	}
-}
-
 // clone returns a deep copy of the request with its context changed to ctx
 func (req *Request) clone(ctx context.Context) *Request {
 	r2 := Request{}

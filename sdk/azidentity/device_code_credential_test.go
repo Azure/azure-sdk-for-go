@@ -6,7 +6,6 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -191,10 +190,7 @@ func TestDeviceCodeCredential_GetTokenAuthorizationPending(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(authorizationPendingResponse)), mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithBody([]byte(authorizationPendingResponse)), mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	handler := func(dc DeviceCodeMessage) {
-		fmt.Println(fmt.Sprintf("Verification URL: %s", dc.VerificationURL))
-		fmt.Println(fmt.Sprintf("User Code: %s", dc.UserCode))
-	}
+	handler := func(dc DeviceCodeMessage) {}
 	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: tenantID, ClientID: clientID, UserPrompt: handler, Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -211,10 +207,7 @@ func TestDeviceCodeCredential_GetTokenExpiredToken(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(deviceCodeResponse)))
 	srv.AppendResponse(mock.WithBody([]byte(authorizationPendingResponse)), mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithBody([]byte(expiredTokenResponse)), mock.WithStatusCode(http.StatusUnauthorized))
-	handler := func(dc DeviceCodeMessage) {
-		fmt.Println(dc.Message)
-		return
-	}
+	handler := func(dc DeviceCodeMessage) {}
 	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: tenantID, ClientID: clientID, UserPrompt: handler, Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)

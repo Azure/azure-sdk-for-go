@@ -1,5 +1,5 @@
-github.com/Azure/azure-sdk-for-go/sdk/azcore v0.11.0 h1:OhkQQEj0+3Kq3ufXVRggYeJ7dPECSjK1JR+wCsdLBfw=
-github.com/Azure/azure-sdk-for-go/sdk/azcore v0.11.0/go.mod h1:R+GJZ0mj7yxXtTENNLTzwkwro5zWzrEiZOdpIiN7Ypc=
+github.com/Azure/azure-sdk-for-go/sdk/azcore v0.12.0 h1:weap5lumRwv92BJjxQWroM1XXWpPEU/JSssoljj4EVc=
+github.com/Azure/azure-sdk-for-go/sdk/azcore v0.12.0/go.mod h1:R+GJZ0mj7yxXtTENNLTzwkwro5zWzrEiZOdpIiN7Ypc=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.3.0 h1:l7b+GcynB+tNmqq4yrQG2mMzp34gNu65CC5iGTKVlOA=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.3.0/go.mod h1:Q+TCQnSr+clUU0JU+xrHZ3slYCxw17AOFdvWFpQXjAY=
 github.com/Azure/azure-sdk-for-go/sdk/to v0.1.1 h1:xfQtpQrdXC5By+/gOhE6rLRevCw17TLfjSWzkGkT58Y=
@@ -8,8 +8,8 @@ github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4 h1:49lOXmGaUpV9Fz3gd7T
 github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4/go.mod h1:4OwLy04Bl9Ef3GJJCoec+30X3LQs/0/m4HFRt/2LUSA=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
-golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a h1:vclmkQCjlDX5OydZ9wv8rBCcS0QyQY66Mpf/7BZbInM=
-golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
+golang.org/x/crypto v0.0.0-20201002170205-7f63de1d35b0 h1:hb9wdF1z5waM+dSIICn1l0DkLVDT3hqhhQsDNUmHPRE=
+golang.org/x/crypto v0.0.0-20201002170205-7f63de1d35b0/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
 golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3/go.mod h1:t9HGtf8HONx5eT2rtn7q6eTqICYqUVnKs3thJo3Qplg=
 golang.org/x/net v0.0.0-20200904194848-62affa334b73 h1:MXfv8rhZWmFeqX3GNZRsd6vOLoaCHjYEX3qkRo3YBUA=
 golang.org/x/net v0.0.0-20200904194848-62affa334b73/go.mod h1:/O7V0waA8r7cgGh81Ro3o1hOxt32SMVPicZroKQ2sZA=

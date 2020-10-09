@@ -20,6 +20,14 @@ const (
 	accessTokenRespShortLived = `{"access_token": "` + tokenValue + `", "expires_in": 0}`
 )
 
+func defaultTestPipeline(srv azcore.Transport, cred azcore.Credential, scope string) azcore.Pipeline {
+	return azcore.NewPipeline(
+		srv,
+		azcore.NewRetryPolicy(nil),
+		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
+		azcore.NewLogPolicy(nil))
+}
+
 func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
@@ -29,13 +37,7 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	pipeline := azcore.NewPipeline(
-		srv,
-		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
-		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(nil),
-		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(nil))
+	pipeline := defaultTestPipeline(srv, cred, scope)
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -59,13 +61,7 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	pipeline := azcore.NewPipeline(
-		srv,
-		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
-		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(nil),
-		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(nil))
+	pipeline := defaultTestPipeline(srv, cred, scope)
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -94,13 +90,7 @@ func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	pipeline := azcore.NewPipeline(
-		srv,
-		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
-		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(nil),
-		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(nil))
+	pipeline := defaultTestPipeline(srv, cred, scope)
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -125,13 +115,7 @@ func TestRetryPolicy_NonRetriable(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	pipeline := azcore.NewPipeline(
-		srv,
-		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
-		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(nil),
-		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(nil))
+	pipeline := defaultTestPipeline(srv, cred, scope)
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -151,13 +135,7 @@ func TestRetryPolicy_HTTPRequest(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	pipeline := azcore.NewPipeline(
-		srv,
-		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
-		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(nil),
-		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(nil))
+	pipeline := defaultTestPipeline(srv, cred, scope)
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)

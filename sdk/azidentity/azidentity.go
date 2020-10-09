@@ -152,10 +152,9 @@ func newDefaultPipeline(o TokenCredentialOptions) azcore.Pipeline {
 
 	return azcore.NewPipeline(
 		o.HTTPClient,
-		azcore.NewTelemetryPolicy(o.Telemetry),
-		azcore.NewUniqueRequestIDPolicy(),
+		azcore.NewTelemetryPolicy(&o.Telemetry),
 		azcore.NewRetryPolicy(o.Retry),
-		azcore.NewRequestLogPolicy(nil))
+		azcore.NewLogPolicy(nil))
 }
 
 // newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
@@ -192,8 +191,7 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 
 	return azcore.NewPipeline(
 		o.HTTPClient,
-		azcore.NewTelemetryPolicy(o.Telemetry),
-		azcore.NewUniqueRequestIDPolicy(),
+		azcore.NewTelemetryPolicy(&o.Telemetry),
 		azcore.NewRetryPolicy(&retryOpts),
-		azcore.NewRequestLogPolicy(nil))
+		azcore.NewLogPolicy(nil))
 }

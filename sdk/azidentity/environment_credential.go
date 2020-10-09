@@ -24,10 +24,25 @@ type EnvironmentCredential struct {
 	cred azcore.TokenCredential
 }
 
+// EnvironmentCredentialOptions configures the EnvironmentCredential with optional parameters.
+type EnvironmentCredentialOptions struct {
+	// Manage the configuration of requests sent to Azure Active Directory through the pipeline.
+	Options *TokenCredentialOptions
+}
+
+// DefaultEnvironmentCredentialOptions returns an instance of EnvironmentCredentialOptions with default values set.
+func DefaultEnvironmentCredentialOptions() EnvironmentCredentialOptions {
+	return EnvironmentCredentialOptions{}
+}
+
 // NewEnvironmentCredential creates an instance that implements the azcore.TokenCredential interface and reads credential details from environment variables.
 // If the expected environment variables are not found at this time, then a CredentialUnavailableError will be returned.
 // options: The options used to configure the management of the requests sent to Azure Active Directory.
-func NewEnvironmentCredential(options *TokenCredentialOptions) (*EnvironmentCredential, error) {
+func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*EnvironmentCredential, error) {
+	if options == nil {
+		temp := DefaultEnvironmentCredentialOptions()
+		options = &temp
+	}
 	tenantID := os.Getenv("AZURE_TENANT_ID")
 	if tenantID == "" {
 		err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_TENANT_ID"}
@@ -42,7 +57,7 @@ func NewEnvironmentCredential(options *TokenCredentialOptions) (*EnvironmentCred
 	}
 	if clientSecret := os.Getenv("AZURE_CLIENT_SECRET"); clientSecret != "" {
 		azcore.Log().Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientSecretCredential")
-		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, options)
+		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, &ClientSecretCredentialOptions{Options: options.Options})
 		if err != nil {
 			return nil, err
 		}
@@ -50,7 +65,7 @@ func NewEnvironmentCredential(options *TokenCredentialOptions) (*EnvironmentCred
 	}
 	if clientCertificate := os.Getenv("AZURE_CLIENT_CERTIFICATE_PATH"); clientCertificate != "" {
 		azcore.Log().Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientCertificateCredential")
-		cred, err := NewClientCertificateCredential(tenantID, clientID, clientCertificate, nil, options)
+		cred, err := NewClientCertificateCredential(tenantID, clientID, clientCertificate, nil, options.Options)
 		if err != nil {
 			return nil, err
 		}
@@ -59,7 +74,7 @@ func NewEnvironmentCredential(options *TokenCredentialOptions) (*EnvironmentCred
 	if username := os.Getenv("AZURE_USERNAME"); username != "" {
 		if password := os.Getenv("AZURE_PASSWORD"); password != "" {
 			azcore.Log().Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking UsernamePasswordCredential")
-			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, options)
+			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, options.Options)
 			if err != nil {
 				return nil, err
 			}

@@ -600,8 +600,6 @@ type ClusterCreateProperties struct {
 	EncryptionInTransitProperties *EncryptionInTransitProperties `json:"encryptionInTransitProperties,omitempty"`
 	// MinSupportedTLSVersion - The minimal supported tls version.
 	MinSupportedTLSVersion *string `json:"minSupportedTlsVersion,omitempty"`
-	// NetworkSettings - The network settings.
-	NetworkSettings *NetworkSettings `json:"networkSettings,omitempty"`
 }
 
 // ClusterDefinition the cluster definition.
@@ -678,8 +676,6 @@ type ClusterGetProperties struct {
 	EncryptionInTransitProperties *EncryptionInTransitProperties `json:"encryptionInTransitProperties,omitempty"`
 	// MinSupportedTLSVersion - The minimal supported tls version.
 	MinSupportedTLSVersion *string `json:"minSupportedTlsVersion,omitempty"`
-	// NetworkSettings - The network settings.
-	NetworkSettings *NetworkSettings `json:"networkSettings,omitempty"`
 }
 
 // ClusterIdentity identity for the cluster.
@@ -1316,14 +1312,6 @@ type LocalizedName struct {
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - The localized name of the used resource.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
-}
-
-// NetworkSettings the network settings.
-type NetworkSettings struct {
-	// PublicNetworkAccess - Specifies whether public network access is enabled for inbound and outbound, or outbound only. Possible values include: 'InboundAndOutbound', 'OutboundOnly'
-	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-	// OutboundOnlyPublicNetworkAccessType - The mechanism through which the cluster will have outbound access to the public network. Possible values include: 'PublicLoadBalancer', 'UDR'
-	OutboundOnlyPublicNetworkAccessType OutboundOnlyPublicNetworkAccessType `json:"outboundOnlyPublicNetworkAccessType,omitempty"`
 }
 
 // Operation the HDInsight REST API operation.

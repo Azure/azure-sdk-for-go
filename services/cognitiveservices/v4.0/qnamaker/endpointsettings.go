@@ -102,13 +102,13 @@ func (client EndpointSettingsClient) GetSettingsResponder(resp *http.Response) (
 // UpdateSettings sends the update settings request.
 // Parameters:
 // endpointSettingsPayload - post body of the request.
-func (client EndpointSettingsClient) UpdateSettings(ctx context.Context, endpointSettingsPayload EndpointSettingsDTO) (result String, err error) {
+func (client EndpointSettingsClient) UpdateSettings(ctx context.Context, endpointSettingsPayload EndpointSettingsDTO) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EndpointSettingsClient.UpdateSettings")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response != nil {
+				sc = result.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -121,7 +121,7 @@ func (client EndpointSettingsClient) UpdateSettings(ctx context.Context, endpoin
 
 	resp, err := client.UpdateSettingsSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.Response = resp
 		err = autorest.NewErrorWithError(err, "qnamaker.EndpointSettingsClient", "UpdateSettings", resp, "Failure sending request")
 		return
 	}
@@ -157,12 +157,11 @@ func (client EndpointSettingsClient) UpdateSettingsSender(req *http.Request) (*h
 
 // UpdateSettingsResponder handles the response to the UpdateSettings request. The method always
 // closes the http.Response Body.
-func (client EndpointSettingsClient) UpdateSettingsResponder(resp *http.Response) (result String, err error) {
+func (client EndpointSettingsClient) UpdateSettingsResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }

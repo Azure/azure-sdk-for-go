@@ -74,7 +74,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	if username := os.Getenv("AZURE_USERNAME"); username != "" {
 		if password := os.Getenv("AZURE_PASSWORD"); password != "" {
 			azcore.Log().Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking UsernamePasswordCredential")
-			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, options.Options)
+			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, &UsernamePasswordCredentialOptions{Options: options})
 			if err != nil {
 				return nil, err
 			}

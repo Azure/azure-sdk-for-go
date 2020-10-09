@@ -23,7 +23,7 @@ type DeviceCodeCredentialOptions struct {
 	// Gets the client (application) ID of the service principal
 	ClientID string
 	// The callback function used to send the login message back to the user
-	UserPrompt func(string)
+	UserPrompt func(DeviceCodeMessage)
 	// Options used to configure the management of the requests sent to Azure Active Directory.
 	Options *TokenCredentialOptions
 }
@@ -32,19 +32,34 @@ type DeviceCodeCredentialOptions struct {
 // For more information on the device code authentication flow see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code.
 type DeviceCodeCredential struct {
 	client       *aadIdentityClient
-	tenantID     string       // Gets the Azure Active Directory tenant (directory) ID of the service principal
-	clientID     string       // Gets the client (application) ID of the service principal
-	userPrompt   func(string) // Sends the user a message with a verification URL and device code to sign in to the login server
-	refreshToken string       // Gets the refresh token sent from the service and will be used to retreive new access tokens after the initial request for a token. Thread safety for updates is handled in the AuthenticationPolicy since only one goroutine will be updating at a time
+	tenantID     string                  // Gets the Azure Active Directory tenant (directory) ID of the service principal
+	clientID     string                  // Gets the client (application) ID of the service principal
+	userPrompt   func(DeviceCodeMessage) // Sends the user a message with a verification URL and device code to sign in to the login server
+	refreshToken string                  // Gets the refresh token sent from the service and will be used to retreive new access tokens after the initial request for a token. Thread safety for updates is handled in the AuthenticationPolicy since only one goroutine will be updating at a time
+}
+
+// DeviceCodeMessage is used to store device code related information to help the user login and allow the device code flow to continue
+// to request a token to authenticate a user.
+type DeviceCodeMessage struct {
+	// User code returned by the service.
+	UserCode string `json:"user_code"`
+	// Verification URL where the user must navigate to authenticate using the device code and credentials.
+	VerificationURL string `json:"verification_uri"`
+	// User friendly text response that can be used for display purposes.
+	Message string `json:"message"`
 }
 
 // DefaultDeviceCodeCredentialOptions provides the default settings for DeviceCodeCredential.
+// It will set the following default values:
+// TenantID set to "organizations".
+// ClientID set to the default developer sign on client ID "04b07795-8ddb-461a-bbee-02f9e1bf7b46".
+// UserPrompt set to output login information for the user to stdout.
 func DefaultDeviceCodeCredentialOptions() DeviceCodeCredentialOptions {
 	return DeviceCodeCredentialOptions{
 		TenantID: organizationsTenantID,
 		ClientID: developerSignOnClientID,
-		UserPrompt: func(s string) {
-			fmt.Println(s)
+		UserPrompt: func(dc DeviceCodeMessage) {
+			fmt.Println(dc.Message)
 		},
 	}
 }
@@ -98,7 +113,11 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 		return nil, err // TODO check what error type to return here
 	}
 	// send authentication flow instructions back to the user to log in and authorize the device
-	c.userPrompt(dc.Message)
+
+	c.userPrompt(DeviceCodeMessage{
+		UserCode:        dc.UserCode,
+		VerificationURL: dc.VerificationURL,
+		Message:         dc.Message})
 	// poll the token endpoint until a valid access token is received or until authentication fails
 	for {
 		tk, err := c.client.authenticateDeviceCode(ctx, c.tenantID, c.clientID, dc.DeviceCode, opts.Scopes)
@@ -129,11 +148,11 @@ func (c *DeviceCodeCredential) AuthenticationPolicy(options azcore.Authenticatio
 // deviceCodeResult is used to store device code related information to help the user login and allow the device code flow to continue
 // to request a token to authenticate a user
 type deviceCodeResult struct {
-	UserCode        string `json:"user_code"`        // User code returned by the service
-	DeviceCode      string `json:"device_code"`      // Device code returned by the service
+	UserCode        string `json:"user_code"`        // User code returned by the service.
+	DeviceCode      string `json:"device_code"`      // Device code returned by the service.
 	VerificationURL string `json:"verification_uri"` // Verification URL where the user must navigate to authenticate using the device code and credentials.
 	Interval        int64  `json:"interval"`         // Polling interval time to check for completion of authentication flow.
-	Message         string `json:"message"`          // User friendly text response that can be used for display purpose.
+	Message         string `json:"message"`          // User friendly text response that can be used for display purposes.
 }
 
 var _ azcore.TokenCredential = (*DeviceCodeCredential)(nil)

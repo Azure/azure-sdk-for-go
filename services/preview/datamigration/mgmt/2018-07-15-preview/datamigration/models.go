@@ -8014,6 +8014,8 @@ type MigrateMySQLAzureDbForMySQLSyncDatabaseInput struct {
 	SourceSetting map[string]*string `json:"sourceSetting"`
 	// TargetSetting - Target settings to tune target endpoint migration behavior
 	TargetSetting map[string]*string `json:"targetSetting"`
+	// TableMap - Mapping of source to target tables
+	TableMap map[string]*string `json:"tableMap"`
 }
 
 // MarshalJSON is the custom marshaler for MigrateMySQLAzureDbForMySQLSyncDatabaseInput.
@@ -8033,6 +8035,9 @@ func (mmsadfmssdi MigrateMySQLAzureDbForMySQLSyncDatabaseInput) MarshalJSON() ([
 	}
 	if mmsadfmssdi.TargetSetting != nil {
 		objectMap["targetSetting"] = mmsadfmssdi.TargetSetting
+	}
+	if mmsadfmssdi.TableMap != nil {
+		objectMap["tableMap"] = mmsadfmssdi.TableMap
 	}
 	return json.Marshal(objectMap)
 }
@@ -9651,6 +9656,8 @@ type MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseInput struct {
 	SourceSetting map[string]*string `json:"sourceSetting"`
 	// TargetSetting - Target settings to tune target endpoint migration behavior
 	TargetSetting map[string]*string `json:"targetSetting"`
+	// SelectedTables - Tables selected for migration
+	SelectedTables *[]MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseTableInput `json:"selectedTables,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseInput.
@@ -9671,7 +9678,16 @@ func (mpsadfpssdi MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseInput) Marsha
 	if mpsadfpssdi.TargetSetting != nil {
 		objectMap["targetSetting"] = mpsadfpssdi.TargetSetting
 	}
+	if mpsadfpssdi.SelectedTables != nil {
+		objectMap["selectedTables"] = mpsadfpssdi.SelectedTables
+	}
 	return json.Marshal(objectMap)
+}
+
+// MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseTableInput selected tables for the migration
+type MigratePostgreSQLAzureDbForPostgreSQLSyncDatabaseTableInput struct {
+	// Name - Name of the table to migrate
+	Name *string `json:"name,omitempty"`
 }
 
 // MigratePostgreSQLAzureDbForPostgreSQLSyncTaskInput input for the task that migrates PostgreSQL databases to

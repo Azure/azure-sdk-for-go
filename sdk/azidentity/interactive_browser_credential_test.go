@@ -31,7 +31,7 @@ func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
 }
 
 func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := DefaultInteractiveBrowserCredentialOptions()
@@ -56,7 +56,7 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
 	options := DefaultInteractiveBrowserCredentialOptions()

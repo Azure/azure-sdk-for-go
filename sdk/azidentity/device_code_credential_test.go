@@ -149,7 +149,7 @@ func TestDeviceCodeCredential_RequestNewDeviceCodeCustomTenantIDClientID(t *test
 }
 
 func TestDeviceCodeCredential_GetTokenSuccess(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(deviceCodeResponse)))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
@@ -170,7 +170,7 @@ func TestDeviceCodeCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestDeviceCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: tenantID, ClientID: clientID, Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
@@ -184,7 +184,7 @@ func TestDeviceCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 }
 
 func TestDeviceCodeCredential_GetTokenAuthorizationPending(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(deviceCodeResponse)))
 	srv.AppendResponse(mock.WithBody([]byte(authorizationPendingResponse)), mock.WithStatusCode(http.StatusUnauthorized))
@@ -202,7 +202,7 @@ func TestDeviceCodeCredential_GetTokenAuthorizationPending(t *testing.T) {
 }
 
 func TestDeviceCodeCredential_GetTokenExpiredToken(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(deviceCodeResponse)))
 	srv.AppendResponse(mock.WithBody([]byte(authorizationPendingResponse)), mock.WithStatusCode(http.StatusUnauthorized))
@@ -219,7 +219,7 @@ func TestDeviceCodeCredential_GetTokenExpiredToken(t *testing.T) {
 }
 
 func TestDeviceCodeCredential_GetTokenWithRefreshTokenFailure(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
 	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: tenantID, ClientID: clientID, Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
@@ -238,7 +238,7 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenFailure(t *testing.T) {
 }
 
 func TestDeviceCodeCredential_GetTokenWithRefreshTokenSuccess(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	handler := func(DeviceCodeMessage) {}

@@ -128,6 +128,17 @@ type TokenCredentialOptions struct {
 	Telemetry azcore.TelemetryOptions
 }
 
+var schemeCheck = func(u string) error {
+	s, err := url.Parse(u)
+	if err != nil {
+		return err
+	}
+	if s.Scheme != "https" {
+		return errors.New("cannot use an authority host without https")
+	}
+	return nil
+}
+
 // setDefaultValues initializes an instance of TokenCredentialOptions with default settings.
 func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, error) {
 	authorityHost := AzurePublicCloud
@@ -142,12 +153,9 @@ func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, er
 	if c.AuthorityHost == "" {
 		c.AuthorityHost = authorityHost
 	}
-	u, err := url.Parse(c.AuthorityHost)
+	err := schemeCheck(c.AuthorityHost)
 	if err != nil {
 		return nil, err
-	}
-	if u.Scheme != "https" {
-		return nil, errors.New("cannot use an authority host without https")
 	}
 	return c, nil
 }

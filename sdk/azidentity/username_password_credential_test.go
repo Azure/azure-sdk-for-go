@@ -62,7 +62,7 @@ func TestUsernamePasswordCredential_CreateAuthRequestSuccess(t *testing.T) {
 }
 
 func TestUsernamePasswordCredential_GetTokenSuccess(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &UsernamePasswordCredentialOptions{Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
@@ -76,7 +76,7 @@ func TestUsernamePasswordCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestUsernamePasswordCredential_GetTokenInvalidCredentials(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "wrong_password", &UsernamePasswordCredentialOptions{Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})

@@ -13,7 +13,7 @@ import (
 type AuthorizationCodeCredentialOptions struct {
 	// Gets the client secret that was generated for the App Registration used to authenticate the client.
 	ClientSecret *string
-	// Manange the configuration of the requests sent to Azure Active Directory.
+	// Manage the configuration of the requests sent to Azure Active Directory.
 	Options *TokenCredentialOptions
 }
 

@@ -43,7 +43,7 @@ type interactiveConfig struct {
 }
 
 // aadIdentityClient provides the base for authenticating with Client Secret Credentials, Client Certificate Credentials
-// and Environment Credentials. This type inlcudes an azcore.Pipeline and TokenCredentialOptions.
+// and Environment Credentials. This type includes an azcore.Pipeline and TokenCredentialOptions.
 type aadIdentityClient struct {
 	options  TokenCredentialOptions
 	pipeline azcore.Pipeline

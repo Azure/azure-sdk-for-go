@@ -77,7 +77,6 @@ type ManagedClustersClientAPI interface {
 	Start(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.ManagedClustersStartFuture, err error)
 	Stop(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.ManagedClustersStopFuture, err error)
 	UpdateTags(ctx context.Context, resourceGroupName string, resourceName string, parameters containerservice.TagsObject) (result containerservice.ManagedClustersUpdateTagsFuture, err error)
-	UpgradeNodeImageVersion(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string) (result containerservice.ManagedClustersUpgradeNodeImageVersionFuture, err error)
 }
 
 var _ ManagedClustersClientAPI = (*containerservice.ManagedClustersClient)(nil)
@@ -91,6 +90,7 @@ type AgentPoolsClientAPI interface {
 	GetUpgradeProfile(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string) (result containerservice.AgentPoolUpgradeProfile, err error)
 	List(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.AgentPoolListResultPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, resourceName string) (result containerservice.AgentPoolListResultIterator, err error)
+	UpgradeNodeImageVersion(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string) (result containerservice.AgentPoolsUpgradeNodeImageVersionFuture, err error)
 }
 
 var _ AgentPoolsClientAPI = (*containerservice.AgentPoolsClient)(nil)

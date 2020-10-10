@@ -478,8 +478,8 @@ type ApplicationInsightsComponentFeature struct {
 	MeterID *string `json:"MeterId,omitempty"`
 	// MeterRateFrequency - READ-ONLY; The meter rate for the feature's meter.
 	MeterRateFrequency *string `json:"MeterRateFrequency,omitempty"`
-	// ResouceID - READ-ONLY; Reserved, not used now.
-	ResouceID *string `json:"ResouceId,omitempty"`
+	// ResourceID - READ-ONLY; Reserved, not used now.
+	ResourceID *string `json:"ResourceId,omitempty"`
 	// IsHidden - READ-ONLY; Reserved, not used now.
 	IsHidden *bool `json:"IsHidden,omitempty"`
 	// Capabilities - READ-ONLY; A list of Application Insights component feature capability.

@@ -160,6 +160,7 @@ type OperationEntityListResultPage = original.OperationEntityListResultPage
 type OperationsClient = original.OperationsClient
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
 type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
 type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
 type PrivateLinkResource = original.PrivateLinkResource

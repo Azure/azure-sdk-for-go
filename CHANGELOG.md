@@ -1,5 +1,28 @@
 # CHANGELOG
 
+## `v47.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| datadog | 2020-02-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| cognitiveservices | 2017-04-18 |
+
+### Breaking Changes
+
+| Package Name | API Version |
+| ---: | :---: |
+| containerservice | 2020-09-01 |
+| datafactory | 2018-06-01 |
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/93106ff722d481c30a9a4ae089564635c10e9401
+
 ## `v46.4.0`
 
 ### New Packages

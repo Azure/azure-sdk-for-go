@@ -75,10 +75,10 @@ func NewTLSHTTP2Server() (*Server, func()) {
 	return s, func() { s.srv.Close() }
 }
 
-// ServerConfig returns a copy of the server config, this cannot be
+// ServerConfig returns the server config. Please note this should not be
 // modified since Start or StartTLS has already been called on the server.
-func (s *Server) ServerConfig() http.Server {
-	return *s.srv.Config
+func (s *Server) ServerConfig() *http.Server {
+	return s.srv.Config
 }
 
 // returns true if the next response is an error response

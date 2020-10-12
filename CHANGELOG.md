@@ -20,6 +20,7 @@
 | ---: | :---: |
 | containerservice | 2020-09-01 |
 | datafactory | 2018-06-01 |
+| security | v1.0<br/>v2.0<br/>v3.0 |
 
 ### Package Renames
 

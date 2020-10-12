@@ -22,7 +22,7 @@ package hdinsight
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/mgmt/2015-03-01-preview/hdinsight"
+	original "github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2018-06-01/hdinsight"
 )
 
 const (
@@ -177,13 +177,17 @@ type ErrorResponse = original.ErrorResponse
 type Errors = original.Errors
 type ExecuteScriptActionParameters = original.ExecuteScriptActionParameters
 type Extension = original.Extension
-type ExtensionClient = original.ExtensionClient
-type ExtensionDisableMonitoringFuture = original.ExtensionDisableMonitoringFuture
-type ExtensionEnableMonitoringFuture = original.ExtensionEnableMonitoringFuture
+type ExtensionsClient = original.ExtensionsClient
+type ExtensionsCreateFuture = original.ExtensionsCreateFuture
+type ExtensionsDeleteFuture = original.ExtensionsDeleteFuture
+type ExtensionsDisableMonitoringFuture = original.ExtensionsDisableMonitoringFuture
+type ExtensionsEnableMonitoringFuture = original.ExtensionsEnableMonitoringFuture
 type GatewaySettings = original.GatewaySettings
 type HardwareProfile = original.HardwareProfile
+type HostInfo = original.HostInfo
 type KafkaRestProperties = original.KafkaRestProperties
 type LinuxOperatingSystemProfile = original.LinuxOperatingSystemProfile
+type ListHostInfo = original.ListHostInfo
 type LocalizedName = original.LocalizedName
 type LocationsClient = original.LocationsClient
 type NetworkSettings = original.NetworkSettings
@@ -230,6 +234,8 @@ type VMSizeCompatibilityFilterV2 = original.VMSizeCompatibilityFilterV2
 type VMSizesCapability = original.VMSizesCapability
 type VersionSpec = original.VersionSpec
 type VersionsCapability = original.VersionsCapability
+type VirtualMachinesClient = original.VirtualMachinesClient
+type VirtualMachinesRestartHostsFuture = original.VirtualMachinesRestartHostsFuture
 type VirtualNetworkProfile = original.VirtualNetworkProfile
 
 func New(subscriptionID string) BaseClient {
@@ -265,11 +271,11 @@ func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
 func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
 	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewExtensionClient(subscriptionID string) ExtensionClient {
-	return original.NewExtensionClient(subscriptionID)
+func NewExtensionsClient(subscriptionID string) ExtensionsClient {
+	return original.NewExtensionsClient(subscriptionID)
 }
-func NewExtensionClientWithBaseURI(baseURI string, subscriptionID string) ExtensionClient {
-	return original.NewExtensionClientWithBaseURI(baseURI, subscriptionID)
+func NewExtensionsClientWithBaseURI(baseURI string, subscriptionID string) ExtensionsClient {
+	return original.NewExtensionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewLocationsClient(subscriptionID string) LocationsClient {
 	return original.NewLocationsClient(subscriptionID)
@@ -313,6 +319,12 @@ func NewScriptExecutionHistoryClient(subscriptionID string) ScriptExecutionHisto
 func NewScriptExecutionHistoryClientWithBaseURI(baseURI string, subscriptionID string) ScriptExecutionHistoryClient {
 	return original.NewScriptExecutionHistoryClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClient(subscriptionID)
+}
+func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -350,7 +362,7 @@ func PossibleTierValues() []Tier {
 	return original.PossibleTierValues()
 }
 func UserAgent() string {
-	return original.UserAgent() + " profiles/preview"
+	return original.UserAgent() + " profiles/latest"
 }
 func Version() string {
 	return original.Version()

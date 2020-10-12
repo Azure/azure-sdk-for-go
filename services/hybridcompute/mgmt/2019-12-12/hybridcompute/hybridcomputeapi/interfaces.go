@@ -19,7 +19,7 @@ package hybridcomputeapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/hybridcompute/mgmt/2019-12-12/hybridcompute"
+	"github.com/Azure/azure-sdk-for-go/services/hybridcompute/mgmt/2019-12-12/hybridcompute"
 	"github.com/Azure/go-autorest/autorest"
 )
 

@@ -19,13 +19,28 @@ type ClientSecretCredential struct {
 	clientSecret string // Gets the client secret that was generated for the App Registration used to authenticate the client.
 }
 
+// ClientSecretCredentialOptions configures the ClientSecretCredential with optional parameters.
+type ClientSecretCredentialOptions struct {
+	// Manage the configuration of requests sent to Azure Active Directory through the pipeline.
+	Options *TokenCredentialOptions
+}
+
+// DefaultClientSecretCredentialOptions returns an instance of ClientSecretCredentialOptions with default values set.
+func DefaultClientSecretCredentialOptions() ClientSecretCredentialOptions {
+	return ClientSecretCredentialOptions{}
+}
+
 // NewClientSecretCredential constructs a new ClientSecretCredential with the details needed to authenticate against Azure Active Directory with a client secret.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
 // clientSecret: A client secret that was generated for the App Registration used to authenticate the client.
 // options: allow to configure the management of the requests sent to Azure Active Directory.
-func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *TokenCredentialOptions) (*ClientSecretCredential, error) {
-	c, err := newAADIdentityClient(options)
+func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *ClientSecretCredentialOptions) (*ClientSecretCredential, error) {
+	if options == nil {
+		temp := DefaultClientSecretCredentialOptions()
+		options = &temp
+	}
+	c, err := newAADIdentityClient(options.Options)
 	if err != nil {
 		return nil, err
 	}

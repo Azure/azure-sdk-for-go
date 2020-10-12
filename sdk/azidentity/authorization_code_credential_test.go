@@ -62,7 +62,7 @@ func TestAuthorizationCodeCredential_CreateAuthRequestSuccess(t *testing.T) {
 }
 
 func TestAuthorizationCodeCredential_GetTokenSuccess(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := DefaultAuthorizationCodeCredentialOptions()
@@ -80,7 +80,7 @@ func TestAuthorizationCodeCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestAuthorizationCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
 	options := DefaultAuthorizationCodeCredentialOptions()
@@ -129,7 +129,7 @@ func TestAuthorizationCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 }
 
 func TestAuthorizationCodeCredential_GetTokenUnexpectedJSON(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
 	options := DefaultAuthorizationCodeCredentialOptions()

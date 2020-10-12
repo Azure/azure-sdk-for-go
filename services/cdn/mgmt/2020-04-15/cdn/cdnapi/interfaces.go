@@ -19,7 +19,7 @@ package cdnapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/cdn/mgmt/2020-04-15/cdn"
+	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-04-15/cdn"
 	"github.com/Azure/go-autorest/autorest"
 )
 

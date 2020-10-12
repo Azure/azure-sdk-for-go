@@ -22,11 +22,26 @@ package cdn
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2019-04-15/cdn"
+	original "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-04-15/cdn"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type ActionType = original.ActionType
+
+const (
+	Allow    ActionType = original.Allow
+	Block    ActionType = original.Block
+	Log      ActionType = original.Log
+	Redirect ActionType = original.Redirect
+)
+
+type Algorithm = original.Algorithm
+
+const (
+	SHA256 Algorithm = original.SHA256
 )
 
 type CacheBehavior = original.CacheBehavior
@@ -99,6 +114,13 @@ const (
 	SubmittingDomainControlValidationRequest      CustomHTTPSProvisioningSubstate = original.SubmittingDomainControlValidationRequest
 )
 
+type CustomRuleEnabledState = original.CustomRuleEnabledState
+
+const (
+	CustomRuleEnabledStateDisabled CustomRuleEnabledState = original.CustomRuleEnabledStateDisabled
+	CustomRuleEnabledStateEnabled  CustomRuleEnabledState = original.CustomRuleEnabledStateEnabled
+)
+
 type DestinationProtocol = original.DestinationProtocol
 
 const (
@@ -121,8 +143,8 @@ const (
 type GeoFilterActions = original.GeoFilterActions
 
 const (
-	Allow GeoFilterActions = original.Allow
-	Block GeoFilterActions = original.Block
+	GeoFilterActionsAllow GeoFilterActions = original.GeoFilterActionsAllow
+	GeoFilterActionsBlock GeoFilterActions = original.GeoFilterActionsBlock
 )
 
 type HeaderAction = original.HeaderAction
@@ -131,6 +153,35 @@ const (
 	Append    HeaderAction = original.Append
 	Delete    HeaderAction = original.Delete
 	Overwrite HeaderAction = original.Overwrite
+)
+
+type HealthProbeRequestType = original.HealthProbeRequestType
+
+const (
+	GET    HealthProbeRequestType = original.GET
+	HEAD   HealthProbeRequestType = original.HEAD
+	NotSet HealthProbeRequestType = original.NotSet
+)
+
+type ManagedRuleEnabledState = original.ManagedRuleEnabledState
+
+const (
+	ManagedRuleEnabledStateDisabled ManagedRuleEnabledState = original.ManagedRuleEnabledStateDisabled
+	ManagedRuleEnabledStateEnabled  ManagedRuleEnabledState = original.ManagedRuleEnabledStateEnabled
+)
+
+type MatchVariable = original.MatchVariable
+
+const (
+	Cookies       MatchVariable = original.Cookies
+	PostArgs      MatchVariable = original.PostArgs
+	QueryString   MatchVariable = original.QueryString
+	RemoteAddr    MatchVariable = original.RemoteAddr
+	RequestBody   MatchVariable = original.RequestBody
+	RequestHeader MatchVariable = original.RequestHeader
+	RequestMethod MatchVariable = original.RequestMethod
+	RequestURI    MatchVariable = original.RequestURI
+	SocketAddr    MatchVariable = original.SocketAddr
 )
 
 type MinimumTLSVersion = original.MinimumTLSVersion
@@ -171,6 +222,30 @@ const (
 	NameModifyResponseHeader NameBasicDeliveryRuleAction = original.NameModifyResponseHeader
 	NameURLRedirect          NameBasicDeliveryRuleAction = original.NameURLRedirect
 	NameURLRewrite           NameBasicDeliveryRuleAction = original.NameURLRewrite
+	NameURLSigning           NameBasicDeliveryRuleAction = original.NameURLSigning
+)
+
+type OdataType = original.OdataType
+
+const (
+	MicrosoftAzureCdnModelsDeliveryRuleURLSigningActionParameters OdataType = original.MicrosoftAzureCdnModelsDeliveryRuleURLSigningActionParameters
+)
+
+type Operator = original.Operator
+
+const (
+	OperatorAny                Operator = original.OperatorAny
+	OperatorBeginsWith         Operator = original.OperatorBeginsWith
+	OperatorContains           Operator = original.OperatorContains
+	OperatorEndsWith           Operator = original.OperatorEndsWith
+	OperatorEqual              Operator = original.OperatorEqual
+	OperatorGeoMatch           Operator = original.OperatorGeoMatch
+	OperatorGreaterThan        Operator = original.OperatorGreaterThan
+	OperatorGreaterThanOrEqual Operator = original.OperatorGreaterThanOrEqual
+	OperatorIPMatch            Operator = original.OperatorIPMatch
+	OperatorLessThan           Operator = original.OperatorLessThan
+	OperatorLessThanOrEqual    Operator = original.OperatorLessThanOrEqual
+	OperatorRegEx              Operator = original.OperatorRegEx
 )
 
 type OptimizationType = original.OptimizationType
@@ -183,12 +258,53 @@ const (
 	VideoOnDemandMediaStreaming OptimizationType = original.VideoOnDemandMediaStreaming
 )
 
+type OriginGroupResourceState = original.OriginGroupResourceState
+
+const (
+	OriginGroupResourceStateActive   OriginGroupResourceState = original.OriginGroupResourceStateActive
+	OriginGroupResourceStateCreating OriginGroupResourceState = original.OriginGroupResourceStateCreating
+	OriginGroupResourceStateDeleting OriginGroupResourceState = original.OriginGroupResourceStateDeleting
+)
+
 type OriginResourceState = original.OriginResourceState
 
 const (
 	OriginResourceStateActive   OriginResourceState = original.OriginResourceStateActive
 	OriginResourceStateCreating OriginResourceState = original.OriginResourceStateCreating
 	OriginResourceStateDeleting OriginResourceState = original.OriginResourceStateDeleting
+)
+
+type ParamIndicator = original.ParamIndicator
+
+const (
+	Expires   ParamIndicator = original.Expires
+	KeyID     ParamIndicator = original.KeyID
+	Signature ParamIndicator = original.Signature
+)
+
+type PolicyEnabledState = original.PolicyEnabledState
+
+const (
+	PolicyEnabledStateDisabled PolicyEnabledState = original.PolicyEnabledStateDisabled
+	PolicyEnabledStateEnabled  PolicyEnabledState = original.PolicyEnabledStateEnabled
+)
+
+type PolicyMode = original.PolicyMode
+
+const (
+	Detection  PolicyMode = original.Detection
+	Prevention PolicyMode = original.Prevention
+)
+
+type PolicyResourceState = original.PolicyResourceState
+
+const (
+	PolicyResourceStateCreating  PolicyResourceState = original.PolicyResourceStateCreating
+	PolicyResourceStateDeleting  PolicyResourceState = original.PolicyResourceStateDeleting
+	PolicyResourceStateDisabled  PolicyResourceState = original.PolicyResourceStateDisabled
+	PolicyResourceStateDisabling PolicyResourceState = original.PolicyResourceStateDisabling
+	PolicyResourceStateEnabled   PolicyResourceState = original.PolicyResourceStateEnabled
+	PolicyResourceStateEnabling  PolicyResourceState = original.PolicyResourceStateEnabling
 )
 
 type PostArgsOperator = original.PostArgsOperator
@@ -203,6 +319,24 @@ const (
 	PostArgsOperatorGreaterThanOrEqual PostArgsOperator = original.PostArgsOperatorGreaterThanOrEqual
 	PostArgsOperatorLessThan           PostArgsOperator = original.PostArgsOperatorLessThan
 	PostArgsOperatorLessThanOrEqual    PostArgsOperator = original.PostArgsOperatorLessThanOrEqual
+)
+
+type PrivateEndpointStatus = original.PrivateEndpointStatus
+
+const (
+	Approved     PrivateEndpointStatus = original.Approved
+	Disconnected PrivateEndpointStatus = original.Disconnected
+	Pending      PrivateEndpointStatus = original.Pending
+	Rejected     PrivateEndpointStatus = original.Rejected
+	Timeout      PrivateEndpointStatus = original.Timeout
+)
+
+type ProbeProtocol = original.ProbeProtocol
+
+const (
+	ProbeProtocolHTTP   ProbeProtocol = original.ProbeProtocolHTTP
+	ProbeProtocolHTTPS  ProbeProtocol = original.ProbeProtocolHTTPS
+	ProbeProtocolNotSet ProbeProtocol = original.ProbeProtocolNotSet
 )
 
 type ProfileResourceState = original.ProfileResourceState
@@ -221,6 +355,14 @@ const (
 	ServerNameIndication ProtocolType = original.ServerNameIndication
 )
 
+type ProvisioningState = original.ProvisioningState
+
+const (
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+)
+
 type QueryStringBehavior = original.QueryStringBehavior
 
 const (
@@ -233,10 +375,10 @@ const (
 type QueryStringCachingBehavior = original.QueryStringCachingBehavior
 
 const (
-	BypassCaching     QueryStringCachingBehavior = original.BypassCaching
-	IgnoreQueryString QueryStringCachingBehavior = original.IgnoreQueryString
-	NotSet            QueryStringCachingBehavior = original.NotSet
-	UseQueryString    QueryStringCachingBehavior = original.UseQueryString
+	QueryStringCachingBehaviorBypassCaching     QueryStringCachingBehavior = original.QueryStringCachingBehaviorBypassCaching
+	QueryStringCachingBehaviorIgnoreQueryString QueryStringCachingBehavior = original.QueryStringCachingBehaviorIgnoreQueryString
+	QueryStringCachingBehaviorNotSet            QueryStringCachingBehavior = original.QueryStringCachingBehaviorNotSet
+	QueryStringCachingBehaviorUseQueryString    QueryStringCachingBehavior = original.QueryStringCachingBehaviorUseQueryString
 )
 
 type QueryStringOperator = original.QueryStringOperator
@@ -318,6 +460,14 @@ const (
 	MicrosoftCdnProfilesEndpoints ResourceType = original.MicrosoftCdnProfilesEndpoints
 )
 
+type ResponseBasedDetectedErrorTypes = original.ResponseBasedDetectedErrorTypes
+
+const (
+	ResponseBasedDetectedErrorTypesNone             ResponseBasedDetectedErrorTypes = original.ResponseBasedDetectedErrorTypesNone
+	ResponseBasedDetectedErrorTypesTCPAndHTTPErrors ResponseBasedDetectedErrorTypes = original.ResponseBasedDetectedErrorTypesTCPAndHTTPErrors
+	ResponseBasedDetectedErrorTypesTCPErrorsOnly    ResponseBasedDetectedErrorTypes = original.ResponseBasedDetectedErrorTypesTCPErrorsOnly
+)
+
 type SkuName = original.SkuName
 
 const (
@@ -335,6 +485,17 @@ type Transform = original.Transform
 const (
 	Lowercase Transform = original.Lowercase
 	Uppercase Transform = original.Uppercase
+)
+
+type TransformType = original.TransformType
+
+const (
+	TransformTypeLowercase   TransformType = original.TransformTypeLowercase
+	TransformTypeRemoveNulls TransformType = original.TransformTypeRemoveNulls
+	TransformTypeTrim        TransformType = original.TransformTypeTrim
+	TransformTypeUppercase   TransformType = original.TransformTypeUppercase
+	TransformTypeURLDecode   TransformType = original.TransformTypeURLDecode
+	TransformTypeURLEncode   TransformType = original.TransformTypeURLEncode
 )
 
 type URLFileExtensionOperator = original.URLFileExtensionOperator
@@ -402,7 +563,11 @@ type CustomDomainPropertiesParameters = original.CustomDomainPropertiesParameter
 type CustomDomainsClient = original.CustomDomainsClient
 type CustomDomainsCreateFuture = original.CustomDomainsCreateFuture
 type CustomDomainsDeleteFuture = original.CustomDomainsDeleteFuture
+type CustomRule = original.CustomRule
+type CustomRuleList = original.CustomRuleList
 type DeepCreatedOrigin = original.DeepCreatedOrigin
+type DeepCreatedOriginGroup = original.DeepCreatedOriginGroup
+type DeepCreatedOriginGroupProperties = original.DeepCreatedOriginGroupProperties
 type DeepCreatedOriginProperties = original.DeepCreatedOriginProperties
 type DeliveryRule = original.DeliveryRule
 type DeliveryRuleAction = original.DeliveryRuleAction
@@ -438,6 +603,8 @@ type EndpointListResultPage = original.EndpointListResultPage
 type EndpointProperties = original.EndpointProperties
 type EndpointPropertiesUpdateParameters = original.EndpointPropertiesUpdateParameters
 type EndpointPropertiesUpdateParametersDeliveryPolicy = original.EndpointPropertiesUpdateParametersDeliveryPolicy
+type EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink = original.EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink
+type EndpointType = original.EndpointType
 type EndpointUpdateParameters = original.EndpointUpdateParameters
 type EndpointsClient = original.EndpointsClient
 type EndpointsCreateFuture = original.EndpointsCreateFuture
@@ -449,13 +616,29 @@ type EndpointsStopFuture = original.EndpointsStopFuture
 type EndpointsUpdateFuture = original.EndpointsUpdateFuture
 type ErrorResponse = original.ErrorResponse
 type GeoFilter = original.GeoFilter
+type HTTPErrorRangeParameters = original.HTTPErrorRangeParameters
 type HTTPVersionMatchConditionParameters = original.HTTPVersionMatchConditionParameters
 type HeaderActionParameters = original.HeaderActionParameters
+type HealthProbeParameters = original.HealthProbeParameters
 type IPAddressGroup = original.IPAddressGroup
 type IsDeviceMatchConditionParameters = original.IsDeviceMatchConditionParameters
 type KeyVaultCertificateSourceParameters = original.KeyVaultCertificateSourceParameters
+type KeyVaultSigningKeyParameters = original.KeyVaultSigningKeyParameters
 type LoadParameters = original.LoadParameters
 type ManagedHTTPSParameters = original.ManagedHTTPSParameters
+type ManagedRuleDefinition = original.ManagedRuleDefinition
+type ManagedRuleGroupDefinition = original.ManagedRuleGroupDefinition
+type ManagedRuleGroupOverride = original.ManagedRuleGroupOverride
+type ManagedRuleOverride = original.ManagedRuleOverride
+type ManagedRuleSet = original.ManagedRuleSet
+type ManagedRuleSetDefinition = original.ManagedRuleSetDefinition
+type ManagedRuleSetDefinitionList = original.ManagedRuleSetDefinitionList
+type ManagedRuleSetDefinitionListIterator = original.ManagedRuleSetDefinitionListIterator
+type ManagedRuleSetDefinitionListPage = original.ManagedRuleSetDefinitionListPage
+type ManagedRuleSetDefinitionProperties = original.ManagedRuleSetDefinitionProperties
+type ManagedRuleSetList = original.ManagedRuleSetList
+type ManagedRuleSetsClient = original.ManagedRuleSetsClient
+type MatchCondition = original.MatchCondition
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationsClient = original.OperationsClient
@@ -463,14 +646,31 @@ type OperationsListResult = original.OperationsListResult
 type OperationsListResultIterator = original.OperationsListResultIterator
 type OperationsListResultPage = original.OperationsListResultPage
 type Origin = original.Origin
+type OriginGroup = original.OriginGroup
+type OriginGroupListResult = original.OriginGroupListResult
+type OriginGroupListResultIterator = original.OriginGroupListResultIterator
+type OriginGroupListResultPage = original.OriginGroupListResultPage
+type OriginGroupProperties = original.OriginGroupProperties
+type OriginGroupUpdateParameters = original.OriginGroupUpdateParameters
+type OriginGroupUpdatePropertiesParameters = original.OriginGroupUpdatePropertiesParameters
+type OriginGroupsClient = original.OriginGroupsClient
+type OriginGroupsCreateFuture = original.OriginGroupsCreateFuture
+type OriginGroupsDeleteFuture = original.OriginGroupsDeleteFuture
+type OriginGroupsUpdateFuture = original.OriginGroupsUpdateFuture
 type OriginListResult = original.OriginListResult
 type OriginListResultIterator = original.OriginListResultIterator
 type OriginListResultPage = original.OriginListResultPage
 type OriginProperties = original.OriginProperties
-type OriginPropertiesParameters = original.OriginPropertiesParameters
 type OriginUpdateParameters = original.OriginUpdateParameters
+type OriginUpdatePropertiesParameters = original.OriginUpdatePropertiesParameters
 type OriginsClient = original.OriginsClient
+type OriginsCreateFuture = original.OriginsCreateFuture
+type OriginsDeleteFuture = original.OriginsDeleteFuture
 type OriginsUpdateFuture = original.OriginsUpdateFuture
+type PoliciesClient = original.PoliciesClient
+type PoliciesCreateOrUpdateFuture = original.PoliciesCreateOrUpdateFuture
+type PoliciesUpdateFuture = original.PoliciesUpdateFuture
+type PolicySettings = original.PolicySettings
 type PostArgsMatchConditionParameters = original.PostArgsMatchConditionParameters
 type Profile = original.Profile
 type ProfileListResult = original.ProfileListResult
@@ -485,6 +685,8 @@ type ProfilesUpdateFuture = original.ProfilesUpdateFuture
 type ProxyResource = original.ProxyResource
 type PurgeParameters = original.PurgeParameters
 type QueryStringMatchConditionParameters = original.QueryStringMatchConditionParameters
+type RateLimitRule = original.RateLimitRule
+type RateLimitRuleList = original.RateLimitRuleList
 type RemoteAddressMatchConditionParameters = original.RemoteAddressMatchConditionParameters
 type RequestBodyMatchConditionParameters = original.RequestBodyMatchConditionParameters
 type RequestHeaderMatchConditionParameters = original.RequestHeaderMatchConditionParameters
@@ -492,11 +694,13 @@ type RequestMethodMatchConditionParameters = original.RequestMethodMatchConditio
 type RequestSchemeMatchConditionParameters = original.RequestSchemeMatchConditionParameters
 type RequestURIMatchConditionParameters = original.RequestURIMatchConditionParameters
 type Resource = original.Resource
+type ResourceReference = original.ResourceReference
 type ResourceUsage = original.ResourceUsage
 type ResourceUsageClient = original.ResourceUsageClient
 type ResourceUsageListResult = original.ResourceUsageListResult
 type ResourceUsageListResultIterator = original.ResourceUsageListResultIterator
 type ResourceUsageListResultPage = original.ResourceUsageListResultPage
+type ResponseBasedOriginErrorDetectionParameters = original.ResponseBasedOriginErrorDetectionParameters
 type Sku = original.Sku
 type SsoURI = original.SsoURI
 type SupportedOptimizationTypesListResult = original.SupportedOptimizationTypesListResult
@@ -508,11 +712,21 @@ type URLRedirectAction = original.URLRedirectAction
 type URLRedirectActionParameters = original.URLRedirectActionParameters
 type URLRewriteAction = original.URLRewriteAction
 type URLRewriteActionParameters = original.URLRewriteActionParameters
+type URLSigningAction = original.URLSigningAction
+type URLSigningActionParameters = original.URLSigningActionParameters
+type URLSigningKey = original.URLSigningKey
+type URLSigningParamIdentifier = original.URLSigningParamIdentifier
 type UserManagedHTTPSParameters = original.UserManagedHTTPSParameters
 type ValidateCustomDomainInput = original.ValidateCustomDomainInput
 type ValidateCustomDomainOutput = original.ValidateCustomDomainOutput
 type ValidateProbeInput = original.ValidateProbeInput
 type ValidateProbeOutput = original.ValidateProbeOutput
+type WebApplicationFirewallPolicy = original.WebApplicationFirewallPolicy
+type WebApplicationFirewallPolicyList = original.WebApplicationFirewallPolicyList
+type WebApplicationFirewallPolicyListIterator = original.WebApplicationFirewallPolicyListIterator
+type WebApplicationFirewallPolicyListPage = original.WebApplicationFirewallPolicyListPage
+type WebApplicationFirewallPolicyPatchParameters = original.WebApplicationFirewallPolicyPatchParameters
+type WebApplicationFirewallPolicyProperties = original.WebApplicationFirewallPolicyProperties
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -553,6 +767,18 @@ func NewEndpointsClient(subscriptionID string) EndpointsClient {
 func NewEndpointsClientWithBaseURI(baseURI string, subscriptionID string) EndpointsClient {
 	return original.NewEndpointsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewManagedRuleSetDefinitionListIterator(page ManagedRuleSetDefinitionListPage) ManagedRuleSetDefinitionListIterator {
+	return original.NewManagedRuleSetDefinitionListIterator(page)
+}
+func NewManagedRuleSetDefinitionListPage(getNextPage func(context.Context, ManagedRuleSetDefinitionList) (ManagedRuleSetDefinitionList, error)) ManagedRuleSetDefinitionListPage {
+	return original.NewManagedRuleSetDefinitionListPage(getNextPage)
+}
+func NewManagedRuleSetsClient(subscriptionID string) ManagedRuleSetsClient {
+	return original.NewManagedRuleSetsClient(subscriptionID)
+}
+func NewManagedRuleSetsClientWithBaseURI(baseURI string, subscriptionID string) ManagedRuleSetsClient {
+	return original.NewManagedRuleSetsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -565,6 +791,18 @@ func NewOperationsListResultIterator(page OperationsListResultPage) OperationsLi
 func NewOperationsListResultPage(getNextPage func(context.Context, OperationsListResult) (OperationsListResult, error)) OperationsListResultPage {
 	return original.NewOperationsListResultPage(getNextPage)
 }
+func NewOriginGroupListResultIterator(page OriginGroupListResultPage) OriginGroupListResultIterator {
+	return original.NewOriginGroupListResultIterator(page)
+}
+func NewOriginGroupListResultPage(getNextPage func(context.Context, OriginGroupListResult) (OriginGroupListResult, error)) OriginGroupListResultPage {
+	return original.NewOriginGroupListResultPage(getNextPage)
+}
+func NewOriginGroupsClient(subscriptionID string) OriginGroupsClient {
+	return original.NewOriginGroupsClient(subscriptionID)
+}
+func NewOriginGroupsClientWithBaseURI(baseURI string, subscriptionID string) OriginGroupsClient {
+	return original.NewOriginGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOriginListResultIterator(page OriginListResultPage) OriginListResultIterator {
 	return original.NewOriginListResultIterator(page)
 }
@@ -576,6 +814,12 @@ func NewOriginsClient(subscriptionID string) OriginsClient {
 }
 func NewOriginsClientWithBaseURI(baseURI string, subscriptionID string) OriginsClient {
 	return original.NewOriginsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPoliciesClient(subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClient(subscriptionID)
+}
+func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
+	return original.NewPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewProfileListResultIterator(page ProfileListResultPage) ProfileListResultIterator {
 	return original.NewProfileListResultIterator(page)
@@ -601,8 +845,20 @@ func NewResourceUsageListResultIterator(page ResourceUsageListResultPage) Resour
 func NewResourceUsageListResultPage(getNextPage func(context.Context, ResourceUsageListResult) (ResourceUsageListResult, error)) ResourceUsageListResultPage {
 	return original.NewResourceUsageListResultPage(getNextPage)
 }
+func NewWebApplicationFirewallPolicyListIterator(page WebApplicationFirewallPolicyListPage) WebApplicationFirewallPolicyListIterator {
+	return original.NewWebApplicationFirewallPolicyListIterator(page)
+}
+func NewWebApplicationFirewallPolicyListPage(getNextPage func(context.Context, WebApplicationFirewallPolicyList) (WebApplicationFirewallPolicyList, error)) WebApplicationFirewallPolicyListPage {
+	return original.NewWebApplicationFirewallPolicyListPage(getNextPage)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
+}
+func PossibleAlgorithmValues() []Algorithm {
+	return original.PossibleAlgorithmValues()
 }
 func PossibleCacheBehaviorValues() []CacheBehavior {
 	return original.PossibleCacheBehaviorValues()
@@ -625,6 +881,9 @@ func PossibleCustomHTTPSProvisioningStateValues() []CustomHTTPSProvisioningState
 func PossibleCustomHTTPSProvisioningSubstateValues() []CustomHTTPSProvisioningSubstate {
 	return original.PossibleCustomHTTPSProvisioningSubstateValues()
 }
+func PossibleCustomRuleEnabledStateValues() []CustomRuleEnabledState {
+	return original.PossibleCustomRuleEnabledStateValues()
+}
 func PossibleDestinationProtocolValues() []DestinationProtocol {
 	return original.PossibleDestinationProtocolValues()
 }
@@ -637,6 +896,15 @@ func PossibleGeoFilterActionsValues() []GeoFilterActions {
 func PossibleHeaderActionValues() []HeaderAction {
 	return original.PossibleHeaderActionValues()
 }
+func PossibleHealthProbeRequestTypeValues() []HealthProbeRequestType {
+	return original.PossibleHealthProbeRequestTypeValues()
+}
+func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
+	return original.PossibleManagedRuleEnabledStateValues()
+}
+func PossibleMatchVariableValues() []MatchVariable {
+	return original.PossibleMatchVariableValues()
+}
 func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
 	return original.PossibleMinimumTLSVersionValues()
 }
@@ -646,20 +914,50 @@ func PossibleNameBasicDeliveryRuleActionValues() []NameBasicDeliveryRuleAction {
 func PossibleNameValues() []Name {
 	return original.PossibleNameValues()
 }
+func PossibleOdataTypeValues() []OdataType {
+	return original.PossibleOdataTypeValues()
+}
+func PossibleOperatorValues() []Operator {
+	return original.PossibleOperatorValues()
+}
 func PossibleOptimizationTypeValues() []OptimizationType {
 	return original.PossibleOptimizationTypeValues()
+}
+func PossibleOriginGroupResourceStateValues() []OriginGroupResourceState {
+	return original.PossibleOriginGroupResourceStateValues()
 }
 func PossibleOriginResourceStateValues() []OriginResourceState {
 	return original.PossibleOriginResourceStateValues()
 }
+func PossibleParamIndicatorValues() []ParamIndicator {
+	return original.PossibleParamIndicatorValues()
+}
+func PossiblePolicyEnabledStateValues() []PolicyEnabledState {
+	return original.PossiblePolicyEnabledStateValues()
+}
+func PossiblePolicyModeValues() []PolicyMode {
+	return original.PossiblePolicyModeValues()
+}
+func PossiblePolicyResourceStateValues() []PolicyResourceState {
+	return original.PossiblePolicyResourceStateValues()
+}
 func PossiblePostArgsOperatorValues() []PostArgsOperator {
 	return original.PossiblePostArgsOperatorValues()
+}
+func PossiblePrivateEndpointStatusValues() []PrivateEndpointStatus {
+	return original.PossiblePrivateEndpointStatusValues()
+}
+func PossibleProbeProtocolValues() []ProbeProtocol {
+	return original.PossibleProbeProtocolValues()
 }
 func PossibleProfileResourceStateValues() []ProfileResourceState {
 	return original.PossibleProfileResourceStateValues()
 }
 func PossibleProtocolTypeValues() []ProtocolType {
 	return original.PossibleProtocolTypeValues()
+}
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return original.PossibleProvisioningStateValues()
 }
 func PossibleQueryStringBehaviorValues() []QueryStringBehavior {
 	return original.PossibleQueryStringBehaviorValues()
@@ -688,8 +986,14 @@ func PossibleRequestURIOperatorValues() []RequestURIOperator {
 func PossibleResourceTypeValues() []ResourceType {
 	return original.PossibleResourceTypeValues()
 }
+func PossibleResponseBasedDetectedErrorTypesValues() []ResponseBasedDetectedErrorTypes {
+	return original.PossibleResponseBasedDetectedErrorTypesValues()
+}
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
+}
+func PossibleTransformTypeValues() []TransformType {
+	return original.PossibleTransformTypeValues()
 }
 func PossibleTransformValues() []Transform {
 	return original.PossibleTransformValues()

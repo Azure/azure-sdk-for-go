@@ -19,7 +19,7 @@ package trafficmanagerapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2018-02-01/trafficmanager"
+	"github.com/Azure/azure-sdk-for-go/services/preview/trafficmanager/mgmt/2018-02-01-preview/trafficmanager"
 )
 
 // EndpointsClientAPI contains the set of methods on the EndpointsClient type.

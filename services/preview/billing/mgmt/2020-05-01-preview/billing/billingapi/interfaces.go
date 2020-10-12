@@ -19,7 +19,7 @@ package billingapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/billing/mgmt/2020-05-01/billing"
+	"github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2020-05-01-preview/billing"
 )
 
 // AccountsClientAPI contains the set of methods on the AccountsClient type.

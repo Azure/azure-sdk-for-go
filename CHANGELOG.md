@@ -27,6 +27,7 @@
 
 - package `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2020-06-01/appconfiguration` has been renamed to `github.com/Azure/azure-sdk-for-go/services/appconfiguration/mgmt/2020-06-01/appconfiguration`
 
+- package `github.com/Azure/azure-sdk-for-go/services/billing/mgmt/2020-05-01/billing` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2020-05-01-preview/billing`
 
 Generated from https://github.com/Azure/azure-rest-api-specs/tree/93106ff722d481c30a9a4ae089564635c10e9401
 

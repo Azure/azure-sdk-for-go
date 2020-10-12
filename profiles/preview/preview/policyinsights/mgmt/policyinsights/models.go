@@ -22,7 +22,7 @@ package policyinsights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2018-07-01-preview/policyinsights"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2019-10-01-preview/policyinsights"
 )
 
 const (
@@ -36,7 +36,17 @@ const (
 	Latest  PolicyStatesResource = original.Latest
 )
 
+type ResourceDiscoveryMode = original.ResourceDiscoveryMode
+
+const (
+	ExistingNonCompliant ResourceDiscoveryMode = original.ExistingNonCompliant
+	ReEvaluateCompliance ResourceDiscoveryMode = original.ReEvaluateCompliance
+)
+
 type BaseClient = original.BaseClient
+type ComplianceDetail = original.ComplianceDetail
+type ComponentEventDetails = original.ComponentEventDetails
+type ComponentStateDetails = original.ComponentStateDetails
 type ErrorDefinition = original.ErrorDefinition
 type ErrorResponse = original.ErrorResponse
 type ExpressionEvaluationDetails = original.ExpressionEvaluationDetails
@@ -54,11 +64,21 @@ type PolicyEventsClient = original.PolicyEventsClient
 type PolicyEventsQueryResults = original.PolicyEventsQueryResults
 type PolicyEventsQueryResultsIterator = original.PolicyEventsQueryResultsIterator
 type PolicyEventsQueryResultsPage = original.PolicyEventsQueryResultsPage
+type PolicyGroupSummary = original.PolicyGroupSummary
+type PolicyMetadata = original.PolicyMetadata
+type PolicyMetadataClient = original.PolicyMetadataClient
+type PolicyMetadataCollection = original.PolicyMetadataCollection
+type PolicyMetadataCollectionIterator = original.PolicyMetadataCollectionIterator
+type PolicyMetadataCollectionPage = original.PolicyMetadataCollectionPage
+type PolicyMetadataProperties = original.PolicyMetadataProperties
+type PolicyMetadataSlimProperties = original.PolicyMetadataSlimProperties
 type PolicyState = original.PolicyState
 type PolicyStatesClient = original.PolicyStatesClient
 type PolicyStatesQueryResults = original.PolicyStatesQueryResults
 type PolicyStatesQueryResultsIterator = original.PolicyStatesQueryResultsIterator
 type PolicyStatesQueryResultsPage = original.PolicyStatesQueryResultsPage
+type PolicyStatesTriggerResourceGroupEvaluationFuture = original.PolicyStatesTriggerResourceGroupEvaluationFuture
+type PolicyStatesTriggerSubscriptionEvaluationFuture = original.PolicyStatesTriggerSubscriptionEvaluationFuture
 type PolicyTrackedResource = original.PolicyTrackedResource
 type PolicyTrackedResourcesClient = original.PolicyTrackedResourcesClient
 type PolicyTrackedResourcesQueryResults = original.PolicyTrackedResourcesQueryResults
@@ -78,7 +98,7 @@ type RemediationListResultIterator = original.RemediationListResultIterator
 type RemediationListResultPage = original.RemediationListResultPage
 type RemediationProperties = original.RemediationProperties
 type RemediationsClient = original.RemediationsClient
-type String = original.String
+type SlimPolicyMetadata = original.SlimPolicyMetadata
 type SummarizeResults = original.SummarizeResults
 type Summary = original.Summary
 type SummaryResults = original.SummaryResults
@@ -105,6 +125,18 @@ func NewPolicyEventsQueryResultsIterator(page PolicyEventsQueryResultsPage) Poli
 }
 func NewPolicyEventsQueryResultsPage(getNextPage func(context.Context, PolicyEventsQueryResults) (PolicyEventsQueryResults, error)) PolicyEventsQueryResultsPage {
 	return original.NewPolicyEventsQueryResultsPage(getNextPage)
+}
+func NewPolicyMetadataClient() PolicyMetadataClient {
+	return original.NewPolicyMetadataClient()
+}
+func NewPolicyMetadataClientWithBaseURI(baseURI string) PolicyMetadataClient {
+	return original.NewPolicyMetadataClientWithBaseURI(baseURI)
+}
+func NewPolicyMetadataCollectionIterator(page PolicyMetadataCollectionPage) PolicyMetadataCollectionIterator {
+	return original.NewPolicyMetadataCollectionIterator(page)
+}
+func NewPolicyMetadataCollectionPage(getNextPage func(context.Context, PolicyMetadataCollection) (PolicyMetadataCollection, error)) PolicyMetadataCollectionPage {
+	return original.NewPolicyMetadataCollectionPage(getNextPage)
 }
 func NewPolicyStatesClient() PolicyStatesClient {
 	return original.NewPolicyStatesClient()
@@ -153,6 +185,9 @@ func NewWithBaseURI(baseURI string) BaseClient {
 }
 func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
 	return original.PossiblePolicyStatesResourceValues()
+}
+func PossibleResourceDiscoveryModeValues() []ResourceDiscoveryMode {
+	return original.PossibleResourceDiscoveryModeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

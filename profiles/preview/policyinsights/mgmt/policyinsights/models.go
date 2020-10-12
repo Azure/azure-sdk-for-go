@@ -19,11 +19,7 @@
 
 package policyinsights
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/policyinsights/mgmt/2019-10-01/policyinsights"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/policyinsights/mgmt/2018-04-04/policyinsights"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -36,74 +32,25 @@ const (
 	Latest  PolicyStatesResource = original.Latest
 )
 
-type ResourceDiscoveryMode = original.ResourceDiscoveryMode
-
-const (
-	ExistingNonCompliant ResourceDiscoveryMode = original.ExistingNonCompliant
-	ReEvaluateCompliance ResourceDiscoveryMode = original.ReEvaluateCompliance
-)
-
 type BaseClient = original.BaseClient
-type ComplianceDetail = original.ComplianceDetail
-type ComponentEventDetails = original.ComponentEventDetails
-type ComponentStateDetails = original.ComponentStateDetails
-type ErrorDefinition = original.ErrorDefinition
-type ErrorResponse = original.ErrorResponse
-type ExpressionEvaluationDetails = original.ExpressionEvaluationDetails
-type IfNotExistsEvaluationDetails = original.IfNotExistsEvaluationDetails
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationsClient = original.OperationsClient
 type OperationsListResults = original.OperationsListResults
 type PolicyAssignmentSummary = original.PolicyAssignmentSummary
 type PolicyDefinitionSummary = original.PolicyDefinitionSummary
-type PolicyDetails = original.PolicyDetails
-type PolicyEvaluationDetails = original.PolicyEvaluationDetails
 type PolicyEvent = original.PolicyEvent
 type PolicyEventsClient = original.PolicyEventsClient
 type PolicyEventsQueryResults = original.PolicyEventsQueryResults
-type PolicyEventsQueryResultsIterator = original.PolicyEventsQueryResultsIterator
-type PolicyEventsQueryResultsPage = original.PolicyEventsQueryResultsPage
-type PolicyGroupSummary = original.PolicyGroupSummary
-type PolicyMetadata = original.PolicyMetadata
-type PolicyMetadataClient = original.PolicyMetadataClient
-type PolicyMetadataCollection = original.PolicyMetadataCollection
-type PolicyMetadataCollectionIterator = original.PolicyMetadataCollectionIterator
-type PolicyMetadataCollectionPage = original.PolicyMetadataCollectionPage
-type PolicyMetadataProperties = original.PolicyMetadataProperties
-type PolicyMetadataSlimProperties = original.PolicyMetadataSlimProperties
 type PolicyState = original.PolicyState
 type PolicyStatesClient = original.PolicyStatesClient
 type PolicyStatesQueryResults = original.PolicyStatesQueryResults
-type PolicyStatesQueryResultsIterator = original.PolicyStatesQueryResultsIterator
-type PolicyStatesQueryResultsPage = original.PolicyStatesQueryResultsPage
-type PolicyStatesTriggerResourceGroupEvaluationFuture = original.PolicyStatesTriggerResourceGroupEvaluationFuture
-type PolicyStatesTriggerSubscriptionEvaluationFuture = original.PolicyStatesTriggerSubscriptionEvaluationFuture
-type PolicyTrackedResource = original.PolicyTrackedResource
-type PolicyTrackedResourcesClient = original.PolicyTrackedResourcesClient
-type PolicyTrackedResourcesQueryResults = original.PolicyTrackedResourcesQueryResults
-type PolicyTrackedResourcesQueryResultsIterator = original.PolicyTrackedResourcesQueryResultsIterator
-type PolicyTrackedResourcesQueryResultsPage = original.PolicyTrackedResourcesQueryResultsPage
 type QueryFailure = original.QueryFailure
 type QueryFailureError = original.QueryFailureError
-type Remediation = original.Remediation
-type RemediationDeployment = original.RemediationDeployment
-type RemediationDeploymentSummary = original.RemediationDeploymentSummary
-type RemediationDeploymentsListResult = original.RemediationDeploymentsListResult
-type RemediationDeploymentsListResultIterator = original.RemediationDeploymentsListResultIterator
-type RemediationDeploymentsListResultPage = original.RemediationDeploymentsListResultPage
-type RemediationFilters = original.RemediationFilters
-type RemediationListResult = original.RemediationListResult
-type RemediationListResultIterator = original.RemediationListResultIterator
-type RemediationListResultPage = original.RemediationListResultPage
-type RemediationProperties = original.RemediationProperties
-type RemediationsClient = original.RemediationsClient
-type SlimPolicyMetadata = original.SlimPolicyMetadata
+type String = original.String
 type SummarizeResults = original.SummarizeResults
 type Summary = original.Summary
 type SummaryResults = original.SummaryResults
-type TrackedResourceModificationDetails = original.TrackedResourceModificationDetails
-type TypedErrorInfo = original.TypedErrorInfo
 
 func New() BaseClient {
 	return original.New()
@@ -120,74 +67,17 @@ func NewPolicyEventsClient() PolicyEventsClient {
 func NewPolicyEventsClientWithBaseURI(baseURI string) PolicyEventsClient {
 	return original.NewPolicyEventsClientWithBaseURI(baseURI)
 }
-func NewPolicyEventsQueryResultsIterator(page PolicyEventsQueryResultsPage) PolicyEventsQueryResultsIterator {
-	return original.NewPolicyEventsQueryResultsIterator(page)
-}
-func NewPolicyEventsQueryResultsPage(getNextPage func(context.Context, PolicyEventsQueryResults) (PolicyEventsQueryResults, error)) PolicyEventsQueryResultsPage {
-	return original.NewPolicyEventsQueryResultsPage(getNextPage)
-}
-func NewPolicyMetadataClient() PolicyMetadataClient {
-	return original.NewPolicyMetadataClient()
-}
-func NewPolicyMetadataClientWithBaseURI(baseURI string) PolicyMetadataClient {
-	return original.NewPolicyMetadataClientWithBaseURI(baseURI)
-}
-func NewPolicyMetadataCollectionIterator(page PolicyMetadataCollectionPage) PolicyMetadataCollectionIterator {
-	return original.NewPolicyMetadataCollectionIterator(page)
-}
-func NewPolicyMetadataCollectionPage(getNextPage func(context.Context, PolicyMetadataCollection) (PolicyMetadataCollection, error)) PolicyMetadataCollectionPage {
-	return original.NewPolicyMetadataCollectionPage(getNextPage)
-}
 func NewPolicyStatesClient() PolicyStatesClient {
 	return original.NewPolicyStatesClient()
 }
 func NewPolicyStatesClientWithBaseURI(baseURI string) PolicyStatesClient {
 	return original.NewPolicyStatesClientWithBaseURI(baseURI)
 }
-func NewPolicyStatesQueryResultsIterator(page PolicyStatesQueryResultsPage) PolicyStatesQueryResultsIterator {
-	return original.NewPolicyStatesQueryResultsIterator(page)
-}
-func NewPolicyStatesQueryResultsPage(getNextPage func(context.Context, PolicyStatesQueryResults) (PolicyStatesQueryResults, error)) PolicyStatesQueryResultsPage {
-	return original.NewPolicyStatesQueryResultsPage(getNextPage)
-}
-func NewPolicyTrackedResourcesClient() PolicyTrackedResourcesClient {
-	return original.NewPolicyTrackedResourcesClient()
-}
-func NewPolicyTrackedResourcesClientWithBaseURI(baseURI string) PolicyTrackedResourcesClient {
-	return original.NewPolicyTrackedResourcesClientWithBaseURI(baseURI)
-}
-func NewPolicyTrackedResourcesQueryResultsIterator(page PolicyTrackedResourcesQueryResultsPage) PolicyTrackedResourcesQueryResultsIterator {
-	return original.NewPolicyTrackedResourcesQueryResultsIterator(page)
-}
-func NewPolicyTrackedResourcesQueryResultsPage(getNextPage func(context.Context, PolicyTrackedResourcesQueryResults) (PolicyTrackedResourcesQueryResults, error)) PolicyTrackedResourcesQueryResultsPage {
-	return original.NewPolicyTrackedResourcesQueryResultsPage(getNextPage)
-}
-func NewRemediationDeploymentsListResultIterator(page RemediationDeploymentsListResultPage) RemediationDeploymentsListResultIterator {
-	return original.NewRemediationDeploymentsListResultIterator(page)
-}
-func NewRemediationDeploymentsListResultPage(getNextPage func(context.Context, RemediationDeploymentsListResult) (RemediationDeploymentsListResult, error)) RemediationDeploymentsListResultPage {
-	return original.NewRemediationDeploymentsListResultPage(getNextPage)
-}
-func NewRemediationListResultIterator(page RemediationListResultPage) RemediationListResultIterator {
-	return original.NewRemediationListResultIterator(page)
-}
-func NewRemediationListResultPage(getNextPage func(context.Context, RemediationListResult) (RemediationListResult, error)) RemediationListResultPage {
-	return original.NewRemediationListResultPage(getNextPage)
-}
-func NewRemediationsClient() RemediationsClient {
-	return original.NewRemediationsClient()
-}
-func NewRemediationsClientWithBaseURI(baseURI string) RemediationsClient {
-	return original.NewRemediationsClientWithBaseURI(baseURI)
-}
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
 }
 func PossiblePolicyStatesResourceValues() []PolicyStatesResource {
 	return original.PossiblePolicyStatesResourceValues()
-}
-func PossibleResourceDiscoveryModeValues() []ResourceDiscoveryMode {
-	return original.PossibleResourceDiscoveryModeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -45,6 +45,8 @@
 
 - package `github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2020-08-01/operationalinsights` has been renamed to `github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2020-08-01/operationalinsights`
 
+- package `github.com/Azure/azure-sdk-for-go/services/policyinsights/mgmt/2019-10-01/policyinsights` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2019-10-01-preview/policyinsights`
+
 Generated from https://github.com/Azure/azure-rest-api-specs/tree/93106ff722d481c30a9a4ae089564635c10e9401
 
 ## `v46.4.0`

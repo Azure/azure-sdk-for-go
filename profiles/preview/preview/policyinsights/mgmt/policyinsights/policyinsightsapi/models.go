@@ -19,10 +19,11 @@
 
 package policyinsightsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2018-07-01-preview/policyinsights/policyinsightsapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2019-10-01-preview/policyinsights/policyinsightsapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
 type PolicyEventsClientAPI = original.PolicyEventsClientAPI
+type PolicyMetadataClientAPI = original.PolicyMetadataClientAPI
 type PolicyStatesClientAPI = original.PolicyStatesClientAPI
 type PolicyTrackedResourcesClientAPI = original.PolicyTrackedResourcesClientAPI
 type RemediationsClientAPI = original.RemediationsClientAPI

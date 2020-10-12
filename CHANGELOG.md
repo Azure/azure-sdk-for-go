@@ -31,6 +31,8 @@
 
 - package `github.com/Azure/azure-sdk-for-go/services/preview/cdn/mgmt/2020-04-15/cdn` has been renamed to `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-04-15/cdn`
 
+- package `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-02-01/containerservice` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2019-02-01-preview/containerservice`
+
 Generated from https://github.com/Azure/azure-rest-api-specs/tree/93106ff722d481c30a9a4ae089564635c10e9401
 
 ## `v46.4.0`

@@ -19,7 +19,7 @@ package containerserviceapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-02-01/containerservice"
+	"github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2019-02-01-preview/containerservice"
 )
 
 // OpenShiftManagedClustersClientAPI contains the set of methods on the OpenShiftManagedClustersClient type.

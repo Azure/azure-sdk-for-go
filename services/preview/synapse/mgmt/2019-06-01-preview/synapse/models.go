@@ -472,6 +472,8 @@ type BigDataPoolResourceProperties struct {
 	NodeCount *int32 `json:"nodeCount,omitempty"`
 	// LibraryRequirements - Library version requirements
 	LibraryRequirements *LibraryRequirements `json:"libraryRequirements,omitempty"`
+	// SparkConfigProperties - Spark configuration file to specify additional properties
+	SparkConfigProperties *LibraryRequirements `json:"sparkConfigProperties,omitempty"`
 	// SparkVersion - The Apache Spark version.
 	SparkVersion *string `json:"sparkVersion,omitempty"`
 	// DefaultSparkLogFolder - The default folder where Spark logs will be written.

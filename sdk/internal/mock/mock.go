@@ -12,6 +12,8 @@ import (
 	"net/http/httptest"
 	"sync"
 	"time"
+
+	"golang.org/x/net/http2"
 )
 
 const (
@@ -56,6 +58,27 @@ func NewTLSServer() (*Server, func()) {
 	s := newServer()
 	s.srv = httptest.NewTLSServer(http.HandlerFunc(s.serveHTTP))
 	return s, func() { s.srv.Close() }
+}
+
+// NewTLSHTTP2Server creates a new Server object with HTTP2 configuration.
+// The returned close func must be called when the server is no longer needed.
+// It will return nil for both the server and close func if it encountered an error
+// when configuring HTTP2 for the new TLS server.
+func NewTLSHTTP2Server() (*Server, func()) {
+	s := newServer()
+	s.srv = httptest.NewUnstartedServer(http.HandlerFunc(s.serveHTTP))
+	if err := http2.ConfigureServer(s.srv.Config, new(http2.Server)); err != nil {
+		return nil, nil
+	}
+	s.srv.TLS = s.srv.Config.TLSConfig
+	s.srv.StartTLS()
+	return s, func() { s.srv.Close() }
+}
+
+// ServerConfig returns a copy of the server config, this cannot be
+// modified since Start or StartTLS has already been called on the server.
+func (s *Server) ServerConfig() http.Server {
+	return *s.srv.Config
 }
 
 // returns true if the next response is an error response

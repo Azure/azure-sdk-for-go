@@ -21,6 +21,10 @@
 | containerservice | 2020-09-01 |
 | datafactory | 2018-06-01 |
 
+### Package Renames
+
+- package `github.com/Azure/azure-sdk-for-go/services/preview/regionmove/mgmt/2019-10-01-preview/regionmove` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/resourcemover/mgmt/2019-10-01-preview/resourcemover`
+
 Generated from https://github.com/Azure/azure-rest-api-specs/tree/93106ff722d481c30a9a4ae089564635c10e9401
 
 ## `v46.4.0`

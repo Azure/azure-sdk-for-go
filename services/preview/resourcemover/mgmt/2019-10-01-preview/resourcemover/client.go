@@ -2,7 +2,7 @@
 //
 // A first party Azure service orchestrating the move of Azure resources from one Azure region to another or between
 // zones within a region.
-package regionmove
+package resourcemover
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //

@@ -1,4 +1,4 @@
-package regionmove
+package resourcemover
 
 import "github.com/Azure/azure-sdk-for-go/version"
 

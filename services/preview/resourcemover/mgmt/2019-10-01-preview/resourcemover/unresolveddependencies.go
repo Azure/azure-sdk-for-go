@@ -1,4 +1,4 @@
-package regionmove
+package resourcemover
 
 // Copyright (c) Microsoft and contributors.  All rights reserved.
 //

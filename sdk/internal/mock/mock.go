@@ -6,6 +6,7 @@
 package mock
 
 import (
+	"crypto/tls"
 	"errors"
 	"io"
 	"net/http"
@@ -44,22 +45,26 @@ func newServer() *Server {
 
 // NewServer creates a new Server object.
 // The returned close func must be called when the server is no longer needed.
-func NewServer() (*Server, func()) {
+func NewServer(cfg ...ServerOption) (*Server, func()) {
 	s := newServer()
-	s.srv = httptest.NewServer(http.HandlerFunc(s.serveHTTP))
+	s.srv = httptest.NewUnstartedServer(http.HandlerFunc(s.serveHTTP))
+	for _, c := range cfg {
+		c.apply(s)
+	}
+	s.srv.Start()
 	return s, func() { s.srv.Close() }
 }
 
-// NewTLSServer creates a new Server object and applies any additional configurations
-// provided on the httptest.Server.
+// NewTLSServer creates a new Server object and applies any additional ServerOption
+// configurations provided on the Server.
 // The returned close func must be called when the server is no longer needed.
 // It will return nil for both the server and close func if it encountered an error
 // when configuring HTTP2 for the new TLS server.
-func NewTLSServer(config ...func(*httptest.Server)) (*Server, func()) {
+func NewTLSServer(cfg ...ServerOption) (*Server, func()) {
 	s := newServer()
 	s.srv = httptest.NewUnstartedServer(http.HandlerFunc(s.serveHTTP))
-	for _, c := range config {
-		c(s.srv)
+	for _, c := range cfg {
+		c.apply(s)
 	}
 	s.srv.StartTLS()
 	return s, func() { s.srv.Close() }
@@ -203,6 +208,24 @@ func (s *Server) SetResponse(opts ...ResponseOption) {
 		panic("WithPredicate not supported for static responses")
 	}
 	s.static = &mr
+}
+
+// ServerOption is an abstraction for configuring a mock Server.
+type ServerOption interface {
+	apply(s *Server)
+}
+
+type fnSrvOpt func(*Server)
+
+func (fn fnSrvOpt) apply(s *Server) {
+	fn(s)
+}
+
+// WithTLSConfig sets the given TLS config on server.
+func WithTLSConfig(cfg *tls.Config) ServerOption {
+	return fnSrvOpt(func(s *Server) {
+		s.srv.TLS = cfg
+	})
 }
 
 // ResponseOption is an abstraction for configuring a mock HTTP response.

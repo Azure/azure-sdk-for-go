@@ -30,26 +30,18 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hybridkubernetes/mgmt/2020-01-01-preview/hybridkubernetes"
 
-// AuthenticationCertificateDetails ...
-type AuthenticationCertificateDetails struct {
-	// CertificateData - Base64 encoded client certificate data.
-	CertificateData *string `json:"certificateData,omitempty"`
-	// KeyData - Base64 encoded key data.
-	KeyData *string `json:"keyData,omitempty"`
-}
-
-// AuthenticationDetails ...
+// AuthenticationDetails authentication details of the user
 type AuthenticationDetails struct {
-	// AuthenticationMethod - The mode of client authentication. Possible values include: 'Token', 'ClientCertificate'
-	AuthenticationMethod AuthenticationMethod        `json:"authenticationMethod,omitempty"`
-	Value                *AuthenticationDetailsValue `json:"value,omitempty"`
+	// AuthenticationMethod - The mode of client authentication.
+	AuthenticationMethod *string `json:"authenticationMethod,omitempty"`
+	// Value - Authentication token value.
+	Value *AuthenticationDetailsValue `json:"value,omitempty"`
 }
 
-// AuthenticationDetailsValue ...
+// AuthenticationDetailsValue authentication token value.
 type AuthenticationDetailsValue struct {
 	// Token - Authentication token.
-	Token             *string                           `json:"token,omitempty"`
-	ClientCertificate *AuthenticationCertificateDetails `json:"clientCertificate,omitempty"`
+	Token *string `json:"token,omitempty"`
 }
 
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
@@ -179,7 +171,7 @@ func (cc *ConnectedCluster) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ConnectedClusterAADProfile ...
+// ConnectedClusterAADProfile AAD profile of the connected cluster
 type ConnectedClusterAADProfile struct {
 	// TenantID - The aad tenant id which is configured on target K8s cluster
 	TenantID *string `json:"tenantId,omitempty"`
@@ -469,24 +461,25 @@ func (ccp *ConnectedClusterPatch) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ConnectedClusterPatchProperties ...
+// ConnectedClusterPatchProperties properties which can be patched on the connected cluster resource.
 type ConnectedClusterPatchProperties struct {
 	// AgentPublicKeyCertificate - Base64 encoded public certificate used by the agent to do the initial handshake to the backend services in Azure.
 	AgentPublicKeyCertificate *string `json:"agentPublicKeyCertificate,omitempty"`
 }
 
-// ConnectedClusterProperties ...
+// ConnectedClusterProperties properties of the connected cluster.
 type ConnectedClusterProperties struct {
 	// AgentPublicKeyCertificate - Base64 encoded public certificate used by the agent to do the initial handshake to the backend services in Azure.
-	AgentPublicKeyCertificate *string                     `json:"agentPublicKeyCertificate,omitempty"`
-	AadProfile                *ConnectedClusterAADProfile `json:"aadProfile,omitempty"`
+	AgentPublicKeyCertificate *string `json:"agentPublicKeyCertificate,omitempty"`
+	// AadProfile - AAD profile of the connected cluster.
+	AadProfile *ConnectedClusterAADProfile `json:"aadProfile,omitempty"`
 	// KubernetesVersion - READ-ONLY; The Kubernetes version of the connected cluster resource
 	KubernetesVersion *string `json:"kubernetesVersion,omitempty"`
 	// TotalNodeCount - READ-ONLY; Number of nodes present in the connected cluster resource
 	TotalNodeCount *int32 `json:"totalNodeCount,omitempty"`
 	// AgentVersion - READ-ONLY; Version of the agent running on the connected cluster resource
 	AgentVersion *string `json:"agentVersion,omitempty"`
-	// ProvisioningState - Possible values include: 'Succeeded', 'Failed', 'Canceled', 'Provisioning', 'Updating', 'Deleting', 'Accepted'
+	// ProvisioningState - Provisioning state of the connected cluster resource. Possible values include: 'Succeeded', 'Failed', 'Canceled', 'Provisioning', 'Updating', 'Deleting', 'Accepted'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -520,17 +513,32 @@ type CredentialResults struct {
 	Kubeconfigs *[]CredentialResult `json:"kubeconfigs,omitempty"`
 }
 
-// ErrorDetails the error response details containing error code and error message
-type ErrorDetails struct {
+// ErrorAdditionalInfo the resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// Type - READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty"`
+	// Info - READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty"`
+}
+
+// ErrorResponse the resource management error response.
+type ErrorResponse struct {
+	// Error - The error object.
+	Error *ErrorResponseError `json:"error,omitempty"`
+}
+
+// ErrorResponseError the error object.
+type ErrorResponseError struct {
 	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
-}
-
-// ErrorResponse the error response that indicates why an operation has failed.
-type ErrorResponse struct {
-	Error *ErrorDetails `json:"error,omitempty"`
+	// Target - READ-ONLY; The error target.
+	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]ErrorResponse `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
 // Operation the Connected cluster API operation
@@ -729,7 +737,7 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// Resource ...
+// Resource the resource model definition for a ARM tracked top level resource
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`

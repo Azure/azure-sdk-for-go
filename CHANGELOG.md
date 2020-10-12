@@ -51,6 +51,8 @@
 
 - package `github.com/Azure/azure-sdk-for-go/services/preview/hybridcompute/mgmt/2019-12-12/hybridcompute` has been renamed to `github.com/Azure/azure-sdk-for-go/services/hybridcompute/mgmt/2019-12-12/hybridcompute`
 
+- package `github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2018-07-01/storage` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2018-07-01-preview/storage`
+
 Generated from https://github.com/Azure/azure-rest-api-specs/tree/93106ff722d481c30a9a4ae089564635c10e9401
 
 ## `v46.4.0`

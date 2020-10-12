@@ -19,7 +19,7 @@
 
 package storage
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2018-03-01-preview/storage"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2018-07-01-preview/storage"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -30,6 +30,12 @@ type AccessTier = original.AccessTier
 const (
 	Cool AccessTier = original.Cool
 	Hot  AccessTier = original.Hot
+)
+
+type AccountExpand = original.AccountExpand
+
+const (
+	AccountExpandGeoReplicationStats AccountExpand = original.AccountExpandGeoReplicationStats
 )
 
 type AccountStatus = original.AccountStatus
@@ -71,6 +77,14 @@ const (
 	DefaultActionDeny  DefaultAction = original.DefaultActionDeny
 )
 
+type GeoReplicationStatus = original.GeoReplicationStatus
+
+const (
+	GeoReplicationStatusBootstrap   GeoReplicationStatus = original.GeoReplicationStatusBootstrap
+	GeoReplicationStatusLive        GeoReplicationStatus = original.GeoReplicationStatusLive
+	GeoReplicationStatusUnavailable GeoReplicationStatus = original.GeoReplicationStatusUnavailable
+)
+
 type HTTPProtocol = original.HTTPProtocol
 
 const (
@@ -110,9 +124,11 @@ const (
 type Kind = original.Kind
 
 const (
-	BlobStorage Kind = original.BlobStorage
-	Storage     Kind = original.Storage
-	StorageV2   Kind = original.StorageV2
+	BlobStorage      Kind = original.BlobStorage
+	BlockBlobStorage Kind = original.BlockBlobStorage
+	FileStorage      Kind = original.FileStorage
+	Storage          Kind = original.Storage
+	StorageV2        Kind = original.StorageV2
 )
 
 type LeaseDuration = original.LeaseDuration
@@ -212,6 +228,7 @@ type SkuName = original.SkuName
 
 const (
 	PremiumLRS    SkuName = original.PremiumLRS
+	PremiumZRS    SkuName = original.PremiumZRS
 	StandardGRS   SkuName = original.StandardGRS
 	StandardLRS   SkuName = original.StandardLRS
 	StandardRAGRS SkuName = original.StandardRAGRS
@@ -262,18 +279,26 @@ type AccountSasParameters = original.AccountSasParameters
 type AccountUpdateParameters = original.AccountUpdateParameters
 type AccountsClient = original.AccountsClient
 type AccountsCreateFuture = original.AccountsCreateFuture
+type AccountsFailoverFuture = original.AccountsFailoverFuture
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type BlobContainer = original.BlobContainer
 type BlobContainersClient = original.BlobContainersClient
+type BlobServiceProperties = original.BlobServiceProperties
+type BlobServicePropertiesProperties = original.BlobServicePropertiesProperties
+type BlobServicesClient = original.BlobServicesClient
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
 type ContainerProperties = original.ContainerProperties
+type CorsRule = original.CorsRule
+type CorsRules = original.CorsRules
 type CustomDomain = original.CustomDomain
+type DeleteRetentionPolicy = original.DeleteRetentionPolicy
 type Dimension = original.Dimension
 type Encryption = original.Encryption
 type EncryptionService = original.EncryptionService
 type EncryptionServices = original.EncryptionServices
 type Endpoints = original.Endpoints
+type GeoReplicationStats = original.GeoReplicationStats
 type IPRule = original.IPRule
 type Identity = original.Identity
 type ImmutabilityPolicy = original.ImmutabilityPolicy
@@ -288,6 +313,7 @@ type ListAccountSasResponse = original.ListAccountSasResponse
 type ListContainerItem = original.ListContainerItem
 type ListContainerItems = original.ListContainerItems
 type ListServiceSasResponse = original.ListServiceSasResponse
+type ManagementPoliciesClient = original.ManagementPoliciesClient
 type ManagementPoliciesRules = original.ManagementPoliciesRules
 type ManagementPoliciesRulesSetParameter = original.ManagementPoliciesRulesSetParameter
 type MetricSpecification = original.MetricSpecification
@@ -330,6 +356,18 @@ func NewBlobContainersClient(subscriptionID string) BlobContainersClient {
 func NewBlobContainersClientWithBaseURI(baseURI string, subscriptionID string) BlobContainersClient {
 	return original.NewBlobContainersClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewBlobServicesClient(subscriptionID string) BlobServicesClient {
+	return original.NewBlobServicesClient(subscriptionID)
+}
+func NewBlobServicesClientWithBaseURI(baseURI string, subscriptionID string) BlobServicesClient {
+	return original.NewBlobServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewManagementPoliciesClient(subscriptionID string) ManagementPoliciesClient {
+	return original.NewManagementPoliciesClient(subscriptionID)
+}
+func NewManagementPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ManagementPoliciesClient {
+	return original.NewManagementPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -354,6 +392,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleAccessTierValues() []AccessTier {
 	return original.PossibleAccessTierValues()
 }
+func PossibleAccountExpandValues() []AccountExpand {
+	return original.PossibleAccountExpandValues()
+}
 func PossibleAccountStatusValues() []AccountStatus {
 	return original.PossibleAccountStatusValues()
 }
@@ -368,6 +409,9 @@ func PossibleBypassValues() []Bypass {
 }
 func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()
+}
+func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
+	return original.PossibleGeoReplicationStatusValues()
 }
 func PossibleHTTPProtocolValues() []HTTPProtocol {
 	return original.PossibleHTTPProtocolValues()

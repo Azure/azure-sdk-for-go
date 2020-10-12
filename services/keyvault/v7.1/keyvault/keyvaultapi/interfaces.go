@@ -19,7 +19,7 @@ package keyvaultapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/keyvault/v7.1-preview/keyvault"
+	"github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault"
 	"github.com/Azure/go-autorest/autorest"
 )
 

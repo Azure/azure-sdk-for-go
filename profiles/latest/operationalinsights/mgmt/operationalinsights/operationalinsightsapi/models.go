@@ -19,9 +19,25 @@
 
 package operationalinsightsapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-03-20/operationalinsights/operationalinsightsapi"
+import original "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2020-08-01/operationalinsights/operationalinsightsapi"
 
+type AvailableServiceTiersClientAPI = original.AvailableServiceTiersClientAPI
+type ClustersClientAPI = original.ClustersClientAPI
+type DataExportsClientAPI = original.DataExportsClientAPI
+type DataSourcesClientAPI = original.DataSourcesClientAPI
+type DeletedWorkspacesClientAPI = original.DeletedWorkspacesClientAPI
+type GatewaysClientAPI = original.GatewaysClientAPI
+type IntelligencePacksClientAPI = original.IntelligencePacksClientAPI
+type LinkedServicesClientAPI = original.LinkedServicesClientAPI
+type LinkedStorageAccountsClientAPI = original.LinkedStorageAccountsClientAPI
+type ManagementGroupsClientAPI = original.ManagementGroupsClientAPI
+type OperationStatusesClientAPI = original.OperationStatusesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type SavedSearchesClientAPI = original.SavedSearchesClientAPI
-type StorageInsightsClientAPI = original.StorageInsightsClientAPI
+type SchemaClientAPI = original.SchemaClientAPI
+type SharedKeysClientAPI = original.SharedKeysClientAPI
+type StorageInsightConfigsClientAPI = original.StorageInsightConfigsClientAPI
+type TablesClientAPI = original.TablesClientAPI
+type UsagesClientAPI = original.UsagesClientAPI
+type WorkspacePurgeClientAPI = original.WorkspacePurgeClientAPI
 type WorkspacesClientAPI = original.WorkspacesClientAPI

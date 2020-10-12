@@ -22,7 +22,7 @@ package operationalinsights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2020-08-01/operationalinsights"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2020-03-01-preview/operationalinsights"
 )
 
 const (
@@ -102,6 +102,7 @@ const (
 	Alerts      DataSourceType = original.Alerts
 	AzureWatson DataSourceType = original.AzureWatson
 	CustomLogs  DataSourceType = original.CustomLogs
+	Ingestion   DataSourceType = original.Ingestion
 	Query       DataSourceType = original.Query
 )
 

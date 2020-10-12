@@ -19,7 +19,9 @@
 
 package appconfigurationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/appconfiguration/mgmt/2019-10-01/appconfiguration/appconfigurationapi"
+import original "github.com/Azure/azure-sdk-for-go/services/appconfiguration/mgmt/2020-06-01/appconfiguration/appconfigurationapi"
 
 type ConfigurationStoresClientAPI = original.ConfigurationStoresClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI

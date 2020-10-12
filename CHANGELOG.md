@@ -25,6 +25,9 @@
 
 - package `github.com/Azure/azure-sdk-for-go/services/preview/regionmove/mgmt/2019-10-01-preview/regionmove` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/resourcemover/mgmt/2019-10-01-preview/resourcemover`
 
+- package `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2020-06-01/appconfiguration` has been renamed to `github.com/Azure/azure-sdk-for-go/services/appconfiguration/mgmt/2020-06-01/appconfiguration`
+
+
 Generated from https://github.com/Azure/azure-rest-api-specs/tree/93106ff722d481c30a9a4ae089564635c10e9401
 
 ## `v46.4.0`

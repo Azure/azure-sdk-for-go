@@ -1,3 +1,4 @@
+TEST
 # Azure Identity client library for Go
 
 The Azure Identity library provides a set of credential types for use with

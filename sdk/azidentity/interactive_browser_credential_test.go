@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"net/http/httptest"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -32,7 +33,13 @@ func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
 }
 
 func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
-	srv, close := mock.NewTLSHTTP2Server()
+	f := func(s *httptest.Server) {
+		if err := http2.ConfigureServer(s.Config, new(http2.Server)); err != nil {
+			panic(err)
+		}
+		s.TLS = s.Config.TLSConfig
+	}
+	srv, close := mock.NewTLSServer(f)
 	defer close()
 	tr := &http.Transport{TLSClientConfig: srv.ServerConfig().TLSConfig}
 	if err := http2.ConfigureTransport(tr); err != nil {
@@ -63,7 +70,13 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
-	srv, close := mock.NewTLSHTTP2Server()
+	f := func(s *httptest.Server) {
+		if err := http2.ConfigureServer(s.Config, new(http2.Server)); err != nil {
+			panic(err)
+		}
+		s.TLS = s.Config.TLSConfig
+	}
+	srv, close := mock.NewTLSServer(f)
 	defer close()
 	tr := &http.Transport{TLSClientConfig: srv.ServerConfig().TLSConfig}
 	if err := http2.ConfigureTransport(tr); err != nil {

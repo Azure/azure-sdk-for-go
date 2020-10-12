@@ -33,6 +33,12 @@
 
 - package `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-02-01/containerservice` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2019-02-01-preview/containerservice`
 
+- package `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2019-12-12/documentdb` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2019-12-12-preview/documentdb`
+
+- package `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2020-03-01/documentdb` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-03-01-preview/documentdb`
+
+- package `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2020-04-01/documentdb` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb`
+
 Generated from https://github.com/Azure/azure-rest-api-specs/tree/93106ff722d481c30a9a4ae089564635c10e9401
 
 ## `v46.4.0`

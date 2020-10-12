@@ -22,7 +22,7 @@ package documentdb
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2020-04-01/documentdb"
+	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2019-08-01/documentdb"
 )
 
 const (
@@ -127,20 +127,6 @@ const (
 	PrimaryAggregationTypeTotal   PrimaryAggregationType = original.PrimaryAggregationTypeTotal
 )
 
-type PublicNetworkAccess = original.PublicNetworkAccess
-
-const (
-	Disabled PublicNetworkAccess = original.Disabled
-	Enabled  PublicNetworkAccess = original.Enabled
-)
-
-type ServerVersion = original.ServerVersion
-
-const (
-	ThreeFullStopSix ServerVersion = original.ThreeFullStopSix
-	ThreeFullStopTwo ServerVersion = original.ThreeFullStopTwo
-)
-
 type SpatialType = original.SpatialType
 
 const (
@@ -179,19 +165,13 @@ const (
 	Seconds        UnitType = original.Seconds
 )
 
-type APIProperties = original.APIProperties
 type ARMProxyResource = original.ARMProxyResource
 type ARMResourceProperties = original.ARMResourceProperties
-type AutoUpgradePolicyResource = original.AutoUpgradePolicyResource
-type AutoscaleSettings = original.AutoscaleSettings
-type AutoscaleSettingsResource = original.AutoscaleSettingsResource
-type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type Capability = original.Capability
 type CassandraKeyspaceCreateUpdateParameters = original.CassandraKeyspaceCreateUpdateParameters
 type CassandraKeyspaceCreateUpdateProperties = original.CassandraKeyspaceCreateUpdateProperties
 type CassandraKeyspaceGetProperties = original.CassandraKeyspaceGetProperties
-type CassandraKeyspaceGetPropertiesOptions = original.CassandraKeyspaceGetPropertiesOptions
 type CassandraKeyspaceGetPropertiesResource = original.CassandraKeyspaceGetPropertiesResource
 type CassandraKeyspaceGetResults = original.CassandraKeyspaceGetResults
 type CassandraKeyspaceListResult = original.CassandraKeyspaceListResult
@@ -202,17 +182,12 @@ type CassandraResourcesCreateUpdateCassandraKeyspaceFuture = original.CassandraR
 type CassandraResourcesCreateUpdateCassandraTableFuture = original.CassandraResourcesCreateUpdateCassandraTableFuture
 type CassandraResourcesDeleteCassandraKeyspaceFuture = original.CassandraResourcesDeleteCassandraKeyspaceFuture
 type CassandraResourcesDeleteCassandraTableFuture = original.CassandraResourcesDeleteCassandraTableFuture
-type CassandraResourcesMigrateCassandraKeyspaceToAutoscaleFuture = original.CassandraResourcesMigrateCassandraKeyspaceToAutoscaleFuture
-type CassandraResourcesMigrateCassandraKeyspaceToManualThroughputFuture = original.CassandraResourcesMigrateCassandraKeyspaceToManualThroughputFuture
-type CassandraResourcesMigrateCassandraTableToAutoscaleFuture = original.CassandraResourcesMigrateCassandraTableToAutoscaleFuture
-type CassandraResourcesMigrateCassandraTableToManualThroughputFuture = original.CassandraResourcesMigrateCassandraTableToManualThroughputFuture
 type CassandraResourcesUpdateCassandraKeyspaceThroughputFuture = original.CassandraResourcesUpdateCassandraKeyspaceThroughputFuture
 type CassandraResourcesUpdateCassandraTableThroughputFuture = original.CassandraResourcesUpdateCassandraTableThroughputFuture
 type CassandraSchema = original.CassandraSchema
 type CassandraTableCreateUpdateParameters = original.CassandraTableCreateUpdateParameters
 type CassandraTableCreateUpdateProperties = original.CassandraTableCreateUpdateProperties
 type CassandraTableGetProperties = original.CassandraTableGetProperties
-type CassandraTableGetPropertiesOptions = original.CassandraTableGetPropertiesOptions
 type CassandraTableGetPropertiesResource = original.CassandraTableGetPropertiesResource
 type CassandraTableGetResults = original.CassandraTableGetResults
 type CassandraTableListResult = original.CassandraTableListResult
@@ -227,8 +202,6 @@ type CompositePath = original.CompositePath
 type ConflictResolutionPolicy = original.ConflictResolutionPolicy
 type ConsistencyPolicy = original.ConsistencyPolicy
 type ContainerPartitionKey = original.ContainerPartitionKey
-type CorsPolicy = original.CorsPolicy
-type CreateUpdateOptions = original.CreateUpdateOptions
 type DatabaseAccountConnectionString = original.DatabaseAccountConnectionString
 type DatabaseAccountCreateUpdateParameters = original.DatabaseAccountCreateUpdateParameters
 type DatabaseAccountCreateUpdateProperties = original.DatabaseAccountCreateUpdateProperties
@@ -259,7 +232,6 @@ type FailoverPolicy = original.FailoverPolicy
 type GremlinDatabaseCreateUpdateParameters = original.GremlinDatabaseCreateUpdateParameters
 type GremlinDatabaseCreateUpdateProperties = original.GremlinDatabaseCreateUpdateProperties
 type GremlinDatabaseGetProperties = original.GremlinDatabaseGetProperties
-type GremlinDatabaseGetPropertiesOptions = original.GremlinDatabaseGetPropertiesOptions
 type GremlinDatabaseGetPropertiesResource = original.GremlinDatabaseGetPropertiesResource
 type GremlinDatabaseGetResults = original.GremlinDatabaseGetResults
 type GremlinDatabaseListResult = original.GremlinDatabaseListResult
@@ -267,7 +239,6 @@ type GremlinDatabaseResource = original.GremlinDatabaseResource
 type GremlinGraphCreateUpdateParameters = original.GremlinGraphCreateUpdateParameters
 type GremlinGraphCreateUpdateProperties = original.GremlinGraphCreateUpdateProperties
 type GremlinGraphGetProperties = original.GremlinGraphGetProperties
-type GremlinGraphGetPropertiesOptions = original.GremlinGraphGetPropertiesOptions
 type GremlinGraphGetPropertiesResource = original.GremlinGraphGetPropertiesResource
 type GremlinGraphGetResults = original.GremlinGraphGetResults
 type GremlinGraphListResult = original.GremlinGraphListResult
@@ -277,13 +248,8 @@ type GremlinResourcesCreateUpdateGremlinDatabaseFuture = original.GremlinResourc
 type GremlinResourcesCreateUpdateGremlinGraphFuture = original.GremlinResourcesCreateUpdateGremlinGraphFuture
 type GremlinResourcesDeleteGremlinDatabaseFuture = original.GremlinResourcesDeleteGremlinDatabaseFuture
 type GremlinResourcesDeleteGremlinGraphFuture = original.GremlinResourcesDeleteGremlinGraphFuture
-type GremlinResourcesMigrateGremlinDatabaseToAutoscaleFuture = original.GremlinResourcesMigrateGremlinDatabaseToAutoscaleFuture
-type GremlinResourcesMigrateGremlinDatabaseToManualThroughputFuture = original.GremlinResourcesMigrateGremlinDatabaseToManualThroughputFuture
-type GremlinResourcesMigrateGremlinGraphToAutoscaleFuture = original.GremlinResourcesMigrateGremlinGraphToAutoscaleFuture
-type GremlinResourcesMigrateGremlinGraphToManualThroughputFuture = original.GremlinResourcesMigrateGremlinGraphToManualThroughputFuture
 type GremlinResourcesUpdateGremlinDatabaseThroughputFuture = original.GremlinResourcesUpdateGremlinDatabaseThroughputFuture
 type GremlinResourcesUpdateGremlinGraphThroughputFuture = original.GremlinResourcesUpdateGremlinGraphThroughputFuture
-type IPAddressOrRange = original.IPAddressOrRange
 type IncludedPath = original.IncludedPath
 type Indexes = original.Indexes
 type IndexingPolicy = original.IndexingPolicy
@@ -298,7 +264,6 @@ type MetricValue = original.MetricValue
 type MongoDBCollectionCreateUpdateParameters = original.MongoDBCollectionCreateUpdateParameters
 type MongoDBCollectionCreateUpdateProperties = original.MongoDBCollectionCreateUpdateProperties
 type MongoDBCollectionGetProperties = original.MongoDBCollectionGetProperties
-type MongoDBCollectionGetPropertiesOptions = original.MongoDBCollectionGetPropertiesOptions
 type MongoDBCollectionGetPropertiesResource = original.MongoDBCollectionGetPropertiesResource
 type MongoDBCollectionGetResults = original.MongoDBCollectionGetResults
 type MongoDBCollectionListResult = original.MongoDBCollectionListResult
@@ -306,7 +271,6 @@ type MongoDBCollectionResource = original.MongoDBCollectionResource
 type MongoDBDatabaseCreateUpdateParameters = original.MongoDBDatabaseCreateUpdateParameters
 type MongoDBDatabaseCreateUpdateProperties = original.MongoDBDatabaseCreateUpdateProperties
 type MongoDBDatabaseGetProperties = original.MongoDBDatabaseGetProperties
-type MongoDBDatabaseGetPropertiesOptions = original.MongoDBDatabaseGetPropertiesOptions
 type MongoDBDatabaseGetPropertiesResource = original.MongoDBDatabaseGetPropertiesResource
 type MongoDBDatabaseGetResults = original.MongoDBDatabaseGetResults
 type MongoDBDatabaseListResult = original.MongoDBDatabaseListResult
@@ -316,10 +280,6 @@ type MongoDBResourcesCreateUpdateMongoDBCollectionFuture = original.MongoDBResou
 type MongoDBResourcesCreateUpdateMongoDBDatabaseFuture = original.MongoDBResourcesCreateUpdateMongoDBDatabaseFuture
 type MongoDBResourcesDeleteMongoDBCollectionFuture = original.MongoDBResourcesDeleteMongoDBCollectionFuture
 type MongoDBResourcesDeleteMongoDBDatabaseFuture = original.MongoDBResourcesDeleteMongoDBDatabaseFuture
-type MongoDBResourcesMigrateMongoDBCollectionToAutoscaleFuture = original.MongoDBResourcesMigrateMongoDBCollectionToAutoscaleFuture
-type MongoDBResourcesMigrateMongoDBCollectionToManualThroughputFuture = original.MongoDBResourcesMigrateMongoDBCollectionToManualThroughputFuture
-type MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleFuture = original.MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleFuture
-type MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputFuture = original.MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputFuture
 type MongoDBResourcesUpdateMongoDBCollectionThroughputFuture = original.MongoDBResourcesUpdateMongoDBCollectionThroughputFuture
 type MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture = original.MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture
 type MongoIndex = original.MongoIndex
@@ -341,7 +301,6 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
-type OptionsResource = original.OptionsResource
 type PartitionKeyRangeIDClient = original.PartitionKeyRangeIDClient
 type PartitionKeyRangeIDRegionClient = original.PartitionKeyRangeIDRegionClient
 type PartitionMetric = original.PartitionMetric
@@ -354,25 +313,10 @@ type PercentileMetricListResult = original.PercentileMetricListResult
 type PercentileMetricValue = original.PercentileMetricValue
 type PercentileSourceTargetClient = original.PercentileSourceTargetClient
 type PercentileTargetClient = original.PercentileTargetClient
-type PrivateEndpointConnection = original.PrivateEndpointConnection
-type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
-type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
-type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
-type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
-type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
-type PrivateEndpointProperty = original.PrivateEndpointProperty
-type PrivateLinkResource = original.PrivateLinkResource
-type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
-type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
-type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
-type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
-type ProxyResource = original.ProxyResource
 type RegionForOnlineOffline = original.RegionForOnlineOffline
-type Resource = original.Resource
 type SQLContainerCreateUpdateParameters = original.SQLContainerCreateUpdateParameters
 type SQLContainerCreateUpdateProperties = original.SQLContainerCreateUpdateProperties
 type SQLContainerGetProperties = original.SQLContainerGetProperties
-type SQLContainerGetPropertiesOptions = original.SQLContainerGetPropertiesOptions
 type SQLContainerGetPropertiesResource = original.SQLContainerGetPropertiesResource
 type SQLContainerGetResults = original.SQLContainerGetResults
 type SQLContainerListResult = original.SQLContainerListResult
@@ -380,7 +324,6 @@ type SQLContainerResource = original.SQLContainerResource
 type SQLDatabaseCreateUpdateParameters = original.SQLDatabaseCreateUpdateParameters
 type SQLDatabaseCreateUpdateProperties = original.SQLDatabaseCreateUpdateProperties
 type SQLDatabaseGetProperties = original.SQLDatabaseGetProperties
-type SQLDatabaseGetPropertiesOptions = original.SQLDatabaseGetPropertiesOptions
 type SQLDatabaseGetPropertiesResource = original.SQLDatabaseGetPropertiesResource
 type SQLDatabaseGetResults = original.SQLDatabaseGetResults
 type SQLDatabaseListResult = original.SQLDatabaseListResult
@@ -396,10 +339,6 @@ type SQLResourcesDeleteSQLDatabaseFuture = original.SQLResourcesDeleteSQLDatabas
 type SQLResourcesDeleteSQLStoredProcedureFuture = original.SQLResourcesDeleteSQLStoredProcedureFuture
 type SQLResourcesDeleteSQLTriggerFuture = original.SQLResourcesDeleteSQLTriggerFuture
 type SQLResourcesDeleteSQLUserDefinedFunctionFuture = original.SQLResourcesDeleteSQLUserDefinedFunctionFuture
-type SQLResourcesMigrateSQLContainerToAutoscaleFuture = original.SQLResourcesMigrateSQLContainerToAutoscaleFuture
-type SQLResourcesMigrateSQLContainerToManualThroughputFuture = original.SQLResourcesMigrateSQLContainerToManualThroughputFuture
-type SQLResourcesMigrateSQLDatabaseToAutoscaleFuture = original.SQLResourcesMigrateSQLDatabaseToAutoscaleFuture
-type SQLResourcesMigrateSQLDatabaseToManualThroughputFuture = original.SQLResourcesMigrateSQLDatabaseToManualThroughputFuture
 type SQLResourcesUpdateSQLContainerThroughputFuture = original.SQLResourcesUpdateSQLContainerThroughputFuture
 type SQLResourcesUpdateSQLDatabaseThroughputFuture = original.SQLResourcesUpdateSQLDatabaseThroughputFuture
 type SQLStoredProcedureCreateUpdateParameters = original.SQLStoredProcedureCreateUpdateParameters
@@ -427,7 +366,6 @@ type SpatialSpec = original.SpatialSpec
 type TableCreateUpdateParameters = original.TableCreateUpdateParameters
 type TableCreateUpdateProperties = original.TableCreateUpdateProperties
 type TableGetProperties = original.TableGetProperties
-type TableGetPropertiesOptions = original.TableGetPropertiesOptions
 type TableGetPropertiesResource = original.TableGetPropertiesResource
 type TableGetResults = original.TableGetResults
 type TableListResult = original.TableListResult
@@ -435,91 +373,87 @@ type TableResource = original.TableResource
 type TableResourcesClient = original.TableResourcesClient
 type TableResourcesCreateUpdateTableFuture = original.TableResourcesCreateUpdateTableFuture
 type TableResourcesDeleteTableFuture = original.TableResourcesDeleteTableFuture
-type TableResourcesMigrateTableToAutoscaleFuture = original.TableResourcesMigrateTableToAutoscaleFuture
-type TableResourcesMigrateTableToManualThroughputFuture = original.TableResourcesMigrateTableToManualThroughputFuture
 type TableResourcesUpdateTableThroughputFuture = original.TableResourcesUpdateTableThroughputFuture
-type ThroughputPolicyResource = original.ThroughputPolicyResource
 type ThroughputSettingsGetProperties = original.ThroughputSettingsGetProperties
 type ThroughputSettingsGetPropertiesResource = original.ThroughputSettingsGetPropertiesResource
 type ThroughputSettingsGetResults = original.ThroughputSettingsGetResults
 type ThroughputSettingsResource = original.ThroughputSettingsResource
 type ThroughputSettingsUpdateParameters = original.ThroughputSettingsUpdateParameters
 type ThroughputSettingsUpdateProperties = original.ThroughputSettingsUpdateProperties
-type TrackedResource = original.TrackedResource
 type UniqueKey = original.UniqueKey
 type UniqueKeyPolicy = original.UniqueKeyPolicy
 type Usage = original.Usage
 type UsagesResult = original.UsagesResult
 type VirtualNetworkRule = original.VirtualNetworkRule
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New(subscriptionID string, subscriptionID1 string) BaseClient {
+	return original.New(subscriptionID, subscriptionID1)
 }
-func NewCassandraResourcesClient(subscriptionID string) CassandraResourcesClient {
-	return original.NewCassandraResourcesClient(subscriptionID)
+func NewCassandraResourcesClient(subscriptionID string, subscriptionID1 string) CassandraResourcesClient {
+	return original.NewCassandraResourcesClient(subscriptionID, subscriptionID1)
 }
-func NewCassandraResourcesClientWithBaseURI(baseURI string, subscriptionID string) CassandraResourcesClient {
-	return original.NewCassandraResourcesClientWithBaseURI(baseURI, subscriptionID)
+func NewCassandraResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CassandraResourcesClient {
+	return original.NewCassandraResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewCollectionClient(subscriptionID string) CollectionClient {
-	return original.NewCollectionClient(subscriptionID)
+func NewCollectionClient(subscriptionID string, subscriptionID1 string) CollectionClient {
+	return original.NewCollectionClient(subscriptionID, subscriptionID1)
 }
-func NewCollectionClientWithBaseURI(baseURI string, subscriptionID string) CollectionClient {
-	return original.NewCollectionClientWithBaseURI(baseURI, subscriptionID)
+func NewCollectionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionClient {
+	return original.NewCollectionClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewCollectionPartitionClient(subscriptionID string) CollectionPartitionClient {
-	return original.NewCollectionPartitionClient(subscriptionID)
+func NewCollectionPartitionClient(subscriptionID string, subscriptionID1 string) CollectionPartitionClient {
+	return original.NewCollectionPartitionClient(subscriptionID, subscriptionID1)
 }
-func NewCollectionPartitionClientWithBaseURI(baseURI string, subscriptionID string) CollectionPartitionClient {
-	return original.NewCollectionPartitionClientWithBaseURI(baseURI, subscriptionID)
+func NewCollectionPartitionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionPartitionClient {
+	return original.NewCollectionPartitionClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewCollectionPartitionRegionClient(subscriptionID string) CollectionPartitionRegionClient {
-	return original.NewCollectionPartitionRegionClient(subscriptionID)
+func NewCollectionPartitionRegionClient(subscriptionID string, subscriptionID1 string) CollectionPartitionRegionClient {
+	return original.NewCollectionPartitionRegionClient(subscriptionID, subscriptionID1)
 }
-func NewCollectionPartitionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionPartitionRegionClient {
-	return original.NewCollectionPartitionRegionClientWithBaseURI(baseURI, subscriptionID)
+func NewCollectionPartitionRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionPartitionRegionClient {
+	return original.NewCollectionPartitionRegionClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewCollectionRegionClient(subscriptionID string) CollectionRegionClient {
-	return original.NewCollectionRegionClient(subscriptionID)
+func NewCollectionRegionClient(subscriptionID string, subscriptionID1 string) CollectionRegionClient {
+	return original.NewCollectionRegionClient(subscriptionID, subscriptionID1)
 }
-func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string) CollectionRegionClient {
-	return original.NewCollectionRegionClientWithBaseURI(baseURI, subscriptionID)
+func NewCollectionRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionRegionClient {
+	return original.NewCollectionRegionClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewDatabaseAccountRegionClient(subscriptionID string) DatabaseAccountRegionClient {
-	return original.NewDatabaseAccountRegionClient(subscriptionID)
+func NewDatabaseAccountRegionClient(subscriptionID string, subscriptionID1 string) DatabaseAccountRegionClient {
+	return original.NewDatabaseAccountRegionClient(subscriptionID, subscriptionID1)
 }
-func NewDatabaseAccountRegionClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAccountRegionClient {
-	return original.NewDatabaseAccountRegionClientWithBaseURI(baseURI, subscriptionID)
+func NewDatabaseAccountRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) DatabaseAccountRegionClient {
+	return original.NewDatabaseAccountRegionClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewDatabaseAccountsClient(subscriptionID string) DatabaseAccountsClient {
-	return original.NewDatabaseAccountsClient(subscriptionID)
+func NewDatabaseAccountsClient(subscriptionID string, subscriptionID1 string) DatabaseAccountsClient {
+	return original.NewDatabaseAccountsClient(subscriptionID, subscriptionID1)
 }
-func NewDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string) DatabaseAccountsClient {
-	return original.NewDatabaseAccountsClientWithBaseURI(baseURI, subscriptionID)
+func NewDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) DatabaseAccountsClient {
+	return original.NewDatabaseAccountsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewDatabaseClient(subscriptionID string) DatabaseClient {
-	return original.NewDatabaseClient(subscriptionID)
+func NewDatabaseClient(subscriptionID string, subscriptionID1 string) DatabaseClient {
+	return original.NewDatabaseClient(subscriptionID, subscriptionID1)
 }
-func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string) DatabaseClient {
-	return original.NewDatabaseClientWithBaseURI(baseURI, subscriptionID)
+func NewDatabaseClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) DatabaseClient {
+	return original.NewDatabaseClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewGremlinResourcesClient(subscriptionID string) GremlinResourcesClient {
-	return original.NewGremlinResourcesClient(subscriptionID)
+func NewGremlinResourcesClient(subscriptionID string, subscriptionID1 string) GremlinResourcesClient {
+	return original.NewGremlinResourcesClient(subscriptionID, subscriptionID1)
 }
-func NewGremlinResourcesClientWithBaseURI(baseURI string, subscriptionID string) GremlinResourcesClient {
-	return original.NewGremlinResourcesClientWithBaseURI(baseURI, subscriptionID)
+func NewGremlinResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) GremlinResourcesClient {
+	return original.NewGremlinResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewMongoDBResourcesClient(subscriptionID string) MongoDBResourcesClient {
-	return original.NewMongoDBResourcesClient(subscriptionID)
+func NewMongoDBResourcesClient(subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
+	return original.NewMongoDBResourcesClient(subscriptionID, subscriptionID1)
 }
-func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string) MongoDBResourcesClient {
-	return original.NewMongoDBResourcesClientWithBaseURI(baseURI, subscriptionID)
+func NewMongoDBResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) MongoDBResourcesClient {
+	return original.NewMongoDBResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewNotebookWorkspacesClient(subscriptionID string) NotebookWorkspacesClient {
-	return original.NewNotebookWorkspacesClient(subscriptionID)
+func NewNotebookWorkspacesClient(subscriptionID string, subscriptionID1 string) NotebookWorkspacesClient {
+	return original.NewNotebookWorkspacesClient(subscriptionID, subscriptionID1)
 }
-func NewNotebookWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) NotebookWorkspacesClient {
-	return original.NewNotebookWorkspacesClientWithBaseURI(baseURI, subscriptionID)
+func NewNotebookWorkspacesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) NotebookWorkspacesClient {
+	return original.NewNotebookWorkspacesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
@@ -527,68 +461,56 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(getNextPage)
 }
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
+func NewOperationsClient(subscriptionID string, subscriptionID1 string) OperationsClient {
+	return original.NewOperationsClient(subscriptionID, subscriptionID1)
 }
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewPartitionKeyRangeIDClient(subscriptionID string) PartitionKeyRangeIDClient {
-	return original.NewPartitionKeyRangeIDClient(subscriptionID)
+func NewPartitionKeyRangeIDClient(subscriptionID string, subscriptionID1 string) PartitionKeyRangeIDClient {
+	return original.NewPartitionKeyRangeIDClient(subscriptionID, subscriptionID1)
 }
-func NewPartitionKeyRangeIDClientWithBaseURI(baseURI string, subscriptionID string) PartitionKeyRangeIDClient {
-	return original.NewPartitionKeyRangeIDClientWithBaseURI(baseURI, subscriptionID)
+func NewPartitionKeyRangeIDClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PartitionKeyRangeIDClient {
+	return original.NewPartitionKeyRangeIDClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewPartitionKeyRangeIDRegionClient(subscriptionID string) PartitionKeyRangeIDRegionClient {
-	return original.NewPartitionKeyRangeIDRegionClient(subscriptionID)
+func NewPartitionKeyRangeIDRegionClient(subscriptionID string, subscriptionID1 string) PartitionKeyRangeIDRegionClient {
+	return original.NewPartitionKeyRangeIDRegionClient(subscriptionID, subscriptionID1)
 }
-func NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI string, subscriptionID string) PartitionKeyRangeIDRegionClient {
-	return original.NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI, subscriptionID)
+func NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PartitionKeyRangeIDRegionClient {
+	return original.NewPartitionKeyRangeIDRegionClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewPercentileClient(subscriptionID string) PercentileClient {
-	return original.NewPercentileClient(subscriptionID)
+func NewPercentileClient(subscriptionID string, subscriptionID1 string) PercentileClient {
+	return original.NewPercentileClient(subscriptionID, subscriptionID1)
 }
-func NewPercentileClientWithBaseURI(baseURI string, subscriptionID string) PercentileClient {
-	return original.NewPercentileClientWithBaseURI(baseURI, subscriptionID)
+func NewPercentileClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PercentileClient {
+	return original.NewPercentileClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewPercentileSourceTargetClient(subscriptionID string) PercentileSourceTargetClient {
-	return original.NewPercentileSourceTargetClient(subscriptionID)
+func NewPercentileSourceTargetClient(subscriptionID string, subscriptionID1 string) PercentileSourceTargetClient {
+	return original.NewPercentileSourceTargetClient(subscriptionID, subscriptionID1)
 }
-func NewPercentileSourceTargetClientWithBaseURI(baseURI string, subscriptionID string) PercentileSourceTargetClient {
-	return original.NewPercentileSourceTargetClientWithBaseURI(baseURI, subscriptionID)
+func NewPercentileSourceTargetClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PercentileSourceTargetClient {
+	return original.NewPercentileSourceTargetClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewPercentileTargetClient(subscriptionID string) PercentileTargetClient {
-	return original.NewPercentileTargetClient(subscriptionID)
+func NewPercentileTargetClient(subscriptionID string, subscriptionID1 string) PercentileTargetClient {
+	return original.NewPercentileTargetClient(subscriptionID, subscriptionID1)
 }
-func NewPercentileTargetClientWithBaseURI(baseURI string, subscriptionID string) PercentileTargetClient {
-	return original.NewPercentileTargetClientWithBaseURI(baseURI, subscriptionID)
+func NewPercentileTargetClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PercentileTargetClient {
+	return original.NewPercentileTargetClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
-	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+func NewSQLResourcesClient(subscriptionID string, subscriptionID1 string) SQLResourcesClient {
+	return original.NewSQLResourcesClient(subscriptionID, subscriptionID1)
 }
-func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
-	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+func NewSQLResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) SQLResourcesClient {
+	return original.NewSQLResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
-	return original.NewPrivateLinkResourcesClient(subscriptionID)
+func NewTableResourcesClient(subscriptionID string, subscriptionID1 string) TableResourcesClient {
+	return original.NewTableResourcesClient(subscriptionID, subscriptionID1)
 }
-func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
-	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) TableResourcesClient {
+	return original.NewTableResourcesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
-func NewSQLResourcesClient(subscriptionID string) SQLResourcesClient {
-	return original.NewSQLResourcesClient(subscriptionID)
-}
-func NewSQLResourcesClientWithBaseURI(baseURI string, subscriptionID string) SQLResourcesClient {
-	return original.NewSQLResourcesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewTableResourcesClient(subscriptionID string) TableResourcesClient {
-	return original.NewTableResourcesClient(subscriptionID)
-}
-func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string) TableResourcesClient {
-	return original.NewTableResourcesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func NewWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) BaseClient {
+	return original.NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)
 }
 func PossibleCompositePathSortOrderValues() []CompositePathSortOrder {
 	return original.PossibleCompositePathSortOrderValues()
@@ -625,12 +547,6 @@ func PossiblePartitionKindValues() []PartitionKind {
 }
 func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 	return original.PossiblePrimaryAggregationTypeValues()
-}
-func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return original.PossiblePublicNetworkAccessValues()
-}
-func PossibleServerVersionValues() []ServerVersion {
-	return original.PossibleServerVersionValues()
 }
 func PossibleSpatialTypeValues() []SpatialType {
 	return original.PossibleSpatialTypeValues()

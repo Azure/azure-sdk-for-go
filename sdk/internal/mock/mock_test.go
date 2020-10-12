@@ -9,6 +9,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http"
+	"net/http/httptest"
 	"testing"
 	"time"
 )
@@ -262,37 +263,14 @@ func TestComplexResponseTLS(t *testing.T) {
 	}
 }
 
-func TestComplexResponseTLSHTTP2(t *testing.T) {
-	srv, close := NewTLSHTTP2Server()
+func TestTLSServerConfig(t *testing.T) {
+	f := func(srv *httptest.Server) {
+		srv.EnableHTTP2 = true
+	}
+	s, close := NewTLSServer(f)
 	defer close()
-	const body = "this is the response body"
-	srv.AppendResponse(
-		WithStatusCode(http.StatusOK),
-		WithBody([]byte(body)),
-		WithHeader("some", "value"),
-		WithSlowResponse(2*time.Second),
-	)
-	req, err := http.NewRequest(http.MethodGet, srv.URL(), nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	resp, err := srv.Do(req)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code %d", resp.StatusCode)
-	}
-	if h := resp.Header.Get("some"); h != "value" {
-		t.Fatalf("unexpected header value %s", h)
-	}
-	r, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
-	resp.Body.Close()
-	if string(r) != body {
-		t.Fatalf("unexpected response body %s", string(r))
+	if s.srv.EnableHTTP2 != true {
+		t.Fatal("Did not set additional config successfully")
 	}
 }
 

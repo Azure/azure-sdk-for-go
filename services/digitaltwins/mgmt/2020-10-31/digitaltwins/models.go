@@ -1211,31 +1211,3 @@ func (sb ServiceBus) AsEndpointResourceProperties() (*EndpointResourceProperties
 func (sb ServiceBus) AsBasicEndpointResourceProperties() (BasicEndpointResourceProperties, bool) {
 	return &sb, true
 }
-
-// UpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type UpdateFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *UpdateFuture) Result(client Client) (d Description, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "digitaltwins.UpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("digitaltwins.UpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
-		d, err = client.UpdateResponder(d.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "digitaltwins.UpdateFuture", "Result", d.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}

@@ -30,7 +30,7 @@ type EnvironmentCredentialOptions struct {
 	Options *TokenCredentialOptions
 }
 
-// DefaultEnvironmentCredentialOptions returns an instance of EnvironmentCredentialOptions with default values set.
+// DefaultEnvironmentCredentialOptions returns an instance of EnvironmentCredentialOptions initialized with default values.
 func DefaultEnvironmentCredentialOptions() EnvironmentCredentialOptions {
 	return EnvironmentCredentialOptions{}
 }
@@ -65,7 +65,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	}
 	if clientCertificate := os.Getenv("AZURE_CLIENT_CERTIFICATE_PATH"); clientCertificate != "" {
 		azcore.Log().Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientCertificateCredential")
-		cred, err := NewClientCertificateCredential(tenantID, clientID, clientCertificate, nil, options.Options)
+		cred, err := NewClientCertificateCredential(tenantID, clientID, clientCertificate, &ClientCertificateCredentialOptions{Options: options.Options})
 		if err != nil {
 			return nil, err
 		}
@@ -74,7 +74,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	if username := os.Getenv("AZURE_USERNAME"); username != "" {
 		if password := os.Getenv("AZURE_PASSWORD"); password != "" {
 			azcore.Log().Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking UsernamePasswordCredential")
-			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, options.Options)
+			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, &UsernamePasswordCredentialOptions{Options: options.Options})
 			if err != nil {
 				return nil, err
 			}

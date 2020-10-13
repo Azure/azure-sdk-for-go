@@ -20,15 +20,30 @@ type UsernamePasswordCredential struct {
 	password string // Gets the user account's password
 }
 
+// UsernamePasswordCredentialOptions can be used to provide additional information to configure the UsernamePasswordCredential.
+// Use these options to modify the default pipeline behavior through the TokenCredentialOptions.
+type UsernamePasswordCredentialOptions struct {
+	Options *TokenCredentialOptions
+}
+
+// DefaultUsernamePasswordCredentialOptions returns an instance of UsernamePasswordCredentialOptions initialized with default values.
+func DefaultUsernamePasswordCredentialOptions() UsernamePasswordCredentialOptions {
+	return UsernamePasswordCredentialOptions{}
+}
+
 // NewUsernamePasswordCredential constructs a new UsernamePasswordCredential with the details needed to authenticate against Azure Active Directory with
 // a simple username and password.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
 // username: A user's account username
 // password: A user's account password
-// options: TokenCredentialOptions used to configure the pipeline for the requests sent to Azure Active Directory.
-func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *TokenCredentialOptions) (*UsernamePasswordCredential, error) {
-	c, err := newAADIdentityClient(options)
+// options: UsernamePasswordCredentialOptions used to configure the pipeline for the requests sent to Azure Active Directory.
+func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *UsernamePasswordCredentialOptions) (*UsernamePasswordCredential, error) {
+	if options == nil {
+		temp := DefaultUsernamePasswordCredentialOptions()
+		options = &temp
+	}
+	c, err := newAADIdentityClient(options.Options)
 	if err != nil {
 		return nil, err
 	}

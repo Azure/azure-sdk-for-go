@@ -27,13 +27,28 @@ type ClientCertificateCredential struct {
 	cert     *certContents // The contents of the certificate file
 }
 
+// ClientCertificateCredentialOptions contain optional parameters that can be used when configuring a ClientCertificateCredential.
+// password: The password required to decrypt the private key.  Pass nil if there is no password.
+// options: Manage the configuration of requests sent to Azure Active Directory.
+type ClientCertificateCredentialOptions struct {
+	// The password required to decrypt the private key.  Pass nil if there is no password.
+	Password *string
+	// Manage the configuration of requests sent to Azure Active Directory.
+	Options *TokenCredentialOptions
+}
+
+// DefaultClientCertificateCredentialOptions returns an instance of ClientCertificateCredentialOptions initialized with default values.
+func DefaultClientCertificateCredentialOptions() ClientCertificateCredentialOptions {
+	return ClientCertificateCredentialOptions{}
+}
+
 // NewClientCertificateCredential creates an instance of ClientCertificateCredential with the details needed to authenticate against Azure Active Directory with the specified certificate.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
 // clientCertificate: The path to the client certificate used to authenticate the client.  Supported formats are PEM and PFX.
 // password: The password required to decrypt the private key.  Pass nil if there is no password.
-// options: configure the management of the requests sent to Azure Active Directory.
-func NewClientCertificateCredential(tenantID string, clientID string, clientCertificate string, password *string, options *TokenCredentialOptions) (*ClientCertificateCredential, error) {
+// options: ClientCertificateCredentialOptions that can be used to provide additional configurations for the credential.
+func NewClientCertificateCredential(tenantID string, clientID string, clientCertificate string, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
 	_, err := os.Stat(clientCertificate)
 	if err != nil {
 		credErr := &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: "Certificate file not found in path: " + clientCertificate}
@@ -46,12 +61,16 @@ func NewClientCertificateCredential(tenantID string, clientID string, clientCert
 		logCredentialError(credErr.CredentialType, credErr)
 		return nil, credErr
 	}
+	if options == nil {
+		temp := DefaultClientCertificateCredentialOptions()
+		options = &temp
+	}
 	var cert *certContents
 	clientCertificate = strings.ToUpper(clientCertificate)
 	if strings.HasSuffix(clientCertificate, ".PEM") {
-		cert, err = extractFromPEMFile(certData, password)
+		cert, err = extractFromPEMFile(certData, options.Password)
 	} else if strings.HasSuffix(clientCertificate, ".PFX") {
-		cert, err = extractFromPFXFile(certData, password)
+		cert, err = extractFromPFXFile(certData, options.Password)
 	} else {
 		err = errors.New("only PEM and PFX files are supported")
 	}
@@ -60,7 +79,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, clientCert
 		logCredentialError(credErr.CredentialType, credErr)
 		return nil, credErr
 	}
-	c, err := newAADIdentityClient(options)
+	c, err := newAADIdentityClient(options.Options)
 	if err != nil {
 		return nil, err
 	}

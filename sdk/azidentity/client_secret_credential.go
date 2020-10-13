@@ -25,7 +25,7 @@ type ClientSecretCredentialOptions struct {
 	Options *TokenCredentialOptions
 }
 
-// DefaultClientSecretCredentialOptions returns an instance of ClientSecretCredentialOptions with default values set.
+// DefaultClientSecretCredentialOptions returns an instance of ClientSecretCredentialOptions initialized with default values.
 func DefaultClientSecretCredentialOptions() ClientSecretCredentialOptions {
 	return ClientSecretCredentialOptions{}
 }

@@ -5,160 +5,125 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package azcore implements an HTTP request/response middleware pipeline whose
-policy objects mutate an HTTP request's URL, query parameters, and/or headers before
-the request is sent over the wire.
+Package azcore implements an HTTP request/response middleware pipeline.
 
-Not all policy objects mutate an HTTP request; some policy objects simply impact the
-flow of requests/responses by performing operations such as logging, retry policies,
-timeouts, failure injection, and deserialization of response payloads.
+The middleware consists of three components.
+- One or more Policy objects.
+- A Transport object.
+- A Pipeline object that combines the Policy and Transport objects.
 
 Implementing the Policy Interface
 
-To implement a policy, define a struct that implements the pipeline.Policy interface's Do method. Your Do
-method is called when an HTTP request wants to be sent over the network. Your Do method can perform any
-operation(s) it desires. For example, it can log the outgoing request, mutate the URL, headers, and/or query
-parameters, inject a failure, etc. Your Do method must then forward the HTTP request to next Policy object
-in a linked-list ensuring that the remaining Policy objects perform their work. Ultimately, the last Policy
-object sends the HTTP request over the network (by calling the HTTPSender's Do method).
+A Policy can be implemented in two ways; as a first-class function for a stateless Policy, or as
+a method on a type for a stateful Policy.  Note that HTTP requests made via the same pipeline share
+the same Policy instances, so if a Policy mutates its state it MUST be properly synchronized to
+avoid race conditions.
 
-When an HTTP response comes back, each Policy object in the linked-list gets a chance to process the response
-(in reverse order). The Policy object can log the response, retry the operation if due to a transient failure
-or timeout, deserialize the response body, etc. Ultimately, the last Policy object returns the HTTP response
-to the code that initiated the original HTTP request.
+A Policy's Do method is called when an HTTP request wants to be sent over the network. The Do method can
+perform any operation(s) it desires. For example, it can log the outgoing request, mutate the URL, headers,
+and/or query parameters, inject a failure, etc.  Once the Policy has successfully completed its request
+work, it must call the Next() method on the *azcore.Request object in order to pass the request to the
+next Policy in the chain.
 
-Here is a template for how to define a pipeline.Policy object:
+When an HTTP response comes back, the Policy then gets a chance to process the response/error.  The Policy object
+can log the response, retry the operation if it failed due to a transient error or timeout, unmarshal the response
+body, etc.  Once the Policy has successfully completed its response work, it must return the *azcore.Response
+and error objects to its caller.
 
-   type myPolicy struct {
-      node   PolicyNode
-      // TODO: Add configuration/setting fields here (if desired)...
+Template for implementing a stateless Policy:
+
+   func MyStatelessPolicy() Policy {
+	   return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
+         // TODO: mutate/process Request here
+
+         // forward Request to next Policy & get Response/error
+         resp, err := req.Next()
+
+         // TODO: mutate/process Response/error here
+
+         // return Response/error to previous Policy
+         return resp, err
+	   })
    }
 
-   func (p *myPolicy) Do(ctx context.Context, request pipeline.Request) (pipeline.Response, error) {
-      // TODO: Mutate/process the HTTP request here...
-      response, err := p.node.Do(ctx, request)	// Forward HTTP request to next Policy & get HTTP response
-      // TODO: Mutate/process the HTTP response here...
-      return response, err	// Return response/error to previous Policy
+Template for implementing a stateful Policy object:
+
+   type MyStatefulPolicy struct {
+      // TODO: add configuration/setting fields here...
    }
 
-Implementing the Factory Interface
+   func (p *MyStatefulPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
+         // TODO: mutate/process Request here
 
-Each Policy struct definition requires a factory struct definition that implements the pipeline.Factory interface's New
-method. The New method is called when application code wants to initiate a new HTTP request. Factory's New method is
-passed a pipeline.PolicyNode object which contains a reference to the owning pipeline.Pipeline object (discussed later) and
-a reference to the next Policy object in the linked list. The New method should create its corresponding Policy object
-passing it the PolicyNode and any other configuration/settings fields appropriate for the specific Policy object.
+         // forward Request to next Policy & get Response/error
+         resp, err := req.Next()
 
-Here is a template for how to define a pipeline.Policy object:
+         // TODO: mutate/process Response/error here
 
-   // NOTE: Once created & initialized, Factory objects should be goroutine-safe (ex: immutable);
-   // this allows reuse (efficient use of memory) and makes these objects usable by multiple goroutines concurrently.
-   type myPolicyFactory struct {
-      // TODO: Add any configuration/setting fields if desired...
+         // return Response/error to previous Policy
+         return resp, err
    }
 
-   func (f *myPolicyFactory) New(node pipeline.PolicyNode) Policy {
-      return &myPolicy{node: node} // TODO: Also initialize any configuration/setting fields here (if desired)...
-   }
+Implementing the Transport Interface
 
-Using your Factory and Policy objects via a Pipeline
+The Transport interface is a specialized Policy.  Its responsibility is to send the HTTP request
+and return the corresponding HTTP response or error.  The Transport is always the last Policy in
+the chain.  The default Transport policy uses a shared http.Client from the standard library.
 
-To use the Factory and Policy objects, an application constructs a slice of Factory objects and passes
-this slice to the pipeline.NewPipeline function.
+The same stateful/stateless rules for Policy implementations apply to Transport implementations.
 
-   func NewPipeline(factories []pipeline.Factory, sender pipeline.HTTPSender) Pipeline
+Using Policy and Transport Objects Via a Pipeline
 
-This function also requires an object implementing the HTTPSender interface. For simple scenarios,
-passing nil for HTTPSender causes a standard Go http.Client object to be created and used to actually
-send the HTTP response over the network. For more advanced scenarios, you can pass your own HTTPSender
-object in. This allows sharing of http.Client objects or the use of custom-configured http.Client objects
-or other objects that can simulate the network requests for testing purposes.
+To use the Policy and Transport objects, an application passes them to the NewPipeline function.
 
-Now that you have a pipeline.Pipeline object, you can create a pipeline.Request object (which is a simple
-wrapper around Go's standard http.Request object) and pass it to Pipeline's Do method along with passing a
-context.Context for cancelling the HTTP request (if desired).
+   func NewPipeline(transport Transport, policies ...Policy) Pipeline
 
-   type Pipeline interface {
-      Do(ctx context.Context, methodFactory pipeline.Factory, request pipeline.Request) (pipeline.Response, error)
-   }
+The specified Policy objects form a chain and are invoked in the order provided to NewPipeline
+followed by the Transport.
 
-Do iterates over the slice of Factory objects and tells each one to create its corresponding
-Policy object. After the linked-list of Policy objects have been created, Do calls the first
-Policy object passing it the Context & HTTP request parameters. These parameters now flow through
-all the Policy objects giving each object a chance to look at and/or mutate the HTTP request.
-The last Policy object sends the message over the network.
+Once the Pipeline has been created, create a Request object and pass it to Pipeline's Do method.
 
-When the network operation completes, the HTTP response and error return values pass
-back through the same Policy objects in reverse order. Most Policy objects ignore the
-response/error but some log the result, retry the operation (depending on the exact
-reason the operation failed), or deserialize the response's body. Your own Policy
-objects can do whatever they like when processing outgoing requests or incoming responses.
+   func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Request, error)
 
-Note that after an I/O request runs to completion, the Policy objects for that request
-are garbage collected. However, Pipeline object (like Factory objects) are goroutine-safe allowing
-them to be created once and reused over many I/O operations. This allows for efficient use of
-memory and also makes them safely usable by multiple goroutines concurrently.
+   func (p Pipeline) Do(req *Request) (*Response, error)
 
-Inserting a Method-Specific Factory into the Linked-List of Policy Objects
+The Pipeline.Do method sends the specified Request through the chain of Policy and Transport
+objects.  The response/error is then sent through the same chain of Policy objects in reverse
+order.  For example, assuming there are Policy types PolicyA, PolicyB, and PolicyC along with
+TransportA.
 
-While Pipeline and Factory objects can be reused over many different operations, it is
-common to have special behavior for a specific operation/method. For example, a method
-may need to deserialize the response's body to an instance of a specific data type.
-To accommodate this, the Pipeline's Do method takes an additional method-specific
-Factory object. The Do method tells this Factory to create a Policy object and
-injects this method-specific Policy object into the linked-list of Policy objects.
+   pipeline := NewPipeline(TransportA, PolicyA, PolicyB, PolicyC)
 
-When creating a Pipeline object, the slice of Factory objects passed must have 1
-(and only 1) entry marking where the method-specific Factory should be injected.
-The Factory marker is obtained by calling the pipeline.MethodFactoryMarker() function:
+The flow of Request and Response looks like the following:
 
-   func MethodFactoryMarker() pipeline.Factory
+azcore.Request -> PolicyA -> PolicyB -> PolicyC -> TransportA -----+
+                                                                   |
+                                                            HTTP(s) endpoint
+                                                                   |
+caller <--------- PolicyA <- PolicyB <- PolicyC <- azcore.Response-+
 
-Creating an HTTP Request Object
+Creating a Request Object
 
-The HTTP request object passed to Pipeline's Do method is not Go's http.Request struct.
-Instead, it is a pipeline.Request struct which is a simple wrapper around Go's standard
-http.Request. You create a pipeline.Request object by calling the pipeline.NewRequest function:
+The Request object passed to Pipeline's Do method is a wrapper around an *http.Request.  It also
+contains some internal state and provides various convenience methods.  You create a Request object
+by calling the NewRequest function:
 
-   func NewRequest(method string, url url.URL, options pipeline.RequestOptions) (request pipeline.Request, err error)
+   func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Request, error)
 
-To this function, you must pass a pipeline.RequestOptions that looks like this:
+If the Request should contain a body, call the SetBody method.
 
-   type RequestOptions struct {
-      // The readable and seekable stream to be sent to the server as the request's body.
-      Body io.ReadSeeker
+   func (req *Request) SetBody(body ReadSeekCloser, contentType string) error
 
-      // The callback method (if not nil) to be invoked to report progress as the stream is uploaded in the HTTP request.
-      Progress ProgressReceiver
-   }
+A seekable stream is required so that upon retry, the retry Policy object can seek the stream
+back to the beginning before retrying the network request and re-uploading the body.
 
-The method and struct ensure that the request's body stream is a read/seekable stream.
-A seekable stream is required so that upon retry, the final Policy object can seek
-the stream back to the beginning before retrying the network request and re-uploading the
-body. In addition, you can associate a ProgressReceiver callback function which will be
-invoked periodically to report progress while bytes are being read from the body stream
-and sent over the network.
+Processing the Response
 
-Processing the HTTP Response
+When the HTTP response is received, the underlying *http.Response is wrapped in a Response type.
+The Response type contains various convenience methods, things like testing the HTTP response code
+and unmarshalling the response body in a particular format.
 
-When an HTTP response comes in from the network, a reference to Go's http.Response struct is
-embedded in a struct that implements the pipeline.Response interface:
-
-   type Response interface {
-      Response() *http.Response
-   }
-
-This interface is returned through all the Policy objects. Each Policy object can call the Response
-interface's Response method to examine (or mutate) the embedded http.Response object.
-
-A Policy object can internally define another struct (implementing the pipeline.Response interface)
-that embeds an http.Response and adds additional fields and return this structure to other Policy
-objects. This allows a Policy object to deserialize the body to some other struct and return the
-original http.Response and the additional struct back through the Policy chain. Other Policy objects
-can see the Response but cannot see the additional struct with the deserialized body. After all the
-Policy objects have returned, the pipeline.Response interface is returned by Pipeline's Do method.
-The caller of this method can perform a type assertion attempting to get back to the struct type
-really returned by the Policy object. If the type assertion is successful, the caller now has
-access to both the http.Response and the deserialized struct object.
+The Response is returned through all the Policy objects. Each Policy object can inspect/mutate the
+embedded *http.Response.
 */
 package azcore

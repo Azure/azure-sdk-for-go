@@ -31,9 +31,7 @@ func init() {
 	}
 }
 
-// DefaultHTTPClientTransport ...
+// DefaultHTTPClientTransport returns a shared Transport. It uses an http.Client.
 func DefaultHTTPClientTransport() Transport {
-	return TransportFunc(func(req *http.Request) (*http.Response, error) {
-		return defaultHTTPClient.Do(req)
-	})
+	return defaultHTTPClient
 }

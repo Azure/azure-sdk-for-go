@@ -97,17 +97,17 @@ func (l *Logger) resetClassifications() {
 	l.cls = nil
 }
 
-var log Logger
+var logger Logger
 
 // Log returns the process-wide logger.
 func Log() *Logger {
-	return &log
+	return &logger
 }
 
 func init() {
 	if cls := os.Getenv("AZURE_SDK_GO_LOGGING"); cls == "all" {
 		// cls could be enhanced to support a comma-delimited list of log classifications
-		log.lst = func(cls LogClassification, msg string) {
+		logger.lst = func(cls LogClassification, msg string) {
 			// simple console logger, it writes to stderr in the following format:
 			// [time-stamp] Classification: message
 			fmt.Fprintf(os.Stderr, "[%s] %s: %s\n", time.Now().Format(time.StampMicro), cls, msg)

@@ -472,6 +472,8 @@ type BigDataPoolResourceProperties struct {
 	NodeCount *int32 `json:"nodeCount,omitempty"`
 	// LibraryRequirements - Library version requirements
 	LibraryRequirements *LibraryRequirements `json:"libraryRequirements,omitempty"`
+	// SparkConfigProperties - Spark configuration file to specify additional properties
+	SparkConfigProperties *LibraryRequirements `json:"sparkConfigProperties,omitempty"`
 	// SparkVersion - The Apache Spark version.
 	SparkVersion *string `json:"sparkVersion,omitempty"`
 	// DefaultSparkLogFolder - The default folder where Spark logs will be written.
@@ -3691,6 +3693,16 @@ type ManagedIntegrationRuntimeTypeProperties struct {
 	ComputeProperties *IntegrationRuntimeComputeProperties `json:"computeProperties,omitempty"`
 	// SsisProperties - SSIS properties for managed integration runtime.
 	SsisProperties *IntegrationRuntimeSsisProperties `json:"ssisProperties,omitempty"`
+}
+
+// ManagedVirtualNetworkSettings managed Virtual Network Settings
+type ManagedVirtualNetworkSettings struct {
+	// PreventDataExfiltration - Prevent Data Exfiltration
+	PreventDataExfiltration *bool `json:"preventDataExfiltration,omitempty"`
+	// LinkedAccessCheckOnTargetResource - Linked Access Check On Target Resource
+	LinkedAccessCheckOnTargetResource *bool `json:"linkedAccessCheckOnTargetResource,omitempty"`
+	// AllowedAadTenantIdsForLinking - Allowed Aad Tenant Ids For Linking
+	AllowedAadTenantIdsForLinking *[]string `json:"allowedAadTenantIdsForLinking,omitempty"`
 }
 
 // MetadataSyncConfig configuration for metadata sync
@@ -9707,6 +9719,8 @@ type WorkspacePatchInfo struct {
 	Tags map[string]*string `json:"tags"`
 	// Identity - The identity of the workspace
 	Identity *ManagedIdentity `json:"identity,omitempty"`
+	// ManagedVirtualNetworkSettings - Managed Virtual Network Settings
+	ManagedVirtualNetworkSettings *WorkspacePatchInfoManagedVirtualNetworkSettings `json:"managedVirtualNetworkSettings,omitempty"`
 	// WorkspacePatchProperties - Workspace patch properties
 	*WorkspacePatchProperties `json:"properties,omitempty"`
 }
@@ -9719,6 +9733,9 @@ func (wpi WorkspacePatchInfo) MarshalJSON() ([]byte, error) {
 	}
 	if wpi.Identity != nil {
 		objectMap["identity"] = wpi.Identity
+	}
+	if wpi.ManagedVirtualNetworkSettings != nil {
+		objectMap["managedVirtualNetworkSettings"] = wpi.ManagedVirtualNetworkSettings
 	}
 	if wpi.WorkspacePatchProperties != nil {
 		objectMap["properties"] = wpi.WorkspacePatchProperties
@@ -9753,6 +9770,15 @@ func (wpi *WorkspacePatchInfo) UnmarshalJSON(body []byte) error {
 				}
 				wpi.Identity = &identity
 			}
+		case "managedVirtualNetworkSettings":
+			if v != nil {
+				var managedVirtualNetworkSettings WorkspacePatchInfoManagedVirtualNetworkSettings
+				err = json.Unmarshal(*v, &managedVirtualNetworkSettings)
+				if err != nil {
+					return err
+				}
+				wpi.ManagedVirtualNetworkSettings = &managedVirtualNetworkSettings
+			}
 		case "properties":
 			if v != nil {
 				var workspacePatchProperties WorkspacePatchProperties
@@ -9766,6 +9792,16 @@ func (wpi *WorkspacePatchInfo) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// WorkspacePatchInfoManagedVirtualNetworkSettings managed Virtual Network Settings
+type WorkspacePatchInfoManagedVirtualNetworkSettings struct {
+	// PreventDataExfiltration - Prevent Data Exfiltration
+	PreventDataExfiltration *bool `json:"preventDataExfiltration,omitempty"`
+	// LinkedAccessCheckOnTargetResource - Linked Access Check On Target Resource
+	LinkedAccessCheckOnTargetResource *bool `json:"linkedAccessCheckOnTargetResource,omitempty"`
+	// AllowedAadTenantIdsForLinking - Allowed Aad Tenant Ids For Linking
+	AllowedAadTenantIdsForLinking *[]string `json:"allowedAadTenantIdsForLinking,omitempty"`
 }
 
 // WorkspacePatchProperties workspace patch properties
@@ -9807,6 +9843,8 @@ type WorkspaceProperties struct {
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// ExtraProperties - READ-ONLY; Workspace level configs and feature flags
 	ExtraProperties map[string]interface{} `json:"extraProperties"`
+	// ManagedVirtualNetworkSettings - Managed Virtual Network Settings
+	ManagedVirtualNetworkSettings *ManagedVirtualNetworkSettings `json:"managedVirtualNetworkSettings,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for WorkspaceProperties.
@@ -9835,6 +9873,9 @@ func (wp WorkspaceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if wp.PrivateEndpointConnections != nil {
 		objectMap["privateEndpointConnections"] = wp.PrivateEndpointConnections
+	}
+	if wp.ManagedVirtualNetworkSettings != nil {
+		objectMap["managedVirtualNetworkSettings"] = wp.ManagedVirtualNetworkSettings
 	}
 	return json.Marshal(objectMap)
 }

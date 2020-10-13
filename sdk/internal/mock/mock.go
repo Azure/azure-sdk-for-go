@@ -228,6 +228,13 @@ func WithTLSConfig(cfg *tls.Config) ServerOption {
 	})
 }
 
+// WithHTTP2Enabled sets the HTTP2Enabled field on the testserver to the boolean value provided.
+func WithHTTP2Enabled(enabled bool) ServerOption {
+	return fnSrvOpt(func(s *Server) {
+		s.srv.EnableHTTP2 = enabled
+	})
+}
+
 // ResponseOption is an abstraction for configuring a mock HTTP response.
 type ResponseOption interface {
 	apply(mr *mockResponse)

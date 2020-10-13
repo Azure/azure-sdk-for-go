@@ -32,11 +32,7 @@ func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
 }
 
 func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
-	tempSrv := &http.Server{}
-	if err := http2.ConfigureServer(tempSrv, new(http2.Server)); err != nil {
-		panic(err)
-	}
-	srv, close := mock.NewTLSServer(mock.WithTLSConfig(tempSrv.TLSConfig))
+	srv, close := mock.NewTLSServer(mock.WithHTTP2Enabled(true))
 	defer close()
 	tr := &http.Transport{TLSClientConfig: srv.ServerConfig().TLSConfig}
 	if err := http2.ConfigureTransport(tr); err != nil {
@@ -67,11 +63,7 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
-	tempSrv := &http.Server{}
-	if err := http2.ConfigureServer(tempSrv, new(http2.Server)); err != nil {
-		panic(err)
-	}
-	srv, close := mock.NewTLSServer(mock.WithTLSConfig(tempSrv.TLSConfig))
+	srv, close := mock.NewTLSServer(mock.WithHTTP2Enabled(true))
 	defer close()
 	tr := &http.Transport{TLSClientConfig: srv.ServerConfig().TLSConfig}
 	if err := http2.ConfigureTransport(tr); err != nil {

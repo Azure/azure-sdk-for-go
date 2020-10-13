@@ -1,6 +1,6 @@
 module github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
-go 1.13
+go 1.14
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.12.0

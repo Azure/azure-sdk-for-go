@@ -10,12 +10,12 @@ stages:
         - template: ../variables/globals.yml
       strategy:
         matrix:
-          Linux_Go113:
+          Linux_Go115:
             vm.image: 'ubuntu-18.04'
-            go.version: '1.13'
-          Windows_Go113:
+            go.version: '1.15'
+          Windows_Go115:
             vm.image: 'windows-2019'
-            go.version: '1.13'
+            go.version: '1.15'
           Linux_Go114:
             vm.image: 'ubuntu-18.04'
             go.version: '1.14'
@@ -55,7 +55,7 @@ stages:
       steps:
       - task: GoTool@0
         inputs:
-          version: '1.13'
+          version: '1.15'
         displayName: "Select Go Version"
 
       - template: ../steps/create-go-workspace.yml

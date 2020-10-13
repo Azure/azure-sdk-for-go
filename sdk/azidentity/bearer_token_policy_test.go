@@ -128,7 +128,7 @@ func TestRetryPolicy_NonRetriable(t *testing.T) {
 }
 
 func TestRetryPolicy_HTTPRequest(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &ClientSecretCredentialOptions{Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})

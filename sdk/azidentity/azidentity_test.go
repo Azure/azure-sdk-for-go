@@ -115,3 +115,11 @@ func Test_AzureGovernmentAuthorityHost(t *testing.T) {
 		t.Fatalf("Did not retrieve expected authority host string")
 	}
 }
+
+func Test_NonHTTPSAuthorityHost(t *testing.T) {
+	opts := &TokenCredentialOptions{AuthorityHost: "http://foo.com"}
+	opts, err := opts.setDefaultValues()
+	if err == nil {
+		t.Fatal("Expected an error but did not receive one.")
+	}
+}

@@ -1,5 +1,5 @@
-// // Copyright (c) Microsoft Corporation. All rights reserved.
-// // Licensed under the MIT License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package azidentity
 
@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
+	"golang.org/x/net/http2"
 )
 
 func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
@@ -31,11 +32,17 @@ func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
 }
 
 func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer(mock.WithHTTP2Enabled(true))
 	defer close()
+	tr := &http.Transport{}
+	if err := http2.ConfigureTransport(tr); err != nil {
+		t.Fatalf("Failed to configure http2 transport: %v", err)
+	}
+	tr.TLSClientConfig.InsecureSkipVerify = true
+	client := &http.Client{Transport: tr}
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := DefaultInteractiveBrowserCredentialOptions()
-	options.Options = &TokenCredentialOptions{AuthorityHost: srv.URL()}
+	options.Options = &TokenCredentialOptions{AuthorityHost: srv.URL(), HTTPClient: client}
 	cred, err := NewInteractiveBrowserCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -56,12 +63,18 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer(mock.WithHTTP2Enabled(true))
 	defer close()
+	tr := &http.Transport{}
+	if err := http2.ConfigureTransport(tr); err != nil {
+		t.Fatalf("Failed to configure http2 transport: %v", err)
+	}
+	tr.TLSClientConfig.InsecureSkipVerify = true
+	client := &http.Client{Transport: tr}
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
 	options := DefaultInteractiveBrowserCredentialOptions()
 	options.ClientSecret = to.StringPtr(wrongSecret)
-	options.Options = &TokenCredentialOptions{AuthorityHost: srv.URL()}
+	options.Options = &TokenCredentialOptions{AuthorityHost: srv.URL(), HTTPClient: client}
 	cred, err := NewInteractiveBrowserCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)

@@ -64,7 +64,7 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not set environment variables for testing: %v", err)
 	}
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	secCred, err := NewClientSecretCredential(tenantID, clientID, secret, &ClientSecretCredentialOptions{Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
@@ -92,7 +92,7 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	secCred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &ClientSecretCredentialOptions{Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
@@ -117,7 +117,7 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 }
 
 func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendError(&CredentialUnavailableError{CredentialType: "MockCredential", Message: "Mocking a credential unavailable error"})
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))

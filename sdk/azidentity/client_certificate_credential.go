@@ -37,7 +37,7 @@ type ClientCertificateCredentialOptions struct {
 	Options *TokenCredentialOptions
 }
 
-// DefaultClientCertificateCredentialOptions returns an instance of ClientCertificateCredentialOptions with the default values set.
+// DefaultClientCertificateCredentialOptions returns an instance of ClientCertificateCredentialOptions initialized with default values.
 func DefaultClientCertificateCredentialOptions() ClientCertificateCredentialOptions {
 	return ClientCertificateCredentialOptions{}
 }

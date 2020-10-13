@@ -29,7 +29,7 @@ type AuthorizationCodeCredential struct {
 	redirectURI  string  // The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
 }
 
-// DefaultAuthorizationCodeCredentialOptions provides the default implementation for AuthorizationCodeCredentialOptions that is necessary for AuthorizationCodeCredential.
+// DefaultAuthorizationCodeCredentialOptions returns an instance of AuthorizationCodeCredentialOptions initialized with default values.
 func DefaultAuthorizationCodeCredentialOptions() AuthorizationCodeCredentialOptions {
 	return AuthorizationCodeCredentialOptions{}
 }

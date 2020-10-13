@@ -30,7 +30,7 @@ type EnvironmentCredentialOptions struct {
 	Options *TokenCredentialOptions
 }
 
-// DefaultEnvironmentCredentialOptions returns an instance of EnvironmentCredentialOptions with default values set.
+// DefaultEnvironmentCredentialOptions returns an instance of EnvironmentCredentialOptions initialized with default values.
 func DefaultEnvironmentCredentialOptions() EnvironmentCredentialOptions {
 	return EnvironmentCredentialOptions{}
 }

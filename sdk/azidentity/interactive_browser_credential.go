@@ -36,8 +36,7 @@ type InteractiveBrowserCredential struct {
 	options InteractiveBrowserCredentialOptions
 }
 
-// DefaultInteractiveBrowserCredentialOptions use this function to get the default values for logging in with
-// an interactive browser window.
+// DefaultInteractiveBrowserCredentialOptions returns an instance of InteractiveBrowserCredentialOptions initialized with default values.
 func DefaultInteractiveBrowserCredentialOptions() InteractiveBrowserCredentialOptions {
 	return InteractiveBrowserCredentialOptions{
 		TenantID:     organizationsTenantID,

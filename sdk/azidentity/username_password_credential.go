@@ -26,7 +26,7 @@ type UsernamePasswordCredentialOptions struct {
 	Options *TokenCredentialOptions
 }
 
-// DefaultUsernamePasswordCredentialOptions use this function to get the default values for authenticating with UsernamePasswordCredential.
+// DefaultUsernamePasswordCredentialOptions returns an instance of UsernamePasswordCredentialOptions initialized with default values.
 func DefaultUsernamePasswordCredentialOptions() UsernamePasswordCredentialOptions {
 	return UsernamePasswordCredentialOptions{}
 }

@@ -34,7 +34,7 @@ func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
 func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewTLSServer(mock.WithHTTP2Enabled(true))
 	defer close()
-	tr := &http.Transport{TLSClientConfig: srv.ServerConfig().TLSConfig}
+	tr := &http.Transport{}
 	if err := http2.ConfigureTransport(tr); err != nil {
 		t.Fatalf("Failed to configure http2 transport: %v", err)
 	}
@@ -65,7 +65,7 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewTLSServer(mock.WithHTTP2Enabled(true))
 	defer close()
-	tr := &http.Transport{TLSClientConfig: srv.ServerConfig().TLSConfig}
+	tr := &http.Transport{}
 	if err := http2.ConfigureTransport(tr); err != nil {
 		t.Fatalf("Failed to configure http2 transport: %v", err)
 	}

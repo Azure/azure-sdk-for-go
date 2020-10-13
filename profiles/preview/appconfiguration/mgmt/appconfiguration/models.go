@@ -22,20 +22,36 @@ package appconfiguration
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/appconfiguration/mgmt/2019-10-01/appconfiguration"
+	original "github.com/Azure/azure-sdk-for-go/services/appconfiguration/mgmt/2020-06-01/appconfiguration"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type ActionsRequired = original.ActionsRequired
+
+const (
+	None     ActionsRequired = original.None
+	Recreate ActionsRequired = original.Recreate
+)
+
+type ConnectionStatus = original.ConnectionStatus
+
+const (
+	Approved     ConnectionStatus = original.Approved
+	Disconnected ConnectionStatus = original.Disconnected
+	Pending      ConnectionStatus = original.Pending
+	Rejected     ConnectionStatus = original.Rejected
+)
+
 type IdentityType = original.IdentityType
 
 const (
-	None                       IdentityType = original.None
-	SystemAssigned             IdentityType = original.SystemAssigned
-	SystemAssignedUserAssigned IdentityType = original.SystemAssignedUserAssigned
-	UserAssigned               IdentityType = original.UserAssigned
+	IdentityTypeNone                       IdentityType = original.IdentityTypeNone
+	IdentityTypeSystemAssigned             IdentityType = original.IdentityTypeSystemAssigned
+	IdentityTypeSystemAssignedUserAssigned IdentityType = original.IdentityTypeSystemAssignedUserAssigned
+	IdentityTypeUserAssigned               IdentityType = original.IdentityTypeUserAssigned
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -49,6 +65,13 @@ const (
 	Updating  ProvisioningState = original.Updating
 )
 
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	Disabled PublicNetworkAccess = original.Disabled
+	Enabled  PublicNetworkAccess = original.Enabled
+)
+
 type APIKey = original.APIKey
 type APIKeyListResult = original.APIKeyListResult
 type APIKeyListResultIterator = original.APIKeyListResultIterator
@@ -60,13 +83,16 @@ type ConfigurationStoreListResult = original.ConfigurationStoreListResult
 type ConfigurationStoreListResultIterator = original.ConfigurationStoreListResultIterator
 type ConfigurationStoreListResultPage = original.ConfigurationStoreListResultPage
 type ConfigurationStoreProperties = original.ConfigurationStoreProperties
+type ConfigurationStorePropertiesUpdateParameters = original.ConfigurationStorePropertiesUpdateParameters
 type ConfigurationStoreUpdateParameters = original.ConfigurationStoreUpdateParameters
 type ConfigurationStoresClient = original.ConfigurationStoresClient
 type ConfigurationStoresCreateFuture = original.ConfigurationStoresCreateFuture
 type ConfigurationStoresDeleteFuture = original.ConfigurationStoresDeleteFuture
 type ConfigurationStoresUpdateFuture = original.ConfigurationStoresUpdateFuture
+type EncryptionProperties = original.EncryptionProperties
 type Error = original.Error
 type KeyValue = original.KeyValue
+type KeyVaultProperties = original.KeyVaultProperties
 type ListKeyValueParameters = original.ListKeyValueParameters
 type NameAvailabilityStatus = original.NameAvailabilityStatus
 type OperationDefinition = original.OperationDefinition
@@ -75,6 +101,23 @@ type OperationDefinitionListResult = original.OperationDefinitionListResult
 type OperationDefinitionListResultIterator = original.OperationDefinitionListResultIterator
 type OperationDefinitionListResultPage = original.OperationDefinitionListResultPage
 type OperationsClient = original.OperationsClient
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
+type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionReference = original.PrivateEndpointConnectionReference
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceListResultIterator = original.PrivateLinkResourceListResultIterator
+type PrivateLinkResourceListResultPage = original.PrivateLinkResourceListResultPage
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type RegenerateKeyParameters = original.RegenerateKeyParameters
 type Resource = original.Resource
 type ResourceIdentity = original.ResourceIdentity
@@ -114,14 +157,47 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return original.NewPrivateEndpointConnectionListResultIterator(page)
+}
+func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(getNextPage)
+}
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourceListResultIterator(page PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator {
+	return original.NewPrivateLinkResourceListResultIterator(page)
+}
+func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return original.NewPrivateLinkResourceListResultPage(getNextPage)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleActionsRequiredValues() []ActionsRequired {
+	return original.PossibleActionsRequiredValues()
+}
+func PossibleConnectionStatusValues() []ConnectionStatus {
+	return original.PossibleConnectionStatusValues()
 }
 func PossibleIdentityTypeValues() []IdentityType {
 	return original.PossibleIdentityTypeValues()
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

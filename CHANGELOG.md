@@ -1,5 +1,63 @@
 # CHANGELOG
 
+## `v47.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| datadog | 2020-02-01-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| cognitiveservices | 2017-04-18 |
+
+### Breaking Changes
+
+| Package Name | API Version |
+| ---: | :---: |
+| containerservice | 2020-09-01 |
+| datafactory | 2018-06-01 |
+| security | v1.0<br/>v2.0<br/>v3.0 |
+
+### Package Renames
+
+- package `github.com/Azure/azure-sdk-for-go/services/preview/regionmove/mgmt/2019-10-01-preview/regionmove` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/resourcemover/mgmt/2019-10-01-preview/resourcemover`
+
+- package `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2020-06-01/appconfiguration` has been renamed to `github.com/Azure/azure-sdk-for-go/services/appconfiguration/mgmt/2020-06-01/appconfiguration`
+
+- package `github.com/Azure/azure-sdk-for-go/services/billing/mgmt/2020-05-01/billing` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2020-05-01-preview/billing`
+
+- package `github.com/Azure/azure-sdk-for-go/services/preview/cdn/mgmt/2020-04-15/cdn` has been renamed to `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-04-15/cdn`
+
+- package `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-02-01/containerservice` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2019-02-01-preview/containerservice`
+
+- package `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2019-12-12/documentdb` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2019-12-12-preview/documentdb`
+
+- package `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2020-03-01/documentdb` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-03-01-preview/documentdb`
+
+- package `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2020-04-01/documentdb` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb`
+
+- package `github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/mgmt/2018-06-01-preview/hdinsight` has been renamed to `github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2018-06-01/hdinsight`
+
+- package `github.com/Azure/azure-sdk-for-go/services/preview/keyvault/v7.1-preview/keyvault` has been renamed to `github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault`
+
+- package `github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2020-08-01/operationalinsights` has been renamed to `github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2020-08-01/operationalinsights`
+
+- package `github.com/Azure/azure-sdk-for-go/services/policyinsights/mgmt/2019-10-01/policyinsights` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2019-10-01-preview/policyinsights`
+
+- package `github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2018-02-01/servicefabric` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2018-02-01-preview/servicefabric`
+
+- package `github.com/Azure/azure-sdk-for-go/services/preview/hybridcompute/mgmt/2019-12-12/hybridcompute` has been renamed to `github.com/Azure/azure-sdk-for-go/services/hybridcompute/mgmt/2019-12-12/hybridcompute`
+
+- package `github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2018-07-01/storage` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2018-07-01-preview/storage`
+
+- package `github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2018-02-01/trafficmanager` has been renamed to `github.com/Azure/azure-sdk-for-go/services/preview/trafficmanager/mgmt/2018-02-01-preview/trafficmanager`
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/93106ff722d481c30a9a4ae089564635c10e9401
+
 ## `v46.4.0`
 
 ### New Packages

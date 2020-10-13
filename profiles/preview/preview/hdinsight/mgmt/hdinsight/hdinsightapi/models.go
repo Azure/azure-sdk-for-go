@@ -19,14 +19,13 @@
 
 package hdinsightapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/mgmt/2018-06-01-preview/hdinsight/hdinsightapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/mgmt/2015-03-01-preview/hdinsight/hdinsightapi"
 
 type ApplicationsClientAPI = original.ApplicationsClientAPI
 type ClustersClientAPI = original.ClustersClientAPI
 type ConfigurationsClientAPI = original.ConfigurationsClientAPI
-type ExtensionsClientAPI = original.ExtensionsClientAPI
+type ExtensionClientAPI = original.ExtensionClientAPI
 type LocationsClientAPI = original.LocationsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type ScriptActionsClientAPI = original.ScriptActionsClientAPI
 type ScriptExecutionHistoryClientAPI = original.ScriptExecutionHistoryClientAPI
-type VirtualMachinesClientAPI = original.VirtualMachinesClientAPI

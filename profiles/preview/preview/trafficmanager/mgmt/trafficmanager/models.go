@@ -19,7 +19,7 @@
 
 package trafficmanager
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/trafficmanager/mgmt/2017-09-01-preview/trafficmanager"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/trafficmanager/mgmt/2018-02-01-preview/trafficmanager"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -75,6 +75,13 @@ const (
 	Performance TrafficRoutingMethod = original.Performance
 	Priority    TrafficRoutingMethod = original.Priority
 	Weighted    TrafficRoutingMethod = original.Weighted
+)
+
+type TrafficViewEnrollmentStatus = original.TrafficViewEnrollmentStatus
+
+const (
+	TrafficViewEnrollmentStatusDisabled TrafficViewEnrollmentStatus = original.TrafficViewEnrollmentStatusDisabled
+	TrafficViewEnrollmentStatusEnabled  TrafficViewEnrollmentStatus = original.TrafficViewEnrollmentStatusEnabled
 )
 
 type BaseClient = original.BaseClient
@@ -161,6 +168,9 @@ func PossibleProfileStatusValues() []ProfileStatus {
 }
 func PossibleTrafficRoutingMethodValues() []TrafficRoutingMethod {
 	return original.PossibleTrafficRoutingMethodValues()
+}
+func PossibleTrafficViewEnrollmentStatusValues() []TrafficViewEnrollmentStatus {
+	return original.PossibleTrafficViewEnrollmentStatusValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

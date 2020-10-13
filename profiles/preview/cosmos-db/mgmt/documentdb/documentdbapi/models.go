@@ -19,7 +19,7 @@
 
 package documentdbapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2020-04-01/documentdb/documentdbapi"
+import original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2019-08-01/documentdb/documentdbapi"
 
 type CassandraResourcesClientAPI = original.CassandraResourcesClientAPI
 type CollectionClientAPI = original.CollectionClientAPI
@@ -38,7 +38,5 @@ type PartitionKeyRangeIDRegionClientAPI = original.PartitionKeyRangeIDRegionClie
 type PercentileClientAPI = original.PercentileClientAPI
 type PercentileSourceTargetClientAPI = original.PercentileSourceTargetClientAPI
 type PercentileTargetClientAPI = original.PercentileTargetClientAPI
-type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
-type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type SQLResourcesClientAPI = original.SQLResourcesClientAPI
 type TableResourcesClientAPI = original.TableResourcesClientAPI

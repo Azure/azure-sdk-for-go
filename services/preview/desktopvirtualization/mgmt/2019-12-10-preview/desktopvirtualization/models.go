@@ -1355,6 +1355,8 @@ type HostPoolPatchProperties struct {
 	ValidationEnvironment *bool `json:"validationEnvironment,omitempty"`
 	// RegistrationInfo - The registration info of HostPool.
 	RegistrationInfo *RegistrationInfoPatch `json:"registrationInfo,omitempty"`
+	// VMTemplate - VM template for sessionhosts configuration within hostpool.
+	VMTemplate *string `json:"vmTemplate,omitempty"`
 	// SsoContext - Path to keyvault containing ssoContext secret.
 	SsoContext *string `json:"ssoContext,omitempty"`
 	// PreferredAppGroupType - The type of preferred application group type, default to Desktop Application Group. Possible values include: 'PreferredAppGroupTypeNone', 'PreferredAppGroupTypeDesktop', 'PreferredAppGroupTypeRailApplications'

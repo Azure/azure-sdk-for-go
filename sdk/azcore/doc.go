@@ -8,9 +8,9 @@
 Package azcore implements an HTTP request/response middleware pipeline.
 
 The middleware consists of three components.
-- One or more Policy objects.
-- A Transport object.
-- A Pipeline object that combines the Policy and Transport objects.
+- One or more Policy instances.
+- A Transport instance.
+- A Pipeline instance that combines the Policy and Transport instances.
 
 Implementing the Policy Interface
 
@@ -22,13 +22,13 @@ avoid race conditions.
 A Policy's Do method is called when an HTTP request wants to be sent over the network. The Do method can
 perform any operation(s) it desires. For example, it can log the outgoing request, mutate the URL, headers,
 and/or query parameters, inject a failure, etc.  Once the Policy has successfully completed its request
-work, it must call the Next() method on the *azcore.Request object in order to pass the request to the
+work, it must call the Next() method on the *azcore.Request instance in order to pass the request to the
 next Policy in the chain.
 
-When an HTTP response comes back, the Policy then gets a chance to process the response/error.  The Policy object
+When an HTTP response comes back, the Policy then gets a chance to process the response/error.  The Policy instance
 can log the response, retry the operation if it failed due to a transient error or timeout, unmarshal the response
 body, etc.  Once the Policy has successfully completed its response work, it must return the *azcore.Response
-and error objects to its caller.
+and error instances to its caller.
 
 Template for implementing a stateless Policy:
 
@@ -46,7 +46,7 @@ Template for implementing a stateless Policy:
 	   })
    }
 
-Template for implementing a stateful Policy object:
+Template for implementing a stateful Policy:
 
    type MyStatefulPolicy struct {
       // TODO: add configuration/setting fields here...
@@ -72,23 +72,23 @@ the chain.  The default Transport policy uses a shared http.Client from the stan
 
 The same stateful/stateless rules for Policy implementations apply to Transport implementations.
 
-Using Policy and Transport Objects Via a Pipeline
+Using Policy and Transport Instances Via a Pipeline
 
-To use the Policy and Transport objects, an application passes them to the NewPipeline function.
+To use the Policy and Transport instances, an application passes them to the NewPipeline function.
 
    func NewPipeline(transport Transport, policies ...Policy) Pipeline
 
-The specified Policy objects form a chain and are invoked in the order provided to NewPipeline
+The specified Policy instances form a chain and are invoked in the order provided to NewPipeline
 followed by the Transport.
 
-Once the Pipeline has been created, create a Request object and pass it to Pipeline's Do method.
+Once the Pipeline has been created, create a Request instance and pass it to Pipeline's Do method.
 
    func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Request, error)
 
    func (p Pipeline) Do(req *Request) (*Response, error)
 
 The Pipeline.Do method sends the specified Request through the chain of Policy and Transport
-objects.  The response/error is then sent through the same chain of Policy objects in reverse
+instances.  The response/error is then sent through the same chain of Policy instances in reverse
 order.  For example, assuming there are Policy types PolicyA, PolicyB, and PolicyC along with
 TransportA.
 
@@ -102,10 +102,10 @@ azcore.Request -> PolicyA -> PolicyB -> PolicyC -> TransportA -----+
                                                                    |
 caller <--------- PolicyA <- PolicyB <- PolicyC <- azcore.Response-+
 
-Creating a Request Object
+Creating a Request Instance
 
-The Request object passed to Pipeline's Do method is a wrapper around an *http.Request.  It also
-contains some internal state and provides various convenience methods.  You create a Request object
+The Request instance passed to Pipeline's Do method is a wrapper around an *http.Request.  It also
+contains some internal state and provides various convenience methods.  You create a Request instance
 by calling the NewRequest function:
 
    func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Request, error)
@@ -114,16 +114,16 @@ If the Request should contain a body, call the SetBody method.
 
    func (req *Request) SetBody(body ReadSeekCloser, contentType string) error
 
-A seekable stream is required so that upon retry, the retry Policy object can seek the stream
+A seekable stream is required so that upon retry, the retry Policy instance can seek the stream
 back to the beginning before retrying the network request and re-uploading the body.
 
 Processing the Response
 
 When the HTTP response is received, the underlying *http.Response is wrapped in a Response type.
-The Response type contains various convenience methods, things like testing the HTTP response code
-and unmarshalling the response body in a particular format.
+The Response type contains various convenience methods, like testing the HTTP response code and
+unmarshalling the response body in a particular format.
 
-The Response is returned through all the Policy objects. Each Policy object can inspect/mutate the
+The Response is returned through all the Policy instances. Each Policy instance can inspect/mutate the
 embedded *http.Response.
 */
 package azcore

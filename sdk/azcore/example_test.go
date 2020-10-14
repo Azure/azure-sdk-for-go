@@ -48,6 +48,7 @@ func ExampleRequest_SetBody() {
 }
 
 func ExampleLogger_Should() {
+	// you can create your own logging classification as needed
 	const LogExpensiveThing azcore.LogClassification = "ExpensiveThing"
 	if azcore.Log().Should(LogExpensiveThing) {
 		// perform expensive calculation only when enabled

@@ -27,7 +27,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2018-07-01/storage"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2018-07-01-preview/storage"
 
 // Account the storage account.
 type Account struct {

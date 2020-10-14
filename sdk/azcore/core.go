@@ -14,7 +14,7 @@ import (
 // Request and react to the received Response.
 type Policy interface {
 	// Do applies the policy to the specified Request.  When implementing a Policy, mutate the
-	// request before calling req.Do() to move on to the next policy, and respond to the result
+	// request before calling req.Next() to move on to the next policy, and respond to the result
 	// before returning to the caller.
 	Do(req *Request) (*Response, error)
 }
@@ -62,11 +62,11 @@ type Pipeline struct {
 	policies []Policy
 }
 
-// NewPipeline creates a new goroutine-safe Pipeline object from the specified Policies.
-// If no transport is provided then the default HTTP transport will be used.
+// NewPipeline creates a new Pipeline object from the specified Transport and Policies.
+// If no transport is provided then the default *http.Client transport will be used.
 func NewPipeline(transport Transport, policies ...Policy) Pipeline {
 	if transport == nil {
-		transport = DefaultHTTPClientTransport()
+		transport = defaultHTTPClient
 	}
 	// transport policy must always be the last in the slice
 	policies = append(policies, newHTTPHeaderPolicy(), newBodyDownloadPolicy(), transportPolicy{trans: transport})

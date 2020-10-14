@@ -30,10 +30,3 @@ func init() {
 		Transport: transport,
 	}
 }
-
-// DefaultHTTPClientTransport ...
-func DefaultHTTPClientTransport() Transport {
-	return TransportFunc(func(req *http.Request) (*http.Response, error) {
-		return defaultHTTPClient.Do(req)
-	})
-}

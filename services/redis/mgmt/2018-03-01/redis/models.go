@@ -1812,7 +1812,7 @@ type Sku struct {
 	Name SkuName `json:"name,omitempty"`
 	// Family - The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium). Possible values include: 'C', 'P'
 	Family SkuFamily `json:"family,omitempty"`
-	// Capacity - The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4).
+	// Capacity - The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4, 5).
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 

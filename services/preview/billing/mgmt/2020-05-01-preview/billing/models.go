@@ -30,7 +30,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/billing/mgmt/2020-05-01/billing"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2020-05-01-preview/billing"
 
 // Account a billing account.
 type Account struct {
@@ -1602,6 +1602,8 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty"`
 	// Target - READ-ONLY; The target of the particular error.
 	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The sub details of the error.
+	Details *[]ErrorSubDetailsItem `json:"details,omitempty"`
 }
 
 // ErrorResponse error response indicates that the service is not able to process the incoming request. The
@@ -1609,6 +1611,16 @@ type ErrorDetails struct {
 type ErrorResponse struct {
 	// Error - The details of the error.
 	Error *ErrorDetails `json:"error,omitempty"`
+}
+
+// ErrorSubDetailsItem ...
+type ErrorSubDetailsItem struct {
+	// Code - READ-ONLY; Error code.
+	Code *string `json:"code,omitempty"`
+	// Message - READ-ONLY; Error message indicating why the operation failed.
+	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The target of the particular error.
+	Target *string `json:"target,omitempty"`
 }
 
 // IndirectRelationshipInfo the billing profile details of the partner of the customer for an indirect motion.
@@ -2097,7 +2109,7 @@ type InvoiceProperties struct {
 	DueDate *date.Time `json:"dueDate,omitempty"`
 	// InvoiceDate - READ-ONLY; The date when the invoice was generated.
 	InvoiceDate *date.Time `json:"invoiceDate,omitempty"`
-	// Status - READ-ONLY; The current status of the invoice. Possible values include: 'Due', 'OverDue', 'Paid'
+	// Status - READ-ONLY; The current status of the invoice. Possible values include: 'Due', 'OverDue', 'Paid', 'Void'
 	Status InvoiceStatus `json:"status,omitempty"`
 	// AmountDue - READ-ONLY; The amount due as of now.
 	AmountDue *Amount `json:"amountDue,omitempty"`
@@ -2133,8 +2145,22 @@ type InvoiceProperties struct {
 	Documents *[]Document `json:"documents,omitempty"`
 	// Payments - READ-ONLY; List of payments.
 	Payments *[]PaymentProperties `json:"payments,omitempty"`
+	// RebillDetails - READ-ONLY; Rebill details for an invoice.
+	RebillDetails map[string]*RebillDetails `json:"rebillDetails"`
+	// DocumentType - READ-ONLY; The type of the document. Possible values include: 'InvoiceDocumentTypeInvoice', 'InvoiceDocumentTypeCreditNote'
+	DocumentType InvoiceDocumentType `json:"documentType,omitempty"`
+	// BilledDocumentID - READ-ONLY; The Id of the active invoice which is originally billed after this invoice was voided. This field is applicable to the void invoices only.
+	BilledDocumentID *string `json:"billedDocumentId,omitempty"`
+	// CreditForDocumentID - READ-ONLY; The Id of the invoice which got voided and this credit note was issued as a result. This field is applicable to the credit notes only.
+	CreditForDocumentID *string `json:"creditForDocumentId,omitempty"`
 	// SubscriptionID - READ-ONLY; The ID of the subscription for which the invoice is generated.
 	SubscriptionID *string `json:"subscriptionId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InvoiceProperties.
+func (IP InvoiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // InvoicesDownloadBillingSubscriptionInvoiceFuture an abstraction for monitoring and retrieving the results of
@@ -2190,6 +2216,64 @@ func (future *InvoicesDownloadInvoiceFuture) Result(client InvoicesClient) (du D
 		du, err = client.DownloadInvoiceResponder(du.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadInvoiceFuture", "Result", du.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// InvoicesDownloadMultipleBillingProfileInvoicesFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type InvoicesDownloadMultipleBillingProfileInvoicesFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *InvoicesDownloadMultipleBillingProfileInvoicesFuture) Result(client InvoicesClient) (du DownloadURL, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingProfileInvoicesFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("billing.InvoicesDownloadMultipleBillingProfileInvoicesFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+		du, err = client.DownloadMultipleBillingProfileInvoicesResponder(du.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingProfileInvoicesFuture", "Result", du.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture) Result(client InvoicesClient) (du DownloadURL, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("billing.InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+		du, err = client.DownloadMultipleBillingSubscriptionInvoicesResponder(du.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture", "Result", du.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -4165,6 +4249,22 @@ func (pp PropertyProperties) MarshalJSON() ([]byte, error) {
 	if pp.CostCenter != nil {
 		objectMap["costCenter"] = pp.CostCenter
 	}
+	return json.Marshal(objectMap)
+}
+
+// RebillDetails the rebill details of an invoice.
+type RebillDetails struct {
+	// CreditNoteDocumentID - READ-ONLY; The ID of credit note.
+	CreditNoteDocumentID *string `json:"creditNoteDocumentId,omitempty"`
+	// InvoiceDocumentID - READ-ONLY; The ID of invoice.
+	InvoiceDocumentID *string `json:"invoiceDocumentId,omitempty"`
+	// RebillDetails - READ-ONLY; Rebill details for an invoice.
+	RebillDetails map[string]*RebillDetails `json:"rebillDetails"`
+}
+
+// MarshalJSON is the custom marshaler for RebillDetails.
+func (rd RebillDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
 

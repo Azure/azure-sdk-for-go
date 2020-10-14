@@ -22,7 +22,7 @@ func ExamplePipeline_Do() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	pipeline := azcore.NewPipeline(azcore.DefaultHTTPClientTransport())
+	pipeline := azcore.NewPipeline(nil)
 	resp, err := pipeline.Do(req)
 	if err != nil {
 		log.Fatal(err)

@@ -1,17 +1,17 @@
-# Azure Core Client Package for Go
+# Azure Core Client Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/azcore)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore)
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%20azcore%20-%20ci?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=1843&branchName=master)
 [![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1843/master)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1843/master)
 
-The `azcore` module provides a set of common interfaces and types for Go SDK client libraries.
-These libraries follow the [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html).
+The `azcore` module provides a set of common interfaces and types for Go SDK client modules.
+These modules follow the [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html).
 
 ## Getting started
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Typically, you will not need to explicitly install `azcore` as it will be installed as a client library dependency.
+Typically, you will not need to explicitly install `azcore` as it will be installed as a client module dependency.
 To add the latest version to your `go.mod` file, execute the following command.
 
 ```bash

@@ -63,10 +63,10 @@ type Pipeline struct {
 }
 
 // NewPipeline creates a new Pipeline object from the specified Transport and Policies.
-// If no transport is provided then the default HTTP transport will be used.
+// If no transport is provided then the default *http.Client transport will be used.
 func NewPipeline(transport Transport, policies ...Policy) Pipeline {
 	if transport == nil {
-		transport = DefaultHTTPClientTransport()
+		transport = defaultHTTPClient
 	}
 	// transport policy must always be the last in the slice
 	policies = append(policies, newHTTPHeaderPolicy(), newBodyDownloadPolicy(), transportPolicy{trans: transport})

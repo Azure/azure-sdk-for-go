@@ -32,7 +32,7 @@ and error instances to its caller.
 
 Template for implementing a stateless Policy:
 
-   func MyStatelessPolicy() Policy {
+   func NewMyStatelessPolicy() Policy {
 	   return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
          // TODO: mutate/process Request here
 
@@ -49,7 +49,14 @@ Template for implementing a stateless Policy:
 Template for implementing a stateful Policy:
 
    type MyStatefulPolicy struct {
-      // TODO: add configuration/setting fields here...
+      // TODO: add configuration/setting fields here
+   }
+
+   // TODO: add initialization args to NewMyStatefulPolicy()
+   func NewMyStatefulPolicy() Policy {
+      return &MyStatefulPolicy{
+         // TODO: initialize configuration/setting fields here
+      }
    }
 
    func (p *MyStatefulPolicy) Do(req *azcore.Request) (resp *azcore.Response, err error) {
@@ -66,9 +73,9 @@ Template for implementing a stateful Policy:
 
 Implementing the Transport Interface
 
-The Transport interface is a specialized Policy.  Its responsibility is to send the HTTP request
-and return the corresponding HTTP response or error.  The Transport is always the last Policy in
-the chain.  The default Transport policy uses a shared http.Client from the standard library.
+The Transport interface is responsible for sending the HTTP request and returning the corresponding
+HTTP response or error.  The Transport is invoked by the last Policy in the chain.  The default Transport
+implementation uses a shared http.Client from the standard library.
 
 The same stateful/stateless rules for Policy implementations apply to Transport implementations.
 

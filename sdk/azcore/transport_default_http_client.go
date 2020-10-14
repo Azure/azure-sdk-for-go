@@ -30,8 +30,3 @@ func init() {
 		Transport: transport,
 	}
 }
-
-// DefaultHTTPClientTransport returns a shared Transport. It uses an http.Client.
-func DefaultHTTPClientTransport() Transport {
-	return defaultHTTPClient
-}

@@ -18,11 +18,11 @@ import (
 )
 
 func ExamplePipeline_Do() {
-	pipeline := azcore.NewPipeline(azcore.DefaultHTTPClientTransport())
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, "https://github.com/robots.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
+	pipeline := azcore.NewPipeline(azcore.DefaultHTTPClientTransport())
 	resp, err := pipeline.Do(req)
 	if err != nil {
 		log.Fatal(err)

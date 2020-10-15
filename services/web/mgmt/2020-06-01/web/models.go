@@ -20846,6 +20846,8 @@ type SiteConfig struct {
 	HTTP20Enabled *bool `json:"http20Enabled,omitempty"`
 	// MinTLSVersion - MinTlsVersion: configures the minimum version of TLS required for SSL requests. Possible values include: 'OneFullStopZero', 'OneFullStopOne', 'OneFullStopTwo'
 	MinTLSVersion SupportedTLSVersions `json:"minTlsVersion,omitempty"`
+	// ScmMinTLSVersion - ScmMinTlsVersion: configures the minimum version of TLS required for SSL requests for SCM site. Possible values include: 'OneFullStopZero', 'OneFullStopOne', 'OneFullStopTwo'
+	ScmMinTLSVersion SupportedTLSVersions `json:"scmMinTlsVersion,omitempty"`
 	// FtpsState - State of FTP / FTPS service. Possible values include: 'AllAllowed', 'FtpsOnly', 'Disabled'
 	FtpsState FtpsState `json:"ftpsState,omitempty"`
 	// PreWarmedInstanceCount - Number of preWarmed instances.
@@ -21010,6 +21012,9 @@ func (sc SiteConfig) MarshalJSON() ([]byte, error) {
 	}
 	if sc.MinTLSVersion != "" {
 		objectMap["minTlsVersion"] = sc.MinTLSVersion
+	}
+	if sc.ScmMinTLSVersion != "" {
+		objectMap["scmMinTlsVersion"] = sc.ScmMinTLSVersion
 	}
 	if sc.FtpsState != "" {
 		objectMap["ftpsState"] = sc.FtpsState
@@ -25496,6 +25501,197 @@ type StaticSiteResetPropertiesARMResourceProperties struct {
 	RepositoryToken *string `json:"repositoryToken,omitempty"`
 	// ShouldUpdateRepository - Determines whether the repository should be updated with the new properties.
 	ShouldUpdateRepository *bool `json:"shouldUpdateRepository,omitempty"`
+}
+
+// StaticSitesWorkflowPreview preview for the Static Site Workflow to be generated
+type StaticSitesWorkflowPreview struct {
+	autorest.Response `json:"-"`
+	// StaticSitesWorkflowPreviewProperties - StaticSitesWorkflowPreview resource specific properties
+	*StaticSitesWorkflowPreviewProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StaticSitesWorkflowPreview.
+func (sswp StaticSitesWorkflowPreview) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sswp.StaticSitesWorkflowPreviewProperties != nil {
+		objectMap["properties"] = sswp.StaticSitesWorkflowPreviewProperties
+	}
+	if sswp.Kind != nil {
+		objectMap["kind"] = sswp.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for StaticSitesWorkflowPreview struct.
+func (sswp *StaticSitesWorkflowPreview) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var staticSitesWorkflowPreviewProperties StaticSitesWorkflowPreviewProperties
+				err = json.Unmarshal(*v, &staticSitesWorkflowPreviewProperties)
+				if err != nil {
+					return err
+				}
+				sswp.StaticSitesWorkflowPreviewProperties = &staticSitesWorkflowPreviewProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sswp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sswp.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				sswp.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sswp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// StaticSitesWorkflowPreviewProperties staticSitesWorkflowPreview resource specific properties
+type StaticSitesWorkflowPreviewProperties struct {
+	// Path - READ-ONLY; The path for the workflow file to be generated
+	Path *string `json:"path,omitempty"`
+	// Contents - READ-ONLY; The contents for the workflow file to be generated
+	Contents *string `json:"contents,omitempty"`
+}
+
+// StaticSitesWorkflowPreviewRequest request entity for previewing the Static Site workflow
+type StaticSitesWorkflowPreviewRequest struct {
+	// StaticSitesWorkflowPreviewRequestProperties - StaticSitesWorkflowPreviewRequest resource specific properties
+	*StaticSitesWorkflowPreviewRequestProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StaticSitesWorkflowPreviewRequest.
+func (sswpr StaticSitesWorkflowPreviewRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sswpr.StaticSitesWorkflowPreviewRequestProperties != nil {
+		objectMap["properties"] = sswpr.StaticSitesWorkflowPreviewRequestProperties
+	}
+	if sswpr.Kind != nil {
+		objectMap["kind"] = sswpr.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for StaticSitesWorkflowPreviewRequest struct.
+func (sswpr *StaticSitesWorkflowPreviewRequest) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var staticSitesWorkflowPreviewRequestProperties StaticSitesWorkflowPreviewRequestProperties
+				err = json.Unmarshal(*v, &staticSitesWorkflowPreviewRequestProperties)
+				if err != nil {
+					return err
+				}
+				sswpr.StaticSitesWorkflowPreviewRequestProperties = &staticSitesWorkflowPreviewRequestProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sswpr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sswpr.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				sswpr.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sswpr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// StaticSitesWorkflowPreviewRequestProperties staticSitesWorkflowPreviewRequest resource specific properties
+type StaticSitesWorkflowPreviewRequestProperties struct {
+	// RepositoryURL - URL for the repository of the static site.
+	RepositoryURL *string `json:"repositoryUrl,omitempty"`
+	// Branch - The target branch in the repository.
+	Branch *string `json:"branch,omitempty"`
+	// BuildProperties - Build properties to configure on the repository.
+	BuildProperties *StaticSiteBuildProperties `json:"buildProperties,omitempty"`
 }
 
 // StaticSiteUserARMResource static Site User ARM resource.

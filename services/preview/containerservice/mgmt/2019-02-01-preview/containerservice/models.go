@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-02-01/containerservice"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2019-02-01-preview/containerservice"
 
 // AccessProfile profile for enabling a user to access a managed cluster.
 type AccessProfile struct {
@@ -1345,7 +1345,7 @@ type ManagedClusterProperties struct {
 	NodeResourceGroup *string `json:"nodeResourceGroup,omitempty"`
 	// EnableRBAC - Whether to enable Kubernetes Role-Based Access Control.
 	EnableRBAC *bool `json:"enableRBAC,omitempty"`
-	// EnablePodSecurityPolicy - (PREVIEW) Whether to enable Kubernetes Pod security policy.
+	// EnablePodSecurityPolicy - (DEPRECATING) Whether to enable Kubernetes pod security policy (preview). This feature is set for removal on October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy.
 	EnablePodSecurityPolicy *bool `json:"enablePodSecurityPolicy,omitempty"`
 	// NetworkProfile - Profile of network configuration.
 	NetworkProfile *NetworkProfileType `json:"networkProfile,omitempty"`

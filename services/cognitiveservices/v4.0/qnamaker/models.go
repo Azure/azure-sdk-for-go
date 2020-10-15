@@ -60,7 +60,7 @@ type CreateKbDTO struct {
 	EnableHierarchicalExtraction *bool `json:"enableHierarchicalExtraction,omitempty"`
 	// DefaultAnswerUsedForExtraction - Text string to be used as the answer in any Q-A which has no extracted answer from the document but has a hierarchy. Required when EnableHierarchicalExtraction field is set to True.
 	DefaultAnswerUsedForExtraction *string `json:"defaultAnswerUsedForExtraction,omitempty"`
-	// Language - Language of the knowledgebase.
+	// Language - Language of the knowledgebase. Please find the list of supported languages <a href="https://aka.ms/qnamaker-languages#languages-supported" target="_blank">here</a>.
 	Language *string `json:"language,omitempty"`
 }
 
@@ -286,12 +286,6 @@ type QnADTOContext struct {
 type ReplaceKbDTO struct {
 	// QnAList - List of Q-A (QnADTO) to be added to the knowledgebase. Q-A Ids are assigned by the service and should be omitted.
 	QnAList *[]QnADTO `json:"qnAList,omitempty"`
-}
-
-// String ...
-type String struct {
-	autorest.Response `json:"-"`
-	Value             *string `json:"value,omitempty"`
 }
 
 // UpdateContextDTO update Body schema to represent context to be updated

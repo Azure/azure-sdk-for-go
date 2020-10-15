@@ -8,9 +8,10 @@
 Package azcore implements an HTTP request/response middleware pipeline.
 
 The middleware consists of three components.
-- One or more Policy instances.
-- A Transport instance.
-- A Pipeline instance that combines the Policy and Transport instances.
+
+   - One or more Policy instances.
+   - A Transport instance.
+   - A Pipeline instance that combines the Policy and Transport instances.
 
 Implementing the Policy Interface
 
@@ -33,7 +34,7 @@ and error instances to its caller.
 Template for implementing a stateless Policy:
 
    func NewMyStatelessPolicy() Policy {
-	   return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
+      return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
          // TODO: mutate/process Request here
 
          // forward Request to next Policy & get Response/error
@@ -43,7 +44,7 @@ Template for implementing a stateless Policy:
 
          // return Response/error to previous Policy
          return resp, err
-	   })
+      })
    }
 
 Template for implementing a stateful Policy:
@@ -103,11 +104,11 @@ TransportA.
 
 The flow of Request and Response looks like the following:
 
-azcore.Request -> PolicyA -> PolicyB -> PolicyC -> TransportA -----+
-                                                                   |
-                                                            HTTP(s) endpoint
-                                                                   |
-caller <--------- PolicyA <- PolicyB <- PolicyC <- azcore.Response-+
+   azcore.Request -> PolicyA -> PolicyB -> PolicyC -> TransportA -----+
+                                                                      |
+                                                               HTTP(s) endpoint
+                                                                      |
+   caller <--------- PolicyA <- PolicyB <- PolicyC <- azcore.Response-+
 
 Creating a Request Instance
 

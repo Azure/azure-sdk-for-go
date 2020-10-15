@@ -58,7 +58,6 @@ func DefaultRegistrationOptions() RegistrationOptions {
 		MaxAttempts:     3,
 		PollingDelay:    15 * time.Second,
 		PollingDuration: 5 * time.Minute,
-		HTTPClient:      azcore.DefaultHTTPClientTransport(),
 		Retry:           azcore.DefaultRetryOptions(),
 	}
 }

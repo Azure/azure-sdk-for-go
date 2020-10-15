@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// DatabaseAccountsClient is the azure Cosmos DB Database Service Resource Provider REST API
+// DatabaseAccountsClient is the client for the DatabaseAccounts methods of the Documentdb service.
 type DatabaseAccountsClient struct {
 	BaseClient
 }

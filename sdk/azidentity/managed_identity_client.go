@@ -148,7 +148,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID 
 	case msiTypeAppServiceV20170901, msiTypeAppServiceV20190801:
 		return c.createAppServiceAuthRequest(ctx, clientID, scopes)
 	case msiTypeAzureArc:
-		// need to perform preliminary request to retreive the secret key provided by the IDENTITY_ENDPOINT
+		// need to perform preliminary request to retreive the secret key challenge provided by the HIMDS service
 		key, err := c.getAzureArcSecretKey(ctx, scopes)
 		if err != nil {
 			return nil, &AuthenticationFailedError{inner: err, msg: "Failed to retreive secret key from the identity endpoint."}
@@ -278,6 +278,8 @@ func (c *managedIdentityClient) getMSIType() (msiType, error) {
 			c.endpoint = endpointEnvVar
 			if header := os.Getenv(identityHeader); header != "" { // if BOTH the env vars IDENTITY_ENDPOINT and IDENTITY_HEADER are set the msiType is AppService
 				c.msiType = msiTypeAppServiceV20190801
+			} else if arcIMDS := os.Getenv(arcIMDSEndpoint); arcIMDS != "" {
+				c.msiType = msiTypeAzureArc
 			} else { // if ONLY the env var IDENTITY_ENDPOINT is set the msiType is Azure Functions
 				c.msiType = msiTypeUnavailable
 				return c.msiType, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "This Managed Identity Environment is not supported yet"}
@@ -289,13 +291,6 @@ func (c *managedIdentityClient) getMSIType() (msiType, error) {
 			} else { // if ONLY the env var MSI_ENDPOINT is set the msiType is CloudShell
 				c.msiType = msiTypeCloudShell
 			}
-		} else if endpointEnvVar := os.Getenv(arcIMDSEndpoint); endpointEnvVar != "" { // check for IMDS_ENDPOINT to identify Azure Arc environment
-			c.endpoint = endpointEnvVar
-			// Give preference to the IDENTITY_ENDPOINT over the IMDS_ENDPOINT if it is available
-			if arcIdentityEndpoint := os.Getenv(identityEndpoint); arcIdentityEndpoint != "" {
-				c.endpoint = arcIdentityEndpoint
-			}
-			c.msiType = msiTypeAzureArc
 		} else if c.imdsAvailable() { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the MsiType is Imds. This will timeout after 500 milliseconds
 			c.endpoint = imdsEndpoint
 			c.msiType = msiTypeIMDS

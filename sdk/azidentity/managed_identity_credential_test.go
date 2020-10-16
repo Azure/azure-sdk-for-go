@@ -27,7 +27,7 @@ func clearEnvVars(envVars ...string) {
 	}
 }
 func TestManagedIdentityCredential_GetTokenInAzureArcLive(t *testing.T) {
-	if len(os.Getenv("IMDS_ENDPOINT")) == 0 {
+	if len(os.Getenv(arcIMDSEndpoint)) == 0 {
 		t.Skip()
 	}
 	msiCred, err := NewManagedIdentityCredential(clientID, nil)

@@ -166,6 +166,59 @@ func PossibleDataFlowComputeTypeValues() []DataFlowComputeType {
 	return []DataFlowComputeType{ComputeOptimized, General, MemoryOptimized}
 }
 
+// DataMaskingFunction enumerates the values for data masking function.
+type DataMaskingFunction string
+
+const (
+	// DataMaskingFunctionCCN ...
+	DataMaskingFunctionCCN DataMaskingFunction = "CCN"
+	// DataMaskingFunctionDefault ...
+	DataMaskingFunctionDefault DataMaskingFunction = "Default"
+	// DataMaskingFunctionEmail ...
+	DataMaskingFunctionEmail DataMaskingFunction = "Email"
+	// DataMaskingFunctionNumber ...
+	DataMaskingFunctionNumber DataMaskingFunction = "Number"
+	// DataMaskingFunctionSSN ...
+	DataMaskingFunctionSSN DataMaskingFunction = "SSN"
+	// DataMaskingFunctionText ...
+	DataMaskingFunctionText DataMaskingFunction = "Text"
+)
+
+// PossibleDataMaskingFunctionValues returns an array of possible values for the DataMaskingFunction const type.
+func PossibleDataMaskingFunctionValues() []DataMaskingFunction {
+	return []DataMaskingFunction{DataMaskingFunctionCCN, DataMaskingFunctionDefault, DataMaskingFunctionEmail, DataMaskingFunctionNumber, DataMaskingFunctionSSN, DataMaskingFunctionText}
+}
+
+// DataMaskingRuleState enumerates the values for data masking rule state.
+type DataMaskingRuleState string
+
+const (
+	// DataMaskingRuleStateDisabled ...
+	DataMaskingRuleStateDisabled DataMaskingRuleState = "Disabled"
+	// DataMaskingRuleStateEnabled ...
+	DataMaskingRuleStateEnabled DataMaskingRuleState = "Enabled"
+)
+
+// PossibleDataMaskingRuleStateValues returns an array of possible values for the DataMaskingRuleState const type.
+func PossibleDataMaskingRuleStateValues() []DataMaskingRuleState {
+	return []DataMaskingRuleState{DataMaskingRuleStateDisabled, DataMaskingRuleStateEnabled}
+}
+
+// DataMaskingState enumerates the values for data masking state.
+type DataMaskingState string
+
+const (
+	// DataMaskingStateDisabled ...
+	DataMaskingStateDisabled DataMaskingState = "Disabled"
+	// DataMaskingStateEnabled ...
+	DataMaskingStateEnabled DataMaskingState = "Enabled"
+)
+
+// PossibleDataMaskingStateValues returns an array of possible values for the DataMaskingState const type.
+func PossibleDataMaskingStateValues() []DataMaskingState {
+	return []DataMaskingState{DataMaskingStateDisabled, DataMaskingStateEnabled}
+}
+
 // DesiredState enumerates the values for desired state.
 type DesiredState string
 
@@ -430,11 +483,13 @@ const (
 	NodeSizeXLarge NodeSize = "XLarge"
 	// NodeSizeXXLarge ...
 	NodeSizeXXLarge NodeSize = "XXLarge"
+	// NodeSizeXXXLarge ...
+	NodeSizeXXXLarge NodeSize = "XXXLarge"
 )
 
 // PossibleNodeSizeValues returns an array of possible values for the NodeSize const type.
 func PossibleNodeSizeValues() []NodeSize {
-	return []NodeSize{NodeSizeLarge, NodeSizeMedium, NodeSizeNone, NodeSizeSmall, NodeSizeXLarge, NodeSizeXXLarge}
+	return []NodeSize{NodeSizeLarge, NodeSizeMedium, NodeSizeNone, NodeSizeSmall, NodeSizeXLarge, NodeSizeXXLarge, NodeSizeXXXLarge}
 }
 
 // NodeSizeFamily enumerates the values for node size family.
@@ -696,6 +751,21 @@ const (
 // PossibleSelfHostedIntegrationRuntimeNodeStatusValues returns an array of possible values for the SelfHostedIntegrationRuntimeNodeStatus const type.
 func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrationRuntimeNodeStatus {
 	return []SelfHostedIntegrationRuntimeNodeStatus{SelfHostedIntegrationRuntimeNodeStatusInitializeFailed, SelfHostedIntegrationRuntimeNodeStatusInitializing, SelfHostedIntegrationRuntimeNodeStatusLimited, SelfHostedIntegrationRuntimeNodeStatusNeedRegistration, SelfHostedIntegrationRuntimeNodeStatusOffline, SelfHostedIntegrationRuntimeNodeStatusOnline, SelfHostedIntegrationRuntimeNodeStatusUpgrading}
+}
+
+// SensitivityLabelSource enumerates the values for sensitivity label source.
+type SensitivityLabelSource string
+
+const (
+	// Current ...
+	Current SensitivityLabelSource = "current"
+	// Recommended ...
+	Recommended SensitivityLabelSource = "recommended"
+)
+
+// PossibleSensitivityLabelSourceValues returns an array of possible values for the SensitivityLabelSource const type.
+func PossibleSensitivityLabelSourceValues() []SensitivityLabelSource {
+	return []SensitivityLabelSource{Current, Recommended}
 }
 
 // SsisObjectMetadataType enumerates the values for ssis object metadata type.

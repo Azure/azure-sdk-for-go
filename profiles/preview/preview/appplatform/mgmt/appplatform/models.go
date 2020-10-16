@@ -109,8 +109,9 @@ const (
 type RuntimeVersion = original.RuntimeVersion
 
 const (
-	Java11 RuntimeVersion = original.Java11
-	Java8  RuntimeVersion = original.Java8
+	Java11    RuntimeVersion = original.Java11
+	Java8     RuntimeVersion = original.Java8
+	NetCore31 RuntimeVersion = original.NetCore31
 )
 
 type SkuScaleType = original.SkuScaleType
@@ -119,6 +120,21 @@ const (
 	SkuScaleTypeAutomatic SkuScaleType = original.SkuScaleTypeAutomatic
 	SkuScaleTypeManual    SkuScaleType = original.SkuScaleTypeManual
 	SkuScaleTypeNone      SkuScaleType = original.SkuScaleTypeNone
+)
+
+type SupportedRuntimePlatform = original.SupportedRuntimePlatform
+
+const (
+	Java    SupportedRuntimePlatform = original.Java
+	NETCore SupportedRuntimePlatform = original.NETCore
+)
+
+type SupportedRuntimeValue = original.SupportedRuntimeValue
+
+const (
+	SupportedRuntimeValueJava11    SupportedRuntimeValue = original.SupportedRuntimeValueJava11
+	SupportedRuntimeValueJava8     SupportedRuntimeValue = original.SupportedRuntimeValueJava8
+	SupportedRuntimeValueNetCore31 SupportedRuntimeValue = original.SupportedRuntimeValueNetCore31
 )
 
 type TestKeyType = original.TestKeyType
@@ -140,8 +156,9 @@ const (
 type UserSourceType = original.UserSourceType
 
 const (
-	Jar    UserSourceType = original.Jar
-	Source UserSourceType = original.Source
+	Jar        UserSourceType = original.Jar
+	NetCoreZip UserSourceType = original.NetCoreZip
+	Source     UserSourceType = original.Source
 )
 
 type AppResource = original.AppResource
@@ -155,6 +172,7 @@ type AppsUpdateFuture = original.AppsUpdateFuture
 type AvailableOperations = original.AvailableOperations
 type AvailableOperationsIterator = original.AvailableOperationsIterator
 type AvailableOperationsPage = original.AvailableOperationsPage
+type AvailableRuntimeVersions = original.AvailableRuntimeVersions
 type BaseClient = original.BaseClient
 type BindingResource = original.BindingResource
 type BindingResourceCollection = original.BindingResourceCollection
@@ -205,6 +223,7 @@ type MetricSpecification = original.MetricSpecification
 type NameAvailability = original.NameAvailability
 type NameAvailabilityParameters = original.NameAvailabilityParameters
 type NetworkProfile = original.NetworkProfile
+type NetworkProfileOutboundIPs = original.NetworkProfileOutboundIPs
 type OperationDetail = original.OperationDetail
 type OperationDisplay = original.OperationDisplay
 type OperationProperties = original.OperationProperties
@@ -223,6 +242,7 @@ type ResourceSkuRestrictionInfo = original.ResourceSkuRestrictionInfo
 type ResourceSkuRestrictions = original.ResourceSkuRestrictions
 type ResourceSkuZoneDetails = original.ResourceSkuZoneDetails
 type ResourceUploadDefinition = original.ResourceUploadDefinition
+type RuntimeVersionsClient = original.RuntimeVersionsClient
 type ServiceResource = original.ServiceResource
 type ServiceResourceList = original.ServiceResourceList
 type ServiceResourceListIterator = original.ServiceResourceListIterator
@@ -235,6 +255,7 @@ type ServicesUpdateFuture = original.ServicesUpdateFuture
 type Sku = original.Sku
 type SkuCapacity = original.SkuCapacity
 type SkuClient = original.SkuClient
+type SupportedRuntimeVersion = original.SupportedRuntimeVersion
 type TemporaryDisk = original.TemporaryDisk
 type TestKeys = original.TestKeys
 type TraceProperties = original.TraceProperties
@@ -322,6 +343,12 @@ func NewResourceSkuCollectionIterator(page ResourceSkuCollectionPage) ResourceSk
 func NewResourceSkuCollectionPage(getNextPage func(context.Context, ResourceSkuCollection) (ResourceSkuCollection, error)) ResourceSkuCollectionPage {
 	return original.NewResourceSkuCollectionPage(getNextPage)
 }
+func NewRuntimeVersionsClient(subscriptionID string) RuntimeVersionsClient {
+	return original.NewRuntimeVersionsClient(subscriptionID)
+}
+func NewRuntimeVersionsClientWithBaseURI(baseURI string, subscriptionID string) RuntimeVersionsClient {
+	return original.NewRuntimeVersionsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewServiceResourceListIterator(page ServiceResourceListPage) ServiceResourceListIterator {
 	return original.NewServiceResourceListIterator(page)
 }
@@ -372,6 +399,12 @@ func PossibleRuntimeVersionValues() []RuntimeVersion {
 }
 func PossibleSkuScaleTypeValues() []SkuScaleType {
 	return original.PossibleSkuScaleTypeValues()
+}
+func PossibleSupportedRuntimePlatformValues() []SupportedRuntimePlatform {
+	return original.PossibleSupportedRuntimePlatformValues()
+}
+func PossibleSupportedRuntimeValueValues() []SupportedRuntimeValue {
+	return original.PossibleSupportedRuntimeValueValues()
 }
 func PossibleTestKeyTypeValues() []TestKeyType {
 	return original.PossibleTestKeyTypeValues()

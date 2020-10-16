@@ -23,6 +23,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/operationali
 
 type AvailableServiceTiersClientAPI = original.AvailableServiceTiersClientAPI
 type ClustersClientAPI = original.ClustersClientAPI
+type DataCollectorLogsClientAPI = original.DataCollectorLogsClientAPI
 type DataExportsClientAPI = original.DataExportsClientAPI
 type DataSourcesClientAPI = original.DataSourcesClientAPI
 type DeletedWorkspacesClientAPI = original.DeletedWorkspacesClientAPI

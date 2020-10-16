@@ -210,6 +210,10 @@ type ClustersClient = original.ClustersClient
 type ClustersCreateOrUpdateFuture = original.ClustersCreateOrUpdateFuture
 type ClustersDeleteFuture = original.ClustersDeleteFuture
 type CoreSummary = original.CoreSummary
+type DataCollectorLog = original.DataCollectorLog
+type DataCollectorLogProperties = original.DataCollectorLogProperties
+type DataCollectorLogsClient = original.DataCollectorLogsClient
+type DataCollectorLogsListResult = original.DataCollectorLogsListResult
 type DataExport = original.DataExport
 type DataExportErrorResponse = original.DataExportErrorResponse
 type DataExportListResult = original.DataExportListResult
@@ -324,6 +328,12 @@ func NewClustersClient(subscriptionID string) ClustersClient {
 }
 func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) ClustersClient {
 	return original.NewClustersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDataCollectorLogsClient(subscriptionID string) DataCollectorLogsClient {
+	return original.NewDataCollectorLogsClient(subscriptionID)
+}
+func NewDataCollectorLogsClientWithBaseURI(baseURI string, subscriptionID string) DataCollectorLogsClient {
+	return original.NewDataCollectorLogsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDataExportsClient(subscriptionID string) DataExportsClient {
 	return original.NewDataExportsClient(subscriptionID)

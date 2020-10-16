@@ -22,7 +22,7 @@ package alertsmanagement
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/alertsmanagement/mgmt/2019-05-05/alertsmanagement"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/alertsmanagement/mgmt/2019-06-01-preview/alertsmanagement"
 )
 
 const (
@@ -48,6 +48,13 @@ const (
 	MonitorConditionChange AlertModificationEvent = original.MonitorConditionChange
 	SeverityChange         AlertModificationEvent = original.SeverityChange
 	StateChange            AlertModificationEvent = original.StateChange
+)
+
+type AlertRuleState = original.AlertRuleState
+
+const (
+	AlertRuleStateDisabled AlertRuleState = original.AlertRuleStateDisabled
+	AlertRuleStateEnabled  AlertRuleState = original.AlertRuleStateEnabled
 )
 
 type AlertState = original.AlertState
@@ -208,6 +215,7 @@ const (
 )
 
 type ActionGroup = original.ActionGroup
+type ActionGroupsInformation = original.ActionGroupsInformation
 type ActionRule = original.ActionRule
 type ActionRuleProperties = original.ActionRuleProperties
 type ActionRulesClient = original.ActionRulesClient
@@ -219,6 +227,13 @@ type AlertModification = original.AlertModification
 type AlertModificationItem = original.AlertModificationItem
 type AlertModificationProperties = original.AlertModificationProperties
 type AlertProperties = original.AlertProperties
+type AlertRule = original.AlertRule
+type AlertRulePatchObject = original.AlertRulePatchObject
+type AlertRulePatchProperties = original.AlertRulePatchProperties
+type AlertRuleProperties = original.AlertRuleProperties
+type AlertRulesList = original.AlertRulesList
+type AlertRulesListIterator = original.AlertRulesListIterator
+type AlertRulesListPage = original.AlertRulesListPage
 type AlertsClient = original.AlertsClient
 type AlertsList = original.AlertsList
 type AlertsListIterator = original.AlertsListIterator
@@ -228,12 +243,14 @@ type AlertsMetaDataProperties = original.AlertsMetaDataProperties
 type AlertsSummary = original.AlertsSummary
 type AlertsSummaryGroup = original.AlertsSummaryGroup
 type AlertsSummaryGroupItem = original.AlertsSummaryGroupItem
+type AzureResource = original.AzureResource
 type BaseClient = original.BaseClient
 type BasicActionRuleProperties = original.BasicActionRuleProperties
 type BasicAlertsMetaDataProperties = original.BasicAlertsMetaDataProperties
 type Bool = original.Bool
 type Condition = original.Condition
 type Conditions = original.Conditions
+type Detector = original.Detector
 type Diagnostics = original.Diagnostics
 type ErrorResponse = original.ErrorResponse
 type ErrorResponseBody = original.ErrorResponseBody
@@ -251,6 +268,8 @@ type PatchObject = original.PatchObject
 type PatchProperties = original.PatchProperties
 type Resource = original.Resource
 type Scope = original.Scope
+type SmartDetectorAlertRulesClient = original.SmartDetectorAlertRulesClient
+type SmartDetectorErrorResponse = original.SmartDetectorErrorResponse
 type SmartGroup = original.SmartGroup
 type SmartGroupAggregatedProperty = original.SmartGroupAggregatedProperty
 type SmartGroupModification = original.SmartGroupModification
@@ -264,6 +283,7 @@ type SmartGroupsListPage = original.SmartGroupsListPage
 type Suppression = original.Suppression
 type SuppressionConfig = original.SuppressionConfig
 type SuppressionSchedule = original.SuppressionSchedule
+type ThrottlingInformation = original.ThrottlingInformation
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -279,6 +299,12 @@ func NewActionRulesListIterator(page ActionRulesListPage) ActionRulesListIterato
 }
 func NewActionRulesListPage(getNextPage func(context.Context, ActionRulesList) (ActionRulesList, error)) ActionRulesListPage {
 	return original.NewActionRulesListPage(getNextPage)
+}
+func NewAlertRulesListIterator(page AlertRulesListPage) AlertRulesListIterator {
+	return original.NewAlertRulesListIterator(page)
+}
+func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
+	return original.NewAlertRulesListPage(getNextPage)
 }
 func NewAlertsClient(subscriptionID string) AlertsClient {
 	return original.NewAlertsClient(subscriptionID)
@@ -304,6 +330,12 @@ func NewOperationsListIterator(page OperationsListPage) OperationsListIterator {
 func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
 	return original.NewOperationsListPage(getNextPage)
 }
+func NewSmartDetectorAlertRulesClient(subscriptionID string) SmartDetectorAlertRulesClient {
+	return original.NewSmartDetectorAlertRulesClient(subscriptionID)
+}
+func NewSmartDetectorAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) SmartDetectorAlertRulesClient {
+	return original.NewSmartDetectorAlertRulesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewSmartGroupsClient(subscriptionID string) SmartGroupsClient {
 	return original.NewSmartGroupsClient(subscriptionID)
 }
@@ -324,6 +356,9 @@ func PossibleActionRuleStatusValues() []ActionRuleStatus {
 }
 func PossibleAlertModificationEventValues() []AlertModificationEvent {
 	return original.PossibleAlertModificationEventValues()
+}
+func PossibleAlertRuleStateValues() []AlertRuleState {
+	return original.PossibleAlertRuleStateValues()
 }
 func PossibleAlertStateValues() []AlertState {
 	return original.PossibleAlertStateValues()

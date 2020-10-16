@@ -22,7 +22,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-06-01/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-06-30/compute"
 )
 
 const (
@@ -175,6 +175,13 @@ const (
 	SystemAssigned DiskEncryptionSetIdentityType = original.SystemAssigned
 )
 
+type DiskEncryptionSetType = original.DiskEncryptionSetType
+
+const (
+	EncryptionAtRestWithCustomerKey             DiskEncryptionSetType = original.EncryptionAtRestWithCustomerKey
+	EncryptionAtRestWithPlatformAndCustomerKeys DiskEncryptionSetType = original.EncryptionAtRestWithPlatformAndCustomerKeys
+)
+
 type DiskState = original.DiskState
 
 const (
@@ -198,9 +205,21 @@ const (
 type EncryptionType = original.EncryptionType
 
 const (
-	EncryptionAtRestWithCustomerKey             EncryptionType = original.EncryptionAtRestWithCustomerKey
-	EncryptionAtRestWithPlatformAndCustomerKeys EncryptionType = original.EncryptionAtRestWithPlatformAndCustomerKeys
-	EncryptionAtRestWithPlatformKey             EncryptionType = original.EncryptionAtRestWithPlatformKey
+	EncryptionTypeEncryptionAtRestWithCustomerKey             EncryptionType = original.EncryptionTypeEncryptionAtRestWithCustomerKey
+	EncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys EncryptionType = original.EncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys
+	EncryptionTypeEncryptionAtRestWithPlatformKey             EncryptionType = original.EncryptionTypeEncryptionAtRestWithPlatformKey
+)
+
+type ExecutionState = original.ExecutionState
+
+const (
+	ExecutionStateCanceled  ExecutionState = original.ExecutionStateCanceled
+	ExecutionStateFailed    ExecutionState = original.ExecutionStateFailed
+	ExecutionStatePending   ExecutionState = original.ExecutionStatePending
+	ExecutionStateRunning   ExecutionState = original.ExecutionStateRunning
+	ExecutionStateSucceeded ExecutionState = original.ExecutionStateSucceeded
+	ExecutionStateTimedOut  ExecutionState = original.ExecutionStateTimedOut
+	ExecutionStateUnknown   ExecutionState = original.ExecutionStateUnknown
 )
 
 type HostCaching = original.HostCaching
@@ -1034,6 +1053,9 @@ type ResourceSkusClient = original.ResourceSkusClient
 type ResourceSkusResult = original.ResourceSkusResult
 type ResourceSkusResultIterator = original.ResourceSkusResultIterator
 type ResourceSkusResultPage = original.ResourceSkusResultPage
+type ResourceURIList = original.ResourceURIList
+type ResourceURIListIterator = original.ResourceURIListIterator
+type ResourceURIListPage = original.ResourceURIListPage
 type RetrieveBootDiagnosticsDataResult = original.RetrieveBootDiagnosticsDataResult
 type RollbackStatusInfo = original.RollbackStatusInfo
 type RollingUpgradePolicy = original.RollingUpgradePolicy
@@ -1134,7 +1156,18 @@ type VirtualMachineListResultPage = original.VirtualMachineListResultPage
 type VirtualMachinePatchStatus = original.VirtualMachinePatchStatus
 type VirtualMachineProperties = original.VirtualMachineProperties
 type VirtualMachineReimageParameters = original.VirtualMachineReimageParameters
+type VirtualMachineRunCommand = original.VirtualMachineRunCommand
+type VirtualMachineRunCommandInstanceView = original.VirtualMachineRunCommandInstanceView
+type VirtualMachineRunCommandProperties = original.VirtualMachineRunCommandProperties
+type VirtualMachineRunCommandScriptSource = original.VirtualMachineRunCommandScriptSource
+type VirtualMachineRunCommandUpdate = original.VirtualMachineRunCommandUpdate
 type VirtualMachineRunCommandsClient = original.VirtualMachineRunCommandsClient
+type VirtualMachineRunCommandsCreateOrUpdateFuture = original.VirtualMachineRunCommandsCreateOrUpdateFuture
+type VirtualMachineRunCommandsDeleteFuture = original.VirtualMachineRunCommandsDeleteFuture
+type VirtualMachineRunCommandsListResult = original.VirtualMachineRunCommandsListResult
+type VirtualMachineRunCommandsListResultIterator = original.VirtualMachineRunCommandsListResultIterator
+type VirtualMachineRunCommandsListResultPage = original.VirtualMachineRunCommandsListResultPage
+type VirtualMachineRunCommandsUpdateFuture = original.VirtualMachineRunCommandsUpdateFuture
 type VirtualMachineScaleSet = original.VirtualMachineScaleSet
 type VirtualMachineScaleSetDataDisk = original.VirtualMachineScaleSetDataDisk
 type VirtualMachineScaleSetExtension = original.VirtualMachineScaleSetExtension
@@ -1216,6 +1249,10 @@ type VirtualMachineScaleSetVMProfile = original.VirtualMachineScaleSetVMProfile
 type VirtualMachineScaleSetVMProperties = original.VirtualMachineScaleSetVMProperties
 type VirtualMachineScaleSetVMProtectionPolicy = original.VirtualMachineScaleSetVMProtectionPolicy
 type VirtualMachineScaleSetVMReimageParameters = original.VirtualMachineScaleSetVMReimageParameters
+type VirtualMachineScaleSetVMRunCommandsClient = original.VirtualMachineScaleSetVMRunCommandsClient
+type VirtualMachineScaleSetVMRunCommandsCreateOrUpdateFuture = original.VirtualMachineScaleSetVMRunCommandsCreateOrUpdateFuture
+type VirtualMachineScaleSetVMRunCommandsDeleteFuture = original.VirtualMachineScaleSetVMRunCommandsDeleteFuture
+type VirtualMachineScaleSetVMRunCommandsUpdateFuture = original.VirtualMachineScaleSetVMRunCommandsUpdateFuture
 type VirtualMachineScaleSetVMsClient = original.VirtualMachineScaleSetVMsClient
 type VirtualMachineScaleSetVMsDeallocateFuture = original.VirtualMachineScaleSetVMsDeallocateFuture
 type VirtualMachineScaleSetVMsDeleteFuture = original.VirtualMachineScaleSetVMsDeleteFuture
@@ -1470,6 +1507,12 @@ func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResu
 func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
 	return original.NewResourceSkusResultPage(getNextPage)
 }
+func NewResourceURIListIterator(page ResourceURIListPage) ResourceURIListIterator {
+	return original.NewResourceURIListIterator(page)
+}
+func NewResourceURIListPage(getNextPage func(context.Context, ResourceURIList) (ResourceURIList, error)) ResourceURIListPage {
+	return original.NewResourceURIListPage(getNextPage)
+}
 func NewRunCommandListResultIterator(page RunCommandListResultPage) RunCommandListResultIterator {
 	return original.NewRunCommandListResultIterator(page)
 }
@@ -1536,6 +1579,12 @@ func NewVirtualMachineRunCommandsClient(subscriptionID string) VirtualMachineRun
 func NewVirtualMachineRunCommandsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineRunCommandsClient {
 	return original.NewVirtualMachineRunCommandsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewVirtualMachineRunCommandsListResultIterator(page VirtualMachineRunCommandsListResultPage) VirtualMachineRunCommandsListResultIterator {
+	return original.NewVirtualMachineRunCommandsListResultIterator(page)
+}
+func NewVirtualMachineRunCommandsListResultPage(getNextPage func(context.Context, VirtualMachineRunCommandsListResult) (VirtualMachineRunCommandsListResult, error)) VirtualMachineRunCommandsListResultPage {
+	return original.NewVirtualMachineRunCommandsListResultPage(getNextPage)
+}
 func NewVirtualMachineScaleSetExtensionListResultIterator(page VirtualMachineScaleSetExtensionListResultPage) VirtualMachineScaleSetExtensionListResultIterator {
 	return original.NewVirtualMachineScaleSetExtensionListResultIterator(page)
 }
@@ -1589,6 +1638,12 @@ func NewVirtualMachineScaleSetVMListResultIterator(page VirtualMachineScaleSetVM
 }
 func NewVirtualMachineScaleSetVMListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetVMListResult) (VirtualMachineScaleSetVMListResult, error)) VirtualMachineScaleSetVMListResultPage {
 	return original.NewVirtualMachineScaleSetVMListResultPage(getNextPage)
+}
+func NewVirtualMachineScaleSetVMRunCommandsClient(subscriptionID string) VirtualMachineScaleSetVMRunCommandsClient {
+	return original.NewVirtualMachineScaleSetVMRunCommandsClient(subscriptionID)
+}
+func NewVirtualMachineScaleSetVMRunCommandsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetVMRunCommandsClient {
+	return original.NewVirtualMachineScaleSetVMRunCommandsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewVirtualMachineScaleSetVMsClient(subscriptionID string) VirtualMachineScaleSetVMsClient {
 	return original.NewVirtualMachineScaleSetVMsClient(subscriptionID)
@@ -1656,6 +1711,9 @@ func PossibleDiskCreateOptionValues() []DiskCreateOption {
 func PossibleDiskEncryptionSetIdentityTypeValues() []DiskEncryptionSetIdentityType {
 	return original.PossibleDiskEncryptionSetIdentityTypeValues()
 }
+func PossibleDiskEncryptionSetTypeValues() []DiskEncryptionSetType {
+	return original.PossibleDiskEncryptionSetTypeValues()
+}
 func PossibleDiskStateValues() []DiskState {
 	return original.PossibleDiskStateValues()
 }
@@ -1664,6 +1722,9 @@ func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 }
 func PossibleEncryptionTypeValues() []EncryptionType {
 	return original.PossibleEncryptionTypeValues()
+}
+func PossibleExecutionStateValues() []ExecutionState {
+	return original.PossibleExecutionStateValues()
 }
 func PossibleHostCachingValues() []HostCaching {
 	return original.PossibleHostCachingValues()

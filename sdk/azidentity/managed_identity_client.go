@@ -204,7 +204,7 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 }
 
 func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, scopes []string) (string, error) {
-	// create the request to retreive the secret key provided by the HIMDS service
+	// create the request to retreive the secret key challenge provided by the HIMDS service
 	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return "", err
@@ -214,20 +214,23 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, scopes
 	q.Add("api-version", azureArcAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
 	request.URL.RawQuery = q.Encode()
-
+	// send the initial request to get the short-lived secret key
 	response, err := c.pipeline.Do(request)
 	if err != nil {
 		return "", err
 	}
+	// the endpoint is expected to return a 401 with the WWW-Authenticte header set to the location
+	// of the secret key file. Any other status code indicates an error in the request.
 	if response.StatusCode != 401 {
 		return "", &AuthenticationFailedError{inner: newAADAuthenticationFailedError(response), msg: fmt.Sprintf("Expected a 401 Unauthorized response, received: %d", response.StatusCode)}
 	}
 	if header := response.Header.Get("WWW-Authenticate"); len(header) != 0 {
-		pos := strings.LastIndex(header, "Realm=")
+		// the WWW-Authenticate header is expected in the following format: Basic realm=/some/file/path.key
+		pos := strings.LastIndex(header, "=")
 		if pos == -1 {
 			return "", errors.New("Did not receive a value from WWW-Authenticate header")
 		}
-		key, err := ioutil.ReadFile(header[:pos+1])
+		key, err := ioutil.ReadFile(header[pos+1:])
 		if err != nil {
 			return "", fmt.Errorf("Could not read file contents: %w", err)
 		}

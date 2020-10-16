@@ -22,7 +22,7 @@ package kusto
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2020-06-14/kusto"
+	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2020-09-18/kusto"
 )
 
 const (
@@ -55,6 +55,7 @@ const (
 	StandardE16aV4        AzureSkuName = original.StandardE16aV4
 	StandardE2aV4         AzureSkuName = original.StandardE2aV4
 	StandardE4aV4         AzureSkuName = original.StandardE4aV4
+	StandardE64iV3        AzureSkuName = original.StandardE64iV3
 	StandardE8asV41TBPS   AzureSkuName = original.StandardE8asV41TBPS
 	StandardE8asV42TBPS   AzureSkuName = original.StandardE8asV42TBPS
 	StandardE8aV4         AzureSkuName = original.StandardE8aV4
@@ -118,6 +119,13 @@ const (
 	DefaultPrincipalsModificationKindUnion   DefaultPrincipalsModificationKind = original.DefaultPrincipalsModificationKindUnion
 )
 
+type EngineType = original.EngineType
+
+const (
+	V2 EngineType = original.V2
+	V3 EngineType = original.V3
+)
+
 type EventGridDataFormat = original.EventGridDataFormat
 
 const (
@@ -163,8 +171,10 @@ const (
 type IdentityType = original.IdentityType
 
 const (
-	IdentityTypeNone           IdentityType = original.IdentityTypeNone
-	IdentityTypeSystemAssigned IdentityType = original.IdentityTypeSystemAssigned
+	IdentityTypeNone                       IdentityType = original.IdentityTypeNone
+	IdentityTypeSystemAssigned             IdentityType = original.IdentityTypeSystemAssigned
+	IdentityTypeSystemAssignedUserAssigned IdentityType = original.IdentityTypeSystemAssignedUserAssigned
+	IdentityTypeUserAssigned               IdentityType = original.IdentityTypeUserAssigned
 )
 
 type IotHubDataFormat = original.IotHubDataFormat
@@ -451,6 +461,9 @@ func PossibleDatabasePrincipalTypeValues() []DatabasePrincipalType {
 }
 func PossibleDefaultPrincipalsModificationKindValues() []DefaultPrincipalsModificationKind {
 	return original.PossibleDefaultPrincipalsModificationKindValues()
+}
+func PossibleEngineTypeValues() []EngineType {
+	return original.PossibleEngineTypeValues()
 }
 func PossibleEventGridDataFormatValues() []EventGridDataFormat {
 	return original.PossibleEventGridDataFormatValues()

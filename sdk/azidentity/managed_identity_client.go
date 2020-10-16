@@ -291,7 +291,7 @@ func (c *managedIdentityClient) getMSIType() (msiType, error) {
 			} else { // if ONLY the env var MSI_ENDPOINT is set the msiType is CloudShell
 				c.msiType = msiTypeCloudShell
 			}
-		} else if c.imdsAvailable() { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the MsiType is Imds. This will timeout after 500 milliseconds
+		} else if c.imdsAvailable() { // if MSI_ENDPOINT is NOT set AND the IMDS endpoint is available the msiType is IMDS. This will timeout after 500 milliseconds
 			c.endpoint = imdsEndpoint
 			c.msiType = msiTypeIMDS
 		} else { // if MSI_ENDPOINT is NOT set and IMDS endpoint is not available Managed Identity is not available

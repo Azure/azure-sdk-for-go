@@ -65,9 +65,7 @@ var (
 )
 
 func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
-	return &ManagedIdentityCredentialOptions{
-		HTTPClient: azcore.DefaultHTTPClientTransport(),
-	}
+	return &ManagedIdentityCredentialOptions{}
 }
 
 // newManagedIdentityClient creates a new instance of the ManagedIdentityClient with the ManagedIdentityCredentialOptions

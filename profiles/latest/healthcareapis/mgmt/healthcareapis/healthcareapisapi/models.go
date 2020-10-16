@@ -19,7 +19,7 @@
 
 package healthcareapisapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/healthcareapis/mgmt/2019-09-16/healthcareapis/healthcareapisapi"
+import original "github.com/Azure/azure-sdk-for-go/services/healthcareapis/mgmt/2020-03-15/healthcareapis/healthcareapisapi"
 
 type OperationResultsClientAPI = original.OperationResultsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

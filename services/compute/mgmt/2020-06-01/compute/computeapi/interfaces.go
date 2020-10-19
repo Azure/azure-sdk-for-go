@@ -146,7 +146,7 @@ type VirtualMachinesClientAPI interface {
 	ConvertToManagedDisks(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesConvertToManagedDisksFuture, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, VMName string, parameters compute.VirtualMachine) (result compute.VirtualMachinesCreateOrUpdateFuture, err error)
 	Deallocate(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesDeallocateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesDeleteFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, VMName string, forceDeletion *bool) (result compute.VirtualMachinesDeleteFuture, err error)
 	Generalize(ctx context.Context, resourceGroupName string, VMName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, VMName string, expand compute.InstanceViewTypes) (result compute.VirtualMachine, err error)
 	InstanceView(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachineInstanceView, err error)
@@ -291,12 +291,30 @@ var _ LogAnalyticsClientAPI = (*compute.LogAnalyticsClient)(nil)
 
 // VirtualMachineRunCommandsClientAPI contains the set of methods on the VirtualMachineRunCommandsClient type.
 type VirtualMachineRunCommandsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, VMName string, runCommandName string, runCommand compute.VirtualMachineRunCommand) (result compute.VirtualMachineRunCommandsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, VMName string, runCommandName string) (result compute.VirtualMachineRunCommandsDeleteFuture, err error)
 	Get(ctx context.Context, location string, commandID string) (result compute.RunCommandDocument, err error)
+	GetByVirtualMachine(ctx context.Context, resourceGroupName string, VMName string, runCommandName string, expand string) (result compute.VirtualMachineRunCommand, err error)
 	List(ctx context.Context, location string) (result compute.RunCommandListResultPage, err error)
 	ListComplete(ctx context.Context, location string) (result compute.RunCommandListResultIterator, err error)
+	ListByVirtualMachine(ctx context.Context, resourceGroupName string, VMName string, expand string) (result compute.VirtualMachineRunCommandsListResultPage, err error)
+	ListByVirtualMachineComplete(ctx context.Context, resourceGroupName string, VMName string, expand string) (result compute.VirtualMachineRunCommandsListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, VMName string, runCommandName string, runCommand compute.VirtualMachineRunCommandUpdate) (result compute.VirtualMachineRunCommandsUpdateFuture, err error)
 }
 
 var _ VirtualMachineRunCommandsClientAPI = (*compute.VirtualMachineRunCommandsClient)(nil)
+
+// VirtualMachineScaleSetVMRunCommandsClientAPI contains the set of methods on the VirtualMachineScaleSetVMRunCommandsClient type.
+type VirtualMachineScaleSetVMRunCommandsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, runCommandName string, runCommand compute.VirtualMachineRunCommand) (result compute.VirtualMachineScaleSetVMRunCommandsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, runCommandName string) (result compute.VirtualMachineScaleSetVMRunCommandsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, runCommandName string, expand string) (result compute.VirtualMachineRunCommand, err error)
+	List(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, expand string) (result compute.VirtualMachineRunCommandsListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, expand string) (result compute.VirtualMachineRunCommandsListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, runCommandName string, runCommand compute.VirtualMachineRunCommandUpdate) (result compute.VirtualMachineScaleSetVMRunCommandsUpdateFuture, err error)
+}
+
+var _ VirtualMachineScaleSetVMRunCommandsClientAPI = (*compute.VirtualMachineScaleSetVMRunCommandsClient)(nil)
 
 // ResourceSkusClientAPI contains the set of methods on the ResourceSkusClient type.
 type ResourceSkusClientAPI interface {

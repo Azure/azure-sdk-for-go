@@ -19,11 +19,11 @@ import (
 // ManagementPoliciesOperations contains the methods for the ManagementPolicies group.
 type ManagementPoliciesOperations interface {
 	// CreateOrUpdate - Sets the managementpolicy to the specified storage account.
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy) (*ManagementPolicyResponse, error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesCreateOrUpdateOptions) (*ManagementPolicyResponse, error)
 	// Delete - Deletes the managementpolicy associated with the specified storage account.
-	Delete(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName) (*http.Response, error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesDeleteOptions) (*http.Response, error)
 	// Get - Gets the managementpolicy associated with the specified storage account.
-	Get(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName) (*ManagementPolicyResponse, error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesGetOptions) (*ManagementPolicyResponse, error)
 }
 
 // ManagementPoliciesClient implements the ManagementPoliciesOperations interface.
@@ -44,8 +44,8 @@ func (client *ManagementPoliciesClient) Do(req *azcore.Request) (*azcore.Respons
 }
 
 // CreateOrUpdate - Sets the managementpolicy to the specified storage account.
-func (client *ManagementPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy) (*ManagementPolicyResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, properties)
+func (client *ManagementPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesCreateOrUpdateOptions) (*ManagementPolicyResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, properties, options)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func (client *ManagementPoliciesClient) CreateOrUpdate(ctx context.Context, reso
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagementPoliciesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy) (*azcore.Request, error) {
+func (client *ManagementPoliciesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -94,14 +94,14 @@ func (client *ManagementPoliciesClient) CreateOrUpdateHandleError(resp *azcore.R
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Delete - Deletes the managementpolicy associated with the specified storage account.
-func (client *ManagementPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName)
+func (client *ManagementPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +116,7 @@ func (client *ManagementPoliciesClient) Delete(ctx context.Context, resourceGrou
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *ManagementPoliciesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName) (*azcore.Request, error) {
+func (client *ManagementPoliciesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -139,14 +139,14 @@ func (client *ManagementPoliciesClient) DeleteHandleError(resp *azcore.Response)
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Get - Gets the managementpolicy associated with the specified storage account.
-func (client *ManagementPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName) (*ManagementPolicyResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName)
+func (client *ManagementPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesGetOptions) (*ManagementPolicyResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +165,7 @@ func (client *ManagementPoliciesClient) Get(ctx context.Context, resourceGroupNa
 }
 
 // GetCreateRequest creates the Get request.
-func (client *ManagementPoliciesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName) (*azcore.Request, error) {
+func (client *ManagementPoliciesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -195,7 +195,7 @@ func (client *ManagementPoliciesClient) GetHandleError(resp *azcore.Response) er
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

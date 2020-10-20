@@ -14,7 +14,7 @@ import (
 // Operations contains the methods for the Operations group.
 type Operations interface {
 	// List - Lists all of the available Event Hub REST API operations.
-	List() OperationListResultPager
+	List(options *OperationsListOptions) OperationListResultPager
 }
 
 // OperationsClient implements the Operations interface.
@@ -34,22 +34,23 @@ func (client *OperationsClient) Do(req *azcore.Request) (*azcore.Response, error
 }
 
 // List - Lists all of the available Event Hub REST API operations.
-func (client *OperationsClient) List() OperationListResultPager {
+func (client *OperationsClient) List(options *OperationsListOptions) OperationListResultPager {
 	return &operationListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *OperationListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.OperationListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *OperationsClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *OperationsClient) ListCreateRequest(ctx context.Context, options *OperationsListOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.EventHub/operations"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
 	if err != nil {
@@ -74,5 +75,5 @@ func (client *OperationsClient) ListHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

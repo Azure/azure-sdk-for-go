@@ -8,7 +8,6 @@ package azblob
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"net/http"
 )
 
 // ListBlobsFlatSegmentResponsePager provides iteration over ListBlobsFlatSegmentResponse pages.
@@ -45,6 +44,8 @@ type listBlobsFlatSegmentResponsePager struct {
 	advancer listBlobsFlatSegmentResponseAdvancePage
 	// contains the current response
 	current *ListBlobsFlatSegmentResponseResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -73,7 +74,7 @@ func (p *listBlobsFlatSegmentResponsePager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -124,6 +125,8 @@ type listBlobsHierarchySegmentResponsePager struct {
 	advancer listBlobsHierarchySegmentResponseAdvancePage
 	// contains the current response
 	current *ListBlobsHierarchySegmentResponseResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -152,7 +155,7 @@ func (p *listBlobsHierarchySegmentResponsePager) NextPage(ctx context.Context) b
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -203,6 +206,8 @@ type listContainersSegmentResponsePager struct {
 	advancer listContainersSegmentResponseAdvancePage
 	// contains the current response
 	current *ListContainersSegmentResponseResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -231,7 +236,7 @@ func (p *listContainersSegmentResponsePager) NextPage(ctx context.Context) bool 
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}

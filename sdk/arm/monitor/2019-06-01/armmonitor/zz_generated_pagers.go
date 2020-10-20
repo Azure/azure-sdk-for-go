@@ -8,7 +8,6 @@ package armmonitor
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"net/http"
 )
 
 // AutoscaleSettingResourceCollectionPager provides iteration over AutoscaleSettingResourceCollection pages.
@@ -45,6 +44,8 @@ type autoscaleSettingResourceCollectionPager struct {
 	advancer autoscaleSettingResourceCollectionAdvancePage
 	// contains the current response
 	current *AutoscaleSettingResourceCollectionResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -73,7 +74,7 @@ func (p *autoscaleSettingResourceCollectionPager) NextPage(ctx context.Context) 
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -124,6 +125,8 @@ type eventDataCollectionPager struct {
 	advancer eventDataCollectionAdvancePage
 	// contains the current response
 	current *EventDataCollectionResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -152,7 +155,7 @@ func (p *eventDataCollectionPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}

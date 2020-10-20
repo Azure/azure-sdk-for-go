@@ -16,11 +16,11 @@ import (
 // QueueServicesOperations contains the methods for the QueueServices group.
 type QueueServicesOperations interface {
 	// GetServiceProperties - Gets the properties of a storage account’s Queue service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
-	GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (*QueueServicePropertiesResponse, error)
+	GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *QueueServicesGetServicePropertiesOptions) (*QueueServicePropertiesResponse, error)
 	// List - List all queue services for the storage account
-	List(ctx context.Context, resourceGroupName string, accountName string) (*ListQueueServicesResponse, error)
+	List(ctx context.Context, resourceGroupName string, accountName string, options *QueueServicesListOptions) (*ListQueueServicesResponse, error)
 	// SetServiceProperties - Sets the properties of a storage account’s Queue service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
-	SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters QueueServiceProperties) (*QueueServicePropertiesResponse, error)
+	SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters QueueServiceProperties, options *QueueServicesSetServicePropertiesOptions) (*QueueServicePropertiesResponse, error)
 }
 
 // QueueServicesClient implements the QueueServicesOperations interface.
@@ -41,8 +41,8 @@ func (client *QueueServicesClient) Do(req *azcore.Request) (*azcore.Response, er
 }
 
 // GetServiceProperties - Gets the properties of a storage account’s Queue service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
-func (client *QueueServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (*QueueServicePropertiesResponse, error) {
-	req, err := client.GetServicePropertiesCreateRequest(ctx, resourceGroupName, accountName)
+func (client *QueueServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *QueueServicesGetServicePropertiesOptions) (*QueueServicePropertiesResponse, error) {
+	req, err := client.GetServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func (client *QueueServicesClient) GetServiceProperties(ctx context.Context, res
 }
 
 // GetServicePropertiesCreateRequest creates the GetServiceProperties request.
-func (client *QueueServicesClient) GetServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string) (*azcore.Request, error) {
+func (client *QueueServicesClient) GetServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *QueueServicesGetServicePropertiesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/{queueServiceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -90,12 +90,12 @@ func (client *QueueServicesClient) GetServicePropertiesHandleError(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - List all queue services for the storage account
-func (client *QueueServicesClient) List(ctx context.Context, resourceGroupName string, accountName string) (*ListQueueServicesResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceGroupName, accountName)
+func (client *QueueServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *QueueServicesListOptions) (*ListQueueServicesResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +114,7 @@ func (client *QueueServicesClient) List(ctx context.Context, resourceGroupName s
 }
 
 // ListCreateRequest creates the List request.
-func (client *QueueServicesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string) (*azcore.Request, error) {
+func (client *QueueServicesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *QueueServicesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -142,12 +142,12 @@ func (client *QueueServicesClient) ListHandleError(resp *azcore.Response) error 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // SetServiceProperties - Sets the properties of a storage account’s Queue service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
-func (client *QueueServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters QueueServiceProperties) (*QueueServicePropertiesResponse, error) {
-	req, err := client.SetServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters)
+func (client *QueueServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters QueueServiceProperties, options *QueueServicesSetServicePropertiesOptions) (*QueueServicePropertiesResponse, error) {
+	req, err := client.SetServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +166,7 @@ func (client *QueueServicesClient) SetServiceProperties(ctx context.Context, res
 }
 
 // SetServicePropertiesCreateRequest creates the SetServiceProperties request.
-func (client *QueueServicesClient) SetServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters QueueServiceProperties) (*azcore.Request, error) {
+func (client *QueueServicesClient) SetServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters QueueServiceProperties, options *QueueServicesSetServicePropertiesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/{queueServiceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -195,5 +195,5 @@ func (client *QueueServicesClient) SetServicePropertiesHandleError(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

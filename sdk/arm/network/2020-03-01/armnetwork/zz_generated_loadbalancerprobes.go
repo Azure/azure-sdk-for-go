@@ -16,9 +16,9 @@ import (
 // LoadBalancerProbesOperations contains the methods for the LoadBalancerProbes group.
 type LoadBalancerProbesOperations interface {
 	// Get - Gets load balancer probe.
-	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string) (*ProbeResponse, error)
+	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string, options *LoadBalancerProbesGetOptions) (*ProbeResponse, error)
 	// List - Gets all the load balancer probes.
-	List(resourceGroupName string, loadBalancerName string) LoadBalancerProbeListResultPager
+	List(resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesListOptions) LoadBalancerProbeListResultPager
 }
 
 // LoadBalancerProbesClient implements the LoadBalancerProbesOperations interface.
@@ -39,8 +39,8 @@ func (client *LoadBalancerProbesClient) Do(req *azcore.Request) (*azcore.Respons
 }
 
 // Get - Gets load balancer probe.
-func (client *LoadBalancerProbesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string) (*ProbeResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, loadBalancerName, probeName)
+func (client *LoadBalancerProbesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string, options *LoadBalancerProbesGetOptions) (*ProbeResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, loadBalancerName, probeName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (client *LoadBalancerProbesClient) Get(ctx context.Context, resourceGroupNa
 }
 
 // GetCreateRequest creates the Get request.
-func (client *LoadBalancerProbesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string) (*azcore.Request, error) {
+func (client *LoadBalancerProbesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, probeName string, options *LoadBalancerProbesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -88,26 +88,27 @@ func (client *LoadBalancerProbesClient) GetHandleError(resp *azcore.Response) er
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Gets all the load balancer probes.
-func (client *LoadBalancerProbesClient) List(resourceGroupName string, loadBalancerName string) LoadBalancerProbeListResultPager {
+func (client *LoadBalancerProbesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesListOptions) LoadBalancerProbeListResultPager {
 	return &loadBalancerProbeListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, loadBalancerName)
+			return client.ListCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *LoadBalancerProbeListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.LoadBalancerProbeListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *LoadBalancerProbesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string) (*azcore.Request, error) {
+func (client *LoadBalancerProbesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -135,5 +136,5 @@ func (client *LoadBalancerProbesClient) ListHandleError(resp *azcore.Response) e
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -16,9 +16,9 @@ import (
 // LoadBalancerFrontendIPConfigurationsOperations contains the methods for the LoadBalancerFrontendIPConfigurations group.
 type LoadBalancerFrontendIPConfigurationsOperations interface {
 	// Get - Gets load balancer frontend IP configuration.
-	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, frontendIPConfigurationName string) (*FrontendIPConfigurationResponse, error)
+	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, frontendIPConfigurationName string, options *LoadBalancerFrontendIPConfigurationsGetOptions) (*FrontendIPConfigurationResponse, error)
 	// List - Gets all the load balancer frontend IP configurations.
-	List(resourceGroupName string, loadBalancerName string) LoadBalancerFrontendIPConfigurationListResultPager
+	List(resourceGroupName string, loadBalancerName string, options *LoadBalancerFrontendIPConfigurationsListOptions) LoadBalancerFrontendIPConfigurationListResultPager
 }
 
 // LoadBalancerFrontendIPConfigurationsClient implements the LoadBalancerFrontendIPConfigurationsOperations interface.
@@ -39,8 +39,8 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) Do(req *azcore.Request
 }
 
 // Get - Gets load balancer frontend IP configuration.
-func (client *LoadBalancerFrontendIPConfigurationsClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, frontendIPConfigurationName string) (*FrontendIPConfigurationResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, loadBalancerName, frontendIPConfigurationName)
+func (client *LoadBalancerFrontendIPConfigurationsClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, frontendIPConfigurationName string, options *LoadBalancerFrontendIPConfigurationsGetOptions) (*FrontendIPConfigurationResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, loadBalancerName, frontendIPConfigurationName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) Get(ctx context.Contex
 }
 
 // GetCreateRequest creates the Get request.
-func (client *LoadBalancerFrontendIPConfigurationsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, frontendIPConfigurationName string) (*azcore.Request, error) {
+func (client *LoadBalancerFrontendIPConfigurationsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, frontendIPConfigurationName string, options *LoadBalancerFrontendIPConfigurationsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/frontendIPConfigurations/{frontendIPConfigurationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -88,26 +88,27 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) GetHandleError(resp *a
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Gets all the load balancer frontend IP configurations.
-func (client *LoadBalancerFrontendIPConfigurationsClient) List(resourceGroupName string, loadBalancerName string) LoadBalancerFrontendIPConfigurationListResultPager {
+func (client *LoadBalancerFrontendIPConfigurationsClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerFrontendIPConfigurationsListOptions) LoadBalancerFrontendIPConfigurationListResultPager {
 	return &loadBalancerFrontendIPConfigurationListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, loadBalancerName)
+			return client.ListCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *LoadBalancerFrontendIPConfigurationListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.LoadBalancerFrontendIPConfigurationListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *LoadBalancerFrontendIPConfigurationsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string) (*azcore.Request, error) {
+func (client *LoadBalancerFrontendIPConfigurationsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancerFrontendIPConfigurationsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/frontendIPConfigurations"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -135,5 +136,5 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) ListHandleError(resp *
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

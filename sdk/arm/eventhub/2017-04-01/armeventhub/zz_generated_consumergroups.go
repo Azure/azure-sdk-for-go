@@ -17,13 +17,13 @@ import (
 // ConsumerGroupsOperations contains the methods for the ConsumerGroups group.
 type ConsumerGroupsOperations interface {
 	// CreateOrUpdate - Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, parameters ConsumerGroup) (*ConsumerGroupResponse, error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, parameters ConsumerGroup, options *ConsumerGroupsCreateOrUpdateOptions) (*ConsumerGroupResponse, error)
 	// Delete - Deletes a consumer group from the specified Event Hub and resource group.
-	Delete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string) (*http.Response, error)
+	Delete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, options *ConsumerGroupsDeleteOptions) (*http.Response, error)
 	// Get - Gets a description for the specified consumer group.
-	Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string) (*ConsumerGroupResponse, error)
+	Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, options *ConsumerGroupsGetOptions) (*ConsumerGroupResponse, error)
 	// ListByEventHub - Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists in the Namespace.
-	ListByEventHub(resourceGroupName string, namespaceName string, eventHubName string, consumerGroupsListByEventHubOptions *ConsumerGroupsListByEventHubOptions) ConsumerGroupListResultPager
+	ListByEventHub(resourceGroupName string, namespaceName string, eventHubName string, options *ConsumerGroupsListByEventHubOptions) ConsumerGroupListResultPager
 }
 
 // ConsumerGroupsClient implements the ConsumerGroupsOperations interface.
@@ -44,8 +44,8 @@ func (client *ConsumerGroupsClient) Do(req *azcore.Request) (*azcore.Response, e
 }
 
 // CreateOrUpdate - Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
-func (client *ConsumerGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, parameters ConsumerGroup) (*ConsumerGroupResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, consumerGroupName, parameters)
+func (client *ConsumerGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, parameters ConsumerGroup, options *ConsumerGroupsCreateOrUpdateOptions) (*ConsumerGroupResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, consumerGroupName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func (client *ConsumerGroupsClient) CreateOrUpdate(ctx context.Context, resource
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ConsumerGroupsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, parameters ConsumerGroup) (*azcore.Request, error) {
+func (client *ConsumerGroupsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, parameters ConsumerGroup, options *ConsumerGroupsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/consumergroups/{consumerGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -94,12 +94,12 @@ func (client *ConsumerGroupsClient) CreateOrUpdateHandleError(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - Deletes a consumer group from the specified Event Hub and resource group.
-func (client *ConsumerGroupsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, consumerGroupName)
+func (client *ConsumerGroupsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, options *ConsumerGroupsDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, consumerGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +114,7 @@ func (client *ConsumerGroupsClient) Delete(ctx context.Context, resourceGroupNam
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *ConsumerGroupsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string) (*azcore.Request, error) {
+func (client *ConsumerGroupsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, options *ConsumerGroupsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/consumergroups/{consumerGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -138,12 +138,12 @@ func (client *ConsumerGroupsClient) DeleteHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets a description for the specified consumer group.
-func (client *ConsumerGroupsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string) (*ConsumerGroupResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, consumerGroupName)
+func (client *ConsumerGroupsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, options *ConsumerGroupsGetOptions) (*ConsumerGroupResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, consumerGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -162,7 +162,7 @@ func (client *ConsumerGroupsClient) Get(ctx context.Context, resourceGroupName s
 }
 
 // GetCreateRequest creates the Get request.
-func (client *ConsumerGroupsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string) (*azcore.Request, error) {
+func (client *ConsumerGroupsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupName string, options *ConsumerGroupsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/consumergroups/{consumerGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -192,26 +192,27 @@ func (client *ConsumerGroupsClient) GetHandleError(resp *azcore.Response) error 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByEventHub - Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists in the Namespace.
-func (client *ConsumerGroupsClient) ListByEventHub(resourceGroupName string, namespaceName string, eventHubName string, consumerGroupsListByEventHubOptions *ConsumerGroupsListByEventHubOptions) ConsumerGroupListResultPager {
+func (client *ConsumerGroupsClient) ListByEventHub(resourceGroupName string, namespaceName string, eventHubName string, options *ConsumerGroupsListByEventHubOptions) ConsumerGroupListResultPager {
 	return &consumerGroupListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByEventHubCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, consumerGroupsListByEventHubOptions)
+			return client.ListByEventHubCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, options)
 		},
 		responder: client.ListByEventHubHandleResponse,
 		errorer:   client.ListByEventHubHandleError,
 		advancer: func(ctx context.Context, resp *ConsumerGroupListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ConsumerGroupListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByEventHubCreateRequest creates the ListByEventHub request.
-func (client *ConsumerGroupsClient) ListByEventHubCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, consumerGroupsListByEventHubOptions *ConsumerGroupsListByEventHubOptions) (*azcore.Request, error) {
+func (client *ConsumerGroupsClient) ListByEventHubCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, options *ConsumerGroupsListByEventHubOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/consumergroups"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -223,11 +224,11 @@ func (client *ConsumerGroupsClient) ListByEventHubCreateRequest(ctx context.Cont
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2017-04-01")
-	if consumerGroupsListByEventHubOptions != nil && consumerGroupsListByEventHubOptions.Skip != nil {
-		query.Set("$skip", strconv.FormatInt(int64(*consumerGroupsListByEventHubOptions.Skip), 10))
+	if options != nil && options.Skip != nil {
+		query.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	if consumerGroupsListByEventHubOptions != nil && consumerGroupsListByEventHubOptions.Top != nil {
-		query.Set("$top", strconv.FormatInt(int64(*consumerGroupsListByEventHubOptions.Top), 10))
+	if options != nil && options.Top != nil {
+		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -246,5 +247,5 @@ func (client *ConsumerGroupsClient) ListByEventHubHandleError(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

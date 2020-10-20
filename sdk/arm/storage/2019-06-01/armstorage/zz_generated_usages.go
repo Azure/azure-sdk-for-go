@@ -19,7 +19,7 @@ import (
 // UsagesOperations contains the methods for the Usages group.
 type UsagesOperations interface {
 	// ListByLocation - Gets the current usage count and the limit for the resources of the location under the subscription.
-	ListByLocation(ctx context.Context, location string) (*UsageListResultResponse, error)
+	ListByLocation(ctx context.Context, location string, options *UsagesListByLocationOptions) (*UsageListResultResponse, error)
 }
 
 // UsagesClient implements the UsagesOperations interface.
@@ -40,8 +40,8 @@ func (client *UsagesClient) Do(req *azcore.Request) (*azcore.Response, error) {
 }
 
 // ListByLocation - Gets the current usage count and the limit for the resources of the location under the subscription.
-func (client *UsagesClient) ListByLocation(ctx context.Context, location string) (*UsageListResultResponse, error) {
-	req, err := client.ListByLocationCreateRequest(ctx, location)
+func (client *UsagesClient) ListByLocation(ctx context.Context, location string, options *UsagesListByLocationOptions) (*UsageListResultResponse, error) {
+	req, err := client.ListByLocationCreateRequest(ctx, location, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (client *UsagesClient) ListByLocation(ctx context.Context, location string)
 }
 
 // ListByLocationCreateRequest creates the ListByLocation request.
-func (client *UsagesClient) ListByLocationCreateRequest(ctx context.Context, location string) (*azcore.Request, error) {
+func (client *UsagesClient) ListByLocationCreateRequest(ctx context.Context, location string, options *UsagesListByLocationOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/usages"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
@@ -88,7 +88,7 @@ func (client *UsagesClient) ListByLocationHandleError(resp *azcore.Response) err
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

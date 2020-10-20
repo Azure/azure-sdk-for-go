@@ -16,9 +16,9 @@ import (
 // MetricAlertsStatusOperations contains the methods for the MetricAlertsStatus group.
 type MetricAlertsStatusOperations interface {
 	// List - Retrieve an alert rule status.
-	List(ctx context.Context, resourceGroupName string, ruleName string) (*MetricAlertStatusCollectionResponse, error)
+	List(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsStatusListOptions) (*MetricAlertStatusCollectionResponse, error)
 	// ListByName - Retrieve an alert rule status.
-	ListByName(ctx context.Context, resourceGroupName string, ruleName string, statusName string) (*MetricAlertStatusCollectionResponse, error)
+	ListByName(ctx context.Context, resourceGroupName string, ruleName string, statusName string, options *MetricAlertsStatusListByNameOptions) (*MetricAlertStatusCollectionResponse, error)
 }
 
 // MetricAlertsStatusClient implements the MetricAlertsStatusOperations interface.
@@ -39,8 +39,8 @@ func (client *MetricAlertsStatusClient) Do(req *azcore.Request) (*azcore.Respons
 }
 
 // List - Retrieve an alert rule status.
-func (client *MetricAlertsStatusClient) List(ctx context.Context, resourceGroupName string, ruleName string) (*MetricAlertStatusCollectionResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceGroupName, ruleName)
+func (client *MetricAlertsStatusClient) List(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsStatusListOptions) (*MetricAlertStatusCollectionResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceGroupName, ruleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (client *MetricAlertsStatusClient) List(ctx context.Context, resourceGroupN
 }
 
 // ListCreateRequest creates the List request.
-func (client *MetricAlertsStatusClient) ListCreateRequest(ctx context.Context, resourceGroupName string, ruleName string) (*azcore.Request, error) {
+func (client *MetricAlertsStatusClient) ListCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsStatusListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts/{ruleName}/status"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -87,12 +87,12 @@ func (client *MetricAlertsStatusClient) ListHandleError(resp *azcore.Response) e
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByName - Retrieve an alert rule status.
-func (client *MetricAlertsStatusClient) ListByName(ctx context.Context, resourceGroupName string, ruleName string, statusName string) (*MetricAlertStatusCollectionResponse, error) {
-	req, err := client.ListByNameCreateRequest(ctx, resourceGroupName, ruleName, statusName)
+func (client *MetricAlertsStatusClient) ListByName(ctx context.Context, resourceGroupName string, ruleName string, statusName string, options *MetricAlertsStatusListByNameOptions) (*MetricAlertStatusCollectionResponse, error) {
+	req, err := client.ListByNameCreateRequest(ctx, resourceGroupName, ruleName, statusName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +111,7 @@ func (client *MetricAlertsStatusClient) ListByName(ctx context.Context, resource
 }
 
 // ListByNameCreateRequest creates the ListByName request.
-func (client *MetricAlertsStatusClient) ListByNameCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, statusName string) (*azcore.Request, error) {
+func (client *MetricAlertsStatusClient) ListByNameCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, statusName string, options *MetricAlertsStatusListByNameOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts/{ruleName}/status/{statusName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -140,5 +140,5 @@ func (client *MetricAlertsStatusClient) ListByNameHandleError(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

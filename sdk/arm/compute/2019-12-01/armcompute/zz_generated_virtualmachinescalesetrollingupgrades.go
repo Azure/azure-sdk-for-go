@@ -21,17 +21,17 @@ import (
 // VirtualMachineScaleSetRollingUpgradesOperations contains the methods for the VirtualMachineScaleSetRollingUpgrades group.
 type VirtualMachineScaleSetRollingUpgradesOperations interface {
 	// BeginCancel - Cancels the current virtual machine scale set rolling upgrade.
-	BeginCancel(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPPollerResponse, error)
+	BeginCancel(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesCancelOptions) (*HTTPPollerResponse, error)
 	// ResumeCancel - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCancel(token string) (HTTPPoller, error)
 	// GetLatest - Gets the status of the latest virtual machine scale set rolling upgrade.
-	GetLatest(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*RollingUpgradeStatusInfoResponse, error)
+	GetLatest(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesGetLatestOptions) (*RollingUpgradeStatusInfoResponse, error)
 	// BeginStartExtensionUpgrade - Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest available extension version. Instances which are already running the latest extension versions are not affected.
-	BeginStartExtensionUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPPollerResponse, error)
+	BeginStartExtensionUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeOptions) (*HTTPPollerResponse, error)
 	// ResumeStartExtensionUpgrade - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeStartExtensionUpgrade(token string) (HTTPPoller, error)
 	// BeginStartOSUpgrade - Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image OS version. Instances which are already running the latest available OS version are not affected.
-	BeginStartOSUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPPollerResponse, error)
+	BeginStartOSUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesStartOSUpgradeOptions) (*HTTPPollerResponse, error)
 	// ResumeStartOSUpgrade - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeStartOSUpgrade(token string) (HTTPPoller, error)
 }
@@ -53,8 +53,8 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) Do(req *azcore.Reques
 	return client.p.Do(req)
 }
 
-func (client *VirtualMachineScaleSetRollingUpgradesClient) BeginCancel(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Cancel(ctx, resourceGroupName, vmScaleSetName)
+func (client *VirtualMachineScaleSetRollingUpgradesClient) BeginCancel(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesCancelOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Cancel(ctx, resourceGroupName, vmScaleSetName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -88,8 +88,8 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) ResumeCancel(token st
 }
 
 // Cancel - Cancels the current virtual machine scale set rolling upgrade.
-func (client *VirtualMachineScaleSetRollingUpgradesClient) Cancel(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*azcore.Response, error) {
-	req, err := client.CancelCreateRequest(ctx, resourceGroupName, vmScaleSetName)
+func (client *VirtualMachineScaleSetRollingUpgradesClient) Cancel(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesCancelOptions) (*azcore.Response, error) {
+	req, err := client.CancelCreateRequest(ctx, resourceGroupName, vmScaleSetName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +104,7 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) Cancel(ctx context.Co
 }
 
 // CancelCreateRequest creates the Cancel request.
-func (client *VirtualMachineScaleSetRollingUpgradesClient) CancelCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*azcore.Request, error) {
+func (client *VirtualMachineScaleSetRollingUpgradesClient) CancelCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesCancelOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/rollingUpgrades/cancel"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
@@ -126,14 +126,14 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) CancelHandleError(res
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // GetLatest - Gets the status of the latest virtual machine scale set rolling upgrade.
-func (client *VirtualMachineScaleSetRollingUpgradesClient) GetLatest(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*RollingUpgradeStatusInfoResponse, error) {
-	req, err := client.GetLatestCreateRequest(ctx, resourceGroupName, vmScaleSetName)
+func (client *VirtualMachineScaleSetRollingUpgradesClient) GetLatest(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesGetLatestOptions) (*RollingUpgradeStatusInfoResponse, error) {
+	req, err := client.GetLatestCreateRequest(ctx, resourceGroupName, vmScaleSetName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -152,7 +152,7 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) GetLatest(ctx context
 }
 
 // GetLatestCreateRequest creates the GetLatest request.
-func (client *VirtualMachineScaleSetRollingUpgradesClient) GetLatestCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*azcore.Request, error) {
+func (client *VirtualMachineScaleSetRollingUpgradesClient) GetLatestCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesGetLatestOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/rollingUpgrades/latest"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
@@ -181,13 +181,13 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) GetLatestHandleError(
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-func (client *VirtualMachineScaleSetRollingUpgradesClient) BeginStartExtensionUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPPollerResponse, error) {
-	resp, err := client.StartExtensionUpgrade(ctx, resourceGroupName, vmScaleSetName)
+func (client *VirtualMachineScaleSetRollingUpgradesClient) BeginStartExtensionUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.StartExtensionUpgrade(ctx, resourceGroupName, vmScaleSetName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -221,8 +221,8 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) ResumeStartExtensionU
 }
 
 // StartExtensionUpgrade - Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest available extension version. Instances which are already running the latest extension versions are not affected.
-func (client *VirtualMachineScaleSetRollingUpgradesClient) StartExtensionUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*azcore.Response, error) {
-	req, err := client.StartExtensionUpgradeCreateRequest(ctx, resourceGroupName, vmScaleSetName)
+func (client *VirtualMachineScaleSetRollingUpgradesClient) StartExtensionUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeOptions) (*azcore.Response, error) {
+	req, err := client.StartExtensionUpgradeCreateRequest(ctx, resourceGroupName, vmScaleSetName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -237,7 +237,7 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) StartExtensionUpgrade
 }
 
 // StartExtensionUpgradeCreateRequest creates the StartExtensionUpgrade request.
-func (client *VirtualMachineScaleSetRollingUpgradesClient) StartExtensionUpgradeCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*azcore.Request, error) {
+func (client *VirtualMachineScaleSetRollingUpgradesClient) StartExtensionUpgradeCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/extensionRollingUpgrade"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
@@ -259,13 +259,13 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) StartExtensionUpgrade
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-func (client *VirtualMachineScaleSetRollingUpgradesClient) BeginStartOSUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*HTTPPollerResponse, error) {
-	resp, err := client.StartOSUpgrade(ctx, resourceGroupName, vmScaleSetName)
+func (client *VirtualMachineScaleSetRollingUpgradesClient) BeginStartOSUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesStartOSUpgradeOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.StartOSUpgrade(ctx, resourceGroupName, vmScaleSetName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -299,8 +299,8 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) ResumeStartOSUpgrade(
 }
 
 // StartOSUpgrade - Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image OS version. Instances which are already running the latest available OS version are not affected.
-func (client *VirtualMachineScaleSetRollingUpgradesClient) StartOSUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*azcore.Response, error) {
-	req, err := client.StartOSUpgradeCreateRequest(ctx, resourceGroupName, vmScaleSetName)
+func (client *VirtualMachineScaleSetRollingUpgradesClient) StartOSUpgrade(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesStartOSUpgradeOptions) (*azcore.Response, error) {
+	req, err := client.StartOSUpgradeCreateRequest(ctx, resourceGroupName, vmScaleSetName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -315,7 +315,7 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) StartOSUpgrade(ctx co
 }
 
 // StartOSUpgradeCreateRequest creates the StartOSUpgrade request.
-func (client *VirtualMachineScaleSetRollingUpgradesClient) StartOSUpgradeCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string) (*azcore.Request, error) {
+func (client *VirtualMachineScaleSetRollingUpgradesClient) StartOSUpgradeCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetRollingUpgradesStartOSUpgradeOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/osRollingUpgrade"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
@@ -337,7 +337,7 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) StartOSUpgradeHandleE
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

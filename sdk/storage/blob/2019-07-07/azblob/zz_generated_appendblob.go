@@ -180,7 +180,7 @@ func (client *appendBlobClient) AppendBlockHandleError(resp *azcore.Response) er
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // AppendBlockFromURL - The Append Block operation commits a new block of data to the end of an existing append blob where the contents are read from a source url. The Append Block operation is permitted only if the blob was created with x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
@@ -355,7 +355,7 @@ func (client *appendBlobClient) AppendBlockFromURLHandleError(resp *azcore.Respo
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Create - The Create Append Blob operation creates a new append blob.
@@ -507,5 +507,5 @@ func (client *appendBlobClient) CreateHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

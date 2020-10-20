@@ -16,9 +16,9 @@ import (
 // DiagnosticSettingsCategoryOperations contains the methods for the DiagnosticSettingsCategory group.
 type DiagnosticSettingsCategoryOperations interface {
 	// Get - Gets the diagnostic settings category for the specified resource.
-	Get(ctx context.Context, resourceUri string, name string) (*DiagnosticSettingsCategoryResourceResponse, error)
+	Get(ctx context.Context, resourceUri string, name string, options *DiagnosticSettingsCategoryGetOptions) (*DiagnosticSettingsCategoryResourceResponse, error)
 	// List - Lists the diagnostic settings categories for the specified resource.
-	List(ctx context.Context, resourceUri string) (*DiagnosticSettingsCategoryResourceCollectionResponse, error)
+	List(ctx context.Context, resourceUri string, options *DiagnosticSettingsCategoryListOptions) (*DiagnosticSettingsCategoryResourceCollectionResponse, error)
 }
 
 // DiagnosticSettingsCategoryClient implements the DiagnosticSettingsCategoryOperations interface.
@@ -38,8 +38,8 @@ func (client *DiagnosticSettingsCategoryClient) Do(req *azcore.Request) (*azcore
 }
 
 // Get - Gets the diagnostic settings category for the specified resource.
-func (client *DiagnosticSettingsCategoryClient) Get(ctx context.Context, resourceUri string, name string) (*DiagnosticSettingsCategoryResourceResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceUri, name)
+func (client *DiagnosticSettingsCategoryClient) Get(ctx context.Context, resourceUri string, name string, options *DiagnosticSettingsCategoryGetOptions) (*DiagnosticSettingsCategoryResourceResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceUri, name, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +58,7 @@ func (client *DiagnosticSettingsCategoryClient) Get(ctx context.Context, resourc
 }
 
 // GetCreateRequest creates the Get request.
-func (client *DiagnosticSettingsCategoryClient) GetCreateRequest(ctx context.Context, resourceUri string, name string) (*azcore.Request, error) {
+func (client *DiagnosticSettingsCategoryClient) GetCreateRequest(ctx context.Context, resourceUri string, name string, options *DiagnosticSettingsCategoryGetOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/diagnosticSettingsCategories/{name}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceUri)
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
@@ -85,12 +85,12 @@ func (client *DiagnosticSettingsCategoryClient) GetHandleError(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Lists the diagnostic settings categories for the specified resource.
-func (client *DiagnosticSettingsCategoryClient) List(ctx context.Context, resourceUri string) (*DiagnosticSettingsCategoryResourceCollectionResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceUri)
+func (client *DiagnosticSettingsCategoryClient) List(ctx context.Context, resourceUri string, options *DiagnosticSettingsCategoryListOptions) (*DiagnosticSettingsCategoryResourceCollectionResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceUri, options)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (client *DiagnosticSettingsCategoryClient) List(ctx context.Context, resour
 }
 
 // ListCreateRequest creates the List request.
-func (client *DiagnosticSettingsCategoryClient) ListCreateRequest(ctx context.Context, resourceUri string) (*azcore.Request, error) {
+func (client *DiagnosticSettingsCategoryClient) ListCreateRequest(ctx context.Context, resourceUri string, options *DiagnosticSettingsCategoryListOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/diagnosticSettingsCategories"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceUri)
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -135,5 +135,5 @@ func (client *DiagnosticSettingsCategoryClient) ListHandleError(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

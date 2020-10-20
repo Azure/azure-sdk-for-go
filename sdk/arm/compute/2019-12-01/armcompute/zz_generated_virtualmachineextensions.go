@@ -21,19 +21,19 @@ import (
 // VirtualMachineExtensionsOperations contains the methods for the VirtualMachineExtensions group.
 type VirtualMachineExtensionsOperations interface {
 	// BeginCreateOrUpdate - The operation to create or update the extension.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension) (*VirtualMachineExtensionPollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension, options *VirtualMachineExtensionsCreateOrUpdateOptions) (*VirtualMachineExtensionPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VirtualMachineExtensionPoller, error)
 	// BeginDelete - The operation to delete the extension.
-	BeginDelete(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - The operation to get the extension.
-	Get(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, virtualMachineExtensionsGetOptions *VirtualMachineExtensionsGetOptions) (*VirtualMachineExtensionResponse, error)
+	Get(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsGetOptions) (*VirtualMachineExtensionResponse, error)
 	// List - The operation to get all extensions of a Virtual Machine.
-	List(ctx context.Context, resourceGroupName string, vmName string, virtualMachineExtensionsListOptions *VirtualMachineExtensionsListOptions) (*VirtualMachineExtensionsListResultResponse, error)
+	List(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachineExtensionsListOptions) (*VirtualMachineExtensionsListResultResponse, error)
 	// BeginUpdate - The operation to update the extension.
-	BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate) (*VirtualMachineExtensionPollerResponse, error)
+	BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate, options *VirtualMachineExtensionsUpdateOptions) (*VirtualMachineExtensionPollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (VirtualMachineExtensionPoller, error)
 }
@@ -55,8 +55,8 @@ func (client *VirtualMachineExtensionsClient) Do(req *azcore.Request) (*azcore.R
 	return client.p.Do(req)
 }
 
-func (client *VirtualMachineExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension) (*VirtualMachineExtensionPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters)
+func (client *VirtualMachineExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension, options *VirtualMachineExtensionsCreateOrUpdateOptions) (*VirtualMachineExtensionPollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -90,8 +90,8 @@ func (client *VirtualMachineExtensionsClient) ResumeCreateOrUpdate(token string)
 }
 
 // CreateOrUpdate - The operation to create or update the extension.
-func (client *VirtualMachineExtensionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters)
+func (client *VirtualMachineExtensionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension, options *VirtualMachineExtensionsCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +106,7 @@ func (client *VirtualMachineExtensionsClient) CreateOrUpdate(ctx context.Context
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualMachineExtensionsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension) (*azcore.Request, error) {
+func (client *VirtualMachineExtensionsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension, options *VirtualMachineExtensionsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{vmExtensionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
@@ -136,13 +136,13 @@ func (client *VirtualMachineExtensionsClient) CreateOrUpdateHandleError(resp *az
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-func (client *VirtualMachineExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, vmName, vmExtensionName)
+func (client *VirtualMachineExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, vmName, vmExtensionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -176,8 +176,8 @@ func (client *VirtualMachineExtensionsClient) ResumeDelete(token string) (HTTPPo
 }
 
 // Delete - The operation to delete the extension.
-func (client *VirtualMachineExtensionsClient) Delete(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName)
+func (client *VirtualMachineExtensionsClient) Delete(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +192,7 @@ func (client *VirtualMachineExtensionsClient) Delete(ctx context.Context, resour
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *VirtualMachineExtensionsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string) (*azcore.Request, error) {
+func (client *VirtualMachineExtensionsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{vmExtensionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
@@ -215,14 +215,14 @@ func (client *VirtualMachineExtensionsClient) DeleteHandleError(resp *azcore.Res
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Get - The operation to get the extension.
-func (client *VirtualMachineExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, virtualMachineExtensionsGetOptions *VirtualMachineExtensionsGetOptions) (*VirtualMachineExtensionResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, virtualMachineExtensionsGetOptions)
+func (client *VirtualMachineExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsGetOptions) (*VirtualMachineExtensionResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -241,7 +241,7 @@ func (client *VirtualMachineExtensionsClient) Get(ctx context.Context, resourceG
 }
 
 // GetCreateRequest creates the Get request.
-func (client *VirtualMachineExtensionsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, virtualMachineExtensionsGetOptions *VirtualMachineExtensionsGetOptions) (*azcore.Request, error) {
+func (client *VirtualMachineExtensionsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{vmExtensionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
@@ -252,8 +252,8 @@ func (client *VirtualMachineExtensionsClient) GetCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	query := req.URL.Query()
-	if virtualMachineExtensionsGetOptions != nil && virtualMachineExtensionsGetOptions.Expand != nil {
-		query.Set("$expand", *virtualMachineExtensionsGetOptions.Expand)
+	if options != nil && options.Expand != nil {
+		query.Set("$expand", *options.Expand)
 	}
 	query.Set("api-version", "2019-12-01")
 	req.URL.RawQuery = query.Encode()
@@ -274,14 +274,14 @@ func (client *VirtualMachineExtensionsClient) GetHandleError(resp *azcore.Respon
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // List - The operation to get all extensions of a Virtual Machine.
-func (client *VirtualMachineExtensionsClient) List(ctx context.Context, resourceGroupName string, vmName string, virtualMachineExtensionsListOptions *VirtualMachineExtensionsListOptions) (*VirtualMachineExtensionsListResultResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceGroupName, vmName, virtualMachineExtensionsListOptions)
+func (client *VirtualMachineExtensionsClient) List(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachineExtensionsListOptions) (*VirtualMachineExtensionsListResultResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceGroupName, vmName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -300,7 +300,7 @@ func (client *VirtualMachineExtensionsClient) List(ctx context.Context, resource
 }
 
 // ListCreateRequest creates the List request.
-func (client *VirtualMachineExtensionsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, vmName string, virtualMachineExtensionsListOptions *VirtualMachineExtensionsListOptions) (*azcore.Request, error) {
+func (client *VirtualMachineExtensionsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachineExtensionsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
@@ -310,8 +310,8 @@ func (client *VirtualMachineExtensionsClient) ListCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	query := req.URL.Query()
-	if virtualMachineExtensionsListOptions != nil && virtualMachineExtensionsListOptions.Expand != nil {
-		query.Set("$expand", *virtualMachineExtensionsListOptions.Expand)
+	if options != nil && options.Expand != nil {
+		query.Set("$expand", *options.Expand)
 	}
 	query.Set("api-version", "2019-12-01")
 	req.URL.RawQuery = query.Encode()
@@ -332,13 +332,13 @@ func (client *VirtualMachineExtensionsClient) ListHandleError(resp *azcore.Respo
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-func (client *VirtualMachineExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate) (*VirtualMachineExtensionPollerResponse, error) {
-	resp, err := client.Update(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters)
+func (client *VirtualMachineExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate, options *VirtualMachineExtensionsUpdateOptions) (*VirtualMachineExtensionPollerResponse, error) {
+	resp, err := client.Update(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -372,8 +372,8 @@ func (client *VirtualMachineExtensionsClient) ResumeUpdate(token string) (Virtua
 }
 
 // Update - The operation to update the extension.
-func (client *VirtualMachineExtensionsClient) Update(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate) (*azcore.Response, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters)
+func (client *VirtualMachineExtensionsClient) Update(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate, options *VirtualMachineExtensionsUpdateOptions) (*azcore.Response, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -388,7 +388,7 @@ func (client *VirtualMachineExtensionsClient) Update(ctx context.Context, resour
 }
 
 // UpdateCreateRequest creates the Update request.
-func (client *VirtualMachineExtensionsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate) (*azcore.Request, error) {
+func (client *VirtualMachineExtensionsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate, options *VirtualMachineExtensionsUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/extensions/{vmExtensionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
@@ -418,7 +418,7 @@ func (client *VirtualMachineExtensionsClient) UpdateHandleError(resp *azcore.Res
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

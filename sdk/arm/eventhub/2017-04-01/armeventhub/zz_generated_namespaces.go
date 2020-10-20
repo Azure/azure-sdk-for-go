@@ -18,43 +18,43 @@ import (
 // NamespacesOperations contains the methods for the Namespaces group.
 type NamespacesOperations interface {
 	// CheckNameAvailability - Check the give Namespace name availability.
-	CheckNameAvailability(ctx context.Context, parameters CheckNameAvailabilityParameter) (*CheckNameAvailabilityResultResponse, error)
+	CheckNameAvailability(ctx context.Context, parameters CheckNameAvailabilityParameter, options *NamespacesCheckNameAvailabilityOptions) (*CheckNameAvailabilityResultResponse, error)
 	// BeginCreateOrUpdate - Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is idempotent.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace) (*EhNamespacePollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace, options *NamespacesCreateOrUpdateOptions) (*EhNamespacePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (EhNamespacePoller, error)
 	// CreateOrUpdateAuthorizationRule - Creates or updates an AuthorizationRule for a Namespace.
-	CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters AuthorizationRule) (*AuthorizationRuleResponse, error)
+	CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters AuthorizationRule, options *NamespacesCreateOrUpdateAuthorizationRuleOptions) (*AuthorizationRuleResponse, error)
 	// CreateOrUpdateNetworkRuleSet - Create or update NetworkRuleSet for a Namespace.
-	CreateOrUpdateNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSet) (*NetworkRuleSetResponse, error)
+	CreateOrUpdateNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSet, options *NamespacesCreateOrUpdateNetworkRuleSetOptions) (*NetworkRuleSetResponse, error)
 	// BeginDelete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-	BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// DeleteAuthorizationRule - Deletes an AuthorizationRule for a Namespace.
-	DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (*http.Response, error)
+	DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesDeleteAuthorizationRuleOptions) (*http.Response, error)
 	// Get - Gets the description of the specified namespace.
-	Get(ctx context.Context, resourceGroupName string, namespaceName string) (*EhNamespaceResponse, error)
+	Get(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesGetOptions) (*EhNamespaceResponse, error)
 	// GetAuthorizationRule - Gets an AuthorizationRule for a Namespace by rule name.
-	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (*AuthorizationRuleResponse, error)
+	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesGetAuthorizationRuleOptions) (*AuthorizationRuleResponse, error)
 	// GetMessagingPlan - Gets messaging plan for specified namespace.
-	GetMessagingPlan(ctx context.Context, resourceGroupName string, namespaceName string) (*MessagingPlanResponse, error)
+	GetMessagingPlan(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesGetMessagingPlanOptions) (*MessagingPlanResponse, error)
 	// GetNetworkRuleSet - Gets NetworkRuleSet for a Namespace.
-	GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string) (*NetworkRuleSetResponse, error)
+	GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesGetNetworkRuleSetOptions) (*NetworkRuleSetResponse, error)
 	// List - Lists all the available Namespaces within a subscription, irrespective of the resource groups.
-	List() EhNamespaceListResultPager
+	List(options *NamespacesListOptions) EhNamespaceListResultPager
 	// ListAuthorizationRules - Gets a list of authorization rules for a Namespace.
-	ListAuthorizationRules(resourceGroupName string, namespaceName string) AuthorizationRuleListResultPager
+	ListAuthorizationRules(resourceGroupName string, namespaceName string, options *NamespacesListAuthorizationRulesOptions) AuthorizationRuleListResultPager
 	// ListByResourceGroup - Lists the available Namespaces within a resource group.
-	ListByResourceGroup(resourceGroupName string) EhNamespaceListResultPager
+	ListByResourceGroup(resourceGroupName string, options *NamespacesListByResourceGroupOptions) EhNamespaceListResultPager
 	// ListKeys - Gets the primary and secondary connection strings for the Namespace.
-	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (*AccessKeysResponse, error)
+	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesListKeysOptions) (*AccessKeysResponse, error)
 	// ListNetworkRuleSets - Gets list of NetworkRuleSet for a Namespace.
-	ListNetworkRuleSets(resourceGroupName string, namespaceName string) NetworkRuleSetListResultPager
+	ListNetworkRuleSets(resourceGroupName string, namespaceName string, options *NamespacesListNetworkRuleSetsOptions) NetworkRuleSetListResultPager
 	// RegenerateKeys - Regenerates the primary or secondary connection strings for the specified Namespace.
-	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters) (*AccessKeysResponse, error)
+	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *NamespacesRegenerateKeysOptions) (*AccessKeysResponse, error)
 	// Update - Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is idempotent.
-	Update(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace) (*EhNamespaceResponse, error)
+	Update(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace, options *NamespacesUpdateOptions) (*EhNamespaceResponse, error)
 }
 
 // NamespacesClient implements the NamespacesOperations interface.
@@ -75,8 +75,8 @@ func (client *NamespacesClient) Do(req *azcore.Request) (*azcore.Response, error
 }
 
 // CheckNameAvailability - Check the give Namespace name availability.
-func (client *NamespacesClient) CheckNameAvailability(ctx context.Context, parameters CheckNameAvailabilityParameter) (*CheckNameAvailabilityResultResponse, error) {
-	req, err := client.CheckNameAvailabilityCreateRequest(ctx, parameters)
+func (client *NamespacesClient) CheckNameAvailability(ctx context.Context, parameters CheckNameAvailabilityParameter, options *NamespacesCheckNameAvailabilityOptions) (*CheckNameAvailabilityResultResponse, error) {
+	req, err := client.CheckNameAvailabilityCreateRequest(ctx, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +95,7 @@ func (client *NamespacesClient) CheckNameAvailability(ctx context.Context, param
 }
 
 // CheckNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *NamespacesClient) CheckNameAvailabilityCreateRequest(ctx context.Context, parameters CheckNameAvailabilityParameter) (*azcore.Request, error) {
+func (client *NamespacesClient) CheckNameAvailabilityCreateRequest(ctx context.Context, parameters CheckNameAvailabilityParameter, options *NamespacesCheckNameAvailabilityOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/checkNameAvailability"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.u, urlPath))
@@ -121,11 +121,11 @@ func (client *NamespacesClient) CheckNameAvailabilityHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *NamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace) (*EhNamespacePollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, namespaceName, parameters)
+func (client *NamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace, options *NamespacesCreateOrUpdateOptions) (*EhNamespacePollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, namespaceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -159,8 +159,8 @@ func (client *NamespacesClient) ResumeCreateOrUpdate(token string) (EhNamespaceP
 }
 
 // CreateOrUpdate - Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is idempotent.
-func (client *NamespacesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, parameters)
+func (client *NamespacesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace, options *NamespacesCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +175,7 @@ func (client *NamespacesClient) CreateOrUpdate(ctx context.Context, resourceGrou
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *NamespacesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace) (*azcore.Request, error) {
+func (client *NamespacesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace, options *NamespacesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -203,12 +203,12 @@ func (client *NamespacesClient) CreateOrUpdateHandleError(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // CreateOrUpdateAuthorizationRule - Creates or updates an AuthorizationRule for a Namespace.
-func (client *NamespacesClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters AuthorizationRule) (*AuthorizationRuleResponse, error) {
-	req, err := client.CreateOrUpdateAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName, parameters)
+func (client *NamespacesClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters AuthorizationRule, options *NamespacesCreateOrUpdateAuthorizationRuleOptions) (*AuthorizationRuleResponse, error) {
+	req, err := client.CreateOrUpdateAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -227,7 +227,7 @@ func (client *NamespacesClient) CreateOrUpdateAuthorizationRule(ctx context.Cont
 }
 
 // CreateOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
-func (client *NamespacesClient) CreateOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters AuthorizationRule) (*azcore.Request, error) {
+func (client *NamespacesClient) CreateOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters AuthorizationRule, options *NamespacesCreateOrUpdateAuthorizationRuleOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -256,12 +256,12 @@ func (client *NamespacesClient) CreateOrUpdateAuthorizationRuleHandleError(resp 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // CreateOrUpdateNetworkRuleSet - Create or update NetworkRuleSet for a Namespace.
-func (client *NamespacesClient) CreateOrUpdateNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSet) (*NetworkRuleSetResponse, error) {
-	req, err := client.CreateOrUpdateNetworkRuleSetCreateRequest(ctx, resourceGroupName, namespaceName, parameters)
+func (client *NamespacesClient) CreateOrUpdateNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSet, options *NamespacesCreateOrUpdateNetworkRuleSetOptions) (*NetworkRuleSetResponse, error) {
+	req, err := client.CreateOrUpdateNetworkRuleSetCreateRequest(ctx, resourceGroupName, namespaceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -280,7 +280,7 @@ func (client *NamespacesClient) CreateOrUpdateNetworkRuleSet(ctx context.Context
 }
 
 // CreateOrUpdateNetworkRuleSetCreateRequest creates the CreateOrUpdateNetworkRuleSet request.
-func (client *NamespacesClient) CreateOrUpdateNetworkRuleSetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSet) (*azcore.Request, error) {
+func (client *NamespacesClient) CreateOrUpdateNetworkRuleSetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters NetworkRuleSet, options *NamespacesCreateOrUpdateNetworkRuleSetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkRuleSets/default"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -308,11 +308,11 @@ func (client *NamespacesClient) CreateOrUpdateNetworkRuleSetHandleError(resp *az
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *NamespacesClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, namespaceName)
+func (client *NamespacesClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, namespaceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -346,8 +346,8 @@ func (client *NamespacesClient) ResumeDelete(token string) (HTTPPoller, error) {
 }
 
 // Delete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-func (client *NamespacesClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, namespaceName)
+func (client *NamespacesClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, namespaceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -362,7 +362,7 @@ func (client *NamespacesClient) Delete(ctx context.Context, resourceGroupName st
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *NamespacesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string) (*azcore.Request, error) {
+func (client *NamespacesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -384,12 +384,12 @@ func (client *NamespacesClient) DeleteHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // DeleteAuthorizationRule - Deletes an AuthorizationRule for a Namespace.
-func (client *NamespacesClient) DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (*http.Response, error) {
-	req, err := client.DeleteAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName)
+func (client *NamespacesClient) DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesDeleteAuthorizationRuleOptions) (*http.Response, error) {
+	req, err := client.DeleteAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -404,7 +404,7 @@ func (client *NamespacesClient) DeleteAuthorizationRule(ctx context.Context, res
 }
 
 // DeleteAuthorizationRuleCreateRequest creates the DeleteAuthorizationRule request.
-func (client *NamespacesClient) DeleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (*azcore.Request, error) {
+func (client *NamespacesClient) DeleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesDeleteAuthorizationRuleOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -427,12 +427,12 @@ func (client *NamespacesClient) DeleteAuthorizationRuleHandleError(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets the description of the specified namespace.
-func (client *NamespacesClient) Get(ctx context.Context, resourceGroupName string, namespaceName string) (*EhNamespaceResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, namespaceName)
+func (client *NamespacesClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesGetOptions) (*EhNamespaceResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, namespaceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -451,7 +451,7 @@ func (client *NamespacesClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // GetCreateRequest creates the Get request.
-func (client *NamespacesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string) (*azcore.Request, error) {
+func (client *NamespacesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -479,12 +479,12 @@ func (client *NamespacesClient) GetHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetAuthorizationRule - Gets an AuthorizationRule for a Namespace by rule name.
-func (client *NamespacesClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (*AuthorizationRuleResponse, error) {
-	req, err := client.GetAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName)
+func (client *NamespacesClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesGetAuthorizationRuleOptions) (*AuthorizationRuleResponse, error) {
+	req, err := client.GetAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -503,7 +503,7 @@ func (client *NamespacesClient) GetAuthorizationRule(ctx context.Context, resour
 }
 
 // GetAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
-func (client *NamespacesClient) GetAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (*azcore.Request, error) {
+func (client *NamespacesClient) GetAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesGetAuthorizationRuleOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -532,12 +532,12 @@ func (client *NamespacesClient) GetAuthorizationRuleHandleError(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetMessagingPlan - Gets messaging plan for specified namespace.
-func (client *NamespacesClient) GetMessagingPlan(ctx context.Context, resourceGroupName string, namespaceName string) (*MessagingPlanResponse, error) {
-	req, err := client.GetMessagingPlanCreateRequest(ctx, resourceGroupName, namespaceName)
+func (client *NamespacesClient) GetMessagingPlan(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesGetMessagingPlanOptions) (*MessagingPlanResponse, error) {
+	req, err := client.GetMessagingPlanCreateRequest(ctx, resourceGroupName, namespaceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -556,7 +556,7 @@ func (client *NamespacesClient) GetMessagingPlan(ctx context.Context, resourceGr
 }
 
 // GetMessagingPlanCreateRequest creates the GetMessagingPlan request.
-func (client *NamespacesClient) GetMessagingPlanCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string) (*azcore.Request, error) {
+func (client *NamespacesClient) GetMessagingPlanCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesGetMessagingPlanOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/messagingplan"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -584,12 +584,12 @@ func (client *NamespacesClient) GetMessagingPlanHandleError(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetNetworkRuleSet - Gets NetworkRuleSet for a Namespace.
-func (client *NamespacesClient) GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string) (*NetworkRuleSetResponse, error) {
-	req, err := client.GetNetworkRuleSetCreateRequest(ctx, resourceGroupName, namespaceName)
+func (client *NamespacesClient) GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesGetNetworkRuleSetOptions) (*NetworkRuleSetResponse, error) {
+	req, err := client.GetNetworkRuleSetCreateRequest(ctx, resourceGroupName, namespaceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -608,7 +608,7 @@ func (client *NamespacesClient) GetNetworkRuleSet(ctx context.Context, resourceG
 }
 
 // GetNetworkRuleSetCreateRequest creates the GetNetworkRuleSet request.
-func (client *NamespacesClient) GetNetworkRuleSetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string) (*azcore.Request, error) {
+func (client *NamespacesClient) GetNetworkRuleSetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesGetNetworkRuleSetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkRuleSets/default"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -636,26 +636,27 @@ func (client *NamespacesClient) GetNetworkRuleSetHandleError(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Lists all the available Namespaces within a subscription, irrespective of the resource groups.
-func (client *NamespacesClient) List() EhNamespaceListResultPager {
+func (client *NamespacesClient) List(options *NamespacesListOptions) EhNamespaceListResultPager {
 	return &ehNamespaceListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *EhNamespaceListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.EhNamespaceListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *NamespacesClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *NamespacesClient) ListCreateRequest(ctx context.Context, options *NamespacesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/namespaces"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -681,26 +682,27 @@ func (client *NamespacesClient) ListHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListAuthorizationRules - Gets a list of authorization rules for a Namespace.
-func (client *NamespacesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string) AuthorizationRuleListResultPager {
+func (client *NamespacesClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, options *NamespacesListAuthorizationRulesOptions) AuthorizationRuleListResultPager {
 	return &authorizationRuleListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName)
+			return client.ListAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, options)
 		},
 		responder: client.ListAuthorizationRulesHandleResponse,
 		errorer:   client.ListAuthorizationRulesHandleError,
 		advancer: func(ctx context.Context, resp *AuthorizationRuleListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AuthorizationRuleListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *NamespacesClient) ListAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string) (*azcore.Request, error) {
+func (client *NamespacesClient) ListAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesListAuthorizationRulesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/authorizationRules"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -728,26 +730,27 @@ func (client *NamespacesClient) ListAuthorizationRulesHandleError(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByResourceGroup - Lists the available Namespaces within a resource group.
-func (client *NamespacesClient) ListByResourceGroup(resourceGroupName string) EhNamespaceListResultPager {
+func (client *NamespacesClient) ListByResourceGroup(resourceGroupName string, options *NamespacesListByResourceGroupOptions) EhNamespaceListResultPager {
 	return &ehNamespaceListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName)
+			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
 		responder: client.ListByResourceGroupHandleResponse,
 		errorer:   client.ListByResourceGroupHandleError,
 		advancer: func(ctx context.Context, resp *EhNamespaceListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.EhNamespaceListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NamespacesClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *NamespacesClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *NamespacesListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -774,12 +777,12 @@ func (client *NamespacesClient) ListByResourceGroupHandleError(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListKeys - Gets the primary and secondary connection strings for the Namespace.
-func (client *NamespacesClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (*AccessKeysResponse, error) {
-	req, err := client.ListKeysCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName)
+func (client *NamespacesClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesListKeysOptions) (*AccessKeysResponse, error) {
+	req, err := client.ListKeysCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -798,7 +801,7 @@ func (client *NamespacesClient) ListKeys(ctx context.Context, resourceGroupName 
 }
 
 // ListKeysCreateRequest creates the ListKeys request.
-func (client *NamespacesClient) ListKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string) (*azcore.Request, error) {
+func (client *NamespacesClient) ListKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, options *NamespacesListKeysOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}/listKeys"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -827,26 +830,27 @@ func (client *NamespacesClient) ListKeysHandleError(resp *azcore.Response) error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListNetworkRuleSets - Gets list of NetworkRuleSet for a Namespace.
-func (client *NamespacesClient) ListNetworkRuleSets(resourceGroupName string, namespaceName string) NetworkRuleSetListResultPager {
+func (client *NamespacesClient) ListNetworkRuleSets(resourceGroupName string, namespaceName string, options *NamespacesListNetworkRuleSetsOptions) NetworkRuleSetListResultPager {
 	return &networkRuleSetListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListNetworkRuleSetsCreateRequest(ctx, resourceGroupName, namespaceName)
+			return client.ListNetworkRuleSetsCreateRequest(ctx, resourceGroupName, namespaceName, options)
 		},
 		responder: client.ListNetworkRuleSetsHandleResponse,
 		errorer:   client.ListNetworkRuleSetsHandleError,
 		advancer: func(ctx context.Context, resp *NetworkRuleSetListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.NetworkRuleSetListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListNetworkRuleSetsCreateRequest creates the ListNetworkRuleSets request.
-func (client *NamespacesClient) ListNetworkRuleSetsCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string) (*azcore.Request, error) {
+func (client *NamespacesClient) ListNetworkRuleSetsCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesListNetworkRuleSetsOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkRuleSets"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -874,12 +878,12 @@ func (client *NamespacesClient) ListNetworkRuleSetsHandleError(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // RegenerateKeys - Regenerates the primary or secondary connection strings for the specified Namespace.
-func (client *NamespacesClient) RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters) (*AccessKeysResponse, error) {
-	req, err := client.RegenerateKeysCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName, parameters)
+func (client *NamespacesClient) RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *NamespacesRegenerateKeysOptions) (*AccessKeysResponse, error) {
+	req, err := client.RegenerateKeysCreateRequest(ctx, resourceGroupName, namespaceName, authorizationRuleName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -898,7 +902,7 @@ func (client *NamespacesClient) RegenerateKeys(ctx context.Context, resourceGrou
 }
 
 // RegenerateKeysCreateRequest creates the RegenerateKeys request.
-func (client *NamespacesClient) RegenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters) (*azcore.Request, error) {
+func (client *NamespacesClient) RegenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *NamespacesRegenerateKeysOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/authorizationRules/{authorizationRuleName}/regenerateKeys"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -927,12 +931,12 @@ func (client *NamespacesClient) RegenerateKeysHandleError(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Update - Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is idempotent.
-func (client *NamespacesClient) Update(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace) (*EhNamespaceResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, namespaceName, parameters)
+func (client *NamespacesClient) Update(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace, options *NamespacesUpdateOptions) (*EhNamespaceResponse, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, namespaceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -951,7 +955,7 @@ func (client *NamespacesClient) Update(ctx context.Context, resourceGroupName st
 }
 
 // UpdateCreateRequest creates the Update request.
-func (client *NamespacesClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace) (*azcore.Request, error) {
+func (client *NamespacesClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters EhNamespace, options *NamespacesUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -979,5 +983,5 @@ func (client *NamespacesClient) UpdateHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

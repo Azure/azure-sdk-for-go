@@ -288,6 +288,21 @@ type ConsumerGroupResponse struct {
 	RawResponse *http.Response
 }
 
+// ConsumerGroupsCreateOrUpdateOptions contains the optional parameters for the ConsumerGroups.CreateOrUpdate method.
+type ConsumerGroupsCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConsumerGroupsDeleteOptions contains the optional parameters for the ConsumerGroups.Delete method.
+type ConsumerGroupsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConsumerGroupsGetOptions contains the optional parameters for the ConsumerGroups.Get method.
+type ConsumerGroupsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ConsumerGroupsListByEventHubOptions contains the optional parameters for the ConsumerGroups.ListByEventHub method.
 type ConsumerGroupsListByEventHubOptions struct {
 	// Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
@@ -317,6 +332,61 @@ type DestinationProperties struct {
 
 	// Resource id of the storage account to be used to create the blobs
 	StorageAccountResourceID *string `json:"storageAccountResourceId,omitempty"`
+}
+
+// DisasterRecoveryConfigsBreakPairingOptions contains the optional parameters for the DisasterRecoveryConfigs.BreakPairing
+// method.
+type DisasterRecoveryConfigsBreakPairingOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DisasterRecoveryConfigsCheckNameAvailabilityOptions contains the optional parameters for the DisasterRecoveryConfigs.CheckNameAvailability
+// method.
+type DisasterRecoveryConfigsCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DisasterRecoveryConfigsCreateOrUpdateOptions contains the optional parameters for the DisasterRecoveryConfigs.CreateOrUpdate
+// method.
+type DisasterRecoveryConfigsCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DisasterRecoveryConfigsDeleteOptions contains the optional parameters for the DisasterRecoveryConfigs.Delete method.
+type DisasterRecoveryConfigsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DisasterRecoveryConfigsFailOverOptions contains the optional parameters for the DisasterRecoveryConfigs.FailOver method.
+type DisasterRecoveryConfigsFailOverOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DisasterRecoveryConfigsGetAuthorizationRuleOptions contains the optional parameters for the DisasterRecoveryConfigs.GetAuthorizationRule
+// method.
+type DisasterRecoveryConfigsGetAuthorizationRuleOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DisasterRecoveryConfigsGetOptions contains the optional parameters for the DisasterRecoveryConfigs.Get method.
+type DisasterRecoveryConfigsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DisasterRecoveryConfigsListAuthorizationRulesOptions contains the optional parameters for the DisasterRecoveryConfigs.ListAuthorizationRules
+// method.
+type DisasterRecoveryConfigsListAuthorizationRulesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DisasterRecoveryConfigsListKeysOptions contains the optional parameters for the DisasterRecoveryConfigs.ListKeys method.
+type DisasterRecoveryConfigsListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DisasterRecoveryConfigsListOptions contains the optional parameters for the DisasterRecoveryConfigs.List method.
+type DisasterRecoveryConfigsListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Single Namespace item in List or Get Operation
@@ -530,6 +600,42 @@ type EventHubListResultResponse struct {
 	RawResponse *http.Response
 }
 
+// EventHubsCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the EventHubs.CreateOrUpdateAuthorizationRule
+// method.
+type EventHubsCreateOrUpdateAuthorizationRuleOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EventHubsCreateOrUpdateOptions contains the optional parameters for the EventHubs.CreateOrUpdate method.
+type EventHubsCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EventHubsDeleteAuthorizationRuleOptions contains the optional parameters for the EventHubs.DeleteAuthorizationRule method.
+type EventHubsDeleteAuthorizationRuleOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EventHubsDeleteOptions contains the optional parameters for the EventHubs.Delete method.
+type EventHubsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EventHubsGetAuthorizationRuleOptions contains the optional parameters for the EventHubs.GetAuthorizationRule method.
+type EventHubsGetAuthorizationRuleOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EventHubsGetOptions contains the optional parameters for the EventHubs.Get method.
+type EventHubsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EventHubsListAuthorizationRulesOptions contains the optional parameters for the EventHubs.ListAuthorizationRules method.
+type EventHubsListAuthorizationRulesOptions struct {
+	// placeholder for future optional parameters
+}
+
 // EventHubsListByNamespaceOptions contains the optional parameters for the EventHubs.ListByNamespace method.
 type EventHubsListByNamespaceOptions struct {
 	// Skip is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
@@ -537,6 +643,16 @@ type EventHubsListByNamespaceOptions struct {
 	Skip *int32
 	// May be used to limit the number of results to the most recent N usageDetails.
 	Top *int32
+}
+
+// EventHubsListKeysOptions contains the optional parameters for the EventHubs.ListKeys method.
+type EventHubsListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EventHubsRegenerateKeysOptions contains the optional parameters for the EventHubs.RegenerateKeys method.
+type EventHubsRegenerateKeysOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Single item in List or Get Event Hub operation
@@ -794,6 +910,93 @@ type MessagingRegionsProperties struct {
 	FullName *string `json:"fullName,omitempty" azure:"ro"`
 }
 
+// NamespacesCheckNameAvailabilityOptions contains the optional parameters for the Namespaces.CheckNameAvailability method.
+type NamespacesCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the Namespaces.CreateOrUpdateAuthorizationRule
+// method.
+type NamespacesCreateOrUpdateAuthorizationRuleOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesCreateOrUpdateNetworkRuleSetOptions contains the optional parameters for the Namespaces.CreateOrUpdateNetworkRuleSet
+// method.
+type NamespacesCreateOrUpdateNetworkRuleSetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesCreateOrUpdateOptions contains the optional parameters for the Namespaces.CreateOrUpdate method.
+type NamespacesCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesDeleteAuthorizationRuleOptions contains the optional parameters for the Namespaces.DeleteAuthorizationRule method.
+type NamespacesDeleteAuthorizationRuleOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesDeleteOptions contains the optional parameters for the Namespaces.Delete method.
+type NamespacesDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesGetAuthorizationRuleOptions contains the optional parameters for the Namespaces.GetAuthorizationRule method.
+type NamespacesGetAuthorizationRuleOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesGetMessagingPlanOptions contains the optional parameters for the Namespaces.GetMessagingPlan method.
+type NamespacesGetMessagingPlanOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesGetNetworkRuleSetOptions contains the optional parameters for the Namespaces.GetNetworkRuleSet method.
+type NamespacesGetNetworkRuleSetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesGetOptions contains the optional parameters for the Namespaces.Get method.
+type NamespacesGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesListAuthorizationRulesOptions contains the optional parameters for the Namespaces.ListAuthorizationRules method.
+type NamespacesListAuthorizationRulesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesListByResourceGroupOptions contains the optional parameters for the Namespaces.ListByResourceGroup method.
+type NamespacesListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesListKeysOptions contains the optional parameters for the Namespaces.ListKeys method.
+type NamespacesListKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesListNetworkRuleSetsOptions contains the optional parameters for the Namespaces.ListNetworkRuleSets method.
+type NamespacesListNetworkRuleSetsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesListOptions contains the optional parameters for the Namespaces.List method.
+type NamespacesListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesRegenerateKeysOptions contains the optional parameters for the Namespaces.RegenerateKeys method.
+type NamespacesRegenerateKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NamespacesUpdateOptions contains the optional parameters for the Namespaces.Update method.
+type NamespacesUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // Description of NetworkRuleSet resource.
 type NetworkRuleSet struct {
 	Resource
@@ -899,6 +1102,11 @@ type OperationListResultResponse struct {
 	RawResponse *http.Response
 }
 
+// OperationsListOptions contains the optional parameters for the Operations.List method.
+type OperationsListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // Parameters supplied to the Regenerate Authorization Rule operation, specifies which key needs to be reset.
 type RegenerateAccessKeyParameters struct {
 	// Optional, if the key value provided, is set for KeyType or autogenerated Key value set for keyType
@@ -906,6 +1114,11 @@ type RegenerateAccessKeyParameters struct {
 
 	// The access key to regenerate.
 	KeyType *KeyType `json:"keyType,omitempty"`
+}
+
+// RegionsListBySKUOptions contains the optional parameters for the Regions.ListBySKU method.
+type RegionsListBySKUOptions struct {
+	// placeholder for future optional parameters
 }
 
 // The resource definition.

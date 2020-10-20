@@ -18,19 +18,19 @@ import (
 // BastionHostsOperations contains the methods for the BastionHosts group.
 type BastionHostsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates the specified Bastion Host.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost) (*BastionHostPollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost, options *BastionHostsCreateOrUpdateOptions) (*BastionHostPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (BastionHostPoller, error)
 	// BeginDelete - Deletes the specified Bastion Host.
-	BeginDelete(ctx context.Context, resourceGroupName string, bastionHostName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified Bastion Host.
-	Get(ctx context.Context, resourceGroupName string, bastionHostName string) (*BastionHostResponse, error)
+	Get(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsGetOptions) (*BastionHostResponse, error)
 	// List - Lists all Bastion Hosts in a subscription.
-	List() BastionHostListResultPager
+	List(options *BastionHostsListOptions) BastionHostListResultPager
 	// ListByResourceGroup - Lists all Bastion Hosts in a resource group.
-	ListByResourceGroup(resourceGroupName string) BastionHostListResultPager
+	ListByResourceGroup(resourceGroupName string, options *BastionHostsListByResourceGroupOptions) BastionHostListResultPager
 }
 
 // BastionHostsClient implements the BastionHostsOperations interface.
@@ -50,8 +50,8 @@ func (client *BastionHostsClient) Do(req *azcore.Request) (*azcore.Response, err
 	return client.p.Do(req)
 }
 
-func (client *BastionHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost) (*BastionHostPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, bastionHostName, parameters)
+func (client *BastionHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost, options *BastionHostsCreateOrUpdateOptions) (*BastionHostPollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, bastionHostName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -85,8 +85,8 @@ func (client *BastionHostsClient) ResumeCreateOrUpdate(token string) (BastionHos
 }
 
 // CreateOrUpdate - Creates or updates the specified Bastion Host.
-func (client *BastionHostsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, bastionHostName, parameters)
+func (client *BastionHostsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost, options *BastionHostsCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, bastionHostName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +101,7 @@ func (client *BastionHostsClient) CreateOrUpdate(ctx context.Context, resourceGr
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *BastionHostsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost) (*azcore.Request, error) {
+func (client *BastionHostsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, parameters BastionHost, options *BastionHostsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{bastionHostName}", url.PathEscape(bastionHostName))
@@ -129,11 +129,11 @@ func (client *BastionHostsClient) CreateOrUpdateHandleError(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *BastionHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, bastionHostName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, bastionHostName)
+func (client *BastionHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, bastionHostName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -167,8 +167,8 @@ func (client *BastionHostsClient) ResumeDelete(token string) (HTTPPoller, error)
 }
 
 // Delete - Deletes the specified Bastion Host.
-func (client *BastionHostsClient) Delete(ctx context.Context, resourceGroupName string, bastionHostName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, bastionHostName)
+func (client *BastionHostsClient) Delete(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, bastionHostName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -183,7 +183,7 @@ func (client *BastionHostsClient) Delete(ctx context.Context, resourceGroupName 
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *BastionHostsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string) (*azcore.Request, error) {
+func (client *BastionHostsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{bastionHostName}", url.PathEscape(bastionHostName))
@@ -205,12 +205,12 @@ func (client *BastionHostsClient) DeleteHandleError(resp *azcore.Response) error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets the specified Bastion Host.
-func (client *BastionHostsClient) Get(ctx context.Context, resourceGroupName string, bastionHostName string) (*BastionHostResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, bastionHostName)
+func (client *BastionHostsClient) Get(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsGetOptions) (*BastionHostResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, bastionHostName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -229,7 +229,7 @@ func (client *BastionHostsClient) Get(ctx context.Context, resourceGroupName str
 }
 
 // GetCreateRequest creates the Get request.
-func (client *BastionHostsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string) (*azcore.Request, error) {
+func (client *BastionHostsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{bastionHostName}", url.PathEscape(bastionHostName))
@@ -257,26 +257,27 @@ func (client *BastionHostsClient) GetHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Lists all Bastion Hosts in a subscription.
-func (client *BastionHostsClient) List() BastionHostListResultPager {
+func (client *BastionHostsClient) List(options *BastionHostsListOptions) BastionHostListResultPager {
 	return &bastionHostListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *BastionHostListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.BastionHostListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *BastionHostsClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *BastionHostsClient) ListCreateRequest(ctx context.Context, options *BastionHostsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/bastionHosts"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -302,26 +303,27 @@ func (client *BastionHostsClient) ListHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByResourceGroup - Lists all Bastion Hosts in a resource group.
-func (client *BastionHostsClient) ListByResourceGroup(resourceGroupName string) BastionHostListResultPager {
+func (client *BastionHostsClient) ListByResourceGroup(resourceGroupName string, options *BastionHostsListByResourceGroupOptions) BastionHostListResultPager {
 	return &bastionHostListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName)
+			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
 		responder: client.ListByResourceGroupHandleResponse,
 		errorer:   client.ListByResourceGroupHandleError,
 		advancer: func(ctx context.Context, resp *BastionHostListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.BastionHostListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *BastionHostsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *BastionHostsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *BastionHostsListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -348,5 +350,5 @@ func (client *BastionHostsClient) ListByResourceGroupHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

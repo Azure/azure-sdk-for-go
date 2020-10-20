@@ -16,7 +16,7 @@ import (
 // PrivateLinkResourcesOperations contains the methods for the PrivateLinkResources group.
 type PrivateLinkResourcesOperations interface {
 	// ListByVault - Gets the private link resources supported for the key vault.
-	ListByVault(ctx context.Context, resourceGroupName string, vaultName string) (*PrivateLinkResourceListResultResponse, error)
+	ListByVault(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (*PrivateLinkResourceListResultResponse, error)
 }
 
 // PrivateLinkResourcesClient implements the PrivateLinkResourcesOperations interface.
@@ -37,8 +37,8 @@ func (client *PrivateLinkResourcesClient) Do(req *azcore.Request) (*azcore.Respo
 }
 
 // ListByVault - Gets the private link resources supported for the key vault.
-func (client *PrivateLinkResourcesClient) ListByVault(ctx context.Context, resourceGroupName string, vaultName string) (*PrivateLinkResourceListResultResponse, error) {
-	req, err := client.ListByVaultCreateRequest(ctx, resourceGroupName, vaultName)
+func (client *PrivateLinkResourcesClient) ListByVault(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (*PrivateLinkResourceListResultResponse, error) {
+	req, err := client.ListByVaultCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (client *PrivateLinkResourcesClient) ListByVault(ctx context.Context, resou
 }
 
 // ListByVaultCreateRequest creates the ListByVault request.
-func (client *PrivateLinkResourcesClient) ListByVaultCreateRequest(ctx context.Context, resourceGroupName string, vaultName string) (*azcore.Request, error) {
+func (client *PrivateLinkResourcesClient) ListByVaultCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/privateLinkResources"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -85,5 +85,5 @@ func (client *PrivateLinkResourcesClient) ListByVaultHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

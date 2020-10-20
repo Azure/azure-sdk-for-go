@@ -16,9 +16,9 @@ import (
 // MetricBaselineOperations contains the methods for the MetricBaseline group.
 type MetricBaselineOperations interface {
 	// CalculateBaseline - **Lists the baseline values for a resource**.
-	CalculateBaseline(ctx context.Context, resourceUri string, timeSeriesInformation TimeSeriesInformation) (*CalculateBaselineResponseResponse, error)
+	CalculateBaseline(ctx context.Context, resourceUri string, timeSeriesInformation TimeSeriesInformation, options *MetricBaselineCalculateBaselineOptions) (*CalculateBaselineResponseResponse, error)
 	// Get - **Gets the baseline values for a specific metric**.
-	Get(ctx context.Context, resourceUri string, metricName string, metricBaselineGetOptions *MetricBaselineGetOptions) (*BaselineResponseResponse, error)
+	Get(ctx context.Context, resourceUri string, metricName string, options *MetricBaselineGetOptions) (*BaselineResponseResponse, error)
 }
 
 // MetricBaselineClient implements the MetricBaselineOperations interface.
@@ -38,8 +38,8 @@ func (client *MetricBaselineClient) Do(req *azcore.Request) (*azcore.Response, e
 }
 
 // CalculateBaseline - **Lists the baseline values for a resource**.
-func (client *MetricBaselineClient) CalculateBaseline(ctx context.Context, resourceUri string, timeSeriesInformation TimeSeriesInformation) (*CalculateBaselineResponseResponse, error) {
-	req, err := client.CalculateBaselineCreateRequest(ctx, resourceUri, timeSeriesInformation)
+func (client *MetricBaselineClient) CalculateBaseline(ctx context.Context, resourceUri string, timeSeriesInformation TimeSeriesInformation, options *MetricBaselineCalculateBaselineOptions) (*CalculateBaselineResponseResponse, error) {
+	req, err := client.CalculateBaselineCreateRequest(ctx, resourceUri, timeSeriesInformation, options)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +58,7 @@ func (client *MetricBaselineClient) CalculateBaseline(ctx context.Context, resou
 }
 
 // CalculateBaselineCreateRequest creates the CalculateBaseline request.
-func (client *MetricBaselineClient) CalculateBaselineCreateRequest(ctx context.Context, resourceUri string, timeSeriesInformation TimeSeriesInformation) (*azcore.Request, error) {
+func (client *MetricBaselineClient) CalculateBaselineCreateRequest(ctx context.Context, resourceUri string, timeSeriesInformation TimeSeriesInformation, options *MetricBaselineCalculateBaselineOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/calculatebaseline"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceUri)
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.u, urlPath))
@@ -84,12 +84,12 @@ func (client *MetricBaselineClient) CalculateBaselineHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - **Gets the baseline values for a specific metric**.
-func (client *MetricBaselineClient) Get(ctx context.Context, resourceUri string, metricName string, metricBaselineGetOptions *MetricBaselineGetOptions) (*BaselineResponseResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceUri, metricName, metricBaselineGetOptions)
+func (client *MetricBaselineClient) Get(ctx context.Context, resourceUri string, metricName string, options *MetricBaselineGetOptions) (*BaselineResponseResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceUri, metricName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func (client *MetricBaselineClient) Get(ctx context.Context, resourceUri string,
 }
 
 // GetCreateRequest creates the Get request.
-func (client *MetricBaselineClient) GetCreateRequest(ctx context.Context, resourceUri string, metricName string, metricBaselineGetOptions *MetricBaselineGetOptions) (*azcore.Request, error) {
+func (client *MetricBaselineClient) GetCreateRequest(ctx context.Context, resourceUri string, metricName string, options *MetricBaselineGetOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/baseline/{metricName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceUri)
 	urlPath = strings.ReplaceAll(urlPath, "{metricName}", url.PathEscape(metricName))
@@ -117,20 +117,20 @@ func (client *MetricBaselineClient) GetCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	query := req.URL.Query()
-	if metricBaselineGetOptions != nil && metricBaselineGetOptions.Timespan != nil {
-		query.Set("timespan", *metricBaselineGetOptions.Timespan)
+	if options != nil && options.Timespan != nil {
+		query.Set("timespan", *options.Timespan)
 	}
-	if metricBaselineGetOptions != nil && metricBaselineGetOptions.Interval != nil {
-		query.Set("interval", *metricBaselineGetOptions.Interval)
+	if options != nil && options.Interval != nil {
+		query.Set("interval", *options.Interval)
 	}
-	if metricBaselineGetOptions != nil && metricBaselineGetOptions.Aggregation != nil {
-		query.Set("aggregation", *metricBaselineGetOptions.Aggregation)
+	if options != nil && options.Aggregation != nil {
+		query.Set("aggregation", *options.Aggregation)
 	}
-	if metricBaselineGetOptions != nil && metricBaselineGetOptions.Sensitivities != nil {
-		query.Set("sensitivities", *metricBaselineGetOptions.Sensitivities)
+	if options != nil && options.Sensitivities != nil {
+		query.Set("sensitivities", *options.Sensitivities)
 	}
-	if metricBaselineGetOptions != nil && metricBaselineGetOptions.ResultType != nil {
-		query.Set("resultType", string(*metricBaselineGetOptions.ResultType))
+	if options != nil && options.ResultType != nil {
+		query.Set("resultType", string(*options.ResultType))
 	}
 	query.Set("api-version", "2017-11-01-preview")
 	req.URL.RawQuery = query.Encode()
@@ -150,5 +150,5 @@ func (client *MetricBaselineClient) GetHandleError(resp *azcore.Response) error 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

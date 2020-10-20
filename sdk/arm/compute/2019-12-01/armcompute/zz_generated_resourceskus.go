@@ -19,7 +19,7 @@ import (
 // ResourceSKUsOperations contains the methods for the ResourceSKUs group.
 type ResourceSKUsOperations interface {
 	// List - Gets the list of Microsoft.Compute SKUs available for your Subscription.
-	List(resourceSkUsListOptions *ResourceSKUsListOptions) ResourceSKUsResultPager
+	List(options *ResourceSKUsListOptions) ResourceSKUsResultPager
 }
 
 // ResourceSKUsClient implements the ResourceSKUsOperations interface.
@@ -40,22 +40,23 @@ func (client *ResourceSKUsClient) Do(req *azcore.Request) (*azcore.Response, err
 }
 
 // List - Gets the list of Microsoft.Compute SKUs available for your Subscription.
-func (client *ResourceSKUsClient) List(resourceSkUsListOptions *ResourceSKUsListOptions) ResourceSKUsResultPager {
+func (client *ResourceSKUsClient) List(options *ResourceSKUsListOptions) ResourceSKUsResultPager {
 	return &resourceSkUsResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceSkUsListOptions)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *ResourceSKUsResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceSKUsResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *ResourceSKUsClient) ListCreateRequest(ctx context.Context, resourceSkUsListOptions *ResourceSKUsListOptions) (*azcore.Request, error) {
+func (client *ResourceSKUsClient) ListCreateRequest(ctx context.Context, options *ResourceSKUsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/skus"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -64,8 +65,8 @@ func (client *ResourceSKUsClient) ListCreateRequest(ctx context.Context, resourc
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2019-04-01")
-	if resourceSkUsListOptions != nil && resourceSkUsListOptions.Filter != nil {
-		query.Set("$filter", *resourceSkUsListOptions.Filter)
+	if options != nil && options.Filter != nil {
+		query.Set("$filter", *options.Filter)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -85,7 +86,7 @@ func (client *ResourceSKUsClient) ListHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

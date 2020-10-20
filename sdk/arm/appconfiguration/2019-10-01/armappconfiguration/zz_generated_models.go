@@ -275,6 +275,21 @@ type ConfigurationStoreUpdateParameters struct {
 	Tags *map[string]string `json:"tags,omitempty"`
 }
 
+// ConfigurationStoresCreateOptions contains the optional parameters for the ConfigurationStores.Create method.
+type ConfigurationStoresCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationStoresDeleteOptions contains the optional parameters for the ConfigurationStores.Delete method.
+type ConfigurationStoresDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationStoresGetOptions contains the optional parameters for the ConfigurationStores.Get method.
+type ConfigurationStoresGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ConfigurationStoresListByResourceGroupOptions contains the optional parameters for the ConfigurationStores.ListByResourceGroup
 // method.
 type ConfigurationStoresListByResourceGroupOptions struct {
@@ -282,6 +297,11 @@ type ConfigurationStoresListByResourceGroupOptions struct {
 	// a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies a starting point
 	// to use for subsequent calls.
 	SkipToken *string
+}
+
+// ConfigurationStoresListKeyValueOptions contains the optional parameters for the ConfigurationStores.ListKeyValue method.
+type ConfigurationStoresListKeyValueOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ConfigurationStoresListKeysOptions contains the optional parameters for the ConfigurationStores.ListKeys method.
@@ -298,6 +318,16 @@ type ConfigurationStoresListOptions struct {
 	// a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies a starting point
 	// to use for subsequent calls.
 	SkipToken *string
+}
+
+// ConfigurationStoresRegenerateKeyOptions contains the optional parameters for the ConfigurationStores.RegenerateKey method.
+type ConfigurationStoresRegenerateKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigurationStoresUpdateOptions contains the optional parameters for the ConfigurationStores.Update method.
+type ConfigurationStoresUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // AppConfiguration error object.
@@ -536,6 +566,11 @@ type OperationDefinitionListResultResponse struct {
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// OperationsCheckNameAvailabilityOptions contains the optional parameters for the Operations.CheckNameAvailability method.
+type OperationsCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
 }
 
 // OperationsListOptions contains the optional parameters for the Operations.List method.

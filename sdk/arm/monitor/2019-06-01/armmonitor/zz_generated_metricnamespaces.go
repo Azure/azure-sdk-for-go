@@ -15,7 +15,7 @@ import (
 // MetricNamespacesOperations contains the methods for the MetricNamespaces group.
 type MetricNamespacesOperations interface {
 	// List - Lists the metric namespaces for the resource.
-	List(ctx context.Context, resourceUri string, metricNamespacesListOptions *MetricNamespacesListOptions) (*MetricNamespaceCollectionResponse, error)
+	List(ctx context.Context, resourceUri string, options *MetricNamespacesListOptions) (*MetricNamespaceCollectionResponse, error)
 }
 
 // MetricNamespacesClient implements the MetricNamespacesOperations interface.
@@ -35,8 +35,8 @@ func (client *MetricNamespacesClient) Do(req *azcore.Request) (*azcore.Response,
 }
 
 // List - Lists the metric namespaces for the resource.
-func (client *MetricNamespacesClient) List(ctx context.Context, resourceUri string, metricNamespacesListOptions *MetricNamespacesListOptions) (*MetricNamespaceCollectionResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceUri, metricNamespacesListOptions)
+func (client *MetricNamespacesClient) List(ctx context.Context, resourceUri string, options *MetricNamespacesListOptions) (*MetricNamespaceCollectionResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceUri, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (client *MetricNamespacesClient) List(ctx context.Context, resourceUri stri
 }
 
 // ListCreateRequest creates the List request.
-func (client *MetricNamespacesClient) ListCreateRequest(ctx context.Context, resourceUri string, metricNamespacesListOptions *MetricNamespacesListOptions) (*azcore.Request, error) {
+func (client *MetricNamespacesClient) ListCreateRequest(ctx context.Context, resourceUri string, options *MetricNamespacesListOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/metricNamespaces"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceUri)
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -64,8 +64,8 @@ func (client *MetricNamespacesClient) ListCreateRequest(ctx context.Context, res
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2017-12-01-preview")
-	if metricNamespacesListOptions != nil && metricNamespacesListOptions.StartTime != nil {
-		query.Set("startTime", *metricNamespacesListOptions.StartTime)
+	if options != nil && options.StartTime != nil {
+		query.Set("startTime", *options.StartTime)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -84,5 +84,5 @@ func (client *MetricNamespacesClient) ListHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

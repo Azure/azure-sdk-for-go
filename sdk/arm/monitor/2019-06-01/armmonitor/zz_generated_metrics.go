@@ -16,7 +16,7 @@ import (
 // MetricsOperations contains the methods for the Metrics group.
 type MetricsOperations interface {
 	// List - **Lists the metric values for a resource**.
-	List(ctx context.Context, resourceUri string, metricsListOptions *MetricsListOptions) (*ResponseResponse, error)
+	List(ctx context.Context, resourceUri string, options *MetricsListOptions) (*ResponseResponse, error)
 }
 
 // MetricsClient implements the MetricsOperations interface.
@@ -36,8 +36,8 @@ func (client *MetricsClient) Do(req *azcore.Request) (*azcore.Response, error) {
 }
 
 // List - **Lists the metric values for a resource**.
-func (client *MetricsClient) List(ctx context.Context, resourceUri string, metricsListOptions *MetricsListOptions) (*ResponseResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceUri, metricsListOptions)
+func (client *MetricsClient) List(ctx context.Context, resourceUri string, options *MetricsListOptions) (*ResponseResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceUri, options)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (client *MetricsClient) List(ctx context.Context, resourceUri string, metri
 }
 
 // ListCreateRequest creates the List request.
-func (client *MetricsClient) ListCreateRequest(ctx context.Context, resourceUri string, metricsListOptions *MetricsListOptions) (*azcore.Request, error) {
+func (client *MetricsClient) ListCreateRequest(ctx context.Context, resourceUri string, options *MetricsListOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/metrics"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceUri)
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -64,33 +64,33 @@ func (client *MetricsClient) ListCreateRequest(ctx context.Context, resourceUri 
 		return nil, err
 	}
 	query := req.URL.Query()
-	if metricsListOptions != nil && metricsListOptions.Timespan != nil {
-		query.Set("timespan", *metricsListOptions.Timespan)
+	if options != nil && options.Timespan != nil {
+		query.Set("timespan", *options.Timespan)
 	}
-	if metricsListOptions != nil && metricsListOptions.Interval != nil {
-		query.Set("interval", *metricsListOptions.Interval)
+	if options != nil && options.Interval != nil {
+		query.Set("interval", *options.Interval)
 	}
-	if metricsListOptions != nil && metricsListOptions.Metricnames != nil {
-		query.Set("metricnames", *metricsListOptions.Metricnames)
+	if options != nil && options.Metricnames != nil {
+		query.Set("metricnames", *options.Metricnames)
 	}
-	if metricsListOptions != nil && metricsListOptions.Aggregation != nil {
-		query.Set("aggregation", *metricsListOptions.Aggregation)
+	if options != nil && options.Aggregation != nil {
+		query.Set("aggregation", *options.Aggregation)
 	}
-	if metricsListOptions != nil && metricsListOptions.Top != nil {
-		query.Set("top", strconv.FormatInt(int64(*metricsListOptions.Top), 10))
+	if options != nil && options.Top != nil {
+		query.Set("top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	if metricsListOptions != nil && metricsListOptions.Orderby != nil {
-		query.Set("orderby", *metricsListOptions.Orderby)
+	if options != nil && options.Orderby != nil {
+		query.Set("orderby", *options.Orderby)
 	}
-	if metricsListOptions != nil && metricsListOptions.Filter != nil {
-		query.Set("$filter", *metricsListOptions.Filter)
+	if options != nil && options.Filter != nil {
+		query.Set("$filter", *options.Filter)
 	}
-	if metricsListOptions != nil && metricsListOptions.ResultType != nil {
-		query.Set("resultType", string(*metricsListOptions.ResultType))
+	if options != nil && options.ResultType != nil {
+		query.Set("resultType", string(*options.ResultType))
 	}
 	query.Set("api-version", "2018-01-01")
-	if metricsListOptions != nil && metricsListOptions.Metricnamespace != nil {
-		query.Set("metricnamespace", *metricsListOptions.Metricnamespace)
+	if options != nil && options.Metricnamespace != nil {
+		query.Set("metricnamespace", *options.Metricnamespace)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -109,5 +109,5 @@ func (client *MetricsClient) ListHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

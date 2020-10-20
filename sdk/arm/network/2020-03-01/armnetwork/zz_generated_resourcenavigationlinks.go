@@ -16,7 +16,7 @@ import (
 // ResourceNavigationLinksOperations contains the methods for the ResourceNavigationLinks group.
 type ResourceNavigationLinksOperations interface {
 	// List - Gets a list of resource navigation links for a subnet.
-	List(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string) (*ResourceNavigationLinksListResultResponse, error)
+	List(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *ResourceNavigationLinksListOptions) (*ResourceNavigationLinksListResultResponse, error)
 }
 
 // ResourceNavigationLinksClient implements the ResourceNavigationLinksOperations interface.
@@ -37,8 +37,8 @@ func (client *ResourceNavigationLinksClient) Do(req *azcore.Request) (*azcore.Re
 }
 
 // List - Gets a list of resource navigation links for a subnet.
-func (client *ResourceNavigationLinksClient) List(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string) (*ResourceNavigationLinksListResultResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName)
+func (client *ResourceNavigationLinksClient) List(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *ResourceNavigationLinksListOptions) (*ResourceNavigationLinksListResultResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (client *ResourceNavigationLinksClient) List(ctx context.Context, resourceG
 }
 
 // ListCreateRequest creates the List request.
-func (client *ResourceNavigationLinksClient) ListCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string) (*azcore.Request, error) {
+func (client *ResourceNavigationLinksClient) ListCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *ResourceNavigationLinksListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/ResourceNavigationLinks"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkName}", url.PathEscape(virtualNetworkName))
@@ -86,5 +86,5 @@ func (client *ResourceNavigationLinksClient) ListHandleError(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

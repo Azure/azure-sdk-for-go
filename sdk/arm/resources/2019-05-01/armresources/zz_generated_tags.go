@@ -19,15 +19,15 @@ import (
 // TagsOperations contains the methods for the Tags group.
 type TagsOperations interface {
 	// CreateOrUpdate - The tag name can have a maximum of 512 characters and is case insensitive. Tag names created by Azure have prefixes of microsoft, azure, or windows. You cannot create tags with one of these prefixes.
-	CreateOrUpdate(ctx context.Context, tagName string) (*TagDetailsResponse, error)
+	CreateOrUpdate(ctx context.Context, tagName string, options *TagsCreateOrUpdateOptions) (*TagDetailsResponse, error)
 	// CreateOrUpdateValue - Creates a tag value. The name of the tag must already exist.
-	CreateOrUpdateValue(ctx context.Context, tagName string, tagValue string) (*TagValueResponse, error)
+	CreateOrUpdateValue(ctx context.Context, tagName string, tagValue string, options *TagsCreateOrUpdateValueOptions) (*TagValueResponse, error)
 	// Delete - You must remove all values from a resource tag before you can delete it.
-	Delete(ctx context.Context, tagName string) (*http.Response, error)
+	Delete(ctx context.Context, tagName string, options *TagsDeleteOptions) (*http.Response, error)
 	// DeleteValue - Deletes a tag value.
-	DeleteValue(ctx context.Context, tagName string, tagValue string) (*http.Response, error)
+	DeleteValue(ctx context.Context, tagName string, tagValue string, options *TagsDeleteValueOptions) (*http.Response, error)
 	// List - Gets the names and values of all resource tags that are defined in a subscription.
-	List() TagsListResultPager
+	List(options *TagsListOptions) TagsListResultPager
 }
 
 // TagsClient implements the TagsOperations interface.
@@ -48,8 +48,8 @@ func (client *TagsClient) Do(req *azcore.Request) (*azcore.Response, error) {
 }
 
 // CreateOrUpdate - The tag name can have a maximum of 512 characters and is case insensitive. Tag names created by Azure have prefixes of microsoft, azure, or windows. You cannot create tags with one of these prefixes.
-func (client *TagsClient) CreateOrUpdate(ctx context.Context, tagName string) (*TagDetailsResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, tagName)
+func (client *TagsClient) CreateOrUpdate(ctx context.Context, tagName string, options *TagsCreateOrUpdateOptions) (*TagDetailsResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, tagName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (client *TagsClient) CreateOrUpdate(ctx context.Context, tagName string) (*
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TagsClient) CreateOrUpdateCreateRequest(ctx context.Context, tagName string) (*azcore.Request, error) {
+func (client *TagsClient) CreateOrUpdateCreateRequest(ctx context.Context, tagName string, options *TagsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}"
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -96,14 +96,14 @@ func (client *TagsClient) CreateOrUpdateHandleError(resp *azcore.Response) error
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // CreateOrUpdateValue - Creates a tag value. The name of the tag must already exist.
-func (client *TagsClient) CreateOrUpdateValue(ctx context.Context, tagName string, tagValue string) (*TagValueResponse, error) {
-	req, err := client.CreateOrUpdateValueCreateRequest(ctx, tagName, tagValue)
+func (client *TagsClient) CreateOrUpdateValue(ctx context.Context, tagName string, tagValue string, options *TagsCreateOrUpdateValueOptions) (*TagValueResponse, error) {
+	req, err := client.CreateOrUpdateValueCreateRequest(ctx, tagName, tagValue, options)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ func (client *TagsClient) CreateOrUpdateValue(ctx context.Context, tagName strin
 }
 
 // CreateOrUpdateValueCreateRequest creates the CreateOrUpdateValue request.
-func (client *TagsClient) CreateOrUpdateValueCreateRequest(ctx context.Context, tagName string, tagValue string) (*azcore.Request, error) {
+func (client *TagsClient) CreateOrUpdateValueCreateRequest(ctx context.Context, tagName string, tagValue string, options *TagsCreateOrUpdateValueOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}"
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
 	urlPath = strings.ReplaceAll(urlPath, "{tagValue}", url.PathEscape(tagValue))
@@ -151,14 +151,14 @@ func (client *TagsClient) CreateOrUpdateValueHandleError(resp *azcore.Response) 
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Delete - You must remove all values from a resource tag before you can delete it.
-func (client *TagsClient) Delete(ctx context.Context, tagName string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, tagName)
+func (client *TagsClient) Delete(ctx context.Context, tagName string, options *TagsDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, tagName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -173,7 +173,7 @@ func (client *TagsClient) Delete(ctx context.Context, tagName string) (*http.Res
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *TagsClient) DeleteCreateRequest(ctx context.Context, tagName string) (*azcore.Request, error) {
+func (client *TagsClient) DeleteCreateRequest(ctx context.Context, tagName string, options *TagsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}"
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -194,14 +194,14 @@ func (client *TagsClient) DeleteHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // DeleteValue - Deletes a tag value.
-func (client *TagsClient) DeleteValue(ctx context.Context, tagName string, tagValue string) (*http.Response, error) {
-	req, err := client.DeleteValueCreateRequest(ctx, tagName, tagValue)
+func (client *TagsClient) DeleteValue(ctx context.Context, tagName string, tagValue string, options *TagsDeleteValueOptions) (*http.Response, error) {
+	req, err := client.DeleteValueCreateRequest(ctx, tagName, tagValue, options)
 	if err != nil {
 		return nil, err
 	}
@@ -216,7 +216,7 @@ func (client *TagsClient) DeleteValue(ctx context.Context, tagName string, tagVa
 }
 
 // DeleteValueCreateRequest creates the DeleteValue request.
-func (client *TagsClient) DeleteValueCreateRequest(ctx context.Context, tagName string, tagValue string) (*azcore.Request, error) {
+func (client *TagsClient) DeleteValueCreateRequest(ctx context.Context, tagName string, tagValue string, options *TagsDeleteValueOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}"
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
 	urlPath = strings.ReplaceAll(urlPath, "{tagValue}", url.PathEscape(tagValue))
@@ -238,28 +238,29 @@ func (client *TagsClient) DeleteValueHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // List - Gets the names and values of all resource tags that are defined in a subscription.
-func (client *TagsClient) List() TagsListResultPager {
+func (client *TagsClient) List(options *TagsListOptions) TagsListResultPager {
 	return &tagsListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *TagsListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.TagsListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *TagsClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *TagsClient) ListCreateRequest(ctx context.Context, options *TagsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -286,7 +287,7 @@ func (client *TagsClient) ListHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

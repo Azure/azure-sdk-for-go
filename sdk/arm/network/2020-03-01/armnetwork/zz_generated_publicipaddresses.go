@@ -18,27 +18,27 @@ import (
 // PublicIPAddressesOperations contains the methods for the PublicIPAddresses group.
 type PublicIPAddressesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a static or dynamic public IP address.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (*PublicIPAddressPollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress, options *PublicIPAddressesCreateOrUpdateOptions) (*PublicIPAddressPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (PublicIPAddressPoller, error)
 	// BeginDelete - Deletes the specified public IP address.
-	BeginDelete(ctx context.Context, resourceGroupName string, publicIPAddressName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, publicIPAddressName string, options *PublicIPAddressesDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified public IP address in a specified resource group.
-	Get(ctx context.Context, resourceGroupName string, publicIPAddressName string, publicIPAddressesGetOptions *PublicIPAddressesGetOptions) (*PublicIPAddressResponse, error)
+	Get(ctx context.Context, resourceGroupName string, publicIPAddressName string, options *PublicIPAddressesGetOptions) (*PublicIPAddressResponse, error)
 	// GetVirtualMachineScaleSetPublicIPAddress - Get the specified public IP address in a virtual machine scale set.
-	GetVirtualMachineScaleSetPublicIPAddress(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, publicIPAddressName string, publicIPAddressesGetVirtualMachineScaleSetPublicIpaddressOptions *PublicIPAddressesGetVirtualMachineScaleSetPublicIPAddressOptions) (*PublicIPAddressResponse, error)
+	GetVirtualMachineScaleSetPublicIPAddress(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, publicIPAddressName string, options *PublicIPAddressesGetVirtualMachineScaleSetPublicIPAddressOptions) (*PublicIPAddressResponse, error)
 	// List - Gets all public IP addresses in a resource group.
-	List(resourceGroupName string) PublicIPAddressListResultPager
+	List(resourceGroupName string, options *PublicIPAddressesListOptions) PublicIPAddressListResultPager
 	// ListAll - Gets all the public IP addresses in a subscription.
-	ListAll() PublicIPAddressListResultPager
+	ListAll(options *PublicIPAddressesListAllOptions) PublicIPAddressListResultPager
 	// ListVirtualMachineScaleSetPublicIPAddresses - Gets information about all public IP addresses on a virtual machine scale set level.
-	ListVirtualMachineScaleSetPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string) PublicIPAddressListResultPager
+	ListVirtualMachineScaleSetPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string, options *PublicIPAddressesListVirtualMachineScaleSetPublicIPAddressesOptions) PublicIPAddressListResultPager
 	// ListVirtualMachineScaleSetVMPublicIPaddresses - Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale set.
-	ListVirtualMachineScaleSetVMPublicIPaddresses(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string) PublicIPAddressListResultPager
+	ListVirtualMachineScaleSetVMPublicIPaddresses(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesListVirtualMachineScaleSetVMPublicIPaddressesOptions) PublicIPAddressListResultPager
 	// UpdateTags - Updates public IP address tags.
-	UpdateTags(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters TagsObject) (*PublicIPAddressResponse, error)
+	UpdateTags(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters TagsObject, options *PublicIPAddressesUpdateTagsOptions) (*PublicIPAddressResponse, error)
 }
 
 // PublicIPAddressesClient implements the PublicIPAddressesOperations interface.
@@ -58,8 +58,8 @@ func (client *PublicIPAddressesClient) Do(req *azcore.Request) (*azcore.Response
 	return client.p.Do(req)
 }
 
-func (client *PublicIPAddressesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (*PublicIPAddressPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, publicIPAddressName, parameters)
+func (client *PublicIPAddressesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress, options *PublicIPAddressesCreateOrUpdateOptions) (*PublicIPAddressPollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, publicIPAddressName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -93,8 +93,8 @@ func (client *PublicIPAddressesClient) ResumeCreateOrUpdate(token string) (Publi
 }
 
 // CreateOrUpdate - Creates or updates a static or dynamic public IP address.
-func (client *PublicIPAddressesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, publicIPAddressName, parameters)
+func (client *PublicIPAddressesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress, options *PublicIPAddressesCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, publicIPAddressName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (client *PublicIPAddressesClient) CreateOrUpdate(ctx context.Context, resou
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PublicIPAddressesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress) (*azcore.Request, error) {
+func (client *PublicIPAddressesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters PublicIPAddress, options *PublicIPAddressesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{publicIpAddressName}", url.PathEscape(publicIPAddressName))
@@ -137,11 +137,11 @@ func (client *PublicIPAddressesClient) CreateOrUpdateHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *PublicIPAddressesClient) BeginDelete(ctx context.Context, resourceGroupName string, publicIPAddressName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, publicIPAddressName)
+func (client *PublicIPAddressesClient) BeginDelete(ctx context.Context, resourceGroupName string, publicIPAddressName string, options *PublicIPAddressesDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, publicIPAddressName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -175,8 +175,8 @@ func (client *PublicIPAddressesClient) ResumeDelete(token string) (HTTPPoller, e
 }
 
 // Delete - Deletes the specified public IP address.
-func (client *PublicIPAddressesClient) Delete(ctx context.Context, resourceGroupName string, publicIPAddressName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, publicIPAddressName)
+func (client *PublicIPAddressesClient) Delete(ctx context.Context, resourceGroupName string, publicIPAddressName string, options *PublicIPAddressesDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, publicIPAddressName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +191,7 @@ func (client *PublicIPAddressesClient) Delete(ctx context.Context, resourceGroup
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *PublicIPAddressesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, publicIPAddressName string) (*azcore.Request, error) {
+func (client *PublicIPAddressesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, publicIPAddressName string, options *PublicIPAddressesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{publicIpAddressName}", url.PathEscape(publicIPAddressName))
@@ -213,12 +213,12 @@ func (client *PublicIPAddressesClient) DeleteHandleError(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets the specified public IP address in a specified resource group.
-func (client *PublicIPAddressesClient) Get(ctx context.Context, resourceGroupName string, publicIPAddressName string, publicIPAddressesGetOptions *PublicIPAddressesGetOptions) (*PublicIPAddressResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, publicIPAddressName, publicIPAddressesGetOptions)
+func (client *PublicIPAddressesClient) Get(ctx context.Context, resourceGroupName string, publicIPAddressName string, options *PublicIPAddressesGetOptions) (*PublicIPAddressResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, publicIPAddressName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -237,7 +237,7 @@ func (client *PublicIPAddressesClient) Get(ctx context.Context, resourceGroupNam
 }
 
 // GetCreateRequest creates the Get request.
-func (client *PublicIPAddressesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, publicIPAddressName string, publicIPAddressesGetOptions *PublicIPAddressesGetOptions) (*azcore.Request, error) {
+func (client *PublicIPAddressesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, publicIPAddressName string, options *PublicIPAddressesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{publicIpAddressName}", url.PathEscape(publicIPAddressName))
@@ -248,8 +248,8 @@ func (client *PublicIPAddressesClient) GetCreateRequest(ctx context.Context, res
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2020-03-01")
-	if publicIPAddressesGetOptions != nil && publicIPAddressesGetOptions.Expand != nil {
-		query.Set("$expand", *publicIPAddressesGetOptions.Expand)
+	if options != nil && options.Expand != nil {
+		query.Set("$expand", *options.Expand)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -268,12 +268,12 @@ func (client *PublicIPAddressesClient) GetHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetVirtualMachineScaleSetPublicIPAddress - Get the specified public IP address in a virtual machine scale set.
-func (client *PublicIPAddressesClient) GetVirtualMachineScaleSetPublicIPAddress(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, publicIPAddressName string, publicIPAddressesGetVirtualMachineScaleSetPublicIpaddressOptions *PublicIPAddressesGetVirtualMachineScaleSetPublicIPAddressOptions) (*PublicIPAddressResponse, error) {
-	req, err := client.GetVirtualMachineScaleSetPublicIPAddressCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIPAddressName, publicIPAddressesGetVirtualMachineScaleSetPublicIpaddressOptions)
+func (client *PublicIPAddressesClient) GetVirtualMachineScaleSetPublicIPAddress(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, publicIPAddressName string, options *PublicIPAddressesGetVirtualMachineScaleSetPublicIPAddressOptions) (*PublicIPAddressResponse, error) {
+	req, err := client.GetVirtualMachineScaleSetPublicIPAddressCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIPAddressName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -292,7 +292,7 @@ func (client *PublicIPAddressesClient) GetVirtualMachineScaleSetPublicIPAddress(
 }
 
 // GetVirtualMachineScaleSetPublicIPAddressCreateRequest creates the GetVirtualMachineScaleSetPublicIPAddress request.
-func (client *PublicIPAddressesClient) GetVirtualMachineScaleSetPublicIPAddressCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, publicIPAddressName string, publicIPAddressesGetVirtualMachineScaleSetPublicIpaddressOptions *PublicIPAddressesGetVirtualMachineScaleSetPublicIPAddressOptions) (*azcore.Request, error) {
+func (client *PublicIPAddressesClient) GetVirtualMachineScaleSetPublicIPAddressCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, publicIPAddressName string, options *PublicIPAddressesGetVirtualMachineScaleSetPublicIPAddressOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses/{publicIpAddressName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineScaleSetName}", url.PathEscape(virtualMachineScaleSetName))
@@ -307,8 +307,8 @@ func (client *PublicIPAddressesClient) GetVirtualMachineScaleSetPublicIPAddressC
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2018-10-01")
-	if publicIPAddressesGetVirtualMachineScaleSetPublicIpaddressOptions != nil && publicIPAddressesGetVirtualMachineScaleSetPublicIpaddressOptions.Expand != nil {
-		query.Set("$expand", *publicIPAddressesGetVirtualMachineScaleSetPublicIpaddressOptions.Expand)
+	if options != nil && options.Expand != nil {
+		query.Set("$expand", *options.Expand)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -327,26 +327,27 @@ func (client *PublicIPAddressesClient) GetVirtualMachineScaleSetPublicIPAddressH
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Gets all public IP addresses in a resource group.
-func (client *PublicIPAddressesClient) List(resourceGroupName string) PublicIPAddressListResultPager {
+func (client *PublicIPAddressesClient) List(resourceGroupName string, options *PublicIPAddressesListOptions) PublicIPAddressListResultPager {
 	return &publicIPAddressListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName)
+			return client.ListCreateRequest(ctx, resourceGroupName, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *PublicIPAddressListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PublicIPAddressListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *PublicIPAddressesClient) ListCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *PublicIPAddressesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, options *PublicIPAddressesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -373,26 +374,27 @@ func (client *PublicIPAddressesClient) ListHandleError(resp *azcore.Response) er
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListAll - Gets all the public IP addresses in a subscription.
-func (client *PublicIPAddressesClient) ListAll() PublicIPAddressListResultPager {
+func (client *PublicIPAddressesClient) ListAll(options *PublicIPAddressesListAllOptions) PublicIPAddressListResultPager {
 	return &publicIPAddressListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListAllCreateRequest(ctx)
+			return client.ListAllCreateRequest(ctx, options)
 		},
 		responder: client.ListAllHandleResponse,
 		errorer:   client.ListAllHandleError,
 		advancer: func(ctx context.Context, resp *PublicIPAddressListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PublicIPAddressListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListAllCreateRequest creates the ListAll request.
-func (client *PublicIPAddressesClient) ListAllCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *PublicIPAddressesClient) ListAllCreateRequest(ctx context.Context, options *PublicIPAddressesListAllOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/publicIPAddresses"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -418,26 +420,27 @@ func (client *PublicIPAddressesClient) ListAllHandleError(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListVirtualMachineScaleSetPublicIPAddresses - Gets information about all public IP addresses on a virtual machine scale set level.
-func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string) PublicIPAddressListResultPager {
+func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string, options *PublicIPAddressesListVirtualMachineScaleSetPublicIPAddressesOptions) PublicIPAddressListResultPager {
 	return &publicIPAddressListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListVirtualMachineScaleSetPublicIPAddressesCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName)
+			return client.ListVirtualMachineScaleSetPublicIPAddressesCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, options)
 		},
 		responder: client.ListVirtualMachineScaleSetPublicIPAddressesHandleResponse,
 		errorer:   client.ListVirtualMachineScaleSetPublicIPAddressesHandleError,
 		advancer: func(ctx context.Context, resp *PublicIPAddressListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PublicIPAddressListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListVirtualMachineScaleSetPublicIPAddressesCreateRequest creates the ListVirtualMachineScaleSetPublicIPAddresses request.
-func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetPublicIPAddressesCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string) (*azcore.Request, error) {
+func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetPublicIPAddressesCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, options *PublicIPAddressesListVirtualMachineScaleSetPublicIPAddressesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/publicipaddresses"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineScaleSetName}", url.PathEscape(virtualMachineScaleSetName))
@@ -465,26 +468,27 @@ func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetPublicIPAddress
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListVirtualMachineScaleSetVMPublicIPaddresses - Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale set.
-func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetVMPublicIPaddresses(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string) PublicIPAddressListResultPager {
+func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetVMPublicIPaddresses(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesListVirtualMachineScaleSetVMPublicIPaddressesOptions) PublicIPAddressListResultPager {
 	return &publicIPAddressListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListVirtualMachineScaleSetVMPublicIPaddressesCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName)
+			return client.ListVirtualMachineScaleSetVMPublicIPaddressesCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, options)
 		},
 		responder: client.ListVirtualMachineScaleSetVMPublicIPaddressesHandleResponse,
 		errorer:   client.ListVirtualMachineScaleSetVMPublicIPaddressesHandleError,
 		advancer: func(ctx context.Context, resp *PublicIPAddressListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PublicIPAddressListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListVirtualMachineScaleSetVMPublicIPaddressesCreateRequest creates the ListVirtualMachineScaleSetVMPublicIPaddresses request.
-func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetVMPublicIPaddressesCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string) (*azcore.Request, error) {
+func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetVMPublicIPaddressesCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesListVirtualMachineScaleSetVMPublicIPaddressesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineScaleSetName}", url.PathEscape(virtualMachineScaleSetName))
@@ -515,12 +519,12 @@ func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetVMPublicIPaddre
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // UpdateTags - Updates public IP address tags.
-func (client *PublicIPAddressesClient) UpdateTags(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters TagsObject) (*PublicIPAddressResponse, error) {
-	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, publicIPAddressName, parameters)
+func (client *PublicIPAddressesClient) UpdateTags(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters TagsObject, options *PublicIPAddressesUpdateTagsOptions) (*PublicIPAddressResponse, error) {
+	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, publicIPAddressName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -539,7 +543,7 @@ func (client *PublicIPAddressesClient) UpdateTags(ctx context.Context, resourceG
 }
 
 // UpdateTagsCreateRequest creates the UpdateTags request.
-func (client *PublicIPAddressesClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters TagsObject) (*azcore.Request, error) {
+func (client *PublicIPAddressesClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters TagsObject, options *PublicIPAddressesUpdateTagsOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{publicIpAddressName}", url.PathEscape(publicIPAddressName))
@@ -567,5 +571,5 @@ func (client *PublicIPAddressesClient) UpdateTagsHandleError(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

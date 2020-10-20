@@ -16,7 +16,7 @@ import (
 // AzureFirewallFqdnTagsOperations contains the methods for the AzureFirewallFqdnTags group.
 type AzureFirewallFqdnTagsOperations interface {
 	// ListAll - Gets all the Azure Firewall FQDN Tags in a subscription.
-	ListAll() AzureFirewallFqdnTagListResultPager
+	ListAll(options *AzureFirewallFqdnTagsListAllOptions) AzureFirewallFqdnTagListResultPager
 }
 
 // AzureFirewallFqdnTagsClient implements the AzureFirewallFqdnTagsOperations interface.
@@ -37,22 +37,23 @@ func (client *AzureFirewallFqdnTagsClient) Do(req *azcore.Request) (*azcore.Resp
 }
 
 // ListAll - Gets all the Azure Firewall FQDN Tags in a subscription.
-func (client *AzureFirewallFqdnTagsClient) ListAll() AzureFirewallFqdnTagListResultPager {
+func (client *AzureFirewallFqdnTagsClient) ListAll(options *AzureFirewallFqdnTagsListAllOptions) AzureFirewallFqdnTagListResultPager {
 	return &azureFirewallFqdnTagListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListAllCreateRequest(ctx)
+			return client.ListAllCreateRequest(ctx, options)
 		},
 		responder: client.ListAllHandleResponse,
 		errorer:   client.ListAllHandleError,
 		advancer: func(ctx context.Context, resp *AzureFirewallFqdnTagListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AzureFirewallFqdnTagListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListAllCreateRequest creates the ListAll request.
-func (client *AzureFirewallFqdnTagsClient) ListAllCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *AzureFirewallFqdnTagsClient) ListAllCreateRequest(ctx context.Context, options *AzureFirewallFqdnTagsListAllOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/azureFirewallFqdnTags"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -78,5 +79,5 @@ func (client *AzureFirewallFqdnTagsClient) ListAllHandleError(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

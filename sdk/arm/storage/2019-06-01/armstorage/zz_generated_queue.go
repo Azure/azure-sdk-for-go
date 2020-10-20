@@ -16,15 +16,15 @@ import (
 // QueueOperations contains the methods for the Queue group.
 type QueueOperations interface {
 	// Create - Creates a new queue with the specified queue name, under the specified account.
-	Create(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue) (*StorageQueueResponse, error)
+	Create(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue, options *QueueCreateOptions) (*StorageQueueResponse, error)
 	// Delete - Deletes the queue with the specified queue name, under the specified account if it exists.
-	Delete(ctx context.Context, resourceGroupName string, accountName string, queueName string) (*http.Response, error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, queueName string, options *QueueDeleteOptions) (*http.Response, error)
 	// Get - Gets the queue with the specified queue name, under the specified account if it exists.
-	Get(ctx context.Context, resourceGroupName string, accountName string, queueName string) (*StorageQueueResponse, error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, queueName string, options *QueueGetOptions) (*StorageQueueResponse, error)
 	// List - Gets a list of all the queues under the specified storage account
-	List(resourceGroupName string, accountName string, queueListOptions *QueueListOptions) ListQueueResourcePager
+	List(resourceGroupName string, accountName string, options *QueueListOptions) ListQueueResourcePager
 	// Update - Creates a new queue with the specified queue name, under the specified account.
-	Update(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue) (*StorageQueueResponse, error)
+	Update(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue, options *QueueUpdateOptions) (*StorageQueueResponse, error)
 }
 
 // QueueClient implements the QueueOperations interface.
@@ -45,8 +45,8 @@ func (client *QueueClient) Do(req *azcore.Request) (*azcore.Response, error) {
 }
 
 // Create - Creates a new queue with the specified queue name, under the specified account.
-func (client *QueueClient) Create(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue) (*StorageQueueResponse, error) {
-	req, err := client.CreateCreateRequest(ctx, resourceGroupName, accountName, queueName, queue)
+func (client *QueueClient) Create(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue, options *QueueCreateOptions) (*StorageQueueResponse, error) {
+	req, err := client.CreateCreateRequest(ctx, resourceGroupName, accountName, queueName, queue, options)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (client *QueueClient) Create(ctx context.Context, resourceGroupName string,
 }
 
 // CreateCreateRequest creates the Create request.
-func (client *QueueClient) CreateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue) (*azcore.Request, error) {
+func (client *QueueClient) CreateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue, options *QueueCreateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues/{queueName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -94,12 +94,12 @@ func (client *QueueClient) CreateHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - Deletes the queue with the specified queue name, under the specified account if it exists.
-func (client *QueueClient) Delete(ctx context.Context, resourceGroupName string, accountName string, queueName string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, accountName, queueName)
+func (client *QueueClient) Delete(ctx context.Context, resourceGroupName string, accountName string, queueName string, options *QueueDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, accountName, queueName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +114,7 @@ func (client *QueueClient) Delete(ctx context.Context, resourceGroupName string,
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *QueueClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, queueName string) (*azcore.Request, error) {
+func (client *QueueClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, queueName string, options *QueueDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues/{queueName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -137,12 +137,12 @@ func (client *QueueClient) DeleteHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets the queue with the specified queue name, under the specified account if it exists.
-func (client *QueueClient) Get(ctx context.Context, resourceGroupName string, accountName string, queueName string) (*StorageQueueResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, accountName, queueName)
+func (client *QueueClient) Get(ctx context.Context, resourceGroupName string, accountName string, queueName string, options *QueueGetOptions) (*StorageQueueResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, accountName, queueName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +161,7 @@ func (client *QueueClient) Get(ctx context.Context, resourceGroupName string, ac
 }
 
 // GetCreateRequest creates the Get request.
-func (client *QueueClient) GetCreateRequest(ctx context.Context, resourceGroupName string, accountName string, queueName string) (*azcore.Request, error) {
+func (client *QueueClient) GetCreateRequest(ctx context.Context, resourceGroupName string, accountName string, queueName string, options *QueueGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues/{queueName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -190,26 +190,27 @@ func (client *QueueClient) GetHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Gets a list of all the queues under the specified storage account
-func (client *QueueClient) List(resourceGroupName string, accountName string, queueListOptions *QueueListOptions) ListQueueResourcePager {
+func (client *QueueClient) List(resourceGroupName string, accountName string, options *QueueListOptions) ListQueueResourcePager {
 	return &listQueueResourcePager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, accountName, queueListOptions)
+			return client.ListCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *ListQueueResourceResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListQueueResource.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *QueueClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string, queueListOptions *QueueListOptions) (*azcore.Request, error) {
+func (client *QueueClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *QueueListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -220,11 +221,11 @@ func (client *QueueClient) ListCreateRequest(ctx context.Context, resourceGroupN
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2019-06-01")
-	if queueListOptions != nil && queueListOptions.Maxpagesize != nil {
-		query.Set("$maxpagesize", *queueListOptions.Maxpagesize)
+	if options != nil && options.Maxpagesize != nil {
+		query.Set("$maxpagesize", *options.Maxpagesize)
 	}
-	if queueListOptions != nil && queueListOptions.Filter != nil {
-		query.Set("$filter", *queueListOptions.Filter)
+	if options != nil && options.Filter != nil {
+		query.Set("$filter", *options.Filter)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -243,12 +244,12 @@ func (client *QueueClient) ListHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Update - Creates a new queue with the specified queue name, under the specified account.
-func (client *QueueClient) Update(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue) (*StorageQueueResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, accountName, queueName, queue)
+func (client *QueueClient) Update(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue, options *QueueUpdateOptions) (*StorageQueueResponse, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, accountName, queueName, queue, options)
 	if err != nil {
 		return nil, err
 	}
@@ -267,7 +268,7 @@ func (client *QueueClient) Update(ctx context.Context, resourceGroupName string,
 }
 
 // UpdateCreateRequest creates the Update request.
-func (client *QueueClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue) (*azcore.Request, error) {
+func (client *QueueClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, queueName string, queue StorageQueue, options *QueueUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues/{queueName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -296,5 +297,5 @@ func (client *QueueClient) UpdateHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -16,7 +16,7 @@ import (
 // ServiceAssociationLinksOperations contains the methods for the ServiceAssociationLinks group.
 type ServiceAssociationLinksOperations interface {
 	// List - Gets a list of service association links for a subnet.
-	List(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string) (*ServiceAssociationLinksListResultResponse, error)
+	List(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *ServiceAssociationLinksListOptions) (*ServiceAssociationLinksListResultResponse, error)
 }
 
 // ServiceAssociationLinksClient implements the ServiceAssociationLinksOperations interface.
@@ -37,8 +37,8 @@ func (client *ServiceAssociationLinksClient) Do(req *azcore.Request) (*azcore.Re
 }
 
 // List - Gets a list of service association links for a subnet.
-func (client *ServiceAssociationLinksClient) List(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string) (*ServiceAssociationLinksListResultResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName)
+func (client *ServiceAssociationLinksClient) List(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *ServiceAssociationLinksListOptions) (*ServiceAssociationLinksListResultResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceGroupName, virtualNetworkName, subnetName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (client *ServiceAssociationLinksClient) List(ctx context.Context, resourceG
 }
 
 // ListCreateRequest creates the List request.
-func (client *ServiceAssociationLinksClient) ListCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string) (*azcore.Request, error) {
+func (client *ServiceAssociationLinksClient) ListCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, subnetName string, options *ServiceAssociationLinksListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/ServiceAssociationLinks"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkName}", url.PathEscape(virtualNetworkName))
@@ -86,5 +86,5 @@ func (client *ServiceAssociationLinksClient) ListHandleError(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

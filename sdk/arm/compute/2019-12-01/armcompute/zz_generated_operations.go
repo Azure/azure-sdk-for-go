@@ -17,7 +17,7 @@ import (
 // Operations contains the methods for the Operations group.
 type Operations interface {
 	// List - Gets a list of compute operations.
-	List(ctx context.Context) (*ComputeOperationListResultResponse, error)
+	List(ctx context.Context, options *OperationsListOptions) (*ComputeOperationListResultResponse, error)
 }
 
 // OperationsClient implements the Operations interface.
@@ -37,8 +37,8 @@ func (client *OperationsClient) Do(req *azcore.Request) (*azcore.Response, error
 }
 
 // List - Gets a list of compute operations.
-func (client *OperationsClient) List(ctx context.Context) (*ComputeOperationListResultResponse, error) {
-	req, err := client.ListCreateRequest(ctx)
+func (client *OperationsClient) List(ctx context.Context, options *OperationsListOptions) (*ComputeOperationListResultResponse, error) {
+	req, err := client.ListCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (client *OperationsClient) List(ctx context.Context) (*ComputeOperationList
 }
 
 // ListCreateRequest creates the List request.
-func (client *OperationsClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *OperationsClient) ListCreateRequest(ctx context.Context, options *OperationsListOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Compute/operations"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
 	if err != nil {
@@ -83,7 +83,7 @@ func (client *OperationsClient) ListHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

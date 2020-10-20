@@ -188,7 +188,7 @@ func (client *blockBlobClient) CommitBlockListHandleError(resp *azcore.Response)
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetBlockList - The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob
@@ -286,7 +286,7 @@ func (client *blockBlobClient) GetBlockListHandleError(resp *azcore.Response) er
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // StageBlock - The Stage Block operation creates a new block to be committed as part of a blob
@@ -407,7 +407,7 @@ func (client *blockBlobClient) StageBlockHandleError(resp *azcore.Response) erro
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // StageBlockFromURL - The Stage Block operation creates a new block to be committed as part of a blob where the contents are read from a URL.
@@ -544,7 +544,7 @@ func (client *blockBlobClient) StageBlockFromURLHandleError(resp *azcore.Respons
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Upload - The Upload Block Blob operation updates the content of an existing block blob. Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not supported with Put Blob; the content of the existing blob is overwritten with the content of the new blob. To perform a partial update of the content of a block blob, use the Put Block List operation.
@@ -702,5 +702,5 @@ func (client *blockBlobClient) UploadHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

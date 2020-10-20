@@ -20,17 +20,17 @@ import (
 // DeploymentOperationsOperations contains the methods for the DeploymentOperations group.
 type DeploymentOperationsOperations interface {
 	// Get - Gets a deployments operation.
-	Get(ctx context.Context, resourceGroupName string, deploymentName string, operationId string) (*DeploymentOperationResponse, error)
+	Get(ctx context.Context, resourceGroupName string, deploymentName string, operationId string, options *DeploymentOperationsGetOptions) (*DeploymentOperationResponse, error)
 	// GetAtManagementGroupScope - Gets a deployments operation.
-	GetAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, operationId string) (*DeploymentOperationResponse, error)
+	GetAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, operationId string, options *DeploymentOperationsGetAtManagementGroupScopeOptions) (*DeploymentOperationResponse, error)
 	// GetAtSubscriptionScope - Gets a deployments operation.
-	GetAtSubscriptionScope(ctx context.Context, deploymentName string, operationId string) (*DeploymentOperationResponse, error)
+	GetAtSubscriptionScope(ctx context.Context, deploymentName string, operationId string, options *DeploymentOperationsGetAtSubscriptionScopeOptions) (*DeploymentOperationResponse, error)
 	// List - Gets all deployments operations for a deployment.
-	List(resourceGroupName string, deploymentName string, deploymentOperationsListOptions *DeploymentOperationsListOptions) DeploymentOperationsListResultPager
+	List(resourceGroupName string, deploymentName string, options *DeploymentOperationsListOptions) DeploymentOperationsListResultPager
 	// ListAtManagementGroupScope - Gets all deployments operations for a deployment.
-	ListAtManagementGroupScope(groupId string, deploymentName string, deploymentOperationsListAtManagementGroupScopeOptions *DeploymentOperationsListAtManagementGroupScopeOptions) DeploymentOperationsListResultPager
+	ListAtManagementGroupScope(groupId string, deploymentName string, options *DeploymentOperationsListAtManagementGroupScopeOptions) DeploymentOperationsListResultPager
 	// ListAtSubscriptionScope - Gets all deployments operations for a deployment.
-	ListAtSubscriptionScope(deploymentName string, deploymentOperationsListAtSubscriptionScopeOptions *DeploymentOperationsListAtSubscriptionScopeOptions) DeploymentOperationsListResultPager
+	ListAtSubscriptionScope(deploymentName string, options *DeploymentOperationsListAtSubscriptionScopeOptions) DeploymentOperationsListResultPager
 }
 
 // DeploymentOperationsClient implements the DeploymentOperationsOperations interface.
@@ -51,8 +51,8 @@ func (client *DeploymentOperationsClient) Do(req *azcore.Request) (*azcore.Respo
 }
 
 // Get - Gets a deployments operation.
-func (client *DeploymentOperationsClient) Get(ctx context.Context, resourceGroupName string, deploymentName string, operationId string) (*DeploymentOperationResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, deploymentName, operationId)
+func (client *DeploymentOperationsClient) Get(ctx context.Context, resourceGroupName string, deploymentName string, operationId string, options *DeploymentOperationsGetOptions) (*DeploymentOperationResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, deploymentName, operationId, options)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +71,7 @@ func (client *DeploymentOperationsClient) Get(ctx context.Context, resourceGroup
 }
 
 // GetCreateRequest creates the Get request.
-func (client *DeploymentOperationsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, operationId string) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, operationId string, options *DeploymentOperationsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations/{operationId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -101,14 +101,14 @@ func (client *DeploymentOperationsClient) GetHandleError(resp *azcore.Response) 
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // GetAtManagementGroupScope - Gets a deployments operation.
-func (client *DeploymentOperationsClient) GetAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, operationId string) (*DeploymentOperationResponse, error) {
-	req, err := client.GetAtManagementGroupScopeCreateRequest(ctx, groupId, deploymentName, operationId)
+func (client *DeploymentOperationsClient) GetAtManagementGroupScope(ctx context.Context, groupId string, deploymentName string, operationId string, options *DeploymentOperationsGetAtManagementGroupScopeOptions) (*DeploymentOperationResponse, error) {
+	req, err := client.GetAtManagementGroupScopeCreateRequest(ctx, groupId, deploymentName, operationId, options)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ func (client *DeploymentOperationsClient) GetAtManagementGroupScope(ctx context.
 }
 
 // GetAtManagementGroupScopeCreateRequest creates the GetAtManagementGroupScope request.
-func (client *DeploymentOperationsClient) GetAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, operationId string) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) GetAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, operationId string, options *DeploymentOperationsGetAtManagementGroupScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}"
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupId))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -156,14 +156,14 @@ func (client *DeploymentOperationsClient) GetAtManagementGroupScopeHandleError(r
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // GetAtSubscriptionScope - Gets a deployments operation.
-func (client *DeploymentOperationsClient) GetAtSubscriptionScope(ctx context.Context, deploymentName string, operationId string) (*DeploymentOperationResponse, error) {
-	req, err := client.GetAtSubscriptionScopeCreateRequest(ctx, deploymentName, operationId)
+func (client *DeploymentOperationsClient) GetAtSubscriptionScope(ctx context.Context, deploymentName string, operationId string, options *DeploymentOperationsGetAtSubscriptionScopeOptions) (*DeploymentOperationResponse, error) {
+	req, err := client.GetAtSubscriptionScopeCreateRequest(ctx, deploymentName, operationId, options)
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +182,7 @@ func (client *DeploymentOperationsClient) GetAtSubscriptionScope(ctx context.Con
 }
 
 // GetAtSubscriptionScopeCreateRequest creates the GetAtSubscriptionScope request.
-func (client *DeploymentOperationsClient) GetAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, operationId string) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) GetAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, operationId string, options *DeploymentOperationsGetAtSubscriptionScopeOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationId))
@@ -211,28 +211,29 @@ func (client *DeploymentOperationsClient) GetAtSubscriptionScopeHandleError(resp
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // List - Gets all deployments operations for a deployment.
-func (client *DeploymentOperationsClient) List(resourceGroupName string, deploymentName string, deploymentOperationsListOptions *DeploymentOperationsListOptions) DeploymentOperationsListResultPager {
+func (client *DeploymentOperationsClient) List(resourceGroupName string, deploymentName string, options *DeploymentOperationsListOptions) DeploymentOperationsListResultPager {
 	return &deploymentOperationsListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, deploymentName, deploymentOperationsListOptions)
+			return client.ListCreateRequest(ctx, resourceGroupName, deploymentName, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *DeploymentOperationsListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DeploymentOperationsListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *DeploymentOperationsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, deploymentOperationsListOptions *DeploymentOperationsListOptions) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentOperationsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -242,8 +243,8 @@ func (client *DeploymentOperationsClient) ListCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	query := req.URL.Query()
-	if deploymentOperationsListOptions != nil && deploymentOperationsListOptions.Top != nil {
-		query.Set("$top", strconv.FormatInt(int64(*deploymentOperationsListOptions.Top), 10))
+	if options != nil && options.Top != nil {
+		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	query.Set("api-version", "2019-05-01")
 	req.URL.RawQuery = query.Encode()
@@ -264,28 +265,29 @@ func (client *DeploymentOperationsClient) ListHandleError(resp *azcore.Response)
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // ListAtManagementGroupScope - Gets all deployments operations for a deployment.
-func (client *DeploymentOperationsClient) ListAtManagementGroupScope(groupId string, deploymentName string, deploymentOperationsListAtManagementGroupScopeOptions *DeploymentOperationsListAtManagementGroupScopeOptions) DeploymentOperationsListResultPager {
+func (client *DeploymentOperationsClient) ListAtManagementGroupScope(groupId string, deploymentName string, options *DeploymentOperationsListAtManagementGroupScopeOptions) DeploymentOperationsListResultPager {
 	return &deploymentOperationsListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListAtManagementGroupScopeCreateRequest(ctx, groupId, deploymentName, deploymentOperationsListAtManagementGroupScopeOptions)
+			return client.ListAtManagementGroupScopeCreateRequest(ctx, groupId, deploymentName, options)
 		},
 		responder: client.ListAtManagementGroupScopeHandleResponse,
 		errorer:   client.ListAtManagementGroupScopeHandleError,
 		advancer: func(ctx context.Context, resp *DeploymentOperationsListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DeploymentOperationsListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListAtManagementGroupScopeCreateRequest creates the ListAtManagementGroupScope request.
-func (client *DeploymentOperationsClient) ListAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, deploymentOperationsListAtManagementGroupScopeOptions *DeploymentOperationsListAtManagementGroupScopeOptions) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) ListAtManagementGroupScopeCreateRequest(ctx context.Context, groupId string, deploymentName string, options *DeploymentOperationsListAtManagementGroupScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupId))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
@@ -294,8 +296,8 @@ func (client *DeploymentOperationsClient) ListAtManagementGroupScopeCreateReques
 		return nil, err
 	}
 	query := req.URL.Query()
-	if deploymentOperationsListAtManagementGroupScopeOptions != nil && deploymentOperationsListAtManagementGroupScopeOptions.Top != nil {
-		query.Set("$top", strconv.FormatInt(int64(*deploymentOperationsListAtManagementGroupScopeOptions.Top), 10))
+	if options != nil && options.Top != nil {
+		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	query.Set("api-version", "2019-05-01")
 	req.URL.RawQuery = query.Encode()
@@ -316,28 +318,29 @@ func (client *DeploymentOperationsClient) ListAtManagementGroupScopeHandleError(
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // ListAtSubscriptionScope - Gets all deployments operations for a deployment.
-func (client *DeploymentOperationsClient) ListAtSubscriptionScope(deploymentName string, deploymentOperationsListAtSubscriptionScopeOptions *DeploymentOperationsListAtSubscriptionScopeOptions) DeploymentOperationsListResultPager {
+func (client *DeploymentOperationsClient) ListAtSubscriptionScope(deploymentName string, options *DeploymentOperationsListAtSubscriptionScopeOptions) DeploymentOperationsListResultPager {
 	return &deploymentOperationsListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListAtSubscriptionScopeCreateRequest(ctx, deploymentName, deploymentOperationsListAtSubscriptionScopeOptions)
+			return client.ListAtSubscriptionScopeCreateRequest(ctx, deploymentName, options)
 		},
 		responder: client.ListAtSubscriptionScopeHandleResponse,
 		errorer:   client.ListAtSubscriptionScopeHandleError,
 		advancer: func(ctx context.Context, resp *DeploymentOperationsListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DeploymentOperationsListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListAtSubscriptionScopeCreateRequest creates the ListAtSubscriptionScope request.
-func (client *DeploymentOperationsClient) ListAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, deploymentOperationsListAtSubscriptionScopeOptions *DeploymentOperationsListAtSubscriptionScopeOptions) (*azcore.Request, error) {
+func (client *DeploymentOperationsClient) ListAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, options *DeploymentOperationsListAtSubscriptionScopeOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -346,8 +349,8 @@ func (client *DeploymentOperationsClient) ListAtSubscriptionScopeCreateRequest(c
 		return nil, err
 	}
 	query := req.URL.Query()
-	if deploymentOperationsListAtSubscriptionScopeOptions != nil && deploymentOperationsListAtSubscriptionScopeOptions.Top != nil {
-		query.Set("$top", strconv.FormatInt(int64(*deploymentOperationsListAtSubscriptionScopeOptions.Top), 10))
+	if options != nil && options.Top != nil {
+		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	query.Set("api-version", "2019-05-01")
 	req.URL.RawQuery = query.Encode()
@@ -368,7 +371,7 @@ func (client *DeploymentOperationsClient) ListAtSubscriptionScopeHandleError(res
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

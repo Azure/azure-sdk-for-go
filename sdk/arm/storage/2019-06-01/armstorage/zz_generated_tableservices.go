@@ -16,11 +16,11 @@ import (
 // TableServicesOperations contains the methods for the TableServices group.
 type TableServicesOperations interface {
 	// GetServiceProperties - Gets the properties of a storage account’s Table service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
-	GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (*TableServicePropertiesResponse, error)
+	GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *TableServicesGetServicePropertiesOptions) (*TableServicePropertiesResponse, error)
 	// List - List all table services for the storage account.
-	List(ctx context.Context, resourceGroupName string, accountName string) (*ListTableServicesResponse, error)
+	List(ctx context.Context, resourceGroupName string, accountName string, options *TableServicesListOptions) (*ListTableServicesResponse, error)
 	// SetServiceProperties - Sets the properties of a storage account’s Table service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
-	SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters TableServiceProperties) (*TableServicePropertiesResponse, error)
+	SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters TableServiceProperties, options *TableServicesSetServicePropertiesOptions) (*TableServicePropertiesResponse, error)
 }
 
 // TableServicesClient implements the TableServicesOperations interface.
@@ -41,8 +41,8 @@ func (client *TableServicesClient) Do(req *azcore.Request) (*azcore.Response, er
 }
 
 // GetServiceProperties - Gets the properties of a storage account’s Table service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
-func (client *TableServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (*TableServicePropertiesResponse, error) {
-	req, err := client.GetServicePropertiesCreateRequest(ctx, resourceGroupName, accountName)
+func (client *TableServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *TableServicesGetServicePropertiesOptions) (*TableServicePropertiesResponse, error) {
+	req, err := client.GetServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func (client *TableServicesClient) GetServiceProperties(ctx context.Context, res
 }
 
 // GetServicePropertiesCreateRequest creates the GetServiceProperties request.
-func (client *TableServicesClient) GetServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string) (*azcore.Request, error) {
+func (client *TableServicesClient) GetServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *TableServicesGetServicePropertiesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/{tableServiceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -90,12 +90,12 @@ func (client *TableServicesClient) GetServicePropertiesHandleError(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - List all table services for the storage account.
-func (client *TableServicesClient) List(ctx context.Context, resourceGroupName string, accountName string) (*ListTableServicesResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceGroupName, accountName)
+func (client *TableServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *TableServicesListOptions) (*ListTableServicesResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +114,7 @@ func (client *TableServicesClient) List(ctx context.Context, resourceGroupName s
 }
 
 // ListCreateRequest creates the List request.
-func (client *TableServicesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string) (*azcore.Request, error) {
+func (client *TableServicesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *TableServicesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -142,12 +142,12 @@ func (client *TableServicesClient) ListHandleError(resp *azcore.Response) error 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // SetServiceProperties - Sets the properties of a storage account’s Table service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
-func (client *TableServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters TableServiceProperties) (*TableServicePropertiesResponse, error) {
-	req, err := client.SetServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters)
+func (client *TableServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters TableServiceProperties, options *TableServicesSetServicePropertiesOptions) (*TableServicePropertiesResponse, error) {
+	req, err := client.SetServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +166,7 @@ func (client *TableServicesClient) SetServiceProperties(ctx context.Context, res
 }
 
 // SetServicePropertiesCreateRequest creates the SetServiceProperties request.
-func (client *TableServicesClient) SetServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters TableServiceProperties) (*azcore.Request, error) {
+func (client *TableServicesClient) SetServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters TableServiceProperties, options *TableServicesSetServicePropertiesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/{tableServiceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -195,5 +195,5 @@ func (client *TableServicesClient) SetServicePropertiesHandleError(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

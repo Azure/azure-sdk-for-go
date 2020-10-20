@@ -15,7 +15,7 @@ import (
 // MetricDefinitionsOperations contains the methods for the MetricDefinitions group.
 type MetricDefinitionsOperations interface {
 	// List - Lists the metric definitions for the resource.
-	List(ctx context.Context, resourceUri string, metricDefinitionsListOptions *MetricDefinitionsListOptions) (*MetricDefinitionCollectionResponse, error)
+	List(ctx context.Context, resourceUri string, options *MetricDefinitionsListOptions) (*MetricDefinitionCollectionResponse, error)
 }
 
 // MetricDefinitionsClient implements the MetricDefinitionsOperations interface.
@@ -35,8 +35,8 @@ func (client *MetricDefinitionsClient) Do(req *azcore.Request) (*azcore.Response
 }
 
 // List - Lists the metric definitions for the resource.
-func (client *MetricDefinitionsClient) List(ctx context.Context, resourceUri string, metricDefinitionsListOptions *MetricDefinitionsListOptions) (*MetricDefinitionCollectionResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceUri, metricDefinitionsListOptions)
+func (client *MetricDefinitionsClient) List(ctx context.Context, resourceUri string, options *MetricDefinitionsListOptions) (*MetricDefinitionCollectionResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceUri, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (client *MetricDefinitionsClient) List(ctx context.Context, resourceUri str
 }
 
 // ListCreateRequest creates the List request.
-func (client *MetricDefinitionsClient) ListCreateRequest(ctx context.Context, resourceUri string, metricDefinitionsListOptions *MetricDefinitionsListOptions) (*azcore.Request, error) {
+func (client *MetricDefinitionsClient) ListCreateRequest(ctx context.Context, resourceUri string, options *MetricDefinitionsListOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/metricDefinitions"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceUri)
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -64,8 +64,8 @@ func (client *MetricDefinitionsClient) ListCreateRequest(ctx context.Context, re
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2018-01-01")
-	if metricDefinitionsListOptions != nil && metricDefinitionsListOptions.Metricnamespace != nil {
-		query.Set("metricnamespace", *metricDefinitionsListOptions.Metricnamespace)
+	if options != nil && options.Metricnamespace != nil {
+		query.Set("metricnamespace", *options.Metricnamespace)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -84,5 +84,5 @@ func (client *MetricDefinitionsClient) ListHandleError(resp *azcore.Response) er
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -16,7 +16,7 @@ import (
 // ActivityLogsOperations contains the methods for the ActivityLogs group.
 type ActivityLogsOperations interface {
 	// List - Provides the list of records from the activity logs.
-	List(filter string, activityLogsListOptions *ActivityLogsListOptions) EventDataCollectionPager
+	List(filter string, options *ActivityLogsListOptions) EventDataCollectionPager
 }
 
 // ActivityLogsClient implements the ActivityLogsOperations interface.
@@ -37,22 +37,23 @@ func (client *ActivityLogsClient) Do(req *azcore.Request) (*azcore.Response, err
 }
 
 // List - Provides the list of records from the activity logs.
-func (client *ActivityLogsClient) List(filter string, activityLogsListOptions *ActivityLogsListOptions) EventDataCollectionPager {
+func (client *ActivityLogsClient) List(filter string, options *ActivityLogsListOptions) EventDataCollectionPager {
 	return &eventDataCollectionPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, filter, activityLogsListOptions)
+			return client.ListCreateRequest(ctx, filter, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *EventDataCollectionResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.EventDataCollection.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *ActivityLogsClient) ListCreateRequest(ctx context.Context, filter string, activityLogsListOptions *ActivityLogsListOptions) (*azcore.Request, error) {
+func (client *ActivityLogsClient) ListCreateRequest(ctx context.Context, filter string, options *ActivityLogsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/microsoft.insights/eventtypes/management/values"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -62,8 +63,8 @@ func (client *ActivityLogsClient) ListCreateRequest(ctx context.Context, filter 
 	query := req.URL.Query()
 	query.Set("api-version", "2015-04-01")
 	query.Set("$filter", filter)
-	if activityLogsListOptions != nil && activityLogsListOptions.SelectParameter != nil {
-		query.Set("$select", *activityLogsListOptions.SelectParameter)
+	if options != nil && options.SelectParameter != nil {
+		query.Set("$select", *options.SelectParameter)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -82,5 +83,5 @@ func (client *ActivityLogsClient) ListHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

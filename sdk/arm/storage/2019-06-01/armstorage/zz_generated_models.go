@@ -187,6 +187,16 @@ type BlobContainerResponse struct {
 	RawResponse *http.Response
 }
 
+// BlobContainersClearLegalHoldOptions contains the optional parameters for the BlobContainers.ClearLegalHold method.
+type BlobContainersClearLegalHoldOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BlobContainersCreateOptions contains the optional parameters for the BlobContainers.Create method.
+type BlobContainersCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // BlobContainersCreateOrUpdateImmutabilityPolicyOptions contains the optional parameters for the BlobContainers.CreateOrUpdateImmutabilityPolicy
 // method.
 type BlobContainersCreateOrUpdateImmutabilityPolicyOptions struct {
@@ -195,6 +205,17 @@ type BlobContainersCreateOrUpdateImmutabilityPolicyOptions struct {
 	IfMatch *string
 	// The ImmutabilityPolicy Properties that will be created or updated to a blob container.
 	Parameters *ImmutabilityPolicy
+}
+
+// BlobContainersDeleteImmutabilityPolicyOptions contains the optional parameters for the BlobContainers.DeleteImmutabilityPolicy
+// method.
+type BlobContainersDeleteImmutabilityPolicyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BlobContainersDeleteOptions contains the optional parameters for the BlobContainers.Delete method.
+type BlobContainersDeleteOptions struct {
+	// placeholder for future optional parameters
 }
 
 // BlobContainersExtendImmutabilityPolicyOptions contains the optional parameters for the BlobContainers.ExtendImmutabilityPolicy
@@ -212,6 +233,11 @@ type BlobContainersGetImmutabilityPolicyOptions struct {
 	IfMatch *string
 }
 
+// BlobContainersGetOptions contains the optional parameters for the BlobContainers.Get method.
+type BlobContainersGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // BlobContainersLeaseOptions contains the optional parameters for the BlobContainers.Lease method.
 type BlobContainersLeaseOptions struct {
 	// Lease Container request body.
@@ -226,6 +252,22 @@ type BlobContainersListOptions struct {
 	Include *ListContainersInclude
 	// Optional. Specified maximum number of containers that can be included in the list.
 	Maxpagesize *string
+}
+
+// BlobContainersLockImmutabilityPolicyOptions contains the optional parameters for the BlobContainers.LockImmutabilityPolicy
+// method.
+type BlobContainersLockImmutabilityPolicyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BlobContainersSetLegalHoldOptions contains the optional parameters for the BlobContainers.SetLegalHold method.
+type BlobContainersSetLegalHoldOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BlobContainersUpdateOptions contains the optional parameters for the BlobContainers.Update method.
+type BlobContainersUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Blob restore parameters
@@ -384,6 +426,21 @@ type BlobServicePropertiesResponse struct {
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// BlobServicesGetServicePropertiesOptions contains the optional parameters for the BlobServices.GetServiceProperties method.
+type BlobServicesGetServicePropertiesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BlobServicesListOptions contains the optional parameters for the BlobServices.List method.
+type BlobServicesListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BlobServicesSetServicePropertiesOptions contains the optional parameters for the BlobServices.SetServiceProperties method.
+type BlobServicesSetServicePropertiesOptions struct {
+	// placeholder for future optional parameters
 }
 
 // The blob service properties for change feed events.
@@ -875,6 +932,26 @@ type EncryptionScopeResponse struct {
 	RawResponse *http.Response
 }
 
+// EncryptionScopesGetOptions contains the optional parameters for the EncryptionScopes.Get method.
+type EncryptionScopesGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EncryptionScopesListOptions contains the optional parameters for the EncryptionScopes.List method.
+type EncryptionScopesListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EncryptionScopesPatchOptions contains the optional parameters for the EncryptionScopes.Patch method.
+type EncryptionScopesPatchOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EncryptionScopesPutOptions contains the optional parameters for the EncryptionScopes.Put method.
+type EncryptionScopesPutOptions struct {
+	// placeholder for future optional parameters
+}
+
 // A service that allows server-side encryption to be used.
 type EncryptionService struct {
 	// A boolean indicating whether or not the service encrypts the data as it is stored.
@@ -1044,6 +1121,21 @@ type FileServicePropertiesResponse struct {
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// FileServicesGetServicePropertiesOptions contains the optional parameters for the FileServices.GetServiceProperties method.
+type FileServicesGetServicePropertiesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FileServicesListOptions contains the optional parameters for the FileServices.List method.
+type FileServicesListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FileServicesSetServicePropertiesOptions contains the optional parameters for the FileServices.SetServiceProperties method.
+type FileServicesSetServicePropertiesOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Properties of the file share, including Id, resource name, resource type, Etag.
@@ -1266,6 +1358,16 @@ type FileShareResponse struct {
 	RawResponse *http.Response
 }
 
+// FileSharesCreateOptions contains the optional parameters for the FileShares.Create method.
+type FileSharesCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FileSharesDeleteOptions contains the optional parameters for the FileShares.Delete method.
+type FileSharesDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
 // FileSharesGetOptions contains the optional parameters for the FileShares.Get method.
 type FileSharesGetOptions struct {
 	// Optional, used to expand the properties within share's properties.
@@ -1280,6 +1382,16 @@ type FileSharesListOptions struct {
 	Filter *string
 	// Optional. Specified maximum number of shares that can be included in the list.
 	Maxpagesize *string
+}
+
+// FileSharesRestoreOptions contains the optional parameters for the FileShares.Restore method.
+type FileSharesRestoreOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FileSharesUpdateOptions contains the optional parameters for the FileShares.Update method.
+type FileSharesUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Statistics related to replication for storage account's Blob, Table, Queue and File services. It is only available when
@@ -1708,6 +1820,21 @@ type ListTableServicesResponse struct {
 	RawResponse *http.Response
 }
 
+// ManagementPoliciesCreateOrUpdateOptions contains the optional parameters for the ManagementPolicies.CreateOrUpdate method.
+type ManagementPoliciesCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagementPoliciesDeleteOptions contains the optional parameters for the ManagementPolicies.Delete method.
+type ManagementPoliciesDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagementPoliciesGetOptions contains the optional parameters for the ManagementPolicies.Get method.
+type ManagementPoliciesGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // The Get Storage Account ManagementPolicies operation response.
 type ManagementPolicy struct {
 	Resource
@@ -1897,6 +2024,27 @@ type ObjectReplicationPolicies struct {
 	Value *[]ObjectReplicationPolicy `json:"value,omitempty"`
 }
 
+// ObjectReplicationPoliciesCreateOrUpdateOptions contains the optional parameters for the ObjectReplicationPolicies.CreateOrUpdate
+// method.
+type ObjectReplicationPoliciesCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ObjectReplicationPoliciesDeleteOptions contains the optional parameters for the ObjectReplicationPolicies.Delete method.
+type ObjectReplicationPoliciesDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ObjectReplicationPoliciesGetOptions contains the optional parameters for the ObjectReplicationPolicies.Get method.
+type ObjectReplicationPoliciesGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ObjectReplicationPoliciesListOptions contains the optional parameters for the ObjectReplicationPolicies.List method.
+type ObjectReplicationPoliciesListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ObjectReplicationPoliciesResponse is the response envelope for operations that return a ObjectReplicationPolicies type.
 type ObjectReplicationPoliciesResponse struct {
 	// List storage account object replication policies.
@@ -2084,6 +2232,11 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
+// OperationsListOptions contains the optional parameters for the Operations.List method.
+type OperationsListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// The ARM identifier for Private Endpoint
@@ -2134,6 +2287,26 @@ type PrivateEndpointConnectionResponse struct {
 	RawResponse *http.Response
 }
 
+// PrivateEndpointConnectionsDeleteOptions contains the optional parameters for the PrivateEndpointConnections.Delete method.
+type PrivateEndpointConnectionsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
+type PrivateEndpointConnectionsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsListOptions contains the optional parameters for the PrivateEndpointConnections.List method.
+type PrivateEndpointConnectionsListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsPutOptions contains the optional parameters for the PrivateEndpointConnections.Put method.
+type PrivateEndpointConnectionsPutOptions struct {
+	// placeholder for future optional parameters
+}
+
 // A private link resource
 type PrivateLinkResource struct {
 	Resource
@@ -2169,6 +2342,12 @@ type PrivateLinkResourceProperties struct {
 	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
 }
 
+// PrivateLinkResourcesListByStorageAccountOptions contains the optional parameters for the PrivateLinkResources.ListByStorageAccount
+// method.
+type PrivateLinkResourcesListByStorageAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
 // A collection of information about the state of the connection between service consumer and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
@@ -2179,6 +2358,21 @@ type PrivateLinkServiceConnectionState struct {
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
 	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+}
+
+// QueueCreateOptions contains the optional parameters for the Queue.Create method.
+type QueueCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueueDeleteOptions contains the optional parameters for the Queue.Delete method.
+type QueueDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueueGetOptions contains the optional parameters for the Queue.Get method.
+type QueueGetOptions struct {
+	// placeholder for future optional parameters
 }
 
 // QueueListOptions contains the optional parameters for the Queue.List method.
@@ -2219,6 +2413,26 @@ type QueueServicePropertiesResponse struct {
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// QueueServicesGetServicePropertiesOptions contains the optional parameters for the QueueServices.GetServiceProperties method.
+type QueueServicesGetServicePropertiesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueueServicesListOptions contains the optional parameters for the QueueServices.List method.
+type QueueServicesListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueueServicesSetServicePropertiesOptions contains the optional parameters for the QueueServices.SetServiceProperties method.
+type QueueServicesSetServicePropertiesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// QueueUpdateOptions contains the optional parameters for the Queue.Update method.
+type QueueUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 type Resource struct {
@@ -2376,6 +2590,11 @@ type SKUInformation struct {
 
 	// The SKU tier. This is based on the SKU name.
 	Tier *SKUTier `json:"tier,omitempty" azure:"ro"`
+}
+
+// SKUsListOptions contains the optional parameters for the SKUs.List method.
+type SKUsListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // The parameters to list service SAS credentials of a specific resource.
@@ -3171,6 +3390,27 @@ type StorageAccountUpdateParameters struct {
 	Tags *map[string]string `json:"tags,omitempty"`
 }
 
+// StorageAccountsCheckNameAvailabilityOptions contains the optional parameters for the StorageAccounts.CheckNameAvailability
+// method.
+type StorageAccountsCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageAccountsCreateOptions contains the optional parameters for the StorageAccounts.Create method.
+type StorageAccountsCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageAccountsDeleteOptions contains the optional parameters for the StorageAccounts.Delete method.
+type StorageAccountsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageAccountsFailoverOptions contains the optional parameters for the StorageAccounts.Failover method.
+type StorageAccountsFailoverOptions struct {
+	// placeholder for future optional parameters
+}
+
 // StorageAccountsGetPropertiesOptions contains the optional parameters for the StorageAccounts.GetProperties method.
 type StorageAccountsGetPropertiesOptions struct {
 	// May be used to expand the properties within account's properties. By default, data is not included when fetching properties.
@@ -3178,10 +3418,52 @@ type StorageAccountsGetPropertiesOptions struct {
 	Expand *StorageAccountExpand
 }
 
+// StorageAccountsListAccountSasOptions contains the optional parameters for the StorageAccounts.ListAccountSas method.
+type StorageAccountsListAccountSasOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageAccountsListByResourceGroupOptions contains the optional parameters for the StorageAccounts.ListByResourceGroup
+// method.
+type StorageAccountsListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
 // StorageAccountsListKeysOptions contains the optional parameters for the StorageAccounts.ListKeys method.
 type StorageAccountsListKeysOptions struct {
 	// Specifies type of the key to be listed. Possible value is kerb.
 	Expand *string
+}
+
+// StorageAccountsListOptions contains the optional parameters for the StorageAccounts.List method.
+type StorageAccountsListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageAccountsListServiceSasOptions contains the optional parameters for the StorageAccounts.ListServiceSas method.
+type StorageAccountsListServiceSasOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageAccountsRegenerateKeyOptions contains the optional parameters for the StorageAccounts.RegenerateKey method.
+type StorageAccountsRegenerateKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageAccountsRestoreBlobRangesOptions contains the optional parameters for the StorageAccounts.RestoreBlobRanges method.
+type StorageAccountsRestoreBlobRangesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageAccountsRevokeUserDelegationKeysOptions contains the optional parameters for the StorageAccounts.RevokeUserDelegationKeys
+// method.
+type StorageAccountsRevokeUserDelegationKeysOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StorageAccountsUpdateOptions contains the optional parameters for the StorageAccounts.Update method.
+type StorageAccountsUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 type StorageQueue struct {
@@ -3219,6 +3501,26 @@ type Table struct {
 	TableProperties *TableProperties `json:"properties,omitempty"`
 }
 
+// TableCreateOptions contains the optional parameters for the Table.Create method.
+type TableCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TableDeleteOptions contains the optional parameters for the Table.Delete method.
+type TableDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TableGetOptions contains the optional parameters for the Table.Get method.
+type TableGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TableListOptions contains the optional parameters for the Table.List method.
+type TableListOptions struct {
+	// placeholder for future optional parameters
+}
+
 type TableProperties struct {
 	// Table name under the specified account
 	TableName *string `json:"tableName,omitempty" azure:"ro"`
@@ -3254,6 +3556,26 @@ type TableServicePropertiesResponse struct {
 
 	// The properties of a storage account’s Table service.
 	TableServiceProperties *TableServiceProperties
+}
+
+// TableServicesGetServicePropertiesOptions contains the optional parameters for the TableServices.GetServiceProperties method.
+type TableServicesGetServicePropertiesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TableServicesListOptions contains the optional parameters for the TableServices.List method.
+type TableServicesListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TableServicesSetServicePropertiesOptions contains the optional parameters for the TableServices.SetServiceProperties method.
+type TableServicesSetServicePropertiesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TableUpdateOptions contains the optional parameters for the Table.Update method.
+type TableUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Blob index tag based filtering for blob objects
@@ -3493,6 +3815,11 @@ type UsageName struct {
 
 	// Gets a string describing the resource name.
 	Value *string `json:"value,omitempty" azure:"ro"`
+}
+
+// UsagesListByLocationOptions contains the optional parameters for the Usages.ListByLocation method.
+type UsagesListByLocationOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Virtual Network rule.

@@ -8,7 +8,6 @@ package armnetwork
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"net/http"
 )
 
 // ApplicationGatewayAvailableSslPredefinedPoliciesPager provides iteration over ApplicationGatewayAvailableSslPredefinedPolicies pages.
@@ -45,6 +44,8 @@ type applicationGatewayAvailableSslPredefinedPoliciesPager struct {
 	advancer applicationGatewayAvailableSslPredefinedPoliciesAdvancePage
 	// contains the current response
 	current *ApplicationGatewayAvailableSslPredefinedPoliciesResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -73,7 +74,7 @@ func (p *applicationGatewayAvailableSslPredefinedPoliciesPager) NextPage(ctx con
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -124,6 +125,8 @@ type applicationGatewayListResultPager struct {
 	advancer applicationGatewayListResultAdvancePage
 	// contains the current response
 	current *ApplicationGatewayListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -152,7 +155,7 @@ func (p *applicationGatewayListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -203,6 +206,8 @@ type applicationSecurityGroupListResultPager struct {
 	advancer applicationSecurityGroupListResultAdvancePage
 	// contains the current response
 	current *ApplicationSecurityGroupListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -231,7 +236,7 @@ func (p *applicationSecurityGroupListResultPager) NextPage(ctx context.Context) 
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -282,6 +287,8 @@ type authorizationListResultPager struct {
 	advancer authorizationListResultAdvancePage
 	// contains the current response
 	current *AuthorizationListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -310,7 +317,7 @@ func (p *authorizationListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -361,6 +368,8 @@ type autoApprovedPrivateLinkServicesResultPager struct {
 	advancer autoApprovedPrivateLinkServicesResultAdvancePage
 	// contains the current response
 	current *AutoApprovedPrivateLinkServicesResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -389,7 +398,7 @@ func (p *autoApprovedPrivateLinkServicesResultPager) NextPage(ctx context.Contex
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -440,6 +449,8 @@ type availableDelegationsResultPager struct {
 	advancer availableDelegationsResultAdvancePage
 	// contains the current response
 	current *AvailableDelegationsResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -468,7 +479,7 @@ func (p *availableDelegationsResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -519,6 +530,8 @@ type availablePrivateEndpointTypesResultPager struct {
 	advancer availablePrivateEndpointTypesResultAdvancePage
 	// contains the current response
 	current *AvailablePrivateEndpointTypesResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -547,7 +560,7 @@ func (p *availablePrivateEndpointTypesResultPager) NextPage(ctx context.Context)
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -598,6 +611,8 @@ type availableServiceAliasesResultPager struct {
 	advancer availableServiceAliasesResultAdvancePage
 	// contains the current response
 	current *AvailableServiceAliasesResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -626,7 +641,7 @@ func (p *availableServiceAliasesResultPager) NextPage(ctx context.Context) bool 
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -677,6 +692,8 @@ type azureFirewallFqdnTagListResultPager struct {
 	advancer azureFirewallFqdnTagListResultAdvancePage
 	// contains the current response
 	current *AzureFirewallFqdnTagListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -705,7 +722,7 @@ func (p *azureFirewallFqdnTagListResultPager) NextPage(ctx context.Context) bool
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -756,6 +773,8 @@ type azureFirewallListResultPager struct {
 	advancer azureFirewallListResultAdvancePage
 	// contains the current response
 	current *AzureFirewallListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -784,7 +803,7 @@ func (p *azureFirewallListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -835,6 +854,8 @@ type bastionActiveSessionListResultPager struct {
 	advancer bastionActiveSessionListResultAdvancePage
 	// contains the current response
 	current *BastionActiveSessionListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 	// previous response from the endpoint (LRO case)
@@ -870,7 +891,7 @@ func (p *bastionActiveSessionListResultPager) NextPage(ctx context.Context) bool
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -921,6 +942,8 @@ type bastionHostListResultPager struct {
 	advancer bastionHostListResultAdvancePage
 	// contains the current response
 	current *BastionHostListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -949,7 +972,7 @@ func (p *bastionHostListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -1000,6 +1023,8 @@ type bastionSessionDeleteResultPager struct {
 	advancer bastionSessionDeleteResultAdvancePage
 	// contains the current response
 	current *BastionSessionDeleteResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -1028,7 +1053,7 @@ func (p *bastionSessionDeleteResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -1079,6 +1104,8 @@ type bastionShareableLinkListResultPager struct {
 	advancer bastionShareableLinkListResultAdvancePage
 	// contains the current response
 	current *BastionShareableLinkListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 	// previous response from the endpoint (LRO case)
@@ -1114,7 +1141,7 @@ func (p *bastionShareableLinkListResultPager) NextPage(ctx context.Context) bool
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -1165,6 +1192,8 @@ type bgpServiceCommunityListResultPager struct {
 	advancer bgpServiceCommunityListResultAdvancePage
 	// contains the current response
 	current *BgpServiceCommunityListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -1193,7 +1222,7 @@ func (p *bgpServiceCommunityListResultPager) NextPage(ctx context.Context) bool 
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -1244,6 +1273,8 @@ type ddosProtectionPlanListResultPager struct {
 	advancer ddosProtectionPlanListResultAdvancePage
 	// contains the current response
 	current *DdosProtectionPlanListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -1272,7 +1303,7 @@ func (p *ddosProtectionPlanListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -1323,6 +1354,8 @@ type endpointServicesListResultPager struct {
 	advancer endpointServicesListResultAdvancePage
 	// contains the current response
 	current *EndpointServicesListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -1351,7 +1384,7 @@ func (p *endpointServicesListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -1402,6 +1435,8 @@ type expressRouteCircuitConnectionListResultPager struct {
 	advancer expressRouteCircuitConnectionListResultAdvancePage
 	// contains the current response
 	current *ExpressRouteCircuitConnectionListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -1430,7 +1465,7 @@ func (p *expressRouteCircuitConnectionListResultPager) NextPage(ctx context.Cont
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -1481,6 +1516,8 @@ type expressRouteCircuitListResultPager struct {
 	advancer expressRouteCircuitListResultAdvancePage
 	// contains the current response
 	current *ExpressRouteCircuitListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -1509,7 +1546,7 @@ func (p *expressRouteCircuitListResultPager) NextPage(ctx context.Context) bool 
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -1560,6 +1597,8 @@ type expressRouteCircuitPeeringListResultPager struct {
 	advancer expressRouteCircuitPeeringListResultAdvancePage
 	// contains the current response
 	current *ExpressRouteCircuitPeeringListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -1588,7 +1627,7 @@ func (p *expressRouteCircuitPeeringListResultPager) NextPage(ctx context.Context
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -1639,6 +1678,8 @@ type expressRouteCrossConnectionListResultPager struct {
 	advancer expressRouteCrossConnectionListResultAdvancePage
 	// contains the current response
 	current *ExpressRouteCrossConnectionListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -1667,7 +1708,7 @@ func (p *expressRouteCrossConnectionListResultPager) NextPage(ctx context.Contex
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -1718,6 +1759,8 @@ type expressRouteCrossConnectionPeeringListPager struct {
 	advancer expressRouteCrossConnectionPeeringListAdvancePage
 	// contains the current response
 	current *ExpressRouteCrossConnectionPeeringListResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -1746,7 +1789,7 @@ func (p *expressRouteCrossConnectionPeeringListPager) NextPage(ctx context.Conte
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -1797,6 +1840,8 @@ type expressRouteLinkListResultPager struct {
 	advancer expressRouteLinkListResultAdvancePage
 	// contains the current response
 	current *ExpressRouteLinkListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -1825,7 +1870,7 @@ func (p *expressRouteLinkListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -1876,6 +1921,8 @@ type expressRoutePortListResultPager struct {
 	advancer expressRoutePortListResultAdvancePage
 	// contains the current response
 	current *ExpressRoutePortListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -1904,7 +1951,7 @@ func (p *expressRoutePortListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -1955,6 +2002,8 @@ type expressRoutePortsLocationListResultPager struct {
 	advancer expressRoutePortsLocationListResultAdvancePage
 	// contains the current response
 	current *ExpressRoutePortsLocationListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -1983,7 +2032,7 @@ func (p *expressRoutePortsLocationListResultPager) NextPage(ctx context.Context)
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -2034,6 +2083,8 @@ type expressRouteServiceProviderListResultPager struct {
 	advancer expressRouteServiceProviderListResultAdvancePage
 	// contains the current response
 	current *ExpressRouteServiceProviderListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -2062,7 +2113,7 @@ func (p *expressRouteServiceProviderListResultPager) NextPage(ctx context.Contex
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -2113,6 +2164,8 @@ type firewallPolicyListResultPager struct {
 	advancer firewallPolicyListResultAdvancePage
 	// contains the current response
 	current *FirewallPolicyListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -2141,7 +2194,7 @@ func (p *firewallPolicyListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -2192,6 +2245,8 @@ type firewallPolicyRuleGroupListResultPager struct {
 	advancer firewallPolicyRuleGroupListResultAdvancePage
 	// contains the current response
 	current *FirewallPolicyRuleGroupListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -2220,7 +2275,7 @@ func (p *firewallPolicyRuleGroupListResultPager) NextPage(ctx context.Context) b
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -2271,6 +2326,8 @@ type flowLogListResultPager struct {
 	advancer flowLogListResultAdvancePage
 	// contains the current response
 	current *FlowLogListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -2299,7 +2356,7 @@ func (p *flowLogListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -2350,6 +2407,8 @@ type ipAllocationListResultPager struct {
 	advancer ipAllocationListResultAdvancePage
 	// contains the current response
 	current *IPAllocationListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -2378,7 +2437,7 @@ func (p *ipAllocationListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -2429,6 +2488,8 @@ type ipGroupListResultPager struct {
 	advancer ipGroupListResultAdvancePage
 	// contains the current response
 	current *IPGroupListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -2457,7 +2518,7 @@ func (p *ipGroupListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -2508,6 +2569,8 @@ type inboundNatRuleListResultPager struct {
 	advancer inboundNatRuleListResultAdvancePage
 	// contains the current response
 	current *InboundNatRuleListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -2536,7 +2599,7 @@ func (p *inboundNatRuleListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -2587,6 +2650,8 @@ type listHubVirtualNetworkConnectionsResultPager struct {
 	advancer listHubVirtualNetworkConnectionsResultAdvancePage
 	// contains the current response
 	current *ListHubVirtualNetworkConnectionsResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -2615,7 +2680,7 @@ func (p *listHubVirtualNetworkConnectionsResultPager) NextPage(ctx context.Conte
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -2666,6 +2731,8 @@ type listP2SVpnGatewaysResultPager struct {
 	advancer listP2SVpnGatewaysResultAdvancePage
 	// contains the current response
 	current *ListP2SVpnGatewaysResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -2694,7 +2761,7 @@ func (p *listP2SVpnGatewaysResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -2745,6 +2812,8 @@ type listVirtualHubRouteTableV2SResultPager struct {
 	advancer listVirtualHubRouteTableV2SResultAdvancePage
 	// contains the current response
 	current *ListVirtualHubRouteTableV2SResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -2773,7 +2842,7 @@ func (p *listVirtualHubRouteTableV2SResultPager) NextPage(ctx context.Context) b
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -2824,6 +2893,8 @@ type listVirtualHubsResultPager struct {
 	advancer listVirtualHubsResultAdvancePage
 	// contains the current response
 	current *ListVirtualHubsResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -2852,7 +2923,7 @@ func (p *listVirtualHubsResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -2903,6 +2974,8 @@ type listVirtualWaNsResultPager struct {
 	advancer listVirtualWaNsResultAdvancePage
 	// contains the current response
 	current *ListVirtualWaNsResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -2931,7 +3004,7 @@ func (p *listVirtualWaNsResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -2982,6 +3055,8 @@ type listVpnConnectionsResultPager struct {
 	advancer listVpnConnectionsResultAdvancePage
 	// contains the current response
 	current *ListVpnConnectionsResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -3010,7 +3085,7 @@ func (p *listVpnConnectionsResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -3061,6 +3136,8 @@ type listVpnGatewaysResultPager struct {
 	advancer listVpnGatewaysResultAdvancePage
 	// contains the current response
 	current *ListVpnGatewaysResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -3089,7 +3166,7 @@ func (p *listVpnGatewaysResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -3140,6 +3217,8 @@ type listVpnServerConfigurationsResultPager struct {
 	advancer listVpnServerConfigurationsResultAdvancePage
 	// contains the current response
 	current *ListVpnServerConfigurationsResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -3168,7 +3247,7 @@ func (p *listVpnServerConfigurationsResultPager) NextPage(ctx context.Context) b
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -3219,6 +3298,8 @@ type listVpnSiteLinkConnectionsResultPager struct {
 	advancer listVpnSiteLinkConnectionsResultAdvancePage
 	// contains the current response
 	current *ListVpnSiteLinkConnectionsResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -3247,7 +3328,7 @@ func (p *listVpnSiteLinkConnectionsResultPager) NextPage(ctx context.Context) bo
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -3298,6 +3379,8 @@ type listVpnSiteLinksResultPager struct {
 	advancer listVpnSiteLinksResultAdvancePage
 	// contains the current response
 	current *ListVpnSiteLinksResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -3326,7 +3409,7 @@ func (p *listVpnSiteLinksResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -3377,6 +3460,8 @@ type listVpnSitesResultPager struct {
 	advancer listVpnSitesResultAdvancePage
 	// contains the current response
 	current *ListVpnSitesResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -3405,7 +3490,7 @@ func (p *listVpnSitesResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -3456,6 +3541,8 @@ type loadBalancerBackendAddressPoolListResultPager struct {
 	advancer loadBalancerBackendAddressPoolListResultAdvancePage
 	// contains the current response
 	current *LoadBalancerBackendAddressPoolListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -3484,7 +3571,7 @@ func (p *loadBalancerBackendAddressPoolListResultPager) NextPage(ctx context.Con
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -3535,6 +3622,8 @@ type loadBalancerFrontendIPConfigurationListResultPager struct {
 	advancer loadBalancerFrontendIPConfigurationListResultAdvancePage
 	// contains the current response
 	current *LoadBalancerFrontendIPConfigurationListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -3563,7 +3652,7 @@ func (p *loadBalancerFrontendIPConfigurationListResultPager) NextPage(ctx contex
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -3614,6 +3703,8 @@ type loadBalancerListResultPager struct {
 	advancer loadBalancerListResultAdvancePage
 	// contains the current response
 	current *LoadBalancerListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -3642,7 +3733,7 @@ func (p *loadBalancerListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -3693,6 +3784,8 @@ type loadBalancerLoadBalancingRuleListResultPager struct {
 	advancer loadBalancerLoadBalancingRuleListResultAdvancePage
 	// contains the current response
 	current *LoadBalancerLoadBalancingRuleListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -3721,7 +3814,7 @@ func (p *loadBalancerLoadBalancingRuleListResultPager) NextPage(ctx context.Cont
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -3772,6 +3865,8 @@ type loadBalancerOutboundRuleListResultPager struct {
 	advancer loadBalancerOutboundRuleListResultAdvancePage
 	// contains the current response
 	current *LoadBalancerOutboundRuleListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -3800,7 +3895,7 @@ func (p *loadBalancerOutboundRuleListResultPager) NextPage(ctx context.Context) 
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -3851,6 +3946,8 @@ type loadBalancerProbeListResultPager struct {
 	advancer loadBalancerProbeListResultAdvancePage
 	// contains the current response
 	current *LoadBalancerProbeListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -3879,7 +3976,7 @@ func (p *loadBalancerProbeListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -3930,6 +4027,8 @@ type localNetworkGatewayListResultPager struct {
 	advancer localNetworkGatewayListResultAdvancePage
 	// contains the current response
 	current *LocalNetworkGatewayListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -3958,7 +4057,7 @@ func (p *localNetworkGatewayListResultPager) NextPage(ctx context.Context) bool 
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -4009,6 +4108,8 @@ type natGatewayListResultPager struct {
 	advancer natGatewayListResultAdvancePage
 	// contains the current response
 	current *NatGatewayListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -4037,7 +4138,7 @@ func (p *natGatewayListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -4088,6 +4189,8 @@ type networkInterfaceIPConfigurationListResultPager struct {
 	advancer networkInterfaceIPConfigurationListResultAdvancePage
 	// contains the current response
 	current *NetworkInterfaceIPConfigurationListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -4116,7 +4219,7 @@ func (p *networkInterfaceIPConfigurationListResultPager) NextPage(ctx context.Co
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -4167,6 +4270,8 @@ type networkInterfaceListResultPager struct {
 	advancer networkInterfaceListResultAdvancePage
 	// contains the current response
 	current *NetworkInterfaceListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -4195,7 +4300,7 @@ func (p *networkInterfaceListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -4246,6 +4351,8 @@ type networkInterfaceLoadBalancerListResultPager struct {
 	advancer networkInterfaceLoadBalancerListResultAdvancePage
 	// contains the current response
 	current *NetworkInterfaceLoadBalancerListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -4274,7 +4381,7 @@ func (p *networkInterfaceLoadBalancerListResultPager) NextPage(ctx context.Conte
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -4325,6 +4432,8 @@ type networkInterfaceTapConfigurationListResultPager struct {
 	advancer networkInterfaceTapConfigurationListResultAdvancePage
 	// contains the current response
 	current *NetworkInterfaceTapConfigurationListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -4353,7 +4462,7 @@ func (p *networkInterfaceTapConfigurationListResultPager) NextPage(ctx context.C
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -4404,6 +4513,8 @@ type networkProfileListResultPager struct {
 	advancer networkProfileListResultAdvancePage
 	// contains the current response
 	current *NetworkProfileListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -4432,7 +4543,7 @@ func (p *networkProfileListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -4483,6 +4594,8 @@ type networkSecurityGroupListResultPager struct {
 	advancer networkSecurityGroupListResultAdvancePage
 	// contains the current response
 	current *NetworkSecurityGroupListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -4511,7 +4624,7 @@ func (p *networkSecurityGroupListResultPager) NextPage(ctx context.Context) bool
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -4562,6 +4675,8 @@ type networkVirtualApplianceListResultPager struct {
 	advancer networkVirtualApplianceListResultAdvancePage
 	// contains the current response
 	current *NetworkVirtualApplianceListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -4590,7 +4705,7 @@ func (p *networkVirtualApplianceListResultPager) NextPage(ctx context.Context) b
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -4641,6 +4756,8 @@ type operationListResultPager struct {
 	advancer operationListResultAdvancePage
 	// contains the current response
 	current *OperationListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -4669,7 +4786,7 @@ func (p *operationListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -4720,6 +4837,8 @@ type peerExpressRouteCircuitConnectionListResultPager struct {
 	advancer peerExpressRouteCircuitConnectionListResultAdvancePage
 	// contains the current response
 	current *PeerExpressRouteCircuitConnectionListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -4748,7 +4867,7 @@ func (p *peerExpressRouteCircuitConnectionListResultPager) NextPage(ctx context.
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -4799,6 +4918,8 @@ type privateDnsZoneGroupListResultPager struct {
 	advancer privateDnsZoneGroupListResultAdvancePage
 	// contains the current response
 	current *PrivateDNSZoneGroupListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -4827,7 +4948,7 @@ func (p *privateDnsZoneGroupListResultPager) NextPage(ctx context.Context) bool 
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -4878,6 +4999,8 @@ type privateEndpointConnectionListResultPager struct {
 	advancer privateEndpointConnectionListResultAdvancePage
 	// contains the current response
 	current *PrivateEndpointConnectionListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -4906,7 +5029,7 @@ func (p *privateEndpointConnectionListResultPager) NextPage(ctx context.Context)
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -4957,6 +5080,8 @@ type privateEndpointListResultPager struct {
 	advancer privateEndpointListResultAdvancePage
 	// contains the current response
 	current *PrivateEndpointListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -4985,7 +5110,7 @@ func (p *privateEndpointListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -5036,6 +5161,8 @@ type privateLinkServiceListResultPager struct {
 	advancer privateLinkServiceListResultAdvancePage
 	// contains the current response
 	current *PrivateLinkServiceListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -5064,7 +5191,7 @@ func (p *privateLinkServiceListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -5115,6 +5242,8 @@ type publicIPAddressListResultPager struct {
 	advancer publicIPAddressListResultAdvancePage
 	// contains the current response
 	current *PublicIPAddressListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -5143,7 +5272,7 @@ func (p *publicIPAddressListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -5194,6 +5323,8 @@ type publicIPPrefixListResultPager struct {
 	advancer publicIPPrefixListResultAdvancePage
 	// contains the current response
 	current *PublicIPPrefixListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -5222,7 +5353,7 @@ func (p *publicIPPrefixListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -5273,6 +5404,8 @@ type routeFilterListResultPager struct {
 	advancer routeFilterListResultAdvancePage
 	// contains the current response
 	current *RouteFilterListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -5301,7 +5434,7 @@ func (p *routeFilterListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -5352,6 +5485,8 @@ type routeFilterRuleListResultPager struct {
 	advancer routeFilterRuleListResultAdvancePage
 	// contains the current response
 	current *RouteFilterRuleListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -5380,7 +5515,7 @@ func (p *routeFilterRuleListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -5431,6 +5566,8 @@ type routeListResultPager struct {
 	advancer routeListResultAdvancePage
 	// contains the current response
 	current *RouteListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -5459,7 +5596,7 @@ func (p *routeListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -5510,6 +5647,8 @@ type routeTableListResultPager struct {
 	advancer routeTableListResultAdvancePage
 	// contains the current response
 	current *RouteTableListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -5538,7 +5677,7 @@ func (p *routeTableListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -5589,6 +5728,8 @@ type securityPartnerProviderListResultPager struct {
 	advancer securityPartnerProviderListResultAdvancePage
 	// contains the current response
 	current *SecurityPartnerProviderListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -5617,7 +5758,7 @@ func (p *securityPartnerProviderListResultPager) NextPage(ctx context.Context) b
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -5668,6 +5809,8 @@ type securityRuleListResultPager struct {
 	advancer securityRuleListResultAdvancePage
 	// contains the current response
 	current *SecurityRuleListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -5696,7 +5839,7 @@ func (p *securityRuleListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -5747,6 +5890,8 @@ type serviceEndpointPolicyDefinitionListResultPager struct {
 	advancer serviceEndpointPolicyDefinitionListResultAdvancePage
 	// contains the current response
 	current *ServiceEndpointPolicyDefinitionListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -5775,7 +5920,7 @@ func (p *serviceEndpointPolicyDefinitionListResultPager) NextPage(ctx context.Co
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -5826,6 +5971,8 @@ type serviceEndpointPolicyListResultPager struct {
 	advancer serviceEndpointPolicyListResultAdvancePage
 	// contains the current response
 	current *ServiceEndpointPolicyListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -5854,7 +6001,7 @@ func (p *serviceEndpointPolicyListResultPager) NextPage(ctx context.Context) boo
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -5905,6 +6052,8 @@ type subnetListResultPager struct {
 	advancer subnetListResultAdvancePage
 	// contains the current response
 	current *SubnetListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -5933,7 +6082,7 @@ func (p *subnetListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -5984,6 +6133,8 @@ type usagesListResultPager struct {
 	advancer usagesListResultAdvancePage
 	// contains the current response
 	current *UsagesListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -6012,7 +6163,7 @@ func (p *usagesListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -6063,6 +6214,8 @@ type virtualNetworkGatewayConnectionListResultPager struct {
 	advancer virtualNetworkGatewayConnectionListResultAdvancePage
 	// contains the current response
 	current *VirtualNetworkGatewayConnectionListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -6091,7 +6244,7 @@ func (p *virtualNetworkGatewayConnectionListResultPager) NextPage(ctx context.Co
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -6142,6 +6295,8 @@ type virtualNetworkGatewayListConnectionsResultPager struct {
 	advancer virtualNetworkGatewayListConnectionsResultAdvancePage
 	// contains the current response
 	current *VirtualNetworkGatewayListConnectionsResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -6170,7 +6325,7 @@ func (p *virtualNetworkGatewayListConnectionsResultPager) NextPage(ctx context.C
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -6221,6 +6376,8 @@ type virtualNetworkGatewayListResultPager struct {
 	advancer virtualNetworkGatewayListResultAdvancePage
 	// contains the current response
 	current *VirtualNetworkGatewayListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -6249,7 +6406,7 @@ func (p *virtualNetworkGatewayListResultPager) NextPage(ctx context.Context) boo
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -6300,6 +6457,8 @@ type virtualNetworkListResultPager struct {
 	advancer virtualNetworkListResultAdvancePage
 	// contains the current response
 	current *VirtualNetworkListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -6328,7 +6487,7 @@ func (p *virtualNetworkListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -6379,6 +6538,8 @@ type virtualNetworkListUsageResultPager struct {
 	advancer virtualNetworkListUsageResultAdvancePage
 	// contains the current response
 	current *VirtualNetworkListUsageResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -6407,7 +6568,7 @@ func (p *virtualNetworkListUsageResultPager) NextPage(ctx context.Context) bool 
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -6458,6 +6619,8 @@ type virtualNetworkPeeringListResultPager struct {
 	advancer virtualNetworkPeeringListResultAdvancePage
 	// contains the current response
 	current *VirtualNetworkPeeringListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -6486,7 +6649,7 @@ func (p *virtualNetworkPeeringListResultPager) NextPage(ctx context.Context) boo
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -6537,6 +6700,8 @@ type virtualNetworkTapListResultPager struct {
 	advancer virtualNetworkTapListResultAdvancePage
 	// contains the current response
 	current *VirtualNetworkTapListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -6565,7 +6730,7 @@ func (p *virtualNetworkTapListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -6616,6 +6781,8 @@ type virtualRouterListResultPager struct {
 	advancer virtualRouterListResultAdvancePage
 	// contains the current response
 	current *VirtualRouterListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -6644,7 +6811,7 @@ func (p *virtualRouterListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -6695,6 +6862,8 @@ type virtualRouterPeeringListResultPager struct {
 	advancer virtualRouterPeeringListResultAdvancePage
 	// contains the current response
 	current *VirtualRouterPeeringListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -6723,7 +6892,7 @@ func (p *virtualRouterPeeringListResultPager) NextPage(ctx context.Context) bool
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -6774,6 +6943,8 @@ type webApplicationFirewallPolicyListResultPager struct {
 	advancer webApplicationFirewallPolicyListResultAdvancePage
 	// contains the current response
 	current *WebApplicationFirewallPolicyListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -6802,7 +6973,7 @@ func (p *webApplicationFirewallPolicyListResultPager) NextPage(ctx context.Conte
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}

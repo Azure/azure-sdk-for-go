@@ -22,21 +22,21 @@ import (
 // ResourceGroupsOperations contains the methods for the ResourceGroups group.
 type ResourceGroupsOperations interface {
 	// CheckExistence - Checks whether a resource group exists.
-	CheckExistence(ctx context.Context, resourceGroupName string) (*http.Response, error)
+	CheckExistence(ctx context.Context, resourceGroupName string, options *ResourceGroupsCheckExistenceOptions) (*http.Response, error)
 	// CreateOrUpdate - Creates or updates a resource group.
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, parameters ResourceGroup) (*ResourceGroupResponse, error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, parameters ResourceGroup, options *ResourceGroupsCreateOrUpdateOptions) (*ResourceGroupResponse, error)
 	// BeginDelete - When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
-	BeginDelete(ctx context.Context, resourceGroupName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, options *ResourceGroupsDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// ExportTemplate - Captures the specified resource group as a template.
-	ExportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest) (*ResourceGroupExportResultResponse, error)
+	ExportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsExportTemplateOptions) (*ResourceGroupExportResultResponse, error)
 	// Get - Gets a resource group.
-	Get(ctx context.Context, resourceGroupName string) (*ResourceGroupResponse, error)
+	Get(ctx context.Context, resourceGroupName string, options *ResourceGroupsGetOptions) (*ResourceGroupResponse, error)
 	// List - Gets all the resource groups for a subscription.
-	List(resourceGroupsListOptions *ResourceGroupsListOptions) ResourceGroupListResultPager
+	List(options *ResourceGroupsListOptions) ResourceGroupListResultPager
 	// Update - Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating a resource group. If a field is unspecified, the current value is retained.
-	Update(ctx context.Context, resourceGroupName string, parameters ResourceGroupPatchable) (*ResourceGroupResponse, error)
+	Update(ctx context.Context, resourceGroupName string, parameters ResourceGroupPatchable, options *ResourceGroupsUpdateOptions) (*ResourceGroupResponse, error)
 }
 
 // ResourceGroupsClient implements the ResourceGroupsOperations interface.
@@ -57,8 +57,8 @@ func (client *ResourceGroupsClient) Do(req *azcore.Request) (*azcore.Response, e
 }
 
 // CheckExistence - Checks whether a resource group exists.
-func (client *ResourceGroupsClient) CheckExistence(ctx context.Context, resourceGroupName string) (*http.Response, error) {
-	req, err := client.CheckExistenceCreateRequest(ctx, resourceGroupName)
+func (client *ResourceGroupsClient) CheckExistence(ctx context.Context, resourceGroupName string, options *ResourceGroupsCheckExistenceOptions) (*http.Response, error) {
+	req, err := client.CheckExistenceCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +73,7 @@ func (client *ResourceGroupsClient) CheckExistence(ctx context.Context, resource
 }
 
 // CheckExistenceCreateRequest creates the CheckExistence request.
-func (client *ResourceGroupsClient) CheckExistenceCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *ResourceGroupsClient) CheckExistenceCreateRequest(ctx context.Context, resourceGroupName string, options *ResourceGroupsCheckExistenceOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -94,14 +94,14 @@ func (client *ResourceGroupsClient) CheckExistenceHandleError(resp *azcore.Respo
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // CreateOrUpdate - Creates or updates a resource group.
-func (client *ResourceGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, parameters ResourceGroup) (*ResourceGroupResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, parameters)
+func (client *ResourceGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, parameters ResourceGroup, options *ResourceGroupsCreateOrUpdateOptions) (*ResourceGroupResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func (client *ResourceGroupsClient) CreateOrUpdate(ctx context.Context, resource
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ResourceGroupsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, parameters ResourceGroup) (*azcore.Request, error) {
+func (client *ResourceGroupsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, parameters ResourceGroup, options *ResourceGroupsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -148,13 +148,13 @@ func (client *ResourceGroupsClient) CreateOrUpdateHandleError(resp *azcore.Respo
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-func (client *ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName)
+func (client *ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, options *ResourceGroupsDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -188,8 +188,8 @@ func (client *ResourceGroupsClient) ResumeDelete(token string) (HTTPPoller, erro
 }
 
 // Delete - When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and currently stored operations.
-func (client *ResourceGroupsClient) Delete(ctx context.Context, resourceGroupName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName)
+func (client *ResourceGroupsClient) Delete(ctx context.Context, resourceGroupName string, options *ResourceGroupsDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -204,7 +204,7 @@ func (client *ResourceGroupsClient) Delete(ctx context.Context, resourceGroupNam
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *ResourceGroupsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *ResourceGroupsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, options *ResourceGroupsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -225,14 +225,14 @@ func (client *ResourceGroupsClient) DeleteHandleError(resp *azcore.Response) err
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // ExportTemplate - Captures the specified resource group as a template.
-func (client *ResourceGroupsClient) ExportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest) (*ResourceGroupExportResultResponse, error) {
-	req, err := client.ExportTemplateCreateRequest(ctx, resourceGroupName, parameters)
+func (client *ResourceGroupsClient) ExportTemplate(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsExportTemplateOptions) (*ResourceGroupExportResultResponse, error) {
+	req, err := client.ExportTemplateCreateRequest(ctx, resourceGroupName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -251,7 +251,7 @@ func (client *ResourceGroupsClient) ExportTemplate(ctx context.Context, resource
 }
 
 // ExportTemplateCreateRequest creates the ExportTemplate request.
-func (client *ResourceGroupsClient) ExportTemplateCreateRequest(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest) (*azcore.Request, error) {
+func (client *ResourceGroupsClient) ExportTemplateCreateRequest(ctx context.Context, resourceGroupName string, parameters ExportTemplateRequest, options *ResourceGroupsExportTemplateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/exportTemplate"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -279,14 +279,14 @@ func (client *ResourceGroupsClient) ExportTemplateHandleError(resp *azcore.Respo
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Get - Gets a resource group.
-func (client *ResourceGroupsClient) Get(ctx context.Context, resourceGroupName string) (*ResourceGroupResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName)
+func (client *ResourceGroupsClient) Get(ctx context.Context, resourceGroupName string, options *ResourceGroupsGetOptions) (*ResourceGroupResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -305,7 +305,7 @@ func (client *ResourceGroupsClient) Get(ctx context.Context, resourceGroupName s
 }
 
 // GetCreateRequest creates the Get request.
-func (client *ResourceGroupsClient) GetCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *ResourceGroupsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, options *ResourceGroupsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -333,28 +333,29 @@ func (client *ResourceGroupsClient) GetHandleError(resp *azcore.Response) error 
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // List - Gets all the resource groups for a subscription.
-func (client *ResourceGroupsClient) List(resourceGroupsListOptions *ResourceGroupsListOptions) ResourceGroupListResultPager {
+func (client *ResourceGroupsClient) List(options *ResourceGroupsListOptions) ResourceGroupListResultPager {
 	return &resourceGroupListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupsListOptions)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *ResourceGroupListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceGroupListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *ResourceGroupsClient) ListCreateRequest(ctx context.Context, resourceGroupsListOptions *ResourceGroupsListOptions) (*azcore.Request, error) {
+func (client *ResourceGroupsClient) ListCreateRequest(ctx context.Context, options *ResourceGroupsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -362,11 +363,11 @@ func (client *ResourceGroupsClient) ListCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	query := req.URL.Query()
-	if resourceGroupsListOptions != nil && resourceGroupsListOptions.Filter != nil {
-		query.Set("$filter", *resourceGroupsListOptions.Filter)
+	if options != nil && options.Filter != nil {
+		query.Set("$filter", *options.Filter)
 	}
-	if resourceGroupsListOptions != nil && resourceGroupsListOptions.Top != nil {
-		query.Set("$top", strconv.FormatInt(int64(*resourceGroupsListOptions.Top), 10))
+	if options != nil && options.Top != nil {
+		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	query.Set("api-version", "2019-05-01")
 	req.URL.RawQuery = query.Encode()
@@ -387,14 +388,14 @@ func (client *ResourceGroupsClient) ListHandleError(resp *azcore.Response) error
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Update - Resource groups can be updated through a simple PATCH operation to a group address. The format of the request is the same as that for creating a resource group. If a field is unspecified, the current value is retained.
-func (client *ResourceGroupsClient) Update(ctx context.Context, resourceGroupName string, parameters ResourceGroupPatchable) (*ResourceGroupResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, parameters)
+func (client *ResourceGroupsClient) Update(ctx context.Context, resourceGroupName string, parameters ResourceGroupPatchable, options *ResourceGroupsUpdateOptions) (*ResourceGroupResponse, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -413,7 +414,7 @@ func (client *ResourceGroupsClient) Update(ctx context.Context, resourceGroupNam
 }
 
 // UpdateCreateRequest creates the Update request.
-func (client *ResourceGroupsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, parameters ResourceGroupPatchable) (*azcore.Request, error) {
+func (client *ResourceGroupsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, parameters ResourceGroupPatchable, options *ResourceGroupsUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -441,7 +442,7 @@ func (client *ResourceGroupsClient) UpdateHandleError(resp *azcore.Response) err
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

@@ -21,19 +21,19 @@ import (
 // ContainerServicesOperations contains the methods for the ContainerServices group.
 type ContainerServicesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService) (*ContainerServicePollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService, options *ContainerServicesCreateOrUpdateOptions) (*ContainerServicePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ContainerServicePoller, error)
 	// BeginDelete - Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-	BeginDelete(ctx context.Context, resourceGroupName string, containerServiceName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-	Get(ctx context.Context, resourceGroupName string, containerServiceName string) (*ContainerServiceResponse, error)
+	Get(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesGetOptions) (*ContainerServiceResponse, error)
 	// List - Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-	List() ContainerServiceListResultPager
+	List(options *ContainerServicesListOptions) ContainerServiceListResultPager
 	// ListByResourceGroup - Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-	ListByResourceGroup(resourceGroupName string) ContainerServiceListResultPager
+	ListByResourceGroup(resourceGroupName string, options *ContainerServicesListByResourceGroupOptions) ContainerServiceListResultPager
 }
 
 // ContainerServicesClient implements the ContainerServicesOperations interface.
@@ -53,8 +53,8 @@ func (client *ContainerServicesClient) Do(req *azcore.Request) (*azcore.Response
 	return client.p.Do(req)
 }
 
-func (client *ContainerServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService) (*ContainerServicePollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, containerServiceName, parameters)
+func (client *ContainerServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService, options *ContainerServicesCreateOrUpdateOptions) (*ContainerServicePollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, containerServiceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -88,8 +88,8 @@ func (client *ContainerServicesClient) ResumeCreateOrUpdate(token string) (Conta
 }
 
 // CreateOrUpdate - Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-func (client *ContainerServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, containerServiceName, parameters)
+func (client *ContainerServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService, options *ContainerServicesCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, containerServiceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +104,7 @@ func (client *ContainerServicesClient) CreateOrUpdate(ctx context.Context, resou
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ContainerServicesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService) (*azcore.Request, error) {
+func (client *ContainerServicesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService, options *ContainerServicesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{containerServiceName}", url.PathEscape(containerServiceName))
@@ -133,13 +133,13 @@ func (client *ContainerServicesClient) CreateOrUpdateHandleError(resp *azcore.Re
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-func (client *ContainerServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, containerServiceName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, containerServiceName)
+func (client *ContainerServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, containerServiceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -173,8 +173,8 @@ func (client *ContainerServicesClient) ResumeDelete(token string) (HTTPPoller, e
 }
 
 // Delete - Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-func (client *ContainerServicesClient) Delete(ctx context.Context, resourceGroupName string, containerServiceName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, containerServiceName)
+func (client *ContainerServicesClient) Delete(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, containerServiceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -189,7 +189,7 @@ func (client *ContainerServicesClient) Delete(ctx context.Context, resourceGroup
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *ContainerServicesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, containerServiceName string) (*azcore.Request, error) {
+func (client *ContainerServicesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{containerServiceName}", url.PathEscape(containerServiceName))
@@ -211,14 +211,14 @@ func (client *ContainerServicesClient) DeleteHandleError(resp *azcore.Response) 
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Get - Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-func (client *ContainerServicesClient) Get(ctx context.Context, resourceGroupName string, containerServiceName string) (*ContainerServiceResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, containerServiceName)
+func (client *ContainerServicesClient) Get(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesGetOptions) (*ContainerServiceResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, containerServiceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -237,7 +237,7 @@ func (client *ContainerServicesClient) Get(ctx context.Context, resourceGroupNam
 }
 
 // GetCreateRequest creates the Get request.
-func (client *ContainerServicesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, containerServiceName string) (*azcore.Request, error) {
+func (client *ContainerServicesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices/{containerServiceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{containerServiceName}", url.PathEscape(containerServiceName))
@@ -266,28 +266,29 @@ func (client *ContainerServicesClient) GetHandleError(resp *azcore.Response) err
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // List - Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-func (client *ContainerServicesClient) List() ContainerServiceListResultPager {
+func (client *ContainerServicesClient) List(options *ContainerServicesListOptions) ContainerServiceListResultPager {
 	return &containerServiceListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *ContainerServiceListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ContainerServiceListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *ContainerServicesClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *ContainerServicesClient) ListCreateRequest(ctx context.Context, options *ContainerServicesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/containerServices"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -314,28 +315,29 @@ func (client *ContainerServicesClient) ListHandleError(resp *azcore.Response) er
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // ListByResourceGroup - Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-func (client *ContainerServicesClient) ListByResourceGroup(resourceGroupName string) ContainerServiceListResultPager {
+func (client *ContainerServicesClient) ListByResourceGroup(resourceGroupName string, options *ContainerServicesListByResourceGroupOptions) ContainerServiceListResultPager {
 	return &containerServiceListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName)
+			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
 		responder: client.ListByResourceGroupHandleResponse,
 		errorer:   client.ListByResourceGroupHandleError,
 		advancer: func(ctx context.Context, resp *ContainerServiceListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ContainerServiceListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ContainerServicesClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *ContainerServicesClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ContainerServicesListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/containerServices"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -363,7 +365,7 @@ func (client *ContainerServicesClient) ListByResourceGroupHandleError(resp *azco
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

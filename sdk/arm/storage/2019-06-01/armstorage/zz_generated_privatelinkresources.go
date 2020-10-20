@@ -19,7 +19,7 @@ import (
 // PrivateLinkResourcesOperations contains the methods for the PrivateLinkResources group.
 type PrivateLinkResourcesOperations interface {
 	// ListByStorageAccount - Gets the private link resources that need to be created for a storage account.
-	ListByStorageAccount(ctx context.Context, resourceGroupName string, accountName string) (*PrivateLinkResourceListResultResponse, error)
+	ListByStorageAccount(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesListByStorageAccountOptions) (*PrivateLinkResourceListResultResponse, error)
 }
 
 // PrivateLinkResourcesClient implements the PrivateLinkResourcesOperations interface.
@@ -40,8 +40,8 @@ func (client *PrivateLinkResourcesClient) Do(req *azcore.Request) (*azcore.Respo
 }
 
 // ListByStorageAccount - Gets the private link resources that need to be created for a storage account.
-func (client *PrivateLinkResourcesClient) ListByStorageAccount(ctx context.Context, resourceGroupName string, accountName string) (*PrivateLinkResourceListResultResponse, error) {
-	req, err := client.ListByStorageAccountCreateRequest(ctx, resourceGroupName, accountName)
+func (client *PrivateLinkResourcesClient) ListByStorageAccount(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesListByStorageAccountOptions) (*PrivateLinkResourceListResultResponse, error) {
+	req, err := client.ListByStorageAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (client *PrivateLinkResourcesClient) ListByStorageAccount(ctx context.Conte
 }
 
 // ListByStorageAccountCreateRequest creates the ListByStorageAccount request.
-func (client *PrivateLinkResourcesClient) ListByStorageAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string) (*azcore.Request, error) {
+func (client *PrivateLinkResourcesClient) ListByStorageAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesListByStorageAccountOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/privateLinkResources"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -89,7 +89,7 @@ func (client *PrivateLinkResourcesClient) ListByStorageAccountHandleError(resp *
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

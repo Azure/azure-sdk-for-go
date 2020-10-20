@@ -18,21 +18,21 @@ import (
 // ServiceEndpointPoliciesOperations contains the methods for the ServiceEndpointPolicies group.
 type ServiceEndpointPoliciesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a service Endpoint Policies.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters ServiceEndpointPolicy) (*ServiceEndpointPolicyPollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters ServiceEndpointPolicy, options *ServiceEndpointPoliciesCreateOrUpdateOptions) (*ServiceEndpointPolicyPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ServiceEndpointPolicyPoller, error)
 	// BeginDelete - Deletes the specified service endpoint policy.
-	BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPoliciesDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified service Endpoint Policies in a specified resource group.
-	Get(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPoliciesGetOptions *ServiceEndpointPoliciesGetOptions) (*ServiceEndpointPolicyResponse, error)
+	Get(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPoliciesGetOptions) (*ServiceEndpointPolicyResponse, error)
 	// List - Gets all the service endpoint policies in a subscription.
-	List() ServiceEndpointPolicyListResultPager
+	List(options *ServiceEndpointPoliciesListOptions) ServiceEndpointPolicyListResultPager
 	// ListByResourceGroup - Gets all service endpoint Policies in a resource group.
-	ListByResourceGroup(resourceGroupName string) ServiceEndpointPolicyListResultPager
+	ListByResourceGroup(resourceGroupName string, options *ServiceEndpointPoliciesListByResourceGroupOptions) ServiceEndpointPolicyListResultPager
 	// UpdateTags - Updates tags of a service endpoint policy.
-	UpdateTags(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters TagsObject) (*ServiceEndpointPolicyResponse, error)
+	UpdateTags(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters TagsObject, options *ServiceEndpointPoliciesUpdateTagsOptions) (*ServiceEndpointPolicyResponse, error)
 }
 
 // ServiceEndpointPoliciesClient implements the ServiceEndpointPoliciesOperations interface.
@@ -52,8 +52,8 @@ func (client *ServiceEndpointPoliciesClient) Do(req *azcore.Request) (*azcore.Re
 	return client.p.Do(req)
 }
 
-func (client *ServiceEndpointPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters ServiceEndpointPolicy) (*ServiceEndpointPolicyPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, serviceEndpointPolicyName, parameters)
+func (client *ServiceEndpointPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters ServiceEndpointPolicy, options *ServiceEndpointPoliciesCreateOrUpdateOptions) (*ServiceEndpointPolicyPollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, serviceEndpointPolicyName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -87,8 +87,8 @@ func (client *ServiceEndpointPoliciesClient) ResumeCreateOrUpdate(token string) 
 }
 
 // CreateOrUpdate - Creates or updates a service Endpoint Policies.
-func (client *ServiceEndpointPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters ServiceEndpointPolicy) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, parameters)
+func (client *ServiceEndpointPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters ServiceEndpointPolicy, options *ServiceEndpointPoliciesCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (client *ServiceEndpointPoliciesClient) CreateOrUpdate(ctx context.Context,
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServiceEndpointPoliciesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters ServiceEndpointPolicy) (*azcore.Request, error) {
+func (client *ServiceEndpointPoliciesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters ServiceEndpointPolicy, options *ServiceEndpointPoliciesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceEndpointPolicies/{serviceEndpointPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{serviceEndpointPolicyName}", url.PathEscape(serviceEndpointPolicyName))
@@ -131,11 +131,11 @@ func (client *ServiceEndpointPoliciesClient) CreateOrUpdateHandleError(resp *azc
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *ServiceEndpointPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, serviceEndpointPolicyName)
+func (client *ServiceEndpointPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPoliciesDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, serviceEndpointPolicyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -169,8 +169,8 @@ func (client *ServiceEndpointPoliciesClient) ResumeDelete(token string) (HTTPPol
 }
 
 // Delete - Deletes the specified service endpoint policy.
-func (client *ServiceEndpointPoliciesClient) Delete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName)
+func (client *ServiceEndpointPoliciesClient) Delete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPoliciesDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +185,7 @@ func (client *ServiceEndpointPoliciesClient) Delete(ctx context.Context, resourc
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *ServiceEndpointPoliciesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string) (*azcore.Request, error) {
+func (client *ServiceEndpointPoliciesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPoliciesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceEndpointPolicies/{serviceEndpointPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{serviceEndpointPolicyName}", url.PathEscape(serviceEndpointPolicyName))
@@ -207,12 +207,12 @@ func (client *ServiceEndpointPoliciesClient) DeleteHandleError(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets the specified service Endpoint Policies in a specified resource group.
-func (client *ServiceEndpointPoliciesClient) Get(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPoliciesGetOptions *ServiceEndpointPoliciesGetOptions) (*ServiceEndpointPolicyResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPoliciesGetOptions)
+func (client *ServiceEndpointPoliciesClient) Get(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPoliciesGetOptions) (*ServiceEndpointPolicyResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -231,7 +231,7 @@ func (client *ServiceEndpointPoliciesClient) Get(ctx context.Context, resourceGr
 }
 
 // GetCreateRequest creates the Get request.
-func (client *ServiceEndpointPoliciesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPoliciesGetOptions *ServiceEndpointPoliciesGetOptions) (*azcore.Request, error) {
+func (client *ServiceEndpointPoliciesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPoliciesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceEndpointPolicies/{serviceEndpointPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{serviceEndpointPolicyName}", url.PathEscape(serviceEndpointPolicyName))
@@ -242,8 +242,8 @@ func (client *ServiceEndpointPoliciesClient) GetCreateRequest(ctx context.Contex
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2020-03-01")
-	if serviceEndpointPoliciesGetOptions != nil && serviceEndpointPoliciesGetOptions.Expand != nil {
-		query.Set("$expand", *serviceEndpointPoliciesGetOptions.Expand)
+	if options != nil && options.Expand != nil {
+		query.Set("$expand", *options.Expand)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -262,26 +262,27 @@ func (client *ServiceEndpointPoliciesClient) GetHandleError(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Gets all the service endpoint policies in a subscription.
-func (client *ServiceEndpointPoliciesClient) List() ServiceEndpointPolicyListResultPager {
+func (client *ServiceEndpointPoliciesClient) List(options *ServiceEndpointPoliciesListOptions) ServiceEndpointPolicyListResultPager {
 	return &serviceEndpointPolicyListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *ServiceEndpointPolicyListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ServiceEndpointPolicyListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *ServiceEndpointPoliciesClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *ServiceEndpointPoliciesClient) ListCreateRequest(ctx context.Context, options *ServiceEndpointPoliciesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ServiceEndpointPolicies"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -307,26 +308,27 @@ func (client *ServiceEndpointPoliciesClient) ListHandleError(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByResourceGroup - Gets all service endpoint Policies in a resource group.
-func (client *ServiceEndpointPoliciesClient) ListByResourceGroup(resourceGroupName string) ServiceEndpointPolicyListResultPager {
+func (client *ServiceEndpointPoliciesClient) ListByResourceGroup(resourceGroupName string, options *ServiceEndpointPoliciesListByResourceGroupOptions) ServiceEndpointPolicyListResultPager {
 	return &serviceEndpointPolicyListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName)
+			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
 		responder: client.ListByResourceGroupHandleResponse,
 		errorer:   client.ListByResourceGroupHandleError,
 		advancer: func(ctx context.Context, resp *ServiceEndpointPolicyListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ServiceEndpointPolicyListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ServiceEndpointPoliciesClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *ServiceEndpointPoliciesClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ServiceEndpointPoliciesListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceEndpointPolicies"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -353,12 +355,12 @@ func (client *ServiceEndpointPoliciesClient) ListByResourceGroupHandleError(resp
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // UpdateTags - Updates tags of a service endpoint policy.
-func (client *ServiceEndpointPoliciesClient) UpdateTags(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters TagsObject) (*ServiceEndpointPolicyResponse, error) {
-	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, parameters)
+func (client *ServiceEndpointPoliciesClient) UpdateTags(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters TagsObject, options *ServiceEndpointPoliciesUpdateTagsOptions) (*ServiceEndpointPolicyResponse, error) {
+	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -377,7 +379,7 @@ func (client *ServiceEndpointPoliciesClient) UpdateTags(ctx context.Context, res
 }
 
 // UpdateTagsCreateRequest creates the UpdateTags request.
-func (client *ServiceEndpointPoliciesClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters TagsObject) (*azcore.Request, error) {
+func (client *ServiceEndpointPoliciesClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, parameters TagsObject, options *ServiceEndpointPoliciesUpdateTagsOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceEndpointPolicies/{serviceEndpointPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{serviceEndpointPolicyName}", url.PathEscape(serviceEndpointPolicyName))
@@ -405,5 +407,5 @@ func (client *ServiceEndpointPoliciesClient) UpdateTagsHandleError(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

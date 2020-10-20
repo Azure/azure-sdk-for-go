@@ -16,7 +16,7 @@ import (
 // ServiceTagsOperations contains the methods for the ServiceTags group.
 type ServiceTagsOperations interface {
 	// List - Gets a list of service tag information resources.
-	List(ctx context.Context, location string) (*ServiceTagsListResultResponse, error)
+	List(ctx context.Context, location string, options *ServiceTagsListOptions) (*ServiceTagsListResultResponse, error)
 }
 
 // ServiceTagsClient implements the ServiceTagsOperations interface.
@@ -37,8 +37,8 @@ func (client *ServiceTagsClient) Do(req *azcore.Request) (*azcore.Response, erro
 }
 
 // List - Gets a list of service tag information resources.
-func (client *ServiceTagsClient) List(ctx context.Context, location string) (*ServiceTagsListResultResponse, error) {
-	req, err := client.ListCreateRequest(ctx, location)
+func (client *ServiceTagsClient) List(ctx context.Context, location string, options *ServiceTagsListOptions) (*ServiceTagsListResultResponse, error) {
+	req, err := client.ListCreateRequest(ctx, location, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (client *ServiceTagsClient) List(ctx context.Context, location string) (*Se
 }
 
 // ListCreateRequest creates the List request.
-func (client *ServiceTagsClient) ListCreateRequest(ctx context.Context, location string) (*azcore.Request, error) {
+func (client *ServiceTagsClient) ListCreateRequest(ctx context.Context, location string, options *ServiceTagsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/serviceTags"
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -84,5 +84,5 @@ func (client *ServiceTagsClient) ListHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -21,29 +21,29 @@ import (
 // SnapshotsOperations contains the methods for the Snapshots group.
 type SnapshotsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a snapshot.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot) (*SnapshotPollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsCreateOrUpdateOptions) (*SnapshotPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (SnapshotPoller, error)
 	// BeginDelete - Deletes a snapshot.
-	BeginDelete(ctx context.Context, resourceGroupName string, snapshotName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets information about a snapshot.
-	Get(ctx context.Context, resourceGroupName string, snapshotName string) (*SnapshotResponse, error)
+	Get(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsGetOptions) (*SnapshotResponse, error)
 	// BeginGrantAccess - Grants access to a snapshot.
-	BeginGrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData) (*AccessURIPollerResponse, error)
+	BeginGrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsGrantAccessOptions) (*AccessURIPollerResponse, error)
 	// ResumeGrantAccess - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeGrantAccess(token string) (AccessURIPoller, error)
 	// List - Lists snapshots under a subscription.
-	List() SnapshotListPager
+	List(options *SnapshotsListOptions) SnapshotListPager
 	// ListByResourceGroup - Lists snapshots under a resource group.
-	ListByResourceGroup(resourceGroupName string) SnapshotListPager
+	ListByResourceGroup(resourceGroupName string, options *SnapshotsListByResourceGroupOptions) SnapshotListPager
 	// BeginRevokeAccess - Revokes access to a snapshot.
-	BeginRevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string) (*HTTPPollerResponse, error)
+	BeginRevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsRevokeAccessOptions) (*HTTPPollerResponse, error)
 	// ResumeRevokeAccess - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeRevokeAccess(token string) (HTTPPoller, error)
 	// BeginUpdate - Updates (patches) a snapshot.
-	BeginUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate) (*SnapshotPollerResponse, error)
+	BeginUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsUpdateOptions) (*SnapshotPollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (SnapshotPoller, error)
 }
@@ -65,8 +65,8 @@ func (client *SnapshotsClient) Do(req *azcore.Request) (*azcore.Response, error)
 	return client.p.Do(req)
 }
 
-func (client *SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot) (*SnapshotPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, snapshotName, snapshot)
+func (client *SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsCreateOrUpdateOptions) (*SnapshotPollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
 		return nil, err
 	}
@@ -100,8 +100,8 @@ func (client *SnapshotsClient) ResumeCreateOrUpdate(token string) (SnapshotPolle
 }
 
 // CreateOrUpdate - Creates or updates a snapshot.
-func (client *SnapshotsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, snapshotName, snapshot)
+func (client *SnapshotsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +116,7 @@ func (client *SnapshotsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SnapshotsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot) (*azcore.Request, error) {
+func (client *SnapshotsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -145,13 +145,13 @@ func (client *SnapshotsClient) CreateOrUpdateHandleError(resp *azcore.Response) 
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupName string, snapshotName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, snapshotName)
+func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -185,8 +185,8 @@ func (client *SnapshotsClient) ResumeDelete(token string) (HTTPPoller, error) {
 }
 
 // Delete - Deletes a snapshot.
-func (client *SnapshotsClient) Delete(ctx context.Context, resourceGroupName string, snapshotName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, snapshotName)
+func (client *SnapshotsClient) Delete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -201,7 +201,7 @@ func (client *SnapshotsClient) Delete(ctx context.Context, resourceGroupName str
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *SnapshotsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string) (*azcore.Request, error) {
+func (client *SnapshotsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -223,14 +223,14 @@ func (client *SnapshotsClient) DeleteHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Get - Gets information about a snapshot.
-func (client *SnapshotsClient) Get(ctx context.Context, resourceGroupName string, snapshotName string) (*SnapshotResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, snapshotName)
+func (client *SnapshotsClient) Get(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsGetOptions) (*SnapshotResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -249,7 +249,7 @@ func (client *SnapshotsClient) Get(ctx context.Context, resourceGroupName string
 }
 
 // GetCreateRequest creates the Get request.
-func (client *SnapshotsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string) (*azcore.Request, error) {
+func (client *SnapshotsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -278,13 +278,13 @@ func (client *SnapshotsClient) GetHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-func (client *SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData) (*AccessURIPollerResponse, error) {
-	resp, err := client.GrantAccess(ctx, resourceGroupName, snapshotName, grantAccessData)
+func (client *SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsGrantAccessOptions) (*AccessURIPollerResponse, error) {
+	resp, err := client.GrantAccess(ctx, resourceGroupName, snapshotName, grantAccessData, options)
 	if err != nil {
 		return nil, err
 	}
@@ -318,8 +318,8 @@ func (client *SnapshotsClient) ResumeGrantAccess(token string) (AccessURIPoller,
 }
 
 // GrantAccess - Grants access to a snapshot.
-func (client *SnapshotsClient) GrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData) (*azcore.Response, error) {
-	req, err := client.GrantAccessCreateRequest(ctx, resourceGroupName, snapshotName, grantAccessData)
+func (client *SnapshotsClient) GrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsGrantAccessOptions) (*azcore.Response, error) {
+	req, err := client.GrantAccessCreateRequest(ctx, resourceGroupName, snapshotName, grantAccessData, options)
 	if err != nil {
 		return nil, err
 	}
@@ -334,7 +334,7 @@ func (client *SnapshotsClient) GrantAccess(ctx context.Context, resourceGroupNam
 }
 
 // GrantAccessCreateRequest creates the GrantAccess request.
-func (client *SnapshotsClient) GrantAccessCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData) (*azcore.Request, error) {
+func (client *SnapshotsClient) GrantAccessCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsGrantAccessOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/beginGetAccess"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -363,28 +363,29 @@ func (client *SnapshotsClient) GrantAccessHandleError(resp *azcore.Response) err
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // List - Lists snapshots under a subscription.
-func (client *SnapshotsClient) List() SnapshotListPager {
+func (client *SnapshotsClient) List(options *SnapshotsListOptions) SnapshotListPager {
 	return &snapshotListPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *SnapshotListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SnapshotList.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *SnapshotsClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *SnapshotsClient) ListCreateRequest(ctx context.Context, options *SnapshotsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/snapshots"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -411,28 +412,29 @@ func (client *SnapshotsClient) ListHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // ListByResourceGroup - Lists snapshots under a resource group.
-func (client *SnapshotsClient) ListByResourceGroup(resourceGroupName string) SnapshotListPager {
+func (client *SnapshotsClient) ListByResourceGroup(resourceGroupName string, options *SnapshotsListByResourceGroupOptions) SnapshotListPager {
 	return &snapshotListPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName)
+			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
 		responder: client.ListByResourceGroupHandleResponse,
 		errorer:   client.ListByResourceGroupHandleError,
 		advancer: func(ctx context.Context, resp *SnapshotListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SnapshotList.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *SnapshotsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *SnapshotsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *SnapshotsListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -460,13 +462,13 @@ func (client *SnapshotsClient) ListByResourceGroupHandleError(resp *azcore.Respo
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-func (client *SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string) (*HTTPPollerResponse, error) {
-	resp, err := client.RevokeAccess(ctx, resourceGroupName, snapshotName)
+func (client *SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsRevokeAccessOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.RevokeAccess(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -500,8 +502,8 @@ func (client *SnapshotsClient) ResumeRevokeAccess(token string) (HTTPPoller, err
 }
 
 // RevokeAccess - Revokes access to a snapshot.
-func (client *SnapshotsClient) RevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string) (*azcore.Response, error) {
-	req, err := client.RevokeAccessCreateRequest(ctx, resourceGroupName, snapshotName)
+func (client *SnapshotsClient) RevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsRevokeAccessOptions) (*azcore.Response, error) {
+	req, err := client.RevokeAccessCreateRequest(ctx, resourceGroupName, snapshotName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -516,7 +518,7 @@ func (client *SnapshotsClient) RevokeAccess(ctx context.Context, resourceGroupNa
 }
 
 // RevokeAccessCreateRequest creates the RevokeAccess request.
-func (client *SnapshotsClient) RevokeAccessCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string) (*azcore.Request, error) {
+func (client *SnapshotsClient) RevokeAccessCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsRevokeAccessOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}/endGetAccess"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -538,13 +540,13 @@ func (client *SnapshotsClient) RevokeAccessHandleError(resp *azcore.Response) er
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate) (*SnapshotPollerResponse, error) {
-	resp, err := client.Update(ctx, resourceGroupName, snapshotName, snapshot)
+func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsUpdateOptions) (*SnapshotPollerResponse, error) {
+	resp, err := client.Update(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
 		return nil, err
 	}
@@ -578,8 +580,8 @@ func (client *SnapshotsClient) ResumeUpdate(token string) (SnapshotPoller, error
 }
 
 // Update - Updates (patches) a snapshot.
-func (client *SnapshotsClient) Update(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate) (*azcore.Response, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, snapshotName, snapshot)
+func (client *SnapshotsClient) Update(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsUpdateOptions) (*azcore.Response, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, snapshotName, snapshot, options)
 	if err != nil {
 		return nil, err
 	}
@@ -594,7 +596,7 @@ func (client *SnapshotsClient) Update(ctx context.Context, resourceGroupName str
 }
 
 // UpdateCreateRequest creates the Update request.
-func (client *SnapshotsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate) (*azcore.Request, error) {
+func (client *SnapshotsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/snapshots/{snapshotName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -623,7 +625,7 @@ func (client *SnapshotsClient) UpdateHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

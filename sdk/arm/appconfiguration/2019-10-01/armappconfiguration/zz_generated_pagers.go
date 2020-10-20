@@ -8,7 +8,6 @@ package armappconfiguration
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"net/http"
 )
 
 // APIKeyListResultPager provides iteration over APIKeyListResult pages.
@@ -45,6 +44,8 @@ type apiKeyListResultPager struct {
 	advancer apiKeyListResultAdvancePage
 	// contains the current response
 	current *APIKeyListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -73,7 +74,7 @@ func (p *apiKeyListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -124,6 +125,8 @@ type configurationStoreListResultPager struct {
 	advancer configurationStoreListResultAdvancePage
 	// contains the current response
 	current *ConfigurationStoreListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -152,7 +155,7 @@ func (p *configurationStoreListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -203,6 +206,8 @@ type operationDefinitionListResultPager struct {
 	advancer operationDefinitionListResultAdvancePage
 	// contains the current response
 	current *OperationDefinitionListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -231,7 +236,7 @@ func (p *operationDefinitionListResultPager) NextPage(ctx context.Context) bool 
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}

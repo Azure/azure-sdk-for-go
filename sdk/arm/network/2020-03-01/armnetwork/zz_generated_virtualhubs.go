@@ -18,21 +18,21 @@ import (
 // VirtualHubsOperations contains the methods for the VirtualHubs group.
 type VirtualHubsOperations interface {
 	// BeginCreateOrUpdate - Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub) (*VirtualHubPollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub, options *VirtualHubsCreateOrUpdateOptions) (*VirtualHubPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VirtualHubPoller, error)
 	// BeginDelete - Deletes a VirtualHub.
-	BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubsDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Retrieves the details of a VirtualHub.
-	Get(ctx context.Context, resourceGroupName string, virtualHubName string) (*VirtualHubResponse, error)
+	Get(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubsGetOptions) (*VirtualHubResponse, error)
 	// List - Lists all the VirtualHubs in a subscription.
-	List() ListVirtualHubsResultPager
+	List(options *VirtualHubsListOptions) ListVirtualHubsResultPager
 	// ListByResourceGroup - Lists all the VirtualHubs in a resource group.
-	ListByResourceGroup(resourceGroupName string) ListVirtualHubsResultPager
+	ListByResourceGroup(resourceGroupName string, options *VirtualHubsListByResourceGroupOptions) ListVirtualHubsResultPager
 	// UpdateTags - Updates VirtualHub tags.
-	UpdateTags(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters TagsObject) (*VirtualHubResponse, error)
+	UpdateTags(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters TagsObject, options *VirtualHubsUpdateTagsOptions) (*VirtualHubResponse, error)
 }
 
 // VirtualHubsClient implements the VirtualHubsOperations interface.
@@ -52,8 +52,8 @@ func (client *VirtualHubsClient) Do(req *azcore.Request) (*azcore.Response, erro
 	return client.p.Do(req)
 }
 
-func (client *VirtualHubsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub) (*VirtualHubPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, virtualHubName, virtualHubParameters)
+func (client *VirtualHubsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub, options *VirtualHubsCreateOrUpdateOptions) (*VirtualHubPollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, virtualHubName, virtualHubParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -87,8 +87,8 @@ func (client *VirtualHubsClient) ResumeCreateOrUpdate(token string) (VirtualHubP
 }
 
 // CreateOrUpdate - Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
-func (client *VirtualHubsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, virtualHubParameters)
+func (client *VirtualHubsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub, options *VirtualHubsCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, virtualHubParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (client *VirtualHubsClient) CreateOrUpdate(ctx context.Context, resourceGro
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualHubsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub) (*azcore.Request, error) {
+func (client *VirtualHubsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub, options *VirtualHubsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -131,11 +131,11 @@ func (client *VirtualHubsClient) CreateOrUpdateHandleError(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *VirtualHubsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, virtualHubName)
+func (client *VirtualHubsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubsDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, virtualHubName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -169,8 +169,8 @@ func (client *VirtualHubsClient) ResumeDelete(token string) (HTTPPoller, error) 
 }
 
 // Delete - Deletes a VirtualHub.
-func (client *VirtualHubsClient) Delete(ctx context.Context, resourceGroupName string, virtualHubName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, virtualHubName)
+func (client *VirtualHubsClient) Delete(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubsDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, virtualHubName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +185,7 @@ func (client *VirtualHubsClient) Delete(ctx context.Context, resourceGroupName s
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *VirtualHubsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string) (*azcore.Request, error) {
+func (client *VirtualHubsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -207,12 +207,12 @@ func (client *VirtualHubsClient) DeleteHandleError(resp *azcore.Response) error 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Retrieves the details of a VirtualHub.
-func (client *VirtualHubsClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string) (*VirtualHubResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, virtualHubName)
+func (client *VirtualHubsClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubsGetOptions) (*VirtualHubResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, virtualHubName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -231,7 +231,7 @@ func (client *VirtualHubsClient) Get(ctx context.Context, resourceGroupName stri
 }
 
 // GetCreateRequest creates the Get request.
-func (client *VirtualHubsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string) (*azcore.Request, error) {
+func (client *VirtualHubsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -259,26 +259,27 @@ func (client *VirtualHubsClient) GetHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Lists all the VirtualHubs in a subscription.
-func (client *VirtualHubsClient) List() ListVirtualHubsResultPager {
+func (client *VirtualHubsClient) List(options *VirtualHubsListOptions) ListVirtualHubsResultPager {
 	return &listVirtualHubsResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *ListVirtualHubsResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListVirtualHubsResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *VirtualHubsClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *VirtualHubsClient) ListCreateRequest(ctx context.Context, options *VirtualHubsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualHubs"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -304,26 +305,27 @@ func (client *VirtualHubsClient) ListHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByResourceGroup - Lists all the VirtualHubs in a resource group.
-func (client *VirtualHubsClient) ListByResourceGroup(resourceGroupName string) ListVirtualHubsResultPager {
+func (client *VirtualHubsClient) ListByResourceGroup(resourceGroupName string, options *VirtualHubsListByResourceGroupOptions) ListVirtualHubsResultPager {
 	return &listVirtualHubsResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName)
+			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
 		responder: client.ListByResourceGroupHandleResponse,
 		errorer:   client.ListByResourceGroupHandleError,
 		advancer: func(ctx context.Context, resp *ListVirtualHubsResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListVirtualHubsResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *VirtualHubsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *VirtualHubsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *VirtualHubsListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -350,12 +352,12 @@ func (client *VirtualHubsClient) ListByResourceGroupHandleError(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // UpdateTags - Updates VirtualHub tags.
-func (client *VirtualHubsClient) UpdateTags(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters TagsObject) (*VirtualHubResponse, error) {
-	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, virtualHubName, virtualHubParameters)
+func (client *VirtualHubsClient) UpdateTags(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters TagsObject, options *VirtualHubsUpdateTagsOptions) (*VirtualHubResponse, error) {
+	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, virtualHubName, virtualHubParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -374,7 +376,7 @@ func (client *VirtualHubsClient) UpdateTags(ctx context.Context, resourceGroupNa
 }
 
 // UpdateTagsCreateRequest creates the UpdateTags request.
-func (client *VirtualHubsClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters TagsObject) (*azcore.Request, error) {
+func (client *VirtualHubsClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters TagsObject, options *VirtualHubsUpdateTagsOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -402,5 +404,5 @@ func (client *VirtualHubsClient) UpdateTagsHandleError(resp *azcore.Response) er
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

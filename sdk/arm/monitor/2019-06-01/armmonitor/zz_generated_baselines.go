@@ -15,7 +15,7 @@ import (
 // BaselinesOperations contains the methods for the Baselines group.
 type BaselinesOperations interface {
 	// List - **Lists the metric baseline values for a resource**.
-	List(ctx context.Context, resourceUri string, baselinesListOptions *BaselinesListOptions) (*MetricBaselinesResponseResponse, error)
+	List(ctx context.Context, resourceUri string, options *BaselinesListOptions) (*MetricBaselinesResponseResponse, error)
 }
 
 // BaselinesClient implements the BaselinesOperations interface.
@@ -35,8 +35,8 @@ func (client *BaselinesClient) Do(req *azcore.Request) (*azcore.Response, error)
 }
 
 // List - **Lists the metric baseline values for a resource**.
-func (client *BaselinesClient) List(ctx context.Context, resourceUri string, baselinesListOptions *BaselinesListOptions) (*MetricBaselinesResponseResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceUri, baselinesListOptions)
+func (client *BaselinesClient) List(ctx context.Context, resourceUri string, options *BaselinesListOptions) (*MetricBaselinesResponseResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceUri, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (client *BaselinesClient) List(ctx context.Context, resourceUri string, bas
 }
 
 // ListCreateRequest creates the List request.
-func (client *BaselinesClient) ListCreateRequest(ctx context.Context, resourceUri string, baselinesListOptions *BaselinesListOptions) (*azcore.Request, error) {
+func (client *BaselinesClient) ListCreateRequest(ctx context.Context, resourceUri string, options *BaselinesListOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/metricBaselines"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceUri)
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -63,29 +63,29 @@ func (client *BaselinesClient) ListCreateRequest(ctx context.Context, resourceUr
 		return nil, err
 	}
 	query := req.URL.Query()
-	if baselinesListOptions != nil && baselinesListOptions.Metricnames != nil {
-		query.Set("metricnames", *baselinesListOptions.Metricnames)
+	if options != nil && options.Metricnames != nil {
+		query.Set("metricnames", *options.Metricnames)
 	}
-	if baselinesListOptions != nil && baselinesListOptions.Metricnamespace != nil {
-		query.Set("metricnamespace", *baselinesListOptions.Metricnamespace)
+	if options != nil && options.Metricnamespace != nil {
+		query.Set("metricnamespace", *options.Metricnamespace)
 	}
-	if baselinesListOptions != nil && baselinesListOptions.Timespan != nil {
-		query.Set("timespan", *baselinesListOptions.Timespan)
+	if options != nil && options.Timespan != nil {
+		query.Set("timespan", *options.Timespan)
 	}
-	if baselinesListOptions != nil && baselinesListOptions.Interval != nil {
-		query.Set("interval", *baselinesListOptions.Interval)
+	if options != nil && options.Interval != nil {
+		query.Set("interval", *options.Interval)
 	}
-	if baselinesListOptions != nil && baselinesListOptions.Aggregation != nil {
-		query.Set("aggregation", *baselinesListOptions.Aggregation)
+	if options != nil && options.Aggregation != nil {
+		query.Set("aggregation", *options.Aggregation)
 	}
-	if baselinesListOptions != nil && baselinesListOptions.Sensitivities != nil {
-		query.Set("sensitivities", *baselinesListOptions.Sensitivities)
+	if options != nil && options.Sensitivities != nil {
+		query.Set("sensitivities", *options.Sensitivities)
 	}
-	if baselinesListOptions != nil && baselinesListOptions.Filter != nil {
-		query.Set("$filter", *baselinesListOptions.Filter)
+	if options != nil && options.Filter != nil {
+		query.Set("$filter", *options.Filter)
 	}
-	if baselinesListOptions != nil && baselinesListOptions.ResultType != nil {
-		query.Set("resultType", string(*baselinesListOptions.ResultType))
+	if options != nil && options.ResultType != nil {
+		query.Set("resultType", string(*options.ResultType))
 	}
 	query.Set("api-version", "2019-03-01")
 	req.URL.RawQuery = query.Encode()
@@ -105,5 +105,5 @@ func (client *BaselinesClient) ListHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

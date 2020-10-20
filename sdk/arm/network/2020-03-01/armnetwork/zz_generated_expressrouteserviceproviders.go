@@ -16,7 +16,7 @@ import (
 // ExpressRouteServiceProvidersOperations contains the methods for the ExpressRouteServiceProviders group.
 type ExpressRouteServiceProvidersOperations interface {
 	// List - Gets all the available express route service providers.
-	List() ExpressRouteServiceProviderListResultPager
+	List(options *ExpressRouteServiceProvidersListOptions) ExpressRouteServiceProviderListResultPager
 }
 
 // ExpressRouteServiceProvidersClient implements the ExpressRouteServiceProvidersOperations interface.
@@ -37,22 +37,23 @@ func (client *ExpressRouteServiceProvidersClient) Do(req *azcore.Request) (*azco
 }
 
 // List - Gets all the available express route service providers.
-func (client *ExpressRouteServiceProvidersClient) List() ExpressRouteServiceProviderListResultPager {
+func (client *ExpressRouteServiceProvidersClient) List(options *ExpressRouteServiceProvidersListOptions) ExpressRouteServiceProviderListResultPager {
 	return &expressRouteServiceProviderListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *ExpressRouteServiceProviderListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ExpressRouteServiceProviderListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *ExpressRouteServiceProvidersClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *ExpressRouteServiceProvidersClient) ListCreateRequest(ctx context.Context, options *ExpressRouteServiceProvidersListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/expressRouteServiceProviders"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -78,5 +79,5 @@ func (client *ExpressRouteServiceProvidersClient) ListHandleError(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

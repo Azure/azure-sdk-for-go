@@ -16,25 +16,25 @@ import (
 // DisasterRecoveryConfigsOperations contains the methods for the DisasterRecoveryConfigs group.
 type DisasterRecoveryConfigsOperations interface {
 	// BreakPairing - This operation disables the Disaster Recovery and stops replicating changes from primary to secondary namespaces
-	BreakPairing(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (*http.Response, error)
+	BreakPairing(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsBreakPairingOptions) (*http.Response, error)
 	// CheckNameAvailability - Check the give Namespace name availability.
-	CheckNameAvailability(ctx context.Context, resourceGroupName string, namespaceName string, parameters CheckNameAvailabilityParameter) (*CheckNameAvailabilityResultResponse, error)
+	CheckNameAvailability(ctx context.Context, resourceGroupName string, namespaceName string, parameters CheckNameAvailabilityParameter, options *DisasterRecoveryConfigsCheckNameAvailabilityOptions) (*CheckNameAvailabilityResultResponse, error)
 	// CreateOrUpdate - Creates or updates a new Alias(Disaster Recovery configuration)
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, alias string, parameters ArmDisasterRecovery) (*ArmDisasterRecoveryResponse, error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, alias string, parameters ArmDisasterRecovery, options *DisasterRecoveryConfigsCreateOrUpdateOptions) (*ArmDisasterRecoveryResponse, error)
 	// Delete - Deletes an Alias(Disaster Recovery configuration)
-	Delete(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (*http.Response, error)
+	Delete(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsDeleteOptions) (*http.Response, error)
 	// FailOver - Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace
-	FailOver(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (*http.Response, error)
+	FailOver(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsFailOverOptions) (*http.Response, error)
 	// Get - Retrieves Alias(Disaster Recovery configuration) for primary or secondary namespace
-	Get(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (*ArmDisasterRecoveryResponse, error)
+	Get(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsGetOptions) (*ArmDisasterRecoveryResponse, error)
 	// GetAuthorizationRule - Gets an AuthorizationRule for a Namespace by rule name.
-	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string) (*AuthorizationRuleResponse, error)
+	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsGetAuthorizationRuleOptions) (*AuthorizationRuleResponse, error)
 	// List - Gets all Alias(Disaster Recovery configurations)
-	List(resourceGroupName string, namespaceName string) ArmDisasterRecoveryListResultPager
+	List(resourceGroupName string, namespaceName string, options *DisasterRecoveryConfigsListOptions) ArmDisasterRecoveryListResultPager
 	// ListAuthorizationRules - Gets a list of authorization rules for a Namespace.
-	ListAuthorizationRules(resourceGroupName string, namespaceName string, alias string) AuthorizationRuleListResultPager
+	ListAuthorizationRules(resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsListAuthorizationRulesOptions) AuthorizationRuleListResultPager
 	// ListKeys - Gets the primary and secondary connection strings for the Namespace.
-	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string) (*AccessKeysResponse, error)
+	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsListKeysOptions) (*AccessKeysResponse, error)
 }
 
 // DisasterRecoveryConfigsClient implements the DisasterRecoveryConfigsOperations interface.
@@ -55,8 +55,8 @@ func (client *DisasterRecoveryConfigsClient) Do(req *azcore.Request) (*azcore.Re
 }
 
 // BreakPairing - This operation disables the Disaster Recovery and stops replicating changes from primary to secondary namespaces
-func (client *DisasterRecoveryConfigsClient) BreakPairing(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (*http.Response, error) {
-	req, err := client.BreakPairingCreateRequest(ctx, resourceGroupName, namespaceName, alias)
+func (client *DisasterRecoveryConfigsClient) BreakPairing(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsBreakPairingOptions) (*http.Response, error) {
+	req, err := client.BreakPairingCreateRequest(ctx, resourceGroupName, namespaceName, alias, options)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +71,7 @@ func (client *DisasterRecoveryConfigsClient) BreakPairing(ctx context.Context, r
 }
 
 // BreakPairingCreateRequest creates the BreakPairing request.
-func (client *DisasterRecoveryConfigsClient) BreakPairingCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (*azcore.Request, error) {
+func (client *DisasterRecoveryConfigsClient) BreakPairingCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsBreakPairingOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/breakPairing"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -94,12 +94,12 @@ func (client *DisasterRecoveryConfigsClient) BreakPairingHandleError(resp *azcor
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // CheckNameAvailability - Check the give Namespace name availability.
-func (client *DisasterRecoveryConfigsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, namespaceName string, parameters CheckNameAvailabilityParameter) (*CheckNameAvailabilityResultResponse, error) {
-	req, err := client.CheckNameAvailabilityCreateRequest(ctx, resourceGroupName, namespaceName, parameters)
+func (client *DisasterRecoveryConfigsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, namespaceName string, parameters CheckNameAvailabilityParameter, options *DisasterRecoveryConfigsCheckNameAvailabilityOptions) (*CheckNameAvailabilityResultResponse, error) {
+	req, err := client.CheckNameAvailabilityCreateRequest(ctx, resourceGroupName, namespaceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +118,7 @@ func (client *DisasterRecoveryConfigsClient) CheckNameAvailability(ctx context.C
 }
 
 // CheckNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *DisasterRecoveryConfigsClient) CheckNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters CheckNameAvailabilityParameter) (*azcore.Request, error) {
+func (client *DisasterRecoveryConfigsClient) CheckNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, parameters CheckNameAvailabilityParameter, options *DisasterRecoveryConfigsCheckNameAvailabilityOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/checkNameAvailability"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -146,12 +146,12 @@ func (client *DisasterRecoveryConfigsClient) CheckNameAvailabilityHandleError(re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // CreateOrUpdate - Creates or updates a new Alias(Disaster Recovery configuration)
-func (client *DisasterRecoveryConfigsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, alias string, parameters ArmDisasterRecovery) (*ArmDisasterRecoveryResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, alias, parameters)
+func (client *DisasterRecoveryConfigsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, alias string, parameters ArmDisasterRecovery, options *DisasterRecoveryConfigsCreateOrUpdateOptions) (*ArmDisasterRecoveryResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, alias, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -170,7 +170,7 @@ func (client *DisasterRecoveryConfigsClient) CreateOrUpdate(ctx context.Context,
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DisasterRecoveryConfigsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, parameters ArmDisasterRecovery) (*azcore.Request, error) {
+func (client *DisasterRecoveryConfigsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, parameters ArmDisasterRecovery, options *DisasterRecoveryConfigsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -199,12 +199,12 @@ func (client *DisasterRecoveryConfigsClient) CreateOrUpdateHandleError(resp *azc
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - Deletes an Alias(Disaster Recovery configuration)
-func (client *DisasterRecoveryConfigsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, namespaceName, alias)
+func (client *DisasterRecoveryConfigsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, namespaceName, alias, options)
 	if err != nil {
 		return nil, err
 	}
@@ -219,7 +219,7 @@ func (client *DisasterRecoveryConfigsClient) Delete(ctx context.Context, resourc
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *DisasterRecoveryConfigsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (*azcore.Request, error) {
+func (client *DisasterRecoveryConfigsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -242,12 +242,12 @@ func (client *DisasterRecoveryConfigsClient) DeleteHandleError(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // FailOver - Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace
-func (client *DisasterRecoveryConfigsClient) FailOver(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (*http.Response, error) {
-	req, err := client.FailOverCreateRequest(ctx, resourceGroupName, namespaceName, alias)
+func (client *DisasterRecoveryConfigsClient) FailOver(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsFailOverOptions) (*http.Response, error) {
+	req, err := client.FailOverCreateRequest(ctx, resourceGroupName, namespaceName, alias, options)
 	if err != nil {
 		return nil, err
 	}
@@ -262,7 +262,7 @@ func (client *DisasterRecoveryConfigsClient) FailOver(ctx context.Context, resou
 }
 
 // FailOverCreateRequest creates the FailOver request.
-func (client *DisasterRecoveryConfigsClient) FailOverCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (*azcore.Request, error) {
+func (client *DisasterRecoveryConfigsClient) FailOverCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsFailOverOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/failover"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -285,12 +285,12 @@ func (client *DisasterRecoveryConfigsClient) FailOverHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Retrieves Alias(Disaster Recovery configuration) for primary or secondary namespace
-func (client *DisasterRecoveryConfigsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (*ArmDisasterRecoveryResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, namespaceName, alias)
+func (client *DisasterRecoveryConfigsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsGetOptions) (*ArmDisasterRecoveryResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, namespaceName, alias, options)
 	if err != nil {
 		return nil, err
 	}
@@ -309,7 +309,7 @@ func (client *DisasterRecoveryConfigsClient) Get(ctx context.Context, resourceGr
 }
 
 // GetCreateRequest creates the Get request.
-func (client *DisasterRecoveryConfigsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (*azcore.Request, error) {
+func (client *DisasterRecoveryConfigsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -338,12 +338,12 @@ func (client *DisasterRecoveryConfigsClient) GetHandleError(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetAuthorizationRule - Gets an AuthorizationRule for a Namespace by rule name.
-func (client *DisasterRecoveryConfigsClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string) (*AuthorizationRuleResponse, error) {
-	req, err := client.GetAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, alias, authorizationRuleName)
+func (client *DisasterRecoveryConfigsClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsGetAuthorizationRuleOptions) (*AuthorizationRuleResponse, error) {
+	req, err := client.GetAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, alias, authorizationRuleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -362,7 +362,7 @@ func (client *DisasterRecoveryConfigsClient) GetAuthorizationRule(ctx context.Co
 }
 
 // GetAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
-func (client *DisasterRecoveryConfigsClient) GetAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string) (*azcore.Request, error) {
+func (client *DisasterRecoveryConfigsClient) GetAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsGetAuthorizationRuleOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules/{authorizationRuleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -392,26 +392,27 @@ func (client *DisasterRecoveryConfigsClient) GetAuthorizationRuleHandleError(res
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Gets all Alias(Disaster Recovery configurations)
-func (client *DisasterRecoveryConfigsClient) List(resourceGroupName string, namespaceName string) ArmDisasterRecoveryListResultPager {
+func (client *DisasterRecoveryConfigsClient) List(resourceGroupName string, namespaceName string, options *DisasterRecoveryConfigsListOptions) ArmDisasterRecoveryListResultPager {
 	return &armDisasterRecoveryListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, namespaceName)
+			return client.ListCreateRequest(ctx, resourceGroupName, namespaceName, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *ArmDisasterRecoveryListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ArmDisasterRecoveryListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *DisasterRecoveryConfigsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string) (*azcore.Request, error) {
+func (client *DisasterRecoveryConfigsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *DisasterRecoveryConfigsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -439,26 +440,27 @@ func (client *DisasterRecoveryConfigsClient) ListHandleError(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListAuthorizationRules - Gets a list of authorization rules for a Namespace.
-func (client *DisasterRecoveryConfigsClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, alias string) AuthorizationRuleListResultPager {
+func (client *DisasterRecoveryConfigsClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsListAuthorizationRulesOptions) AuthorizationRuleListResultPager {
 	return &authorizationRuleListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, alias)
+			return client.ListAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, alias, options)
 		},
 		responder: client.ListAuthorizationRulesHandleResponse,
 		errorer:   client.ListAuthorizationRulesHandleError,
 		advancer: func(ctx context.Context, resp *AuthorizationRuleListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AuthorizationRuleListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *DisasterRecoveryConfigsClient) ListAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string) (*azcore.Request, error) {
+func (client *DisasterRecoveryConfigsClient) ListAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, options *DisasterRecoveryConfigsListAuthorizationRulesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -487,12 +489,12 @@ func (client *DisasterRecoveryConfigsClient) ListAuthorizationRulesHandleError(r
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListKeys - Gets the primary and secondary connection strings for the Namespace.
-func (client *DisasterRecoveryConfigsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string) (*AccessKeysResponse, error) {
-	req, err := client.ListKeysCreateRequest(ctx, resourceGroupName, namespaceName, alias, authorizationRuleName)
+func (client *DisasterRecoveryConfigsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsListKeysOptions) (*AccessKeysResponse, error) {
+	req, err := client.ListKeysCreateRequest(ctx, resourceGroupName, namespaceName, alias, authorizationRuleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -511,7 +513,7 @@ func (client *DisasterRecoveryConfigsClient) ListKeys(ctx context.Context, resou
 }
 
 // ListKeysCreateRequest creates the ListKeys request.
-func (client *DisasterRecoveryConfigsClient) ListKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string) (*azcore.Request, error) {
+func (client *DisasterRecoveryConfigsClient) ListKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, alias string, authorizationRuleName string, options *DisasterRecoveryConfigsListKeysOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/disasterRecoveryConfigs/{alias}/authorizationRules/{authorizationRuleName}/listKeys"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -541,5 +543,5 @@ func (client *DisasterRecoveryConfigsClient) ListKeysHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

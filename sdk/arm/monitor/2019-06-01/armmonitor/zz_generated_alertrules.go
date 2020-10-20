@@ -19,17 +19,17 @@ import (
 // AlertRulesOperations contains the methods for the AlertRules group.
 type AlertRulesOperations interface {
 	// CreateOrUpdate - Creates or updates a classic metric alert rule.
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters AlertRuleResource) (*AlertRuleResourceResponse, error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters AlertRuleResource, options *AlertRulesCreateOrUpdateOptions) (*AlertRuleResourceResponse, error)
 	// Delete - Deletes a classic metric alert rule
-	Delete(ctx context.Context, resourceGroupName string, ruleName string) (*http.Response, error)
+	Delete(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRulesDeleteOptions) (*http.Response, error)
 	// Get - Gets a classic metric alert rule
-	Get(ctx context.Context, resourceGroupName string, ruleName string) (*AlertRuleResourceResponse, error)
+	Get(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRulesGetOptions) (*AlertRuleResourceResponse, error)
 	// ListByResourceGroup - List the classic metric alert rules within a resource group.
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (*AlertRuleResourceCollectionResponse, error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, options *AlertRulesListByResourceGroupOptions) (*AlertRuleResourceCollectionResponse, error)
 	// ListBySubscription - List the classic metric alert rules within a subscription.
-	ListBySubscription(ctx context.Context) (*AlertRuleResourceCollectionResponse, error)
+	ListBySubscription(ctx context.Context, options *AlertRulesListBySubscriptionOptions) (*AlertRuleResourceCollectionResponse, error)
 	// Update - Updates an existing classic metric AlertRuleResource. To update other fields use the CreateOrUpdate method.
-	Update(ctx context.Context, resourceGroupName string, ruleName string, alertRulesResource AlertRuleResourcePatch) (*AlertRuleResourceResponse, error)
+	Update(ctx context.Context, resourceGroupName string, ruleName string, alertRulesResource AlertRuleResourcePatch, options *AlertRulesUpdateOptions) (*AlertRuleResourceResponse, error)
 }
 
 // AlertRulesClient implements the AlertRulesOperations interface.
@@ -50,8 +50,8 @@ func (client *AlertRulesClient) Do(req *azcore.Request) (*azcore.Response, error
 }
 
 // CreateOrUpdate - Creates or updates a classic metric alert rule.
-func (client *AlertRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters AlertRuleResource) (*AlertRuleResourceResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, ruleName, parameters)
+func (client *AlertRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters AlertRuleResource, options *AlertRulesCreateOrUpdateOptions) (*AlertRuleResourceResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, ruleName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (client *AlertRulesClient) CreateOrUpdate(ctx context.Context, resourceGrou
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AlertRulesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, parameters AlertRuleResource) (*azcore.Request, error) {
+func (client *AlertRulesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, parameters AlertRuleResource, options *AlertRulesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
@@ -98,12 +98,12 @@ func (client *AlertRulesClient) CreateOrUpdateHandleError(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - Deletes a classic metric alert rule
-func (client *AlertRulesClient) Delete(ctx context.Context, resourceGroupName string, ruleName string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, ruleName)
+func (client *AlertRulesClient) Delete(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRulesDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, ruleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +118,7 @@ func (client *AlertRulesClient) Delete(ctx context.Context, resourceGroupName st
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *AlertRulesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, ruleName string) (*azcore.Request, error) {
+func (client *AlertRulesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRulesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
@@ -140,14 +140,14 @@ func (client *AlertRulesClient) DeleteHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Get - Gets a classic metric alert rule
-func (client *AlertRulesClient) Get(ctx context.Context, resourceGroupName string, ruleName string) (*AlertRuleResourceResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, ruleName)
+func (client *AlertRulesClient) Get(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRulesGetOptions) (*AlertRuleResourceResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, ruleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +166,7 @@ func (client *AlertRulesClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // GetCreateRequest creates the Get request.
-func (client *AlertRulesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, ruleName string) (*azcore.Request, error) {
+func (client *AlertRulesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRulesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
@@ -195,14 +195,14 @@ func (client *AlertRulesClient) GetHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // ListByResourceGroup - List the classic metric alert rules within a resource group.
-func (client *AlertRulesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (*AlertRuleResourceCollectionResponse, error) {
-	req, err := client.ListByResourceGroupCreateRequest(ctx, resourceGroupName)
+func (client *AlertRulesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *AlertRulesListByResourceGroupOptions) (*AlertRuleResourceCollectionResponse, error) {
+	req, err := client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -221,7 +221,7 @@ func (client *AlertRulesClient) ListByResourceGroup(ctx context.Context, resourc
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AlertRulesClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *AlertRulesClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AlertRulesListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -249,14 +249,14 @@ func (client *AlertRulesClient) ListByResourceGroupHandleError(resp *azcore.Resp
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // ListBySubscription - List the classic metric alert rules within a subscription.
-func (client *AlertRulesClient) ListBySubscription(ctx context.Context) (*AlertRuleResourceCollectionResponse, error) {
-	req, err := client.ListBySubscriptionCreateRequest(ctx)
+func (client *AlertRulesClient) ListBySubscription(ctx context.Context, options *AlertRulesListBySubscriptionOptions) (*AlertRuleResourceCollectionResponse, error) {
+	req, err := client.ListBySubscriptionCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -275,7 +275,7 @@ func (client *AlertRulesClient) ListBySubscription(ctx context.Context) (*AlertR
 }
 
 // ListBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AlertRulesClient) ListBySubscriptionCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *AlertRulesClient) ListBySubscriptionCreateRequest(ctx context.Context, options *AlertRulesListBySubscriptionOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/microsoft.insights/alertrules"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -302,14 +302,14 @@ func (client *AlertRulesClient) ListBySubscriptionHandleError(resp *azcore.Respo
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Update - Updates an existing classic metric AlertRuleResource. To update other fields use the CreateOrUpdate method.
-func (client *AlertRulesClient) Update(ctx context.Context, resourceGroupName string, ruleName string, alertRulesResource AlertRuleResourcePatch) (*AlertRuleResourceResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, ruleName, alertRulesResource)
+func (client *AlertRulesClient) Update(ctx context.Context, resourceGroupName string, ruleName string, alertRulesResource AlertRuleResourcePatch, options *AlertRulesUpdateOptions) (*AlertRuleResourceResponse, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, ruleName, alertRulesResource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -328,7 +328,7 @@ func (client *AlertRulesClient) Update(ctx context.Context, resourceGroupName st
 }
 
 // UpdateCreateRequest creates the Update request.
-func (client *AlertRulesClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, alertRulesResource AlertRuleResourcePatch) (*azcore.Request, error) {
+func (client *AlertRulesClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, alertRulesResource AlertRuleResourcePatch, options *AlertRulesUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -356,5 +356,5 @@ func (client *AlertRulesClient) UpdateHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

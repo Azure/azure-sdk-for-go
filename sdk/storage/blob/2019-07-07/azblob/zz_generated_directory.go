@@ -147,7 +147,7 @@ func (client *directoryClient) CreateHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - Deletes the directory
@@ -239,7 +239,7 @@ func (client *directoryClient) DeleteHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetAccessControl - Get the owner, group, permissions, or access control list for a directory.
@@ -347,7 +347,7 @@ func (client *directoryClient) GetAccessControlHandleError(resp *azcore.Response
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Rename - Rename a directory. By default, the destination is overwritten and if the destination already exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations). To fail if the destination already exists, use a conditional request with If-None-Match: "*".
@@ -498,7 +498,7 @@ func (client *directoryClient) RenameHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // SetAccessControl - Set the owner, group, permissions, or access control list for a directory.
@@ -603,5 +603,5 @@ func (client *directoryClient) SetAccessControlHandleError(resp *azcore.Response
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

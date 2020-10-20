@@ -309,6 +309,11 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
+// OperationsListOptions contains the optional parameters for the Operations.List method.
+type OperationsListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // Permissions the identity has for keys, secrets, certificates and storage.
 type Permissions struct {
 	// Permissions to certificates
@@ -383,6 +388,21 @@ type PrivateEndpointConnectionResponse struct {
 	RetryAfter *int32
 }
 
+// PrivateEndpointConnectionsDeleteOptions contains the optional parameters for the PrivateEndpointConnections.Delete method.
+type PrivateEndpointConnectionsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsGetOptions contains the optional parameters for the PrivateEndpointConnections.Get method.
+type PrivateEndpointConnectionsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsPutOptions contains the optional parameters for the PrivateEndpointConnections.Put method.
+type PrivateEndpointConnectionsPutOptions struct {
+	// placeholder for future optional parameters
+}
+
 // A private link resource
 type PrivateLinkResource struct {
 	Resource
@@ -416,6 +436,11 @@ type PrivateLinkResourceProperties struct {
 
 	// Required DNS zone names of the the private link resource.
 	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
+}
+
+// PrivateLinkResourcesListByVaultOptions contains the optional parameters for the PrivateLinkResources.ListByVault method.
+type PrivateLinkResourcesListByVaultOptions struct {
+	// placeholder for future optional parameters
 }
 
 // An object that represents the approval state of the private link connection.
@@ -688,6 +713,31 @@ type VaultResponse struct {
 	Vault *Vault
 }
 
+// VaultsCheckNameAvailabilityOptions contains the optional parameters for the Vaults.CheckNameAvailability method.
+type VaultsCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VaultsCreateOrUpdateOptions contains the optional parameters for the Vaults.CreateOrUpdate method.
+type VaultsCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VaultsDeleteOptions contains the optional parameters for the Vaults.Delete method.
+type VaultsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VaultsGetDeletedOptions contains the optional parameters for the Vaults.GetDeleted method.
+type VaultsGetDeletedOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VaultsGetOptions contains the optional parameters for the Vaults.Get method.
+type VaultsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // VaultsListByResourceGroupOptions contains the optional parameters for the Vaults.ListByResourceGroup method.
 type VaultsListByResourceGroupOptions struct {
 	// Maximum number of results to return.
@@ -700,10 +750,30 @@ type VaultsListBySubscriptionOptions struct {
 	Top *int32
 }
 
+// VaultsListDeletedOptions contains the optional parameters for the Vaults.ListDeleted method.
+type VaultsListDeletedOptions struct {
+	// placeholder for future optional parameters
+}
+
 // VaultsListOptions contains the optional parameters for the Vaults.List method.
 type VaultsListOptions struct {
 	// Maximum number of results to return.
 	Top *int32
+}
+
+// VaultsPurgeDeletedOptions contains the optional parameters for the Vaults.PurgeDeleted method.
+type VaultsPurgeDeletedOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VaultsUpdateAccessPolicyOptions contains the optional parameters for the Vaults.UpdateAccessPolicy method.
+type VaultsUpdateAccessPolicyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VaultsUpdateOptions contains the optional parameters for the Vaults.Update method.
+type VaultsUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // A rule governing the accessibility of a vault from a specific virtual network.

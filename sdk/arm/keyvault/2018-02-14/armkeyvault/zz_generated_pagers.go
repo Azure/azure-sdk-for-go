@@ -8,7 +8,6 @@ package armkeyvault
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"net/http"
 )
 
 // DeletedVaultListResultPager provides iteration over DeletedVaultListResult pages.
@@ -45,6 +44,8 @@ type deletedVaultListResultPager struct {
 	advancer deletedVaultListResultAdvancePage
 	// contains the current response
 	current *DeletedVaultListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -73,7 +74,7 @@ func (p *deletedVaultListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -124,6 +125,8 @@ type operationListResultPager struct {
 	advancer operationListResultAdvancePage
 	// contains the current response
 	current *OperationListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -152,7 +155,7 @@ func (p *operationListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -203,6 +206,8 @@ type resourceListResultPager struct {
 	advancer resourceListResultAdvancePage
 	// contains the current response
 	current *ResourceListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -231,7 +236,7 @@ func (p *resourceListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}
@@ -282,6 +287,8 @@ type vaultListResultPager struct {
 	advancer vaultListResultAdvancePage
 	// contains the current response
 	current *VaultListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
 	// any error encountered
 	err error
 }
@@ -310,7 +317,7 @@ func (p *vaultListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(p.statusCodes...) {
 		p.err = p.errorer(resp)
 		return false
 	}

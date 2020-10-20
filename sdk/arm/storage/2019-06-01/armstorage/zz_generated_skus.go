@@ -19,7 +19,7 @@ import (
 // SKUsOperations contains the methods for the SKUs group.
 type SKUsOperations interface {
 	// List - Lists the available SKUs supported by Microsoft.Storage for given subscription.
-	List(ctx context.Context) (*StorageSKUListResultResponse, error)
+	List(ctx context.Context, options *SKUsListOptions) (*StorageSKUListResultResponse, error)
 }
 
 // SKUsClient implements the SKUsOperations interface.
@@ -40,8 +40,8 @@ func (client *SKUsClient) Do(req *azcore.Request) (*azcore.Response, error) {
 }
 
 // List - Lists the available SKUs supported by Microsoft.Storage for given subscription.
-func (client *SKUsClient) List(ctx context.Context) (*StorageSKUListResultResponse, error) {
-	req, err := client.ListCreateRequest(ctx)
+func (client *SKUsClient) List(ctx context.Context, options *SKUsListOptions) (*StorageSKUListResultResponse, error) {
+	req, err := client.ListCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (client *SKUsClient) List(ctx context.Context) (*StorageSKUListResultRespon
 }
 
 // ListCreateRequest creates the List request.
-func (client *SKUsClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *SKUsClient) ListCreateRequest(ctx context.Context, options *SKUsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/skus"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -87,7 +87,7 @@ func (client *SKUsClient) ListHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

@@ -23,8 +23,8 @@ func (client *serviceClient) Do(req *azcore.Request) (*azcore.Response, error) {
 }
 
 // GetAccountInfo - Returns the sku name and account kind
-func (client *serviceClient) GetAccountInfo(ctx context.Context) (*ServiceGetAccountInfoResponse, error) {
-	req, err := client.GetAccountInfoCreateRequest(ctx)
+func (client *serviceClient) GetAccountInfo(ctx context.Context, options *ServiceGetAccountInfoOptions) (*ServiceGetAccountInfoResponse, error) {
+	req, err := client.GetAccountInfoCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (client *serviceClient) GetAccountInfo(ctx context.Context) (*ServiceGetAcc
 }
 
 // GetAccountInfoCreateRequest creates the GetAccountInfo request.
-func (client *serviceClient) GetAccountInfoCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *serviceClient) GetAccountInfoCreateRequest(ctx context.Context, options *ServiceGetAccountInfoOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodGet, client.u)
 	if err != nil {
 		return nil, err
@@ -91,12 +91,12 @@ func (client *serviceClient) GetAccountInfoHandleError(resp *azcore.Response) er
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetProperties - gets the properties of a storage account's Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
-func (client *serviceClient) GetProperties(ctx context.Context, serviceGetPropertiesOptions *ServiceGetPropertiesOptions) (*StorageServicePropertiesResponse, error) {
-	req, err := client.GetPropertiesCreateRequest(ctx, serviceGetPropertiesOptions)
+func (client *serviceClient) GetProperties(ctx context.Context, options *ServiceGetPropertiesOptions) (*StorageServicePropertiesResponse, error) {
+	req, err := client.GetPropertiesCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func (client *serviceClient) GetProperties(ctx context.Context, serviceGetProper
 }
 
 // GetPropertiesCreateRequest creates the GetProperties request.
-func (client *serviceClient) GetPropertiesCreateRequest(ctx context.Context, serviceGetPropertiesOptions *ServiceGetPropertiesOptions) (*azcore.Request, error) {
+func (client *serviceClient) GetPropertiesCreateRequest(ctx context.Context, options *ServiceGetPropertiesOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodGet, client.u)
 	if err != nil {
 		return nil, err
@@ -123,13 +123,13 @@ func (client *serviceClient) GetPropertiesCreateRequest(ctx context.Context, ser
 	query := req.URL.Query()
 	query.Set("restype", "service")
 	query.Set("comp", "properties")
-	if serviceGetPropertiesOptions != nil && serviceGetPropertiesOptions.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*serviceGetPropertiesOptions.Timeout), 10))
+	if options != nil && options.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("x-ms-version", "2019-07-07")
-	if serviceGetPropertiesOptions != nil && serviceGetPropertiesOptions.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *serviceGetPropertiesOptions.RequestId)
+	if options != nil && options.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
 	req.Header.Set("Accept", "application/xml")
 	return req, nil
@@ -156,12 +156,12 @@ func (client *serviceClient) GetPropertiesHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetStatistics - Retrieves statistics related to replication for the Blob service. It is only available on the secondary location endpoint when read-access geo-redundant replication is enabled for the storage account.
-func (client *serviceClient) GetStatistics(ctx context.Context, serviceGetStatisticsOptions *ServiceGetStatisticsOptions) (*StorageServiceStatsResponse, error) {
-	req, err := client.GetStatisticsCreateRequest(ctx, serviceGetStatisticsOptions)
+func (client *serviceClient) GetStatistics(ctx context.Context, options *ServiceGetStatisticsOptions) (*StorageServiceStatsResponse, error) {
+	req, err := client.GetStatisticsCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +180,7 @@ func (client *serviceClient) GetStatistics(ctx context.Context, serviceGetStatis
 }
 
 // GetStatisticsCreateRequest creates the GetStatistics request.
-func (client *serviceClient) GetStatisticsCreateRequest(ctx context.Context, serviceGetStatisticsOptions *ServiceGetStatisticsOptions) (*azcore.Request, error) {
+func (client *serviceClient) GetStatisticsCreateRequest(ctx context.Context, options *ServiceGetStatisticsOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodGet, client.u)
 	if err != nil {
 		return nil, err
@@ -188,13 +188,13 @@ func (client *serviceClient) GetStatisticsCreateRequest(ctx context.Context, ser
 	query := req.URL.Query()
 	query.Set("restype", "service")
 	query.Set("comp", "stats")
-	if serviceGetStatisticsOptions != nil && serviceGetStatisticsOptions.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*serviceGetStatisticsOptions.Timeout), 10))
+	if options != nil && options.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("x-ms-version", "2019-07-07")
-	if serviceGetStatisticsOptions != nil && serviceGetStatisticsOptions.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *serviceGetStatisticsOptions.RequestId)
+	if options != nil && options.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
 	req.Header.Set("Accept", "application/xml")
 	return req, nil
@@ -228,12 +228,12 @@ func (client *serviceClient) GetStatisticsHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetUserDelegationKey - Retrieves a user delegation key for the Blob service. This is only a valid operation when using bearer token authentication.
-func (client *serviceClient) GetUserDelegationKey(ctx context.Context, keyInfo KeyInfo, serviceGetUserDelegationKeyOptions *ServiceGetUserDelegationKeyOptions) (*UserDelegationKeyResponse, error) {
-	req, err := client.GetUserDelegationKeyCreateRequest(ctx, keyInfo, serviceGetUserDelegationKeyOptions)
+func (client *serviceClient) GetUserDelegationKey(ctx context.Context, keyInfo KeyInfo, options *ServiceGetUserDelegationKeyOptions) (*UserDelegationKeyResponse, error) {
+	req, err := client.GetUserDelegationKeyCreateRequest(ctx, keyInfo, options)
 	if err != nil {
 		return nil, err
 	}
@@ -252,7 +252,7 @@ func (client *serviceClient) GetUserDelegationKey(ctx context.Context, keyInfo K
 }
 
 // GetUserDelegationKeyCreateRequest creates the GetUserDelegationKey request.
-func (client *serviceClient) GetUserDelegationKeyCreateRequest(ctx context.Context, keyInfo KeyInfo, serviceGetUserDelegationKeyOptions *ServiceGetUserDelegationKeyOptions) (*azcore.Request, error) {
+func (client *serviceClient) GetUserDelegationKeyCreateRequest(ctx context.Context, keyInfo KeyInfo, options *ServiceGetUserDelegationKeyOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodPost, client.u)
 	if err != nil {
 		return nil, err
@@ -260,13 +260,13 @@ func (client *serviceClient) GetUserDelegationKeyCreateRequest(ctx context.Conte
 	query := req.URL.Query()
 	query.Set("restype", "service")
 	query.Set("comp", "userdelegationkey")
-	if serviceGetUserDelegationKeyOptions != nil && serviceGetUserDelegationKeyOptions.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*serviceGetUserDelegationKeyOptions.Timeout), 10))
+	if options != nil && options.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("x-ms-version", "2019-07-07")
-	if serviceGetUserDelegationKeyOptions != nil && serviceGetUserDelegationKeyOptions.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *serviceGetUserDelegationKeyOptions.RequestId)
+	if options != nil && options.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
 	req.Header.Set("Accept", "application/xml")
 	return req, req.MarshalAsXML(keyInfo)
@@ -300,51 +300,52 @@ func (client *serviceClient) GetUserDelegationKeyHandleError(resp *azcore.Respon
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListContainersSegment - The List Containers Segment operation returns a list of the containers under the specified account
-func (client *serviceClient) ListContainersSegment(serviceListContainersSegmentOptions *ServiceListContainersSegmentOptions) ListContainersSegmentResponsePager {
+func (client *serviceClient) ListContainersSegment(options *ServiceListContainersSegmentOptions) ListContainersSegmentResponsePager {
 	return &listContainersSegmentResponsePager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListContainersSegmentCreateRequest(ctx, serviceListContainersSegmentOptions)
+			return client.ListContainersSegmentCreateRequest(ctx, options)
 		},
 		responder: client.ListContainersSegmentHandleResponse,
 		errorer:   client.ListContainersSegmentHandleError,
 		advancer: func(ctx context.Context, resp *ListContainersSegmentResponseResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.EnumerationResults.NextMarker)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListContainersSegmentCreateRequest creates the ListContainersSegment request.
-func (client *serviceClient) ListContainersSegmentCreateRequest(ctx context.Context, serviceListContainersSegmentOptions *ServiceListContainersSegmentOptions) (*azcore.Request, error) {
+func (client *serviceClient) ListContainersSegmentCreateRequest(ctx context.Context, options *ServiceListContainersSegmentOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodGet, client.u)
 	if err != nil {
 		return nil, err
 	}
 	query := req.URL.Query()
 	query.Set("comp", "list")
-	if serviceListContainersSegmentOptions != nil && serviceListContainersSegmentOptions.Prefix != nil {
-		query.Set("prefix", *serviceListContainersSegmentOptions.Prefix)
+	if options != nil && options.Prefix != nil {
+		query.Set("prefix", *options.Prefix)
 	}
-	if serviceListContainersSegmentOptions != nil && serviceListContainersSegmentOptions.Marker != nil {
-		query.Set("marker", *serviceListContainersSegmentOptions.Marker)
+	if options != nil && options.Marker != nil {
+		query.Set("marker", *options.Marker)
 	}
-	if serviceListContainersSegmentOptions != nil && serviceListContainersSegmentOptions.Maxresults != nil {
-		query.Set("maxresults", strconv.FormatInt(int64(*serviceListContainersSegmentOptions.Maxresults), 10))
+	if options != nil && options.Maxresults != nil {
+		query.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	if serviceListContainersSegmentOptions != nil && serviceListContainersSegmentOptions.Include != nil {
+	if options != nil && options.Include != nil {
 		query.Set("include", "metadata")
 	}
-	if serviceListContainersSegmentOptions != nil && serviceListContainersSegmentOptions.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*serviceListContainersSegmentOptions.Timeout), 10))
+	if options != nil && options.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("x-ms-version", "2019-07-07")
-	if serviceListContainersSegmentOptions != nil && serviceListContainersSegmentOptions.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *serviceListContainersSegmentOptions.RequestId)
+	if options != nil && options.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
 	req.Header.Set("Accept", "application/xml")
 	return req, nil
@@ -371,12 +372,12 @@ func (client *serviceClient) ListContainersSegmentHandleError(resp *azcore.Respo
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // SetProperties - Sets properties for a storage account's Blob service endpoint, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules
-func (client *serviceClient) SetProperties(ctx context.Context, storageServiceProperties StorageServiceProperties, serviceSetPropertiesOptions *ServiceSetPropertiesOptions) (*ServiceSetPropertiesResponse, error) {
-	req, err := client.SetPropertiesCreateRequest(ctx, storageServiceProperties, serviceSetPropertiesOptions)
+func (client *serviceClient) SetProperties(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceSetPropertiesOptions) (*ServiceSetPropertiesResponse, error) {
+	req, err := client.SetPropertiesCreateRequest(ctx, storageServiceProperties, options)
 	if err != nil {
 		return nil, err
 	}
@@ -395,7 +396,7 @@ func (client *serviceClient) SetProperties(ctx context.Context, storageServicePr
 }
 
 // SetPropertiesCreateRequest creates the SetProperties request.
-func (client *serviceClient) SetPropertiesCreateRequest(ctx context.Context, storageServiceProperties StorageServiceProperties, serviceSetPropertiesOptions *ServiceSetPropertiesOptions) (*azcore.Request, error) {
+func (client *serviceClient) SetPropertiesCreateRequest(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceSetPropertiesOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodPut, client.u)
 	if err != nil {
 		return nil, err
@@ -403,13 +404,13 @@ func (client *serviceClient) SetPropertiesCreateRequest(ctx context.Context, sto
 	query := req.URL.Query()
 	query.Set("restype", "service")
 	query.Set("comp", "properties")
-	if serviceSetPropertiesOptions != nil && serviceSetPropertiesOptions.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*serviceSetPropertiesOptions.Timeout), 10))
+	if options != nil && options.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("x-ms-version", "2019-07-07")
-	if serviceSetPropertiesOptions != nil && serviceSetPropertiesOptions.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *serviceSetPropertiesOptions.RequestId)
+	if options != nil && options.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
 	req.Header.Set("Accept", "application/xml")
 	return req, req.MarshalAsXML(storageServiceProperties)
@@ -436,12 +437,12 @@ func (client *serviceClient) SetPropertiesHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // SubmitBatch - The Batch operation allows multiple API calls to be embedded into a single HTTP request.
-func (client *serviceClient) SubmitBatch(ctx context.Context, contentLength int64, multipartContentType string, body azcore.ReadSeekCloser, serviceSubmitBatchOptions *ServiceSubmitBatchOptions) (*ServiceSubmitBatchResponse, error) {
-	req, err := client.SubmitBatchCreateRequest(ctx, contentLength, multipartContentType, body, serviceSubmitBatchOptions)
+func (client *serviceClient) SubmitBatch(ctx context.Context, contentLength int64, multipartContentType string, body azcore.ReadSeekCloser, options *ServiceSubmitBatchOptions) (*ServiceSubmitBatchResponse, error) {
+	req, err := client.SubmitBatchCreateRequest(ctx, contentLength, multipartContentType, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -460,23 +461,23 @@ func (client *serviceClient) SubmitBatch(ctx context.Context, contentLength int6
 }
 
 // SubmitBatchCreateRequest creates the SubmitBatch request.
-func (client *serviceClient) SubmitBatchCreateRequest(ctx context.Context, contentLength int64, multipartContentType string, body azcore.ReadSeekCloser, serviceSubmitBatchOptions *ServiceSubmitBatchOptions) (*azcore.Request, error) {
+func (client *serviceClient) SubmitBatchCreateRequest(ctx context.Context, contentLength int64, multipartContentType string, body azcore.ReadSeekCloser, options *ServiceSubmitBatchOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodPost, client.u)
 	if err != nil {
 		return nil, err
 	}
 	query := req.URL.Query()
 	query.Set("comp", "batch")
-	if serviceSubmitBatchOptions != nil && serviceSubmitBatchOptions.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*serviceSubmitBatchOptions.Timeout), 10))
+	if options != nil && options.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = query.Encode()
 	req.SkipBodyDownload()
 	req.Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
 	req.Header.Set("Content-Type", multipartContentType)
 	req.Header.Set("x-ms-version", "2019-07-07")
-	if serviceSubmitBatchOptions != nil && serviceSubmitBatchOptions.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *serviceSubmitBatchOptions.RequestId)
+	if options != nil && options.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
 	req.Header.Set("Accept", "application/xml")
 	return req, req.MarshalAsXML(body)
@@ -503,5 +504,5 @@ func (client *serviceClient) SubmitBatchHandleError(resp *azcore.Response) error
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

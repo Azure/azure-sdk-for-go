@@ -19,9 +19,9 @@ import (
 // AlertRuleIncidentsOperations contains the methods for the AlertRuleIncidents group.
 type AlertRuleIncidentsOperations interface {
 	// Get - Gets an incident associated to an alert rule
-	Get(ctx context.Context, resourceGroupName string, ruleName string, incidentName string) (*IncidentResponse, error)
+	Get(ctx context.Context, resourceGroupName string, ruleName string, incidentName string, options *AlertRuleIncidentsGetOptions) (*IncidentResponse, error)
 	// ListByAlertRule - Gets a list of incidents associated to an alert rule
-	ListByAlertRule(ctx context.Context, resourceGroupName string, ruleName string) (*IncidentListResultResponse, error)
+	ListByAlertRule(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRuleIncidentsListByAlertRuleOptions) (*IncidentListResultResponse, error)
 }
 
 // AlertRuleIncidentsClient implements the AlertRuleIncidentsOperations interface.
@@ -42,8 +42,8 @@ func (client *AlertRuleIncidentsClient) Do(req *azcore.Request) (*azcore.Respons
 }
 
 // Get - Gets an incident associated to an alert rule
-func (client *AlertRuleIncidentsClient) Get(ctx context.Context, resourceGroupName string, ruleName string, incidentName string) (*IncidentResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, ruleName, incidentName)
+func (client *AlertRuleIncidentsClient) Get(ctx context.Context, resourceGroupName string, ruleName string, incidentName string, options *AlertRuleIncidentsGetOptions) (*IncidentResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, ruleName, incidentName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (client *AlertRuleIncidentsClient) Get(ctx context.Context, resourceGroupNa
 }
 
 // GetCreateRequest creates the Get request.
-func (client *AlertRuleIncidentsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, incidentName string) (*azcore.Request, error) {
+func (client *AlertRuleIncidentsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, incidentName string, options *AlertRuleIncidentsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}/incidents/{incidentName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
@@ -91,12 +91,12 @@ func (client *AlertRuleIncidentsClient) GetHandleError(resp *azcore.Response) er
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByAlertRule - Gets a list of incidents associated to an alert rule
-func (client *AlertRuleIncidentsClient) ListByAlertRule(ctx context.Context, resourceGroupName string, ruleName string) (*IncidentListResultResponse, error) {
-	req, err := client.ListByAlertRuleCreateRequest(ctx, resourceGroupName, ruleName)
+func (client *AlertRuleIncidentsClient) ListByAlertRule(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRuleIncidentsListByAlertRuleOptions) (*IncidentListResultResponse, error) {
+	req, err := client.ListByAlertRuleCreateRequest(ctx, resourceGroupName, ruleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func (client *AlertRuleIncidentsClient) ListByAlertRule(ctx context.Context, res
 }
 
 // ListByAlertRuleCreateRequest creates the ListByAlertRule request.
-func (client *AlertRuleIncidentsClient) ListByAlertRuleCreateRequest(ctx context.Context, resourceGroupName string, ruleName string) (*azcore.Request, error) {
+func (client *AlertRuleIncidentsClient) ListByAlertRuleCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRuleIncidentsListByAlertRuleOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}/incidents"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
@@ -144,7 +144,7 @@ func (client *AlertRuleIncidentsClient) ListByAlertRuleHandleError(resp *azcore.
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

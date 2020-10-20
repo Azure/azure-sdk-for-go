@@ -19,13 +19,13 @@ import (
 // PrivateEndpointConnectionsOperations contains the methods for the PrivateEndpointConnections group.
 type PrivateEndpointConnectionsOperations interface {
 	// Delete - Deletes the specified private endpoint connection associated with the storage account.
-	Delete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (*http.Response, error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsDeleteOptions) (*http.Response, error)
 	// Get - Gets the specified private endpoint connection associated with the storage account.
-	Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (*PrivateEndpointConnectionResponse, error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsGetOptions) (*PrivateEndpointConnectionResponse, error)
 	// List - List all the private endpoint connections associated with the storage account.
-	List(ctx context.Context, resourceGroupName string, accountName string) (*PrivateEndpointConnectionListResultResponse, error)
+	List(ctx context.Context, resourceGroupName string, accountName string, options *PrivateEndpointConnectionsListOptions) (*PrivateEndpointConnectionListResultResponse, error)
 	// Put - Update the state of specified private endpoint connection associated with the storage account.
-	Put(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties PrivateEndpointConnection) (*PrivateEndpointConnectionResponse, error)
+	Put(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsPutOptions) (*PrivateEndpointConnectionResponse, error)
 }
 
 // PrivateEndpointConnectionsClient implements the PrivateEndpointConnectionsOperations interface.
@@ -46,8 +46,8 @@ func (client *PrivateEndpointConnectionsClient) Do(req *azcore.Request) (*azcore
 }
 
 // Delete - Deletes the specified private endpoint connection associated with the storage account.
-func (client *PrivateEndpointConnectionsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName)
+func (client *PrivateEndpointConnectionsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (client *PrivateEndpointConnectionsClient) Delete(ctx context.Context, reso
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *PrivateEndpointConnectionsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (*azcore.Request, error) {
+func (client *PrivateEndpointConnectionsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -85,12 +85,12 @@ func (client *PrivateEndpointConnectionsClient) DeleteHandleError(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets the specified private endpoint connection associated with the storage account.
-func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (*PrivateEndpointConnectionResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName)
+func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsGetOptions) (*PrivateEndpointConnectionResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourc
 }
 
 // GetCreateRequest creates the Get request.
-func (client *PrivateEndpointConnectionsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (*azcore.Request, error) {
+func (client *PrivateEndpointConnectionsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -138,12 +138,12 @@ func (client *PrivateEndpointConnectionsClient) GetHandleError(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - List all the private endpoint connections associated with the storage account.
-func (client *PrivateEndpointConnectionsClient) List(ctx context.Context, resourceGroupName string, accountName string) (*PrivateEndpointConnectionListResultResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceGroupName, accountName)
+func (client *PrivateEndpointConnectionsClient) List(ctx context.Context, resourceGroupName string, accountName string, options *PrivateEndpointConnectionsListOptions) (*PrivateEndpointConnectionListResultResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -162,7 +162,7 @@ func (client *PrivateEndpointConnectionsClient) List(ctx context.Context, resour
 }
 
 // ListCreateRequest creates the List request.
-func (client *PrivateEndpointConnectionsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string) (*azcore.Request, error) {
+func (client *PrivateEndpointConnectionsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PrivateEndpointConnectionsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/privateEndpointConnections"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -191,14 +191,14 @@ func (client *PrivateEndpointConnectionsClient) ListHandleError(resp *azcore.Res
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Put - Update the state of specified private endpoint connection associated with the storage account.
-func (client *PrivateEndpointConnectionsClient) Put(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties PrivateEndpointConnection) (*PrivateEndpointConnectionResponse, error) {
-	req, err := client.PutCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName, properties)
+func (client *PrivateEndpointConnectionsClient) Put(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsPutOptions) (*PrivateEndpointConnectionResponse, error) {
+	req, err := client.PutCreateRequest(ctx, resourceGroupName, accountName, privateEndpointConnectionName, properties, options)
 	if err != nil {
 		return nil, err
 	}
@@ -217,7 +217,7 @@ func (client *PrivateEndpointConnectionsClient) Put(ctx context.Context, resourc
 }
 
 // PutCreateRequest creates the Put request.
-func (client *PrivateEndpointConnectionsClient) PutCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties PrivateEndpointConnection) (*azcore.Request, error) {
+func (client *PrivateEndpointConnectionsClient) PutCreateRequest(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsPutOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -246,5 +246,5 @@ func (client *PrivateEndpointConnectionsClient) PutHandleError(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

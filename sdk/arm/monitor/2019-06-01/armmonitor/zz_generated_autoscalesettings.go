@@ -16,17 +16,17 @@ import (
 // AutoscaleSettingsOperations contains the methods for the AutoscaleSettings group.
 type AutoscaleSettingsOperations interface {
 	// CreateOrUpdate - Creates or updates an autoscale setting.
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource) (*AutoscaleSettingResourceResponse, error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource, options *AutoscaleSettingsCreateOrUpdateOptions) (*AutoscaleSettingResourceResponse, error)
 	// Delete - Deletes and autoscale setting
-	Delete(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (*http.Response, error)
+	Delete(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsDeleteOptions) (*http.Response, error)
 	// Get - Gets an autoscale setting
-	Get(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (*AutoscaleSettingResourceResponse, error)
+	Get(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsGetOptions) (*AutoscaleSettingResourceResponse, error)
 	// ListByResourceGroup - Lists the autoscale settings for a resource group
-	ListByResourceGroup(resourceGroupName string) AutoscaleSettingResourceCollectionPager
+	ListByResourceGroup(resourceGroupName string, options *AutoscaleSettingsListByResourceGroupOptions) AutoscaleSettingResourceCollectionPager
 	// ListBySubscription - Lists the autoscale settings for a subscription
-	ListBySubscription() AutoscaleSettingResourceCollectionPager
+	ListBySubscription(options *AutoscaleSettingsListBySubscriptionOptions) AutoscaleSettingResourceCollectionPager
 	// Update - Updates an existing AutoscaleSettingsResource. To update other fields use the CreateOrUpdate method.
-	Update(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch) (*AutoscaleSettingResourceResponse, error)
+	Update(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch, options *AutoscaleSettingsUpdateOptions) (*AutoscaleSettingResourceResponse, error)
 }
 
 // AutoscaleSettingsClient implements the AutoscaleSettingsOperations interface.
@@ -47,8 +47,8 @@ func (client *AutoscaleSettingsClient) Do(req *azcore.Request) (*azcore.Response
 }
 
 // CreateOrUpdate - Creates or updates an autoscale setting.
-func (client *AutoscaleSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource) (*AutoscaleSettingResourceResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, autoscaleSettingName, parameters)
+func (client *AutoscaleSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource, options *AutoscaleSettingsCreateOrUpdateOptions) (*AutoscaleSettingResourceResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, autoscaleSettingName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (client *AutoscaleSettingsClient) CreateOrUpdate(ctx context.Context, resou
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AutoscaleSettingsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource) (*azcore.Request, error) {
+func (client *AutoscaleSettingsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource, options *AutoscaleSettingsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/autoscalesettings/{autoscaleSettingName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{autoscaleSettingName}", url.PathEscape(autoscaleSettingName))
@@ -95,12 +95,12 @@ func (client *AutoscaleSettingsClient) CreateOrUpdateHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - Deletes and autoscale setting
-func (client *AutoscaleSettingsClient) Delete(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, autoscaleSettingName)
+func (client *AutoscaleSettingsClient) Delete(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, autoscaleSettingName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func (client *AutoscaleSettingsClient) Delete(ctx context.Context, resourceGroup
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *AutoscaleSettingsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (*azcore.Request, error) {
+func (client *AutoscaleSettingsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/autoscalesettings/{autoscaleSettingName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{autoscaleSettingName}", url.PathEscape(autoscaleSettingName))
@@ -137,12 +137,12 @@ func (client *AutoscaleSettingsClient) DeleteHandleError(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets an autoscale setting
-func (client *AutoscaleSettingsClient) Get(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (*AutoscaleSettingResourceResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, autoscaleSettingName)
+func (client *AutoscaleSettingsClient) Get(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsGetOptions) (*AutoscaleSettingResourceResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, autoscaleSettingName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +161,7 @@ func (client *AutoscaleSettingsClient) Get(ctx context.Context, resourceGroupNam
 }
 
 // GetCreateRequest creates the Get request.
-func (client *AutoscaleSettingsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string) (*azcore.Request, error) {
+func (client *AutoscaleSettingsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/autoscalesettings/{autoscaleSettingName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{autoscaleSettingName}", url.PathEscape(autoscaleSettingName))
@@ -189,26 +189,27 @@ func (client *AutoscaleSettingsClient) GetHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByResourceGroup - Lists the autoscale settings for a resource group
-func (client *AutoscaleSettingsClient) ListByResourceGroup(resourceGroupName string) AutoscaleSettingResourceCollectionPager {
+func (client *AutoscaleSettingsClient) ListByResourceGroup(resourceGroupName string, options *AutoscaleSettingsListByResourceGroupOptions) AutoscaleSettingResourceCollectionPager {
 	return &autoscaleSettingResourceCollectionPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName)
+			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
 		responder: client.ListByResourceGroupHandleResponse,
 		errorer:   client.ListByResourceGroupHandleError,
 		advancer: func(ctx context.Context, resp *AutoscaleSettingResourceCollectionResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AutoscaleSettingResourceCollection.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AutoscaleSettingsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *AutoscaleSettingsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AutoscaleSettingsListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/autoscalesettings"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -235,26 +236,27 @@ func (client *AutoscaleSettingsClient) ListByResourceGroupHandleError(resp *azco
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListBySubscription - Lists the autoscale settings for a subscription
-func (client *AutoscaleSettingsClient) ListBySubscription() AutoscaleSettingResourceCollectionPager {
+func (client *AutoscaleSettingsClient) ListBySubscription(options *AutoscaleSettingsListBySubscriptionOptions) AutoscaleSettingResourceCollectionPager {
 	return &autoscaleSettingResourceCollectionPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListBySubscriptionCreateRequest(ctx)
+			return client.ListBySubscriptionCreateRequest(ctx, options)
 		},
 		responder: client.ListBySubscriptionHandleResponse,
 		errorer:   client.ListBySubscriptionHandleError,
 		advancer: func(ctx context.Context, resp *AutoscaleSettingResourceCollectionResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AutoscaleSettingResourceCollection.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AutoscaleSettingsClient) ListBySubscriptionCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *AutoscaleSettingsClient) ListBySubscriptionCreateRequest(ctx context.Context, options *AutoscaleSettingsListBySubscriptionOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/microsoft.insights/autoscalesettings"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -280,12 +282,12 @@ func (client *AutoscaleSettingsClient) ListBySubscriptionHandleError(resp *azcor
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Update - Updates an existing AutoscaleSettingsResource. To update other fields use the CreateOrUpdate method.
-func (client *AutoscaleSettingsClient) Update(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch) (*AutoscaleSettingResourceResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, autoscaleSettingName, autoscaleSettingResource)
+func (client *AutoscaleSettingsClient) Update(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch, options *AutoscaleSettingsUpdateOptions) (*AutoscaleSettingResourceResponse, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, autoscaleSettingName, autoscaleSettingResource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -304,7 +306,7 @@ func (client *AutoscaleSettingsClient) Update(ctx context.Context, resourceGroup
 }
 
 // UpdateCreateRequest creates the Update request.
-func (client *AutoscaleSettingsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch) (*azcore.Request, error) {
+func (client *AutoscaleSettingsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch, options *AutoscaleSettingsUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/autoscalesettings/{autoscaleSettingName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -332,5 +334,5 @@ func (client *AutoscaleSettingsClient) UpdateHandleError(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

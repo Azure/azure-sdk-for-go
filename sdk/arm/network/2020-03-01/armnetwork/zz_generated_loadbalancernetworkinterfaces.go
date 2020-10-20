@@ -16,7 +16,7 @@ import (
 // LoadBalancerNetworkInterfacesOperations contains the methods for the LoadBalancerNetworkInterfaces group.
 type LoadBalancerNetworkInterfacesOperations interface {
 	// List - Gets associated load balancer network interfaces.
-	List(resourceGroupName string, loadBalancerName string) NetworkInterfaceListResultPager
+	List(resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesListOptions) NetworkInterfaceListResultPager
 }
 
 // LoadBalancerNetworkInterfacesClient implements the LoadBalancerNetworkInterfacesOperations interface.
@@ -37,22 +37,23 @@ func (client *LoadBalancerNetworkInterfacesClient) Do(req *azcore.Request) (*azc
 }
 
 // List - Gets associated load balancer network interfaces.
-func (client *LoadBalancerNetworkInterfacesClient) List(resourceGroupName string, loadBalancerName string) NetworkInterfaceListResultPager {
+func (client *LoadBalancerNetworkInterfacesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesListOptions) NetworkInterfaceListResultPager {
 	return &networkInterfaceListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, loadBalancerName)
+			return client.ListCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *NetworkInterfaceListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.NetworkInterfaceListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *LoadBalancerNetworkInterfacesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string) (*azcore.Request, error) {
+func (client *LoadBalancerNetworkInterfacesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/networkInterfaces"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -80,5 +81,5 @@ func (client *LoadBalancerNetworkInterfacesClient) ListHandleError(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -16,7 +16,7 @@ import (
 // RegionsOperations contains the methods for the Regions group.
 type RegionsOperations interface {
 	// ListBySKU - Gets the available Regions for a given sku
-	ListBySKU(sku string) MessagingRegionsListResultPager
+	ListBySKU(sku string, options *RegionsListBySKUOptions) MessagingRegionsListResultPager
 }
 
 // RegionsClient implements the RegionsOperations interface.
@@ -37,22 +37,23 @@ func (client *RegionsClient) Do(req *azcore.Request) (*azcore.Response, error) {
 }
 
 // ListBySKU - Gets the available Regions for a given sku
-func (client *RegionsClient) ListBySKU(sku string) MessagingRegionsListResultPager {
+func (client *RegionsClient) ListBySKU(sku string, options *RegionsListBySKUOptions) MessagingRegionsListResultPager {
 	return &messagingRegionsListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListBySKUCreateRequest(ctx, sku)
+			return client.ListBySKUCreateRequest(ctx, sku, options)
 		},
 		responder: client.ListBySKUHandleResponse,
 		errorer:   client.ListBySKUHandleError,
 		advancer: func(ctx context.Context, resp *MessagingRegionsListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.MessagingRegionsListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListBySKUCreateRequest creates the ListBySKU request.
-func (client *RegionsClient) ListBySKUCreateRequest(ctx context.Context, sku string) (*azcore.Request, error) {
+func (client *RegionsClient) ListBySKUCreateRequest(ctx context.Context, sku string, options *RegionsListBySKUOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/sku/{sku}/regions"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{sku}", url.PathEscape(sku))
@@ -79,5 +80,5 @@ func (client *RegionsClient) ListBySKUHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

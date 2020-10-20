@@ -16,9 +16,9 @@ import (
 // Operations contains the methods for the Operations group.
 type Operations interface {
 	// CheckNameAvailability - Checks whether the configuration store name is available for use.
-	CheckNameAvailability(ctx context.Context, checkNameAvailabilityParameters CheckNameAvailabilityParameters) (*NameAvailabilityStatusResponse, error)
+	CheckNameAvailability(ctx context.Context, checkNameAvailabilityParameters CheckNameAvailabilityParameters, options *OperationsCheckNameAvailabilityOptions) (*NameAvailabilityStatusResponse, error)
 	// List - Lists the operations available from this provider.
-	List(operationsListOptions *OperationsListOptions) OperationDefinitionListResultPager
+	List(options *OperationsListOptions) OperationDefinitionListResultPager
 }
 
 // OperationsClient implements the Operations interface.
@@ -39,8 +39,8 @@ func (client *OperationsClient) Do(req *azcore.Request) (*azcore.Response, error
 }
 
 // CheckNameAvailability - Checks whether the configuration store name is available for use.
-func (client *OperationsClient) CheckNameAvailability(ctx context.Context, checkNameAvailabilityParameters CheckNameAvailabilityParameters) (*NameAvailabilityStatusResponse, error) {
-	req, err := client.CheckNameAvailabilityCreateRequest(ctx, checkNameAvailabilityParameters)
+func (client *OperationsClient) CheckNameAvailability(ctx context.Context, checkNameAvailabilityParameters CheckNameAvailabilityParameters, options *OperationsCheckNameAvailabilityOptions) (*NameAvailabilityStatusResponse, error) {
+	req, err := client.CheckNameAvailabilityCreateRequest(ctx, checkNameAvailabilityParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (client *OperationsClient) CheckNameAvailability(ctx context.Context, check
 }
 
 // CheckNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *OperationsClient) CheckNameAvailabilityCreateRequest(ctx context.Context, checkNameAvailabilityParameters CheckNameAvailabilityParameters) (*azcore.Request, error) {
+func (client *OperationsClient) CheckNameAvailabilityCreateRequest(ctx context.Context, checkNameAvailabilityParameters CheckNameAvailabilityParameters, options *OperationsCheckNameAvailabilityOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/checkNameAvailability"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.u, urlPath))
@@ -85,26 +85,27 @@ func (client *OperationsClient) CheckNameAvailabilityHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Lists the operations available from this provider.
-func (client *OperationsClient) List(operationsListOptions *OperationsListOptions) OperationDefinitionListResultPager {
+func (client *OperationsClient) List(options *OperationsListOptions) OperationDefinitionListResultPager {
 	return &operationDefinitionListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, operationsListOptions)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *OperationDefinitionListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.OperationDefinitionListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *OperationsClient) ListCreateRequest(ctx context.Context, operationsListOptions *OperationsListOptions) (*azcore.Request, error) {
+func (client *OperationsClient) ListCreateRequest(ctx context.Context, options *OperationsListOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.AppConfiguration/operations"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
 	if err != nil {
@@ -112,8 +113,8 @@ func (client *OperationsClient) ListCreateRequest(ctx context.Context, operation
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2019-10-01")
-	if operationsListOptions != nil && operationsListOptions.SkipToken != nil {
-		query.Set("$skipToken", *operationsListOptions.SkipToken)
+	if options != nil && options.SkipToken != nil {
+		query.Set("$skipToken", *options.SkipToken)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -132,5 +133,5 @@ func (client *OperationsClient) ListHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

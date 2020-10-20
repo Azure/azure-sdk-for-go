@@ -14,7 +14,7 @@ import (
 // EventCategoriesOperations contains the methods for the EventCategories group.
 type EventCategoriesOperations interface {
 	// List - Get the list of available event categories supported in the Activity Logs Service.<br>The current list includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
-	List(ctx context.Context) (*EventCategoryCollectionResponse, error)
+	List(ctx context.Context, options *EventCategoriesListOptions) (*EventCategoryCollectionResponse, error)
 }
 
 // EventCategoriesClient implements the EventCategoriesOperations interface.
@@ -34,8 +34,8 @@ func (client *EventCategoriesClient) Do(req *azcore.Request) (*azcore.Response, 
 }
 
 // List - Get the list of available event categories supported in the Activity Logs Service.<br>The current list includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
-func (client *EventCategoriesClient) List(ctx context.Context) (*EventCategoryCollectionResponse, error) {
-	req, err := client.ListCreateRequest(ctx)
+func (client *EventCategoriesClient) List(ctx context.Context, options *EventCategoriesListOptions) (*EventCategoryCollectionResponse, error) {
+	req, err := client.ListCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func (client *EventCategoriesClient) List(ctx context.Context) (*EventCategoryCo
 }
 
 // ListCreateRequest creates the List request.
-func (client *EventCategoriesClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *EventCategoriesClient) ListCreateRequest(ctx context.Context, options *EventCategoriesListOptions) (*azcore.Request, error) {
 	urlPath := "/providers/microsoft.insights/eventcategories"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
 	if err != nil {
@@ -79,5 +79,5 @@ func (client *EventCategoriesClient) ListHandleError(resp *azcore.Response) erro
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

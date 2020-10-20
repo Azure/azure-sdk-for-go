@@ -164,7 +164,7 @@ func (client *pageBlobClient) ClearPagesHandleError(resp *azcore.Response) error
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // CopyIncremental - The Copy Incremental operation copies a snapshot of the source page blob to a destination page blob. The snapshot is copied such that only the differential changes between the previously copied snapshot are transferred to the destination. The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual. This API is supported since REST version 2016-05-31.
@@ -264,7 +264,7 @@ func (client *pageBlobClient) CopyIncrementalHandleError(resp *azcore.Response) 
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Create - The Create operation creates a new page blob.
@@ -423,7 +423,7 @@ func (client *pageBlobClient) CreateHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetPageRanges - The Get Page Ranges operation returns the list of valid page ranges for a page blob or snapshot of a page blob
@@ -532,7 +532,7 @@ func (client *pageBlobClient) GetPageRangesHandleError(resp *azcore.Response) er
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetPageRangesDiff - The Get Page Ranges Diff operation returns the list of valid page ranges for a page blob that were changed between target blob and previous snapshot.
@@ -647,7 +647,7 @@ func (client *pageBlobClient) GetPageRangesDiffHandleError(resp *azcore.Response
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Resize - Resize the Blob
@@ -763,7 +763,7 @@ func (client *pageBlobClient) ResizeHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // UpdateSequenceNumber - Update the sequence number of the blob
@@ -870,7 +870,7 @@ func (client *pageBlobClient) UpdateSequenceNumberHandleError(resp *azcore.Respo
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // UploadPages - The Upload Pages operation writes a range of pages to a page blob
@@ -1032,7 +1032,7 @@ func (client *pageBlobClient) UploadPagesHandleError(resp *azcore.Response) erro
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // UploadPagesFromURL - The Upload Pages operation writes a range of pages to a page blob where the contents are read from a URL
@@ -1203,5 +1203,5 @@ func (client *pageBlobClient) UploadPagesFromURLHandleError(resp *azcore.Respons
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -16,17 +16,17 @@ import (
 // ScheduledQueryRulesOperations contains the methods for the ScheduledQueryRules group.
 type ScheduledQueryRulesOperations interface {
 	// CreateOrUpdate - Creates or updates an log search rule.
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters LogSearchRuleResource) (*LogSearchRuleResourceResponse, error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters LogSearchRuleResource, options *ScheduledQueryRulesCreateOrUpdateOptions) (*LogSearchRuleResourceResponse, error)
 	// Delete - Deletes a Log Search rule
-	Delete(ctx context.Context, resourceGroupName string, ruleName string) (*http.Response, error)
+	Delete(ctx context.Context, resourceGroupName string, ruleName string, options *ScheduledQueryRulesDeleteOptions) (*http.Response, error)
 	// Get - Gets an Log Search rule
-	Get(ctx context.Context, resourceGroupName string, ruleName string) (*LogSearchRuleResourceResponse, error)
+	Get(ctx context.Context, resourceGroupName string, ruleName string, options *ScheduledQueryRulesGetOptions) (*LogSearchRuleResourceResponse, error)
 	// ListByResourceGroup - List the Log Search rules within a resource group.
-	ListByResourceGroup(ctx context.Context, resourceGroupName string, scheduledQueryRulesListByResourceGroupOptions *ScheduledQueryRulesListByResourceGroupOptions) (*LogSearchRuleResourceCollectionResponse, error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ScheduledQueryRulesListByResourceGroupOptions) (*LogSearchRuleResourceCollectionResponse, error)
 	// ListBySubscription - List the Log Search rules within a subscription group.
-	ListBySubscription(ctx context.Context, scheduledQueryRulesListBySubscriptionOptions *ScheduledQueryRulesListBySubscriptionOptions) (*LogSearchRuleResourceCollectionResponse, error)
+	ListBySubscription(ctx context.Context, options *ScheduledQueryRulesListBySubscriptionOptions) (*LogSearchRuleResourceCollectionResponse, error)
 	// Update - Update log search Rule.
-	Update(ctx context.Context, resourceGroupName string, ruleName string, parameters LogSearchRuleResourcePatch) (*LogSearchRuleResourceResponse, error)
+	Update(ctx context.Context, resourceGroupName string, ruleName string, parameters LogSearchRuleResourcePatch, options *ScheduledQueryRulesUpdateOptions) (*LogSearchRuleResourceResponse, error)
 }
 
 // ScheduledQueryRulesClient implements the ScheduledQueryRulesOperations interface.
@@ -47,8 +47,8 @@ func (client *ScheduledQueryRulesClient) Do(req *azcore.Request) (*azcore.Respon
 }
 
 // CreateOrUpdate - Creates or updates an log search rule.
-func (client *ScheduledQueryRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters LogSearchRuleResource) (*LogSearchRuleResourceResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, ruleName, parameters)
+func (client *ScheduledQueryRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters LogSearchRuleResource, options *ScheduledQueryRulesCreateOrUpdateOptions) (*LogSearchRuleResourceResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, ruleName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (client *ScheduledQueryRulesClient) CreateOrUpdate(ctx context.Context, res
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ScheduledQueryRulesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, parameters LogSearchRuleResource) (*azcore.Request, error) {
+func (client *ScheduledQueryRulesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, parameters LogSearchRuleResource, options *ScheduledQueryRulesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/scheduledQueryRules/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -95,12 +95,12 @@ func (client *ScheduledQueryRulesClient) CreateOrUpdateHandleError(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - Deletes a Log Search rule
-func (client *ScheduledQueryRulesClient) Delete(ctx context.Context, resourceGroupName string, ruleName string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, ruleName)
+func (client *ScheduledQueryRulesClient) Delete(ctx context.Context, resourceGroupName string, ruleName string, options *ScheduledQueryRulesDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, ruleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func (client *ScheduledQueryRulesClient) Delete(ctx context.Context, resourceGro
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *ScheduledQueryRulesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, ruleName string) (*azcore.Request, error) {
+func (client *ScheduledQueryRulesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *ScheduledQueryRulesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/scheduledQueryRules/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
@@ -137,12 +137,12 @@ func (client *ScheduledQueryRulesClient) DeleteHandleError(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets an Log Search rule
-func (client *ScheduledQueryRulesClient) Get(ctx context.Context, resourceGroupName string, ruleName string) (*LogSearchRuleResourceResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, ruleName)
+func (client *ScheduledQueryRulesClient) Get(ctx context.Context, resourceGroupName string, ruleName string, options *ScheduledQueryRulesGetOptions) (*LogSearchRuleResourceResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, ruleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +161,7 @@ func (client *ScheduledQueryRulesClient) Get(ctx context.Context, resourceGroupN
 }
 
 // GetCreateRequest creates the Get request.
-func (client *ScheduledQueryRulesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, ruleName string) (*azcore.Request, error) {
+func (client *ScheduledQueryRulesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *ScheduledQueryRulesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/scheduledQueryRules/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
@@ -189,12 +189,12 @@ func (client *ScheduledQueryRulesClient) GetHandleError(resp *azcore.Response) e
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByResourceGroup - List the Log Search rules within a resource group.
-func (client *ScheduledQueryRulesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, scheduledQueryRulesListByResourceGroupOptions *ScheduledQueryRulesListByResourceGroupOptions) (*LogSearchRuleResourceCollectionResponse, error) {
-	req, err := client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, scheduledQueryRulesListByResourceGroupOptions)
+func (client *ScheduledQueryRulesClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ScheduledQueryRulesListByResourceGroupOptions) (*LogSearchRuleResourceCollectionResponse, error) {
+	req, err := client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -213,7 +213,7 @@ func (client *ScheduledQueryRulesClient) ListByResourceGroup(ctx context.Context
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ScheduledQueryRulesClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, scheduledQueryRulesListByResourceGroupOptions *ScheduledQueryRulesListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *ScheduledQueryRulesClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ScheduledQueryRulesListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/scheduledQueryRules"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -223,8 +223,8 @@ func (client *ScheduledQueryRulesClient) ListByResourceGroupCreateRequest(ctx co
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2018-04-16")
-	if scheduledQueryRulesListByResourceGroupOptions != nil && scheduledQueryRulesListByResourceGroupOptions.Filter != nil {
-		query.Set("$filter", *scheduledQueryRulesListByResourceGroupOptions.Filter)
+	if options != nil && options.Filter != nil {
+		query.Set("$filter", *options.Filter)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -243,12 +243,12 @@ func (client *ScheduledQueryRulesClient) ListByResourceGroupHandleError(resp *az
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListBySubscription - List the Log Search rules within a subscription group.
-func (client *ScheduledQueryRulesClient) ListBySubscription(ctx context.Context, scheduledQueryRulesListBySubscriptionOptions *ScheduledQueryRulesListBySubscriptionOptions) (*LogSearchRuleResourceCollectionResponse, error) {
-	req, err := client.ListBySubscriptionCreateRequest(ctx, scheduledQueryRulesListBySubscriptionOptions)
+func (client *ScheduledQueryRulesClient) ListBySubscription(ctx context.Context, options *ScheduledQueryRulesListBySubscriptionOptions) (*LogSearchRuleResourceCollectionResponse, error) {
+	req, err := client.ListBySubscriptionCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -267,7 +267,7 @@ func (client *ScheduledQueryRulesClient) ListBySubscription(ctx context.Context,
 }
 
 // ListBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ScheduledQueryRulesClient) ListBySubscriptionCreateRequest(ctx context.Context, scheduledQueryRulesListBySubscriptionOptions *ScheduledQueryRulesListBySubscriptionOptions) (*azcore.Request, error) {
+func (client *ScheduledQueryRulesClient) ListBySubscriptionCreateRequest(ctx context.Context, options *ScheduledQueryRulesListBySubscriptionOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/microsoft.insights/scheduledQueryRules"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -276,8 +276,8 @@ func (client *ScheduledQueryRulesClient) ListBySubscriptionCreateRequest(ctx con
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2018-04-16")
-	if scheduledQueryRulesListBySubscriptionOptions != nil && scheduledQueryRulesListBySubscriptionOptions.Filter != nil {
-		query.Set("$filter", *scheduledQueryRulesListBySubscriptionOptions.Filter)
+	if options != nil && options.Filter != nil {
+		query.Set("$filter", *options.Filter)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -296,12 +296,12 @@ func (client *ScheduledQueryRulesClient) ListBySubscriptionHandleError(resp *azc
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Update - Update log search Rule.
-func (client *ScheduledQueryRulesClient) Update(ctx context.Context, resourceGroupName string, ruleName string, parameters LogSearchRuleResourcePatch) (*LogSearchRuleResourceResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, ruleName, parameters)
+func (client *ScheduledQueryRulesClient) Update(ctx context.Context, resourceGroupName string, ruleName string, parameters LogSearchRuleResourcePatch, options *ScheduledQueryRulesUpdateOptions) (*LogSearchRuleResourceResponse, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, ruleName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -320,7 +320,7 @@ func (client *ScheduledQueryRulesClient) Update(ctx context.Context, resourceGro
 }
 
 // UpdateCreateRequest creates the Update request.
-func (client *ScheduledQueryRulesClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, parameters LogSearchRuleResourcePatch) (*azcore.Request, error) {
+func (client *ScheduledQueryRulesClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, parameters LogSearchRuleResourcePatch, options *ScheduledQueryRulesUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/scheduledQueryRules/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -348,5 +348,5 @@ func (client *ScheduledQueryRulesClient) UpdateHandleError(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

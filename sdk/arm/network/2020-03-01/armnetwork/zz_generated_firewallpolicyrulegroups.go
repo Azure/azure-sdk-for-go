@@ -18,17 +18,17 @@ import (
 // FirewallPolicyRuleGroupsOperations contains the methods for the FirewallPolicyRuleGroups group.
 type FirewallPolicyRuleGroupsOperations interface {
 	// BeginCreateOrUpdate - Creates or updates the specified FirewallPolicyRuleGroup.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, parameters FirewallPolicyRuleGroup) (*FirewallPolicyRuleGroupPollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, parameters FirewallPolicyRuleGroup, options *FirewallPolicyRuleGroupsCreateOrUpdateOptions) (*FirewallPolicyRuleGroupPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (FirewallPolicyRuleGroupPoller, error)
 	// BeginDelete - Deletes the specified FirewallPolicyRuleGroup.
-	BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, options *FirewallPolicyRuleGroupsDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified FirewallPolicyRuleGroup.
-	Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (*FirewallPolicyRuleGroupResponse, error)
+	Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, options *FirewallPolicyRuleGroupsGetOptions) (*FirewallPolicyRuleGroupResponse, error)
 	// List - Lists all FirewallPolicyRuleGroups in a FirewallPolicy resource.
-	List(resourceGroupName string, firewallPolicyName string) FirewallPolicyRuleGroupListResultPager
+	List(resourceGroupName string, firewallPolicyName string, options *FirewallPolicyRuleGroupsListOptions) FirewallPolicyRuleGroupListResultPager
 }
 
 // FirewallPolicyRuleGroupsClient implements the FirewallPolicyRuleGroupsOperations interface.
@@ -48,8 +48,8 @@ func (client *FirewallPolicyRuleGroupsClient) Do(req *azcore.Request) (*azcore.R
 	return client.p.Do(req)
 }
 
-func (client *FirewallPolicyRuleGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, parameters FirewallPolicyRuleGroup) (*FirewallPolicyRuleGroupPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, firewallPolicyName, ruleGroupName, parameters)
+func (client *FirewallPolicyRuleGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, parameters FirewallPolicyRuleGroup, options *FirewallPolicyRuleGroupsCreateOrUpdateOptions) (*FirewallPolicyRuleGroupPollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, firewallPolicyName, ruleGroupName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -83,8 +83,8 @@ func (client *FirewallPolicyRuleGroupsClient) ResumeCreateOrUpdate(token string)
 }
 
 // CreateOrUpdate - Creates or updates the specified FirewallPolicyRuleGroup.
-func (client *FirewallPolicyRuleGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, parameters FirewallPolicyRuleGroup) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, firewallPolicyName, ruleGroupName, parameters)
+func (client *FirewallPolicyRuleGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, parameters FirewallPolicyRuleGroup, options *FirewallPolicyRuleGroupsCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, firewallPolicyName, ruleGroupName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func (client *FirewallPolicyRuleGroupsClient) CreateOrUpdate(ctx context.Context
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *FirewallPolicyRuleGroupsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, parameters FirewallPolicyRuleGroup) (*azcore.Request, error) {
+func (client *FirewallPolicyRuleGroupsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, parameters FirewallPolicyRuleGroup, options *FirewallPolicyRuleGroupsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/ruleGroups/{ruleGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{firewallPolicyName}", url.PathEscape(firewallPolicyName))
@@ -128,11 +128,11 @@ func (client *FirewallPolicyRuleGroupsClient) CreateOrUpdateHandleError(resp *az
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *FirewallPolicyRuleGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, firewallPolicyName, ruleGroupName)
+func (client *FirewallPolicyRuleGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, options *FirewallPolicyRuleGroupsDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, firewallPolicyName, ruleGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -166,8 +166,8 @@ func (client *FirewallPolicyRuleGroupsClient) ResumeDelete(token string) (HTTPPo
 }
 
 // Delete - Deletes the specified FirewallPolicyRuleGroup.
-func (client *FirewallPolicyRuleGroupsClient) Delete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, firewallPolicyName, ruleGroupName)
+func (client *FirewallPolicyRuleGroupsClient) Delete(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, options *FirewallPolicyRuleGroupsDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, firewallPolicyName, ruleGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +182,7 @@ func (client *FirewallPolicyRuleGroupsClient) Delete(ctx context.Context, resour
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *FirewallPolicyRuleGroupsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (*azcore.Request, error) {
+func (client *FirewallPolicyRuleGroupsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, options *FirewallPolicyRuleGroupsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/ruleGroups/{ruleGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{firewallPolicyName}", url.PathEscape(firewallPolicyName))
@@ -205,12 +205,12 @@ func (client *FirewallPolicyRuleGroupsClient) DeleteHandleError(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets the specified FirewallPolicyRuleGroup.
-func (client *FirewallPolicyRuleGroupsClient) Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (*FirewallPolicyRuleGroupResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, firewallPolicyName, ruleGroupName)
+func (client *FirewallPolicyRuleGroupsClient) Get(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, options *FirewallPolicyRuleGroupsGetOptions) (*FirewallPolicyRuleGroupResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, firewallPolicyName, ruleGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -229,7 +229,7 @@ func (client *FirewallPolicyRuleGroupsClient) Get(ctx context.Context, resourceG
 }
 
 // GetCreateRequest creates the Get request.
-func (client *FirewallPolicyRuleGroupsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string) (*azcore.Request, error) {
+func (client *FirewallPolicyRuleGroupsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, ruleGroupName string, options *FirewallPolicyRuleGroupsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/ruleGroups/{ruleGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{firewallPolicyName}", url.PathEscape(firewallPolicyName))
@@ -258,26 +258,27 @@ func (client *FirewallPolicyRuleGroupsClient) GetHandleError(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Lists all FirewallPolicyRuleGroups in a FirewallPolicy resource.
-func (client *FirewallPolicyRuleGroupsClient) List(resourceGroupName string, firewallPolicyName string) FirewallPolicyRuleGroupListResultPager {
+func (client *FirewallPolicyRuleGroupsClient) List(resourceGroupName string, firewallPolicyName string, options *FirewallPolicyRuleGroupsListOptions) FirewallPolicyRuleGroupListResultPager {
 	return &firewallPolicyRuleGroupListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, firewallPolicyName)
+			return client.ListCreateRequest(ctx, resourceGroupName, firewallPolicyName, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *FirewallPolicyRuleGroupListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.FirewallPolicyRuleGroupListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *FirewallPolicyRuleGroupsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string) (*azcore.Request, error) {
+func (client *FirewallPolicyRuleGroupsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPolicyRuleGroupsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/ruleGroups"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{firewallPolicyName}", url.PathEscape(firewallPolicyName))
@@ -305,5 +306,5 @@ func (client *FirewallPolicyRuleGroupsClient) ListHandleError(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

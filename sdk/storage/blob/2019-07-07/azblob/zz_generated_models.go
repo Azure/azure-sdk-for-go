@@ -708,6 +708,11 @@ type BlobGetAccessControlResponse struct {
 	Version *string
 }
 
+// BlobGetAccountInfoOptions contains the optional parameters for the Blob.GetAccountInfo method.
+type BlobGetAccountInfoOptions struct {
+	// placeholder for future optional parameters
+}
+
 // BlobGetAccountInfoResponse contains the response from method Blob.GetAccountInfo.
 type BlobGetAccountInfoResponse struct {
 	// AccountKind contains the information returned from the x-ms-account-kind header response.
@@ -1855,6 +1860,11 @@ type ContainerGetAccessPolicyOptions struct {
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
 	Timeout *int32
+}
+
+// ContainerGetAccountInfoOptions contains the optional parameters for the Container.GetAccountInfo method.
+type ContainerGetAccountInfoOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ContainerGetAccountInfoResponse contains the response from method Container.GetAccountInfo.
@@ -3156,6 +3166,11 @@ type SequenceNumberAccessConditions struct {
 	IfSequenceNumberLessThan *int64
 	// Specify this header value to operate only on a blob if it has a sequence number less than or equal to the specified.
 	IfSequenceNumberLessThanOrEqualTo *int64
+}
+
+// ServiceGetAccountInfoOptions contains the optional parameters for the Service.GetAccountInfo method.
+type ServiceGetAccountInfoOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ServiceGetAccountInfoResponse contains the response from method Service.GetAccountInfo.

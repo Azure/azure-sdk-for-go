@@ -19,15 +19,15 @@ import (
 // LogProfilesOperations contains the methods for the LogProfiles group.
 type LogProfilesOperations interface {
 	// CreateOrUpdate - Create or update a log profile in Azure Monitoring REST API.
-	CreateOrUpdate(ctx context.Context, logProfileName string, parameters LogProfileResource) (*LogProfileResourceResponse, error)
+	CreateOrUpdate(ctx context.Context, logProfileName string, parameters LogProfileResource, options *LogProfilesCreateOrUpdateOptions) (*LogProfileResourceResponse, error)
 	// Delete - Deletes the log profile.
-	Delete(ctx context.Context, logProfileName string) (*http.Response, error)
+	Delete(ctx context.Context, logProfileName string, options *LogProfilesDeleteOptions) (*http.Response, error)
 	// Get - Gets the log profile.
-	Get(ctx context.Context, logProfileName string) (*LogProfileResourceResponse, error)
+	Get(ctx context.Context, logProfileName string, options *LogProfilesGetOptions) (*LogProfileResourceResponse, error)
 	// List - List the log profiles.
-	List(ctx context.Context) (*LogProfileCollectionResponse, error)
+	List(ctx context.Context, options *LogProfilesListOptions) (*LogProfileCollectionResponse, error)
 	// Update - Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
-	Update(ctx context.Context, logProfileName string, logProfilesResource LogProfileResourcePatch) (*LogProfileResourceResponse, error)
+	Update(ctx context.Context, logProfileName string, logProfilesResource LogProfileResourcePatch, options *LogProfilesUpdateOptions) (*LogProfileResourceResponse, error)
 }
 
 // LogProfilesClient implements the LogProfilesOperations interface.
@@ -48,8 +48,8 @@ func (client *LogProfilesClient) Do(req *azcore.Request) (*azcore.Response, erro
 }
 
 // CreateOrUpdate - Create or update a log profile in Azure Monitoring REST API.
-func (client *LogProfilesClient) CreateOrUpdate(ctx context.Context, logProfileName string, parameters LogProfileResource) (*LogProfileResourceResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, logProfileName, parameters)
+func (client *LogProfilesClient) CreateOrUpdate(ctx context.Context, logProfileName string, parameters LogProfileResource, options *LogProfilesCreateOrUpdateOptions) (*LogProfileResourceResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, logProfileName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (client *LogProfilesClient) CreateOrUpdate(ctx context.Context, logProfileN
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LogProfilesClient) CreateOrUpdateCreateRequest(ctx context.Context, logProfileName string, parameters LogProfileResource) (*azcore.Request, error) {
+func (client *LogProfilesClient) CreateOrUpdateCreateRequest(ctx context.Context, logProfileName string, parameters LogProfileResource, options *LogProfilesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles/{logProfileName}"
 	urlPath = strings.ReplaceAll(urlPath, "{logProfileName}", url.PathEscape(logProfileName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -96,14 +96,14 @@ func (client *LogProfilesClient) CreateOrUpdateHandleError(resp *azcore.Response
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Delete - Deletes the log profile.
-func (client *LogProfilesClient) Delete(ctx context.Context, logProfileName string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, logProfileName)
+func (client *LogProfilesClient) Delete(ctx context.Context, logProfileName string, options *LogProfilesDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, logProfileName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +118,7 @@ func (client *LogProfilesClient) Delete(ctx context.Context, logProfileName stri
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *LogProfilesClient) DeleteCreateRequest(ctx context.Context, logProfileName string) (*azcore.Request, error) {
+func (client *LogProfilesClient) DeleteCreateRequest(ctx context.Context, logProfileName string, options *LogProfilesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles/{logProfileName}"
 	urlPath = strings.ReplaceAll(urlPath, "{logProfileName}", url.PathEscape(logProfileName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -139,14 +139,14 @@ func (client *LogProfilesClient) DeleteHandleError(resp *azcore.Response) error 
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Get - Gets the log profile.
-func (client *LogProfilesClient) Get(ctx context.Context, logProfileName string) (*LogProfileResourceResponse, error) {
-	req, err := client.GetCreateRequest(ctx, logProfileName)
+func (client *LogProfilesClient) Get(ctx context.Context, logProfileName string, options *LogProfilesGetOptions) (*LogProfileResourceResponse, error) {
+	req, err := client.GetCreateRequest(ctx, logProfileName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +165,7 @@ func (client *LogProfilesClient) Get(ctx context.Context, logProfileName string)
 }
 
 // GetCreateRequest creates the Get request.
-func (client *LogProfilesClient) GetCreateRequest(ctx context.Context, logProfileName string) (*azcore.Request, error) {
+func (client *LogProfilesClient) GetCreateRequest(ctx context.Context, logProfileName string, options *LogProfilesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles/{logProfileName}"
 	urlPath = strings.ReplaceAll(urlPath, "{logProfileName}", url.PathEscape(logProfileName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -192,12 +192,12 @@ func (client *LogProfilesClient) GetHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - List the log profiles.
-func (client *LogProfilesClient) List(ctx context.Context) (*LogProfileCollectionResponse, error) {
-	req, err := client.ListCreateRequest(ctx)
+func (client *LogProfilesClient) List(ctx context.Context, options *LogProfilesListOptions) (*LogProfileCollectionResponse, error) {
+	req, err := client.ListCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -216,7 +216,7 @@ func (client *LogProfilesClient) List(ctx context.Context) (*LogProfileCollectio
 }
 
 // ListCreateRequest creates the List request.
-func (client *LogProfilesClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *LogProfilesClient) ListCreateRequest(ctx context.Context, options *LogProfilesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -243,14 +243,14 @@ func (client *LogProfilesClient) ListHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Update - Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
-func (client *LogProfilesClient) Update(ctx context.Context, logProfileName string, logProfilesResource LogProfileResourcePatch) (*LogProfileResourceResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, logProfileName, logProfilesResource)
+func (client *LogProfilesClient) Update(ctx context.Context, logProfileName string, logProfilesResource LogProfileResourcePatch, options *LogProfilesUpdateOptions) (*LogProfileResourceResponse, error) {
+	req, err := client.UpdateCreateRequest(ctx, logProfileName, logProfilesResource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -269,7 +269,7 @@ func (client *LogProfilesClient) Update(ctx context.Context, logProfileName stri
 }
 
 // UpdateCreateRequest creates the Update request.
-func (client *LogProfilesClient) UpdateCreateRequest(ctx context.Context, logProfileName string, logProfilesResource LogProfileResourcePatch) (*azcore.Request, error) {
+func (client *LogProfilesClient) UpdateCreateRequest(ctx context.Context, logProfileName string, logProfilesResource LogProfileResourcePatch, options *LogProfilesUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles/{logProfileName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{logProfileName}", url.PathEscape(logProfileName))
@@ -296,5 +296,5 @@ func (client *LogProfilesClient) UpdateHandleError(resp *azcore.Response) error 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

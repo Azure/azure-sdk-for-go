@@ -18,27 +18,27 @@ import (
 // ConfigurationStoresOperations contains the methods for the ConfigurationStores group.
 type ConfigurationStoresOperations interface {
 	// BeginCreate - Creates a configuration store with the specified parameters.
-	BeginCreate(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters ConfigurationStore) (*ConfigurationStorePollerResponse, error)
+	BeginCreate(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters ConfigurationStore, options *ConfigurationStoresCreateOptions) (*ConfigurationStorePollerResponse, error)
 	// ResumeCreate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreate(token string) (ConfigurationStorePoller, error)
 	// BeginDelete - Deletes a configuration store.
-	BeginDelete(ctx context.Context, resourceGroupName string, configStoreName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, configStoreName string, options *ConfigurationStoresDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the properties of the specified configuration store.
-	Get(ctx context.Context, resourceGroupName string, configStoreName string) (*ConfigurationStoreResponse, error)
+	Get(ctx context.Context, resourceGroupName string, configStoreName string, options *ConfigurationStoresGetOptions) (*ConfigurationStoreResponse, error)
 	// List - Lists the configuration stores for a given subscription.
-	List(configurationStoresListOptions *ConfigurationStoresListOptions) ConfigurationStoreListResultPager
+	List(options *ConfigurationStoresListOptions) ConfigurationStoreListResultPager
 	// ListByResourceGroup - Lists the configuration stores for a given resource group.
-	ListByResourceGroup(resourceGroupName string, configurationStoresListByResourceGroupOptions *ConfigurationStoresListByResourceGroupOptions) ConfigurationStoreListResultPager
+	ListByResourceGroup(resourceGroupName string, options *ConfigurationStoresListByResourceGroupOptions) ConfigurationStoreListResultPager
 	// ListKeyValue - Lists a configuration store key-value.
-	ListKeyValue(ctx context.Context, resourceGroupName string, configStoreName string, listKeyValueParameters ListKeyValueParameters) (*KeyValueResponse, error)
+	ListKeyValue(ctx context.Context, resourceGroupName string, configStoreName string, listKeyValueParameters ListKeyValueParameters, options *ConfigurationStoresListKeyValueOptions) (*KeyValueResponse, error)
 	// ListKeys - Lists the access key for the specified configuration store.
-	ListKeys(resourceGroupName string, configStoreName string, configurationStoresListKeysOptions *ConfigurationStoresListKeysOptions) APIKeyListResultPager
+	ListKeys(resourceGroupName string, configStoreName string, options *ConfigurationStoresListKeysOptions) APIKeyListResultPager
 	// RegenerateKey - Regenerates an access key for the specified configuration store.
-	RegenerateKey(ctx context.Context, resourceGroupName string, configStoreName string, regenerateKeyParameters RegenerateKeyParameters) (*APIKeyResponse, error)
+	RegenerateKey(ctx context.Context, resourceGroupName string, configStoreName string, regenerateKeyParameters RegenerateKeyParameters, options *ConfigurationStoresRegenerateKeyOptions) (*APIKeyResponse, error)
 	// BeginUpdate - Updates a configuration store with the specified parameters.
-	BeginUpdate(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters ConfigurationStoreUpdateParameters) (*ConfigurationStorePollerResponse, error)
+	BeginUpdate(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters ConfigurationStoreUpdateParameters, options *ConfigurationStoresUpdateOptions) (*ConfigurationStorePollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (ConfigurationStorePoller, error)
 }
@@ -60,8 +60,8 @@ func (client *ConfigurationStoresClient) Do(req *azcore.Request) (*azcore.Respon
 	return client.p.Do(req)
 }
 
-func (client *ConfigurationStoresClient) BeginCreate(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters ConfigurationStore) (*ConfigurationStorePollerResponse, error) {
-	resp, err := client.Create(ctx, resourceGroupName, configStoreName, configStoreCreationParameters)
+func (client *ConfigurationStoresClient) BeginCreate(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters ConfigurationStore, options *ConfigurationStoresCreateOptions) (*ConfigurationStorePollerResponse, error) {
+	resp, err := client.Create(ctx, resourceGroupName, configStoreName, configStoreCreationParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -95,8 +95,8 @@ func (client *ConfigurationStoresClient) ResumeCreate(token string) (Configurati
 }
 
 // Create - Creates a configuration store with the specified parameters.
-func (client *ConfigurationStoresClient) Create(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters ConfigurationStore) (*azcore.Response, error) {
-	req, err := client.CreateCreateRequest(ctx, resourceGroupName, configStoreName, configStoreCreationParameters)
+func (client *ConfigurationStoresClient) Create(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters ConfigurationStore, options *ConfigurationStoresCreateOptions) (*azcore.Response, error) {
+	req, err := client.CreateCreateRequest(ctx, resourceGroupName, configStoreName, configStoreCreationParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +111,7 @@ func (client *ConfigurationStoresClient) Create(ctx context.Context, resourceGro
 }
 
 // CreateCreateRequest creates the Create request.
-func (client *ConfigurationStoresClient) CreateCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters ConfigurationStore) (*azcore.Request, error) {
+func (client *ConfigurationStoresClient) CreateCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters ConfigurationStore, options *ConfigurationStoresCreateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -139,11 +139,11 @@ func (client *ConfigurationStoresClient) CreateHandleError(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *ConfigurationStoresClient) BeginDelete(ctx context.Context, resourceGroupName string, configStoreName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, configStoreName)
+func (client *ConfigurationStoresClient) BeginDelete(ctx context.Context, resourceGroupName string, configStoreName string, options *ConfigurationStoresDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, configStoreName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -177,8 +177,8 @@ func (client *ConfigurationStoresClient) ResumeDelete(token string) (HTTPPoller,
 }
 
 // Delete - Deletes a configuration store.
-func (client *ConfigurationStoresClient) Delete(ctx context.Context, resourceGroupName string, configStoreName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, configStoreName)
+func (client *ConfigurationStoresClient) Delete(ctx context.Context, resourceGroupName string, configStoreName string, options *ConfigurationStoresDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, configStoreName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -193,7 +193,7 @@ func (client *ConfigurationStoresClient) Delete(ctx context.Context, resourceGro
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *ConfigurationStoresClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string) (*azcore.Request, error) {
+func (client *ConfigurationStoresClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, options *ConfigurationStoresDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -215,12 +215,12 @@ func (client *ConfigurationStoresClient) DeleteHandleError(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets the properties of the specified configuration store.
-func (client *ConfigurationStoresClient) Get(ctx context.Context, resourceGroupName string, configStoreName string) (*ConfigurationStoreResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, configStoreName)
+func (client *ConfigurationStoresClient) Get(ctx context.Context, resourceGroupName string, configStoreName string, options *ConfigurationStoresGetOptions) (*ConfigurationStoreResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, configStoreName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -239,7 +239,7 @@ func (client *ConfigurationStoresClient) Get(ctx context.Context, resourceGroupN
 }
 
 // GetCreateRequest creates the Get request.
-func (client *ConfigurationStoresClient) GetCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string) (*azcore.Request, error) {
+func (client *ConfigurationStoresClient) GetCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, options *ConfigurationStoresGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -267,26 +267,27 @@ func (client *ConfigurationStoresClient) GetHandleError(resp *azcore.Response) e
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Lists the configuration stores for a given subscription.
-func (client *ConfigurationStoresClient) List(configurationStoresListOptions *ConfigurationStoresListOptions) ConfigurationStoreListResultPager {
+func (client *ConfigurationStoresClient) List(options *ConfigurationStoresListOptions) ConfigurationStoreListResultPager {
 	return &configurationStoreListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, configurationStoresListOptions)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *ConfigurationStoreListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ConfigurationStoreListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *ConfigurationStoresClient) ListCreateRequest(ctx context.Context, configurationStoresListOptions *ConfigurationStoresListOptions) (*azcore.Request, error) {
+func (client *ConfigurationStoresClient) ListCreateRequest(ctx context.Context, options *ConfigurationStoresListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -295,8 +296,8 @@ func (client *ConfigurationStoresClient) ListCreateRequest(ctx context.Context, 
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2019-10-01")
-	if configurationStoresListOptions != nil && configurationStoresListOptions.SkipToken != nil {
-		query.Set("$skipToken", *configurationStoresListOptions.SkipToken)
+	if options != nil && options.SkipToken != nil {
+		query.Set("$skipToken", *options.SkipToken)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -315,26 +316,27 @@ func (client *ConfigurationStoresClient) ListHandleError(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByResourceGroup - Lists the configuration stores for a given resource group.
-func (client *ConfigurationStoresClient) ListByResourceGroup(resourceGroupName string, configurationStoresListByResourceGroupOptions *ConfigurationStoresListByResourceGroupOptions) ConfigurationStoreListResultPager {
+func (client *ConfigurationStoresClient) ListByResourceGroup(resourceGroupName string, options *ConfigurationStoresListByResourceGroupOptions) ConfigurationStoreListResultPager {
 	return &configurationStoreListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, configurationStoresListByResourceGroupOptions)
+			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
 		responder: client.ListByResourceGroupHandleResponse,
 		errorer:   client.ListByResourceGroupHandleError,
 		advancer: func(ctx context.Context, resp *ConfigurationStoreListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ConfigurationStoreListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ConfigurationStoresClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, configurationStoresListByResourceGroupOptions *ConfigurationStoresListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *ConfigurationStoresClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ConfigurationStoresListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -344,8 +346,8 @@ func (client *ConfigurationStoresClient) ListByResourceGroupCreateRequest(ctx co
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2019-10-01")
-	if configurationStoresListByResourceGroupOptions != nil && configurationStoresListByResourceGroupOptions.SkipToken != nil {
-		query.Set("$skipToken", *configurationStoresListByResourceGroupOptions.SkipToken)
+	if options != nil && options.SkipToken != nil {
+		query.Set("$skipToken", *options.SkipToken)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -364,12 +366,12 @@ func (client *ConfigurationStoresClient) ListByResourceGroupHandleError(resp *az
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListKeyValue - Lists a configuration store key-value.
-func (client *ConfigurationStoresClient) ListKeyValue(ctx context.Context, resourceGroupName string, configStoreName string, listKeyValueParameters ListKeyValueParameters) (*KeyValueResponse, error) {
-	req, err := client.ListKeyValueCreateRequest(ctx, resourceGroupName, configStoreName, listKeyValueParameters)
+func (client *ConfigurationStoresClient) ListKeyValue(ctx context.Context, resourceGroupName string, configStoreName string, listKeyValueParameters ListKeyValueParameters, options *ConfigurationStoresListKeyValueOptions) (*KeyValueResponse, error) {
+	req, err := client.ListKeyValueCreateRequest(ctx, resourceGroupName, configStoreName, listKeyValueParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -388,7 +390,7 @@ func (client *ConfigurationStoresClient) ListKeyValue(ctx context.Context, resou
 }
 
 // ListKeyValueCreateRequest creates the ListKeyValue request.
-func (client *ConfigurationStoresClient) ListKeyValueCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, listKeyValueParameters ListKeyValueParameters) (*azcore.Request, error) {
+func (client *ConfigurationStoresClient) ListKeyValueCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, listKeyValueParameters ListKeyValueParameters, options *ConfigurationStoresListKeyValueOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/listKeyValue"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -416,26 +418,27 @@ func (client *ConfigurationStoresClient) ListKeyValueHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListKeys - Lists the access key for the specified configuration store.
-func (client *ConfigurationStoresClient) ListKeys(resourceGroupName string, configStoreName string, configurationStoresListKeysOptions *ConfigurationStoresListKeysOptions) APIKeyListResultPager {
+func (client *ConfigurationStoresClient) ListKeys(resourceGroupName string, configStoreName string, options *ConfigurationStoresListKeysOptions) APIKeyListResultPager {
 	return &apiKeyListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListKeysCreateRequest(ctx, resourceGroupName, configStoreName, configurationStoresListKeysOptions)
+			return client.ListKeysCreateRequest(ctx, resourceGroupName, configStoreName, options)
 		},
 		responder: client.ListKeysHandleResponse,
 		errorer:   client.ListKeysHandleError,
 		advancer: func(ctx context.Context, resp *APIKeyListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.APIKeyListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListKeysCreateRequest creates the ListKeys request.
-func (client *ConfigurationStoresClient) ListKeysCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, configurationStoresListKeysOptions *ConfigurationStoresListKeysOptions) (*azcore.Request, error) {
+func (client *ConfigurationStoresClient) ListKeysCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, options *ConfigurationStoresListKeysOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/ListKeys"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -446,8 +449,8 @@ func (client *ConfigurationStoresClient) ListKeysCreateRequest(ctx context.Conte
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2019-10-01")
-	if configurationStoresListKeysOptions != nil && configurationStoresListKeysOptions.SkipToken != nil {
-		query.Set("$skipToken", *configurationStoresListKeysOptions.SkipToken)
+	if options != nil && options.SkipToken != nil {
+		query.Set("$skipToken", *options.SkipToken)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -466,12 +469,12 @@ func (client *ConfigurationStoresClient) ListKeysHandleError(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // RegenerateKey - Regenerates an access key for the specified configuration store.
-func (client *ConfigurationStoresClient) RegenerateKey(ctx context.Context, resourceGroupName string, configStoreName string, regenerateKeyParameters RegenerateKeyParameters) (*APIKeyResponse, error) {
-	req, err := client.RegenerateKeyCreateRequest(ctx, resourceGroupName, configStoreName, regenerateKeyParameters)
+func (client *ConfigurationStoresClient) RegenerateKey(ctx context.Context, resourceGroupName string, configStoreName string, regenerateKeyParameters RegenerateKeyParameters, options *ConfigurationStoresRegenerateKeyOptions) (*APIKeyResponse, error) {
+	req, err := client.RegenerateKeyCreateRequest(ctx, resourceGroupName, configStoreName, regenerateKeyParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -490,7 +493,7 @@ func (client *ConfigurationStoresClient) RegenerateKey(ctx context.Context, reso
 }
 
 // RegenerateKeyCreateRequest creates the RegenerateKey request.
-func (client *ConfigurationStoresClient) RegenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, regenerateKeyParameters RegenerateKeyParameters) (*azcore.Request, error) {
+func (client *ConfigurationStoresClient) RegenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, regenerateKeyParameters RegenerateKeyParameters, options *ConfigurationStoresRegenerateKeyOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/RegenerateKey"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -518,11 +521,11 @@ func (client *ConfigurationStoresClient) RegenerateKeyHandleError(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *ConfigurationStoresClient) BeginUpdate(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters ConfigurationStoreUpdateParameters) (*ConfigurationStorePollerResponse, error) {
-	resp, err := client.Update(ctx, resourceGroupName, configStoreName, configStoreUpdateParameters)
+func (client *ConfigurationStoresClient) BeginUpdate(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters ConfigurationStoreUpdateParameters, options *ConfigurationStoresUpdateOptions) (*ConfigurationStorePollerResponse, error) {
+	resp, err := client.Update(ctx, resourceGroupName, configStoreName, configStoreUpdateParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -556,8 +559,8 @@ func (client *ConfigurationStoresClient) ResumeUpdate(token string) (Configurati
 }
 
 // Update - Updates a configuration store with the specified parameters.
-func (client *ConfigurationStoresClient) Update(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters ConfigurationStoreUpdateParameters) (*azcore.Response, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, configStoreName, configStoreUpdateParameters)
+func (client *ConfigurationStoresClient) Update(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters ConfigurationStoreUpdateParameters, options *ConfigurationStoresUpdateOptions) (*azcore.Response, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, configStoreName, configStoreUpdateParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -572,7 +575,7 @@ func (client *ConfigurationStoresClient) Update(ctx context.Context, resourceGro
 }
 
 // UpdateCreateRequest creates the Update request.
-func (client *ConfigurationStoresClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters ConfigurationStoreUpdateParameters) (*azcore.Request, error) {
+func (client *ConfigurationStoresClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters ConfigurationStoreUpdateParameters, options *ConfigurationStoresUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -600,5 +603,5 @@ func (client *ConfigurationStoresClient) UpdateHandleError(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

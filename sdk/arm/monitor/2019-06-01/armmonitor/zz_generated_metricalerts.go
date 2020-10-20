@@ -19,17 +19,17 @@ import (
 // MetricAlertsOperations contains the methods for the MetricAlerts group.
 type MetricAlertsOperations interface {
 	// CreateOrUpdate - Create or update an metric alert definition.
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResource) (*MetricAlertResourceResponse, error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResource, options *MetricAlertsCreateOrUpdateOptions) (*MetricAlertResourceResponse, error)
 	// Delete - Delete an alert rule definition.
-	Delete(ctx context.Context, resourceGroupName string, ruleName string) (*http.Response, error)
+	Delete(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsDeleteOptions) (*http.Response, error)
 	// Get - Retrieve an alert rule definition.
-	Get(ctx context.Context, resourceGroupName string, ruleName string) (*MetricAlertResourceResponse, error)
+	Get(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsGetOptions) (*MetricAlertResourceResponse, error)
 	// ListByResourceGroup - Retrieve alert rule definitions in a resource group.
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (*MetricAlertResourceCollectionResponse, error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, options *MetricAlertsListByResourceGroupOptions) (*MetricAlertResourceCollectionResponse, error)
 	// ListBySubscription - Retrieve alert rule definitions in a subscription.
-	ListBySubscription(ctx context.Context) (*MetricAlertResourceCollectionResponse, error)
+	ListBySubscription(ctx context.Context, options *MetricAlertsListBySubscriptionOptions) (*MetricAlertResourceCollectionResponse, error)
 	// Update - Update an metric alert definition.
-	Update(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResourcePatch) (*MetricAlertResourceResponse, error)
+	Update(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResourcePatch, options *MetricAlertsUpdateOptions) (*MetricAlertResourceResponse, error)
 }
 
 // MetricAlertsClient implements the MetricAlertsOperations interface.
@@ -50,8 +50,8 @@ func (client *MetricAlertsClient) Do(req *azcore.Request) (*azcore.Response, err
 }
 
 // CreateOrUpdate - Create or update an metric alert definition.
-func (client *MetricAlertsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResource) (*MetricAlertResourceResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, ruleName, parameters)
+func (client *MetricAlertsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResource, options *MetricAlertsCreateOrUpdateOptions) (*MetricAlertResourceResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, ruleName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func (client *MetricAlertsClient) CreateOrUpdate(ctx context.Context, resourceGr
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *MetricAlertsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResource) (*azcore.Request, error) {
+func (client *MetricAlertsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResource, options *MetricAlertsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -98,12 +98,12 @@ func (client *MetricAlertsClient) CreateOrUpdateHandleError(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - Delete an alert rule definition.
-func (client *MetricAlertsClient) Delete(ctx context.Context, resourceGroupName string, ruleName string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, ruleName)
+func (client *MetricAlertsClient) Delete(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, ruleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +118,7 @@ func (client *MetricAlertsClient) Delete(ctx context.Context, resourceGroupName 
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *MetricAlertsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, ruleName string) (*azcore.Request, error) {
+func (client *MetricAlertsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -140,14 +140,14 @@ func (client *MetricAlertsClient) DeleteHandleError(resp *azcore.Response) error
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Get - Retrieve an alert rule definition.
-func (client *MetricAlertsClient) Get(ctx context.Context, resourceGroupName string, ruleName string) (*MetricAlertResourceResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, ruleName)
+func (client *MetricAlertsClient) Get(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsGetOptions) (*MetricAlertResourceResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, ruleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +166,7 @@ func (client *MetricAlertsClient) Get(ctx context.Context, resourceGroupName str
 }
 
 // GetCreateRequest creates the Get request.
-func (client *MetricAlertsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, ruleName string) (*azcore.Request, error) {
+func (client *MetricAlertsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *MetricAlertsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -194,12 +194,12 @@ func (client *MetricAlertsClient) GetHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByResourceGroup - Retrieve alert rule definitions in a resource group.
-func (client *MetricAlertsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (*MetricAlertResourceCollectionResponse, error) {
-	req, err := client.ListByResourceGroupCreateRequest(ctx, resourceGroupName)
+func (client *MetricAlertsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *MetricAlertsListByResourceGroupOptions) (*MetricAlertResourceCollectionResponse, error) {
+	req, err := client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -218,7 +218,7 @@ func (client *MetricAlertsClient) ListByResourceGroup(ctx context.Context, resou
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *MetricAlertsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *MetricAlertsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *MetricAlertsListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -245,12 +245,12 @@ func (client *MetricAlertsClient) ListByResourceGroupHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListBySubscription - Retrieve alert rule definitions in a subscription.
-func (client *MetricAlertsClient) ListBySubscription(ctx context.Context) (*MetricAlertResourceCollectionResponse, error) {
-	req, err := client.ListBySubscriptionCreateRequest(ctx)
+func (client *MetricAlertsClient) ListBySubscription(ctx context.Context, options *MetricAlertsListBySubscriptionOptions) (*MetricAlertResourceCollectionResponse, error) {
+	req, err := client.ListBySubscriptionCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -269,7 +269,7 @@ func (client *MetricAlertsClient) ListBySubscription(ctx context.Context) (*Metr
 }
 
 // ListBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *MetricAlertsClient) ListBySubscriptionCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *MetricAlertsClient) ListBySubscriptionCreateRequest(ctx context.Context, options *MetricAlertsListBySubscriptionOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metricAlerts"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -295,12 +295,12 @@ func (client *MetricAlertsClient) ListBySubscriptionHandleError(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Update - Update an metric alert definition.
-func (client *MetricAlertsClient) Update(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResourcePatch) (*MetricAlertResourceResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, ruleName, parameters)
+func (client *MetricAlertsClient) Update(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResourcePatch, options *MetricAlertsUpdateOptions) (*MetricAlertResourceResponse, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, ruleName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -319,7 +319,7 @@ func (client *MetricAlertsClient) Update(ctx context.Context, resourceGroupName 
 }
 
 // UpdateCreateRequest creates the Update request.
-func (client *MetricAlertsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResourcePatch) (*azcore.Request, error) {
+func (client *MetricAlertsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, parameters MetricAlertResourcePatch, options *MetricAlertsUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/metricAlerts/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -347,5 +347,5 @@ func (client *MetricAlertsClient) UpdateHandleError(resp *azcore.Response) error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -99,7 +99,7 @@ func (client *blobClient) AbortCopyFromURLHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // AcquireLease - [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations
@@ -202,7 +202,7 @@ func (client *blobClient) AcquireLeaseHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // BreakLease - [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations
@@ -307,7 +307,7 @@ func (client *blobClient) BreakLeaseHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ChangeLease - [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations
@@ -406,7 +406,7 @@ func (client *blobClient) ChangeLeaseHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // CopyFromURL - The Copy From URL operation copies a blob or an internet resource to a new blob. It will not return a response until the copy is complete.
@@ -546,7 +546,7 @@ func (client *blobClient) CopyFromURLHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // CreateSnapshot - The Create Snapshot operation creates a read-only snapshot of a blob
@@ -669,7 +669,7 @@ func (client *blobClient) CreateSnapshotHandleError(resp *azcore.Response) error
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - If the storage account's soft delete feature is disabled then, when a blob is deleted, it is permanently removed from the storage account. If the storage account's soft delete feature is enabled, then, when a blob is deleted, it is marked for deletion and becomes inaccessible immediately. However, the blob service retains the blob or snapshot for the number of days specified by the DeleteRetentionPolicy section of [Storage service properties] (Set-Blob-Service-Properties.md). After the specified number of days has passed, the blob's data is permanently removed from the storage account. Note that you continue to be charged for the soft-deleted blob's storage until it is permanently removed. Use the List Blobs API and specify the "include=deleted" query parameter to discover which blobs and snapshots have been soft deleted. You can then use the Undelete Blob API to restore a soft-deleted blob. All other operations on a soft-deleted blob or snapshot causes the service to return an HTTP status code of 404 (ResourceNotFound).
@@ -760,7 +760,7 @@ func (client *blobClient) DeleteHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Download - The Download operation reads or downloads a blob from the system, including its metadata and properties. You can also call Download to read a snapshot.
@@ -996,7 +996,7 @@ func (client *blobClient) DownloadHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetAccessControl - Get the owner, group, permissions, or access control list for a blob.
@@ -1104,12 +1104,12 @@ func (client *blobClient) GetAccessControlHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetAccountInfo - Returns the sku name and account kind
-func (client *blobClient) GetAccountInfo(ctx context.Context) (*BlobGetAccountInfoResponse, error) {
-	req, err := client.GetAccountInfoCreateRequest(ctx)
+func (client *blobClient) GetAccountInfo(ctx context.Context, options *BlobGetAccountInfoOptions) (*BlobGetAccountInfoResponse, error) {
+	req, err := client.GetAccountInfoCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -1128,7 +1128,7 @@ func (client *blobClient) GetAccountInfo(ctx context.Context) (*BlobGetAccountIn
 }
 
 // GetAccountInfoCreateRequest creates the GetAccountInfo request.
-func (client *blobClient) GetAccountInfoCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *blobClient) GetAccountInfoCreateRequest(ctx context.Context, options *BlobGetAccountInfoOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodGet, client.u)
 	if err != nil {
 		return nil, err
@@ -1176,7 +1176,7 @@ func (client *blobClient) GetAccountInfoHandleError(resp *azcore.Response) error
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetProperties - The Get Properties operation returns all user-defined metadata, standard HTTP properties, and system properties for the blob. It does not return the content of the blob.
@@ -1422,7 +1422,7 @@ func (client *blobClient) GetPropertiesHandleError(resp *azcore.Response) error 
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ReleaseLease - [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations
@@ -1517,7 +1517,7 @@ func (client *blobClient) ReleaseLeaseHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Rename - Rename a blob/file.  By default, the destination is overwritten and if the destination already exists and has a lease the lease is broken.  This operation supports conditional HTTP requests.  For more information, see [Specifying Conditional Headers for Blob Service Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).  To fail if the destination already exists, use a conditional request with If-None-Match: "*".
@@ -1662,7 +1662,7 @@ func (client *blobClient) RenameHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // RenewLease - [Update] The Lease Blob operation establishes and manages a lock on a blob for write and delete operations
@@ -1760,7 +1760,7 @@ func (client *blobClient) RenewLeaseHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // SetAccessControl - Set the owner, group, permissions, or access control list for a blob.
@@ -1865,7 +1865,7 @@ func (client *blobClient) SetAccessControlHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // SetHTTPHeaders - The Set HTTP Headers operation sets system properties on the blob
@@ -1986,7 +1986,7 @@ func (client *blobClient) SetHTTPHeadersHandleError(resp *azcore.Response) error
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // SetMetadata - The Set Blob Metadata operation sets user-defined metadata for the specified blob as one or more name-value pairs
@@ -2112,7 +2112,7 @@ func (client *blobClient) SetMetadataHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // SetTier - The Set Tier operation sets the tier on a blob. The operation is allowed on a page blob in a premium storage account and on a block blob in a blob storage account (locally redundant storage only). A premium page blob's tier determines the allowed size, IOPS, and bandwidth of the blob. A block blob's tier determines Hot/Cool/Archive storage type. This operation does not update the blob's ETag.
@@ -2183,7 +2183,7 @@ func (client *blobClient) SetTierHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // StartCopyFromURL - The Start Copy From URL operation copies a blob or an internet resource to a new blob.
@@ -2308,12 +2308,12 @@ func (client *blobClient) StartCopyFromURLHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Undelete - Undelete a blob that was previously soft deleted
-func (client *blobClient) Undelete(ctx context.Context, blobUndeleteOptions *BlobUndeleteOptions) (*BlobUndeleteResponse, error) {
-	req, err := client.UndeleteCreateRequest(ctx, blobUndeleteOptions)
+func (client *blobClient) Undelete(ctx context.Context, options *BlobUndeleteOptions) (*BlobUndeleteResponse, error) {
+	req, err := client.UndeleteCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -2332,20 +2332,20 @@ func (client *blobClient) Undelete(ctx context.Context, blobUndeleteOptions *Blo
 }
 
 // UndeleteCreateRequest creates the Undelete request.
-func (client *blobClient) UndeleteCreateRequest(ctx context.Context, blobUndeleteOptions *BlobUndeleteOptions) (*azcore.Request, error) {
+func (client *blobClient) UndeleteCreateRequest(ctx context.Context, options *BlobUndeleteOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodPut, client.u)
 	if err != nil {
 		return nil, err
 	}
 	query := req.URL.Query()
 	query.Set("comp", "undelete")
-	if blobUndeleteOptions != nil && blobUndeleteOptions.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*blobUndeleteOptions.Timeout), 10))
+	if options != nil && options.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("x-ms-version", "2019-07-07")
-	if blobUndeleteOptions != nil && blobUndeleteOptions.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *blobUndeleteOptions.RequestId)
+	if options != nil && options.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
 	req.Header.Set("Accept", "application/xml")
 	return req, nil
@@ -2379,5 +2379,5 @@ func (client *blobClient) UndeleteHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

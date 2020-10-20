@@ -16,7 +16,7 @@ import (
 // AvailableDelegationsOperations contains the methods for the AvailableDelegations group.
 type AvailableDelegationsOperations interface {
 	// List - Gets all of the available subnet delegations for this subscription in this region.
-	List(location string) AvailableDelegationsResultPager
+	List(location string, options *AvailableDelegationsListOptions) AvailableDelegationsResultPager
 }
 
 // AvailableDelegationsClient implements the AvailableDelegationsOperations interface.
@@ -37,22 +37,23 @@ func (client *AvailableDelegationsClient) Do(req *azcore.Request) (*azcore.Respo
 }
 
 // List - Gets all of the available subnet delegations for this subscription in this region.
-func (client *AvailableDelegationsClient) List(location string) AvailableDelegationsResultPager {
+func (client *AvailableDelegationsClient) List(location string, options *AvailableDelegationsListOptions) AvailableDelegationsResultPager {
 	return &availableDelegationsResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, location)
+			return client.ListCreateRequest(ctx, location, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *AvailableDelegationsResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AvailableDelegationsResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *AvailableDelegationsClient) ListCreateRequest(ctx context.Context, location string) (*azcore.Request, error) {
+func (client *AvailableDelegationsClient) ListCreateRequest(ctx context.Context, location string, options *AvailableDelegationsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/availableDelegations"
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -79,5 +80,5 @@ func (client *AvailableDelegationsClient) ListHandleError(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -16,13 +16,13 @@ import (
 // DiagnosticSettingsOperations contains the methods for the DiagnosticSettings group.
 type DiagnosticSettingsOperations interface {
 	// CreateOrUpdate - Creates or updates diagnostic settings for the specified resource.
-	CreateOrUpdate(ctx context.Context, resourceUri string, name string, parameters DiagnosticSettingsResource) (*DiagnosticSettingsResourceResponse, error)
+	CreateOrUpdate(ctx context.Context, resourceUri string, name string, parameters DiagnosticSettingsResource, options *DiagnosticSettingsCreateOrUpdateOptions) (*DiagnosticSettingsResourceResponse, error)
 	// Delete - Deletes existing diagnostic settings for the specified resource.
-	Delete(ctx context.Context, resourceUri string, name string) (*http.Response, error)
+	Delete(ctx context.Context, resourceUri string, name string, options *DiagnosticSettingsDeleteOptions) (*http.Response, error)
 	// Get - Gets the active diagnostic settings for the specified resource.
-	Get(ctx context.Context, resourceUri string, name string) (*DiagnosticSettingsResourceResponse, error)
+	Get(ctx context.Context, resourceUri string, name string, options *DiagnosticSettingsGetOptions) (*DiagnosticSettingsResourceResponse, error)
 	// List - Gets the active diagnostic settings list for the specified resource.
-	List(ctx context.Context, resourceUri string) (*DiagnosticSettingsResourceCollectionResponse, error)
+	List(ctx context.Context, resourceUri string, options *DiagnosticSettingsListOptions) (*DiagnosticSettingsResourceCollectionResponse, error)
 }
 
 // DiagnosticSettingsClient implements the DiagnosticSettingsOperations interface.
@@ -42,8 +42,8 @@ func (client *DiagnosticSettingsClient) Do(req *azcore.Request) (*azcore.Respons
 }
 
 // CreateOrUpdate - Creates or updates diagnostic settings for the specified resource.
-func (client *DiagnosticSettingsClient) CreateOrUpdate(ctx context.Context, resourceUri string, name string, parameters DiagnosticSettingsResource) (*DiagnosticSettingsResourceResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceUri, name, parameters)
+func (client *DiagnosticSettingsClient) CreateOrUpdate(ctx context.Context, resourceUri string, name string, parameters DiagnosticSettingsResource, options *DiagnosticSettingsCreateOrUpdateOptions) (*DiagnosticSettingsResourceResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceUri, name, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (client *DiagnosticSettingsClient) CreateOrUpdate(ctx context.Context, reso
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DiagnosticSettingsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceUri string, name string, parameters DiagnosticSettingsResource) (*azcore.Request, error) {
+func (client *DiagnosticSettingsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceUri string, name string, parameters DiagnosticSettingsResource, options *DiagnosticSettingsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/diagnosticSettings/{name}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceUri)
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
@@ -89,12 +89,12 @@ func (client *DiagnosticSettingsClient) CreateOrUpdateHandleError(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - Deletes existing diagnostic settings for the specified resource.
-func (client *DiagnosticSettingsClient) Delete(ctx context.Context, resourceUri string, name string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceUri, name)
+func (client *DiagnosticSettingsClient) Delete(ctx context.Context, resourceUri string, name string, options *DiagnosticSettingsDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceUri, name, options)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (client *DiagnosticSettingsClient) Delete(ctx context.Context, resourceUri 
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *DiagnosticSettingsClient) DeleteCreateRequest(ctx context.Context, resourceUri string, name string) (*azcore.Request, error) {
+func (client *DiagnosticSettingsClient) DeleteCreateRequest(ctx context.Context, resourceUri string, name string, options *DiagnosticSettingsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/diagnosticSettings/{name}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceUri)
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
@@ -130,12 +130,12 @@ func (client *DiagnosticSettingsClient) DeleteHandleError(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets the active diagnostic settings for the specified resource.
-func (client *DiagnosticSettingsClient) Get(ctx context.Context, resourceUri string, name string) (*DiagnosticSettingsResourceResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceUri, name)
+func (client *DiagnosticSettingsClient) Get(ctx context.Context, resourceUri string, name string, options *DiagnosticSettingsGetOptions) (*DiagnosticSettingsResourceResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceUri, name, options)
 	if err != nil {
 		return nil, err
 	}
@@ -154,7 +154,7 @@ func (client *DiagnosticSettingsClient) Get(ctx context.Context, resourceUri str
 }
 
 // GetCreateRequest creates the Get request.
-func (client *DiagnosticSettingsClient) GetCreateRequest(ctx context.Context, resourceUri string, name string) (*azcore.Request, error) {
+func (client *DiagnosticSettingsClient) GetCreateRequest(ctx context.Context, resourceUri string, name string, options *DiagnosticSettingsGetOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/diagnosticSettings/{name}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceUri)
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
@@ -181,12 +181,12 @@ func (client *DiagnosticSettingsClient) GetHandleError(resp *azcore.Response) er
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Gets the active diagnostic settings list for the specified resource.
-func (client *DiagnosticSettingsClient) List(ctx context.Context, resourceUri string) (*DiagnosticSettingsResourceCollectionResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceUri)
+func (client *DiagnosticSettingsClient) List(ctx context.Context, resourceUri string, options *DiagnosticSettingsListOptions) (*DiagnosticSettingsResourceCollectionResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceUri, options)
 	if err != nil {
 		return nil, err
 	}
@@ -205,7 +205,7 @@ func (client *DiagnosticSettingsClient) List(ctx context.Context, resourceUri st
 }
 
 // ListCreateRequest creates the List request.
-func (client *DiagnosticSettingsClient) ListCreateRequest(ctx context.Context, resourceUri string) (*azcore.Request, error) {
+func (client *DiagnosticSettingsClient) ListCreateRequest(ctx context.Context, resourceUri string, options *DiagnosticSettingsListOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/diagnosticSettings"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceUri)
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -231,5 +231,5 @@ func (client *DiagnosticSettingsClient) ListHandleError(resp *azcore.Response) e
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

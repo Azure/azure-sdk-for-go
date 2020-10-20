@@ -18,21 +18,21 @@ import (
 // VpnSitesOperations contains the methods for the VpnSites group.
 type VpnSitesOperations interface {
 	// BeginCreateOrUpdate - Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VpnSite) (*VpnSitePollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VpnSite, options *VpnSitesCreateOrUpdateOptions) (*VpnSitePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VpnSitePoller, error)
 	// BeginDelete - Deletes a VpnSite.
-	BeginDelete(ctx context.Context, resourceGroupName string, vpnSiteName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VpnSitesDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Retrieves the details of a VPN site.
-	Get(ctx context.Context, resourceGroupName string, vpnSiteName string) (*VpnSiteResponse, error)
+	Get(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VpnSitesGetOptions) (*VpnSiteResponse, error)
 	// List - Lists all the VpnSites in a subscription.
-	List() ListVpnSitesResultPager
+	List(options *VpnSitesListOptions) ListVpnSitesResultPager
 	// ListByResourceGroup - Lists all the vpnSites in a resource group.
-	ListByResourceGroup(resourceGroupName string) ListVpnSitesResultPager
+	ListByResourceGroup(resourceGroupName string, options *VpnSitesListByResourceGroupOptions) ListVpnSitesResultPager
 	// UpdateTags - Updates VpnSite tags.
-	UpdateTags(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters TagsObject) (*VpnSiteResponse, error)
+	UpdateTags(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters TagsObject, options *VpnSitesUpdateTagsOptions) (*VpnSiteResponse, error)
 }
 
 // VpnSitesClient implements the VpnSitesOperations interface.
@@ -52,8 +52,8 @@ func (client *VpnSitesClient) Do(req *azcore.Request) (*azcore.Response, error) 
 	return client.p.Do(req)
 }
 
-func (client *VpnSitesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VpnSite) (*VpnSitePollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, vpnSiteName, vpnSiteParameters)
+func (client *VpnSitesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VpnSite, options *VpnSitesCreateOrUpdateOptions) (*VpnSitePollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, vpnSiteName, vpnSiteParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -87,8 +87,8 @@ func (client *VpnSitesClient) ResumeCreateOrUpdate(token string) (VpnSitePoller,
 }
 
 // CreateOrUpdate - Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-func (client *VpnSitesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VpnSite) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, vpnSiteName, vpnSiteParameters)
+func (client *VpnSitesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VpnSite, options *VpnSitesCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, vpnSiteName, vpnSiteParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (client *VpnSitesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VpnSitesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VpnSite) (*azcore.Request, error) {
+func (client *VpnSitesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters VpnSite, options *VpnSitesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites/{vpnSiteName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -131,11 +131,11 @@ func (client *VpnSitesClient) CreateOrUpdateHandleError(resp *azcore.Response) e
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *VpnSitesClient) BeginDelete(ctx context.Context, resourceGroupName string, vpnSiteName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, vpnSiteName)
+func (client *VpnSitesClient) BeginDelete(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VpnSitesDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, vpnSiteName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -169,8 +169,8 @@ func (client *VpnSitesClient) ResumeDelete(token string) (HTTPPoller, error) {
 }
 
 // Delete - Deletes a VpnSite.
-func (client *VpnSitesClient) Delete(ctx context.Context, resourceGroupName string, vpnSiteName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, vpnSiteName)
+func (client *VpnSitesClient) Delete(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VpnSitesDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, vpnSiteName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +185,7 @@ func (client *VpnSitesClient) Delete(ctx context.Context, resourceGroupName stri
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *VpnSitesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, vpnSiteName string) (*azcore.Request, error) {
+func (client *VpnSitesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VpnSitesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites/{vpnSiteName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -207,12 +207,12 @@ func (client *VpnSitesClient) DeleteHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Retrieves the details of a VPN site.
-func (client *VpnSitesClient) Get(ctx context.Context, resourceGroupName string, vpnSiteName string) (*VpnSiteResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, vpnSiteName)
+func (client *VpnSitesClient) Get(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VpnSitesGetOptions) (*VpnSiteResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, vpnSiteName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -231,7 +231,7 @@ func (client *VpnSitesClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // GetCreateRequest creates the Get request.
-func (client *VpnSitesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, vpnSiteName string) (*azcore.Request, error) {
+func (client *VpnSitesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VpnSitesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites/{vpnSiteName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -259,26 +259,27 @@ func (client *VpnSitesClient) GetHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Lists all the VpnSites in a subscription.
-func (client *VpnSitesClient) List() ListVpnSitesResultPager {
+func (client *VpnSitesClient) List(options *VpnSitesListOptions) ListVpnSitesResultPager {
 	return &listVpnSitesResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *ListVpnSitesResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListVpnSitesResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *VpnSitesClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *VpnSitesClient) ListCreateRequest(ctx context.Context, options *VpnSitesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/vpnSites"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -304,26 +305,27 @@ func (client *VpnSitesClient) ListHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByResourceGroup - Lists all the vpnSites in a resource group.
-func (client *VpnSitesClient) ListByResourceGroup(resourceGroupName string) ListVpnSitesResultPager {
+func (client *VpnSitesClient) ListByResourceGroup(resourceGroupName string, options *VpnSitesListByResourceGroupOptions) ListVpnSitesResultPager {
 	return &listVpnSitesResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName)
+			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
 		responder: client.ListByResourceGroupHandleResponse,
 		errorer:   client.ListByResourceGroupHandleError,
 		advancer: func(ctx context.Context, resp *ListVpnSitesResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListVpnSitesResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *VpnSitesClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *VpnSitesClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *VpnSitesListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -350,12 +352,12 @@ func (client *VpnSitesClient) ListByResourceGroupHandleError(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // UpdateTags - Updates VpnSite tags.
-func (client *VpnSitesClient) UpdateTags(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters TagsObject) (*VpnSiteResponse, error) {
-	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, vpnSiteName, vpnSiteParameters)
+func (client *VpnSitesClient) UpdateTags(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters TagsObject, options *VpnSitesUpdateTagsOptions) (*VpnSiteResponse, error) {
+	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, vpnSiteName, vpnSiteParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -374,7 +376,7 @@ func (client *VpnSitesClient) UpdateTags(ctx context.Context, resourceGroupName 
 }
 
 // UpdateTagsCreateRequest creates the UpdateTags request.
-func (client *VpnSitesClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters TagsObject) (*azcore.Request, error) {
+func (client *VpnSitesClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteParameters TagsObject, options *VpnSitesUpdateTagsOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites/{vpnSiteName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -402,5 +404,5 @@ func (client *VpnSitesClient) UpdateTagsHandleError(resp *azcore.Response) error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

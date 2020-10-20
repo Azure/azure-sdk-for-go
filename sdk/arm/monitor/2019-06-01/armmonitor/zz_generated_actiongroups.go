@@ -16,19 +16,19 @@ import (
 // ActionGroupsOperations contains the methods for the ActionGroups group.
 type ActionGroupsOperations interface {
 	// CreateOrUpdate - Create a new action group or update an existing one.
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource) (*ActionGroupResourceResponse, error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource, options *ActionGroupsCreateOrUpdateOptions) (*ActionGroupResourceResponse, error)
 	// Delete - Delete an action group.
-	Delete(ctx context.Context, resourceGroupName string, actionGroupName string) (*http.Response, error)
+	Delete(ctx context.Context, resourceGroupName string, actionGroupName string, options *ActionGroupsDeleteOptions) (*http.Response, error)
 	// EnableReceiver - Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation is only supported for Email or SMS receivers.
-	EnableReceiver(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest) (*http.Response, error)
+	EnableReceiver(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest, options *ActionGroupsEnableReceiverOptions) (*http.Response, error)
 	// Get - Get an action group.
-	Get(ctx context.Context, resourceGroupName string, actionGroupName string) (*ActionGroupResourceResponse, error)
+	Get(ctx context.Context, resourceGroupName string, actionGroupName string, options *ActionGroupsGetOptions) (*ActionGroupResourceResponse, error)
 	// ListByResourceGroup - Get a list of all action groups in a resource group.
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (*ActionGroupListResponse, error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ActionGroupsListByResourceGroupOptions) (*ActionGroupListResponse, error)
 	// ListBySubscriptionID - Get a list of all action groups in a subscription.
-	ListBySubscriptionID(ctx context.Context) (*ActionGroupListResponse, error)
+	ListBySubscriptionID(ctx context.Context, options *ActionGroupsListBySubscriptionIDOptions) (*ActionGroupListResponse, error)
 	// Update - Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
-	Update(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody) (*ActionGroupResourceResponse, error)
+	Update(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody, options *ActionGroupsUpdateOptions) (*ActionGroupResourceResponse, error)
 }
 
 // ActionGroupsClient implements the ActionGroupsOperations interface.
@@ -49,8 +49,8 @@ func (client *ActionGroupsClient) Do(req *azcore.Request) (*azcore.Response, err
 }
 
 // CreateOrUpdate - Create a new action group or update an existing one.
-func (client *ActionGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource) (*ActionGroupResourceResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, actionGroupName, actionGroup)
+func (client *ActionGroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource, options *ActionGroupsCreateOrUpdateOptions) (*ActionGroupResourceResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, actionGroupName, actionGroup, options)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (client *ActionGroupsClient) CreateOrUpdate(ctx context.Context, resourceGr
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ActionGroupsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource) (*azcore.Request, error) {
+func (client *ActionGroupsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroup ActionGroupResource, options *ActionGroupsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/actionGroups/{actionGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{actionGroupName}", url.PathEscape(actionGroupName))
@@ -97,12 +97,12 @@ func (client *ActionGroupsClient) CreateOrUpdateHandleError(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - Delete an action group.
-func (client *ActionGroupsClient) Delete(ctx context.Context, resourceGroupName string, actionGroupName string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, actionGroupName)
+func (client *ActionGroupsClient) Delete(ctx context.Context, resourceGroupName string, actionGroupName string, options *ActionGroupsDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, actionGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -117,7 +117,7 @@ func (client *ActionGroupsClient) Delete(ctx context.Context, resourceGroupName 
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *ActionGroupsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string) (*azcore.Request, error) {
+func (client *ActionGroupsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, options *ActionGroupsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/actionGroups/{actionGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{actionGroupName}", url.PathEscape(actionGroupName))
@@ -139,12 +139,12 @@ func (client *ActionGroupsClient) DeleteHandleError(resp *azcore.Response) error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // EnableReceiver - Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation is only supported for Email or SMS receivers.
-func (client *ActionGroupsClient) EnableReceiver(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest) (*http.Response, error) {
-	req, err := client.EnableReceiverCreateRequest(ctx, resourceGroupName, actionGroupName, enableRequest)
+func (client *ActionGroupsClient) EnableReceiver(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest, options *ActionGroupsEnableReceiverOptions) (*http.Response, error) {
+	req, err := client.EnableReceiverCreateRequest(ctx, resourceGroupName, actionGroupName, enableRequest, options)
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +159,7 @@ func (client *ActionGroupsClient) EnableReceiver(ctx context.Context, resourceGr
 }
 
 // EnableReceiverCreateRequest creates the EnableReceiver request.
-func (client *ActionGroupsClient) EnableReceiverCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest) (*azcore.Request, error) {
+func (client *ActionGroupsClient) EnableReceiverCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, enableRequest EnableRequest, options *ActionGroupsEnableReceiverOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/actionGroups/{actionGroupName}/subscribe"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{actionGroupName}", url.PathEscape(actionGroupName))
@@ -181,12 +181,12 @@ func (client *ActionGroupsClient) EnableReceiverHandleError(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Get an action group.
-func (client *ActionGroupsClient) Get(ctx context.Context, resourceGroupName string, actionGroupName string) (*ActionGroupResourceResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, actionGroupName)
+func (client *ActionGroupsClient) Get(ctx context.Context, resourceGroupName string, actionGroupName string, options *ActionGroupsGetOptions) (*ActionGroupResourceResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, actionGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -205,7 +205,7 @@ func (client *ActionGroupsClient) Get(ctx context.Context, resourceGroupName str
 }
 
 // GetCreateRequest creates the Get request.
-func (client *ActionGroupsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string) (*azcore.Request, error) {
+func (client *ActionGroupsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, options *ActionGroupsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/actionGroups/{actionGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{actionGroupName}", url.PathEscape(actionGroupName))
@@ -233,12 +233,12 @@ func (client *ActionGroupsClient) GetHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByResourceGroup - Get a list of all action groups in a resource group.
-func (client *ActionGroupsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (*ActionGroupListResponse, error) {
-	req, err := client.ListByResourceGroupCreateRequest(ctx, resourceGroupName)
+func (client *ActionGroupsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ActionGroupsListByResourceGroupOptions) (*ActionGroupListResponse, error) {
+	req, err := client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -257,7 +257,7 @@ func (client *ActionGroupsClient) ListByResourceGroup(ctx context.Context, resou
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ActionGroupsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *ActionGroupsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ActionGroupsListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/actionGroups"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -284,12 +284,12 @@ func (client *ActionGroupsClient) ListByResourceGroupHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListBySubscriptionID - Get a list of all action groups in a subscription.
-func (client *ActionGroupsClient) ListBySubscriptionID(ctx context.Context) (*ActionGroupListResponse, error) {
-	req, err := client.ListBySubscriptionIDCreateRequest(ctx)
+func (client *ActionGroupsClient) ListBySubscriptionID(ctx context.Context, options *ActionGroupsListBySubscriptionIDOptions) (*ActionGroupListResponse, error) {
+	req, err := client.ListBySubscriptionIDCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -308,7 +308,7 @@ func (client *ActionGroupsClient) ListBySubscriptionID(ctx context.Context) (*Ac
 }
 
 // ListBySubscriptionIDCreateRequest creates the ListBySubscriptionID request.
-func (client *ActionGroupsClient) ListBySubscriptionIDCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *ActionGroupsClient) ListBySubscriptionIDCreateRequest(ctx context.Context, options *ActionGroupsListBySubscriptionIDOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/microsoft.insights/actionGroups"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -334,12 +334,12 @@ func (client *ActionGroupsClient) ListBySubscriptionIDHandleError(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Update - Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
-func (client *ActionGroupsClient) Update(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody) (*ActionGroupResourceResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, actionGroupName, actionGroupPatch)
+func (client *ActionGroupsClient) Update(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody, options *ActionGroupsUpdateOptions) (*ActionGroupResourceResponse, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, actionGroupName, actionGroupPatch, options)
 	if err != nil {
 		return nil, err
 	}
@@ -358,7 +358,7 @@ func (client *ActionGroupsClient) Update(ctx context.Context, resourceGroupName 
 }
 
 // UpdateCreateRequest creates the Update request.
-func (client *ActionGroupsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody) (*azcore.Request, error) {
+func (client *ActionGroupsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, actionGroupName string, actionGroupPatch ActionGroupPatchBody, options *ActionGroupsUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/actionGroups/{actionGroupName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -386,5 +386,5 @@ func (client *ActionGroupsClient) UpdateHandleError(resp *azcore.Response) error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

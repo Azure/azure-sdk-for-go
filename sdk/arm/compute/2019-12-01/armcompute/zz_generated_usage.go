@@ -19,7 +19,7 @@ import (
 // UsageOperations contains the methods for the Usage group.
 type UsageOperations interface {
 	// List - Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
-	List(location string) ListUsagesResultPager
+	List(location string, options *UsageListOptions) ListUsagesResultPager
 }
 
 // UsageClient implements the UsageOperations interface.
@@ -40,22 +40,23 @@ func (client *UsageClient) Do(req *azcore.Request) (*azcore.Response, error) {
 }
 
 // List - Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
-func (client *UsageClient) List(location string) ListUsagesResultPager {
+func (client *UsageClient) List(location string, options *UsageListOptions) ListUsagesResultPager {
 	return &listUsagesResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, location)
+			return client.ListCreateRequest(ctx, location, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *ListUsagesResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListUsagesResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *UsageClient) ListCreateRequest(ctx context.Context, location string) (*azcore.Request, error) {
+func (client *UsageClient) ListCreateRequest(ctx context.Context, location string, options *UsageListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/usages"
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -83,7 +84,7 @@ func (client *UsageClient) ListHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

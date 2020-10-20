@@ -17,8 +17,6 @@ const telemetryInfo = "azsdk-go-azblob/<version>"
 type clientOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient azcore.Transport
-	// LogOptions configures the built-in request logging policy behavior.
-	LogOptions azcore.RequestLogOptions
 	// Retry configures the built-in retry policy behavior.
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior.
@@ -28,19 +26,19 @@ type clientOptions struct {
 // defaultClientOptions creates a clientOptions type initialized with default values.
 func defaultClientOptions() clientOptions {
 	return clientOptions{
-		HTTPClient: azcore.DefaultHTTPClientTransport(),
-		Retry:      azcore.DefaultRetryOptions(),
+		Retry:     azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
 	}
 }
 
-func (c *clientOptions) telemetryOptions() azcore.TelemetryOptions {
+func (c *clientOptions) telemetryOptions() *azcore.TelemetryOptions {
 	to := c.Telemetry
 	if to.Value == "" {
 		to.Value = telemetryInfo
 	} else {
 		to.Value = fmt.Sprintf("%s %s", telemetryInfo, to.Value)
 	}
-	return to
+	return &to
 }
 
 type client struct {
@@ -56,10 +54,9 @@ func newClient(endpoint string, cred azcore.Credential, options *clientOptions) 
 	}
 	p := azcore.NewPipeline(options.HTTPClient,
 		azcore.NewTelemetryPolicy(options.telemetryOptions()),
-		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(&options.Retry),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(options.LogOptions))
+		azcore.NewLogPolicy(nil))
 	return newClientWithPipeline(endpoint, p)
 }
 

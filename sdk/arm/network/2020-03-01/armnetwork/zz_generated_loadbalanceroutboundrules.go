@@ -16,9 +16,9 @@ import (
 // LoadBalancerOutboundRulesOperations contains the methods for the LoadBalancerOutboundRules group.
 type LoadBalancerOutboundRulesOperations interface {
 	// Get - Gets the specified load balancer outbound rule.
-	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, outboundRuleName string) (*OutboundRuleResponse, error)
+	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, outboundRuleName string, options *LoadBalancerOutboundRulesGetOptions) (*OutboundRuleResponse, error)
 	// List - Gets all the outbound rules in a load balancer.
-	List(resourceGroupName string, loadBalancerName string) LoadBalancerOutboundRuleListResultPager
+	List(resourceGroupName string, loadBalancerName string, options *LoadBalancerOutboundRulesListOptions) LoadBalancerOutboundRuleListResultPager
 }
 
 // LoadBalancerOutboundRulesClient implements the LoadBalancerOutboundRulesOperations interface.
@@ -39,8 +39,8 @@ func (client *LoadBalancerOutboundRulesClient) Do(req *azcore.Request) (*azcore.
 }
 
 // Get - Gets the specified load balancer outbound rule.
-func (client *LoadBalancerOutboundRulesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, outboundRuleName string) (*OutboundRuleResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, loadBalancerName, outboundRuleName)
+func (client *LoadBalancerOutboundRulesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, outboundRuleName string, options *LoadBalancerOutboundRulesGetOptions) (*OutboundRuleResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, loadBalancerName, outboundRuleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (client *LoadBalancerOutboundRulesClient) Get(ctx context.Context, resource
 }
 
 // GetCreateRequest creates the Get request.
-func (client *LoadBalancerOutboundRulesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, outboundRuleName string) (*azcore.Request, error) {
+func (client *LoadBalancerOutboundRulesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, outboundRuleName string, options *LoadBalancerOutboundRulesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/outboundRules/{outboundRuleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -88,26 +88,27 @@ func (client *LoadBalancerOutboundRulesClient) GetHandleError(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Gets all the outbound rules in a load balancer.
-func (client *LoadBalancerOutboundRulesClient) List(resourceGroupName string, loadBalancerName string) LoadBalancerOutboundRuleListResultPager {
+func (client *LoadBalancerOutboundRulesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerOutboundRulesListOptions) LoadBalancerOutboundRuleListResultPager {
 	return &loadBalancerOutboundRuleListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, loadBalancerName)
+			return client.ListCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *LoadBalancerOutboundRuleListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.LoadBalancerOutboundRuleListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *LoadBalancerOutboundRulesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string) (*azcore.Request, error) {
+func (client *LoadBalancerOutboundRulesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancerOutboundRulesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/outboundRules"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -135,5 +136,5 @@ func (client *LoadBalancerOutboundRulesClient) ListHandleError(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

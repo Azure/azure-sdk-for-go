@@ -18,31 +18,31 @@ import (
 // ConnectionMonitorsOperations contains the methods for the ConnectionMonitors group.
 type ConnectionMonitorsOperations interface {
 	// BeginCreateOrUpdate - Create or update a connection monitor.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor) (*ConnectionMonitorResultPollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor, options *ConnectionMonitorsCreateOrUpdateOptions) (*ConnectionMonitorResultPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ConnectionMonitorResultPoller, error)
 	// BeginDelete - Deletes the specified connection monitor.
-	BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets a connection monitor by name.
-	Get(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*ConnectionMonitorResultResponse, error)
+	Get(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsGetOptions) (*ConnectionMonitorResultResponse, error)
 	// List - Lists all connection monitors for the specified Network Watcher.
-	List(ctx context.Context, resourceGroupName string, networkWatcherName string) (*ConnectionMonitorListResultResponse, error)
+	List(ctx context.Context, resourceGroupName string, networkWatcherName string, options *ConnectionMonitorsListOptions) (*ConnectionMonitorListResultResponse, error)
 	// BeginQuery - Query a snapshot of the most recent connection states.
-	BeginQuery(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*ConnectionMonitorQueryResultPollerResponse, error)
+	BeginQuery(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsQueryOptions) (*ConnectionMonitorQueryResultPollerResponse, error)
 	// ResumeQuery - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeQuery(token string) (ConnectionMonitorQueryResultPoller, error)
 	// BeginStart - Starts the specified connection monitor.
-	BeginStart(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error)
+	BeginStart(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsStartOptions) (*HTTPPollerResponse, error)
 	// ResumeStart - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeStart(token string) (HTTPPoller, error)
 	// BeginStop - Stops the specified connection monitor.
-	BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error)
+	BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsStopOptions) (*HTTPPollerResponse, error)
 	// ResumeStop - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeStop(token string) (HTTPPoller, error)
 	// UpdateTags - Update tags of the specified connection monitor.
-	UpdateTags(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters TagsObject) (*ConnectionMonitorResultResponse, error)
+	UpdateTags(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters TagsObject, options *ConnectionMonitorsUpdateTagsOptions) (*ConnectionMonitorResultResponse, error)
 }
 
 // ConnectionMonitorsClient implements the ConnectionMonitorsOperations interface.
@@ -62,8 +62,8 @@ func (client *ConnectionMonitorsClient) Do(req *azcore.Request) (*azcore.Respons
 	return client.p.Do(req)
 }
 
-func (client *ConnectionMonitorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor) (*ConnectionMonitorResultPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
+func (client *ConnectionMonitorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor, options *ConnectionMonitorsCreateOrUpdateOptions) (*ConnectionMonitorResultPollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -97,8 +97,8 @@ func (client *ConnectionMonitorsClient) ResumeCreateOrUpdate(token string) (Conn
 }
 
 // CreateOrUpdate - Create or update a connection monitor.
-func (client *ConnectionMonitorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
+func (client *ConnectionMonitorsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor, options *ConnectionMonitorsCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +113,7 @@ func (client *ConnectionMonitorsClient) CreateOrUpdate(ctx context.Context, reso
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ConnectionMonitorsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor) (*azcore.Request, error) {
+func (client *ConnectionMonitorsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters ConnectionMonitor, options *ConnectionMonitorsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
@@ -142,11 +142,11 @@ func (client *ConnectionMonitorsClient) CreateOrUpdateHandleError(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *ConnectionMonitorsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+func (client *ConnectionMonitorsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -180,8 +180,8 @@ func (client *ConnectionMonitorsClient) ResumeDelete(token string) (HTTPPoller, 
 }
 
 // Delete - Deletes the specified connection monitor.
-func (client *ConnectionMonitorsClient) Delete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+func (client *ConnectionMonitorsClient) Delete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -196,7 +196,7 @@ func (client *ConnectionMonitorsClient) Delete(ctx context.Context, resourceGrou
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *ConnectionMonitorsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Request, error) {
+func (client *ConnectionMonitorsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
@@ -219,12 +219,12 @@ func (client *ConnectionMonitorsClient) DeleteHandleError(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets a connection monitor by name.
-func (client *ConnectionMonitorsClient) Get(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*ConnectionMonitorResultResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+func (client *ConnectionMonitorsClient) Get(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsGetOptions) (*ConnectionMonitorResultResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +243,7 @@ func (client *ConnectionMonitorsClient) Get(ctx context.Context, resourceGroupNa
 }
 
 // GetCreateRequest creates the Get request.
-func (client *ConnectionMonitorsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Request, error) {
+func (client *ConnectionMonitorsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
@@ -272,12 +272,12 @@ func (client *ConnectionMonitorsClient) GetHandleError(resp *azcore.Response) er
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Lists all connection monitors for the specified Network Watcher.
-func (client *ConnectionMonitorsClient) List(ctx context.Context, resourceGroupName string, networkWatcherName string) (*ConnectionMonitorListResultResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceGroupName, networkWatcherName)
+func (client *ConnectionMonitorsClient) List(ctx context.Context, resourceGroupName string, networkWatcherName string, options *ConnectionMonitorsListOptions) (*ConnectionMonitorListResultResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceGroupName, networkWatcherName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -296,7 +296,7 @@ func (client *ConnectionMonitorsClient) List(ctx context.Context, resourceGroupN
 }
 
 // ListCreateRequest creates the List request.
-func (client *ConnectionMonitorsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string) (*azcore.Request, error) {
+func (client *ConnectionMonitorsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, options *ConnectionMonitorsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
@@ -324,11 +324,11 @@ func (client *ConnectionMonitorsClient) ListHandleError(resp *azcore.Response) e
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *ConnectionMonitorsClient) BeginQuery(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*ConnectionMonitorQueryResultPollerResponse, error) {
-	resp, err := client.Query(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+func (client *ConnectionMonitorsClient) BeginQuery(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsQueryOptions) (*ConnectionMonitorQueryResultPollerResponse, error) {
+	resp, err := client.Query(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -362,8 +362,8 @@ func (client *ConnectionMonitorsClient) ResumeQuery(token string) (ConnectionMon
 }
 
 // Query - Query a snapshot of the most recent connection states.
-func (client *ConnectionMonitorsClient) Query(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Response, error) {
-	req, err := client.QueryCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+func (client *ConnectionMonitorsClient) Query(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsQueryOptions) (*azcore.Response, error) {
+	req, err := client.QueryCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -378,7 +378,7 @@ func (client *ConnectionMonitorsClient) Query(ctx context.Context, resourceGroup
 }
 
 // QueryCreateRequest creates the Query request.
-func (client *ConnectionMonitorsClient) QueryCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Request, error) {
+func (client *ConnectionMonitorsClient) QueryCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsQueryOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/query"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
@@ -407,11 +407,11 @@ func (client *ConnectionMonitorsClient) QueryHandleError(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *ConnectionMonitorsClient) BeginStart(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Start(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+func (client *ConnectionMonitorsClient) BeginStart(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsStartOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Start(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -445,8 +445,8 @@ func (client *ConnectionMonitorsClient) ResumeStart(token string) (HTTPPoller, e
 }
 
 // Start - Starts the specified connection monitor.
-func (client *ConnectionMonitorsClient) Start(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Response, error) {
-	req, err := client.StartCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+func (client *ConnectionMonitorsClient) Start(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsStartOptions) (*azcore.Response, error) {
+	req, err := client.StartCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -461,7 +461,7 @@ func (client *ConnectionMonitorsClient) Start(ctx context.Context, resourceGroup
 }
 
 // StartCreateRequest creates the Start request.
-func (client *ConnectionMonitorsClient) StartCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Request, error) {
+func (client *ConnectionMonitorsClient) StartCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsStartOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/start"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
@@ -484,11 +484,11 @@ func (client *ConnectionMonitorsClient) StartHandleError(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *ConnectionMonitorsClient) BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Stop(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+func (client *ConnectionMonitorsClient) BeginStop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsStopOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Stop(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -522,8 +522,8 @@ func (client *ConnectionMonitorsClient) ResumeStop(token string) (HTTPPoller, er
 }
 
 // Stop - Stops the specified connection monitor.
-func (client *ConnectionMonitorsClient) Stop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Response, error) {
-	req, err := client.StopCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName)
+func (client *ConnectionMonitorsClient) Stop(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsStopOptions) (*azcore.Response, error) {
+	req, err := client.StopCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -538,7 +538,7 @@ func (client *ConnectionMonitorsClient) Stop(ctx context.Context, resourceGroupN
 }
 
 // StopCreateRequest creates the Stop request.
-func (client *ConnectionMonitorsClient) StopCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string) (*azcore.Request, error) {
+func (client *ConnectionMonitorsClient) StopCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, options *ConnectionMonitorsStopOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/stop"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
@@ -561,12 +561,12 @@ func (client *ConnectionMonitorsClient) StopHandleError(resp *azcore.Response) e
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // UpdateTags - Update tags of the specified connection monitor.
-func (client *ConnectionMonitorsClient) UpdateTags(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters TagsObject) (*ConnectionMonitorResultResponse, error) {
-	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
+func (client *ConnectionMonitorsClient) UpdateTags(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters TagsObject, options *ConnectionMonitorsUpdateTagsOptions) (*ConnectionMonitorResultResponse, error) {
+	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionMonitorName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -585,7 +585,7 @@ func (client *ConnectionMonitorsClient) UpdateTags(ctx context.Context, resource
 }
 
 // UpdateTagsCreateRequest creates the UpdateTags request.
-func (client *ConnectionMonitorsClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters TagsObject) (*azcore.Request, error) {
+func (client *ConnectionMonitorsClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionMonitorName string, parameters TagsObject, options *ConnectionMonitorsUpdateTagsOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
@@ -614,5 +614,5 @@ func (client *ConnectionMonitorsClient) UpdateTagsHandleError(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

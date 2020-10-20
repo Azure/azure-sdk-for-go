@@ -16,13 +16,13 @@ import (
 // ObjectReplicationPoliciesOperations contains the methods for the ObjectReplicationPolicies group.
 type ObjectReplicationPoliciesOperations interface {
 	// CreateOrUpdate - Create or update the object replication policy of the storage account.
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, properties ObjectReplicationPolicy) (*ObjectReplicationPolicyResponse, error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, properties ObjectReplicationPolicy, options *ObjectReplicationPoliciesCreateOrUpdateOptions) (*ObjectReplicationPolicyResponse, error)
 	// Delete - Deletes the object replication policy associated with the specified storage account.
-	Delete(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string) (*http.Response, error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesDeleteOptions) (*http.Response, error)
 	// Get - Get the object replication policy of the storage account by policy ID.
-	Get(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string) (*ObjectReplicationPolicyResponse, error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesGetOptions) (*ObjectReplicationPolicyResponse, error)
 	// List - List the object replication policies associated with the storage account.
-	List(ctx context.Context, resourceGroupName string, accountName string) (*ObjectReplicationPoliciesResponse, error)
+	List(ctx context.Context, resourceGroupName string, accountName string, options *ObjectReplicationPoliciesListOptions) (*ObjectReplicationPoliciesResponse, error)
 }
 
 // ObjectReplicationPoliciesClient implements the ObjectReplicationPoliciesOperations interface.
@@ -43,8 +43,8 @@ func (client *ObjectReplicationPoliciesClient) Do(req *azcore.Request) (*azcore.
 }
 
 // CreateOrUpdate - Create or update the object replication policy of the storage account.
-func (client *ObjectReplicationPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, properties ObjectReplicationPolicy) (*ObjectReplicationPolicyResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, accountName, objectReplicationPolicyId, properties)
+func (client *ObjectReplicationPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, properties ObjectReplicationPolicy, options *ObjectReplicationPoliciesCreateOrUpdateOptions) (*ObjectReplicationPolicyResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, accountName, objectReplicationPolicyId, properties, options)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +63,7 @@ func (client *ObjectReplicationPoliciesClient) CreateOrUpdate(ctx context.Contex
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ObjectReplicationPoliciesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, properties ObjectReplicationPolicy) (*azcore.Request, error) {
+func (client *ObjectReplicationPoliciesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, properties ObjectReplicationPolicy, options *ObjectReplicationPoliciesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -92,12 +92,12 @@ func (client *ObjectReplicationPoliciesClient) CreateOrUpdateHandleError(resp *a
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - Deletes the object replication policy associated with the specified storage account.
-func (client *ObjectReplicationPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, accountName, objectReplicationPolicyId)
+func (client *ObjectReplicationPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, accountName, objectReplicationPolicyId, options)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func (client *ObjectReplicationPoliciesClient) Delete(ctx context.Context, resou
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *ObjectReplicationPoliciesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string) (*azcore.Request, error) {
+func (client *ObjectReplicationPoliciesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -135,12 +135,12 @@ func (client *ObjectReplicationPoliciesClient) DeleteHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Get the object replication policy of the storage account by policy ID.
-func (client *ObjectReplicationPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string) (*ObjectReplicationPolicyResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, accountName, objectReplicationPolicyId)
+func (client *ObjectReplicationPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesGetOptions) (*ObjectReplicationPolicyResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, accountName, objectReplicationPolicyId, options)
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +159,7 @@ func (client *ObjectReplicationPoliciesClient) Get(ctx context.Context, resource
 }
 
 // GetCreateRequest creates the Get request.
-func (client *ObjectReplicationPoliciesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string) (*azcore.Request, error) {
+func (client *ObjectReplicationPoliciesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyId string, options *ObjectReplicationPoliciesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -188,12 +188,12 @@ func (client *ObjectReplicationPoliciesClient) GetHandleError(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - List the object replication policies associated with the storage account.
-func (client *ObjectReplicationPoliciesClient) List(ctx context.Context, resourceGroupName string, accountName string) (*ObjectReplicationPoliciesResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceGroupName, accountName)
+func (client *ObjectReplicationPoliciesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *ObjectReplicationPoliciesListOptions) (*ObjectReplicationPoliciesResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +212,7 @@ func (client *ObjectReplicationPoliciesClient) List(ctx context.Context, resourc
 }
 
 // ListCreateRequest creates the List request.
-func (client *ObjectReplicationPoliciesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string) (*azcore.Request, error) {
+func (client *ObjectReplicationPoliciesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *ObjectReplicationPoliciesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -240,5 +240,5 @@ func (client *ObjectReplicationPoliciesClient) ListHandleError(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

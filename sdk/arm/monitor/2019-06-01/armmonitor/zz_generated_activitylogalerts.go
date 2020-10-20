@@ -16,17 +16,17 @@ import (
 // ActivityLogAlertsOperations contains the methods for the ActivityLogAlerts group.
 type ActivityLogAlertsOperations interface {
 	// CreateOrUpdate - Create a new activity log alert or update an existing one.
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlert ActivityLogAlertResource) (*ActivityLogAlertResourceResponse, error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlert ActivityLogAlertResource, options *ActivityLogAlertsCreateOrUpdateOptions) (*ActivityLogAlertResourceResponse, error)
 	// Delete - Delete an activity log alert.
-	Delete(ctx context.Context, resourceGroupName string, activityLogAlertName string) (*http.Response, error)
+	Delete(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsDeleteOptions) (*http.Response, error)
 	// Get - Get an activity log alert.
-	Get(ctx context.Context, resourceGroupName string, activityLogAlertName string) (*ActivityLogAlertResourceResponse, error)
+	Get(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsGetOptions) (*ActivityLogAlertResourceResponse, error)
 	// ListByResourceGroup - Get a list of all activity log alerts in a resource group.
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (*ActivityLogAlertListResponse, error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ActivityLogAlertsListByResourceGroupOptions) (*ActivityLogAlertListResponse, error)
 	// ListBySubscriptionID - Get a list of all activity log alerts in a subscription.
-	ListBySubscriptionID(ctx context.Context) (*ActivityLogAlertListResponse, error)
+	ListBySubscriptionID(ctx context.Context, options *ActivityLogAlertsListBySubscriptionIDOptions) (*ActivityLogAlertListResponse, error)
 	// Update - Updates an existing ActivityLogAlertResource's tags. To update other fields use the CreateOrUpdate method.
-	Update(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertPatch ActivityLogAlertPatchBody) (*ActivityLogAlertResourceResponse, error)
+	Update(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertPatch ActivityLogAlertPatchBody, options *ActivityLogAlertsUpdateOptions) (*ActivityLogAlertResourceResponse, error)
 }
 
 // ActivityLogAlertsClient implements the ActivityLogAlertsOperations interface.
@@ -47,8 +47,8 @@ func (client *ActivityLogAlertsClient) Do(req *azcore.Request) (*azcore.Response
 }
 
 // CreateOrUpdate - Create a new activity log alert or update an existing one.
-func (client *ActivityLogAlertsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlert ActivityLogAlertResource) (*ActivityLogAlertResourceResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, activityLogAlertName, activityLogAlert)
+func (client *ActivityLogAlertsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlert ActivityLogAlertResource, options *ActivityLogAlertsCreateOrUpdateOptions) (*ActivityLogAlertResourceResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, activityLogAlertName, activityLogAlert, options)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (client *ActivityLogAlertsClient) CreateOrUpdate(ctx context.Context, resou
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ActivityLogAlertsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlert ActivityLogAlertResource) (*azcore.Request, error) {
+func (client *ActivityLogAlertsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlert ActivityLogAlertResource, options *ActivityLogAlertsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/activityLogAlerts/{activityLogAlertName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -95,12 +95,12 @@ func (client *ActivityLogAlertsClient) CreateOrUpdateHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - Delete an activity log alert.
-func (client *ActivityLogAlertsClient) Delete(ctx context.Context, resourceGroupName string, activityLogAlertName string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, activityLogAlertName)
+func (client *ActivityLogAlertsClient) Delete(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, activityLogAlertName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func (client *ActivityLogAlertsClient) Delete(ctx context.Context, resourceGroup
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *ActivityLogAlertsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string) (*azcore.Request, error) {
+func (client *ActivityLogAlertsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/activityLogAlerts/{activityLogAlertName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -137,12 +137,12 @@ func (client *ActivityLogAlertsClient) DeleteHandleError(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Get an activity log alert.
-func (client *ActivityLogAlertsClient) Get(ctx context.Context, resourceGroupName string, activityLogAlertName string) (*ActivityLogAlertResourceResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, activityLogAlertName)
+func (client *ActivityLogAlertsClient) Get(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsGetOptions) (*ActivityLogAlertResourceResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, activityLogAlertName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +161,7 @@ func (client *ActivityLogAlertsClient) Get(ctx context.Context, resourceGroupNam
 }
 
 // GetCreateRequest creates the Get request.
-func (client *ActivityLogAlertsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string) (*azcore.Request, error) {
+func (client *ActivityLogAlertsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, options *ActivityLogAlertsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/activityLogAlerts/{activityLogAlertName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -189,12 +189,12 @@ func (client *ActivityLogAlertsClient) GetHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByResourceGroup - Get a list of all activity log alerts in a resource group.
-func (client *ActivityLogAlertsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (*ActivityLogAlertListResponse, error) {
-	req, err := client.ListByResourceGroupCreateRequest(ctx, resourceGroupName)
+func (client *ActivityLogAlertsClient) ListByResourceGroup(ctx context.Context, resourceGroupName string, options *ActivityLogAlertsListByResourceGroupOptions) (*ActivityLogAlertListResponse, error) {
+	req, err := client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -213,7 +213,7 @@ func (client *ActivityLogAlertsClient) ListByResourceGroup(ctx context.Context, 
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ActivityLogAlertsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *ActivityLogAlertsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ActivityLogAlertsListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/activityLogAlerts"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -240,12 +240,12 @@ func (client *ActivityLogAlertsClient) ListByResourceGroupHandleError(resp *azco
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListBySubscriptionID - Get a list of all activity log alerts in a subscription.
-func (client *ActivityLogAlertsClient) ListBySubscriptionID(ctx context.Context) (*ActivityLogAlertListResponse, error) {
-	req, err := client.ListBySubscriptionIDCreateRequest(ctx)
+func (client *ActivityLogAlertsClient) ListBySubscriptionID(ctx context.Context, options *ActivityLogAlertsListBySubscriptionIDOptions) (*ActivityLogAlertListResponse, error) {
+	req, err := client.ListBySubscriptionIDCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -264,7 +264,7 @@ func (client *ActivityLogAlertsClient) ListBySubscriptionID(ctx context.Context)
 }
 
 // ListBySubscriptionIDCreateRequest creates the ListBySubscriptionID request.
-func (client *ActivityLogAlertsClient) ListBySubscriptionIDCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *ActivityLogAlertsClient) ListBySubscriptionIDCreateRequest(ctx context.Context, options *ActivityLogAlertsListBySubscriptionIDOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/microsoft.insights/activityLogAlerts"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -290,12 +290,12 @@ func (client *ActivityLogAlertsClient) ListBySubscriptionIDHandleError(resp *azc
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Update - Updates an existing ActivityLogAlertResource's tags. To update other fields use the CreateOrUpdate method.
-func (client *ActivityLogAlertsClient) Update(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertPatch ActivityLogAlertPatchBody) (*ActivityLogAlertResourceResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, activityLogAlertName, activityLogAlertPatch)
+func (client *ActivityLogAlertsClient) Update(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertPatch ActivityLogAlertPatchBody, options *ActivityLogAlertsUpdateOptions) (*ActivityLogAlertResourceResponse, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, activityLogAlertName, activityLogAlertPatch, options)
 	if err != nil {
 		return nil, err
 	}
@@ -314,7 +314,7 @@ func (client *ActivityLogAlertsClient) Update(ctx context.Context, resourceGroup
 }
 
 // UpdateCreateRequest creates the Update request.
-func (client *ActivityLogAlertsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertPatch ActivityLogAlertPatchBody) (*azcore.Request, error) {
+func (client *ActivityLogAlertsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, activityLogAlertName string, activityLogAlertPatch ActivityLogAlertPatchBody, options *ActivityLogAlertsUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/activityLogAlerts/{activityLogAlertName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -342,5 +342,5 @@ func (client *ActivityLogAlertsClient) UpdateHandleError(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

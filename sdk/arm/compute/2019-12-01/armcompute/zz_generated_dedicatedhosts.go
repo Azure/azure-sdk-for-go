@@ -21,19 +21,19 @@ import (
 // DedicatedHostsOperations contains the methods for the DedicatedHosts group.
 type DedicatedHostsOperations interface {
 	// BeginCreateOrUpdate - Create or update a dedicated host .
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost) (*DedicatedHostPollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost, options *DedicatedHostsCreateOrUpdateOptions) (*DedicatedHostPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (DedicatedHostPoller, error)
 	// BeginDelete - Delete a dedicated host.
-	BeginDelete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Retrieves information about a dedicated host.
-	Get(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, dedicatedHostsGetOptions *DedicatedHostsGetOptions) (*DedicatedHostResponse, error)
+	Get(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsGetOptions) (*DedicatedHostResponse, error)
 	// ListByHostGroup - Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response to get the next page of dedicated hosts.
-	ListByHostGroup(resourceGroupName string, hostGroupName string) DedicatedHostListResultPager
+	ListByHostGroup(resourceGroupName string, hostGroupName string, options *DedicatedHostsListByHostGroupOptions) DedicatedHostListResultPager
 	// BeginUpdate - Update an dedicated host .
-	BeginUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate) (*DedicatedHostPollerResponse, error)
+	BeginUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate, options *DedicatedHostsUpdateOptions) (*DedicatedHostPollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (DedicatedHostPoller, error)
 }
@@ -55,8 +55,8 @@ func (client *DedicatedHostsClient) Do(req *azcore.Request) (*azcore.Response, e
 	return client.p.Do(req)
 }
 
-func (client *DedicatedHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost) (*DedicatedHostPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, hostGroupName, hostName, parameters)
+func (client *DedicatedHostsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost, options *DedicatedHostsCreateOrUpdateOptions) (*DedicatedHostPollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -90,8 +90,8 @@ func (client *DedicatedHostsClient) ResumeCreateOrUpdate(token string) (Dedicate
 }
 
 // CreateOrUpdate - Create or update a dedicated host .
-func (client *DedicatedHostsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, parameters)
+func (client *DedicatedHostsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost, options *DedicatedHostsCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +106,7 @@ func (client *DedicatedHostsClient) CreateOrUpdate(ctx context.Context, resource
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DedicatedHostsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost) (*azcore.Request, error) {
+func (client *DedicatedHostsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHost, options *DedicatedHostsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{hostGroupName}", url.PathEscape(hostGroupName))
@@ -136,13 +136,13 @@ func (client *DedicatedHostsClient) CreateOrUpdateHandleError(resp *azcore.Respo
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-func (client *DedicatedHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, hostGroupName, hostName)
+func (client *DedicatedHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, hostGroupName, hostName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -176,8 +176,8 @@ func (client *DedicatedHostsClient) ResumeDelete(token string) (HTTPPoller, erro
 }
 
 // Delete - Delete a dedicated host.
-func (client *DedicatedHostsClient) Delete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, hostGroupName, hostName)
+func (client *DedicatedHostsClient) Delete(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +192,7 @@ func (client *DedicatedHostsClient) Delete(ctx context.Context, resourceGroupNam
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *DedicatedHostsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string) (*azcore.Request, error) {
+func (client *DedicatedHostsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{hostGroupName}", url.PathEscape(hostGroupName))
@@ -215,14 +215,14 @@ func (client *DedicatedHostsClient) DeleteHandleError(resp *azcore.Response) err
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Get - Retrieves information about a dedicated host.
-func (client *DedicatedHostsClient) Get(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, dedicatedHostsGetOptions *DedicatedHostsGetOptions) (*DedicatedHostResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, dedicatedHostsGetOptions)
+func (client *DedicatedHostsClient) Get(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsGetOptions) (*DedicatedHostResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -241,7 +241,7 @@ func (client *DedicatedHostsClient) Get(ctx context.Context, resourceGroupName s
 }
 
 // GetCreateRequest creates the Get request.
-func (client *DedicatedHostsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, dedicatedHostsGetOptions *DedicatedHostsGetOptions) (*azcore.Request, error) {
+func (client *DedicatedHostsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *DedicatedHostsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{hostGroupName}", url.PathEscape(hostGroupName))
@@ -252,7 +252,7 @@ func (client *DedicatedHostsClient) GetCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	query := req.URL.Query()
-	if dedicatedHostsGetOptions != nil && dedicatedHostsGetOptions.Expand != nil {
+	if options != nil && options.Expand != nil {
 		query.Set("$expand", "instanceView")
 	}
 	query.Set("api-version", "2019-12-01")
@@ -274,28 +274,29 @@ func (client *DedicatedHostsClient) GetHandleError(resp *azcore.Response) error 
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // ListByHostGroup - Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response to get the next page of dedicated hosts.
-func (client *DedicatedHostsClient) ListByHostGroup(resourceGroupName string, hostGroupName string) DedicatedHostListResultPager {
+func (client *DedicatedHostsClient) ListByHostGroup(resourceGroupName string, hostGroupName string, options *DedicatedHostsListByHostGroupOptions) DedicatedHostListResultPager {
 	return &dedicatedHostListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByHostGroupCreateRequest(ctx, resourceGroupName, hostGroupName)
+			return client.ListByHostGroupCreateRequest(ctx, resourceGroupName, hostGroupName, options)
 		},
 		responder: client.ListByHostGroupHandleResponse,
 		errorer:   client.ListByHostGroupHandleError,
 		advancer: func(ctx context.Context, resp *DedicatedHostListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.DedicatedHostListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByHostGroupCreateRequest creates the ListByHostGroup request.
-func (client *DedicatedHostsClient) ListByHostGroupCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string) (*azcore.Request, error) {
+func (client *DedicatedHostsClient) ListByHostGroupCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, options *DedicatedHostsListByHostGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{hostGroupName}", url.PathEscape(hostGroupName))
@@ -324,13 +325,13 @@ func (client *DedicatedHostsClient) ListByHostGroupHandleError(resp *azcore.Resp
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-func (client *DedicatedHostsClient) BeginUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate) (*DedicatedHostPollerResponse, error) {
-	resp, err := client.Update(ctx, resourceGroupName, hostGroupName, hostName, parameters)
+func (client *DedicatedHostsClient) BeginUpdate(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate, options *DedicatedHostsUpdateOptions) (*DedicatedHostPollerResponse, error) {
+	resp, err := client.Update(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -364,8 +365,8 @@ func (client *DedicatedHostsClient) ResumeUpdate(token string) (DedicatedHostPol
 }
 
 // Update - Update an dedicated host .
-func (client *DedicatedHostsClient) Update(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate) (*azcore.Response, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, parameters)
+func (client *DedicatedHostsClient) Update(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate, options *DedicatedHostsUpdateOptions) (*azcore.Response, error) {
+	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, hostGroupName, hostName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -380,7 +381,7 @@ func (client *DedicatedHostsClient) Update(ctx context.Context, resourceGroupNam
 }
 
 // UpdateCreateRequest creates the Update request.
-func (client *DedicatedHostsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate) (*azcore.Request, error) {
+func (client *DedicatedHostsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters DedicatedHostUpdate, options *DedicatedHostsUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{hostGroupName}", url.PathEscape(hostGroupName))
@@ -410,7 +411,7 @@ func (client *DedicatedHostsClient) UpdateHandleError(resp *azcore.Response) err
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

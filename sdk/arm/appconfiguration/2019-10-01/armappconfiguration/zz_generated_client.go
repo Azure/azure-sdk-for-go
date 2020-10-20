@@ -18,8 +18,6 @@ const telemetryInfo = "azsdk-go-armappconfiguration/<version>"
 type ClientOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient azcore.Transport
-	// LogOptions configures the built-in request logging policy behavior.
-	LogOptions azcore.RequestLogOptions
 	// Retry configures the built-in retry policy behavior.
 	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior.
@@ -31,20 +29,20 @@ type ClientOptions struct {
 // DefaultClientOptions creates a ClientOptions type initialized with default values.
 func DefaultClientOptions() ClientOptions {
 	return ClientOptions{
-		HTTPClient:        azcore.DefaultHTTPClientTransport(),
 		Retry:             azcore.DefaultRetryOptions(),
 		RegisterRPOptions: armcore.DefaultRegistrationOptions(),
+		Telemetry:         azcore.DefaultTelemetryOptions(),
 	}
 }
 
-func (c *ClientOptions) telemetryOptions() azcore.TelemetryOptions {
+func (c *ClientOptions) telemetryOptions() *azcore.TelemetryOptions {
 	to := c.Telemetry
 	if to.Value == "" {
 		to.Value = telemetryInfo
 	} else {
 		to.Value = fmt.Sprintf("%s %s", telemetryInfo, to.Value)
 	}
-	return to
+	return &to
 }
 
 type Client struct {
@@ -68,13 +66,12 @@ func NewClient(endpoint string, cred azcore.Credential, options *ClientOptions) 
 	}
 	policies := []azcore.Policy{
 		azcore.NewTelemetryPolicy(options.telemetryOptions()),
-		azcore.NewUniqueRequestIDPolicy(),
 	}
 	policies = append(policies, armcore.NewRPRegistrationPolicy(cred, &options.RegisterRPOptions))
 	policies = append(policies,
 		azcore.NewRetryPolicy(&options.Retry),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(options.LogOptions))
+		azcore.NewLogPolicy(nil))
 	p := azcore.NewPipeline(options.HTTPClient, policies...)
 	return NewClientWithPipeline(endpoint, p)
 }

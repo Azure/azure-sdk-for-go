@@ -16,9 +16,9 @@ import (
 // NetworkInterfaceIPConfigurationsOperations contains the methods for the NetworkInterfaceIPConfigurations group.
 type NetworkInterfaceIPConfigurationsOperations interface {
 	// Get - Gets the specified network interface ip configuration.
-	Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, ipConfigurationName string) (*NetworkInterfaceIPConfigurationResponse, error)
+	Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, ipConfigurationName string, options *NetworkInterfaceIPConfigurationsGetOptions) (*NetworkInterfaceIPConfigurationResponse, error)
 	// List - Get all ip configurations in a network interface.
-	List(resourceGroupName string, networkInterfaceName string) NetworkInterfaceIPConfigurationListResultPager
+	List(resourceGroupName string, networkInterfaceName string, options *NetworkInterfaceIPConfigurationsListOptions) NetworkInterfaceIPConfigurationListResultPager
 }
 
 // NetworkInterfaceIPConfigurationsClient implements the NetworkInterfaceIPConfigurationsOperations interface.
@@ -39,8 +39,8 @@ func (client *NetworkInterfaceIPConfigurationsClient) Do(req *azcore.Request) (*
 }
 
 // Get - Gets the specified network interface ip configuration.
-func (client *NetworkInterfaceIPConfigurationsClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, ipConfigurationName string) (*NetworkInterfaceIPConfigurationResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, networkInterfaceName, ipConfigurationName)
+func (client *NetworkInterfaceIPConfigurationsClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, ipConfigurationName string, options *NetworkInterfaceIPConfigurationsGetOptions) (*NetworkInterfaceIPConfigurationResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, networkInterfaceName, ipConfigurationName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (client *NetworkInterfaceIPConfigurationsClient) Get(ctx context.Context, r
 }
 
 // GetCreateRequest creates the Get request.
-func (client *NetworkInterfaceIPConfigurationsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string, ipConfigurationName string) (*azcore.Request, error) {
+func (client *NetworkInterfaceIPConfigurationsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string, ipConfigurationName string, options *NetworkInterfaceIPConfigurationsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/ipConfigurations/{ipConfigurationName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkInterfaceName}", url.PathEscape(networkInterfaceName))
@@ -88,26 +88,27 @@ func (client *NetworkInterfaceIPConfigurationsClient) GetHandleError(resp *azcor
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Get all ip configurations in a network interface.
-func (client *NetworkInterfaceIPConfigurationsClient) List(resourceGroupName string, networkInterfaceName string) NetworkInterfaceIPConfigurationListResultPager {
+func (client *NetworkInterfaceIPConfigurationsClient) List(resourceGroupName string, networkInterfaceName string, options *NetworkInterfaceIPConfigurationsListOptions) NetworkInterfaceIPConfigurationListResultPager {
 	return &networkInterfaceIPConfigurationListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, networkInterfaceName)
+			return client.ListCreateRequest(ctx, resourceGroupName, networkInterfaceName, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *NetworkInterfaceIPConfigurationListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.NetworkInterfaceIPConfigurationListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *NetworkInterfaceIPConfigurationsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*azcore.Request, error) {
+func (client *NetworkInterfaceIPConfigurationsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *NetworkInterfaceIPConfigurationsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/ipConfigurations"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkInterfaceName}", url.PathEscape(networkInterfaceName))
@@ -135,5 +136,5 @@ func (client *NetworkInterfaceIPConfigurationsClient) ListHandleError(resp *azco
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -13,7 +13,11 @@ import (
 )
 
 // ActionClassification provides polymorphic access to related types.
+// Call the interface's GetAction() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *Action, *AlertingAction, *LogToMetricAction
 type ActionClassification interface {
+	// GetAction() returns the Action content of the underlying type.
 	GetAction() *Action
 }
 
@@ -149,6 +153,41 @@ type ActionGroupResourceResponse struct {
 	RawResponse *http.Response
 }
 
+// ActionGroupsCreateOrUpdateOptions contains the optional parameters for the ActionGroups.CreateOrUpdate method.
+type ActionGroupsCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActionGroupsDeleteOptions contains the optional parameters for the ActionGroups.Delete method.
+type ActionGroupsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActionGroupsEnableReceiverOptions contains the optional parameters for the ActionGroups.EnableReceiver method.
+type ActionGroupsEnableReceiverOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActionGroupsGetOptions contains the optional parameters for the ActionGroups.Get method.
+type ActionGroupsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActionGroupsListByResourceGroupOptions contains the optional parameters for the ActionGroups.ListByResourceGroup method.
+type ActionGroupsListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActionGroupsListBySubscriptionIDOptions contains the optional parameters for the ActionGroups.ListBySubscriptionID method.
+type ActionGroupsListBySubscriptionIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActionGroupsUpdateOptions contains the optional parameters for the ActionGroups.Update method.
+type ActionGroupsUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // An Azure activity log alert.
 type ActivityLogAlert struct {
 	// The actions that will activate when the condition is met.
@@ -249,6 +288,38 @@ type ActivityLogAlertResourceResponse struct {
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// ActivityLogAlertsCreateOrUpdateOptions contains the optional parameters for the ActivityLogAlerts.CreateOrUpdate method.
+type ActivityLogAlertsCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActivityLogAlertsDeleteOptions contains the optional parameters for the ActivityLogAlerts.Delete method.
+type ActivityLogAlertsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActivityLogAlertsGetOptions contains the optional parameters for the ActivityLogAlerts.Get method.
+type ActivityLogAlertsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActivityLogAlertsListByResourceGroupOptions contains the optional parameters for the ActivityLogAlerts.ListByResourceGroup
+// method.
+type ActivityLogAlertsListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActivityLogAlertsListBySubscriptionIDOptions contains the optional parameters for the ActivityLogAlerts.ListBySubscriptionID
+// method.
+type ActivityLogAlertsListBySubscriptionIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActivityLogAlertsUpdateOptions contains the optional parameters for the ActivityLogAlerts.Update method.
+type ActivityLogAlertsUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ActivityLogsListOptions contains the optional parameters for the ActivityLogs.List method.
@@ -354,6 +425,16 @@ func (a *AlertRule) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// AlertRuleIncidentsGetOptions contains the optional parameters for the AlertRuleIncidents.Get method.
+type AlertRuleIncidentsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertRuleIncidentsListByAlertRuleOptions contains the optional parameters for the AlertRuleIncidents.ListByAlertRule method.
+type AlertRuleIncidentsListByAlertRuleOptions struct {
+	// placeholder for future optional parameters
+}
+
 // The alert rule resource.
 type AlertRuleResource struct {
 	Resource
@@ -392,6 +473,36 @@ type AlertRuleResourceResponse struct {
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// AlertRulesCreateOrUpdateOptions contains the optional parameters for the AlertRules.CreateOrUpdate method.
+type AlertRulesCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertRulesDeleteOptions contains the optional parameters for the AlertRules.Delete method.
+type AlertRulesDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertRulesGetOptions contains the optional parameters for the AlertRules.Get method.
+type AlertRulesGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertRulesListByResourceGroupOptions contains the optional parameters for the AlertRules.ListByResourceGroup method.
+type AlertRulesListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertRulesListBySubscriptionOptions contains the optional parameters for the AlertRules.ListBySubscription method.
+type AlertRulesListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertRulesUpdateOptions contains the optional parameters for the AlertRules.Update method.
+type AlertRulesUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Specify action need to be taken when rule type is Alert
@@ -592,6 +703,38 @@ type AutoscaleSettingResourceResponse struct {
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// AutoscaleSettingsCreateOrUpdateOptions contains the optional parameters for the AutoscaleSettings.CreateOrUpdate method.
+type AutoscaleSettingsCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AutoscaleSettingsDeleteOptions contains the optional parameters for the AutoscaleSettings.Delete method.
+type AutoscaleSettingsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AutoscaleSettingsGetOptions contains the optional parameters for the AutoscaleSettings.Get method.
+type AutoscaleSettingsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AutoscaleSettingsListByResourceGroupOptions contains the optional parameters for the AutoscaleSettings.ListByResourceGroup
+// method.
+type AutoscaleSettingsListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AutoscaleSettingsListBySubscriptionOptions contains the optional parameters for the AutoscaleSettings.ListBySubscription
+// method.
+type AutoscaleSettingsListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AutoscaleSettingsUpdateOptions contains the optional parameters for the AutoscaleSettings.Update method.
+type AutoscaleSettingsUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // Azure action group
@@ -806,6 +949,16 @@ type DiagnosticSettingsCategory struct {
 	CategoryType *CategoryType `json:"categoryType,omitempty"`
 }
 
+// DiagnosticSettingsCategoryGetOptions contains the optional parameters for the DiagnosticSettingsCategory.Get method.
+type DiagnosticSettingsCategoryGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticSettingsCategoryListOptions contains the optional parameters for the DiagnosticSettingsCategory.List method.
+type DiagnosticSettingsCategoryListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // The diagnostic settings category resource.
 type DiagnosticSettingsCategoryResource struct {
 	ProxyOnlyResource
@@ -837,6 +990,26 @@ type DiagnosticSettingsCategoryResourceResponse struct {
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// DiagnosticSettingsCreateOrUpdateOptions contains the optional parameters for the DiagnosticSettings.CreateOrUpdate method.
+type DiagnosticSettingsCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticSettingsDeleteOptions contains the optional parameters for the DiagnosticSettings.Delete method.
+type DiagnosticSettingsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticSettingsGetOptions contains the optional parameters for the DiagnosticSettings.Get method.
+type DiagnosticSettingsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiagnosticSettingsListOptions contains the optional parameters for the DiagnosticSettings.List method.
+type DiagnosticSettingsListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // The diagnostic setting resource.
@@ -1032,6 +1205,11 @@ func (e ErrorResponse) Error() string {
 		msg = "missing error info"
 	}
 	return msg
+}
+
+// EventCategoriesListOptions contains the optional parameters for the EventCategories.List method.
+type EventCategoriesListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // A collection of event categories. Currently possible values are: Administrative, Security, ServiceHealth, Alert, Recommendation,
@@ -1650,6 +1828,31 @@ type LogProfileResourceResponse struct {
 	RawResponse *http.Response
 }
 
+// LogProfilesCreateOrUpdateOptions contains the optional parameters for the LogProfiles.CreateOrUpdate method.
+type LogProfilesCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogProfilesDeleteOptions contains the optional parameters for the LogProfiles.Delete method.
+type LogProfilesDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogProfilesGetOptions contains the optional parameters for the LogProfiles.Get method.
+type LogProfilesGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogProfilesListOptions contains the optional parameters for the LogProfiles.List method.
+type LogProfilesListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LogProfilesUpdateOptions contains the optional parameters for the LogProfiles.Update method.
+type LogProfilesUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // Log Search Rule Definition
 type LogSearchRule struct {
 	// Action needs to be taken on rule execution.
@@ -1957,7 +2160,12 @@ type MetricAlertAction struct {
 }
 
 // MetricAlertCriteriaClassification provides polymorphic access to related types.
+// Call the interface's GetMetricAlertCriteria() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *MetricAlertCriteria, *MetricAlertMultipleResourceMultipleMetricCriteria, *MetricAlertSingleResourceMultipleMetricCriteria,
+// - *WebtestLocationAvailabilityCriteria
 type MetricAlertCriteriaClassification interface {
+	// GetMetricAlertCriteria() returns the MetricAlertCriteria content of the underlying type.
 	GetMetricAlertCriteria() *MetricAlertCriteria
 }
 
@@ -2389,6 +2597,46 @@ func (m *MetricAlertStatusProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MetricAlertsCreateOrUpdateOptions contains the optional parameters for the MetricAlerts.CreateOrUpdate method.
+type MetricAlertsCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MetricAlertsDeleteOptions contains the optional parameters for the MetricAlerts.Delete method.
+type MetricAlertsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MetricAlertsGetOptions contains the optional parameters for the MetricAlerts.Get method.
+type MetricAlertsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MetricAlertsListByResourceGroupOptions contains the optional parameters for the MetricAlerts.ListByResourceGroup method.
+type MetricAlertsListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MetricAlertsListBySubscriptionOptions contains the optional parameters for the MetricAlerts.ListBySubscription method.
+type MetricAlertsListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MetricAlertsStatusListByNameOptions contains the optional parameters for the MetricAlertsStatus.ListByName method.
+type MetricAlertsStatusListByNameOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MetricAlertsStatusListOptions contains the optional parameters for the MetricAlertsStatus.List method.
+type MetricAlertsStatusListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MetricAlertsUpdateOptions contains the optional parameters for the MetricAlerts.Update method.
+type MetricAlertsUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // Metric availability specifies the time grain (aggregation interval or frequency) and the retention period for that time
 // grain.
 type MetricAvailability struct {
@@ -2397,6 +2645,11 @@ type MetricAvailability struct {
 
 	// the time grain specifies the aggregation interval for the metric. Expressed as a duration 'PT1M', 'P1D', etc.
 	TimeGrain *string `json:"timeGrain,omitempty"`
+}
+
+// MetricBaselineCalculateBaselineOptions contains the optional parameters for the MetricBaseline.CalculateBaseline method.
+type MetricBaselineCalculateBaselineOptions struct {
+	// placeholder for future optional parameters
 }
 
 // MetricBaselineGetOptions contains the optional parameters for the MetricBaseline.Get method.
@@ -2789,7 +3042,11 @@ type MetricsListOptions struct {
 }
 
 // MultiMetricCriteriaClassification provides polymorphic access to related types.
+// Call the interface's GetMultiMetricCriteria() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *MultiMetricCriteria, *DynamicMetricCriteria, *MetricCriteria
 type MultiMetricCriteriaClassification interface {
+	// GetMultiMetricCriteria() returns the MultiMetricCriteria content of the underlying type.
 	GetMultiMetricCriteria() *MultiMetricCriteria
 }
 
@@ -2960,6 +3217,11 @@ type OperationListResultResponse struct {
 	RawResponse *http.Response
 }
 
+// OperationsListOptions contains the optional parameters for the Operations.List method.
+type OperationsListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // A proxy only azure resource object
 type ProxyOnlyResource struct {
 	// Azure resource Id
@@ -3111,7 +3373,11 @@ type RetentionPolicy struct {
 }
 
 // RuleActionClassification provides polymorphic access to related types.
+// Call the interface's GetRuleAction() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *RuleAction, *RuleEmailAction, *RuleWebhookAction
 type RuleActionClassification interface {
+	// GetRuleAction() returns the RuleAction content of the underlying type.
 	GetRuleAction() *RuleAction
 }
 
@@ -3158,7 +3424,11 @@ func (r *RuleAction) unmarshalInternal(rawMsg map[string]*json.RawMessage) error
 }
 
 // RuleConditionClassification provides polymorphic access to related types.
+// Call the interface's GetRuleCondition() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *RuleCondition, *LocationThresholdRuleCondition, *ManagementEventRuleCondition, *ThresholdRuleCondition
 type RuleConditionClassification interface {
+	// GetRuleCondition() returns the RuleCondition content of the underlying type.
 	GetRuleCondition() *RuleCondition
 }
 
@@ -3218,7 +3488,11 @@ func (r *RuleCondition) unmarshalInternal(rawMsg map[string]*json.RawMessage) er
 }
 
 // RuleDataSourceClassification provides polymorphic access to related types.
+// Call the interface's GetRuleDataSource() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *RuleDataSource, *RuleManagementEventDataSource, *RuleMetricDataSource
 type RuleDataSourceClassification interface {
+	// GetRuleDataSource() returns the RuleDataSource content of the underlying type.
 	GetRuleDataSource() *RuleDataSource
 }
 
@@ -3607,6 +3881,21 @@ type Schedule struct {
 	TimeWindowInMinutes *int32 `json:"timeWindowInMinutes,omitempty"`
 }
 
+// ScheduledQueryRulesCreateOrUpdateOptions contains the optional parameters for the ScheduledQueryRules.CreateOrUpdate method.
+type ScheduledQueryRulesCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduledQueryRulesDeleteOptions contains the optional parameters for the ScheduledQueryRules.Delete method.
+type ScheduledQueryRulesDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScheduledQueryRulesGetOptions contains the optional parameters for the ScheduledQueryRules.Get method.
+type ScheduledQueryRulesGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ScheduledQueryRulesListByResourceGroupOptions contains the optional parameters for the ScheduledQueryRules.ListByResourceGroup
 // method.
 type ScheduledQueryRulesListByResourceGroupOptions struct {
@@ -3619,6 +3908,11 @@ type ScheduledQueryRulesListByResourceGroupOptions struct {
 type ScheduledQueryRulesListBySubscriptionOptions struct {
 	// The filter to apply on the operation. For more information please see https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx
 	Filter *string
+}
+
+// ScheduledQueryRulesUpdateOptions contains the optional parameters for the ScheduledQueryRules.Update method.
+type ScheduledQueryRulesUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // the authorization used by the user who has performed the operation that led to this event. This captures the RBAC properties
@@ -3918,6 +4212,11 @@ type TriggerCondition struct {
 
 	// Evaluation operation for rule - 'GreaterThan' or 'LessThan.
 	ThresholdOperator *ConditionalOperator `json:"thresholdOperator,omitempty"`
+}
+
+// VMInsightsGetOnboardingStatusOptions contains the optional parameters for the VMInsights.GetOnboardingStatus method.
+type VMInsightsGetOnboardingStatusOptions struct {
+	// placeholder for future optional parameters
 }
 
 // VM Insights onboarding status for a resource.

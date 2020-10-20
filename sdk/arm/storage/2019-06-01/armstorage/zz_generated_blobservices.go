@@ -19,11 +19,11 @@ import (
 // BlobServicesOperations contains the methods for the BlobServices group.
 type BlobServicesOperations interface {
 	// GetServiceProperties - Gets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
-	GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (*BlobServicePropertiesResponse, error)
+	GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesGetServicePropertiesOptions) (*BlobServicePropertiesResponse, error)
 	// List - List blob services of storage account. It returns a collection of one object named default.
-	List(ctx context.Context, resourceGroupName string, accountName string) (*BlobServiceItemsResponse, error)
+	List(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesListOptions) (*BlobServiceItemsResponse, error)
 	// SetServiceProperties - Sets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
-	SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties) (*BlobServicePropertiesResponse, error)
+	SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties, options *BlobServicesSetServicePropertiesOptions) (*BlobServicePropertiesResponse, error)
 }
 
 // BlobServicesClient implements the BlobServicesOperations interface.
@@ -44,8 +44,8 @@ func (client *BlobServicesClient) Do(req *azcore.Request) (*azcore.Response, err
 }
 
 // GetServiceProperties - Gets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
-func (client *BlobServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (*BlobServicePropertiesResponse, error) {
-	req, err := client.GetServicePropertiesCreateRequest(ctx, resourceGroupName, accountName)
+func (client *BlobServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesGetServicePropertiesOptions) (*BlobServicePropertiesResponse, error) {
+	req, err := client.GetServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func (client *BlobServicesClient) GetServiceProperties(ctx context.Context, reso
 }
 
 // GetServicePropertiesCreateRequest creates the GetServiceProperties request.
-func (client *BlobServicesClient) GetServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string) (*azcore.Request, error) {
+func (client *BlobServicesClient) GetServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesGetServicePropertiesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/{BlobServicesName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -94,14 +94,14 @@ func (client *BlobServicesClient) GetServicePropertiesHandleError(resp *azcore.R
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // List - List blob services of storage account. It returns a collection of one object named default.
-func (client *BlobServicesClient) List(ctx context.Context, resourceGroupName string, accountName string) (*BlobServiceItemsResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceGroupName, accountName)
+func (client *BlobServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesListOptions) (*BlobServiceItemsResponse, error) {
+	req, err := client.ListCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func (client *BlobServicesClient) List(ctx context.Context, resourceGroupName st
 }
 
 // ListCreateRequest creates the List request.
-func (client *BlobServicesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string) (*azcore.Request, error) {
+func (client *BlobServicesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -149,14 +149,14 @@ func (client *BlobServicesClient) ListHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // SetServiceProperties - Sets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource Sharing) rules.
-func (client *BlobServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties) (*BlobServicePropertiesResponse, error) {
-	req, err := client.SetServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters)
+func (client *BlobServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties, options *BlobServicesSetServicePropertiesOptions) (*BlobServicePropertiesResponse, error) {
+	req, err := client.SetServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +175,7 @@ func (client *BlobServicesClient) SetServiceProperties(ctx context.Context, reso
 }
 
 // SetServicePropertiesCreateRequest creates the SetServiceProperties request.
-func (client *BlobServicesClient) SetServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties) (*azcore.Request, error) {
+func (client *BlobServicesClient) SetServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties, options *BlobServicesSetServicePropertiesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/{BlobServicesName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -205,7 +205,7 @@ func (client *BlobServicesClient) SetServicePropertiesHandleError(resp *azcore.R
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

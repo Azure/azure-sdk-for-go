@@ -14,7 +14,7 @@ import (
 // TenantActivityLogsOperations contains the methods for the TenantActivityLogs group.
 type TenantActivityLogsOperations interface {
 	// List - Gets the Activity Logs for the Tenant.<br>Everything that is applicable to the API to get the Activity Logs for the subscription is applicable to this API (the parameters, $filter, etc.).<br>One thing to point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only surfaces the logs that were generated at the tenant level.
-	List(tenantActivityLogsListOptions *TenantActivityLogsListOptions) EventDataCollectionPager
+	List(options *TenantActivityLogsListOptions) EventDataCollectionPager
 }
 
 // TenantActivityLogsClient implements the TenantActivityLogsOperations interface.
@@ -34,22 +34,23 @@ func (client *TenantActivityLogsClient) Do(req *azcore.Request) (*azcore.Respons
 }
 
 // List - Gets the Activity Logs for the Tenant.<br>Everything that is applicable to the API to get the Activity Logs for the subscription is applicable to this API (the parameters, $filter, etc.).<br>One thing to point out here is that this API does *not* retrieve the logs at the individual subscription of the tenant but only surfaces the logs that were generated at the tenant level.
-func (client *TenantActivityLogsClient) List(tenantActivityLogsListOptions *TenantActivityLogsListOptions) EventDataCollectionPager {
+func (client *TenantActivityLogsClient) List(options *TenantActivityLogsListOptions) EventDataCollectionPager {
 	return &eventDataCollectionPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, tenantActivityLogsListOptions)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *EventDataCollectionResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.EventDataCollection.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *TenantActivityLogsClient) ListCreateRequest(ctx context.Context, tenantActivityLogsListOptions *TenantActivityLogsListOptions) (*azcore.Request, error) {
+func (client *TenantActivityLogsClient) ListCreateRequest(ctx context.Context, options *TenantActivityLogsListOptions) (*azcore.Request, error) {
 	urlPath := "/providers/microsoft.insights/eventtypes/management/values"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
 	if err != nil {
@@ -57,11 +58,11 @@ func (client *TenantActivityLogsClient) ListCreateRequest(ctx context.Context, t
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2015-04-01")
-	if tenantActivityLogsListOptions != nil && tenantActivityLogsListOptions.Filter != nil {
-		query.Set("$filter", *tenantActivityLogsListOptions.Filter)
+	if options != nil && options.Filter != nil {
+		query.Set("$filter", *options.Filter)
 	}
-	if tenantActivityLogsListOptions != nil && tenantActivityLogsListOptions.SelectParameter != nil {
-		query.Set("$select", *tenantActivityLogsListOptions.SelectParameter)
+	if options != nil && options.SelectParameter != nil {
+		query.Set("$select", *options.SelectParameter)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -80,5 +81,5 @@ func (client *TenantActivityLogsClient) ListHandleError(resp *azcore.Response) e
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

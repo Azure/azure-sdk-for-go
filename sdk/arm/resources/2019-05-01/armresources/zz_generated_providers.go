@@ -20,13 +20,13 @@ import (
 // ProvidersOperations contains the methods for the Providers group.
 type ProvidersOperations interface {
 	// Get - Gets the specified resource provider.
-	Get(ctx context.Context, resourceProviderNamespace string, providersGetOptions *ProvidersGetOptions) (*ProviderResponse, error)
+	Get(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetOptions) (*ProviderResponse, error)
 	// List - Gets all resource providers for a subscription.
-	List(providersListOptions *ProvidersListOptions) ProviderListResultPager
+	List(options *ProvidersListOptions) ProviderListResultPager
 	// Register - Registers a subscription with a resource provider.
-	Register(ctx context.Context, resourceProviderNamespace string) (*ProviderResponse, error)
+	Register(ctx context.Context, resourceProviderNamespace string, options *ProvidersRegisterOptions) (*ProviderResponse, error)
 	// Unregister - Unregisters a subscription from a resource provider.
-	Unregister(ctx context.Context, resourceProviderNamespace string) (*ProviderResponse, error)
+	Unregister(ctx context.Context, resourceProviderNamespace string, options *ProvidersUnregisterOptions) (*ProviderResponse, error)
 }
 
 // ProvidersClient implements the ProvidersOperations interface.
@@ -47,8 +47,8 @@ func (client *ProvidersClient) Do(req *azcore.Request) (*azcore.Response, error)
 }
 
 // Get - Gets the specified resource provider.
-func (client *ProvidersClient) Get(ctx context.Context, resourceProviderNamespace string, providersGetOptions *ProvidersGetOptions) (*ProviderResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceProviderNamespace, providersGetOptions)
+func (client *ProvidersClient) Get(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetOptions) (*ProviderResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (client *ProvidersClient) Get(ctx context.Context, resourceProviderNamespac
 }
 
 // GetCreateRequest creates the Get request.
-func (client *ProvidersClient) GetCreateRequest(ctx context.Context, resourceProviderNamespace string, providersGetOptions *ProvidersGetOptions) (*azcore.Request, error) {
+func (client *ProvidersClient) GetCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -76,8 +76,8 @@ func (client *ProvidersClient) GetCreateRequest(ctx context.Context, resourcePro
 		return nil, err
 	}
 	query := req.URL.Query()
-	if providersGetOptions != nil && providersGetOptions.Expand != nil {
-		query.Set("$expand", *providersGetOptions.Expand)
+	if options != nil && options.Expand != nil {
+		query.Set("$expand", *options.Expand)
 	}
 	query.Set("api-version", "2019-05-01")
 	req.URL.RawQuery = query.Encode()
@@ -98,28 +98,29 @@ func (client *ProvidersClient) GetHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // List - Gets all resource providers for a subscription.
-func (client *ProvidersClient) List(providersListOptions *ProvidersListOptions) ProviderListResultPager {
+func (client *ProvidersClient) List(options *ProvidersListOptions) ProviderListResultPager {
 	return &providerListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, providersListOptions)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *ProviderListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProviderListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *ProvidersClient) ListCreateRequest(ctx context.Context, providersListOptions *ProvidersListOptions) (*azcore.Request, error) {
+func (client *ProvidersClient) ListCreateRequest(ctx context.Context, options *ProvidersListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -127,11 +128,11 @@ func (client *ProvidersClient) ListCreateRequest(ctx context.Context, providersL
 		return nil, err
 	}
 	query := req.URL.Query()
-	if providersListOptions != nil && providersListOptions.Top != nil {
-		query.Set("$top", strconv.FormatInt(int64(*providersListOptions.Top), 10))
+	if options != nil && options.Top != nil {
+		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	if providersListOptions != nil && providersListOptions.Expand != nil {
-		query.Set("$expand", *providersListOptions.Expand)
+	if options != nil && options.Expand != nil {
+		query.Set("$expand", *options.Expand)
 	}
 	query.Set("api-version", "2019-05-01")
 	req.URL.RawQuery = query.Encode()
@@ -152,14 +153,14 @@ func (client *ProvidersClient) ListHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Register - Registers a subscription with a resource provider.
-func (client *ProvidersClient) Register(ctx context.Context, resourceProviderNamespace string) (*ProviderResponse, error) {
-	req, err := client.RegisterCreateRequest(ctx, resourceProviderNamespace)
+func (client *ProvidersClient) Register(ctx context.Context, resourceProviderNamespace string, options *ProvidersRegisterOptions) (*ProviderResponse, error) {
+	req, err := client.RegisterCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +179,7 @@ func (client *ProvidersClient) Register(ctx context.Context, resourceProviderNam
 }
 
 // RegisterCreateRequest creates the Register request.
-func (client *ProvidersClient) RegisterCreateRequest(ctx context.Context, resourceProviderNamespace string) (*azcore.Request, error) {
+func (client *ProvidersClient) RegisterCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersRegisterOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -206,14 +207,14 @@ func (client *ProvidersClient) RegisterHandleError(resp *azcore.Response) error 
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
 // Unregister - Unregisters a subscription from a resource provider.
-func (client *ProvidersClient) Unregister(ctx context.Context, resourceProviderNamespace string) (*ProviderResponse, error) {
-	req, err := client.UnregisterCreateRequest(ctx, resourceProviderNamespace)
+func (client *ProvidersClient) Unregister(ctx context.Context, resourceProviderNamespace string, options *ProvidersUnregisterOptions) (*ProviderResponse, error) {
+	req, err := client.UnregisterCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
 		return nil, err
 	}
@@ -232,7 +233,7 @@ func (client *ProvidersClient) Unregister(ctx context.Context, resourceProviderN
 }
 
 // UnregisterCreateRequest creates the Unregister request.
-func (client *ProvidersClient) UnregisterCreateRequest(ctx context.Context, resourceProviderNamespace string) (*azcore.Request, error) {
+func (client *ProvidersClient) UnregisterCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersUnregisterOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/unregister"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -260,7 +261,7 @@ func (client *ProvidersClient) UnregisterHandleError(resp *azcore.Response) erro
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

@@ -16,9 +16,9 @@ import (
 // VpnSiteLinksOperations contains the methods for the VpnSiteLinks group.
 type VpnSiteLinksOperations interface {
 	// Get - Retrieves the details of a VPN site link.
-	Get(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteLinkName string) (*VpnSiteLinkResponse, error)
+	Get(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteLinkName string, options *VpnSiteLinksGetOptions) (*VpnSiteLinkResponse, error)
 	// ListByVpnSite - Lists all the vpnSiteLinks in a resource group for a vpn site.
-	ListByVpnSite(resourceGroupName string, vpnSiteName string) ListVpnSiteLinksResultPager
+	ListByVpnSite(resourceGroupName string, vpnSiteName string, options *VpnSiteLinksListByVpnSiteOptions) ListVpnSiteLinksResultPager
 }
 
 // VpnSiteLinksClient implements the VpnSiteLinksOperations interface.
@@ -39,8 +39,8 @@ func (client *VpnSiteLinksClient) Do(req *azcore.Request) (*azcore.Response, err
 }
 
 // Get - Retrieves the details of a VPN site link.
-func (client *VpnSiteLinksClient) Get(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteLinkName string) (*VpnSiteLinkResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, vpnSiteName, vpnSiteLinkName)
+func (client *VpnSiteLinksClient) Get(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteLinkName string, options *VpnSiteLinksGetOptions) (*VpnSiteLinkResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, vpnSiteName, vpnSiteLinkName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (client *VpnSiteLinksClient) Get(ctx context.Context, resourceGroupName str
 }
 
 // GetCreateRequest creates the Get request.
-func (client *VpnSiteLinksClient) GetCreateRequest(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteLinkName string) (*azcore.Request, error) {
+func (client *VpnSiteLinksClient) GetCreateRequest(ctx context.Context, resourceGroupName string, vpnSiteName string, vpnSiteLinkName string, options *VpnSiteLinksGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites/{vpnSiteName}/vpnSiteLinks/{vpnSiteLinkName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -88,26 +88,27 @@ func (client *VpnSiteLinksClient) GetHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByVpnSite - Lists all the vpnSiteLinks in a resource group for a vpn site.
-func (client *VpnSiteLinksClient) ListByVpnSite(resourceGroupName string, vpnSiteName string) ListVpnSiteLinksResultPager {
+func (client *VpnSiteLinksClient) ListByVpnSite(resourceGroupName string, vpnSiteName string, options *VpnSiteLinksListByVpnSiteOptions) ListVpnSiteLinksResultPager {
 	return &listVpnSiteLinksResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByVpnSiteCreateRequest(ctx, resourceGroupName, vpnSiteName)
+			return client.ListByVpnSiteCreateRequest(ctx, resourceGroupName, vpnSiteName, options)
 		},
 		responder: client.ListByVpnSiteHandleResponse,
 		errorer:   client.ListByVpnSiteHandleError,
 		advancer: func(ctx context.Context, resp *ListVpnSiteLinksResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListVpnSiteLinksResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByVpnSiteCreateRequest creates the ListByVpnSite request.
-func (client *VpnSiteLinksClient) ListByVpnSiteCreateRequest(ctx context.Context, resourceGroupName string, vpnSiteName string) (*azcore.Request, error) {
+func (client *VpnSiteLinksClient) ListByVpnSiteCreateRequest(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VpnSiteLinksListByVpnSiteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites/{vpnSiteName}/vpnSiteLinks"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -135,5 +136,5 @@ func (client *VpnSiteLinksClient) ListByVpnSiteHandleError(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

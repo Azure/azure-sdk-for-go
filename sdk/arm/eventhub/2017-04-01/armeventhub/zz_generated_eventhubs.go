@@ -17,25 +17,25 @@ import (
 // EventHubsOperations contains the methods for the EventHubs group.
 type EventHubsOperations interface {
 	// CreateOrUpdate - Creates or updates a new Event Hub as a nested resource within a Namespace.
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, parameters Eventhub) (*EventhubResponse, error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, parameters Eventhub, options *EventHubsCreateOrUpdateOptions) (*EventhubResponse, error)
 	// CreateOrUpdateAuthorizationRule - Creates or updates an AuthorizationRule for the specified Event Hub. Creation/update of the AuthorizationRule will take a few seconds to take effect.
-	CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters AuthorizationRule) (*AuthorizationRuleResponse, error)
+	CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters AuthorizationRule, options *EventHubsCreateOrUpdateAuthorizationRuleOptions) (*AuthorizationRuleResponse, error)
 	// Delete - Deletes an Event Hub from the specified Namespace and resource group.
-	Delete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (*http.Response, error)
+	Delete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsDeleteOptions) (*http.Response, error)
 	// DeleteAuthorizationRule - Deletes an Event Hub AuthorizationRule.
-	DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string) (*http.Response, error)
+	DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsDeleteAuthorizationRuleOptions) (*http.Response, error)
 	// Get - Gets an Event Hubs description for the specified Event Hub.
-	Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (*EventhubResponse, error)
+	Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsGetOptions) (*EventhubResponse, error)
 	// GetAuthorizationRule - Gets an AuthorizationRule for an Event Hub by rule name.
-	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string) (*AuthorizationRuleResponse, error)
+	GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsGetAuthorizationRuleOptions) (*AuthorizationRuleResponse, error)
 	// ListAuthorizationRules - Gets the authorization rules for an Event Hub.
-	ListAuthorizationRules(resourceGroupName string, namespaceName string, eventHubName string) AuthorizationRuleListResultPager
+	ListAuthorizationRules(resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsListAuthorizationRulesOptions) AuthorizationRuleListResultPager
 	// ListByNamespace - Gets all the Event Hubs in a Namespace.
-	ListByNamespace(resourceGroupName string, namespaceName string, eventHubsListByNamespaceOptions *EventHubsListByNamespaceOptions) EventHubListResultPager
+	ListByNamespace(resourceGroupName string, namespaceName string, options *EventHubsListByNamespaceOptions) EventHubListResultPager
 	// ListKeys - Gets the ACS and SAS connection strings for the Event Hub.
-	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string) (*AccessKeysResponse, error)
+	ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsListKeysOptions) (*AccessKeysResponse, error)
 	// RegenerateKeys - Regenerates the ACS and SAS connection strings for the Event Hub.
-	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters) (*AccessKeysResponse, error)
+	RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *EventHubsRegenerateKeysOptions) (*AccessKeysResponse, error)
 }
 
 // EventHubsClient implements the EventHubsOperations interface.
@@ -56,8 +56,8 @@ func (client *EventHubsClient) Do(req *azcore.Request) (*azcore.Response, error)
 }
 
 // CreateOrUpdate - Creates or updates a new Event Hub as a nested resource within a Namespace.
-func (client *EventHubsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, parameters Eventhub) (*EventhubResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, parameters)
+func (client *EventHubsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, parameters Eventhub, options *EventHubsCreateOrUpdateOptions) (*EventhubResponse, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (client *EventHubsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *EventHubsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, parameters Eventhub) (*azcore.Request, error) {
+func (client *EventHubsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, parameters Eventhub, options *EventHubsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -105,12 +105,12 @@ func (client *EventHubsClient) CreateOrUpdateHandleError(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // CreateOrUpdateAuthorizationRule - Creates or updates an AuthorizationRule for the specified Event Hub. Creation/update of the AuthorizationRule will take a few seconds to take effect.
-func (client *EventHubsClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters AuthorizationRule) (*AuthorizationRuleResponse, error) {
-	req, err := client.CreateOrUpdateAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName, parameters)
+func (client *EventHubsClient) CreateOrUpdateAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters AuthorizationRule, options *EventHubsCreateOrUpdateAuthorizationRuleOptions) (*AuthorizationRuleResponse, error) {
+	req, err := client.CreateOrUpdateAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +129,7 @@ func (client *EventHubsClient) CreateOrUpdateAuthorizationRule(ctx context.Conte
 }
 
 // CreateOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
-func (client *EventHubsClient) CreateOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters AuthorizationRule) (*azcore.Request, error) {
+func (client *EventHubsClient) CreateOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters AuthorizationRule, options *EventHubsCreateOrUpdateAuthorizationRuleOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -159,12 +159,12 @@ func (client *EventHubsClient) CreateOrUpdateAuthorizationRuleHandleError(resp *
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - Deletes an Event Hub from the specified Namespace and resource group.
-func (client *EventHubsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName)
+func (client *EventHubsClient) Delete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsDeleteOptions) (*http.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -179,7 +179,7 @@ func (client *EventHubsClient) Delete(ctx context.Context, resourceGroupName str
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *EventHubsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (*azcore.Request, error) {
+func (client *EventHubsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -202,12 +202,12 @@ func (client *EventHubsClient) DeleteHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // DeleteAuthorizationRule - Deletes an Event Hub AuthorizationRule.
-func (client *EventHubsClient) DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string) (*http.Response, error) {
-	req, err := client.DeleteAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName)
+func (client *EventHubsClient) DeleteAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsDeleteAuthorizationRuleOptions) (*http.Response, error) {
+	req, err := client.DeleteAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -222,7 +222,7 @@ func (client *EventHubsClient) DeleteAuthorizationRule(ctx context.Context, reso
 }
 
 // DeleteAuthorizationRuleCreateRequest creates the DeleteAuthorizationRule request.
-func (client *EventHubsClient) DeleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string) (*azcore.Request, error) {
+func (client *EventHubsClient) DeleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsDeleteAuthorizationRuleOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -246,12 +246,12 @@ func (client *EventHubsClient) DeleteAuthorizationRuleHandleError(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets an Event Hubs description for the specified Event Hub.
-func (client *EventHubsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (*EventhubResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName)
+func (client *EventHubsClient) Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsGetOptions) (*EventhubResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -270,7 +270,7 @@ func (client *EventHubsClient) Get(ctx context.Context, resourceGroupName string
 }
 
 // GetCreateRequest creates the Get request.
-func (client *EventHubsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (*azcore.Request, error) {
+func (client *EventHubsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -299,12 +299,12 @@ func (client *EventHubsClient) GetHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetAuthorizationRule - Gets an AuthorizationRule for an Event Hub by rule name.
-func (client *EventHubsClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string) (*AuthorizationRuleResponse, error) {
-	req, err := client.GetAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName)
+func (client *EventHubsClient) GetAuthorizationRule(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsGetAuthorizationRuleOptions) (*AuthorizationRuleResponse, error) {
+	req, err := client.GetAuthorizationRuleCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -323,7 +323,7 @@ func (client *EventHubsClient) GetAuthorizationRule(ctx context.Context, resourc
 }
 
 // GetAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
-func (client *EventHubsClient) GetAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string) (*azcore.Request, error) {
+func (client *EventHubsClient) GetAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsGetAuthorizationRuleOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -353,26 +353,27 @@ func (client *EventHubsClient) GetAuthorizationRuleHandleError(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListAuthorizationRules - Gets the authorization rules for an Event Hub.
-func (client *EventHubsClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, eventHubName string) AuthorizationRuleListResultPager {
+func (client *EventHubsClient) ListAuthorizationRules(resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsListAuthorizationRulesOptions) AuthorizationRuleListResultPager {
 	return &authorizationRuleListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName)
+			return client.ListAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, options)
 		},
 		responder: client.ListAuthorizationRulesHandleResponse,
 		errorer:   client.ListAuthorizationRulesHandleError,
 		advancer: func(ctx context.Context, resp *AuthorizationRuleListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AuthorizationRuleListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *EventHubsClient) ListAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string) (*azcore.Request, error) {
+func (client *EventHubsClient) ListAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, options *EventHubsListAuthorizationRulesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -401,26 +402,27 @@ func (client *EventHubsClient) ListAuthorizationRulesHandleError(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByNamespace - Gets all the Event Hubs in a Namespace.
-func (client *EventHubsClient) ListByNamespace(resourceGroupName string, namespaceName string, eventHubsListByNamespaceOptions *EventHubsListByNamespaceOptions) EventHubListResultPager {
+func (client *EventHubsClient) ListByNamespace(resourceGroupName string, namespaceName string, options *EventHubsListByNamespaceOptions) EventHubListResultPager {
 	return &eventHubListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, eventHubsListByNamespaceOptions)
+			return client.ListByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
 		},
 		responder: client.ListByNamespaceHandleResponse,
 		errorer:   client.ListByNamespaceHandleError,
 		advancer: func(ctx context.Context, resp *EventHubListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.EventHubListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByNamespaceCreateRequest creates the ListByNamespace request.
-func (client *EventHubsClient) ListByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubsListByNamespaceOptions *EventHubsListByNamespaceOptions) (*azcore.Request, error) {
+func (client *EventHubsClient) ListByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *EventHubsListByNamespaceOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -431,11 +433,11 @@ func (client *EventHubsClient) ListByNamespaceCreateRequest(ctx context.Context,
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2017-04-01")
-	if eventHubsListByNamespaceOptions != nil && eventHubsListByNamespaceOptions.Skip != nil {
-		query.Set("$skip", strconv.FormatInt(int64(*eventHubsListByNamespaceOptions.Skip), 10))
+	if options != nil && options.Skip != nil {
+		query.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	if eventHubsListByNamespaceOptions != nil && eventHubsListByNamespaceOptions.Top != nil {
-		query.Set("$top", strconv.FormatInt(int64(*eventHubsListByNamespaceOptions.Top), 10))
+	if options != nil && options.Top != nil {
+		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -454,12 +456,12 @@ func (client *EventHubsClient) ListByNamespaceHandleError(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListKeys - Gets the ACS and SAS connection strings for the Event Hub.
-func (client *EventHubsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string) (*AccessKeysResponse, error) {
-	req, err := client.ListKeysCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName)
+func (client *EventHubsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsListKeysOptions) (*AccessKeysResponse, error) {
+	req, err := client.ListKeysCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -478,7 +480,7 @@ func (client *EventHubsClient) ListKeys(ctx context.Context, resourceGroupName s
 }
 
 // ListKeysCreateRequest creates the ListKeys request.
-func (client *EventHubsClient) ListKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string) (*azcore.Request, error) {
+func (client *EventHubsClient) ListKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, options *EventHubsListKeysOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}/listKeys"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -508,12 +510,12 @@ func (client *EventHubsClient) ListKeysHandleError(resp *azcore.Response) error 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // RegenerateKeys - Regenerates the ACS and SAS connection strings for the Event Hub.
-func (client *EventHubsClient) RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters) (*AccessKeysResponse, error) {
-	req, err := client.RegenerateKeysCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName, parameters)
+func (client *EventHubsClient) RegenerateKeys(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *EventHubsRegenerateKeysOptions) (*AccessKeysResponse, error) {
+	req, err := client.RegenerateKeysCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, authorizationRuleName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -532,7 +534,7 @@ func (client *EventHubsClient) RegenerateKeys(ctx context.Context, resourceGroup
 }
 
 // RegenerateKeysCreateRequest creates the RegenerateKeys request.
-func (client *EventHubsClient) RegenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters) (*azcore.Request, error) {
+func (client *EventHubsClient) RegenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, options *EventHubsRegenerateKeysOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}/regenerateKeys"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
@@ -562,5 +564,5 @@ func (client *EventHubsClient) RegenerateKeysHandleError(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

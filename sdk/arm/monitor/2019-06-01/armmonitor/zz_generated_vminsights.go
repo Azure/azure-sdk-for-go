@@ -15,7 +15,7 @@ import (
 // VMInsightsOperations contains the methods for the VMInsights group.
 type VMInsightsOperations interface {
 	// GetOnboardingStatus - Retrieves the VM Insights onboarding status for the specified resource or resource scope.
-	GetOnboardingStatus(ctx context.Context, resourceUri string) (*VMInsightsOnboardingStatusResponse, error)
+	GetOnboardingStatus(ctx context.Context, resourceUri string, options *VMInsightsGetOnboardingStatusOptions) (*VMInsightsOnboardingStatusResponse, error)
 }
 
 // VMInsightsClient implements the VMInsightsOperations interface.
@@ -35,8 +35,8 @@ func (client *VMInsightsClient) Do(req *azcore.Request) (*azcore.Response, error
 }
 
 // GetOnboardingStatus - Retrieves the VM Insights onboarding status for the specified resource or resource scope.
-func (client *VMInsightsClient) GetOnboardingStatus(ctx context.Context, resourceUri string) (*VMInsightsOnboardingStatusResponse, error) {
-	req, err := client.GetOnboardingStatusCreateRequest(ctx, resourceUri)
+func (client *VMInsightsClient) GetOnboardingStatus(ctx context.Context, resourceUri string, options *VMInsightsGetOnboardingStatusOptions) (*VMInsightsOnboardingStatusResponse, error) {
+	req, err := client.GetOnboardingStatusCreateRequest(ctx, resourceUri, options)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func (client *VMInsightsClient) GetOnboardingStatus(ctx context.Context, resourc
 }
 
 // GetOnboardingStatusCreateRequest creates the GetOnboardingStatus request.
-func (client *VMInsightsClient) GetOnboardingStatusCreateRequest(ctx context.Context, resourceUri string) (*azcore.Request, error) {
+func (client *VMInsightsClient) GetOnboardingStatusCreateRequest(ctx context.Context, resourceUri string, options *VMInsightsGetOnboardingStatusOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/vmInsightsOnboardingStatuses/default"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceUri)
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -81,5 +81,5 @@ func (client *VMInsightsClient) GetOnboardingStatusHandleError(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -120,7 +120,7 @@ func (client *containerClient) AcquireLeaseHandleError(resp *azcore.Response) er
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // BreakLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
@@ -220,7 +220,7 @@ func (client *containerClient) BreakLeaseHandleError(resp *azcore.Response) erro
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ChangeLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
@@ -314,7 +314,7 @@ func (client *containerClient) ChangeLeaseHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Create - creates a new container under the specified account. If the container with the same name already exists, the operation fails
@@ -409,7 +409,7 @@ func (client *containerClient) CreateHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Delete - operation marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection
@@ -489,7 +489,7 @@ func (client *containerClient) DeleteHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetAccessPolicy - gets the permissions for the specified container. The permissions indicate whether container data may be accessed publicly.
@@ -577,12 +577,12 @@ func (client *containerClient) GetAccessPolicyHandleError(resp *azcore.Response)
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetAccountInfo - Returns the sku name and account kind
-func (client *containerClient) GetAccountInfo(ctx context.Context) (*ContainerGetAccountInfoResponse, error) {
-	req, err := client.GetAccountInfoCreateRequest(ctx)
+func (client *containerClient) GetAccountInfo(ctx context.Context, options *ContainerGetAccountInfoOptions) (*ContainerGetAccountInfoResponse, error) {
+	req, err := client.GetAccountInfoCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -601,7 +601,7 @@ func (client *containerClient) GetAccountInfo(ctx context.Context) (*ContainerGe
 }
 
 // GetAccountInfoCreateRequest creates the GetAccountInfo request.
-func (client *containerClient) GetAccountInfoCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *containerClient) GetAccountInfoCreateRequest(ctx context.Context, options *ContainerGetAccountInfoOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodGet, client.u)
 	if err != nil {
 		return nil, err
@@ -649,7 +649,7 @@ func (client *containerClient) GetAccountInfoHandleError(resp *azcore.Response) 
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // GetProperties - returns all user-defined metadata and system properties for the specified container. The data returned does not include the container's list of blobs
@@ -777,26 +777,27 @@ func (client *containerClient) GetPropertiesHandleError(resp *azcore.Response) e
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListBlobFlatSegment - [Update] The List Blobs operation returns a list of the blobs under the specified container
-func (client *containerClient) ListBlobFlatSegment(containerListBlobFlatSegmentOptions *ContainerListBlobFlatSegmentOptions) ListBlobsFlatSegmentResponsePager {
+func (client *containerClient) ListBlobFlatSegment(options *ContainerListBlobFlatSegmentOptions) ListBlobsFlatSegmentResponsePager {
 	return &listBlobsFlatSegmentResponsePager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListBlobFlatSegmentCreateRequest(ctx, containerListBlobFlatSegmentOptions)
+			return client.ListBlobFlatSegmentCreateRequest(ctx, options)
 		},
 		responder: client.ListBlobFlatSegmentHandleResponse,
 		errorer:   client.ListBlobFlatSegmentHandleError,
 		advancer: func(ctx context.Context, resp *ListBlobsFlatSegmentResponseResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.EnumerationResults.NextMarker)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListBlobFlatSegmentCreateRequest creates the ListBlobFlatSegment request.
-func (client *containerClient) ListBlobFlatSegmentCreateRequest(ctx context.Context, containerListBlobFlatSegmentOptions *ContainerListBlobFlatSegmentOptions) (*azcore.Request, error) {
+func (client *containerClient) ListBlobFlatSegmentCreateRequest(ctx context.Context, options *ContainerListBlobFlatSegmentOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodGet, client.u)
 	if err != nil {
 		return nil, err
@@ -804,25 +805,25 @@ func (client *containerClient) ListBlobFlatSegmentCreateRequest(ctx context.Cont
 	query := req.URL.Query()
 	query.Set("restype", "container")
 	query.Set("comp", "list")
-	if containerListBlobFlatSegmentOptions != nil && containerListBlobFlatSegmentOptions.Prefix != nil {
-		query.Set("prefix", *containerListBlobFlatSegmentOptions.Prefix)
+	if options != nil && options.Prefix != nil {
+		query.Set("prefix", *options.Prefix)
 	}
-	if containerListBlobFlatSegmentOptions != nil && containerListBlobFlatSegmentOptions.Marker != nil {
-		query.Set("marker", *containerListBlobFlatSegmentOptions.Marker)
+	if options != nil && options.Marker != nil {
+		query.Set("marker", *options.Marker)
 	}
-	if containerListBlobFlatSegmentOptions != nil && containerListBlobFlatSegmentOptions.Maxresults != nil {
-		query.Set("maxresults", strconv.FormatInt(int64(*containerListBlobFlatSegmentOptions.Maxresults), 10))
+	if options != nil && options.Maxresults != nil {
+		query.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	if containerListBlobFlatSegmentOptions != nil && containerListBlobFlatSegmentOptions.Include != nil {
-		query.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(*containerListBlobFlatSegmentOptions.Include), "[]")), ","))
+	if options != nil && options.Include != nil {
+		query.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(*options.Include), "[]")), ","))
 	}
-	if containerListBlobFlatSegmentOptions != nil && containerListBlobFlatSegmentOptions.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*containerListBlobFlatSegmentOptions.Timeout), 10))
+	if options != nil && options.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("x-ms-version", "2019-07-07")
-	if containerListBlobFlatSegmentOptions != nil && containerListBlobFlatSegmentOptions.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *containerListBlobFlatSegmentOptions.RequestId)
+	if options != nil && options.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
 	req.Header.Set("Accept", "application/xml")
 	return req, nil
@@ -859,26 +860,27 @@ func (client *containerClient) ListBlobFlatSegmentHandleError(resp *azcore.Respo
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListBlobHierarchySegment - [Update] The List Blobs operation returns a list of the blobs under the specified container
-func (client *containerClient) ListBlobHierarchySegment(delimiter string, containerListBlobHierarchySegmentOptions *ContainerListBlobHierarchySegmentOptions) ListBlobsHierarchySegmentResponsePager {
+func (client *containerClient) ListBlobHierarchySegment(delimiter string, options *ContainerListBlobHierarchySegmentOptions) ListBlobsHierarchySegmentResponsePager {
 	return &listBlobsHierarchySegmentResponsePager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListBlobHierarchySegmentCreateRequest(ctx, delimiter, containerListBlobHierarchySegmentOptions)
+			return client.ListBlobHierarchySegmentCreateRequest(ctx, delimiter, options)
 		},
 		responder: client.ListBlobHierarchySegmentHandleResponse,
 		errorer:   client.ListBlobHierarchySegmentHandleError,
 		advancer: func(ctx context.Context, resp *ListBlobsHierarchySegmentResponseResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.EnumerationResults.NextMarker)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListBlobHierarchySegmentCreateRequest creates the ListBlobHierarchySegment request.
-func (client *containerClient) ListBlobHierarchySegmentCreateRequest(ctx context.Context, delimiter string, containerListBlobHierarchySegmentOptions *ContainerListBlobHierarchySegmentOptions) (*azcore.Request, error) {
+func (client *containerClient) ListBlobHierarchySegmentCreateRequest(ctx context.Context, delimiter string, options *ContainerListBlobHierarchySegmentOptions) (*azcore.Request, error) {
 	req, err := azcore.NewRequest(ctx, http.MethodGet, client.u)
 	if err != nil {
 		return nil, err
@@ -886,26 +888,26 @@ func (client *containerClient) ListBlobHierarchySegmentCreateRequest(ctx context
 	query := req.URL.Query()
 	query.Set("restype", "container")
 	query.Set("comp", "list")
-	if containerListBlobHierarchySegmentOptions != nil && containerListBlobHierarchySegmentOptions.Prefix != nil {
-		query.Set("prefix", *containerListBlobHierarchySegmentOptions.Prefix)
+	if options != nil && options.Prefix != nil {
+		query.Set("prefix", *options.Prefix)
 	}
 	query.Set("delimiter", delimiter)
-	if containerListBlobHierarchySegmentOptions != nil && containerListBlobHierarchySegmentOptions.Marker != nil {
-		query.Set("marker", *containerListBlobHierarchySegmentOptions.Marker)
+	if options != nil && options.Marker != nil {
+		query.Set("marker", *options.Marker)
 	}
-	if containerListBlobHierarchySegmentOptions != nil && containerListBlobHierarchySegmentOptions.Maxresults != nil {
-		query.Set("maxresults", strconv.FormatInt(int64(*containerListBlobHierarchySegmentOptions.Maxresults), 10))
+	if options != nil && options.Maxresults != nil {
+		query.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	if containerListBlobHierarchySegmentOptions != nil && containerListBlobHierarchySegmentOptions.Include != nil {
-		query.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(*containerListBlobHierarchySegmentOptions.Include), "[]")), ","))
+	if options != nil && options.Include != nil {
+		query.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(*options.Include), "[]")), ","))
 	}
-	if containerListBlobHierarchySegmentOptions != nil && containerListBlobHierarchySegmentOptions.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*containerListBlobHierarchySegmentOptions.Timeout), 10))
+	if options != nil && options.Timeout != nil {
+		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("x-ms-version", "2019-07-07")
-	if containerListBlobHierarchySegmentOptions != nil && containerListBlobHierarchySegmentOptions.RequestId != nil {
-		req.Header.Set("x-ms-client-request-id", *containerListBlobHierarchySegmentOptions.RequestId)
+	if options != nil && options.RequestId != nil {
+		req.Header.Set("x-ms-client-request-id", *options.RequestId)
 	}
 	req.Header.Set("Accept", "application/xml")
 	return req, nil
@@ -942,7 +944,7 @@ func (client *containerClient) ListBlobHierarchySegmentHandleError(resp *azcore.
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ReleaseLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
@@ -1032,7 +1034,7 @@ func (client *containerClient) ReleaseLeaseHandleError(resp *azcore.Response) er
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // RenewLease - [Update] establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds, or can be infinite
@@ -1125,7 +1127,7 @@ func (client *containerClient) RenewLeaseHandleError(resp *azcore.Response) erro
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // SetAccessPolicy - sets the permissions for the specified container. The permissions indicate whether blobs in a container may be accessed publicly.
@@ -1226,7 +1228,7 @@ func (client *containerClient) SetAccessPolicyHandleError(resp *azcore.Response)
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // SetMetadata - operation sets one or more user-defined name-value pairs for the specified container.
@@ -1319,5 +1321,5 @@ func (client *containerClient) SetMetadataHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

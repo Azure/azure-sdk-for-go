@@ -18,21 +18,21 @@ import (
 // LoadBalancersOperations contains the methods for the LoadBalancers group.
 type LoadBalancersOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a load balancer.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer) (*LoadBalancerPollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (*LoadBalancerPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (LoadBalancerPoller, error)
 	// BeginDelete - Deletes the specified load balancer.
-	BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified load balancer.
-	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, loadBalancersGetOptions *LoadBalancersGetOptions) (*LoadBalancerResponse, error)
+	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersGetOptions) (*LoadBalancerResponse, error)
 	// List - Gets all the load balancers in a resource group.
-	List(resourceGroupName string) LoadBalancerListResultPager
+	List(resourceGroupName string, options *LoadBalancersListOptions) LoadBalancerListResultPager
 	// ListAll - Gets all the load balancers in a subscription.
-	ListAll() LoadBalancerListResultPager
+	ListAll(options *LoadBalancersListAllOptions) LoadBalancerListResultPager
 	// UpdateTags - Updates a load balancer tags.
-	UpdateTags(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters TagsObject) (*LoadBalancerResponse, error)
+	UpdateTags(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters TagsObject, options *LoadBalancersUpdateTagsOptions) (*LoadBalancerResponse, error)
 }
 
 // LoadBalancersClient implements the LoadBalancersOperations interface.
@@ -52,8 +52,8 @@ func (client *LoadBalancersClient) Do(req *azcore.Request) (*azcore.Response, er
 	return client.p.Do(req)
 }
 
-func (client *LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer) (*LoadBalancerPollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, loadBalancerName, parameters)
+func (client *LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (*LoadBalancerPollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, loadBalancerName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -87,8 +87,8 @@ func (client *LoadBalancersClient) ResumeCreateOrUpdate(token string) (LoadBalan
 }
 
 // CreateOrUpdate - Creates or updates a load balancer.
-func (client *LoadBalancersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, loadBalancerName, parameters)
+func (client *LoadBalancersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, loadBalancerName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (client *LoadBalancersClient) CreateOrUpdate(ctx context.Context, resourceG
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LoadBalancersClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer) (*azcore.Request, error) {
+func (client *LoadBalancersClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -131,11 +131,11 @@ func (client *LoadBalancersClient) CreateOrUpdateHandleError(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *LoadBalancersClient) BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, loadBalancerName)
+func (client *LoadBalancersClient) BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, loadBalancerName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -169,8 +169,8 @@ func (client *LoadBalancersClient) ResumeDelete(token string) (HTTPPoller, error
 }
 
 // Delete - Deletes the specified load balancer.
-func (client *LoadBalancersClient) Delete(ctx context.Context, resourceGroupName string, loadBalancerName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, loadBalancerName)
+func (client *LoadBalancersClient) Delete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +185,7 @@ func (client *LoadBalancersClient) Delete(ctx context.Context, resourceGroupName
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *LoadBalancersClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string) (*azcore.Request, error) {
+func (client *LoadBalancersClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -207,12 +207,12 @@ func (client *LoadBalancersClient) DeleteHandleError(resp *azcore.Response) erro
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets the specified load balancer.
-func (client *LoadBalancersClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, loadBalancersGetOptions *LoadBalancersGetOptions) (*LoadBalancerResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, loadBalancerName, loadBalancersGetOptions)
+func (client *LoadBalancersClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersGetOptions) (*LoadBalancerResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -231,7 +231,7 @@ func (client *LoadBalancersClient) Get(ctx context.Context, resourceGroupName st
 }
 
 // GetCreateRequest creates the Get request.
-func (client *LoadBalancersClient) GetCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, loadBalancersGetOptions *LoadBalancersGetOptions) (*azcore.Request, error) {
+func (client *LoadBalancersClient) GetCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -242,8 +242,8 @@ func (client *LoadBalancersClient) GetCreateRequest(ctx context.Context, resourc
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2020-03-01")
-	if loadBalancersGetOptions != nil && loadBalancersGetOptions.Expand != nil {
-		query.Set("$expand", *loadBalancersGetOptions.Expand)
+	if options != nil && options.Expand != nil {
+		query.Set("$expand", *options.Expand)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -262,26 +262,27 @@ func (client *LoadBalancersClient) GetHandleError(resp *azcore.Response) error {
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Gets all the load balancers in a resource group.
-func (client *LoadBalancersClient) List(resourceGroupName string) LoadBalancerListResultPager {
+func (client *LoadBalancersClient) List(resourceGroupName string, options *LoadBalancersListOptions) LoadBalancerListResultPager {
 	return &loadBalancerListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName)
+			return client.ListCreateRequest(ctx, resourceGroupName, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *LoadBalancerListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.LoadBalancerListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *LoadBalancersClient) ListCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *LoadBalancersClient) ListCreateRequest(ctx context.Context, resourceGroupName string, options *LoadBalancersListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -308,26 +309,27 @@ func (client *LoadBalancersClient) ListHandleError(resp *azcore.Response) error 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListAll - Gets all the load balancers in a subscription.
-func (client *LoadBalancersClient) ListAll() LoadBalancerListResultPager {
+func (client *LoadBalancersClient) ListAll(options *LoadBalancersListAllOptions) LoadBalancerListResultPager {
 	return &loadBalancerListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListAllCreateRequest(ctx)
+			return client.ListAllCreateRequest(ctx, options)
 		},
 		responder: client.ListAllHandleResponse,
 		errorer:   client.ListAllHandleError,
 		advancer: func(ctx context.Context, resp *LoadBalancerListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.LoadBalancerListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListAllCreateRequest creates the ListAll request.
-func (client *LoadBalancersClient) ListAllCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *LoadBalancersClient) ListAllCreateRequest(ctx context.Context, options *LoadBalancersListAllOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/loadBalancers"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -353,12 +355,12 @@ func (client *LoadBalancersClient) ListAllHandleError(resp *azcore.Response) err
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // UpdateTags - Updates a load balancer tags.
-func (client *LoadBalancersClient) UpdateTags(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters TagsObject) (*LoadBalancerResponse, error) {
-	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, loadBalancerName, parameters)
+func (client *LoadBalancersClient) UpdateTags(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters TagsObject, options *LoadBalancersUpdateTagsOptions) (*LoadBalancerResponse, error) {
+	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, loadBalancerName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -377,7 +379,7 @@ func (client *LoadBalancersClient) UpdateTags(ctx context.Context, resourceGroup
 }
 
 // UpdateTagsCreateRequest creates the UpdateTags request.
-func (client *LoadBalancersClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters TagsObject) (*azcore.Request, error) {
+func (client *LoadBalancersClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters TagsObject, options *LoadBalancersUpdateTagsOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -405,5 +407,5 @@ func (client *LoadBalancersClient) UpdateTagsHandleError(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

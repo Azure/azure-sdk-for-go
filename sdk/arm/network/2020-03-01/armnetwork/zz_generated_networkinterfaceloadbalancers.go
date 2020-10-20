@@ -16,7 +16,7 @@ import (
 // NetworkInterfaceLoadBalancersOperations contains the methods for the NetworkInterfaceLoadBalancers group.
 type NetworkInterfaceLoadBalancersOperations interface {
 	// List - List all load balancers in a network interface.
-	List(resourceGroupName string, networkInterfaceName string) NetworkInterfaceLoadBalancerListResultPager
+	List(resourceGroupName string, networkInterfaceName string, options *NetworkInterfaceLoadBalancersListOptions) NetworkInterfaceLoadBalancerListResultPager
 }
 
 // NetworkInterfaceLoadBalancersClient implements the NetworkInterfaceLoadBalancersOperations interface.
@@ -37,22 +37,23 @@ func (client *NetworkInterfaceLoadBalancersClient) Do(req *azcore.Request) (*azc
 }
 
 // List - List all load balancers in a network interface.
-func (client *NetworkInterfaceLoadBalancersClient) List(resourceGroupName string, networkInterfaceName string) NetworkInterfaceLoadBalancerListResultPager {
+func (client *NetworkInterfaceLoadBalancersClient) List(resourceGroupName string, networkInterfaceName string, options *NetworkInterfaceLoadBalancersListOptions) NetworkInterfaceLoadBalancerListResultPager {
 	return &networkInterfaceLoadBalancerListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, networkInterfaceName)
+			return client.ListCreateRequest(ctx, resourceGroupName, networkInterfaceName, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *NetworkInterfaceLoadBalancerListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.NetworkInterfaceLoadBalancerListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *NetworkInterfaceLoadBalancersClient) ListCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string) (*azcore.Request, error) {
+func (client *NetworkInterfaceLoadBalancersClient) ListCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *NetworkInterfaceLoadBalancersListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/loadBalancers"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkInterfaceName}", url.PathEscape(networkInterfaceName))
@@ -80,5 +81,5 @@ func (client *NetworkInterfaceLoadBalancersClient) ListHandleError(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -16,9 +16,9 @@ import (
 // PeerExpressRouteCircuitConnectionsOperations contains the methods for the PeerExpressRouteCircuitConnections group.
 type PeerExpressRouteCircuitConnectionsOperations interface {
 	// Get - Gets the specified Peer Express Route Circuit Connection from the specified express route circuit.
-	Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string) (*PeerExpressRouteCircuitConnectionResponse, error)
+	Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *PeerExpressRouteCircuitConnectionsGetOptions) (*PeerExpressRouteCircuitConnectionResponse, error)
 	// List - Gets all global reach peer connections associated with a private peering in an express route circuit.
-	List(resourceGroupName string, circuitName string, peeringName string) PeerExpressRouteCircuitConnectionListResultPager
+	List(resourceGroupName string, circuitName string, peeringName string, options *PeerExpressRouteCircuitConnectionsListOptions) PeerExpressRouteCircuitConnectionListResultPager
 }
 
 // PeerExpressRouteCircuitConnectionsClient implements the PeerExpressRouteCircuitConnectionsOperations interface.
@@ -39,8 +39,8 @@ func (client *PeerExpressRouteCircuitConnectionsClient) Do(req *azcore.Request) 
 }
 
 // Get - Gets the specified Peer Express Route Circuit Connection from the specified express route circuit.
-func (client *PeerExpressRouteCircuitConnectionsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string) (*PeerExpressRouteCircuitConnectionResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, circuitName, peeringName, connectionName)
+func (client *PeerExpressRouteCircuitConnectionsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *PeerExpressRouteCircuitConnectionsGetOptions) (*PeerExpressRouteCircuitConnectionResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, circuitName, peeringName, connectionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (client *PeerExpressRouteCircuitConnectionsClient) Get(ctx context.Context,
 }
 
 // GetCreateRequest creates the Get request.
-func (client *PeerExpressRouteCircuitConnectionsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string) (*azcore.Request, error) {
+func (client *PeerExpressRouteCircuitConnectionsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, connectionName string, options *PeerExpressRouteCircuitConnectionsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/peerConnections/{connectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{circuitName}", url.PathEscape(circuitName))
@@ -89,26 +89,27 @@ func (client *PeerExpressRouteCircuitConnectionsClient) GetHandleError(resp *azc
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Gets all global reach peer connections associated with a private peering in an express route circuit.
-func (client *PeerExpressRouteCircuitConnectionsClient) List(resourceGroupName string, circuitName string, peeringName string) PeerExpressRouteCircuitConnectionListResultPager {
+func (client *PeerExpressRouteCircuitConnectionsClient) List(resourceGroupName string, circuitName string, peeringName string, options *PeerExpressRouteCircuitConnectionsListOptions) PeerExpressRouteCircuitConnectionListResultPager {
 	return &peerExpressRouteCircuitConnectionListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, circuitName, peeringName)
+			return client.ListCreateRequest(ctx, resourceGroupName, circuitName, peeringName, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *PeerExpressRouteCircuitConnectionListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.PeerExpressRouteCircuitConnectionListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *PeerExpressRouteCircuitConnectionsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string) (*azcore.Request, error) {
+func (client *PeerExpressRouteCircuitConnectionsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *PeerExpressRouteCircuitConnectionsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}/peerConnections"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{circuitName}", url.PathEscape(circuitName))
@@ -137,5 +138,5 @@ func (client *PeerExpressRouteCircuitConnectionsClient) ListHandleError(resp *az
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

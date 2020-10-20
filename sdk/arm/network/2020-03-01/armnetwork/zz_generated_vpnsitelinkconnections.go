@@ -16,7 +16,7 @@ import (
 // VpnSiteLinkConnectionsOperations contains the methods for the VpnSiteLinkConnections group.
 type VpnSiteLinkConnectionsOperations interface {
 	// Get - Retrieves the details of a vpn site link connection.
-	Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string) (*VpnSiteLinkConnectionResponse, error)
+	Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VpnSiteLinkConnectionsGetOptions) (*VpnSiteLinkConnectionResponse, error)
 }
 
 // VpnSiteLinkConnectionsClient implements the VpnSiteLinkConnectionsOperations interface.
@@ -37,8 +37,8 @@ func (client *VpnSiteLinkConnectionsClient) Do(req *azcore.Request) (*azcore.Res
 }
 
 // Get - Retrieves the details of a vpn site link connection.
-func (client *VpnSiteLinkConnectionsClient) Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string) (*VpnSiteLinkConnectionResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName)
+func (client *VpnSiteLinkConnectionsClient) Get(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VpnSiteLinkConnectionsGetOptions) (*VpnSiteLinkConnectionResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (client *VpnSiteLinkConnectionsClient) Get(ctx context.Context, resourceGro
 }
 
 // GetCreateRequest creates the Get request.
-func (client *VpnSiteLinkConnectionsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string) (*azcore.Request, error) {
+func (client *VpnSiteLinkConnectionsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VpnSiteLinkConnectionsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections/{linkConnectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -87,5 +87,5 @@ func (client *VpnSiteLinkConnectionsClient) GetHandleError(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -18,21 +18,21 @@ import (
 // NetworkVirtualAppliancesOperations contains the methods for the NetworkVirtualAppliances group.
 type NetworkVirtualAppliancesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates the specified Network Virtual Appliance.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance) (*NetworkVirtualAppliancePollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance, options *NetworkVirtualAppliancesCreateOrUpdateOptions) (*NetworkVirtualAppliancePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (NetworkVirtualAppliancePoller, error)
 	// BeginDelete - Deletes the specified Network Virtual Appliance.
-	BeginDelete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *NetworkVirtualAppliancesDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified Network Virtual Appliance.
-	Get(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, networkVirtualAppliancesGetOptions *NetworkVirtualAppliancesGetOptions) (*NetworkVirtualApplianceResponse, error)
+	Get(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *NetworkVirtualAppliancesGetOptions) (*NetworkVirtualApplianceResponse, error)
 	// List - Gets all Network Virtual Appliances in a subscription.
-	List() NetworkVirtualApplianceListResultPager
+	List(options *NetworkVirtualAppliancesListOptions) NetworkVirtualApplianceListResultPager
 	// ListByResourceGroup - Lists all Network Virtual Appliances in a resource group.
-	ListByResourceGroup(resourceGroupName string) NetworkVirtualApplianceListResultPager
+	ListByResourceGroup(resourceGroupName string, options *NetworkVirtualAppliancesListByResourceGroupOptions) NetworkVirtualApplianceListResultPager
 	// UpdateTags - Updates a Network Virtual Appliance.
-	UpdateTags(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters TagsObject) (*NetworkVirtualApplianceResponse, error)
+	UpdateTags(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters TagsObject, options *NetworkVirtualAppliancesUpdateTagsOptions) (*NetworkVirtualApplianceResponse, error)
 }
 
 // NetworkVirtualAppliancesClient implements the NetworkVirtualAppliancesOperations interface.
@@ -52,8 +52,8 @@ func (client *NetworkVirtualAppliancesClient) Do(req *azcore.Request) (*azcore.R
 	return client.p.Do(req)
 }
 
-func (client *NetworkVirtualAppliancesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance) (*NetworkVirtualAppliancePollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, networkVirtualApplianceName, parameters)
+func (client *NetworkVirtualAppliancesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance, options *NetworkVirtualAppliancesCreateOrUpdateOptions) (*NetworkVirtualAppliancePollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, networkVirtualApplianceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -87,8 +87,8 @@ func (client *NetworkVirtualAppliancesClient) ResumeCreateOrUpdate(token string)
 }
 
 // CreateOrUpdate - Creates or updates the specified Network Virtual Appliance.
-func (client *NetworkVirtualAppliancesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, parameters)
+func (client *NetworkVirtualAppliancesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance, options *NetworkVirtualAppliancesCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (client *NetworkVirtualAppliancesClient) CreateOrUpdate(ctx context.Context
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *NetworkVirtualAppliancesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance) (*azcore.Request, error) {
+func (client *NetworkVirtualAppliancesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters NetworkVirtualAppliance, options *NetworkVirtualAppliancesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
@@ -131,11 +131,11 @@ func (client *NetworkVirtualAppliancesClient) CreateOrUpdateHandleError(resp *az
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *NetworkVirtualAppliancesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, networkVirtualApplianceName)
+func (client *NetworkVirtualAppliancesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *NetworkVirtualAppliancesDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, networkVirtualApplianceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -169,8 +169,8 @@ func (client *NetworkVirtualAppliancesClient) ResumeDelete(token string) (HTTPPo
 }
 
 // Delete - Deletes the specified Network Virtual Appliance.
-func (client *NetworkVirtualAppliancesClient) Delete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName)
+func (client *NetworkVirtualAppliancesClient) Delete(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *NetworkVirtualAppliancesDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +185,7 @@ func (client *NetworkVirtualAppliancesClient) Delete(ctx context.Context, resour
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *NetworkVirtualAppliancesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string) (*azcore.Request, error) {
+func (client *NetworkVirtualAppliancesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *NetworkVirtualAppliancesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
@@ -207,12 +207,12 @@ func (client *NetworkVirtualAppliancesClient) DeleteHandleError(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets the specified Network Virtual Appliance.
-func (client *NetworkVirtualAppliancesClient) Get(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, networkVirtualAppliancesGetOptions *NetworkVirtualAppliancesGetOptions) (*NetworkVirtualApplianceResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, networkVirtualAppliancesGetOptions)
+func (client *NetworkVirtualAppliancesClient) Get(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *NetworkVirtualAppliancesGetOptions) (*NetworkVirtualApplianceResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -231,7 +231,7 @@ func (client *NetworkVirtualAppliancesClient) Get(ctx context.Context, resourceG
 }
 
 // GetCreateRequest creates the Get request.
-func (client *NetworkVirtualAppliancesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, networkVirtualAppliancesGetOptions *NetworkVirtualAppliancesGetOptions) (*azcore.Request, error) {
+func (client *NetworkVirtualAppliancesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *NetworkVirtualAppliancesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
@@ -242,8 +242,8 @@ func (client *NetworkVirtualAppliancesClient) GetCreateRequest(ctx context.Conte
 	}
 	query := req.URL.Query()
 	query.Set("api-version", "2020-03-01")
-	if networkVirtualAppliancesGetOptions != nil && networkVirtualAppliancesGetOptions.Expand != nil {
-		query.Set("$expand", *networkVirtualAppliancesGetOptions.Expand)
+	if options != nil && options.Expand != nil {
+		query.Set("$expand", *options.Expand)
 	}
 	req.URL.RawQuery = query.Encode()
 	req.Header.Set("Accept", "application/json")
@@ -262,26 +262,27 @@ func (client *NetworkVirtualAppliancesClient) GetHandleError(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // List - Gets all Network Virtual Appliances in a subscription.
-func (client *NetworkVirtualAppliancesClient) List() NetworkVirtualApplianceListResultPager {
+func (client *NetworkVirtualAppliancesClient) List(options *NetworkVirtualAppliancesListOptions) NetworkVirtualApplianceListResultPager {
 	return &networkVirtualApplianceListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *NetworkVirtualApplianceListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.NetworkVirtualApplianceListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *NetworkVirtualAppliancesClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *NetworkVirtualAppliancesClient) ListCreateRequest(ctx context.Context, options *NetworkVirtualAppliancesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkVirtualAppliances"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
@@ -307,26 +308,27 @@ func (client *NetworkVirtualAppliancesClient) ListHandleError(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByResourceGroup - Lists all Network Virtual Appliances in a resource group.
-func (client *NetworkVirtualAppliancesClient) ListByResourceGroup(resourceGroupName string) NetworkVirtualApplianceListResultPager {
+func (client *NetworkVirtualAppliancesClient) ListByResourceGroup(resourceGroupName string, options *NetworkVirtualAppliancesListByResourceGroupOptions) NetworkVirtualApplianceListResultPager {
 	return &networkVirtualApplianceListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName)
+			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
 		responder: client.ListByResourceGroupHandleResponse,
 		errorer:   client.ListByResourceGroupHandleError,
 		advancer: func(ctx context.Context, resp *NetworkVirtualApplianceListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.NetworkVirtualApplianceListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NetworkVirtualAppliancesClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string) (*azcore.Request, error) {
+func (client *NetworkVirtualAppliancesClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *NetworkVirtualAppliancesListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -353,12 +355,12 @@ func (client *NetworkVirtualAppliancesClient) ListByResourceGroupHandleError(res
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // UpdateTags - Updates a Network Virtual Appliance.
-func (client *NetworkVirtualAppliancesClient) UpdateTags(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters TagsObject) (*NetworkVirtualApplianceResponse, error) {
-	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, parameters)
+func (client *NetworkVirtualAppliancesClient) UpdateTags(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters TagsObject, options *NetworkVirtualAppliancesUpdateTagsOptions) (*NetworkVirtualApplianceResponse, error) {
+	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -377,7 +379,7 @@ func (client *NetworkVirtualAppliancesClient) UpdateTags(ctx context.Context, re
 }
 
 // UpdateTagsCreateRequest creates the UpdateTags request.
-func (client *NetworkVirtualAppliancesClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters TagsObject) (*azcore.Request, error) {
+func (client *NetworkVirtualAppliancesClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters TagsObject, options *NetworkVirtualAppliancesUpdateTagsOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -405,5 +407,5 @@ func (client *NetworkVirtualAppliancesClient) UpdateTagsHandleError(resp *azcore
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

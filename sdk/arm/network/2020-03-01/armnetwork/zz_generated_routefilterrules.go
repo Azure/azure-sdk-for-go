@@ -18,17 +18,17 @@ import (
 // RouteFilterRulesOperations contains the methods for the RouteFilterRules group.
 type RouteFilterRulesOperations interface {
 	// BeginCreateOrUpdate - Creates or updates a route in the specified route filter.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule) (*RouteFilterRulePollerResponse, error)
+	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule, options *RouteFilterRulesCreateOrUpdateOptions) (*RouteFilterRulePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (RouteFilterRulePoller, error)
 	// BeginDelete - Deletes the specified rule from a route filter.
-	BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (*HTTPPollerResponse, error)
+	BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, options *RouteFilterRulesDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified rule from a route filter.
-	Get(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (*RouteFilterRuleResponse, error)
+	Get(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, options *RouteFilterRulesGetOptions) (*RouteFilterRuleResponse, error)
 	// ListByRouteFilter - Gets all RouteFilterRules in a route filter.
-	ListByRouteFilter(resourceGroupName string, routeFilterName string) RouteFilterRuleListResultPager
+	ListByRouteFilter(resourceGroupName string, routeFilterName string, options *RouteFilterRulesListByRouteFilterOptions) RouteFilterRuleListResultPager
 }
 
 // RouteFilterRulesClient implements the RouteFilterRulesOperations interface.
@@ -48,8 +48,8 @@ func (client *RouteFilterRulesClient) Do(req *azcore.Request) (*azcore.Response,
 	return client.p.Do(req)
 }
 
-func (client *RouteFilterRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule) (*RouteFilterRulePollerResponse, error) {
-	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters)
+func (client *RouteFilterRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule, options *RouteFilterRulesCreateOrUpdateOptions) (*RouteFilterRulePollerResponse, error) {
+	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -83,8 +83,8 @@ func (client *RouteFilterRulesClient) ResumeCreateOrUpdate(token string) (RouteF
 }
 
 // CreateOrUpdate - Creates or updates a route in the specified route filter.
-func (client *RouteFilterRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters)
+func (client *RouteFilterRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule, options *RouteFilterRulesCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, routeFilterName, ruleName, routeFilterRuleParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func (client *RouteFilterRulesClient) CreateOrUpdate(ctx context.Context, resour
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RouteFilterRulesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule) (*azcore.Request, error) {
+func (client *RouteFilterRulesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, routeFilterRuleParameters RouteFilterRule, options *RouteFilterRulesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}/routeFilterRules/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{routeFilterName}", url.PathEscape(routeFilterName))
@@ -128,11 +128,11 @@ func (client *RouteFilterRulesClient) CreateOrUpdateHandleError(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *RouteFilterRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (*HTTPPollerResponse, error) {
-	resp, err := client.Delete(ctx, resourceGroupName, routeFilterName, ruleName)
+func (client *RouteFilterRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, options *RouteFilterRulesDeleteOptions) (*HTTPPollerResponse, error) {
+	resp, err := client.Delete(ctx, resourceGroupName, routeFilterName, ruleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -166,8 +166,8 @@ func (client *RouteFilterRulesClient) ResumeDelete(token string) (HTTPPoller, er
 }
 
 // Delete - Deletes the specified rule from a route filter.
-func (client *RouteFilterRulesClient) Delete(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, routeFilterName, ruleName)
+func (client *RouteFilterRulesClient) Delete(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, options *RouteFilterRulesDeleteOptions) (*azcore.Response, error) {
+	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, routeFilterName, ruleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +182,7 @@ func (client *RouteFilterRulesClient) Delete(ctx context.Context, resourceGroupN
 }
 
 // DeleteCreateRequest creates the Delete request.
-func (client *RouteFilterRulesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (*azcore.Request, error) {
+func (client *RouteFilterRulesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, options *RouteFilterRulesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}/routeFilterRules/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{routeFilterName}", url.PathEscape(routeFilterName))
@@ -205,12 +205,12 @@ func (client *RouteFilterRulesClient) DeleteHandleError(resp *azcore.Response) e
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // Get - Gets the specified rule from a route filter.
-func (client *RouteFilterRulesClient) Get(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (*RouteFilterRuleResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, routeFilterName, ruleName)
+func (client *RouteFilterRulesClient) Get(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, options *RouteFilterRulesGetOptions) (*RouteFilterRuleResponse, error) {
+	req, err := client.GetCreateRequest(ctx, resourceGroupName, routeFilterName, ruleName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -229,7 +229,7 @@ func (client *RouteFilterRulesClient) Get(ctx context.Context, resourceGroupName
 }
 
 // GetCreateRequest creates the Get request.
-func (client *RouteFilterRulesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string) (*azcore.Request, error) {
+func (client *RouteFilterRulesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, ruleName string, options *RouteFilterRulesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}/routeFilterRules/{ruleName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{routeFilterName}", url.PathEscape(routeFilterName))
@@ -258,26 +258,27 @@ func (client *RouteFilterRulesClient) GetHandleError(resp *azcore.Response) erro
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }
 
 // ListByRouteFilter - Gets all RouteFilterRules in a route filter.
-func (client *RouteFilterRulesClient) ListByRouteFilter(resourceGroupName string, routeFilterName string) RouteFilterRuleListResultPager {
+func (client *RouteFilterRulesClient) ListByRouteFilter(resourceGroupName string, routeFilterName string, options *RouteFilterRulesListByRouteFilterOptions) RouteFilterRuleListResultPager {
 	return &routeFilterRuleListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByRouteFilterCreateRequest(ctx, resourceGroupName, routeFilterName)
+			return client.ListByRouteFilterCreateRequest(ctx, resourceGroupName, routeFilterName, options)
 		},
 		responder: client.ListByRouteFilterHandleResponse,
 		errorer:   client.ListByRouteFilterHandleError,
 		advancer: func(ctx context.Context, resp *RouteFilterRuleListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.RouteFilterRuleListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListByRouteFilterCreateRequest creates the ListByRouteFilter request.
-func (client *RouteFilterRulesClient) ListByRouteFilterCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string) (*azcore.Request, error) {
+func (client *RouteFilterRulesClient) ListByRouteFilterCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFilterRulesListByRouteFilterOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}/routeFilterRules"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{routeFilterName}", url.PathEscape(routeFilterName))
@@ -305,5 +306,5 @@ func (client *RouteFilterRulesClient) ListByRouteFilterHandleError(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

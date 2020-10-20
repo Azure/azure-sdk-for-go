@@ -17,7 +17,7 @@ import (
 // Operations contains the methods for the Operations group.
 type Operations interface {
 	// List - Lists all of the available Microsoft.Resources REST API operations.
-	List() OperationListResultPager
+	List(options *OperationsListOptions) OperationListResultPager
 }
 
 // OperationsClient implements the Operations interface.
@@ -37,22 +37,23 @@ func (client *OperationsClient) Do(req *azcore.Request) (*azcore.Response, error
 }
 
 // List - Lists all of the available Microsoft.Resources REST API operations.
-func (client *OperationsClient) List() OperationListResultPager {
+func (client *OperationsClient) List(options *OperationsListOptions) OperationListResultPager {
 	return &operationListResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx)
+			return client.ListCreateRequest(ctx, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *OperationListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.OperationListResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *OperationsClient) ListCreateRequest(ctx context.Context) (*azcore.Request, error) {
+func (client *OperationsClient) ListCreateRequest(ctx context.Context, options *OperationsListOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Resources/operations"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
 	if err != nil {
@@ -78,7 +79,7 @@ func (client *OperationsClient) ListHandleError(resp *azcore.Response) error {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
 	}
 	if len(body) == 0 {
-		return errors.New(resp.Status)
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
 	}
-	return errors.New(string(body))
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }

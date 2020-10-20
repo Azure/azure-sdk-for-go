@@ -16,7 +16,7 @@ import (
 // AvailableResourceGroupDelegationsOperations contains the methods for the AvailableResourceGroupDelegations group.
 type AvailableResourceGroupDelegationsOperations interface {
 	// List - Gets all of the available subnet delegations for this resource group in this region.
-	List(location string, resourceGroupName string) AvailableDelegationsResultPager
+	List(location string, resourceGroupName string, options *AvailableResourceGroupDelegationsListOptions) AvailableDelegationsResultPager
 }
 
 // AvailableResourceGroupDelegationsClient implements the AvailableResourceGroupDelegationsOperations interface.
@@ -37,22 +37,23 @@ func (client *AvailableResourceGroupDelegationsClient) Do(req *azcore.Request) (
 }
 
 // List - Gets all of the available subnet delegations for this resource group in this region.
-func (client *AvailableResourceGroupDelegationsClient) List(location string, resourceGroupName string) AvailableDelegationsResultPager {
+func (client *AvailableResourceGroupDelegationsClient) List(location string, resourceGroupName string, options *AvailableResourceGroupDelegationsListOptions) AvailableDelegationsResultPager {
 	return &availableDelegationsResultPager{
 		pipeline: client.p,
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, location, resourceGroupName)
+			return client.ListCreateRequest(ctx, location, resourceGroupName, options)
 		},
 		responder: client.ListHandleResponse,
 		errorer:   client.ListHandleError,
 		advancer: func(ctx context.Context, resp *AvailableDelegationsResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AvailableDelegationsResult.NextLink)
 		},
+		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // ListCreateRequest creates the List request.
-func (client *AvailableResourceGroupDelegationsClient) ListCreateRequest(ctx context.Context, location string, resourceGroupName string) (*azcore.Request, error) {
+func (client *AvailableResourceGroupDelegationsClient) ListCreateRequest(ctx context.Context, location string, resourceGroupName string, options *AvailableResourceGroupDelegationsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations/{location}/availableDelegations"
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -80,5 +81,5 @@ func (client *AvailableResourceGroupDelegationsClient) ListHandleError(resp *azc
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
-	return err
+	return azcore.NewResponseError(&err, resp.Response)
 }

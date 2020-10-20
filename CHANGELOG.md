@@ -25,8 +25,10 @@
 | Package Name | API Version |
 | ---: | :---: |
 | operationalinsights | 2020-03-01-preview |
+| synapse | 2019-06-01-preview |
 
 Generated from https://github.com/Azure/azure-rest-api-specs/tree/c0471d8a805d8ae7f55946ea7020dd56282b23f4
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/6e52d5c8e77a02fb333a991de8f1ca630ba9ff3e (synapse)
 
 ## `v47.0.0`
 

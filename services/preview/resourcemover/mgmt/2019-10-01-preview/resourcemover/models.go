@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/regionmove/mgmt/2019-10-01-preview/regionmove"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/resourcemover/mgmt/2019-10-01-preview/resourcemover"
 
 // AffectedMoveResource the RP custom operation error info.
 type AffectedMoveResource struct {
@@ -154,6 +154,16 @@ type AzureResourceReference struct {
 	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
 }
 
+// BulkRemoveRequest defines the request body for bulk remove of move resources operation.
+type BulkRemoveRequest struct {
+	// ValidateOnly - Gets or sets a value indicating whether the operation needs to only run pre-requisite.
+	ValidateOnly *bool `json:"validateOnly,omitempty"`
+	// MoveResources - Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched via moveResourceInputType property.
+	MoveResources *[]string `json:"moveResources,omitempty"`
+	// MoveResourceInputType - Possible values include: 'MoveResourceID', 'MoveResourceSourceID'
+	MoveResourceInputType MoveResourceInputType `json:"moveResourceInputType,omitempty"`
+}
+
 // CloudError an error response from the service.
 type CloudError struct {
 	// Error - Cloud error body.
@@ -248,8 +258,17 @@ type Identity struct {
 type JobStatus struct {
 	// JobName - Possible values include: 'InitialSync'
 	JobName JobName `json:"jobName,omitempty"`
-	// JobProgress - Gets or sets the monitoring job percentage.
+	// JobProgress - READ-ONLY; Gets or sets the monitoring job percentage.
 	JobProgress *string `json:"jobProgress,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobStatus.
+func (js JobStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if js.JobName != "" {
+		objectMap["jobName"] = js.JobName
+	}
+	return json.Marshal(objectMap)
 }
 
 // LBBackendAddressPoolResourceSettings defines load balancer backend address pool properties.
@@ -607,6 +626,35 @@ func NewMoveCollectionResultListPage(getNextPage func(context.Context, MoveColle
 	return MoveCollectionResultListPage{fn: getNextPage}
 }
 
+// MoveCollectionsBulkRemoveFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type MoveCollectionsBulkRemoveFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *MoveCollectionsBulkRemoveFuture) Result(client MoveCollectionsClient) (osVar OperationStatus, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsBulkRemoveFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsBulkRemoveFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
+		osVar, err = client.BulkRemoveResponder(osVar.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsBulkRemoveFuture", "Result", osVar.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // MoveCollectionsCommitFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type MoveCollectionsCommitFuture struct {
@@ -619,18 +667,18 @@ func (future *MoveCollectionsCommitFuture) Result(client MoveCollectionsClient) 
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsCommitFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsCommitFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("regionmove.MoveCollectionsCommitFuture")
+		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsCommitFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 		osVar, err = client.CommitResponder(osVar.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsCommitFuture", "Result", osVar.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsCommitFuture", "Result", osVar.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -648,18 +696,18 @@ func (future *MoveCollectionsDeleteFuture) Result(client MoveCollectionsClient) 
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("regionmove.MoveCollectionsDeleteFuture")
+		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsDeleteFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 		osVar, err = client.DeleteResponder(osVar.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsDeleteFuture", "Result", osVar.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDeleteFuture", "Result", osVar.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -677,18 +725,18 @@ func (future *MoveCollectionsDiscardFuture) Result(client MoveCollectionsClient)
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsDiscardFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDiscardFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("regionmove.MoveCollectionsDiscardFuture")
+		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsDiscardFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 		osVar, err = client.DiscardResponder(osVar.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsDiscardFuture", "Result", osVar.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsDiscardFuture", "Result", osVar.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -706,18 +754,18 @@ func (future *MoveCollectionsInitiateMoveFuture) Result(client MoveCollectionsCl
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsInitiateMoveFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsInitiateMoveFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("regionmove.MoveCollectionsInitiateMoveFuture")
+		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsInitiateMoveFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 		osVar, err = client.InitiateMoveResponder(osVar.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsInitiateMoveFuture", "Result", osVar.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsInitiateMoveFuture", "Result", osVar.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -735,18 +783,18 @@ func (future *MoveCollectionsPrepareFuture) Result(client MoveCollectionsClient)
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsPrepareFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsPrepareFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("regionmove.MoveCollectionsPrepareFuture")
+		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsPrepareFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 		osVar, err = client.PrepareResponder(osVar.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsPrepareFuture", "Result", osVar.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsPrepareFuture", "Result", osVar.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -764,18 +812,18 @@ func (future *MoveCollectionsResolveDependenciesFuture) Result(client MoveCollec
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsResolveDependenciesFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsResolveDependenciesFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("regionmove.MoveCollectionsResolveDependenciesFuture")
+		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsResolveDependenciesFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 		osVar, err = client.ResolveDependenciesResponder(osVar.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "regionmove.MoveCollectionsResolveDependenciesFuture", "Result", osVar.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsResolveDependenciesFuture", "Result", osVar.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -815,6 +863,8 @@ type MoveResourceCollection struct {
 	Value *[]MoveResource `json:"value,omitempty"`
 	// NextLink - Gets the value of  next link.
 	NextLink *string `json:"nextLink,omitempty"`
+	// Summary - Gets or the list of summary items.
+	Summary *[]SummaryItem `json:"summary,omitempty"`
 }
 
 // MoveResourceCollectionIterator provides access to a complete listing of MoveResource values.
@@ -989,7 +1039,7 @@ type MoveResourceDependencyOverride struct {
 	TargetID *string `json:"targetId,omitempty"`
 }
 
-// MoveResourceError an error response from the azure region move service.
+// MoveResourceError an error response from the azure resource mover service.
 type MoveResourceError struct {
 	// Properties - The move resource error body.
 	Properties *MoveResourceErrorBody `json:"properties,omitempty"`
@@ -997,13 +1047,13 @@ type MoveResourceError struct {
 
 // MoveResourceErrorBody an error response from the Azure Migrate service.
 type MoveResourceErrorBody struct {
-	// Code - An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	// Code - READ-ONLY; An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
 	Code *string `json:"code,omitempty"`
-	// Message - A message describing the error, intended to be suitable for display in a user interface.
+	// Message - READ-ONLY; A message describing the error, intended to be suitable for display in a user interface.
 	Message *string `json:"message,omitempty"`
-	// Target - The target of the particular error. For example, the name of the property in error.
+	// Target - READ-ONLY; The target of the particular error. For example, the name of the property in error.
 	Target *string `json:"target,omitempty"`
-	// Details - A list of additional details about the error.
+	// Details - READ-ONLY; A list of additional details about the error.
 	Details *[]MoveResourceErrorBody `json:"details,omitempty"`
 }
 
@@ -1038,7 +1088,8 @@ type MoveResourceProperties struct {
 	DependsOn *[]MoveResourceDependency `json:"dependsOn,omitempty"`
 	// DependsOnOverrides - Gets or sets the move resource dependencies overrides.
 	DependsOnOverrides *[]MoveResourceDependencyOverride `json:"dependsOnOverrides,omitempty"`
-	Errors             *MoveResourceError                `json:"errors,omitempty"`
+	// Errors - READ-ONLY; Defines the move resource errors.
+	Errors *MoveResourcePropertiesErrors `json:"errors,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MoveResourceProperties.
@@ -1056,9 +1107,6 @@ func (mrp MoveResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap["resourceSettings"] = mrp.ResourceSettings
 	if mrp.DependsOnOverrides != nil {
 		objectMap["dependsOnOverrides"] = mrp.DependsOnOverrides
-	}
-	if mrp.Errors != nil {
-		objectMap["errors"] = mrp.Errors
 	}
 	return json.Marshal(objectMap)
 }
@@ -1154,7 +1202,7 @@ func (mrp *MoveResourceProperties) UnmarshalJSON(body []byte) error {
 			}
 		case "errors":
 			if v != nil {
-				var errorsVar MoveResourceError
+				var errorsVar MoveResourcePropertiesErrors
 				err = json.Unmarshal(*v, &errorsVar)
 				if err != nil {
 					return err
@@ -1167,14 +1215,35 @@ func (mrp *MoveResourceProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// MoveResourcePropertiesErrors defines the move resource errors.
+type MoveResourcePropertiesErrors struct {
+	// Properties - The move resource error body.
+	Properties *MoveResourceErrorBody `json:"properties,omitempty"`
+}
+
 // MoveResourcePropertiesMoveStatus defines the move resource status.
 type MoveResourcePropertiesMoveStatus struct {
 	// MoveState - Possible values include: 'AssignmentPending', 'PreparePending', 'PrepareInProgress', 'PrepareFailed', 'MovePending', 'MoveInProgress', 'MoveFailed', 'DiscardInProgress', 'DiscardFailed', 'CommitPending', 'CommitInProgress', 'CommitFailed', 'Committed'
 	MoveState MoveState          `json:"moveState,omitempty"`
 	JobStatus *JobStatus         `json:"jobStatus,omitempty"`
 	Errors    *MoveResourceError `json:"errors,omitempty"`
-	// TargetID - Gets the Target ARM Id of the resource.
+	// TargetID - READ-ONLY; Gets the Target ARM Id of the resource.
 	TargetID *string `json:"targetId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MoveResourcePropertiesMoveStatus.
+func (mrpS MoveResourcePropertiesMoveStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mrpS.MoveState != "" {
+		objectMap["moveState"] = mrpS.MoveState
+	}
+	if mrpS.JobStatus != nil {
+		objectMap["jobStatus"] = mrpS.JobStatus
+	}
+	if mrpS.Errors != nil {
+		objectMap["errors"] = mrpS.Errors
+	}
+	return json.Marshal(objectMap)
 }
 
 // MoveResourcePropertiesSourceResourceSettings gets or sets the source resource settings.
@@ -1280,18 +1349,18 @@ func (future *MoveResourcesCreateFuture) Result(client MoveResourcesClient) (mr 
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesCreateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("regionmove.MoveResourcesCreateFuture")
+		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveResourcesCreateFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if mr.Response.Response, err = future.GetResult(sender); err == nil && mr.Response.Response.StatusCode != http.StatusNoContent {
 		mr, err = client.CreateResponder(mr.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesCreateFuture", "Result", mr.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesCreateFuture", "Result", mr.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -1309,18 +1378,18 @@ func (future *MoveResourcesDeleteFuture) Result(client MoveResourcesClient) (osV
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
-		err = azure.NewAsyncOpIncompleteError("regionmove.MoveResourcesDeleteFuture")
+		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveResourcesDeleteFuture")
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if osVar.Response.Response, err = future.GetResult(sender); err == nil && osVar.Response.Response.StatusCode != http.StatusNoContent {
 		osVar, err = client.DeleteResponder(osVar.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "regionmove.MoveResourcesDeleteFuture", "Result", osVar.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesDeleteFuture", "Result", osVar.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -1332,8 +1401,23 @@ type MoveResourceStatus struct {
 	MoveState MoveState          `json:"moveState,omitempty"`
 	JobStatus *JobStatus         `json:"jobStatus,omitempty"`
 	Errors    *MoveResourceError `json:"errors,omitempty"`
-	// TargetID - Gets the Target ARM Id of the resource.
+	// TargetID - READ-ONLY; Gets the Target ARM Id of the resource.
 	TargetID *string `json:"targetId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MoveResourceStatus.
+func (mrs MoveResourceStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mrs.MoveState != "" {
+		objectMap["moveState"] = mrs.MoveState
+	}
+	if mrs.JobStatus != nil {
+		objectMap["jobStatus"] = mrs.JobStatus
+	}
+	if mrs.Errors != nil {
+		objectMap["errors"] = mrs.Errors
+	}
+	return json.Marshal(objectMap)
 }
 
 // NetworkInterfaceResourceSettings defines the network interface resource settings.
@@ -1615,8 +1699,10 @@ type OperationsDiscovery struct {
 	// This API is used to register for their service, and should include details about the
 	// operation (e.g. a localized name for the resource provider + any special
 	// considerations like PII release).
-	Name    *string  `json:"name,omitempty"`
-	Display *Display `json:"display,omitempty"`
+	Name *string `json:"name,omitempty"`
+	// IsDataAction - Indicates whether the operation is a data action
+	IsDataAction *bool    `json:"isDataAction,omitempty"`
+	Display      *Display `json:"display,omitempty"`
 	// Origin - Gets or sets Origin.
 	// The intended executor of the operation; governs the display of the operation in the
 	// RBAC UX and the audit logs UX.
@@ -1890,8 +1976,8 @@ func (rgrs ResourceGroupResourceSettings) AsBasicResourceSettings() (BasicResour
 	return &rgrs, true
 }
 
-// ResourceMoveRequest defines the request body for resource move operation.
-type ResourceMoveRequest struct {
+// ResourceMoveRequestType defines the request body for resource move operation.
+type ResourceMoveRequestType struct {
 	// ValidateOnly - Gets or sets a value indicating whether the operation needs to only run pre-requisite.
 	ValidateOnly *bool `json:"validateOnly,omitempty"`
 	// MoveResources - Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched via moveResourceInputType property.
@@ -2386,6 +2472,14 @@ type SubnetResourceSettings struct {
 	Name *string `json:"name,omitempty"`
 	// AddressPrefix - Gets or sets address prefix for the subnet.
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
+}
+
+// SummaryItem summary item.
+type SummaryItem struct {
+	// Count - Gets the count.
+	Count *int32 `json:"count,omitempty"`
+	// Item - Gets the item.
+	Item *string `json:"item,omitempty"`
 }
 
 // UnresolvedDependency unresolved dependency.

@@ -24,26 +24,21 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-const (
-	// DefaultSynapseDNSSuffix is the default value for synapse dns suffix
-	DefaultSynapseDNSSuffix = "dev.azuresynapse.net"
-)
-
 // BaseClient is the base client for Managedvirtualnetwork.
 type BaseClient struct {
 	autorest.Client
-	SynapseDNSSuffix string
+	Endpoint string
 }
 
 // New creates an instance of the BaseClient client.
-func New() BaseClient {
-	return NewWithoutDefaults(DefaultSynapseDNSSuffix)
+func New(endpoint string) BaseClient {
+	return NewWithoutDefaults(endpoint)
 }
 
 // NewWithoutDefaults creates an instance of the BaseClient client.
-func NewWithoutDefaults(synapseDNSSuffix string) BaseClient {
+func NewWithoutDefaults(endpoint string) BaseClient {
 	return BaseClient{
-		Client:           autorest.NewClientWithUserAgent(UserAgent()),
-		SynapseDNSSuffix: synapseDNSSuffix,
+		Client:   autorest.NewClientWithUserAgent(UserAgent()),
+		Endpoint: endpoint,
 	}
 }

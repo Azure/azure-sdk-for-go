@@ -25,11 +25,11 @@ import (
 
 // ManagedPrivateEndpointsClientAPI contains the set of methods on the ManagedPrivateEndpointsClient type.
 type ManagedPrivateEndpointsClientAPI interface {
-	Create(ctx context.Context, workspaceName string, managedVirtualNetworkName string, managedPrivateEndpointName string) (result managedvirtualnetwork.ManagedPrivateEndpoint, err error)
-	Delete(ctx context.Context, workspaceName string, managedVirtualNetworkName string, managedPrivateEndpointName string) (result autorest.Response, err error)
-	Get(ctx context.Context, workspaceName string, managedVirtualNetworkName string, managedPrivateEndpointName string) (result managedvirtualnetwork.ManagedPrivateEndpoint, err error)
-	List(ctx context.Context, workspaceName string, managedVirtualNetworkName string) (result managedvirtualnetwork.ManagedPrivateEndpointListResponsePage, err error)
-	ListComplete(ctx context.Context, workspaceName string, managedVirtualNetworkName string) (result managedvirtualnetwork.ManagedPrivateEndpointListResponseIterator, err error)
+	Create(ctx context.Context, managedVirtualNetworkName string, managedPrivateEndpointName string, managedPrivateEndpoint managedvirtualnetwork.ManagedPrivateEndpoint) (result managedvirtualnetwork.ManagedPrivateEndpoint, err error)
+	Delete(ctx context.Context, managedVirtualNetworkName string, managedPrivateEndpointName string) (result autorest.Response, err error)
+	Get(ctx context.Context, managedVirtualNetworkName string, managedPrivateEndpointName string) (result managedvirtualnetwork.ManagedPrivateEndpoint, err error)
+	List(ctx context.Context, managedVirtualNetworkName string) (result managedvirtualnetwork.ManagedPrivateEndpointListResponsePage, err error)
+	ListComplete(ctx context.Context, managedVirtualNetworkName string) (result managedvirtualnetwork.ManagedPrivateEndpointListResponseIterator, err error)
 }
 
 var _ ManagedPrivateEndpointsClientAPI = (*managedvirtualnetwork.ManagedPrivateEndpointsClient)(nil)

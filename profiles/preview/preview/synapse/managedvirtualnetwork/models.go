@@ -25,10 +25,6 @@ import (
 	original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-06-01-preview/managedvirtualnetwork"
 )
 
-const (
-	DefaultSynapseDNSSuffix = original.DefaultSynapseDNSSuffix
-)
-
 type BaseClient = original.BaseClient
 type ManagedPrivateEndpoint = original.ManagedPrivateEndpoint
 type ManagedPrivateEndpointConnectionState = original.ManagedPrivateEndpointConnectionState
@@ -38,8 +34,8 @@ type ManagedPrivateEndpointListResponsePage = original.ManagedPrivateEndpointLis
 type ManagedPrivateEndpointProperties = original.ManagedPrivateEndpointProperties
 type ManagedPrivateEndpointsClient = original.ManagedPrivateEndpointsClient
 
-func New() BaseClient {
-	return original.New()
+func New(endpoint string) BaseClient {
+	return original.New(endpoint)
 }
 func NewManagedPrivateEndpointListResponseIterator(page ManagedPrivateEndpointListResponsePage) ManagedPrivateEndpointListResponseIterator {
 	return original.NewManagedPrivateEndpointListResponseIterator(page)
@@ -47,11 +43,11 @@ func NewManagedPrivateEndpointListResponseIterator(page ManagedPrivateEndpointLi
 func NewManagedPrivateEndpointListResponsePage(getNextPage func(context.Context, ManagedPrivateEndpointListResponse) (ManagedPrivateEndpointListResponse, error)) ManagedPrivateEndpointListResponsePage {
 	return original.NewManagedPrivateEndpointListResponsePage(getNextPage)
 }
-func NewManagedPrivateEndpointsClient() ManagedPrivateEndpointsClient {
-	return original.NewManagedPrivateEndpointsClient()
+func NewManagedPrivateEndpointsClient(endpoint string) ManagedPrivateEndpointsClient {
+	return original.NewManagedPrivateEndpointsClient(endpoint)
 }
-func NewWithoutDefaults(synapseDNSSuffix string) BaseClient {
-	return original.NewWithoutDefaults(synapseDNSSuffix)
+func NewWithoutDefaults(endpoint string) BaseClient {
+	return original.NewWithoutDefaults(endpoint)
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

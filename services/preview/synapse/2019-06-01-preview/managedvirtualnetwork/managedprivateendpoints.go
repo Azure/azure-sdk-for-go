@@ -32,16 +32,16 @@ type ManagedPrivateEndpointsClient struct {
 }
 
 // NewManagedPrivateEndpointsClient creates an instance of the ManagedPrivateEndpointsClient client.
-func NewManagedPrivateEndpointsClient() ManagedPrivateEndpointsClient {
-	return ManagedPrivateEndpointsClient{New()}
+func NewManagedPrivateEndpointsClient(endpoint string) ManagedPrivateEndpointsClient {
+	return ManagedPrivateEndpointsClient{New(endpoint)}
 }
 
 // Create create Managed Private Endpoints
 // Parameters:
-// workspaceName - the name of the workspace to execute operations on.
 // managedVirtualNetworkName - managed virtual network name
 // managedPrivateEndpointName - managed private endpoint name
-func (client ManagedPrivateEndpointsClient) Create(ctx context.Context, workspaceName string, managedVirtualNetworkName string, managedPrivateEndpointName string) (result ManagedPrivateEndpoint, err error) {
+// managedPrivateEndpoint - managed private endpoint properties.
+func (client ManagedPrivateEndpointsClient) Create(ctx context.Context, managedVirtualNetworkName string, managedPrivateEndpointName string, managedPrivateEndpoint ManagedPrivateEndpoint) (result ManagedPrivateEndpoint, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedPrivateEndpointsClient.Create")
 		defer func() {
@@ -52,7 +52,7 @@ func (client ManagedPrivateEndpointsClient) Create(ctx context.Context, workspac
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, workspaceName, managedVirtualNetworkName, managedPrivateEndpointName)
+	req, err := client.CreatePreparer(ctx, managedVirtualNetworkName, managedPrivateEndpointName, managedPrivateEndpoint)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedvirtualnetwork.ManagedPrivateEndpointsClient", "Create", nil, "Failure preparing request")
 		return
@@ -74,10 +74,9 @@ func (client ManagedPrivateEndpointsClient) Create(ctx context.Context, workspac
 }
 
 // CreatePreparer prepares the Create request.
-func (client ManagedPrivateEndpointsClient) CreatePreparer(ctx context.Context, workspaceName string, managedVirtualNetworkName string, managedPrivateEndpointName string) (*http.Request, error) {
+func (client ManagedPrivateEndpointsClient) CreatePreparer(ctx context.Context, managedVirtualNetworkName string, managedPrivateEndpointName string, managedPrivateEndpoint ManagedPrivateEndpoint) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"SynapseDnsSuffix": client.SynapseDNSSuffix,
-		"workspaceName":    workspaceName,
+		"endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -90,10 +89,15 @@ func (client ManagedPrivateEndpointsClient) CreatePreparer(ctx context.Context, 
 		"api-version": APIVersion,
 	}
 
+	managedPrivateEndpoint.ID = nil
+	managedPrivateEndpoint.Name = nil
+	managedPrivateEndpoint.Type = nil
 	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
-		autorest.WithCustomBaseURL("https://{workspaceName}.{SynapseDnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
 		autorest.WithPathParameters("/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}", pathParameters),
+		autorest.WithJSON(managedPrivateEndpoint),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -109,7 +113,7 @@ func (client ManagedPrivateEndpointsClient) CreateSender(req *http.Request) (*ht
 func (client ManagedPrivateEndpointsClient) CreateResponder(resp *http.Response) (result ManagedPrivateEndpoint, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
@@ -118,10 +122,9 @@ func (client ManagedPrivateEndpointsClient) CreateResponder(resp *http.Response)
 
 // Delete delete Managed Private Endpoints
 // Parameters:
-// workspaceName - the name of the workspace to execute operations on.
 // managedVirtualNetworkName - managed virtual network name
 // managedPrivateEndpointName - managed private endpoint name
-func (client ManagedPrivateEndpointsClient) Delete(ctx context.Context, workspaceName string, managedVirtualNetworkName string, managedPrivateEndpointName string) (result autorest.Response, err error) {
+func (client ManagedPrivateEndpointsClient) Delete(ctx context.Context, managedVirtualNetworkName string, managedPrivateEndpointName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedPrivateEndpointsClient.Delete")
 		defer func() {
@@ -132,7 +135,7 @@ func (client ManagedPrivateEndpointsClient) Delete(ctx context.Context, workspac
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, workspaceName, managedVirtualNetworkName, managedPrivateEndpointName)
+	req, err := client.DeletePreparer(ctx, managedVirtualNetworkName, managedPrivateEndpointName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedvirtualnetwork.ManagedPrivateEndpointsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -154,10 +157,9 @@ func (client ManagedPrivateEndpointsClient) Delete(ctx context.Context, workspac
 }
 
 // DeletePreparer prepares the Delete request.
-func (client ManagedPrivateEndpointsClient) DeletePreparer(ctx context.Context, workspaceName string, managedVirtualNetworkName string, managedPrivateEndpointName string) (*http.Request, error) {
+func (client ManagedPrivateEndpointsClient) DeletePreparer(ctx context.Context, managedVirtualNetworkName string, managedPrivateEndpointName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"SynapseDnsSuffix": client.SynapseDNSSuffix,
-		"workspaceName":    workspaceName,
+		"endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -172,7 +174,7 @@ func (client ManagedPrivateEndpointsClient) DeletePreparer(ctx context.Context, 
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
-		autorest.WithCustomBaseURL("https://{workspaceName}.{SynapseDnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
 		autorest.WithPathParameters("/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -197,10 +199,9 @@ func (client ManagedPrivateEndpointsClient) DeleteResponder(resp *http.Response)
 
 // Get get Managed Private Endpoints
 // Parameters:
-// workspaceName - the name of the workspace to execute operations on.
 // managedVirtualNetworkName - managed virtual network name
 // managedPrivateEndpointName - managed private endpoint name
-func (client ManagedPrivateEndpointsClient) Get(ctx context.Context, workspaceName string, managedVirtualNetworkName string, managedPrivateEndpointName string) (result ManagedPrivateEndpoint, err error) {
+func (client ManagedPrivateEndpointsClient) Get(ctx context.Context, managedVirtualNetworkName string, managedPrivateEndpointName string) (result ManagedPrivateEndpoint, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedPrivateEndpointsClient.Get")
 		defer func() {
@@ -211,7 +212,7 @@ func (client ManagedPrivateEndpointsClient) Get(ctx context.Context, workspaceNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, workspaceName, managedVirtualNetworkName, managedPrivateEndpointName)
+	req, err := client.GetPreparer(ctx, managedVirtualNetworkName, managedPrivateEndpointName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedvirtualnetwork.ManagedPrivateEndpointsClient", "Get", nil, "Failure preparing request")
 		return
@@ -233,10 +234,9 @@ func (client ManagedPrivateEndpointsClient) Get(ctx context.Context, workspaceNa
 }
 
 // GetPreparer prepares the Get request.
-func (client ManagedPrivateEndpointsClient) GetPreparer(ctx context.Context, workspaceName string, managedVirtualNetworkName string, managedPrivateEndpointName string) (*http.Request, error) {
+func (client ManagedPrivateEndpointsClient) GetPreparer(ctx context.Context, managedVirtualNetworkName string, managedPrivateEndpointName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"SynapseDnsSuffix": client.SynapseDNSSuffix,
-		"workspaceName":    workspaceName,
+		"endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -251,7 +251,7 @@ func (client ManagedPrivateEndpointsClient) GetPreparer(ctx context.Context, wor
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{workspaceName}.{SynapseDnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
 		autorest.WithPathParameters("/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -277,9 +277,8 @@ func (client ManagedPrivateEndpointsClient) GetResponder(resp *http.Response) (r
 
 // List list Managed Private Endpoints
 // Parameters:
-// workspaceName - the name of the workspace to execute operations on.
 // managedVirtualNetworkName - managed virtual network name
-func (client ManagedPrivateEndpointsClient) List(ctx context.Context, workspaceName string, managedVirtualNetworkName string) (result ManagedPrivateEndpointListResponsePage, err error) {
+func (client ManagedPrivateEndpointsClient) List(ctx context.Context, managedVirtualNetworkName string) (result ManagedPrivateEndpointListResponsePage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedPrivateEndpointsClient.List")
 		defer func() {
@@ -291,7 +290,7 @@ func (client ManagedPrivateEndpointsClient) List(ctx context.Context, workspaceN
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, workspaceName, managedVirtualNetworkName)
+	req, err := client.ListPreparer(ctx, managedVirtualNetworkName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managedvirtualnetwork.ManagedPrivateEndpointsClient", "List", nil, "Failure preparing request")
 		return
@@ -316,10 +315,9 @@ func (client ManagedPrivateEndpointsClient) List(ctx context.Context, workspaceN
 }
 
 // ListPreparer prepares the List request.
-func (client ManagedPrivateEndpointsClient) ListPreparer(ctx context.Context, workspaceName string, managedVirtualNetworkName string) (*http.Request, error) {
+func (client ManagedPrivateEndpointsClient) ListPreparer(ctx context.Context, managedVirtualNetworkName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
-		"SynapseDnsSuffix": client.SynapseDNSSuffix,
-		"workspaceName":    workspaceName,
+		"endpoint": client.Endpoint,
 	}
 
 	pathParameters := map[string]interface{}{
@@ -333,7 +331,7 @@ func (client ManagedPrivateEndpointsClient) ListPreparer(ctx context.Context, wo
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
-		autorest.WithCustomBaseURL("https://{workspaceName}.{SynapseDnsSuffix}", urlParameters),
+		autorest.WithCustomBaseURL("{endpoint}", urlParameters),
 		autorest.WithPathParameters("/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -379,7 +377,7 @@ func (client ManagedPrivateEndpointsClient) listNextResults(ctx context.Context,
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ManagedPrivateEndpointsClient) ListComplete(ctx context.Context, workspaceName string, managedVirtualNetworkName string) (result ManagedPrivateEndpointListResponseIterator, err error) {
+func (client ManagedPrivateEndpointsClient) ListComplete(ctx context.Context, managedVirtualNetworkName string) (result ManagedPrivateEndpointListResponseIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedPrivateEndpointsClient.List")
 		defer func() {
@@ -390,6 +388,6 @@ func (client ManagedPrivateEndpointsClient) ListComplete(ctx context.Context, wo
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, workspaceName, managedVirtualNetworkName)
+	result.page, err = client.List(ctx, managedVirtualNetworkName)
 	return
 }

@@ -44,7 +44,7 @@ type ApplicationsClientAPI interface {
 	ListBySubscription(ctx context.Context) (result managedapplications.ApplicationListResultPage, err error)
 	ListBySubscriptionComplete(ctx context.Context) (result managedapplications.ApplicationListResultIterator, err error)
 	RefreshPermissions(ctx context.Context, resourceGroupName string, applicationName string) (result managedapplications.ApplicationsRefreshPermissionsFuture, err error)
-	Update(ctx context.Context, resourceGroupName string, applicationName string, parameters *managedapplications.Application) (result managedapplications.Application, err error)
+	Update(ctx context.Context, resourceGroupName string, applicationName string, parameters *managedapplications.ApplicationPatchable) (result managedapplications.Application, err error)
 	UpdateByID(ctx context.Context, applicationID string, parameters *managedapplications.Application) (result managedapplications.Application, err error)
 }
 
@@ -53,11 +53,11 @@ var _ ApplicationsClientAPI = (*managedapplications.ApplicationsClient)(nil)
 // ApplicationDefinitionsClientAPI contains the set of methods on the ApplicationDefinitionsClient type.
 type ApplicationDefinitionsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters managedapplications.ApplicationDefinition) (result managedapplications.ApplicationDefinitionsCreateOrUpdateFuture, err error)
-	CreateOrUpdateByID(ctx context.Context, applicationDefinitionID string, parameters managedapplications.ApplicationDefinition) (result managedapplications.ApplicationDefinitionsCreateOrUpdateByIDFuture, err error)
+	CreateOrUpdateByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string, parameters managedapplications.ApplicationDefinition) (result managedapplications.ApplicationDefinitionsCreateOrUpdateByIDFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, applicationDefinitionName string) (result managedapplications.ApplicationDefinitionsDeleteFuture, err error)
-	DeleteByID(ctx context.Context, applicationDefinitionID string) (result managedapplications.ApplicationDefinitionsDeleteByIDFuture, err error)
+	DeleteByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string) (result managedapplications.ApplicationDefinitionsDeleteByIDFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, applicationDefinitionName string) (result managedapplications.ApplicationDefinition, err error)
-	GetByID(ctx context.Context, applicationDefinitionID string) (result managedapplications.ApplicationDefinition, err error)
+	GetByID(ctx context.Context, resourceGroupName string, applicationDefinitionName string) (result managedapplications.ApplicationDefinition, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result managedapplications.ApplicationDefinitionListResultPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result managedapplications.ApplicationDefinitionListResultIterator, err error)
 }

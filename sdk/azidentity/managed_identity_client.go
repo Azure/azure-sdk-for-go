@@ -6,7 +6,9 @@ package azidentity
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -22,11 +24,13 @@ const (
 )
 
 const (
-	identityEndpoint = "IDENTITY_ENDPOINT"
-	identityHeader   = "IDENTITY_HEADER"
-	msiEndpoint      = "MSI_ENDPOINT"
-	msiSecret        = "MSI_SECRET"
-	imdsAPIVersion   = "2018-02-01"
+	arcIMDSEndpoint    = "IMDS_ENDPOINT"
+	identityEndpoint   = "IDENTITY_ENDPOINT"
+	identityHeader     = "IDENTITY_HEADER"
+	msiEndpoint        = "MSI_ENDPOINT"
+	msiSecret          = "MSI_SECRET"
+	imdsAPIVersion     = "2018-02-01"
+	azureArcAPIVersion = "2019-08-15"
 )
 
 type msiType int
@@ -38,6 +42,7 @@ const (
 	msiTypeCloudShell          msiType = 3
 	msiTypeUnavailable         msiType = 4
 	msiTypeAppServiceV20190801 msiType = 5
+	msiTypeAzureArc            msiType = 6
 )
 
 // managedIdentityClient provides the base for authenticating in managed identity environments
@@ -142,6 +147,13 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID 
 		return c.createIMDSAuthRequest(ctx, scopes)
 	case msiTypeAppServiceV20170901, msiTypeAppServiceV20190801:
 		return c.createAppServiceAuthRequest(ctx, clientID, scopes)
+	case msiTypeAzureArc:
+		// need to perform preliminary request to retreive the secret key challenge provided by the HIMDS service
+		key, err := c.getAzureArcSecretKey(ctx, scopes)
+		if err != nil {
+			return nil, &AuthenticationFailedError{inner: err, msg: "Failed to retreive secret key from the identity endpoint."}
+		}
+		return c.createAzureArcAuthRequest(ctx, key, scopes)
 	case msiTypeCloudShell:
 		return c.createCloudShellAuthRequest(ctx, clientID, scopes)
 	default:
@@ -191,6 +203,57 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 	return request, nil
 }
 
+func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resources []string) (string, error) {
+	// create the request to retreive the secret key challenge provided by the HIMDS service
+	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
+	if err != nil {
+		return "", err
+	}
+	request.Header.Set(azcore.HeaderMetadata, "true")
+	q := request.URL.Query()
+	q.Add("api-version", azureArcAPIVersion)
+	q.Add("resource", strings.Join(resources, " "))
+	request.URL.RawQuery = q.Encode()
+	// send the initial request to get the short-lived secret key
+	response, err := c.pipeline.Do(request)
+	if err != nil {
+		return "", err
+	}
+	// the endpoint is expected to return a 401 with the WWW-Authenticte header set to the location
+	// of the secret key file. Any other status code indicates an error in the request.
+	if response.StatusCode != 401 {
+		return "", &AuthenticationFailedError{inner: newAADAuthenticationFailedError(response), msg: fmt.Sprintf("Expected a 401 Unauthorized response, received: %d", response.StatusCode)}
+	}
+	header := response.Header.Get("WWW-Authenticate")
+	if len(header) == 0 {
+		return "", errors.New("Did not receive a value from WWW-Authenticate header")
+	}
+	// the WWW-Authenticate header is expected in the following format: Basic realm=/some/file/path.key
+	pos := strings.LastIndex(header, "=")
+	if pos == -1 {
+		return "", fmt.Errorf("Did not receive a correct value from WWW-Authenticate header: %s", header)
+	}
+	key, err := ioutil.ReadFile(header[pos+1:])
+	if err != nil {
+		return "", fmt.Errorf("Could not read file (%s) contents: %w", header[pos+1:], err)
+	}
+	return string(key), nil
+}
+
+func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, key string, resources []string) (*azcore.Request, error) {
+	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	request.Header.Set(azcore.HeaderMetadata, "true")
+	request.Header.Set(azcore.HeaderAuthorization, fmt.Sprintf("Basic %s", key))
+	q := request.URL.Query()
+	q.Add("api-version", azureArcAPIVersion)
+	q.Add("resource", strings.Join(resources, " "))
+	request.URL.RawQuery = q.Encode()
+	return request, nil
+}
+
 func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.Request, error) {
 	request, err := azcore.NewRequest(ctx, http.MethodPost, c.endpoint)
 	if err != nil {
@@ -216,6 +279,8 @@ func (c *managedIdentityClient) getMSIType() (msiType, error) {
 			c.endpoint = endpointEnvVar
 			if header := os.Getenv(identityHeader); header != "" { // if BOTH the env vars IDENTITY_ENDPOINT and IDENTITY_HEADER are set the msiType is AppService
 				c.msiType = msiTypeAppServiceV20190801
+			} else if arcIMDS := os.Getenv(arcIMDSEndpoint); arcIMDS != "" {
+				c.msiType = msiTypeAzureArc
 			} else { // if ONLY the env var IDENTITY_ENDPOINT is set the msiType is Azure Functions
 				c.msiType = msiTypeUnavailable
 				return c.msiType, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "This Managed Identity Environment is not supported yet"}

@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2020-08-01/operationalinsights"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2020-08-01/operationalinsights"
 
 // AvailableServiceTier service Tier details.
 type AvailableServiceTier struct {

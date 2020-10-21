@@ -1,5 +1,35 @@
 # CHANGELOG
 
+## `v47.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| alertsmanagement | 2019-06-01-preview |
+| azurestackhci | 2020-10-01 |
+| compute | 2020-06-30 |
+| healthcareapis | 2020-03-15 |
+| keyvault | 2020-04-01-preview |
+| kusto | 2020-09-18 |
+| workloadmonitor | 2020-01-13-preview |
+
+### Updated Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| appplatform | 2019-05-01-preview |
+
+### Breaking Changes
+
+| Package Name | API Version |
+| ---: | :---: |
+| operationalinsights | 2020-03-01-preview |
+| synapse | 2019-06-01-preview |
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/c0471d8a805d8ae7f55946ea7020dd56282b23f4
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/6e52d5c8e77a02fb333a991de8f1ca630ba9ff3e (synapse)
+
 ## `v47.0.0`
 
 ### New Packages

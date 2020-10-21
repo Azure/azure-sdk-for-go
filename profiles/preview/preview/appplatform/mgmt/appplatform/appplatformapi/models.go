@@ -27,5 +27,6 @@ type CertificatesClientAPI = original.CertificatesClientAPI
 type CustomDomainsClientAPI = original.CustomDomainsClientAPI
 type DeploymentsClientAPI = original.DeploymentsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type RuntimeVersionsClientAPI = original.RuntimeVersionsClientAPI
 type ServicesClientAPI = original.ServicesClientAPI
 type SkuClientAPI = original.SkuClientAPI

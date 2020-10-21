@@ -19,9 +19,10 @@
 
 package alertsmanagementapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/alertsmanagement/mgmt/2019-05-05/alertsmanagement/alertsmanagementapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/alertsmanagement/mgmt/2019-06-01-preview/alertsmanagement/alertsmanagementapi"
 
 type ActionRulesClientAPI = original.ActionRulesClientAPI
 type AlertsClientAPI = original.AlertsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type SmartDetectorAlertRulesClientAPI = original.SmartDetectorAlertRulesClientAPI
 type SmartGroupsClientAPI = original.SmartGroupsClientAPI

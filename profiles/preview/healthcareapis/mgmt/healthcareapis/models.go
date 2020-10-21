@@ -22,7 +22,7 @@ package healthcareapis
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/healthcareapis/mgmt/2019-09-16/healthcareapis"
+	original "github.com/Azure/azure-sdk-for-go/services/healthcareapis/mgmt/2020-03-15/healthcareapis"
 )
 
 const (

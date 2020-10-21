@@ -512,6 +512,29 @@ type IotSensorsClientAPI interface {
 
 var _ IotSensorsClientAPI = (*security.IotSensorsClient)(nil)
 
+// DevicesForSubscriptionClientAPI contains the set of methods on the DevicesForSubscriptionClient type.
+type DevicesForSubscriptionClientAPI interface {
+	List(ctx context.Context, limit *int32, skipToken string, deviceManagementType security.ManagementState) (result security.DeviceListPage, err error)
+	ListComplete(ctx context.Context, limit *int32, skipToken string, deviceManagementType security.ManagementState) (result security.DeviceListIterator, err error)
+}
+
+var _ DevicesForSubscriptionClientAPI = (*security.DevicesForSubscriptionClient)(nil)
+
+// DevicesForHubClientAPI contains the set of methods on the DevicesForHubClient type.
+type DevicesForHubClientAPI interface {
+	List(ctx context.Context, resourceID string, limit *int32, skipToken string, deviceManagementType security.ManagementState) (result security.DeviceListPage, err error)
+	ListComplete(ctx context.Context, resourceID string, limit *int32, skipToken string, deviceManagementType security.ManagementState) (result security.DeviceListIterator, err error)
+}
+
+var _ DevicesForHubClientAPI = (*security.DevicesForHubClient)(nil)
+
+// DeviceClientAPI contains the set of methods on the DeviceClient type.
+type DeviceClientAPI interface {
+	Get(ctx context.Context, resourceID string, deviceID string) (result security.Device, err error)
+}
+
+var _ DeviceClientAPI = (*security.DeviceClient)(nil)
+
 // OnPremiseIotSensorsClientAPI contains the set of methods on the OnPremiseIotSensorsClient type.
 type OnPremiseIotSensorsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, onPremiseIotSensorName string) (result security.OnPremiseIotSensor, err error)

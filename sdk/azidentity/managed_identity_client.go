@@ -203,7 +203,7 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 	return request, nil
 }
 
-func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, scopes []string) (string, error) {
+func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resources []string) (string, error) {
 	// create the request to retreive the secret key challenge provided by the HIMDS service
 	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
@@ -212,7 +212,7 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, scopes
 	request.Header.Set(azcore.HeaderMetadata, "true")
 	q := request.URL.Query()
 	q.Add("api-version", azureArcAPIVersion)
-	q.Add("resource", strings.Join(scopes, " "))
+	q.Add("resource", strings.Join(resources, " "))
 	request.URL.RawQuery = q.Encode()
 	// send the initial request to get the short-lived secret key
 	response, err := c.pipeline.Do(request)
@@ -240,7 +240,7 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, scopes
 	return string(key), nil
 }
 
-func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, key string, scopes []string) (*azcore.Request, error) {
+func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, key string, resources []string) (*azcore.Request, error) {
 	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return nil, err
@@ -249,7 +249,7 @@ func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, k
 	request.Header.Set(azcore.HeaderAuthorization, fmt.Sprintf("Basic %s", key))
 	q := request.URL.Query()
 	q.Add("api-version", azureArcAPIVersion)
-	q.Add("resource", strings.Join(scopes, " "))
+	q.Add("resource", strings.Join(resources, " "))
 	request.URL.RawQuery = q.Encode()
 	return request, nil
 }

@@ -224,19 +224,20 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, scopes
 	if response.StatusCode != 401 {
 		return "", &AuthenticationFailedError{inner: newAADAuthenticationFailedError(response), msg: fmt.Sprintf("Expected a 401 Unauthorized response, received: %d", response.StatusCode)}
 	}
-	if header := response.Header.Get("WWW-Authenticate"); len(header) != 0 {
-		// the WWW-Authenticate header is expected in the following format: Basic realm=/some/file/path.key
-		pos := strings.LastIndex(header, "=")
-		if pos == -1 {
-			return "", errors.New("Did not receive a value from WWW-Authenticate header")
-		}
-		key, err := ioutil.ReadFile(header[pos+1:])
-		if err != nil {
-			return "", fmt.Errorf("Could not read file contents: %w", err)
-		}
-		return string(key), nil
+	header := response.Header.Get("WWW-Authenticate")
+	if len(header) == 0 {
+		return "", errors.New("Did not receive a value from WWW-Authenticate header")
 	}
-	return "", errors.New("Did not receive a value from WWW-Authenticate header")
+	// the WWW-Authenticate header is expected in the following format: Basic realm=/some/file/path.key
+	pos := strings.LastIndex(header, "=")
+	if pos == -1 {
+		return "", fmt.Errorf("Did not receive a correct value from WWW-Authenticate header: %s", header)
+	}
+	key, err := ioutil.ReadFile(header[pos+1:])
+	if err != nil {
+		return "", fmt.Errorf("Could not read file (%s) contents: %w", header[pos+1:], err)
+	}
+	return string(key), nil
 }
 
 func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, key string, scopes []string) (*azcore.Request, error) {

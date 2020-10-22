@@ -23,6 +23,20 @@ const (
 	expiredTokenResponse         = `{"error": "expired_token","error_description": "Token has expired.","error_codes": [],"timestamp": "2019-12-01 19:00:00Z","trace_id": "2d091b0","correlation_id": "a999","error_uri": "https://login.contoso.com/error?code=0"}`
 )
 
+func TestDeviceCodeCredential_InvalidTenantID(t *testing.T) {
+	cred, err := NewDeviceCodeCredential(&DeviceCodeCredentialOptions{TenantID: badTenantID})
+	if err == nil {
+		t.Fatal("Expected an error but received none")
+	}
+	if cred != nil {
+		t.Fatalf("Expected a nil credential value. Received: %v", cred)
+	}
+	var errType *CredentialUnavailableError
+	if !errors.As(err, &errType) {
+		t.Fatalf("Did not receive a CredentialUnavailableError. Received: %t", err)
+	}
+}
+
 func TestDeviceCodeCredential_CreateAuthRequestSuccess(t *testing.T) {
 	cred, err := NewDeviceCodeCredential(nil)
 	if err != nil {
@@ -143,7 +157,7 @@ func TestDeviceCodeCredential_RequestNewDeviceCodeCustomTenantIDClientID(t *test
 	if req.Request.URL.Scheme != "https" {
 		t.Fatalf("Wrong request scheme")
 	}
-	if req.Request.URL.Path != "/expected_tenant/oauth2/v2.0/devicecode" {
+	if req.Request.URL.Path != "/expected-tenant/oauth2/v2.0/devicecode" {
 		t.Fatalf("Did not set the right path when passing in an empty tenant ID")
 	}
 }

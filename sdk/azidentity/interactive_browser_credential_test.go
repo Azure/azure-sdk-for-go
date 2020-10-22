@@ -15,6 +15,20 @@ import (
 	"golang.org/x/net/http2"
 )
 
+func TestInteractiveBrowserCredential_InvalidTenantID(t *testing.T) {
+	cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{TenantID: badTenantID})
+	if err == nil {
+		t.Fatal("Expected an error but received none")
+	}
+	if cred != nil {
+		t.Fatalf("Expected a nil credential value. Received: %v", cred)
+	}
+	var errType *CredentialUnavailableError
+	if !errors.As(err, &errType) {
+		t.Fatalf("Did not receive a CredentialUnavailableError. Received: %t", err)
+	}
+}
+
 func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
 	cred, err := NewInteractiveBrowserCredential(nil)
 	if err != nil {

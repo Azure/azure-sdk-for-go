@@ -53,6 +53,9 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 		temp := DefaultInteractiveBrowserCredentialOptions()
 		options = &temp
 	}
+	if !validTenantID(options.TenantID) {
+		return nil, &CredentialUnavailableError{CredentialType: "Interactive Browser Credential", Message: "invalid tenant ID passed to credential"}
+	}
 	c, err := newAADIdentityClient(options.Options)
 	if err != nil {
 		return nil, err

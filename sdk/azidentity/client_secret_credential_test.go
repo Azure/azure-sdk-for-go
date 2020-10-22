@@ -16,7 +16,8 @@ import (
 )
 
 const (
-	tenantID                 = "expected_tenant"
+	tenantID                 = "expected-tenant"
+	badTenantID              = "bad_tenant"
 	clientID                 = "expected_client"
 	secret                   = "secret"
 	wrongSecret              = "wrong_secret"
@@ -24,6 +25,20 @@ const (
 	scope                    = "http://storage.azure.com/.default"
 	defaultTestAuthorityHost = "login.microsoftonline.com"
 )
+
+func TestClientSecretCredential_InvalidTenantID(t *testing.T) {
+	cred, err := NewClientSecretCredential(badTenantID, clientID, secret, nil)
+	if err == nil {
+		t.Fatal("Expected an error but received none")
+	}
+	if cred != nil {
+		t.Fatalf("Expected a nil credential value. Received: %v", cred)
+	}
+	var errType *CredentialUnavailableError
+	if !errors.As(err, &errType) {
+		t.Fatalf("Did not receive a CredentialUnavailableError. Received: %t", err)
+	}
+}
 
 func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, nil)

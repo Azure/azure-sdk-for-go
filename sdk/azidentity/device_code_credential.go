@@ -71,6 +71,9 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 		temp := DefaultDeviceCodeCredentialOptions()
 		options = &temp
 	}
+	if !validTenantID(options.TenantID) {
+		return nil, &CredentialUnavailableError{CredentialType: "Device Code Credential", Message: "invalid tenant ID passed to credential"}
+	}
 	c, err := newAADIdentityClient(options.Options)
 	if err != nil {
 		return nil, err

@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"regexp"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -197,4 +198,13 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 		azcore.NewTelemetryPolicy(&o.Telemetry),
 		azcore.NewRetryPolicy(&retryOpts),
 		azcore.NewLogPolicy(nil))
+}
+
+// validTenantID return true is it receives a valid tenantID, returns false otherwise
+func validTenantID(tenantID string) bool {
+	match, err := regexp.MatchString("^[0-9a-zA-Z-.]+$", tenantID)
+	if err != nil {
+		return false
+	}
+	return match
 }

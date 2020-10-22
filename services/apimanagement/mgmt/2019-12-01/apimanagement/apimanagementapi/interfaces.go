@@ -281,6 +281,36 @@ type CertificateClientAPI interface {
 
 var _ CertificateClientAPI = (*apimanagement.CertificateClient)(nil)
 
+// ContentTypeClientAPI contains the set of methods on the ContentTypeClient type.
+type ContentTypeClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string) (result apimanagement.ContentTypeContract, err error)
+	Delete(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string) (result autorest.Response, err error)
+	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string) (result autorest.Response, err error)
+	ListByService(ctx context.Context, resourceGroupName string, serviceName string) (result apimanagement.ContentTypeCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string) (result apimanagement.ContentTypeCollectionIterator, err error)
+}
+
+var _ ContentTypeClientAPI = (*apimanagement.ContentTypeClient)(nil)
+
+// ContentTypesClientAPI contains the set of methods on the ContentTypesClient type.
+type ContentTypesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string) (result apimanagement.ContentTypeContract, err error)
+}
+
+var _ ContentTypesClientAPI = (*apimanagement.ContentTypesClient)(nil)
+
+// ContentItemClientAPI contains the set of methods on the ContentItemClient type.
+type ContentItemClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string) (result apimanagement.ContentItemContract, err error)
+	Delete(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string) (result apimanagement.ContentItemContract, err error)
+	GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, contentItemID string) (result autorest.Response, err error)
+	ListByService(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string) (result apimanagement.ContentItemCollectionPage, err error)
+	ListByServiceComplete(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string) (result apimanagement.ContentItemCollectionIterator, err error)
+}
+
+var _ ContentItemClientAPI = (*apimanagement.ContentItemClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result apimanagement.OperationListResultPage, err error)

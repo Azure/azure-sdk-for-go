@@ -41,6 +41,9 @@ func DefaultAuthorizationCodeCredentialOptions() AuthorizationCodeCredentialOpti
 // redirectURI: The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
 // options: Manage the configuration of the requests sent to Azure Active Directory, they can also include a client secret for web app authentication.
 func NewAuthorizationCodeCredential(tenantID string, clientID string, authCode string, redirectURI string, options *AuthorizationCodeCredentialOptions) (*AuthorizationCodeCredential, error) {
+	if !validTenantID(tenantID) {
+		return nil, &CredentialUnavailableError{CredentialType: "Authorization Code Credential", Message: "invalid tenant ID passed to credential"}
+	}
 	if options == nil {
 		temp := DefaultAuthorizationCodeCredentialOptions()
 		options = &temp

@@ -20,6 +20,20 @@ const (
 	testRedirectURI = "http://localhost"
 )
 
+func TestAuthorizationCodeCredential_InvalidTenantID(t *testing.T) {
+	cred, err := NewAuthorizationCodeCredential(badTenantID, clientID, testAuthCode, testRedirectURI, nil)
+	if err == nil {
+		t.Fatal("Expected an error but received none")
+	}
+	if cred != nil {
+		t.Fatalf("Expected a nil credential value. Received: %v", cred)
+	}
+	var errType *CredentialUnavailableError
+	if !errors.As(err, &errType) {
+		t.Fatalf("Did not receive a CredentialUnavailableError. Received: %t", err)
+	}
+}
+
 func TestAuthorizationCodeCredential_CreateAuthRequestSuccess(t *testing.T) {
 	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, testRedirectURI, nil)
 	if err != nil {

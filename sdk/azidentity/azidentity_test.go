@@ -123,3 +123,33 @@ func Test_NonHTTPSAuthorityHost(t *testing.T) {
 		t.Fatal("Expected an error but did not receive one.")
 	}
 }
+
+func Test_ValidTenantIDFalse(t *testing.T) {
+	if validTenantID("bad@tenant") {
+		t.Fatal("Expected to receive false, but received true")
+	}
+	if validTenantID("bad/tenant") {
+		t.Fatal("Expected to receive false, but received true")
+	}
+	if validTenantID("bad(tenant") {
+		t.Fatal("Expected to receive false, but received true")
+	}
+	if validTenantID("bad)tenant") {
+		t.Fatal("Expected to receive false, but received true")
+	}
+	if validTenantID("bad:tenant") {
+		t.Fatal("Expected to receive false, but received true")
+	}
+}
+
+func Test_ValidTenantIDTrue(t *testing.T) {
+	if !validTenantID("goodtenant") {
+		t.Fatal("Expected to receive true, but received false")
+	}
+	if !validTenantID("good-tenant") {
+		t.Fatal("Expected to receive true, but received false")
+	}
+	if !validTenantID("good.tenant") {
+		t.Fatal("Expected to receive true, but received false")
+	}
+}

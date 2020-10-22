@@ -39,6 +39,9 @@ func DefaultUsernamePasswordCredentialOptions() UsernamePasswordCredentialOption
 // password: A user's account password
 // options: UsernamePasswordCredentialOptions used to configure the pipeline for the requests sent to Azure Active Directory.
 func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *UsernamePasswordCredentialOptions) (*UsernamePasswordCredential, error) {
+	if !validTenantID(tenantID) {
+		return nil, &CredentialUnavailableError{CredentialType: "Username Password Credential", Message: "invalid tenant ID passed to credential"}
+	}
 	if options == nil {
 		temp := DefaultUsernamePasswordCredentialOptions()
 		options = &temp

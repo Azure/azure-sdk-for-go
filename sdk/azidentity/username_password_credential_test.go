@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -13,6 +14,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
+
+func TestUsernamePasswordCredential_InvalidTenantID(t *testing.T) {
+	cred, err := NewUsernamePasswordCredential(badTenantID, clientID, "username", "password", nil)
+	if err == nil {
+		t.Fatal("Expected an error but received none")
+	}
+	if cred != nil {
+		t.Fatalf("Expected a nil credential value. Received: %v", cred)
+	}
+	var errType *CredentialUnavailableError
+	if !errors.As(err, &errType) {
+		t.Fatalf("Did not receive a CredentialUnavailableError. Received: %t", err)
+	}
+}
 
 func TestUsernamePasswordCredential_CreateAuthRequestSuccess(t *testing.T) {
 	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", nil)

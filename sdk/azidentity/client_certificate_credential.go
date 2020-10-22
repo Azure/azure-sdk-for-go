@@ -49,6 +49,9 @@ func DefaultClientCertificateCredentialOptions() ClientCertificateCredentialOpti
 // password: The password required to decrypt the private key.  Pass nil if there is no password.
 // options: ClientCertificateCredentialOptions that can be used to provide additional configurations for the credential.
 func NewClientCertificateCredential(tenantID string, clientID string, clientCertificate string, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
+	if !validTenantID(tenantID) {
+		return nil, &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: "invalid tenant ID passed to credential"}
+	}
 	_, err := os.Stat(clientCertificate)
 	if err != nil {
 		credErr := &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: "Certificate file not found in path: " + clientCertificate}

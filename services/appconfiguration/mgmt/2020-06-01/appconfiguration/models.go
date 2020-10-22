@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2020-06-01/appconfiguration"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/appconfiguration/mgmt/2020-06-01/appconfiguration"
 
 // APIKey an API key used for authenticating with a configuration store endpoint.
 type APIKey struct {

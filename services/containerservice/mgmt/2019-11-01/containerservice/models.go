@@ -1688,7 +1688,7 @@ type ManagedClusterProperties struct {
 	NodeResourceGroup *string `json:"nodeResourceGroup,omitempty"`
 	// EnableRBAC - Whether to enable Kubernetes Role-Based Access Control.
 	EnableRBAC *bool `json:"enableRBAC,omitempty"`
-	// EnablePodSecurityPolicy - (PREVIEW) Whether to enable Kubernetes Pod security policy.
+	// EnablePodSecurityPolicy - (DEPRECATING) Whether to enable Kubernetes pod security policy (preview). This feature is set for removal on October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy.
 	EnablePodSecurityPolicy *bool `json:"enablePodSecurityPolicy,omitempty"`
 	// NetworkProfile - Profile of network configuration.
 	NetworkProfile *NetworkProfileType `json:"networkProfile,omitempty"`
@@ -2000,9 +2000,9 @@ type ManagedClusterUpgradeProfileProperties struct {
 
 // ManagedClusterWindowsProfile profile for Windows VMs in the container service cluster.
 type ManagedClusterWindowsProfile struct {
-	// AdminUsername - The administrator username to use for Windows VMs.
+	// AdminUsername - Specifies the name of the administrator account. <br><br> **restriction:** Cannot end in "." <br><br> **Disallowed values:** "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5". <br><br> **Minimum-length:** 1 character <br><br> **Max-length:** 20 characters
 	AdminUsername *string `json:"adminUsername,omitempty"`
-	// AdminPassword - The administrator password to use for Windows VMs.
+	// AdminPassword - Specifies the password of the administrator account. <br><br> **Minimum-length:** 8 characters <br><br> **Max-length:** 123 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character (Regex match [\W_]) <br><br> **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
 	AdminPassword *string `json:"adminPassword,omitempty"`
 }
 

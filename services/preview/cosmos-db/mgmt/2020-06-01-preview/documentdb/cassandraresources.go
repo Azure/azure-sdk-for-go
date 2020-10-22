@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// CassandraResourcesClient is the azure Cosmos DB Database Service Resource Provider REST API
+// CassandraResourcesClient is the client for the CassandraResources methods of the Documentdb service.
 type CassandraResourcesClient struct {
 	BaseClient
 }

@@ -1067,6 +1067,20 @@ func (cmbp ContinuousModeBackupPolicy) AsBasicBackupPolicy() (BasicBackupPolicy,
 	return &cmbp, true
 }
 
+// CorsPolicy the CORS policy for the Cosmos DB database account.
+type CorsPolicy struct {
+	// AllowedOrigins - The origin domains that are permitted to make a request against the service via CORS.
+	AllowedOrigins *string `json:"allowedOrigins,omitempty"`
+	// AllowedMethods - The methods (HTTP request verbs) that the origin domain may use for a CORS request.
+	AllowedMethods *string `json:"allowedMethods,omitempty"`
+	// AllowedHeaders - The request headers that the origin domain may specify on the CORS request.
+	AllowedHeaders *string `json:"allowedHeaders,omitempty"`
+	// ExposedHeaders - The response headers that may be sent in the response to the CORS request and exposed by the browser to the request issuer.
+	ExposedHeaders *string `json:"exposedHeaders,omitempty"`
+	// MaxAgeInSeconds - The maximum amount time that a browser should cache the preflight OPTIONS request.
+	MaxAgeInSeconds *int64 `json:"maxAgeInSeconds,omitempty"`
+}
+
 // CreateUpdateOptions createUpdateOptions are a list of key-value pairs that describe the resource. Supported
 // keys are "If-Match", "If-None-Match", "Session-Token" and "Throughput"
 type CreateUpdateOptions struct {
@@ -1251,6 +1265,8 @@ type DatabaseAccountCreateUpdateProperties struct {
 	EnableAnalyticalStorage *bool `json:"enableAnalyticalStorage,omitempty"`
 	// BackupPolicy - The object representing the policy for taking backups on an account.
 	BackupPolicy BasicBackupPolicy `json:"backupPolicy,omitempty"`
+	// Cors - The CORS policy for the Cosmos DB database account.
+	Cors *[]CorsPolicy `json:"cors,omitempty"`
 	// CreateMode - Possible values include: 'CreateModeDatabaseAccountCreateUpdateProperties', 'CreateModeDefault', 'CreateModeRestore'
 	CreateMode CreateModeBasicDatabaseAccountCreateUpdateProperties `json:"createMode,omitempty"`
 }
@@ -1352,6 +1368,9 @@ func (dacup DatabaseAccountCreateUpdateProperties) MarshalJSON() ([]byte, error)
 		objectMap["enableAnalyticalStorage"] = dacup.EnableAnalyticalStorage
 	}
 	objectMap["backupPolicy"] = dacup.BackupPolicy
+	if dacup.Cors != nil {
+		objectMap["cors"] = dacup.Cors
+	}
 	if dacup.CreateMode != "" {
 		objectMap["createMode"] = dacup.CreateMode
 	}
@@ -1548,6 +1567,15 @@ func (dacup *DatabaseAccountCreateUpdateProperties) UnmarshalJSON(body []byte) e
 				}
 				dacup.BackupPolicy = backupPolicy
 			}
+		case "cors":
+			if v != nil {
+				var cors []CorsPolicy
+				err = json.Unmarshal(*v, &cors)
+				if err != nil {
+					return err
+				}
+				dacup.Cors = &cors
+			}
 		case "createMode":
 			if v != nil {
 				var createMode CreateModeBasicDatabaseAccountCreateUpdateProperties
@@ -1618,6 +1646,8 @@ type DatabaseAccountGetProperties struct {
 	RestoreParameters *RestoreParameters `json:"restoreParameters,omitempty"`
 	// BackupPolicy - The object representing the policy for taking backups on an account.
 	BackupPolicy BasicBackupPolicy `json:"backupPolicy,omitempty"`
+	// Cors - The CORS policy for the Cosmos DB database account.
+	Cors *[]CorsPolicy `json:"cors,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DatabaseAccountGetProperties.
@@ -1678,6 +1708,9 @@ func (dagp DatabaseAccountGetProperties) MarshalJSON() ([]byte, error) {
 		objectMap["restoreParameters"] = dagp.RestoreParameters
 	}
 	objectMap["backupPolicy"] = dagp.BackupPolicy
+	if dagp.Cors != nil {
+		objectMap["cors"] = dagp.Cors
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -1931,6 +1964,15 @@ func (dagp *DatabaseAccountGetProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dagp.BackupPolicy = backupPolicy
+			}
+		case "cors":
+			if v != nil {
+				var cors []CorsPolicy
+				err = json.Unmarshal(*v, &cors)
+				if err != nil {
+					return err
+				}
+				dagp.Cors = &cors
 			}
 		}
 	}
@@ -2297,6 +2339,7 @@ type DatabaseAccountUpdateParameters struct {
 	// Location - The location of the resource group to which the resource belongs.
 	Location                         *string `json:"location,omitempty"`
 	*DatabaseAccountUpdateProperties `json:"properties,omitempty"`
+	Identity                         *ManagedServiceIdentity `json:"identity,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DatabaseAccountUpdateParameters.
@@ -2310,6 +2353,9 @@ func (daup DatabaseAccountUpdateParameters) MarshalJSON() ([]byte, error) {
 	}
 	if daup.DatabaseAccountUpdateProperties != nil {
 		objectMap["properties"] = daup.DatabaseAccountUpdateProperties
+	}
+	if daup.Identity != nil {
+		objectMap["identity"] = daup.Identity
 	}
 	return json.Marshal(objectMap)
 }
@@ -2349,6 +2395,15 @@ func (daup *DatabaseAccountUpdateParameters) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				daup.DatabaseAccountUpdateProperties = &databaseAccountUpdateProperties
+			}
+		case "identity":
+			if v != nil {
+				var identity ManagedServiceIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				daup.Identity = &identity
 			}
 		}
 	}
@@ -2392,6 +2447,8 @@ type DatabaseAccountUpdateProperties struct {
 	EnableAnalyticalStorage *bool `json:"enableAnalyticalStorage,omitempty"`
 	// BackupPolicy - The object representing the policy for taking backups on an account.
 	BackupPolicy BasicBackupPolicy `json:"backupPolicy,omitempty"`
+	// Cors - The CORS policy for the Cosmos DB database account.
+	Cors *[]CorsPolicy `json:"cors,omitempty"`
 }
 
 // UnmarshalJSON is the custom unmarshaler for DatabaseAccountUpdateProperties struct.
@@ -2555,6 +2612,15 @@ func (daup *DatabaseAccountUpdateProperties) UnmarshalJSON(body []byte) error {
 				}
 				daup.BackupPolicy = backupPolicy
 			}
+		case "cors":
+			if v != nil {
+				var cors []CorsPolicy
+				err = json.Unmarshal(*v, &cors)
+				if err != nil {
+					return err
+				}
+				daup.Cors = &cors
+			}
 		}
 	}
 
@@ -2567,6 +2633,11 @@ type DatabaseRestoreResource struct {
 	DatabaseName *string `json:"databaseName,omitempty"`
 	// CollectionNames - The names of the collections to restore.
 	CollectionNames *[]string `json:"collectionNames,omitempty"`
+}
+
+// DefaultErrorResponse an error response from the service.
+type DefaultErrorResponse struct {
+	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // DefaultRequestDatabaseAccountCreateUpdateProperties properties for non-restore Azure Cosmos DB database
@@ -2608,6 +2679,8 @@ type DefaultRequestDatabaseAccountCreateUpdateProperties struct {
 	EnableAnalyticalStorage *bool `json:"enableAnalyticalStorage,omitempty"`
 	// BackupPolicy - The object representing the policy for taking backups on an account.
 	BackupPolicy BasicBackupPolicy `json:"backupPolicy,omitempty"`
+	// Cors - The CORS policy for the Cosmos DB database account.
+	Cors *[]CorsPolicy `json:"cors,omitempty"`
 	// CreateMode - Possible values include: 'CreateModeDatabaseAccountCreateUpdateProperties', 'CreateModeDefault', 'CreateModeRestore'
 	CreateMode CreateModeBasicDatabaseAccountCreateUpdateProperties `json:"createMode,omitempty"`
 }
@@ -2668,6 +2741,9 @@ func (drdacup DefaultRequestDatabaseAccountCreateUpdateProperties) MarshalJSON()
 		objectMap["enableAnalyticalStorage"] = drdacup.EnableAnalyticalStorage
 	}
 	objectMap["backupPolicy"] = drdacup.BackupPolicy
+	if drdacup.Cors != nil {
+		objectMap["cors"] = drdacup.Cors
+	}
 	if drdacup.CreateMode != "" {
 		objectMap["createMode"] = drdacup.CreateMode
 	}
@@ -2864,6 +2940,15 @@ func (drdacup *DefaultRequestDatabaseAccountCreateUpdateProperties) UnmarshalJSO
 				}
 				drdacup.BackupPolicy = backupPolicy
 			}
+		case "cors":
+			if v != nil {
+				var cors []CorsPolicy
+				err = json.Unmarshal(*v, &cors)
+				if err != nil {
+					return err
+				}
+				drdacup.Cors = &cors
+			}
 		case "createMode":
 			if v != nil {
 				var createMode CreateModeBasicDatabaseAccountCreateUpdateProperties
@@ -2885,11 +2970,6 @@ type ErrorResponse struct {
 	Code *string `json:"code,omitempty"`
 	// Message - Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
-}
-
-// ErrorResponseUpdatedFormat an error response from the service.
-type ErrorResponseUpdatedFormat struct {
-	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // ExcludedPath ...
@@ -3776,8 +3856,10 @@ type ManagedServiceIdentity struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - READ-ONLY; The tenant id of the system assigned identity. This property will only be provided for a system assigned identity.
 	TenantID *string `json:"tenantId,omitempty"`
-	// Type - The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the service. Possible values include: 'ResourceIdentityTypeSystemAssigned', 'ResourceIdentityTypeUserAssigned', 'ResourceIdentityTypeSystemAssignedUserAssigned', 'ResourceIdentityTypeNone'
+	// Type - The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities from the service. Possible values include: 'ResourceIdentityTypeSystemAssigned', 'ResourceIdentityTypeUserAssigned', 'ResourceIdentityTypeSystemAssignedUserAssigned', 'ResourceIdentityTypeNone'
 	Type ResourceIdentityType `json:"type,omitempty"`
+	// UserAssignedIdentities - The list of user identities associated with resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	UserAssignedIdentities map[string]*ManagedServiceIdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities"`
 }
 
 // MarshalJSON is the custom marshaler for ManagedServiceIdentity.
@@ -3786,7 +3868,18 @@ func (msi ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
 	if msi.Type != "" {
 		objectMap["type"] = msi.Type
 	}
+	if msi.UserAssignedIdentities != nil {
+		objectMap["userAssignedIdentities"] = msi.UserAssignedIdentities
+	}
 	return json.Marshal(objectMap)
+}
+
+// ManagedServiceIdentityUserAssignedIdentitiesValue ...
+type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
+	// PrincipalID - READ-ONLY; The principal id of user assigned identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ClientID - READ-ONLY; The client id of user assigned identity.
+	ClientID *string `json:"clientId,omitempty"`
 }
 
 // Metric metric data
@@ -5241,6 +5334,14 @@ type PeriodicModeProperties struct {
 	BackupRetentionIntervalInHours *int32 `json:"backupRetentionIntervalInHours,omitempty"`
 }
 
+// Permission the set of data plane operations permitted through this Role Definition.
+type Permission struct {
+	// DataActions - An array of data actions that are allowed.
+	DataActions *[]string `json:"dataActions,omitempty"`
+	// NotDataActions - An array of data actions that are denied.
+	NotDataActions *[]string `json:"notDataActions,omitempty"`
+}
+
 // PrivateEndpointConnection a private endpoint connection
 type PrivateEndpointConnection struct {
 	autorest.Response `json:"-"`
@@ -5665,7 +5766,7 @@ type RestorableDatabaseAccountsListResult struct {
 type RestoreParameters struct {
 	// RestoreMode - Describes the mode of the restore. Possible values include: 'PointInTime'
 	RestoreMode RestoreMode `json:"restoreMode,omitempty"`
-	// RestoreSource - Path of the source account from which the restore has to be initiated
+	// RestoreSource - The id of the restorable database account from which the restore has to be initiated. For example: /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}
 	RestoreSource *string `json:"restoreSource,omitempty"`
 	// RestoreTimestampInUtc - Time to which the account has to be restored (ISO-8601 format).
 	RestoreTimestampInUtc *date.Time `json:"restoreTimestampInUtc,omitempty"`
@@ -5713,6 +5814,8 @@ type RestoreReqeustDatabaseAccountCreateUpdateProperties struct {
 	EnableAnalyticalStorage *bool `json:"enableAnalyticalStorage,omitempty"`
 	// BackupPolicy - The object representing the policy for taking backups on an account.
 	BackupPolicy BasicBackupPolicy `json:"backupPolicy,omitempty"`
+	// Cors - The CORS policy for the Cosmos DB database account.
+	Cors *[]CorsPolicy `json:"cors,omitempty"`
 	// CreateMode - Possible values include: 'CreateModeDatabaseAccountCreateUpdateProperties', 'CreateModeDefault', 'CreateModeRestore'
 	CreateMode CreateModeBasicDatabaseAccountCreateUpdateProperties `json:"createMode,omitempty"`
 }
@@ -5776,6 +5879,9 @@ func (rrdacup RestoreReqeustDatabaseAccountCreateUpdateProperties) MarshalJSON()
 		objectMap["enableAnalyticalStorage"] = rrdacup.EnableAnalyticalStorage
 	}
 	objectMap["backupPolicy"] = rrdacup.BackupPolicy
+	if rrdacup.Cors != nil {
+		objectMap["cors"] = rrdacup.Cors
+	}
 	if rrdacup.CreateMode != "" {
 		objectMap["createMode"] = rrdacup.CreateMode
 	}
@@ -5980,6 +6086,15 @@ func (rrdacup *RestoreReqeustDatabaseAccountCreateUpdateProperties) UnmarshalJSO
 					return err
 				}
 				rrdacup.BackupPolicy = backupPolicy
+			}
+		case "cors":
+			if v != nil {
+				var cors []CorsPolicy
+				err = json.Unmarshal(*v, &cors)
+				if err != nil {
+					return err
+				}
+				rrdacup.Cors = &cors
 			}
 		case "createMode":
 			if v != nil {
@@ -6669,6 +6784,64 @@ func (future *SQLResourcesCreateUpdateSQLDatabaseFuture) Result(client SQLResour
 	return
 }
 
+// SQLResourcesCreateUpdateSQLRoleAssignmentFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
+type SQLResourcesCreateUpdateSQLRoleAssignmentFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *SQLResourcesCreateUpdateSQLRoleAssignmentFuture) Result(client SQLResourcesClient) (sragr SQLRoleAssignmentGetResults, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLRoleAssignmentFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesCreateUpdateSQLRoleAssignmentFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if sragr.Response.Response, err = future.GetResult(sender); err == nil && sragr.Response.Response.StatusCode != http.StatusNoContent {
+		sragr, err = client.CreateUpdateSQLRoleAssignmentResponder(sragr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLRoleAssignmentFuture", "Result", sragr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// SQLResourcesCreateUpdateSQLRoleDefinitionFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
+type SQLResourcesCreateUpdateSQLRoleDefinitionFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *SQLResourcesCreateUpdateSQLRoleDefinitionFuture) Result(client SQLResourcesClient) (srdgr SQLRoleDefinitionGetResults, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLRoleDefinitionFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesCreateUpdateSQLRoleDefinitionFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if srdgr.Response.Response, err = future.GetResult(sender); err == nil && srdgr.Response.Response.StatusCode != http.StatusNoContent {
+		srdgr, err = client.CreateUpdateSQLRoleDefinitionResponder(srdgr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLRoleDefinitionFuture", "Result", srdgr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // SQLResourcesCreateUpdateSQLStoredProcedureFuture an abstraction for monitoring and retrieving the results of
 // a long-running operation.
 type SQLResourcesCreateUpdateSQLStoredProcedureFuture struct {
@@ -6802,6 +6975,52 @@ func (future *SQLResourcesDeleteSQLDatabaseFuture) Result(client SQLResourcesCli
 	return
 }
 
+// SQLResourcesDeleteSQLRoleAssignmentFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type SQLResourcesDeleteSQLRoleAssignmentFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *SQLResourcesDeleteSQLRoleAssignmentFuture) Result(client SQLResourcesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesDeleteSQLRoleAssignmentFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesDeleteSQLRoleAssignmentFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// SQLResourcesDeleteSQLRoleDefinitionFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type SQLResourcesDeleteSQLRoleDefinitionFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *SQLResourcesDeleteSQLRoleDefinitionFuture) Result(client SQLResourcesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesDeleteSQLRoleDefinitionFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesDeleteSQLRoleDefinitionFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // SQLResourcesDeleteSQLStoredProcedureFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type SQLResourcesDeleteSQLStoredProcedureFuture struct {
@@ -6927,6 +7146,268 @@ func (future *SQLResourcesUpdateSQLDatabaseThroughputFuture) Result(client SQLRe
 		}
 	}
 	return
+}
+
+// SQLRoleAssignmentCreateUpdateParameters parameters to create and update an Azure Cosmos DB SQL Role
+// Assignment.
+type SQLRoleAssignmentCreateUpdateParameters struct {
+	// SQLRoleAssignmentResource - Properties to create and update an Azure Cosmos DB SQL Role Assignment.
+	*SQLRoleAssignmentResource `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLRoleAssignmentCreateUpdateParameters.
+func (sracup SQLRoleAssignmentCreateUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sracup.SQLRoleAssignmentResource != nil {
+		objectMap["properties"] = sracup.SQLRoleAssignmentResource
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SQLRoleAssignmentCreateUpdateParameters struct.
+func (sracup *SQLRoleAssignmentCreateUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var SQLRoleAssignmentResource SQLRoleAssignmentResource
+				err = json.Unmarshal(*v, &SQLRoleAssignmentResource)
+				if err != nil {
+					return err
+				}
+				sracup.SQLRoleAssignmentResource = &SQLRoleAssignmentResource
+			}
+		}
+	}
+
+	return nil
+}
+
+// SQLRoleAssignmentGetResults an Azure Cosmos DB Role Assignment
+type SQLRoleAssignmentGetResults struct {
+	autorest.Response `json:"-"`
+	// SQLRoleAssignmentResource - Properties related to the Role Assignment.
+	*SQLRoleAssignmentResource `json:"properties,omitempty"`
+	// ID - READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLRoleAssignmentGetResults.
+func (sragr SQLRoleAssignmentGetResults) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sragr.SQLRoleAssignmentResource != nil {
+		objectMap["properties"] = sragr.SQLRoleAssignmentResource
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SQLRoleAssignmentGetResults struct.
+func (sragr *SQLRoleAssignmentGetResults) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var SQLRoleAssignmentResource SQLRoleAssignmentResource
+				err = json.Unmarshal(*v, &SQLRoleAssignmentResource)
+				if err != nil {
+					return err
+				}
+				sragr.SQLRoleAssignmentResource = &SQLRoleAssignmentResource
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sragr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sragr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sragr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SQLRoleAssignmentListResult the relevant Role Assignments.
+type SQLRoleAssignmentListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of Role Assignments and their properties
+	Value *[]SQLRoleAssignmentGetResults `json:"value,omitempty"`
+}
+
+// SQLRoleAssignmentResource azure Cosmos DB SQL Role Assignment resource object.
+type SQLRoleAssignmentResource struct {
+	// RoleDefinitionID - The unique identifier for the associated Role Definition.
+	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
+	// Scope - The data plane resource path for which access is being granted through this Role Assignment.
+	Scope *string `json:"scope,omitempty"`
+	// PrincipalID - The unique identifier for the associated AAD principal in the AAD graph to which access is being granted through this Role Assignment. Tenant ID for the principal is inferred using the tenant associated with the subscription.
+	PrincipalID *string `json:"principalId,omitempty"`
+}
+
+// SQLRoleDefinitionCreateUpdateParameters parameters to create and update an Azure Cosmos DB SQL Role
+// Definition.
+type SQLRoleDefinitionCreateUpdateParameters struct {
+	// SQLRoleDefinitionResource - Properties to create and update an Azure Cosmos DB SQL Role Definition.
+	*SQLRoleDefinitionResource `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLRoleDefinitionCreateUpdateParameters.
+func (srdcup SQLRoleDefinitionCreateUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if srdcup.SQLRoleDefinitionResource != nil {
+		objectMap["properties"] = srdcup.SQLRoleDefinitionResource
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SQLRoleDefinitionCreateUpdateParameters struct.
+func (srdcup *SQLRoleDefinitionCreateUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var SQLRoleDefinitionResource SQLRoleDefinitionResource
+				err = json.Unmarshal(*v, &SQLRoleDefinitionResource)
+				if err != nil {
+					return err
+				}
+				srdcup.SQLRoleDefinitionResource = &SQLRoleDefinitionResource
+			}
+		}
+	}
+
+	return nil
+}
+
+// SQLRoleDefinitionGetResults an Azure Cosmos DB SQL Role Definition.
+type SQLRoleDefinitionGetResults struct {
+	autorest.Response `json:"-"`
+	// SQLRoleDefinitionResource - Properties related to the Role Definition.
+	*SQLRoleDefinitionResource `json:"properties,omitempty"`
+	// ID - READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLRoleDefinitionGetResults.
+func (srdgr SQLRoleDefinitionGetResults) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if srdgr.SQLRoleDefinitionResource != nil {
+		objectMap["properties"] = srdgr.SQLRoleDefinitionResource
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SQLRoleDefinitionGetResults struct.
+func (srdgr *SQLRoleDefinitionGetResults) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var SQLRoleDefinitionResource SQLRoleDefinitionResource
+				err = json.Unmarshal(*v, &SQLRoleDefinitionResource)
+				if err != nil {
+					return err
+				}
+				srdgr.SQLRoleDefinitionResource = &SQLRoleDefinitionResource
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				srdgr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				srdgr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				srdgr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SQLRoleDefinitionListResult the relevant Role Definitions.
+type SQLRoleDefinitionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of Role Definitions and their properties.
+	Value *[]SQLRoleDefinitionGetResults `json:"value,omitempty"`
+}
+
+// SQLRoleDefinitionResource azure Cosmos DB SQL Role Definition resource object.
+type SQLRoleDefinitionResource struct {
+	// RoleName - A user-friendly name for the Role Definition. Must be unique for the database account.
+	RoleName *string `json:"roleName,omitempty"`
+	// Type - Indicates whether the Role Definition was built-in or user created. Possible values include: 'BuiltInRole', 'CustomRole'
+	Type RoleDefinitionType `json:"type,omitempty"`
+	// AssignableScopes - A set of fully qualified Scopes at or below which Role Assignments may be created using this Role Definition. This will allow application of this Role Definition on the entire database account or any underlying Database / Collection. Must have at least one element. Scopes higher than Database account are not enforceable as assignable Scopes. Note that resources referenced in assignable Scopes need not exist.
+	AssignableScopes *[]string `json:"assignableScopes,omitempty"`
+	// Permissions - The set of operations allowed through this Role Definition.
+	Permissions *[]Permission `json:"permissions,omitempty"`
 }
 
 // SQLStoredProcedureCreateUpdateParameters parameters to create and update Cosmos DB storedProcedure.

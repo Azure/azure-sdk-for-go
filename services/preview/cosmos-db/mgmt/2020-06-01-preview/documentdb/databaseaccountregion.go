@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// DatabaseAccountRegionClient is the azure Cosmos DB Database Service Resource Provider REST API
+// DatabaseAccountRegionClient is the client for the DatabaseAccountRegion methods of the Documentdb service.
 type DatabaseAccountRegionClient struct {
 	BaseClient
 }

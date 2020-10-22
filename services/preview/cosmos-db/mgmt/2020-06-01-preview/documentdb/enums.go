@@ -301,7 +301,7 @@ const (
 	// ResourceIdentityTypeSystemAssigned ...
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
 	// ResourceIdentityTypeSystemAssignedUserAssigned ...
-	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned,UserAssigned"
 	// ResourceIdentityTypeUserAssigned ...
 	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
 )
@@ -322,6 +322,21 @@ const (
 // PossibleRestoreModeValues returns an array of possible values for the RestoreMode const type.
 func PossibleRestoreModeValues() []RestoreMode {
 	return []RestoreMode{PointInTime}
+}
+
+// RoleDefinitionType enumerates the values for role definition type.
+type RoleDefinitionType string
+
+const (
+	// BuiltInRole ...
+	BuiltInRole RoleDefinitionType = "BuiltInRole"
+	// CustomRole ...
+	CustomRole RoleDefinitionType = "CustomRole"
+)
+
+// PossibleRoleDefinitionTypeValues returns an array of possible values for the RoleDefinitionType const type.
+func PossibleRoleDefinitionTypeValues() []RoleDefinitionType {
+	return []RoleDefinitionType{BuiltInRole, CustomRole}
 }
 
 // ServerVersion enumerates the values for server version.

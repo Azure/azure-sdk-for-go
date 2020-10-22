@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2020-03-01/documentdb"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-03-01-preview/documentdb"
 
 // ARMProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
 // required location and tags

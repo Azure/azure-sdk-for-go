@@ -75,10 +75,12 @@ func (e *AuthenticationFailedError) NonRetriable() {
 }
 
 func (e *AuthenticationFailedError) Error() string {
-	if len(e.msg) == 0 {
-		e.msg = e.inner.Error()
+	if e.inner == nil {
+		return e.msg
+	} else if e.msg == "" {
+		return e.inner.Error()
 	}
-	return e.msg
+	return e.msg + " details: " + e.inner.Error()
 }
 
 var _ azcore.NonRetriableError = (*AuthenticationFailedError)(nil)

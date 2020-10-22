@@ -471,6 +471,35 @@ func (future *AgentPoolsDeleteFuture) Result(client AgentPoolsClient) (ar autore
 	return
 }
 
+// AgentPoolsUpgradeNodeImageVersionFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AgentPoolsUpgradeNodeImageVersionFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *AgentPoolsUpgradeNodeImageVersionFuture) Result(client AgentPoolsClient) (ap AgentPool, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsUpgradeNodeImageVersionFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("containerservice.AgentPoolsUpgradeNodeImageVersionFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ap.Response.Response, err = future.GetResult(sender); err == nil && ap.Response.Response.StatusCode != http.StatusNoContent {
+		ap, err = client.UpgradeNodeImageVersionResponder(ap.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsUpgradeNodeImageVersionFuture", "Result", ap.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // AgentPoolUpgradeProfile the list of available upgrades for an agent pool.
 type AgentPoolUpgradeProfile struct {
 	autorest.Response `json:"-"`
@@ -2033,35 +2062,6 @@ func (future *ManagedClustersUpdateTagsFuture) Result(client ManagedClustersClie
 	return
 }
 
-// ManagedClustersUpgradeNodeImageVersionFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ManagedClustersUpgradeNodeImageVersionFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *ManagedClustersUpgradeNodeImageVersionFuture) Result(client ManagedClustersClient) (ap AgentPool, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersUpgradeNodeImageVersionFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersUpgradeNodeImageVersionFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ap.Response.Response, err = future.GetResult(sender); err == nil && ap.Response.Response.StatusCode != http.StatusNoContent {
-		ap, err = client.UpgradeNodeImageVersionResponder(ap.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersUpgradeNodeImageVersionFuture", "Result", ap.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
 // ManagedClusterUpgradeProfile the list of available upgrades for compute pools.
 type ManagedClusterUpgradeProfile struct {
 	autorest.Response `json:"-"`
@@ -2145,9 +2145,9 @@ type ManagedClusterUpgradeProfileProperties struct {
 
 // ManagedClusterWindowsProfile profile for Windows VMs in the container service cluster.
 type ManagedClusterWindowsProfile struct {
-	// AdminUsername - The administrator username to use for Windows VMs.
+	// AdminUsername - Specifies the name of the administrator account. <br><br> **restriction:** Cannot end in "." <br><br> **Disallowed values:** "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5". <br><br> **Minimum-length:** 1 character <br><br> **Max-length:** 20 characters
 	AdminUsername *string `json:"adminUsername,omitempty"`
-	// AdminPassword - The administrator password to use for Windows VMs.
+	// AdminPassword - Specifies the password of the administrator account. <br><br> **Minimum-length:** 8 characters <br><br> **Max-length:** 123 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character (Regex match [\W_]) <br><br> **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
 	AdminPassword *string `json:"adminPassword,omitempty"`
 	// LicenseType - The licenseType to use for Windows VMs. Windows_Server is used to enable Azure Hybrid User Benefits for Windows VMs. Possible values include: 'None', 'WindowsServer'
 	LicenseType LicenseType `json:"licenseType,omitempty"`

@@ -5,7 +5,7 @@
 [![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1846/master)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1846/master)
 
 The `azidentity` module provides a set of credential types for use with
-Azure SDK clients which support Azure Active Directory (AAD) token authentication.
+Azure SDK clients that support Azure Active Directory (AAD) token authentication.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/azidentity)
 | [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/)

@@ -1,7 +1,11 @@
-# Azure Identity client library for Go
+# Azure Identity Client Module for Go
 
-The Azure Identity library provides a set of credential types for use with
-Azure SDK clients which support Azure Active Directory (AAD) token authentication.
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/azidentity)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity)
+[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%20azidentity?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=1846&branchName=master)
+[![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1846/master)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1846/master)
+
+The `azidentity` module provides a set of credential types for use with
+Azure SDK clients that support Azure Active Directory (AAD) token authentication.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/azidentity)
 | [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/)
@@ -9,6 +13,8 @@ Azure SDK clients which support Azure Active Directory (AAD) token authenticatio
 # Getting started
 
 ## Install the package
+
+This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
 Install the Azure Identity module:
 
@@ -24,8 +30,8 @@ go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ### Authenticating during local development
 
 When debugging and executing code locally it is typical for developers to use
-their own accounts for authenticating calls to Azure services. The Azure
-Identity library supports authenticating through developer tools to simplify
+their own accounts for authenticating calls to Azure services. The `azidentity`
+module supports authenticating through developer tools to simplify
 local development.
 
 #### Authenticating via the Azure CLI
@@ -51,9 +57,9 @@ service client to authenticate requests. Service clients across the Azure SDK
 accept a credential instance when they are constructed, and use that credential
 to authenticate requests.
 
-The Azure Identity library focuses on OAuth authentication with Azure Active
+The `azidentity` module focuses on OAuth authentication with Azure Active
 Directory (AAD). It offers a variety of credential types capable of acquiring
-an AAD access token. See [Credential Types](#credential-types "Credential Types") below for a list of this library's credential types.
+an AAD access token. See [Credential Types](#credential-types "Credential Types") below for a list of this module's credential types.
 
 ### DefaultAzureCredential
 
@@ -155,7 +161,7 @@ Azure Active Directory
 
 ### Logging
 
-This library uses the classification based logging implementation in azcore. To turn on logging set `AZURE_SDK_GO_LOGGING` to `all`. If you only want to include logs for azidentity, you must create you own logger and set the log classification as `LogCredential`.
+This module uses the classification based logging implementation in azcore. To turn on logging set `AZURE_SDK_GO_LOGGING` to `all`. If you only want to include logs for `azidentity`, you must create you own logger and set the log classification as `LogCredential`.
 Credentials log basic information only, including `GetToken` success or failure and errors. These log entries do not contain authentication secrets but may contain sensitive information.
 
 To obtain more detailed logging, including request/response bodies and header values, make sure to leave the logger as default or enable the `LogRequest` and/or `LogResponse` classificatons. A logger that only includes credential logs can be like the following:

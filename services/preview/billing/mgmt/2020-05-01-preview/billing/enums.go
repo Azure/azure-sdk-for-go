@@ -193,6 +193,21 @@ func PossibleFrequencyValues() []Frequency {
 	return []Frequency{Monthly, OneTime, UsageBased}
 }
 
+// InvoiceDocumentType enumerates the values for invoice document type.
+type InvoiceDocumentType string
+
+const (
+	// InvoiceDocumentTypeCreditNote ...
+	InvoiceDocumentTypeCreditNote InvoiceDocumentType = "CreditNote"
+	// InvoiceDocumentTypeInvoice ...
+	InvoiceDocumentTypeInvoice InvoiceDocumentType = "Invoice"
+)
+
+// PossibleInvoiceDocumentTypeValues returns an array of possible values for the InvoiceDocumentType const type.
+func PossibleInvoiceDocumentTypeValues() []InvoiceDocumentType {
+	return []InvoiceDocumentType{InvoiceDocumentTypeCreditNote, InvoiceDocumentTypeInvoice}
+}
+
 // InvoiceSectionState enumerates the values for invoice section state.
 type InvoiceSectionState string
 
@@ -218,11 +233,13 @@ const (
 	OverDue InvoiceStatus = "OverDue"
 	// Paid ...
 	Paid InvoiceStatus = "Paid"
+	// Void ...
+	Void InvoiceStatus = "Void"
 )
 
 // PossibleInvoiceStatusValues returns an array of possible values for the InvoiceStatus const type.
 func PossibleInvoiceStatusValues() []InvoiceStatus {
-	return []InvoiceStatus{Due, OverDue, Paid}
+	return []InvoiceStatus{Due, OverDue, Paid, Void}
 }
 
 // InvoiceType enumerates the values for invoice type.

@@ -130,7 +130,7 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 	try := int32(1)
 	for {
 		resp = nil // reset
-		Log().Writef(LogRetryPolicy, "\n=====> Try=%d", try)
+		Log().Writef(LogRetryPolicy, "\n=====> Try=%d %s %s", try, req.Method, req.URL.String())
 
 		// For each try, seek to the beginning of the Body stream. We do this even for the 1st try because
 		// the stream may not be at offset 0 when we first get it and we want the same behavior for the
@@ -157,6 +157,7 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 		} else if ctxErr := req.Context().Err(); ctxErr != nil {
 			// don't retry if the parent context has been cancelled or its deadline exceeded
 			err = ctxErr
+			Log().Writef(LogRetryPolicy, "abort due to %v", err)
 			return
 		}
 
@@ -182,12 +183,13 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 		if delay <= 0 {
 			delay = options.calcDelay(try)
 		}
-		Log().Writef(LogRetryPolicy, "Try=%d, Delay=%v", try, delay)
+		Log().Writef(LogRetryPolicy, "End Try #%d, Delay=%v", try, delay)
 		select {
 		case <-time.After(delay):
 			try++
 		case <-req.Context().Done():
 			err = req.Context().Err()
+			Log().Writef(LogRetryPolicy, "abort due to %v", err)
 			return
 		}
 	}

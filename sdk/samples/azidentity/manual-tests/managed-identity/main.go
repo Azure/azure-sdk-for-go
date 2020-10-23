@@ -17,9 +17,9 @@ func main() {
 		panic(err)
 	}
 	fmt.Println("Calling GetToken()...")
-	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{"https://vault.azure.net"}})
+	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{"https://vault.azure.net"}})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(fmt.Sprintf("Success! Token received %v", tk))
+	fmt.Println("Success! Token received.")
 }

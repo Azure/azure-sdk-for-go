@@ -29,53 +29,54 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2020-01-13-preview/workloadmonitor"
 
-// DefaultError error body contract.
-type DefaultError struct {
-	// Error - Details about the error
-	Error *DefaultErrorError `json:"error,omitempty"`
+// ErrorDetails ...
+type ErrorDetails struct {
+	// Code - Error code identifying the specific error.
+	Code *string `json:"code,omitempty"`
+	// Message - A human-readable error message.
+	Message *string `json:"message,omitempty"`
 }
 
-// DefaultErrorError details about the error
-type DefaultErrorError struct {
+// ErrorResponse ...
+type ErrorResponse struct {
+	// Error - Error info.
+	Error *ErrorResponseError `json:"error,omitempty"`
+}
+
+// ErrorResponseError error info.
+type ErrorResponseError struct {
 	// Code - Service-defined error code. This code serves as a sub-status for the HTTP error code specified in the response.
 	Code *string `json:"code,omitempty"`
 	// Message - Human-readable representation of the error.
 	Message *string `json:"message,omitempty"`
-	// Details - Details of the error.
+	// Details - Error details.
 	Details *[]ErrorDetails `json:"details,omitempty"`
 }
 
-// ErrorDetails error details of the error body contract.
-type ErrorDetails struct {
-	// Code - Property level error code.
-	Code *string `json:"code,omitempty"`
-	// Message - Human-readable representation of property-level error.
-	Message *string `json:"message,omitempty"`
-}
-
-// Monitor information about a monitor.
-type Monitor struct {
-	autorest.Response  `json:"-"`
-	*MonitorProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Arm ID of this monitor.
+// HealthMonitor ...
+type HealthMonitor struct {
+	autorest.Response `json:"-"`
+	// HealthMonitorProperties - Properties of the monitor's health status.
+	*HealthMonitorProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Url-encoded monitor name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of ARM resource.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for Monitor.
-func (mVar Monitor) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for HealthMonitor.
+func (hm HealthMonitor) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if mVar.MonitorProperties != nil {
-		objectMap["properties"] = mVar.MonitorProperties
+	if hm.HealthMonitorProperties != nil {
+		objectMap["properties"] = hm.HealthMonitorProperties
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for Monitor struct.
-func (mVar *Monitor) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for HealthMonitor struct.
+func (hm *HealthMonitor) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -85,12 +86,12 @@ func (mVar *Monitor) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var monitorProperties MonitorProperties
-				err = json.Unmarshal(*v, &monitorProperties)
+				var healthMonitorProperties HealthMonitorProperties
+				err = json.Unmarshal(*v, &healthMonitorProperties)
 				if err != nil {
 					return err
 				}
-				mVar.MonitorProperties = &monitorProperties
+				hm.HealthMonitorProperties = &healthMonitorProperties
 			}
 		case "id":
 			if v != nil {
@@ -99,7 +100,7 @@ func (mVar *Monitor) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				mVar.ID = &ID
+				hm.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -108,7 +109,7 @@ func (mVar *Monitor) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				mVar.Name = &name
+				hm.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -117,7 +118,7 @@ func (mVar *Monitor) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				mVar.Type = &typeVar
+				hm.Type = &typeVar
 			}
 		}
 	}
@@ -125,26 +126,26 @@ func (mVar *Monitor) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// MonitorList basic information about the current status of a monitor.
-type MonitorList struct {
+// HealthMonitorList ...
+type HealthMonitorList struct {
 	autorest.Response `json:"-"`
-	// Value - Array of monitors.
-	Value *[]Monitor `json:"value,omitempty"`
-	// NextLink - Link to next page if list is too long.
+	// Value - Array of health monitors of the virtual machine.
+	Value *[]HealthMonitor `json:"value,omitempty"`
+	// NextLink - Link to next page if the list is too long.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// MonitorListIterator provides access to a complete listing of Monitor values.
-type MonitorListIterator struct {
+// HealthMonitorListIterator provides access to a complete listing of HealthMonitor values.
+type HealthMonitorListIterator struct {
 	i    int
-	page MonitorListPage
+	page HealthMonitorListPage
 }
 
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *MonitorListIterator) NextWithContext(ctx context.Context) (err error) {
+func (iter *HealthMonitorListIterator) NextWithContext(ctx context.Context) (err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorListIterator.NextWithContext")
+		ctx = tracing.StartSpan(ctx, fqdn+"/HealthMonitorListIterator.NextWithContext")
 		defer func() {
 			sc := -1
 			if iter.Response().Response.Response != nil {
@@ -169,67 +170,67 @@ func (iter *MonitorListIterator) NextWithContext(ctx context.Context) (err error
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
-func (iter *MonitorListIterator) Next() error {
+func (iter *HealthMonitorListIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter MonitorListIterator) NotDone() bool {
+func (iter HealthMonitorListIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
 // Response returns the raw server response from the last page request.
-func (iter MonitorListIterator) Response() MonitorList {
+func (iter HealthMonitorListIterator) Response() HealthMonitorList {
 	return iter.page.Response()
 }
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter MonitorListIterator) Value() Monitor {
+func (iter HealthMonitorListIterator) Value() HealthMonitor {
 	if !iter.page.NotDone() {
-		return Monitor{}
+		return HealthMonitor{}
 	}
 	return iter.page.Values()[iter.i]
 }
 
-// Creates a new instance of the MonitorListIterator type.
-func NewMonitorListIterator(page MonitorListPage) MonitorListIterator {
-	return MonitorListIterator{page: page}
+// Creates a new instance of the HealthMonitorListIterator type.
+func NewHealthMonitorListIterator(page HealthMonitorListPage) HealthMonitorListIterator {
+	return HealthMonitorListIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
-func (ml MonitorList) IsEmpty() bool {
-	return ml.Value == nil || len(*ml.Value) == 0
+func (hml HealthMonitorList) IsEmpty() bool {
+	return hml.Value == nil || len(*hml.Value) == 0
 }
 
 // hasNextLink returns true if the NextLink is not empty.
-func (ml MonitorList) hasNextLink() bool {
-	return ml.NextLink != nil && len(*ml.NextLink) != 0
+func (hml HealthMonitorList) hasNextLink() bool {
+	return hml.NextLink != nil && len(*hml.NextLink) != 0
 }
 
-// monitorListPreparer prepares a request to retrieve the next set of results.
+// healthMonitorListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (ml MonitorList) monitorListPreparer(ctx context.Context) (*http.Request, error) {
-	if !ml.hasNextLink() {
+func (hml HealthMonitorList) healthMonitorListPreparer(ctx context.Context) (*http.Request, error) {
+	if !hml.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(ml.NextLink)))
+		autorest.WithBaseURL(to.String(hml.NextLink)))
 }
 
-// MonitorListPage contains a page of Monitor values.
-type MonitorListPage struct {
-	fn func(context.Context, MonitorList) (MonitorList, error)
-	ml MonitorList
+// HealthMonitorListPage contains a page of HealthMonitor values.
+type HealthMonitorListPage struct {
+	fn  func(context.Context, HealthMonitorList) (HealthMonitorList, error)
+	hml HealthMonitorList
 }
 
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *MonitorListPage) NextWithContext(ctx context.Context) (err error) {
+func (page *HealthMonitorListPage) NextWithContext(ctx context.Context) (err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorListPage.NextWithContext")
+		ctx = tracing.StartSpan(ctx, fqdn+"/HealthMonitorListPage.NextWithContext")
 		defer func() {
 			sc := -1
 			if page.Response().Response.Response != nil {
@@ -239,11 +240,11 @@ func (page *MonitorListPage) NextWithContext(ctx context.Context) (err error) {
 		}()
 	}
 	for {
-		next, err := page.fn(ctx, page.ml)
+		next, err := page.fn(ctx, page.hml)
 		if err != nil {
 			return err
 		}
-		page.ml = next
+		page.hml = next
 		if !next.hasNextLink() || !next.IsEmpty() {
 			break
 		}
@@ -254,82 +255,83 @@ func (page *MonitorListPage) NextWithContext(ctx context.Context) (err error) {
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
-func (page *MonitorListPage) Next() error {
+func (page *HealthMonitorListPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page MonitorListPage) NotDone() bool {
-	return !page.ml.IsEmpty()
+func (page HealthMonitorListPage) NotDone() bool {
+	return !page.hml.IsEmpty()
 }
 
 // Response returns the raw server response from the last page request.
-func (page MonitorListPage) Response() MonitorList {
-	return page.ml
+func (page HealthMonitorListPage) Response() HealthMonitorList {
+	return page.hml
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page MonitorListPage) Values() []Monitor {
-	if page.ml.IsEmpty() {
+func (page HealthMonitorListPage) Values() []HealthMonitor {
+	if page.hml.IsEmpty() {
 		return nil
 	}
-	return *page.ml.Value
+	return *page.hml.Value
 }
 
-// Creates a new instance of the MonitorListPage type.
-func NewMonitorListPage(getNextPage func(context.Context, MonitorList) (MonitorList, error)) MonitorListPage {
-	return MonitorListPage{fn: getNextPage}
+// Creates a new instance of the HealthMonitorListPage type.
+func NewHealthMonitorListPage(getNextPage func(context.Context, HealthMonitorList) (HealthMonitorList, error)) HealthMonitorListPage {
+	return HealthMonitorListPage{fn: getNextPage}
 }
 
-// MonitorProperties properties of the monitor.
-type MonitorProperties struct {
-	// MonitorName - Human-readable name of this monitor.
+// HealthMonitorProperties properties of the monitor.
+type HealthMonitorProperties struct {
+	// MonitorName - Human-readable name of the monitor.
 	MonitorName *string `json:"monitorName,omitempty"`
-	// MonitorType - Type of this monitor.
+	// MonitorType - Type of the monitor.
 	MonitorType *string `json:"monitorType,omitempty"`
-	// MonitoredObject - Dynamic monitored object of this monitor.
+	// MonitoredObject - Dynamic monitored object of the monitor.
 	MonitoredObject *string `json:"monitoredObject,omitempty"`
-	// ParentMonitorName - Name of this monitor's parent.
+	// ParentMonitorName - Name of the parent monitor.
 	ParentMonitorName *string `json:"parentMonitorName,omitempty"`
-	// PreviousMonitorState - Current health state of this monitor. Possible values include: 'Healthy', 'Critical', 'Warning', 'Unknown'
+	// PreviousMonitorState - Previous health state of the monitor. Possible values include: 'Healthy', 'Critical', 'Warning', 'Unknown', 'Disabled', 'None'
 	PreviousMonitorState HealthState `json:"previousMonitorState,omitempty"`
-	// CurrentMonitorState - Current health state of this monitor. Possible values include: 'Healthy', 'Critical', 'Warning', 'Unknown'
+	// CurrentMonitorState - Current health state of the monitor. Possible values include: 'Healthy', 'Critical', 'Warning', 'Unknown', 'Disabled', 'None'
 	CurrentMonitorState HealthState `json:"currentMonitorState,omitempty"`
-	// EvaluationTimestamp - Timestamp that this monitor was last evaluated.
+	// EvaluationTimestamp - Timestamp of the monitor's last health evaluation.
 	EvaluationTimestamp *string `json:"evaluationTimestamp,omitempty"`
-	// CurrentStateFirstObservedTimestamp - Timestamp of this monitor's last state change.
+	// CurrentStateFirstObservedTimestamp - Timestamp of the monitor's last health state change.
 	CurrentStateFirstObservedTimestamp *string `json:"currentStateFirstObservedTimestamp,omitempty"`
-	// LastReportedTimestamp - Timestamp of this monitor's last reported state.
+	// LastReportedTimestamp - Timestamp of the monitor's last reported health state.
 	LastReportedTimestamp *string `json:"lastReportedTimestamp,omitempty"`
-	// Evidence - Evidence of this monitor's last state change.
+	// Evidence - Evidence validating the monitor's current health state.
 	Evidence interface{} `json:"evidence,omitempty"`
-	// MonitorConfiguration - Configuration settings at the time of this monitor's last state change.
+	// MonitorConfiguration - The configuration settings at the time of the monitor's health evaluation.
 	MonitorConfiguration interface{} `json:"monitorConfiguration,omitempty"`
 }
 
-// MonitorStateChange information about a state transition of a monitor.
-type MonitorStateChange struct {
-	autorest.Response             `json:"-"`
-	*MonitorStateChangeProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Arm ID of this monitor.
+// HealthMonitorStateChange ...
+type HealthMonitorStateChange struct {
+	autorest.Response `json:"-"`
+	// HealthMonitorStateChangeProperties - Properties of the monitor's state change.
+	*HealthMonitorStateChangeProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Url-encoded monitor name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of ARM resource.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for MonitorStateChange.
-func (msc MonitorStateChange) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for HealthMonitorStateChange.
+func (hmsc HealthMonitorStateChange) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if msc.MonitorStateChangeProperties != nil {
-		objectMap["properties"] = msc.MonitorStateChangeProperties
+	if hmsc.HealthMonitorStateChangeProperties != nil {
+		objectMap["properties"] = hmsc.HealthMonitorStateChangeProperties
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for MonitorStateChange struct.
-func (msc *MonitorStateChange) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for HealthMonitorStateChange struct.
+func (hmsc *HealthMonitorStateChange) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -339,12 +341,12 @@ func (msc *MonitorStateChange) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var monitorStateChangeProperties MonitorStateChangeProperties
-				err = json.Unmarshal(*v, &monitorStateChangeProperties)
+				var healthMonitorStateChangeProperties HealthMonitorStateChangeProperties
+				err = json.Unmarshal(*v, &healthMonitorStateChangeProperties)
 				if err != nil {
 					return err
 				}
-				msc.MonitorStateChangeProperties = &monitorStateChangeProperties
+				hmsc.HealthMonitorStateChangeProperties = &healthMonitorStateChangeProperties
 			}
 		case "id":
 			if v != nil {
@@ -353,7 +355,7 @@ func (msc *MonitorStateChange) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				msc.ID = &ID
+				hmsc.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -362,7 +364,7 @@ func (msc *MonitorStateChange) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				msc.Name = &name
+				hmsc.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -371,7 +373,7 @@ func (msc *MonitorStateChange) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				msc.Type = &typeVar
+				hmsc.Type = &typeVar
 			}
 		}
 	}
@@ -379,26 +381,27 @@ func (msc *MonitorStateChange) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// MonitorStateChangeList the monitor history of a monitor
-type MonitorStateChangeList struct {
+// HealthMonitorStateChangeList ...
+type HealthMonitorStateChangeList struct {
 	autorest.Response `json:"-"`
-	// Value - Array of state change transitions.
-	Value *[]MonitorStateChange `json:"value,omitempty"`
-	// NextLink - Link to next page if list is too long.
+	// Value - Array of health state changes within the specified time window.
+	Value *[]HealthMonitorStateChange `json:"value,omitempty"`
+	// NextLink - Link to next page if the list is too long.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// MonitorStateChangeListIterator provides access to a complete listing of MonitorStateChange values.
-type MonitorStateChangeListIterator struct {
+// HealthMonitorStateChangeListIterator provides access to a complete listing of HealthMonitorStateChange
+// values.
+type HealthMonitorStateChangeListIterator struct {
 	i    int
-	page MonitorStateChangeListPage
+	page HealthMonitorStateChangeListPage
 }
 
 // NextWithContext advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
-func (iter *MonitorStateChangeListIterator) NextWithContext(ctx context.Context) (err error) {
+func (iter *HealthMonitorStateChangeListIterator) NextWithContext(ctx context.Context) (err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorStateChangeListIterator.NextWithContext")
+		ctx = tracing.StartSpan(ctx, fqdn+"/HealthMonitorStateChangeListIterator.NextWithContext")
 		defer func() {
 			sc := -1
 			if iter.Response().Response.Response != nil {
@@ -423,67 +426,67 @@ func (iter *MonitorStateChangeListIterator) NextWithContext(ctx context.Context)
 // Next advances to the next value.  If there was an error making
 // the request the iterator does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
-func (iter *MonitorStateChangeListIterator) Next() error {
+func (iter *HealthMonitorStateChangeListIterator) Next() error {
 	return iter.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter MonitorStateChangeListIterator) NotDone() bool {
+func (iter HealthMonitorStateChangeListIterator) NotDone() bool {
 	return iter.page.NotDone() && iter.i < len(iter.page.Values())
 }
 
 // Response returns the raw server response from the last page request.
-func (iter MonitorStateChangeListIterator) Response() MonitorStateChangeList {
+func (iter HealthMonitorStateChangeListIterator) Response() HealthMonitorStateChangeList {
 	return iter.page.Response()
 }
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter MonitorStateChangeListIterator) Value() MonitorStateChange {
+func (iter HealthMonitorStateChangeListIterator) Value() HealthMonitorStateChange {
 	if !iter.page.NotDone() {
-		return MonitorStateChange{}
+		return HealthMonitorStateChange{}
 	}
 	return iter.page.Values()[iter.i]
 }
 
-// Creates a new instance of the MonitorStateChangeListIterator type.
-func NewMonitorStateChangeListIterator(page MonitorStateChangeListPage) MonitorStateChangeListIterator {
-	return MonitorStateChangeListIterator{page: page}
+// Creates a new instance of the HealthMonitorStateChangeListIterator type.
+func NewHealthMonitorStateChangeListIterator(page HealthMonitorStateChangeListPage) HealthMonitorStateChangeListIterator {
+	return HealthMonitorStateChangeListIterator{page: page}
 }
 
 // IsEmpty returns true if the ListResult contains no values.
-func (mscl MonitorStateChangeList) IsEmpty() bool {
-	return mscl.Value == nil || len(*mscl.Value) == 0
+func (hmscl HealthMonitorStateChangeList) IsEmpty() bool {
+	return hmscl.Value == nil || len(*hmscl.Value) == 0
 }
 
 // hasNextLink returns true if the NextLink is not empty.
-func (mscl MonitorStateChangeList) hasNextLink() bool {
-	return mscl.NextLink != nil && len(*mscl.NextLink) != 0
+func (hmscl HealthMonitorStateChangeList) hasNextLink() bool {
+	return hmscl.NextLink != nil && len(*hmscl.NextLink) != 0
 }
 
-// monitorStateChangeListPreparer prepares a request to retrieve the next set of results.
+// healthMonitorStateChangeListPreparer prepares a request to retrieve the next set of results.
 // It returns nil if no more results exist.
-func (mscl MonitorStateChangeList) monitorStateChangeListPreparer(ctx context.Context) (*http.Request, error) {
-	if !mscl.hasNextLink() {
+func (hmscl HealthMonitorStateChangeList) healthMonitorStateChangeListPreparer(ctx context.Context) (*http.Request, error) {
+	if !hmscl.hasNextLink() {
 		return nil, nil
 	}
 	return autorest.Prepare((&http.Request{}).WithContext(ctx),
 		autorest.AsJSON(),
 		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(mscl.NextLink)))
+		autorest.WithBaseURL(to.String(hmscl.NextLink)))
 }
 
-// MonitorStateChangeListPage contains a page of MonitorStateChange values.
-type MonitorStateChangeListPage struct {
-	fn   func(context.Context, MonitorStateChangeList) (MonitorStateChangeList, error)
-	mscl MonitorStateChangeList
+// HealthMonitorStateChangeListPage contains a page of HealthMonitorStateChange values.
+type HealthMonitorStateChangeListPage struct {
+	fn    func(context.Context, HealthMonitorStateChangeList) (HealthMonitorStateChangeList, error)
+	hmscl HealthMonitorStateChangeList
 }
 
 // NextWithContext advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
-func (page *MonitorStateChangeListPage) NextWithContext(ctx context.Context) (err error) {
+func (page *HealthMonitorStateChangeListPage) NextWithContext(ctx context.Context) (err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorStateChangeListPage.NextWithContext")
+		ctx = tracing.StartSpan(ctx, fqdn+"/HealthMonitorStateChangeListPage.NextWithContext")
 		defer func() {
 			sc := -1
 			if page.Response().Response.Response != nil {
@@ -493,11 +496,11 @@ func (page *MonitorStateChangeListPage) NextWithContext(ctx context.Context) (er
 		}()
 	}
 	for {
-		next, err := page.fn(ctx, page.mscl)
+		next, err := page.fn(ctx, page.hmscl)
 		if err != nil {
 			return err
 		}
-		page.mscl = next
+		page.hmscl = next
 		if !next.hasNextLink() || !next.IsEmpty() {
 			break
 		}
@@ -508,83 +511,83 @@ func (page *MonitorStateChangeListPage) NextWithContext(ctx context.Context) (er
 // Next advances to the next page of values.  If there was an error making
 // the request the page does not advance and the error is returned.
 // Deprecated: Use NextWithContext() instead.
-func (page *MonitorStateChangeListPage) Next() error {
+func (page *HealthMonitorStateChangeListPage) Next() error {
 	return page.NextWithContext(context.Background())
 }
 
 // NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page MonitorStateChangeListPage) NotDone() bool {
-	return !page.mscl.IsEmpty()
+func (page HealthMonitorStateChangeListPage) NotDone() bool {
+	return !page.hmscl.IsEmpty()
 }
 
 // Response returns the raw server response from the last page request.
-func (page MonitorStateChangeListPage) Response() MonitorStateChangeList {
-	return page.mscl
+func (page HealthMonitorStateChangeListPage) Response() HealthMonitorStateChangeList {
+	return page.hmscl
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page MonitorStateChangeListPage) Values() []MonitorStateChange {
-	if page.mscl.IsEmpty() {
+func (page HealthMonitorStateChangeListPage) Values() []HealthMonitorStateChange {
+	if page.hmscl.IsEmpty() {
 		return nil
 	}
-	return *page.mscl.Value
+	return *page.hmscl.Value
 }
 
-// Creates a new instance of the MonitorStateChangeListPage type.
-func NewMonitorStateChangeListPage(getNextPage func(context.Context, MonitorStateChangeList) (MonitorStateChangeList, error)) MonitorStateChangeListPage {
-	return MonitorStateChangeListPage{fn: getNextPage}
+// Creates a new instance of the HealthMonitorStateChangeListPage type.
+func NewHealthMonitorStateChangeListPage(getNextPage func(context.Context, HealthMonitorStateChangeList) (HealthMonitorStateChangeList, error)) HealthMonitorStateChangeListPage {
+	return HealthMonitorStateChangeListPage{fn: getNextPage}
 }
 
-// MonitorStateChangeProperties properties of the monitor.
-type MonitorStateChangeProperties struct {
-	// MonitorName - Human-readable name of this monitor.
+// HealthMonitorStateChangeProperties properties of the monitor.
+type HealthMonitorStateChangeProperties struct {
+	// MonitorName - Human-readable name of the monitor.
 	MonitorName *string `json:"monitorName,omitempty"`
-	// MonitorType - Type of this monitor.
+	// MonitorType - Type of the monitor.
 	MonitorType *string `json:"monitorType,omitempty"`
-	// MonitoredObject - Dynamic monitored object of this monitor.
+	// MonitoredObject - Dynamic monitored object of the monitor.
 	MonitoredObject *string `json:"monitoredObject,omitempty"`
-	// EvaluationTimestamp - Timestamp of that this event ocurred.
+	// EvaluationTimestamp - Timestamp of the monitor's last health evaluation.
 	EvaluationTimestamp *string `json:"evaluationTimestamp,omitempty"`
-	// CurrentStateFirstObservedTimestamp - Timestamp of that this health state first ocurred.
+	// CurrentStateFirstObservedTimestamp - Timestamp of the monitor's last health state change.
 	CurrentStateFirstObservedTimestamp *string `json:"currentStateFirstObservedTimestamp,omitempty"`
-	// PreviousMonitorState - Previous health state. Possible values include: 'Healthy', 'Critical', 'Warning', 'Unknown'
+	// PreviousMonitorState - Previous health state of the monitor. Possible values include: 'Healthy', 'Critical', 'Warning', 'Unknown', 'Disabled', 'None'
 	PreviousMonitorState HealthState `json:"previousMonitorState,omitempty"`
-	// CurrentMonitorState - New health state. Possible values include: 'Healthy', 'Critical', 'Warning', 'Unknown'
+	// CurrentMonitorState - Current health state of the monitor. Possible values include: 'Healthy', 'Critical', 'Warning', 'Unknown', 'Disabled', 'None'
 	CurrentMonitorState HealthState `json:"currentMonitorState,omitempty"`
-	// Evidence - Evidence of this monitor's last state change.
+	// Evidence - Evidence validating the monitor's current health state.
 	Evidence interface{} `json:"evidence,omitempty"`
-	// MonitorConfiguration - Configuration settings at the time of this monitor's last state change.
+	// MonitorConfiguration - The configuration settings at the time of the monitor's health evaluation.
 	MonitorConfiguration interface{} `json:"monitorConfiguration,omitempty"`
 }
 
-// Operation operation supported by the resource provider.
+// Operation ...
 type Operation struct {
-	// Name - Name of the operation.
+	// Name - The name of the operation being performed on this particular object.
 	Name *string `json:"name,omitempty"`
-	// Display - The properties of the resource operation.
+	// Display - The localized display information for this particular operation or action.
 	Display *OperationDisplay `json:"display,omitempty"`
-	// Origin - The origin of the operation.
+	// Origin - The intended executor of the operation.
 	Origin *string `json:"origin,omitempty"`
 }
 
-// OperationDisplay the properties of the resource operation.
+// OperationDisplay the localized display information for this particular operation or action.
 type OperationDisplay struct {
-	// Provider - Provider name of this operation.
+	// Provider - Operation resource provider name.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - Resource name of this operation.
+	// Resource - Resource on which the operation is performed.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - Operation name of the operation.
+	// Operation - Human-readable, friendly name for the operation.
 	Operation *string `json:"operation,omitempty"`
-	// Description - Description of the operation.
+	// Description - Operation description.
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationList list of possible operations.
+// OperationList ...
 type OperationList struct {
 	autorest.Response `json:"-"`
-	// Value - Array of possible operations.
+	// Value - Array of available REST API operations.
 	Value *[]Operation `json:"value,omitempty"`
-	// NextLink - Link to next page if list is too long.
+	// NextLink - Link to next page if the list is too long.
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
@@ -737,10 +740,10 @@ func NewOperationListPage(getNextPage func(context.Context, OperationList) (Oper
 
 // Resource the resource model definition for the ARM proxy resource, 'microsoft.workloadmonitor/monitors'.
 type Resource struct {
-	// ID - READ-ONLY; Arm ID of this monitor.
+	// ID - READ-ONLY; The resource Id.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Url-encoded monitor name.
+	// Name - READ-ONLY; The resource name.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Type of ARM resource.
+	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 }

@@ -31,14 +31,14 @@ type OperationsClientAPI interface {
 
 var _ OperationsClientAPI = (*workloadmonitor.OperationsClient)(nil)
 
-// MonitorsClientAPI contains the set of methods on the MonitorsClient type.
-type MonitorsClientAPI interface {
-	Get(ctx context.Context, subscriptionID string, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, monitorID string, expand string) (result workloadmonitor.Monitor, err error)
-	GetStateChange(ctx context.Context, subscriptionID string, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, monitorID string, timestampUnix string, expand string) (result workloadmonitor.MonitorStateChange, err error)
-	List(ctx context.Context, subscriptionID string, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, filter string, expand string) (result workloadmonitor.MonitorListPage, err error)
-	ListComplete(ctx context.Context, subscriptionID string, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, filter string, expand string) (result workloadmonitor.MonitorListIterator, err error)
-	ListStateChanges(ctx context.Context, subscriptionID string, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, monitorID string, filter string, expand string, startTimestampUtc *date.Time, endTimestampUtc *date.Time) (result workloadmonitor.MonitorStateChangeListPage, err error)
-	ListStateChangesComplete(ctx context.Context, subscriptionID string, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, monitorID string, filter string, expand string, startTimestampUtc *date.Time, endTimestampUtc *date.Time) (result workloadmonitor.MonitorStateChangeListIterator, err error)
+// HealthMonitorsClientAPI contains the set of methods on the HealthMonitorsClient type.
+type HealthMonitorsClientAPI interface {
+	Get(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, expand string) (result workloadmonitor.HealthMonitor, err error)
+	GetStateChange(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, timestampUnix string, expand string) (result workloadmonitor.HealthMonitorStateChange, err error)
+	List(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, filter string, expand string) (result workloadmonitor.HealthMonitorListPage, err error)
+	ListComplete(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, filter string, expand string) (result workloadmonitor.HealthMonitorListIterator, err error)
+	ListStateChanges(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, filter string, expand string, startTimestampUtc *date.Time, endTimestampUtc *date.Time) (result workloadmonitor.HealthMonitorStateChangeListPage, err error)
+	ListStateChangesComplete(ctx context.Context, subscriptionID string, resourceGroupName string, providerName string, resourceCollectionName string, resourceName string, monitorID string, filter string, expand string, startTimestampUtc *date.Time, endTimestampUtc *date.Time) (result workloadmonitor.HealthMonitorStateChangeListIterator, err error)
 }
 
-var _ MonitorsClientAPI = (*workloadmonitor.MonitorsClient)(nil)
+var _ HealthMonitorsClientAPI = (*workloadmonitor.HealthMonitorsClient)(nil)

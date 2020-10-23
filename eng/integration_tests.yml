@@ -30,7 +30,7 @@ steps:
       go get github.com/axw/gocov/gocov
       go get github.com/AlekSi/gocov-xml
       go get -u github.com/matm/gocov-html
-      go get github.com/fzipp/gocyclo
+      go get github.com/fzipp/gocyclo/cmd/gocyclo
       go get golang.org/x/lint/golint
     displayName: 'Install Dependencies'
     workingDirectory: '$(sdkPath)'

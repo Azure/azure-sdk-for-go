@@ -373,21 +373,21 @@ var _ TopologyClientAPI = (*security.TopologyClient)(nil)
 
 // AlertsClientAPI contains the set of methods on the AlertsClient type.
 type AlertsClientAPI interface {
-	GetResourceGroupLevel(ctx context.Context, alertName string, resourceGroupName string) (result security.Alert, err error)
-	GetSubscriptionLevel(ctx context.Context, alertName string) (result security.Alert, err error)
+	GetResourceGroupLevelAlerts(ctx context.Context, alertName string, resourceGroupName string) (result security.Alert, err error)
+	GetSubscriptionLevelAlert(ctx context.Context, alertName string) (result security.Alert, err error)
 	List(ctx context.Context) (result security.AlertListPage, err error)
 	ListComplete(ctx context.Context) (result security.AlertListIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.AlertListPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result security.AlertListIterator, err error)
-	ListResourceGroupLevelByRegion(ctx context.Context, resourceGroupName string) (result security.AlertListPage, err error)
-	ListResourceGroupLevelByRegionComplete(ctx context.Context, resourceGroupName string) (result security.AlertListIterator, err error)
-	ListSubscriptionLevelByRegion(ctx context.Context) (result security.AlertListPage, err error)
-	ListSubscriptionLevelByRegionComplete(ctx context.Context) (result security.AlertListIterator, err error)
-	UpdateResourceGroupLevelStateToActivate(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error)
-	UpdateResourceGroupLevelStateToDismiss(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error)
+	ListResourceGroupLevelAlertsByRegion(ctx context.Context, resourceGroupName string) (result security.AlertListPage, err error)
+	ListResourceGroupLevelAlertsByRegionComplete(ctx context.Context, resourceGroupName string) (result security.AlertListIterator, err error)
+	ListSubscriptionLevelAlertsByRegion(ctx context.Context) (result security.AlertListPage, err error)
+	ListSubscriptionLevelAlertsByRegionComplete(ctx context.Context) (result security.AlertListIterator, err error)
+	UpdateResourceGroupLevelAlertStateToDismiss(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error)
+	UpdateResourceGroupLevelAlertStateToReactivate(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error)
 	UpdateResourceGroupLevelStateToResolve(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error)
-	UpdateSubscriptionLevelStateToActivate(ctx context.Context, alertName string) (result autorest.Response, err error)
-	UpdateSubscriptionLevelStateToDismiss(ctx context.Context, alertName string) (result autorest.Response, err error)
+	UpdateSubscriptionLevelAlertStateToDismiss(ctx context.Context, alertName string) (result autorest.Response, err error)
+	UpdateSubscriptionLevelAlertStateToReactivate(ctx context.Context, alertName string) (result autorest.Response, err error)
 	UpdateSubscriptionLevelStateToResolve(ctx context.Context, alertName string) (result autorest.Response, err error)
 }
 
@@ -511,6 +511,29 @@ type IotSensorsClientAPI interface {
 }
 
 var _ IotSensorsClientAPI = (*security.IotSensorsClient)(nil)
+
+// DevicesForSubscriptionClientAPI contains the set of methods on the DevicesForSubscriptionClient type.
+type DevicesForSubscriptionClientAPI interface {
+	List(ctx context.Context, limit *int32, skipToken string, deviceManagementType security.ManagementState) (result security.DeviceListPage, err error)
+	ListComplete(ctx context.Context, limit *int32, skipToken string, deviceManagementType security.ManagementState) (result security.DeviceListIterator, err error)
+}
+
+var _ DevicesForSubscriptionClientAPI = (*security.DevicesForSubscriptionClient)(nil)
+
+// DevicesForHubClientAPI contains the set of methods on the DevicesForHubClient type.
+type DevicesForHubClientAPI interface {
+	List(ctx context.Context, resourceID string, limit *int32, skipToken string, deviceManagementType security.ManagementState) (result security.DeviceListPage, err error)
+	ListComplete(ctx context.Context, resourceID string, limit *int32, skipToken string, deviceManagementType security.ManagementState) (result security.DeviceListIterator, err error)
+}
+
+var _ DevicesForHubClientAPI = (*security.DevicesForHubClient)(nil)
+
+// DeviceClientAPI contains the set of methods on the DeviceClient type.
+type DeviceClientAPI interface {
+	Get(ctx context.Context, resourceID string, deviceID string) (result security.Device, err error)
+}
+
+var _ DeviceClientAPI = (*security.DeviceClient)(nil)
 
 // OnPremiseIotSensorsClientAPI contains the set of methods on the OnPremiseIotSensorsClient type.
 type OnPremiseIotSensorsClientAPI interface {

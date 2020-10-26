@@ -123,7 +123,7 @@ func PossibleAssessedResourceTypeValues() []AssessedResourceType {
 type AuthenticationProvisioningState string
 
 const (
-	// Expired the connection is expired
+	// Expired the connection has expired
 	Expired AuthenticationProvisioningState = "Expired"
 	// IncorrectPolicy Incorrect policy of the connector
 	IncorrectPolicy AuthenticationProvisioningState = "IncorrectPolicy"
@@ -161,9 +161,9 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 type AutoProvision string
 
 const (
-	// AutoProvisionOff Do not install Azure Arc agent on the VMs automatically
+	// AutoProvisionOff Do not install Azure Arc agent on the machines automatically
 	AutoProvisionOff AutoProvision = "Off"
-	// AutoProvisionOn Install missing Azure Arc agent on VMs automatically
+	// AutoProvisionOn Install missing Azure Arc agents on machines automatically
 	AutoProvisionOn AutoProvision = "On"
 )
 

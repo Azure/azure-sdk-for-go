@@ -466,17 +466,23 @@ type BigDataPoolResourceProperties struct {
 	AutoPause *AutoPauseProperties `json:"autoPause,omitempty"`
 	// IsComputeIsolationEnabled - Whether compute isolation is required or not.
 	IsComputeIsolationEnabled *bool `json:"isComputeIsolationEnabled,omitempty"`
+	// SessionLevelPackagesEnabled - Whether session level library/package management is enabled or not.
+	SessionLevelPackagesEnabled *bool `json:"sessionLevelPackagesEnabled,omitempty"`
 	// SparkEventsFolder - The Spark events folder
 	SparkEventsFolder *string `json:"sparkEventsFolder,omitempty"`
 	// NodeCount - The number of nodes in the Big Data pool.
 	NodeCount *int32 `json:"nodeCount,omitempty"`
 	// LibraryRequirements - Library version requirements
 	LibraryRequirements *LibraryRequirements `json:"libraryRequirements,omitempty"`
+	// CustomLibraries - List of custom libraries/packages associated with the spark pool.
+	CustomLibraries *[]LibraryInfo `json:"customLibraries,omitempty"`
+	// SparkConfigProperties - Spark configuration file to specify additional properties
+	SparkConfigProperties *LibraryRequirements `json:"sparkConfigProperties,omitempty"`
 	// SparkVersion - The Apache Spark version.
 	SparkVersion *string `json:"sparkVersion,omitempty"`
 	// DefaultSparkLogFolder - The default folder where Spark logs will be written.
 	DefaultSparkLogFolder *string `json:"defaultSparkLogFolder,omitempty"`
-	// NodeSize - The level of compute power that each node in the Big Data pool has. Possible values include: 'NodeSizeNone', 'NodeSizeSmall', 'NodeSizeMedium', 'NodeSizeLarge', 'NodeSizeXLarge', 'NodeSizeXXLarge'
+	// NodeSize - The level of compute power that each node in the Big Data pool has. Possible values include: 'NodeSizeNone', 'NodeSizeSmall', 'NodeSizeMedium', 'NodeSizeLarge', 'NodeSizeXLarge', 'NodeSizeXXLarge', 'NodeSizeXXXLarge'
 	NodeSize NodeSize `json:"nodeSize,omitempty"`
 	// NodeSizeFamily - The kind of nodes that the Big Data pool provides. Possible values include: 'NodeSizeFamilyNone', 'NodeSizeFamilyMemoryOptimized'
 	NodeSizeFamily NodeSizeFamily `json:"nodeSizeFamily,omitempty"`
@@ -930,6 +936,294 @@ type DataLakeStorageAccountDetails struct {
 	Filesystem *string `json:"filesystem,omitempty"`
 }
 
+// DataMaskingPolicy represents a database data masking policy.
+type DataMaskingPolicy struct {
+	autorest.Response `json:"-"`
+	// DataMaskingPolicyProperties - The properties of the data masking policy.
+	*DataMaskingPolicyProperties `json:"properties,omitempty"`
+	// Location - READ-ONLY; The location of the data masking policy.
+	Location *string `json:"location,omitempty"`
+	// Kind - READ-ONLY; The kind of data masking policy. Metadata, used for Azure portal.
+	Kind *string `json:"kind,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataMaskingPolicy.
+func (dmp DataMaskingPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dmp.DataMaskingPolicyProperties != nil {
+		objectMap["properties"] = dmp.DataMaskingPolicyProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DataMaskingPolicy struct.
+func (dmp *DataMaskingPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dataMaskingPolicyProperties DataMaskingPolicyProperties
+				err = json.Unmarshal(*v, &dataMaskingPolicyProperties)
+				if err != nil {
+					return err
+				}
+				dmp.DataMaskingPolicyProperties = &dataMaskingPolicyProperties
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				dmp.Location = &location
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				dmp.Kind = &kind
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dmp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dmp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dmp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DataMaskingPolicyProperties the properties of a database data masking policy.
+type DataMaskingPolicyProperties struct {
+	// DataMaskingState - The state of the data masking policy. Possible values include: 'DataMaskingStateDisabled', 'DataMaskingStateEnabled'
+	DataMaskingState DataMaskingState `json:"dataMaskingState,omitempty"`
+	// ExemptPrincipals - The list of the exempt principals. Specifies the semicolon-separated list of database users for which the data masking policy does not apply. The specified users receive data results without masking for all of the database queries.
+	ExemptPrincipals *string `json:"exemptPrincipals,omitempty"`
+	// ApplicationPrincipals - READ-ONLY; The list of the application principals. This is a legacy parameter and is no longer used.
+	ApplicationPrincipals *string `json:"applicationPrincipals,omitempty"`
+	// MaskingLevel - READ-ONLY; The masking level. This is a legacy parameter and is no longer used.
+	MaskingLevel *string `json:"maskingLevel,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataMaskingPolicyProperties.
+func (dmpp DataMaskingPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dmpp.DataMaskingState != "" {
+		objectMap["dataMaskingState"] = dmpp.DataMaskingState
+	}
+	if dmpp.ExemptPrincipals != nil {
+		objectMap["exemptPrincipals"] = dmpp.ExemptPrincipals
+	}
+	return json.Marshal(objectMap)
+}
+
+// DataMaskingRule represents a Sql pool data masking rule.
+type DataMaskingRule struct {
+	autorest.Response `json:"-"`
+	// DataMaskingRuleProperties - The properties of the resource.
+	*DataMaskingRuleProperties `json:"properties,omitempty"`
+	// Location - READ-ONLY; The location of the data masking rule.
+	Location *string `json:"location,omitempty"`
+	// Kind - READ-ONLY; The kind of Data Masking Rule. Metadata, used for Azure portal.
+	Kind *string `json:"kind,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataMaskingRule.
+func (dmr DataMaskingRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dmr.DataMaskingRuleProperties != nil {
+		objectMap["properties"] = dmr.DataMaskingRuleProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for DataMaskingRule struct.
+func (dmr *DataMaskingRule) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dataMaskingRuleProperties DataMaskingRuleProperties
+				err = json.Unmarshal(*v, &dataMaskingRuleProperties)
+				if err != nil {
+					return err
+				}
+				dmr.DataMaskingRuleProperties = &dataMaskingRuleProperties
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				dmr.Location = &location
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				dmr.Kind = &kind
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				dmr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				dmr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				dmr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DataMaskingRuleListResult the response to a list data masking rules request.
+type DataMaskingRuleListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of Sql pool data masking rules.
+	Value *[]DataMaskingRule `json:"value,omitempty"`
+}
+
+// DataMaskingRuleProperties the properties of a Sql pool data masking rule.
+type DataMaskingRuleProperties struct {
+	// ID - READ-ONLY; The rule Id.
+	ID *string `json:"id,omitempty"`
+	// AliasName - The alias name. This is a legacy parameter and is no longer used.
+	AliasName *string `json:"aliasName,omitempty"`
+	// RuleState - The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName, columnName, maskingFunction, and specify ruleState as disabled. However, if the rule doesn't already exist, the rule will be created with ruleState set to enabled, regardless of the provided value of ruleState. Possible values include: 'DataMaskingRuleStateDisabled', 'DataMaskingRuleStateEnabled'
+	RuleState DataMaskingRuleState `json:"ruleState,omitempty"`
+	// SchemaName - The schema name on which the data masking rule is applied.
+	SchemaName *string `json:"schemaName,omitempty"`
+	// TableName - The table name on which the data masking rule is applied.
+	TableName *string `json:"tableName,omitempty"`
+	// ColumnName - The column name on which the data masking rule is applied.
+	ColumnName *string `json:"columnName,omitempty"`
+	// MaskingFunction - The masking function that is used for the data masking rule. Possible values include: 'DataMaskingFunctionDefault', 'DataMaskingFunctionCCN', 'DataMaskingFunctionEmail', 'DataMaskingFunctionNumber', 'DataMaskingFunctionSSN', 'DataMaskingFunctionText'
+	MaskingFunction DataMaskingFunction `json:"maskingFunction,omitempty"`
+	// NumberFrom - The numberFrom property of the masking rule. Required if maskingFunction is set to Number, otherwise this parameter will be ignored.
+	NumberFrom *string `json:"numberFrom,omitempty"`
+	// NumberTo - The numberTo property of the data masking rule. Required if maskingFunction is set to Number, otherwise this parameter will be ignored.
+	NumberTo *string `json:"numberTo,omitempty"`
+	// PrefixSize - If maskingFunction is set to Text, the number of characters to show unmasked in the beginning of the string. Otherwise, this parameter will be ignored.
+	PrefixSize *string `json:"prefixSize,omitempty"`
+	// SuffixSize - If maskingFunction is set to Text, the number of characters to show unmasked at the end of the string. Otherwise, this parameter will be ignored.
+	SuffixSize *string `json:"suffixSize,omitempty"`
+	// ReplacementString - If maskingFunction is set to Text, the character to use for masking the unexposed part of the string. Otherwise, this parameter will be ignored.
+	ReplacementString *string `json:"replacementString,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataMaskingRuleProperties.
+func (dmrp DataMaskingRuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dmrp.AliasName != nil {
+		objectMap["aliasName"] = dmrp.AliasName
+	}
+	if dmrp.RuleState != "" {
+		objectMap["ruleState"] = dmrp.RuleState
+	}
+	if dmrp.SchemaName != nil {
+		objectMap["schemaName"] = dmrp.SchemaName
+	}
+	if dmrp.TableName != nil {
+		objectMap["tableName"] = dmrp.TableName
+	}
+	if dmrp.ColumnName != nil {
+		objectMap["columnName"] = dmrp.ColumnName
+	}
+	if dmrp.MaskingFunction != "" {
+		objectMap["maskingFunction"] = dmrp.MaskingFunction
+	}
+	if dmrp.NumberFrom != nil {
+		objectMap["numberFrom"] = dmrp.NumberFrom
+	}
+	if dmrp.NumberTo != nil {
+		objectMap["numberTo"] = dmrp.NumberTo
+	}
+	if dmrp.PrefixSize != nil {
+		objectMap["prefixSize"] = dmrp.PrefixSize
+	}
+	if dmrp.SuffixSize != nil {
+		objectMap["suffixSize"] = dmrp.SuffixSize
+	}
+	if dmrp.ReplacementString != nil {
+		objectMap["replacementString"] = dmrp.ReplacementString
+	}
+	return json.Marshal(objectMap)
+}
+
 // DataWarehouseUserActivities user activities of a data warehouse
 type DataWarehouseUserActivities struct {
 	autorest.Response `json:"-"`
@@ -1142,6 +1436,332 @@ type ErrorResponse struct {
 	Details *[]ErrorResponse `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// ExtendedSQLPoolBlobAuditingPolicy an extended Sql pool blob auditing policy.
+type ExtendedSQLPoolBlobAuditingPolicy struct {
+	autorest.Response `json:"-"`
+	// ExtendedSQLPoolBlobAuditingPolicyProperties - Resource properties.
+	*ExtendedSQLPoolBlobAuditingPolicyProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExtendedSQLPoolBlobAuditingPolicy.
+func (espbap ExtendedSQLPoolBlobAuditingPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if espbap.ExtendedSQLPoolBlobAuditingPolicyProperties != nil {
+		objectMap["properties"] = espbap.ExtendedSQLPoolBlobAuditingPolicyProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ExtendedSQLPoolBlobAuditingPolicy struct.
+func (espbap *ExtendedSQLPoolBlobAuditingPolicy) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var extendedSQLPoolBlobAuditingPolicyProperties ExtendedSQLPoolBlobAuditingPolicyProperties
+				err = json.Unmarshal(*v, &extendedSQLPoolBlobAuditingPolicyProperties)
+				if err != nil {
+					return err
+				}
+				espbap.ExtendedSQLPoolBlobAuditingPolicyProperties = &extendedSQLPoolBlobAuditingPolicyProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				espbap.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				espbap.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				espbap.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ExtendedSQLPoolBlobAuditingPolicyListResult a list of sql pool extended auditing settings.
+type ExtendedSQLPoolBlobAuditingPolicyListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]ExtendedSQLPoolBlobAuditingPolicy `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ExtendedSQLPoolBlobAuditingPolicyListResultIterator provides access to a complete listing of
+// ExtendedSQLPoolBlobAuditingPolicy values.
+type ExtendedSQLPoolBlobAuditingPolicyListResultIterator struct {
+	i    int
+	page ExtendedSQLPoolBlobAuditingPolicyListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ExtendedSQLPoolBlobAuditingPolicyListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExtendedSQLPoolBlobAuditingPolicyListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ExtendedSQLPoolBlobAuditingPolicyListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ExtendedSQLPoolBlobAuditingPolicyListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ExtendedSQLPoolBlobAuditingPolicyListResultIterator) Response() ExtendedSQLPoolBlobAuditingPolicyListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ExtendedSQLPoolBlobAuditingPolicyListResultIterator) Value() ExtendedSQLPoolBlobAuditingPolicy {
+	if !iter.page.NotDone() {
+		return ExtendedSQLPoolBlobAuditingPolicy{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ExtendedSQLPoolBlobAuditingPolicyListResultIterator type.
+func NewExtendedSQLPoolBlobAuditingPolicyListResultIterator(page ExtendedSQLPoolBlobAuditingPolicyListResultPage) ExtendedSQLPoolBlobAuditingPolicyListResultIterator {
+	return ExtendedSQLPoolBlobAuditingPolicyListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (espbaplr ExtendedSQLPoolBlobAuditingPolicyListResult) IsEmpty() bool {
+	return espbaplr.Value == nil || len(*espbaplr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (espbaplr ExtendedSQLPoolBlobAuditingPolicyListResult) hasNextLink() bool {
+	return espbaplr.NextLink != nil && len(*espbaplr.NextLink) != 0
+}
+
+// extendedSQLPoolBlobAuditingPolicyListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (espbaplr ExtendedSQLPoolBlobAuditingPolicyListResult) extendedSQLPoolBlobAuditingPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !espbaplr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(espbaplr.NextLink)))
+}
+
+// ExtendedSQLPoolBlobAuditingPolicyListResultPage contains a page of ExtendedSQLPoolBlobAuditingPolicy values.
+type ExtendedSQLPoolBlobAuditingPolicyListResultPage struct {
+	fn       func(context.Context, ExtendedSQLPoolBlobAuditingPolicyListResult) (ExtendedSQLPoolBlobAuditingPolicyListResult, error)
+	espbaplr ExtendedSQLPoolBlobAuditingPolicyListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ExtendedSQLPoolBlobAuditingPolicyListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ExtendedSQLPoolBlobAuditingPolicyListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.espbaplr)
+		if err != nil {
+			return err
+		}
+		page.espbaplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ExtendedSQLPoolBlobAuditingPolicyListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ExtendedSQLPoolBlobAuditingPolicyListResultPage) NotDone() bool {
+	return !page.espbaplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ExtendedSQLPoolBlobAuditingPolicyListResultPage) Response() ExtendedSQLPoolBlobAuditingPolicyListResult {
+	return page.espbaplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ExtendedSQLPoolBlobAuditingPolicyListResultPage) Values() []ExtendedSQLPoolBlobAuditingPolicy {
+	if page.espbaplr.IsEmpty() {
+		return nil
+	}
+	return *page.espbaplr.Value
+}
+
+// Creates a new instance of the ExtendedSQLPoolBlobAuditingPolicyListResultPage type.
+func NewExtendedSQLPoolBlobAuditingPolicyListResultPage(getNextPage func(context.Context, ExtendedSQLPoolBlobAuditingPolicyListResult) (ExtendedSQLPoolBlobAuditingPolicyListResult, error)) ExtendedSQLPoolBlobAuditingPolicyListResultPage {
+	return ExtendedSQLPoolBlobAuditingPolicyListResultPage{fn: getNextPage}
+}
+
+// ExtendedSQLPoolBlobAuditingPolicyProperties properties of an extended Sql pool blob auditing policy.
+type ExtendedSQLPoolBlobAuditingPolicyProperties struct {
+	// PredicateExpression - Specifies condition of where clause when creating an audit.
+	PredicateExpression *string `json:"predicateExpression,omitempty"`
+	// State - Specifies the state of the policy. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are required. Possible values include: 'BlobAuditingPolicyStateEnabled', 'BlobAuditingPolicyStateDisabled'
+	State BlobAuditingPolicyState `json:"state,omitempty"`
+	// StorageEndpoint - Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled is required.
+	StorageEndpoint *string `json:"storageEndpoint,omitempty"`
+	// StorageAccountAccessKey - Specifies the identifier key of the auditing storage account.
+	// If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server system-assigned managed identity to access the storage.
+	// Prerequisites for using managed identity authentication:
+	// 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+	// 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server identity.
+	// For more information, see [Auditing to storage using Managed Identity authentication](https://go.microsoft.com/fwlink/?linkid=2114355)
+	StorageAccountAccessKey *string `json:"storageAccountAccessKey,omitempty"`
+	// RetentionDays - Specifies the number of days to keep in the audit logs in the storage account.
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
+	// AuditActionsAndGroups - Specifies the Actions-Groups and Actions to audit.
+	//
+	// The recommended set of action groups to use is the following combination - this will audit all the queries and stored procedures executed against the database, as well as successful and failed logins:
+	//
+	// BATCH_COMPLETED_GROUP,
+	// SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP,
+	// FAILED_DATABASE_AUTHENTICATION_GROUP.
+	//
+	// This above combination is also the set that is configured by default when enabling auditing from the Azure portal.
+	//
+	// The supported action groups to audit are (note: choose only specific groups that cover your auditing needs. Using unnecessary groups could lead to very large quantities of audit records):
+	//
+	// APPLICATION_ROLE_CHANGE_PASSWORD_GROUP
+	// BACKUP_RESTORE_GROUP
+	// DATABASE_LOGOUT_GROUP
+	// DATABASE_OBJECT_CHANGE_GROUP
+	// DATABASE_OBJECT_OWNERSHIP_CHANGE_GROUP
+	// DATABASE_OBJECT_PERMISSION_CHANGE_GROUP
+	// DATABASE_OPERATION_GROUP
+	// DATABASE_PERMISSION_CHANGE_GROUP
+	// DATABASE_PRINCIPAL_CHANGE_GROUP
+	// DATABASE_PRINCIPAL_IMPERSONATION_GROUP
+	// DATABASE_ROLE_MEMBER_CHANGE_GROUP
+	// FAILED_DATABASE_AUTHENTICATION_GROUP
+	// SCHEMA_OBJECT_ACCESS_GROUP
+	// SCHEMA_OBJECT_CHANGE_GROUP
+	// SCHEMA_OBJECT_OWNERSHIP_CHANGE_GROUP
+	// SCHEMA_OBJECT_PERMISSION_CHANGE_GROUP
+	// SUCCESSFUL_DATABASE_AUTHENTICATION_GROUP
+	// USER_CHANGE_PASSWORD_GROUP
+	// BATCH_STARTED_GROUP
+	// BATCH_COMPLETED_GROUP
+	//
+	// These are groups that cover all sql statements and stored procedures executed against the database, and should not be used in combination with other groups as this will result in duplicate audit logs.
+	//
+	// For more information, see [Database-Level Audit Action Groups](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-action-groups).
+	//
+	// For Database auditing policy, specific Actions can also be specified (note that Actions cannot be specified for Server auditing policy). The supported actions to audit are:
+	// SELECT
+	// UPDATE
+	// INSERT
+	// DELETE
+	// EXECUTE
+	// RECEIVE
+	// REFERENCES
+	//
+	// The general form for defining an action to be audited is:
+	// {action} ON {object} BY {principal}
+	//
+	// Note that <object> in the above format can refer to an object like a table, view, or stored procedure, or an entire database or schema. For the latter cases, the forms DATABASE::{db_name} and SCHEMA::{schema_name} are used, respectively.
+	//
+	// For example:
+	// SELECT on dbo.myTable by public
+	// SELECT on DATABASE::myDatabase by public
+	// SELECT on SCHEMA::mySchema by public
+	//
+	// For more information, see [Database-Level Audit Actions](https://docs.microsoft.com/en-us/sql/relational-databases/security/auditing/sql-server-audit-action-groups-and-actions#database-level-audit-actions)
+	AuditActionsAndGroups *[]string `json:"auditActionsAndGroups,omitempty"`
+	// StorageAccountSubscriptionID - Specifies the blob storage subscription Id.
+	StorageAccountSubscriptionID *uuid.UUID `json:"storageAccountSubscriptionId,omitempty"`
+	// IsStorageSecondaryKeyInUse - Specifies whether storageAccountAccessKey value is the storage's secondary key.
+	IsStorageSecondaryKeyInUse *bool `json:"isStorageSecondaryKeyInUse,omitempty"`
+	// IsAzureMonitorTargetEnabled - Specifies whether audit events are sent to Azure Monitor.
+	// In order to send the events to Azure Monitor, specify 'state' as 'Enabled' and 'isAzureMonitorTargetEnabled' as true.
+	//
+	// When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
+	// Note that for server level audit you should use the 'master' database as {databaseName}.
+	//
+	// Diagnostic Settings URI format:
+	// PUT https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/providers/microsoft.insights/diagnosticSettings/{settingsName}?api-version=2017-05-01-preview
+	//
+	// For more information, see [Diagnostic Settings REST API](https://go.microsoft.com/fwlink/?linkid=2033207)
+	// or [Diagnostic Settings PowerShell](https://go.microsoft.com/fwlink/?linkid=2033043)
+	IsAzureMonitorTargetEnabled *bool `json:"isAzureMonitorTargetEnabled,omitempty"`
+	// QueueDelayMs - Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed.
+	// The default minimum value is 1000 (1 second). The maximum is 2,147,483,647.
+	QueueDelayMs *int32 `json:"queueDelayMs,omitempty"`
 }
 
 // GeoBackupPolicy a database geo backup policy.
@@ -3031,6 +3651,20 @@ func (future *IPFirewallRulesReplaceAllFuture) Result(client IPFirewallRulesClie
 	return
 }
 
+// LibraryInfo library/package information of a Big Data pool powered by Apache Spark
+type LibraryInfo struct {
+	// Name - Name of the library.
+	Name *string `json:"name,omitempty"`
+	// Path - Storage blob path of library.
+	Path *string `json:"path,omitempty"`
+	// ContainerName - Storage blob container name.
+	ContainerName *string `json:"containerName,omitempty"`
+	// UploadedTimestamp - The last update time of the library.
+	UploadedTimestamp *date.Time `json:"uploadedTimestamp,omitempty"`
+	// Type - Type of the library.
+	Type *string `json:"type,omitempty"`
+}
+
 // LibraryRequirements library requirements for a Big Data pool powered by Apache Spark
 type LibraryRequirements struct {
 	// Time - READ-ONLY; The last update time of the library requirements file.
@@ -3691,6 +4325,16 @@ type ManagedIntegrationRuntimeTypeProperties struct {
 	ComputeProperties *IntegrationRuntimeComputeProperties `json:"computeProperties,omitempty"`
 	// SsisProperties - SSIS properties for managed integration runtime.
 	SsisProperties *IntegrationRuntimeSsisProperties `json:"ssisProperties,omitempty"`
+}
+
+// ManagedVirtualNetworkSettings managed Virtual Network Settings
+type ManagedVirtualNetworkSettings struct {
+	// PreventDataExfiltration - Prevent Data Exfiltration
+	PreventDataExfiltration *bool `json:"preventDataExfiltration,omitempty"`
+	// LinkedAccessCheckOnTargetResource - Linked Access Check On Target Resource
+	LinkedAccessCheckOnTargetResource *bool `json:"linkedAccessCheckOnTargetResource,omitempty"`
+	// AllowedAadTenantIdsForLinking - Allowed Aad Tenant Ids For Linking
+	AllowedAadTenantIdsForLinking *[]string `json:"allowedAadTenantIdsForLinking,omitempty"`
 }
 
 // MetadataSyncConfig configuration for metadata sync
@@ -6226,6 +6870,163 @@ func (spbap *SQLPoolBlobAuditingPolicy) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// SQLPoolBlobAuditingPolicyListResult a list of Sql pool auditing settings.
+type SQLPoolBlobAuditingPolicyListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]SQLPoolBlobAuditingPolicy `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// SQLPoolBlobAuditingPolicyListResultIterator provides access to a complete listing of
+// SQLPoolBlobAuditingPolicy values.
+type SQLPoolBlobAuditingPolicyListResultIterator struct {
+	i    int
+	page SQLPoolBlobAuditingPolicyListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SQLPoolBlobAuditingPolicyListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolBlobAuditingPolicyListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *SQLPoolBlobAuditingPolicyListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SQLPoolBlobAuditingPolicyListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SQLPoolBlobAuditingPolicyListResultIterator) Response() SQLPoolBlobAuditingPolicyListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SQLPoolBlobAuditingPolicyListResultIterator) Value() SQLPoolBlobAuditingPolicy {
+	if !iter.page.NotDone() {
+		return SQLPoolBlobAuditingPolicy{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the SQLPoolBlobAuditingPolicyListResultIterator type.
+func NewSQLPoolBlobAuditingPolicyListResultIterator(page SQLPoolBlobAuditingPolicyListResultPage) SQLPoolBlobAuditingPolicyListResultIterator {
+	return SQLPoolBlobAuditingPolicyListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (spbaplr SQLPoolBlobAuditingPolicyListResult) IsEmpty() bool {
+	return spbaplr.Value == nil || len(*spbaplr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (spbaplr SQLPoolBlobAuditingPolicyListResult) hasNextLink() bool {
+	return spbaplr.NextLink != nil && len(*spbaplr.NextLink) != 0
+}
+
+// sQLPoolBlobAuditingPolicyListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (spbaplr SQLPoolBlobAuditingPolicyListResult) sQLPoolBlobAuditingPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !spbaplr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(spbaplr.NextLink)))
+}
+
+// SQLPoolBlobAuditingPolicyListResultPage contains a page of SQLPoolBlobAuditingPolicy values.
+type SQLPoolBlobAuditingPolicyListResultPage struct {
+	fn      func(context.Context, SQLPoolBlobAuditingPolicyListResult) (SQLPoolBlobAuditingPolicyListResult, error)
+	spbaplr SQLPoolBlobAuditingPolicyListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SQLPoolBlobAuditingPolicyListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolBlobAuditingPolicyListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.spbaplr)
+		if err != nil {
+			return err
+		}
+		page.spbaplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *SQLPoolBlobAuditingPolicyListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SQLPoolBlobAuditingPolicyListResultPage) NotDone() bool {
+	return !page.spbaplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SQLPoolBlobAuditingPolicyListResultPage) Response() SQLPoolBlobAuditingPolicyListResult {
+	return page.spbaplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SQLPoolBlobAuditingPolicyListResultPage) Values() []SQLPoolBlobAuditingPolicy {
+	if page.spbaplr.IsEmpty() {
+		return nil
+	}
+	return *page.spbaplr.Value
+}
+
+// Creates a new instance of the SQLPoolBlobAuditingPolicyListResultPage type.
+func NewSQLPoolBlobAuditingPolicyListResultPage(getNextPage func(context.Context, SQLPoolBlobAuditingPolicyListResult) (SQLPoolBlobAuditingPolicyListResult, error)) SQLPoolBlobAuditingPolicyListResultPage {
+	return SQLPoolBlobAuditingPolicyListResultPage{fn: getNextPage}
+}
+
 // SQLPoolBlobAuditingPolicyProperties properties of a Sql pool blob auditing policy.
 type SQLPoolBlobAuditingPolicyProperties struct {
 	// State - Specifies the state of the policy. If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled are required. Possible values include: 'BlobAuditingPolicyStateEnabled', 'BlobAuditingPolicyStateDisabled'
@@ -6471,6 +7272,7 @@ func NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultPage(getNextPage func
 
 // SQLPoolColumn a Sql pool column resource.
 type SQLPoolColumn struct {
+	autorest.Response `json:"-"`
 	// SQLPoolColumnProperties - Resource properties.
 	*SQLPoolColumnProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -7210,6 +8012,7 @@ func (future *SQLPoolRestorePointsCreateFuture) Result(client SQLPoolRestorePoin
 
 // SQLPoolSchema a Sql pool schema resource.
 type SQLPoolSchema struct {
+	autorest.Response `json:"-"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -7561,6 +8364,7 @@ func (future *SQLPoolsResumeFuture) Result(client SQLPoolsClient) (so SetObject,
 
 // SQLPoolTable a Sql pool table resource.
 type SQLPoolTable struct {
+	autorest.Response `json:"-"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -9058,6 +9862,7 @@ type VulnerabilityAssessmentScanError struct {
 
 // VulnerabilityAssessmentScanRecord a vulnerability assessment scan record.
 type VulnerabilityAssessmentScanRecord struct {
+	autorest.Response `json:"-"`
 	// VulnerabilityAssessmentScanRecordProperties - Resource properties.
 	*VulnerabilityAssessmentScanRecordProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -9707,6 +10512,8 @@ type WorkspacePatchInfo struct {
 	Tags map[string]*string `json:"tags"`
 	// Identity - The identity of the workspace
 	Identity *ManagedIdentity `json:"identity,omitempty"`
+	// ManagedVirtualNetworkSettings - Managed Virtual Network Settings
+	ManagedVirtualNetworkSettings *WorkspacePatchInfoManagedVirtualNetworkSettings `json:"managedVirtualNetworkSettings,omitempty"`
 	// WorkspacePatchProperties - Workspace patch properties
 	*WorkspacePatchProperties `json:"properties,omitempty"`
 }
@@ -9719,6 +10526,9 @@ func (wpi WorkspacePatchInfo) MarshalJSON() ([]byte, error) {
 	}
 	if wpi.Identity != nil {
 		objectMap["identity"] = wpi.Identity
+	}
+	if wpi.ManagedVirtualNetworkSettings != nil {
+		objectMap["managedVirtualNetworkSettings"] = wpi.ManagedVirtualNetworkSettings
 	}
 	if wpi.WorkspacePatchProperties != nil {
 		objectMap["properties"] = wpi.WorkspacePatchProperties
@@ -9753,6 +10563,15 @@ func (wpi *WorkspacePatchInfo) UnmarshalJSON(body []byte) error {
 				}
 				wpi.Identity = &identity
 			}
+		case "managedVirtualNetworkSettings":
+			if v != nil {
+				var managedVirtualNetworkSettings WorkspacePatchInfoManagedVirtualNetworkSettings
+				err = json.Unmarshal(*v, &managedVirtualNetworkSettings)
+				if err != nil {
+					return err
+				}
+				wpi.ManagedVirtualNetworkSettings = &managedVirtualNetworkSettings
+			}
 		case "properties":
 			if v != nil {
 				var workspacePatchProperties WorkspacePatchProperties
@@ -9766,6 +10585,16 @@ func (wpi *WorkspacePatchInfo) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// WorkspacePatchInfoManagedVirtualNetworkSettings managed Virtual Network Settings
+type WorkspacePatchInfoManagedVirtualNetworkSettings struct {
+	// PreventDataExfiltration - Prevent Data Exfiltration
+	PreventDataExfiltration *bool `json:"preventDataExfiltration,omitempty"`
+	// LinkedAccessCheckOnTargetResource - Linked Access Check On Target Resource
+	LinkedAccessCheckOnTargetResource *bool `json:"linkedAccessCheckOnTargetResource,omitempty"`
+	// AllowedAadTenantIdsForLinking - Allowed Aad Tenant Ids For Linking
+	AllowedAadTenantIdsForLinking *[]string `json:"allowedAadTenantIdsForLinking,omitempty"`
 }
 
 // WorkspacePatchProperties workspace patch properties
@@ -9807,6 +10636,8 @@ type WorkspaceProperties struct {
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// ExtraProperties - READ-ONLY; Workspace level configs and feature flags
 	ExtraProperties map[string]interface{} `json:"extraProperties"`
+	// ManagedVirtualNetworkSettings - Managed Virtual Network Settings
+	ManagedVirtualNetworkSettings *ManagedVirtualNetworkSettings `json:"managedVirtualNetworkSettings,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for WorkspaceProperties.
@@ -9835,6 +10666,9 @@ func (wp WorkspaceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if wp.PrivateEndpointConnections != nil {
 		objectMap["privateEndpointConnections"] = wp.PrivateEndpointConnections
+	}
+	if wp.ManagedVirtualNetworkSettings != nil {
+		objectMap["managedVirtualNetworkSettings"] = wp.ManagedVirtualNetworkSettings
 	}
 	return json.Marshal(objectMap)
 }

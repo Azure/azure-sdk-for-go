@@ -38,11 +38,11 @@ var (
 	userAgent = "azidentitysample"
 )
 
-// ExampleGroupsClientWithDefaultAzureCredential for using the DefaultAzureCredential through the NewDefaultAzureCredentialAdapter and assigning the credential to the
+// ExampleNewDefaultAzureCredential for using the DefaultAzureCredential through the NewDefaultAzureCredentialAdapter and assigning the credential to the
 // SDK V1 authorizer.
 // NewDefaultAzureCredentialAdapter should be used to replace auth.NewAuthorizerFromEnvironment(). DefaultAzureCredential, similarly to NewAuthorizerFromEnvironment, checks for
 // environment variables that can construct ClientSecretCredentials, ClientCertificateCredentials, UsernamePasswordCredentials, ManagedIdentityCredentials and AzureCLICredentials.
-func ExampleGroupsClientWithDefaultAzureCredential() {
+func ExampleNewDefaultAzureCredential() {
 	groupsClient := resources.NewGroupsClient(subscriptionID)
 	// call azidext.NewDefaultAzureCredentialAdapter in order to get an authorizer with a DefaultAzureCredential
 	// leave azidext.DefaultAzureCredentialOptions as nil to get the default scope for management APIs.
@@ -69,12 +69,12 @@ func ExampleGroupsClientWithDefaultAzureCredential() {
 	// samplegroup
 }
 
-// ExampleGroupsClientWithClientSecretCredential for using the ClientSecretCredential with the NewAzureIdentityCredentialAdapter and assigning the credential to the
+// ExampleNewClientSecretCredential for using the ClientSecretCredential with the NewAzureIdentityCredentialAdapter and assigning the credential to the
 // SDK V1 authorizer.
 // NewAzureIdentityCredentialAdapter can take any credential type defined in azidentity and convert it to an authorizer that is compatible with the Azure SDK for Go
 // V1 implementation. For a list of the credentials that azidentity includes, please see: https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/azidentity.
 // NewClientSecretCredential can be used in place of auth.NewClientCredentialsConfig().
-func ExampleGroupsClientWithClientSecretCredential() {
+func ExampleNewClientSecretCredential() {
 	groupsClient := resources.NewGroupsClient(subscriptionID)
 	// instantiate a new ClientSecretCredential as specified in the documentation
 	cred, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
@@ -107,14 +107,14 @@ func ExampleGroupsClientWithClientSecretCredential() {
 	// samplegroup
 }
 
-// ExampleGroupsClientWithEnvironmentCredential for using the EnvironmentCredential with the NewAzureIdentityCredentialAdapter and assigning the credential to the
+// ExampleNewEnvironmentCredential for using the EnvironmentCredential with the NewAzureIdentityCredentialAdapter and assigning the credential to the
 // SDK V1 authorizer.
 // NewAzureIdentityCredentialAdapter can take any credential type defined in azidentity and convert it to an authorizer that is compatible with the Azure SDK for Go
 // V1 implementation. For a list of the credentials that azidentity includes, please see: https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/azidentity.
 // NewEnvironmentCredential can be used in place of auth.NewAuthorizerFromEnvironment(). An important distinction is that NewEnvironmentCredential does not include Managed
 // Identity credential, for a credential that also checks the environment for Managed Identity credential use the NewDefaultAzureCredentialAdapter. Alternatively,
 // create a custom credential chain with NewChainedTokenCredential and add all desired token credentials to try into the chain.
-func ExampleGroupsClientWithEnvironmentCredential() {
+func ExampleNewEnvironmentCredential() {
 	groupsClient := resources.NewGroupsClient(subscriptionID)
 	cred, err := azidentity.NewEnvironmentCredential(nil)
 	if err != nil {

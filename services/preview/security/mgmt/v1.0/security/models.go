@@ -3887,9 +3887,10 @@ type AutoProvisioningSettingProperties struct {
 }
 
 // AwAssumeRoleAuthenticationDetailsProperties AWS cloud account connector based assume role, the role enables
-// delegating access to your AWS resources. The role is composed of role arn and external id, for more details,
-// refer to <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html">Creating a
-// Role to Delegate Permissions to an IAM User (write only)</a>
+// delegating access to your AWS resources. The role is composed of role Amazon Resource Name (ARN) and
+// external ID. For more details, refer to <a
+// href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html">Creating a Role to
+// Delegate Permissions to an IAM User (write only)</a>
 type AwAssumeRoleAuthenticationDetailsProperties struct {
 	// AccountID - READ-ONLY; The ID of the cloud account
 	AccountID *string `json:"accountId,omitempty"`
@@ -3947,7 +3948,7 @@ func (aaradp AwAssumeRoleAuthenticationDetailsProperties) AsBasicAuthenticationD
 }
 
 // AwsCredsAuthenticationDetailsProperties AWS cloud account connector based credentials, the credentials is
-// composed of access key id and secret key, for more details, refer to <a
+// composed of access key ID and secret key, for more details, refer to <a
 // href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html">Creating an IAM User in Your
 // AWS Account (write only)</a>
 type AwsCredsAuthenticationDetailsProperties struct {
@@ -4991,9 +4992,9 @@ func NewConnectorSettingListPage(getNextPage func(context.Context, ConnectorSett
 	return ConnectorSettingListPage{fn: getNextPage}
 }
 
-// ConnectorSettingProperties describes properties of an connector setting
+// ConnectorSettingProperties describes properties of a connector setting
 type ConnectorSettingProperties struct {
-	// HybridComputeSettings - Settings for hybrid compute management, these settings are relevant only Arc autoProvision (Hybrid Compute).
+	// HybridComputeSettings - Settings for hybrid compute management. These settings are relevant only for Arc autoProvision (Hybrid Compute).
 	HybridComputeSettings *HybridComputeSettingsProperties `json:"hybridComputeSettings,omitempty"`
 	// AuthenticationDetails - Settings for authentication management, these settings are relevant only for the cloud connector.
 	AuthenticationDetails BasicAuthenticationDetailsProperties `json:"authenticationDetails,omitempty"`
@@ -7505,29 +7506,29 @@ func (funiar FileUploadsNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustom
 }
 
 // GcpCredentialsDetailsProperties GCP cloud account connector based service to service credentials, the
-// credentials is composed of organization id and json api key (write only)</a>
+// credentials are composed of the organization ID and a JSON API key (write only)
 type GcpCredentialsDetailsProperties struct {
-	// OrganizationID - The Organization ID of the GCP cloud account
+	// OrganizationID - The organization ID of the GCP cloud account
 	OrganizationID *string `json:"organizationId,omitempty"`
 	// Type - Type field of the API key (write only)
 	Type *string `json:"type,omitempty"`
-	// ProjectID - Project Id field of the API key (write only)
+	// ProjectID - Project ID field of the API key (write only)
 	ProjectID *string `json:"projectId,omitempty"`
-	// PrivateKeyID - Private key Id field of the API key (write only)
+	// PrivateKeyID - Private key ID field of the API key (write only)
 	PrivateKeyID *string `json:"privateKeyId,omitempty"`
 	// PrivateKey - Private key field of the API key (write only)
 	PrivateKey *string `json:"privateKey,omitempty"`
 	// ClientEmail - Client email field of the API key (write only)
 	ClientEmail *string `json:"clientEmail,omitempty"`
-	// ClientID - Client Id field of the API key (write only)
+	// ClientID - Client ID field of the API key (write only)
 	ClientID *string `json:"clientId,omitempty"`
-	// AuthURI - Auth Uri field of the API key (write only)
+	// AuthURI - Auth URI field of the API key (write only)
 	AuthURI *string `json:"authUri,omitempty"`
-	// TokenURI - Token Uri field of the API key (write only)
+	// TokenURI - Token URI field of the API key (write only)
 	TokenURI *string `json:"tokenUri,omitempty"`
-	// AuthProviderX509CertURL - Auth provider x509 certificate url field of the API key (write only)
+	// AuthProviderX509CertURL - Auth provider x509 certificate URL field of the API key (write only)
 	AuthProviderX509CertURL *string `json:"authProviderX509CertUrl,omitempty"`
-	// ClientX509CertURL - Client x509 certificate url field of the API key (write only)
+	// ClientX509CertURL - Client x509 certificate URL field of the API key (write only)
 	ClientX509CertURL *string `json:"clientX509CertUrl,omitempty"`
 	// AuthenticationProvisioningState - READ-ONLY; State of the multi-cloud connector. Possible values include: 'Valid', 'Invalid', 'Expired', 'IncorrectPolicy'
 	AuthenticationProvisioningState AuthenticationProvisioningState `json:"authenticationProvisioningState,omitempty"`
@@ -8184,7 +8185,7 @@ type HybridComputeSettingsProperties struct {
 	AutoProvision AutoProvision `json:"autoProvision,omitempty"`
 	// ResourceGroupName - The name of the resource group where Arc (Hybrid Compute) connectors are connected.
 	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
-	// Region - The location where the meta data of machines will be stored
+	// Region - The location where the metadata of machines will be stored
 	Region *string `json:"region,omitempty"`
 	// ProxyServer - For a non-Azure machine that is not connected directly to the internet, specify a proxy server that the non-Azure machine can use.
 	ProxyServer *ProxyServerProperties `json:"proxyServer,omitempty"`
@@ -12857,7 +12858,7 @@ func (svp ServerVulnerabilityProperties) AsBasicAdditionalData() (BasicAdditiona
 
 // ServicePrincipalProperties details of the service principal.
 type ServicePrincipalProperties struct {
-	// ApplicationID - Application id of service principal.
+	// ApplicationID - Application ID of service principal.
 	ApplicationID *string `json:"applicationId,omitempty"`
 	// Secret - A secret string that the application uses to prove its identity, also can be referred to as application password (write only).
 	Secret *string `json:"secret,omitempty"`

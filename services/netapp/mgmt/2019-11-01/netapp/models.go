@@ -962,7 +962,7 @@ type ReplicationObject struct {
 	ReplicationID *string `json:"replicationId,omitempty"`
 	// EndpointType - Indicates whether the local volume is the source or destination for the Volume Replication. Possible values include: 'Src', 'Dst'
 	EndpointType EndpointType `json:"endpointType,omitempty"`
-	// ReplicationSchedule - Schedule. Possible values include: '10minutely', 'Hourly', 'Daily', 'Weekly', 'Monthly'
+	// ReplicationSchedule - Schedule. Possible values include: '10minutely', 'Hourly', 'Daily'
 	ReplicationSchedule ReplicationSchedule `json:"replicationSchedule,omitempty"`
 	// RemoteVolumeResourceID - The resource ID of the remote volume.
 	RemoteVolumeResourceID *string `json:"remoteVolumeResourceId,omitempty"`

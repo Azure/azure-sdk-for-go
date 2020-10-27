@@ -715,6 +715,8 @@ type DeploymentProperties struct {
 	DebugSetting *DebugSetting `json:"debugSetting,omitempty"`
 	// OnErrorDeployment - The deployment on error behavior.
 	OnErrorDeployment *OnErrorDeployment `json:"onErrorDeployment,omitempty"`
+	// ExpressionEvaluationOptions - Specifies whether template expressions are evaluated within the scope of the parent template or nested template. Only applicable to nested templates. If not specified, default value is outer.
+	ExpressionEvaluationOptions *ExpressionEvaluationOptions `json:"expressionEvaluationOptions,omitempty"`
 }
 
 // DeploymentPropertiesExtended deployment properties with additional details.
@@ -1320,6 +1322,8 @@ type DeploymentWhatIfProperties struct {
 	DebugSetting *DebugSetting `json:"debugSetting,omitempty"`
 	// OnErrorDeployment - The deployment on error behavior.
 	OnErrorDeployment *OnErrorDeployment `json:"onErrorDeployment,omitempty"`
+	// ExpressionEvaluationOptions - Specifies whether template expressions are evaluated within the scope of the parent template or nested template. Only applicable to nested templates. If not specified, default value is outer.
+	ExpressionEvaluationOptions *ExpressionEvaluationOptions `json:"expressionEvaluationOptions,omitempty"`
 }
 
 // DeploymentWhatIfSettings deployment What-If operation settings.
@@ -1356,6 +1360,13 @@ type ExportTemplateRequest struct {
 	ResourcesProperty *[]string `json:"resources,omitempty"`
 	// Options - The export template options. A CSV-formatted list containing zero or more of the following: 'IncludeParameterDefaultValue', 'IncludeComments', 'SkipResourceNameParameterization', 'SkipAllParameterization'
 	Options *string `json:"options,omitempty"`
+}
+
+// ExpressionEvaluationOptions specifies whether template expressions are evaluated within the scope of the
+// parent template or nested template.
+type ExpressionEvaluationOptions struct {
+	// Scope - The scope to be used for evaluation of parameters, variables and functions in a nested template. Possible values include: 'ExpressionEvaluationOptionsScopeTypeNotSpecified', 'ExpressionEvaluationOptionsScopeTypeOuter', 'ExpressionEvaluationOptionsScopeTypeInner'
+	Scope ExpressionEvaluationOptionsScopeType `json:"scope,omitempty"`
 }
 
 // GenericResource resource information.

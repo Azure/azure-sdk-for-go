@@ -32,6 +32,7 @@ var _ OperationsClientAPI = (*communication.OperationsClient)(nil)
 
 // ServiceClientAPI contains the set of methods on the ServiceClient type.
 type ServiceClientAPI interface {
+	CheckNameAvailability(ctx context.Context, nameAvailabilityParameters *communication.NameAvailabilityParameters) (result communication.NameAvailability, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, communicationServiceName string, parameters *communication.ServiceResource) (result communication.ServiceCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, communicationServiceName string) (result communication.ServiceDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, communicationServiceName string) (result communication.ServiceResource, err error)

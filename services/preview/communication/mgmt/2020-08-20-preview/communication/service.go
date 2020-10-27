@@ -42,6 +42,92 @@ func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceC
 	return ServiceClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// CheckNameAvailability checks that the CommunicationService name is valid and is not already in use.
+// Parameters:
+// nameAvailabilityParameters - parameters supplied to the operation.
+func (client ServiceClient) CheckNameAvailability(ctx context.Context, nameAvailabilityParameters *NameAvailabilityParameters) (result NameAvailability, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceClient.CheckNameAvailability")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: nameAvailabilityParameters,
+			Constraints: []validation.Constraint{{Target: "nameAvailabilityParameters", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "nameAvailabilityParameters.Type", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "nameAvailabilityParameters.Name", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("communication.ServiceClient", "CheckNameAvailability", err.Error())
+	}
+
+	req, err := client.CheckNameAvailabilityPreparer(ctx, nameAvailabilityParameters)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "communication.ServiceClient", "CheckNameAvailability", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.CheckNameAvailabilitySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "communication.ServiceClient", "CheckNameAvailability", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CheckNameAvailabilityResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "communication.ServiceClient", "CheckNameAvailability", resp, "Failure responding to request")
+	}
+
+	return
+}
+
+// CheckNameAvailabilityPreparer prepares the CheckNameAvailability request.
+func (client ServiceClient) CheckNameAvailabilityPreparer(ctx context.Context, nameAvailabilityParameters *NameAvailabilityParameters) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-08-20-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Communication/checkNameAvailability", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if nameAvailabilityParameters != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(nameAvailabilityParameters))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CheckNameAvailabilitySender sends the CheckNameAvailability request. The method will close the
+// http.Response Body if it receives an error.
+func (client ServiceClient) CheckNameAvailabilitySender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// CheckNameAvailabilityResponder handles the response to the CheckNameAvailability request. The method always
+// closes the http.Response Body.
+func (client ServiceClient) CheckNameAvailabilityResponder(resp *http.Response) (result NameAvailability, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // CreateOrUpdate create a new CommunicationService or update an existing CommunicationService.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value

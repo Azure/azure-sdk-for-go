@@ -358,7 +358,7 @@ func NewClusterListPage(getNextPage func(context.Context, ClusterList) (ClusterL
 
 // ClusterProperties the properties of a cluster
 type ClusterProperties struct {
-	// ProvisioningState - READ-ONLY; The state of the cluster provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'
+	// ProvisioningState - The state of the cluster provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'
 	ProvisioningState ClusterProvisioningState `json:"provisioningState,omitempty"`
 	// ClusterID - READ-ONLY; The identity
 	ClusterID *int32 `json:"clusterId,omitempty"`
@@ -371,6 +371,9 @@ type ClusterProperties struct {
 // MarshalJSON is the custom marshaler for ClusterProperties.
 func (cp ClusterProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if cp.ProvisioningState != "" {
+		objectMap["provisioningState"] = cp.ProvisioningState
+	}
 	if cp.ClusterSize != nil {
 		objectMap["clusterSize"] = cp.ClusterSize
 	}
@@ -1034,8 +1037,20 @@ type IdentitySource struct {
 	Password *string `json:"password,omitempty"`
 }
 
+// LogSpecification specifications of the Log for Azure Monitoring
+type LogSpecification struct {
+	// Name - Name of the log
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Localized friendly display name of the log
+	DisplayName *string `json:"displayName,omitempty"`
+	// BlobDuration - Blob duration of the log
+	BlobDuration *string `json:"blobDuration,omitempty"`
+}
+
 // ManagementCluster the properties of a default cluster
 type ManagementCluster struct {
+	// ProvisioningState - The state of the cluster provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'
+	ProvisioningState ClusterProvisioningState `json:"provisioningState,omitempty"`
 	// ClusterID - READ-ONLY; The identity
 	ClusterID *int32 `json:"clusterId,omitempty"`
 	// Hosts - READ-ONLY; The hosts
@@ -1047,10 +1062,51 @@ type ManagementCluster struct {
 // MarshalJSON is the custom marshaler for ManagementCluster.
 func (mc ManagementCluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if mc.ProvisioningState != "" {
+		objectMap["provisioningState"] = mc.ProvisioningState
+	}
 	if mc.ClusterSize != nil {
 		objectMap["clusterSize"] = mc.ClusterSize
 	}
 	return json.Marshal(objectMap)
+}
+
+// MetricDimension specifications of the Dimension of metrics
+type MetricDimension struct {
+	// Name - Name of the dimension
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Localized friendly display name of the dimension
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
+// MetricSpecification specifications of the Metrics for Azure Monitoring
+type MetricSpecification struct {
+	// Name - Name of the metric
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Localized friendly display name of the metric
+	DisplayName *string `json:"displayName,omitempty"`
+	// DisplayDescription - Localized friendly description of the metric
+	DisplayDescription *string `json:"displayDescription,omitempty"`
+	// Unit - Unit that makes sense for the metric
+	Unit *string `json:"unit,omitempty"`
+	// Category - Name of the metric category that the metric belongs to. A metric can only belong to a single category.
+	Category *string `json:"category,omitempty"`
+	// AggregationType - Only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
+	AggregationType *string `json:"aggregationType,omitempty"`
+	// SupportedAggregationTypes - Supported aggregation types
+	SupportedAggregationTypes *[]string `json:"supportedAggregationTypes,omitempty"`
+	// SupportedTimeGrainTypes - Supported time grain types
+	SupportedTimeGrainTypes *[]string `json:"supportedTimeGrainTypes,omitempty"`
+	// FillGapWithZero - Optional. If set to true, then zero will be returned for time duration where no metric is emitted/published.
+	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
+	// Dimensions - Dimensions of the metric
+	Dimensions *[]MetricDimension `json:"dimensions,omitempty"`
+	// EnableRegionalMdmAccount - Whether or not the service is using regional MDM accounts.
+	EnableRegionalMdmAccount *string `json:"enableRegionalMdmAccount,omitempty"`
+	// SourceMdmAccount - The name of the MDM account.
+	SourceMdmAccount *string `json:"sourceMdmAccount,omitempty"`
+	// SourceMdmNamespace - The name of the MDM namespace.
+	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
 }
 
 // Operation a REST API operation
@@ -1059,6 +1115,27 @@ type Operation struct {
 	Name *string `json:"name,omitempty"`
 	// Display - READ-ONLY; Contains the localized display information for this operation
 	Display *OperationDisplay `json:"display,omitempty"`
+	// IsDataAction - Gets or sets a value indicating whether the operation is a data action or not
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+	// Origin - Origin of the operation
+	Origin *string `json:"origin,omitempty"`
+	// Properties - Properties of the operation
+	Properties *OperationProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if o.IsDataAction != nil {
+		objectMap["isDataAction"] = o.IsDataAction
+	}
+	if o.Origin != nil {
+		objectMap["origin"] = o.Origin
+	}
+	if o.Properties != nil {
+		objectMap["properties"] = o.Properties
+	}
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay contains the localized display information for this operation
@@ -1227,6 +1304,12 @@ func (page OperationListPage) Values() []Operation {
 // Creates a new instance of the OperationListPage type.
 func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
 	return OperationListPage{fn: getNextPage}
+}
+
+// OperationProperties extra Operation properties
+type OperationProperties struct {
+	// ServiceSpecification - Service specifications of the operation
+	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
 // PrivateCloud a private cloud resource
@@ -1726,6 +1809,14 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// ServiceSpecification service specification payload
+type ServiceSpecification struct {
+	// LogSpecifications - Specifications of the Log for Azure Monitoring
+	LogSpecifications *[]LogSpecification `json:"logSpecifications,omitempty"`
+	// MetricSpecifications - Specifications of the Metrics for Azure Monitoring
+	MetricSpecifications *[]MetricSpecification `json:"metricSpecifications,omitempty"`
 }
 
 // Sku the resource model definition representing SKU

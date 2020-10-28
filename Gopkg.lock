@@ -78,6 +78,14 @@
   version = "v1.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:fbb258160f42c1534d260e05ff1748ae24cd250b27775aa02c33b4fa4846c752"
+  name = "github.com/jongio/azidext"
+  packages = ["go/azidext"]
+  pruneopts = "UT"
+  revision = "b90a855ce4a2d31fa3a9e9b2ba48ba2fc78655cb"
+
+[[projects]]
   digest = "1:4cc7748b74453830951f95ddc3fd980387e7c13f77cc33d7cba54cd6b96dad26"
   name = "github.com/kr/pretty"
   packages = ["."]
@@ -100,6 +108,14 @@
   pruneopts = "UT"
   revision = "af06845cf3004701891bf4fdb884bfe4920b3727"
   version = "v1.1.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:635ac9478e783f09b2945663e359ebf74bc225b37f9845795d1b247285b458a2"
+  name = "github.com/pkg/browser"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "0a3d74bf9ce488f035cf5bc36f753a711bc74334"
 
 [[projects]]
   digest = "1:9e1d37b58d17113ec3cb5608ac0382313c5b59470b94ed97d0976e69c7022314"
@@ -165,10 +181,12 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:5e5cd6013a1d667dfd96de1d9f02a01db382d4d25d1a2aebc451689fdaa230b0"
+  digest = "1:e72563a56c7520e506cbf1cbad08ca6994e004cebb40081b43c124931beb2bdc"
   name = "golang.org/x/net"
   packages = [
     "http/httpguts",
+    "http2",
+    "http2/hpack",
     "idna",
   ]
   pruneopts = "UT"
@@ -256,12 +274,15 @@
     "github.com/dnaeon/go-vcr/cassette",
     "github.com/dnaeon/go-vcr/recorder",
     "github.com/globalsign/mgo",
+    "github.com/jongio/azidext/go/azidext",
+    "github.com/pkg/browser",
     "github.com/pkg/errors",
     "github.com/satori/go.uuid",
     "github.com/shopspring/decimal",
     "github.com/spf13/cobra",
     "golang.org/x/crypto/pkcs12",
     "golang.org/x/net/http/httpguts",
+    "golang.org/x/net/http2",
     "golang.org/x/tools/imports",
     "gopkg.in/check.v1",
   ]

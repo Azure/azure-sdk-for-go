@@ -100,6 +100,26 @@ type MetricSpecification struct {
 	Dimensions *[]Dimension `json:"dimensions,omitempty"`
 }
 
+// NameAvailability result of the request to check name availability. It contains a flag and possible reason of
+// failure.
+type NameAvailability struct {
+	autorest.Response `json:"-"`
+	// NameAvailable - Indicates whether the name is available or not.
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	// Reason - The reason of the availability. Required if name is not available.
+	Reason *string `json:"reason,omitempty"`
+	// Message - The message of the operation.
+	Message *string `json:"message,omitempty"`
+}
+
+// NameAvailabilityParameters data POST-ed to the nameAvailability action
+type NameAvailabilityParameters struct {
+	// Type - The resource type. Should be always "Microsoft.Communication/CommunicationServices".
+	Type *string `json:"type,omitempty"`
+	// Name - The CommunicationService name to validate. e.g."my-CommunicationService-name-here"
+	Name *string `json:"name,omitempty"`
+}
+
 // Operation REST API operation supported by CommunicationService resource provider.
 type Operation struct {
 	// Name - Name of the operation with format: {provider}/{resource}/{operation}
@@ -290,7 +310,7 @@ type OperationProperties struct {
 // OperationStatus the current status of an async operation
 type OperationStatus struct {
 	autorest.Response `json:"-"`
-	// ID - READ-ONLY; The operation Id.
+	// ID - READ-ONLY; Fully qualified ID for the operation status.
 	ID *string `json:"id,omitempty"`
 	// Status - READ-ONLY; Provisioning state of the resource. Possible values include: 'StatusSucceeded', 'StatusFailed', 'StatusCanceled', 'StatusCreating', 'StatusDeleting', 'StatusMoving'
 	Status Status `json:"status,omitempty"`

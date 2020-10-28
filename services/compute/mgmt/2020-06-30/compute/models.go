@@ -14253,6 +14253,78 @@ func (vmssv *VirtualMachineScaleSetVM) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// VirtualMachineScaleSetVMExtension describes a VMSS VM Extension.
+type VirtualMachineScaleSetVMExtension struct {
+	autorest.Response `json:"-"`
+	// Name - READ-ONLY; The name of the extension.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type                               *string `json:"type,omitempty"`
+	*VirtualMachineExtensionProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetVMExtension.
+func (vmssve VirtualMachineScaleSetVMExtension) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vmssve.VirtualMachineExtensionProperties != nil {
+		objectMap["properties"] = vmssve.VirtualMachineExtensionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetVMExtension struct.
+func (vmssve *VirtualMachineScaleSetVMExtension) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				vmssve.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vmssve.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var virtualMachineExtensionProperties VirtualMachineExtensionProperties
+				err = json.Unmarshal(*v, &virtualMachineExtensionProperties)
+				if err != nil {
+					return err
+				}
+				vmssve.VirtualMachineExtensionProperties = &virtualMachineExtensionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				vmssve.ID = &ID
+			}
+		}
+	}
+
+	return nil
+}
+
 // VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture struct {
@@ -14261,7 +14333,7 @@ type VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture) Result(client VirtualMachineScaleSetVMExtensionsClient) (vme VirtualMachineExtension, err error) {
+func (future *VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture) Result(client VirtualMachineScaleSetVMExtensionsClient) (vmssve VirtualMachineScaleSetVMExtension, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -14273,10 +14345,10 @@ func (future *VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture) Result(cli
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vme.Response.Response, err = future.GetResult(sender); err == nil && vme.Response.Response.StatusCode != http.StatusNoContent {
-		vme, err = client.CreateOrUpdateResponder(vme.Response.Response)
+	if vmssve.Response.Response, err = future.GetResult(sender); err == nil && vmssve.Response.Response.StatusCode != http.StatusNoContent {
+		vmssve, err = client.CreateOrUpdateResponder(vmssve.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture", "Result", vme.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture", "Result", vmssve.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -14305,6 +14377,13 @@ func (future *VirtualMachineScaleSetVMExtensionsDeleteFuture) Result(client Virt
 	return
 }
 
+// VirtualMachineScaleSetVMExtensionsListResult the List VMSS VM Extension operation response
+type VirtualMachineScaleSetVMExtensionsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of VMSS VM extensions
+	Value *[]VirtualMachineScaleSetVMExtension `json:"value,omitempty"`
+}
+
 // VirtualMachineScaleSetVMExtensionsSummary extensions summary for virtual machines of a virtual machine scale
 // set.
 type VirtualMachineScaleSetVMExtensionsSummary struct {
@@ -14322,7 +14401,7 @@ type VirtualMachineScaleSetVMExtensionsUpdateFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetVMExtensionsUpdateFuture) Result(client VirtualMachineScaleSetVMExtensionsClient) (vme VirtualMachineExtension, err error) {
+func (future *VirtualMachineScaleSetVMExtensionsUpdateFuture) Result(client VirtualMachineScaleSetVMExtensionsClient) (vmssve VirtualMachineScaleSetVMExtension, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -14334,13 +14413,84 @@ func (future *VirtualMachineScaleSetVMExtensionsUpdateFuture) Result(client Virt
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vme.Response.Response, err = future.GetResult(sender); err == nil && vme.Response.Response.StatusCode != http.StatusNoContent {
-		vme, err = client.UpdateResponder(vme.Response.Response)
+	if vmssve.Response.Response, err = future.GetResult(sender); err == nil && vmssve.Response.Response.StatusCode != http.StatusNoContent {
+		vmssve, err = client.UpdateResponder(vmssve.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsUpdateFuture", "Result", vme.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsUpdateFuture", "Result", vmssve.Response.Response, "Failure responding to request")
 		}
 	}
 	return
+}
+
+// VirtualMachineScaleSetVMExtensionUpdate describes a VMSS VM Extension.
+type VirtualMachineScaleSetVMExtensionUpdate struct {
+	// Name - READ-ONLY; The name of the extension.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type                                     *string `json:"type,omitempty"`
+	*VirtualMachineExtensionUpdateProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetVMExtensionUpdate.
+func (vmssveu VirtualMachineScaleSetVMExtensionUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vmssveu.VirtualMachineExtensionUpdateProperties != nil {
+		objectMap["properties"] = vmssveu.VirtualMachineExtensionUpdateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetVMExtensionUpdate struct.
+func (vmssveu *VirtualMachineScaleSetVMExtensionUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				vmssveu.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vmssveu.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var virtualMachineExtensionUpdateProperties VirtualMachineExtensionUpdateProperties
+				err = json.Unmarshal(*v, &virtualMachineExtensionUpdateProperties)
+				if err != nil {
+					return err
+				}
+				vmssveu.VirtualMachineExtensionUpdateProperties = &virtualMachineExtensionUpdateProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				vmssveu.ID = &ID
+			}
+		}
+	}
+
+	return nil
 }
 
 // VirtualMachineScaleSetVMInstanceIDs specifies a list of virtual machine instance IDs from the VM scale set.

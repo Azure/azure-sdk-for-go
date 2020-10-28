@@ -116,7 +116,7 @@ type ActiveConnectionsNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ActiveConnectionsNotInAllowedRange.
@@ -1643,7 +1643,7 @@ type AllowlistCustomAlertRule struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 func unmarshalBasicAllowlistCustomAlertRule(body []byte) (BasicAllowlistCustomAlertRule, error) {
@@ -1872,7 +1872,7 @@ type AmqpC2DMessagesNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AmqpC2DMessagesNotInAllowedRange.
@@ -2063,7 +2063,7 @@ type AmqpC2DRejectedMessagesNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AmqpC2DRejectedMessagesNotInAllowedRange.
@@ -2253,7 +2253,7 @@ type AmqpD2CMessagesNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AmqpD2CMessagesNotInAllowedRange.
@@ -3887,9 +3887,10 @@ type AutoProvisioningSettingProperties struct {
 }
 
 // AwAssumeRoleAuthenticationDetailsProperties AWS cloud account connector based assume role, the role enables
-// delegating access to your AWS resources. The role is composed of role arn and external id, for more details,
-// refer to <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html">Creating a
-// Role to Delegate Permissions to an IAM User (write only)</a>
+// delegating access to your AWS resources. The role is composed of role Amazon Resource Name (ARN) and
+// external ID. For more details, refer to <a
+// href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html">Creating a Role to
+// Delegate Permissions to an IAM User (write only)</a>
 type AwAssumeRoleAuthenticationDetailsProperties struct {
 	// AccountID - READ-ONLY; The ID of the cloud account
 	AccountID *string `json:"accountId,omitempty"`
@@ -3947,7 +3948,7 @@ func (aaradp AwAssumeRoleAuthenticationDetailsProperties) AsBasicAuthenticationD
 }
 
 // AwsCredsAuthenticationDetailsProperties AWS cloud account connector based credentials, the credentials is
-// composed of access key id and secret key, for more details, refer to <a
+// composed of access key ID and secret key, for more details, refer to <a
 // href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html">Creating an IAM User in Your
 // AWS Account (write only)</a>
 type AwsCredsAuthenticationDetailsProperties struct {
@@ -4064,6 +4065,33 @@ type AzureResourceLink struct {
 type AzureTrackedResourceLocation struct {
 	// Location - Location where the resource is stored
 	Location *string `json:"location,omitempty"`
+}
+
+// Baseline baseline details.
+type Baseline struct {
+	// ExpectedResults - Expected results.
+	ExpectedResults *[][]string `json:"expectedResults,omitempty"`
+	// UpdatedTime - Baseline update time (UTC).
+	UpdatedTime *date.Time `json:"updatedTime,omitempty"`
+}
+
+// BaselineAdjustedResult the rule result adjusted with baseline.
+type BaselineAdjustedResult struct {
+	Baseline *Baseline `json:"baseline,omitempty"`
+	// Status - Possible values include: 'NonFinding', 'Finding', 'InternalError'
+	Status RuleStatus `json:"status,omitempty"`
+	// ResultsNotInBaseline - Results the are not in baseline.
+	ResultsNotInBaseline *[][]string `json:"resultsNotInBaseline,omitempty"`
+	// ResultsOnlyInBaseline - Results the are in baseline.
+	ResultsOnlyInBaseline *[][]string `json:"resultsOnlyInBaseline,omitempty"`
+}
+
+// BenchmarkReference the benchmark references.
+type BenchmarkReference struct {
+	// Benchmark - The benchmark name.
+	Benchmark *string `json:"benchmark,omitempty"`
+	// Reference - The benchmark reference.
+	Reference *string `json:"reference,omitempty"`
 }
 
 // CefExternalSecuritySolution represents a security solution which sends CEF logs to an OMS workspace
@@ -4584,7 +4612,7 @@ type ConnectionToIPNotAllowed struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectionToIPNotAllowed.
@@ -4991,9 +5019,9 @@ func NewConnectorSettingListPage(getNextPage func(context.Context, ConnectorSett
 	return ConnectorSettingListPage{fn: getNextPage}
 }
 
-// ConnectorSettingProperties describes properties of an connector setting
+// ConnectorSettingProperties describes properties of a connector setting
 type ConnectorSettingProperties struct {
-	// HybridComputeSettings - Settings for hybrid compute management, these settings are relevant only Arc autoProvision (Hybrid Compute).
+	// HybridComputeSettings - Settings for hybrid compute management. These settings are relevant only for Arc autoProvision (Hybrid Compute).
 	HybridComputeSettings *HybridComputeSettingsProperties `json:"hybridComputeSettings,omitempty"`
 	// AuthenticationDetails - Settings for authentication management, these settings are relevant only for the cloud connector.
 	AuthenticationDetails BasicAuthenticationDetailsProperties `json:"authenticationDetails,omitempty"`
@@ -5372,7 +5400,7 @@ type CustomAlertRule struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 func unmarshalBasicCustomAlertRule(body []byte) (BasicCustomAlertRule, error) {
@@ -5787,7 +5815,7 @@ type DenylistCustomAlertRule struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DenylistCustomAlertRule.
@@ -6269,7 +6297,7 @@ type DirectMethodInvokesNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DirectMethodInvokesNotInAllowedRange.
@@ -7139,7 +7167,7 @@ type FailedLocalLoginsNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FailedLocalLoginsNotInAllowedRange.
@@ -7329,7 +7357,7 @@ type FileUploadsNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FileUploadsNotInAllowedRange.
@@ -7505,29 +7533,29 @@ func (funiar FileUploadsNotInAllowedRange) AsBasicCustomAlertRule() (BasicCustom
 }
 
 // GcpCredentialsDetailsProperties GCP cloud account connector based service to service credentials, the
-// credentials is composed of organization id and json api key (write only)</a>
+// credentials are composed of the organization ID and a JSON API key (write only)
 type GcpCredentialsDetailsProperties struct {
-	// OrganizationID - The Organization ID of the GCP cloud account
+	// OrganizationID - The organization ID of the GCP cloud account
 	OrganizationID *string `json:"organizationId,omitempty"`
 	// Type - Type field of the API key (write only)
 	Type *string `json:"type,omitempty"`
-	// ProjectID - Project Id field of the API key (write only)
+	// ProjectID - Project ID field of the API key (write only)
 	ProjectID *string `json:"projectId,omitempty"`
-	// PrivateKeyID - Private key Id field of the API key (write only)
+	// PrivateKeyID - Private key ID field of the API key (write only)
 	PrivateKeyID *string `json:"privateKeyId,omitempty"`
 	// PrivateKey - Private key field of the API key (write only)
 	PrivateKey *string `json:"privateKey,omitempty"`
 	// ClientEmail - Client email field of the API key (write only)
 	ClientEmail *string `json:"clientEmail,omitempty"`
-	// ClientID - Client Id field of the API key (write only)
+	// ClientID - Client ID field of the API key (write only)
 	ClientID *string `json:"clientId,omitempty"`
-	// AuthURI - Auth Uri field of the API key (write only)
+	// AuthURI - Auth URI field of the API key (write only)
 	AuthURI *string `json:"authUri,omitempty"`
-	// TokenURI - Token Uri field of the API key (write only)
+	// TokenURI - Token URI field of the API key (write only)
 	TokenURI *string `json:"tokenUri,omitempty"`
-	// AuthProviderX509CertURL - Auth provider x509 certificate url field of the API key (write only)
+	// AuthProviderX509CertURL - Auth provider x509 certificate URL field of the API key (write only)
 	AuthProviderX509CertURL *string `json:"authProviderX509CertUrl,omitempty"`
-	// ClientX509CertURL - Client x509 certificate url field of the API key (write only)
+	// ClientX509CertURL - Client x509 certificate URL field of the API key (write only)
 	ClientX509CertURL *string `json:"clientX509CertUrl,omitempty"`
 	// AuthenticationProvisioningState - READ-ONLY; State of the multi-cloud connector. Possible values include: 'Valid', 'Invalid', 'Expired', 'IncorrectPolicy'
 	AuthenticationProvisioningState AuthenticationProvisioningState `json:"authenticationProvisioningState,omitempty"`
@@ -7620,7 +7648,7 @@ type HTTPC2DMessagesNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for HTTPC2DMessagesNotInAllowedRange.
@@ -7811,7 +7839,7 @@ type HTTPC2DRejectedMessagesNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for HTTPC2DRejectedMessagesNotInAllowedRange.
@@ -8001,7 +8029,7 @@ type HTTPD2CMessagesNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for HTTPD2CMessagesNotInAllowedRange.
@@ -8184,7 +8212,7 @@ type HybridComputeSettingsProperties struct {
 	AutoProvision AutoProvision `json:"autoProvision,omitempty"`
 	// ResourceGroupName - The name of the resource group where Arc (Hybrid Compute) connectors are connected.
 	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
-	// Region - The location where the meta data of machines will be stored
+	// Region - The location where the metadata of machines will be stored
 	Region *string `json:"region,omitempty"`
 	// ProxyServer - For a non-Azure machine that is not connected directly to the internet, specify a proxy server that the non-Azure machine can use.
 	ProxyServer *ProxyServerProperties `json:"proxyServer,omitempty"`
@@ -10005,7 +10033,7 @@ type ListCustomAlertRule struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 func unmarshalBasicListCustomAlertRule(body []byte) (BasicListCustomAlertRule, error) {
@@ -10237,7 +10265,7 @@ type LocalUserNotAllowed struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for LocalUserNotAllowed.
@@ -10427,7 +10455,7 @@ type MqttC2DMessagesNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MqttC2DMessagesNotInAllowedRange.
@@ -10618,7 +10646,7 @@ type MqttC2DRejectedMessagesNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MqttC2DRejectedMessagesNotInAllowedRange.
@@ -10808,7 +10836,7 @@ type MqttD2CMessagesNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MqttD2CMessagesNotInAllowedRange.
@@ -11494,7 +11522,7 @@ type ProcessNotAllowed struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ProcessNotAllowed.
@@ -11697,6 +11725,16 @@ type PublisherInfo struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// QueryCheck the rule query details.
+type QueryCheck struct {
+	// Query - The rule query.
+	Query *string `json:"query,omitempty"`
+	// ExpectedResult - Expected result.
+	ExpectedResult *[][]string `json:"expectedResult,omitempty"`
+	// ColumnNames - Column names of expected result.
+	ColumnNames *[]string `json:"columnNames,omitempty"`
+}
+
 // QueuePurgesNotInAllowedRange number of device queue purges is not in allowed range.
 type QueuePurgesNotInAllowedRange struct {
 	// TimeWindowSize - The time window size in iso8601 format.
@@ -11712,7 +11750,7 @@ type QueuePurgesNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for QueuePurgesNotInAllowedRange.
@@ -12699,6 +12737,18 @@ func (rcsp RegulatoryComplianceStandardProperties) MarshalJSON() ([]byte, error)
 	return json.Marshal(objectMap)
 }
 
+// Remediation remediation details.
+type Remediation struct {
+	// Description - Remediation description.
+	Description *string `json:"description,omitempty"`
+	// Scripts - Remediation script.
+	Scripts *[]string `json:"scripts,omitempty"`
+	// Automated - Is remediation automated.
+	Automated *bool `json:"automated,omitempty"`
+	// PortalLink - Optional link to remediate in Azure Portal.
+	PortalLink *string `json:"portalLink,omitempty"`
+}
+
 // Resource describes an Azure resource.
 type Resource struct {
 	// ID - READ-ONLY; Resource Id
@@ -12822,6 +12872,173 @@ type Rule struct {
 	Protocols *[]TransportProtocol `json:"protocols,omitempty"`
 	// IPAddresses - The remote IP addresses that should be able to communicate with the Azure resource on the rule's destination port and protocol
 	IPAddresses *[]string `json:"ipAddresses,omitempty"`
+}
+
+// RuleResults rule results.
+type RuleResults struct {
+	autorest.Response `json:"-"`
+	Properties        *RuleResultsProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RuleResults.
+func (rr RuleResults) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rr.Properties != nil {
+		objectMap["properties"] = rr.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// RuleResultsInput rule results input.
+type RuleResultsInput struct {
+	// LatestScan - Take results from latest scan.
+	LatestScan *bool `json:"latestScan,omitempty"`
+	// Results - Expected results to be inserted into the baseline.
+	// Leave this field empty it LatestScan == true.
+	Results *[][]string `json:"results,omitempty"`
+}
+
+// RuleResultsProperties rule results properties.
+type RuleResultsProperties struct {
+	// Results - Expected results in the baseline.
+	Results *[][]string `json:"results,omitempty"`
+}
+
+// RulesResults a list of rules results.
+type RulesResults struct {
+	autorest.Response `json:"-"`
+	// Value - List of rule results.
+	Value *[]RuleResults `json:"value,omitempty"`
+}
+
+// RulesResultsInput rules results input.
+type RulesResultsInput struct {
+	// LatestScan - Take results from latest scan.
+	LatestScan *bool `json:"latestScan,omitempty"`
+	// Results - Expected results to be inserted into the baseline.
+	// Leave this field empty it LatestScan == true.
+	Results map[string][][]string `json:"results"`
+}
+
+// MarshalJSON is the custom marshaler for RulesResultsInput.
+func (rri RulesResultsInput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rri.LatestScan != nil {
+		objectMap["latestScan"] = rri.LatestScan
+	}
+	if rri.Results != nil {
+		objectMap["results"] = rri.Results
+	}
+	return json.Marshal(objectMap)
+}
+
+// Scan a vulnerability assessment scan record.
+type Scan struct {
+	autorest.Response `json:"-"`
+	Properties        *ScanProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Scan.
+func (s Scan) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.Properties != nil {
+		objectMap["properties"] = s.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// ScanProperties a vulnerability assessment scan record properties.
+type ScanProperties struct {
+	// TriggerType - Possible values include: 'OnDemand', 'Recurring'
+	TriggerType ScanTriggerType `json:"triggerType,omitempty"`
+	// State - Possible values include: 'ScanStateFailed', 'ScanStateFailedToRun', 'ScanStateInProgress', 'ScanStatePassed'
+	State ScanState `json:"state,omitempty"`
+	// Server - The server name.
+	Server *string `json:"server,omitempty"`
+	// Database - The database name.
+	Database *string `json:"database,omitempty"`
+	// SQLVersion - The SQL version.
+	SQLVersion *string `json:"sqlVersion,omitempty"`
+	// StartTime - The scan start time (UTC).
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - Scan results are valid until end time (UTC).
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// HighSeverityFailedRulesCount - The number of failed rules with high severity.
+	HighSeverityFailedRulesCount *int32 `json:"highSeverityFailedRulesCount,omitempty"`
+	// MediumSeverityFailedRulesCount - The number of failed rules with medium severity.
+	MediumSeverityFailedRulesCount *int32 `json:"mediumSeverityFailedRulesCount,omitempty"`
+	// LowSeverityFailedRulesCount - The number of failed rules with low severity.
+	LowSeverityFailedRulesCount *int32 `json:"lowSeverityFailedRulesCount,omitempty"`
+	// TotalPassedRulesCount - The number of total passed rules.
+	TotalPassedRulesCount *int32 `json:"totalPassedRulesCount,omitempty"`
+	// TotalFailedRulesCount - The number of total failed rules.
+	TotalFailedRulesCount *int32 `json:"totalFailedRulesCount,omitempty"`
+	// TotalRulesCount - The number of total rules assessed.
+	TotalRulesCount *int32 `json:"totalRulesCount,omitempty"`
+	// IsBaselineApplied - Baseline created for this database, and has one or more rules.
+	IsBaselineApplied *bool `json:"isBaselineApplied,omitempty"`
+}
+
+// ScanResult a vulnerability assessment scan result for a single rule.
+type ScanResult struct {
+	autorest.Response `json:"-"`
+	Properties        *ScanResultProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScanResult.
+func (sr ScanResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sr.Properties != nil {
+		objectMap["properties"] = sr.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// ScanResultProperties a vulnerability assessment scan result properties for a single rule.
+type ScanResultProperties struct {
+	// RuleID - The rule Id.
+	RuleID *string `json:"ruleId,omitempty"`
+	// Status - Possible values include: 'NonFinding', 'Finding', 'InternalError'
+	Status RuleStatus `json:"status,omitempty"`
+	// IsTrimmed - Indicated whether the results specified here are trimmed.
+	IsTrimmed *bool `json:"isTrimmed,omitempty"`
+	// QueryResults - The results of the query that was run.
+	QueryResults           *[][]string             `json:"queryResults,omitempty"`
+	Remediation            *Remediation            `json:"remediation,omitempty"`
+	BaselineAdjustedResult *BaselineAdjustedResult `json:"baselineAdjustedResult,omitempty"`
+	RuleMetadata           *VaRule                 `json:"ruleMetadata,omitempty"`
+}
+
+// ScanResults a list of vulnerability assessment scan results.
+type ScanResults struct {
+	autorest.Response `json:"-"`
+	// Value - List of vulnerability assessment scan results.
+	Value *[]ScanResult `json:"value,omitempty"`
+}
+
+// Scans a list of vulnerability assessment scan records.
+type Scans struct {
+	autorest.Response `json:"-"`
+	// Value - List of vulnerability assessment scan records.
+	Value *[]Scan `json:"value,omitempty"`
 }
 
 // ScopeElement a more specific scope used to identify the alerts to suppress.
@@ -13838,7 +14055,7 @@ func (svp ServerVulnerabilityProperties) AsBasicAdditionalData() (BasicAdditiona
 
 // ServicePrincipalProperties details of the service principal.
 type ServicePrincipalProperties struct {
-	// ApplicationID - Application id of service principal.
+	// ApplicationID - Application ID of service principal.
 	ApplicationID *string `json:"applicationId,omitempty"`
 	// Secret - A secret string that the application uses to prove its identity, also can be referred to as application password (write only).
 	Secret *string `json:"secret,omitempty"`
@@ -14849,7 +15066,7 @@ type ThresholdCustomAlertRule struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 func unmarshalBasicThresholdCustomAlertRule(body []byte) (BasicThresholdCustomAlertRule, error) {
@@ -15160,7 +15377,7 @@ type TimeWindowCustomAlertRule struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 func unmarshalBasicTimeWindowCustomAlertRule(body []byte) (BasicTimeWindowCustomAlertRule, error) {
@@ -15760,7 +15977,7 @@ type TwinUpdatesNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for TwinUpdatesNotInAllowedRange.
@@ -15950,7 +16167,7 @@ type UnauthorizedOperationsNotInAllowedRange struct {
 	// IsEnabled - Status of the custom alert.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// RuleType - Possible values include: 'RuleTypeCustomAlertRule', 'RuleTypeThresholdCustomAlertRule', 'RuleTypeTimeWindowCustomAlertRule', 'RuleTypeAllowlistCustomAlertRule', 'RuleTypeDenylistCustomAlertRule', 'RuleTypeListCustomAlertRule', 'RuleTypeConnectionToIPNotAllowed', 'RuleTypeLocalUserNotAllowed', 'RuleTypeProcessNotAllowed', 'RuleTypeActiveConnectionsNotInAllowedRange', 'RuleTypeAmqpC2DMessagesNotInAllowedRange', 'RuleTypeMqttC2DMessagesNotInAllowedRange', 'RuleTypeHTTPC2DMessagesNotInAllowedRange', 'RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange', 'RuleTypeMqttC2DRejectedMessagesNotInAllowedRange', 'RuleTypeHTTPC2DRejectedMessagesNotInAllowedRange', 'RuleTypeAmqpD2CMessagesNotInAllowedRange', 'RuleTypeMqttD2CMessagesNotInAllowedRange', 'RuleTypeHTTPD2CMessagesNotInAllowedRange', 'RuleTypeDirectMethodInvokesNotInAllowedRange', 'RuleTypeFailedLocalLoginsNotInAllowedRange', 'RuleTypeFileUploadsNotInAllowedRange', 'RuleTypeQueuePurgesNotInAllowedRange', 'RuleTypeTwinUpdatesNotInAllowedRange', 'RuleTypeUnauthorizedOperationsNotInAllowedRange'
-	RuleType RuleType `json:"ruleType,omitempty"`
+	RuleType RuleTypeBasicCustomAlertRule `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for UnauthorizedOperationsNotInAllowedRange.
@@ -16162,6 +16379,27 @@ type UserRecommendation struct {
 	Username *string `json:"username,omitempty"`
 	// RecommendationAction - Possible values include: 'RecommendationAction1Recommended', 'RecommendationAction1Add', 'RecommendationAction1Remove'
 	RecommendationAction RecommendationAction1 `json:"recommendationAction,omitempty"`
+}
+
+// VaRule vulnerability assessment rule metadata details.
+type VaRule struct {
+	// RuleID - The rule Id.
+	RuleID *string `json:"ruleId,omitempty"`
+	// Severity - Possible values include: 'RuleSeverityHigh', 'RuleSeverityMedium', 'RuleSeverityLow', 'RuleSeverityInformational', 'RuleSeverityObsolete'
+	Severity RuleSeverity `json:"severity,omitempty"`
+	// Category - The rule category.
+	Category *string `json:"category,omitempty"`
+	// RuleType - Possible values include: 'Binary', 'BaselineExpected', 'PositiveList', 'NegativeList'
+	RuleType RuleType `json:"ruleType,omitempty"`
+	// Title - The rule title.
+	Title *string `json:"title,omitempty"`
+	// Description - The rule description.
+	Description *string `json:"description,omitempty"`
+	// Rationale - The rule rationale.
+	Rationale  *string     `json:"rationale,omitempty"`
+	QueryCheck *QueryCheck `json:"queryCheck,omitempty"`
+	// BenchmarkReferences - The benchmark references.
+	BenchmarkReferences *[]BenchmarkReference `json:"benchmarkReferences,omitempty"`
 }
 
 // VendorReference vendor reference

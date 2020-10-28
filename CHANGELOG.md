@@ -11,7 +11,6 @@
 | media | 2020-05-01 |
 | mysqlflexibleservers | 2020-07-01-preview |
 | netapp | 2020-07-01 |
-| operationalinsights | 2019-08-01-preview |
 | policy | 2020-03-01-preview |
 | securityinsight | v1.0 |
 

@@ -72,7 +72,7 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 		options = &temp
 	}
 	if !validTenantID(options.TenantID) {
-		return nil, &CredentialUnavailableError{CredentialType: "Device Code Credential", Message: "invalid tenant ID passed to credential"}
+		return nil, &CredentialUnavailableError{CredentialType: "Device Code Credential", Message: "Invalid tenantID provided. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names."}
 	}
 	c, err := newAADIdentityClient(options.Options)
 	if err != nil {

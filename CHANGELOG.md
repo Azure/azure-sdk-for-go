@@ -1,5 +1,30 @@
 # CHANGELOG
 
+## `v48.0.0`
+
+### New Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| confluent | 2020-03-01-preview |
+| healthcareapis | 2020-03-30 |
+| media | 2020-05-01 |
+| mysqlflexibleservers | 2020-07-01-preview |
+| netapp | 2020-07-01 |
+| operationalinsights | 2019-08-01-preview |
+| policy | 2020-03-01-preview |
+| securityinsight | v1.0 |
+
+### Breaking Changes
+
+| Package Name | API Version |
+| ---: | :---: |
+| digitaltwins | 2020-10-31 |
+| hdinsight | 2018-06-01 |
+| workloadmonitor | 2020-01-13-preview |
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/c174d654d4cd9f45e929a31480e19ada7baa6924
+
 ## `v47.1.0`
 
 ### New Packages

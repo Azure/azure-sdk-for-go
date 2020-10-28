@@ -22,7 +22,7 @@ package healthcareapis
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/healthcareapis/mgmt/2020-03-15/healthcareapis"
+	original "github.com/Azure/azure-sdk-for-go/services/healthcareapis/mgmt/2020-03-30/healthcareapis"
 )
 
 const (
@@ -54,6 +54,23 @@ const (
 	Succeeded OperationResultStatus = original.Succeeded
 )
 
+type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
+
+const (
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateCreating
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateDeleting
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateFailed
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
+)
+
+type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
+
+const (
+	Approved PrivateEndpointServiceConnectionStatus = original.Approved
+	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
+	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -68,6 +85,13 @@ const (
 	ProvisioningStateVerifying     ProvisioningState = original.ProvisioningStateVerifying
 )
 
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	Disabled PublicNetworkAccess = original.Disabled
+	Enabled  PublicNetworkAccess = original.Enabled
+)
+
 type ServiceNameUnavailabilityReason = original.ServiceNameUnavailabilityReason
 
 const (
@@ -75,6 +99,7 @@ const (
 	Invalid       ServiceNameUnavailabilityReason = original.Invalid
 )
 
+type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
 type ErrorDetails = original.ErrorDetails
@@ -87,8 +112,20 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationResultsClient = original.OperationResultsClient
 type OperationResultsDescription = original.OperationResultsDescription
 type OperationsClient = original.OperationsClient
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
+type ProxyResource = original.ProxyResource
 type Resource = original.Resource
-type ResourceIdentity = original.ResourceIdentity
 type ServiceAccessPolicyEntry = original.ServiceAccessPolicyEntry
 type ServiceAuthenticationConfigurationInfo = original.ServiceAuthenticationConfigurationInfo
 type ServiceCorsConfigurationInfo = original.ServiceCorsConfigurationInfo
@@ -104,8 +141,12 @@ type ServicesDescriptionListResultPage = original.ServicesDescriptionListResultP
 type ServicesNameAvailabilityInfo = original.ServicesNameAvailabilityInfo
 type ServicesPatchDescription = original.ServicesPatchDescription
 type ServicesProperties = original.ServicesProperties
+type ServicesPropertiesUpdateParameters = original.ServicesPropertiesUpdateParameters
+type ServicesResource = original.ServicesResource
+type ServicesResourceIdentity = original.ServicesResourceIdentity
 type ServicesUpdateFuture = original.ServicesUpdateFuture
 type SetObject = original.SetObject
+type TrackedResource = original.TrackedResource
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -127,6 +168,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServicesClient(subscriptionID string) ServicesClient {
 	return original.NewServicesClient(subscriptionID)
@@ -152,8 +205,17 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 func PossibleOperationResultStatusValues() []OperationResultStatus {
 	return original.PossibleOperationResultStatusValues()
 }
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
+}
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func PossibleServiceNameUnavailabilityReasonValues() []ServiceNameUnavailabilityReason {
 	return original.PossibleServiceNameUnavailabilityReasonValues()

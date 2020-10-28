@@ -19,7 +19,7 @@ package securityinsightapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/v1.0/securityinsight"
+	"github.com/Azure/azure-sdk-for-go/services/securityinsight/mgmt/v1.0/securityinsight"
 	"github.com/Azure/go-autorest/autorest"
 )
 

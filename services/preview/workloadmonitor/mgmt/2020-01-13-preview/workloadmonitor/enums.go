@@ -23,8 +23,12 @@ type HealthState string
 const (
 	// Critical ...
 	Critical HealthState = "Critical"
+	// Disabled ...
+	Disabled HealthState = "Disabled"
 	// Healthy ...
 	Healthy HealthState = "Healthy"
+	// None ...
+	None HealthState = "None"
 	// Unknown ...
 	Unknown HealthState = "Unknown"
 	// Warning ...
@@ -33,5 +37,5 @@ const (
 
 // PossibleHealthStateValues returns an array of possible values for the HealthState const type.
 func PossibleHealthStateValues() []HealthState {
-	return []HealthState{Critical, Healthy, Unknown, Warning}
+	return []HealthState{Critical, Disabled, Healthy, None, Unknown, Warning}
 }

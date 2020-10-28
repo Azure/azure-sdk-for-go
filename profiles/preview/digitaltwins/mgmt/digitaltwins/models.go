@@ -110,7 +110,6 @@ type PatchDescription = original.PatchDescription
 type Properties = original.Properties
 type Resource = original.Resource
 type ServiceBus = original.ServiceBus
-type UpdateFuture = original.UpdateFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

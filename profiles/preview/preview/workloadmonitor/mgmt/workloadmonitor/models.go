@@ -33,26 +33,28 @@ type HealthState = original.HealthState
 
 const (
 	Critical HealthState = original.Critical
+	Disabled HealthState = original.Disabled
 	Healthy  HealthState = original.Healthy
+	None     HealthState = original.None
 	Unknown  HealthState = original.Unknown
 	Warning  HealthState = original.Warning
 )
 
 type BaseClient = original.BaseClient
-type DefaultError = original.DefaultError
-type DefaultErrorError = original.DefaultErrorError
 type ErrorDetails = original.ErrorDetails
-type Monitor = original.Monitor
-type MonitorList = original.MonitorList
-type MonitorListIterator = original.MonitorListIterator
-type MonitorListPage = original.MonitorListPage
-type MonitorProperties = original.MonitorProperties
-type MonitorStateChange = original.MonitorStateChange
-type MonitorStateChangeList = original.MonitorStateChangeList
-type MonitorStateChangeListIterator = original.MonitorStateChangeListIterator
-type MonitorStateChangeListPage = original.MonitorStateChangeListPage
-type MonitorStateChangeProperties = original.MonitorStateChangeProperties
-type MonitorsClient = original.MonitorsClient
+type ErrorResponse = original.ErrorResponse
+type ErrorResponseError = original.ErrorResponseError
+type HealthMonitor = original.HealthMonitor
+type HealthMonitorList = original.HealthMonitorList
+type HealthMonitorListIterator = original.HealthMonitorListIterator
+type HealthMonitorListPage = original.HealthMonitorListPage
+type HealthMonitorProperties = original.HealthMonitorProperties
+type HealthMonitorStateChange = original.HealthMonitorStateChange
+type HealthMonitorStateChangeList = original.HealthMonitorStateChangeList
+type HealthMonitorStateChangeListIterator = original.HealthMonitorStateChangeListIterator
+type HealthMonitorStateChangeListPage = original.HealthMonitorStateChangeListPage
+type HealthMonitorStateChangeProperties = original.HealthMonitorStateChangeProperties
+type HealthMonitorsClient = original.HealthMonitorsClient
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
@@ -64,23 +66,23 @@ type Resource = original.Resource
 func New() BaseClient {
 	return original.New()
 }
-func NewMonitorListIterator(page MonitorListPage) MonitorListIterator {
-	return original.NewMonitorListIterator(page)
+func NewHealthMonitorListIterator(page HealthMonitorListPage) HealthMonitorListIterator {
+	return original.NewHealthMonitorListIterator(page)
 }
-func NewMonitorListPage(getNextPage func(context.Context, MonitorList) (MonitorList, error)) MonitorListPage {
-	return original.NewMonitorListPage(getNextPage)
+func NewHealthMonitorListPage(getNextPage func(context.Context, HealthMonitorList) (HealthMonitorList, error)) HealthMonitorListPage {
+	return original.NewHealthMonitorListPage(getNextPage)
 }
-func NewMonitorStateChangeListIterator(page MonitorStateChangeListPage) MonitorStateChangeListIterator {
-	return original.NewMonitorStateChangeListIterator(page)
+func NewHealthMonitorStateChangeListIterator(page HealthMonitorStateChangeListPage) HealthMonitorStateChangeListIterator {
+	return original.NewHealthMonitorStateChangeListIterator(page)
 }
-func NewMonitorStateChangeListPage(getNextPage func(context.Context, MonitorStateChangeList) (MonitorStateChangeList, error)) MonitorStateChangeListPage {
-	return original.NewMonitorStateChangeListPage(getNextPage)
+func NewHealthMonitorStateChangeListPage(getNextPage func(context.Context, HealthMonitorStateChangeList) (HealthMonitorStateChangeList, error)) HealthMonitorStateChangeListPage {
+	return original.NewHealthMonitorStateChangeListPage(getNextPage)
 }
-func NewMonitorsClient() MonitorsClient {
-	return original.NewMonitorsClient()
+func NewHealthMonitorsClient() HealthMonitorsClient {
+	return original.NewHealthMonitorsClient()
 }
-func NewMonitorsClientWithBaseURI(baseURI string) MonitorsClient {
-	return original.NewMonitorsClientWithBaseURI(baseURI)
+func NewHealthMonitorsClientWithBaseURI(baseURI string) HealthMonitorsClient {
+	return original.NewHealthMonitorsClientWithBaseURI(baseURI)
 }
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)

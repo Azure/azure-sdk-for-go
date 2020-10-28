@@ -22,7 +22,7 @@ package media
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2018-07-01/media"
+	original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2020-05-01/media"
 )
 
 const (
@@ -35,6 +35,13 @@ const (
 	AacLc   AacAudioProfile = original.AacLc
 	HeAacV1 AacAudioProfile = original.HeAacV1
 	HeAacV2 AacAudioProfile = original.HeAacV2
+)
+
+type AccountEncryptionKeyType = original.AccountEncryptionKeyType
+
+const (
+	CustomerKey AccountEncryptionKeyType = original.CustomerKey
+	SystemKey   AccountEncryptionKeyType = original.SystemKey
 )
 
 type AnalysisResolution = original.AnalysisResolution
@@ -57,6 +64,13 @@ type AssetStorageEncryptionFormat = original.AssetStorageEncryptionFormat
 const (
 	MediaStorageClientEncryption AssetStorageEncryptionFormat = original.MediaStorageClientEncryption
 	None                         AssetStorageEncryptionFormat = original.None
+)
+
+type AudioAnalysisMode = original.AudioAnalysisMode
+
+const (
+	Basic    AudioAnalysisMode = original.Basic
+	Standard AudioAnalysisMode = original.Standard
 )
 
 type ContentKeyPolicyFairPlayRentalAndLeaseKeyType = original.ContentKeyPolicyFairPlayRentalAndLeaseKeyType
@@ -125,6 +139,7 @@ const (
 	AdaptiveStreaming                EncoderNamedPreset = original.AdaptiveStreaming
 	ContentAwareEncoding             EncoderNamedPreset = original.ContentAwareEncoding
 	ContentAwareEncodingExperimental EncoderNamedPreset = original.ContentAwareEncodingExperimental
+	CopyAllBitrateNonInterleaved     EncoderNamedPreset = original.CopyAllBitrateNonInterleaved
 	H264MultipleBitrate1080p         EncoderNamedPreset = original.H264MultipleBitrate1080p
 	H264MultipleBitrate720p          EncoderNamedPreset = original.H264MultipleBitrate720p
 	H264MultipleBitrateSD            EncoderNamedPreset = original.H264MultipleBitrateSD
@@ -240,7 +255,6 @@ const (
 type LiveEventEncodingType = original.LiveEventEncodingType
 
 const (
-	LiveEventEncodingTypeBasic        LiveEventEncodingType = original.LiveEventEncodingTypeBasic
 	LiveEventEncodingTypeNone         LiveEventEncodingType = original.LiveEventEncodingTypeNone
 	LiveEventEncodingTypePremium1080p LiveEventEncodingType = original.LiveEventEncodingTypePremium1080p
 	LiveEventEncodingTypeStandard     LiveEventEncodingType = original.LiveEventEncodingTypeStandard
@@ -256,11 +270,13 @@ const (
 type LiveEventResourceState = original.LiveEventResourceState
 
 const (
-	Deleting LiveEventResourceState = original.Deleting
-	Running  LiveEventResourceState = original.Running
-	Starting LiveEventResourceState = original.Starting
-	Stopped  LiveEventResourceState = original.Stopped
-	Stopping LiveEventResourceState = original.Stopping
+	Allocating LiveEventResourceState = original.Allocating
+	Deleting   LiveEventResourceState = original.Deleting
+	Running    LiveEventResourceState = original.Running
+	StandBy    LiveEventResourceState = original.StandBy
+	Starting   LiveEventResourceState = original.Starting
+	Stopped    LiveEventResourceState = original.Stopped
+	Stopping   LiveEventResourceState = original.Stopping
 )
 
 type LiveOutputResourceState = original.LiveOutputResourceState
@@ -269,6 +285,13 @@ const (
 	LiveOutputResourceStateCreating LiveOutputResourceState = original.LiveOutputResourceStateCreating
 	LiveOutputResourceStateDeleting LiveOutputResourceState = original.LiveOutputResourceStateDeleting
 	LiveOutputResourceStateRunning  LiveOutputResourceState = original.LiveOutputResourceStateRunning
+)
+
+type ManagedIdentityType = original.ManagedIdentityType
+
+const (
+	ManagedIdentityTypeNone           ManagedIdentityType = original.ManagedIdentityTypeNone
+	ManagedIdentityTypeSystemAssigned ManagedIdentityType = original.ManagedIdentityTypeSystemAssigned
 )
 
 type MetricAggregationType = original.MetricAggregationType
@@ -300,6 +323,7 @@ type OdataTypeBasicClipTime = original.OdataTypeBasicClipTime
 const (
 	OdataTypeClipTime                       OdataTypeBasicClipTime = original.OdataTypeClipTime
 	OdataTypeMicrosoftMediaAbsoluteClipTime OdataTypeBasicClipTime = original.OdataTypeMicrosoftMediaAbsoluteClipTime
+	OdataTypeMicrosoftMediaUtcClipTime      OdataTypeBasicClipTime = original.OdataTypeMicrosoftMediaUtcClipTime
 )
 
 type OdataTypeBasicCodec = original.OdataTypeBasicCodec
@@ -419,6 +443,23 @@ const (
 	Normal Priority = original.Normal
 )
 
+type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
+
+const (
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateCreating
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateDeleting
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateFailed
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
+)
+
+type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
+
+const (
+	Approved PrivateEndpointServiceConnectionStatus = original.Approved
+	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
+	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
+)
+
 type Rotation = original.Rotation
 
 const (
@@ -435,6 +476,13 @@ type StorageAccountType = original.StorageAccountType
 const (
 	Primary   StorageAccountType = original.Primary
 	Secondary StorageAccountType = original.Secondary
+)
+
+type StorageAuthentication = original.StorageAuthentication
+
+const (
+	ManagedIdentity StorageAuthentication = original.ManagedIdentity
+	System          StorageAuthentication = original.System
 )
 
 type StreamOptionsFlag = original.StreamOptionsFlag
@@ -494,9 +542,19 @@ const (
 	TrackPropertyTypeUnknown TrackPropertyType = original.TrackPropertyTypeUnknown
 )
 
+type VideoSyncMode = original.VideoSyncMode
+
+const (
+	VideoSyncModeAuto        VideoSyncMode = original.VideoSyncModeAuto
+	VideoSyncModeCfr         VideoSyncMode = original.VideoSyncModeCfr
+	VideoSyncModePassthrough VideoSyncMode = original.VideoSyncModePassthrough
+	VideoSyncModeVfr         VideoSyncMode = original.VideoSyncModeVfr
+)
+
 type APIError = original.APIError
 type AacAudio = original.AacAudio
 type AbsoluteClipTime = original.AbsoluteClipTime
+type AccountEncryption = original.AccountEncryption
 type AccountFilter = original.AccountFilter
 type AccountFilterCollection = original.AccountFilterCollection
 type AccountFilterCollectionIterator = original.AccountFilterCollectionIterator
@@ -521,6 +579,7 @@ type AssetsClient = original.AssetsClient
 type Audio = original.Audio
 type AudioAnalyzerPreset = original.AudioAnalyzerPreset
 type AudioOverlay = original.AudioOverlay
+type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type BasicAudio = original.BasicAudio
 type BasicAudioAnalyzerPreset = original.BasicAudioAnalyzerPreset
@@ -622,6 +681,7 @@ type JobsClient = original.JobsClient
 type JpgFormat = original.JpgFormat
 type JpgImage = original.JpgImage
 type JpgLayer = original.JpgLayer
+type KeyVaultProperties = original.KeyVaultProperties
 type Layer = original.Layer
 type ListContainerSasInput = original.ListContainerSasInput
 type ListContentKeysResponse = original.ListContentKeysResponse
@@ -634,12 +694,16 @@ type LiveEventEncoding = original.LiveEventEncoding
 type LiveEventEndpoint = original.LiveEventEndpoint
 type LiveEventInput = original.LiveEventInput
 type LiveEventInputAccessControl = original.LiveEventInputAccessControl
+type LiveEventInputTrackSelection = original.LiveEventInputTrackSelection
 type LiveEventListResult = original.LiveEventListResult
 type LiveEventListResultIterator = original.LiveEventListResultIterator
 type LiveEventListResultPage = original.LiveEventListResultPage
+type LiveEventOutputTranscriptionTrack = original.LiveEventOutputTranscriptionTrack
 type LiveEventPreview = original.LiveEventPreview
 type LiveEventPreviewAccessControl = original.LiveEventPreviewAccessControl
 type LiveEventProperties = original.LiveEventProperties
+type LiveEventTranscription = original.LiveEventTranscription
+type LiveEventsAllocateFuture = original.LiveEventsAllocateFuture
 type LiveEventsClient = original.LiveEventsClient
 type LiveEventsCreateFuture = original.LiveEventsCreateFuture
 type LiveEventsDeleteFuture = original.LiveEventsDeleteFuture
@@ -657,10 +721,10 @@ type LiveOutputsCreateFuture = original.LiveOutputsCreateFuture
 type LiveOutputsDeleteFuture = original.LiveOutputsDeleteFuture
 type Location = original.Location
 type LocationsClient = original.LocationsClient
+type LogSpecification = original.LogSpecification
 type MediaservicesClient = original.MediaservicesClient
-type Metric = original.Metric
 type MetricDimension = original.MetricDimension
-type MetricProperties = original.MetricProperties
+type MetricSpecification = original.MetricSpecification
 type Mp4Format = original.Mp4Format
 type MultiBitrateFormat = original.MultiBitrateFormat
 type NoEncryption = original.NoEncryption
@@ -678,6 +742,17 @@ type PngImage = original.PngImage
 type PngLayer = original.PngLayer
 type PresentationTimeRange = original.PresentationTimeRange
 type Preset = original.Preset
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
+type Properties = original.Properties
 type Provider = original.Provider
 type ProxyResource = original.ProxyResource
 type Rectangle = original.Rectangle
@@ -686,6 +761,7 @@ type Service = original.Service
 type ServiceCollection = original.ServiceCollection
 type ServiceCollectionIterator = original.ServiceCollectionIterator
 type ServiceCollectionPage = original.ServiceCollectionPage
+type ServiceIdentity = original.ServiceIdentity
 type ServiceProperties = original.ServiceProperties
 type ServiceSpecification = original.ServiceSpecification
 type StandardEncoderPreset = original.StandardEncoderPreset
@@ -724,10 +800,6 @@ type StreamingPolicyFairPlayConfiguration = original.StreamingPolicyFairPlayConf
 type StreamingPolicyPlayReadyConfiguration = original.StreamingPolicyPlayReadyConfiguration
 type StreamingPolicyProperties = original.StreamingPolicyProperties
 type StreamingPolicyWidevineConfiguration = original.StreamingPolicyWidevineConfiguration
-type SubscriptionMediaService = original.SubscriptionMediaService
-type SubscriptionMediaServiceCollection = original.SubscriptionMediaServiceCollection
-type SubscriptionMediaServiceCollectionIterator = original.SubscriptionMediaServiceCollectionIterator
-type SubscriptionMediaServiceCollectionPage = original.SubscriptionMediaServiceCollectionPage
 type SyncStorageKeysInput = original.SyncStorageKeysInput
 type TrackPropertyCondition = original.TrackPropertyCondition
 type TrackSelection = original.TrackSelection
@@ -740,6 +812,7 @@ type TransformOutput = original.TransformOutput
 type TransformProperties = original.TransformProperties
 type TransformsClient = original.TransformsClient
 type TransportStreamFormat = original.TransportStreamFormat
+type UtcClipTime = original.UtcClipTime
 type Video = original.Video
 type VideoAnalyzerPreset = original.VideoAnalyzerPreset
 type VideoLayer = original.VideoLayer
@@ -856,6 +929,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewServiceCollectionIterator(page ServiceCollectionPage) ServiceCollectionIterator {
 	return original.NewServiceCollectionIterator(page)
 }
@@ -898,12 +983,6 @@ func NewStreamingPolicyCollectionIterator(page StreamingPolicyCollectionPage) St
 func NewStreamingPolicyCollectionPage(getNextPage func(context.Context, StreamingPolicyCollection) (StreamingPolicyCollection, error)) StreamingPolicyCollectionPage {
 	return original.NewStreamingPolicyCollectionPage(getNextPage)
 }
-func NewSubscriptionMediaServiceCollectionIterator(page SubscriptionMediaServiceCollectionPage) SubscriptionMediaServiceCollectionIterator {
-	return original.NewSubscriptionMediaServiceCollectionIterator(page)
-}
-func NewSubscriptionMediaServiceCollectionPage(getNextPage func(context.Context, SubscriptionMediaServiceCollection) (SubscriptionMediaServiceCollection, error)) SubscriptionMediaServiceCollectionPage {
-	return original.NewSubscriptionMediaServiceCollectionPage(getNextPage)
-}
 func NewTransformCollectionIterator(page TransformCollectionPage) TransformCollectionIterator {
 	return original.NewTransformCollectionIterator(page)
 }
@@ -922,6 +1001,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleAacAudioProfileValues() []AacAudioProfile {
 	return original.PossibleAacAudioProfileValues()
 }
+func PossibleAccountEncryptionKeyTypeValues() []AccountEncryptionKeyType {
+	return original.PossibleAccountEncryptionKeyTypeValues()
+}
 func PossibleAnalysisResolutionValues() []AnalysisResolution {
 	return original.PossibleAnalysisResolutionValues()
 }
@@ -930,6 +1012,9 @@ func PossibleAssetContainerPermissionValues() []AssetContainerPermission {
 }
 func PossibleAssetStorageEncryptionFormatValues() []AssetStorageEncryptionFormat {
 	return original.PossibleAssetStorageEncryptionFormatValues()
+}
+func PossibleAudioAnalysisModeValues() []AudioAnalysisMode {
+	return original.PossibleAudioAnalysisModeValues()
 }
 func PossibleContentKeyPolicyFairPlayRentalAndLeaseKeyTypeValues() []ContentKeyPolicyFairPlayRentalAndLeaseKeyType {
 	return original.PossibleContentKeyPolicyFairPlayRentalAndLeaseKeyTypeValues()
@@ -1000,6 +1085,9 @@ func PossibleLiveEventResourceStateValues() []LiveEventResourceState {
 func PossibleLiveOutputResourceStateValues() []LiveOutputResourceState {
 	return original.PossibleLiveOutputResourceStateValues()
 }
+func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
+	return original.PossibleManagedIdentityTypeValues()
+}
 func PossibleMetricAggregationTypeValues() []MetricAggregationType {
 	return original.PossibleMetricAggregationTypeValues()
 }
@@ -1048,11 +1136,20 @@ func PossibleOnErrorTypeValues() []OnErrorType {
 func PossiblePriorityValues() []Priority {
 	return original.PossiblePriorityValues()
 }
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
+}
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
+}
 func PossibleRotationValues() []Rotation {
 	return original.PossibleRotationValues()
 }
 func PossibleStorageAccountTypeValues() []StorageAccountType {
 	return original.PossibleStorageAccountTypeValues()
+}
+func PossibleStorageAuthenticationValues() []StorageAuthentication {
+	return original.PossibleStorageAuthenticationValues()
 }
 func PossibleStreamOptionsFlagValues() []StreamOptionsFlag {
 	return original.PossibleStreamOptionsFlagValues()
@@ -1074,6 +1171,9 @@ func PossibleTrackPropertyCompareOperationValues() []TrackPropertyCompareOperati
 }
 func PossibleTrackPropertyTypeValues() []TrackPropertyType {
 	return original.PossibleTrackPropertyTypeValues()
+}
+func PossibleVideoSyncModeValues() []VideoSyncMode {
+	return original.PossibleVideoSyncModeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

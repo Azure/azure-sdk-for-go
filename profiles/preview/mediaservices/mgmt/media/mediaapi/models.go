@@ -19,7 +19,7 @@
 
 package mediaapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2018-07-01/media/mediaapi"
+import original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2020-05-01/media/mediaapi"
 
 type AccountFiltersClientAPI = original.AccountFiltersClientAPI
 type AssetFiltersClientAPI = original.AssetFiltersClientAPI
@@ -31,6 +31,8 @@ type LiveOutputsClientAPI = original.LiveOutputsClientAPI
 type LocationsClientAPI = original.LocationsClientAPI
 type MediaservicesClientAPI = original.MediaservicesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type StreamingEndpointsClientAPI = original.StreamingEndpointsClientAPI
 type StreamingLocatorsClientAPI = original.StreamingLocatorsClientAPI
 type StreamingPoliciesClientAPI = original.StreamingPoliciesClientAPI

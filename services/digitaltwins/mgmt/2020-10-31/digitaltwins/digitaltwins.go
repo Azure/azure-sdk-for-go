@@ -625,13 +625,13 @@ func (client Client) ListByResourceGroupComplete(ctx context.Context, resourceGr
 // resourceGroupName - the name of the resource group that contains the DigitalTwinsInstance.
 // resourceName - the name of the DigitalTwinsInstance.
 // digitalTwinsPatchDescription - the DigitalTwinsInstance and security metadata.
-func (client Client) Update(ctx context.Context, resourceGroupName string, resourceName string, digitalTwinsPatchDescription PatchDescription) (result UpdateFuture, err error) {
+func (client Client) Update(ctx context.Context, resourceGroupName string, resourceName string, digitalTwinsPatchDescription PatchDescription) (result Description, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -652,10 +652,16 @@ func (client Client) Update(ctx context.Context, resourceGroupName string, resou
 		return
 	}
 
-	result, err = client.UpdateSender(req)
+	resp, err := client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "Update", result.Response(), "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "Update", resp, "Failure sending request")
 		return
+	}
+
+	result, err = client.UpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "digitaltwins.Client", "Update", resp, "Failure responding to request")
 	}
 
 	return
@@ -686,14 +692,8 @@ func (client Client) UpdatePreparer(ctx context.Context, resourceGroupName strin
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client Client) UpdateSender(req *http.Request) (future UpdateFuture, err error) {
-	var resp *http.Response
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	future.Future, err = azure.NewFutureFromResponse(resp)
-	return
+func (client Client) UpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // UpdateResponder handles the response to the Update request. The method always

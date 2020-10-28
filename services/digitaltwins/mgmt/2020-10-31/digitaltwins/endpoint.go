@@ -68,7 +68,9 @@ func (client EndpointClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil}}},
 		{TargetValue: endpointName,
 			Constraints: []validation.Constraint{{Target: "endpointName", Name: validation.MaxLength, Rule: 49, Chain: nil},
-				{Target: "endpointName", Name: validation.MinLength, Rule: 2, Chain: nil}}}}); err != nil {
+				{Target: "endpointName", Name: validation.MinLength, Rule: 2, Chain: nil}}},
+		{TargetValue: endpointDescription,
+			Constraints: []validation.Constraint{{Target: "endpointDescription.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("digitaltwins.EndpointClient", "CreateOrUpdate", err.Error())
 	}
 

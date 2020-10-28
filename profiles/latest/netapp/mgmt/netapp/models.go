@@ -19,7 +19,7 @@
 
 package netapp
 
-import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-06-01/netapp"
+import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-07-01/netapp"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -95,8 +95,6 @@ const (
 	OneZerominutely ReplicationSchedule = original.OneZerominutely
 	Daily           ReplicationSchedule = original.Daily
 	Hourly          ReplicationSchedule = original.Hourly
-	Monthly         ReplicationSchedule = original.Monthly
-	Weekly          ReplicationSchedule = original.Weekly
 )
 
 type SecurityStyle = original.SecurityStyle

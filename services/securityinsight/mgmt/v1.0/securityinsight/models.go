@@ -29,7 +29,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/v1.0/securityinsight"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/securityinsight/mgmt/v1.0/securityinsight"
 
 // AADDataConnector represents AAD (Azure Active Directory) data connector.
 type AADDataConnector struct {
@@ -2379,7 +2379,8 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
-// ErrorResponse the resource management error response.
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for failed
+// operations. (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`

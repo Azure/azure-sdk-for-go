@@ -32,7 +32,7 @@ type ClientAPI interface {
 	ListComplete(ctx context.Context) (result digitaltwins.DescriptionListResultIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result digitaltwins.DescriptionListResultPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result digitaltwins.DescriptionListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, resourceName string, digitalTwinsPatchDescription digitaltwins.PatchDescription) (result digitaltwins.UpdateFuture, err error)
+	Update(ctx context.Context, resourceGroupName string, resourceName string, digitalTwinsPatchDescription digitaltwins.PatchDescription) (result digitaltwins.Description, err error)
 }
 
 var _ ClientAPI = (*digitaltwins.Client)(nil)

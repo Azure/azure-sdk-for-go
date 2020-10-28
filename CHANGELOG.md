@@ -23,6 +23,10 @@
 | hdinsight | 2018-06-01 |
 | workloadmonitor | 2020-01-13-preview |
 
+### Package Renames
+
+- package `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/v1.0/securityinsight` has been renamed to `github.com/Azure/azure-sdk-for-go/services/securityinsight/mgmt/v1.0/securityinsight` 
+
 Generated from https://github.com/Azure/azure-rest-api-specs/tree/c174d654d4cd9f45e929a31480e19ada7baa6924
 
 ## `v47.1.0`

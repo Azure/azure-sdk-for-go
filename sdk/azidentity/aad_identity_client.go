@@ -53,12 +53,9 @@ type aadIdentityClient struct {
 // that are passed into it along with a default pipeline.
 // options: TokenCredentialOptions that can configure policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
-func newAADIdentityClient(authorityHost string, options *pipelineOptions) (*aadIdentityClient, error) {
+func newAADIdentityClient(authorityHost string, options pipelineOptions) (*aadIdentityClient, error) {
 	logEnvVars()
-	if options == nil {
-		options = &pipelineOptions{}
-	}
-	return &aadIdentityClient{authorityHost: authorityHost, pipeline: newDefaultPipeline(*options)}, nil
+	return &aadIdentityClient{authorityHost: authorityHost, pipeline: newDefaultPipeline(options)}, nil
 }
 
 // refreshAccessToken creates a refresh token request and returns the resulting Access Token or

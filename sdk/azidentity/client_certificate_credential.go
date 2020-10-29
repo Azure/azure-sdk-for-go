@@ -93,7 +93,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, clientCert
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, &pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry})
+	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry})
 	if err != nil {
 		return nil, err
 	}

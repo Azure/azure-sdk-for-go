@@ -25,8 +25,15 @@ type InteractiveBrowserCredentialOptions struct {
 	ClientSecret *string
 	// The redirect URI used to request the authorization code. Must be the same URI that is configured for the App Registration.
 	RedirectURI *string
-	// Options allows configuring the management of the requests sent to Azure Active Directory.
-	Options *TokenCredentialOptions
+	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	AuthorityHost string
+	// HTTPClient sets the transport for making HTTP requests
+	// Leave this as nil to use the default HTTP transport
+	HTTPClient azcore.Transport
+	// Retry configures the built-in retry policy behavior
+	Retry *azcore.RetryOptions
+	// Telemetry configures the built-in telemetry policy behavior
+	Telemetry azcore.TelemetryOptions
 }
 
 // InteractiveBrowserCredential enables authentication to Azure Active Directory using an interactive browser to log in.
@@ -56,7 +63,11 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 	if !validTenantID(options.TenantID) {
 		return nil, &CredentialUnavailableError{CredentialType: "Interactive Browser Credential", Message: "invalid tenant ID passed to credential"}
 	}
-	c, err := newAADIdentityClient(options.Options)
+	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	if err != nil {
+		return nil, err
+	}
+	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry})
 	if err != nil {
 		return nil, err
 	}

@@ -21,8 +21,15 @@ type ClientSecretCredential struct {
 
 // ClientSecretCredentialOptions configures the ClientSecretCredential with optional parameters.
 type ClientSecretCredentialOptions struct {
-	// Manage the configuration of requests sent to Azure Active Directory through the pipeline.
-	Options *TokenCredentialOptions
+	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	AuthorityHost string
+	// HTTPClient sets the transport for making HTTP requests
+	// Leave this as nil to use the default HTTP transport
+	HTTPClient azcore.Transport
+	// Retry configures the built-in retry policy behavior
+	Retry *azcore.RetryOptions
+	// Telemetry configures the built-in telemetry policy behavior
+	Telemetry azcore.TelemetryOptions
 }
 
 // DefaultClientSecretCredentialOptions returns an instance of ClientSecretCredentialOptions initialized with default values.
@@ -43,7 +50,11 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 		temp := DefaultClientSecretCredentialOptions()
 		options = &temp
 	}
-	c, err := newAADIdentityClient(options.Options)
+	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	if err != nil {
+		return nil, err
+	}
+	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry})
 	if err != nil {
 		return nil, err
 	}

@@ -115,11 +115,8 @@ func (e *CredentialUnavailableError) NonRetriable() {
 
 var _ azcore.NonRetriableError = (*CredentialUnavailableError)(nil)
 
-// TokenCredentialOptions are used to configure how requests are made to Azure Active Directory.
-type TokenCredentialOptions struct {
-	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
-	AuthorityHost string
-
+// pipelineOptions are used to configure how requests are made to Azure Active Directory.
+type pipelineOptions struct {
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
 	HTTPClient azcore.Transport
@@ -131,34 +128,26 @@ type TokenCredentialOptions struct {
 	Telemetry azcore.TelemetryOptions
 }
 
-// setDefaultValues initializes an instance of TokenCredentialOptions with default settings.
-func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, error) {
-	authorityHost := AzurePublicCloud
-	if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
-		authorityHost = envAuthorityHost
+// setAuthorityHost initializes the authority host for credentials.
+func setAuthorityHost(authorityHost string) (string, error) {
+	if authorityHost == "" {
+		authorityHost = AzurePublicCloud
+		if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
+			authorityHost = envAuthorityHost
+		}
 	}
-
-	if c == nil {
-		c = &TokenCredentialOptions{AuthorityHost: authorityHost}
-	}
-
-	if c.AuthorityHost == "" {
-		c.AuthorityHost = authorityHost
-	}
-
-	s, err := url.Parse(c.AuthorityHost)
+	u, err := url.Parse(authorityHost)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
-
-	if s.Scheme != "https" {
-		return nil, errors.New("cannot use an authority host without https")
+	if u.Scheme != "https" {
+		return "", errors.New("cannot use an authority host without https")
 	}
-	return c, nil
+	return authorityHost, nil
 }
 
 // newDefaultPipeline creates a pipeline using the specified pipeline options.
-func newDefaultPipeline(o TokenCredentialOptions) azcore.Pipeline {
+func newDefaultPipeline(o pipelineOptions) azcore.Pipeline {
 	return azcore.NewPipeline(
 		o.HTTPClient,
 		azcore.NewTelemetryPolicy(&o.Telemetry),

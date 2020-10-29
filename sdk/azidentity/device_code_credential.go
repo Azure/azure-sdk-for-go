@@ -24,8 +24,15 @@ type DeviceCodeCredentialOptions struct {
 	ClientID string
 	// The callback function used to send the login message back to the user
 	UserPrompt func(DeviceCodeMessage)
-	// Options used to configure the management of the requests sent to Azure Active Directory.
-	Options *TokenCredentialOptions
+	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	AuthorityHost string
+	// HTTPClient sets the transport for making HTTP requests
+	// Leave this as nil to use the default HTTP transport
+	HTTPClient azcore.Transport
+	// Retry configures the built-in retry policy behavior
+	Retry *azcore.RetryOptions
+	// Telemetry configures the built-in telemetry policy behavior
+	Telemetry azcore.TelemetryOptions
 }
 
 // DeviceCodeCredential authenticates a user using the device code flow, and provides access tokens for that user account.
@@ -74,7 +81,11 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 	if !validTenantID(options.TenantID) {
 		return nil, &CredentialUnavailableError{CredentialType: "Device Code Credential", Message: "invalid tenant ID passed to credential"}
 	}
-	c, err := newAADIdentityClient(options.Options)
+	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	if err != nil {
+		return nil, err
+	}
+	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry})
 	if err != nil {
 		return nil, err
 	}

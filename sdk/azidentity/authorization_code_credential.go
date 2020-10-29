@@ -13,8 +13,15 @@ import (
 type AuthorizationCodeCredentialOptions struct {
 	// Gets the client secret that was generated for the App Registration used to authenticate the client.
 	ClientSecret *string
-	// Manage the configuration of the requests sent to Azure Active Directory.
-	Options *TokenCredentialOptions
+	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	AuthorityHost string
+	// HTTPClient sets the transport for making HTTP requests
+	// Leave this as nil to use the default HTTP transport
+	HTTPClient azcore.Transport
+	// Retry configures the built-in retry policy behavior
+	Retry *azcore.RetryOptions
+	// Telemetry configures the built-in telemetry policy behavior
+	Telemetry azcore.TelemetryOptions
 }
 
 // AuthorizationCodeCredential enables authentication to Azure Active Directory using an authorization code
@@ -48,7 +55,11 @@ func NewAuthorizationCodeCredential(tenantID string, clientID string, authCode s
 		temp := DefaultAuthorizationCodeCredentialOptions()
 		options = &temp
 	}
-	c, err := newAADIdentityClient(options.Options)
+	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	if err != nil {
+		return nil, err
+	}
+	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry})
 	if err != nil {
 		return nil, err
 	}

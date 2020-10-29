@@ -23,7 +23,15 @@ type UsernamePasswordCredential struct {
 // UsernamePasswordCredentialOptions can be used to provide additional information to configure the UsernamePasswordCredential.
 // Use these options to modify the default pipeline behavior through the TokenCredentialOptions.
 type UsernamePasswordCredentialOptions struct {
-	Options *TokenCredentialOptions
+	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	AuthorityHost string
+	// HTTPClient sets the transport for making HTTP requests
+	// Leave this as nil to use the default HTTP transport
+	HTTPClient azcore.Transport
+	// Retry configures the built-in retry policy behavior
+	Retry *azcore.RetryOptions
+	// Telemetry configures the built-in telemetry policy behavior
+	Telemetry azcore.TelemetryOptions
 }
 
 // DefaultUsernamePasswordCredentialOptions returns an instance of UsernamePasswordCredentialOptions initialized with default values.
@@ -46,7 +54,11 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 		temp := DefaultUsernamePasswordCredentialOptions()
 		options = &temp
 	}
-	c, err := newAADIdentityClient(options.Options)
+	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	if err != nil {
+		return nil, err
+	}
+	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry})
 	if err != nil {
 		return nil, err
 	}

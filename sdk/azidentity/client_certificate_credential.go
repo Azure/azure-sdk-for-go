@@ -33,8 +33,15 @@ type ClientCertificateCredential struct {
 type ClientCertificateCredentialOptions struct {
 	// The password required to decrypt the private key.  Pass nil if there is no password.
 	Password *string
-	// Manage the configuration of requests sent to Azure Active Directory.
-	Options *TokenCredentialOptions
+	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	AuthorityHost string
+	// HTTPClient sets the transport for making HTTP requests
+	// Leave this as nil to use the default HTTP transport
+	HTTPClient azcore.Transport
+	// Retry configures the built-in retry policy behavior
+	Retry *azcore.RetryOptions
+	// Telemetry configures the built-in telemetry policy behavior
+	Telemetry azcore.TelemetryOptions
 }
 
 // DefaultClientCertificateCredentialOptions returns an instance of ClientCertificateCredentialOptions initialized with default values.
@@ -82,7 +89,11 @@ func NewClientCertificateCredential(tenantID string, clientID string, clientCert
 		logCredentialError(credErr.CredentialType, credErr)
 		return nil, credErr
 	}
-	c, err := newAADIdentityClient(options.Options)
+	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	if err != nil {
+		return nil, err
+	}
+	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry})
 	if err != nil {
 		return nil, err
 	}

@@ -857,6 +857,8 @@ func NewBackupShortTermRetentionPolicyListResultPage(getNextPage func(context.Co
 type BackupShortTermRetentionPolicyProperties struct {
 	// RetentionDays - The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
 	RetentionDays *int32 `json:"retentionDays,omitempty"`
+	// DiffBackupIntervalInHours - The differential backup interval in hours. This is how many interval hours between each differential backup will be supported. This is only applicable to live databases but not dropped databases.
+	DiffBackupIntervalInHours *int32 `json:"diffBackupIntervalInHours,omitempty"`
 }
 
 // BaseLongTermRetentionPolicyProperties properties of a long term retention policy
@@ -1963,17 +1965,19 @@ type DatabaseProperties struct {
 	MaxLogSizeBytes *int64 `json:"maxLogSizeBytes,omitempty"`
 	// EarliestRestoreDate - READ-ONLY; This records the earliest start date and time that restore is available for this database (ISO8601 format).
 	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
-	// ReadScale - If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica. This property is only settable for Premium and Business Critical databases. Possible values include: 'DatabaseReadScaleEnabled', 'DatabaseReadScaleDisabled'
+	// ReadScale - The state of read-only routing. If enabled, connections that have application intent set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Possible values include: 'DatabaseReadScaleEnabled', 'DatabaseReadScaleDisabled'
 	ReadScale DatabaseReadScale `json:"readScale,omitempty"`
-	// ReadReplicaCount - The number of readonly secondary replicas associated with the database to which readonly application intent connections may be routed. This property is only settable for Hyperscale edition databases.
+	// ReadReplicaCount - The number of readonly secondary replicas associated with the database.
 	ReadReplicaCount *int32 `json:"readReplicaCount,omitempty"`
 	// CurrentSku - READ-ONLY; The name and tier of the SKU.
 	CurrentSku *Sku `json:"currentSku,omitempty"`
 	// AutoPauseDelay - Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is disabled
 	AutoPauseDelay *int32 `json:"autoPauseDelay,omitempty"`
+	// StorageAccountType - The storage account type used to store backups for this database. Possible values include: 'GRS', 'LRS', 'ZRS'
+	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 	// MinCapacity - Minimal capacity that database will always have allocated, if not paused
 	MinCapacity *float64 `json:"minCapacity,omitempty"`
-	// PausedDate - READ-ONLY; The date when database was paused by user configuration or action (ISO8601 format). Null if the database is ready.
+	// PausedDate - READ-ONLY; The date when database was paused by user configuration or action(ISO8601 format). Null if the database is ready.
 	PausedDate *date.Time `json:"pausedDate,omitempty"`
 	// ResumedDate - READ-ONLY; The date when database was resumed by user action or database login (ISO8601 format). Null if the database is paused.
 	ResumedDate *date.Time `json:"resumedDate,omitempty"`
@@ -2036,39 +2040,13 @@ func (dp DatabaseProperties) MarshalJSON() ([]byte, error) {
 	if dp.AutoPauseDelay != nil {
 		objectMap["autoPauseDelay"] = dp.AutoPauseDelay
 	}
+	if dp.StorageAccountType != "" {
+		objectMap["storageAccountType"] = dp.StorageAccountType
+	}
 	if dp.MinCapacity != nil {
 		objectMap["minCapacity"] = dp.MinCapacity
 	}
 	return json.Marshal(objectMap)
-}
-
-// DatabasesCreateImportOperationFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type DatabasesCreateImportOperationFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabasesCreateImportOperationFuture) Result(client DatabasesClient) (ier ImportExportResponse, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesCreateImportOperationFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.DatabasesCreateImportOperationFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ier.Response.Response, err = future.GetResult(sender); err == nil && ier.Response.Response.StatusCode != http.StatusNoContent {
-		ier, err = client.CreateImportOperationResponder(ier.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesCreateImportOperationFuture", "Result", ier.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // DatabasesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -2247,7 +2225,7 @@ type DatabasesExportFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *DatabasesExportFuture) Result(client DatabasesClient) (ier ImportExportResponse, err error) {
+func (future *DatabasesExportFuture) Result(client DatabasesClient) (ieor ImportExportOperationResult, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -2259,10 +2237,10 @@ func (future *DatabasesExportFuture) Result(client DatabasesClient) (ier ImportE
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ier.Response.Response, err = future.GetResult(sender); err == nil && ier.Response.Response.StatusCode != http.StatusNoContent {
-		ier, err = client.ExportResponder(ier.Response.Response)
+	if ieor.Response.Response, err = future.GetResult(sender); err == nil && ieor.Response.Response.StatusCode != http.StatusNoContent {
+		ieor, err = client.ExportResponder(ieor.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesExportFuture", "Result", ier.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "sql.DatabasesExportFuture", "Result", ieor.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -2288,34 +2266,6 @@ func (future *DatabasesFailoverFuture) Result(client DatabasesClient) (ar autore
 		return
 	}
 	ar.Response = future.Response()
-	return
-}
-
-// DatabasesImportFuture an abstraction for monitoring and retrieving the results of a long-running operation.
-type DatabasesImportFuture struct {
-	azure.Future
-}
-
-// Result returns the result of the asynchronous operation.
-// If the operation has not completed it will return an error.
-func (future *DatabasesImportFuture) Result(client DatabasesClient) (ier ImportExportResponse, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "sql.DatabasesImportFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("sql.DatabasesImportFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if ier.Response.Response, err = future.GetResult(sender); err == nil && ier.Response.Response.StatusCode != http.StatusNoContent {
-		ier, err = client.ImportResponder(ier.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "sql.DatabasesImportFuture", "Result", ier.Response.Response, "Failure responding to request")
-		}
-	}
 	return
 }
 
@@ -4732,20 +4682,22 @@ func (future *EncryptionProtectorsRevalidateFuture) Result(client EncryptionProt
 	return
 }
 
-// ExportRequest export database parameters.
-type ExportRequest struct {
-	// StorageKeyType - The type of the storage key to use. Possible values include: 'StorageAccessKey', 'SharedAccessKey'
+// ExportDatabaseDefinition contains the information necessary to perform export database operation.
+type ExportDatabaseDefinition struct {
+	// StorageKeyType - Storage key type. Possible values include: 'SharedAccessKey', 'StorageAccessKey'
 	StorageKeyType StorageKeyType `json:"storageKeyType,omitempty"`
-	// StorageKey - The storage key to use.  If storage key type is SharedAccessKey, it must be preceded with a "?."
+	// StorageKey - Storage key.
 	StorageKey *string `json:"storageKey,omitempty"`
-	// StorageURI - The storage uri to use.
+	// StorageURI - Storage Uri.
 	StorageURI *string `json:"storageUri,omitempty"`
-	// AdministratorLogin - The name of the SQL administrator.
+	// AdministratorLogin - Administrator login name.
 	AdministratorLogin *string `json:"administratorLogin,omitempty"`
-	// AdministratorLoginPassword - The password of the SQL administrator.
+	// AdministratorLoginPassword - Administrator login password.
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
-	// AuthenticationType - The authentication type. Possible values include: 'SQL', 'ADPassword'
-	AuthenticationType AuthenticationType `json:"authenticationType,omitempty"`
+	// AuthenticationType - Authentication type.
+	AuthenticationType *string `json:"authenticationType,omitempty"`
+	// NetworkIsolation - Optional resource information to enable network isolation for request.
+	NetworkIsolation *NetworkIsolationSettings `json:"networkIsolation,omitempty"`
 }
 
 // ExtendedDatabaseBlobAuditingPolicy an extended database blob auditing policy.
@@ -6163,11 +6115,59 @@ func (gbpp GeoBackupPolicyProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ImportExportResponse response for Import/Export Get operation.
-type ImportExportResponse struct {
+// ImportExistingDatabaseDefinition contains the information necessary to perform import operation for existing
+// database.
+type ImportExistingDatabaseDefinition struct {
+	// StorageKeyType - Storage key type. Possible values include: 'SharedAccessKey', 'StorageAccessKey'
+	StorageKeyType StorageKeyType `json:"storageKeyType,omitempty"`
+	// StorageKey - Storage key.
+	StorageKey *string `json:"storageKey,omitempty"`
+	// StorageURI - Storage Uri.
+	StorageURI *string `json:"storageUri,omitempty"`
+	// AdministratorLogin - Administrator login name.
+	AdministratorLogin *string `json:"administratorLogin,omitempty"`
+	// AdministratorLoginPassword - Administrator login password.
+	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
+	// AuthenticationType - Authentication type.
+	AuthenticationType *string `json:"authenticationType,omitempty"`
+	// NetworkIsolation - Optional resource information to enable network isolation for request.
+	NetworkIsolation *NetworkIsolationSettings `json:"networkIsolation,omitempty"`
+}
+
+// ImportExportImportFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ImportExportImportFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ImportExportImportFuture) Result(client ImportExportClient) (ieor ImportExportOperationResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ImportExportImportFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ImportExportImportFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ieor.Response.Response, err = future.GetResult(sender); err == nil && ieor.Response.Response.StatusCode != http.StatusNoContent {
+		ieor, err = client.ImportResponder(ieor.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ImportExportImportFuture", "Result", ieor.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ImportExportOperationResult an ImportExport operation result resource.
+type ImportExportOperationResult struct {
 	autorest.Response `json:"-"`
-	// ImportExportResponseProperties - The import/export operation properties.
-	*ImportExportResponseProperties `json:"properties,omitempty"`
+	// ImportExportOperationResultProperties - Resource properties.
+	*ImportExportOperationResultProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name.
@@ -6176,17 +6176,17 @@ type ImportExportResponse struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// MarshalJSON is the custom marshaler for ImportExportResponse.
-func (ier ImportExportResponse) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for ImportExportOperationResult.
+func (ieor ImportExportOperationResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if ier.ImportExportResponseProperties != nil {
-		objectMap["properties"] = ier.ImportExportResponseProperties
+	if ieor.ImportExportOperationResultProperties != nil {
+		objectMap["properties"] = ieor.ImportExportOperationResultProperties
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for ImportExportResponse struct.
-func (ier *ImportExportResponse) UnmarshalJSON(body []byte) error {
+// UnmarshalJSON is the custom unmarshaler for ImportExportOperationResult struct.
+func (ieor *ImportExportOperationResult) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
 	err := json.Unmarshal(body, &m)
 	if err != nil {
@@ -6196,12 +6196,12 @@ func (ier *ImportExportResponse) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var importExportResponseProperties ImportExportResponseProperties
-				err = json.Unmarshal(*v, &importExportResponseProperties)
+				var importExportOperationResultProperties ImportExportOperationResultProperties
+				err = json.Unmarshal(*v, &importExportOperationResultProperties)
 				if err != nil {
 					return err
 				}
-				ier.ImportExportResponseProperties = &importExportResponseProperties
+				ieor.ImportExportOperationResultProperties = &importExportOperationResultProperties
 			}
 		case "id":
 			if v != nil {
@@ -6210,7 +6210,7 @@ func (ier *ImportExportResponse) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ier.ID = &ID
+				ieor.ID = &ID
 			}
 		case "name":
 			if v != nil {
@@ -6219,7 +6219,7 @@ func (ier *ImportExportResponse) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ier.Name = &name
+				ieor.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -6228,7 +6228,7 @@ func (ier *ImportExportResponse) UnmarshalJSON(body []byte) error {
 				if err != nil {
 					return err
 				}
-				ier.Type = &typeVar
+				ieor.Type = &typeVar
 			}
 		}
 	}
@@ -6236,146 +6236,54 @@ func (ier *ImportExportResponse) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ImportExportResponseProperties response for Import/Export Status operation.
-type ImportExportResponseProperties struct {
-	// RequestType - READ-ONLY; The request type of the operation.
-	RequestType *string `json:"requestType,omitempty"`
-	// RequestID - READ-ONLY; The request type of the operation.
+// ImportExportOperationResultProperties contains the operation result properties for import/export operation.
+type ImportExportOperationResultProperties struct {
+	// RequestID - READ-ONLY; Request Id.
 	RequestID *uuid.UUID `json:"requestId,omitempty"`
-	// ServerName - READ-ONLY; The name of the server.
-	ServerName *string `json:"serverName,omitempty"`
-	// DatabaseName - READ-ONLY; The name of the database.
-	DatabaseName *string `json:"databaseName,omitempty"`
-	// Status - READ-ONLY; The status message returned from the server.
-	Status *string `json:"status,omitempty"`
-	// LastModifiedTime - READ-ONLY; The operation status last modified time.
-	LastModifiedTime *string `json:"lastModifiedTime,omitempty"`
-	// QueuedTime - READ-ONLY; The operation queued time.
+	// RequestType - READ-ONLY; Request type.
+	RequestType *string `json:"requestType,omitempty"`
+	// QueuedTime - READ-ONLY; Queued time.
 	QueuedTime *string `json:"queuedTime,omitempty"`
-	// BlobURI - READ-ONLY; The blob uri.
+	// LastModifiedTime - READ-ONLY; Last modified time.
+	LastModifiedTime *string `json:"lastModifiedTime,omitempty"`
+	// BlobURI - READ-ONLY; Blob Uri.
 	BlobURI *string `json:"blobUri,omitempty"`
-	// ErrorMessage - READ-ONLY; The error message returned from the server.
-	ErrorMessage *string `json:"errorMessage,omitempty"`
-}
-
-// ImportExtensionProperties represents the properties for an import operation
-type ImportExtensionProperties struct {
-	// OperationMode - The type of import operation being performed. This is always Import.
-	OperationMode *string `json:"operationMode,omitempty"`
-	// StorageKeyType - The type of the storage key to use. Possible values include: 'StorageAccessKey', 'SharedAccessKey'
-	StorageKeyType StorageKeyType `json:"storageKeyType,omitempty"`
-	// StorageKey - The storage key to use.  If storage key type is SharedAccessKey, it must be preceded with a "?."
-	StorageKey *string `json:"storageKey,omitempty"`
-	// StorageURI - The storage uri to use.
-	StorageURI *string `json:"storageUri,omitempty"`
-	// AdministratorLogin - The name of the SQL administrator.
-	AdministratorLogin *string `json:"administratorLogin,omitempty"`
-	// AdministratorLoginPassword - The password of the SQL administrator.
-	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
-	// AuthenticationType - The authentication type. Possible values include: 'SQL', 'ADPassword'
-	AuthenticationType AuthenticationType `json:"authenticationType,omitempty"`
-}
-
-// ImportExtensionRequest import database parameters.
-type ImportExtensionRequest struct {
-	// Name - The name of the extension.
-	Name *string `json:"name,omitempty"`
-	// Type - The type of the extension.
-	Type *string `json:"type,omitempty"`
-	// ImportExtensionProperties - Represents the properties of the resource.
-	*ImportExtensionProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ImportExtensionRequest.
-func (ier ImportExtensionRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ier.Name != nil {
-		objectMap["name"] = ier.Name
-	}
-	if ier.Type != nil {
-		objectMap["type"] = ier.Type
-	}
-	if ier.ImportExtensionProperties != nil {
-		objectMap["properties"] = ier.ImportExtensionProperties
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for ImportExtensionRequest struct.
-func (ier *ImportExtensionRequest) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				ier.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				ier.Type = &typeVar
-			}
-		case "properties":
-			if v != nil {
-				var importExtensionProperties ImportExtensionProperties
-				err = json.Unmarshal(*v, &importExtensionProperties)
-				if err != nil {
-					return err
-				}
-				ier.ImportExtensionProperties = &importExtensionProperties
-			}
-		}
-	}
-
-	return nil
-}
-
-// ImportRequest import database parameters.
-type ImportRequest struct {
-	// DatabaseName - The name of the database to import.
+	// ServerName - READ-ONLY; Server name.
+	ServerName *string `json:"serverName,omitempty"`
+	// DatabaseName - READ-ONLY; Database name.
 	DatabaseName *string `json:"databaseName,omitempty"`
-	// Edition - The edition for the database being created.
-	//
-	// The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name, tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the `Capabilities_ListByLocation` REST API or one of the following commands:
-	//
-	// ```azurecli
-	// az sql db list-editions -l <location> -o table
-	// ````
-	//
-	// ```powershell
-	// Get-AzSqlServerServiceObjective -Location <location>
-	// ````
-	// . Possible values include: 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'PremiumRS', 'Free', 'Stretch', 'DataWarehouse', 'System', 'System2', 'GeneralPurpose', 'BusinessCritical', 'Hyperscale'
-	Edition DatabaseEdition `json:"edition,omitempty"`
-	// ServiceObjectiveName - The name of the service objective to assign to the database. Possible values include: 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem0', 'ServiceObjectiveNameSystem1', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameSystem3', 'ServiceObjectiveNameSystem4', 'ServiceObjectiveNameSystem2L', 'ServiceObjectiveNameSystem3L', 'ServiceObjectiveNameSystem4L', 'ServiceObjectiveNameFree', 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameS4', 'ServiceObjectiveNameS6', 'ServiceObjectiveNameS7', 'ServiceObjectiveNameS9', 'ServiceObjectiveNameS12', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNamePRS1', 'ServiceObjectiveNamePRS2', 'ServiceObjectiveNamePRS4', 'ServiceObjectiveNamePRS6', 'ServiceObjectiveNameDW100', 'ServiceObjectiveNameDW200', 'ServiceObjectiveNameDW300', 'ServiceObjectiveNameDW400', 'ServiceObjectiveNameDW500', 'ServiceObjectiveNameDW600', 'ServiceObjectiveNameDW1000', 'ServiceObjectiveNameDW1200', 'ServiceObjectiveNameDW1000c', 'ServiceObjectiveNameDW1500', 'ServiceObjectiveNameDW1500c', 'ServiceObjectiveNameDW2000', 'ServiceObjectiveNameDW2000c', 'ServiceObjectiveNameDW3000', 'ServiceObjectiveNameDW2500c', 'ServiceObjectiveNameDW3000c', 'ServiceObjectiveNameDW6000', 'ServiceObjectiveNameDW5000c', 'ServiceObjectiveNameDW6000c', 'ServiceObjectiveNameDW7500c', 'ServiceObjectiveNameDW10000c', 'ServiceObjectiveNameDW15000c', 'ServiceObjectiveNameDW30000c', 'ServiceObjectiveNameDS100', 'ServiceObjectiveNameDS200', 'ServiceObjectiveNameDS300', 'ServiceObjectiveNameDS400', 'ServiceObjectiveNameDS500', 'ServiceObjectiveNameDS600', 'ServiceObjectiveNameDS1000', 'ServiceObjectiveNameDS1200', 'ServiceObjectiveNameDS1500', 'ServiceObjectiveNameDS2000', 'ServiceObjectiveNameElasticPool'
-	ServiceObjectiveName ServiceObjectiveName `json:"serviceObjectiveName,omitempty"`
-	// MaxSizeBytes - The maximum size for the newly imported database.
+	// Status - READ-ONLY; Operation status.
+	Status *string `json:"status,omitempty"`
+	// ErrorMessage - READ-ONLY; Error message.
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+	// PrivateEndpointConnections - READ-ONLY; Gets the status of private endpoints associated with this request.
+	PrivateEndpointConnections *[]PrivateEndpointConnectionRequestStatus `json:"privateEndpointConnections,omitempty"`
+}
+
+// ImportNewDatabaseDefinition contains the information necessary to perform import operation for new database.
+type ImportNewDatabaseDefinition struct {
+	// DatabaseName - Name of the import database.
+	DatabaseName *string `json:"databaseName,omitempty"`
+	// Edition - Edition of the import database.
+	Edition *string `json:"edition,omitempty"`
+	// ServiceObjectiveName - Service level objective name of the import database.
+	ServiceObjectiveName *string `json:"serviceObjectiveName,omitempty"`
+	// MaxSizeBytes - Max size in bytes for the import database.
 	MaxSizeBytes *string `json:"maxSizeBytes,omitempty"`
-	// StorageKeyType - The type of the storage key to use. Possible values include: 'StorageAccessKey', 'SharedAccessKey'
+	// StorageKeyType - Storage key type. Possible values include: 'SharedAccessKey', 'StorageAccessKey'
 	StorageKeyType StorageKeyType `json:"storageKeyType,omitempty"`
-	// StorageKey - The storage key to use.  If storage key type is SharedAccessKey, it must be preceded with a "?."
+	// StorageKey - Storage key.
 	StorageKey *string `json:"storageKey,omitempty"`
-	// StorageURI - The storage uri to use.
+	// StorageURI - Storage Uri.
 	StorageURI *string `json:"storageUri,omitempty"`
-	// AdministratorLogin - The name of the SQL administrator.
+	// AdministratorLogin - Administrator login name.
 	AdministratorLogin *string `json:"administratorLogin,omitempty"`
-	// AdministratorLoginPassword - The password of the SQL administrator.
+	// AdministratorLoginPassword - Administrator login password.
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
-	// AuthenticationType - The authentication type. Possible values include: 'SQL', 'ADPassword'
-	AuthenticationType AuthenticationType `json:"authenticationType,omitempty"`
+	// AuthenticationType - Authentication type.
+	AuthenticationType *string `json:"authenticationType,omitempty"`
+	// NetworkIsolation - Optional resource information to enable network isolation for request.
+	NetworkIsolation *NetworkIsolationSettings `json:"networkIsolation,omitempty"`
 }
 
 // InstanceFailoverGroup an instance failover group.
@@ -11261,6 +11169,296 @@ func (future *ManagedInstanceAdministratorsDeleteFuture) Result(client ManagedIn
 	return
 }
 
+// ManagedInstanceAzureADOnlyAuthentication azure Active Directory only authentication.
+type ManagedInstanceAzureADOnlyAuthentication struct {
+	autorest.Response `json:"-"`
+	// ManagedInstanceAzureADOnlyAuthProperties - Resource properties.
+	*ManagedInstanceAzureADOnlyAuthProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedInstanceAzureADOnlyAuthentication.
+func (miaaoa ManagedInstanceAzureADOnlyAuthentication) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if miaaoa.ManagedInstanceAzureADOnlyAuthProperties != nil {
+		objectMap["properties"] = miaaoa.ManagedInstanceAzureADOnlyAuthProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ManagedInstanceAzureADOnlyAuthentication struct.
+func (miaaoa *ManagedInstanceAzureADOnlyAuthentication) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var managedInstanceAzureADOnlyAuthProperties ManagedInstanceAzureADOnlyAuthProperties
+				err = json.Unmarshal(*v, &managedInstanceAzureADOnlyAuthProperties)
+				if err != nil {
+					return err
+				}
+				miaaoa.ManagedInstanceAzureADOnlyAuthProperties = &managedInstanceAzureADOnlyAuthProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				miaaoa.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				miaaoa.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				miaaoa.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture an abstraction for monitoring and retrieving
+// the results of a long-running operation.
+type ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture) Result(client ManagedInstanceAzureADOnlyAuthenticationsClient) (miaaoa ManagedInstanceAzureADOnlyAuthentication, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if miaaoa.Response.Response, err = future.GetResult(sender); err == nil && miaaoa.Response.Response.StatusCode != http.StatusNoContent {
+		miaaoa, err = client.CreateOrUpdateResponder(miaaoa.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedInstanceAzureADOnlyAuthenticationsCreateOrUpdateFuture", "Result", miaaoa.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture) Result(client ManagedInstanceAzureADOnlyAuthenticationsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstanceAzureADOnlyAuthenticationsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ManagedInstanceAzureADOnlyAuthListResult a list of active directory only authentications.
+type ManagedInstanceAzureADOnlyAuthListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]ManagedInstanceAzureADOnlyAuthentication `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ManagedInstanceAzureADOnlyAuthListResultIterator provides access to a complete listing of
+// ManagedInstanceAzureADOnlyAuthentication values.
+type ManagedInstanceAzureADOnlyAuthListResultIterator struct {
+	i    int
+	page ManagedInstanceAzureADOnlyAuthListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ManagedInstanceAzureADOnlyAuthListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedInstanceAzureADOnlyAuthListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ManagedInstanceAzureADOnlyAuthListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ManagedInstanceAzureADOnlyAuthListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ManagedInstanceAzureADOnlyAuthListResultIterator) Response() ManagedInstanceAzureADOnlyAuthListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ManagedInstanceAzureADOnlyAuthListResultIterator) Value() ManagedInstanceAzureADOnlyAuthentication {
+	if !iter.page.NotDone() {
+		return ManagedInstanceAzureADOnlyAuthentication{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ManagedInstanceAzureADOnlyAuthListResultIterator type.
+func NewManagedInstanceAzureADOnlyAuthListResultIterator(page ManagedInstanceAzureADOnlyAuthListResultPage) ManagedInstanceAzureADOnlyAuthListResultIterator {
+	return ManagedInstanceAzureADOnlyAuthListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (miaaoalr ManagedInstanceAzureADOnlyAuthListResult) IsEmpty() bool {
+	return miaaoalr.Value == nil || len(*miaaoalr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (miaaoalr ManagedInstanceAzureADOnlyAuthListResult) hasNextLink() bool {
+	return miaaoalr.NextLink != nil && len(*miaaoalr.NextLink) != 0
+}
+
+// managedInstanceAzureADOnlyAuthListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (miaaoalr ManagedInstanceAzureADOnlyAuthListResult) managedInstanceAzureADOnlyAuthListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !miaaoalr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(miaaoalr.NextLink)))
+}
+
+// ManagedInstanceAzureADOnlyAuthListResultPage contains a page of ManagedInstanceAzureADOnlyAuthentication
+// values.
+type ManagedInstanceAzureADOnlyAuthListResultPage struct {
+	fn       func(context.Context, ManagedInstanceAzureADOnlyAuthListResult) (ManagedInstanceAzureADOnlyAuthListResult, error)
+	miaaoalr ManagedInstanceAzureADOnlyAuthListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ManagedInstanceAzureADOnlyAuthListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedInstanceAzureADOnlyAuthListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.miaaoalr)
+		if err != nil {
+			return err
+		}
+		page.miaaoalr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ManagedInstanceAzureADOnlyAuthListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ManagedInstanceAzureADOnlyAuthListResultPage) NotDone() bool {
+	return !page.miaaoalr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ManagedInstanceAzureADOnlyAuthListResultPage) Response() ManagedInstanceAzureADOnlyAuthListResult {
+	return page.miaaoalr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ManagedInstanceAzureADOnlyAuthListResultPage) Values() []ManagedInstanceAzureADOnlyAuthentication {
+	if page.miaaoalr.IsEmpty() {
+		return nil
+	}
+	return *page.miaaoalr.Value
+}
+
+// Creates a new instance of the ManagedInstanceAzureADOnlyAuthListResultPage type.
+func NewManagedInstanceAzureADOnlyAuthListResultPage(getNextPage func(context.Context, ManagedInstanceAzureADOnlyAuthListResult) (ManagedInstanceAzureADOnlyAuthListResult, error)) ManagedInstanceAzureADOnlyAuthListResultPage {
+	return ManagedInstanceAzureADOnlyAuthListResultPage{fn: getNextPage}
+}
+
+// ManagedInstanceAzureADOnlyAuthProperties properties of a active directory only authentication for Managed
+// Instance.
+type ManagedInstanceAzureADOnlyAuthProperties struct {
+	// AzureADOnlyAuthentication - Azure Active Directory only Authentication enabled.
+	AzureADOnlyAuthentication *bool `json:"azureADOnlyAuthentication,omitempty"`
+}
+
 // ManagedInstanceEditionCapability the managed server capability
 type ManagedInstanceEditionCapability struct {
 	// Name - READ-ONLY; The managed server version name.
@@ -12895,8 +13093,32 @@ type ManagedInstancePairInfo struct {
 	PartnerManagedInstanceID *string `json:"partnerManagedInstanceId,omitempty"`
 }
 
+// ManagedInstancePrivateLinkServiceConnectionStateProperty ...
+type ManagedInstancePrivateLinkServiceConnectionStateProperty struct {
+	// Status - The private link service connection status.
+	Status *string `json:"status,omitempty"`
+	// Description - The private link service connection description.
+	Description *string `json:"description,omitempty"`
+	// ActionsRequired - READ-ONLY; The private link service connection description.
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedInstancePrivateLinkServiceConnectionStateProperty.
+func (miplscsp ManagedInstancePrivateLinkServiceConnectionStateProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if miplscsp.Status != nil {
+		objectMap["status"] = miplscsp.Status
+	}
+	if miplscsp.Description != nil {
+		objectMap["description"] = miplscsp.Description
+	}
+	return json.Marshal(objectMap)
+}
+
 // ManagedInstanceProperties the properties of a managed instance.
 type ManagedInstanceProperties struct {
+	// ProvisioningState - READ-ONLY; Possible values include: 'ProvisioningState1Creating', 'ProvisioningState1Deleting', 'ProvisioningState1Updating', 'ProvisioningState1Unknown', 'ProvisioningState1Succeeded', 'ProvisioningState1Failed'
+	ProvisioningState ProvisioningState1 `json:"provisioningState,omitempty"`
 	// ManagedInstanceCreateMode - Specifies the mode of database creation.
 	//
 	// Default: Regular instance creation.
@@ -12946,6 +13168,8 @@ type ManagedInstanceProperties struct {
 	MaintenanceConfigurationID *string `json:"maintenanceConfigurationId,omitempty"`
 	// MinimalTLSVersion - Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
 	MinimalTLSVersion *string `json:"minimalTlsVersion,omitempty"`
+	// StorageAccountType - The storage account type used to store backups for this instance. The options are LRS (LocallyRedundantStorage), ZRS (ZoneRedundantStorage) and GRS (GeoRedundantStorage). Possible values include: 'GRS', 'LRS', 'ZRS'
+	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ManagedInstanceProperties.
@@ -13001,6 +13225,9 @@ func (mip ManagedInstanceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if mip.MinimalTLSVersion != nil {
 		objectMap["minimalTlsVersion"] = mip.MinimalTLSVersion
+	}
+	if mip.StorageAccountType != "" {
+		objectMap["storageAccountType"] = mip.StorageAccountType
 	}
 	return json.Marshal(objectMap)
 }
@@ -13947,13 +14174,21 @@ type Name struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
+// NetworkIsolationSettings contains the ARM resources for which to create private endpoint connection.
+type NetworkIsolationSettings struct {
+	// StorageAccountResourceID - The resource id for the storage account used to store BACPAC file. If set, private endpoint connection will be created for the storage account. Must match storage account used for StorageUri parameter.
+	StorageAccountResourceID *string `json:"storageAccountResourceId,omitempty"`
+	// SQLServerResourceID - The resource id for the SQL server which is the target of this request. If set, private endpoint connection will be created for the SQL server. Must match server which is target of the operation.
+	SQLServerResourceID *string `json:"sqlServerResourceId,omitempty"`
+}
+
 // Operation SQL REST API operation definition.
 type Operation struct {
 	// Name - READ-ONLY; The name of the operation being performed on this particular object.
 	Name *string `json:"name,omitempty"`
 	// Display - READ-ONLY; The localized display information for this particular operation / action.
 	Display *OperationDisplay `json:"display,omitempty"`
-	// Origin - READ-ONLY; The intended executor of the operation. Possible values include: 'OperationOriginUser', 'OperationOriginSystem'
+	// Origin - READ-ONLY; The intended executor of the operation. Possible values include: 'User', 'System'
 	Origin OperationOrigin `json:"origin,omitempty"`
 	// Properties - READ-ONLY; Additional descriptions for the operation.
 	Properties map[string]interface{} `json:"properties"`
@@ -14441,6 +14676,16 @@ func (pecp PrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// PrivateEndpointConnectionRequestStatus contains the private endpoint connection requests status.
+type PrivateEndpointConnectionRequestStatus struct {
+	// PrivateLinkServiceID - READ-ONLY; Resource id for which the private endpoint is created.
+	PrivateLinkServiceID *string `json:"privateLinkServiceId,omitempty"`
+	// PrivateEndpointConnectionName - READ-ONLY; The connection name for the private endpoint.
+	PrivateEndpointConnectionName *string `json:"privateEndpointConnectionName,omitempty"`
+	// Status - READ-ONLY; Status of this private endpoint connection.
+	Status *string `json:"status,omitempty"`
+}
+
 // PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type PrivateEndpointConnectionsCreateOrUpdateFuture struct {
@@ -14827,7 +15072,7 @@ type RecommendedElasticPoolMetric struct {
 
 // RecommendedElasticPoolProperties represents the properties of a recommended elastic pool.
 type RecommendedElasticPoolProperties struct {
-	// DatabaseEdition - READ-ONLY; The edition of the recommended elastic pool. The ElasticPoolEdition enumeration contains all the valid editions. Possible values include: 'ElasticPoolEditionBasic', 'ElasticPoolEditionStandard', 'ElasticPoolEditionPremium', 'ElasticPoolEditionGeneralPurpose', 'ElasticPoolEditionBusinessCritical'
+	// DatabaseEdition - READ-ONLY; The edition of the recommended elastic pool. The ElasticPoolEdition enumeration contains all the valid editions. Possible values include: 'Basic', 'Standard', 'Premium', 'GeneralPurpose', 'BusinessCritical'
 	DatabaseEdition ElasticPoolEdition `json:"databaseEdition,omitempty"`
 	// Dtu - The DTU for the recommended elastic pool.
 	Dtu *float64 `json:"dtu,omitempty"`
@@ -17708,6 +17953,12 @@ type ServerDNSAliasProperties struct {
 	AzureDNSRecord *string `json:"azureDnsRecord,omitempty"`
 }
 
+// ServerInfo server info for the server trust group.
+type ServerInfo struct {
+	// ServerID - Server Id.
+	ServerID *string `json:"serverId,omitempty"`
+}
+
 // ServerKey a server key.
 type ServerKey struct {
 	autorest.Response `json:"-"`
@@ -18403,6 +18654,35 @@ func (ssap *ServerSecurityAlertPolicy) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// ServersImportDatabaseFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ServersImportDatabaseFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ServersImportDatabaseFuture) Result(client ServersClient) (ieor ImportExportOperationResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ServersImportDatabaseFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ServersImportDatabaseFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if ieor.Response.Response, err = future.GetResult(sender); err == nil && ieor.Response.Response.StatusCode != http.StatusNoContent {
+		ieor, err = client.ImportDatabaseResponder(ieor.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ServersImportDatabaseFuture", "Result", ieor.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // ServersUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ServersUpdateFuture struct {
 	azure.Future
@@ -18428,6 +18708,295 @@ func (future *ServersUpdateFuture) Result(client ServersClient) (s Server, err e
 			err = autorest.NewErrorWithError(err, "sql.ServersUpdateFuture", "Result", s.Response.Response, "Failure responding to request")
 		}
 	}
+	return
+}
+
+// ServerTrustGroup a server trust group.
+type ServerTrustGroup struct {
+	autorest.Response `json:"-"`
+	// ServerTrustGroupProperties - Resource properties.
+	*ServerTrustGroupProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerTrustGroup.
+func (stg ServerTrustGroup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if stg.ServerTrustGroupProperties != nil {
+		objectMap["properties"] = stg.ServerTrustGroupProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ServerTrustGroup struct.
+func (stg *ServerTrustGroup) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var serverTrustGroupProperties ServerTrustGroupProperties
+				err = json.Unmarshal(*v, &serverTrustGroupProperties)
+				if err != nil {
+					return err
+				}
+				stg.ServerTrustGroupProperties = &serverTrustGroupProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				stg.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				stg.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				stg.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ServerTrustGroupListResult a list of server trust groups.
+type ServerTrustGroupListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]ServerTrustGroup `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ServerTrustGroupListResultIterator provides access to a complete listing of ServerTrustGroup values.
+type ServerTrustGroupListResultIterator struct {
+	i    int
+	page ServerTrustGroupListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ServerTrustGroupListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerTrustGroupListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ServerTrustGroupListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ServerTrustGroupListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ServerTrustGroupListResultIterator) Response() ServerTrustGroupListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ServerTrustGroupListResultIterator) Value() ServerTrustGroup {
+	if !iter.page.NotDone() {
+		return ServerTrustGroup{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ServerTrustGroupListResultIterator type.
+func NewServerTrustGroupListResultIterator(page ServerTrustGroupListResultPage) ServerTrustGroupListResultIterator {
+	return ServerTrustGroupListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (stglr ServerTrustGroupListResult) IsEmpty() bool {
+	return stglr.Value == nil || len(*stglr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (stglr ServerTrustGroupListResult) hasNextLink() bool {
+	return stglr.NextLink != nil && len(*stglr.NextLink) != 0
+}
+
+// serverTrustGroupListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (stglr ServerTrustGroupListResult) serverTrustGroupListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !stglr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(stglr.NextLink)))
+}
+
+// ServerTrustGroupListResultPage contains a page of ServerTrustGroup values.
+type ServerTrustGroupListResultPage struct {
+	fn    func(context.Context, ServerTrustGroupListResult) (ServerTrustGroupListResult, error)
+	stglr ServerTrustGroupListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ServerTrustGroupListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerTrustGroupListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.stglr)
+		if err != nil {
+			return err
+		}
+		page.stglr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ServerTrustGroupListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ServerTrustGroupListResultPage) NotDone() bool {
+	return !page.stglr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ServerTrustGroupListResultPage) Response() ServerTrustGroupListResult {
+	return page.stglr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ServerTrustGroupListResultPage) Values() []ServerTrustGroup {
+	if page.stglr.IsEmpty() {
+		return nil
+	}
+	return *page.stglr.Value
+}
+
+// Creates a new instance of the ServerTrustGroupListResultPage type.
+func NewServerTrustGroupListResultPage(getNextPage func(context.Context, ServerTrustGroupListResult) (ServerTrustGroupListResult, error)) ServerTrustGroupListResultPage {
+	return ServerTrustGroupListResultPage{fn: getNextPage}
+}
+
+// ServerTrustGroupProperties properties of a server trust group.
+type ServerTrustGroupProperties struct {
+	// GroupMembers - Group members information for the server trust group.
+	GroupMembers *[]ServerInfo `json:"groupMembers,omitempty"`
+	// TrustScopes - Trust scope of the server trust group.
+	TrustScopes *[]string `json:"trustScopes,omitempty"`
+}
+
+// ServerTrustGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ServerTrustGroupsCreateOrUpdateFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ServerTrustGroupsCreateOrUpdateFuture) Result(client ServerTrustGroupsClient) (stg ServerTrustGroup, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ServerTrustGroupsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ServerTrustGroupsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if stg.Response.Response, err = future.GetResult(sender); err == nil && stg.Response.Response.StatusCode != http.StatusNoContent {
+		stg, err = client.CreateOrUpdateResponder(stg.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "sql.ServerTrustGroupsCreateOrUpdateFuture", "Result", stg.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ServerTrustGroupsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ServerTrustGroupsDeleteFuture struct {
+	azure.Future
+}
+
+// Result returns the result of the asynchronous operation.
+// If the operation has not completed it will return an error.
+func (future *ServerTrustGroupsDeleteFuture) Result(client ServerTrustGroupsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "sql.ServerTrustGroupsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		err = azure.NewAsyncOpIncompleteError("sql.ServerTrustGroupsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
 	return
 }
 
@@ -19052,8 +19621,8 @@ type SloUsageMetric struct {
 
 // StorageCapability the storage account type capability.
 type StorageCapability struct {
-	// StorageAccountType - READ-ONLY; The storage account type for the database's backups. Possible values include: 'GRS', 'LRS', 'ZRS'
-	StorageAccountType StorageAccountType `json:"storageAccountType,omitempty"`
+	// StorageAccountType - READ-ONLY; The storage account type for the database's backups. Possible values include: 'StorageAccountType1GRS', 'StorageAccountType1LRS', 'StorageAccountType1ZRS'
+	StorageAccountType StorageAccountType1 `json:"storageAccountType,omitempty"`
 	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
 	// Reason - The reason for the capability not being available.
@@ -20649,6 +21218,8 @@ type SyncGroupProperties struct {
 	Schema *SyncGroupSchema `json:"schema,omitempty"`
 	// UsePrivateLinkConnection - If use private link connection is enabled.
 	UsePrivateLinkConnection *bool `json:"usePrivateLinkConnection,omitempty"`
+	// PrivateEndpointName - READ-ONLY; Private endpoint name of the sync group if use private link connection is enabled.
+	PrivateEndpointName *string `json:"privateEndpointName,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SyncGroupProperties.
@@ -21047,6 +21618,8 @@ type SyncMemberProperties struct {
 	SyncMemberAzureDatabaseResourceID *string `json:"syncMemberAzureDatabaseResourceId,omitempty"`
 	// UsePrivateLinkConnection - Whether to use private link connection.
 	UsePrivateLinkConnection *bool `json:"usePrivateLinkConnection,omitempty"`
+	// PrivateEndpointName - READ-ONLY; Private endpoint name of the sync member if use private link connection is enabled, for sync members in Azure.
+	PrivateEndpointName *string `json:"privateEndpointName,omitempty"`
 	// ServerName - Server name of the member database in the sync member
 	ServerName *string `json:"serverName,omitempty"`
 	// DatabaseName - Database name of the member database in the sync member.

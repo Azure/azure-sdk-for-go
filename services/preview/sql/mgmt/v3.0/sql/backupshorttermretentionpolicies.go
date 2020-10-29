@@ -87,7 +87,7 @@ func (client BackupShortTermRetentionPoliciesClient) CreateOrUpdatePreparer(ctx 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-10-01-preview"
+	const APIVersion = "2020-02-02-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -174,7 +174,7 @@ func (client BackupShortTermRetentionPoliciesClient) GetPreparer(ctx context.Con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-10-01-preview"
+	const APIVersion = "2020-02-02-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -256,7 +256,7 @@ func (client BackupShortTermRetentionPoliciesClient) ListByDatabasePreparer(ctx 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-10-01-preview"
+	const APIVersion = "2020-02-02-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -367,7 +367,7 @@ func (client BackupShortTermRetentionPoliciesClient) UpdatePreparer(ctx context.
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2017-10-01-preview"
+	const APIVersion = "2020-02-02-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

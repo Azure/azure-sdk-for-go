@@ -82,7 +82,7 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &ClientSecretCredentialOptions{Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
+	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &ClientSecretCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -96,7 +96,7 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
-	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &ClientSecretCredentialOptions{Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
+	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &ClientSecretCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -141,7 +141,7 @@ func TestClientSecretCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
-	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &ClientSecretCredentialOptions{Options: &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()}})
+	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &ClientSecretCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
 	if err != nil {
 		t.Fatalf("Failed to create the credential")
 	}

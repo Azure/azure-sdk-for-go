@@ -34,8 +34,8 @@ func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create interactive browser credential: %v", err)
 	}
-	if cred.client.options.AuthorityHost != AzurePublicCloud {
-		t.Fatalf("Wrong authority host set. Expected: %s, Received: %s", AzurePublicCloud, cred.client.options.AuthorityHost)
+	if cred.client.authorityHost != AzurePublicCloud {
+		t.Fatalf("Wrong authority host set. Expected: %s, Received: %s", AzurePublicCloud, cred.client.authorityHost)
 	}
 	if cred.options.ClientID != developerSignOnClientID {
 		t.Fatalf("Wrong clientID set. Expected: %s, Received: %s", developerSignOnClientID, cred.options.ClientID)
@@ -56,7 +56,8 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	client := &http.Client{Transport: tr}
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := DefaultInteractiveBrowserCredentialOptions()
-	options.Options = &TokenCredentialOptions{AuthorityHost: srv.URL(), HTTPClient: client}
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = client
 	cred, err := NewInteractiveBrowserCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -88,7 +89,8 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
 	options := DefaultInteractiveBrowserCredentialOptions()
 	options.ClientSecret = to.StringPtr(wrongSecret)
-	options.Options = &TokenCredentialOptions{AuthorityHost: srv.URL(), HTTPClient: client}
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = client
 	cred, err := NewInteractiveBrowserCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)

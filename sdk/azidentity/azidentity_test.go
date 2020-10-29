@@ -7,8 +7,6 @@ import (
 	"net/url"
 	"os"
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 const (
@@ -23,26 +21,16 @@ func Test_AuthorityHost_Parse(t *testing.T) {
 	}
 }
 
-func Test_NonNilTokenCredentialOptsNilAuthorityHost(t *testing.T) {
-	opts := &TokenCredentialOptions{Retry: &azcore.RetryOptions{MaxRetries: 6}}
-	opts, err := opts.setDefaultValues()
-	if err != nil {
-		t.Fatalf("Received an error: %v", err)
-	}
-	if opts.AuthorityHost == "" {
-		t.Fatalf("Did not set default authority host")
-	}
-}
-
 func Test_SetEnvAuthorityHost(t *testing.T) {
 	err := os.Setenv("AZURE_AUTHORITY_HOST", envHostString)
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}
-
-	opts := &TokenCredentialOptions{}
-	opts, err = opts.setDefaultValues()
-	if opts.AuthorityHost != envHostString {
+	authorityHost, err := setAuthorityHost("")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if authorityHost != envHostString {
 		t.Fatalf("Unexpected error when get host from environment vairable: %v", err)
 	}
 
@@ -59,9 +47,11 @@ func Test_CustomAuthorityHost(t *testing.T) {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}
 
-	opts := &TokenCredentialOptions{AuthorityHost: customHostString}
-	opts, err = opts.setDefaultValues()
-	if opts.AuthorityHost != customHostString {
+	authorityHost, err := setAuthorityHost(customHostString)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if authorityHost != customHostString {
 		t.Fatalf("Unexpected error when get host from environment vairable: %v", err)
 	}
 
@@ -73,54 +63,52 @@ func Test_CustomAuthorityHost(t *testing.T) {
 }
 
 func Test_DefaultAuthorityHost(t *testing.T) {
-	opts := &TokenCredentialOptions{}
-	opts, err := opts.setDefaultValues()
-	if opts.AuthorityHost != AzurePublicCloud {
+	authorityHost, err := setAuthorityHost("")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if authorityHost != AzurePublicCloud {
 		t.Fatalf("Unexpected error when set default AuthorityHost: %v", err)
 	}
 }
 
 func Test_AzureGermanyAuthorityHost(t *testing.T) {
-	opts := &TokenCredentialOptions{}
-	opts, err := opts.setDefaultValues()
+	authorityHost, err := setAuthorityHost(AzureGermany)
 	if err != nil {
 		t.Fatal(err)
 	}
-	opts.AuthorityHost = AzureGermany
-	if opts.AuthorityHost != AzureGermany {
+	if authorityHost != AzureGermany {
 		t.Fatalf("Did not retrieve expected authority host string")
 	}
 }
 
 func Test_AzureChinaAuthorityHost(t *testing.T) {
-	opts := &TokenCredentialOptions{}
-	opts, err := opts.setDefaultValues()
+	authorityHost, err := setAuthorityHost(AzureChina)
 	if err != nil {
 		t.Fatal(err)
 	}
-	opts.AuthorityHost = AzureChina
-	if opts.AuthorityHost != AzureChina {
+	if authorityHost != AzureChina {
 		t.Fatalf("Did not retrieve expected authority host string")
 	}
 }
 
 func Test_AzureGovernmentAuthorityHost(t *testing.T) {
-	opts := &TokenCredentialOptions{}
-	opts, err := opts.setDefaultValues()
+	authorityHost, err := setAuthorityHost(AzureGovernment)
 	if err != nil {
 		t.Fatal(err)
 	}
-	opts.AuthorityHost = AzureGovernment
-	if opts.AuthorityHost != AzureGovernment {
+	if authorityHost != AzureGovernment {
 		t.Fatalf("Did not retrieve expected authority host string")
 	}
 }
 
 func Test_NonHTTPSAuthorityHost(t *testing.T) {
-	opts := &TokenCredentialOptions{AuthorityHost: "http://foo.com"}
-	opts, err := opts.setDefaultValues()
+	authorityHost, err := setAuthorityHost("http://foo.com")
 	if err == nil {
 		t.Fatal("Expected an error but did not receive one.")
+	}
+	if authorityHost != "" {
+		t.Fatalf("Unexpected value in authority host string: %s", authorityHost)
 	}
 }
 

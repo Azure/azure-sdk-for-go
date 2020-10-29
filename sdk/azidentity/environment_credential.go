@@ -26,8 +26,15 @@ type EnvironmentCredential struct {
 
 // EnvironmentCredentialOptions configures the EnvironmentCredential with optional parameters.
 type EnvironmentCredentialOptions struct {
-	// Manage the configuration of requests sent to Azure Active Directory through the pipeline.
-	Options *TokenCredentialOptions
+	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	AuthorityHost string
+	// HTTPClient sets the transport for making HTTP requests
+	// Leave this as nil to use the default HTTP transport
+	HTTPClient azcore.Transport
+	// Retry configures the built-in retry policy behavior
+	Retry *azcore.RetryOptions
+	// Telemetry configures the built-in telemetry policy behavior
+	Telemetry azcore.TelemetryOptions
 }
 
 // DefaultEnvironmentCredentialOptions returns an instance of EnvironmentCredentialOptions initialized with default values.
@@ -57,7 +64,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	}
 	if clientSecret := os.Getenv("AZURE_CLIENT_SECRET"); clientSecret != "" {
 		azcore.Log().Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientSecretCredential")
-		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, &ClientSecretCredentialOptions{Options: options.Options})
+		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, &ClientSecretCredentialOptions{AuthorityHost: options.AuthorityHost, HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry})
 		if err != nil {
 			return nil, err
 		}
@@ -65,7 +72,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	}
 	if clientCertificate := os.Getenv("AZURE_CLIENT_CERTIFICATE_PATH"); clientCertificate != "" {
 		azcore.Log().Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientCertificateCredential")
-		cred, err := NewClientCertificateCredential(tenantID, clientID, clientCertificate, &ClientCertificateCredentialOptions{Options: options.Options})
+		cred, err := NewClientCertificateCredential(tenantID, clientID, clientCertificate, &ClientCertificateCredentialOptions{AuthorityHost: options.AuthorityHost, HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry})
 		if err != nil {
 			return nil, err
 		}
@@ -74,7 +81,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	if username := os.Getenv("AZURE_USERNAME"); username != "" {
 		if password := os.Getenv("AZURE_PASSWORD"); password != "" {
 			azcore.Log().Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking UsernamePasswordCredential")
-			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, &UsernamePasswordCredentialOptions{Options: options.Options})
+			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, &UsernamePasswordCredentialOptions{AuthorityHost: options.AuthorityHost, HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry})
 			if err != nil {
 				return nil, err
 			}

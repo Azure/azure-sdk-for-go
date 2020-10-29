@@ -223,8 +223,11 @@ func (page OperationListResultPage) Values() []OperationResult {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResult an Confluent REST API operation.
@@ -397,7 +400,8 @@ type OrganizationResourceListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// OrganizationResourceListResultIterator provides access to a complete listing of OrganizationResource values.
+// OrganizationResourceListResultIterator provides access to a complete listing of OrganizationResource
+// values.
 type OrganizationResourceListResultIterator struct {
 	i    int
 	page OrganizationResourceListResultPage
@@ -540,8 +544,11 @@ func (page OrganizationResourceListResultPage) Values() []OrganizationResource {
 }
 
 // Creates a new instance of the OrganizationResourceListResultPage type.
-func NewOrganizationResourceListResultPage(getNextPage func(context.Context, OrganizationResourceListResult) (OrganizationResourceListResult, error)) OrganizationResourceListResultPage {
-	return OrganizationResourceListResultPage{fn: getNextPage}
+func NewOrganizationResourceListResultPage(cur OrganizationResourceListResult, getNextPage func(context.Context, OrganizationResourceListResult) (OrganizationResourceListResult, error)) OrganizationResourceListResultPage {
+	return OrganizationResourceListResultPage{
+		fn:   getNextPage,
+		orlr: cur,
+	}
 }
 
 // OrganizationResourceProperties organization resource property

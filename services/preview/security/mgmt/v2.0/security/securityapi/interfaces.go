@@ -23,6 +23,33 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// SQLVulnerabilityAssessmentScansClientAPI contains the set of methods on the SQLVulnerabilityAssessmentScansClient type.
+type SQLVulnerabilityAssessmentScansClientAPI interface {
+	Get(ctx context.Context, scanID string, workspaceID string, APIVersion string, resourceID string) (result security.Scan, err error)
+	List(ctx context.Context, workspaceID string, APIVersion string, resourceID string) (result security.Scans, err error)
+}
+
+var _ SQLVulnerabilityAssessmentScansClientAPI = (*security.SQLVulnerabilityAssessmentScansClient)(nil)
+
+// SQLVulnerabilityAssessmentScanResultsClientAPI contains the set of methods on the SQLVulnerabilityAssessmentScanResultsClient type.
+type SQLVulnerabilityAssessmentScanResultsClientAPI interface {
+	Get(ctx context.Context, scanID string, scanResultID string, workspaceID string, APIVersion string, resourceID string) (result security.ScanResult, err error)
+	List(ctx context.Context, scanID string, workspaceID string, APIVersion string, resourceID string) (result security.ScanResults, err error)
+}
+
+var _ SQLVulnerabilityAssessmentScanResultsClientAPI = (*security.SQLVulnerabilityAssessmentScanResultsClient)(nil)
+
+// SQLVulnerabilityAssessmentBaselineRulesClientAPI contains the set of methods on the SQLVulnerabilityAssessmentBaselineRulesClient type.
+type SQLVulnerabilityAssessmentBaselineRulesClientAPI interface {
+	Add(ctx context.Context, workspaceID string, APIVersion string, resourceID string, body *security.RulesResultsInput) (result security.RulesResults, err error)
+	CreateOrUpdate(ctx context.Context, ruleID string, workspaceID string, APIVersion string, resourceID string, body *security.RuleResultsInput) (result security.RuleResults, err error)
+	Delete(ctx context.Context, ruleID string, workspaceID string, APIVersion string, resourceID string) (result autorest.Response, err error)
+	Get(ctx context.Context, ruleID string, workspaceID string, APIVersion string, resourceID string) (result security.RuleResults, err error)
+	List(ctx context.Context, workspaceID string, APIVersion string, resourceID string) (result security.RulesResults, err error)
+}
+
+var _ SQLVulnerabilityAssessmentBaselineRulesClientAPI = (*security.SQLVulnerabilityAssessmentBaselineRulesClient)(nil)
+
 // SecureScoresClientAPI contains the set of methods on the SecureScoresClient type.
 type SecureScoresClientAPI interface {
 	Get(ctx context.Context, secureScoreName string) (result security.SecureScoreItem, err error)

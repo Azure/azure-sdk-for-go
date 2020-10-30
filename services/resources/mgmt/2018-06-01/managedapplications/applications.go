@@ -790,7 +790,7 @@ func (client ApplicationsClient) ListBySubscriptionComplete(ctx context.Context)
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // applicationName - the name of the managed application.
 // parameters - parameters supplied to update an existing managed application.
-func (client ApplicationsClient) Update(ctx context.Context, resourceGroupName string, applicationName string, parameters *Application) (result Application, err error) {
+func (client ApplicationsClient) Update(ctx context.Context, resourceGroupName string, applicationName string, parameters *ApplicationPatchable) (result Application, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationsClient.Update")
 		defer func() {
@@ -834,7 +834,7 @@ func (client ApplicationsClient) Update(ctx context.Context, resourceGroupName s
 }
 
 // UpdatePreparer prepares the Update request.
-func (client ApplicationsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, applicationName string, parameters *Application) (*http.Request, error) {
+func (client ApplicationsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, applicationName string, parameters *ApplicationPatchable) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"applicationName":   autorest.Encode("path", applicationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),

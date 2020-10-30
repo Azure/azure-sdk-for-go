@@ -20,6 +20,7 @@ package reservationsapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-07-19-preview/reservations"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // BaseClientAPI contains the set of methods on the BaseClient type.
@@ -60,7 +61,8 @@ var _ AutoQuotaIncreaseClientAPI = (*reservations.AutoQuotaIncreaseClient)(nil)
 
 // ClientAPI contains the set of methods on the Client type.
 type ClientAPI interface {
-	AvailableScopes(ctx context.Context, reservationOrderID string, reservationID string, body []string) (result reservations.ReservationAvailableScopesFuture, err error)
+	Archive(ctx context.Context, reservationOrderID string, reservationID string) (result autorest.Response, err error)
+	AvailableScopes(ctx context.Context, reservationOrderID string, reservationID string, body reservations.AvailableScopeRequest) (result reservations.ReservationAvailableScopesFuture, err error)
 	Get(ctx context.Context, reservationID string, reservationOrderID string, expand string) (result reservations.Response, err error)
 	List(ctx context.Context, reservationOrderID string) (result reservations.ListPage, err error)
 	ListComplete(ctx context.Context, reservationOrderID string) (result reservations.ListIterator, err error)
@@ -68,6 +70,7 @@ type ClientAPI interface {
 	ListRevisionsComplete(ctx context.Context, reservationID string, reservationOrderID string) (result reservations.ListIterator, err error)
 	Merge(ctx context.Context, reservationOrderID string, body reservations.MergeRequest) (result reservations.ReservationMergeFuture, err error)
 	Split(ctx context.Context, reservationOrderID string, body reservations.SplitRequest) (result reservations.SplitFuture, err error)
+	Unarchive(ctx context.Context, reservationOrderID string, reservationID string) (result autorest.Response, err error)
 	Update(ctx context.Context, reservationOrderID string, reservationID string, parameters reservations.Patch) (result reservations.ReservationUpdateFuture, err error)
 }
 

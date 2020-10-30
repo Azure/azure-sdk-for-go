@@ -134,13 +134,13 @@ func (client PrivateLinkHubsClient) CreateOrUpdateResponder(resp *http.Response)
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // privateLinkHubName - the name of the privateLinkHub
-func (client PrivateLinkHubsClient) Delete(ctx context.Context, resourceGroupName string, privateLinkHubName string) (result autorest.Response, err error) {
+func (client PrivateLinkHubsClient) Delete(ctx context.Context, resourceGroupName string, privateLinkHubName string) (result PrivateLinkHubsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkHubsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -161,16 +161,10 @@ func (client PrivateLinkHubsClient) Delete(ctx context.Context, resourceGroupNam
 		return
 	}
 
-	resp, err := client.DeleteSender(req)
+	result, err = client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "Delete", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.PrivateLinkHubsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
@@ -199,8 +193,14 @@ func (client PrivateLinkHubsClient) DeletePreparer(ctx context.Context, resource
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client PrivateLinkHubsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client PrivateLinkHubsClient) DeleteSender(req *http.Request) (future PrivateLinkHubsDeleteFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -208,7 +208,7 @@ func (client PrivateLinkHubsClient) DeleteSender(req *http.Request) (*http.Respo
 func (client PrivateLinkHubsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNoContent),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return

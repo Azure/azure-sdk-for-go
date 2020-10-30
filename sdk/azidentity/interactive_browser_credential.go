@@ -61,7 +61,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 		options = &temp
 	}
 	if !validTenantID(options.TenantID) {
-		return nil, &CredentialUnavailableError{CredentialType: "Interactive Browser Credential", Message: "invalid tenant ID passed to credential"}
+		return nil, &CredentialUnavailableError{CredentialType: "Interactive Browser Credential", Message: tenantIDValidationErr}
 	}
 	authorityHost, err := setAuthorityHost(options.AuthorityHost)
 	if err != nil {

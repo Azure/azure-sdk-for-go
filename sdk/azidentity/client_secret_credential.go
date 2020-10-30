@@ -44,7 +44,7 @@ func DefaultClientSecretCredentialOptions() ClientSecretCredentialOptions {
 // options: allow to configure the management of the requests sent to Azure Active Directory.
 func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *ClientSecretCredentialOptions) (*ClientSecretCredential, error) {
 	if !validTenantID(tenantID) {
-		return nil, &CredentialUnavailableError{CredentialType: "Client Secret Credential", Message: "invalid tenant ID passed to credential"}
+		return nil, &CredentialUnavailableError{CredentialType: "Client Secret Credential", Message: tenantIDValidationErr}
 	}
 	if options == nil {
 		temp := DefaultClientSecretCredentialOptions()

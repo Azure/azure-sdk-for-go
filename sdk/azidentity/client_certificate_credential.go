@@ -50,7 +50,7 @@ func DefaultClientCertificateCredentialOptions() ClientCertificateCredentialOpti
 // options: ClientCertificateCredentialOptions that can be used to provide additional configurations for the credential.
 func NewClientCertificateCredential(tenantID string, clientID string, certificatePath string, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
 	if !validTenantID(tenantID) {
-		return nil, &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: "Invalid tenantID provided. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names."}
+		return nil, &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: tenantIDValidationErr}
 	}
 	_, err := os.Stat(certificatePath)
 	if err != nil {

@@ -54,7 +54,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 		options = &temp
 	}
 	if !validTenantID(options.TenantID) {
-		return nil, &CredentialUnavailableError{CredentialType: "Interactive Browser Credential", Message: "Invalid tenantID provided. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names."}
+		return nil, &CredentialUnavailableError{CredentialType: "Interactive Browser Credential", Message: tenantIDValidationErr}
 	}
 	c, err := newAADIdentityClient(options.Options)
 	if err != nil {

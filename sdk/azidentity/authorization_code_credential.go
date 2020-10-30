@@ -42,7 +42,7 @@ func DefaultAuthorizationCodeCredentialOptions() AuthorizationCodeCredentialOpti
 // options: Manage the configuration of the requests sent to Azure Active Directory, they can also include a client secret for web app authentication.
 func NewAuthorizationCodeCredential(tenantID string, clientID string, authCode string, redirectURI string, options *AuthorizationCodeCredentialOptions) (*AuthorizationCodeCredential, error) {
 	if !validTenantID(tenantID) {
-		return nil, &CredentialUnavailableError{CredentialType: "Authorization Code Credential", Message: "Invalid tenantID provided. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names."}
+		return nil, &CredentialUnavailableError{CredentialType: "Authorization Code Credential", Message: tenantIDValidationErr}
 	}
 	if options == nil {
 		temp := DefaultAuthorizationCodeCredentialOptions()

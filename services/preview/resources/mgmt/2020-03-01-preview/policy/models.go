@@ -297,8 +297,11 @@ func (page AssignmentListResultPage) Values() []Assignment {
 }
 
 // Creates a new instance of the AssignmentListResultPage type.
-func NewAssignmentListResultPage(getNextPage func(context.Context, AssignmentListResult) (AssignmentListResult, error)) AssignmentListResultPage {
-	return AssignmentListResultPage{fn: getNextPage}
+func NewAssignmentListResultPage(cur AssignmentListResult, getNextPage func(context.Context, AssignmentListResult) (AssignmentListResult, error)) AssignmentListResultPage {
+	return AssignmentListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AssignmentProperties the policy assignment properties.
@@ -363,24 +366,11 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// CloudError the resource management error response.
+// CloudError common error response for all Azure Resource Manager APIs to return error details for failed
+// operations. (This also follows the OData error response format.).
 type CloudError struct {
 	// Error - The error object.
-	Error *CloudErrorError `json:"error,omitempty"`
-}
-
-// CloudErrorError the error object.
-type CloudErrorError struct {
-	// Code - READ-ONLY; The error code.
-	Code *string `json:"code,omitempty"`
-	// Message - READ-ONLY; The error message.
-	Message *string `json:"message,omitempty"`
-	// Target - READ-ONLY; The error target.
-	Target *string `json:"target,omitempty"`
-	// Details - READ-ONLY; The error details.
-	Details *[]CloudError `json:"details,omitempty"`
-	// AdditionalInfo - READ-ONLY; The error additional info.
-	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+	Error *ErrorDetail `json:"error,omitempty"`
 }
 
 // Definition the policy definition.
@@ -622,8 +612,11 @@ func (page DefinitionListResultPage) Values() []Definition {
 }
 
 // Creates a new instance of the DefinitionListResultPage type.
-func NewDefinitionListResultPage(getNextPage func(context.Context, DefinitionListResult) (DefinitionListResult, error)) DefinitionListResultPage {
-	return DefinitionListResultPage{fn: getNextPage}
+func NewDefinitionListResultPage(cur DefinitionListResult, getNextPage func(context.Context, DefinitionListResult) (DefinitionListResult, error)) DefinitionListResultPage {
+	return DefinitionListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DefinitionProperties the policy definition properties.
@@ -707,6 +700,20 @@ type ErrorAdditionalInfo struct {
 	Type *string `json:"type,omitempty"`
 	// Info - READ-ONLY; The additional info.
 	Info interface{} `json:"info,omitempty"`
+}
+
+// ErrorDetail the error detail.
+type ErrorDetail struct {
+	// Code - READ-ONLY; The error code.
+	Code *string `json:"code,omitempty"`
+	// Message - READ-ONLY; The error message.
+	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The error target.
+	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]ErrorDetail `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
 // Exemption the policy exemption.
@@ -954,8 +961,11 @@ func (page ExemptionListResultPage) Values() []Exemption {
 }
 
 // Creates a new instance of the ExemptionListResultPage type.
-func NewExemptionListResultPage(getNextPage func(context.Context, ExemptionListResult) (ExemptionListResult, error)) ExemptionListResultPage {
-	return ExemptionListResultPage{fn: getNextPage}
+func NewExemptionListResultPage(cur ExemptionListResult, getNextPage func(context.Context, ExemptionListResult) (ExemptionListResult, error)) ExemptionListResultPage {
+	return ExemptionListResultPage{
+		fn:  getNextPage,
+		elr: cur,
+	}
 }
 
 // ExemptionProperties the policy exemption properties.
@@ -1329,8 +1339,11 @@ func (page SetDefinitionListResultPage) Values() []SetDefinition {
 }
 
 // Creates a new instance of the SetDefinitionListResultPage type.
-func NewSetDefinitionListResultPage(getNextPage func(context.Context, SetDefinitionListResult) (SetDefinitionListResult, error)) SetDefinitionListResultPage {
-	return SetDefinitionListResultPage{fn: getNextPage}
+func NewSetDefinitionListResultPage(cur SetDefinitionListResult, getNextPage func(context.Context, SetDefinitionListResult) (SetDefinitionListResult, error)) SetDefinitionListResultPage {
+	return SetDefinitionListResultPage{
+		fn:   getNextPage,
+		sdlr: cur,
+	}
 }
 
 // SetDefinitionProperties the policy set definition properties.

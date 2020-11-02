@@ -1547,8 +1547,11 @@ func (page ListUsagesResultPage) Values() []Usage {
 }
 
 // Creates a new instance of the ListUsagesResultPage type.
-func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
-	return ListUsagesResultPage{fn: getNextPage}
+func NewListUsagesResultPage(cur ListUsagesResult, getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return ListUsagesResultPage{
+		fn:  getNextPage,
+		lur: cur,
+	}
 }
 
 // ListWorkspaceKeysResult ...
@@ -1716,8 +1719,11 @@ func (page ListWorkspaceQuotasPage) Values() []ResourceQuota {
 }
 
 // Creates a new instance of the ListWorkspaceQuotasPage type.
-func NewListWorkspaceQuotasPage(getNextPage func(context.Context, ListWorkspaceQuotas) (ListWorkspaceQuotas, error)) ListWorkspaceQuotasPage {
-	return ListWorkspaceQuotasPage{fn: getNextPage}
+func NewListWorkspaceQuotasPage(cur ListWorkspaceQuotas, getNextPage func(context.Context, ListWorkspaceQuotas) (ListWorkspaceQuotas, error)) ListWorkspaceQuotasPage {
+	return ListWorkspaceQuotasPage{
+		fn:  getNextPage,
+		lwq: cur,
+	}
 }
 
 // MachineLearningComputeCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -1997,8 +2003,11 @@ func (page PaginatedComputeResourcesListPage) Values() []ComputeResource {
 }
 
 // Creates a new instance of the PaginatedComputeResourcesListPage type.
-func NewPaginatedComputeResourcesListPage(getNextPage func(context.Context, PaginatedComputeResourcesList) (PaginatedComputeResourcesList, error)) PaginatedComputeResourcesListPage {
-	return PaginatedComputeResourcesListPage{fn: getNextPage}
+func NewPaginatedComputeResourcesListPage(cur PaginatedComputeResourcesList, getNextPage func(context.Context, PaginatedComputeResourcesList) (PaginatedComputeResourcesList, error)) PaginatedComputeResourcesListPage {
+	return PaginatedComputeResourcesListPage{
+		fn:   getNextPage,
+		pcrl: cur,
+	}
 }
 
 // Password ...
@@ -2669,8 +2678,11 @@ func (page WorkspaceListResultPage) Values() []Workspace {
 }
 
 // Creates a new instance of the WorkspaceListResultPage type.
-func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
-	return WorkspaceListResultPage{fn: getNextPage}
+func NewWorkspaceListResultPage(cur WorkspaceListResult, getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
+	return WorkspaceListResultPage{
+		fn:  getNextPage,
+		wlr: cur,
+	}
 }
 
 // WorkspaceProperties the properties of a machine learning workspace.
@@ -2733,8 +2745,8 @@ type WorkspacePropertiesUpdateParameters struct {
 	FriendlyName *string `json:"friendlyName,omitempty"`
 }
 
-// WorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// WorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type WorkspacesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2762,7 +2774,8 @@ func (future *WorkspacesCreateOrUpdateFuture) Result(client WorkspacesClient) (w
 	return
 }
 
-// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type WorkspacesDeleteFuture struct {
 	azure.Future
 }

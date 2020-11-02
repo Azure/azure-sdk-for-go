@@ -23,6 +23,13 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
+	CreateThreatIntelligence(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, threatIntelligenceIndicatorObjectToUpsert securityinsight.ThreatIntelligenceIndicatorWithoutReadOnlyFields) (result securityinsight.ThreatIntelligenceResourceModel, err error)
+}
+
+var _ BaseClientAPI = (*securityinsight.BaseClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result securityinsight.OperationsListPage, err error)
@@ -157,6 +164,13 @@ type EntitiesClientAPI interface {
 
 var _ EntitiesClientAPI = (*securityinsight.EntitiesClient)(nil)
 
+// EntitiesGetTimelineClientAPI contains the set of methods on the EntitiesGetTimelineClient type.
+type EntitiesGetTimelineClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string, parameters securityinsight.EntityTimelineParameters) (result securityinsight.EntityTimelineResponse, err error)
+}
+
+var _ EntitiesGetTimelineClientAPI = (*securityinsight.EntitiesGetTimelineClient)(nil)
+
 // EntitiesRelationsClientAPI contains the set of methods on the EntitiesRelationsClient type.
 type EntitiesRelationsClientAPI interface {
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, entityID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.RelationListPage, err error)
@@ -215,6 +229,9 @@ type IncidentsClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string) (result securityinsight.Incident, err error)
 	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.IncidentListPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.IncidentListIterator, err error)
+	ListOfAlerts(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string) (result securityinsight.IncidentAlertList, err error)
+	ListOfBookmarks(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string) (result securityinsight.IncidentBookmarkList, err error)
+	ListOfEntities(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string) (result securityinsight.IncidentEntitiesResponse, err error)
 }
 
 var _ IncidentsClientAPI = (*securityinsight.IncidentsClient)(nil)
@@ -222,6 +239,7 @@ var _ IncidentsClientAPI = (*securityinsight.IncidentsClient)(nil)
 // IncidentCommentsClientAPI contains the set of methods on the IncidentCommentsClient type.
 type IncidentCommentsClientAPI interface {
 	CreateComment(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, incidentCommentID string, incidentComment securityinsight.IncidentComment) (result securityinsight.IncidentComment, err error)
+	DeleteComment(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, incidentCommentID string) (result autorest.Response, err error)
 	GetComment(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, incidentCommentID string) (result securityinsight.IncidentComment, err error)
 	ListByIncident(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.IncidentCommentListPage, err error)
 	ListByIncidentComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, incidentID string, filter string, orderby string, top *int32, skipToken string) (result securityinsight.IncidentCommentListIterator, err error)
@@ -239,3 +257,56 @@ type IncidentRelationsClientAPI interface {
 }
 
 var _ IncidentRelationsClientAPI = (*securityinsight.IncidentRelationsClient)(nil)
+
+// WatchlistsClientAPI contains the set of methods on the WatchlistsClient type.
+type WatchlistsClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, watchlistAlias string, watchlist securityinsight.Watchlist) (result securityinsight.Watchlist, err error)
+	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, watchlistAlias string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, watchlistAlias string) (result securityinsight.Watchlist, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.WatchlistListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.WatchlistListIterator, err error)
+	ListBySubscription(ctx context.Context, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.WatchlistListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.WatchlistListIterator, err error)
+}
+
+var _ WatchlistsClientAPI = (*securityinsight.WatchlistsClient)(nil)
+
+// ThreatIntelligenceIndicatorsClientAPI contains the set of methods on the ThreatIntelligenceIndicatorsClient type.
+type ThreatIntelligenceIndicatorsClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, top *int32, skipToken string, orderby string) (result securityinsight.ThreatIntelligenceResourceListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, filter string, top *int32, skipToken string, orderby string) (result securityinsight.ThreatIntelligenceResourceListIterator, err error)
+}
+
+var _ ThreatIntelligenceIndicatorsClientAPI = (*securityinsight.ThreatIntelligenceIndicatorsClient)(nil)
+
+// ThreatIntelligenceIndicatorClientAPI contains the set of methods on the ThreatIntelligenceIndicatorClient type.
+type ThreatIntelligenceIndicatorClientAPI interface {
+	AppendTags(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string, threatIntelligenceAppendTagsRequestBody securityinsight.ThreatIntelligenceAppendTagsRequestBody) (result autorest.Response, err error)
+	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string) (result securityinsight.ThreatIntelligenceResourceModel, err error)
+	ReplaceTags(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string, threatIntelligenceReplaceTagsModel securityinsight.ThreatIntelligenceIndicatorWithoutReadOnlyFields) (result securityinsight.ThreatIntelligenceResourceModel, err error)
+}
+
+var _ ThreatIntelligenceIndicatorClientAPI = (*securityinsight.ThreatIntelligenceIndicatorClient)(nil)
+
+// ThreatIntelligenceIndicatorUpsertClientAPI contains the set of methods on the ThreatIntelligenceIndicatorUpsertClient type.
+type ThreatIntelligenceIndicatorUpsertClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, name string, threatIntelligenceIndicatorObjectToUpsert securityinsight.ThreatIntelligenceIndicatorWithoutReadOnlyFields) (result securityinsight.ThreatIntelligenceResourceModel, err error)
+}
+
+var _ ThreatIntelligenceIndicatorUpsertClientAPI = (*securityinsight.ThreatIntelligenceIndicatorUpsertClient)(nil)
+
+// ThreatIntelligenceIndicatorsListClientAPI contains the set of methods on the ThreatIntelligenceIndicatorsListClient type.
+type ThreatIntelligenceIndicatorsListClientAPI interface {
+	Query(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, threatIntelligenceArmStixQuery securityinsight.ThreatIntelligenceArmStixQuery) (result securityinsight.ThreatIntelligenceResourceListPage, err error)
+	QueryComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, threatIntelligenceArmStixQuery securityinsight.ThreatIntelligenceArmStixQuery) (result securityinsight.ThreatIntelligenceResourceListIterator, err error)
+}
+
+var _ ThreatIntelligenceIndicatorsListClientAPI = (*securityinsight.ThreatIntelligenceIndicatorsListClient)(nil)
+
+// ThreatIntelligenceIndicatorMetricsClientAPI contains the set of methods on the ThreatIntelligenceIndicatorMetricsClient type.
+type ThreatIntelligenceIndicatorMetricsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, ctiEntityKind string) (result securityinsight.ThreatIntelligenceMetricResourceList, err error)
+}
+
+var _ ThreatIntelligenceIndicatorMetricsClientAPI = (*securityinsight.ThreatIntelligenceIndicatorMetricsClient)(nil)

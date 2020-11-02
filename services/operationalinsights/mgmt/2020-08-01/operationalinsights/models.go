@@ -190,8 +190,8 @@ func (c *Cluster) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ClusterErrorResponse error response indicates that the service is not able to process the incoming request.
-// The reason is provided in the error message.
+// ClusterErrorResponse error response indicates that the service is not able to process the incoming
+// request. The reason is provided in the error message.
 type ClusterErrorResponse struct {
 	// Error - The details of the error.
 	Error *ErrorResponse `json:"error,omitempty"`
@@ -349,8 +349,11 @@ func (page ClusterListResultPage) Values() []Cluster {
 }
 
 // Creates a new instance of the ClusterListResultPage type.
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return ClusterListResultPage{fn: getNextPage}
+func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ClusterPatch the top level Log Analytics cluster resource container.
@@ -479,7 +482,8 @@ func (future *ClustersCreateOrUpdateFuture) Result(client ClustersClient) (c Clu
 	return
 }
 
-// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// ClustersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type ClustersDeleteFuture struct {
 	azure.Future
 }
@@ -922,8 +926,11 @@ func (page DataSourceListResultPage) Values() []DataSource {
 }
 
 // Creates a new instance of the DataSourceListResultPage type.
-func NewDataSourceListResultPage(getNextPage func(context.Context, DataSourceListResult) (DataSourceListResult, error)) DataSourceListResultPage {
-	return DataSourceListResultPage{fn: getNextPage}
+func NewDataSourceListResultPage(cur DataSourceListResult, getNextPage func(context.Context, DataSourceListResult) (DataSourceListResult, error)) DataSourceListResultPage {
+	return DataSourceListResultPage{
+		fn:   getNextPage,
+		dslr: cur,
+	}
 }
 
 // Destination destination properties.
@@ -1010,8 +1017,8 @@ type ErrorContract struct {
 	Error *ErrorResponse `json:"error,omitempty"`
 }
 
-// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for failed
-// operations. (This also follows the OData error response format.)
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
@@ -1583,8 +1590,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationStatus the status of operation.
@@ -1612,8 +1622,8 @@ type PrivateLinkScopedResource struct {
 	ScopeID *string `json:"scopeId,omitempty"`
 }
 
-// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not have
-// tags and a location
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
 type ProxyResource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -2096,8 +2106,11 @@ func (page StorageInsightListResultPage) Values() []StorageInsight {
 }
 
 // Creates a new instance of the StorageInsightListResultPage type.
-func NewStorageInsightListResultPage(getNextPage func(context.Context, StorageInsightListResult) (StorageInsightListResult, error)) StorageInsightListResultPage {
-	return StorageInsightListResultPage{fn: getNextPage}
+func NewStorageInsightListResultPage(cur StorageInsightListResult, getNextPage func(context.Context, StorageInsightListResult) (StorageInsightListResult, error)) StorageInsightListResultPage {
+	return StorageInsightListResultPage{
+		fn:   getNextPage,
+		silr: cur,
+	}
 }
 
 // StorageInsightProperties storage insight properties.
@@ -2229,8 +2242,8 @@ type Tag struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource which
-// has 'tags' and a 'location'
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
@@ -2602,8 +2615,8 @@ type WorkspacePurgeStatusResponse struct {
 	Status PurgeState `json:"status,omitempty"`
 }
 
-// WorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// WorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type WorkspacesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2631,7 +2644,8 @@ func (future *WorkspacesCreateOrUpdateFuture) Result(client WorkspacesClient) (w
 	return
 }
 
-// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// WorkspacesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type WorkspacesDeleteFuture struct {
 	azure.Future
 }

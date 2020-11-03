@@ -21,6 +21,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -31,14 +32,14 @@ type InvoicesClient struct {
 }
 
 // NewInvoicesClient creates an instance of the InvoicesClient client.
-func NewInvoicesClient(subscriptionID string, subscriptionID1 string) InvoicesClient {
-	return NewInvoicesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewInvoicesClient(subscriptionID string) InvoicesClient {
+	return NewInvoicesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewInvoicesClientWithBaseURI creates an instance of the InvoicesClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) InvoicesClient {
-	return InvoicesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewInvoicesClientWithBaseURI(baseURI string, subscriptionID string) InvoicesClient {
+	return InvoicesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // DownloadBillingSubscriptionInvoice gets a URL to download an invoice.
@@ -184,6 +185,170 @@ func (client InvoicesClient) DownloadInvoiceSender(req *http.Request) (future In
 // DownloadInvoiceResponder handles the response to the DownloadInvoice request. The method always
 // closes the http.Response Body.
 func (client InvoicesClient) DownloadInvoiceResponder(resp *http.Response) (result DownloadURL, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// DownloadMultipleBillingProfileInvoices gets a URL to download multiple invoice documents (invoice pdf, tax receipts,
+// credit notes) as a zip file. The operation is supported for billing accounts with agreement type Microsoft Partner
+// Agreement or Microsoft Customer Agreement.
+// Parameters:
+// billingAccountName - the ID that uniquely identifies a billing account.
+// downloadUrls - an array of download urls for individual documents
+func (client InvoicesClient) DownloadMultipleBillingProfileInvoices(ctx context.Context, billingAccountName string, downloadUrls []string) (result InvoicesDownloadMultipleBillingProfileInvoicesFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicesClient.DownloadMultipleBillingProfileInvoices")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: downloadUrls,
+			Constraints: []validation.Constraint{{Target: "downloadUrls", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("billing.InvoicesClient", "DownloadMultipleBillingProfileInvoices", err.Error())
+	}
+
+	req, err := client.DownloadMultipleBillingProfileInvoicesPreparer(ctx, billingAccountName, downloadUrls)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "DownloadMultipleBillingProfileInvoices", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DownloadMultipleBillingProfileInvoicesSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "DownloadMultipleBillingProfileInvoices", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DownloadMultipleBillingProfileInvoicesPreparer prepares the DownloadMultipleBillingProfileInvoices request.
+func (client InvoicesClient) DownloadMultipleBillingProfileInvoicesPreparer(ctx context.Context, billingAccountName string, downloadUrls []string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"billingAccountName": autorest.Encode("path", billingAccountName),
+	}
+
+	const APIVersion = "2020-05-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/downloadDocuments", pathParameters),
+		autorest.WithJSON(downloadUrls),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DownloadMultipleBillingProfileInvoicesSender sends the DownloadMultipleBillingProfileInvoices request. The method will close the
+// http.Response Body if it receives an error.
+func (client InvoicesClient) DownloadMultipleBillingProfileInvoicesSender(req *http.Request) (future InvoicesDownloadMultipleBillingProfileInvoicesFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// DownloadMultipleBillingProfileInvoicesResponder handles the response to the DownloadMultipleBillingProfileInvoices request. The method always
+// closes the http.Response Body.
+func (client InvoicesClient) DownloadMultipleBillingProfileInvoicesResponder(resp *http.Response) (result DownloadURL, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// DownloadMultipleBillingSubscriptionInvoices gets a URL to download multiple invoice documents (invoice pdf, tax
+// receipts, credit notes) as a zip file.
+// Parameters:
+// downloadUrls - an array of download urls for individual documents
+func (client InvoicesClient) DownloadMultipleBillingSubscriptionInvoices(ctx context.Context, downloadUrls []string) (result InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicesClient.DownloadMultipleBillingSubscriptionInvoices")
+		defer func() {
+			sc := -1
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: downloadUrls,
+			Constraints: []validation.Constraint{{Target: "downloadUrls", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("billing.InvoicesClient", "DownloadMultipleBillingSubscriptionInvoices", err.Error())
+	}
+
+	req, err := client.DownloadMultipleBillingSubscriptionInvoicesPreparer(ctx, downloadUrls)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "DownloadMultipleBillingSubscriptionInvoices", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DownloadMultipleBillingSubscriptionInvoicesSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "billing.InvoicesClient", "DownloadMultipleBillingSubscriptionInvoices", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DownloadMultipleBillingSubscriptionInvoicesPreparer prepares the DownloadMultipleBillingSubscriptionInvoices request.
+func (client InvoicesClient) DownloadMultipleBillingSubscriptionInvoicesPreparer(ctx context.Context, downloadUrls []string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-05-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/downloadDocuments", pathParameters),
+		autorest.WithJSON(downloadUrls),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DownloadMultipleBillingSubscriptionInvoicesSender sends the DownloadMultipleBillingSubscriptionInvoices request. The method will close the
+// http.Response Body if it receives an error.
+func (client InvoicesClient) DownloadMultipleBillingSubscriptionInvoicesSender(req *http.Request) (future InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
+}
+
+// DownloadMultipleBillingSubscriptionInvoicesResponder handles the response to the DownloadMultipleBillingSubscriptionInvoices request. The method always
+// closes the http.Response Body.
+func (client InvoicesClient) DownloadMultipleBillingSubscriptionInvoicesResponder(resp *http.Response) (result DownloadURL, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),

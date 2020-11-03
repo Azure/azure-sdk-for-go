@@ -31,14 +31,14 @@ type PoliciesClient struct {
 }
 
 // NewPoliciesClient creates an instance of the PoliciesClient client.
-func NewPoliciesClient(subscriptionID string, subscriptionID1 string) PoliciesClient {
-	return NewPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewPoliciesClient(subscriptionID string) PoliciesClient {
+	return NewPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewPoliciesClientWithBaseURI creates an instance of the PoliciesClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) PoliciesClient {
-	return PoliciesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PoliciesClient {
+	return PoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // GetByBillingProfile lists the policies for a billing profile. This operation is supported only for billing accounts

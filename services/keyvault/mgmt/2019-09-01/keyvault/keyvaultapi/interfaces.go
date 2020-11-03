@@ -68,3 +68,16 @@ type OperationsClientAPI interface {
 }
 
 var _ OperationsClientAPI = (*keyvault.OperationsClient)(nil)
+
+// KeysClientAPI contains the set of methods on the KeysClient type.
+type KeysClientAPI interface {
+	CreateIfNotExist(ctx context.Context, resourceGroupName string, vaultName string, keyName string, parameters keyvault.KeyCreateParameters) (result keyvault.Key, err error)
+	Get(ctx context.Context, resourceGroupName string, vaultName string, keyName string) (result keyvault.Key, err error)
+	GetVersion(ctx context.Context, resourceGroupName string, vaultName string, keyName string, keyVersion string) (result keyvault.Key, err error)
+	List(ctx context.Context, resourceGroupName string, vaultName string) (result keyvault.KeyListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, vaultName string) (result keyvault.KeyListResultIterator, err error)
+	ListVersions(ctx context.Context, resourceGroupName string, vaultName string, keyName string) (result keyvault.KeyListResultPage, err error)
+	ListVersionsComplete(ctx context.Context, resourceGroupName string, vaultName string, keyName string) (result keyvault.KeyListResultIterator, err error)
+}
+
+var _ KeysClientAPI = (*keyvault.KeysClient)(nil)

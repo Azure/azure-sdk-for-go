@@ -1,4 +1,4 @@
-# Azure Identity Client Module for Go
+# Azure Resources Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armresources)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armresources)
 
@@ -12,7 +12,7 @@ The `armresources` module provides operations for working with resources and res
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Identity module:
+Install the Azure Resources module:
 
 ```sh
 go get -u github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armresources

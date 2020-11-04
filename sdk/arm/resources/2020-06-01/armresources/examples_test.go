@@ -13,16 +13,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func getDefaultClient() *armresources.Client {
+func ExampleResourceGroupsOperations_CheckExistence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	return armresources.NewDefaultClient(cred, nil)
-}
-
-func ExampleResourceGroupsOperations_CheckExistence() {
-	client := armresources.NewResourceGroupsClient(getDefaultClient(), "<subscription ID>")
+	client := armresources.NewResourceGroupsClient(armresources.NewDefaultClient(cred, nil), "<subscription ID>")
 	resp, err := client.CheckExistence(context.Background(), "<resource group name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -31,7 +27,11 @@ func ExampleResourceGroupsOperations_CheckExistence() {
 }
 
 func ExampleResourceGroupsOperations_CreateOrUpdate() {
-	client := armresources.NewResourceGroupsClient(getDefaultClient(), "<subscription ID>")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	client := armresources.NewResourceGroupsClient(armresources.NewDefaultClient(cred, nil), "<subscription ID>")
 	resp, err := client.CreateOrUpdate(context.Background(), "<resource group name>", armresources.ResourceGroup{
 		Location: to.StringPtr("<location>"),
 	}, nil)
@@ -42,7 +42,11 @@ func ExampleResourceGroupsOperations_CreateOrUpdate() {
 }
 
 func ExampleResourceGroupsOperations_List() {
-	client := armresources.NewResourceGroupsClient(getDefaultClient(), "<subscription ID>")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	client := armresources.NewResourceGroupsClient(armresources.NewDefaultClient(cred, nil), "<subscription ID>")
 	pager := client.List(nil)
 	for pager.NextPage(context.Background()) {
 		if err := pager.Err(); err != nil {
@@ -55,7 +59,11 @@ func ExampleResourceGroupsOperations_List() {
 }
 
 func ExampleResourceGroupsOperations_BeginDelete() {
-	client := armresources.NewResourceGroupsClient(getDefaultClient(), "<subscription ID>")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	client := armresources.NewResourceGroupsClient(armresources.NewDefaultClient(cred, nil), "<subscription ID>")
 	poller, err := client.BeginDelete(context.Background(), "<resource group name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)

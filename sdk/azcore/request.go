@@ -211,6 +211,12 @@ func (req *Request) Close() error {
 	return req.Body.Close()
 }
 
+// Telemetry adds telemetry data to the request.
+// If telemetry reporting is disabled the value is discarded.
+func (req *Request) Telemetry(v string) {
+	req.SetOperationValue(requestTelemetry(v))
+}
+
 // clone returns a deep copy of the request with its context changed to ctx
 func (req *Request) clone(ctx context.Context) *Request {
 	r2 := Request{}

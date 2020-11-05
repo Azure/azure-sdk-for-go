@@ -94,6 +94,28 @@ func TestPolicyTelemetryWithAppID(t *testing.T) {
 	}
 }
 
+func TestPolicyTelemetryWithAppIDAndReqTelemetry(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse()
+	const appID = "my_application"
+	o := DefaultTelemetryOptions()
+	o.ApplicationID = appID
+	pl := NewPipeline(srv, NewTelemetryPolicy(&o))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	req.Telemetry("TestPolicyTelemetryWithAppIDAndReqTelemetry")
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if v := resp.Request.Header.Get(HeaderUserAgent); v != fmt.Sprintf("%s %s %s", "TestPolicyTelemetryWithAppIDAndReqTelemetry", appID, platformInfo) {
+		t.Fatalf("unexpected user agent value: %s", v)
+	}
+}
+
 func TestPolicyTelemetryWithAppIDSanitized(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
@@ -152,6 +174,7 @@ func TestPolicyTelemetryDisabled(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
+	req.Telemetry("this should be ignored")
 	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

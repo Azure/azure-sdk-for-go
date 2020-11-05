@@ -54,15 +54,12 @@ func NewConnection(endpoint string, cred azcore.TokenCredential, options *Connec
 		o := DefaultConnectionOptions()
 		options = &o
 	}
-	policies := []azcore.Policy{
+	p := azcore.NewPipeline(options.HTTPClient,
 		azcore.NewTelemetryPolicy(&options.Telemetry),
-	}
-	policies = append(policies, NewRPRegistrationPolicy(cred, &options.RegisterRPOptions))
-	policies = append(policies,
+		NewRPRegistrationPolicy(cred, &options.RegisterRPOptions),
 		azcore.NewRetryPolicy(&options.Retry),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewLogPolicy(nil))
-	p := azcore.NewPipeline(options.HTTPClient, policies...)
 	return NewConnectionWithPipeline(endpoint, p)
 }
 

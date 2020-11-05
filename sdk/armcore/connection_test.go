@@ -13,8 +13,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
-	//"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	//"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 type mockTokenCred struct{}

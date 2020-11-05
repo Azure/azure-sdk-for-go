@@ -780,7 +780,7 @@ func (client SQLPoolsClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client SQLPoolsClient) UpdateResponder(resp *http.Response) (result SQLPool, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

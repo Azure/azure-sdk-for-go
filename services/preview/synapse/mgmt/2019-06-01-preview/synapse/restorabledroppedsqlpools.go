@@ -26,31 +26,32 @@ import (
 	"net/http"
 )
 
-// SQLPoolGeoBackupPoliciesClient is the azure Synapse Analytics Management Client
-type SQLPoolGeoBackupPoliciesClient struct {
+// RestorableDroppedSQLPoolsClient is the azure Synapse Analytics Management Client
+type RestorableDroppedSQLPoolsClient struct {
 	BaseClient
 }
 
-// NewSQLPoolGeoBackupPoliciesClient creates an instance of the SQLPoolGeoBackupPoliciesClient client.
-func NewSQLPoolGeoBackupPoliciesClient(subscriptionID string) SQLPoolGeoBackupPoliciesClient {
-	return NewSQLPoolGeoBackupPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewRestorableDroppedSQLPoolsClient creates an instance of the RestorableDroppedSQLPoolsClient client.
+func NewRestorableDroppedSQLPoolsClient(subscriptionID string) RestorableDroppedSQLPoolsClient {
+	return NewRestorableDroppedSQLPoolsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSQLPoolGeoBackupPoliciesClientWithBaseURI creates an instance of the SQLPoolGeoBackupPoliciesClient client using
-// a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
+// NewRestorableDroppedSQLPoolsClientWithBaseURI creates an instance of the RestorableDroppedSQLPoolsClient client
+// using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
 // clouds, Azure stack).
-func NewSQLPoolGeoBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolGeoBackupPoliciesClient {
-	return SQLPoolGeoBackupPoliciesClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewRestorableDroppedSQLPoolsClientWithBaseURI(baseURI string, subscriptionID string) RestorableDroppedSQLPoolsClient {
+	return RestorableDroppedSQLPoolsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get get the specified SQL pool geo backup policy
+// Get gets a deleted sql pool that can be restored
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace
-// SQLPoolName - SQL pool name
-func (client SQLPoolGeoBackupPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result GeoBackupPolicy, err error) {
+// restorableDroppedSQLPoolID - the id of the deleted Sql Pool in the form of
+// sqlPoolName,deletionTimeInFileTimeFormat
+func (client RestorableDroppedSQLPoolsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, restorableDroppedSQLPoolID string) (result RestorableDroppedSQLPool, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolGeoBackupPoliciesClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/RestorableDroppedSQLPoolsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -66,38 +67,37 @@ func (client SQLPoolGeoBackupPoliciesClient) Get(ctx context.Context, resourceGr
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.SQLPoolGeoBackupPoliciesClient", "Get", err.Error())
+		return result, validation.NewError("synapse.RestorableDroppedSQLPoolsClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, restorableDroppedSQLPoolID)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolGeoBackupPoliciesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.RestorableDroppedSQLPoolsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolGeoBackupPoliciesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.RestorableDroppedSQLPoolsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolGeoBackupPoliciesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "synapse.RestorableDroppedSQLPoolsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client SQLPoolGeoBackupPoliciesClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
+func (client RestorableDroppedSQLPoolsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, restorableDroppedSQLPoolID string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"geoBackupPolicyName": autorest.Encode("path", "Default"),
-		"resourceGroupName":   autorest.Encode("path", resourceGroupName),
-		"sqlPoolName":         autorest.Encode("path", SQLPoolName),
-		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":       autorest.Encode("path", workspaceName),
+		"resourceGroupName":          autorest.Encode("path", resourceGroupName),
+		"restorableDroppedSqlPoolId": autorest.Encode("path", restorableDroppedSQLPoolID),
+		"subscriptionId":             autorest.Encode("path", client.SubscriptionID),
+		"workspaceName":              autorest.Encode("path", workspaceName),
 	}
 
 	const APIVersion = "2019-06-01-preview"
@@ -108,20 +108,20 @@ func (client SQLPoolGeoBackupPoliciesClient) GetPreparer(ctx context.Context, re
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies/{geoBackupPolicyName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/restorableDroppedSqlPools/{restorableDroppedSqlPoolId}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client SQLPoolGeoBackupPoliciesClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client RestorableDroppedSQLPoolsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client SQLPoolGeoBackupPoliciesClient) GetResponder(resp *http.Response) (result GeoBackupPolicy, err error) {
+func (client RestorableDroppedSQLPoolsClient) GetResponder(resp *http.Response) (result RestorableDroppedSQLPool, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -131,14 +131,13 @@ func (client SQLPoolGeoBackupPoliciesClient) GetResponder(resp *http.Response) (
 	return
 }
 
-// List get list of SQL pool geo backup policies
+// ListByWorkspace gets a list of deleted Sql pools that can be restored
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace
-// SQLPoolName - SQL pool name
-func (client SQLPoolGeoBackupPoliciesClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result GeoBackupPolicyListResult, err error) {
+func (client RestorableDroppedSQLPoolsClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result RestorableDroppedSQLPoolListResult, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolGeoBackupPoliciesClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/RestorableDroppedSQLPoolsClient.ListByWorkspace")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -154,35 +153,34 @@ func (client SQLPoolGeoBackupPoliciesClient) List(ctx context.Context, resourceG
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.SQLPoolGeoBackupPoliciesClient", "List", err.Error())
+		return result, validation.NewError("synapse.RestorableDroppedSQLPoolsClient", "ListByWorkspace", err.Error())
 	}
 
-	req, err := client.ListPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName)
+	req, err := client.ListByWorkspacePreparer(ctx, resourceGroupName, workspaceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolGeoBackupPoliciesClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.RestorableDroppedSQLPoolsClient", "ListByWorkspace", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.ListSender(req)
+	resp, err := client.ListByWorkspaceSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolGeoBackupPoliciesClient", "List", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.RestorableDroppedSQLPoolsClient", "ListByWorkspace", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.ListResponder(resp)
+	result, err = client.ListByWorkspaceResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolGeoBackupPoliciesClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "synapse.RestorableDroppedSQLPoolsClient", "ListByWorkspace", resp, "Failure responding to request")
 	}
 
 	return
 }
 
-// ListPreparer prepares the List request.
-func (client SQLPoolGeoBackupPoliciesClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
+// ListByWorkspacePreparer prepares the ListByWorkspace request.
+func (client RestorableDroppedSQLPoolsClient) ListByWorkspacePreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"sqlPoolName":       autorest.Encode("path", SQLPoolName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
@@ -195,20 +193,20 @@ func (client SQLPoolGeoBackupPoliciesClient) ListPreparer(ctx context.Context, r
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/restorableDroppedSqlPools", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// ListSender sends the List request. The method will close the
+// ListByWorkspaceSender sends the ListByWorkspace request. The method will close the
 // http.Response Body if it receives an error.
-func (client SQLPoolGeoBackupPoliciesClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client RestorableDroppedSQLPoolsClient) ListByWorkspaceSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
-// ListResponder handles the response to the List request. The method always
+// ListByWorkspaceResponder handles the response to the ListByWorkspace request. The method always
 // closes the http.Response Body.
-func (client SQLPoolGeoBackupPoliciesClient) ListResponder(resp *http.Response) (result GeoBackupPolicyListResult, err error) {
+func (client RestorableDroppedSQLPoolsClient) ListByWorkspaceResponder(resp *http.Response) (result RestorableDroppedSQLPoolListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

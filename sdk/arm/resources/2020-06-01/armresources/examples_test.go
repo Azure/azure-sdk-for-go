@@ -41,6 +41,23 @@ func ExampleResourceGroupsOperations_CreateOrUpdate() {
 	log.Printf("resource group ID: %s\n", *resp.ResourceGroup.ID)
 }
 
+func ExampleResourceGroupsOperations_Update() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	client := armresources.NewResourceGroupsClient(armresources.NewDefaultClient(cred, nil), "<subscription ID>")
+	rgName := "<resource group name>"
+	tags := map[string]string{
+		"exampleTag": "exampleTagValue",
+	}
+	resp, err := client.Update(context.Background(), rgName, armresources.ResourceGroupPatchable{Name: &rgName, Tags: &tags}, nil)
+	if err != nil {
+		log.Fatalf("failed to update resource group: %v", err)
+	}
+	log.Printf("updated resource group: %v", *resp.ResourceGroup.ID)
+}
+
 func ExampleResourceGroupsOperations_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,4 +89,52 @@ func ExampleResourceGroupsOperations_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to delete resource group: %v", err)
 	}
+}
+
+func ExampleResourceGroupsOperations_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	client := armresources.NewResourceGroupsClient(armresources.NewDefaultClient(cred, nil), "<subscription ID>")
+	rg, err := client.Get(context.Background(), "<resource group name>", nil)
+	if err != nil {
+		log.Fatalf("failed to get resource group: %v", err)
+	}
+	log.Printf("resource group name: %s\n", *rg.ResourceGroup.Name)
+}
+
+func ExampleResourceGroupsOperations_ResumeDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	client := armresources.NewResourceGroupsClient(armresources.NewDefaultClient(cred, nil), "<subscription ID>")
+	rg, err := client.BeginDelete(context.Background(), "<resource group name>", nil)
+	if err != nil {
+		log.Fatalf("failed to get resource group: %v", err)
+	}
+	tk, err := rg.Poller.ResumeToken()
+	if err != nil {
+		log.Fatalf("failed to get resource group poller resume token: %v", err)
+	}
+	rgPoller, err := client.ResumeDelete(tk)
+	if err != nil {
+		log.Fatalf("failed to get resource group: %v", err)
+	}
+	for {
+		_, err := rgPoller.Poll(context.Background())
+		if err != nil {
+			log.Fatalf("failed to poll for status: %v", err)
+		}
+		if rgPoller.Done() {
+			break
+		}
+		time.Sleep(5 * time.Second)
+	}
+	resp, err := rgPoller.FinalResponse(context.Background())
+	if err != nil {
+		log.Fatalf("failed to get final poller response: %v", err)
+	}
+	log.Printf("resource group deletion status code: %d\n", resp.StatusCode)
 }

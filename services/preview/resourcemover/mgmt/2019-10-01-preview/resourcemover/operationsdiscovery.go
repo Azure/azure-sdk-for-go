@@ -57,20 +57,20 @@ func (client OperationsDiscoveryClient) Get(ctx context.Context) (result Operati
 	}
 	req, err := client.GetPreparer(ctx)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.OperationsDiscoveryClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.OperationsDiscoveryClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "regionmove.OperationsDiscoveryClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.OperationsDiscoveryClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.OperationsDiscoveryClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resourcemover.OperationsDiscoveryClient", "Get", resp, "Failure responding to request")
 	}
 
 	return

@@ -77,6 +77,10 @@ func (p telemetryPolicy) Do(req *Request) (*Response, error) {
 	if ua := req.Request.Header.Get(HeaderUserAgent); ua != "" {
 		p.telemetryValue = fmt.Sprintf("%s %s", p.telemetryValue, ua)
 	}
+	var rt requestTelemetry
+	if req.OperationValue(&rt) {
+		p.telemetryValue = fmt.Sprintf("%s %s", string(rt), p.telemetryValue)
+	}
 	req.Request.Header.Set(HeaderUserAgent, p.telemetryValue)
 	return req.Next()
 }
@@ -92,3 +96,6 @@ var platformInfo = func() string {
 	}
 	return fmt.Sprintf("(%s; %s)", runtime.Version(), operatingSystem)
 }()
+
+// used for adding per-request telemetry
+type requestTelemetry string

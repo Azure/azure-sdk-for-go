@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// CollectionClient is the azure Cosmos DB Database Service Resource Provider REST API
+// CollectionClient is the client for the Collection methods of the Documentdb service.
 type CollectionClient struct {
 	BaseClient
 }

@@ -26,7 +26,7 @@ import (
 	"net/http"
 )
 
-// NotebookWorkspacesClient is the azure Cosmos DB Database Service Resource Provider REST API
+// NotebookWorkspacesClient is the client for the NotebookWorkspaces methods of the Documentdb service.
 type NotebookWorkspacesClient struct {
 	BaseClient
 }

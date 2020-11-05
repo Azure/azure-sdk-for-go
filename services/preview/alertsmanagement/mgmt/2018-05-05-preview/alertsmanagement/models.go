@@ -364,8 +364,11 @@ func (page AlertsListPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertsListPage type.
-func NewAlertsListPage(getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
-	return AlertsListPage{fn: getNextPage}
+func NewAlertsListPage(cur AlertsList, getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
+	return AlertsListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AlertsSummary summary of the alerts.
@@ -494,7 +497,8 @@ type AlertsSummaryBySeverityAndMonitorCondition struct {
 	Sev4 *AlertsSummaryBySeverityAndMonitorConditionSev4 `json:"sev4,omitempty"`
 }
 
-// AlertsSummaryBySeverityAndMonitorConditionSev0 summary of alerts by monitor condition with severity 'Sev0'
+// AlertsSummaryBySeverityAndMonitorConditionSev0 summary of alerts by monitor condition with severity
+// 'Sev0'
 type AlertsSummaryBySeverityAndMonitorConditionSev0 struct {
 	// Fired - Count of alerts with monitorCondition 'Fired'
 	Fired *int32 `json:"fired,omitempty"`
@@ -502,7 +506,8 @@ type AlertsSummaryBySeverityAndMonitorConditionSev0 struct {
 	Resolved *int32 `json:"resolved,omitempty"`
 }
 
-// AlertsSummaryBySeverityAndMonitorConditionSev1 summary of alerts by monitor condition with severity 'Sev1'
+// AlertsSummaryBySeverityAndMonitorConditionSev1 summary of alerts by monitor condition with severity
+// 'Sev1'
 type AlertsSummaryBySeverityAndMonitorConditionSev1 struct {
 	// Fired - Count of alerts with monitorCondition 'Fired'
 	Fired *int32 `json:"fired,omitempty"`
@@ -510,7 +515,8 @@ type AlertsSummaryBySeverityAndMonitorConditionSev1 struct {
 	Resolved *int32 `json:"resolved,omitempty"`
 }
 
-// AlertsSummaryBySeverityAndMonitorConditionSev2 summary of alerts by monitor condition with severity 'Sev2'
+// AlertsSummaryBySeverityAndMonitorConditionSev2 summary of alerts by monitor condition with severity
+// 'Sev2'
 type AlertsSummaryBySeverityAndMonitorConditionSev2 struct {
 	// Fired - Count of alerts with monitorCondition 'Fired'
 	Fired *int32 `json:"fired,omitempty"`
@@ -518,7 +524,8 @@ type AlertsSummaryBySeverityAndMonitorConditionSev2 struct {
 	Resolved *int32 `json:"resolved,omitempty"`
 }
 
-// AlertsSummaryBySeverityAndMonitorConditionSev3 summary of alerts by monitor condition with severity 'Sev3'
+// AlertsSummaryBySeverityAndMonitorConditionSev3 summary of alerts by monitor condition with severity
+// 'Sev3'
 type AlertsSummaryBySeverityAndMonitorConditionSev3 struct {
 	// Fired - Count of alerts with monitorCondition 'Fired'
 	Fired *int32 `json:"fired,omitempty"`
@@ -526,7 +533,8 @@ type AlertsSummaryBySeverityAndMonitorConditionSev3 struct {
 	Resolved *int32 `json:"resolved,omitempty"`
 }
 
-// AlertsSummaryBySeverityAndMonitorConditionSev4 summary of alerts by monitor condition with severity 'Sev4'
+// AlertsSummaryBySeverityAndMonitorConditionSev4 summary of alerts by monitor condition with severity
+// 'Sev4'
 type AlertsSummaryBySeverityAndMonitorConditionSev4 struct {
 	// Fired - Count of alerts with monitorCondition 'Fired'
 	Fired *int32 `json:"fired,omitempty"`
@@ -872,8 +880,11 @@ func (page OperationsListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationsListPage type.
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return OperationsListPage{fn: getNextPage}
+func NewOperationsListPage(cur OperationsList, getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
+	return OperationsListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // Resource an azure resource object

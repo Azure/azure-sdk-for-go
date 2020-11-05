@@ -47,11 +47,14 @@ func ExampleResourceGroupsOperations_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	client := armresources.NewResourceGroupsClient(armresources.NewDefaultClient(cred, nil), "<subscription ID>")
-	rgName := "<resource group name>"
-	tags := map[string]string{
-		"exampleTag": "exampleTagValue",
-	}
-	resp, err := client.Update(context.Background(), rgName, armresources.ResourceGroupPatchable{Name: &rgName, Tags: &tags}, nil)
+	resp, err := client.Update(
+		context.Background(),
+		"<resource group name>",
+		armresources.ResourceGroupPatchable{
+			Tags: &map[string]string{
+				"exampleTag": "exampleTagValue",
+			}},
+		nil)
 	if err != nil {
 		log.Fatalf("failed to update resource group: %v", err)
 	}

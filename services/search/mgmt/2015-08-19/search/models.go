@@ -121,8 +121,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult the result of the request to list REST API operations. It contains a list of operations
-// and a URL  to get the next set of results.
+// OperationListResult the result of the request to list REST API operations. It contains a list of
+// operations and a URL  to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of operations supported by the resource provider.
@@ -368,7 +368,8 @@ func (future *ServicesCreateOrUpdateFuture) Result(client ServicesClient) (s Ser
 	return
 }
 
-// Sku defines the SKU of an Azure Cognitive Search Service, which determines price tier and capacity limits.
+// Sku defines the SKU of an Azure Cognitive Search Service, which determines price tier and capacity
+// limits.
 type Sku struct {
 	// Name - The SKU of the Search service. Valid values include: 'free': Shared service. 'basic': Dedicated service with up to 3 replicas. 'standard': Dedicated service with up to 12 partitions and 12 replicas. 'standard2': Similar to standard, but with more capacity per search unit. 'standard3': The largest Standard offering with up to 12 partitions and 12 replicas (or up to 3 partitions with more indexes if you also set the hostingMode property to 'highDensity'). 'storage_optimized_l1': Supports 1TB per partition, up to 12 partitions. 'storage_optimized_l2': Supports 2TB per partition, up to 12 partitions.'. Possible values include: 'Free', 'Basic', 'Standard', 'Standard2', 'Standard3', 'StorageOptimizedL1', 'StorageOptimizedL2'
 	Name SkuName `json:"name,omitempty"`

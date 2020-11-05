@@ -32,15 +32,15 @@ type CollectionPartitionClient struct {
 }
 
 // NewCollectionPartitionClient creates an instance of the CollectionPartitionClient client.
-func NewCollectionPartitionClient(subscriptionID string, subscriptionID1 string) CollectionPartitionClient {
-	return NewCollectionPartitionClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewCollectionPartitionClient(subscriptionID string) CollectionPartitionClient {
+	return NewCollectionPartitionClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewCollectionPartitionClientWithBaseURI creates an instance of the CollectionPartitionClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewCollectionPartitionClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) CollectionPartitionClient {
-	return CollectionPartitionClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewCollectionPartitionClientWithBaseURI(baseURI string, subscriptionID string) CollectionPartitionClient {
+	return CollectionPartitionClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // ListMetrics retrieves the metrics determined by the given filter for the given collection, split by partition.
@@ -64,6 +64,8 @@ func (client CollectionPartitionClient) ListMetrics(ctx context.Context, resourc
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -158,6 +160,8 @@ func (client CollectionPartitionClient) ListUsages(ctx context.Context, resource
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},

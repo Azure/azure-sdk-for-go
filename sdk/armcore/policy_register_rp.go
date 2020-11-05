@@ -19,8 +19,6 @@ import (
 	sdkruntime "github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 )
 
-const scope = "https://management.azure.com//.default"
-
 const (
 	// LogRPRegistration entries contain information specific to the automatic registration of an RP.
 	// Entries of this classification are written IFF the policy needs to take any action.

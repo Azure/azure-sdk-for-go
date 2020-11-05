@@ -4,14 +4,19 @@
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%20armcore%20-%20ci?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=1844&branchName=master)
 [![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1844/master)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1844/master)
 
-The `armcore` module provides utility functions and types for Go SDK ARM client modules.
+The `armcore` module provides functions and types for Go SDK ARM client modules.
 These modules follow the [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html).
 
 ## Getting started
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-The contents of this module are used by generated code.  It is not intended for external use.
+Typically, you will not need to explicitly install `armcore` as it will be installed as an ARM client module dependency.
+To add the latest version to your `go.mod` file, execute the following command.
+
+```bash
+go get -u github.com/Azure/azure-sdk-for-go/sdk/armcore
+```
 
 General documentation and examples can be found on [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore).
 

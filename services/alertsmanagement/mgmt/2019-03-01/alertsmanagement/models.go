@@ -369,8 +369,11 @@ func (page AlertRulesListPage) Values() []AlertRule {
 }
 
 // Creates a new instance of the AlertRulesListPage type.
-func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
-	return AlertRulesListPage{fn: getNextPage}
+func NewAlertRulesListPage(cur AlertRulesList, getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
+	return AlertRulesListPage{
+		fn:  getNextPage,
+		arl: cur,
+	}
 }
 
 // AlertsList list the alerts.
@@ -525,8 +528,114 @@ func (page AlertsListPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertsListPage type.
-func NewAlertsListPage(getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
-	return AlertsListPage{fn: getNextPage}
+func NewAlertsListPage(cur AlertsList, getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
+	return AlertsListPage{
+		fn: getNextPage,
+		al: cur,
+	}
+}
+
+// AlertsMetaData alert meta data information.
+type AlertsMetaData struct {
+	autorest.Response `json:"-"`
+	Properties        BasicAlertsMetaDataProperties `json:"properties,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AlertsMetaData struct.
+func (amd *AlertsMetaData) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				properties, err := unmarshalBasicAlertsMetaDataProperties(*v)
+				if err != nil {
+					return err
+				}
+				amd.Properties = properties
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicAlertsMetaDataProperties alert meta data property bag
+type BasicAlertsMetaDataProperties interface {
+	AsMonitorServiceList() (*MonitorServiceList, bool)
+	AsAlertsMetaDataProperties() (*AlertsMetaDataProperties, bool)
+}
+
+// AlertsMetaDataProperties alert meta data property bag
+type AlertsMetaDataProperties struct {
+	// MetadataIdentifier - Possible values include: 'MetadataIdentifierAlertsMetaDataProperties', 'MetadataIdentifierMonitorServiceList'
+	MetadataIdentifier MetadataIdentifier `json:"metadataIdentifier,omitempty"`
+}
+
+func unmarshalBasicAlertsMetaDataProperties(body []byte) (BasicAlertsMetaDataProperties, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["metadataIdentifier"] {
+	case string(MetadataIdentifierMonitorServiceList):
+		var msl MonitorServiceList
+		err := json.Unmarshal(body, &msl)
+		return msl, err
+	default:
+		var amdp AlertsMetaDataProperties
+		err := json.Unmarshal(body, &amdp)
+		return amdp, err
+	}
+}
+func unmarshalBasicAlertsMetaDataPropertiesArray(body []byte) ([]BasicAlertsMetaDataProperties, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	amdpArray := make([]BasicAlertsMetaDataProperties, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		amdp, err := unmarshalBasicAlertsMetaDataProperties(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		amdpArray[index] = amdp
+	}
+	return amdpArray, nil
+}
+
+// MarshalJSON is the custom marshaler for AlertsMetaDataProperties.
+func (amdp AlertsMetaDataProperties) MarshalJSON() ([]byte, error) {
+	amdp.MetadataIdentifier = MetadataIdentifierAlertsMetaDataProperties
+	objectMap := make(map[string]interface{})
+	if amdp.MetadataIdentifier != "" {
+		objectMap["metadataIdentifier"] = amdp.MetadataIdentifier
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMonitorServiceList is the BasicAlertsMetaDataProperties implementation for AlertsMetaDataProperties.
+func (amdp AlertsMetaDataProperties) AsMonitorServiceList() (*MonitorServiceList, bool) {
+	return nil, false
+}
+
+// AsAlertsMetaDataProperties is the BasicAlertsMetaDataProperties implementation for AlertsMetaDataProperties.
+func (amdp AlertsMetaDataProperties) AsAlertsMetaDataProperties() (*AlertsMetaDataProperties, bool) {
+	return &amdp, true
+}
+
+// AsBasicAlertsMetaDataProperties is the BasicAlertsMetaDataProperties implementation for AlertsMetaDataProperties.
+func (amdp AlertsMetaDataProperties) AsBasicAlertsMetaDataProperties() (BasicAlertsMetaDataProperties, bool) {
+	return &amdp, true
 }
 
 // AlertsSummary summary of alerts based on the input filters and 'groupby' parameters.
@@ -584,7 +693,8 @@ type AzureResource struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// Detector the detector information. By default this is not populated, unless it's specified in expandDetector
+// Detector the detector information. By default this is not populated, unless it's specified in
+// expandDetector
 type Detector struct {
 	// ID - The detector id.
 	ID *string `json:"id,omitempty"`
@@ -695,6 +805,50 @@ func (e Essentials) MarshalJSON() ([]byte, error) {
 		objectMap["targetResourceType"] = e.TargetResourceType
 	}
 	return json.Marshal(objectMap)
+}
+
+// MonitorServiceDetails details of a monitor service
+type MonitorServiceDetails struct {
+	// Name - Monitor service name
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Monitor service display name
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
+// MonitorServiceList monitor service details
+type MonitorServiceList struct {
+	// Data - Array of operations
+	Data *[]MonitorServiceDetails `json:"data,omitempty"`
+	// MetadataIdentifier - Possible values include: 'MetadataIdentifierAlertsMetaDataProperties', 'MetadataIdentifierMonitorServiceList'
+	MetadataIdentifier MetadataIdentifier `json:"metadataIdentifier,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MonitorServiceList.
+func (msl MonitorServiceList) MarshalJSON() ([]byte, error) {
+	msl.MetadataIdentifier = MetadataIdentifierMonitorServiceList
+	objectMap := make(map[string]interface{})
+	if msl.Data != nil {
+		objectMap["data"] = msl.Data
+	}
+	if msl.MetadataIdentifier != "" {
+		objectMap["metadataIdentifier"] = msl.MetadataIdentifier
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsMonitorServiceList is the BasicAlertsMetaDataProperties implementation for MonitorServiceList.
+func (msl MonitorServiceList) AsMonitorServiceList() (*MonitorServiceList, bool) {
+	return &msl, true
+}
+
+// AsAlertsMetaDataProperties is the BasicAlertsMetaDataProperties implementation for MonitorServiceList.
+func (msl MonitorServiceList) AsAlertsMetaDataProperties() (*AlertsMetaDataProperties, bool) {
+	return nil, false
+}
+
+// AsBasicAlertsMetaDataProperties is the BasicAlertsMetaDataProperties implementation for MonitorServiceList.
+func (msl MonitorServiceList) AsBasicAlertsMetaDataProperties() (BasicAlertsMetaDataProperties, bool) {
+	return &msl, true
 }
 
 // Operation operation provided by provider
@@ -869,8 +1023,11 @@ func (page OperationsListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationsListPage type.
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return OperationsListPage{fn: getNextPage}
+func NewOperationsListPage(cur OperationsList, getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
+	return OperationsListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // ProxyResource an azure resource object
@@ -893,7 +1050,6 @@ type SmartDetectorErrorResponse struct {
 
 // SmartGroup set of related alerts grouped together smartly by AMS.
 type SmartGroup struct {
-	autorest.Response     `json:"-"`
 	*SmartGroupProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -973,8 +1129,7 @@ type SmartGroupAggregatedProperty struct {
 
 // SmartGroupModification alert Modification details
 type SmartGroupModification struct {
-	autorest.Response `json:"-"`
-	Properties        *SmartGroupModificationProperties `json:"properties,omitempty"`
+	Properties *SmartGroupModificationProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Azure resource type
@@ -1099,7 +1254,6 @@ func (sgp SmartGroupProperties) MarshalJSON() ([]byte, error) {
 
 // SmartGroupsList list the alerts.
 type SmartGroupsList struct {
-	autorest.Response `json:"-"`
 	// NextLink - URL to fetch the next set of alerts.
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - List of alerts

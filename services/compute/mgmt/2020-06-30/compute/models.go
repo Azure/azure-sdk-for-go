@@ -38,15 +38,16 @@ type AccessURI struct {
 	AccessSAS *string `json:"accessSAS,omitempty"`
 }
 
-// AdditionalCapabilities enables or disables a capability on the virtual machine or virtual machine scale set.
+// AdditionalCapabilities enables or disables a capability on the virtual machine or virtual machine scale
+// set.
 type AdditionalCapabilities struct {
 	// UltraSSDEnabled - The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled.
 	UltraSSDEnabled *bool `json:"ultraSSDEnabled,omitempty"`
 }
 
 // AdditionalUnattendContent specifies additional XML formatted information that can be included in the
-// Unattend.xml file, which is used by Windows Setup. Contents are defined by setting name, component name, and
-// the pass in which the content is applied.
+// Unattend.xml file, which is used by Windows Setup. Contents are defined by setting name, component name,
+// and the pass in which the content is applied.
 type AdditionalUnattendContent struct {
 	// PassName - The pass name. Currently, the only allowable value is OobeSystem. Possible values include: 'OobeSystem'
 	PassName PassNames `json:"passName,omitempty"`
@@ -102,8 +103,8 @@ type AutomaticOSUpgradeProperties struct {
 	AutomaticOSUpgradeSupported *bool `json:"automaticOSUpgradeSupported,omitempty"`
 }
 
-// AutomaticRepairsPolicy specifies the configuration parameters for automatic repairs on the virtual machine
-// scale set.
+// AutomaticRepairsPolicy specifies the configuration parameters for automatic repairs on the virtual
+// machine scale set.
 type AutomaticRepairsPolicy struct {
 	// Enabled - Specifies whether automatic repairs should be enabled on the virtual machine scale set. The default value is false.
 	Enabled *bool `json:"enabled,omitempty"`
@@ -111,14 +112,16 @@ type AutomaticRepairsPolicy struct {
 	GracePeriod *string `json:"gracePeriod,omitempty"`
 }
 
-// AvailabilitySet specifies information about the availability set that the virtual machine should be assigned
-// to. Virtual machines specified in the same availability set are allocated to different nodes to maximize
-// availability. For more information about availability sets, see [Manage the availability of virtual
+// AvailabilitySet specifies information about the availability set that the virtual machine should be
+// assigned to. Virtual machines specified in the same availability set are allocated to different nodes to
+// maximize availability. For more information about availability sets, see [Manage the availability of
+// virtual
 // machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
-// <br><br> For more information on Azure planned maintenance, see [Planned maintenance for virtual machines in
+// <br><br> For more information on Azure planned maintenance, see [Planned maintenance for virtual
+// machines in
 // Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
-// <br><br> Currently, a VM can only be added to availability set at creation time. An existing VM cannot be
-// added to an availability set.
+// <br><br> Currently, a VM can only be added to availability set at creation time. An existing VM cannot
+// be added to an availability set.
 type AvailabilitySet struct {
 	autorest.Response          `json:"-"`
 	*AvailabilitySetProperties `json:"properties,omitempty"`
@@ -384,8 +387,11 @@ func (page AvailabilitySetListResultPage) Values() []AvailabilitySet {
 }
 
 // Creates a new instance of the AvailabilitySetListResultPage type.
-func NewAvailabilitySetListResultPage(getNextPage func(context.Context, AvailabilitySetListResult) (AvailabilitySetListResult, error)) AvailabilitySetListResultPage {
-	return AvailabilitySetListResultPage{fn: getNextPage}
+func NewAvailabilitySetListResultPage(cur AvailabilitySetListResult, getNextPage func(context.Context, AvailabilitySetListResult) (AvailabilitySetListResult, error)) AvailabilitySetListResultPage {
+	return AvailabilitySetListResultPage{
+		fn:   getNextPage,
+		aslr: cur,
+	}
 }
 
 // AvailabilitySetProperties the instance view of a resource.
@@ -420,8 +426,8 @@ func (asp AvailabilitySetProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AvailabilitySetUpdate specifies information about the availability set that the virtual machine should be
-// assigned to. Only tags may be updated.
+// AvailabilitySetUpdate specifies information about the availability set that the virtual machine should
+// be assigned to. Only tags may be updated.
 type AvailabilitySetUpdate struct {
 	*AvailabilitySetProperties `json:"properties,omitempty"`
 	// Sku - Sku of the availability set
@@ -844,8 +850,11 @@ func (page ContainerServiceListResultPage) Values() []ContainerService {
 }
 
 // Creates a new instance of the ContainerServiceListResultPage type.
-func NewContainerServiceListResultPage(getNextPage func(context.Context, ContainerServiceListResult) (ContainerServiceListResult, error)) ContainerServiceListResultPage {
-	return ContainerServiceListResultPage{fn: getNextPage}
+func NewContainerServiceListResultPage(cur ContainerServiceListResult, getNextPage func(context.Context, ContainerServiceListResult) (ContainerServiceListResult, error)) ContainerServiceListResultPage {
+	return ContainerServiceListResultPage{
+		fn:   getNextPage,
+		cslr: cur,
+	}
 }
 
 // ContainerServiceMasterProfile profile for the container service master.
@@ -980,8 +989,8 @@ func (future *ContainerServicesDeleteFuture) Result(client ContainerServicesClie
 	return
 }
 
-// ContainerServiceServicePrincipalProfile information about a service principal identity for the cluster to
-// use for manipulating Azure APIs.
+// ContainerServiceServicePrincipalProfile information about a service principal identity for the cluster
+// to use for manipulating Azure APIs.
 type ContainerServiceServicePrincipalProfile struct {
 	// ClientID - The ID for the service principal.
 	ClientID *string `json:"clientId,omitempty"`
@@ -1270,7 +1279,8 @@ func (dh *DedicatedHost) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DedicatedHostAllocatableVM represents the dedicated host unutilized capacity in terms of a specific VM size.
+// DedicatedHostAllocatableVM represents the dedicated host unutilized capacity in terms of a specific VM
+// size.
 type DedicatedHostAllocatableVM struct {
 	// VMSize - VM size in terms of which the unutilized capacity is represented.
 	VMSize *string `json:"vmSize,omitempty"`
@@ -1284,9 +1294,9 @@ type DedicatedHostAvailableCapacity struct {
 	AllocatableVMs *[]DedicatedHostAllocatableVM `json:"allocatableVMs,omitempty"`
 }
 
-// DedicatedHostGroup specifies information about the dedicated host group that the dedicated hosts should be
-// assigned to. <br><br> Currently, a dedicated host can only be added to a dedicated host group at creation
-// time. An existing dedicated host cannot be added to another dedicated host group.
+// DedicatedHostGroup specifies information about the dedicated host group that the dedicated hosts should
+// be assigned to. <br><br> Currently, a dedicated host can only be added to a dedicated host group at
+// creation time. An existing dedicated host cannot be added to another dedicated host group.
 type DedicatedHostGroup struct {
 	autorest.Response             `json:"-"`
 	*DedicatedHostGroupProperties `json:"properties,omitempty"`
@@ -1558,8 +1568,11 @@ func (page DedicatedHostGroupListResultPage) Values() []DedicatedHostGroup {
 }
 
 // Creates a new instance of the DedicatedHostGroupListResultPage type.
-func NewDedicatedHostGroupListResultPage(getNextPage func(context.Context, DedicatedHostGroupListResult) (DedicatedHostGroupListResult, error)) DedicatedHostGroupListResultPage {
-	return DedicatedHostGroupListResultPage{fn: getNextPage}
+func NewDedicatedHostGroupListResultPage(cur DedicatedHostGroupListResult, getNextPage func(context.Context, DedicatedHostGroupListResult) (DedicatedHostGroupListResult, error)) DedicatedHostGroupListResultPage {
+	return DedicatedHostGroupListResultPage{
+		fn:    getNextPage,
+		dhglr: cur,
+	}
 }
 
 // DedicatedHostGroupProperties dedicated Host Group Properties.
@@ -1586,8 +1599,8 @@ func (dhgp DedicatedHostGroupProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DedicatedHostGroupUpdate specifies information about the dedicated host group that the dedicated host should
-// be assigned to. Only tags may be updated.
+// DedicatedHostGroupUpdate specifies information about the dedicated host group that the dedicated host
+// should be assigned to. Only tags may be updated.
 type DedicatedHostGroupUpdate struct {
 	*DedicatedHostGroupProperties `json:"properties,omitempty"`
 	// Zones - Availability Zone to use for this host group. Only single zone is supported. The zone can be assigned only during creation. If not provided, the group supports all zones in the region. If provided, enforces each host in the group to be in the same zone.
@@ -1852,8 +1865,11 @@ func (page DedicatedHostListResultPage) Values() []DedicatedHost {
 }
 
 // Creates a new instance of the DedicatedHostListResultPage type.
-func NewDedicatedHostListResultPage(getNextPage func(context.Context, DedicatedHostListResult) (DedicatedHostListResult, error)) DedicatedHostListResultPage {
-	return DedicatedHostListResultPage{fn: getNextPage}
+func NewDedicatedHostListResultPage(cur DedicatedHostListResult, getNextPage func(context.Context, DedicatedHostListResult) (DedicatedHostListResult, error)) DedicatedHostListResultPage {
+	return DedicatedHostListResultPage{
+		fn:   getNextPage,
+		dhlr: cur,
+	}
 }
 
 // DedicatedHostProperties properties of the dedicated host.
@@ -2025,7 +2041,8 @@ func (dhu *DedicatedHostUpdate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DiagnosticsProfile specifies the boot diagnostic settings state. <br><br>Minimum api-version: 2015-06-15.
+// DiagnosticsProfile specifies the boot diagnostic settings state. <br><br>Minimum api-version:
+// 2015-06-15.
 type DiagnosticsProfile struct {
 	// BootDiagnostics - Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status. <br><br> You can easily view the output of your console log. <br><br> Azure also enables you to see a screenshot of the VM from the hypervisor.
 	BootDiagnostics *BootDiagnostics `json:"bootDiagnostics,omitempty"`
@@ -2301,8 +2318,8 @@ func (da *DiskAccess) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DiskAccessesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DiskAccessesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DiskAccessesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -2534,8 +2551,11 @@ func (page DiskAccessListPage) Values() []DiskAccess {
 }
 
 // Creates a new instance of the DiskAccessListPage type.
-func NewDiskAccessListPage(getNextPage func(context.Context, DiskAccessList) (DiskAccessList, error)) DiskAccessListPage {
-	return DiskAccessListPage{fn: getNextPage}
+func NewDiskAccessListPage(cur DiskAccessList, getNextPage func(context.Context, DiskAccessList) (DiskAccessList, error)) DiskAccessListPage {
+	return DiskAccessListPage{
+		fn:  getNextPage,
+		dal: cur,
+	}
 }
 
 // DiskAccessProperties ...
@@ -2828,13 +2848,16 @@ func (page DiskEncryptionSetListPage) Values() []DiskEncryptionSet {
 }
 
 // Creates a new instance of the DiskEncryptionSetListPage type.
-func NewDiskEncryptionSetListPage(getNextPage func(context.Context, DiskEncryptionSetList) (DiskEncryptionSetList, error)) DiskEncryptionSetListPage {
-	return DiskEncryptionSetListPage{fn: getNextPage}
+func NewDiskEncryptionSetListPage(cur DiskEncryptionSetList, getNextPage func(context.Context, DiskEncryptionSetList) (DiskEncryptionSetList, error)) DiskEncryptionSetListPage {
+	return DiskEncryptionSetListPage{
+		fn:   getNextPage,
+		desl: cur,
+	}
 }
 
-// DiskEncryptionSetParameters describes the parameter of customer managed disk encryption set resource id that
-// can be specified for disk. <br><br> NOTE: The disk encryption set resource id can only be specified for
-// managed disk. Please refer https://aka.ms/mdssewithcmkoverview for more details.
+// DiskEncryptionSetParameters describes the parameter of customer managed disk encryption set resource id
+// that can be specified for disk. <br><br> NOTE: The disk encryption set resource id can only be specified
+// for managed disk. Please refer https://aka.ms/mdssewithcmkoverview for more details.
 type DiskEncryptionSetParameters struct {
 	// ID - Resource Id
 	ID *string `json:"id,omitempty"`
@@ -2869,8 +2892,8 @@ func (future *DiskEncryptionSetsCreateOrUpdateFuture) Result(client DiskEncrypti
 	return
 }
 
-// DiskEncryptionSetsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DiskEncryptionSetsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DiskEncryptionSetsDeleteFuture struct {
 	azure.Future
 }
@@ -2892,8 +2915,8 @@ func (future *DiskEncryptionSetsDeleteFuture) Result(client DiskEncryptionSetsCl
 	return
 }
 
-// DiskEncryptionSetsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// DiskEncryptionSetsUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type DiskEncryptionSetsUpdateFuture struct {
 	azure.Future
 }
@@ -3158,8 +3181,11 @@ func (page DiskListPage) Values() []Disk {
 }
 
 // Creates a new instance of the DiskListPage type.
-func NewDiskListPage(getNextPage func(context.Context, DiskList) (DiskList, error)) DiskListPage {
-	return DiskListPage{fn: getNextPage}
+func NewDiskListPage(cur DiskList, getNextPage func(context.Context, DiskList) (DiskList, error)) DiskListPage {
+	return DiskListPage{
+		fn: getNextPage,
+		dl: cur,
+	}
 }
 
 // DiskProperties disk resource properties.
@@ -3308,7 +3334,8 @@ func (future *DisksDeleteFuture) Result(client DisksClient) (ar autorest.Respons
 	return
 }
 
-// DisksGrantAccessFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// DisksGrantAccessFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type DisksGrantAccessFuture struct {
 	azure.Future
 }
@@ -3513,8 +3540,8 @@ type EncryptionImages struct {
 	DataDiskImages *[]DataDiskImageEncryption `json:"dataDiskImages,omitempty"`
 }
 
-// EncryptionSetIdentity the managed identity for the disk encryption set. It should be given permission on the
-// key vault before it can be used to encrypt disks.
+// EncryptionSetIdentity the managed identity for the disk encryption set. It should be given permission on
+// the key vault before it can be used to encrypt disks.
 type EncryptionSetIdentity struct {
 	// Type - The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported. Possible values include: 'SystemAssigned'
 	Type DiskEncryptionSetIdentityType `json:"type,omitempty"`
@@ -3604,7 +3631,8 @@ func (future *GalleriesCreateOrUpdateFuture) Result(client GalleriesClient) (g G
 	return
 }
 
-// GalleriesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// GalleriesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type GalleriesDeleteFuture struct {
 	azure.Future
 }
@@ -3626,7 +3654,8 @@ func (future *GalleriesDeleteFuture) Result(client GalleriesClient) (ar autorest
 	return
 }
 
-// GalleriesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// GalleriesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type GalleriesUpdateFuture struct {
 	azure.Future
 }
@@ -3754,8 +3783,8 @@ func (g *Gallery) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// GalleryApplication specifies information about the gallery Application Definition that you want to create or
-// update.
+// GalleryApplication specifies information about the gallery Application Definition that you want to
+// create or update.
 type GalleryApplication struct {
 	autorest.Response             `json:"-"`
 	*GalleryApplicationProperties `json:"properties,omitempty"`
@@ -4007,8 +4036,11 @@ func (page GalleryApplicationListPage) Values() []GalleryApplication {
 }
 
 // Creates a new instance of the GalleryApplicationListPage type.
-func NewGalleryApplicationListPage(getNextPage func(context.Context, GalleryApplicationList) (GalleryApplicationList, error)) GalleryApplicationListPage {
-	return GalleryApplicationListPage{fn: getNextPage}
+func NewGalleryApplicationListPage(cur GalleryApplicationList, getNextPage func(context.Context, GalleryApplicationList) (GalleryApplicationList, error)) GalleryApplicationListPage {
+	return GalleryApplicationListPage{
+		fn:  getNextPage,
+		gal: cur,
+	}
 }
 
 // GalleryApplicationProperties describes the properties of a gallery Application Definition.
@@ -4056,8 +4088,8 @@ func (future *GalleryApplicationsCreateOrUpdateFuture) Result(client GalleryAppl
 	return
 }
 
-// GalleryApplicationsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// GalleryApplicationsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type GalleryApplicationsDeleteFuture struct {
 	azure.Future
 }
@@ -4079,8 +4111,8 @@ func (future *GalleryApplicationsDeleteFuture) Result(client GalleryApplications
 	return
 }
 
-// GalleryApplicationsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// GalleryApplicationsUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type GalleryApplicationsUpdateFuture struct {
 	azure.Future
 }
@@ -4448,8 +4480,11 @@ func (page GalleryApplicationVersionListPage) Values() []GalleryApplicationVersi
 }
 
 // Creates a new instance of the GalleryApplicationVersionListPage type.
-func NewGalleryApplicationVersionListPage(getNextPage func(context.Context, GalleryApplicationVersionList) (GalleryApplicationVersionList, error)) GalleryApplicationVersionListPage {
-	return GalleryApplicationVersionListPage{fn: getNextPage}
+func NewGalleryApplicationVersionListPage(cur GalleryApplicationVersionList, getNextPage func(context.Context, GalleryApplicationVersionList) (GalleryApplicationVersionList, error)) GalleryApplicationVersionListPage {
+	return GalleryApplicationVersionListPage{
+		fn:   getNextPage,
+		gavl: cur,
+	}
 }
 
 // GalleryApplicationVersionProperties describes the properties of a gallery Image Version.
@@ -4521,8 +4556,8 @@ func (gavpp GalleryApplicationVersionPublishingProfile) MarshalJSON() ([]byte, e
 	return json.Marshal(objectMap)
 }
 
-// GalleryApplicationVersionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// GalleryApplicationVersionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type GalleryApplicationVersionsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -4602,8 +4637,8 @@ func (future *GalleryApplicationVersionsUpdateFuture) Result(client GalleryAppli
 	return
 }
 
-// GalleryApplicationVersionUpdate specifies information about the gallery Application Version that you want to
-// update.
+// GalleryApplicationVersionUpdate specifies information about the gallery Application Version that you
+// want to update.
 type GalleryApplicationVersionUpdate struct {
 	*GalleryApplicationVersionProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource Id
@@ -5051,8 +5086,11 @@ func (page GalleryImageListPage) Values() []GalleryImage {
 }
 
 // Creates a new instance of the GalleryImageListPage type.
-func NewGalleryImageListPage(getNextPage func(context.Context, GalleryImageList) (GalleryImageList, error)) GalleryImageListPage {
-	return GalleryImageListPage{fn: getNextPage}
+func NewGalleryImageListPage(cur GalleryImageList, getNextPage func(context.Context, GalleryImageList) (GalleryImageList, error)) GalleryImageListPage {
+	return GalleryImageListPage{
+		fn:  getNextPage,
+		gil: cur,
+	}
 }
 
 // GalleryImageProperties describes the properties of a gallery Image Definition.
@@ -5123,8 +5161,8 @@ func (gip GalleryImageProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// GalleryImagesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// GalleryImagesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type GalleryImagesCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -5289,7 +5327,8 @@ func (giu *GalleryImageUpdate) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// GalleryImageVersion specifies information about the gallery Image Version that you want to create or update.
+// GalleryImageVersion specifies information about the gallery Image Version that you want to create or
+// update.
 type GalleryImageVersion struct {
 	autorest.Response              `json:"-"`
 	*GalleryImageVersionProperties `json:"properties,omitempty"`
@@ -5541,8 +5580,11 @@ func (page GalleryImageVersionListPage) Values() []GalleryImageVersion {
 }
 
 // Creates a new instance of the GalleryImageVersionListPage type.
-func NewGalleryImageVersionListPage(getNextPage func(context.Context, GalleryImageVersionList) (GalleryImageVersionList, error)) GalleryImageVersionListPage {
-	return GalleryImageVersionListPage{fn: getNextPage}
+func NewGalleryImageVersionListPage(cur GalleryImageVersionList, getNextPage func(context.Context, GalleryImageVersionList) (GalleryImageVersionList, error)) GalleryImageVersionListPage {
+	return GalleryImageVersionListPage{
+		fn:   getNextPage,
+		givl: cur,
+	}
 }
 
 // GalleryImageVersionProperties describes the properties of a gallery Image Version.
@@ -5633,8 +5675,8 @@ func (future *GalleryImageVersionsCreateOrUpdateFuture) Result(client GalleryIma
 	return
 }
 
-// GalleryImageVersionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// GalleryImageVersionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type GalleryImageVersionsDeleteFuture struct {
 	azure.Future
 }
@@ -5664,8 +5706,8 @@ type GalleryImageVersionStorageProfile struct {
 	DataDiskImages *[]GalleryDataDiskImage `json:"dataDiskImages,omitempty"`
 }
 
-// GalleryImageVersionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// GalleryImageVersionsUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type GalleryImageVersionsUpdateFuture struct {
 	azure.Future
 }
@@ -5930,8 +5972,11 @@ func (page GalleryListPage) Values() []Gallery {
 }
 
 // Creates a new instance of the GalleryListPage type.
-func NewGalleryListPage(getNextPage func(context.Context, GalleryList) (GalleryList, error)) GalleryListPage {
-	return GalleryListPage{fn: getNextPage}
+func NewGalleryListPage(cur GalleryList, getNextPage func(context.Context, GalleryList) (GalleryList, error)) GalleryListPage {
+	return GalleryListPage{
+		fn: getNextPage,
+		gl: cur,
+	}
 }
 
 // GalleryOSDiskImage this is the OS disk image.
@@ -6075,8 +6120,9 @@ type HardwareProfile struct {
 	VMSize VirtualMachineSizeTypes `json:"vmSize,omitempty"`
 }
 
-// Image the source user image virtual hard disk. The virtual hard disk will be copied before being attached to
-// the virtual machine. If SourceImage is provided, the destination virtual hard drive must not exist.
+// Image the source user image virtual hard disk. The virtual hard disk will be copied before being
+// attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
+// exist.
 type Image struct {
 	autorest.Response `json:"-"`
 	*ImageProperties  `json:"properties,omitempty"`
@@ -6374,8 +6420,11 @@ func (page ImageListResultPage) Values() []Image {
 }
 
 // Creates a new instance of the ImageListResultPage type.
-func NewImageListResultPage(getNextPage func(context.Context, ImageListResult) (ImageListResult, error)) ImageListResultPage {
-	return ImageListResultPage{fn: getNextPage}
+func NewImageListResultPage(cur ImageListResult, getNextPage func(context.Context, ImageListResult) (ImageListResult, error)) ImageListResultPage {
+	return ImageListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // ImageOSDisk describes an Operating System disk.
@@ -6427,7 +6476,8 @@ func (IP ImageProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ImagePurchasePlan describes the gallery Image Definition purchase plan. This is used by marketplace images.
+// ImagePurchasePlan describes the gallery Image Definition purchase plan. This is used by marketplace
+// images.
 type ImagePurchasePlan struct {
 	// Name - The plan ID.
 	Name *string `json:"name,omitempty"`
@@ -6439,8 +6489,8 @@ type ImagePurchasePlan struct {
 
 // ImageReference specifies information about the image to use. You can specify information about platform
 // images, marketplace images, or virtual machine images. This element is required when you want to use a
-// platform image, marketplace image, or virtual machine image, but is not used in other creation operations.
-// NOTE: Image reference publisher and offer can only be set when you create the scale set.
+// platform image, marketplace image, or virtual machine image, but is not used in other creation
+// operations. NOTE: Image reference publisher and offer can only be set when you create the scale set.
 type ImageReference struct {
 	// Publisher - The image publisher.
 	Publisher *string `json:"publisher,omitempty"`
@@ -6640,8 +6690,8 @@ type InstanceViewStatus struct {
 	Time *date.Time `json:"time,omitempty"`
 }
 
-// KeyVaultAndKeyReference key Vault Key Url and vault id of KeK, KeK is optional and when provided is used to
-// unwrap the encryptionKey
+// KeyVaultAndKeyReference key Vault Key Url and vault id of KeK, KeK is optional and when provided is used
+// to unwrap the encryptionKey
 type KeyVaultAndKeyReference struct {
 	// SourceVault - Resource id of the KeyVault containing the key or secret
 	SourceVault *SourceVault `json:"sourceVault,omitempty"`
@@ -6703,8 +6753,8 @@ type LastPatchInstallationSummary struct {
 	Error *APIError `json:"error,omitempty"`
 }
 
-// LinuxConfiguration specifies the Linux operating system settings on the virtual machine. <br><br>For a list
-// of supported Linux distributions, see [Linux on Azure-Endorsed
+// LinuxConfiguration specifies the Linux operating system settings on the virtual machine. <br><br>For a
+// list of supported Linux distributions, see [Linux on Azure-Endorsed
 // Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-endorsed-distros?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)
 // <br><br> For running non-endorsed distributions, see [Information for Non-Endorsed
 // Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-create-upload-generic?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
@@ -6869,8 +6919,11 @@ func (page ListUsagesResultPage) Values() []Usage {
 }
 
 // Creates a new instance of the ListUsagesResultPage type.
-func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
-	return ListUsagesResultPage{fn: getNextPage}
+func NewListUsagesResultPage(cur ListUsagesResult, getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return ListUsagesResultPage{
+		fn:  getNextPage,
+		lur: cur,
+	}
 }
 
 // ListVirtualMachineExtensionImage ...
@@ -6885,8 +6938,8 @@ type ListVirtualMachineImageResource struct {
 	Value             *[]VirtualMachineImageResource `json:"value,omitempty"`
 }
 
-// LogAnalyticsExportRequestRateByIntervalFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// LogAnalyticsExportRequestRateByIntervalFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type LogAnalyticsExportRequestRateByIntervalFuture struct {
 	azure.Future
 }
@@ -7165,8 +7218,8 @@ type OrchestrationServiceSummary struct {
 	ServiceState OrchestrationServiceState `json:"serviceState,omitempty"`
 }
 
-// OSDisk specifies information about the operating system disk used by the virtual machine. <br><br> For more
-// information about disks, see [About disks and VHDs for Azure virtual
+// OSDisk specifies information about the operating system disk used by the virtual machine. <br><br> For
+// more information about disks, see [About disks and VHDs for Azure virtual
 // machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
 type OSDisk struct {
 	// OsType - This property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**. Possible values include: 'Windows', 'Linux'
@@ -7205,8 +7258,8 @@ type OSDiskImageEncryption struct {
 	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
 }
 
-// OSProfile specifies the operating system settings for the virtual machine. Some of the settings cannot be
-// changed once VM is provisioned.
+// OSProfile specifies the operating system settings for the virtual machine. Some of the settings cannot
+// be changed once VM is provisioned.
 type OSProfile struct {
 	// ComputerName - Specifies the host OS name of the virtual machine. <br><br> This name cannot be updated after the VM is created. <br><br> **Max-length (Windows):** 15 characters <br><br> **Max-length (Linux):** 64 characters. <br><br> For naming conventions and restrictions see [Azure infrastructure services implementation guidelines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions).
 	ComputerName *string `json:"computerName,omitempty"`
@@ -7234,11 +7287,11 @@ type PatchSettings struct {
 	PatchMode InGuestPatchMode `json:"patchMode,omitempty"`
 }
 
-// Plan specifies information about the marketplace image used to create the virtual machine. This element is
-// only used for marketplace images. Before you can use a marketplace image from an API, you must enable the
-// image for programmatic use.  In the Azure portal, find the marketplace image that you want to use and then
-// click **Want to deploy programmatically, Get Started ->**. Enter any required information and then click
-// **Save**.
+// Plan specifies information about the marketplace image used to create the virtual machine. This element
+// is only used for marketplace images. Before you can use a marketplace image from an API, you must enable
+// the image for programmatic use.  In the Azure portal, find the marketplace image that you want to use
+// and then click **Want to deploy programmatically, Get Started ->**. Enter any required information and
+// then click **Save**.
 type Plan struct {
 	// Name - The plan ID.
 	Name *string `json:"name,omitempty"`
@@ -7557,8 +7610,8 @@ type ProximityPlacementGroupListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// ProximityPlacementGroupListResultIterator provides access to a complete listing of ProximityPlacementGroup
-// values.
+// ProximityPlacementGroupListResultIterator provides access to a complete listing of
+// ProximityPlacementGroup values.
 type ProximityPlacementGroupListResultIterator struct {
 	i    int
 	page ProximityPlacementGroupListResultPage
@@ -7701,8 +7754,11 @@ func (page ProximityPlacementGroupListResultPage) Values() []ProximityPlacementG
 }
 
 // Creates a new instance of the ProximityPlacementGroupListResultPage type.
-func NewProximityPlacementGroupListResultPage(getNextPage func(context.Context, ProximityPlacementGroupListResult) (ProximityPlacementGroupListResult, error)) ProximityPlacementGroupListResultPage {
-	return ProximityPlacementGroupListResultPage{fn: getNextPage}
+func NewProximityPlacementGroupListResultPage(cur ProximityPlacementGroupListResult, getNextPage func(context.Context, ProximityPlacementGroupListResult) (ProximityPlacementGroupListResult, error)) ProximityPlacementGroupListResultPage {
+	return ProximityPlacementGroupListResultPage{
+		fn:    getNextPage,
+		ppglr: cur,
+	}
 }
 
 // ProximityPlacementGroupProperties describes the properties of a Proximity Placement Group.
@@ -7756,8 +7812,8 @@ type PurchasePlan struct {
 	Product *string `json:"product,omitempty"`
 }
 
-// RecommendedMachineConfiguration the properties describe the recommended machine configuration for this Image
-// Definition. These properties are updatable.
+// RecommendedMachineConfiguration the properties describe the recommended machine configuration for this
+// Image Definition. These properties are updatable.
 type RecommendedMachineConfiguration struct {
 	VCPUs  *ResourceRange `json:"vCPUs,omitempty"`
 	Memory *ResourceRange `json:"memory,omitempty"`
@@ -8086,8 +8142,11 @@ func (page ResourceSkusResultPage) Values() []ResourceSku {
 }
 
 // Creates a new instance of the ResourceSkusResultPage type.
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return ResourceSkusResultPage{fn: getNextPage}
+func NewResourceSkusResultPage(cur ResourceSkusResult, getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return ResourceSkusResultPage{
+		fn:  getNextPage,
+		rsr: cur,
+	}
 }
 
 // ResourceSkuZoneDetails describes The zonal capabilities of a SKU.
@@ -8250,8 +8309,11 @@ func (page ResourceURIListPage) Values() []string {
 }
 
 // Creates a new instance of the ResourceURIListPage type.
-func NewResourceURIListPage(getNextPage func(context.Context, ResourceURIList) (ResourceURIList, error)) ResourceURIListPage {
-	return ResourceURIListPage{fn: getNextPage}
+func NewResourceURIListPage(cur ResourceURIList, getNextPage func(context.Context, ResourceURIList) (ResourceURIList, error)) ResourceURIListPage {
+	return ResourceURIListPage{
+		fn:  getNextPage,
+		rul: cur,
+	}
 }
 
 // RetrieveBootDiagnosticsDataResult the SAS URIs of the console screenshot and serial log blobs.
@@ -8285,7 +8347,8 @@ type RollingUpgradePolicy struct {
 	PauseTimeBetweenBatches *string `json:"pauseTimeBetweenBatches,omitempty"`
 }
 
-// RollingUpgradeProgressInfo information about the number of virtual machine instances in each upgrade state.
+// RollingUpgradeProgressInfo information about the number of virtual machine instances in each upgrade
+// state.
 type RollingUpgradeProgressInfo struct {
 	// SuccessfulInstanceCount - READ-ONLY; The number of instances that have been successfully upgraded.
 	SuccessfulInstanceCount *int32 `json:"successfulInstanceCount,omitempty"`
@@ -8624,8 +8687,11 @@ func (page RunCommandListResultPage) Values() []RunCommandDocumentBase {
 }
 
 // Creates a new instance of the RunCommandListResultPage type.
-func NewRunCommandListResultPage(getNextPage func(context.Context, RunCommandListResult) (RunCommandListResult, error)) RunCommandListResultPage {
-	return RunCommandListResultPage{fn: getNextPage}
+func NewRunCommandListResultPage(cur RunCommandListResult, getNextPage func(context.Context, RunCommandListResult) (RunCommandListResult, error)) RunCommandListResultPage {
+	return RunCommandListResultPage{
+		fn:   getNextPage,
+		rclr: cur,
+	}
 }
 
 // RunCommandParameterDefinition describes the properties of a run command parameter.
@@ -8672,8 +8738,9 @@ type ShareInfoElement struct {
 	VMURI *string `json:"vmUri,omitempty"`
 }
 
-// Sku describes a virtual machine scale set sku. NOTE: If the new VM SKU is not supported on the hardware the
-// scale set is currently on, you need to deallocate the VMs in the scale set before you modify the SKU name.
+// Sku describes a virtual machine scale set sku. NOTE: If the new VM SKU is not supported on the hardware
+// the scale set is currently on, you need to deallocate the VMs in the scale set before you modify the SKU
+// name.
 type Sku struct {
 	// Name - The sku name.
 	Name *string `json:"name,omitempty"`
@@ -8959,8 +9026,11 @@ func (page SnapshotListPage) Values() []Snapshot {
 }
 
 // Creates a new instance of the SnapshotListPage type.
-func NewSnapshotListPage(getNextPage func(context.Context, SnapshotList) (SnapshotList, error)) SnapshotListPage {
-	return SnapshotListPage{fn: getNextPage}
+func NewSnapshotListPage(cur SnapshotList, getNextPage func(context.Context, SnapshotList) (SnapshotList, error)) SnapshotListPage {
+	return SnapshotListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
 }
 
 // SnapshotProperties snapshot resource properties.
@@ -9060,7 +9130,8 @@ func (future *SnapshotsCreateOrUpdateFuture) Result(client SnapshotsClient) (s S
 	return
 }
 
-// SnapshotsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SnapshotsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SnapshotsDeleteFuture struct {
 	azure.Future
 }
@@ -9151,7 +9222,8 @@ func (future *SnapshotsRevokeAccessFuture) Result(client SnapshotsClient) (ar au
 	return
 }
 
-// SnapshotsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SnapshotsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SnapshotsUpdateFuture struct {
 	azure.Future
 }
@@ -9273,8 +9345,8 @@ type SSHConfiguration struct {
 	PublicKeys *[]SSHPublicKey `json:"publicKeys,omitempty"`
 }
 
-// SSHPublicKey contains information about SSH certificate public key and the path on the Linux VM where the
-// public key is placed.
+// SSHPublicKey contains information about SSH certificate public key and the path on the Linux VM where
+// the public key is placed.
 type SSHPublicKey struct {
 	// Path - Specifies the full path on the created VM where ssh public key is stored. If the file already exists, the specified key is appended to the file. Example: /home/user/.ssh/authorized_keys
 	Path *string `json:"path,omitempty"`
@@ -9409,7 +9481,8 @@ type SSHPublicKeysGroupListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// SSHPublicKeysGroupListResultIterator provides access to a complete listing of SSHPublicKeyResource values.
+// SSHPublicKeysGroupListResultIterator provides access to a complete listing of SSHPublicKeyResource
+// values.
 type SSHPublicKeysGroupListResultIterator struct {
 	i    int
 	page SSHPublicKeysGroupListResultPage
@@ -9552,8 +9625,11 @@ func (page SSHPublicKeysGroupListResultPage) Values() []SSHPublicKeyResource {
 }
 
 // Creates a new instance of the SSHPublicKeysGroupListResultPage type.
-func NewSSHPublicKeysGroupListResultPage(getNextPage func(context.Context, SSHPublicKeysGroupListResult) (SSHPublicKeysGroupListResult, error)) SSHPublicKeysGroupListResultPage {
-	return SSHPublicKeysGroupListResultPage{fn: getNextPage}
+func NewSSHPublicKeysGroupListResultPage(cur SSHPublicKeysGroupListResult, getNextPage func(context.Context, SSHPublicKeysGroupListResult) (SSHPublicKeysGroupListResult, error)) SSHPublicKeysGroupListResultPage {
+	return SSHPublicKeysGroupListResultPage{
+		fn:     getNextPage,
+		spkglr: cur,
+	}
 }
 
 // SSHPublicKeyUpdateResource specifies information about the SSH public key.
@@ -9720,7 +9796,8 @@ type UpgradeOperationHistoricalStatusInfo struct {
 	Location *string `json:"location,omitempty"`
 }
 
-// UpgradeOperationHistoricalStatusInfoProperties describes each OS upgrade on the Virtual Machine Scale Set.
+// UpgradeOperationHistoricalStatusInfoProperties describes each OS upgrade on the Virtual Machine Scale
+// Set.
 type UpgradeOperationHistoricalStatusInfoProperties struct {
 	// RunningStatus - READ-ONLY; Information about the overall status of the upgrade operation.
 	RunningStatus *UpgradeOperationHistoryStatus `json:"runningStatus,omitempty"`
@@ -9784,8 +9861,8 @@ type UserArtifactSource struct {
 	MediaLink *string `json:"mediaLink,omitempty"`
 }
 
-// VaultCertificate describes a single certificate reference in a Key Vault, and where the certificate should
-// reside on the VM.
+// VaultCertificate describes a single certificate reference in a Key Vault, and where the certificate
+// should reside on the VM.
 type VaultCertificate struct {
 	// CertificateURL - This is the URL of a certificate that has been uploaded to Key Vault as a secret. For adding a secret to the Key Vault, see [Add a key or secret to the key vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add). In this case, your certificate needs to be It is the Base64 encoding of the following JSON Object which is encoded in UTF-8: <br><br> {<br>  "data":"<Base64-encoded-certificate>",<br>  "dataType":"pfx",<br>  "password":"<pfx-file-password>"<br>}
 	CertificateURL *string `json:"certificateUrl,omitempty"`
@@ -10320,8 +10397,8 @@ func (vmep VirtualMachineExtensionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VirtualMachineExtensionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// VirtualMachineExtensionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type VirtualMachineExtensionsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -10892,8 +10969,11 @@ func (page VirtualMachineListResultPage) Values() []VirtualMachine {
 }
 
 // Creates a new instance of the VirtualMachineListResultPage type.
-func NewVirtualMachineListResultPage(getNextPage func(context.Context, VirtualMachineListResult) (VirtualMachineListResult, error)) VirtualMachineListResultPage {
-	return VirtualMachineListResultPage{fn: getNextPage}
+func NewVirtualMachineListResultPage(cur VirtualMachineListResult, getNextPage func(context.Context, VirtualMachineListResult) (VirtualMachineListResult, error)) VirtualMachineListResultPage {
+	return VirtualMachineListResultPage{
+		fn:   getNextPage,
+		vmlr: cur,
+	}
 }
 
 // VirtualMachinePatchStatus the status of virtual machine patch operations.
@@ -10940,7 +11020,7 @@ type VirtualMachineProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// InstanceView - READ-ONLY; The virtual machine instance view.
 	InstanceView *VirtualMachineInstanceView `json:"instanceView,omitempty"`
-	// LicenseType - Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. <br><br> Possible values are: <br><br> Windows_Client <br><br> Windows_Server <br><br> If this element is included in a request for an update, the value must match the initial value. This value cannot be updated. <br><br> For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) <br><br> Minimum api-version: 2015-06-15
+	// LicenseType - Specifies that the image or disk that is being used was licensed on-premises. <br><br> Possible values for Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values for Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) <br><br> [Azure Hybrid Use Benefit for Linux Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) <br><br> Minimum api-version: 2015-06-15
 	LicenseType *string `json:"licenseType,omitempty"`
 	// VMID - READ-ONLY; Specifies the VM unique ID which is a 128-bits identifier that is encoded and stored in all Azure IaaS VMs SMBIOS and can be read using platform BIOS commands.
 	VMID *string `json:"vmId,omitempty"`
@@ -11005,8 +11085,8 @@ func (vmp VirtualMachineProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VirtualMachineReimageParameters parameters for Reimaging Virtual Machine. NOTE: Virtual Machine OS disk will
-// always be reimaged
+// VirtualMachineReimageParameters parameters for Reimaging Virtual Machine. NOTE: Virtual Machine OS disk
+// will always be reimaged
 type VirtualMachineReimageParameters struct {
 	// TempDisk - Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage parameter is only supported for VM/VMSS with Ephemeral OS disk.
 	TempDisk *bool `json:"tempDisk,omitempty"`
@@ -11191,8 +11271,8 @@ func (vmrcp VirtualMachineRunCommandProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VirtualMachineRunCommandsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// VirtualMachineRunCommandsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type VirtualMachineRunCommandsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -11406,8 +11486,11 @@ func (page VirtualMachineRunCommandsListResultPage) Values() []VirtualMachineRun
 }
 
 // Creates a new instance of the VirtualMachineRunCommandsListResultPage type.
-func NewVirtualMachineRunCommandsListResultPage(getNextPage func(context.Context, VirtualMachineRunCommandsListResult) (VirtualMachineRunCommandsListResult, error)) VirtualMachineRunCommandsListResultPage {
-	return VirtualMachineRunCommandsListResultPage{fn: getNextPage}
+func NewVirtualMachineRunCommandsListResultPage(cur VirtualMachineRunCommandsListResult, getNextPage func(context.Context, VirtualMachineRunCommandsListResult) (VirtualMachineRunCommandsListResult, error)) VirtualMachineRunCommandsListResultPage {
+	return VirtualMachineRunCommandsListResultPage{
+		fn:     getNextPage,
+		vmrclr: cur,
+	}
 }
 
 // VirtualMachineRunCommandsUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -11926,8 +12009,11 @@ func (page VirtualMachineScaleSetExtensionListResultPage) Values() []VirtualMach
 }
 
 // Creates a new instance of the VirtualMachineScaleSetExtensionListResultPage type.
-func NewVirtualMachineScaleSetExtensionListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetExtensionListResult) (VirtualMachineScaleSetExtensionListResult, error)) VirtualMachineScaleSetExtensionListResultPage {
-	return VirtualMachineScaleSetExtensionListResultPage{fn: getNextPage}
+func NewVirtualMachineScaleSetExtensionListResultPage(cur VirtualMachineScaleSetExtensionListResult, getNextPage func(context.Context, VirtualMachineScaleSetExtensionListResult) (VirtualMachineScaleSetExtensionListResult, error)) VirtualMachineScaleSetExtensionListResultPage {
+	return VirtualMachineScaleSetExtensionListResultPage{
+		fn:      getNextPage,
+		vmsselr: cur,
+	}
 }
 
 // VirtualMachineScaleSetExtensionProfile describes a virtual machine scale set extension profile.
@@ -11938,7 +12024,8 @@ type VirtualMachineScaleSetExtensionProfile struct {
 	ExtensionsTimeBudget *string `json:"extensionsTimeBudget,omitempty"`
 }
 
-// VirtualMachineScaleSetExtensionProperties describes the properties of a Virtual Machine Scale Set Extension.
+// VirtualMachineScaleSetExtensionProperties describes the properties of a Virtual Machine Scale Set
+// Extension.
 type VirtualMachineScaleSetExtensionProperties struct {
 	// ForceUpdateTag - If a value is provided and is different from the previous value, the extension handler will be forced to update even if the extension configuration has not changed.
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
@@ -12024,8 +12111,8 @@ func (future *VirtualMachineScaleSetExtensionsCreateOrUpdateFuture) Result(clien
 	return
 }
 
-// VirtualMachineScaleSetExtensionsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// VirtualMachineScaleSetExtensionsDeleteFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type VirtualMachineScaleSetExtensionsDeleteFuture struct {
 	azure.Future
 }
@@ -12047,8 +12134,8 @@ func (future *VirtualMachineScaleSetExtensionsDeleteFuture) Result(client Virtua
 	return
 }
 
-// VirtualMachineScaleSetExtensionsUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// VirtualMachineScaleSetExtensionsUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type VirtualMachineScaleSetExtensionsUpdateFuture struct {
 	azure.Future
 }
@@ -12201,8 +12288,8 @@ func (vmssiv VirtualMachineScaleSetInstanceView) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VirtualMachineScaleSetInstanceViewStatusesSummary instance view statuses summary for virtual machines of a
-// virtual machine scale set.
+// VirtualMachineScaleSetInstanceViewStatusesSummary instance view statuses summary for virtual machines of
+// a virtual machine scale set.
 type VirtualMachineScaleSetInstanceViewStatusesSummary struct {
 	// StatusesSummary - READ-ONLY; The extensions information.
 	StatusesSummary *[]VirtualMachineStatusCodeCount `json:"statusesSummary,omitempty"`
@@ -12275,8 +12362,8 @@ func (vmssic *VirtualMachineScaleSetIPConfiguration) UnmarshalJSON(body []byte) 
 	return nil
 }
 
-// VirtualMachineScaleSetIPConfigurationProperties describes a virtual machine scale set network profile's IP
-// configuration properties.
+// VirtualMachineScaleSetIPConfigurationProperties describes a virtual machine scale set network profile's
+// IP configuration properties.
 type VirtualMachineScaleSetIPConfigurationProperties struct {
 	// Subnet - Specifies the identifier of the subnet.
 	Subnet *APIEntityReference `json:"subnet,omitempty"`
@@ -12304,8 +12391,8 @@ type VirtualMachineScaleSetIPTag struct {
 	Tag *string `json:"tag,omitempty"`
 }
 
-// VirtualMachineScaleSetListOSUpgradeHistory list of Virtual Machine Scale Set OS Upgrade History operation
-// response.
+// VirtualMachineScaleSetListOSUpgradeHistory list of Virtual Machine Scale Set OS Upgrade History
+// operation response.
 type VirtualMachineScaleSetListOSUpgradeHistory struct {
 	autorest.Response `json:"-"`
 	// Value - The list of OS upgrades performed on the virtual machine scale set.
@@ -12459,8 +12546,11 @@ func (page VirtualMachineScaleSetListOSUpgradeHistoryPage) Values() []UpgradeOpe
 }
 
 // Creates a new instance of the VirtualMachineScaleSetListOSUpgradeHistoryPage type.
-func NewVirtualMachineScaleSetListOSUpgradeHistoryPage(getNextPage func(context.Context, VirtualMachineScaleSetListOSUpgradeHistory) (VirtualMachineScaleSetListOSUpgradeHistory, error)) VirtualMachineScaleSetListOSUpgradeHistoryPage {
-	return VirtualMachineScaleSetListOSUpgradeHistoryPage{fn: getNextPage}
+func NewVirtualMachineScaleSetListOSUpgradeHistoryPage(cur VirtualMachineScaleSetListOSUpgradeHistory, getNextPage func(context.Context, VirtualMachineScaleSetListOSUpgradeHistory) (VirtualMachineScaleSetListOSUpgradeHistory, error)) VirtualMachineScaleSetListOSUpgradeHistoryPage {
+	return VirtualMachineScaleSetListOSUpgradeHistoryPage{
+		fn:       getNextPage,
+		vmsslouh: cur,
+	}
 }
 
 // VirtualMachineScaleSetListResult the List Virtual Machine operation response.
@@ -12616,8 +12706,11 @@ func (page VirtualMachineScaleSetListResultPage) Values() []VirtualMachineScaleS
 }
 
 // Creates a new instance of the VirtualMachineScaleSetListResultPage type.
-func NewVirtualMachineScaleSetListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListResult) (VirtualMachineScaleSetListResult, error)) VirtualMachineScaleSetListResultPage {
-	return VirtualMachineScaleSetListResultPage{fn: getNextPage}
+func NewVirtualMachineScaleSetListResultPage(cur VirtualMachineScaleSetListResult, getNextPage func(context.Context, VirtualMachineScaleSetListResult) (VirtualMachineScaleSetListResult, error)) VirtualMachineScaleSetListResultPage {
+	return VirtualMachineScaleSetListResultPage{
+		fn:     getNextPage,
+		vmsslr: cur,
+	}
 }
 
 // VirtualMachineScaleSetListSkusResult the Virtual Machine Scale Set List Skus operation response.
@@ -12773,8 +12866,11 @@ func (page VirtualMachineScaleSetListSkusResultPage) Values() []VirtualMachineSc
 }
 
 // Creates a new instance of the VirtualMachineScaleSetListSkusResultPage type.
-func NewVirtualMachineScaleSetListSkusResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListSkusResult) (VirtualMachineScaleSetListSkusResult, error)) VirtualMachineScaleSetListSkusResultPage {
-	return VirtualMachineScaleSetListSkusResultPage{fn: getNextPage}
+func NewVirtualMachineScaleSetListSkusResultPage(cur VirtualMachineScaleSetListSkusResult, getNextPage func(context.Context, VirtualMachineScaleSetListSkusResult) (VirtualMachineScaleSetListSkusResult, error)) VirtualMachineScaleSetListSkusResultPage {
+	return VirtualMachineScaleSetListSkusResultPage{
+		fn:      getNextPage,
+		vmsslsr: cur,
+	}
 }
 
 // VirtualMachineScaleSetListWithLinkResult the List Virtual Machine operation response.
@@ -12930,8 +13026,11 @@ func (page VirtualMachineScaleSetListWithLinkResultPage) Values() []VirtualMachi
 }
 
 // Creates a new instance of the VirtualMachineScaleSetListWithLinkResultPage type.
-func NewVirtualMachineScaleSetListWithLinkResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListWithLinkResult) (VirtualMachineScaleSetListWithLinkResult, error)) VirtualMachineScaleSetListWithLinkResultPage {
-	return VirtualMachineScaleSetListWithLinkResultPage{fn: getNextPage}
+func NewVirtualMachineScaleSetListWithLinkResultPage(cur VirtualMachineScaleSetListWithLinkResult, getNextPage func(context.Context, VirtualMachineScaleSetListWithLinkResult) (VirtualMachineScaleSetListWithLinkResult, error)) VirtualMachineScaleSetListWithLinkResultPage {
+	return VirtualMachineScaleSetListWithLinkResultPage{
+		fn:       getNextPage,
+		vmsslwlr: cur,
+	}
 }
 
 // VirtualMachineScaleSetManagedDiskParameters describes the parameters of a ScaleSet managed disk.
@@ -12942,8 +13041,8 @@ type VirtualMachineScaleSetManagedDiskParameters struct {
 	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`
 }
 
-// VirtualMachineScaleSetNetworkConfiguration describes a virtual machine scale set network profile's network
-// configurations.
+// VirtualMachineScaleSetNetworkConfiguration describes a virtual machine scale set network profile's
+// network configurations.
 type VirtualMachineScaleSetNetworkConfiguration struct {
 	// Name - The network configuration name.
 	Name                                                  *string `json:"name,omitempty"`
@@ -13016,8 +13115,8 @@ type VirtualMachineScaleSetNetworkConfigurationDNSSettings struct {
 	DNSServers *[]string `json:"dnsServers,omitempty"`
 }
 
-// VirtualMachineScaleSetNetworkConfigurationProperties describes a virtual machine scale set network profile's
-// IP configuration.
+// VirtualMachineScaleSetNetworkConfigurationProperties describes a virtual machine scale set network
+// profile's IP configuration.
 type VirtualMachineScaleSetNetworkConfigurationProperties struct {
 	// Primary - Specifies the primary network interface in case the virtual machine has more than 1 network interface.
 	Primary *bool `json:"primary,omitempty"`
@@ -13157,8 +13256,8 @@ func (vmssp VirtualMachineScaleSetProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// VirtualMachineScaleSetPublicIPAddressConfiguration describes a virtual machines scale set IP Configuration's
-// PublicIPAddress configuration
+// VirtualMachineScaleSetPublicIPAddressConfiguration describes a virtual machines scale set IP
+// Configuration's PublicIPAddress configuration
 type VirtualMachineScaleSetPublicIPAddressConfiguration struct {
 	// Name - The publicIP address configuration name.
 	Name                                                          *string `json:"name,omitempty"`
@@ -13240,8 +13339,8 @@ type VirtualMachineScaleSetReimageParameters struct {
 	TempDisk *bool `json:"tempDisk,omitempty"`
 }
 
-// VirtualMachineScaleSetRollingUpgradesCancelFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// VirtualMachineScaleSetRollingUpgradesCancelFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type VirtualMachineScaleSetRollingUpgradesCancelFuture struct {
 	azure.Future
 }
@@ -13286,8 +13385,8 @@ func (future *VirtualMachineScaleSetRollingUpgradesStartExtensionUpgradeFuture) 
 	return
 }
 
-// VirtualMachineScaleSetRollingUpgradesStartOSUpgradeFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// VirtualMachineScaleSetRollingUpgradesStartOSUpgradeFuture an abstraction for monitoring and retrieving
+// the results of a long-running operation.
 type VirtualMachineScaleSetRollingUpgradesStartOSUpgradeFuture struct {
 	azure.Future
 }
@@ -13309,8 +13408,8 @@ func (future *VirtualMachineScaleSetRollingUpgradesStartOSUpgradeFuture) Result(
 	return
 }
 
-// VirtualMachineScaleSetsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// VirtualMachineScaleSetsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type VirtualMachineScaleSetsCreateOrUpdateFuture struct {
 	azure.Future
 }
@@ -13384,8 +13483,8 @@ func (future *VirtualMachineScaleSetsDeleteFuture) Result(client VirtualMachineS
 	return
 }
 
-// VirtualMachineScaleSetsDeleteInstancesFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// VirtualMachineScaleSetsDeleteInstancesFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type VirtualMachineScaleSetsDeleteInstancesFuture struct {
 	azure.Future
 }
@@ -13429,8 +13528,8 @@ type VirtualMachineScaleSetSkuCapacity struct {
 	ScaleType VirtualMachineScaleSetSkuScaleType `json:"scaleType,omitempty"`
 }
 
-// VirtualMachineScaleSetsPerformMaintenanceFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// VirtualMachineScaleSetsPerformMaintenanceFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type VirtualMachineScaleSetsPerformMaintenanceFuture struct {
 	azure.Future
 }
@@ -13567,8 +13666,8 @@ func (future *VirtualMachineScaleSetsRestartFuture) Result(client VirtualMachine
 	return
 }
 
-// VirtualMachineScaleSetsSetOrchestrationServiceStateFuture an abstraction for monitoring and retrieving the
-// results of a long-running operation.
+// VirtualMachineScaleSetsSetOrchestrationServiceStateFuture an abstraction for monitoring and retrieving
+// the results of a long-running operation.
 type VirtualMachineScaleSetsSetOrchestrationServiceStateFuture struct {
 	azure.Future
 }
@@ -13652,8 +13751,8 @@ func (future *VirtualMachineScaleSetsUpdateFuture) Result(client VirtualMachineS
 	return
 }
 
-// VirtualMachineScaleSetsUpdateInstancesFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// VirtualMachineScaleSetsUpdateInstancesFuture an abstraction for monitoring and retrieving the results of
+// a long-running operation.
 type VirtualMachineScaleSetsUpdateInstancesFuture struct {
 	azure.Future
 }
@@ -13770,8 +13869,8 @@ func (vmssu *VirtualMachineScaleSetUpdate) UnmarshalJSON(body []byte) error {
 }
 
 // VirtualMachineScaleSetUpdateIPConfiguration describes a virtual machine scale set network profile's IP
-// configuration. NOTE: The subnet of a scale set may be modified as long as the original subnet and the new
-// subnet are in the same virtual network
+// configuration. NOTE: The subnet of a scale set may be modified as long as the original subnet and the
+// new subnet are in the same virtual network
 type VirtualMachineScaleSetUpdateIPConfiguration struct {
 	// Name - The IP configuration name.
 	Name                                                   *string `json:"name,omitempty"`
@@ -13925,8 +14024,9 @@ func (vmssunc *VirtualMachineScaleSetUpdateNetworkConfiguration) UnmarshalJSON(b
 	return nil
 }
 
-// VirtualMachineScaleSetUpdateNetworkConfigurationProperties describes a virtual machine scale set updatable
-// network profile's IP configuration.Use this object for updating network profile's IP Configuration.
+// VirtualMachineScaleSetUpdateNetworkConfigurationProperties describes a virtual machine scale set
+// updatable network profile's IP configuration.Use this object for updating network profile's IP
+// Configuration.
 type VirtualMachineScaleSetUpdateNetworkConfigurationProperties struct {
 	// Primary - Whether this is a primary NIC on a virtual machine.
 	Primary *bool `json:"primary,omitempty"`
@@ -13950,8 +14050,8 @@ type VirtualMachineScaleSetUpdateNetworkProfile struct {
 	NetworkInterfaceConfigurations *[]VirtualMachineScaleSetUpdateNetworkConfiguration `json:"networkInterfaceConfigurations,omitempty"`
 }
 
-// VirtualMachineScaleSetUpdateOSDisk describes virtual machine scale set operating system disk Update Object.
-// This should be used for Updating VMSS OS Disk.
+// VirtualMachineScaleSetUpdateOSDisk describes virtual machine scale set operating system disk Update
+// Object. This should be used for Updating VMSS OS Disk.
 type VirtualMachineScaleSetUpdateOSDisk struct {
 	// Caching - The caching type. Possible values include: 'CachingTypesNone', 'CachingTypesReadOnly', 'CachingTypesReadWrite'
 	Caching CachingTypes `json:"caching,omitempty"`
@@ -14054,8 +14154,8 @@ func (vmssupiac *VirtualMachineScaleSetUpdatePublicIPAddressConfiguration) Unmar
 	return nil
 }
 
-// VirtualMachineScaleSetUpdatePublicIPAddressConfigurationProperties describes a virtual machines scale set IP
-// Configuration's PublicIPAddress configuration
+// VirtualMachineScaleSetUpdatePublicIPAddressConfigurationProperties describes a virtual machines scale
+// set IP Configuration's PublicIPAddress configuration
 type VirtualMachineScaleSetUpdatePublicIPAddressConfigurationProperties struct {
 	// IdleTimeoutInMinutes - The idle timeout of the public IP address.
 	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
@@ -14253,6 +14353,78 @@ func (vmssv *VirtualMachineScaleSetVM) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// VirtualMachineScaleSetVMExtension describes a VMSS VM Extension.
+type VirtualMachineScaleSetVMExtension struct {
+	autorest.Response `json:"-"`
+	// Name - READ-ONLY; The name of the extension.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type                               *string `json:"type,omitempty"`
+	*VirtualMachineExtensionProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetVMExtension.
+func (vmssve VirtualMachineScaleSetVMExtension) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vmssve.VirtualMachineExtensionProperties != nil {
+		objectMap["properties"] = vmssve.VirtualMachineExtensionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetVMExtension struct.
+func (vmssve *VirtualMachineScaleSetVMExtension) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				vmssve.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vmssve.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var virtualMachineExtensionProperties VirtualMachineExtensionProperties
+				err = json.Unmarshal(*v, &virtualMachineExtensionProperties)
+				if err != nil {
+					return err
+				}
+				vmssve.VirtualMachineExtensionProperties = &virtualMachineExtensionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				vmssve.ID = &ID
+			}
+		}
+	}
+
+	return nil
+}
+
 // VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the
 // results of a long-running operation.
 type VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture struct {
@@ -14261,7 +14433,7 @@ type VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture struct {
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture) Result(client VirtualMachineScaleSetVMExtensionsClient) (vme VirtualMachineExtension, err error) {
+func (future *VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture) Result(client VirtualMachineScaleSetVMExtensionsClient) (vmssve VirtualMachineScaleSetVMExtension, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -14273,17 +14445,17 @@ func (future *VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture) Result(cli
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vme.Response.Response, err = future.GetResult(sender); err == nil && vme.Response.Response.StatusCode != http.StatusNoContent {
-		vme, err = client.CreateOrUpdateResponder(vme.Response.Response)
+	if vmssve.Response.Response, err = future.GetResult(sender); err == nil && vmssve.Response.Response.StatusCode != http.StatusNoContent {
+		vmssve, err = client.CreateOrUpdateResponder(vmssve.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture", "Result", vme.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture", "Result", vmssve.Response.Response, "Failure responding to request")
 		}
 	}
 	return
 }
 
-// VirtualMachineScaleSetVMExtensionsDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// VirtualMachineScaleSetVMExtensionsDeleteFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type VirtualMachineScaleSetVMExtensionsDeleteFuture struct {
 	azure.Future
 }
@@ -14305,8 +14477,15 @@ func (future *VirtualMachineScaleSetVMExtensionsDeleteFuture) Result(client Virt
 	return
 }
 
-// VirtualMachineScaleSetVMExtensionsSummary extensions summary for virtual machines of a virtual machine scale
-// set.
+// VirtualMachineScaleSetVMExtensionsListResult the List VMSS VM Extension operation response
+type VirtualMachineScaleSetVMExtensionsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of VMSS VM extensions
+	Value *[]VirtualMachineScaleSetVMExtension `json:"value,omitempty"`
+}
+
+// VirtualMachineScaleSetVMExtensionsSummary extensions summary for virtual machines of a virtual machine
+// scale set.
 type VirtualMachineScaleSetVMExtensionsSummary struct {
 	// Name - READ-ONLY; The extension name.
 	Name *string `json:"name,omitempty"`
@@ -14314,15 +14493,15 @@ type VirtualMachineScaleSetVMExtensionsSummary struct {
 	StatusesSummary *[]VirtualMachineStatusCodeCount `json:"statusesSummary,omitempty"`
 }
 
-// VirtualMachineScaleSetVMExtensionsUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
+// VirtualMachineScaleSetVMExtensionsUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type VirtualMachineScaleSetVMExtensionsUpdateFuture struct {
 	azure.Future
 }
 
 // Result returns the result of the asynchronous operation.
 // If the operation has not completed it will return an error.
-func (future *VirtualMachineScaleSetVMExtensionsUpdateFuture) Result(client VirtualMachineScaleSetVMExtensionsClient) (vme VirtualMachineExtension, err error) {
+func (future *VirtualMachineScaleSetVMExtensionsUpdateFuture) Result(client VirtualMachineScaleSetVMExtensionsClient) (vmssve VirtualMachineScaleSetVMExtension, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
@@ -14334,16 +14513,88 @@ func (future *VirtualMachineScaleSetVMExtensionsUpdateFuture) Result(client Virt
 		return
 	}
 	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if vme.Response.Response, err = future.GetResult(sender); err == nil && vme.Response.Response.StatusCode != http.StatusNoContent {
-		vme, err = client.UpdateResponder(vme.Response.Response)
+	if vmssve.Response.Response, err = future.GetResult(sender); err == nil && vmssve.Response.Response.StatusCode != http.StatusNoContent {
+		vmssve, err = client.UpdateResponder(vmssve.Response.Response)
 		if err != nil {
-			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsUpdateFuture", "Result", vme.Response.Response, "Failure responding to request")
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsUpdateFuture", "Result", vmssve.Response.Response, "Failure responding to request")
 		}
 	}
 	return
 }
 
-// VirtualMachineScaleSetVMInstanceIDs specifies a list of virtual machine instance IDs from the VM scale set.
+// VirtualMachineScaleSetVMExtensionUpdate describes a VMSS VM Extension.
+type VirtualMachineScaleSetVMExtensionUpdate struct {
+	// Name - READ-ONLY; The name of the extension.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type                                     *string `json:"type,omitempty"`
+	*VirtualMachineExtensionUpdateProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetVMExtensionUpdate.
+func (vmssveu VirtualMachineScaleSetVMExtensionUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if vmssveu.VirtualMachineExtensionUpdateProperties != nil {
+		objectMap["properties"] = vmssveu.VirtualMachineExtensionUpdateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for VirtualMachineScaleSetVMExtensionUpdate struct.
+func (vmssveu *VirtualMachineScaleSetVMExtensionUpdate) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				vmssveu.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vmssveu.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var virtualMachineExtensionUpdateProperties VirtualMachineExtensionUpdateProperties
+				err = json.Unmarshal(*v, &virtualMachineExtensionUpdateProperties)
+				if err != nil {
+					return err
+				}
+				vmssveu.VirtualMachineExtensionUpdateProperties = &virtualMachineExtensionUpdateProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				vmssveu.ID = &ID
+			}
+		}
+	}
+
+	return nil
+}
+
+// VirtualMachineScaleSetVMInstanceIDs specifies a list of virtual machine instance IDs from the VM scale
+// set.
 type VirtualMachineScaleSetVMInstanceIDs struct {
 	// InstanceIds - The virtual machine scale set instance ids. Omitting the virtual machine scale set instance ids will result in the operation being performed on all virtual machines in the virtual machine scale set.
 	InstanceIds *[]string `json:"instanceIds,omitempty"`
@@ -14430,8 +14681,8 @@ type VirtualMachineScaleSetVMListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// VirtualMachineScaleSetVMListResultIterator provides access to a complete listing of VirtualMachineScaleSetVM
-// values.
+// VirtualMachineScaleSetVMListResultIterator provides access to a complete listing of
+// VirtualMachineScaleSetVM values.
 type VirtualMachineScaleSetVMListResultIterator struct {
 	i    int
 	page VirtualMachineScaleSetVMListResultPage
@@ -14574,8 +14825,11 @@ func (page VirtualMachineScaleSetVMListResultPage) Values() []VirtualMachineScal
 }
 
 // Creates a new instance of the VirtualMachineScaleSetVMListResultPage type.
-func NewVirtualMachineScaleSetVMListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetVMListResult) (VirtualMachineScaleSetVMListResult, error)) VirtualMachineScaleSetVMListResultPage {
-	return VirtualMachineScaleSetVMListResultPage{fn: getNextPage}
+func NewVirtualMachineScaleSetVMListResultPage(cur VirtualMachineScaleSetVMListResult, getNextPage func(context.Context, VirtualMachineScaleSetVMListResult) (VirtualMachineScaleSetVMListResult, error)) VirtualMachineScaleSetVMListResultPage {
+	return VirtualMachineScaleSetVMListResultPage{
+		fn:      getNextPage,
+		vmssvlr: cur,
+	}
 }
 
 // VirtualMachineScaleSetVMNetworkProfileConfiguration describes a virtual machine scale set VM network
@@ -14599,7 +14853,7 @@ type VirtualMachineScaleSetVMProfile struct {
 	DiagnosticsProfile *DiagnosticsProfile `json:"diagnosticsProfile,omitempty"`
 	// ExtensionProfile - Specifies a collection of settings for extensions installed on virtual machines in the scale set.
 	ExtensionProfile *VirtualMachineScaleSetExtensionProfile `json:"extensionProfile,omitempty"`
-	// LicenseType - Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. <br><br> Possible values are: <br><br> Windows_Client <br><br> Windows_Server <br><br> If this element is included in a request for an update, the value must match the initial value. This value cannot be updated. <br><br> For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) <br><br> Minimum api-version: 2015-06-15
+	// LicenseType - Specifies that the image or disk that is being used was licensed on-premises. <br><br> Possible values for Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values for Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) <br><br> [Azure Hybrid Use Benefit for Linux Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) <br><br> Minimum api-version: 2015-06-15
 	LicenseType *string `json:"licenseType,omitempty"`
 	// Priority - Specifies the priority for the virtual machines in the scale set. <br><br>Minimum api-version: 2017-10-30-preview. Possible values include: 'Regular', 'Low', 'Spot'
 	Priority VirtualMachinePriorityTypes `json:"priority,omitempty"`
@@ -14611,7 +14865,8 @@ type VirtualMachineScaleSetVMProfile struct {
 	ScheduledEventsProfile *ScheduledEventsProfile `json:"scheduledEventsProfile,omitempty"`
 }
 
-// VirtualMachineScaleSetVMProperties describes the properties of a virtual machine scale set virtual machine.
+// VirtualMachineScaleSetVMProperties describes the properties of a virtual machine scale set virtual
+// machine.
 type VirtualMachineScaleSetVMProperties struct {
 	// LatestModelApplied - READ-ONLY; Specifies whether the latest model has been applied to the virtual machine.
 	LatestModelApplied *bool `json:"latestModelApplied,omitempty"`
@@ -14639,7 +14894,7 @@ type VirtualMachineScaleSetVMProperties struct {
 	AvailabilitySet *SubResource `json:"availabilitySet,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// LicenseType - Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. <br><br> Possible values are: <br><br> Windows_Client <br><br> Windows_Server <br><br> If this element is included in a request for an update, the value must match the initial value. This value cannot be updated. <br><br> For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-hybrid-use-benefit-licensing?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json) <br><br> Minimum api-version: 2015-06-15
+	// LicenseType - Specifies that the image or disk that is being used was licensed on-premises. <br><br> Possible values for Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values for Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more information, see [Azure Hybrid Use Benefit for Windows Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) <br><br> [Azure Hybrid Use Benefit for Linux Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) <br><br> Minimum api-version: 2015-06-15
 	LicenseType *string `json:"licenseType,omitempty"`
 	// ModelDefinitionApplied - READ-ONLY; Specifies whether the model applied to the virtual machine is the model of the virtual machine scale set or the customized model for the virtual machine.
 	ModelDefinitionApplied *string `json:"modelDefinitionApplied,omitempty"`
@@ -14729,8 +14984,8 @@ func (future *VirtualMachineScaleSetVMRunCommandsCreateOrUpdateFuture) Result(cl
 	return
 }
 
-// VirtualMachineScaleSetVMRunCommandsDeleteFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// VirtualMachineScaleSetVMRunCommandsDeleteFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type VirtualMachineScaleSetVMRunCommandsDeleteFuture struct {
 	azure.Future
 }
@@ -14752,8 +15007,8 @@ func (future *VirtualMachineScaleSetVMRunCommandsDeleteFuture) Result(client Vir
 	return
 }
 
-// VirtualMachineScaleSetVMRunCommandsUpdateFuture an abstraction for monitoring and retrieving the results of
-// a long-running operation.
+// VirtualMachineScaleSetVMRunCommandsUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
 type VirtualMachineScaleSetVMRunCommandsUpdateFuture struct {
 	azure.Future
 }
@@ -14827,8 +15082,8 @@ func (future *VirtualMachineScaleSetVMsDeleteFuture) Result(client VirtualMachin
 	return
 }
 
-// VirtualMachineScaleSetVMsPerformMaintenanceFuture an abstraction for monitoring and retrieving the results
-// of a long-running operation.
+// VirtualMachineScaleSetVMsPerformMaintenanceFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
 type VirtualMachineScaleSetVMsPerformMaintenanceFuture struct {
 	azure.Future
 }
@@ -15127,8 +15382,8 @@ func (future *VirtualMachinesCreateOrUpdateFuture) Result(client VirtualMachines
 	return
 }
 
-// VirtualMachinesDeallocateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// VirtualMachinesDeallocateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type VirtualMachinesDeallocateFuture struct {
 	azure.Future
 }
@@ -15358,8 +15613,8 @@ func (future *VirtualMachinesRestartFuture) Result(client VirtualMachinesClient)
 	return
 }
 
-// VirtualMachinesRunCommandFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// VirtualMachinesRunCommandFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type VirtualMachinesRunCommandFuture struct {
 	azure.Future
 }

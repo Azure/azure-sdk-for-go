@@ -28,7 +28,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/cdn/mgmt/2020-04-15/cdn"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-04-15/cdn"
 
 // CacheExpirationActionParameters defines the parameters for the cache expiration action.
 type CacheExpirationActionParameters struct {

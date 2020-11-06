@@ -793,8 +793,8 @@ func (ebad *ExternalBillingAccountDefinition) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ExternalBillingAccountDefinitionListResult result of listing ExternalBillingAccount definitions. It contains
-// a list of available ExternalBillingAccount definitions in the scope provided.
+// ExternalBillingAccountDefinitionListResult result of listing ExternalBillingAccount definitions. It
+// contains a list of available ExternalBillingAccount definitions in the scope provided.
 type ExternalBillingAccountDefinitionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of ExternalBillingAccount definitions.
@@ -897,8 +897,8 @@ func (esd *ExternalSubscriptionDefinition) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ExternalSubscriptionDefinitionListResult result of listing ExternalSubscription definitions. It contains a
-// list of available ExternalSubscription definitions in the scope provided.
+// ExternalSubscriptionDefinitionListResult result of listing ExternalSubscription definitions. It contains
+// a list of available ExternalSubscription definitions in the scope provided.
 type ExternalSubscriptionDefinitionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of ExternalSubscription definitions.
@@ -959,8 +959,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of listing cost management operations. It contains a list of operations and a URL
-// link to get the next set of results.
+// OperationListResult result of listing cost management operations. It contains a list of operations and a
+// URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of cost management operations supported by the Microsoft.CostManagement resource provider.
@@ -1112,8 +1112,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Query ...
@@ -1432,8 +1435,8 @@ func (sr *ShowbackRule) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ShowbackRuleListResult result of listing showback rules. It contains a list of available rules in the scope
-// provided.
+// ShowbackRuleListResult result of listing showback rules. It contains a list of available rules in the
+// scope provided.
 type ShowbackRuleListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of showback rules.

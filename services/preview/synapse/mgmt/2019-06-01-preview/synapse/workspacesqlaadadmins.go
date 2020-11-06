@@ -26,31 +26,31 @@ import (
 	"net/http"
 )
 
-// WorkspaceAadAdminsClient is the azure Synapse Analytics Management Client
-type WorkspaceAadAdminsClient struct {
+// WorkspaceSQLAadAdminsClient is the azure Synapse Analytics Management Client
+type WorkspaceSQLAadAdminsClient struct {
 	BaseClient
 }
 
-// NewWorkspaceAadAdminsClient creates an instance of the WorkspaceAadAdminsClient client.
-func NewWorkspaceAadAdminsClient(subscriptionID string) WorkspaceAadAdminsClient {
-	return NewWorkspaceAadAdminsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewWorkspaceSQLAadAdminsClient creates an instance of the WorkspaceSQLAadAdminsClient client.
+func NewWorkspaceSQLAadAdminsClient(subscriptionID string) WorkspaceSQLAadAdminsClient {
+	return NewWorkspaceSQLAadAdminsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWorkspaceAadAdminsClientWithBaseURI creates an instance of the WorkspaceAadAdminsClient client using a custom
-// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
-// stack).
-func NewWorkspaceAadAdminsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceAadAdminsClient {
-	return WorkspaceAadAdminsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewWorkspaceSQLAadAdminsClientWithBaseURI creates an instance of the WorkspaceSQLAadAdminsClient client using a
+// custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds,
+// Azure stack).
+func NewWorkspaceSQLAadAdminsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceSQLAadAdminsClient {
+	return WorkspaceSQLAadAdminsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates a workspace active directory admin
+// CreateOrUpdate creates or updates a workspace SQL active directory admin
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace
 // aadAdminInfo - workspace active directory administrator properties
-func (client WorkspaceAadAdminsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, aadAdminInfo WorkspaceAadAdminInfo) (result WorkspaceAadAdminsCreateOrUpdateFuture, err error) {
+func (client WorkspaceSQLAadAdminsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, aadAdminInfo WorkspaceAadAdminInfo) (result WorkspaceSQLAadAdminsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceAadAdminsClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceSQLAadAdminsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -66,18 +66,18 @@ func (client WorkspaceAadAdminsClient) CreateOrUpdate(ctx context.Context, resou
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.WorkspaceAadAdminsClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("synapse.WorkspaceSQLAadAdminsClient", "CreateOrUpdate", err.Error())
 	}
 
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, aadAdminInfo)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspaceAadAdminsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceSQLAadAdminsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspaceAadAdminsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceSQLAadAdminsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -85,7 +85,7 @@ func (client WorkspaceAadAdminsClient) CreateOrUpdate(ctx context.Context, resou
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client WorkspaceAadAdminsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, aadAdminInfo WorkspaceAadAdminInfo) (*http.Request, error) {
+func (client WorkspaceSQLAadAdminsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, aadAdminInfo WorkspaceAadAdminInfo) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -101,7 +101,7 @@ func (client WorkspaceAadAdminsClient) CreateOrUpdatePreparer(ctx context.Contex
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/administrators/activeDirectory", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlAdministrators/activeDirectory", pathParameters),
 		autorest.WithJSON(aadAdminInfo),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -109,7 +109,7 @@ func (client WorkspaceAadAdminsClient) CreateOrUpdatePreparer(ctx context.Contex
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkspaceAadAdminsClient) CreateOrUpdateSender(req *http.Request) (future WorkspaceAadAdminsCreateOrUpdateFuture, err error) {
+func (client WorkspaceSQLAadAdminsClient) CreateOrUpdateSender(req *http.Request) (future WorkspaceSQLAadAdminsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
@@ -121,7 +121,7 @@ func (client WorkspaceAadAdminsClient) CreateOrUpdateSender(req *http.Request) (
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client WorkspaceAadAdminsClient) CreateOrUpdateResponder(resp *http.Response) (result WorkspaceAadAdminInfo, err error) {
+func (client WorkspaceSQLAadAdminsClient) CreateOrUpdateResponder(resp *http.Response) (result WorkspaceAadAdminInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
@@ -131,13 +131,13 @@ func (client WorkspaceAadAdminsClient) CreateOrUpdateResponder(resp *http.Respon
 	return
 }
 
-// Delete deletes a workspace active directory admin
+// Delete deletes a workspace SQL active directory admin
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace
-func (client WorkspaceAadAdminsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string) (result WorkspaceAadAdminsDeleteFuture, err error) {
+func (client WorkspaceSQLAadAdminsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string) (result WorkspaceSQLAadAdminsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceAadAdminsClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceSQLAadAdminsClient.Delete")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -153,18 +153,18 @@ func (client WorkspaceAadAdminsClient) Delete(ctx context.Context, resourceGroup
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.WorkspaceAadAdminsClient", "Delete", err.Error())
+		return result, validation.NewError("synapse.WorkspaceSQLAadAdminsClient", "Delete", err.Error())
 	}
 
 	req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspaceAadAdminsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceSQLAadAdminsClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspaceAadAdminsClient", "Delete", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceSQLAadAdminsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -172,7 +172,7 @@ func (client WorkspaceAadAdminsClient) Delete(ctx context.Context, resourceGroup
 }
 
 // DeletePreparer prepares the Delete request.
-func (client WorkspaceAadAdminsClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+func (client WorkspaceSQLAadAdminsClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -187,14 +187,14 @@ func (client WorkspaceAadAdminsClient) DeletePreparer(ctx context.Context, resou
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/administrators/activeDirectory", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlAdministrators/activeDirectory", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkspaceAadAdminsClient) DeleteSender(req *http.Request) (future WorkspaceAadAdminsDeleteFuture, err error) {
+func (client WorkspaceSQLAadAdminsClient) DeleteSender(req *http.Request) (future WorkspaceSQLAadAdminsDeleteFuture, err error) {
 	var resp *http.Response
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
@@ -206,7 +206,7 @@ func (client WorkspaceAadAdminsClient) DeleteSender(req *http.Request) (future W
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client WorkspaceAadAdminsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client WorkspaceSQLAadAdminsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
@@ -215,13 +215,13 @@ func (client WorkspaceAadAdminsClient) DeleteResponder(resp *http.Response) (res
 	return
 }
 
-// Get gets a workspace active directory admin
+// Get gets a workspace SQL active directory admin
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace
-func (client WorkspaceAadAdminsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string) (result WorkspaceAadAdminInfo, err error) {
+func (client WorkspaceSQLAadAdminsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string) (result WorkspaceAadAdminInfo, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceAadAdminsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceSQLAadAdminsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -237,32 +237,32 @@ func (client WorkspaceAadAdminsClient) Get(ctx context.Context, resourceGroupNam
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.WorkspaceAadAdminsClient", "Get", err.Error())
+		return result, validation.NewError("synapse.WorkspaceSQLAadAdminsClient", "Get", err.Error())
 	}
 
 	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspaceAadAdminsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceSQLAadAdminsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.WorkspaceAadAdminsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceSQLAadAdminsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspaceAadAdminsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceSQLAadAdminsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client WorkspaceAadAdminsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+func (client WorkspaceSQLAadAdminsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -277,20 +277,20 @@ func (client WorkspaceAadAdminsClient) GetPreparer(ctx context.Context, resource
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/administrators/activeDirectory", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlAdministrators/activeDirectory", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client WorkspaceAadAdminsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client WorkspaceSQLAadAdminsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client WorkspaceAadAdminsClient) GetResponder(resp *http.Response) (result WorkspaceAadAdminInfo, err error) {
+func (client WorkspaceSQLAadAdminsClient) GetResponder(resp *http.Response) (result WorkspaceAadAdminInfo, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

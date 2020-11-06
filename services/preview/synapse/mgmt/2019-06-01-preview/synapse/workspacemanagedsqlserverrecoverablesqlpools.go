@@ -26,31 +26,32 @@ import (
 	"net/http"
 )
 
-// SQLPoolSchemasClient is the azure Synapse Analytics Management Client
-type SQLPoolSchemasClient struct {
+// WorkspaceManagedSQLServerRecoverableSqlpoolsClient is the azure Synapse Analytics Management Client
+type WorkspaceManagedSQLServerRecoverableSqlpoolsClient struct {
 	BaseClient
 }
 
-// NewSQLPoolSchemasClient creates an instance of the SQLPoolSchemasClient client.
-func NewSQLPoolSchemasClient(subscriptionID string) SQLPoolSchemasClient {
-	return NewSQLPoolSchemasClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewWorkspaceManagedSQLServerRecoverableSqlpoolsClient creates an instance of the
+// WorkspaceManagedSQLServerRecoverableSqlpoolsClient client.
+func NewWorkspaceManagedSQLServerRecoverableSqlpoolsClient(subscriptionID string) WorkspaceManagedSQLServerRecoverableSqlpoolsClient {
+	return NewWorkspaceManagedSQLServerRecoverableSqlpoolsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSQLPoolSchemasClientWithBaseURI creates an instance of the SQLPoolSchemasClient client using a custom endpoint.
-// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewSQLPoolSchemasClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolSchemasClient {
-	return SQLPoolSchemasClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewWorkspaceManagedSQLServerRecoverableSqlpoolsClientWithBaseURI creates an instance of the
+// WorkspaceManagedSQLServerRecoverableSqlpoolsClient client using a custom endpoint.  Use this when interacting with
+// an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewWorkspaceManagedSQLServerRecoverableSqlpoolsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceManagedSQLServerRecoverableSqlpoolsClient {
+	return WorkspaceManagedSQLServerRecoverableSqlpoolsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get get Sql Pool schema
+// Get get recoverable sql pools for workspace managed sql server.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace
-// SQLPoolName - SQL pool name
-// schemaName - the name of the schema.
-func (client SQLPoolSchemasClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string) (result SQLPoolSchema, err error) {
+// SQLComputeName - the name of the sql compute
+func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLComputeName string) (result RecoverableSQLPool, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolSchemasClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedSQLServerRecoverableSqlpoolsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -66,36 +67,35 @@ func (client SQLPoolSchemasClient) Get(ctx context.Context, resourceGroupName st
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.SQLPoolSchemasClient", "Get", err.Error())
+		return result, validation.NewError("synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName, schemaName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, SQLComputeName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolSchemasClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolSchemasClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolSchemasClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client SQLPoolSchemasClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string) (*http.Request, error) {
+func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLComputeName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"schemaName":        autorest.Encode("path", schemaName),
-		"sqlPoolName":       autorest.Encode("path", SQLPoolName),
+		"sqlComputeName":    autorest.Encode("path", SQLComputeName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
@@ -108,20 +108,20 @@ func (client SQLPoolSchemasClient) GetPreparer(ctx context.Context, resourceGrou
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/recoverableSqlPools/{sqlComputeName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client SQLPoolSchemasClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client SQLPoolSchemasClient) GetResponder(resp *http.Response) (result SQLPoolSchema, err error) {
+func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) GetResponder(resp *http.Response) (result RecoverableSQLPool, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -131,19 +131,17 @@ func (client SQLPoolSchemasClient) GetResponder(resp *http.Response) (result SQL
 	return
 }
 
-// List gets schemas of a given SQL pool.
+// List get list of recoverable sql pools for workspace managed sql server.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace
-// SQLPoolName - SQL pool name
-// filter - an OData filter expression that filters elements in the collection.
-func (client SQLPoolSchemasClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, filter string) (result SQLPoolSchemaListResultPage, err error) {
+func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) List(ctx context.Context, resourceGroupName string, workspaceName string) (result RecoverableSQLPoolListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolSchemasClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedSQLServerRecoverableSqlpoolsClient.List")
 		defer func() {
 			sc := -1
-			if result.spslr.Response.Response != nil {
-				sc = result.spslr.Response.Response.StatusCode
+			if result.rsplr.Response.Response != nil {
+				sc = result.rsplr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -155,28 +153,28 @@ func (client SQLPoolSchemasClient) List(ctx context.Context, resourceGroupName s
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.SQLPoolSchemasClient", "List", err.Error())
+		return result, validation.NewError("synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName, filter)
+	req, err := client.ListPreparer(ctx, resourceGroupName, workspaceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolSchemasClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.spslr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolSchemasClient", "List", resp, "Failure sending request")
+		result.rsplr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.spslr, err = client.ListResponder(resp)
+	result.rsplr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolSchemasClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "List", resp, "Failure responding to request")
 	}
-	if result.spslr.hasNextLink() && result.spslr.IsEmpty() {
+	if result.rsplr.hasNextLink() && result.rsplr.IsEmpty() {
 		err = result.NextWithContext(ctx)
 	}
 
@@ -184,10 +182,9 @@ func (client SQLPoolSchemasClient) List(ctx context.Context, resourceGroupName s
 }
 
 // ListPreparer prepares the List request.
-func (client SQLPoolSchemasClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, filter string) (*http.Request, error) {
+func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"sqlPoolName":       autorest.Encode("path", SQLPoolName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
@@ -196,27 +193,24 @@ func (client SQLPoolSchemasClient) ListPreparer(ctx context.Context, resourceGro
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(filter) > 0 {
-		queryParameters["$filter"] = autorest.Encode("query", filter)
-	}
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/schemas", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/recoverableSqlpools", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client SQLPoolSchemasClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client SQLPoolSchemasClient) ListResponder(resp *http.Response) (result SQLPoolSchemaListResult, err error) {
+func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) ListResponder(resp *http.Response) (result RecoverableSQLPoolListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -227,10 +221,10 @@ func (client SQLPoolSchemasClient) ListResponder(resp *http.Response) (result SQ
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client SQLPoolSchemasClient) listNextResults(ctx context.Context, lastResults SQLPoolSchemaListResult) (result SQLPoolSchemaListResult, err error) {
-	req, err := lastResults.sQLPoolSchemaListResultPreparer(ctx)
+func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) listNextResults(ctx context.Context, lastResults RecoverableSQLPoolListResult) (result RecoverableSQLPoolListResult, err error) {
+	req, err := lastResults.recoverableSQLPoolListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "synapse.SQLPoolSchemasClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -238,19 +232,19 @@ func (client SQLPoolSchemasClient) listNextResults(ctx context.Context, lastResu
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "synapse.SQLPoolSchemasClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolSchemasClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SQLPoolSchemasClient) ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, filter string) (result SQLPoolSchemaListResultIterator, err error) {
+func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result RecoverableSQLPoolListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolSchemasClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedSQLServerRecoverableSqlpoolsClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -259,6 +253,6 @@ func (client SQLPoolSchemasClient) ListComplete(ctx context.Context, resourceGro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, resourceGroupName, workspaceName, SQLPoolName, filter)
+	result.page, err = client.List(ctx, resourceGroupName, workspaceName)
 	return
 }

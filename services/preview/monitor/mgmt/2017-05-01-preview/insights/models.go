@@ -267,15 +267,15 @@ type ActivityLogAlertActionList struct {
 	ActionGroups *[]ActivityLogAlertActionGroup `json:"actionGroups,omitempty"`
 }
 
-// ActivityLogAlertAllOfCondition an Activity Log alert condition that is met when all its member conditions
-// are met.
+// ActivityLogAlertAllOfCondition an Activity Log alert condition that is met when all its member
+// conditions are met.
 type ActivityLogAlertAllOfCondition struct {
 	// AllOf - The list of activity log alert conditions.
 	AllOf *[]ActivityLogAlertLeafCondition `json:"allOf,omitempty"`
 }
 
-// ActivityLogAlertLeafCondition an Activity Log alert condition that is met by comparing an activity log field
-// and value.
+// ActivityLogAlertLeafCondition an Activity Log alert condition that is met by comparing an activity log
+// field and value.
 type ActivityLogAlertLeafCondition struct {
 	// Field - The name of the field that this condition will examine. The possible values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName', 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties.'.
 	Field *string `json:"field,omitempty"`
@@ -763,7 +763,8 @@ type AutoscaleProfile struct {
 	Recurrence *Recurrence `json:"recurrence,omitempty"`
 }
 
-// AutoscaleSetting a setting that contains all of the configuration for the automatic scaling of a resource.
+// AutoscaleSetting a setting that contains all of the configuration for the automatic scaling of a
+// resource.
 type AutoscaleSetting struct {
 	// Profiles - the collection of automatic scaling profiles that specify different scaling parameters for different time periods. A maximum of 20 profiles can be specified.
 	Profiles *[]AutoscaleProfile `json:"profiles,omitempty"`
@@ -887,8 +888,8 @@ type AutoscaleSettingResourceCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
-// AutoscaleSettingResourceCollectionIterator provides access to a complete listing of AutoscaleSettingResource
-// values.
+// AutoscaleSettingResourceCollectionIterator provides access to a complete listing of
+// AutoscaleSettingResource values.
 type AutoscaleSettingResourceCollectionIterator struct {
 	i    int
 	page AutoscaleSettingResourceCollectionPage
@@ -1031,8 +1032,11 @@ func (page AutoscaleSettingResourceCollectionPage) Values() []AutoscaleSettingRe
 }
 
 // Creates a new instance of the AutoscaleSettingResourceCollectionPage type.
-func NewAutoscaleSettingResourceCollectionPage(getNextPage func(context.Context, AutoscaleSettingResourceCollection) (AutoscaleSettingResourceCollection, error)) AutoscaleSettingResourceCollectionPage {
-	return AutoscaleSettingResourceCollectionPage{fn: getNextPage}
+func NewAutoscaleSettingResourceCollectionPage(cur AutoscaleSettingResourceCollection, getNextPage func(context.Context, AutoscaleSettingResourceCollection) (AutoscaleSettingResourceCollection, error)) AutoscaleSettingResourceCollectionPage {
+	return AutoscaleSettingResourceCollectionPage{
+		fn:   getNextPage,
+		asrc: cur,
+	}
 }
 
 // AutoscaleSettingResourcePatch the autoscale setting object for patch operations.
@@ -1677,8 +1681,11 @@ func (page EventDataCollectionPage) Values() []EventData {
 }
 
 // Creates a new instance of the EventDataCollectionPage type.
-func NewEventDataCollectionPage(getNextPage func(context.Context, EventDataCollection) (EventDataCollection, error)) EventDataCollectionPage {
-	return EventDataCollectionPage{fn: getNextPage}
+func NewEventDataCollectionPage(cur EventDataCollection, getNextPage func(context.Context, EventDataCollection) (EventDataCollection, error)) EventDataCollectionPage {
+	return EventDataCollectionPage{
+		fn:  getNextPage,
+		edc: cur,
+	}
 }
 
 // HTTPRequestInfo the Http request info.
@@ -2158,8 +2165,8 @@ type Metric struct {
 	Timeseries *[]TimeSeriesElement `json:"timeseries,omitempty"`
 }
 
-// MetricAvailability metric availability specifies the time grain (aggregation interval or frequency) and the
-// retention period for that time grain.
+// MetricAvailability metric availability specifies the time grain (aggregation interval or frequency) and
+// the retention period for that time grain.
 type MetricAvailability struct {
 	// TimeGrain - the time grain specifies the aggregation interval for the metric. Expressed as a duration 'PT1M', 'P1D', etc.
 	TimeGrain *string `json:"timeGrain,omitempty"`
@@ -2656,8 +2663,8 @@ func (rds RuleDataSource) AsBasicRuleDataSource() (BasicRuleDataSource, bool) {
 	return &rds, true
 }
 
-// RuleEmailAction specifies the action to send email when the rule condition is evaluated. The discriminator
-// is always RuleEmailAction in this case.
+// RuleEmailAction specifies the action to send email when the rule condition is evaluated. The
+// discriminator is always RuleEmailAction in this case.
 type RuleEmailAction struct {
 	// SendToServiceOwners - Whether the administrators (service and co-administrators) of the service should be notified when the alert is activated.
 	SendToServiceOwners *bool `json:"sendToServiceOwners,omitempty"`
@@ -2796,8 +2803,8 @@ func (rmeds RuleManagementEventDataSource) AsBasicRuleDataSource() (BasicRuleDat
 	return &rmeds, true
 }
 
-// RuleMetricDataSource a rule metric data source. The discriminator value is always RuleMetricDataSource in
-// this case.
+// RuleMetricDataSource a rule metric data source. The discriminator value is always RuleMetricDataSource
+// in this case.
 type RuleMetricDataSource struct {
 	// MetricName - the name of the metric that defines what the rule monitors.
 	MetricName *string `json:"metricName,omitempty"`
@@ -2931,8 +2938,8 @@ type ScaleRuleMetricDimension struct {
 }
 
 // SenderAuthorization the authorization used by the user who has performed the operation that led to this
-// event. This captures the RBAC properties of the event. These usually include the 'action', 'role' and the
-// 'scope'
+// event. This captures the RBAC properties of the event. These usually include the 'action', 'role' and
+// the 'scope'
 type SenderAuthorization struct {
 	// Action - the permissible actions. For instance: microsoft.support/supporttickets/write
 	Action *string `json:"action,omitempty"`

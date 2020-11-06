@@ -240,10 +240,10 @@ func (e *Export) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ExportDeliveryDestination the destination information for the delivery of the export. To allow access to a
-// storage account, you must register the account's subscription with the Microsoft.CostManagementExports
-// resource provider. This is required once per subscription. When creating an export in the Azure portal, it
-// is done automatically. However, API users need to register the subscription. For more information see
+// ExportDeliveryDestination the destination information for the delivery of the export. To allow access to
+// a storage account, you must register the account's subscription with the Microsoft.CostManagementExports
+// resource provider. This is required once per subscription. When creating an export in the Azure portal,
+// it is done automatically. However, API users need to register the subscription. For more information see
 // https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-supported-services .
 type ExportDeliveryDestination struct {
 	// ResourceID - The resource id of the storage account where exports will be delivered.
@@ -368,7 +368,8 @@ type ExportExecutionProperties struct {
 	RunSettings *CommonExportProperties `json:"runSettings,omitempty"`
 }
 
-// ExportListResult result of listing exports. It contains a list of available exports in the scope provided.
+// ExportListResult result of listing exports. It contains a list of available exports in the scope
+// provided.
 type ExportListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of exports.
@@ -432,8 +433,8 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
-// OperationListResult result of listing cost management operations. It contains a list of operations and a URL
-// link to get the next set of results.
+// OperationListResult result of listing cost management operations. It contains a list of operations and a
+// URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of cost management operations supported by the Microsoft.CostManagement resource provider.
@@ -585,8 +586,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Query ...

@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## `v48.1.0`
+
+### New Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| storage | 2020-08-01-preview |
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/4c1dfe438cfb73300281d05583324aee2fc96015
+
 ## `v48.0.0`
 
 ### New Packages

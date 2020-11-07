@@ -19,12 +19,24 @@
 
 package storageapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2018-07-01-preview/storage/storageapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2020-08-01-preview/storage/storageapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
 type BlobContainersClientAPI = original.BlobContainersClientAPI
+type BlobInventoryPoliciesClientAPI = original.BlobInventoryPoliciesClientAPI
 type BlobServicesClientAPI = original.BlobServicesClientAPI
+type DeletedAccountsClientAPI = original.DeletedAccountsClientAPI
+type EncryptionScopesClientAPI = original.EncryptionScopesClientAPI
+type FileServicesClientAPI = original.FileServicesClientAPI
+type FileSharesClientAPI = original.FileSharesClientAPI
 type ManagementPoliciesClientAPI = original.ManagementPoliciesClientAPI
+type ObjectReplicationPoliciesClientAPI = original.ObjectReplicationPoliciesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
+type QueueClientAPI = original.QueueClientAPI
+type QueueServicesClientAPI = original.QueueServicesClientAPI
 type SkusClientAPI = original.SkusClientAPI
+type TableClientAPI = original.TableClientAPI
+type TableServicesClientAPI = original.TableServicesClientAPI
 type UsagesClientAPI = original.UsagesClientAPI

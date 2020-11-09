@@ -31,9 +31,6 @@ func ExampleResourcesOperations_List() {
 	}
 	client := armresources.NewResourcesClient(armresources.NewDefaultClient(cred, nil), "<subscription ID>")
 	page := client.ListByResourceGroup("<resource group name>", nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
-	}
 	for page.NextPage(context.Background()) {
 		resp := page.PageResponse()
 		if len(*resp.ResourceListResult.Value) == 0 {

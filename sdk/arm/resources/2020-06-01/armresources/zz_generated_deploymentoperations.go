@@ -7,6 +7,7 @@ package armresources
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
@@ -41,18 +42,18 @@ type DeploymentOperationsOperations interface {
 // DeploymentOperationsClient implements the DeploymentOperationsOperations interface.
 // Don't use this type directly, use NewDeploymentOperationsClient() instead.
 type DeploymentOperationsClient struct {
-	*Client
+	con            *armcore.Connection
 	subscriptionID string
 }
 
 // NewDeploymentOperationsClient creates a new instance of DeploymentOperationsClient with the specified values.
-func NewDeploymentOperationsClient(c *Client, subscriptionID string) DeploymentOperationsOperations {
-	return &DeploymentOperationsClient{Client: c, subscriptionID: subscriptionID}
+func NewDeploymentOperationsClient(con *armcore.Connection, subscriptionID string) DeploymentOperationsOperations {
+	return &DeploymentOperationsClient{con: con, subscriptionID: subscriptionID}
 }
 
-// Do invokes the Do() method on the pipeline associated with this client.
-func (client *DeploymentOperationsClient) Do(req *azcore.Request) (*azcore.Response, error) {
-	return client.p.Do(req)
+// Pipeline returns the pipeline associated with this client.
+func (client *DeploymentOperationsClient) Pipeline() azcore.Pipeline {
+	return client.con.Pipeline()
 }
 
 // Get - Gets a deployments operation.
@@ -61,7 +62,7 @@ func (client *DeploymentOperationsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +83,7 @@ func (client *DeploymentOperationsClient) GetCreateRequest(ctx context.Context, 
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationId))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +115,7 @@ func (client *DeploymentOperationsClient) GetAtManagementGroupScope(ctx context.
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +135,7 @@ func (client *DeploymentOperationsClient) GetAtManagementGroupScopeCreateRequest
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupId))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationId))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +167,7 @@ func (client *DeploymentOperationsClient) GetAtScope(ctx context.Context, scope 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -186,7 +187,7 @@ func (client *DeploymentOperationsClient) GetAtScopeCreateRequest(ctx context.Co
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationId))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -218,7 +219,7 @@ func (client *DeploymentOperationsClient) GetAtSubscriptionScope(ctx context.Con
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -238,7 +239,7 @@ func (client *DeploymentOperationsClient) GetAtSubscriptionScopeCreateRequest(ct
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationId))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -270,7 +271,7 @@ func (client *DeploymentOperationsClient) GetAtTenantScope(ctx context.Context, 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -289,7 +290,7 @@ func (client *DeploymentOperationsClient) GetAtTenantScopeCreateRequest(ctx cont
 	urlPath := "/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationId))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -318,7 +319,7 @@ func (client *DeploymentOperationsClient) GetAtTenantScopeHandleError(resp *azco
 // List - Gets all deployments operations for a deployment.
 func (client *DeploymentOperationsClient) List(resourceGroupName string, deploymentName string, options *DeploymentOperationsListOptions) DeploymentOperationsListResultPager {
 	return &deploymentOperationsListResultPager{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.ListCreateRequest(ctx, resourceGroupName, deploymentName, options)
 		},
@@ -337,7 +338,7 @@ func (client *DeploymentOperationsClient) ListCreateRequest(ctx context.Context,
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -369,7 +370,7 @@ func (client *DeploymentOperationsClient) ListHandleError(resp *azcore.Response)
 // ListAtManagementGroupScope - Gets all deployments operations for a deployment.
 func (client *DeploymentOperationsClient) ListAtManagementGroupScope(groupId string, deploymentName string, options *DeploymentOperationsListAtManagementGroupScopeOptions) DeploymentOperationsListResultPager {
 	return &deploymentOperationsListResultPager{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.ListAtManagementGroupScopeCreateRequest(ctx, groupId, deploymentName, options)
 		},
@@ -387,7 +388,7 @@ func (client *DeploymentOperationsClient) ListAtManagementGroupScopeCreateReques
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupId))
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -419,7 +420,7 @@ func (client *DeploymentOperationsClient) ListAtManagementGroupScopeHandleError(
 // ListAtScope - Gets all deployments operations for a deployment.
 func (client *DeploymentOperationsClient) ListAtScope(scope string, deploymentName string, options *DeploymentOperationsListAtScopeOptions) DeploymentOperationsListResultPager {
 	return &deploymentOperationsListResultPager{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.ListAtScopeCreateRequest(ctx, scope, deploymentName, options)
 		},
@@ -437,7 +438,7 @@ func (client *DeploymentOperationsClient) ListAtScopeCreateRequest(ctx context.C
 	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -469,7 +470,7 @@ func (client *DeploymentOperationsClient) ListAtScopeHandleError(resp *azcore.Re
 // ListAtSubscriptionScope - Gets all deployments operations for a deployment.
 func (client *DeploymentOperationsClient) ListAtSubscriptionScope(deploymentName string, options *DeploymentOperationsListAtSubscriptionScopeOptions) DeploymentOperationsListResultPager {
 	return &deploymentOperationsListResultPager{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.ListAtSubscriptionScopeCreateRequest(ctx, deploymentName, options)
 		},
@@ -487,7 +488,7 @@ func (client *DeploymentOperationsClient) ListAtSubscriptionScopeCreateRequest(c
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -519,7 +520,7 @@ func (client *DeploymentOperationsClient) ListAtSubscriptionScopeHandleError(res
 // ListAtTenantScope - Gets all deployments operations for a deployment.
 func (client *DeploymentOperationsClient) ListAtTenantScope(deploymentName string, options *DeploymentOperationsListAtTenantScopeOptions) DeploymentOperationsListResultPager {
 	return &deploymentOperationsListResultPager{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.ListAtTenantScopeCreateRequest(ctx, deploymentName, options)
 		},
@@ -536,7 +537,7 @@ func (client *DeploymentOperationsClient) ListAtTenantScope(deploymentName strin
 func (client *DeploymentOperationsClient) ListAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, options *DeploymentOperationsListAtTenantScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -7,6 +7,7 @@ package armresources
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
@@ -35,18 +36,18 @@ type ProvidersOperations interface {
 // ProvidersClient implements the ProvidersOperations interface.
 // Don't use this type directly, use NewProvidersClient() instead.
 type ProvidersClient struct {
-	*Client
+	con            *armcore.Connection
 	subscriptionID string
 }
 
 // NewProvidersClient creates a new instance of ProvidersClient with the specified values.
-func NewProvidersClient(c *Client, subscriptionID string) ProvidersOperations {
-	return &ProvidersClient{Client: c, subscriptionID: subscriptionID}
+func NewProvidersClient(con *armcore.Connection, subscriptionID string) ProvidersOperations {
+	return &ProvidersClient{con: con, subscriptionID: subscriptionID}
 }
 
-// Do invokes the Do() method on the pipeline associated with this client.
-func (client *ProvidersClient) Do(req *azcore.Request) (*azcore.Response, error) {
-	return client.p.Do(req)
+// Pipeline returns the pipeline associated with this client.
+func (client *ProvidersClient) Pipeline() azcore.Pipeline {
+	return client.con.Pipeline()
 }
 
 // Get - Gets the specified resource provider.
@@ -55,7 +56,7 @@ func (client *ProvidersClient) Get(ctx context.Context, resourceProviderNamespac
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +75,7 @@ func (client *ProvidersClient) GetCreateRequest(ctx context.Context, resourcePro
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +110,7 @@ func (client *ProvidersClient) GetAtTenantScope(ctx context.Context, resourcePro
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +128,7 @@ func (client *ProvidersClient) GetAtTenantScope(ctx context.Context, resourcePro
 func (client *ProvidersClient) GetAtTenantScopeCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetAtTenantScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/{resourceProviderNamespace}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +160,7 @@ func (client *ProvidersClient) GetAtTenantScopeHandleError(resp *azcore.Response
 // List - Gets all resource providers for a subscription.
 func (client *ProvidersClient) List(options *ProvidersListOptions) ProviderListResultPager {
 	return &providerListResultPager{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.ListCreateRequest(ctx, options)
 		},
@@ -176,7 +177,7 @@ func (client *ProvidersClient) List(options *ProvidersListOptions) ProviderListR
 func (client *ProvidersClient) ListCreateRequest(ctx context.Context, options *ProvidersListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -211,7 +212,7 @@ func (client *ProvidersClient) ListHandleError(resp *azcore.Response) error {
 // ListAtTenantScope - Gets all resource providers for the tenant.
 func (client *ProvidersClient) ListAtTenantScope(options *ProvidersListAtTenantScopeOptions) ProviderListResultPager {
 	return &providerListResultPager{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.ListAtTenantScopeCreateRequest(ctx, options)
 		},
@@ -227,7 +228,7 @@ func (client *ProvidersClient) ListAtTenantScope(options *ProvidersListAtTenantS
 // ListAtTenantScopeCreateRequest creates the ListAtTenantScope request.
 func (client *ProvidersClient) ListAtTenantScopeCreateRequest(ctx context.Context, options *ProvidersListAtTenantScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers"
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -265,7 +266,7 @@ func (client *ProvidersClient) Register(ctx context.Context, resourceProviderNam
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -284,7 +285,7 @@ func (client *ProvidersClient) RegisterCreateRequest(ctx context.Context, resour
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -316,7 +317,7 @@ func (client *ProvidersClient) RegisterAtManagementGroupScope(ctx context.Contex
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -331,7 +332,7 @@ func (client *ProvidersClient) RegisterAtManagementGroupScopeCreateRequest(ctx c
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/{resourceProviderNamespace}/register"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupId))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -357,7 +358,7 @@ func (client *ProvidersClient) Unregister(ctx context.Context, resourceProviderN
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -376,7 +377,7 @@ func (client *ProvidersClient) UnregisterCreateRequest(ctx context.Context, reso
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/unregister"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

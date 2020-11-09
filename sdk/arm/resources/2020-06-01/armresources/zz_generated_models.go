@@ -14,16 +14,16 @@ import (
 )
 
 type APIProfile struct {
-	// The API version.
+	// READ-ONLY; The API version.
 	APIVersion *string `json:"apiVersion,omitempty" azure:"ro"`
 
-	// The profile version.
+	// READ-ONLY; The profile version.
 	ProfileVersion *string `json:"profileVersion,omitempty" azure:"ro"`
 }
 
 // The alias type.
 type Alias struct {
-	// The default alias path metadata. Applies to the default path and to any alias path that doesn't have metadata
+	// READ-ONLY; The default alias path metadata. Applies to the default path and to any alias path that doesn't have metadata
 	DefaultMetadata *AliasPathMetadata `json:"defaultMetadata,omitempty" azure:"ro"`
 
 	// The default path for an alias.
@@ -47,7 +47,7 @@ type AliasPath struct {
 	// The API versions.
 	APIVersions *[]string `json:"apiVersions,omitempty"`
 
-	// The metadata of the alias path. If missing, fall back to the default metadata of the alias.
+	// READ-ONLY; The metadata of the alias path. If missing, fall back to the default metadata of the alias.
 	Metadata *AliasPathMetadata `json:"metadata,omitempty" azure:"ro"`
 
 	// The path of an alias.
@@ -58,10 +58,10 @@ type AliasPath struct {
 }
 
 type AliasPathMetadata struct {
-	// The attributes of the token that the alias path is referring to.
+	// READ-ONLY; The attributes of the token that the alias path is referring to.
 	Attributes *AliasPathAttributes `json:"attributes,omitempty" azure:"ro"`
 
-	// The type of the token that the alias path is referring to.
+	// READ-ONLY; The type of the token that the alias path is referring to.
 	Type *AliasPathTokenType `json:"type,omitempty" azure:"ro"`
 }
 
@@ -171,13 +171,13 @@ type DeploymentExportResultResponse struct {
 
 // Deployment information.
 type DeploymentExtended struct {
-	// The ID of the deployment.
+	// READ-ONLY; The ID of the deployment.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// the location of the deployment.
 	Location *string `json:"location,omitempty"`
 
-	// The name of the deployment.
+	// READ-ONLY; The name of the deployment.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// Deployment properties.
@@ -186,7 +186,7 @@ type DeploymentExtended struct {
 	// Deployment tags
 	Tags *map[string]string `json:"tags,omitempty"`
 
-	// The type of the deployment.
+	// READ-ONLY; The type of the deployment.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -219,7 +219,7 @@ type DeploymentExtendedResponse struct {
 
 // List of deployments.
 type DeploymentListResult struct {
-	// The URL to use for getting the next set of results.
+	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// An array of deployments.
@@ -237,10 +237,10 @@ type DeploymentListResultResponse struct {
 
 // Deployment operation information.
 type DeploymentOperation struct {
-	// Full deployment operation ID.
+	// READ-ONLY; Full deployment operation ID.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// Deployment operation ID.
+	// READ-ONLY; Deployment operation ID.
 	OperationID *string `json:"operationId,omitempty" azure:"ro"`
 
 	// Deployment properties.
@@ -249,34 +249,35 @@ type DeploymentOperation struct {
 
 // Deployment operation properties.
 type DeploymentOperationProperties struct {
-	// The duration of the operation.
+	// READ-ONLY; The duration of the operation.
 	Duration *string `json:"duration,omitempty" azure:"ro"`
 
-	// The name of the current provisioning operation.
+	// READ-ONLY; The name of the current provisioning operation.
 	ProvisioningOperation *ProvisioningOperation `json:"provisioningOperation,omitempty" azure:"ro"`
 
-	// The state of the provisioning.
+	// READ-ONLY; The state of the provisioning.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 
-	// The HTTP request message.
+	// READ-ONLY; The HTTP request message.
 	Request *HTTPMessage `json:"request,omitempty" azure:"ro"`
 
-	// The HTTP response message.
+	// READ-ONLY; The HTTP response message.
 	Response *HTTPMessage `json:"response,omitempty" azure:"ro"`
 
-	// Deployment operation service request id.
+	// READ-ONLY; Deployment operation service request id.
 	ServiceRequestID *string `json:"serviceRequestId,omitempty" azure:"ro"`
 
-	// Operation status code from the resource provider. This property may not be set if a response has not yet been received.
+	// READ-ONLY; Operation status code from the resource provider. This property may not be set if a response has not yet been received.
 	StatusCode *string `json:"statusCode,omitempty" azure:"ro"`
 
-	// Operation status message from the resource provider. This property is optional. It will only be provided if an error was received from the resource provider.
+	// READ-ONLY; Operation status message from the resource provider. This property is optional. It will only be provided if an error was received from the
+	// resource provider.
 	StatusMessage *StatusMessage `json:"statusMessage,omitempty" azure:"ro"`
 
-	// The target resource.
+	// READ-ONLY; The target resource.
 	TargetResource *TargetResource `json:"targetResource,omitempty" azure:"ro"`
 
-	// The date and time of the operation.
+	// READ-ONLY; The date and time of the operation.
 	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
 }
 
@@ -451,7 +452,7 @@ type DeploymentOperationsListOptions struct {
 
 // List of deployment operations.
 type DeploymentOperationsListResult struct {
-	// The URL to use for getting the next set of results.
+	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// An array of deployment operations.
@@ -506,55 +507,55 @@ type DeploymentProperties struct {
 
 // Deployment properties with additional details.
 type DeploymentPropertiesExtended struct {
-	// The correlation ID of the deployment.
+	// READ-ONLY; The correlation ID of the deployment.
 	CorrelationID *string `json:"correlationId,omitempty" azure:"ro"`
 
-	// The debug setting of the deployment.
+	// READ-ONLY; The debug setting of the deployment.
 	DebugSetting *DebugSetting `json:"debugSetting,omitempty" azure:"ro"`
 
-	// The list of deployment dependencies.
+	// READ-ONLY; The list of deployment dependencies.
 	Dependencies *[]Dependency `json:"dependencies,omitempty" azure:"ro"`
 
-	// The duration of the template deployment.
+	// READ-ONLY; The duration of the template deployment.
 	Duration *string `json:"duration,omitempty" azure:"ro"`
 
-	// The deployment error.
+	// READ-ONLY; The deployment error.
 	Error *ErrorResponse `json:"error,omitempty" azure:"ro"`
 
-	// The deployment mode. Possible values are Incremental and Complete.
+	// READ-ONLY; The deployment mode. Possible values are Incremental and Complete.
 	Mode *DeploymentMode `json:"mode,omitempty" azure:"ro"`
 
-	// The deployment on error behavior.
+	// READ-ONLY; The deployment on error behavior.
 	OnErrorDeployment *OnErrorDeploymentExtended `json:"onErrorDeployment,omitempty" azure:"ro"`
 
-	// Array of provisioned resources.
+	// READ-ONLY; Array of provisioned resources.
 	OutputResources *[]ResourceReference `json:"outputResources,omitempty" azure:"ro"`
 
-	// Key/value pairs that represent deployment output.
+	// READ-ONLY; Key/value pairs that represent deployment output.
 	Outputs *interface{} `json:"outputs,omitempty" azure:"ro"`
 
-	// Deployment parameters.
+	// READ-ONLY; Deployment parameters.
 	Parameters *interface{} `json:"parameters,omitempty" azure:"ro"`
 
-	// The URI referencing the parameters.
+	// READ-ONLY; The URI referencing the parameters.
 	ParametersLink *ParametersLink `json:"parametersLink,omitempty" azure:"ro"`
 
-	// The list of resource providers needed for the deployment.
+	// READ-ONLY; The list of resource providers needed for the deployment.
 	Providers *[]Provider `json:"providers,omitempty" azure:"ro"`
 
-	// Denotes the state of provisioning.
+	// READ-ONLY; Denotes the state of provisioning.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
-	// The hash produced for the template.
+	// READ-ONLY; The hash produced for the template.
 	TemplateHash *string `json:"templateHash,omitempty" azure:"ro"`
 
-	// The URI referencing the template.
+	// READ-ONLY; The URI referencing the template.
 	TemplateLink *TemplateLink `json:"templateLink,omitempty" azure:"ro"`
 
-	// The timestamp of the template deployment.
+	// READ-ONLY; The timestamp of the template deployment.
 	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
 
-	// Array of validated resources.
+	// READ-ONLY; Array of validated resources.
 	ValidatedResources *[]ResourceReference `json:"validatedResources,omitempty" azure:"ro"`
 }
 
@@ -721,7 +722,7 @@ func (d *DeploymentPropertiesExtended) UnmarshalJSON(data []byte) error {
 
 // Information from validate template deployment response.
 type DeploymentValidateResult struct {
-	// The deployment validation error.
+	// READ-ONLY; The deployment validation error.
 	Error *ErrorResponse `json:"error,omitempty" azure:"ro"`
 
 	// The template deployment properties.
@@ -1013,29 +1014,29 @@ type DeploymentsWhatIfOptions struct {
 
 // The resource management error additional info.
 type ErrorAdditionalInfo struct {
-	// The additional info.
+	// READ-ONLY; The additional info.
 	Info *interface{} `json:"info,omitempty" azure:"ro"`
 
-	// The additional info type.
+	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData error response
 // format.)
 type ErrorResponse struct {
-	// The error additional info.
+	// READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
 
-	// The error code.
+	// READ-ONLY; The error code.
 	Code *string `json:"code,omitempty" azure:"ro"`
 
-	// The error details.
+	// READ-ONLY; The error details.
 	Details *[]ErrorResponse `json:"details,omitempty" azure:"ro"`
 
-	// The error message.
+	// READ-ONLY; The error message.
 	Message *string `json:"message,omitempty" azure:"ro"`
 
-	// The error target.
+	// READ-ONLY; The error target.
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
@@ -1160,13 +1161,13 @@ func (g *GenericResource) unmarshalInternal(rawMsg map[string]*json.RawMessage) 
 // Resource information.
 type GenericResourceExpanded struct {
 	GenericResource
-	// The changed time of the resource. This is only present if requested via the $expand query parameter.
+	// READ-ONLY; The changed time of the resource. This is only present if requested via the $expand query parameter.
 	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
 
-	// The created time of the resource. This is only present if requested via the $expand query parameter.
+	// READ-ONLY; The created time of the resource. This is only present if requested via the $expand query parameter.
 	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
 
-	// The provisioning state of the resource. This is only present if requested via the $expand query parameter.
+	// READ-ONLY; The provisioning state of the resource. This is only present if requested via the $expand query parameter.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
@@ -1274,10 +1275,10 @@ type HTTPPollerResponse struct {
 
 // Identity for the resource.
 type IDentity struct {
-	// The principal ID of resource identity.
+	// READ-ONLY; The principal ID of resource identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 
-	// The tenant ID of resource.
+	// READ-ONLY; The tenant ID of resource.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 
 	// The identity type.
@@ -1289,10 +1290,10 @@ type IDentity struct {
 }
 
 type IDentityUserAssignedIdentitiesValue struct {
-	// The client id of user assigned identity.
+	// READ-ONLY; The client id of user assigned identity.
 	ClientID *string `json:"clientId,omitempty" azure:"ro"`
 
-	// The principal id of user assigned identity.
+	// READ-ONLY; The principal id of user assigned identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
@@ -1310,7 +1311,7 @@ type OnErrorDeploymentExtended struct {
 	// The deployment to be used on error case.
 	DeploymentName *string `json:"deploymentName,omitempty"`
 
-	// The state of the provisioning for the on error deployment.
+	// READ-ONLY; The state of the provisioning for the on error deployment.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 
 	// The deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment.
@@ -1393,25 +1394,25 @@ type Plan struct {
 
 // Resource provider information.
 type Provider struct {
-	// The provider ID.
+	// READ-ONLY; The provider ID.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// The namespace of the resource provider.
 	Namespace *string `json:"namespace,omitempty"`
 
-	// The registration policy of the resource provider.
+	// READ-ONLY; The registration policy of the resource provider.
 	RegistrationPolicy *string `json:"registrationPolicy,omitempty" azure:"ro"`
 
-	// The registration state of the resource provider.
+	// READ-ONLY; The registration state of the resource provider.
 	RegistrationState *string `json:"registrationState,omitempty" azure:"ro"`
 
-	// The collection of provider resource types.
+	// READ-ONLY; The collection of provider resource types.
 	ResourceTypes *[]ProviderResourceType `json:"resourceTypes,omitempty" azure:"ro"`
 }
 
 // List of resource providers.
 type ProviderListResult struct {
-	// The URL to use for getting the next set of results.
+	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// An array of resource providers.
@@ -1429,7 +1430,7 @@ type ProviderListResultResponse struct {
 
 // Resource type managed by the resource provider.
 type ProviderResourceType struct {
-	// The API profiles for the resource provider.
+	// READ-ONLY; The API profiles for the resource provider.
 	APIProfiles *[]APIProfile `json:"apiProfiles,omitempty" azure:"ro"`
 
 	// The API version.
@@ -1441,7 +1442,7 @@ type ProviderResourceType struct {
 	// The additional capabilities offered by this resource type.
 	Capabilities *string `json:"capabilities,omitempty"`
 
-	// The default API version.
+	// READ-ONLY; The default API version.
 	DefaultAPIVersion *string `json:"defaultApiVersion,omitempty" azure:"ro"`
 
 	// The collection of locations where this resource type can be created.
@@ -1510,19 +1511,19 @@ type ProvidersUnregisterOptions struct {
 
 // Specified resource.
 type Resource struct {
-	// Resource ID
+	// READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// Resource location
 	Location *string `json:"location,omitempty"`
 
-	// Resource name
+	// READ-ONLY; Resource name
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// Resource tags
 	Tags *map[string]string `json:"tags,omitempty"`
 
-	// Resource type
+	// READ-ONLY; Resource type
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -1585,7 +1586,7 @@ func (r *Resource) unmarshalInternal(rawMsg map[string]*json.RawMessage) error {
 
 // Resource group information.
 type ResourceGroup struct {
-	// The ID of the resource group.
+	// READ-ONLY; The ID of the resource group.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// The location of the resource group. It cannot be changed after the resource group has been created. It must be one of the supported Azure locations.
@@ -1594,7 +1595,7 @@ type ResourceGroup struct {
 	// The ID of the resource that manages this resource group.
 	ManagedBy *string `json:"managedBy,omitempty"`
 
-	// The name of the resource group.
+	// READ-ONLY; The name of the resource group.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// The resource group properties.
@@ -1603,7 +1604,7 @@ type ResourceGroup struct {
 	// The tags attached to the resource group.
 	Tags *map[string]string `json:"tags,omitempty"`
 
-	// The type of the resource group.
+	// READ-ONLY; The type of the resource group.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
@@ -1648,7 +1649,7 @@ type ResourceGroupFilter struct {
 
 // List of resource groups.
 type ResourceGroupListResult struct {
-	// The URL to use for getting the next set of results.
+	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// An array of resource groups.
@@ -1681,7 +1682,7 @@ type ResourceGroupPatchable struct {
 
 // The resource group properties.
 type ResourceGroupProperties struct {
-	// The provisioning state.
+	// READ-ONLY; The provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
 }
 
@@ -1735,7 +1736,7 @@ type ResourceGroupsUpdateOptions struct {
 
 // List of resource groups.
 type ResourceListResult struct {
-	// The URL to use for getting the next set of results.
+	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// An array of resources.
@@ -1771,7 +1772,7 @@ type ResourceProviderOperationDisplayProperties struct {
 
 // The resource Id model.
 type ResourceReference struct {
-	// The fully qualified resource Id.
+	// READ-ONLY; The fully qualified resource Id.
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
@@ -1951,7 +1952,7 @@ type TagDetails struct {
 	// The total number of resources that use the resource tag. When a tag is initially created and has no associated resources, the value is 0.
 	Count *TagCount `json:"count,omitempty"`
 
-	// The tag name ID.
+	// READ-ONLY; The tag name ID.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// The tag name.
@@ -1975,7 +1976,7 @@ type TagValue struct {
 	// The tag value count.
 	Count *TagCount `json:"count,omitempty"`
 
-	// The tag value ID.
+	// READ-ONLY; The tag value ID.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// The tag value.
@@ -2039,7 +2040,7 @@ type TagsListOptions struct {
 
 // List of subscription tags.
 type TagsListResult struct {
-	// The URL to use for getting the next set of results.
+	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// An array of tags.
@@ -2066,16 +2067,16 @@ type TagsPatchResource struct {
 
 // Wrapper resource for tags API requests and responses.
 type TagsResource struct {
-	// The ID of the tags wrapper resource.
+	// READ-ONLY; The ID of the tags wrapper resource.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
-	// The name of the tags wrapper resource.
+	// READ-ONLY; The name of the tags wrapper resource.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// The set of tags.
 	Properties *Tags `json:"properties,omitempty"`
 
-	// The type of the tags wrapper resource.
+	// READ-ONLY; The type of the tags wrapper resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 

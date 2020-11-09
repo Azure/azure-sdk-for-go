@@ -7,6 +7,7 @@ package armresources
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
@@ -52,18 +53,18 @@ type TagsOperations interface {
 // TagsClient implements the TagsOperations interface.
 // Don't use this type directly, use NewTagsClient() instead.
 type TagsClient struct {
-	*Client
+	con            *armcore.Connection
 	subscriptionID string
 }
 
 // NewTagsClient creates a new instance of TagsClient with the specified values.
-func NewTagsClient(c *Client, subscriptionID string) TagsOperations {
-	return &TagsClient{Client: c, subscriptionID: subscriptionID}
+func NewTagsClient(con *armcore.Connection, subscriptionID string) TagsOperations {
+	return &TagsClient{con: con, subscriptionID: subscriptionID}
 }
 
-// Do invokes the Do() method on the pipeline associated with this client.
-func (client *TagsClient) Do(req *azcore.Request) (*azcore.Response, error) {
-	return client.p.Do(req)
+// Pipeline returns the pipeline associated with this client.
+func (client *TagsClient) Pipeline() azcore.Pipeline {
+	return client.con.Pipeline()
 }
 
 // CreateOrUpdate - This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name can have a maximum of
@@ -74,7 +75,7 @@ func (client *TagsClient) CreateOrUpdate(ctx context.Context, tagName string, op
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +94,7 @@ func (client *TagsClient) CreateOrUpdateCreateRequest(ctx context.Context, tagNa
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}"
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +127,7 @@ func (client *TagsClient) CreateOrUpdateAtScope(ctx context.Context, scope strin
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -144,7 +145,7 @@ func (client *TagsClient) CreateOrUpdateAtScope(ctx context.Context, scope strin
 func (client *TagsClient) CreateOrUpdateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsResource, options *TagsCreateOrUpdateAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +178,7 @@ func (client *TagsClient) CreateOrUpdateValue(ctx context.Context, tagName strin
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -197,7 +198,7 @@ func (client *TagsClient) CreateOrUpdateValueCreateRequest(ctx context.Context, 
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
 	urlPath = strings.ReplaceAll(urlPath, "{tagValue}", url.PathEscape(tagValue))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -231,7 +232,7 @@ func (client *TagsClient) Delete(ctx context.Context, tagName string, options *T
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -246,7 +247,7 @@ func (client *TagsClient) DeleteCreateRequest(ctx context.Context, tagName strin
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}"
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -272,7 +273,7 @@ func (client *TagsClient) DeleteAtScope(ctx context.Context, scope string, optio
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -286,7 +287,7 @@ func (client *TagsClient) DeleteAtScope(ctx context.Context, scope string, optio
 func (client *TagsClient) DeleteAtScopeCreateRequest(ctx context.Context, scope string, options *TagsDeleteAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -314,7 +315,7 @@ func (client *TagsClient) DeleteValue(ctx context.Context, tagName string, tagVa
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -330,7 +331,7 @@ func (client *TagsClient) DeleteValueCreateRequest(ctx context.Context, tagName 
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
 	urlPath = strings.ReplaceAll(urlPath, "{tagValue}", url.PathEscape(tagValue))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -356,7 +357,7 @@ func (client *TagsClient) GetAtScope(ctx context.Context, scope string, options 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -374,7 +375,7 @@ func (client *TagsClient) GetAtScope(ctx context.Context, scope string, options 
 func (client *TagsClient) GetAtScopeCreateRequest(ctx context.Context, scope string, options *TagsGetAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -405,7 +406,7 @@ func (client *TagsClient) GetAtScopeHandleError(resp *azcore.Response) error {
 // In case of a large number of tags, this operation may return a previously cached result.
 func (client *TagsClient) List(options *TagsListOptions) TagsListResultPager {
 	return &tagsListResultPager{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.ListCreateRequest(ctx, options)
 		},
@@ -422,7 +423,7 @@ func (client *TagsClient) List(options *TagsListOptions) TagsListResultPager {
 func (client *TagsClient) ListCreateRequest(ctx context.Context, options *TagsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -458,7 +459,7 @@ func (client *TagsClient) UpdateAtScope(ctx context.Context, scope string, param
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -476,7 +477,7 @@ func (client *TagsClient) UpdateAtScope(ctx context.Context, scope string, param
 func (client *TagsClient) UpdateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsUpdateAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

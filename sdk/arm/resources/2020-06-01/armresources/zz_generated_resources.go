@@ -73,18 +73,18 @@ type ResourcesOperations interface {
 // ResourcesClient implements the ResourcesOperations interface.
 // Don't use this type directly, use NewResourcesClient() instead.
 type ResourcesClient struct {
-	*Client
+	con            *armcore.Connection
 	subscriptionID string
 }
 
 // NewResourcesClient creates a new instance of ResourcesClient with the specified values.
-func NewResourcesClient(c *Client, subscriptionID string) ResourcesOperations {
-	return &ResourcesClient{Client: c, subscriptionID: subscriptionID}
+func NewResourcesClient(con *armcore.Connection, subscriptionID string) ResourcesOperations {
+	return &ResourcesClient{con: con, subscriptionID: subscriptionID}
 }
 
-// Do invokes the Do() method on the pipeline associated with this client.
-func (client *ResourcesClient) Do(req *azcore.Request) (*azcore.Response, error) {
-	return client.p.Do(req)
+// Pipeline returns the pipeline associated with this client.
+func (client *ResourcesClient) Pipeline() azcore.Pipeline {
+	return client.con.Pipeline()
 }
 
 // CheckExistence - Checks whether a resource exists.
@@ -93,7 +93,7 @@ func (client *ResourcesClient) CheckExistence(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func (client *ResourcesClient) CheckExistenceCreateRequest(ctx context.Context, 
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -141,7 +141,7 @@ func (client *ResourcesClient) CheckExistenceByID(ctx context.Context, resourceI
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -158,7 +158,7 @@ func (client *ResourcesClient) CheckExistenceByID(ctx context.Context, resourceI
 func (client *ResourcesClient) CheckExistenceByIDCreateRequest(ctx context.Context, resourceId string, apiVersion string, options *ResourcesCheckExistenceByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
-	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +192,7 @@ func (client *ResourcesClient) BeginCreateOrUpdate(ctx context.Context, resource
 	}
 	poller := &genericResourcePoller{
 		pt:       pt,
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*GenericResourceResponse, error) {
@@ -207,7 +207,7 @@ func (client *ResourcesClient) ResumeCreateOrUpdate(token string) (GenericResour
 		return nil, err
 	}
 	return &genericResourcePoller{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		pt:       pt,
 	}, nil
 }
@@ -218,7 +218,7 @@ func (client *ResourcesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -237,7 +237,7 @@ func (client *ResourcesClient) CreateOrUpdateCreateRequest(ctx context.Context, 
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -277,7 +277,7 @@ func (client *ResourcesClient) BeginCreateOrUpdateByID(ctx context.Context, reso
 	}
 	poller := &genericResourcePoller{
 		pt:       pt,
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*GenericResourceResponse, error) {
@@ -292,7 +292,7 @@ func (client *ResourcesClient) ResumeCreateOrUpdateByID(token string) (GenericRe
 		return nil, err
 	}
 	return &genericResourcePoller{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		pt:       pt,
 	}, nil
 }
@@ -303,7 +303,7 @@ func (client *ResourcesClient) CreateOrUpdateByID(ctx context.Context, resourceI
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -317,7 +317,7 @@ func (client *ResourcesClient) CreateOrUpdateByID(ctx context.Context, resourceI
 func (client *ResourcesClient) CreateOrUpdateByIDCreateRequest(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesCreateOrUpdateByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -357,7 +357,7 @@ func (client *ResourcesClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 	poller := &httpPoller{
 		pt:       pt,
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -372,7 +372,7 @@ func (client *ResourcesClient) ResumeDelete(token string) (HTTPPoller, error) {
 		return nil, err
 	}
 	return &httpPoller{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		pt:       pt,
 	}, nil
 }
@@ -383,7 +383,7 @@ func (client *ResourcesClient) Delete(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -402,7 +402,7 @@ func (client *ResourcesClient) DeleteCreateRequest(ctx context.Context, resource
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -436,7 +436,7 @@ func (client *ResourcesClient) BeginDeleteByID(ctx context.Context, resourceId s
 	}
 	poller := &httpPoller{
 		pt:       pt,
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -451,7 +451,7 @@ func (client *ResourcesClient) ResumeDeleteByID(token string) (HTTPPoller, error
 		return nil, err
 	}
 	return &httpPoller{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		pt:       pt,
 	}, nil
 }
@@ -462,7 +462,7 @@ func (client *ResourcesClient) DeleteByID(ctx context.Context, resourceId string
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -476,7 +476,7 @@ func (client *ResourcesClient) DeleteByID(ctx context.Context, resourceId string
 func (client *ResourcesClient) DeleteByIDCreateRequest(ctx context.Context, resourceId string, apiVersion string, options *ResourcesDeleteByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -502,7 +502,7 @@ func (client *ResourcesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -525,7 +525,7 @@ func (client *ResourcesClient) GetCreateRequest(ctx context.Context, resourceGro
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -557,7 +557,7 @@ func (client *ResourcesClient) GetByID(ctx context.Context, resourceId string, a
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -575,7 +575,7 @@ func (client *ResourcesClient) GetByID(ctx context.Context, resourceId string, a
 func (client *ResourcesClient) GetByIDCreateRequest(ctx context.Context, resourceId string, apiVersion string, options *ResourcesGetByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -604,7 +604,7 @@ func (client *ResourcesClient) GetByIDHandleError(resp *azcore.Response) error {
 // List - Get all the resources in a subscription.
 func (client *ResourcesClient) List(options *ResourcesListOptions) ResourceListResultPager {
 	return &resourceListResultPager{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.ListCreateRequest(ctx, options)
 		},
@@ -621,7 +621,7 @@ func (client *ResourcesClient) List(options *ResourcesListOptions) ResourceListR
 func (client *ResourcesClient) ListCreateRequest(ctx context.Context, options *ResourcesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resources"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -659,7 +659,7 @@ func (client *ResourcesClient) ListHandleError(resp *azcore.Response) error {
 // ListByResourceGroup - Get all the resources for a resource group.
 func (client *ResourcesClient) ListByResourceGroup(resourceGroupName string, options *ResourcesListByResourceGroupOptions) ResourceListResultPager {
 	return &resourceListResultPager{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
@@ -677,7 +677,7 @@ func (client *ResourcesClient) ListByResourceGroupCreateRequest(ctx context.Cont
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -726,7 +726,7 @@ func (client *ResourcesClient) BeginMoveResources(ctx context.Context, sourceRes
 	}
 	poller := &httpPoller{
 		pt:       pt,
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -741,7 +741,7 @@ func (client *ResourcesClient) ResumeMoveResources(token string) (HTTPPoller, er
 		return nil, err
 	}
 	return &httpPoller{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		pt:       pt,
 	}, nil
 }
@@ -754,7 +754,7 @@ func (client *ResourcesClient) MoveResources(ctx context.Context, sourceResource
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -769,7 +769,7 @@ func (client *ResourcesClient) MoveResourcesCreateRequest(ctx context.Context, s
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources"
 	urlPath = strings.ReplaceAll(urlPath, "{sourceResourceGroupName}", url.PathEscape(sourceResourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -803,7 +803,7 @@ func (client *ResourcesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 	}
 	poller := &genericResourcePoller{
 		pt:       pt,
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*GenericResourceResponse, error) {
@@ -818,7 +818,7 @@ func (client *ResourcesClient) ResumeUpdate(token string) (GenericResourcePoller
 		return nil, err
 	}
 	return &genericResourcePoller{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		pt:       pt,
 	}, nil
 }
@@ -829,7 +829,7 @@ func (client *ResourcesClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -848,7 +848,7 @@ func (client *ResourcesClient) UpdateCreateRequest(ctx context.Context, resource
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -888,7 +888,7 @@ func (client *ResourcesClient) BeginUpdateByID(ctx context.Context, resourceId s
 	}
 	poller := &genericResourcePoller{
 		pt:       pt,
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*GenericResourceResponse, error) {
@@ -903,7 +903,7 @@ func (client *ResourcesClient) ResumeUpdateByID(token string) (GenericResourcePo
 		return nil, err
 	}
 	return &genericResourcePoller{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		pt:       pt,
 	}, nil
 }
@@ -914,7 +914,7 @@ func (client *ResourcesClient) UpdateByID(ctx context.Context, resourceId string
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -928,7 +928,7 @@ func (client *ResourcesClient) UpdateByID(ctx context.Context, resourceId string
 func (client *ResourcesClient) UpdateByIDCreateRequest(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesUpdateByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -968,7 +968,7 @@ func (client *ResourcesClient) BeginValidateMoveResources(ctx context.Context, s
 	}
 	poller := &httpPoller{
 		pt:       pt,
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -983,7 +983,7 @@ func (client *ResourcesClient) ResumeValidateMoveResources(token string) (HTTPPo
 		return nil, err
 	}
 	return &httpPoller{
-		pipeline: client.p,
+		pipeline: client.con.Pipeline(),
 		pt:       pt,
 	}, nil
 }
@@ -998,7 +998,7 @@ func (client *ResourcesClient) ValidateMoveResources(ctx context.Context, source
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.Do(req)
+	resp, err := client.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1013,7 +1013,7 @@ func (client *ResourcesClient) ValidateMoveResourcesCreateRequest(ctx context.Co
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/validateMoveResources"
 	urlPath = strings.ReplaceAll(urlPath, "{sourceResourceGroupName}", url.PathEscape(sourceResourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.u, urlPath))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

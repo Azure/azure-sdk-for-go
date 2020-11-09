@@ -8,6 +8,7 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
@@ -16,7 +17,7 @@ func ExampleResourcesOperations_CheckExistence() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armresources.NewResourcesClient(armresources.NewDefaultClient(cred, nil), "<subscription ID>")
+	client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.GetByID(context.Background(), "<resource ID>", "<api version>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -29,7 +30,7 @@ func ExampleResourcesOperations_List() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armresources.NewResourcesClient(armresources.NewDefaultClient(cred, nil), "<subscription ID>")
+	client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
 	page := client.ListByResourceGroup("<resource group name>", nil)
 	for page.NextPage(context.Background()) {
 		resp := page.PageResponse()

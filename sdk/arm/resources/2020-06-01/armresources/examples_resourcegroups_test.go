@@ -89,11 +89,10 @@ func ExampleResourceGroupsOperations_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
 	}
-	resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
+	_, err = poller.PollUntilDone(context.Background(), 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to delete resource group: %v", err)
 	}
-	log.Printf("resource group deletion status code: %d\n", resp.StatusCode)
 }
 
 func ExampleResourceGroupsOperations_Get() {
@@ -137,9 +136,8 @@ func ExampleResourceGroupsOperations_ResumeDelete() {
 		}
 		time.Sleep(5 * time.Second)
 	}
-	resp, err := rgPoller.FinalResponse(context.Background())
+	_, err = rgPoller.FinalResponse(context.Background())
 	if err != nil {
 		log.Fatalf("failed to get final poller response: %v", err)
 	}
-	log.Printf("resource group deletion status code: %d\n", resp.StatusCode)
 }

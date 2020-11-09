@@ -26,32 +26,33 @@ import (
 	"net/http"
 )
 
-// SQLPoolRestorePointsClient is the azure Synapse Analytics Management Client
-type SQLPoolRestorePointsClient struct {
+// SQLPoolWorkloadGroupClient is the azure Synapse Analytics Management Client
+type SQLPoolWorkloadGroupClient struct {
 	BaseClient
 }
 
-// NewSQLPoolRestorePointsClient creates an instance of the SQLPoolRestorePointsClient client.
-func NewSQLPoolRestorePointsClient(subscriptionID string) SQLPoolRestorePointsClient {
-	return NewSQLPoolRestorePointsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewSQLPoolWorkloadGroupClient creates an instance of the SQLPoolWorkloadGroupClient client.
+func NewSQLPoolWorkloadGroupClient(subscriptionID string) SQLPoolWorkloadGroupClient {
+	return NewSQLPoolWorkloadGroupClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSQLPoolRestorePointsClientWithBaseURI creates an instance of the SQLPoolRestorePointsClient client using a custom
+// NewSQLPoolWorkloadGroupClientWithBaseURI creates an instance of the SQLPoolWorkloadGroupClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewSQLPoolRestorePointsClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolRestorePointsClient {
-	return SQLPoolRestorePointsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewSQLPoolWorkloadGroupClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolWorkloadGroupClient {
+	return SQLPoolWorkloadGroupClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create creates a restore point for a data warehouse.
+// CreateOrUpdate create Or Update a Sql pool's workload group.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace
 // SQLPoolName - SQL pool name
-// parameters - the definition for creating the restore point of this Sql pool.
-func (client SQLPoolRestorePointsClient) Create(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters CreateSQLPoolRestorePointDefinition) (result SQLPoolRestorePointsCreateFuture, err error) {
+// workloadGroupName - the name of the workload group.
+// parameters - the requested workload group state.
+func (client SQLPoolWorkloadGroupClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string, parameters WorkloadGroup) (result SQLPoolWorkloadGroupCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolRestorePointsClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolWorkloadGroupClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response() != nil {
@@ -68,31 +69,36 @@ func (client SQLPoolRestorePointsClient) Create(ctx context.Context, resourceGro
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
 		{TargetValue: parameters,
-			Constraints: []validation.Constraint{{Target: "parameters.RestorePointLabel", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.SQLPoolRestorePointsClient", "Create", err.Error())
+			Constraints: []validation.Constraint{{Target: "parameters.WorkloadGroupProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "parameters.WorkloadGroupProperties.MinResourcePercent", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.WorkloadGroupProperties.MaxResourcePercent", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.WorkloadGroupProperties.MinResourcePercentPerRequest", Name: validation.Null, Rule: true, Chain: nil},
+				}}}}}); err != nil {
+		return result, validation.NewError("synapse.SQLPoolWorkloadGroupClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreatePreparer(ctx, resourceGroupName, workspaceName, SQLPoolName, parameters)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, SQLPoolName, workloadGroupName, parameters)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateSender(req)
+	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "Create", result.Response(), "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client SQLPoolRestorePointsClient) CreatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters CreateSQLPoolRestorePointDefinition) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client SQLPoolWorkloadGroupClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string, parameters WorkloadGroup) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"sqlPoolName":       autorest.Encode("path", SQLPoolName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"workloadGroupName": autorest.Encode("path", workloadGroupName),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -103,17 +109,17 @@ func (client SQLPoolRestorePointsClient) CreatePreparer(ctx context.Context, res
 
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
+		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}", pathParameters),
 		autorest.WithJSON(parameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client SQLPoolRestorePointsClient) CreateSender(req *http.Request) (future SQLPoolRestorePointsCreateFuture, err error) {
+func (client SQLPoolWorkloadGroupClient) CreateOrUpdateSender(req *http.Request) (future SQLPoolWorkloadGroupCreateOrUpdateFuture, err error) {
 	var resp *http.Response
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
@@ -123,9 +129,9 @@ func (client SQLPoolRestorePointsClient) CreateSender(req *http.Request) (future
 	return
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client SQLPoolRestorePointsClient) CreateResponder(resp *http.Response) (result RestorePoint, err error) {
+func (client SQLPoolWorkloadGroupClient) CreateOrUpdateResponder(resp *http.Response) (result WorkloadGroup, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
@@ -135,19 +141,19 @@ func (client SQLPoolRestorePointsClient) CreateResponder(resp *http.Response) (r
 	return
 }
 
-// Delete deletes a restore point.
+// Delete remove Sql pool's workload group.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace
 // SQLPoolName - SQL pool name
-// restorePointName - the name of the restore point.
-func (client SQLPoolRestorePointsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, restorePointName string) (result autorest.Response, err error) {
+// workloadGroupName - the name of the workload group.
+func (client SQLPoolWorkloadGroupClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string) (result SQLPoolWorkloadGroupDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolRestorePointsClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolWorkloadGroupClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.Response() != nil {
+				sc = result.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -159,37 +165,31 @@ func (client SQLPoolRestorePointsClient) Delete(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.SQLPoolRestorePointsClient", "Delete", err.Error())
+		return result, validation.NewError("synapse.SQLPoolWorkloadGroupClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName, SQLPoolName, restorePointName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName, SQLPoolName, workloadGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.DeleteSender(req)
+	result, err = client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "Delete", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupClient", "Delete", result.Response(), "Failure sending request")
 		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "Delete", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // DeletePreparer prepares the Delete request.
-func (client SQLPoolRestorePointsClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, restorePointName string) (*http.Request, error) {
+func (client SQLPoolWorkloadGroupClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"restorePointName":  autorest.Encode("path", restorePointName),
 		"sqlPoolName":       autorest.Encode("path", SQLPoolName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"workloadGroupName": autorest.Encode("path", workloadGroupName),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -201,37 +201,43 @@ func (client SQLPoolRestorePointsClient) DeletePreparer(ctx context.Context, res
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints/{restorePointName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client SQLPoolRestorePointsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client SQLPoolWorkloadGroupClient) DeleteSender(req *http.Request) (future SQLPoolWorkloadGroupDeleteFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	future.Future, err = azure.NewFutureFromResponse(resp)
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client SQLPoolRestorePointsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client SQLPoolWorkloadGroupClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
 }
 
-// Get gets a restore point.
+// Get get a Sql pool's workload group.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace
 // SQLPoolName - SQL pool name
-// restorePointName - the name of the restore point.
-func (client SQLPoolRestorePointsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, restorePointName string) (result RestorePoint, err error) {
+// workloadGroupName - the name of the workload group.
+func (client SQLPoolWorkloadGroupClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string) (result WorkloadGroup, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolRestorePointsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolWorkloadGroupClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -247,37 +253,37 @@ func (client SQLPoolRestorePointsClient) Get(ctx context.Context, resourceGroupN
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.SQLPoolRestorePointsClient", "Get", err.Error())
+		return result, validation.NewError("synapse.SQLPoolWorkloadGroupClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName, restorePointName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName, workloadGroupName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client SQLPoolRestorePointsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, restorePointName string) (*http.Request, error) {
+func (client SQLPoolWorkloadGroupClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, workloadGroupName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"restorePointName":  autorest.Encode("path", restorePointName),
 		"sqlPoolName":       autorest.Encode("path", SQLPoolName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"workloadGroupName": autorest.Encode("path", workloadGroupName),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -289,20 +295,20 @@ func (client SQLPoolRestorePointsClient) GetPreparer(ctx context.Context, resour
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints/{restorePointName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client SQLPoolRestorePointsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client SQLPoolWorkloadGroupClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client SQLPoolRestorePointsClient) GetResponder(resp *http.Response) (result RestorePoint, err error) {
+func (client SQLPoolWorkloadGroupClient) GetResponder(resp *http.Response) (result WorkloadGroup, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -312,18 +318,18 @@ func (client SQLPoolRestorePointsClient) GetResponder(resp *http.Response) (resu
 	return
 }
 
-// List get SQL pool backup information
+// List get list of  Sql pool's workload groups.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // workspaceName - the name of the workspace
 // SQLPoolName - SQL pool name
-func (client SQLPoolRestorePointsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result RestorePointListResultPage, err error) {
+func (client SQLPoolWorkloadGroupClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result WorkloadGroupListResultPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolRestorePointsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolWorkloadGroupClient.List")
 		defer func() {
 			sc := -1
-			if result.rplr.Response.Response != nil {
-				sc = result.rplr.Response.Response.StatusCode
+			if result.wglr.Response.Response != nil {
+				sc = result.wglr.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -335,28 +341,28 @@ func (client SQLPoolRestorePointsClient) List(ctx context.Context, resourceGroup
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.SQLPoolRestorePointsClient", "List", err.Error())
+		return result, validation.NewError("synapse.SQLPoolWorkloadGroupClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.rplr.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "List", resp, "Failure sending request")
+		result.wglr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.rplr, err = client.ListResponder(resp)
+	result.wglr, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupClient", "List", resp, "Failure responding to request")
 	}
-	if result.rplr.hasNextLink() && result.rplr.IsEmpty() {
+	if result.wglr.hasNextLink() && result.wglr.IsEmpty() {
 		err = result.NextWithContext(ctx)
 	}
 
@@ -364,7 +370,7 @@ func (client SQLPoolRestorePointsClient) List(ctx context.Context, resourceGroup
 }
 
 // ListPreparer prepares the List request.
-func (client SQLPoolRestorePointsClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
+func (client SQLPoolWorkloadGroupClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"sqlPoolName":       autorest.Encode("path", SQLPoolName),
@@ -380,20 +386,20 @@ func (client SQLPoolRestorePointsClient) ListPreparer(ctx context.Context, resou
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client SQLPoolRestorePointsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client SQLPoolWorkloadGroupClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client SQLPoolRestorePointsClient) ListResponder(resp *http.Response) (result RestorePointListResult, err error) {
+func (client SQLPoolWorkloadGroupClient) ListResponder(resp *http.Response) (result WorkloadGroupListResult, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -404,10 +410,10 @@ func (client SQLPoolRestorePointsClient) ListResponder(resp *http.Response) (res
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client SQLPoolRestorePointsClient) listNextResults(ctx context.Context, lastResults RestorePointListResult) (result RestorePointListResult, err error) {
-	req, err := lastResults.restorePointListResultPreparer(ctx)
+func (client SQLPoolWorkloadGroupClient) listNextResults(ctx context.Context, lastResults WorkloadGroupListResult) (result WorkloadGroupListResult, err error) {
+	req, err := lastResults.workloadGroupListResultPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -415,19 +421,19 @@ func (client SQLPoolRestorePointsClient) listNextResults(ctx context.Context, la
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadGroupClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SQLPoolRestorePointsClient) ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result RestorePointListResultIterator, err error) {
+func (client SQLPoolWorkloadGroupClient) ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result WorkloadGroupListResultIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolRestorePointsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolWorkloadGroupClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

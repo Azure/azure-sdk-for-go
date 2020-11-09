@@ -89,10 +89,11 @@ func ExampleResourceGroupsOperations_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
 	}
-	_, err = poller.PollUntilDone(context.Background(), 30*time.Second)
+	resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
 	if err != nil {
 		log.Fatalf("failed to delete resource group: %v", err)
 	}
+	log.Printf("resource group deletion status code: %d\n", resp.StatusCode)
 }
 
 func ExampleResourceGroupsOperations_Get() {
@@ -114,11 +115,11 @@ func ExampleResourceGroupsOperations_ResumeDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	client := armresources.NewResourceGroupsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
-	rg, err := client.BeginDelete(context.Background(), "<resource group name>", nil)
+	pollerResp, err := client.BeginDelete(context.Background(), "<resource group name>", nil)
 	if err != nil {
 		log.Fatalf("failed to get resource group: %v", err)
 	}
-	tk, err := rg.Poller.ResumeToken()
+	tk, err := pollerResp.Poller.ResumeToken()
 	if err != nil {
 		log.Fatalf("failed to get resource group poller resume token: %v", err)
 	}

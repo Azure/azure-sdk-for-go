@@ -190,7 +190,8 @@ func (aisccvc AzureIaaSClassicComputeVMContainer) AsBasicProtectionContainer() (
 	return &aisccvc, true
 }
 
-// AzureIaaSClassicComputeVMProtectableItem iaaS VM workload-specific backup item representing a classic VM.
+// AzureIaaSClassicComputeVMProtectableItem iaaS VM workload-specific backup item representing a classic
+// VM.
 type AzureIaaSClassicComputeVMProtectableItem struct {
 	// VirtualMachineID - The fully qualified Resource Manager ID of the virtual machine.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
@@ -256,7 +257,8 @@ func (aisccvpi AzureIaaSClassicComputeVMProtectableItem) AsBasicWorkloadProtecta
 	return &aisccvpi, true
 }
 
-// AzureIaaSClassicComputeVMProtectedItem iaaS VM workload-specific backup item representing the classic VM.
+// AzureIaaSClassicComputeVMProtectedItem iaaS VM workload-specific backup item representing the classic
+// VM.
 type AzureIaaSClassicComputeVMProtectedItem struct {
 	// FriendlyName - The friendly name of the VM represented by this backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -372,8 +374,8 @@ func (aisccvpi AzureIaaSClassicComputeVMProtectedItem) AsBasicProtectedItem() (B
 	return &aisccvpi, true
 }
 
-// AzureIaaSComputeVMContainer iaaS VM workload-specific backup item representing a Resource Manager-deployed
-// virtual machine.
+// AzureIaaSComputeVMContainer iaaS VM workload-specific backup item representing a Resource
+// Manager-deployed virtual machine.
 type AzureIaaSComputeVMContainer struct {
 	// VirtualMachineID - The fully qualified Resource Manager URL of the virtual machine represented by this Azure IaaS VM container.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
@@ -466,7 +468,8 @@ func (aiscvc AzureIaaSComputeVMContainer) AsBasicProtectionContainer() (BasicPro
 	return &aiscvc, true
 }
 
-// AzureIaaSComputeVMProtectableItem iaaS VM workload-specific backup item representing a Resource Manager VM.
+// AzureIaaSComputeVMProtectableItem iaaS VM workload-specific backup item representing a Resource Manager
+// VM.
 type AzureIaaSComputeVMProtectableItem struct {
 	// VirtualMachineID - The fully qualified Resource Manager ID of the virtual machine.
 	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
@@ -532,7 +535,8 @@ func (aiscvpi AzureIaaSComputeVMProtectableItem) AsBasicWorkloadProtectableItem(
 	return &aiscvpi, true
 }
 
-// AzureIaaSComputeVMProtectedItem iaaS VM workload-specific backup item representing the Resource Manager VM.
+// AzureIaaSComputeVMProtectedItem iaaS VM workload-specific backup item representing the Resource Manager
+// VM.
 type AzureIaaSComputeVMProtectedItem struct {
 	// FriendlyName - The friendly name of the VM represented by this backup item.
 	FriendlyName *string `json:"friendlyName,omitempty"`
@@ -2064,8 +2068,11 @@ func (page EngineBaseResourceListPage) Values() []EngineBaseResource {
 }
 
 // Creates a new instance of the EngineBaseResourceListPage type.
-func NewEngineBaseResourceListPage(getNextPage func(context.Context, EngineBaseResourceList) (EngineBaseResourceList, error)) EngineBaseResourceListPage {
-	return EngineBaseResourceListPage{fn: getNextPage}
+func NewEngineBaseResourceListPage(cur EngineBaseResourceList, getNextPage func(context.Context, EngineBaseResourceList) (EngineBaseResourceList, error)) EngineBaseResourceListPage {
+	return EngineBaseResourceListPage{
+		fn:   getNextPage,
+		ebrl: cur,
+	}
 }
 
 // ExportJobsOperationResultInfo this class is used to send blob details after exporting jobs.
@@ -2353,8 +2360,8 @@ func (isc IaaSVMContainer) AsBasicProtectionContainer() (BasicProtectionContaine
 	return &isc, true
 }
 
-// IaasVMILRRegistrationRequest restore files or folders from a backup copy, or recovery point, of an IaaS (or
-// Azure) VM.
+// IaasVMILRRegistrationRequest restore files or folders from a backup copy, or recovery point, of an IaaS
+// (or Azure) VM.
 type IaasVMILRRegistrationRequest struct {
 	// RecoveryPointID - The ID of the IaaS VM recovery point used to restore the files or folders.
 	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
@@ -3307,8 +3314,11 @@ func (page JobResourceListPage) Values() []JobResource {
 }
 
 // Creates a new instance of the JobResourceListPage type.
-func NewJobResourceListPage(getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
-	return JobResourceListPage{fn: getNextPage}
+func NewJobResourceListPage(cur JobResourceList, getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
+	return JobResourceListPage{
+		fn:  getNextPage,
+		jrl: cur,
+	}
 }
 
 // KEKDetails the Key Encryption Key (KEK) is the encryption key for the Bitlocker Encryption Key (BEK).
@@ -4420,8 +4430,8 @@ func (osjei OperationStatusJobsExtendedInfo) AsBasicOperationStatusExtendedInfo(
 	return &osjei, true
 }
 
-// OperationStatusProvisionILRExtendedInfo extended information about the Item Level Recovery (ILR) provision
-// action, operation status.
+// OperationStatusProvisionILRExtendedInfo extended information about the Item Level Recovery (ILR)
+// provision action, operation status.
 type OperationStatusProvisionILRExtendedInfo struct {
 	// RecoveryTarget - Target details for the file or folder restore.
 	RecoveryTarget *InstantItemRecoveryTarget `json:"recoveryTarget,omitempty"`
@@ -4916,8 +4926,11 @@ func (page ProtectedItemResourceListPage) Values() []ProtectedItemResource {
 }
 
 // Creates a new instance of the ProtectedItemResourceListPage type.
-func NewProtectedItemResourceListPage(getNextPage func(context.Context, ProtectedItemResourceList) (ProtectedItemResourceList, error)) ProtectedItemResourceListPage {
-	return ProtectedItemResourceListPage{fn: getNextPage}
+func NewProtectedItemResourceListPage(cur ProtectedItemResourceList, getNextPage func(context.Context, ProtectedItemResourceList) (ProtectedItemResourceList, error)) ProtectedItemResourceListPage {
+	return ProtectedItemResourceListPage{
+		fn:   getNextPage,
+		pirl: cur,
+	}
 }
 
 // BasicProtectionContainer the base class for a container with backup items. Containers with specific workloads are
@@ -5064,8 +5077,8 @@ func (pc ProtectionContainer) AsBasicProtectionContainer() (BasicProtectionConta
 	return &pc, true
 }
 
-// ProtectionContainerResource base class for a container with backup items. Containers with specific workloads
-// are derived from this class.
+// ProtectionContainerResource base class for a container with backup items. Containers with specific
+// workloads are derived from this class.
 type ProtectionContainerResource struct {
 	autorest.Response `json:"-"`
 	Properties        BasicProtectionContainer `json:"properties,omitempty"`
@@ -5719,8 +5732,8 @@ func (r Request) AsBasicRequest() (BasicRequest, bool) {
 	return &r, true
 }
 
-// RequestResource base class for the backup request. Workload-specific backup requests are derived from this
-// class.
+// RequestResource base class for the backup request. Workload-specific backup requests are derived from
+// this class.
 type RequestResource struct {
 	Properties BasicRequest `json:"properties,omitempty"`
 	// ID - Resource ID represents the complete path to the resource.
@@ -5961,8 +5974,8 @@ func (rr RestoreRequest) AsBasicRestoreRequest() (BasicRestoreRequest, bool) {
 	return &rr, true
 }
 
-// RestoreRequestResource the base class for a restore request. Workload-specific restore requests are derived
-// from this class.
+// RestoreRequestResource the base class for a restore request. Workload-specific restore requests are
+// derived from this class.
 type RestoreRequestResource struct {
 	Properties BasicRestoreRequest `json:"properties,omitempty"`
 	// ID - Resource ID represents the complete path to the resource.
@@ -6763,8 +6776,11 @@ func (page WorkloadProtectableItemResourceListPage) Values() []WorkloadProtectab
 }
 
 // Creates a new instance of the WorkloadProtectableItemResourceListPage type.
-func NewWorkloadProtectableItemResourceListPage(getNextPage func(context.Context, WorkloadProtectableItemResourceList) (WorkloadProtectableItemResourceList, error)) WorkloadProtectableItemResourceListPage {
-	return WorkloadProtectableItemResourceListPage{fn: getNextPage}
+func NewWorkloadProtectableItemResourceListPage(cur WorkloadProtectableItemResourceList, getNextPage func(context.Context, WorkloadProtectableItemResourceList) (WorkloadProtectableItemResourceList, error)) WorkloadProtectableItemResourceListPage {
+	return WorkloadProtectableItemResourceListPage{
+		fn:    getNextPage,
+		wpirl: cur,
+	}
 }
 
 // YearlyRetentionSchedule yearly retention schedule.

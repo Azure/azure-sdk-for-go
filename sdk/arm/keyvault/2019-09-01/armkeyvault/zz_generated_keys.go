@@ -16,24 +16,24 @@ import (
 
 // KeysOperations contains the methods for the Keys group.
 type KeysOperations interface {
-// CreateIfNotExist - Creates the first version of a new key if it does not exist. If it already exists, then the existing key is returned without any write
-// operations being performed. This API does not create subsequent
-// versions, and does not update existing keys.
+	// CreateIfNotExist - Creates the first version of a new key if it does not exist. If it already exists, then the existing key is returned without any write
+	// operations being performed. This API does not create subsequent
+	// versions, and does not update existing keys.
 	CreateIfNotExist(ctx context.Context, resourceGroupName string, vaultName string, keyName string, parameters KeyCreateParameters, options *KeysCreateIfNotExistOptions) (*KeyResponse, error)
-// Get - Gets the current version of the specified key from the specified key vault.
+	// Get - Gets the current version of the specified key from the specified key vault.
 	Get(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysGetOptions) (*KeyResponse, error)
-// GetVersion - Gets the specified version of the specified key in the specified key vault.
+	// GetVersion - Gets the specified version of the specified key in the specified key vault.
 	GetVersion(ctx context.Context, resourceGroupName string, vaultName string, keyName string, keyVersion string, options *KeysGetVersionOptions) (*KeyResponse, error)
-// List - Lists the keys in the specified key vault.
-	List(resourceGroupName string, vaultName string, options *KeysListOptions) (KeyListResultPager)
-// ListVersions - Lists the versions of the specified key in the specified key vault.
-	ListVersions(resourceGroupName string, vaultName string, keyName string, options *KeysListVersionsOptions) (KeyListResultPager)
+	// List - Lists the keys in the specified key vault.
+	List(resourceGroupName string, vaultName string, options *KeysListOptions) KeyListResultPager
+	// ListVersions - Lists the versions of the specified key in the specified key vault.
+	ListVersions(resourceGroupName string, vaultName string, keyName string, options *KeysListVersionsOptions) KeyListResultPager
 }
 
 // KeysClient implements the KeysOperations interface.
 // Don't use this type directly, use NewKeysClient() instead.
 type KeysClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -95,7 +95,7 @@ func (client *KeysClient) CreateIfNotExistHandleResponse(resp *azcore.Response) 
 
 // CreateIfNotExistHandleError handles the CreateIfNotExist error response.
 func (client *KeysClient) CreateIfNotExistHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -148,7 +148,7 @@ func (client *KeysClient) GetHandleResponse(resp *azcore.Response) (*KeyResponse
 
 // GetHandleError handles the Get error response.
 func (client *KeysClient) GetHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -202,7 +202,7 @@ func (client *KeysClient) GetVersionHandleResponse(resp *azcore.Response) (*KeyR
 
 // GetVersionHandleError handles the GetVersion error response.
 func (client *KeysClient) GetVersionHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -210,7 +210,7 @@ var err CloudError
 }
 
 // List - Lists the keys in the specified key vault.
-func (client *KeysClient) List(resourceGroupName string, vaultName string, options *KeysListOptions) (KeyListResultPager) {
+func (client *KeysClient) List(resourceGroupName string, vaultName string, options *KeysListOptions) KeyListResultPager {
 	return &keyListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -250,7 +250,7 @@ func (client *KeysClient) ListHandleResponse(resp *azcore.Response) (*KeyListRes
 
 // ListHandleError handles the List error response.
 func (client *KeysClient) ListHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -258,7 +258,7 @@ var err CloudError
 }
 
 // ListVersions - Lists the versions of the specified key in the specified key vault.
-func (client *KeysClient) ListVersions(resourceGroupName string, vaultName string, keyName string, options *KeysListVersionsOptions) (KeyListResultPager) {
+func (client *KeysClient) ListVersions(resourceGroupName string, vaultName string, keyName string, options *KeysListVersionsOptions) KeyListResultPager {
 	return &keyListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -299,10 +299,9 @@ func (client *KeysClient) ListVersionsHandleResponse(resp *azcore.Response) (*Ke
 
 // ListVersionsHandleError handles the ListVersions error response.
 func (client *KeysClient) ListVersionsHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

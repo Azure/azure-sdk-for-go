@@ -19,7 +19,7 @@ type AccessPolicyEntry struct {
 	ApplicationID *string `json:"applicationId,omitempty"`
 
 	// The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the
-// list of access policies.
+	// list of access policies.
 	ObjectID *string `json:"objectId,omitempty"`
 
 	// Permissions the identity has for keys, secrets and certificates.
@@ -44,8 +44,8 @@ type Attributes struct {
 	NotBefore *int64 `json:"nbf,omitempty"`
 
 	// READ-ONLY; The deletion recovery level currently in effect for the object. If it contains 'Purgeable', then the object can be permanently deleted by
-// a privileged user; otherwise, only the system can purge the
-// object at the end of the retention interval.
+	// a privileged user; otherwise, only the system can purge the
+	// object at the end of the retention interval.
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in seconds since 1970-01-01T00:00:00Z.
@@ -58,7 +58,7 @@ type CheckNameAvailabilityResult struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 
 	// READ-ONLY; A boolean value that indicates whether the name is available for you to use. If true, the name is available. If false, the name has already
-// been taken or is invalid and cannot be used.
+	// been taken or is invalid and cannot be used.
 	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
 
 	// READ-ONLY; The reason that a vault name could not be used. The Reason element is only returned if NameAvailable is false.
@@ -291,8 +291,8 @@ type KeyProperties struct {
 	Attributes *Attributes `json:"attributes,omitempty"`
 
 	// The elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	CurveName *JSONWebKeyCurveName `json:"curveName,omitempty"`
-	KeyOps *[]JSONWebKeyOperation `json:"keyOps,omitempty"`
+	CurveName *JSONWebKeyCurveName   `json:"curveName,omitempty"`
+	KeyOps    *[]JSONWebKeyOperation `json:"keyOps,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"keySize,omitempty"`
@@ -728,17 +728,17 @@ type VaultPatchProperties struct {
 	CreateMode *CreateMode `json:"createMode,omitempty"`
 
 	// Property specifying whether protection against purge is enabled for this vault. Setting this property to true activates protection against purge for
-// this vault and its content - only the Key Vault
-// service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this functionality is irreversible
-// - that is, the property does not accept
-// false as its value.
+	// this vault and its content - only the Key Vault
+	// service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this functionality is irreversible
+	// - that is, the property does not accept
+	// false as its value.
 	EnablePurgeProtection *bool `json:"enablePurgeProtection,omitempty"`
 
 	// Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data
-// actions, and the access policies specified in vault
-// properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties,
-// and any policy stored on Azure Resource Manager
-// will be ignored. If null or not specified, the value of this property will not change.
+	// actions, and the access policies specified in vault
+	// properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties,
+	// and any policy stored on Azure Resource Manager
+	// will be ignored. If null or not specified, the value of this property will not change.
 	EnableRbacAuthorization *bool `json:"enableRbacAuthorization,omitempty"`
 
 	// Property to specify whether the 'soft delete' functionality is enabled for this key vault. Once set to true, it cannot be reverted to false.
@@ -781,31 +781,31 @@ type VaultPollerResponse struct {
 // Properties of the vault
 type VaultProperties struct {
 	// An array of 0 to 1024 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant
-// ID. When createMode is set to recover, access
-// policies are not required. Otherwise, access policies are required.
+	// ID. When createMode is set to recover, access
+	// policies are not required. Otherwise, access policies are required.
 	AccessPolicies *[]AccessPolicyEntry `json:"accessPolicies,omitempty"`
 
 	// The vault's create mode to indicate whether the vault need to be recovered or not.
 	CreateMode *CreateMode `json:"createMode,omitempty"`
 
 	// Property specifying whether protection against purge is enabled for this vault. Setting this property to true activates protection against purge for
-// this vault and its content - only the Key Vault
-// service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this functionality is irreversible
-// - that is, the property does not accept
-// false as its value.
+	// this vault and its content - only the Key Vault
+	// service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this functionality is irreversible
+	// - that is, the property does not accept
+	// false as its value.
 	EnablePurgeProtection *bool `json:"enablePurgeProtection,omitempty"`
 
 	// Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data
-// actions, and the access policies specified in vault
-// properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties,
-// and any policy stored on Azure Resource Manager
-// will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with
-// RBAC.
+	// actions, and the access policies specified in vault
+	// properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties,
+	// and any policy stored on Azure Resource Manager
+	// will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with
+	// RBAC.
 	EnableRbacAuthorization *bool `json:"enableRbacAuthorization,omitempty"`
 
 	// Property to specify whether the 'soft delete' functionality is enabled for this key vault. If it's not set to any value(true or false) when creating
-// new key vault, it will be set to true by default.
-// Once set to true, it cannot be reverted to false.
+	// new key vault, it will be set to true by default.
+	// Once set to true, it cannot be reverted to false.
 	EnableSoftDelete *bool `json:"enableSoftDelete,omitempty"`
 
 	// Property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.
@@ -913,4 +913,3 @@ type VirtualNetworkRule struct {
 	// Full resource id of a vnet subnet, such as '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
 	ID *string `json:"id,omitempty"`
 }
-

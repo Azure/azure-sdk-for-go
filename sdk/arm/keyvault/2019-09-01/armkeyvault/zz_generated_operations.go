@@ -17,8 +17,8 @@ import (
 
 // Operations contains the methods for the Operations group.
 type Operations interface {
-// List - Lists all of the available Key Vault Rest API operations.
-	List(options *OperationsListOptions) (OperationListResultPager)
+	// List - Lists all of the available Key Vault Rest API operations.
+	List(options *OperationsListOptions) OperationListResultPager
 }
 
 // OperationsClient implements the Operations interface.
@@ -38,7 +38,7 @@ func (client *OperationsClient) Pipeline() azcore.Pipeline {
 }
 
 // List - Lists all of the available Key Vault Rest API operations.
-func (client *OperationsClient) List(options *OperationsListOptions) (OperationListResultPager) {
+func (client *OperationsClient) List(options *OperationsListOptions) OperationListResultPager {
 	return &operationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -75,13 +75,12 @@ func (client *OperationsClient) ListHandleResponse(resp *azcore.Response) (*Oper
 
 // ListHandleError handles the List error response.
 func (client *OperationsClient) ListHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
-
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}

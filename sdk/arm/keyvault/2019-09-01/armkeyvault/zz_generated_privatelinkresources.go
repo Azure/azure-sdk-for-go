@@ -16,14 +16,14 @@ import (
 
 // PrivateLinkResourcesOperations contains the methods for the PrivateLinkResources group.
 type PrivateLinkResourcesOperations interface {
-// ListByVault - Gets the private link resources supported for the key vault.
+	// ListByVault - Gets the private link resources supported for the key vault.
 	ListByVault(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (*PrivateLinkResourceListResultResponse, error)
 }
 
 // PrivateLinkResourcesClient implements the PrivateLinkResourcesOperations interface.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -82,10 +82,9 @@ func (client *PrivateLinkResourcesClient) ListByVaultHandleResponse(resp *azcore
 
 // ListByVaultHandleError handles the ListByVault error response.
 func (client *PrivateLinkResourcesClient) ListByVaultHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

@@ -18,20 +18,20 @@ import (
 
 // PrivateEndpointConnectionsOperations contains the methods for the PrivateEndpointConnections group.
 type PrivateEndpointConnectionsOperations interface {
-// BeginDelete - Deletes the specified private endpoint connection associated with the key vault.
+	// BeginDelete - Deletes the specified private endpoint connection associated with the key vault.
 	BeginDelete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsDeleteOptions) (*PrivateEndpointConnectionPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (PrivateEndpointConnectionPoller, error)
-// Get - Gets the specified private endpoint connection associated with the key vault.
+	// Get - Gets the specified private endpoint connection associated with the key vault.
 	Get(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsGetOptions) (*PrivateEndpointConnectionResponse, error)
-// Put - Updates the specified private endpoint connection associated with the key vault.
+	// Put - Updates the specified private endpoint connection associated with the key vault.
 	Put(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsPutOptions) (*PrivateEndpointConnectionResponse, error)
 }
 
 // PrivateEndpointConnectionsClient implements the PrivateEndpointConnectionsOperations interface.
 // Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
 type PrivateEndpointConnectionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -58,7 +58,7 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 		return nil, err
 	}
 	poller := &privateEndpointConnectionPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -75,7 +75,7 @@ func (client *PrivateEndpointConnectionsClient) ResumeDelete(token string) (Priv
 	}
 	return &privateEndpointConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -92,7 +92,7 @@ func (client *PrivateEndpointConnectionsClient) Delete(ctx context.Context, reso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.DeleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // DeleteCreateRequest creates the Delete request.
@@ -132,7 +132,7 @@ func (client *PrivateEndpointConnectionsClient) DeleteHandleResponse(resp *azcor
 
 // DeleteHandleError handles the Delete error response.
 func (client *PrivateEndpointConnectionsClient) DeleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -196,7 +196,7 @@ func (client *PrivateEndpointConnectionsClient) GetHandleResponse(resp *azcore.R
 
 // GetHandleError handles the Get error response.
 func (client *PrivateEndpointConnectionsClient) GetHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -260,10 +260,9 @@ func (client *PrivateEndpointConnectionsClient) PutHandleResponse(resp *azcore.R
 
 // PutHandleError handles the Put error response.
 func (client *PrivateEndpointConnectionsClient) PutHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

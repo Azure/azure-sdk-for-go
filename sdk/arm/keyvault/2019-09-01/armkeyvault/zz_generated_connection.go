@@ -5,4 +5,4 @@
 
 package armkeyvault
 
-const telemetryInfo = "azsdk-go-armkeyvault/<version>"
+const telemetryInfo = "azsdk-go-armkeyvault/v0.1.0"

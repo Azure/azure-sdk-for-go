@@ -56,7 +56,7 @@ func TestNewConnectionWithPipeline(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	resp, err := con.Do(req)
+	resp, err := con.Pipeline().Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}

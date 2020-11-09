@@ -69,12 +69,12 @@ func NewConnectionWithPipeline(endpoint string, p azcore.Pipeline) *Connection {
 	return &Connection{u: endpoint, p: p}
 }
 
-// Do invokes the Do() method on the connection's pipeline.
-func (c *Connection) Do(req *azcore.Request) (*azcore.Response, error) {
-	return c.p.Do(req)
-}
-
 // Endpoint returns the connection's ARM endpoint.
 func (c *Connection) Endpoint() string {
 	return c.u
+}
+
+// Pipeline returns the connection's pipeline.
+func (c *Connection) Pipeline() azcore.Pipeline {
+	return c.p
 }

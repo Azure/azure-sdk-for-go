@@ -283,7 +283,8 @@ func (future *AccountsCreateOrUpdateFuture) Result(client AccountsClient) (a Acc
 	return
 }
 
-// AccountsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// AccountsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccountsDeleteFuture struct {
 	azure.Future
 }
@@ -305,7 +306,8 @@ func (future *AccountsDeleteFuture) Result(client AccountsClient) (ar autorest.R
 	return
 }
 
-// AccountsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// AccountsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccountsUpdateFuture struct {
 	azure.Future
 }
@@ -861,8 +863,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult result of the request to list Cloud Volume operations. It contains a list of operations
-// and a URL link to get the next set of results.
+// OperationListResult result of the request to list Cloud Volume operations. It contains a list of
+// operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Storage operations supported by the Storage resource provider.
@@ -880,7 +882,7 @@ type PoolPatchProperties struct {
 	// Size - Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104).
 	Size *int64 `json:"size,omitempty"`
 	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
-	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
+	ServiceLevel PatchServiceLevel `json:"serviceLevel,omitempty"`
 }
 
 // PoolProperties pool properties
@@ -889,8 +891,8 @@ type PoolProperties struct {
 	PoolID *string `json:"poolId,omitempty"`
 	// Size - Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104).
 	Size *int64 `json:"size,omitempty"`
-	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
-	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
+	// ServiceLevel - The service level of the file system. Possible values include: 'PoolServiceLevelStandard', 'PoolServiceLevelPremium', 'PoolServiceLevelUltra'
+	ServiceLevel PoolServiceLevel `json:"serviceLevel,omitempty"`
 	// ProvisioningState - READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
@@ -992,7 +994,7 @@ type ReplicationObject struct {
 	ReplicationID *string `json:"replicationId,omitempty"`
 	// EndpointType - Indicates whether the local volume is the source or destination for the Volume Replication. Possible values include: 'Src', 'Dst'
 	EndpointType EndpointType `json:"endpointType,omitempty"`
-	// ReplicationSchedule - Schedule. Possible values include: '10minutely', 'Hourly', 'Daily', 'Weekly', 'Monthly'
+	// ReplicationSchedule - Schedule. Possible values include: '10minutely', 'Hourly', 'Daily'
 	ReplicationSchedule ReplicationSchedule `json:"replicationSchedule,omitempty"`
 	// RemoteVolumeResourceID - The resource ID of the remote volume.
 	RemoteVolumeResourceID *string `json:"remoteVolumeResourceId,omitempty"`
@@ -1139,7 +1141,8 @@ type SnapshotProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
-// SnapshotsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SnapshotsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SnapshotsCreateFuture struct {
 	azure.Future
 }
@@ -1167,7 +1170,8 @@ func (future *SnapshotsCreateFuture) Result(client SnapshotsClient) (s Snapshot,
 	return
 }
 
-// SnapshotsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SnapshotsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SnapshotsDeleteFuture struct {
 	azure.Future
 }
@@ -1196,7 +1200,8 @@ type SnapshotsList struct {
 	Value *[]Snapshot `json:"value,omitempty"`
 }
 
-// SnapshotsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SnapshotsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SnapshotsUpdateFuture struct {
 	azure.Future
 }
@@ -1434,7 +1439,7 @@ func (vp *VolumePatch) UnmarshalJSON(body []byte) error {
 
 // VolumePatchProperties patchable volume properties
 type VolumePatchProperties struct {
-	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
+	// ServiceLevel - The service level of the file system. Possible values include: 'ServiceLevelStandard', 'ServiceLevelPremium', 'ServiceLevelUltra'
 	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
 	// UsageThreshold - Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
@@ -1454,8 +1459,8 @@ type VolumeProperties struct {
 	FileSystemID *string `json:"fileSystemId,omitempty"`
 	// CreationToken - A unique file path for the volume. Used when creating mount targets
 	CreationToken *string `json:"creationToken,omitempty"`
-	// ServiceLevel - The service level of the file system. Possible values include: 'Standard', 'Premium', 'Ultra'
-	ServiceLevel ServiceLevel `json:"serviceLevel,omitempty"`
+	// ServiceLevel - The service level of the file system. Possible values include: 'VolumeServiceLevelStandard', 'VolumeServiceLevelPremium', 'VolumeServiceLevelUltra'
+	ServiceLevel VolumeServiceLevel `json:"serviceLevel,omitempty"`
 	// UsageThreshold - Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB. Specified in bytes.
 	UsageThreshold *int64 `json:"usageThreshold,omitempty"`
 	// ExportPolicy - Set of export policy rules
@@ -1545,8 +1550,8 @@ type VolumeRevert struct {
 	SnapshotID *string `json:"snapshotId,omitempty"`
 }
 
-// VolumesAuthorizeReplicationFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// VolumesAuthorizeReplicationFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type VolumesAuthorizeReplicationFuture struct {
 	azure.Future
 }
@@ -1620,7 +1625,8 @@ func (future *VolumesCreateOrUpdateFuture) Result(client VolumesClient) (vVar Vo
 	return
 }
 
-// VolumesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// VolumesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type VolumesDeleteFuture struct {
 	azure.Future
 }
@@ -1642,8 +1648,8 @@ func (future *VolumesDeleteFuture) Result(client VolumesClient) (ar autorest.Res
 	return
 }
 
-// VolumesDeleteReplicationFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// VolumesDeleteReplicationFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type VolumesDeleteReplicationFuture struct {
 	azure.Future
 }
@@ -1671,8 +1677,8 @@ type VolumeSnapshotProperties struct {
 	SnapshotPolicyID *string `json:"snapshotPolicyId,omitempty"`
 }
 
-// VolumesResyncReplicationFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// VolumesResyncReplicationFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type VolumesResyncReplicationFuture struct {
 	azure.Future
 }
@@ -1694,7 +1700,8 @@ func (future *VolumesResyncReplicationFuture) Result(client VolumesClient) (ar a
 	return
 }
 
-// VolumesRevertFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// VolumesRevertFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type VolumesRevertFuture struct {
 	azure.Future
 }
@@ -1716,7 +1723,8 @@ func (future *VolumesRevertFuture) Result(client VolumesClient) (ar autorest.Res
 	return
 }
 
-// VolumesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// VolumesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type VolumesUpdateFuture struct {
 	azure.Future
 }

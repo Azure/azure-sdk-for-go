@@ -26,31 +26,33 @@ import (
 	"net/http"
 )
 
-// IntegrationRuntimeStatusClient is the azure Synapse Analytics Management Client
-type IntegrationRuntimeStatusClient struct {
+// SQLPoolColumnsClient is the azure Synapse Analytics Management Client
+type SQLPoolColumnsClient struct {
 	BaseClient
 }
 
-// NewIntegrationRuntimeStatusClient creates an instance of the IntegrationRuntimeStatusClient client.
-func NewIntegrationRuntimeStatusClient(subscriptionID string) IntegrationRuntimeStatusClient {
-	return NewIntegrationRuntimeStatusClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewSQLPoolColumnsClient creates an instance of the SQLPoolColumnsClient client.
+func NewSQLPoolColumnsClient(subscriptionID string) SQLPoolColumnsClient {
+	return NewSQLPoolColumnsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewIntegrationRuntimeStatusClientWithBaseURI creates an instance of the IntegrationRuntimeStatusClient client using
-// a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign
-// clouds, Azure stack).
-func NewIntegrationRuntimeStatusClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeStatusClient {
-	return IntegrationRuntimeStatusClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewSQLPoolColumnsClientWithBaseURI creates an instance of the SQLPoolColumnsClient client using a custom endpoint.
+// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewSQLPoolColumnsClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolColumnsClient {
+	return SQLPoolColumnsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get get the integration runtime status
+// Get get Sql pool column
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace.
-// integrationRuntimeName - integration runtime name
-func (client IntegrationRuntimeStatusClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result IntegrationRuntimeStatusResponse, err error) {
+// workspaceName - the name of the workspace
+// SQLPoolName - SQL pool name
+// schemaName - the name of the schema.
+// tableName - the name of the table.
+// columnName - the name of the column.
+func (client SQLPoolColumnsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string, tableName string, columnName string) (result SQLPoolColumn, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationRuntimeStatusClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolColumnsClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -66,37 +68,40 @@ func (client IntegrationRuntimeStatusClient) Get(ctx context.Context, resourceGr
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.IntegrationRuntimeStatusClient", "Get", err.Error())
+		return result, validation.NewError("synapse.SQLPoolColumnsClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, integrationRuntimeName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName, schemaName, tableName, columnName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeStatusClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolColumnsClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeStatusClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolColumnsClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeStatusClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolColumnsClient", "Get", resp, "Failure responding to request")
 	}
 
 	return
 }
 
 // GetPreparer prepares the Get request.
-func (client IntegrationRuntimeStatusClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (*http.Request, error) {
+func (client SQLPoolColumnsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string, tableName string, columnName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
-		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
-		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":          autorest.Encode("path", workspaceName),
+		"columnName":        autorest.Encode("path", columnName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"schemaName":        autorest.Encode("path", schemaName),
+		"sqlPoolName":       autorest.Encode("path", SQLPoolName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+		"tableName":         autorest.Encode("path", tableName),
+		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
 	const APIVersion = "2019-06-01-preview"
@@ -105,22 +110,22 @@ func (client IntegrationRuntimeStatusClient) GetPreparer(ctx context.Context, re
 	}
 
 	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
+		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/getStatus", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client IntegrationRuntimeStatusClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client SQLPoolColumnsClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client IntegrationRuntimeStatusClient) GetResponder(resp *http.Response) (result IntegrationRuntimeStatusResponse, err error) {
+func (client SQLPoolColumnsClient) GetResponder(resp *http.Response) (result SQLPoolColumn, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

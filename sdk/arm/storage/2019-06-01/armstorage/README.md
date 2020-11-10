@@ -2,7 +2,7 @@
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/storage/2019-06-01/armstorage)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/arm/storage/2019-06-01/armstorage)
 
-The `armstorage` module provides operations for working with Azure storage.
+The `armstorage` module provides operations for working with Azure storage resources.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/arm/storage/2019-06-01/armstorage)
 

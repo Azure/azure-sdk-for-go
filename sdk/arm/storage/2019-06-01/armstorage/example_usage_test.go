@@ -23,6 +23,6 @@ func ExampleUsagesOperations_ListByLocation() {
 		log.Fatalf("failed to delete account: %v", err)
 	}
 	for _, u := range *resp.UsageListResult.Value {
-		log.Printf("usage: %v, limit: %v, current value: %v", u.Name.Value, *u.Limit, *u.CurrentValue)
+		log.Printf("usage: %v, limit: %v, current value: %v", *u.Name.Value, *u.Limit, *u.CurrentValue)
 	}
 }

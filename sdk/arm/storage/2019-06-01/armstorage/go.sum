@@ -9,6 +9,7 @@ github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.5.0 h1:ULbdlqfhgV0ghSPHEavHx
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.5.0/go.mod h1:gY56Wxh+J6dkKBCtXLuUk0RLHQ4onVmB74lxW4QjtB8=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.5.0 h1:HG1ggl8L3ZkV/Ydanf7lKr5kkhhPGCpWdnr1J6v7cO4=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.5.0/go.mod h1:k4KbFSunV/+0hOHL1vyFaPsiYQ1Vmvy1TBpmtvCDLZM=
+github.com/Azure/azure-sdk-for-go/sdk/to v0.1.2 h1:TZTVOb/ce7nCmOZYga9+ELtPPVVFG2Px4s/w5OycYS0=
 github.com/Azure/azure-sdk-for-go/sdk/to v0.1.2/go.mod h1:UL/d4lvWAzSJUuX+19uKdN0ktyjoOyQhgY+HWNgtIYI=
 github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4 h1:49lOXmGaUpV9Fz3gd7TFZY106KVlPVa5jcYD1gaQf98=
 github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4/go.mod h1:4OwLy04Bl9Ef3GJJCoec+30X3LQs/0/m4HFRt/2LUSA=

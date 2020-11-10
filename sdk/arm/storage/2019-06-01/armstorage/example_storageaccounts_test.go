@@ -24,7 +24,17 @@ func ExampleStorageAccountsOperations_BeginCreate() {
 		context.Background(),
 		"<resource group name>",
 		"<storage account name>",
-		armstorage.StorageAccountCreateParameters{}, nil)
+		armstorage.StorageAccountCreateParameters{
+			SKU: &armstorage.SKU{
+				Name: armstorage.SKUNameStandardLrs.ToPtr(),
+				Tier: armstorage.SKUTierStandard.ToPtr(),
+			},
+			Kind:     armstorage.KindBlobStorage.ToPtr(),
+			Location: to.StringPtr("<Azure location>"),
+			Properties: &armstorage.StorageAccountPropertiesCreateParameters{
+				AccessTier: armstorage.AccessTierCool.ToPtr(),
+			},
+		}, nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
 	}
@@ -67,7 +77,7 @@ func ExampleStorageAccountsOperations_ListByResourceGroup() {
 		log.Fatalf("failed to obtain a response: %v", err)
 	}
 	for _, sa := range *resp.StorageAccountListResult.Value {
-		log.Printf("storage account ID: %v", sa.ID)
+		log.Printf("storage account ID: %v", *sa.ID)
 	}
 }
 
@@ -77,7 +87,13 @@ func ExampleStorageAccountsOperations_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	client := armstorage.NewStorageAccountsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
-	resp, err := client.CheckNameAvailability(context.Background(), armstorage.StorageAccountCheckNameAvailabilityParameters{Name: to.StringPtr("<storage account name>")}, nil)
+	resp, err := client.CheckNameAvailability(
+		context.Background(),
+		armstorage.StorageAccountCheckNameAvailabilityParameters{
+			Name: to.StringPtr("<storage account name>"),
+			Type: to.StringPtr("Microsoft.Storage/storageAccounts"),
+		},
+		nil)
 	if err != nil {
 		log.Fatalf("failed to delete account: %v", err)
 	}
@@ -95,7 +111,7 @@ func ExampleStorageAccountsOperations_ListKeys() {
 		log.Fatalf("failed to delete account: %v", err)
 	}
 	for _, k := range *resp.StorageAccountListKeysResult.Keys {
-		log.Printf("account key: %v", k.KeyName)
+		log.Printf("account key: %v", *k.KeyName)
 	}
 }
 
@@ -109,7 +125,7 @@ func ExampleStorageAccountsOperations_GetProperties() {
 	if err != nil {
 		log.Fatalf("failed to delete account: %v", err)
 	}
-	log.Printf("storage account properties: %v", *resp.StorageAccount.Properties)
+	log.Printf("storage account properties Access Tier: %v", *resp.StorageAccount.Properties.AccessTier)
 }
 
 func ExampleStorageAccountsOperations_RegenerateKey() {
@@ -123,7 +139,7 @@ func ExampleStorageAccountsOperations_RegenerateKey() {
 		log.Fatalf("failed to delete account: %v", err)
 	}
 	for _, k := range *resp.StorageAccountListKeysResult.Keys {
-		log.Printf("key: %v, value: %v", k.KeyName, k.Value)
+		log.Printf("key: %v, value: %v", *k.KeyName, *k.Value)
 	}
 }
 

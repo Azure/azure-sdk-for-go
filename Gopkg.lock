@@ -70,6 +70,14 @@
   revision = "eeefdecb41b842af6dc652aaea4026e8403e62df"
 
 [[projects]]
+  digest = "1:73770491417b7cb646b28610eec6481187aba7b5c3703da0d42f8d590d016f5f"
+  name = "github.com/gofrs/uuid"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "abfe1881e60ef34074c1b8d8c63b42565c356ed6"
+  version = "v3.3.0"
+
+[[projects]]
   digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
@@ -274,6 +282,7 @@
     "github.com/dnaeon/go-vcr/cassette",
     "github.com/dnaeon/go-vcr/recorder",
     "github.com/globalsign/mgo",
+    "github.com/gofrs/uuid",
     "github.com/jongio/azidext/go/azidext",
     "github.com/pkg/browser",
     "github.com/pkg/errors",

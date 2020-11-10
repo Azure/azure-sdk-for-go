@@ -27,10 +27,16 @@ import (
 	"go/ast"
 	"go/token"
 	"sort"
+	"strings"
 )
 
 // AliasPackage is an abstraction around ast.Package to provide convenience methods for manipulating it.
-type AliasPackage ast.Package
+type AliasPackage struct {
+	ast.Package
+	general []*ast.GenDecl
+	functions []*ast.FuncDecl
+	imports   []*ast.ImportSpec
+}
 
 // ErrorUnexpectedToken is returned when AST parsing encounters an unexpected token, it includes the expected token.
 type ErrorUnexpectedToken struct {
@@ -58,25 +64,21 @@ func (alias AliasPackage) ModelFile() *ast.File {
 // NewAliasPackage creates an alias package from the specified input package.
 // Parameter importPath is the import path specified to consume the package.
 func NewAliasPackage(original *ast.Package, importPath string) (*AliasPackage, error) {
-	models := &ast.File{
-		Name: &ast.Ident{
-			Name:    original.Name,
-			NamePos: token.Pos(len("package") + 2),
-		},
-		Package: 1,
-	}
-
 	alias := &AliasPackage{
-		Name: original.Name,
-		Files: map[string]*ast.File{
-			modelFile: models,
+		Package: ast.Package{
+			Name: original.Name,
+			Files: map[string]*ast.File{
+				modelFile: {
+					Name: &ast.Ident{
+						Name:    original.Name,
+						NamePos: token.Pos(len("package") + 2),
+					},
+					Package: 1,
+				},
+			},
 		},
-	}
-
-	models.Decls = append(models.Decls, &ast.GenDecl{
-		Tok: token.IMPORT,
-		Specs: []ast.Spec{
-			&ast.ImportSpec{
+		imports: []*ast.ImportSpec{
+			{
 				Name: &ast.Ident{
 					Name: origImportAlias,
 				},
@@ -86,27 +88,26 @@ func NewAliasPackage(original *ast.Package, importPath string) (*AliasPackage, e
 				},
 			},
 		},
-	})
+	}
 
-	genDecls := []*ast.GenDecl{}
-	funcDecls := []*ast.FuncDecl{}
-
-	// node traversal is non-deterministic so we maintain a collection
-	// that allows us to emit the nodes in a sort order of our choice
-	ast.Inspect(original, func(n ast.Node) bool {
-		switch node := n.(type) {
-		case *ast.FuncDecl:
-			// exclude methods as they're exposed on the aliased types
-			if node.Recv == nil {
-				funcDecls = append(funcDecls, node)
+	genDeclsMap := make(map[string][]*ast.GenDecl)
+	funcDeclsMap := make(map[string][]*ast.FuncDecl)
+	for filename, f := range original.Files {
+		ast.Inspect(f, func(n ast.Node) bool {
+			switch node := n.(type) {
+			case *ast.FuncDecl:
+				//exclude methods as they're exposed on the aliased types
+				if node.Recv == nil {
+					funcDeclsMap[filename] = append(funcDeclsMap[filename], node)
+				}
+				// return false as we don't care about the function body
+				return false
+			case *ast.GenDecl:
+				genDeclsMap[filename] = append(genDeclsMap[filename], node)
 			}
-			// return false as we don't care about the function body
-			return false
-		case *ast.GenDecl:
-			genDecls = append(genDecls, node)
-		}
-		return true
-	})
+			return true
+		})
+	}
 
 	// genDecls contains constants and type definitions.  group them so that
 	// type defs for consts are next to their respective list of constants.
@@ -121,19 +122,21 @@ func NewAliasPackage(original *ast.Package, importPath string) (*AliasPackage, e
 	constTypeMap := map[string]*constType{}
 
 	// first build a map from all the constants
-	for _, gd := range genDecls {
-		if gd.Tok == token.CONST {
-			// get the const type from the first item
-			vs := gd.Specs[0].(*ast.ValueSpec)
-			if vs.Type == nil {
-				// untyped consts go first
-				untypedConsts = append(untypedConsts, gd)
-				continue
-			}
-			typeName := vs.Type.(*ast.Ident).Name
-			constTypeMap[typeName] = &constType{
-				name:   typeName,
-				values: gd,
+	for _, gdList := range genDeclsMap {
+		for _, gd := range gdList {
+			if gd.Tok == token.CONST {
+				// get the const type from the first item
+				vs := gd.Specs[0].(*ast.ValueSpec)
+				if vs.Type == nil {
+					// untyped consts go first
+					untypedConsts = append(untypedConsts, gd)
+					continue
+				}
+				typeName := vs.Type.(*ast.Ident).Name
+				constTypeMap[typeName] = &constType{
+					name:   typeName,
+					values: gd,
+				}
 			}
 		}
 	}
@@ -141,24 +144,25 @@ func NewAliasPackage(original *ast.Package, importPath string) (*AliasPackage, e
 	typeSpecs := []*ast.GenDecl{}
 
 	// now update the map with the type specs
-	for _, gd := range genDecls {
-		if gd.Tok == token.TYPE {
-			spec := gd.Specs[0].(*ast.TypeSpec)
-			// check if the typespec is in the map, if it is it's for a constant
-			if typeMap, ok := constTypeMap[spec.Name.Name]; ok {
-				typeMap.typeSpec = gd
-			} else {
-				typeSpecs = append(typeSpecs, gd)
+	for _, genDecls := range genDeclsMap {
+		for _, gd := range genDecls {
+			if gd.Tok == token.TYPE {
+				spec := gd.Specs[0].(*ast.TypeSpec)
+				// check if the typespec is in the map, if it is it's for a constant
+				if typeMap, ok := constTypeMap[spec.Name.Name]; ok {
+					typeMap.typeSpec = gd
+				} else {
+					typeSpecs = append(typeSpecs, gd)
+				}
 			}
 		}
 	}
 
 	// add consts, types, and funcs, in that order, in sorted order
-
 	sort.SliceStable(untypedConsts, func(i, j int) bool {
-		tsI := untypedConsts[i].Specs[0].(*ast.TypeSpec)
-		tsJ := untypedConsts[j].Specs[0].(*ast.TypeSpec)
-		return tsI.Name.Name < tsJ.Name.Name
+		tsI := untypedConsts[i].Specs[0].(*ast.ValueSpec)
+		tsJ := untypedConsts[j].Specs[0].(*ast.ValueSpec)
+		return concatIdentNames(tsI.Names) < concatIdentNames(tsJ.Names)
 	})
 	for _, uc := range untypedConsts {
 		err := alias.AddConst(uc)
@@ -176,41 +180,40 @@ func NewAliasPackage(original *ast.Package, importPath string) (*AliasPackage, e
 		return constDecls[i].name < constDecls[j].name
 	})
 	for _, cd := range constDecls {
-		err := alias.AddType(cd.typeSpec)
+		err := alias.AddGeneral(cd.typeSpec)
 		if err != nil {
 			return nil, err
 		}
-		err = alias.AddConst(cd.values)
+		err = alias.AddGeneral(cd.values)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	// now do the typespecs
+	// now do the typeSpecs
 	sort.SliceStable(typeSpecs, func(i, j int) bool {
 		tsI := typeSpecs[i].Specs[0].(*ast.TypeSpec)
 		tsJ := typeSpecs[j].Specs[0].(*ast.TypeSpec)
 		return tsI.Name.Name < tsJ.Name.Name
 	})
 	for _, td := range typeSpecs {
-		err := alias.AddType(td)
+		err := alias.AddGeneral(td)
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	// funcs
-	sort.SliceStable(funcDecls, func(i, j int) bool {
-		return funcDecls[i].Name.Name < funcDecls[j].Name.Name
-	})
-	for _, fd := range funcDecls {
-		err := alias.AddFunc(fd)
-		if err != nil {
-			return nil, err
+	for filename, funcDecls := range funcDeclsMap {
+		for _, fd := range funcDecls {
+			err := alias.AddFunc(fd, original.Files[filename])
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 
-	return alias, nil
+	return alias.Build(), nil
 }
 
 // AddGeneral handles dispatching a GenDecl to either AddConst or AddType.
@@ -239,8 +242,6 @@ func (alias *AliasPackage) AddConst(decl *ast.GenDecl) error {
 		return ErrorUnexpectedToken{Expected: token.CONST, Received: decl.Tok}
 	}
 
-	targetFile := alias.ModelFile()
-
 	for _, spec := range decl.Specs {
 		cast := spec.(*ast.ValueSpec)
 		for j, name := range cast.Names {
@@ -255,7 +256,8 @@ func (alias *AliasPackage) AddConst(decl *ast.GenDecl) error {
 		}
 	}
 
-	targetFile.Decls = append(targetFile.Decls, decl)
+	alias.general = append(alias.general, decl)
+
 	return nil
 }
 
@@ -266,8 +268,6 @@ func (alias *AliasPackage) AddType(decl *ast.GenDecl) error {
 	} else if decl.Tok != token.TYPE {
 		return ErrorUnexpectedToken{Expected: token.TYPE, Received: decl.Tok}
 	}
-
-	targetFile := alias.ModelFile()
 
 	for _, spec := range decl.Specs {
 		cast := spec.(*ast.TypeSpec)
@@ -282,18 +282,30 @@ func (alias *AliasPackage) AddType(decl *ast.GenDecl) error {
 		}
 	}
 
-	targetFile.Decls = append(targetFile.Decls, decl)
+	alias.general = append(alias.general, decl)
+
 	return nil
 }
 
 // AddFunc creates a stub method to redirect the call to the original package, then adds it to the model file.
-func (alias *AliasPackage) AddFunc(decl *ast.FuncDecl) error {
+func (alias *AliasPackage) AddFunc(decl *ast.FuncDecl, originalFile *ast.File) error {
 	if decl == nil {
 		return errUnexpectedNil
 	}
 
-	arguments := []ast.Expr{}
+	var imports []*ast.ImportSpec
+	var arguments []ast.Expr
+
+	// TODO -- we did not check whether the type of parameter is a function. If so, the function may have a type that is also a selector which needs an import
+	// TODO -- but luckily we do not have that kind of functions in our SDK yet.
 	for _, p := range decl.Type.Params.List {
+		// check if the type is Selector, if so, we have to add a import statement for this type
+		if s, ok := p.Type.(*ast.SelectorExpr); ok {
+			i := findImport(originalFile.Imports, s.X.(*ast.Ident))
+			if i != nil {
+				imports = append(imports, i)
+			}
+		}
 		arguments = append(arguments, p.Names[0])
 	}
 
@@ -317,7 +329,91 @@ func (alias *AliasPackage) AddFunc(decl *ast.FuncDecl) error {
 		},
 	}
 
-	targetFile := alias.ModelFile()
-	targetFile.Decls = append(targetFile.Decls, decl)
+	alias.functions = append(alias.functions, decl)
+
+	for _, im := range imports {
+		if err := alias.addImport(im); err != nil {
+			return err
+		}
+	}
 	return nil
+}
+
+func (alias *AliasPackage) addImport(im *ast.ImportSpec) error {
+	if im == nil {
+		return errUnexpectedNil
+	}
+
+	for _, i := range alias.imports {
+		if i.Path.Value == im.Path.Value {
+			return nil
+		}
+	}
+
+	alias.imports = append(alias.imports, im)
+	return nil
+}
+
+// Build add all pending functions and imports into the package
+func (alias *AliasPackage) Build() *AliasPackage {
+	modelFile := alias.ModelFile()
+	if alias.imports != nil {
+		for _, im := range alias.imports {
+			modelFile.Decls = append(modelFile.Decls, &ast.GenDecl{
+				Tok:   token.IMPORT,
+				Specs: []ast.Spec{im},
+			})
+		}
+		alias.imports = nil
+	}
+	if alias.general != nil {
+		for _, t := range alias.general {
+			modelFile.Decls = append(modelFile.Decls, t)
+		}
+		alias.general = nil
+	}
+	if alias.functions != nil {
+		sort.SliceStable(alias.functions, func(i, j int) bool {
+			return alias.functions[i].Name.Name < alias.functions[j].Name.Name
+		})
+		for _, f := range alias.functions {
+			modelFile.Decls = append(modelFile.Decls, f)
+		}
+		alias.functions = nil
+	}
+	return alias
+}
+
+func concatIdentNames(idents []*ast.Ident) string {
+	var names []string
+	for _, i := range idents {
+		names = append(names, i.Name)
+	}
+	return strings.Join(names, ", ")
+}
+
+func findImport(imports []*ast.ImportSpec, i *ast.Ident) *ast.ImportSpec {
+	for _, im := range imports {
+		if im.Name == nil {
+			// this import does not have an alias, get the package name from the path
+			p := getPackageNameFromImportPath(im.Path.Value)
+			if p == i.Name {
+				return im
+			}
+		}
+		// this import has an alias
+		if im.Name != nil && im.Name.Name == i.Name {
+			return im
+		}
+	}
+	return nil
+}
+
+func getPackageNameFromImportPath(path string) string {
+	p := strings.Trim(path, "\"")
+	i := strings.LastIndex(path, "/")
+	if i < 0 {
+		return p
+	}
+	return p[i:]
 }

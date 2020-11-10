@@ -39,7 +39,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
-
 	"golang.org/x/tools/imports"
 )
 
@@ -255,6 +254,7 @@ func writeAliasPackage(ap *AliasPackage, outputPath string, outputLog, errLog *l
 
 	var b bytes.Buffer
 	printer.Fprint(&b, files, file)
+	// this import command only add imports for built-in packages
 	res, err := imports.Process(aliasFile, b.Bytes(), nil)
 	if err != nil {
 		errLog.Fatalf("failed to process imports: %v", err)

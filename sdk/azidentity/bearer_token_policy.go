@@ -87,18 +87,24 @@ func (b *bearerTokenPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
 	if getToken {
 		// this go routine has been elected to refresh the token
 		tk, err := b.creds.GetToken(req.Context(), b.options)
+		// update shared state
+		b.cond.L.Lock()
+		// didn't use defer here in order to explicitly control when unlocking happens
+		unlock := func() {
+			// signal any waiters that the token has been refreshed
+			b.cond.Broadcast()
+			b.cond.L.Unlock()
+		}
+		// to avoid a deadlock if GetToken() fails we MUST reset b.renewing to false before returning
+		b.renewing = false
 		if err != nil {
+			unlock()
 			return nil, err
 		}
 		header = bearerTokenPrefix + tk.Token
-		// update shared state
-		b.cond.L.Lock()
-		b.renewing = false
 		b.header = header
 		b.expiresOn = tk.ExpiresOn
-		// signal any waiters that the token has been refreshed
-		b.cond.Broadcast()
-		b.cond.L.Unlock()
+		unlock()
 	}
 	req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
 	req.Request.Header.Set(azcore.HeaderAuthorization, header)

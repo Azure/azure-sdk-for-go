@@ -332,26 +332,19 @@ func (alias *AliasPackage) AddFunc(decl *ast.FuncDecl, originalFile *ast.File) e
 	alias.functions = append(alias.functions, decl)
 
 	for _, im := range imports {
-		if err := alias.addImport(im); err != nil {
-			return err
-		}
+		alias.addImport(im)
 	}
 	return nil
 }
 
-func (alias *AliasPackage) addImport(im *ast.ImportSpec) error {
-	if im == nil {
-		return errUnexpectedNil
-	}
-
+func (alias *AliasPackage) addImport(im *ast.ImportSpec) {
 	for _, i := range alias.imports {
 		if i.Path.Value == im.Path.Value {
-			return nil
+			return
 		}
 	}
 
 	alias.imports = append(alias.imports, im)
-	return nil
 }
 
 // Build add all pending functions and imports into the package

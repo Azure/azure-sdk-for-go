@@ -361,8 +361,11 @@ func (page ContainerGroupListResultPage) Values() []ContainerGroup {
 }
 
 // Creates a new instance of the ContainerGroupListResultPage type.
-func NewContainerGroupListResultPage(getNextPage func(context.Context, ContainerGroupListResult) (ContainerGroupListResult, error)) ContainerGroupListResultPage {
-	return ContainerGroupListResultPage{fn: getNextPage}
+func NewContainerGroupListResultPage(cur ContainerGroupListResult, getNextPage func(context.Context, ContainerGroupListResult) (ContainerGroupListResult, error)) ContainerGroupListResultPage {
+	return ContainerGroupListResultPage{
+		fn:   getNextPage,
+		cglr: cur,
+	}
 }
 
 // ContainerGroupProperties ...

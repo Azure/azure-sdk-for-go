@@ -33,7 +33,7 @@ import (
 // AliasPackage is an abstraction around ast.Package to provide convenience methods for manipulating it.
 type AliasPackage struct {
 	ast.Package
-	general []*ast.GenDecl
+	general   []*ast.GenDecl
 	functions []*ast.FuncDecl
 	imports   []*ast.ImportSpec
 }

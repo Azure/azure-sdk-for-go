@@ -25,7 +25,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/tracing"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 	"io"
 	"net/http"
 )

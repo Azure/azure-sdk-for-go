@@ -20,7 +20,7 @@ package translatortextapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v1.0_preview.1/translatortext"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // TranslationClientAPI contains the set of methods on the TranslationClient type.

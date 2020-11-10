@@ -21,7 +21,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2020-01-01/advisor"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // RecommendationMetadataClientAPI contains the set of methods on the RecommendationMetadataClient type.

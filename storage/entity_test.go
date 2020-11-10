@@ -20,7 +20,7 @@ import (
 	"strings"
 	"time"
 
-	uuid "github.com/satori/go.uuid"
+	uuid "github.com/gofrs/uuid"
 	chk "gopkg.in/check.v1"
 )
 

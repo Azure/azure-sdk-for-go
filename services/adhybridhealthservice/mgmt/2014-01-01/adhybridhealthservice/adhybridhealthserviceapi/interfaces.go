@@ -22,7 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // AddsServicesClientAPI contains the set of methods on the AddsServicesClient type.

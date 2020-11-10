@@ -22,7 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/batch/2019-06-01.9.0/batch"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // ApplicationClientAPI contains the set of methods on the ApplicationClient type.

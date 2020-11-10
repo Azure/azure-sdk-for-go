@@ -21,7 +21,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/visualstudio/mgmt/2014-04-01-preview/visualstudio"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.

@@ -45,6 +45,7 @@ func NewTagRulesClientWithBaseURI(baseURI string, subscriptionID string) TagRule
 // Parameters:
 // resourceGroupName - the name of the resource group to which the Datadog resource belongs.
 // monitorName - monitor resource name
+// ruleSetName - rule set name
 func (client TagRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, body *MonitoringTagRules) (result MonitoringTagRules, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TagRulesClient.CreateOrUpdate")
@@ -129,6 +130,7 @@ func (client TagRulesClient) CreateOrUpdateResponder(resp *http.Response) (resul
 // Parameters:
 // resourceGroupName - the name of the resource group to which the Datadog resource belongs.
 // monitorName - monitor resource name
+// ruleSetName - rule set name
 func (client TagRulesClient) Get(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string) (result MonitoringTagRules, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TagRulesClient.Get")

@@ -172,7 +172,7 @@ func GetInterfaceMethods(lhs, rhs exports.Content) map[string]exports.Interface 
 
 // Signature contains the details of how a type signature changed (e.g. From:"int" To:"string").
 type Signature struct {
-	// From contains the originial signature.
+	// From contains the original signature.
 	From string `json:"from"`
 
 	// To contains the new signature.

@@ -60,20 +60,20 @@ func (client UnresolvedDependenciesClient) Get(ctx context.Context, resourceGrou
 	}
 	req, err := client.GetPreparer(ctx, resourceGroupName, moveCollectionName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.UnresolvedDependenciesClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "resourcemover.UnresolvedDependenciesClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "regionmove.UnresolvedDependenciesClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.UnresolvedDependenciesClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "regionmove.UnresolvedDependenciesClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "resourcemover.UnresolvedDependenciesClient", "Get", resp, "Failure responding to request")
 	}
 
 	return

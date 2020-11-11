@@ -1,0 +1,15 @@
+{
+  "autorestArguments": [
+    "--use=@microsoft.azure/autorest.go@~2.1.159",
+    "--go",
+    "--verbose",
+    "--go-sdk-folder=.",
+    "--multiapi",
+    "--use-onever",
+    "--preview-chk",
+    "--version=V2"
+  ],
+  "afterScripts": [
+    "gofmt -w ./services/"
+  ]
+}

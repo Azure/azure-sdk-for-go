@@ -22,9 +22,12 @@ const (
 )
 
 func defaultTestPipeline(srv azcore.Transport, cred azcore.Credential, scope string) azcore.Pipeline {
+	retryOpts := azcore.DefaultRetryOptions()
+	retryOpts.MaxRetryDelay = 500 * time.Millisecond
+	retryOpts.RetryDelay = 50 * time.Millisecond
 	return azcore.NewPipeline(
 		srv,
-		azcore.NewRetryPolicy(nil),
+		azcore.NewRetryPolicy(&retryOpts),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
 		azcore.NewLogPolicy(nil))
 }

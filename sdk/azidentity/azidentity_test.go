@@ -24,10 +24,10 @@ func Test_AuthorityHost_Parse(t *testing.T) {
 func Test_SetEnvAuthorityHost(t *testing.T) {
 	err := os.Setenv("AZURE_AUTHORITY_HOST", envHostString)
 	defer func() {
-		// Unset that host environment vairable to avoid other tests failed.
+		// Unset that host environment variable to avoid other tests failed.
 		err = os.Unsetenv("AZURE_AUTHORITY_HOST")
 		if err != nil {
-			t.Fatalf("Unexpected error when unset environment vairable: %v", err)
+			t.Fatalf("Unexpected error when unset environment variable: %v", err)
 		}
 	}()
 	if err != nil {
@@ -38,17 +38,17 @@ func Test_SetEnvAuthorityHost(t *testing.T) {
 		t.Fatal(err)
 	}
 	if authorityHost != envHostString {
-		t.Fatalf("Unexpected error when get host from environment vairable: %v", err)
+		t.Fatalf("Unexpected error when get host from environment variable: %v", err)
 	}
 }
 
 func Test_CustomAuthorityHost(t *testing.T) {
 	err := os.Setenv("AZURE_AUTHORITY_HOST", envHostString)
 	defer func() {
-		// Unset that host environment vairable to avoid other tests failed.
+		// Unset that host environment variable to avoid other tests failed.
 		err = os.Unsetenv("AZURE_AUTHORITY_HOST")
 		if err != nil {
-			t.Fatalf("Unexpected error when unset environment vairable: %v", err)
+			t.Fatalf("Unexpected error when unset environment variable: %v", err)
 		}
 	}()
 	if err != nil {
@@ -60,7 +60,7 @@ func Test_CustomAuthorityHost(t *testing.T) {
 	}
 	// env takes priority
 	if authorityHost != envHostString {
-		t.Fatalf("Unexpected host when get host from environment vairable: %v", authorityHost)
+		t.Fatalf("Unexpected host when get host from environment variable: %v", authorityHost)
 	}
 }
 

@@ -12,7 +12,7 @@ type GenerateInput struct {
 	SpecFolder              string                        `json:"specFolder,omitempty"`
 	HeadSha                 string                        `json:"headSha,omitempty"`
 	HeadRef                 string                        `json:"headRef,omitempty"`
-	RepoHttpsUrl            string                        `json:"repoHttpsUrl,omitempty"`
+	RepoHTTPSURL            string                        `json:"repoHttpsUrl,omitempty"`
 	Trigger                 string                        `json:"trigger,omitempty"`
 	ChangedFiles            []string                      `json:"changedFiles,omitempty"`
 	RelatedReadmeMdFiles    []string                      `json:"relatedReadmeMdFiles,omitempty"`
@@ -43,7 +43,7 @@ type InstallInstructionScriptInput struct {
 	PackageName             string   `json:"packageName,omitempty"`
 	Artifacts               []string `json:"artifacts,omitempty"`
 	IsPublic                bool     `json:"isPublic,omitempty"`
-	DownloadUrlPrefix       string   `json:"downloadUrlPrefix,omitempty"`
+	DownloadURLPrefix       string   `json:"downloadUrlPrefix,omitempty"`
 	DownloadCommandTemplate string   `json:"downloadCommandTemplate,omitempty"`
 	Trigger                 string   `json:"trigger,omitempty"`
 }

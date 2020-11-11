@@ -9,6 +9,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 )
 
+// NewChangelogForPackage returns the changelog for the given pkgDir.
+// This function must be used when the new changes are generated, but not committed to git
+// This function will first fetch all the exported content of the given package
+// Then it add everything to git and then do a `git stash`, temporary revert the package to the previous state
+// and fetch all the exported content of the given package again
+// compare and generate a changelog report for the package
+// This function will undo all the git changes before return
 func NewChangelogForPackage(pkgDir string) (c *Changelog, err error) {
 	// first we need to get the current status of the package
 	rhs, err := getExportForPackage(pkgDir)

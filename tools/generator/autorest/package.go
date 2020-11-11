@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// ChangedPackagesMap is a wrapper of a map of packages. The key is package names, and the value is the changed file list.
 type ChangedPackagesMap map[string][]string
 
 func (c *ChangedPackagesMap) addFileToPackage(pkg, file string) {
@@ -23,14 +24,6 @@ func (c *ChangedPackagesMap) String() string {
 		r = append(r, fmt.Sprintf("%s: %+v", k, v))
 	}
 	return strings.Join(r, "\n")
-}
-
-func (c *ChangedPackagesMap) GetChangedPackages() []string {
-	var r []string
-	for k := range *c {
-		r = append(r, k)
-	}
-	return r
 }
 
 // GetChangedPackages get the go SDK packages map from the given changed file list.
@@ -99,6 +92,9 @@ const (
 	versionGo = "version.go"
 )
 
+// IsValidPackage returns true when the given directory is a valid azure-sdk-for-go package,
+// otherwise returns false (including the directory does not exist)
+// The criteria of a valid azure-sdk-for-go package is that the directory must have a `client.go` and a `version.go` file
 func IsValidPackage(dir string) bool {
 	client := filepath.Join(dir, clientGo)
 	version := filepath.Join(dir, versionGo)

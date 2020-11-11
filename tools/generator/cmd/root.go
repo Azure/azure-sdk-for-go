@@ -16,7 +16,6 @@ import (
 )
 
 const (
-	sdkRoot           = "azure-sdk-for-go"
 	defaultOptionPath = "generate_options.json"
 )
 
@@ -47,6 +46,7 @@ func Command() *cobra.Command {
 	return rootCmd
 }
 
+// Flags ...
 type Flags struct {
 	OptionPath string
 }

@@ -81,6 +81,7 @@ func (client *ProvidersClient) GetCreateRequest(ctx context.Context, resourcePro
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Expand != nil {
 		query.Set("$expand", *options.Expand)
@@ -134,6 +135,7 @@ func (client *ProvidersClient) GetAtTenantScopeCreateRequest(ctx context.Context
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Expand != nil {
 		query.Set("$expand", *options.Expand)
@@ -183,6 +185,7 @@ func (client *ProvidersClient) ListCreateRequest(ctx context.Context, options *P
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Top != nil {
 		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
@@ -234,6 +237,7 @@ func (client *ProvidersClient) ListAtTenantScopeCreateRequest(ctx context.Contex
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Top != nil {
 		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
@@ -291,6 +295,7 @@ func (client *ProvidersClient) RegisterCreateRequest(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -338,6 +343,7 @@ func (client *ProvidersClient) RegisterAtManagementGroupScopeCreateRequest(ctx c
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -383,6 +389,7 @@ func (client *ProvidersClient) UnregisterCreateRequest(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()

@@ -234,6 +234,7 @@ func (client *DeploymentsClient) CalculateTemplateHashCreateRequest(ctx context.
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -284,6 +285,7 @@ func (client *DeploymentsClient) CancelCreateRequest(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -327,6 +329,7 @@ func (client *DeploymentsClient) CancelAtManagementGroupScopeCreateRequest(ctx c
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -370,6 +373,7 @@ func (client *DeploymentsClient) CancelAtScopeCreateRequest(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -413,6 +417,7 @@ func (client *DeploymentsClient) CancelAtSubscriptionScopeCreateRequest(ctx cont
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -455,6 +460,7 @@ func (client *DeploymentsClient) CancelAtTenantScopeCreateRequest(ctx context.Co
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -500,6 +506,7 @@ func (client *DeploymentsClient) CheckExistenceCreateRequest(ctx context.Context
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -544,6 +551,7 @@ func (client *DeploymentsClient) CheckExistenceAtManagementGroupScopeCreateReque
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -588,6 +596,7 @@ func (client *DeploymentsClient) CheckExistenceAtScopeCreateRequest(ctx context.
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -632,6 +641,7 @@ func (client *DeploymentsClient) CheckExistenceAtSubscriptionScopeCreateRequest(
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -675,6 +685,7 @@ func (client *DeploymentsClient) CheckExistenceAtTenantScopeCreateRequest(ctx co
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -751,6 +762,7 @@ func (client *DeploymentsClient) CreateOrUpdateCreateRequest(ctx context.Context
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -832,6 +844,7 @@ func (client *DeploymentsClient) CreateOrUpdateAtManagementGroupScopeCreateReque
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -913,6 +926,7 @@ func (client *DeploymentsClient) CreateOrUpdateAtScopeCreateRequest(ctx context.
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -994,6 +1008,7 @@ func (client *DeploymentsClient) CreateOrUpdateAtSubscriptionScopeCreateRequest(
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1074,6 +1089,7 @@ func (client *DeploymentsClient) CreateOrUpdateAtTenantScopeCreateRequest(ctx co
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1162,6 +1178,7 @@ func (client *DeploymentsClient) DeleteCreateRequest(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1243,6 +1260,7 @@ func (client *DeploymentsClient) DeleteAtManagementGroupScopeCreateRequest(ctx c
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1324,6 +1342,7 @@ func (client *DeploymentsClient) DeleteAtScopeCreateRequest(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1405,6 +1424,7 @@ func (client *DeploymentsClient) DeleteAtSubscriptionScopeCreateRequest(ctx cont
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1485,6 +1505,7 @@ func (client *DeploymentsClient) DeleteAtTenantScopeCreateRequest(ctx context.Co
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1531,6 +1552,7 @@ func (client *DeploymentsClient) ExportTemplateCreateRequest(ctx context.Context
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1582,6 +1604,7 @@ func (client *DeploymentsClient) ExportTemplateAtManagementGroupScopeCreateReque
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1633,6 +1656,7 @@ func (client *DeploymentsClient) ExportTemplateAtScopeCreateRequest(ctx context.
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1684,6 +1708,7 @@ func (client *DeploymentsClient) ExportTemplateAtSubscriptionScopeCreateRequest(
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1734,6 +1759,7 @@ func (client *DeploymentsClient) ExportTemplateAtTenantScopeCreateRequest(ctx co
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1786,6 +1812,7 @@ func (client *DeploymentsClient) GetCreateRequest(ctx context.Context, resourceG
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1837,6 +1864,7 @@ func (client *DeploymentsClient) GetAtManagementGroupScopeCreateRequest(ctx cont
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1888,6 +1916,7 @@ func (client *DeploymentsClient) GetAtScopeCreateRequest(ctx context.Context, sc
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1939,6 +1968,7 @@ func (client *DeploymentsClient) GetAtSubscriptionScopeCreateRequest(ctx context
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -1989,6 +2019,7 @@ func (client *DeploymentsClient) GetAtTenantScopeCreateRequest(ctx context.Conte
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -2035,6 +2066,7 @@ func (client *DeploymentsClient) ListAtManagementGroupScopeCreateRequest(ctx con
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Filter != nil {
 		query.Set("$filter", *options.Filter)
@@ -2087,6 +2119,7 @@ func (client *DeploymentsClient) ListAtScopeCreateRequest(ctx context.Context, s
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Filter != nil {
 		query.Set("$filter", *options.Filter)
@@ -2139,6 +2172,7 @@ func (client *DeploymentsClient) ListAtSubscriptionScopeCreateRequest(ctx contex
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Filter != nil {
 		query.Set("$filter", *options.Filter)
@@ -2190,6 +2224,7 @@ func (client *DeploymentsClient) ListAtTenantScopeCreateRequest(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Filter != nil {
 		query.Set("$filter", *options.Filter)
@@ -2243,6 +2278,7 @@ func (client *DeploymentsClient) ListByResourceGroupCreateRequest(ctx context.Co
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Filter != nil {
 		query.Set("$filter", *options.Filter)
@@ -2331,6 +2367,7 @@ func (client *DeploymentsClient) ValidateCreateRequest(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -2412,6 +2449,7 @@ func (client *DeploymentsClient) ValidateAtManagementGroupScopeCreateRequest(ctx
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -2493,6 +2531,7 @@ func (client *DeploymentsClient) ValidateAtScopeCreateRequest(ctx context.Contex
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -2574,6 +2613,7 @@ func (client *DeploymentsClient) ValidateAtSubscriptionScopeCreateRequest(ctx co
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -2654,6 +2694,7 @@ func (client *DeploymentsClient) ValidateAtTenantScopeCreateRequest(ctx context.
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -2736,6 +2777,7 @@ func (client *DeploymentsClient) WhatIfCreateRequest(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -2817,6 +2859,7 @@ func (client *DeploymentsClient) WhatIfAtManagementGroupScopeCreateRequest(ctx c
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -2898,6 +2941,7 @@ func (client *DeploymentsClient) WhatIfAtSubscriptionScopeCreateRequest(ctx cont
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -2978,6 +3022,7 @@ func (client *DeploymentsClient) WhatIfAtTenantScopeCreateRequest(ctx context.Co
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()

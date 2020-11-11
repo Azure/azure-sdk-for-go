@@ -89,6 +89,7 @@ func (client *DeploymentOperationsClient) GetCreateRequest(ctx context.Context, 
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -141,6 +142,7 @@ func (client *DeploymentOperationsClient) GetAtManagementGroupScopeCreateRequest
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -193,6 +195,7 @@ func (client *DeploymentOperationsClient) GetAtScopeCreateRequest(ctx context.Co
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -245,6 +248,7 @@ func (client *DeploymentOperationsClient) GetAtSubscriptionScopeCreateRequest(ct
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -296,6 +300,7 @@ func (client *DeploymentOperationsClient) GetAtTenantScopeCreateRequest(ctx cont
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -344,6 +349,7 @@ func (client *DeploymentOperationsClient) ListCreateRequest(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Top != nil {
 		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
@@ -394,6 +400,7 @@ func (client *DeploymentOperationsClient) ListAtManagementGroupScopeCreateReques
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Top != nil {
 		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
@@ -444,6 +451,7 @@ func (client *DeploymentOperationsClient) ListAtScopeCreateRequest(ctx context.C
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Top != nil {
 		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
@@ -494,6 +502,7 @@ func (client *DeploymentOperationsClient) ListAtSubscriptionScopeCreateRequest(c
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Top != nil {
 		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
@@ -543,6 +552,7 @@ func (client *DeploymentOperationsClient) ListAtTenantScopeCreateRequest(ctx con
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Top != nil {
 		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))

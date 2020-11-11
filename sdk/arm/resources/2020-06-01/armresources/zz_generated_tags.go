@@ -100,6 +100,7 @@ func (client *TagsClient) CreateOrUpdateCreateRequest(ctx context.Context, tagNa
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -151,6 +152,7 @@ func (client *TagsClient) CreateOrUpdateAtScopeCreateRequest(ctx context.Context
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -204,6 +206,7 @@ func (client *TagsClient) CreateOrUpdateValueCreateRequest(ctx context.Context, 
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -253,6 +256,7 @@ func (client *TagsClient) DeleteCreateRequest(ctx context.Context, tagName strin
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -293,6 +297,7 @@ func (client *TagsClient) DeleteAtScopeCreateRequest(ctx context.Context, scope 
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -337,6 +342,7 @@ func (client *TagsClient) DeleteValueCreateRequest(ctx context.Context, tagName 
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -381,6 +387,7 @@ func (client *TagsClient) GetAtScopeCreateRequest(ctx context.Context, scope str
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -429,6 +436,7 @@ func (client *TagsClient) ListCreateRequest(ctx context.Context, options *TagsLi
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -483,6 +491,7 @@ func (client *TagsClient) UpdateAtScopeCreateRequest(ctx context.Context, scope 
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()

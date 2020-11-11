@@ -88,6 +88,7 @@ func (client *ResourceGroupsClient) CheckExistenceCreateRequest(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -133,6 +134,7 @@ func (client *ResourceGroupsClient) CreateOrUpdateCreateRequest(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -215,6 +217,7 @@ func (client *ResourceGroupsClient) DeleteCreateRequest(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -290,6 +293,7 @@ func (client *ResourceGroupsClient) ExportTemplateCreateRequest(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -341,6 +345,7 @@ func (client *ResourceGroupsClient) GetCreateRequest(ctx context.Context, resour
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()
@@ -387,6 +392,7 @@ func (client *ResourceGroupsClient) ListCreateRequest(ctx context.Context, optio
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	if options != nil && options.Filter != nil {
 		query.Set("$filter", *options.Filter)
@@ -446,6 +452,7 @@ func (client *ResourceGroupsClient) UpdateCreateRequest(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
+	req.Telemetry(telemetryInfo)
 	query := req.URL.Query()
 	query.Set("api-version", "2020-06-01")
 	req.URL.RawQuery = query.Encode()

@@ -13,7 +13,8 @@ import (
 // Use these options to modify the default pipeline behavior through the TokenCredentialOptions.
 // Call DefaultUsernamePasswordCredentialOptions() to create an instance populated with default values.
 type UsernamePasswordCredentialOptions struct {
-	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
@@ -27,9 +28,8 @@ type UsernamePasswordCredentialOptions struct {
 // DefaultUsernamePasswordCredentialOptions returns an instance of UsernamePasswordCredentialOptions initialized with default values.
 func DefaultUsernamePasswordCredentialOptions() UsernamePasswordCredentialOptions {
 	return UsernamePasswordCredentialOptions{
-		AuthorityHost: AzurePublicCloud,
-		Retry:         azcore.DefaultRetryOptions(),
-		Telemetry:     azcore.DefaultTelemetryOptions(),
+		Retry:     azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
 	}
 }
 

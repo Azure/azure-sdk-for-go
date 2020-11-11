@@ -15,6 +15,7 @@ type AuthorizationCodeCredentialOptions struct {
 	// Gets the client secret that was generated for the App Registration used to authenticate the client.
 	ClientSecret string
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
@@ -28,9 +29,8 @@ type AuthorizationCodeCredentialOptions struct {
 // DefaultAuthorizationCodeCredentialOptions returns an instance of AuthorizationCodeCredentialOptions initialized with default values.
 func DefaultAuthorizationCodeCredentialOptions() AuthorizationCodeCredentialOptions {
 	return AuthorizationCodeCredentialOptions{
-		AuthorityHost: AzurePublicCloud,
-		Retry:         azcore.DefaultRetryOptions(),
-		Telemetry:     azcore.DefaultTelemetryOptions(),
+		Retry:     azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
 	}
 }
 

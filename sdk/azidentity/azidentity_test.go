@@ -58,8 +58,8 @@ func Test_CustomAuthorityHost(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// env takes priority
-	if authorityHost != envHostString {
+	// ensure env var doesn't override explicit value
+	if authorityHost != customHostString {
 		t.Fatalf("Unexpected host when get host from environment variable: %v", authorityHost)
 	}
 }

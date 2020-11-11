@@ -13,7 +13,8 @@ import (
 // EnvironmentCredentialOptions configures the EnvironmentCredential with optional parameters.
 // Call DefaultEnvironmentCredentialOptions() to create an instance populated with default values.
 type EnvironmentCredentialOptions struct {
-	// The host of the Azure Active Directory authority. The default is AzurePublicCloud
+	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
@@ -27,9 +28,8 @@ type EnvironmentCredentialOptions struct {
 // DefaultEnvironmentCredentialOptions returns an instance of EnvironmentCredentialOptions initialized with default values.
 func DefaultEnvironmentCredentialOptions() EnvironmentCredentialOptions {
 	return EnvironmentCredentialOptions{
-		AuthorityHost: AzurePublicCloud,
-		Retry:         azcore.DefaultRetryOptions(),
-		Telemetry:     azcore.DefaultTelemetryOptions(),
+		Retry:     azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
 	}
 }
 

@@ -22,7 +22,8 @@ import (
 type ClientCertificateCredentialOptions struct {
 	// The password required to decrypt the private key.  Leave empty if there is no password.
 	Password string
-	// The host of the Azure Active Directory authority. The default is AzurePublicCloud
+	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
@@ -36,9 +37,8 @@ type ClientCertificateCredentialOptions struct {
 // DefaultClientCertificateCredentialOptions returns an instance of ClientCertificateCredentialOptions initialized with default values.
 func DefaultClientCertificateCredentialOptions() ClientCertificateCredentialOptions {
 	return ClientCertificateCredentialOptions{
-		AuthorityHost: AzurePublicCloud,
-		Retry:         azcore.DefaultRetryOptions(),
-		Telemetry:     azcore.DefaultTelemetryOptions(),
+		Retry:     azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
 	}
 }
 

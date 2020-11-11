@@ -12,7 +12,8 @@ import (
 // ClientSecretCredentialOptions configures the ClientSecretCredential with optional parameters.
 // Call DefaultClientSecretCredentialOptions() to create an instance populated with default values.
 type ClientSecretCredentialOptions struct {
-	// The host of the Azure Active Directory authority. The default is AzurePublicCloud
+	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
@@ -26,9 +27,8 @@ type ClientSecretCredentialOptions struct {
 // DefaultClientSecretCredentialOptions returns an instance of ClientSecretCredentialOptions initialized with default values.
 func DefaultClientSecretCredentialOptions() ClientSecretCredentialOptions {
 	return ClientSecretCredentialOptions{
-		AuthorityHost: AzurePublicCloud,
-		Retry:         azcore.DefaultRetryOptions(),
-		Telemetry:     azcore.DefaultTelemetryOptions(),
+		Retry:     azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
 	}
 }
 

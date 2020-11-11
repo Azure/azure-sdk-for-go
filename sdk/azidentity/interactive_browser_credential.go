@@ -26,7 +26,8 @@ type InteractiveBrowserCredentialOptions struct {
 	ClientSecret string
 	// The redirect URL used to request the authorization code. Must be the same URL that is configured for the App Registration.
 	RedirectURL string
-	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
@@ -40,11 +41,10 @@ type InteractiveBrowserCredentialOptions struct {
 // DefaultInteractiveBrowserCredentialOptions returns an instance of InteractiveBrowserCredentialOptions initialized with default values.
 func DefaultInteractiveBrowserCredentialOptions() InteractiveBrowserCredentialOptions {
 	return InteractiveBrowserCredentialOptions{
-		AuthorityHost: AzurePublicCloud,
-		TenantID:      organizationsTenantID,
-		ClientID:      developerSignOnClientID,
-		Retry:         azcore.DefaultRetryOptions(),
-		Telemetry:     azcore.DefaultTelemetryOptions(),
+		TenantID:  organizationsTenantID,
+		ClientID:  developerSignOnClientID,
+		Retry:     azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
 	}
 }
 

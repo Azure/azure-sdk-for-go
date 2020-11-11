@@ -25,7 +25,8 @@ type DeviceCodeCredentialOptions struct {
 	ClientID string
 	// The callback function used to send the login message back to the user
 	UserPrompt func(DeviceCodeMessage)
-	// The host of the Azure Active Directory authority. The default is AzurePublicCloud
+	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
@@ -43,9 +44,8 @@ type DeviceCodeCredentialOptions struct {
 // UserPrompt set to output login information for the user to stdout.
 func DefaultDeviceCodeCredentialOptions() DeviceCodeCredentialOptions {
 	return DeviceCodeCredentialOptions{
-		AuthorityHost: AzurePublicCloud,
-		TenantID:      organizationsTenantID,
-		ClientID:      developerSignOnClientID,
+		TenantID: organizationsTenantID,
+		ClientID: developerSignOnClientID,
 		UserPrompt: func(dc DeviceCodeMessage) {
 			fmt.Println(dc.Message)
 		},

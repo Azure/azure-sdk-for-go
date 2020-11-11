@@ -73,8 +73,8 @@ func Test_Funcs(t *testing.T) {
 		{"DoNothing", exports.Func{}},
 		{"DoNothingWithParam", exports.Func{Params: strPtr("int"), Returns: nil}},
 		{"UserAgent", exports.Func{Params: nil, Returns: strPtr("string")}},
-		{"Client.Delete", exports.Func{Params: strPtr("context.Context,string,string"), Returns: strPtr("DeleteFuture,error")}},
-		{"Client.ListSender", exports.Func{Params: strPtr("*http.Request"), Returns: strPtr("*http.Response,error")}},
+		{"Client.Delete", exports.Func{Params: strPtr("context.Context, string, string"), Returns: strPtr("DeleteFuture, error")}},
+		{"Client.ListSender", exports.Func{Params: strPtr("*http.Request"), Returns: strPtr("*http.Response, error")}},
 	}
 
 	for _, test := range tests {
@@ -121,8 +121,8 @@ func Test_Interfaces(t *testing.T) {
 					Returns: strPtr("error"),
 				},
 				"Five": {
-					Params:  strPtr("int,bool"),
-					Returns: strPtr("int,error"),
+					Params:  strPtr("int, bool"),
+					Returns: strPtr("int, error"),
 				},
 			},
 		}},

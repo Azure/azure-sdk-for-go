@@ -82,7 +82,10 @@ func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &ClientCertificateCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultClientCertificateCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &options)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -96,7 +99,10 @@ func TestClientCertificateCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &ClientCertificateCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultClientCertificateCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &options)
 	if err != nil {
 		t.Fatalf("Did not expect an error but received one: %v", err)
 	}
@@ -114,7 +120,10 @@ func TestClientCertificateCredential_WrongCertificatePath(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	_, err := NewClientCertificateCredential(tenantID, clientID, wrongCertificatePath, &ClientCertificateCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultClientCertificateCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	_, err := NewClientCertificateCredential(tenantID, clientID, wrongCertificatePath, &options)
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
@@ -124,7 +133,10 @@ func TestClientCertificateCredential_GetTokenCheckPrivateKeyBlocks(t *testing.T)
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	cred, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_formatB.pem", &ClientCertificateCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultClientCertificateCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_formatB.pem", &options)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -138,7 +150,10 @@ func TestClientCertificateCredential_GetTokenCheckCertificateBlocks(t *testing.T
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	cred, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_formatA.pem", &ClientCertificateCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultClientCertificateCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_formatA.pem", &options)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -152,7 +167,10 @@ func TestClientCertificateCredential_GetTokenEmptyCertificate(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	_, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_empty.pem", &ClientCertificateCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultClientCertificateCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	_, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_empty.pem", &options)
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
 	}
@@ -162,7 +180,10 @@ func TestClientCertificateCredential_GetTokenNoPrivateKey(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	_, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_nokey.pem", &ClientCertificateCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultClientCertificateCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	_, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_nokey.pem", &options)
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
 	}
@@ -173,7 +194,10 @@ func TestBearerPolicy_ClientCertificateCredential(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &ClientCertificateCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultClientCertificateCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &options)
 	if err != nil {
 		t.Fatalf("Did not expect an error but received: %v", err)
 	}

@@ -11,12 +11,13 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"golang.org/x/net/http2"
 )
 
 func TestInteractiveBrowserCredential_InvalidTenantID(t *testing.T) {
-	cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{TenantID: badTenantID})
+	options := DefaultInteractiveBrowserCredentialOptions()
+	options.TenantID = badTenantID
+	cred, err := NewInteractiveBrowserCredential(&options)
 	if err == nil {
 		t.Fatal("Expected an error but received none")
 	}
@@ -62,7 +63,7 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI *string, scopes []string) (*interactiveConfig, error) {
+	authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI string, scopes []string) (*interactiveConfig, error) {
 		return &interactiveConfig{
 			authCode:    "12345",
 			redirectURI: srv.URL(),
@@ -88,14 +89,14 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	client := &http.Client{Transport: tr}
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
 	options := DefaultInteractiveBrowserCredentialOptions()
-	options.ClientSecret = to.StringPtr(wrongSecret)
+	options.ClientSecret = wrongSecret
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = client
 	cred, err := NewInteractiveBrowserCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI *string, scopes []string) (*interactiveConfig, error) {
+	authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI string, scopes []string) (*interactiveConfig, error) {
 		return &interactiveConfig{
 			authCode:    "12345",
 			redirectURI: srv.URL(),
@@ -128,8 +129,8 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	if len(respError.CorrelationID) == 0 {
 		t.Fatalf("Did not receive a CorrelationID")
 	}
-	if len(respError.URI) == 0 {
-		t.Fatalf("Did not receive an error URI")
+	if len(respError.URL) == 0 {
+		t.Fatalf("Did not receive an error URL")
 	}
 	if respError.Response == nil {
 		t.Fatalf("Did not receive an error response")

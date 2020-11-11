@@ -22,8 +22,14 @@ import (
 type AzureCLITokenProvider func(ctx context.Context, resource string) ([]byte, error)
 
 // AzureCLICredentialOptions contains options used to configure the AzureCLICredential
+// Call DefaultAzureCLICredentialOptions() to create an instance populated with default values.
 type AzureCLICredentialOptions struct {
 	TokenProvider AzureCLITokenProvider
+}
+
+// DefaultAzureCLICredentialOptions returns an instance of AzureCLICredentialOptions initialized with default values.
+func DefaultAzureCLICredentialOptions() AzureCLICredentialOptions {
+	return AzureCLICredentialOptions{TokenProvider: defaultTokenProvider()}
 }
 
 // AzureCLICredential enables authentication to Azure Active Directory using the Azure CLI command "az account get-access-token".
@@ -35,7 +41,8 @@ type AzureCLICredential struct {
 // options: configure the management of the requests sent to Azure Active Directory.
 func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredential, error) {
 	if options == nil {
-		options = &AzureCLICredentialOptions{TokenProvider: defaultTokenProvider()}
+		def := DefaultAzureCLICredentialOptions()
+		options = &def
 	}
 	return &AzureCLICredential{
 		tokenProvider: options.TokenProvider,
@@ -122,7 +129,7 @@ func defaultTokenProvider() func(ctx context.Context, resource string) ([]byte, 
 
 		output, err := cliCmd.Output()
 		if err != nil {
-			return nil, &CredentialUnavailableError{CredentialType: "Azure CLI Credential", Message: stderr.String()}
+			return nil, &CredentialUnavailableError{credentialType: "Azure CLI Credential", message: stderr.String()}
 		}
 
 		return output, nil

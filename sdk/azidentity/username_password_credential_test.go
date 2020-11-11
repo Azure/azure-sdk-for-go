@@ -80,7 +80,10 @@ func TestUsernamePasswordCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &UsernamePasswordCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultUsernamePasswordCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -94,7 +97,10 @@ func TestUsernamePasswordCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "wrong_password", &UsernamePasswordCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultUsernamePasswordCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "wrong_password", &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -109,7 +115,10 @@ func TestBearerPolicy_UsernamePasswordCredential(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &UsernamePasswordCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultUsernamePasswordCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}

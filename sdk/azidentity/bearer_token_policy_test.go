@@ -34,7 +34,10 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &ClientSecretCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultClientSecretCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -58,7 +61,10 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &ClientSecretCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultClientSecretCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -86,8 +92,10 @@ func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespShortLived)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-
-	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &ClientSecretCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultClientSecretCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -112,7 +120,10 @@ func TestRetryPolicy_NonRetriable(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &ClientSecretCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultClientSecretCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -132,7 +143,10 @@ func TestRetryPolicy_HTTPRequest(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &ClientSecretCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	options := DefaultClientSecretCredentialOptions()
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}

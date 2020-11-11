@@ -12,6 +12,7 @@ import (
 )
 
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential.
+// Call DefaultManagedIdentityCredentialOptions() to create an instance populated with default values.
 type ManagedIdentityCredentialOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	// Leave this as nil to use the default HTTP transport.
@@ -21,11 +22,11 @@ type ManagedIdentityCredentialOptions struct {
 	Telemetry azcore.TelemetryOptions
 }
 
-func (m *ManagedIdentityCredentialOptions) setDefaultValues() *ManagedIdentityCredentialOptions {
-	if m == nil {
-		m = defaultMSIOpts
+// DefaultManagedIdentityCredentialOptions returns an instance of ManagedIdentityCredentialOptions initialized with default values.
+func DefaultManagedIdentityCredentialOptions() ManagedIdentityCredentialOptions {
+	return ManagedIdentityCredentialOptions{
+		Telemetry: azcore.DefaultTelemetryOptions(),
 	}
-	return m
 }
 
 // ManagedIdentityCredential attempts authentication using a managed identity that has been assigned to the deployment environment. This authentication type works in several
@@ -43,12 +44,16 @@ type ManagedIdentityCredential struct {
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview#how-a-user-assigned-managed-identity-works-with-an-azure-vm
 func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
 	// Create a new Managed Identity Client with default options
+	if options == nil {
+		def := DefaultManagedIdentityCredentialOptions()
+		options = &def
+	}
 	client := newManagedIdentityClient(options)
 	msiType, err := client.getMSIType()
 	// If there is an error that means that the code is not running in a Managed Identity environment
 	if err != nil {
-		credErr := &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
-		logCredentialError(credErr.CredentialType, credErr)
+		credErr := &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
+		logCredentialError(credErr.credentialType, credErr)
 		return nil, credErr
 	}
 	// Assign the msiType discovered onto the client

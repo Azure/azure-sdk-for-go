@@ -27,7 +27,9 @@ var (
 )
 
 func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
-	cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TokenProvider: mockCLITokenProviderSuccess})
+	options := DefaultAzureCLICredentialOptions()
+	options.TokenProvider = mockCLITokenProviderSuccess
+	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -44,7 +46,9 @@ func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestAzureCLICredential_GetTokenInvalidToken(t *testing.T) {
-	cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TokenProvider: mockCLITokenProviderFailure})
+	options := DefaultAzureCLICredentialOptions()
+	options.TokenProvider = mockCLITokenProviderFailure
+	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -58,7 +62,9 @@ func TestBearerPolicy_AzureCLICredential(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TokenProvider: mockCLITokenProviderSuccess})
+	options := DefaultAzureCLICredentialOptions()
+	options.TokenProvider = mockCLITokenProviderSuccess
+	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
 		t.Fatalf("Did not expect an error but received: %v", err)
 	}

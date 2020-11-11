@@ -80,8 +80,7 @@ func TestAuthorizationCodeCredential_GetTokenSuccess(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := DefaultAuthorizationCodeCredentialOptions()
-	s := secret
-	options.ClientSecret = &s
+	options.ClientSecret = secret
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = srv
 	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, testRedirectURI, &options)
@@ -99,8 +98,7 @@ func TestAuthorizationCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
 	options := DefaultAuthorizationCodeCredentialOptions()
-	s := secret
-	options.ClientSecret = &s
+	options.ClientSecret = secret
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = srv
 	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, testRedirectURI, &options)
@@ -134,8 +132,8 @@ func TestAuthorizationCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 			if len(respError.CorrelationID) == 0 {
 				t.Fatalf("Did not receive a CorrelationID")
 			}
-			if len(respError.URI) == 0 {
-				t.Fatalf("Did not receive an error URI")
+			if len(respError.URL) == 0 {
+				t.Fatalf("Did not receive an error URL")
 			}
 			if respError.Response == nil {
 				t.Fatalf("Did not receive an error response")
@@ -149,8 +147,7 @@ func TestAuthorizationCodeCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
 	options := DefaultAuthorizationCodeCredentialOptions()
-	s := secret
-	options.ClientSecret = &s
+	options.ClientSecret = secret
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = srv
 	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testRedirectURI, testRedirectURI, &options)

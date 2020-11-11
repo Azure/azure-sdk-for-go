@@ -19,14 +19,14 @@ type ChainedTokenCredential struct {
 // NewChainedTokenCredential creates an instance of ChainedTokenCredential with the specified TokenCredential sources.
 func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedTokenCredential, error) {
 	if len(sources) == 0 {
-		credErr := &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: "Length of sources cannot be 0"}
-		logCredentialError(credErr.CredentialType, credErr)
+		credErr := &CredentialUnavailableError{credentialType: "Chained Token Credential", message: "Length of sources cannot be 0"}
+		logCredentialError(credErr.credentialType, credErr)
 		return nil, credErr
 	}
 	for _, source := range sources {
 		if source == nil { // cannot have a nil credential in the chain or else the application will panic when GetToken() is called on nil
-			credErr := &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: "Sources cannot contain a nil TokenCredential"}
-			logCredentialError(credErr.CredentialType, credErr)
+			credErr := &CredentialUnavailableError{credentialType: "Chained Token Credential", message: "Sources cannot contain a nil TokenCredential"}
+			logCredentialError(credErr.credentialType, credErr)
 			return nil, credErr
 		}
 	}
@@ -62,7 +62,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 		}
 	}
 	// if we reach this point it means that all of the credentials in the chain returned CredentialUnavailableErrors
-	credErr := &CredentialUnavailableError{CredentialType: "Chained Token Credential", Message: createChainedErrorMessage(errList)}
+	credErr := &CredentialUnavailableError{credentialType: "Chained Token Credential", message: createChainedErrorMessage(errList)}
 	// skip adding the stack trace here as it was already logged by other calls to GetToken()
 	addGetTokenFailureLogs("Chained Token Credential", credErr, false)
 	return nil, credErr

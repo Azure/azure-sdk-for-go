@@ -170,7 +170,7 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &ClientSecretCredentialOptions{
 		HTTPClient:    srv,
 		AuthorityHost: srv.URL(),
-		Retry: &azcore.RetryOptions{
+		Retry: azcore.RetryOptions{
 			// leaving TryTimeout at zero will trigger a deadline exceeded error causing GetToken() to fail
 			RetryDelay:    50 * time.Millisecond,
 			MaxRetryDelay: 500 * time.Millisecond,

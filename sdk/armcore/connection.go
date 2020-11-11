@@ -67,7 +67,7 @@ func NewConnection(endpoint string, cred azcore.TokenCredential, options *Connec
 		azcore.NewTelemetryPolicy(&options.Telemetry),
 		NewRPRegistrationPolicy(endpoint, cred, &options.RegisterRPOptions),
 		azcore.NewRetryPolicy(&options.Retry),
-		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope(endpoint)}}}),
+		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
 		azcore.NewLogPolicy(nil))
 	return NewConnectionWithPipeline(endpoint, p)
 }
@@ -88,7 +88,7 @@ func (c *Connection) Pipeline() azcore.Pipeline {
 	return c.p
 }
 
-func scope(endpoint string) string {
+func endpointToScope(endpoint string) string {
 	if endpoint[len(endpoint)-1] != '/' {
 		endpoint += "/"
 	}

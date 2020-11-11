@@ -66,10 +66,10 @@ func TestNewConnectionWithPipeline(t *testing.T) {
 }
 
 func TestScope(t *testing.T) {
-	if s := scope(AzureGermany); s != "https://management.microsoftazure.de//.default" {
+	if s := endpointToScope(AzureGermany); s != "https://management.microsoftazure.de//.default" {
 		t.Fatalf("unexpected scope %s", s)
 	}
-	if s := scope("https://management.usgovcloudapi.net"); s != "https://management.usgovcloudapi.net//.default" {
+	if s := endpointToScope("https://management.usgovcloudapi.net"); s != "https://management.usgovcloudapi.net//.default" {
 		t.Fatalf("unexpected scope %s", s)
 	}
 }

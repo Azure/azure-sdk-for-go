@@ -73,11 +73,11 @@ func Test_GetAddedExports(t *testing.T) {
 
 	fAdded := map[string]exports.Func{
 		"DoNothing2":                 {},
-		"Client.ExportData":          {Params: strPtr("context.Context,string,string,ExportRDBParameters"), Returns: strPtr("ExportDataFuture,error")},
-		"Client.ExportDataPreparer":  {Params: strPtr("context.Context,string,string,ExportRDBParameters"), Returns: strPtr("*http.Request,error")},
-		"Client.ExportDataSender":    {Params: strPtr("*http.Request"), Returns: strPtr("ExportDataFuture,error")},
-		"Client.ExportDataResponder": {Params: strPtr("*http.Response"), Returns: strPtr("autorest.Response,error")},
-		"ExportDataFuture.Result":    {Params: strPtr("Client"), Returns: strPtr("autorest.Response,error")},
+		"Client.ExportData":          {Params: strPtr("context.Context, string, string, ExportRDBParameters"), Returns: strPtr("ExportDataFuture, error")},
+		"Client.ExportDataPreparer":  {Params: strPtr("context.Context, string, string, ExportRDBParameters"), Returns: strPtr("*http.Request, error")},
+		"Client.ExportDataSender":    {Params: strPtr("*http.Request"), Returns: strPtr("ExportDataFuture, error")},
+		"Client.ExportDataResponder": {Params: strPtr("*http.Response"), Returns: strPtr("autorest.Response, error")},
+		"ExportDataFuture.Result":    {Params: strPtr("Client"), Returns: strPtr("autorest.Response, error")},
 	}
 
 	for k, v := range fAdded {
@@ -105,7 +105,7 @@ func Test_GetAddedExports(t *testing.T) {
 			"Two": {Returns: strPtr("error")},
 		}},
 		"SomeInterface": {Methods: map[string]exports.Func{
-			"NewMethod": {Params: strPtr("string"), Returns: strPtr("bool,error")},
+			"NewMethod": {Params: strPtr("string"), Returns: strPtr("bool, error")},
 		}},
 	}
 
@@ -199,7 +199,7 @@ func Test_GetAddedInterfaceMethods(t *testing.T) {
 	added := map[string]exports.Interface{
 		"SomeInterface": {
 			Methods: map[string]exports.Func{
-				"NewMethod": {Params: strPtr("string"), Returns: strPtr("bool,error")},
+				"NewMethod": {Params: strPtr("string"), Returns: strPtr("bool, error")},
 			},
 		},
 	}
@@ -275,17 +275,17 @@ func Test_GetFuncSigChanges(t *testing.T) {
 			Params: &delta.Signature{From: "int", To: delta.None},
 		},
 		"Client.List": {
-			Params:  &delta.Signature{From: "context.Context", To: "context.Context,string"},
-			Returns: &delta.Signature{From: "ListResultPage,error", To: "ListResult,error"},
+			Params:  &delta.Signature{From: "context.Context", To: "context.Context, string"},
+			Returns: &delta.Signature{From: "ListResultPage, error", To: "ListResult, error"},
 		},
 		"Client.ListPreparer": {
-			Params: &delta.Signature{From: "context.Context", To: "context.Context,string"},
+			Params: &delta.Signature{From: "context.Context", To: "context.Context, string"},
 		},
 		"Client.Delete": {
-			Params: &delta.Signature{From: "context.Context,string,string", To: "context.Context,string"},
+			Params: &delta.Signature{From: "context.Context, string, string", To: "context.Context, string"},
 		},
 		"Client.DeletePreparer": {
-			Params: &delta.Signature{From: "context.Context,string,string", To: "context.Context,string"},
+			Params: &delta.Signature{From: "context.Context, string, string", To: "context.Context, string"},
 		},
 	}
 
@@ -316,7 +316,7 @@ func Test_GetInterfaceMethodSigChanges(t *testing.T) {
 		"SomeInterface": {
 			MethodSigs: map[string]delta.FuncSig{
 				"One": {Params: &delta.Signature{From: delta.None, To: "string"}},
-				"Two": {Params: &delta.Signature{From: "bool", To: "bool,int"}},
+				"Two": {Params: &delta.Signature{From: "bool", To: "bool, int"}},
 			},
 		},
 	}

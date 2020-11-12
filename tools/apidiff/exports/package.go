@@ -162,7 +162,7 @@ func (pkg Package) buildFunc(ft *ast.FuncType) (f Func) {
 	// appends a to s, comma-delimited style, and returns s
 	appendString := func(s, a string) string {
 		if s != "" {
-			s += ","
+			s += ", "
 		}
 		s += a
 		return s

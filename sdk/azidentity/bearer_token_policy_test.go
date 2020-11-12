@@ -8,6 +8,7 @@ import (
 	"errors"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -144,5 +145,36 @@ func TestRetryPolicy_HTTPRequest(t *testing.T) {
 	var afe *AuthenticationFailedError
 	if !errors.As(err, &afe) {
 		t.Fatalf("unexpected error type %v", err)
+	}
+}
+
+func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &ClientSecretCredentialOptions{
+		HTTPClient:    srv,
+		AuthorityHost: srv.URL(),
+		Retry: &azcore.RetryOptions{
+			// leaving TryTimeout at zero will trigger a deadline exceeded error causing GetToken() to fail
+			RetryDelay:    50 * time.Millisecond,
+			MaxRetryDelay: 500 * time.Millisecond,
+			MaxRetries:    3,
+		}})
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+	pipeline := defaultTestPipeline(srv, cred, scope)
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp, err := pipeline.Do(req)
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if resp != nil {
+		t.Fatal("expected nil response")
 	}
 }

@@ -380,7 +380,7 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, t
 // clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
 // redirectURI: The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
 // scopes: The scopes required for the token
-func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, tenantID string, clientID string, clientSecret *string, redirectURI *string, scopes []string) (*azcore.AccessToken, error) {
+func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, tenantID string, clientID string, clientSecret string, redirectURI string, scopes []string) (*azcore.AccessToken, error) {
 	cfg, err := authCodeReceiver(c.authorityHost, tenantID, clientID, redirectURI, scopes)
 	if err != nil {
 		return nil, err
@@ -396,7 +396,7 @@ func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, 
 // clientSecret: Gets the client secret that was generated for the App Registration used to authenticate the client.
 // redirectURI: The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
 // scopes: The scopes required for the token
-func (c *aadIdentityClient) authenticateAuthCode(ctx context.Context, tenantID string, clientID string, authCode string, clientSecret *string, redirectURI string, scopes []string) (*azcore.AccessToken, error) {
+func (c *aadIdentityClient) authenticateAuthCode(ctx context.Context, tenantID string, clientID string, authCode string, clientSecret string, redirectURI string, scopes []string) (*azcore.AccessToken, error) {
 	req, err := c.createAuthorizationCodeAuthRequest(ctx, tenantID, clientID, authCode, clientSecret, redirectURI, scopes)
 	if err != nil {
 		return nil, err
@@ -415,12 +415,12 @@ func (c *aadIdentityClient) authenticateAuthCode(ctx context.Context, tenantID s
 }
 
 // createAuthorizationCodeAuthRequest creates a request for an Access Token for authorization_code grant types.
-func (c *aadIdentityClient) createAuthorizationCodeAuthRequest(ctx context.Context, tenantID string, clientID string, authCode string, clientSecret *string, redirectURI string, scopes []string) (*azcore.Request, error) {
+func (c *aadIdentityClient) createAuthorizationCodeAuthRequest(ctx context.Context, tenantID string, clientID string, authCode string, clientSecret string, redirectURI string, scopes []string) (*azcore.Request, error) {
 	data := url.Values{}
 	data.Set(qpGrantType, "authorization_code")
 	data.Set(qpClientID, clientID)
-	if clientSecret != nil {
-		data.Set(qpClientSecret, *clientSecret) // only for web apps
+	if clientSecret != "" {
+		data.Set(qpClientSecret, clientSecret) // only for web apps
 	}
 	data.Set(qpRedirectURI, redirectURI)
 	data.Set(qpScope, strings.Join(scopes, " "))

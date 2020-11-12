@@ -17,6 +17,31 @@ import (
 	"golang.org/x/crypto/pkcs12"
 )
 
+// ClientCertificateCredentialOptions contain optional parameters that can be used when configuring a ClientCertificateCredential.
+// Call DefaultClientCertificateCredentialOptions() to create an instance populated with default values.
+type ClientCertificateCredentialOptions struct {
+	// The password required to decrypt the private key.  Leave empty if there is no password.
+	Password string
+	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
+	AuthorityHost string
+	// HTTPClient sets the transport for making HTTP requests
+	// Leave this as nil to use the default HTTP transport
+	HTTPClient azcore.Transport
+	// Retry configures the built-in retry policy behavior
+	Retry azcore.RetryOptions
+	// Telemetry configures the built-in telemetry policy behavior
+	Telemetry azcore.TelemetryOptions
+}
+
+// DefaultClientCertificateCredentialOptions returns an instance of ClientCertificateCredentialOptions initialized with default values.
+func DefaultClientCertificateCredentialOptions() ClientCertificateCredentialOptions {
+	return ClientCertificateCredentialOptions{
+		Retry:     azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
+	}
+}
+
 // ClientCertificateCredential enables authentication of a service principal to Azure Active Directory using a certificate that is assigned to its App Registration. More information
 // on how to configure certificate authentication can be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-certificate-credentials#register-your-certificate-with-azure-ad
@@ -27,28 +52,6 @@ type ClientCertificateCredential struct {
 	cert     *certContents // The contents of the certificate file
 }
 
-// ClientCertificateCredentialOptions contain optional parameters that can be used when configuring a ClientCertificateCredential.
-// password: The password required to decrypt the private key.  Pass nil if there is no password.
-// options: Manage the configuration of requests sent to Azure Active Directory.
-type ClientCertificateCredentialOptions struct {
-	// The password required to decrypt the private key.  Pass nil if there is no password.
-	Password *string
-	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
-	AuthorityHost string
-	// HTTPClient sets the transport for making HTTP requests
-	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transport
-	// Retry configures the built-in retry policy behavior
-	Retry *azcore.RetryOptions
-	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry azcore.TelemetryOptions
-}
-
-// DefaultClientCertificateCredentialOptions returns an instance of ClientCertificateCredentialOptions initialized with default values.
-func DefaultClientCertificateCredentialOptions() ClientCertificateCredentialOptions {
-	return ClientCertificateCredentialOptions{}
-}
-
 // NewClientCertificateCredential creates an instance of ClientCertificateCredential with the details needed to authenticate against Azure Active Directory with the specified certificate.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
@@ -57,18 +60,18 @@ func DefaultClientCertificateCredentialOptions() ClientCertificateCredentialOpti
 // options: ClientCertificateCredentialOptions that can be used to provide additional configurations for the credential.
 func NewClientCertificateCredential(tenantID string, clientID string, certificatePath string, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
 	if !validTenantID(tenantID) {
-		return nil, &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: tenantIDValidationErr}
+		return nil, &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: tenantIDValidationErr}
 	}
 	_, err := os.Stat(certificatePath)
 	if err != nil {
-		credErr := &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: "Certificate file not found in path: " + certificatePath}
-		logCredentialError(credErr.CredentialType, credErr)
+		credErr := &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: "Certificate file not found in path: " + certificatePath}
+		logCredentialError(credErr.credentialType, credErr)
 		return nil, credErr
 	}
 	certData, err := ioutil.ReadFile(certificatePath)
 	if err != nil {
-		credErr := &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: err.Error()}
-		logCredentialError(credErr.CredentialType, credErr)
+		credErr := &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: err.Error()}
+		logCredentialError(credErr.credentialType, credErr)
 		return nil, credErr
 	}
 	if options == nil {
@@ -85,8 +88,8 @@ func NewClientCertificateCredential(tenantID string, clientID string, certificat
 		err = errors.New("only PEM and PFX files are supported")
 	}
 	if err != nil {
-		credErr := &CredentialUnavailableError{CredentialType: "Client Certificate Credential", Message: err.Error()}
-		logCredentialError(credErr.CredentialType, credErr)
+		credErr := &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: err.Error()}
+		logCredentialError(credErr.credentialType, credErr)
 		return nil, credErr
 	}
 	authorityHost, err := setAuthorityHost(options.AuthorityHost)
@@ -163,7 +166,7 @@ func newCertContents(blocks []*pem.Block, fromPEM bool) (*certContents, error) {
 	return &cc, nil
 }
 
-func extractFromPEMFile(certData []byte, password *string) (*certContents, error) {
+func extractFromPEMFile(certData []byte, password string) (*certContents, error) {
 	// TODO: wire up support for password
 	blocks := []*pem.Block{}
 	// read all of the PEM blocks
@@ -181,13 +184,9 @@ func extractFromPEMFile(certData []byte, password *string) (*certContents, error
 	return newCertContents(blocks, true)
 }
 
-func extractFromPFXFile(certData []byte, password *string) (*certContents, error) {
-	if password == nil {
-		empty := ""
-		password = &empty
-	}
+func extractFromPFXFile(certData []byte, password string) (*certContents, error) {
 	// convert PFX binary data to PEM blocks
-	blocks, err := pkcs12.ToPEM(certData, *password)
+	blocks, err := pkcs12.ToPEM(certData, password)
 	if err != nil {
 		return nil, err
 	}

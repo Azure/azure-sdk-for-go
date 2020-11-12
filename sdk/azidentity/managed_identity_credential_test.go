@@ -61,7 +61,9 @@ func TestManagedIdentityCredential_GetTokenInCloudShellMock(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
-	msiCred, err := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	options := DefaultManagedIdentityCredentialOptions()
+	options.HTTPClient = srv
+	msiCred, err := NewManagedIdentityCredential(clientID, &options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -78,7 +80,9 @@ func TestManagedIdentityCredential_GetTokenInCloudShellMockFail(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
-	msiCred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	options := DefaultManagedIdentityCredentialOptions()
+	options.HTTPClient = srv
+	msiCred, err := NewManagedIdentityCredential("", &options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -96,7 +100,9 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20170901Mock(t *testing.
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	_ = os.Setenv("MSI_SECRET", "secret")
 	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
-	msiCred, err := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	options := DefaultManagedIdentityCredentialOptions()
+	options.HTTPClient = srv
+	msiCred, err := NewManagedIdentityCredential(clientID, &options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -120,7 +126,9 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20190801Mock(t *testing.
 	_ = os.Setenv("IDENTITY_ENDPOINT", srv.URL())
 	_ = os.Setenv("IDENTITY_HEADER", "header")
 	defer clearEnvVars("IDENTITY_ENDPOINT", "IDENTITY_HEADER")
-	msiCred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	options := DefaultManagedIdentityCredentialOptions()
+	options.HTTPClient = srv
+	msiCred, err := NewManagedIdentityCredential("", &options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -204,7 +212,9 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnInt(t *testing.T) {
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	_ = os.Setenv("MSI_SECRET", "secret")
 	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
-	msiCred, err := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	options := DefaultManagedIdentityCredentialOptions()
+	options.HTTPClient = srv
+	msiCred, err := NewManagedIdentityCredential(clientID, &options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -222,7 +232,9 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMockFail(t *testing.T) {
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	_ = os.Setenv("MSI_SECRET", "secret")
 	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
-	msiCred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	options := DefaultManagedIdentityCredentialOptions()
+	options.HTTPClient = srv
+	msiCred, err := NewManagedIdentityCredential("", &options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -243,7 +255,9 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMockFail(t *testing.T) {
 // 		srv, close := mock.NewServer()
 // 		defer close()
 // 		srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-// 		msiCred := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
+//		options := DefaultManagedIdentityCredentialOptions()
+//		options.HTTPClient = srv
+// 		msiCred := NewManagedIdentityCredential("", &options)
 // 		_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
 // 		if err == nil {
 // 			t.Fatalf("Cannot run IMDS test in this environment")
@@ -266,7 +280,9 @@ func TestManagedIdentityCredential_NewManagedIdentityCredentialFail(t *testing.T
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	_ = os.Setenv("MSI_ENDPOINT", "https://t .com")
 	defer clearEnvVars("MSI_ENDPOINT")
-	cred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	options := DefaultManagedIdentityCredentialOptions()
+	options.HTTPClient = srv
+	cred, err := NewManagedIdentityCredential("", &options)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -283,7 +299,9 @@ func TestBearerPolicy_ManagedIdentityCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
-	cred, err := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	options := DefaultManagedIdentityCredentialOptions()
+	options.HTTPClient = srv
+	cred, err := NewManagedIdentityCredential(clientID, &options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -305,7 +323,9 @@ func TestManagedIdentityCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
-	msiCred, err := NewManagedIdentityCredential(clientID, &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	options := DefaultManagedIdentityCredentialOptions()
+	options.HTTPClient = srv
+	msiCred, err := NewManagedIdentityCredential(clientID, &options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -361,7 +381,9 @@ func TestManagedIdentityCredential_GetTokenEnvVar(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
 	defer clearEnvVars("MSI_ENDPOINT")
-	msiCred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: srv})
+	options := DefaultManagedIdentityCredentialOptions()
+	options.HTTPClient = srv
+	msiCred, err := NewManagedIdentityCredential("", &options)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

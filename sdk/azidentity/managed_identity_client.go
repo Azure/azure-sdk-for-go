@@ -65,21 +65,12 @@ func (n *wrappedNumber) UnmarshalJSON(b []byte) error {
 	return json.Unmarshal(b, (*json.Number)(n))
 }
 
-var (
-	defaultMSIOpts = newDefaultManagedIdentityOptions()
-)
-
-func newDefaultManagedIdentityOptions() *ManagedIdentityCredentialOptions {
-	return &ManagedIdentityCredentialOptions{}
-}
-
 // newManagedIdentityClient creates a new instance of the ManagedIdentityClient with the ManagedIdentityCredentialOptions
 // that are passed into it along with a default pipeline.
 // options: ManagedIdentityCredentialOptions configure policies for the pipeline and the authority host that
 // will be used to retrieve tokens and authenticate
 func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *managedIdentityClient {
 	logEnvVars()
-	options = options.setDefaultValues()
 	return &managedIdentityClient{
 		pipeline:               newDefaultMSIPipeline(*options), // a pipeline that includes the specific requirements for MSI authentication, such as custom retry policy options
 		imdsAPIVersion:         imdsAPIVersion,                  // this field will be set to whatever value exists in the constant and is used when creating requests to IMDS
@@ -164,7 +155,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID 
 		default:
 			errorMsg = "unknown"
 		}
-		return nil, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Make sure you are running in a valid Managed Identity Environment. Status: " + errorMsg}
+		return nil, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: "Make sure you are running in a valid Managed Identity Environment. Status: " + errorMsg}
 	}
 }
 
@@ -283,7 +274,7 @@ func (c *managedIdentityClient) getMSIType() (msiType, error) {
 				c.msiType = msiTypeAzureArc
 			} else { // if ONLY the env var IDENTITY_ENDPOINT is set the msiType is Azure Functions
 				c.msiType = msiTypeUnavailable
-				return c.msiType, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "This Managed Identity Environment is not supported yet"}
+				return c.msiType, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: "This Managed Identity Environment is not supported yet"}
 			}
 		} else if endpointEnvVar := os.Getenv(msiEndpoint); endpointEnvVar != "" { // if the env var MSI_ENDPOINT is set
 			c.endpoint = endpointEnvVar
@@ -297,7 +288,7 @@ func (c *managedIdentityClient) getMSIType() (msiType, error) {
 			c.msiType = msiTypeIMDS
 		} else { // if MSI_ENDPOINT is NOT set and IMDS endpoint is not available Managed Identity is not available
 			c.msiType = msiTypeUnavailable
-			return c.msiType, &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Make sure you are running in a valid Managed Identity Environment"}
+			return c.msiType, &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: "Make sure you are running in a valid Managed Identity Environment"}
 		}
 	}
 	return c.msiType, nil

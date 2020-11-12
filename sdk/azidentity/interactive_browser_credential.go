@@ -16,24 +16,36 @@ import (
 
 // InteractiveBrowserCredentialOptions can be used when providing additional credential information, such as a client secret.
 // Also use these options to modify the default pipeline behavior through the TokenCredentialOptions.
+// Call DefaultInteractiveBrowserCredentialOptions() to create an instance populated with default values.
 type InteractiveBrowserCredentialOptions struct {
 	// The Azure Active Directory tenant (directory) ID of the service principal.
 	TenantID string
 	// The client (application) ID of the service principal.
 	ClientID string
 	// The client secret that was generated for the App Registration used to authenticate the client. Only applies for web apps.
-	ClientSecret *string
-	// The redirect URI used to request the authorization code. Must be the same URI that is configured for the App Registration.
-	RedirectURI *string
-	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	ClientSecret string
+	// The redirect URL used to request the authorization code. Must be the same URL that is configured for the App Registration.
+	RedirectURL string
+	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
 	HTTPClient azcore.Transport
 	// Retry configures the built-in retry policy behavior
-	Retry *azcore.RetryOptions
+	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior
 	Telemetry azcore.TelemetryOptions
+}
+
+// DefaultInteractiveBrowserCredentialOptions returns an instance of InteractiveBrowserCredentialOptions initialized with default values.
+func DefaultInteractiveBrowserCredentialOptions() InteractiveBrowserCredentialOptions {
+	return InteractiveBrowserCredentialOptions{
+		TenantID:  organizationsTenantID,
+		ClientID:  developerSignOnClientID,
+		Retry:     azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
+	}
 }
 
 // InteractiveBrowserCredential enables authentication to Azure Active Directory using an interactive browser to log in.
@@ -41,16 +53,6 @@ type InteractiveBrowserCredential struct {
 	client *aadIdentityClient
 	// options contains data necessary to authenticate through an interactive browser window
 	options InteractiveBrowserCredentialOptions
-}
-
-// DefaultInteractiveBrowserCredentialOptions returns an instance of InteractiveBrowserCredentialOptions initialized with default values.
-func DefaultInteractiveBrowserCredentialOptions() InteractiveBrowserCredentialOptions {
-	return InteractiveBrowserCredentialOptions{
-		TenantID:     organizationsTenantID,
-		ClientID:     developerSignOnClientID,
-		ClientSecret: nil,
-		RedirectURI:  nil,
-	}
 }
 
 // NewInteractiveBrowserCredential constructs a new InteractiveBrowserCredential with the details needed to authenticate against Azure Active Directory through an interactive browser window.
@@ -61,7 +63,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 		options = &temp
 	}
 	if !validTenantID(options.TenantID) {
-		return nil, &CredentialUnavailableError{CredentialType: "Interactive Browser Credential", Message: tenantIDValidationErr}
+		return nil, &CredentialUnavailableError{credentialType: "Interactive Browser Credential", message: tenantIDValidationErr}
 	}
 	authorityHost, err := setAuthorityHost(options.AuthorityHost)
 	if err != nil {
@@ -79,7 +81,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 // opts: TokenRequestOptions contains the list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
-	tk, err := c.client.authenticateInteractiveBrowser(ctx, c.options.TenantID, c.options.ClientID, c.options.ClientSecret, c.options.RedirectURI, opts.Scopes)
+	tk, err := c.client.authenticateInteractiveBrowser(ctx, c.options.TenantID, c.options.ClientID, c.options.ClientSecret, c.options.RedirectURL, opts.Scopes)
 	if err != nil {
 		addGetTokenFailureLogs("Interactive Browser Credential", err, true)
 		return nil, err
@@ -97,13 +99,13 @@ func (c *InteractiveBrowserCredential) AuthenticationPolicy(options azcore.Authe
 var _ azcore.TokenCredential = (*InteractiveBrowserCredential)(nil)
 
 // authCodeReceiver is used to allow for testing without opening an interactive browser window. Allows mocking a response authorization code and redirect URI.
-var authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI *string, scopes []string) (*interactiveConfig, error) {
+var authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI string, scopes []string) (*interactiveConfig, error) {
 	return interactiveBrowserLogin(authorityHost, tenantID, clientID, redirectURI, scopes)
 }
 
 // interactiveBrowserLogin opens an interactive browser with the specified tenant and client IDs provided then returns the authorization code
 // received or an error.
-func interactiveBrowserLogin(authorityHost string, tenantID string, clientID string, redirectURL *string, scopes []string) (*interactiveConfig, error) {
+func interactiveBrowserLogin(authorityHost string, tenantID string, clientID string, redirectURL string, scopes []string) (*interactiveConfig, error) {
 	const authURLFormat = "%s/%s/oauth2/v2.0/authorize?response_type=code&response_mode=query&client_id=%s&redirect_uri=%s&state=%s&scope=%s&prompt=select_account"
 	state := func() string {
 		rand.Seed(time.Now().Unix())
@@ -117,12 +119,11 @@ func interactiveBrowserLogin(authorityHost string, tenantID string, clientID str
 	}()
 	// start local redirect server so login can call us back
 	rs := newServer()
-	if redirectURL == nil {
-		temp := rs.Start(state)
-		redirectURL = &temp
+	if redirectURL == "" {
+		redirectURL = rs.Start(state)
 	}
 	defer rs.Stop()
-	authURL := fmt.Sprintf(authURLFormat, authorityHost, tenantID, clientID, *redirectURL, state, strings.Join(scopes, " "))
+	authURL := fmt.Sprintf(authURLFormat, authorityHost, tenantID, clientID, redirectURL, state, strings.Join(scopes, " "))
 	// open browser window so user can select credentials
 	err := browser.OpenURL(authURL)
 	if err != nil {
@@ -137,6 +138,6 @@ func interactiveBrowserLogin(authorityHost string, tenantID string, clientID str
 	}
 	return &interactiveConfig{
 		authCode:    authCode,
-		redirectURI: *redirectURL,
+		redirectURI: redirectURL,
 	}, nil
 }

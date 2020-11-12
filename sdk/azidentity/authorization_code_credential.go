@@ -10,18 +10,28 @@ import (
 )
 
 // AuthorizationCodeCredentialOptions contain optional parameters that can be used to configure the AuthorizationCodeCredential.
+// Call DefaultAuthorizationCodeCredentialOptions() to create an instance populated with default values.
 type AuthorizationCodeCredentialOptions struct {
 	// Gets the client secret that was generated for the App Registration used to authenticate the client.
-	ClientSecret *string
-	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	ClientSecret string
+	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
 	HTTPClient azcore.Transport
 	// Retry configures the built-in retry policy behavior
-	Retry *azcore.RetryOptions
+	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior
 	Telemetry azcore.TelemetryOptions
+}
+
+// DefaultAuthorizationCodeCredentialOptions returns an instance of AuthorizationCodeCredentialOptions initialized with default values.
+func DefaultAuthorizationCodeCredentialOptions() AuthorizationCodeCredentialOptions {
+	return AuthorizationCodeCredentialOptions{
+		Retry:     azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
+	}
 }
 
 // AuthorizationCodeCredential enables authentication to Azure Active Directory using an authorization code
@@ -29,27 +39,22 @@ type AuthorizationCodeCredentialOptions struct {
 // documentation: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow.
 type AuthorizationCodeCredential struct {
 	client       *aadIdentityClient
-	tenantID     string  // Gets the Azure Active Directory tenant (directory) ID of the service principal
-	clientID     string  // Gets the client (application) ID of the service principal
-	authCode     string  // The authorization code received from the authorization code flow. The authorization code must not have been used to obtain another token.
-	clientSecret *string // Gets the client secret that was generated for the App Registration used to authenticate the client.
-	redirectURI  string  // The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
-}
-
-// DefaultAuthorizationCodeCredentialOptions returns an instance of AuthorizationCodeCredentialOptions initialized with default values.
-func DefaultAuthorizationCodeCredentialOptions() AuthorizationCodeCredentialOptions {
-	return AuthorizationCodeCredentialOptions{}
+	tenantID     string // Gets the Azure Active Directory tenant (directory) ID of the service principal
+	clientID     string // Gets the client (application) ID of the service principal
+	authCode     string // The authorization code received from the authorization code flow. The authorization code must not have been used to obtain another token.
+	clientSecret string // Gets the client secret that was generated for the App Registration used to authenticate the client.
+	redirectURI  string // The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
 }
 
 // NewAuthorizationCodeCredential constructs a new AuthorizationCodeCredential with the details needed to authenticate against Azure Active Directory with an authorization code.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
 // authCode: The authorization code received from the authorization code flow. The authorization code must not have been used to obtain another token.
-// redirectURI: The redirect URI that was used to request the authorization code. Must be the same URI that is configured for the App Registration.
+// redirectURL: The redirect URL that was used to request the authorization code. Must be the same URL that is configured for the App Registration.
 // options: Manage the configuration of the requests sent to Azure Active Directory, they can also include a client secret for web app authentication.
-func NewAuthorizationCodeCredential(tenantID string, clientID string, authCode string, redirectURI string, options *AuthorizationCodeCredentialOptions) (*AuthorizationCodeCredential, error) {
+func NewAuthorizationCodeCredential(tenantID string, clientID string, authCode string, redirectURL string, options *AuthorizationCodeCredentialOptions) (*AuthorizationCodeCredential, error) {
 	if !validTenantID(tenantID) {
-		return nil, &CredentialUnavailableError{CredentialType: "Authorization Code Credential", Message: tenantIDValidationErr}
+		return nil, &CredentialUnavailableError{credentialType: "Authorization Code Credential", message: tenantIDValidationErr}
 	}
 	if options == nil {
 		temp := DefaultAuthorizationCodeCredentialOptions()
@@ -63,7 +68,7 @@ func NewAuthorizationCodeCredential(tenantID string, clientID string, authCode s
 	if err != nil {
 		return nil, err
 	}
-	return &AuthorizationCodeCredential{tenantID: tenantID, clientID: clientID, authCode: authCode, clientSecret: options.ClientSecret, redirectURI: redirectURI, client: c}, nil
+	return &AuthorizationCodeCredential{tenantID: tenantID, clientID: clientID, authCode: authCode, clientSecret: options.ClientSecret, redirectURI: redirectURL, client: c}, nil
 }
 
 // GetToken obtains a token from Azure Active Directory, using the specified authorization code to authenticate.

@@ -17,6 +17,7 @@ const (
 )
 
 // DeviceCodeCredentialOptions provide options that can configure DeviceCodeCredential instead of using the default values.
+// Call DefaultDeviceCodeCredentialOptions() to create an instance populated with default values.
 type DeviceCodeCredentialOptions struct {
 	// Gets the Azure Active Directory tenant (directory) ID of the service principal
 	TenantID string
@@ -24,36 +25,16 @@ type DeviceCodeCredentialOptions struct {
 	ClientID string
 	// The callback function used to send the login message back to the user
 	UserPrompt func(DeviceCodeMessage)
-	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
+	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost string
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
 	HTTPClient azcore.Transport
 	// Retry configures the built-in retry policy behavior
-	Retry *azcore.RetryOptions
+	Retry azcore.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior
 	Telemetry azcore.TelemetryOptions
-}
-
-// DeviceCodeCredential authenticates a user using the device code flow, and provides access tokens for that user account.
-// For more information on the device code authentication flow see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code.
-type DeviceCodeCredential struct {
-	client       *aadIdentityClient
-	tenantID     string                  // Gets the Azure Active Directory tenant (directory) ID of the service principal
-	clientID     string                  // Gets the client (application) ID of the service principal
-	userPrompt   func(DeviceCodeMessage) // Sends the user a message with a verification URL and device code to sign in to the login server
-	refreshToken string                  // Gets the refresh token sent from the service and will be used to retreive new access tokens after the initial request for a token. Thread safety for updates is handled in the AuthenticationPolicy since only one goroutine will be updating at a time
-}
-
-// DeviceCodeMessage is used to store device code related information to help the user login and allow the device code flow to continue
-// to request a token to authenticate a user.
-type DeviceCodeMessage struct {
-	// User code returned by the service.
-	UserCode string `json:"user_code"`
-	// Verification URL where the user must navigate to authenticate using the device code and credentials.
-	VerificationURL string `json:"verification_uri"`
-	// User friendly text response that can be used for display purposes.
-	Message string `json:"message"`
 }
 
 // DefaultDeviceCodeCredentialOptions provides the default settings for DeviceCodeCredential.
@@ -68,7 +49,30 @@ func DefaultDeviceCodeCredentialOptions() DeviceCodeCredentialOptions {
 		UserPrompt: func(dc DeviceCodeMessage) {
 			fmt.Println(dc.Message)
 		},
+		Retry:     azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
 	}
+}
+
+// DeviceCodeMessage is used to store device code related information to help the user login and allow the device code flow to continue
+// to request a token to authenticate a user.
+type DeviceCodeMessage struct {
+	// User code returned by the service.
+	UserCode string `json:"user_code"`
+	// Verification URL where the user must navigate to authenticate using the device code and credentials.
+	VerificationURL string `json:"verification_uri"`
+	// User friendly text response that can be used for display purposes.
+	Message string `json:"message"`
+}
+
+// DeviceCodeCredential authenticates a user using the device code flow, and provides access tokens for that user account.
+// For more information on the device code authentication flow see: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code.
+type DeviceCodeCredential struct {
+	client       *aadIdentityClient
+	tenantID     string                  // Gets the Azure Active Directory tenant (directory) ID of the service principal
+	clientID     string                  // Gets the client (application) ID of the service principal
+	userPrompt   func(DeviceCodeMessage) // Sends the user a message with a verification URL and device code to sign in to the login server
+	refreshToken string                  // Gets the refresh token sent from the service and will be used to retreive new access tokens after the initial request for a token. Thread safety for updates is handled in the AuthenticationPolicy since only one goroutine will be updating at a time
 }
 
 // NewDeviceCodeCredential constructs a new DeviceCodeCredential used to authenticate against Azure Active Directory with a device code.
@@ -79,7 +83,7 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 		options = &temp
 	}
 	if !validTenantID(options.TenantID) {
-		return nil, &CredentialUnavailableError{CredentialType: "Device Code Credential", Message: tenantIDValidationErr}
+		return nil, &CredentialUnavailableError{credentialType: "Device Code Credential", message: tenantIDValidationErr}
 	}
 	authorityHost, err := setAuthorityHost(options.AuthorityHost)
 	if err != nil {

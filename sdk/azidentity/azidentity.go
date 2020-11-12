@@ -48,7 +48,7 @@ type AADAuthenticationFailedError struct {
 	Timestamp     string `json:"timestamp"`
 	TraceID       string `json:"trace_id"`
 	CorrelationID string `json:"correlation_id"`
-	URI           string `json:"error_uri"`
+	URL           string `json:"error_uri"`
 	Response      *azcore.Response
 }
 
@@ -101,13 +101,13 @@ func newAADAuthenticationFailedError(resp *azcore.Response) error {
 // create a credential do not exist or are unavailable.
 type CredentialUnavailableError struct {
 	// CredentialType holds the name of the credential that is unavailable
-	CredentialType string
+	credentialType string
 	// Message contains the reason why the credential is unavailable
-	Message string
+	message string
 }
 
 func (e *CredentialUnavailableError) Error() string {
-	return e.CredentialType + ": " + e.Message
+	return e.credentialType + ": " + e.message
 }
 
 // NonRetriable indicates that this error should not be retried.
@@ -124,7 +124,7 @@ type pipelineOptions struct {
 	HTTPClient azcore.Transport
 
 	// Retry configures the built-in retry policy behavior
-	Retry *azcore.RetryOptions
+	Retry azcore.RetryOptions
 
 	// Telemetry configures the built-in telemetry policy behavior
 	Telemetry azcore.TelemetryOptions
@@ -134,6 +134,7 @@ type pipelineOptions struct {
 func setAuthorityHost(authorityHost string) (string, error) {
 	if authorityHost == "" {
 		authorityHost = AzurePublicCloud
+		// NOTE: we only allow overriding the authority host if no host was specified
 		if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
 			authorityHost = envAuthorityHost
 		}
@@ -153,7 +154,7 @@ func newDefaultPipeline(o pipelineOptions) azcore.Pipeline {
 	return azcore.NewPipeline(
 		o.HTTPClient,
 		azcore.NewTelemetryPolicy(&o.Telemetry),
-		azcore.NewRetryPolicy(o.Retry),
+		azcore.NewRetryPolicy(&o.Retry),
 		azcore.NewLogPolicy(nil))
 }
 

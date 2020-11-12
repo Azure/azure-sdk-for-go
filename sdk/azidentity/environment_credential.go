@@ -10,6 +10,29 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+// EnvironmentCredentialOptions configures the EnvironmentCredential with optional parameters.
+// Call DefaultEnvironmentCredentialOptions() to create an instance populated with default values.
+type EnvironmentCredentialOptions struct {
+	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
+	AuthorityHost string
+	// HTTPClient sets the transport for making HTTP requests
+	// Leave this as nil to use the default HTTP transport
+	HTTPClient azcore.Transport
+	// Retry configures the built-in retry policy behavior
+	Retry azcore.RetryOptions
+	// Telemetry configures the built-in telemetry policy behavior
+	Telemetry azcore.TelemetryOptions
+}
+
+// DefaultEnvironmentCredentialOptions returns an instance of EnvironmentCredentialOptions initialized with default values.
+func DefaultEnvironmentCredentialOptions() EnvironmentCredentialOptions {
+	return EnvironmentCredentialOptions{
+		Retry:     azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
+	}
+}
+
 // EnvironmentCredential enables authentication to Azure Active Directory using either ClientSecretCredential, ClientCertificateCredential or UsernamePasswordCredential.
 // This credential type will check for the following environment variables in the same order as listed:
 // - AZURE_TENANT_ID
@@ -24,24 +47,6 @@ type EnvironmentCredential struct {
 	cred azcore.TokenCredential
 }
 
-// EnvironmentCredentialOptions configures the EnvironmentCredential with optional parameters.
-type EnvironmentCredentialOptions struct {
-	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
-	AuthorityHost string
-	// HTTPClient sets the transport for making HTTP requests
-	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transport
-	// Retry configures the built-in retry policy behavior
-	Retry *azcore.RetryOptions
-	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry azcore.TelemetryOptions
-}
-
-// DefaultEnvironmentCredentialOptions returns an instance of EnvironmentCredentialOptions initialized with default values.
-func DefaultEnvironmentCredentialOptions() EnvironmentCredentialOptions {
-	return EnvironmentCredentialOptions{}
-}
-
 // NewEnvironmentCredential creates an instance that implements the azcore.TokenCredential interface and reads credential details from environment variables.
 // If the expected environment variables are not found at this time, then a CredentialUnavailableError will be returned.
 // options: The options used to configure the management of the requests sent to Azure Active Directory.
@@ -52,14 +57,14 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	}
 	tenantID := os.Getenv("AZURE_TENANT_ID")
 	if tenantID == "" {
-		err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_TENANT_ID"}
-		logCredentialError(err.CredentialType, err)
+		err := &CredentialUnavailableError{credentialType: "Environment Credential", message: "Missing environment variable AZURE_TENANT_ID"}
+		logCredentialError(err.credentialType, err)
 		return nil, err
 	}
 	clientID := os.Getenv("AZURE_CLIENT_ID")
 	if clientID == "" {
-		err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_CLIENT_ID"}
-		logCredentialError(err.CredentialType, err)
+		err := &CredentialUnavailableError{credentialType: "Environment Credential", message: "Missing environment variable AZURE_CLIENT_ID"}
+		logCredentialError(err.credentialType, err)
 		return nil, err
 	}
 	if clientSecret := os.Getenv("AZURE_CLIENT_SECRET"); clientSecret != "" {
@@ -88,8 +93,8 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 			return &EnvironmentCredential{cred: cred}, nil
 		}
 	}
-	err := &CredentialUnavailableError{CredentialType: "Environment Credential", Message: "Missing environment variable AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH or AZURE_USERNAME and AZURE_PASSWORD"}
-	logCredentialError(err.CredentialType, err)
+	err := &CredentialUnavailableError{credentialType: "Environment Credential", message: "Missing environment variable AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH or AZURE_USERNAME and AZURE_PASSWORD"}
+	logCredentialError(err.credentialType, err)
 	return nil, err
 }
 

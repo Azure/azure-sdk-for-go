@@ -9,6 +9,30 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+// UsernamePasswordCredentialOptions can be used to provide additional information to configure the UsernamePasswordCredential.
+// Use these options to modify the default pipeline behavior through the TokenCredentialOptions.
+// Call DefaultUsernamePasswordCredentialOptions() to create an instance populated with default values.
+type UsernamePasswordCredentialOptions struct {
+	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
+	AuthorityHost string
+	// HTTPClient sets the transport for making HTTP requests
+	// Leave this as nil to use the default HTTP transport
+	HTTPClient azcore.Transport
+	// Retry configures the built-in retry policy behavior
+	Retry azcore.RetryOptions
+	// Telemetry configures the built-in telemetry policy behavior
+	Telemetry azcore.TelemetryOptions
+}
+
+// DefaultUsernamePasswordCredentialOptions returns an instance of UsernamePasswordCredentialOptions initialized with default values.
+func DefaultUsernamePasswordCredentialOptions() UsernamePasswordCredentialOptions {
+	return UsernamePasswordCredentialOptions{
+		Retry:     azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
+	}
+}
+
 // UsernamePasswordCredential enables authentication to Azure Active Directory using a user's  username and password. If the user has MFA enabled this
 // credential will fail to get a token returning an AuthenticationFailureError. Also, this credential requires a high degree of trust and is not
 // recommended outside of prototyping when more secure credentials can be used.
@@ -20,25 +44,6 @@ type UsernamePasswordCredential struct {
 	password string // Gets the user account's password
 }
 
-// UsernamePasswordCredentialOptions can be used to provide additional information to configure the UsernamePasswordCredential.
-// Use these options to modify the default pipeline behavior through the TokenCredentialOptions.
-type UsernamePasswordCredentialOptions struct {
-	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
-	AuthorityHost string
-	// HTTPClient sets the transport for making HTTP requests
-	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transport
-	// Retry configures the built-in retry policy behavior
-	Retry *azcore.RetryOptions
-	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry azcore.TelemetryOptions
-}
-
-// DefaultUsernamePasswordCredentialOptions returns an instance of UsernamePasswordCredentialOptions initialized with default values.
-func DefaultUsernamePasswordCredentialOptions() UsernamePasswordCredentialOptions {
-	return UsernamePasswordCredentialOptions{}
-}
-
 // NewUsernamePasswordCredential constructs a new UsernamePasswordCredential with the details needed to authenticate against Azure Active Directory with
 // a simple username and password.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
@@ -48,7 +53,7 @@ func DefaultUsernamePasswordCredentialOptions() UsernamePasswordCredentialOption
 // options: UsernamePasswordCredentialOptions used to configure the pipeline for the requests sent to Azure Active Directory.
 func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *UsernamePasswordCredentialOptions) (*UsernamePasswordCredential, error) {
 	if !validTenantID(tenantID) {
-		return nil, &CredentialUnavailableError{CredentialType: "Username Password Credential", Message: tenantIDValidationErr}
+		return nil, &CredentialUnavailableError{credentialType: "Username Password Credential", message: tenantIDValidationErr}
 	}
 	if options == nil {
 		temp := DefaultUsernamePasswordCredentialOptions()

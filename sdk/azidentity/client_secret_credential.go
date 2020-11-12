@@ -9,6 +9,29 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+// ClientSecretCredentialOptions configures the ClientSecretCredential with optional parameters.
+// Call DefaultClientSecretCredentialOptions() to create an instance populated with default values.
+type ClientSecretCredentialOptions struct {
+	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
+	AuthorityHost string
+	// HTTPClient sets the transport for making HTTP requests
+	// Leave this as nil to use the default HTTP transport
+	HTTPClient azcore.Transport
+	// Retry configures the built-in retry policy behavior
+	Retry azcore.RetryOptions
+	// Telemetry configures the built-in telemetry policy behavior
+	Telemetry azcore.TelemetryOptions
+}
+
+// DefaultClientSecretCredentialOptions returns an instance of ClientSecretCredentialOptions initialized with default values.
+func DefaultClientSecretCredentialOptions() ClientSecretCredentialOptions {
+	return ClientSecretCredentialOptions{
+		Retry:     azcore.DefaultRetryOptions(),
+		Telemetry: azcore.DefaultTelemetryOptions(),
+	}
+}
+
 // ClientSecretCredential enables authentication to Azure Active Directory using a client secret that was generated for an App Registration.  More information on how
 // to configure a client secret can be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-configure-app-access-web-apis#add-credentials-to-your-web-application
@@ -19,24 +42,6 @@ type ClientSecretCredential struct {
 	clientSecret string // Gets the client secret that was generated for the App Registration used to authenticate the client.
 }
 
-// ClientSecretCredentialOptions configures the ClientSecretCredential with optional parameters.
-type ClientSecretCredentialOptions struct {
-	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
-	AuthorityHost string
-	// HTTPClient sets the transport for making HTTP requests
-	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transport
-	// Retry configures the built-in retry policy behavior
-	Retry *azcore.RetryOptions
-	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry azcore.TelemetryOptions
-}
-
-// DefaultClientSecretCredentialOptions returns an instance of ClientSecretCredentialOptions initialized with default values.
-func DefaultClientSecretCredentialOptions() ClientSecretCredentialOptions {
-	return ClientSecretCredentialOptions{}
-}
-
 // NewClientSecretCredential constructs a new ClientSecretCredential with the details needed to authenticate against Azure Active Directory with a client secret.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
@@ -44,7 +49,7 @@ func DefaultClientSecretCredentialOptions() ClientSecretCredentialOptions {
 // options: allow to configure the management of the requests sent to Azure Active Directory.
 func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *ClientSecretCredentialOptions) (*ClientSecretCredential, error) {
 	if !validTenantID(tenantID) {
-		return nil, &CredentialUnavailableError{CredentialType: "Client Secret Credential", Message: tenantIDValidationErr}
+		return nil, &CredentialUnavailableError{credentialType: "Client Secret Credential", message: tenantIDValidationErr}
 	}
 	if options == nil {
 		temp := DefaultClientSecretCredentialOptions()

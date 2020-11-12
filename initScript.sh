@@ -11,7 +11,7 @@ dep ensure
 cat > $2 << EOF
 {
   "envs": {
-    "PATH": "$PATH:$GOPATH/bin:$GOPATH",
+    "PATH": "$PATH:$GOPATH",
     "GOPATH": "$GOPATH"
   }
 }

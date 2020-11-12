@@ -23,7 +23,7 @@ func ExampleLoadBalancersOperations_BeginCreateOrUpdate() {
 	frontEndIPConfigName := "<frontend IP config name>"
 	backEndAddressPoolName := "<backend address pool name>"
 	probeName := "<probe name>"
-	idPrefix := fmt.Sprintf("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/loadBalancers", "<subscription ID>", "<resource group name>")
+	idPrefix := fmt.Sprintf("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/loadBalancers", "<subscription ID>", resourceGroupName)
 	// Replace the "ipAddress" variable with a call to armnetwork.PublicIPAddressesOperations.Get to retreive the
 	// public IP address instance that will be assigned to the load balancer.
 	var ipAddress *armnetwork.PublicIPAddress

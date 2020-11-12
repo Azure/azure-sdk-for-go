@@ -26,31 +26,30 @@ import (
     "github.com/Azure/go-autorest/autorest/validation"
 )
 
-// SQLPoolVulnerabilityAssessmentsClient is the azure Synapse Analytics Management Client
-type SQLPoolVulnerabilityAssessmentsClient struct {
+// KeysClient is the azure Synapse Analytics Management Client
+type KeysClient struct {
     BaseClient
 }
-// NewSQLPoolVulnerabilityAssessmentsClient creates an instance of the SQLPoolVulnerabilityAssessmentsClient client.
-func NewSQLPoolVulnerabilityAssessmentsClient(subscriptionID string) SQLPoolVulnerabilityAssessmentsClient {
-    return NewSQLPoolVulnerabilityAssessmentsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewKeysClient creates an instance of the KeysClient client.
+func NewKeysClient(subscriptionID string) KeysClient {
+    return NewKeysClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSQLPoolVulnerabilityAssessmentsClientWithBaseURI creates an instance of the SQLPoolVulnerabilityAssessmentsClient
-// client using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI
-// (sovereign clouds, Azure stack).
-    func NewSQLPoolVulnerabilityAssessmentsClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolVulnerabilityAssessmentsClient {
-        return SQLPoolVulnerabilityAssessmentsClient{ NewWithBaseURI(baseURI, subscriptionID)}
+// NewKeysClientWithBaseURI creates an instance of the KeysClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+    func NewKeysClientWithBaseURI(baseURI string, subscriptionID string) KeysClient {
+        return KeysClient{ NewWithBaseURI(baseURI, subscriptionID)}
     }
 
-// CreateOrUpdate creates or updates the Sql pool vulnerability assessment.
+// CreateOrUpdate creates or updates a workspace key
     // Parameters:
         // resourceGroupName - the name of the resource group. The name is case insensitive.
         // workspaceName - the name of the workspace
-        // SQLPoolName - SQL pool name
-        // parameters - the requested resource.
-func (client SQLPoolVulnerabilityAssessmentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters SQLPoolVulnerabilityAssessment) (result SQLPoolVulnerabilityAssessment, err error) {
+        // keyName - the name of the workspace key
+        // keyProperties - key put request properties
+func (client KeysClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, keyProperties Key) (result Key, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolVulnerabilityAssessmentsClient.CreateOrUpdate")
+        ctx = tracing.StartSpan(ctx, fqdn + "/KeysClient.CreateOrUpdate")
         defer func() {
             sc := -1
         if result.Response.Response != nil {
@@ -66,37 +65,36 @@ func (client SQLPoolVulnerabilityAssessmentsClient) CreateOrUpdate(ctx context.C
          Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.SQLPoolVulnerabilityAssessmentsClient", "CreateOrUpdate", err.Error())
+        return result, validation.NewError("synapse.KeysClient", "CreateOrUpdate", err.Error())
         }
 
-        req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, SQLPoolName, parameters)
+        req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, keyName, keyProperties)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "CreateOrUpdate", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "synapse.KeysClient", "CreateOrUpdate", nil , "Failure preparing request")
     return
     }
 
         resp, err := client.CreateOrUpdateSender(req)
         if err != nil {
         result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "CreateOrUpdate", resp, "Failure sending request")
+        err = autorest.NewErrorWithError(err, "synapse.KeysClient", "CreateOrUpdate", resp, "Failure sending request")
         return
         }
 
         result, err = client.CreateOrUpdateResponder(resp)
         if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "CreateOrUpdate", resp, "Failure responding to request")
+        err = autorest.NewErrorWithError(err, "synapse.KeysClient", "CreateOrUpdate", resp, "Failure responding to request")
         }
 
     return
 }
 
     // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-    func (client SQLPoolVulnerabilityAssessmentsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters SQLPoolVulnerabilityAssessment) (*http.Request, error) {
+    func (client KeysClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, keyName string, keyProperties Key) (*http.Request, error) {
         pathParameters := map[string]interface{} {
+        "keyName": autorest.Encode("path",keyName),
         "resourceGroupName": autorest.Encode("path",resourceGroupName),
-        "sqlPoolName": autorest.Encode("path",SQLPoolName),
         "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-        "vulnerabilityAssessmentName": autorest.Encode("path", "default"),
         "workspaceName": autorest.Encode("path",workspaceName),
         }
 
@@ -109,125 +107,38 @@ func (client SQLPoolVulnerabilityAssessmentsClient) CreateOrUpdate(ctx context.C
 autorest.AsContentType("application/json; charset=utf-8"),
 autorest.AsPut(),
 autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/vulnerabilityAssessments/{vulnerabilityAssessmentName}",pathParameters),
-autorest.WithJSON(parameters),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/keys/{keyName}",pathParameters),
+autorest.WithJSON(keyProperties),
 autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
     // http.Response Body if it receives an error.
-    func (client SQLPoolVulnerabilityAssessmentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+    func (client KeysClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
     // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
     // closes the http.Response Body.
-    func (client SQLPoolVulnerabilityAssessmentsClient) CreateOrUpdateResponder(resp *http.Response) (result SQLPoolVulnerabilityAssessment, err error) {
+    func (client KeysClient) CreateOrUpdateResponder(resp *http.Response) (result Key, err error) {
             err = autorest.Respond(
             resp,
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
+            azure.WithErrorUnlessStatusCode(http.StatusOK),
             autorest.ByUnmarshallingJSON(&result),
             autorest.ByClosing())
             result.Response = autorest.Response{Response: resp}
             return
     }
 
-// Delete removes the database's vulnerability assessment.
+// Delete deletes a workspace key
     // Parameters:
         // resourceGroupName - the name of the resource group. The name is case insensitive.
         // workspaceName - the name of the workspace
-        // SQLPoolName - SQL pool name
-func (client SQLPoolVulnerabilityAssessmentsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result autorest.Response, err error) {
+        // keyName - the name of the workspace key
+func (client KeysClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, keyName string) (result Key, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolVulnerabilityAssessmentsClient.Delete")
-        defer func() {
-            sc := -1
-        if result.Response != nil {
-        sc = result.Response.StatusCode
-        }
-            tracing.EndSpan(ctx, sc, err)
-        }()
-    }
-        if err := validation.Validate([]validation.Validation{
-        { TargetValue: client.SubscriptionID,
-         Constraints: []validation.Constraint{	{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil }}},
-        { TargetValue: resourceGroupName,
-         Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
-        	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
-        	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.SQLPoolVulnerabilityAssessmentsClient", "Delete", err.Error())
-        }
-
-        req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName, SQLPoolName)
-    if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "Delete", nil , "Failure preparing request")
-    return
-    }
-
-        resp, err := client.DeleteSender(req)
-        if err != nil {
-        result.Response = resp
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "Delete", resp, "Failure sending request")
-        return
-        }
-
-        result, err = client.DeleteResponder(resp)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "Delete", resp, "Failure responding to request")
-        }
-
-    return
-}
-
-    // DeletePreparer prepares the Delete request.
-    func (client SQLPoolVulnerabilityAssessmentsClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
-        pathParameters := map[string]interface{} {
-        "resourceGroupName": autorest.Encode("path",resourceGroupName),
-        "sqlPoolName": autorest.Encode("path",SQLPoolName),
-        "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-        "vulnerabilityAssessmentName": autorest.Encode("path", "default"),
-        "workspaceName": autorest.Encode("path",workspaceName),
-        }
-
-            const APIVersion = "2019-06-01-preview"
-    queryParameters := map[string]interface{} {
-    "api-version": APIVersion,
-    }
-
-    preparer := autorest.CreatePreparer(
-autorest.AsDelete(),
-autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/vulnerabilityAssessments/{vulnerabilityAssessmentName}",pathParameters),
-autorest.WithQueryParameters(queryParameters))
-    return preparer.Prepare((&http.Request{}).WithContext(ctx))
-    }
-
-    // DeleteSender sends the Delete request. The method will close the
-    // http.Response Body if it receives an error.
-    func (client SQLPoolVulnerabilityAssessmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
-            return client.Send(req, azure.DoRetryWithRegistration(client.Client))
-            }
-
-    // DeleteResponder handles the response to the Delete request. The method always
-    // closes the http.Response Body.
-    func (client SQLPoolVulnerabilityAssessmentsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
-            err = autorest.Respond(
-            resp,
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
-            autorest.ByClosing())
-            result.Response = resp
-            return
-    }
-
-// Get gets the Sql pool's vulnerability assessment.
-    // Parameters:
-        // resourceGroupName - the name of the resource group. The name is case insensitive.
-        // workspaceName - the name of the workspace
-        // SQLPoolName - SQL pool name
-func (client SQLPoolVulnerabilityAssessmentsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result SQLPoolVulnerabilityAssessment, err error) {
-    if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolVulnerabilityAssessmentsClient.Get")
+        ctx = tracing.StartSpan(ctx, fqdn + "/KeysClient.Delete")
         defer func() {
             sc := -1
         if result.Response.Response != nil {
@@ -243,37 +154,36 @@ func (client SQLPoolVulnerabilityAssessmentsClient) Get(ctx context.Context, res
          Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.SQLPoolVulnerabilityAssessmentsClient", "Get", err.Error())
+        return result, validation.NewError("synapse.KeysClient", "Delete", err.Error())
         }
 
-        req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName)
+        req, err := client.DeletePreparer(ctx, resourceGroupName, workspaceName, keyName)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "Get", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "synapse.KeysClient", "Delete", nil , "Failure preparing request")
     return
     }
 
-        resp, err := client.GetSender(req)
+        resp, err := client.DeleteSender(req)
         if err != nil {
         result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "Get", resp, "Failure sending request")
+        err = autorest.NewErrorWithError(err, "synapse.KeysClient", "Delete", resp, "Failure sending request")
         return
         }
 
-        result, err = client.GetResponder(resp)
+        result, err = client.DeleteResponder(resp)
         if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "Get", resp, "Failure responding to request")
+        err = autorest.NewErrorWithError(err, "synapse.KeysClient", "Delete", resp, "Failure responding to request")
         }
 
     return
 }
 
-    // GetPreparer prepares the Get request.
-    func (client SQLPoolVulnerabilityAssessmentsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
+    // DeletePreparer prepares the Delete request.
+    func (client KeysClient) DeletePreparer(ctx context.Context, resourceGroupName string, workspaceName string, keyName string) (*http.Request, error) {
         pathParameters := map[string]interface{} {
+        "keyName": autorest.Encode("path",keyName),
         "resourceGroupName": autorest.Encode("path",resourceGroupName),
-        "sqlPoolName": autorest.Encode("path",SQLPoolName),
         "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-        "vulnerabilityAssessmentName": autorest.Encode("path", "default"),
         "workspaceName": autorest.Encode("path",workspaceName),
         }
 
@@ -283,43 +193,43 @@ func (client SQLPoolVulnerabilityAssessmentsClient) Get(ctx context.Context, res
     }
 
     preparer := autorest.CreatePreparer(
-autorest.AsGet(),
+autorest.AsDelete(),
 autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/vulnerabilityAssessments/{vulnerabilityAssessmentName}",pathParameters),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/keys/{keyName}",pathParameters),
 autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
-    // GetSender sends the Get request. The method will close the
+    // DeleteSender sends the Delete request. The method will close the
     // http.Response Body if it receives an error.
-    func (client SQLPoolVulnerabilityAssessmentsClient) GetSender(req *http.Request) (*http.Response, error) {
+    func (client KeysClient) DeleteSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
-    // GetResponder handles the response to the Get request. The method always
+    // DeleteResponder handles the response to the Delete request. The method always
     // closes the http.Response Body.
-    func (client SQLPoolVulnerabilityAssessmentsClient) GetResponder(resp *http.Response) (result SQLPoolVulnerabilityAssessment, err error) {
+    func (client KeysClient) DeleteResponder(resp *http.Response) (result Key, err error) {
             err = autorest.Respond(
             resp,
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
+            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusNoContent),
             autorest.ByUnmarshallingJSON(&result),
             autorest.ByClosing())
             result.Response = autorest.Response{Response: resp}
             return
     }
 
-// List lists the vulnerability assessment policies associated with a SQL pool.
+// Get gets a workspace key
     // Parameters:
         // resourceGroupName - the name of the resource group. The name is case insensitive.
         // workspaceName - the name of the workspace
-        // SQLPoolName - SQL pool name
-func (client SQLPoolVulnerabilityAssessmentsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result SQLPoolVulnerabilityAssessmentListResultPage, err error) {
+        // keyName - the name of the workspace key
+func (client KeysClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, keyName string) (result Key, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolVulnerabilityAssessmentsClient.List")
+        ctx = tracing.StartSpan(ctx, fqdn + "/KeysClient.Get")
         defer func() {
             sc := -1
-        if result.spvalr.Response.Response != nil {
-        sc = result.spvalr.Response.Response.StatusCode
+        if result.Response.Response != nil {
+        sc = result.Response.Response.StatusCode
         }
             tracing.EndSpan(ctx, sc, err)
         }()
@@ -331,39 +241,35 @@ func (client SQLPoolVulnerabilityAssessmentsClient) List(ctx context.Context, re
          Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.SQLPoolVulnerabilityAssessmentsClient", "List", err.Error())
+        return result, validation.NewError("synapse.KeysClient", "Get", err.Error())
         }
 
-            result.fn = client.listNextResults
-    req, err := client.ListPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName)
+        req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, keyName)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "List", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "synapse.KeysClient", "Get", nil , "Failure preparing request")
     return
     }
 
-        resp, err := client.ListSender(req)
+        resp, err := client.GetSender(req)
         if err != nil {
-        result.spvalr.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "List", resp, "Failure sending request")
+        result.Response = autorest.Response{Response: resp}
+        err = autorest.NewErrorWithError(err, "synapse.KeysClient", "Get", resp, "Failure sending request")
         return
         }
 
-        result.spvalr, err = client.ListResponder(resp)
+        result, err = client.GetResponder(resp)
         if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "List", resp, "Failure responding to request")
+        err = autorest.NewErrorWithError(err, "synapse.KeysClient", "Get", resp, "Failure responding to request")
         }
-            if result.spvalr.hasNextLink() && result.spvalr.IsEmpty() {
-            err = result.NextWithContext(ctx)
-            }
 
     return
 }
 
-    // ListPreparer prepares the List request.
-    func (client SQLPoolVulnerabilityAssessmentsClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
+    // GetPreparer prepares the Get request.
+    func (client KeysClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, keyName string) (*http.Request, error) {
         pathParameters := map[string]interface{} {
+        "keyName": autorest.Encode("path",keyName),
         "resourceGroupName": autorest.Encode("path",resourceGroupName),
-        "sqlPoolName": autorest.Encode("path",SQLPoolName),
         "subscriptionId": autorest.Encode("path",client.SubscriptionID),
         "workspaceName": autorest.Encode("path",workspaceName),
         }
@@ -376,20 +282,20 @@ func (client SQLPoolVulnerabilityAssessmentsClient) List(ctx context.Context, re
     preparer := autorest.CreatePreparer(
 autorest.AsGet(),
 autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/vulnerabilityAssessments",pathParameters),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/keys/{keyName}",pathParameters),
 autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
-    // ListSender sends the List request. The method will close the
+    // GetSender sends the Get request. The method will close the
     // http.Response Body if it receives an error.
-    func (client SQLPoolVulnerabilityAssessmentsClient) ListSender(req *http.Request) (*http.Response, error) {
+    func (client KeysClient) GetSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
-    // ListResponder handles the response to the List request. The method always
+    // GetResponder handles the response to the Get request. The method always
     // closes the http.Response Body.
-    func (client SQLPoolVulnerabilityAssessmentsClient) ListResponder(resp *http.Response) (result SQLPoolVulnerabilityAssessmentListResult, err error) {
+    func (client KeysClient) GetResponder(resp *http.Response) (result Key, err error) {
             err = autorest.Respond(
             resp,
             azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -399,31 +305,120 @@ autorest.WithQueryParameters(queryParameters))
             return
     }
 
-            // listNextResults retrieves the next set of results, if any.
-            func (client SQLPoolVulnerabilityAssessmentsClient) listNextResults(ctx context.Context, lastResults SQLPoolVulnerabilityAssessmentListResult) (result SQLPoolVulnerabilityAssessmentListResult, err error) {
-            req, err := lastResults.sQLPoolVulnerabilityAssessmentListResultPreparer(ctx)
+// ListByWorkspace returns a list of keys in a workspace
+    // Parameters:
+        // resourceGroupName - the name of the resource group. The name is case insensitive.
+        // workspaceName - the name of the workspace
+func (client KeysClient) ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string) (result KeyInfoListResultPage, err error) {
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/KeysClient.ListByWorkspace")
+        defer func() {
+            sc := -1
+        if result.kilr.Response.Response != nil {
+        sc = result.kilr.Response.Response.StatusCode
+        }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        if err := validation.Validate([]validation.Validation{
+        { TargetValue: client.SubscriptionID,
+         Constraints: []validation.Constraint{	{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil }}},
+        { TargetValue: resourceGroupName,
+         Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
+        	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
+        	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
+        return result, validation.NewError("synapse.KeysClient", "ListByWorkspace", err.Error())
+        }
+
+            result.fn = client.listByWorkspaceNextResults
+    req, err := client.ListByWorkspacePreparer(ctx, resourceGroupName, workspaceName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "synapse.KeysClient", "ListByWorkspace", nil , "Failure preparing request")
+    return
+    }
+
+        resp, err := client.ListByWorkspaceSender(req)
+        if err != nil {
+        result.kilr.Response = autorest.Response{Response: resp}
+        err = autorest.NewErrorWithError(err, "synapse.KeysClient", "ListByWorkspace", resp, "Failure sending request")
+        return
+        }
+
+        result.kilr, err = client.ListByWorkspaceResponder(resp)
+        if err != nil {
+        err = autorest.NewErrorWithError(err, "synapse.KeysClient", "ListByWorkspace", resp, "Failure responding to request")
+        }
+            if result.kilr.hasNextLink() && result.kilr.IsEmpty() {
+            err = result.NextWithContext(ctx)
+            }
+
+    return
+}
+
+    // ListByWorkspacePreparer prepares the ListByWorkspace request.
+    func (client KeysClient) ListByWorkspacePreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+        pathParameters := map[string]interface{} {
+        "resourceGroupName": autorest.Encode("path",resourceGroupName),
+        "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+        "workspaceName": autorest.Encode("path",workspaceName),
+        }
+
+            const APIVersion = "2019-06-01-preview"
+    queryParameters := map[string]interface{} {
+    "api-version": APIVersion,
+    }
+
+    preparer := autorest.CreatePreparer(
+autorest.AsGet(),
+autorest.WithBaseURL(client.BaseURI),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/keys",pathParameters),
+autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
+
+    // ListByWorkspaceSender sends the ListByWorkspace request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client KeysClient) ListByWorkspaceSender(req *http.Request) (*http.Response, error) {
+            return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+            }
+
+    // ListByWorkspaceResponder handles the response to the ListByWorkspace request. The method always
+    // closes the http.Response Body.
+    func (client KeysClient) ListByWorkspaceResponder(resp *http.Response) (result KeyInfoListResult, err error) {
+            err = autorest.Respond(
+            resp,
+            azure.WithErrorUnlessStatusCode(http.StatusOK),
+            autorest.ByUnmarshallingJSON(&result),
+            autorest.ByClosing())
+            result.Response = autorest.Response{Response: resp}
+            return
+    }
+
+            // listByWorkspaceNextResults retrieves the next set of results, if any.
+            func (client KeysClient) listByWorkspaceNextResults(ctx context.Context, lastResults KeyInfoListResult) (result KeyInfoListResult, err error) {
+            req, err := lastResults.keyInfoListResultPreparer(ctx)
             if err != nil {
-            return result, autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "listNextResults", nil , "Failure preparing next results request")
+            return result, autorest.NewErrorWithError(err, "synapse.KeysClient", "listByWorkspaceNextResults", nil , "Failure preparing next results request")
             }
             if req == nil {
             return
             }
-            resp, err := client.ListSender(req)
+            resp, err := client.ListByWorkspaceSender(req)
             if err != nil {
             result.Response = autorest.Response{Response: resp}
-            return result, autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "listNextResults", resp, "Failure sending next results request")
+            return result, autorest.NewErrorWithError(err, "synapse.KeysClient", "listByWorkspaceNextResults", resp, "Failure sending next results request")
             }
-            result, err = client.ListResponder(resp)
+            result, err = client.ListByWorkspaceResponder(resp)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "synapse.SQLPoolVulnerabilityAssessmentsClient", "listNextResults", resp, "Failure responding to next results request")
+            err = autorest.NewErrorWithError(err, "synapse.KeysClient", "listByWorkspaceNextResults", resp, "Failure responding to next results request")
             }
             return
                     }
 
-            // ListComplete enumerates all values, automatically crossing page boundaries as required.
-            func (client SQLPoolVulnerabilityAssessmentsClient) ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result SQLPoolVulnerabilityAssessmentListResultIterator, err error) {
+            // ListByWorkspaceComplete enumerates all values, automatically crossing page boundaries as required.
+            func (client KeysClient) ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result KeyInfoListResultIterator, err error) {
             if tracing.IsEnabled() {
-            ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolVulnerabilityAssessmentsClient.List")
+            ctx = tracing.StartSpan(ctx, fqdn + "/KeysClient.ListByWorkspace")
             defer func() {
             sc := -1
             if result.Response().Response.Response != nil {
@@ -432,7 +427,7 @@ autorest.WithQueryParameters(queryParameters))
             tracing.EndSpan(ctx, sc, err)
             }()
             }
-                    result.page, err = client.List(ctx, resourceGroupName, workspaceName, SQLPoolName)
+                    result.page, err = client.ListByWorkspace(ctx, resourceGroupName, workspaceName)
                             return
             }
 

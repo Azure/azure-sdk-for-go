@@ -26,31 +26,32 @@ import (
     "github.com/Azure/go-autorest/autorest/validation"
 )
 
-// WorkspaceManagedIdentitySQLControlSettingsClient is the azure Synapse Analytics Management Client
-type WorkspaceManagedIdentitySQLControlSettingsClient struct {
+// DataMaskingRulesClient is the azure Synapse Analytics Management Client
+type DataMaskingRulesClient struct {
     BaseClient
 }
-// NewWorkspaceManagedIdentitySQLControlSettingsClient creates an instance of the
-// WorkspaceManagedIdentitySQLControlSettingsClient client.
-func NewWorkspaceManagedIdentitySQLControlSettingsClient(subscriptionID string) WorkspaceManagedIdentitySQLControlSettingsClient {
-    return NewWorkspaceManagedIdentitySQLControlSettingsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewDataMaskingRulesClient creates an instance of the DataMaskingRulesClient client.
+func NewDataMaskingRulesClient(subscriptionID string) DataMaskingRulesClient {
+    return NewDataMaskingRulesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewWorkspaceManagedIdentitySQLControlSettingsClientWithBaseURI creates an instance of the
-// WorkspaceManagedIdentitySQLControlSettingsClient client using a custom endpoint.  Use this when interacting with an
-// Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-    func NewWorkspaceManagedIdentitySQLControlSettingsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceManagedIdentitySQLControlSettingsClient {
-        return WorkspaceManagedIdentitySQLControlSettingsClient{ NewWithBaseURI(baseURI, subscriptionID)}
+// NewDataMaskingRulesClientWithBaseURI creates an instance of the DataMaskingRulesClient client using a custom
+// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
+// stack).
+    func NewDataMaskingRulesClientWithBaseURI(baseURI string, subscriptionID string) DataMaskingRulesClient {
+        return DataMaskingRulesClient{ NewWithBaseURI(baseURI, subscriptionID)}
     }
 
-// CreateOrUpdate sends the create or update request.
+// CreateOrUpdate creates or updates a Sql pool data masking rule.
     // Parameters:
         // resourceGroupName - the name of the resource group. The name is case insensitive.
         // workspaceName - the name of the workspace
-        // managedIdentitySQLControlSettings - managed Identity Sql Control Settings
-func (client WorkspaceManagedIdentitySQLControlSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings ManagedIdentitySQLControlSettingsModel) (result ManagedIdentitySQLControlSettingsModel, err error) {
+        // SQLPoolName - SQL pool name
+        // dataMaskingRuleName - the name of the data masking rule.
+        // parameters - the required parameters for creating or updating a data masking rule.
+func (client DataMaskingRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, dataMaskingRuleName string, parameters DataMaskingRule) (result DataMaskingRule, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/WorkspaceManagedIdentitySQLControlSettingsClient.CreateOrUpdate")
+        ctx = tracing.StartSpan(ctx, fqdn + "/DataMaskingRulesClient.CreateOrUpdate")
         defer func() {
             sc := -1
         if result.Response.Response != nil {
@@ -65,35 +66,44 @@ func (client WorkspaceManagedIdentitySQLControlSettingsClient) CreateOrUpdate(ct
         { TargetValue: resourceGroupName,
          Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
-        	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.WorkspaceManagedIdentitySQLControlSettingsClient", "CreateOrUpdate", err.Error())
+        	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}},
+        { TargetValue: parameters,
+         Constraints: []validation.Constraint{	{Target: "parameters.DataMaskingRuleProperties", Name: validation.Null, Rule: false ,
+        Chain: []validation.Constraint{	{Target: "parameters.DataMaskingRuleProperties.SchemaName", Name: validation.Null, Rule: true, Chain: nil },
+        	{Target: "parameters.DataMaskingRuleProperties.TableName", Name: validation.Null, Rule: true, Chain: nil },
+        	{Target: "parameters.DataMaskingRuleProperties.ColumnName", Name: validation.Null, Rule: true, Chain: nil },
+        }}}}}); err != nil {
+        return result, validation.NewError("synapse.DataMaskingRulesClient", "CreateOrUpdate", err.Error())
         }
 
-        req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, managedIdentitySQLControlSettings)
+        req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, SQLPoolName, dataMaskingRuleName, parameters)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedIdentitySQLControlSettingsClient", "CreateOrUpdate", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "synapse.DataMaskingRulesClient", "CreateOrUpdate", nil , "Failure preparing request")
     return
     }
 
         resp, err := client.CreateOrUpdateSender(req)
         if err != nil {
         result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedIdentitySQLControlSettingsClient", "CreateOrUpdate", resp, "Failure sending request")
+        err = autorest.NewErrorWithError(err, "synapse.DataMaskingRulesClient", "CreateOrUpdate", resp, "Failure sending request")
         return
         }
 
         result, err = client.CreateOrUpdateResponder(resp)
         if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedIdentitySQLControlSettingsClient", "CreateOrUpdate", resp, "Failure responding to request")
+        err = autorest.NewErrorWithError(err, "synapse.DataMaskingRulesClient", "CreateOrUpdate", resp, "Failure responding to request")
         }
 
     return
 }
 
     // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-    func (client WorkspaceManagedIdentitySQLControlSettingsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, managedIdentitySQLControlSettings ManagedIdentitySQLControlSettingsModel) (*http.Request, error) {
+    func (client DataMaskingRulesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, dataMaskingRuleName string, parameters DataMaskingRule) (*http.Request, error) {
         pathParameters := map[string]interface{} {
+        "dataMaskingPolicyName": autorest.Encode("path", "Default"),
+        "dataMaskingRuleName": autorest.Encode("path",dataMaskingRuleName),
         "resourceGroupName": autorest.Encode("path",resourceGroupName),
+        "sqlPoolName": autorest.Encode("path",SQLPoolName),
         "subscriptionId": autorest.Encode("path",client.SubscriptionID),
         "workspaceName": autorest.Encode("path",workspaceName),
         }
@@ -103,41 +113,44 @@ func (client WorkspaceManagedIdentitySQLControlSettingsClient) CreateOrUpdate(ct
     "api-version": APIVersion,
     }
 
+            parameters.Location = nil
+            parameters.Kind = nil
     preparer := autorest.CreatePreparer(
 autorest.AsContentType("application/json; charset=utf-8"),
 autorest.AsPut(),
 autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/managedIdentitySqlControlSettings/default",pathParameters),
-autorest.WithJSON(managedIdentitySQLControlSettings),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules/{dataMaskingRuleName}",pathParameters),
+autorest.WithJSON(parameters),
 autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
     // http.Response Body if it receives an error.
-    func (client WorkspaceManagedIdentitySQLControlSettingsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+    func (client DataMaskingRulesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
     // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
     // closes the http.Response Body.
-    func (client WorkspaceManagedIdentitySQLControlSettingsClient) CreateOrUpdateResponder(resp *http.Response) (result ManagedIdentitySQLControlSettingsModel, err error) {
+    func (client DataMaskingRulesClient) CreateOrUpdateResponder(resp *http.Response) (result DataMaskingRule, err error) {
             err = autorest.Respond(
             resp,
-            azure.WithErrorUnlessStatusCode(http.StatusOK),
+            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
             autorest.ByUnmarshallingJSON(&result),
             autorest.ByClosing())
             result.Response = autorest.Response{Response: resp}
             return
     }
 
-// Get sends the get request.
+// ListBySQLPool gets a list of Sql pool data masking rules.
     // Parameters:
         // resourceGroupName - the name of the resource group. The name is case insensitive.
         // workspaceName - the name of the workspace
-func (client WorkspaceManagedIdentitySQLControlSettingsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string) (result ManagedIdentitySQLControlSettingsModel, err error) {
+        // SQLPoolName - SQL pool name
+func (client DataMaskingRulesClient) ListBySQLPool(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result DataMaskingRuleListResult, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/WorkspaceManagedIdentitySQLControlSettingsClient.Get")
+        ctx = tracing.StartSpan(ctx, fqdn + "/DataMaskingRulesClient.ListBySQLPool")
         defer func() {
             sc := -1
         if result.Response.Response != nil {
@@ -153,34 +166,36 @@ func (client WorkspaceManagedIdentitySQLControlSettingsClient) Get(ctx context.C
          Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.WorkspaceManagedIdentitySQLControlSettingsClient", "Get", err.Error())
+        return result, validation.NewError("synapse.DataMaskingRulesClient", "ListBySQLPool", err.Error())
         }
 
-        req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName)
+        req, err := client.ListBySQLPoolPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedIdentitySQLControlSettingsClient", "Get", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "synapse.DataMaskingRulesClient", "ListBySQLPool", nil , "Failure preparing request")
     return
     }
 
-        resp, err := client.GetSender(req)
+        resp, err := client.ListBySQLPoolSender(req)
         if err != nil {
         result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedIdentitySQLControlSettingsClient", "Get", resp, "Failure sending request")
+        err = autorest.NewErrorWithError(err, "synapse.DataMaskingRulesClient", "ListBySQLPool", resp, "Failure sending request")
         return
         }
 
-        result, err = client.GetResponder(resp)
+        result, err = client.ListBySQLPoolResponder(resp)
         if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedIdentitySQLControlSettingsClient", "Get", resp, "Failure responding to request")
+        err = autorest.NewErrorWithError(err, "synapse.DataMaskingRulesClient", "ListBySQLPool", resp, "Failure responding to request")
         }
 
     return
 }
 
-    // GetPreparer prepares the Get request.
-    func (client WorkspaceManagedIdentitySQLControlSettingsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+    // ListBySQLPoolPreparer prepares the ListBySQLPool request.
+    func (client DataMaskingRulesClient) ListBySQLPoolPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
         pathParameters := map[string]interface{} {
+        "dataMaskingPolicyName": autorest.Encode("path", "Default"),
         "resourceGroupName": autorest.Encode("path",resourceGroupName),
+        "sqlPoolName": autorest.Encode("path",SQLPoolName),
         "subscriptionId": autorest.Encode("path",client.SubscriptionID),
         "workspaceName": autorest.Encode("path",workspaceName),
         }
@@ -193,20 +208,20 @@ func (client WorkspaceManagedIdentitySQLControlSettingsClient) Get(ctx context.C
     preparer := autorest.CreatePreparer(
 autorest.AsGet(),
 autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/managedIdentitySqlControlSettings/default",pathParameters),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules",pathParameters),
 autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
-    // GetSender sends the Get request. The method will close the
+    // ListBySQLPoolSender sends the ListBySQLPool request. The method will close the
     // http.Response Body if it receives an error.
-    func (client WorkspaceManagedIdentitySQLControlSettingsClient) GetSender(req *http.Request) (*http.Response, error) {
+    func (client DataMaskingRulesClient) ListBySQLPoolSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
-    // GetResponder handles the response to the Get request. The method always
+    // ListBySQLPoolResponder handles the response to the ListBySQLPool request. The method always
     // closes the http.Response Body.
-    func (client WorkspaceManagedIdentitySQLControlSettingsClient) GetResponder(resp *http.Response) (result ManagedIdentitySQLControlSettingsModel, err error) {
+    func (client DataMaskingRulesClient) ListBySQLPoolResponder(resp *http.Response) (result DataMaskingRuleListResult, err error) {
             err = autorest.Respond(
             resp,
             azure.WithErrorUnlessStatusCode(http.StatusOK),

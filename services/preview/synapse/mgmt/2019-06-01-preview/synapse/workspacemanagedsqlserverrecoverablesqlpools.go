@@ -26,30 +26,31 @@ import (
     "github.com/Azure/go-autorest/autorest/validation"
 )
 
-// PrivateLinkResourcesClient is the azure Synapse Analytics Management Client
-type PrivateLinkResourcesClient struct {
+// WorkspaceManagedSQLServerRecoverableSqlpoolsClient is the azure Synapse Analytics Management Client
+type WorkspaceManagedSQLServerRecoverableSqlpoolsClient struct {
     BaseClient
 }
-// NewPrivateLinkResourcesClient creates an instance of the PrivateLinkResourcesClient client.
-func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
-    return NewPrivateLinkResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewWorkspaceManagedSQLServerRecoverableSqlpoolsClient creates an instance of the
+// WorkspaceManagedSQLServerRecoverableSqlpoolsClient client.
+func NewWorkspaceManagedSQLServerRecoverableSqlpoolsClient(subscriptionID string) WorkspaceManagedSQLServerRecoverableSqlpoolsClient {
+    return NewWorkspaceManagedSQLServerRecoverableSqlpoolsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewPrivateLinkResourcesClientWithBaseURI creates an instance of the PrivateLinkResourcesClient client using a custom
-// endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
-// stack).
-    func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
-        return PrivateLinkResourcesClient{ NewWithBaseURI(baseURI, subscriptionID)}
+// NewWorkspaceManagedSQLServerRecoverableSqlpoolsClientWithBaseURI creates an instance of the
+// WorkspaceManagedSQLServerRecoverableSqlpoolsClient client using a custom endpoint.  Use this when interacting with
+// an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+    func NewWorkspaceManagedSQLServerRecoverableSqlpoolsClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceManagedSQLServerRecoverableSqlpoolsClient {
+        return WorkspaceManagedSQLServerRecoverableSqlpoolsClient{ NewWithBaseURI(baseURI, subscriptionID)}
     }
 
-// Get get private link resource in workspace
+// Get get recoverable sql pools for workspace managed sql server.
     // Parameters:
         // resourceGroupName - the name of the resource group. The name is case insensitive.
         // workspaceName - the name of the workspace
-        // privateLinkResourceName - the name of the private link resource
-func (client PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, privateLinkResourceName string) (result PrivateLinkResource, err error) {
+        // SQLComputeName - the name of the sql compute
+func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLComputeName string) (result RecoverableSQLPool, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/PrivateLinkResourcesClient.Get")
+        ctx = tracing.StartSpan(ctx, fqdn + "/WorkspaceManagedSQLServerRecoverableSqlpoolsClient.Get")
         defer func() {
             sc := -1
         if result.Response.Response != nil {
@@ -65,35 +66,35 @@ func (client PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupN
          Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.PrivateLinkResourcesClient", "Get", err.Error())
+        return result, validation.NewError("synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "Get", err.Error())
         }
 
-        req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, privateLinkResourceName)
+        req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, SQLComputeName)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.PrivateLinkResourcesClient", "Get", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "Get", nil , "Failure preparing request")
     return
     }
 
         resp, err := client.GetSender(req)
         if err != nil {
         result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "synapse.PrivateLinkResourcesClient", "Get", resp, "Failure sending request")
+        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "Get", resp, "Failure sending request")
         return
         }
 
         result, err = client.GetResponder(resp)
         if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.PrivateLinkResourcesClient", "Get", resp, "Failure responding to request")
+        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "Get", resp, "Failure responding to request")
         }
 
     return
 }
 
     // GetPreparer prepares the Get request.
-    func (client PrivateLinkResourcesClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, privateLinkResourceName string) (*http.Request, error) {
+    func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLComputeName string) (*http.Request, error) {
         pathParameters := map[string]interface{} {
-        "privateLinkResourceName": autorest.Encode("path",privateLinkResourceName),
         "resourceGroupName": autorest.Encode("path",resourceGroupName),
+        "sqlComputeName": autorest.Encode("path",SQLComputeName),
         "subscriptionId": autorest.Encode("path",client.SubscriptionID),
         "workspaceName": autorest.Encode("path",workspaceName),
         }
@@ -106,20 +107,20 @@ func (client PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroupN
     preparer := autorest.CreatePreparer(
 autorest.AsGet(),
 autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/privateLinkResources/{privateLinkResourceName}",pathParameters),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/recoverableSqlPools/{sqlComputeName}",pathParameters),
 autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // GetSender sends the Get request. The method will close the
     // http.Response Body if it receives an error.
-    func (client PrivateLinkResourcesClient) GetSender(req *http.Request) (*http.Response, error) {
+    func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) GetSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
     // GetResponder handles the response to the Get request. The method always
     // closes the http.Response Body.
-    func (client PrivateLinkResourcesClient) GetResponder(resp *http.Response) (result PrivateLinkResource, err error) {
+    func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) GetResponder(resp *http.Response) (result RecoverableSQLPool, err error) {
             err = autorest.Respond(
             resp,
             azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -129,17 +130,17 @@ autorest.WithQueryParameters(queryParameters))
             return
     }
 
-// List get all private link resources for a workspaces
+// List get list of recoverable sql pools for workspace managed sql server.
     // Parameters:
         // resourceGroupName - the name of the resource group. The name is case insensitive.
         // workspaceName - the name of the workspace
-func (client PrivateLinkResourcesClient) List(ctx context.Context, resourceGroupName string, workspaceName string) (result PrivateLinkResourceListResultPage, err error) {
+func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) List(ctx context.Context, resourceGroupName string, workspaceName string) (result RecoverableSQLPoolListResultPage, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/PrivateLinkResourcesClient.List")
+        ctx = tracing.StartSpan(ctx, fqdn + "/WorkspaceManagedSQLServerRecoverableSqlpoolsClient.List")
         defer func() {
             sc := -1
-        if result.plrlr.Response.Response != nil {
-        sc = result.plrlr.Response.Response.StatusCode
+        if result.rsplr.Response.Response != nil {
+        sc = result.rsplr.Response.Response.StatusCode
         }
             tracing.EndSpan(ctx, sc, err)
         }()
@@ -151,28 +152,28 @@ func (client PrivateLinkResourcesClient) List(ctx context.Context, resourceGroup
          Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.PrivateLinkResourcesClient", "List", err.Error())
+        return result, validation.NewError("synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "List", err.Error())
         }
 
             result.fn = client.listNextResults
     req, err := client.ListPreparer(ctx, resourceGroupName, workspaceName)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.PrivateLinkResourcesClient", "List", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "List", nil , "Failure preparing request")
     return
     }
 
         resp, err := client.ListSender(req)
         if err != nil {
-        result.plrlr.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "synapse.PrivateLinkResourcesClient", "List", resp, "Failure sending request")
+        result.rsplr.Response = autorest.Response{Response: resp}
+        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "List", resp, "Failure sending request")
         return
         }
 
-        result.plrlr, err = client.ListResponder(resp)
+        result.rsplr, err = client.ListResponder(resp)
         if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.PrivateLinkResourcesClient", "List", resp, "Failure responding to request")
+        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "List", resp, "Failure responding to request")
         }
-            if result.plrlr.hasNextLink() && result.plrlr.IsEmpty() {
+            if result.rsplr.hasNextLink() && result.rsplr.IsEmpty() {
             err = result.NextWithContext(ctx)
             }
 
@@ -180,7 +181,7 @@ func (client PrivateLinkResourcesClient) List(ctx context.Context, resourceGroup
 }
 
     // ListPreparer prepares the List request.
-    func (client PrivateLinkResourcesClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
+    func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
         pathParameters := map[string]interface{} {
         "resourceGroupName": autorest.Encode("path",resourceGroupName),
         "subscriptionId": autorest.Encode("path",client.SubscriptionID),
@@ -195,20 +196,20 @@ func (client PrivateLinkResourcesClient) List(ctx context.Context, resourceGroup
     preparer := autorest.CreatePreparer(
 autorest.AsGet(),
 autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/privateLinkResources",pathParameters),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/recoverableSqlpools",pathParameters),
 autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // ListSender sends the List request. The method will close the
     // http.Response Body if it receives an error.
-    func (client PrivateLinkResourcesClient) ListSender(req *http.Request) (*http.Response, error) {
+    func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) ListSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
     // ListResponder handles the response to the List request. The method always
     // closes the http.Response Body.
-    func (client PrivateLinkResourcesClient) ListResponder(resp *http.Response) (result PrivateLinkResourceListResult, err error) {
+    func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) ListResponder(resp *http.Response) (result RecoverableSQLPoolListResult, err error) {
             err = autorest.Respond(
             resp,
             azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -219,10 +220,10 @@ autorest.WithQueryParameters(queryParameters))
     }
 
             // listNextResults retrieves the next set of results, if any.
-            func (client PrivateLinkResourcesClient) listNextResults(ctx context.Context, lastResults PrivateLinkResourceListResult) (result PrivateLinkResourceListResult, err error) {
-            req, err := lastResults.privateLinkResourceListResultPreparer(ctx)
+            func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) listNextResults(ctx context.Context, lastResults RecoverableSQLPoolListResult) (result RecoverableSQLPoolListResult, err error) {
+            req, err := lastResults.recoverableSQLPoolListResultPreparer(ctx)
             if err != nil {
-            return result, autorest.NewErrorWithError(err, "synapse.PrivateLinkResourcesClient", "listNextResults", nil , "Failure preparing next results request")
+            return result, autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "listNextResults", nil , "Failure preparing next results request")
             }
             if req == nil {
             return
@@ -230,19 +231,19 @@ autorest.WithQueryParameters(queryParameters))
             resp, err := client.ListSender(req)
             if err != nil {
             result.Response = autorest.Response{Response: resp}
-            return result, autorest.NewErrorWithError(err, "synapse.PrivateLinkResourcesClient", "listNextResults", resp, "Failure sending next results request")
+            return result, autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "listNextResults", resp, "Failure sending next results request")
             }
             result, err = client.ListResponder(resp)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "synapse.PrivateLinkResourcesClient", "listNextResults", resp, "Failure responding to next results request")
+            err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerRecoverableSqlpoolsClient", "listNextResults", resp, "Failure responding to next results request")
             }
             return
                     }
 
             // ListComplete enumerates all values, automatically crossing page boundaries as required.
-            func (client PrivateLinkResourcesClient) ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result PrivateLinkResourceListResultIterator, err error) {
+            func (client WorkspaceManagedSQLServerRecoverableSqlpoolsClient) ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result RecoverableSQLPoolListResultIterator, err error) {
             if tracing.IsEnabled() {
-            ctx = tracing.StartSpan(ctx, fqdn + "/PrivateLinkResourcesClient.List")
+            ctx = tracing.StartSpan(ctx, fqdn + "/WorkspaceManagedSQLServerRecoverableSqlpoolsClient.List")
             defer func() {
             sc := -1
             if result.Response().Response.Response != nil {

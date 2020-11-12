@@ -18,116 +18,116 @@ package synapse
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
-	"github.com/Azure/go-autorest/tracing"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
+    "github.com/Azure/go-autorest/autorest/validation"
 )
 
 // IntegrationRuntimeNodeIPAddressClient is the azure Synapse Analytics Management Client
 type IntegrationRuntimeNodeIPAddressClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewIntegrationRuntimeNodeIPAddressClient creates an instance of the IntegrationRuntimeNodeIPAddressClient client.
 func NewIntegrationRuntimeNodeIPAddressClient(subscriptionID string) IntegrationRuntimeNodeIPAddressClient {
-	return NewIntegrationRuntimeNodeIPAddressClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewIntegrationRuntimeNodeIPAddressClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewIntegrationRuntimeNodeIPAddressClientWithBaseURI creates an instance of the IntegrationRuntimeNodeIPAddressClient
 // client using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI
 // (sovereign clouds, Azure stack).
-func NewIntegrationRuntimeNodeIPAddressClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeNodeIPAddressClient {
-	return IntegrationRuntimeNodeIPAddressClient{NewWithBaseURI(baseURI, subscriptionID)}
-}
+    func NewIntegrationRuntimeNodeIPAddressClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeNodeIPAddressClient {
+        return IntegrationRuntimeNodeIPAddressClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
 
 // Get get the IP address of an integration runtime node
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
-// integrationRuntimeName - integration runtime name
-// nodeName - integration runtime node name
+    // Parameters:
+        // resourceGroupName - the name of the resource group. The name is case insensitive.
+        // workspaceName - the name of the workspace.
+        // integrationRuntimeName - integration runtime name
+        // nodeName - integration runtime node name
 func (client IntegrationRuntimeNodeIPAddressClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, nodeName string) (result IntegrationRuntimeNodeIPAddress, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationRuntimeNodeIPAddressClient.Get")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.IntegrationRuntimeNodeIPAddressClient", "Get", err.Error())
-	}
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/IntegrationRuntimeNodeIPAddressClient.Get")
+        defer func() {
+            sc := -1
+        if result.Response.Response != nil {
+        sc = result.Response.Response.StatusCode
+        }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        if err := validation.Validate([]validation.Validation{
+        { TargetValue: client.SubscriptionID,
+         Constraints: []validation.Constraint{	{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil }}},
+        { TargetValue: resourceGroupName,
+         Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
+        	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
+        	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
+        return result, validation.NewError("synapse.IntegrationRuntimeNodeIPAddressClient", "Get", err.Error())
+        }
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, integrationRuntimeName, nodeName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeNodeIPAddressClient", "Get", nil, "Failure preparing request")
-		return
-	}
+        req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, integrationRuntimeName, nodeName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeNodeIPAddressClient", "Get", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeNodeIPAddressClient", "Get", resp, "Failure sending request")
-		return
-	}
+        resp, err := client.GetSender(req)
+        if err != nil {
+        result.Response = autorest.Response{Response: resp}
+        err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeNodeIPAddressClient", "Get", resp, "Failure sending request")
+        return
+        }
 
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeNodeIPAddressClient", "Get", resp, "Failure responding to request")
-	}
+        result, err = client.GetResponder(resp)
+        if err != nil {
+        err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeNodeIPAddressClient", "Get", resp, "Failure responding to request")
+        }
 
-	return
+    return
 }
 
-// GetPreparer prepares the Get request.
-func (client IntegrationRuntimeNodeIPAddressClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, nodeName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
-		"nodeName":               autorest.Encode("path", nodeName),
-		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
-		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":          autorest.Encode("path", workspaceName),
-	}
+    // GetPreparer prepares the Get request.
+    func (client IntegrationRuntimeNodeIPAddressClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, nodeName string) (*http.Request, error) {
+        pathParameters := map[string]interface{} {
+        "integrationRuntimeName": autorest.Encode("path",integrationRuntimeName),
+        "nodeName": autorest.Encode("path",nodeName),
+        "resourceGroupName": autorest.Encode("path",resourceGroupName),
+        "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+        "workspaceName": autorest.Encode("path",workspaceName),
+        }
 
-	const APIVersion = "2019-06-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+            const APIVersion = "2019-06-01-preview"
+    queryParameters := map[string]interface{} {
+    "api-version": APIVersion,
+    }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}/ipAddress", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+autorest.AsPost(),
+autorest.WithBaseURL(client.BaseURI),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}/ipAddress",pathParameters),
+autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client IntegrationRuntimeNodeIPAddressClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
-}
+    // GetSender sends the Get request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client IntegrationRuntimeNodeIPAddressClient) GetSender(req *http.Request) (*http.Response, error) {
+            return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+            }
 
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client IntegrationRuntimeNodeIPAddressClient) GetResponder(resp *http.Response) (result IntegrationRuntimeNodeIPAddress, err error) {
-	err = autorest.Respond(
-		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    // GetResponder handles the response to the Get request. The method always
+    // closes the http.Response Body.
+    func (client IntegrationRuntimeNodeIPAddressClient) GetResponder(resp *http.Response) (result IntegrationRuntimeNodeIPAddress, err error) {
+            err = autorest.Respond(
+            resp,
+            azure.WithErrorUnlessStatusCode(http.StatusOK),
+            autorest.ByUnmarshallingJSON(&result),
+            autorest.ByClosing())
+            result.Response = autorest.Response{Response: resp}
+            return
+    }
+

@@ -26,33 +26,33 @@ import (
     "github.com/Azure/go-autorest/autorest/validation"
 )
 
-// SQLPoolUsagesClient is the azure Synapse Analytics Management Client
-type SQLPoolUsagesClient struct {
+// WorkspaceManagedSQLServerUsagesClient is the azure Synapse Analytics Management Client
+type WorkspaceManagedSQLServerUsagesClient struct {
     BaseClient
 }
-// NewSQLPoolUsagesClient creates an instance of the SQLPoolUsagesClient client.
-func NewSQLPoolUsagesClient(subscriptionID string) SQLPoolUsagesClient {
-    return NewSQLPoolUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewWorkspaceManagedSQLServerUsagesClient creates an instance of the WorkspaceManagedSQLServerUsagesClient client.
+func NewWorkspaceManagedSQLServerUsagesClient(subscriptionID string) WorkspaceManagedSQLServerUsagesClient {
+    return NewWorkspaceManagedSQLServerUsagesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSQLPoolUsagesClientWithBaseURI creates an instance of the SQLPoolUsagesClient client using a custom endpoint.
-// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-    func NewSQLPoolUsagesClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolUsagesClient {
-        return SQLPoolUsagesClient{ NewWithBaseURI(baseURI, subscriptionID)}
+// NewWorkspaceManagedSQLServerUsagesClientWithBaseURI creates an instance of the WorkspaceManagedSQLServerUsagesClient
+// client using a custom endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI
+// (sovereign clouds, Azure stack).
+    func NewWorkspaceManagedSQLServerUsagesClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceManagedSQLServerUsagesClient {
+        return WorkspaceManagedSQLServerUsagesClient{ NewWithBaseURI(baseURI, subscriptionID)}
     }
 
-// List gets SQL pool usages.
+// List get list of server usages metric for workspace managed sql server.
     // Parameters:
         // resourceGroupName - the name of the resource group. The name is case insensitive.
         // workspaceName - the name of the workspace
-        // SQLPoolName - SQL pool name
-func (client SQLPoolUsagesClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result SQLPoolUsageListResultPage, err error) {
+func (client WorkspaceManagedSQLServerUsagesClient) List(ctx context.Context, resourceGroupName string, workspaceName string) (result ServerUsageListResultPage, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolUsagesClient.List")
+        ctx = tracing.StartSpan(ctx, fqdn + "/WorkspaceManagedSQLServerUsagesClient.List")
         defer func() {
             sc := -1
-        if result.spulr.Response.Response != nil {
-        sc = result.spulr.Response.Response.StatusCode
+        if result.sulr.Response.Response != nil {
+        sc = result.sulr.Response.Response.StatusCode
         }
             tracing.EndSpan(ctx, sc, err)
         }()
@@ -64,28 +64,28 @@ func (client SQLPoolUsagesClient) List(ctx context.Context, resourceGroupName st
          Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.SQLPoolUsagesClient", "List", err.Error())
+        return result, validation.NewError("synapse.WorkspaceManagedSQLServerUsagesClient", "List", err.Error())
         }
 
             result.fn = client.listNextResults
-    req, err := client.ListPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName)
+    req, err := client.ListPreparer(ctx, resourceGroupName, workspaceName)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.SQLPoolUsagesClient", "List", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerUsagesClient", "List", nil , "Failure preparing request")
     return
     }
 
         resp, err := client.ListSender(req)
         if err != nil {
-        result.spulr.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolUsagesClient", "List", resp, "Failure sending request")
+        result.sulr.Response = autorest.Response{Response: resp}
+        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerUsagesClient", "List", resp, "Failure sending request")
         return
         }
 
-        result.spulr, err = client.ListResponder(resp)
+        result.sulr, err = client.ListResponder(resp)
         if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolUsagesClient", "List", resp, "Failure responding to request")
+        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerUsagesClient", "List", resp, "Failure responding to request")
         }
-            if result.spulr.hasNextLink() && result.spulr.IsEmpty() {
+            if result.sulr.hasNextLink() && result.sulr.IsEmpty() {
             err = result.NextWithContext(ctx)
             }
 
@@ -93,10 +93,9 @@ func (client SQLPoolUsagesClient) List(ctx context.Context, resourceGroupName st
 }
 
     // ListPreparer prepares the List request.
-    func (client SQLPoolUsagesClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
+    func (client WorkspaceManagedSQLServerUsagesClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
         pathParameters := map[string]interface{} {
         "resourceGroupName": autorest.Encode("path",resourceGroupName),
-        "sqlPoolName": autorest.Encode("path",SQLPoolName),
         "subscriptionId": autorest.Encode("path",client.SubscriptionID),
         "workspaceName": autorest.Encode("path",workspaceName),
         }
@@ -109,20 +108,20 @@ func (client SQLPoolUsagesClient) List(ctx context.Context, resourceGroupName st
     preparer := autorest.CreatePreparer(
 autorest.AsGet(),
 autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/usages",pathParameters),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlUsages",pathParameters),
 autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // ListSender sends the List request. The method will close the
     // http.Response Body if it receives an error.
-    func (client SQLPoolUsagesClient) ListSender(req *http.Request) (*http.Response, error) {
+    func (client WorkspaceManagedSQLServerUsagesClient) ListSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
     // ListResponder handles the response to the List request. The method always
     // closes the http.Response Body.
-    func (client SQLPoolUsagesClient) ListResponder(resp *http.Response) (result SQLPoolUsageListResult, err error) {
+    func (client WorkspaceManagedSQLServerUsagesClient) ListResponder(resp *http.Response) (result ServerUsageListResult, err error) {
             err = autorest.Respond(
             resp,
             azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -133,10 +132,10 @@ autorest.WithQueryParameters(queryParameters))
     }
 
             // listNextResults retrieves the next set of results, if any.
-            func (client SQLPoolUsagesClient) listNextResults(ctx context.Context, lastResults SQLPoolUsageListResult) (result SQLPoolUsageListResult, err error) {
-            req, err := lastResults.sQLPoolUsageListResultPreparer(ctx)
+            func (client WorkspaceManagedSQLServerUsagesClient) listNextResults(ctx context.Context, lastResults ServerUsageListResult) (result ServerUsageListResult, err error) {
+            req, err := lastResults.serverUsageListResultPreparer(ctx)
             if err != nil {
-            return result, autorest.NewErrorWithError(err, "synapse.SQLPoolUsagesClient", "listNextResults", nil , "Failure preparing next results request")
+            return result, autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerUsagesClient", "listNextResults", nil , "Failure preparing next results request")
             }
             if req == nil {
             return
@@ -144,19 +143,19 @@ autorest.WithQueryParameters(queryParameters))
             resp, err := client.ListSender(req)
             if err != nil {
             result.Response = autorest.Response{Response: resp}
-            return result, autorest.NewErrorWithError(err, "synapse.SQLPoolUsagesClient", "listNextResults", resp, "Failure sending next results request")
+            return result, autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerUsagesClient", "listNextResults", resp, "Failure sending next results request")
             }
             result, err = client.ListResponder(resp)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "synapse.SQLPoolUsagesClient", "listNextResults", resp, "Failure responding to next results request")
+            err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerUsagesClient", "listNextResults", resp, "Failure responding to next results request")
             }
             return
                     }
 
             // ListComplete enumerates all values, automatically crossing page boundaries as required.
-            func (client SQLPoolUsagesClient) ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result SQLPoolUsageListResultIterator, err error) {
+            func (client WorkspaceManagedSQLServerUsagesClient) ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result ServerUsageListResultIterator, err error) {
             if tracing.IsEnabled() {
-            ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolUsagesClient.List")
+            ctx = tracing.StartSpan(ctx, fqdn + "/WorkspaceManagedSQLServerUsagesClient.List")
             defer func() {
             sc := -1
             if result.Response().Response.Response != nil {
@@ -165,7 +164,7 @@ autorest.WithQueryParameters(queryParameters))
             tracing.EndSpan(ctx, sc, err)
             }()
             }
-                    result.page, err = client.List(ctx, resourceGroupName, workspaceName, SQLPoolName)
+                    result.page, err = client.List(ctx, resourceGroupName, workspaceName)
                             return
             }
 

@@ -26,32 +26,32 @@ import (
     "github.com/Azure/go-autorest/autorest/validation"
 )
 
-// SQLPoolTransparentDataEncryptionsClient is the azure Synapse Analytics Management Client
-type SQLPoolTransparentDataEncryptionsClient struct {
+// ExtendedSQLPoolBlobAuditingPoliciesClient is the azure Synapse Analytics Management Client
+type ExtendedSQLPoolBlobAuditingPoliciesClient struct {
     BaseClient
 }
-// NewSQLPoolTransparentDataEncryptionsClient creates an instance of the SQLPoolTransparentDataEncryptionsClient
+// NewExtendedSQLPoolBlobAuditingPoliciesClient creates an instance of the ExtendedSQLPoolBlobAuditingPoliciesClient
 // client.
-func NewSQLPoolTransparentDataEncryptionsClient(subscriptionID string) SQLPoolTransparentDataEncryptionsClient {
-    return NewSQLPoolTransparentDataEncryptionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewExtendedSQLPoolBlobAuditingPoliciesClient(subscriptionID string) ExtendedSQLPoolBlobAuditingPoliciesClient {
+    return NewExtendedSQLPoolBlobAuditingPoliciesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSQLPoolTransparentDataEncryptionsClientWithBaseURI creates an instance of the
-// SQLPoolTransparentDataEncryptionsClient client using a custom endpoint.  Use this when interacting with an Azure
+// NewExtendedSQLPoolBlobAuditingPoliciesClientWithBaseURI creates an instance of the
+// ExtendedSQLPoolBlobAuditingPoliciesClient client using a custom endpoint.  Use this when interacting with an Azure
 // cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-    func NewSQLPoolTransparentDataEncryptionsClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolTransparentDataEncryptionsClient {
-        return SQLPoolTransparentDataEncryptionsClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    func NewExtendedSQLPoolBlobAuditingPoliciesClientWithBaseURI(baseURI string, subscriptionID string) ExtendedSQLPoolBlobAuditingPoliciesClient {
+        return ExtendedSQLPoolBlobAuditingPoliciesClient{ NewWithBaseURI(baseURI, subscriptionID)}
     }
 
-// CreateOrUpdate creates or updates a Sql pool's transparent data encryption configuration.
+// CreateOrUpdate creates or updates an extended Sql pool's blob auditing policy.
     // Parameters:
         // resourceGroupName - the name of the resource group. The name is case insensitive.
         // workspaceName - the name of the workspace
         // SQLPoolName - SQL pool name
-        // parameters - the required parameters for creating or updating transparent data encryption.
-func (client SQLPoolTransparentDataEncryptionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters TransparentDataEncryption) (result TransparentDataEncryption, err error) {
+        // parameters - the extended Sql pool blob auditing policy.
+func (client ExtendedSQLPoolBlobAuditingPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters ExtendedSQLPoolBlobAuditingPolicy) (result ExtendedSQLPoolBlobAuditingPolicy, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolTransparentDataEncryptionsClient.CreateOrUpdate")
+        ctx = tracing.StartSpan(ctx, fqdn + "/ExtendedSQLPoolBlobAuditingPoliciesClient.CreateOrUpdate")
         defer func() {
             sc := -1
         if result.Response.Response != nil {
@@ -67,37 +67,37 @@ func (client SQLPoolTransparentDataEncryptionsClient) CreateOrUpdate(ctx context
          Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.SQLPoolTransparentDataEncryptionsClient", "CreateOrUpdate", err.Error())
+        return result, validation.NewError("synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "CreateOrUpdate", err.Error())
         }
 
         req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, SQLPoolName, parameters)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "CreateOrUpdate", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "CreateOrUpdate", nil , "Failure preparing request")
     return
     }
 
         resp, err := client.CreateOrUpdateSender(req)
         if err != nil {
         result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "CreateOrUpdate", resp, "Failure sending request")
+        err = autorest.NewErrorWithError(err, "synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "CreateOrUpdate", resp, "Failure sending request")
         return
         }
 
         result, err = client.CreateOrUpdateResponder(resp)
         if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "CreateOrUpdate", resp, "Failure responding to request")
+        err = autorest.NewErrorWithError(err, "synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "CreateOrUpdate", resp, "Failure responding to request")
         }
 
     return
 }
 
     // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-    func (client SQLPoolTransparentDataEncryptionsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters TransparentDataEncryption) (*http.Request, error) {
+    func (client ExtendedSQLPoolBlobAuditingPoliciesClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters ExtendedSQLPoolBlobAuditingPolicy) (*http.Request, error) {
         pathParameters := map[string]interface{} {
+        "blobAuditingPolicyName": autorest.Encode("path", "default"),
         "resourceGroupName": autorest.Encode("path",resourceGroupName),
         "sqlPoolName": autorest.Encode("path",SQLPoolName),
         "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-        "transparentDataEncryptionName": autorest.Encode("path", "current"),
         "workspaceName": autorest.Encode("path",workspaceName),
         }
 
@@ -106,12 +106,11 @@ func (client SQLPoolTransparentDataEncryptionsClient) CreateOrUpdate(ctx context
     "api-version": APIVersion,
     }
 
-            parameters.Location = nil
     preparer := autorest.CreatePreparer(
 autorest.AsContentType("application/json; charset=utf-8"),
 autorest.AsPut(),
 autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption/{transparentDataEncryptionName}",pathParameters),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/extendedAuditingSettings/{blobAuditingPolicyName}",pathParameters),
 autorest.WithJSON(parameters),
 autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -119,13 +118,13 @@ autorest.WithQueryParameters(queryParameters))
 
     // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
     // http.Response Body if it receives an error.
-    func (client SQLPoolTransparentDataEncryptionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+    func (client ExtendedSQLPoolBlobAuditingPoliciesClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
     // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
     // closes the http.Response Body.
-    func (client SQLPoolTransparentDataEncryptionsClient) CreateOrUpdateResponder(resp *http.Response) (result TransparentDataEncryption, err error) {
+    func (client ExtendedSQLPoolBlobAuditingPoliciesClient) CreateOrUpdateResponder(resp *http.Response) (result ExtendedSQLPoolBlobAuditingPolicy, err error) {
             err = autorest.Respond(
             resp,
             azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
@@ -135,14 +134,14 @@ autorest.WithQueryParameters(queryParameters))
             return
     }
 
-// Get get a SQL pool's transparent data encryption configuration.
+// Get gets an extended Sql pool's blob auditing policy.
     // Parameters:
         // resourceGroupName - the name of the resource group. The name is case insensitive.
         // workspaceName - the name of the workspace
         // SQLPoolName - SQL pool name
-func (client SQLPoolTransparentDataEncryptionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result TransparentDataEncryption, err error) {
+func (client ExtendedSQLPoolBlobAuditingPoliciesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result ExtendedSQLPoolBlobAuditingPolicy, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolTransparentDataEncryptionsClient.Get")
+        ctx = tracing.StartSpan(ctx, fqdn + "/ExtendedSQLPoolBlobAuditingPoliciesClient.Get")
         defer func() {
             sc := -1
         if result.Response.Response != nil {
@@ -158,37 +157,37 @@ func (client SQLPoolTransparentDataEncryptionsClient) Get(ctx context.Context, r
          Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.SQLPoolTransparentDataEncryptionsClient", "Get", err.Error())
+        return result, validation.NewError("synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "Get", err.Error())
         }
 
         req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "Get", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "Get", nil , "Failure preparing request")
     return
     }
 
         resp, err := client.GetSender(req)
         if err != nil {
         result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "Get", resp, "Failure sending request")
+        err = autorest.NewErrorWithError(err, "synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "Get", resp, "Failure sending request")
         return
         }
 
         result, err = client.GetResponder(resp)
         if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "Get", resp, "Failure responding to request")
+        err = autorest.NewErrorWithError(err, "synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "Get", resp, "Failure responding to request")
         }
 
     return
 }
 
     // GetPreparer prepares the Get request.
-    func (client SQLPoolTransparentDataEncryptionsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
+    func (client ExtendedSQLPoolBlobAuditingPoliciesClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
         pathParameters := map[string]interface{} {
+        "blobAuditingPolicyName": autorest.Encode("path", "default"),
         "resourceGroupName": autorest.Encode("path",resourceGroupName),
         "sqlPoolName": autorest.Encode("path",SQLPoolName),
         "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-        "transparentDataEncryptionName": autorest.Encode("path", "current"),
         "workspaceName": autorest.Encode("path",workspaceName),
         }
 
@@ -200,20 +199,20 @@ func (client SQLPoolTransparentDataEncryptionsClient) Get(ctx context.Context, r
     preparer := autorest.CreatePreparer(
 autorest.AsGet(),
 autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption/{transparentDataEncryptionName}",pathParameters),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/extendedAuditingSettings/{blobAuditingPolicyName}",pathParameters),
 autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // GetSender sends the Get request. The method will close the
     // http.Response Body if it receives an error.
-    func (client SQLPoolTransparentDataEncryptionsClient) GetSender(req *http.Request) (*http.Response, error) {
+    func (client ExtendedSQLPoolBlobAuditingPoliciesClient) GetSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
     // GetResponder handles the response to the Get request. The method always
     // closes the http.Response Body.
-    func (client SQLPoolTransparentDataEncryptionsClient) GetResponder(resp *http.Response) (result TransparentDataEncryption, err error) {
+    func (client ExtendedSQLPoolBlobAuditingPoliciesClient) GetResponder(resp *http.Response) (result ExtendedSQLPoolBlobAuditingPolicy, err error) {
             err = autorest.Respond(
             resp,
             azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -223,18 +222,18 @@ autorest.WithQueryParameters(queryParameters))
             return
     }
 
-// List get list of SQL pool's transparent data encryption configurations.
+// ListBySQLPool lists extended auditing settings of a Sql pool.
     // Parameters:
         // resourceGroupName - the name of the resource group. The name is case insensitive.
         // workspaceName - the name of the workspace
         // SQLPoolName - SQL pool name
-func (client SQLPoolTransparentDataEncryptionsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result TransparentDataEncryptionListResultPage, err error) {
+func (client ExtendedSQLPoolBlobAuditingPoliciesClient) ListBySQLPool(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result ExtendedSQLPoolBlobAuditingPolicyListResultPage, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolTransparentDataEncryptionsClient.List")
+        ctx = tracing.StartSpan(ctx, fqdn + "/ExtendedSQLPoolBlobAuditingPoliciesClient.ListBySQLPool")
         defer func() {
             sc := -1
-        if result.tdelr.Response.Response != nil {
-        sc = result.tdelr.Response.Response.StatusCode
+        if result.espbaplr.Response.Response != nil {
+        sc = result.espbaplr.Response.Response.StatusCode
         }
             tracing.EndSpan(ctx, sc, err)
         }()
@@ -246,36 +245,36 @@ func (client SQLPoolTransparentDataEncryptionsClient) List(ctx context.Context, 
          Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.SQLPoolTransparentDataEncryptionsClient", "List", err.Error())
+        return result, validation.NewError("synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "ListBySQLPool", err.Error())
         }
 
-            result.fn = client.listNextResults
-    req, err := client.ListPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName)
+            result.fn = client.listBySQLPoolNextResults
+    req, err := client.ListBySQLPoolPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "List", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "ListBySQLPool", nil , "Failure preparing request")
     return
     }
 
-        resp, err := client.ListSender(req)
+        resp, err := client.ListBySQLPoolSender(req)
         if err != nil {
-        result.tdelr.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "List", resp, "Failure sending request")
+        result.espbaplr.Response = autorest.Response{Response: resp}
+        err = autorest.NewErrorWithError(err, "synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "ListBySQLPool", resp, "Failure sending request")
         return
         }
 
-        result.tdelr, err = client.ListResponder(resp)
+        result.espbaplr, err = client.ListBySQLPoolResponder(resp)
         if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "List", resp, "Failure responding to request")
+        err = autorest.NewErrorWithError(err, "synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "ListBySQLPool", resp, "Failure responding to request")
         }
-            if result.tdelr.hasNextLink() && result.tdelr.IsEmpty() {
+            if result.espbaplr.hasNextLink() && result.espbaplr.IsEmpty() {
             err = result.NextWithContext(ctx)
             }
 
     return
 }
 
-    // ListPreparer prepares the List request.
-    func (client SQLPoolTransparentDataEncryptionsClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
+    // ListBySQLPoolPreparer prepares the ListBySQLPool request.
+    func (client ExtendedSQLPoolBlobAuditingPoliciesClient) ListBySQLPoolPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
         pathParameters := map[string]interface{} {
         "resourceGroupName": autorest.Encode("path",resourceGroupName),
         "sqlPoolName": autorest.Encode("path",SQLPoolName),
@@ -291,20 +290,20 @@ func (client SQLPoolTransparentDataEncryptionsClient) List(ctx context.Context, 
     preparer := autorest.CreatePreparer(
 autorest.AsGet(),
 autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption",pathParameters),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/extendedAuditingSettings",pathParameters),
 autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
-    // ListSender sends the List request. The method will close the
+    // ListBySQLPoolSender sends the ListBySQLPool request. The method will close the
     // http.Response Body if it receives an error.
-    func (client SQLPoolTransparentDataEncryptionsClient) ListSender(req *http.Request) (*http.Response, error) {
+    func (client ExtendedSQLPoolBlobAuditingPoliciesClient) ListBySQLPoolSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
-    // ListResponder handles the response to the List request. The method always
+    // ListBySQLPoolResponder handles the response to the ListBySQLPool request. The method always
     // closes the http.Response Body.
-    func (client SQLPoolTransparentDataEncryptionsClient) ListResponder(resp *http.Response) (result TransparentDataEncryptionListResult, err error) {
+    func (client ExtendedSQLPoolBlobAuditingPoliciesClient) ListBySQLPoolResponder(resp *http.Response) (result ExtendedSQLPoolBlobAuditingPolicyListResult, err error) {
             err = autorest.Respond(
             resp,
             azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -314,31 +313,31 @@ autorest.WithQueryParameters(queryParameters))
             return
     }
 
-            // listNextResults retrieves the next set of results, if any.
-            func (client SQLPoolTransparentDataEncryptionsClient) listNextResults(ctx context.Context, lastResults TransparentDataEncryptionListResult) (result TransparentDataEncryptionListResult, err error) {
-            req, err := lastResults.transparentDataEncryptionListResultPreparer(ctx)
+            // listBySQLPoolNextResults retrieves the next set of results, if any.
+            func (client ExtendedSQLPoolBlobAuditingPoliciesClient) listBySQLPoolNextResults(ctx context.Context, lastResults ExtendedSQLPoolBlobAuditingPolicyListResult) (result ExtendedSQLPoolBlobAuditingPolicyListResult, err error) {
+            req, err := lastResults.extendedSQLPoolBlobAuditingPolicyListResultPreparer(ctx)
             if err != nil {
-            return result, autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "listNextResults", nil , "Failure preparing next results request")
+            return result, autorest.NewErrorWithError(err, "synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "listBySQLPoolNextResults", nil , "Failure preparing next results request")
             }
             if req == nil {
             return
             }
-            resp, err := client.ListSender(req)
+            resp, err := client.ListBySQLPoolSender(req)
             if err != nil {
             result.Response = autorest.Response{Response: resp}
-            return result, autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "listNextResults", resp, "Failure sending next results request")
+            return result, autorest.NewErrorWithError(err, "synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "listBySQLPoolNextResults", resp, "Failure sending next results request")
             }
-            result, err = client.ListResponder(resp)
+            result, err = client.ListBySQLPoolResponder(resp)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "listNextResults", resp, "Failure responding to next results request")
+            err = autorest.NewErrorWithError(err, "synapse.ExtendedSQLPoolBlobAuditingPoliciesClient", "listBySQLPoolNextResults", resp, "Failure responding to next results request")
             }
             return
                     }
 
-            // ListComplete enumerates all values, automatically crossing page boundaries as required.
-            func (client SQLPoolTransparentDataEncryptionsClient) ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result TransparentDataEncryptionListResultIterator, err error) {
+            // ListBySQLPoolComplete enumerates all values, automatically crossing page boundaries as required.
+            func (client ExtendedSQLPoolBlobAuditingPoliciesClient) ListBySQLPoolComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result ExtendedSQLPoolBlobAuditingPolicyListResultIterator, err error) {
             if tracing.IsEnabled() {
-            ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolTransparentDataEncryptionsClient.List")
+            ctx = tracing.StartSpan(ctx, fqdn + "/ExtendedSQLPoolBlobAuditingPoliciesClient.ListBySQLPool")
             defer func() {
             sc := -1
             if result.Response().Response.Response != nil {
@@ -347,7 +346,7 @@ autorest.WithQueryParameters(queryParameters))
             tracing.EndSpan(ctx, sc, err)
             }()
             }
-                    result.page, err = client.List(ctx, resourceGroupName, workspaceName, SQLPoolName)
+                    result.page, err = client.ListBySQLPool(ctx, resourceGroupName, workspaceName, SQLPoolName)
                             return
             }
 

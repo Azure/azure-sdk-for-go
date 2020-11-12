@@ -18,207 +18,207 @@ package synapse
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/Azure/go-autorest/autorest/validation"
-	"github.com/Azure/go-autorest/tracing"
-	"net/http"
+    "github.com/Azure/go-autorest/autorest"
+    "github.com/Azure/go-autorest/autorest/azure"
+    "net/http"
+    "context"
+    "github.com/Azure/go-autorest/tracing"
+    "github.com/Azure/go-autorest/autorest/validation"
 )
 
 // IntegrationRuntimeObjectMetadataClient is the azure Synapse Analytics Management Client
 type IntegrationRuntimeObjectMetadataClient struct {
-	BaseClient
+    BaseClient
 }
-
 // NewIntegrationRuntimeObjectMetadataClient creates an instance of the IntegrationRuntimeObjectMetadataClient client.
 func NewIntegrationRuntimeObjectMetadataClient(subscriptionID string) IntegrationRuntimeObjectMetadataClient {
-	return NewIntegrationRuntimeObjectMetadataClientWithBaseURI(DefaultBaseURI, subscriptionID)
+    return NewIntegrationRuntimeObjectMetadataClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewIntegrationRuntimeObjectMetadataClientWithBaseURI creates an instance of the
 // IntegrationRuntimeObjectMetadataClient client using a custom endpoint.  Use this when interacting with an Azure
 // cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewIntegrationRuntimeObjectMetadataClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeObjectMetadataClient {
-	return IntegrationRuntimeObjectMetadataClient{NewWithBaseURI(baseURI, subscriptionID)}
+    func NewIntegrationRuntimeObjectMetadataClientWithBaseURI(baseURI string, subscriptionID string) IntegrationRuntimeObjectMetadataClient {
+        return IntegrationRuntimeObjectMetadataClient{ NewWithBaseURI(baseURI, subscriptionID)}
+    }
+
+// List get object metadata from an integration runtime
+    // Parameters:
+        // resourceGroupName - the name of the resource group. The name is case insensitive.
+        // workspaceName - the name of the workspace.
+        // integrationRuntimeName - integration runtime name
+        // getMetadataRequest - the parameters for getting a SSIS object metadata.
+func (client IntegrationRuntimeObjectMetadataClient) List(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, getMetadataRequest *GetSsisObjectMetadataRequest) (result SsisObjectMetadataListResponse, err error) {
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/IntegrationRuntimeObjectMetadataClient.List")
+        defer func() {
+            sc := -1
+        if result.Response.Response != nil {
+        sc = result.Response.Response.StatusCode
+        }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        if err := validation.Validate([]validation.Validation{
+        { TargetValue: client.SubscriptionID,
+         Constraints: []validation.Constraint{	{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil }}},
+        { TargetValue: resourceGroupName,
+         Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
+        	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
+        	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
+        return result, validation.NewError("synapse.IntegrationRuntimeObjectMetadataClient", "List", err.Error())
+        }
+
+        req, err := client.ListPreparer(ctx, resourceGroupName, workspaceName, integrationRuntimeName, getMetadataRequest)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataClient", "List", nil , "Failure preparing request")
+    return
+    }
+
+        resp, err := client.ListSender(req)
+        if err != nil {
+        result.Response = autorest.Response{Response: resp}
+        err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataClient", "List", resp, "Failure sending request")
+        return
+        }
+
+        result, err = client.ListResponder(resp)
+        if err != nil {
+        err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataClient", "List", resp, "Failure responding to request")
+        }
+
+    return
 }
 
-// Get get object metadata from an integration runtime
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
-// integrationRuntimeName - integration runtime name
-// getMetadataRequest - the parameters for getting a SSIS object metadata.
-func (client IntegrationRuntimeObjectMetadataClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, getMetadataRequest *GetSsisObjectMetadataRequest) (result SsisObjectMetadataListResponse, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationRuntimeObjectMetadataClient.Get")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.IntegrationRuntimeObjectMetadataClient", "Get", err.Error())
-	}
+    // ListPreparer prepares the List request.
+    func (client IntegrationRuntimeObjectMetadataClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, getMetadataRequest *GetSsisObjectMetadataRequest) (*http.Request, error) {
+        pathParameters := map[string]interface{} {
+        "integrationRuntimeName": autorest.Encode("path",integrationRuntimeName),
+        "resourceGroupName": autorest.Encode("path",resourceGroupName),
+        "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+        "workspaceName": autorest.Encode("path",workspaceName),
+        }
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, integrationRuntimeName, getMetadataRequest)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataClient", "Get", nil, "Failure preparing request")
-		return
-	}
+            const APIVersion = "2019-06-01-preview"
+    queryParameters := map[string]interface{} {
+    "api-version": APIVersion,
+    }
 
-	resp, err := client.GetSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataClient", "Get", resp, "Failure sending request")
-		return
-	}
+    preparer := autorest.CreatePreparer(
+autorest.AsContentType("application/json; charset=utf-8"),
+autorest.AsPost(),
+autorest.WithBaseURL(client.BaseURI),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/getObjectMetadata",pathParameters),
+autorest.WithQueryParameters(queryParameters))
+        if getMetadataRequest != nil {
+        preparer = autorest.DecoratePreparer(preparer,
+        autorest.WithJSON(getMetadataRequest))
+        }
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-	result, err = client.GetResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataClient", "Get", resp, "Failure responding to request")
-	}
+    // ListSender sends the List request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client IntegrationRuntimeObjectMetadataClient) ListSender(req *http.Request) (*http.Response, error) {
+            return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+            }
 
-	return
-}
-
-// GetPreparer prepares the Get request.
-func (client IntegrationRuntimeObjectMetadataClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string, getMetadataRequest *GetSsisObjectMetadataRequest) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
-		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
-		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":          autorest.Encode("path", workspaceName),
-	}
-
-	const APIVersion = "2019-06-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
-
-	preparer := autorest.CreatePreparer(
-		autorest.AsContentType("application/json; charset=utf-8"),
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/getObjectMetadata", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	if getMetadataRequest != nil {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithJSON(getMetadataRequest))
-	}
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
-
-// GetSender sends the Get request. The method will close the
-// http.Response Body if it receives an error.
-func (client IntegrationRuntimeObjectMetadataClient) GetSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
-}
-
-// GetResponder handles the response to the Get request. The method always
-// closes the http.Response Body.
-func (client IntegrationRuntimeObjectMetadataClient) GetResponder(resp *http.Response) (result SsisObjectMetadataListResponse, err error) {
-	err = autorest.Respond(
-		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    // ListResponder handles the response to the List request. The method always
+    // closes the http.Response Body.
+    func (client IntegrationRuntimeObjectMetadataClient) ListResponder(resp *http.Response) (result SsisObjectMetadataListResponse, err error) {
+            err = autorest.Respond(
+            resp,
+            azure.WithErrorUnlessStatusCode(http.StatusOK),
+            autorest.ByUnmarshallingJSON(&result),
+            autorest.ByClosing())
+            result.Response = autorest.Response{Response: resp}
+            return
+    }
 
 // Refresh refresh the object metadata in an integration runtime
-// Parameters:
-// resourceGroupName - the name of the resource group. The name is case insensitive.
-// workspaceName - the name of the workspace
-// integrationRuntimeName - integration runtime name
-func (client IntegrationRuntimeObjectMetadataClient) Refresh(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result SsisObjectMetadataStatusResponse, err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/IntegrationRuntimeObjectMetadataClient.Refresh")
-		defer func() {
-			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	if err := validation.Validate([]validation.Validation{
-		{TargetValue: client.SubscriptionID,
-			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: resourceGroupName,
-			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.IntegrationRuntimeObjectMetadataClient", "Refresh", err.Error())
-	}
+    // Parameters:
+        // resourceGroupName - the name of the resource group. The name is case insensitive.
+        // workspaceName - the name of the workspace.
+        // integrationRuntimeName - integration runtime name
+func (client IntegrationRuntimeObjectMetadataClient) Refresh(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (result IntegrationRuntimeObjectMetadataRefreshFuture, err error) {
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/IntegrationRuntimeObjectMetadataClient.Refresh")
+        defer func() {
+            sc := -1
+        if result.Response() != nil {
+        sc = result.Response().StatusCode
+        }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        if err := validation.Validate([]validation.Validation{
+        { TargetValue: client.SubscriptionID,
+         Constraints: []validation.Constraint{	{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil }}},
+        { TargetValue: resourceGroupName,
+         Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
+        	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
+        	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
+        return result, validation.NewError("synapse.IntegrationRuntimeObjectMetadataClient", "Refresh", err.Error())
+        }
 
-	req, err := client.RefreshPreparer(ctx, resourceGroupName, workspaceName, integrationRuntimeName)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataClient", "Refresh", nil, "Failure preparing request")
-		return
-	}
+        req, err := client.RefreshPreparer(ctx, resourceGroupName, workspaceName, integrationRuntimeName)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataClient", "Refresh", nil , "Failure preparing request")
+    return
+    }
 
-	resp, err := client.RefreshSender(req)
-	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataClient", "Refresh", resp, "Failure sending request")
-		return
-	}
+        result, err = client.RefreshSender(req)
+        if err != nil {
+        err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataClient", "Refresh", result.Response(), "Failure sending request")
+        return
+        }
 
-	result, err = client.RefreshResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataClient", "Refresh", resp, "Failure responding to request")
-	}
-
-	return
+    return
 }
 
-// RefreshPreparer prepares the Refresh request.
-func (client IntegrationRuntimeObjectMetadataClient) RefreshPreparer(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (*http.Request, error) {
-	pathParameters := map[string]interface{}{
-		"integrationRuntimeName": autorest.Encode("path", integrationRuntimeName),
-		"resourceGroupName":      autorest.Encode("path", resourceGroupName),
-		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
-		"workspaceName":          autorest.Encode("path", workspaceName),
-	}
+    // RefreshPreparer prepares the Refresh request.
+    func (client IntegrationRuntimeObjectMetadataClient) RefreshPreparer(ctx context.Context, resourceGroupName string, workspaceName string, integrationRuntimeName string) (*http.Request, error) {
+        pathParameters := map[string]interface{} {
+        "integrationRuntimeName": autorest.Encode("path",integrationRuntimeName),
+        "resourceGroupName": autorest.Encode("path",resourceGroupName),
+        "subscriptionId": autorest.Encode("path",client.SubscriptionID),
+        "workspaceName": autorest.Encode("path",workspaceName),
+        }
 
-	const APIVersion = "2019-06-01-preview"
-	queryParameters := map[string]interface{}{
-		"api-version": APIVersion,
-	}
+            const APIVersion = "2019-06-01-preview"
+    queryParameters := map[string]interface{} {
+    "api-version": APIVersion,
+    }
 
-	preparer := autorest.CreatePreparer(
-		autorest.AsPost(),
-		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/refreshObjectMetadata", pathParameters),
-		autorest.WithQueryParameters(queryParameters))
-	return preparer.Prepare((&http.Request{}).WithContext(ctx))
-}
+    preparer := autorest.CreatePreparer(
+autorest.AsPost(),
+autorest.WithBaseURL(client.BaseURI),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/refreshObjectMetadata",pathParameters),
+autorest.WithQueryParameters(queryParameters))
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
 
-// RefreshSender sends the Refresh request. The method will close the
-// http.Response Body if it receives an error.
-func (client IntegrationRuntimeObjectMetadataClient) RefreshSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
-}
+    // RefreshSender sends the Refresh request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client IntegrationRuntimeObjectMetadataClient) RefreshSender(req *http.Request) (future IntegrationRuntimeObjectMetadataRefreshFuture, err error) {
+            var resp *http.Response
+            resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+            if err != nil {
+            return
+            }
+            future.Future, err = azure.NewFutureFromResponse(resp)
+            return
+            }
 
-// RefreshResponder handles the response to the Refresh request. The method always
-// closes the http.Response Body.
-func (client IntegrationRuntimeObjectMetadataClient) RefreshResponder(resp *http.Response) (result SsisObjectMetadataStatusResponse, err error) {
-	err = autorest.Respond(
-		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
-		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
-	return
-}
+    // RefreshResponder handles the response to the Refresh request. The method always
+    // closes the http.Response Body.
+    func (client IntegrationRuntimeObjectMetadataClient) RefreshResponder(resp *http.Response) (result SsisObjectMetadataStatusResponse, err error) {
+            err = autorest.Respond(
+            resp,
+            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
+            autorest.ByUnmarshallingJSON(&result),
+            autorest.ByClosing())
+            result.Response = autorest.Response{Response: resp}
+            return
+    }
+

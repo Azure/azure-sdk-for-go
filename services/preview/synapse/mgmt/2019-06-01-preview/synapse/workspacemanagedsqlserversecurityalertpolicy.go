@@ -26,36 +26,35 @@ import (
     "github.com/Azure/go-autorest/autorest/validation"
 )
 
-// SQLPoolTransparentDataEncryptionsClient is the azure Synapse Analytics Management Client
-type SQLPoolTransparentDataEncryptionsClient struct {
+// WorkspaceManagedSQLServerSecurityAlertPolicyClient is the azure Synapse Analytics Management Client
+type WorkspaceManagedSQLServerSecurityAlertPolicyClient struct {
     BaseClient
 }
-// NewSQLPoolTransparentDataEncryptionsClient creates an instance of the SQLPoolTransparentDataEncryptionsClient
-// client.
-func NewSQLPoolTransparentDataEncryptionsClient(subscriptionID string) SQLPoolTransparentDataEncryptionsClient {
-    return NewSQLPoolTransparentDataEncryptionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewWorkspaceManagedSQLServerSecurityAlertPolicyClient creates an instance of the
+// WorkspaceManagedSQLServerSecurityAlertPolicyClient client.
+func NewWorkspaceManagedSQLServerSecurityAlertPolicyClient(subscriptionID string) WorkspaceManagedSQLServerSecurityAlertPolicyClient {
+    return NewWorkspaceManagedSQLServerSecurityAlertPolicyClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSQLPoolTransparentDataEncryptionsClientWithBaseURI creates an instance of the
-// SQLPoolTransparentDataEncryptionsClient client using a custom endpoint.  Use this when interacting with an Azure
-// cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-    func NewSQLPoolTransparentDataEncryptionsClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolTransparentDataEncryptionsClient {
-        return SQLPoolTransparentDataEncryptionsClient{ NewWithBaseURI(baseURI, subscriptionID)}
+// NewWorkspaceManagedSQLServerSecurityAlertPolicyClientWithBaseURI creates an instance of the
+// WorkspaceManagedSQLServerSecurityAlertPolicyClient client using a custom endpoint.  Use this when interacting with
+// an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+    func NewWorkspaceManagedSQLServerSecurityAlertPolicyClientWithBaseURI(baseURI string, subscriptionID string) WorkspaceManagedSQLServerSecurityAlertPolicyClient {
+        return WorkspaceManagedSQLServerSecurityAlertPolicyClient{ NewWithBaseURI(baseURI, subscriptionID)}
     }
 
-// CreateOrUpdate creates or updates a Sql pool's transparent data encryption configuration.
+// CreateOrUpdate create or Update a workspace managed sql server's threat detection policy.
     // Parameters:
         // resourceGroupName - the name of the resource group. The name is case insensitive.
         // workspaceName - the name of the workspace
-        // SQLPoolName - SQL pool name
-        // parameters - the required parameters for creating or updating transparent data encryption.
-func (client SQLPoolTransparentDataEncryptionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters TransparentDataEncryption) (result TransparentDataEncryption, err error) {
+        // parameters - the workspace managed sql server security alert policy.
+func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters ServerSecurityAlertPolicy) (result WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateFuture, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolTransparentDataEncryptionsClient.CreateOrUpdate")
+        ctx = tracing.StartSpan(ctx, fqdn + "/WorkspaceManagedSQLServerSecurityAlertPolicyClient.CreateOrUpdate")
         defer func() {
             sc := -1
-        if result.Response.Response != nil {
-        sc = result.Response.Response.StatusCode
+        if result.Response() != nil {
+        sc = result.Response().StatusCode
         }
             tracing.EndSpan(ctx, sc, err)
         }()
@@ -67,37 +66,30 @@ func (client SQLPoolTransparentDataEncryptionsClient) CreateOrUpdate(ctx context
          Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.SQLPoolTransparentDataEncryptionsClient", "CreateOrUpdate", err.Error())
+        return result, validation.NewError("synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "CreateOrUpdate", err.Error())
         }
 
-        req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, SQLPoolName, parameters)
+        req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, workspaceName, parameters)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "CreateOrUpdate", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "CreateOrUpdate", nil , "Failure preparing request")
     return
     }
 
-        resp, err := client.CreateOrUpdateSender(req)
+        result, err = client.CreateOrUpdateSender(req)
         if err != nil {
-        result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "CreateOrUpdate", resp, "Failure sending request")
+        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "CreateOrUpdate", result.Response(), "Failure sending request")
         return
-        }
-
-        result, err = client.CreateOrUpdateResponder(resp)
-        if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "CreateOrUpdate", resp, "Failure responding to request")
         }
 
     return
 }
 
     // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-    func (client SQLPoolTransparentDataEncryptionsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters TransparentDataEncryption) (*http.Request, error) {
+    func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, workspaceName string, parameters ServerSecurityAlertPolicy) (*http.Request, error) {
         pathParameters := map[string]interface{} {
         "resourceGroupName": autorest.Encode("path",resourceGroupName),
-        "sqlPoolName": autorest.Encode("path",SQLPoolName),
+        "securityAlertPolicyName": autorest.Encode("path", "Default"),
         "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-        "transparentDataEncryptionName": autorest.Encode("path", "current"),
         "workspaceName": autorest.Encode("path",workspaceName),
         }
 
@@ -106,12 +98,11 @@ func (client SQLPoolTransparentDataEncryptionsClient) CreateOrUpdate(ctx context
     "api-version": APIVersion,
     }
 
-            parameters.Location = nil
     preparer := autorest.CreatePreparer(
 autorest.AsContentType("application/json; charset=utf-8"),
 autorest.AsPut(),
 autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption/{transparentDataEncryptionName}",pathParameters),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/securityAlertPolicies/{securityAlertPolicyName}",pathParameters),
 autorest.WithJSON(parameters),
 autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -119,30 +110,35 @@ autorest.WithQueryParameters(queryParameters))
 
     // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
     // http.Response Body if it receives an error.
-    func (client SQLPoolTransparentDataEncryptionsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
-            return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+    func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) CreateOrUpdateSender(req *http.Request) (future WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateFuture, err error) {
+            var resp *http.Response
+            resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+            if err != nil {
+            return
+            }
+            future.Future, err = azure.NewFutureFromResponse(resp)
+            return
             }
 
     // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
     // closes the http.Response Body.
-    func (client SQLPoolTransparentDataEncryptionsClient) CreateOrUpdateResponder(resp *http.Response) (result TransparentDataEncryption, err error) {
+    func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) CreateOrUpdateResponder(resp *http.Response) (result ServerSecurityAlertPolicy, err error) {
             err = autorest.Respond(
             resp,
-            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusCreated),
+            azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
             autorest.ByUnmarshallingJSON(&result),
             autorest.ByClosing())
             result.Response = autorest.Response{Response: resp}
             return
     }
 
-// Get get a SQL pool's transparent data encryption configuration.
+// Get get a workspace managed sql server's security alert policy.
     // Parameters:
         // resourceGroupName - the name of the resource group. The name is case insensitive.
         // workspaceName - the name of the workspace
-        // SQLPoolName - SQL pool name
-func (client SQLPoolTransparentDataEncryptionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result TransparentDataEncryption, err error) {
+func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) Get(ctx context.Context, resourceGroupName string, workspaceName string) (result ServerSecurityAlertPolicy, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolTransparentDataEncryptionsClient.Get")
+        ctx = tracing.StartSpan(ctx, fqdn + "/WorkspaceManagedSQLServerSecurityAlertPolicyClient.Get")
         defer func() {
             sc := -1
         if result.Response.Response != nil {
@@ -158,37 +154,36 @@ func (client SQLPoolTransparentDataEncryptionsClient) Get(ctx context.Context, r
          Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.SQLPoolTransparentDataEncryptionsClient", "Get", err.Error())
+        return result, validation.NewError("synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "Get", err.Error())
         }
 
-        req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName)
+        req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "Get", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "Get", nil , "Failure preparing request")
     return
     }
 
         resp, err := client.GetSender(req)
         if err != nil {
         result.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "Get", resp, "Failure sending request")
+        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "Get", resp, "Failure sending request")
         return
         }
 
         result, err = client.GetResponder(resp)
         if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "Get", resp, "Failure responding to request")
+        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "Get", resp, "Failure responding to request")
         }
 
     return
 }
 
     // GetPreparer prepares the Get request.
-    func (client SQLPoolTransparentDataEncryptionsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
+    func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
         pathParameters := map[string]interface{} {
         "resourceGroupName": autorest.Encode("path",resourceGroupName),
-        "sqlPoolName": autorest.Encode("path",SQLPoolName),
+        "securityAlertPolicyName": autorest.Encode("path", "Default"),
         "subscriptionId": autorest.Encode("path",client.SubscriptionID),
-        "transparentDataEncryptionName": autorest.Encode("path", "current"),
         "workspaceName": autorest.Encode("path",workspaceName),
         }
 
@@ -200,20 +195,20 @@ func (client SQLPoolTransparentDataEncryptionsClient) Get(ctx context.Context, r
     preparer := autorest.CreatePreparer(
 autorest.AsGet(),
 autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption/{transparentDataEncryptionName}",pathParameters),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/securityAlertPolicies/{securityAlertPolicyName}",pathParameters),
 autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // GetSender sends the Get request. The method will close the
     // http.Response Body if it receives an error.
-    func (client SQLPoolTransparentDataEncryptionsClient) GetSender(req *http.Request) (*http.Response, error) {
+    func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) GetSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
     // GetResponder handles the response to the Get request. The method always
     // closes the http.Response Body.
-    func (client SQLPoolTransparentDataEncryptionsClient) GetResponder(resp *http.Response) (result TransparentDataEncryption, err error) {
+    func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) GetResponder(resp *http.Response) (result ServerSecurityAlertPolicy, err error) {
             err = autorest.Respond(
             resp,
             azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -223,18 +218,17 @@ autorest.WithQueryParameters(queryParameters))
             return
     }
 
-// List get list of SQL pool's transparent data encryption configurations.
+// List get workspace managed sql server's threat detection policies.
     // Parameters:
         // resourceGroupName - the name of the resource group. The name is case insensitive.
         // workspaceName - the name of the workspace
-        // SQLPoolName - SQL pool name
-func (client SQLPoolTransparentDataEncryptionsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result TransparentDataEncryptionListResultPage, err error) {
+func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) List(ctx context.Context, resourceGroupName string, workspaceName string) (result ServerSecurityAlertPolicyListResultPage, err error) {
     if tracing.IsEnabled() {
-        ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolTransparentDataEncryptionsClient.List")
+        ctx = tracing.StartSpan(ctx, fqdn + "/WorkspaceManagedSQLServerSecurityAlertPolicyClient.List")
         defer func() {
             sc := -1
-        if result.tdelr.Response.Response != nil {
-        sc = result.tdelr.Response.Response.StatusCode
+        if result.ssaplr.Response.Response != nil {
+        sc = result.ssaplr.Response.Response.StatusCode
         }
             tracing.EndSpan(ctx, sc, err)
         }()
@@ -246,28 +240,28 @@ func (client SQLPoolTransparentDataEncryptionsClient) List(ctx context.Context, 
          Constraints: []validation.Constraint{	{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil },
         	{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil }}}}); err != nil {
-        return result, validation.NewError("synapse.SQLPoolTransparentDataEncryptionsClient", "List", err.Error())
+        return result, validation.NewError("synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "List", err.Error())
         }
 
             result.fn = client.listNextResults
-    req, err := client.ListPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName)
+    req, err := client.ListPreparer(ctx, resourceGroupName, workspaceName)
     if err != nil {
-    err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "List", nil , "Failure preparing request")
+    err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "List", nil , "Failure preparing request")
     return
     }
 
         resp, err := client.ListSender(req)
         if err != nil {
-        result.tdelr.Response = autorest.Response{Response: resp}
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "List", resp, "Failure sending request")
+        result.ssaplr.Response = autorest.Response{Response: resp}
+        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "List", resp, "Failure sending request")
         return
         }
 
-        result.tdelr, err = client.ListResponder(resp)
+        result.ssaplr, err = client.ListResponder(resp)
         if err != nil {
-        err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "List", resp, "Failure responding to request")
+        err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "List", resp, "Failure responding to request")
         }
-            if result.tdelr.hasNextLink() && result.tdelr.IsEmpty() {
+            if result.ssaplr.hasNextLink() && result.ssaplr.IsEmpty() {
             err = result.NextWithContext(ctx)
             }
 
@@ -275,10 +269,9 @@ func (client SQLPoolTransparentDataEncryptionsClient) List(ctx context.Context, 
 }
 
     // ListPreparer prepares the List request.
-    func (client SQLPoolTransparentDataEncryptionsClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (*http.Request, error) {
+    func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) ListPreparer(ctx context.Context, resourceGroupName string, workspaceName string) (*http.Request, error) {
         pathParameters := map[string]interface{} {
         "resourceGroupName": autorest.Encode("path",resourceGroupName),
-        "sqlPoolName": autorest.Encode("path",SQLPoolName),
         "subscriptionId": autorest.Encode("path",client.SubscriptionID),
         "workspaceName": autorest.Encode("path",workspaceName),
         }
@@ -291,20 +284,20 @@ func (client SQLPoolTransparentDataEncryptionsClient) List(ctx context.Context, 
     preparer := autorest.CreatePreparer(
 autorest.AsGet(),
 autorest.WithBaseURL(client.BaseURI),
-autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/transparentDataEncryption",pathParameters),
+autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/securityAlertPolicies",pathParameters),
 autorest.WithQueryParameters(queryParameters))
     return preparer.Prepare((&http.Request{}).WithContext(ctx))
     }
 
     // ListSender sends the List request. The method will close the
     // http.Response Body if it receives an error.
-    func (client SQLPoolTransparentDataEncryptionsClient) ListSender(req *http.Request) (*http.Response, error) {
+    func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) ListSender(req *http.Request) (*http.Response, error) {
             return client.Send(req, azure.DoRetryWithRegistration(client.Client))
             }
 
     // ListResponder handles the response to the List request. The method always
     // closes the http.Response Body.
-    func (client SQLPoolTransparentDataEncryptionsClient) ListResponder(resp *http.Response) (result TransparentDataEncryptionListResult, err error) {
+    func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) ListResponder(resp *http.Response) (result ServerSecurityAlertPolicyListResult, err error) {
             err = autorest.Respond(
             resp,
             azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -315,10 +308,10 @@ autorest.WithQueryParameters(queryParameters))
     }
 
             // listNextResults retrieves the next set of results, if any.
-            func (client SQLPoolTransparentDataEncryptionsClient) listNextResults(ctx context.Context, lastResults TransparentDataEncryptionListResult) (result TransparentDataEncryptionListResult, err error) {
-            req, err := lastResults.transparentDataEncryptionListResultPreparer(ctx)
+            func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) listNextResults(ctx context.Context, lastResults ServerSecurityAlertPolicyListResult) (result ServerSecurityAlertPolicyListResult, err error) {
+            req, err := lastResults.serverSecurityAlertPolicyListResultPreparer(ctx)
             if err != nil {
-            return result, autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "listNextResults", nil , "Failure preparing next results request")
+            return result, autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "listNextResults", nil , "Failure preparing next results request")
             }
             if req == nil {
             return
@@ -326,19 +319,19 @@ autorest.WithQueryParameters(queryParameters))
             resp, err := client.ListSender(req)
             if err != nil {
             result.Response = autorest.Response{Response: resp}
-            return result, autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "listNextResults", resp, "Failure sending next results request")
+            return result, autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "listNextResults", resp, "Failure sending next results request")
             }
             result, err = client.ListResponder(resp)
             if err != nil {
-            err = autorest.NewErrorWithError(err, "synapse.SQLPoolTransparentDataEncryptionsClient", "listNextResults", resp, "Failure responding to next results request")
+            err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerSecurityAlertPolicyClient", "listNextResults", resp, "Failure responding to next results request")
             }
             return
                     }
 
             // ListComplete enumerates all values, automatically crossing page boundaries as required.
-            func (client SQLPoolTransparentDataEncryptionsClient) ListComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result TransparentDataEncryptionListResultIterator, err error) {
+            func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) ListComplete(ctx context.Context, resourceGroupName string, workspaceName string) (result ServerSecurityAlertPolicyListResultIterator, err error) {
             if tracing.IsEnabled() {
-            ctx = tracing.StartSpan(ctx, fqdn + "/SQLPoolTransparentDataEncryptionsClient.List")
+            ctx = tracing.StartSpan(ctx, fqdn + "/WorkspaceManagedSQLServerSecurityAlertPolicyClient.List")
             defer func() {
             sc := -1
             if result.Response().Response.Response != nil {
@@ -347,7 +340,7 @@ autorest.WithQueryParameters(queryParameters))
             tracing.EndSpan(ctx, sc, err)
             }()
             }
-                    result.page, err = client.List(ctx, resourceGroupName, workspaceName, SQLPoolName)
+                    result.page, err = client.List(ctx, resourceGroupName, workspaceName)
                             return
             }
 

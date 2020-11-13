@@ -32,14 +32,14 @@ type TableResourcesClient struct {
 }
 
 // NewTableResourcesClient creates an instance of the TableResourcesClient client.
-func NewTableResourcesClient(subscriptionID string, subscriptionID1 string) TableResourcesClient {
-	return NewTableResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewTableResourcesClient(subscriptionID string) TableResourcesClient {
+	return NewTableResourcesClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewTableResourcesClientWithBaseURI creates an instance of the TableResourcesClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) TableResourcesClient {
-	return TableResourcesClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string) TableResourcesClient {
+	return TableResourcesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateUpdateTable create or update an Azure Cosmos DB Table
@@ -60,6 +60,8 @@ func (client TableResourcesClient) CreateUpdateTable(ctx context.Context, resour
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -157,6 +159,8 @@ func (client TableResourcesClient) DeleteTable(ctx context.Context, resourceGrou
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -245,6 +249,8 @@ func (client TableResourcesClient) GetTable(ctx context.Context, resourceGroupNa
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -335,6 +341,8 @@ func (client TableResourcesClient) GetTableThroughput(ctx context.Context, resou
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -423,6 +431,8 @@ func (client TableResourcesClient) ListTables(ctx context.Context, resourceGroup
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
@@ -512,6 +522,8 @@ func (client TableResourcesClient) UpdateTableThroughput(ctx context.Context, re
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},

@@ -31,14 +31,14 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(subscriptionID string, subscriptionID1 string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID, subscriptionID1)
+func NewOperationsClient(subscriptionID string) OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID, subscriptionID1)}
+func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // List lists all of the available Cosmos DB Resource Provider operations.

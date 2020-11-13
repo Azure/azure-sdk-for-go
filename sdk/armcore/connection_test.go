@@ -33,7 +33,7 @@ func (mockTokenCred) GetToken(context.Context, azcore.TokenRequestOptions) (*azc
 func TestNewDefaultConnection(t *testing.T) {
 	opt := DefaultConnectionOptions()
 	con := NewDefaultConnection(mockTokenCred{}, &opt)
-	if ep := con.Endpoint(); ep != DefaultEndpoint {
+	if ep := con.Endpoint(); ep != AzurePublicCloud {
 		t.Fatalf("unexpected endpoint %s", ep)
 	}
 }
@@ -62,5 +62,14 @@ func TestNewConnectionWithPipeline(t *testing.T) {
 	}
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+}
+
+func TestScope(t *testing.T) {
+	if s := endpointToScope(AzureGermany); s != "https://management.microsoftazure.de//.default" {
+		t.Fatalf("unexpected scope %s", s)
+	}
+	if s := endpointToScope("https://management.usgovcloudapi.net"); s != "https://management.usgovcloudapi.net//.default" {
+		t.Fatalf("unexpected scope %s", s)
 	}
 }

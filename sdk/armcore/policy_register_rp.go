@@ -26,6 +26,7 @@ const (
 )
 
 // RegistrationOptions configures the registration policy's behavior.
+// Call DefaultRegistrationOptions() to create an instance populated with default values.
 type RegistrationOptions struct {
 	// MaxAttempts is the total number of times to attempt automatic registration
 	// in the event that an attempt fails.
@@ -60,24 +61,25 @@ func DefaultRegistrationOptions() RegistrationOptions {
 	}
 }
 
-// NewRPRegistrationPolicy creates a policy object configured using the specified pipeline
-// and options.  The policy controls if an unregistered resource provider should automatically
-// be registered. See https://aka.ms/rps-not-found for more information.
+// NewRPRegistrationPolicy creates a policy object configured using the specified endpoint,
+// credentials and options.  The policy controls if an unregistered resource provider should
+// automatically be registered. See https://aka.ms/rps-not-found for more information.
 // Pass nil to accept the default options; this is the same as passing the result
 // from a call to DefaultRegistrationOptions().
-func NewRPRegistrationPolicy(cred azcore.Credential, o *RegistrationOptions) azcore.Policy {
+func NewRPRegistrationPolicy(endpoint string, cred azcore.Credential, o *RegistrationOptions) azcore.Policy {
 	if o == nil {
 		def := DefaultRegistrationOptions()
 		o = &def
 	}
 	p := azcore.NewPipeline(o.HTTPClient,
 		azcore.NewRetryPolicy(&o.Retry),
-		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
+		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
 		azcore.NewLogPolicy(nil))
-	return &rpRegistrationPolicy{pipeline: p, options: *o}
+	return &rpRegistrationPolicy{endpoint: endpoint, pipeline: p, options: *o}
 }
 
 type rpRegistrationPolicy struct {
+	endpoint string
 	pipeline azcore.Pipeline
 	options  RegistrationOptions
 }
@@ -128,7 +130,7 @@ func (r *rpRegistrationPolicy) Do(req *azcore.Request) (*azcore.Response, error)
 		// we use the scheme and host from the original request
 		rpOps := &providersOperations{
 			p:     r.pipeline,
-			u:     fmt.Sprintf("%s://%s", req.URL.Scheme, req.URL.Host),
+			u:     r.endpoint,
 			subID: subID,
 		}
 		if _, err = rpOps.Register(req.Context(), rp); err != nil {

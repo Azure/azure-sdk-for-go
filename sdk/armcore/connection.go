@@ -9,9 +9,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-const scope = "https://management.azure.com//.default"
+const defaultScope = "/.default"
+
+const (
+	// AzureChina is the Azure Resourece Manager China cloud endpoint.
+	AzureChina = "https://management.chinacloudapi.cn/"
+	// AzureGermany is the Azure Resourece Manager Germany cloud endpoint.
+	AzureGermany = "https://management.microsoftazure.de/"
+	// AzureGovernment is the Azure Resourece Manager US government cloud endpoint.
+	AzureGovernment = "https://management.usgovcloudapi.net/"
+	// AzurePublicCloud is the Azure Resourece Manager public cloud endpoint.
+	AzurePublicCloud = "https://management.azure.com/"
+)
 
 // ConnectionOptions contains configuration settings for the connection's pipeline.
+// Call DefaultConnectionOptions() to create an instance populated with default values.
 type ConnectionOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient azcore.Transport
@@ -39,12 +51,9 @@ type Connection struct {
 	p azcore.Pipeline
 }
 
-// DefaultEndpoint is the Azure Resourece Manager public cloud endpoint.
-const DefaultEndpoint = "https://management.azure.com"
-
-// NewDefaultConnection creates an instance of the Connection type using the DefaultEndpoint.
+// NewDefaultConnection creates an instance of the Connection type using the AzurePublicCloud.
 func NewDefaultConnection(cred azcore.TokenCredential, options *ConnectionOptions) *Connection {
-	return NewConnection(DefaultEndpoint, cred, options)
+	return NewConnection(AzurePublicCloud, cred, options)
 }
 
 // NewConnection creates an instance of the Connection type with the specified endpoint.
@@ -56,9 +65,9 @@ func NewConnection(endpoint string, cred azcore.TokenCredential, options *Connec
 	}
 	p := azcore.NewPipeline(options.HTTPClient,
 		azcore.NewTelemetryPolicy(&options.Telemetry),
-		NewRPRegistrationPolicy(cred, &options.RegisterRPOptions),
+		NewRPRegistrationPolicy(endpoint, cred, &options.RegisterRPOptions),
 		azcore.NewRetryPolicy(&options.Retry),
-		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
+		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
 		azcore.NewLogPolicy(nil))
 	return NewConnectionWithPipeline(endpoint, p)
 }
@@ -77,4 +86,11 @@ func (c *Connection) Endpoint() string {
 // Pipeline returns the connection's pipeline.
 func (c *Connection) Pipeline() azcore.Pipeline {
 	return c.p
+}
+
+func endpointToScope(endpoint string) string {
+	if endpoint[len(endpoint)-1] != '/' {
+		endpoint += "/"
+	}
+	return endpoint + defaultScope
 }

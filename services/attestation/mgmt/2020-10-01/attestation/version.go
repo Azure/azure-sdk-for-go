@@ -1,4 +1,4 @@
-package policyinsights
+package attestation
 
 import "github.com/Azure/azure-sdk-for-go/version"
 
@@ -21,7 +21,7 @@ import "github.com/Azure/azure-sdk-for-go/version"
 
 // UserAgent returns the UserAgent string to use when sending http.Requests.
 func UserAgent() string {
-	return "Azure-SDK-For-Go/" + Version() + " policyinsights/2019-10-01-preview"
+	return "Azure-SDK-For-Go/" + Version() + " attestation/2020-10-01"
 }
 
 // Version returns the semantic version (see http://semver.org) of the client.

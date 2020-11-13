@@ -27,7 +27,7 @@ func ExampleSubnetsOperations_BeginCreateOrUpdate() {
 		"<subnet name>",
 		armnetwork.Subnet{
 			Properties: &armnetwork.SubnetPropertiesFormat{
-				AddressPrefix: to.StringPtr("10.0.0.0/16"),
+				AddressPrefix: to.StringPtr("10.0.0.0/16"), // NOTE: the allowed address range can change based on the network the subnet is created in
 			},
 		},
 		nil,
@@ -58,7 +58,7 @@ func ExampleSubnetsOperations_BeginCreateOrUpdate_withNetworkSecurityGroup() {
 		"<subnet name>",
 		armnetwork.Subnet{
 			Properties: &armnetwork.SubnetPropertiesFormat{
-				AddressPrefix:        to.StringPtr("10.0.0.0/16"),
+				AddressPrefix:        to.StringPtr("10.0.0.0/16"), // NOTE: the allowed address range can change based on the network the subnet is created in
 				NetworkSecurityGroup: nsg,
 			},
 		},

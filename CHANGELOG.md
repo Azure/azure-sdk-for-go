@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## `v48.2.0`
+
+### New Packages
+
+| Package Name | API Version |
+| ---: | :---: |
+| attestation | 2020-10-01 |
+| containerservice | 2020-11-01 |
+| redisenterprise | 2020-10-01-preview |
+
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/48e7415267518cc2b92f6e6002466f676bdef1a5
+
 ## `v48.1.0`
 
 ### New Packages

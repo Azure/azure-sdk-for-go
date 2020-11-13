@@ -25,7 +25,7 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the azure Cosmos DB Database Service Resource Provider REST API
+// OperationsClient is the client for the Operations methods of the Documentdb service.
 type OperationsClient struct {
 	BaseClient
 }

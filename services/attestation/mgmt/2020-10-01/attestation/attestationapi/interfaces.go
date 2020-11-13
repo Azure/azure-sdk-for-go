@@ -19,7 +19,7 @@ package attestationapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/stable/attestation/mgmt/2020-10-01/attestation"
+	"github.com/Azure/azure-sdk-for-go/services/attestation/mgmt/2020-10-01/attestation"
 	"github.com/Azure/go-autorest/autorest"
 )
 

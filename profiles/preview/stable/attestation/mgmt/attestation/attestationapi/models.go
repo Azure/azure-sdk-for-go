@@ -19,7 +19,7 @@
 
 package attestationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/stable/attestation/mgmt/2020-10-01/attestation/attestationapi"
+import original "github.com/Azure/azure-sdk-for-go/services/attestation/mgmt/2020-10-01/attestation/attestationapi"
 
 type OperationsClientAPI = original.OperationsClientAPI
 type ProvidersClientAPI = original.ProvidersClientAPI

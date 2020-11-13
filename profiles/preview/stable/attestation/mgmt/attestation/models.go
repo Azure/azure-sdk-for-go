@@ -19,7 +19,7 @@
 
 package attestation
 
-import original "github.com/Azure/azure-sdk-for-go/services/stable/attestation/mgmt/2020-10-01/attestation"
+import original "github.com/Azure/azure-sdk-for-go/services/attestation/mgmt/2020-10-01/attestation"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI

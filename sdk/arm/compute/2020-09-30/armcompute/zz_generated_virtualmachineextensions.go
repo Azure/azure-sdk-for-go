@@ -22,19 +22,19 @@ import (
 
 // VirtualMachineExtensionsOperations contains the methods for the VirtualMachineExtensions group.
 type VirtualMachineExtensionsOperations interface {
-// BeginCreateOrUpdate - The operation to create or update the extension.
+	// BeginCreateOrUpdate - The operation to create or update the extension.
 	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtension, options *VirtualMachineExtensionsCreateOrUpdateOptions) (*VirtualMachineExtensionPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VirtualMachineExtensionPoller, error)
-// BeginDelete - The operation to delete the extension.
+	// BeginDelete - The operation to delete the extension.
 	BeginDelete(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
-// Get - The operation to get the extension.
+	// Get - The operation to get the extension.
 	Get(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsGetOptions) (*VirtualMachineExtensionResponse, error)
-// List - The operation to get all extensions of a Virtual Machine.
+	// List - The operation to get all extensions of a Virtual Machine.
 	List(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachineExtensionsListOptions) (*VirtualMachineExtensionsListResultResponse, error)
-// BeginUpdate - The operation to update the extension.
+	// BeginUpdate - The operation to update the extension.
 	BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate, options *VirtualMachineExtensionsUpdateOptions) (*VirtualMachineExtensionPollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (VirtualMachineExtensionPoller, error)
@@ -43,7 +43,7 @@ type VirtualMachineExtensionsOperations interface {
 // VirtualMachineExtensionsClient implements the VirtualMachineExtensionsOperations interface.
 // Don't use this type directly, use NewVirtualMachineExtensionsClient() instead.
 type VirtualMachineExtensionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -70,7 +70,7 @@ func (client *VirtualMachineExtensionsClient) BeginCreateOrUpdate(ctx context.Co
 		return nil, err
 	}
 	poller := &virtualMachineExtensionPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -87,7 +87,7 @@ func (client *VirtualMachineExtensionsClient) ResumeCreateOrUpdate(token string)
 	}
 	return &virtualMachineExtensionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -104,7 +104,7 @@ func (client *VirtualMachineExtensionsClient) CreateOrUpdate(ctx context.Context
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.CreateOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -134,15 +134,15 @@ func (client *VirtualMachineExtensionsClient) CreateOrUpdateHandleResponse(resp 
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *VirtualMachineExtensionsClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *VirtualMachineExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsDeleteOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, vmName, vmExtensionName, options)
@@ -157,7 +157,7 @@ func (client *VirtualMachineExtensionsClient) BeginDelete(ctx context.Context, r
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -174,7 +174,7 @@ func (client *VirtualMachineExtensionsClient) ResumeDelete(token string) (HTTPPo
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -191,7 +191,7 @@ func (client *VirtualMachineExtensionsClient) Delete(ctx context.Context, resour
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.DeleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // DeleteCreateRequest creates the Delete request.
@@ -214,15 +214,15 @@ func (client *VirtualMachineExtensionsClient) DeleteCreateRequest(ctx context.Co
 
 // DeleteHandleError handles the Delete error response.
 func (client *VirtualMachineExtensionsClient) DeleteHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // Get - The operation to get the extension.
 func (client *VirtualMachineExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, options *VirtualMachineExtensionsGetOptions) (*VirtualMachineExtensionResponse, error) {
@@ -274,15 +274,15 @@ func (client *VirtualMachineExtensionsClient) GetHandleResponse(resp *azcore.Res
 
 // GetHandleError handles the Get error response.
 func (client *VirtualMachineExtensionsClient) GetHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // List - The operation to get all extensions of a Virtual Machine.
 func (client *VirtualMachineExtensionsClient) List(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachineExtensionsListOptions) (*VirtualMachineExtensionsListResultResponse, error) {
@@ -333,15 +333,15 @@ func (client *VirtualMachineExtensionsClient) ListHandleResponse(resp *azcore.Re
 
 // ListHandleError handles the List error response.
 func (client *VirtualMachineExtensionsClient) ListHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *VirtualMachineExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, vmExtensionName string, extensionParameters VirtualMachineExtensionUpdate, options *VirtualMachineExtensionsUpdateOptions) (*VirtualMachineExtensionPollerResponse, error) {
 	resp, err := client.Update(ctx, resourceGroupName, vmName, vmExtensionName, extensionParameters, options)
@@ -356,7 +356,7 @@ func (client *VirtualMachineExtensionsClient) BeginUpdate(ctx context.Context, r
 		return nil, err
 	}
 	poller := &virtualMachineExtensionPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -373,7 +373,7 @@ func (client *VirtualMachineExtensionsClient) ResumeUpdate(token string) (Virtua
 	}
 	return &virtualMachineExtensionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -390,7 +390,7 @@ func (client *VirtualMachineExtensionsClient) Update(ctx context.Context, resour
 	if !resp.HasStatusCode(http.StatusOK) {
 		return nil, client.UpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // UpdateCreateRequest creates the Update request.
@@ -420,13 +420,12 @@ func (client *VirtualMachineExtensionsClient) UpdateHandleResponse(resp *azcore.
 
 // UpdateHandleError handles the Update error response.
 func (client *VirtualMachineExtensionsClient) UpdateHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
-
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}

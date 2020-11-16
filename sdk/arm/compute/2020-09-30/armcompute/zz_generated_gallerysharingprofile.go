@@ -19,7 +19,7 @@ import (
 
 // GallerySharingProfileOperations contains the methods for the GallerySharingProfile group.
 type GallerySharingProfileOperations interface {
-// BeginUpdate - Update sharing profile of a gallery.
+	// BeginUpdate - Update sharing profile of a gallery.
 	BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileUpdateOptions) (*SharingUpdatePollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (SharingUpdatePoller, error)
@@ -28,7 +28,7 @@ type GallerySharingProfileOperations interface {
 // GallerySharingProfileClient implements the GallerySharingProfileOperations interface.
 // Don't use this type directly, use NewGallerySharingProfileClient() instead.
 type GallerySharingProfileClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -55,7 +55,7 @@ func (client *GallerySharingProfileClient) BeginUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	poller := &sharingUpdatePoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -72,7 +72,7 @@ func (client *GallerySharingProfileClient) ResumeUpdate(token string) (SharingUp
 	}
 	return &sharingUpdatePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -89,7 +89,7 @@ func (client *GallerySharingProfileClient) Update(ctx context.Context, resourceG
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.UpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // UpdateCreateRequest creates the Update request.
@@ -118,10 +118,9 @@ func (client *GallerySharingProfileClient) UpdateHandleResponse(resp *azcore.Res
 
 // UpdateHandleError handles the Update error response.
 func (client *GallerySharingProfileClient) UpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

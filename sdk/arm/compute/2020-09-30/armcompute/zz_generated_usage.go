@@ -21,14 +21,14 @@ import (
 
 // UsageOperations contains the methods for the Usage group.
 type UsageOperations interface {
-// List - Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
-	List(location string, options *UsageListOptions) (ListUsagesResultPager)
+	// List - Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
+	List(location string, options *UsageListOptions) ListUsagesResultPager
 }
 
 // UsageClient implements the UsageOperations interface.
 // Don't use this type directly, use NewUsageClient() instead.
 type UsageClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -43,7 +43,7 @@ func (client *UsageClient) Pipeline() azcore.Pipeline {
 }
 
 // List - Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
-func (client *UsageClient) List(location string, options *UsageListOptions) (ListUsagesResultPager) {
+func (client *UsageClient) List(location string, options *UsageListOptions) ListUsagesResultPager {
 	return &listUsagesResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -83,13 +83,12 @@ func (client *UsageClient) ListHandleResponse(resp *azcore.Response) (*ListUsage
 
 // ListHandleError handles the List error response.
 func (client *UsageClient) ListHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
-
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}

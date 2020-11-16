@@ -19,19 +19,19 @@ import (
 
 // VirtualMachineScaleSetVMExtensionsOperations contains the methods for the VirtualMachineScaleSetVMExtensions group.
 type VirtualMachineScaleSetVMExtensionsOperations interface {
-// BeginCreateOrUpdate - The operation to create or update the VMSS VM extension.
+	// BeginCreateOrUpdate - The operation to create or update the VMSS VM extension.
 	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtension, options *VirtualMachineScaleSetVMExtensionsCreateOrUpdateOptions) (*VirtualMachineScaleSetVMExtensionPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VirtualMachineScaleSetVMExtensionPoller, error)
-// BeginDelete - The operation to delete the VMSS VM extension.
+	// BeginDelete - The operation to delete the VMSS VM extension.
 	BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, options *VirtualMachineScaleSetVMExtensionsDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
-// Get - The operation to get the VMSS VM extension.
+	// Get - The operation to get the VMSS VM extension.
 	Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, options *VirtualMachineScaleSetVMExtensionsGetOptions) (*VirtualMachineScaleSetVMExtensionResponse, error)
-// List - The operation to get all extensions of an instance in Virtual Machine Scaleset.
+	// List - The operation to get all extensions of an instance in Virtual Machine Scaleset.
 	List(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, options *VirtualMachineScaleSetVMExtensionsListOptions) (*VirtualMachineScaleSetVMExtensionsListResultResponse, error)
-// BeginUpdate - The operation to update the VMSS VM extension.
+	// BeginUpdate - The operation to update the VMSS VM extension.
 	BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceId string, vmExtensionName string, extensionParameters VirtualMachineScaleSetVMExtensionUpdate, options *VirtualMachineScaleSetVMExtensionsUpdateOptions) (*VirtualMachineScaleSetVMExtensionPollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (VirtualMachineScaleSetVMExtensionPoller, error)
@@ -40,7 +40,7 @@ type VirtualMachineScaleSetVMExtensionsOperations interface {
 // VirtualMachineScaleSetVMExtensionsClient implements the VirtualMachineScaleSetVMExtensionsOperations interface.
 // Don't use this type directly, use NewVirtualMachineScaleSetVMExtensionsClient() instead.
 type VirtualMachineScaleSetVMExtensionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -67,7 +67,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) BeginCreateOrUpdate(ctx 
 		return nil, err
 	}
 	poller := &virtualMachineScaleSetVMExtensionPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -84,7 +84,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) ResumeCreateOrUpdate(tok
 	}
 	return &virtualMachineScaleSetVMExtensionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -101,7 +101,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) CreateOrUpdate(ctx conte
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.CreateOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -132,7 +132,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) CreateOrUpdateHandleResp
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *VirtualMachineScaleSetVMExtensionsClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -152,7 +152,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) BeginDelete(ctx context.
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -169,7 +169,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) ResumeDelete(token strin
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -186,7 +186,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) Delete(ctx context.Conte
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.DeleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // DeleteCreateRequest creates the Delete request.
@@ -211,7 +211,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) DeleteCreateRequest(ctx 
 
 // DeleteHandleError handles the Delete error response.
 func (client *VirtualMachineScaleSetVMExtensionsClient) DeleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -269,7 +269,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) GetHandleResponse(resp *
 
 // GetHandleError handles the Get error response.
 func (client *VirtualMachineScaleSetVMExtensionsClient) GetHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -326,7 +326,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) ListHandleResponse(resp 
 
 // ListHandleError handles the List error response.
 func (client *VirtualMachineScaleSetVMExtensionsClient) ListHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -346,7 +346,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) BeginUpdate(ctx context.
 		return nil, err
 	}
 	poller := &virtualMachineScaleSetVMExtensionPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -363,7 +363,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) ResumeUpdate(token strin
 	}
 	return &virtualMachineScaleSetVMExtensionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -380,7 +380,7 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) Update(ctx context.Conte
 	if !resp.HasStatusCode(http.StatusOK) {
 		return nil, client.UpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // UpdateCreateRequest creates the Update request.
@@ -411,10 +411,9 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) UpdateHandleResponse(res
 
 // UpdateHandleError handles the Update error response.
 func (client *VirtualMachineScaleSetVMExtensionsClient) UpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

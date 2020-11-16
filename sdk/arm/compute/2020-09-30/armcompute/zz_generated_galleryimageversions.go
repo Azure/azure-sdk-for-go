@@ -19,19 +19,19 @@ import (
 
 // GalleryImageVersionsOperations contains the methods for the GalleryImageVersions group.
 type GalleryImageVersionsOperations interface {
-// BeginCreateOrUpdate - Create or update a gallery image version.
+	// BeginCreateOrUpdate - Create or update a gallery image version.
 	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion GalleryImageVersion, options *GalleryImageVersionsCreateOrUpdateOptions) (*GalleryImageVersionPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (GalleryImageVersionPoller, error)
-// BeginDelete - Delete a gallery image version.
+	// BeginDelete - Delete a gallery image version.
 	BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, options *GalleryImageVersionsDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
-// Get - Retrieves information about a gallery image version.
+	// Get - Retrieves information about a gallery image version.
 	Get(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, options *GalleryImageVersionsGetOptions) (*GalleryImageVersionResponse, error)
-// ListByGalleryImage - List gallery image versions in a gallery image definition.
-	ListByGalleryImage(resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImageVersionsListByGalleryImageOptions) (GalleryImageVersionListPager)
-// BeginUpdate - Update a gallery image version.
+	// ListByGalleryImage - List gallery image versions in a gallery image definition.
+	ListByGalleryImage(resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImageVersionsListByGalleryImageOptions) GalleryImageVersionListPager
+	// BeginUpdate - Update a gallery image version.
 	BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion GalleryImageVersionUpdate, options *GalleryImageVersionsUpdateOptions) (*GalleryImageVersionPollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (GalleryImageVersionPoller, error)
@@ -40,7 +40,7 @@ type GalleryImageVersionsOperations interface {
 // GalleryImageVersionsClient implements the GalleryImageVersionsOperations interface.
 // Don't use this type directly, use NewGalleryImageVersionsClient() instead.
 type GalleryImageVersionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -67,7 +67,7 @@ func (client *GalleryImageVersionsClient) BeginCreateOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	poller := &galleryImageVersionPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -84,7 +84,7 @@ func (client *GalleryImageVersionsClient) ResumeCreateOrUpdate(token string) (Ga
 	}
 	return &galleryImageVersionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -101,7 +101,7 @@ func (client *GalleryImageVersionsClient) CreateOrUpdate(ctx context.Context, re
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.CreateOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -132,7 +132,7 @@ func (client *GalleryImageVersionsClient) CreateOrUpdateHandleResponse(resp *azc
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *GalleryImageVersionsClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -152,7 +152,7 @@ func (client *GalleryImageVersionsClient) BeginDelete(ctx context.Context, resou
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -169,7 +169,7 @@ func (client *GalleryImageVersionsClient) ResumeDelete(token string) (HTTPPoller
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -186,7 +186,7 @@ func (client *GalleryImageVersionsClient) Delete(ctx context.Context, resourceGr
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.DeleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // DeleteCreateRequest creates the Delete request.
@@ -211,7 +211,7 @@ func (client *GalleryImageVersionsClient) DeleteCreateRequest(ctx context.Contex
 
 // DeleteHandleError handles the Delete error response.
 func (client *GalleryImageVersionsClient) DeleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -269,7 +269,7 @@ func (client *GalleryImageVersionsClient) GetHandleResponse(resp *azcore.Respons
 
 // GetHandleError handles the Get error response.
 func (client *GalleryImageVersionsClient) GetHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -277,7 +277,7 @@ var err CloudError
 }
 
 // ListByGalleryImage - List gallery image versions in a gallery image definition.
-func (client *GalleryImageVersionsClient) ListByGalleryImage(resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImageVersionsListByGalleryImageOptions) (GalleryImageVersionListPager) {
+func (client *GalleryImageVersionsClient) ListByGalleryImage(resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImageVersionsListByGalleryImageOptions) GalleryImageVersionListPager {
 	return &galleryImageVersionListPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -319,7 +319,7 @@ func (client *GalleryImageVersionsClient) ListByGalleryImageHandleResponse(resp 
 
 // ListByGalleryImageHandleError handles the ListByGalleryImage error response.
 func (client *GalleryImageVersionsClient) ListByGalleryImageHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -339,7 +339,7 @@ func (client *GalleryImageVersionsClient) BeginUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	poller := &galleryImageVersionPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -356,7 +356,7 @@ func (client *GalleryImageVersionsClient) ResumeUpdate(token string) (GalleryIma
 	}
 	return &galleryImageVersionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -373,7 +373,7 @@ func (client *GalleryImageVersionsClient) Update(ctx context.Context, resourceGr
 	if !resp.HasStatusCode(http.StatusOK) {
 		return nil, client.UpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // UpdateCreateRequest creates the Update request.
@@ -404,10 +404,9 @@ func (client *GalleryImageVersionsClient) UpdateHandleResponse(resp *azcore.Resp
 
 // UpdateHandleError handles the Update error response.
 func (client *GalleryImageVersionsClient) UpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

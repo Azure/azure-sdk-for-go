@@ -22,22 +22,22 @@ import (
 
 // VirtualMachineImagesOperations contains the methods for the VirtualMachineImages group.
 type VirtualMachineImagesOperations interface {
-// Get - Gets a virtual machine image.
+	// Get - Gets a virtual machine image.
 	Get(ctx context.Context, location string, publisherName string, offer string, skus string, version string, options *VirtualMachineImagesGetOptions) (*VirtualMachineImageResponse, error)
-// List - Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
+	// List - Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
 	List(ctx context.Context, location string, publisherName string, offer string, skus string, options *VirtualMachineImagesListOptions) (*VirtualMachineImageResourceArrayResponse, error)
-// ListOffers - Gets a list of virtual machine image offers for the specified location and publisher.
+	// ListOffers - Gets a list of virtual machine image offers for the specified location and publisher.
 	ListOffers(ctx context.Context, location string, publisherName string, options *VirtualMachineImagesListOffersOptions) (*VirtualMachineImageResourceArrayResponse, error)
-// ListPublishers - Gets a list of virtual machine image publishers for the specified Azure location.
+	// ListPublishers - Gets a list of virtual machine image publishers for the specified Azure location.
 	ListPublishers(ctx context.Context, location string, options *VirtualMachineImagesListPublishersOptions) (*VirtualMachineImageResourceArrayResponse, error)
-// ListSKUs - Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
+	// ListSKUs - Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
 	ListSKUs(ctx context.Context, location string, publisherName string, offer string, options *VirtualMachineImagesListSKUsOptions) (*VirtualMachineImageResourceArrayResponse, error)
 }
 
 // VirtualMachineImagesClient implements the VirtualMachineImagesOperations interface.
 // Don't use this type directly, use NewVirtualMachineImagesClient() instead.
 type VirtualMachineImagesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -100,15 +100,15 @@ func (client *VirtualMachineImagesClient) GetHandleResponse(resp *azcore.Respons
 
 // GetHandleError handles the Get error response.
 func (client *VirtualMachineImagesClient) GetHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // List - Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
 func (client *VirtualMachineImagesClient) List(ctx context.Context, location string, publisherName string, offer string, skus string, options *VirtualMachineImagesListOptions) (*VirtualMachineImageResourceArrayResponse, error) {
@@ -167,15 +167,15 @@ func (client *VirtualMachineImagesClient) ListHandleResponse(resp *azcore.Respon
 
 // ListHandleError handles the List error response.
 func (client *VirtualMachineImagesClient) ListHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // ListOffers - Gets a list of virtual machine image offers for the specified location and publisher.
 func (client *VirtualMachineImagesClient) ListOffers(ctx context.Context, location string, publisherName string, options *VirtualMachineImagesListOffersOptions) (*VirtualMachineImageResourceArrayResponse, error) {
@@ -223,15 +223,15 @@ func (client *VirtualMachineImagesClient) ListOffersHandleResponse(resp *azcore.
 
 // ListOffersHandleError handles the ListOffers error response.
 func (client *VirtualMachineImagesClient) ListOffersHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // ListPublishers - Gets a list of virtual machine image publishers for the specified Azure location.
 func (client *VirtualMachineImagesClient) ListPublishers(ctx context.Context, location string, options *VirtualMachineImagesListPublishersOptions) (*VirtualMachineImageResourceArrayResponse, error) {
@@ -278,15 +278,15 @@ func (client *VirtualMachineImagesClient) ListPublishersHandleResponse(resp *azc
 
 // ListPublishersHandleError handles the ListPublishers error response.
 func (client *VirtualMachineImagesClient) ListPublishersHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // ListSKUs - Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
 func (client *VirtualMachineImagesClient) ListSKUs(ctx context.Context, location string, publisherName string, offer string, options *VirtualMachineImagesListSKUsOptions) (*VirtualMachineImageResourceArrayResponse, error) {
@@ -335,13 +335,12 @@ func (client *VirtualMachineImagesClient) ListSKUsHandleResponse(resp *azcore.Re
 
 // ListSKUsHandleError handles the ListSKUs error response.
 func (client *VirtualMachineImagesClient) ListSKUsHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
-
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}

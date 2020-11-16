@@ -18,16 +18,16 @@ import (
 
 // SharedGalleryImagesOperations contains the methods for the SharedGalleryImages group.
 type SharedGalleryImagesOperations interface {
-// Get - Get a shared gallery image by subscription id or tenant id.
+	// Get - Get a shared gallery image by subscription id or tenant id.
 	Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesGetOptions) (*SharedGalleryImageResponse, error)
-// List - List shared gallery images by subscription id or tenant id.
-	List(location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) (SharedGalleryImageListPager)
+	// List - List shared gallery images by subscription id or tenant id.
+	List(location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) SharedGalleryImageListPager
 }
 
 // SharedGalleryImagesClient implements the SharedGalleryImagesOperations interface.
 // Don't use this type directly, use NewSharedGalleryImagesClient() instead.
 type SharedGalleryImagesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -88,7 +88,7 @@ func (client *SharedGalleryImagesClient) GetHandleResponse(resp *azcore.Response
 
 // GetHandleError handles the Get error response.
 func (client *SharedGalleryImagesClient) GetHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -96,7 +96,7 @@ var err CloudError
 }
 
 // List - List shared gallery images by subscription id or tenant id.
-func (client *SharedGalleryImagesClient) List(location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) (SharedGalleryImageListPager) {
+func (client *SharedGalleryImagesClient) List(location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) SharedGalleryImageListPager {
 	return &sharedGalleryImageListPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -140,10 +140,9 @@ func (client *SharedGalleryImagesClient) ListHandleResponse(resp *azcore.Respons
 
 // ListHandleError handles the List error response.
 func (client *SharedGalleryImagesClient) ListHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

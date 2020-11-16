@@ -23,87 +23,87 @@ import (
 
 // VirtualMachinesOperations contains the methods for the VirtualMachines group.
 type VirtualMachinesOperations interface {
-// BeginAssessPatches - Assess patches on the VM.
+	// BeginAssessPatches - Assess patches on the VM.
 	BeginAssessPatches(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesAssessPatchesOptions) (*VirtualMachineAssessPatchesResultPollerResponse, error)
 	// ResumeAssessPatches - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeAssessPatches(token string) (VirtualMachineAssessPatchesResultPoller, error)
-// BeginCapture - Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
+	// BeginCapture - Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
 	BeginCapture(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineCaptureParameters, options *VirtualMachinesCaptureOptions) (*VirtualMachineCaptureResultPollerResponse, error)
 	// ResumeCapture - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCapture(token string) (VirtualMachineCaptureResultPoller, error)
-// BeginConvertToManagedDisks - Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before invoking
-// this operation.
+	// BeginConvertToManagedDisks - Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before invoking
+	// this operation.
 	BeginConvertToManagedDisks(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesConvertToManagedDisksOptions) (*HTTPPollerResponse, error)
 	// ResumeConvertToManagedDisks - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeConvertToManagedDisks(token string) (HTTPPoller, error)
-// BeginCreateOrUpdate - The operation to create or update a virtual machine. Please note some properties can be set only during virtual machine creation.
+	// BeginCreateOrUpdate - The operation to create or update a virtual machine. Please note some properties can be set only during virtual machine creation.
 	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachine, options *VirtualMachinesCreateOrUpdateOptions) (*VirtualMachinePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VirtualMachinePoller, error)
-// BeginDeallocate - Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine
-// uses.
+	// BeginDeallocate - Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine
+	// uses.
 	BeginDeallocate(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesDeallocateOptions) (*HTTPPollerResponse, error)
 	// ResumeDeallocate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDeallocate(token string) (HTTPPoller, error)
-// BeginDelete - The operation to delete a virtual machine.
+	// BeginDelete - The operation to delete a virtual machine.
 	BeginDelete(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
-// Generalize - Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before performing this operation.
-// For Windows, please refer to Create a managed image of a generalized VM in Azure [https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource].
-// For Linux, please refer to How to create an image of a virtual machine or VHD [https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image].
+	// Generalize - Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before performing this operation.
+	// For Windows, please refer to Create a managed image of a generalized VM in Azure [https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource].
+	// For Linux, please refer to How to create an image of a virtual machine or VHD [https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image].
 	Generalize(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesGeneralizeOptions) (*http.Response, error)
-// Get - Retrieves information about the model view or the instance view of a virtual machine.
+	// Get - Retrieves information about the model view or the instance view of a virtual machine.
 	Get(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesGetOptions) (*VirtualMachineResponse, error)
-// InstanceView - Retrieves information about the run-time state of a virtual machine.
+	// InstanceView - Retrieves information about the run-time state of a virtual machine.
 	InstanceView(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesInstanceViewOptions) (*VirtualMachineInstanceViewResponse, error)
-// List - Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
-	List(resourceGroupName string, options *VirtualMachinesListOptions) (VirtualMachineListResultPager)
-// ListAll - Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual
-// machines.
-	ListAll(options *VirtualMachinesListAllOptions) (VirtualMachineListResultPager)
-// ListAvailableSizes - Lists all available virtual machine sizes to which the specified virtual machine can be resized.
+	// List - Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
+	List(resourceGroupName string, options *VirtualMachinesListOptions) VirtualMachineListResultPager
+	// ListAll - Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual
+	// machines.
+	ListAll(options *VirtualMachinesListAllOptions) VirtualMachineListResultPager
+	// ListAvailableSizes - Lists all available virtual machine sizes to which the specified virtual machine can be resized.
 	ListAvailableSizes(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesListAvailableSizesOptions) (*VirtualMachineSizeListResultResponse, error)
-// ListByLocation - Gets all the virtual machines under the specified subscription for the specified location.
-	ListByLocation(location string, options *VirtualMachinesListByLocationOptions) (VirtualMachineListResultPager)
-// BeginPerformMaintenance - The operation to perform maintenance on a virtual machine.
+	// ListByLocation - Gets all the virtual machines under the specified subscription for the specified location.
+	ListByLocation(location string, options *VirtualMachinesListByLocationOptions) VirtualMachineListResultPager
+	// BeginPerformMaintenance - The operation to perform maintenance on a virtual machine.
 	BeginPerformMaintenance(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesPerformMaintenanceOptions) (*HTTPPollerResponse, error)
 	// ResumePerformMaintenance - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumePerformMaintenance(token string) (HTTPPoller, error)
-// BeginPowerOff - The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are
-// still charged for this virtual machine.
+	// BeginPowerOff - The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are
+	// still charged for this virtual machine.
 	BeginPowerOff(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesPowerOffOptions) (*HTTPPollerResponse, error)
 	// ResumePowerOff - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumePowerOff(token string) (HTTPPoller, error)
-// BeginReapply - The operation to reapply a virtual machine's state.
+	// BeginReapply - The operation to reapply a virtual machine's state.
 	BeginReapply(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesReapplyOptions) (*HTTPPollerResponse, error)
 	// ResumeReapply - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeReapply(token string) (HTTPPoller, error)
-// BeginRedeploy - Shuts down the virtual machine, moves it to a new node, and powers it back on.
+	// BeginRedeploy - Shuts down the virtual machine, moves it to a new node, and powers it back on.
 	BeginRedeploy(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesRedeployOptions) (*HTTPPollerResponse, error)
 	// ResumeRedeploy - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeRedeploy(token string) (HTTPPoller, error)
-// BeginReimage - Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
+	// BeginReimage - Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
 	BeginReimage(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesReimageOptions) (*HTTPPollerResponse, error)
 	// ResumeReimage - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeReimage(token string) (HTTPPoller, error)
-// BeginRestart - The operation to restart a virtual machine.
+	// BeginRestart - The operation to restart a virtual machine.
 	BeginRestart(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesRestartOptions) (*HTTPPollerResponse, error)
 	// ResumeRestart - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeRestart(token string) (HTTPPoller, error)
-// RetrieveBootDiagnosticsData - The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
+	// RetrieveBootDiagnosticsData - The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
 	RetrieveBootDiagnosticsData(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesRetrieveBootDiagnosticsDataOptions) (*RetrieveBootDiagnosticsDataResultResponse, error)
-// BeginRunCommand - Run command on the VM.
+	// BeginRunCommand - Run command on the VM.
 	BeginRunCommand(ctx context.Context, resourceGroupName string, vmName string, parameters RunCommandInput, options *VirtualMachinesRunCommandOptions) (*RunCommandResultPollerResponse, error)
 	// ResumeRunCommand - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeRunCommand(token string) (RunCommandResultPoller, error)
-// SimulateEviction - The operation to simulate the eviction of spot virtual machine.
+	// SimulateEviction - The operation to simulate the eviction of spot virtual machine.
 	SimulateEviction(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesSimulateEvictionOptions) (*http.Response, error)
-// BeginStart - The operation to start a virtual machine.
+	// BeginStart - The operation to start a virtual machine.
 	BeginStart(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesStartOptions) (*HTTPPollerResponse, error)
 	// ResumeStart - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeStart(token string) (HTTPPoller, error)
-// BeginUpdate - The operation to update a virtual machine.
+	// BeginUpdate - The operation to update a virtual machine.
 	BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineUpdate, options *VirtualMachinesUpdateOptions) (*VirtualMachinePollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (VirtualMachinePoller, error)
@@ -112,7 +112,7 @@ type VirtualMachinesOperations interface {
 // VirtualMachinesClient implements the VirtualMachinesOperations interface.
 // Don't use this type directly, use NewVirtualMachinesClient() instead.
 type VirtualMachinesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -139,7 +139,7 @@ func (client *VirtualMachinesClient) BeginAssessPatches(ctx context.Context, res
 		return nil, err
 	}
 	poller := &virtualMachineAssessPatchesResultPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -156,7 +156,7 @@ func (client *VirtualMachinesClient) ResumeAssessPatches(token string) (VirtualM
 	}
 	return &virtualMachineAssessPatchesResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -173,7 +173,7 @@ func (client *VirtualMachinesClient) AssessPatches(ctx context.Context, resource
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.AssessPatchesHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // AssessPatchesCreateRequest creates the AssessPatches request.
@@ -202,7 +202,7 @@ func (client *VirtualMachinesClient) AssessPatchesHandleResponse(resp *azcore.Re
 
 // AssessPatchesHandleError handles the AssessPatches error response.
 func (client *VirtualMachinesClient) AssessPatchesHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -222,7 +222,7 @@ func (client *VirtualMachinesClient) BeginCapture(ctx context.Context, resourceG
 		return nil, err
 	}
 	poller := &virtualMachineCaptureResultPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -239,7 +239,7 @@ func (client *VirtualMachinesClient) ResumeCapture(token string) (VirtualMachine
 	}
 	return &virtualMachineCaptureResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -256,7 +256,7 @@ func (client *VirtualMachinesClient) Capture(ctx context.Context, resourceGroupN
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.CaptureHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // CaptureCreateRequest creates the Capture request.
@@ -285,15 +285,15 @@ func (client *VirtualMachinesClient) CaptureHandleResponse(resp *azcore.Response
 
 // CaptureHandleError handles the Capture error response.
 func (client *VirtualMachinesClient) CaptureHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *VirtualMachinesClient) BeginConvertToManagedDisks(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesConvertToManagedDisksOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.ConvertToManagedDisks(ctx, resourceGroupName, vmName, options)
@@ -308,7 +308,7 @@ func (client *VirtualMachinesClient) BeginConvertToManagedDisks(ctx context.Cont
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -325,7 +325,7 @@ func (client *VirtualMachinesClient) ResumeConvertToManagedDisks(token string) (
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -343,7 +343,7 @@ func (client *VirtualMachinesClient) ConvertToManagedDisks(ctx context.Context, 
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.ConvertToManagedDisksHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // ConvertToManagedDisksCreateRequest creates the ConvertToManagedDisks request.
@@ -365,15 +365,15 @@ func (client *VirtualMachinesClient) ConvertToManagedDisksCreateRequest(ctx cont
 
 // ConvertToManagedDisksHandleError handles the ConvertToManagedDisks error response.
 func (client *VirtualMachinesClient) ConvertToManagedDisksHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *VirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachine, options *VirtualMachinesCreateOrUpdateOptions) (*VirtualMachinePollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, vmName, parameters, options)
@@ -388,7 +388,7 @@ func (client *VirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context, re
 		return nil, err
 	}
 	poller := &virtualMachinePoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -405,7 +405,7 @@ func (client *VirtualMachinesClient) ResumeCreateOrUpdate(token string) (Virtual
 	}
 	return &virtualMachinePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -422,7 +422,7 @@ func (client *VirtualMachinesClient) CreateOrUpdate(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.CreateOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -451,15 +451,15 @@ func (client *VirtualMachinesClient) CreateOrUpdateHandleResponse(resp *azcore.R
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *VirtualMachinesClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *VirtualMachinesClient) BeginDeallocate(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesDeallocateOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Deallocate(ctx, resourceGroupName, vmName, options)
@@ -474,7 +474,7 @@ func (client *VirtualMachinesClient) BeginDeallocate(ctx context.Context, resour
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -491,7 +491,7 @@ func (client *VirtualMachinesClient) ResumeDeallocate(token string) (HTTPPoller,
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -509,7 +509,7 @@ func (client *VirtualMachinesClient) Deallocate(ctx context.Context, resourceGro
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.DeallocateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // DeallocateCreateRequest creates the Deallocate request.
@@ -531,15 +531,15 @@ func (client *VirtualMachinesClient) DeallocateCreateRequest(ctx context.Context
 
 // DeallocateHandleError handles the Deallocate error response.
 func (client *VirtualMachinesClient) DeallocateHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *VirtualMachinesClient) BeginDelete(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesDeleteOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, vmName, options)
@@ -554,7 +554,7 @@ func (client *VirtualMachinesClient) BeginDelete(ctx context.Context, resourceGr
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -571,7 +571,7 @@ func (client *VirtualMachinesClient) ResumeDelete(token string) (HTTPPoller, err
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -588,7 +588,7 @@ func (client *VirtualMachinesClient) Delete(ctx context.Context, resourceGroupNa
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.DeleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // DeleteCreateRequest creates the Delete request.
@@ -613,15 +613,15 @@ func (client *VirtualMachinesClient) DeleteCreateRequest(ctx context.Context, re
 
 // DeleteHandleError handles the Delete error response.
 func (client *VirtualMachinesClient) DeleteHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // Generalize - Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before performing this operation.
 // For Windows, please refer to Create a managed image of a generalized VM in Azure [https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource].
@@ -660,15 +660,15 @@ func (client *VirtualMachinesClient) GeneralizeCreateRequest(ctx context.Context
 
 // GeneralizeHandleError handles the Generalize error response.
 func (client *VirtualMachinesClient) GeneralizeHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // Get - Retrieves information about the model view or the instance view of a virtual machine.
 func (client *VirtualMachinesClient) Get(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesGetOptions) (*VirtualMachineResponse, error) {
@@ -719,15 +719,15 @@ func (client *VirtualMachinesClient) GetHandleResponse(resp *azcore.Response) (*
 
 // GetHandleError handles the Get error response.
 func (client *VirtualMachinesClient) GetHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // InstanceView - Retrieves information about the run-time state of a virtual machine.
 func (client *VirtualMachinesClient) InstanceView(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesInstanceViewOptions) (*VirtualMachineInstanceViewResponse, error) {
@@ -775,18 +775,18 @@ func (client *VirtualMachinesClient) InstanceViewHandleResponse(resp *azcore.Res
 
 // InstanceViewHandleError handles the InstanceView error response.
 func (client *VirtualMachinesClient) InstanceViewHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // List - Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
-func (client *VirtualMachinesClient) List(resourceGroupName string, options *VirtualMachinesListOptions) (VirtualMachineListResultPager) {
+func (client *VirtualMachinesClient) List(resourceGroupName string, options *VirtualMachinesListOptions) VirtualMachineListResultPager {
 	return &virtualMachineListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -826,19 +826,19 @@ func (client *VirtualMachinesClient) ListHandleResponse(resp *azcore.Response) (
 
 // ListHandleError handles the List error response.
 func (client *VirtualMachinesClient) ListHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // ListAll - Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual
 // machines.
-func (client *VirtualMachinesClient) ListAll(options *VirtualMachinesListAllOptions) (VirtualMachineListResultPager) {
+func (client *VirtualMachinesClient) ListAll(options *VirtualMachinesListAllOptions) VirtualMachineListResultPager {
 	return &virtualMachineListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -880,15 +880,15 @@ func (client *VirtualMachinesClient) ListAllHandleResponse(resp *azcore.Response
 
 // ListAllHandleError handles the ListAll error response.
 func (client *VirtualMachinesClient) ListAllHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // ListAvailableSizes - Lists all available virtual machine sizes to which the specified virtual machine can be resized.
 func (client *VirtualMachinesClient) ListAvailableSizes(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesListAvailableSizesOptions) (*VirtualMachineSizeListResultResponse, error) {
@@ -936,18 +936,18 @@ func (client *VirtualMachinesClient) ListAvailableSizesHandleResponse(resp *azco
 
 // ListAvailableSizesHandleError handles the ListAvailableSizes error response.
 func (client *VirtualMachinesClient) ListAvailableSizesHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // ListByLocation - Gets all the virtual machines under the specified subscription for the specified location.
-func (client *VirtualMachinesClient) ListByLocation(location string, options *VirtualMachinesListByLocationOptions) (VirtualMachineListResultPager) {
+func (client *VirtualMachinesClient) ListByLocation(location string, options *VirtualMachinesListByLocationOptions) VirtualMachineListResultPager {
 	return &virtualMachineListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -987,15 +987,15 @@ func (client *VirtualMachinesClient) ListByLocationHandleResponse(resp *azcore.R
 
 // ListByLocationHandleError handles the ListByLocation error response.
 func (client *VirtualMachinesClient) ListByLocationHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *VirtualMachinesClient) BeginPerformMaintenance(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesPerformMaintenanceOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.PerformMaintenance(ctx, resourceGroupName, vmName, options)
@@ -1010,7 +1010,7 @@ func (client *VirtualMachinesClient) BeginPerformMaintenance(ctx context.Context
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -1027,7 +1027,7 @@ func (client *VirtualMachinesClient) ResumePerformMaintenance(token string) (HTT
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -1044,7 +1044,7 @@ func (client *VirtualMachinesClient) PerformMaintenance(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.PerformMaintenanceHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // PerformMaintenanceCreateRequest creates the PerformMaintenance request.
@@ -1066,15 +1066,15 @@ func (client *VirtualMachinesClient) PerformMaintenanceCreateRequest(ctx context
 
 // PerformMaintenanceHandleError handles the PerformMaintenance error response.
 func (client *VirtualMachinesClient) PerformMaintenanceHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *VirtualMachinesClient) BeginPowerOff(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesPowerOffOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.PowerOff(ctx, resourceGroupName, vmName, options)
@@ -1089,7 +1089,7 @@ func (client *VirtualMachinesClient) BeginPowerOff(ctx context.Context, resource
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -1106,7 +1106,7 @@ func (client *VirtualMachinesClient) ResumePowerOff(token string) (HTTPPoller, e
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -1124,7 +1124,7 @@ func (client *VirtualMachinesClient) PowerOff(ctx context.Context, resourceGroup
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.PowerOffHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // PowerOffCreateRequest creates the PowerOff request.
@@ -1149,15 +1149,15 @@ func (client *VirtualMachinesClient) PowerOffCreateRequest(ctx context.Context, 
 
 // PowerOffHandleError handles the PowerOff error response.
 func (client *VirtualMachinesClient) PowerOffHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *VirtualMachinesClient) BeginReapply(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesReapplyOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Reapply(ctx, resourceGroupName, vmName, options)
@@ -1172,7 +1172,7 @@ func (client *VirtualMachinesClient) BeginReapply(ctx context.Context, resourceG
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -1189,7 +1189,7 @@ func (client *VirtualMachinesClient) ResumeReapply(token string) (HTTPPoller, er
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -1206,7 +1206,7 @@ func (client *VirtualMachinesClient) Reapply(ctx context.Context, resourceGroupN
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.ReapplyHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // ReapplyCreateRequest creates the Reapply request.
@@ -1229,7 +1229,7 @@ func (client *VirtualMachinesClient) ReapplyCreateRequest(ctx context.Context, r
 
 // ReapplyHandleError handles the Reapply error response.
 func (client *VirtualMachinesClient) ReapplyHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -1249,7 +1249,7 @@ func (client *VirtualMachinesClient) BeginRedeploy(ctx context.Context, resource
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -1266,7 +1266,7 @@ func (client *VirtualMachinesClient) ResumeRedeploy(token string) (HTTPPoller, e
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -1283,7 +1283,7 @@ func (client *VirtualMachinesClient) Redeploy(ctx context.Context, resourceGroup
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.RedeployHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // RedeployCreateRequest creates the Redeploy request.
@@ -1305,15 +1305,15 @@ func (client *VirtualMachinesClient) RedeployCreateRequest(ctx context.Context, 
 
 // RedeployHandleError handles the Redeploy error response.
 func (client *VirtualMachinesClient) RedeployHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *VirtualMachinesClient) BeginReimage(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesReimageOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Reimage(ctx, resourceGroupName, vmName, options)
@@ -1328,7 +1328,7 @@ func (client *VirtualMachinesClient) BeginReimage(ctx context.Context, resourceG
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -1345,7 +1345,7 @@ func (client *VirtualMachinesClient) ResumeReimage(token string) (HTTPPoller, er
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -1362,7 +1362,7 @@ func (client *VirtualMachinesClient) Reimage(ctx context.Context, resourceGroupN
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.ReimageHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // ReimageCreateRequest creates the Reimage request.
@@ -1387,15 +1387,15 @@ func (client *VirtualMachinesClient) ReimageCreateRequest(ctx context.Context, r
 
 // ReimageHandleError handles the Reimage error response.
 func (client *VirtualMachinesClient) ReimageHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *VirtualMachinesClient) BeginRestart(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesRestartOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Restart(ctx, resourceGroupName, vmName, options)
@@ -1410,7 +1410,7 @@ func (client *VirtualMachinesClient) BeginRestart(ctx context.Context, resourceG
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -1427,7 +1427,7 @@ func (client *VirtualMachinesClient) ResumeRestart(token string) (HTTPPoller, er
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -1444,7 +1444,7 @@ func (client *VirtualMachinesClient) Restart(ctx context.Context, resourceGroupN
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.RestartHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // RestartCreateRequest creates the Restart request.
@@ -1466,15 +1466,15 @@ func (client *VirtualMachinesClient) RestartCreateRequest(ctx context.Context, r
 
 // RestartHandleError handles the Restart error response.
 func (client *VirtualMachinesClient) RestartHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // RetrieveBootDiagnosticsData - The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
 func (client *VirtualMachinesClient) RetrieveBootDiagnosticsData(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesRetrieveBootDiagnosticsDataOptions) (*RetrieveBootDiagnosticsDataResultResponse, error) {
@@ -1525,7 +1525,7 @@ func (client *VirtualMachinesClient) RetrieveBootDiagnosticsDataHandleResponse(r
 
 // RetrieveBootDiagnosticsDataHandleError handles the RetrieveBootDiagnosticsData error response.
 func (client *VirtualMachinesClient) RetrieveBootDiagnosticsDataHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -1545,7 +1545,7 @@ func (client *VirtualMachinesClient) BeginRunCommand(ctx context.Context, resour
 		return nil, err
 	}
 	poller := &runCommandResultPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -1562,7 +1562,7 @@ func (client *VirtualMachinesClient) ResumeRunCommand(token string) (RunCommandR
 	}
 	return &runCommandResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -1579,7 +1579,7 @@ func (client *VirtualMachinesClient) RunCommand(ctx context.Context, resourceGro
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.RunCommandHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // RunCommandCreateRequest creates the RunCommand request.
@@ -1608,15 +1608,15 @@ func (client *VirtualMachinesClient) RunCommandHandleResponse(resp *azcore.Respo
 
 // RunCommandHandleError handles the RunCommand error response.
 func (client *VirtualMachinesClient) RunCommandHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // SimulateEviction - The operation to simulate the eviction of spot virtual machine.
 func (client *VirtualMachinesClient) SimulateEviction(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesSimulateEvictionOptions) (*http.Response, error) {
@@ -1653,15 +1653,15 @@ func (client *VirtualMachinesClient) SimulateEvictionCreateRequest(ctx context.C
 
 // SimulateEvictionHandleError handles the SimulateEviction error response.
 func (client *VirtualMachinesClient) SimulateEvictionHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGroupName string, vmName string, options *VirtualMachinesStartOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Start(ctx, resourceGroupName, vmName, options)
@@ -1676,7 +1676,7 @@ func (client *VirtualMachinesClient) BeginStart(ctx context.Context, resourceGro
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -1693,7 +1693,7 @@ func (client *VirtualMachinesClient) ResumeStart(token string) (HTTPPoller, erro
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -1710,7 +1710,7 @@ func (client *VirtualMachinesClient) Start(ctx context.Context, resourceGroupNam
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.StartHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // StartCreateRequest creates the Start request.
@@ -1732,15 +1732,15 @@ func (client *VirtualMachinesClient) StartCreateRequest(ctx context.Context, res
 
 // StartHandleError handles the Start error response.
 func (client *VirtualMachinesClient) StartHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *VirtualMachinesClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, parameters VirtualMachineUpdate, options *VirtualMachinesUpdateOptions) (*VirtualMachinePollerResponse, error) {
 	resp, err := client.Update(ctx, resourceGroupName, vmName, parameters, options)
@@ -1755,7 +1755,7 @@ func (client *VirtualMachinesClient) BeginUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	poller := &virtualMachinePoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -1772,7 +1772,7 @@ func (client *VirtualMachinesClient) ResumeUpdate(token string) (VirtualMachineP
 	}
 	return &virtualMachinePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -1789,7 +1789,7 @@ func (client *VirtualMachinesClient) Update(ctx context.Context, resourceGroupNa
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.UpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // UpdateCreateRequest creates the Update request.
@@ -1818,13 +1818,12 @@ func (client *VirtualMachinesClient) UpdateHandleResponse(resp *azcore.Response)
 
 // UpdateHandleError handles the Update error response.
 func (client *VirtualMachinesClient) UpdateHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
-
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}

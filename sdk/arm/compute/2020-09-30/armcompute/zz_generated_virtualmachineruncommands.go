@@ -22,23 +22,23 @@ import (
 
 // VirtualMachineRunCommandsOperations contains the methods for the VirtualMachineRunCommands group.
 type VirtualMachineRunCommandsOperations interface {
-// BeginCreateOrUpdate - The operation to create or update the run command.
+	// BeginCreateOrUpdate - The operation to create or update the run command.
 	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineRunCommand, options *VirtualMachineRunCommandsCreateOrUpdateOptions) (*VirtualMachineRunCommandPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (VirtualMachineRunCommandPoller, error)
-// BeginDelete - The operation to delete the run command.
+	// BeginDelete - The operation to delete the run command.
 	BeginDelete(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *VirtualMachineRunCommandsDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
-// Get - Gets specific run command for a subscription in a location.
+	// Get - Gets specific run command for a subscription in a location.
 	Get(ctx context.Context, location string, commandId string, options *VirtualMachineRunCommandsGetOptions) (*RunCommandDocumentResponse, error)
-// GetByVirtualMachine - The operation to get the run command.
+	// GetByVirtualMachine - The operation to get the run command.
 	GetByVirtualMachine(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *VirtualMachineRunCommandsGetByVirtualMachineOptions) (*VirtualMachineRunCommandResponse, error)
-// List - Lists all available run commands for a subscription in a location.
-	List(location string, options *VirtualMachineRunCommandsListOptions) (RunCommandListResultPager)
-// ListByVirtualMachine - The operation to get all run commands of a Virtual Machine.
-	ListByVirtualMachine(resourceGroupName string, vmName string, options *VirtualMachineRunCommandsListByVirtualMachineOptions) (VirtualMachineRunCommandsListResultPager)
-// BeginUpdate - The operation to update the run command.
+	// List - Lists all available run commands for a subscription in a location.
+	List(location string, options *VirtualMachineRunCommandsListOptions) RunCommandListResultPager
+	// ListByVirtualMachine - The operation to get all run commands of a Virtual Machine.
+	ListByVirtualMachine(resourceGroupName string, vmName string, options *VirtualMachineRunCommandsListByVirtualMachineOptions) VirtualMachineRunCommandsListResultPager
+	// BeginUpdate - The operation to update the run command.
 	BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineRunCommandsUpdateOptions) (*VirtualMachineRunCommandPollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (VirtualMachineRunCommandPoller, error)
@@ -47,7 +47,7 @@ type VirtualMachineRunCommandsOperations interface {
 // VirtualMachineRunCommandsClient implements the VirtualMachineRunCommandsOperations interface.
 // Don't use this type directly, use NewVirtualMachineRunCommandsClient() instead.
 type VirtualMachineRunCommandsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -74,7 +74,7 @@ func (client *VirtualMachineRunCommandsClient) BeginCreateOrUpdate(ctx context.C
 		return nil, err
 	}
 	poller := &virtualMachineRunCommandPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -91,7 +91,7 @@ func (client *VirtualMachineRunCommandsClient) ResumeCreateOrUpdate(token string
 	}
 	return &virtualMachineRunCommandPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -108,7 +108,7 @@ func (client *VirtualMachineRunCommandsClient) CreateOrUpdate(ctx context.Contex
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.CreateOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -138,7 +138,7 @@ func (client *VirtualMachineRunCommandsClient) CreateOrUpdateHandleResponse(resp
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *VirtualMachineRunCommandsClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -158,7 +158,7 @@ func (client *VirtualMachineRunCommandsClient) BeginDelete(ctx context.Context, 
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -175,7 +175,7 @@ func (client *VirtualMachineRunCommandsClient) ResumeDelete(token string) (HTTPP
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -192,7 +192,7 @@ func (client *VirtualMachineRunCommandsClient) Delete(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.DeleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // DeleteCreateRequest creates the Delete request.
@@ -216,7 +216,7 @@ func (client *VirtualMachineRunCommandsClient) DeleteCreateRequest(ctx context.C
 
 // DeleteHandleError handles the Delete error response.
 func (client *VirtualMachineRunCommandsClient) DeleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -269,15 +269,15 @@ func (client *VirtualMachineRunCommandsClient) GetHandleResponse(resp *azcore.Re
 
 // GetHandleError handles the Get error response.
 func (client *VirtualMachineRunCommandsClient) GetHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // GetByVirtualMachine - The operation to get the run command.
 func (client *VirtualMachineRunCommandsClient) GetByVirtualMachine(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *VirtualMachineRunCommandsGetByVirtualMachineOptions) (*VirtualMachineRunCommandResponse, error) {
@@ -329,7 +329,7 @@ func (client *VirtualMachineRunCommandsClient) GetByVirtualMachineHandleResponse
 
 // GetByVirtualMachineHandleError handles the GetByVirtualMachine error response.
 func (client *VirtualMachineRunCommandsClient) GetByVirtualMachineHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -337,7 +337,7 @@ var err CloudError
 }
 
 // List - Lists all available run commands for a subscription in a location.
-func (client *VirtualMachineRunCommandsClient) List(location string, options *VirtualMachineRunCommandsListOptions) (RunCommandListResultPager) {
+func (client *VirtualMachineRunCommandsClient) List(location string, options *VirtualMachineRunCommandsListOptions) RunCommandListResultPager {
 	return &runCommandListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -377,18 +377,18 @@ func (client *VirtualMachineRunCommandsClient) ListHandleResponse(resp *azcore.R
 
 // ListHandleError handles the List error response.
 func (client *VirtualMachineRunCommandsClient) ListHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // ListByVirtualMachine - The operation to get all run commands of a Virtual Machine.
-func (client *VirtualMachineRunCommandsClient) ListByVirtualMachine(resourceGroupName string, vmName string, options *VirtualMachineRunCommandsListByVirtualMachineOptions) (VirtualMachineRunCommandsListResultPager) {
+func (client *VirtualMachineRunCommandsClient) ListByVirtualMachine(resourceGroupName string, vmName string, options *VirtualMachineRunCommandsListByVirtualMachineOptions) VirtualMachineRunCommandsListResultPager {
 	return &virtualMachineRunCommandsListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -432,7 +432,7 @@ func (client *VirtualMachineRunCommandsClient) ListByVirtualMachineHandleRespons
 
 // ListByVirtualMachineHandleError handles the ListByVirtualMachine error response.
 func (client *VirtualMachineRunCommandsClient) ListByVirtualMachineHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -452,7 +452,7 @@ func (client *VirtualMachineRunCommandsClient) BeginUpdate(ctx context.Context, 
 		return nil, err
 	}
 	poller := &virtualMachineRunCommandPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -469,7 +469,7 @@ func (client *VirtualMachineRunCommandsClient) ResumeUpdate(token string) (Virtu
 	}
 	return &virtualMachineRunCommandPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -486,7 +486,7 @@ func (client *VirtualMachineRunCommandsClient) Update(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK) {
 		return nil, client.UpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // UpdateCreateRequest creates the Update request.
@@ -516,10 +516,9 @@ func (client *VirtualMachineRunCommandsClient) UpdateHandleResponse(resp *azcore
 
 // UpdateHandleError handles the Update error response.
 func (client *VirtualMachineRunCommandsClient) UpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

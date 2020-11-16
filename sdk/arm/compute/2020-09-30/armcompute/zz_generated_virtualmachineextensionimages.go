@@ -22,18 +22,18 @@ import (
 
 // VirtualMachineExtensionImagesOperations contains the methods for the VirtualMachineExtensionImages group.
 type VirtualMachineExtensionImagesOperations interface {
-// Get - Gets a virtual machine extension image.
+	// Get - Gets a virtual machine extension image.
 	Get(ctx context.Context, location string, publisherName string, typeParameter string, version string, options *VirtualMachineExtensionImagesGetOptions) (*VirtualMachineExtensionImageResponse, error)
-// ListTypes - Gets a list of virtual machine extension image types.
+	// ListTypes - Gets a list of virtual machine extension image types.
 	ListTypes(ctx context.Context, location string, publisherName string, options *VirtualMachineExtensionImagesListTypesOptions) (*VirtualMachineExtensionImageArrayResponse, error)
-// ListVersions - Gets a list of virtual machine extension image versions.
+	// ListVersions - Gets a list of virtual machine extension image versions.
 	ListVersions(ctx context.Context, location string, publisherName string, typeParameter string, options *VirtualMachineExtensionImagesListVersionsOptions) (*VirtualMachineExtensionImageArrayResponse, error)
 }
 
 // VirtualMachineExtensionImagesClient implements the VirtualMachineExtensionImagesOperations interface.
 // Don't use this type directly, use NewVirtualMachineExtensionImagesClient() instead.
 type VirtualMachineExtensionImagesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -95,15 +95,15 @@ func (client *VirtualMachineExtensionImagesClient) GetHandleResponse(resp *azcor
 
 // GetHandleError handles the Get error response.
 func (client *VirtualMachineExtensionImagesClient) GetHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // ListTypes - Gets a list of virtual machine extension image types.
 func (client *VirtualMachineExtensionImagesClient) ListTypes(ctx context.Context, location string, publisherName string, options *VirtualMachineExtensionImagesListTypesOptions) (*VirtualMachineExtensionImageArrayResponse, error) {
@@ -151,15 +151,15 @@ func (client *VirtualMachineExtensionImagesClient) ListTypesHandleResponse(resp 
 
 // ListTypesHandleError handles the ListTypes error response.
 func (client *VirtualMachineExtensionImagesClient) ListTypesHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // ListVersions - Gets a list of virtual machine extension image versions.
 func (client *VirtualMachineExtensionImagesClient) ListVersions(ctx context.Context, location string, publisherName string, typeParameter string, options *VirtualMachineExtensionImagesListVersionsOptions) (*VirtualMachineExtensionImageArrayResponse, error) {
@@ -217,13 +217,12 @@ func (client *VirtualMachineExtensionImagesClient) ListVersionsHandleResponse(re
 
 // ListVersionsHandleError handles the ListVersions error response.
 func (client *VirtualMachineExtensionImagesClient) ListVersionsHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
-
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}

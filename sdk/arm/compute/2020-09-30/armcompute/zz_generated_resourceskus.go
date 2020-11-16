@@ -21,14 +21,14 @@ import (
 
 // ResourceSKUsOperations contains the methods for the ResourceSKUs group.
 type ResourceSKUsOperations interface {
-// List - Gets the list of Microsoft.Compute SKUs available for your Subscription.
-	List(options *ResourceSKUsListOptions) (ResourceSKUsResultPager)
+	// List - Gets the list of Microsoft.Compute SKUs available for your Subscription.
+	List(options *ResourceSKUsListOptions) ResourceSKUsResultPager
 }
 
 // ResourceSKUsClient implements the ResourceSKUsOperations interface.
 // Don't use this type directly, use NewResourceSKUsClient() instead.
 type ResourceSKUsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -43,7 +43,7 @@ func (client *ResourceSKUsClient) Pipeline() azcore.Pipeline {
 }
 
 // List - Gets the list of Microsoft.Compute SKUs available for your Subscription.
-func (client *ResourceSKUsClient) List(options *ResourceSKUsListOptions) (ResourceSKUsResultPager) {
+func (client *ResourceSKUsClient) List(options *ResourceSKUsListOptions) ResourceSKUsResultPager {
 	return &resourceSkUsResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -85,13 +85,12 @@ func (client *ResourceSKUsClient) ListHandleResponse(resp *azcore.Response) (*Re
 
 // ListHandleError handles the List error response.
 func (client *ResourceSKUsClient) ListHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
-
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}

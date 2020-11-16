@@ -22,23 +22,23 @@ import (
 
 // DiskAccessesOperations contains the methods for the DiskAccesses group.
 type DiskAccessesOperations interface {
-// BeginCreateOrUpdate - Creates or updates a disk access resource
+	// BeginCreateOrUpdate - Creates or updates a disk access resource
 	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccess, options *DiskAccessesCreateOrUpdateOptions) (*DiskAccessPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (DiskAccessPoller, error)
-// BeginDelete - Deletes a disk access resource.
+	// BeginDelete - Deletes a disk access resource.
 	BeginDelete(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
-// Get - Gets information about a disk access resource.
+	// Get - Gets information about a disk access resource.
 	Get(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesGetOptions) (*DiskAccessResponse, error)
-// GetPrivateLinkResources - Gets the private link resources possible under disk access resource
+	// GetPrivateLinkResources - Gets the private link resources possible under disk access resource
 	GetPrivateLinkResources(ctx context.Context, resourceGroupName string, diskAccessName string, options *DiskAccessesGetPrivateLinkResourcesOptions) (*PrivateLinkResourceListResultResponse, error)
-// List - Lists all the disk access resources under a subscription.
-	List(options *DiskAccessesListOptions) (DiskAccessListPager)
-// ListByResourceGroup - Lists all the disk access resources under a resource group.
-	ListByResourceGroup(resourceGroupName string, options *DiskAccessesListByResourceGroupOptions) (DiskAccessListPager)
-// BeginUpdate - Updates (patches) a disk access resource.
+	// List - Lists all the disk access resources under a subscription.
+	List(options *DiskAccessesListOptions) DiskAccessListPager
+	// ListByResourceGroup - Lists all the disk access resources under a resource group.
+	ListByResourceGroup(resourceGroupName string, options *DiskAccessesListByResourceGroupOptions) DiskAccessListPager
+	// BeginUpdate - Updates (patches) a disk access resource.
 	BeginUpdate(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess DiskAccessUpdate, options *DiskAccessesUpdateOptions) (*DiskAccessPollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (DiskAccessPoller, error)
@@ -47,7 +47,7 @@ type DiskAccessesOperations interface {
 // DiskAccessesClient implements the DiskAccessesOperations interface.
 // Don't use this type directly, use NewDiskAccessesClient() instead.
 type DiskAccessesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -74,7 +74,7 @@ func (client *DiskAccessesClient) BeginCreateOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	poller := &diskAccessPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -91,7 +91,7 @@ func (client *DiskAccessesClient) ResumeCreateOrUpdate(token string) (DiskAccess
 	}
 	return &diskAccessPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -108,7 +108,7 @@ func (client *DiskAccessesClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.CreateOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +137,7 @@ func (client *DiskAccessesClient) CreateOrUpdateHandleResponse(resp *azcore.Resp
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *DiskAccessesClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -157,7 +157,7 @@ func (client *DiskAccessesClient) BeginDelete(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -174,7 +174,7 @@ func (client *DiskAccessesClient) ResumeDelete(token string) (HTTPPoller, error)
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -191,7 +191,7 @@ func (client *DiskAccessesClient) Delete(ctx context.Context, resourceGroupName 
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.DeleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // DeleteCreateRequest creates the Delete request.
@@ -214,7 +214,7 @@ func (client *DiskAccessesClient) DeleteCreateRequest(ctx context.Context, resou
 
 // DeleteHandleError handles the Delete error response.
 func (client *DiskAccessesClient) DeleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -267,7 +267,7 @@ func (client *DiskAccessesClient) GetHandleResponse(resp *azcore.Response) (*Dis
 
 // GetHandleError handles the Get error response.
 func (client *DiskAccessesClient) GetHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -320,18 +320,18 @@ func (client *DiskAccessesClient) GetPrivateLinkResourcesHandleResponse(resp *az
 
 // GetPrivateLinkResourcesHandleError handles the GetPrivateLinkResources error response.
 func (client *DiskAccessesClient) GetPrivateLinkResourcesHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // List - Lists all the disk access resources under a subscription.
-func (client *DiskAccessesClient) List(options *DiskAccessesListOptions) (DiskAccessListPager) {
+func (client *DiskAccessesClient) List(options *DiskAccessesListOptions) DiskAccessListPager {
 	return &diskAccessListPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -370,7 +370,7 @@ func (client *DiskAccessesClient) ListHandleResponse(resp *azcore.Response) (*Di
 
 // ListHandleError handles the List error response.
 func (client *DiskAccessesClient) ListHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -378,7 +378,7 @@ var err CloudError
 }
 
 // ListByResourceGroup - Lists all the disk access resources under a resource group.
-func (client *DiskAccessesClient) ListByResourceGroup(resourceGroupName string, options *DiskAccessesListByResourceGroupOptions) (DiskAccessListPager) {
+func (client *DiskAccessesClient) ListByResourceGroup(resourceGroupName string, options *DiskAccessesListByResourceGroupOptions) DiskAccessListPager {
 	return &diskAccessListPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -418,7 +418,7 @@ func (client *DiskAccessesClient) ListByResourceGroupHandleResponse(resp *azcore
 
 // ListByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *DiskAccessesClient) ListByResourceGroupHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -438,7 +438,7 @@ func (client *DiskAccessesClient) BeginUpdate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	poller := &diskAccessPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -455,7 +455,7 @@ func (client *DiskAccessesClient) ResumeUpdate(token string) (DiskAccessPoller, 
 	}
 	return &diskAccessPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -472,7 +472,7 @@ func (client *DiskAccessesClient) Update(ctx context.Context, resourceGroupName 
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.UpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // UpdateCreateRequest creates the Update request.
@@ -501,10 +501,9 @@ func (client *DiskAccessesClient) UpdateHandleResponse(resp *azcore.Response) (*
 
 // UpdateHandleError handles the Update error response.
 func (client *DiskAccessesClient) UpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

@@ -7,8 +7,6 @@
 
 package armcompute
 
-
-
 import (
 	"regexp"
 	"strings"

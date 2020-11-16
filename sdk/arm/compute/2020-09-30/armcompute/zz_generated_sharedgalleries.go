@@ -18,16 +18,16 @@ import (
 
 // SharedGalleriesOperations contains the methods for the SharedGalleries group.
 type SharedGalleriesOperations interface {
-// Get - Get a shared gallery by subscription id or tenant id.
+	// Get - Get a shared gallery by subscription id or tenant id.
 	Get(ctx context.Context, location string, galleryUniqueName string, options *SharedGalleriesGetOptions) (*PirSharedGalleryResourceResponse, error)
-// List - List shared galleries by subscription id or tenant id.
-	List(location string, options *SharedGalleriesListOptions) (SharedGalleryListPager)
+	// List - List shared galleries by subscription id or tenant id.
+	List(location string, options *SharedGalleriesListOptions) SharedGalleryListPager
 }
 
 // SharedGalleriesClient implements the SharedGalleriesOperations interface.
 // Don't use this type directly, use NewSharedGalleriesClient() instead.
 type SharedGalleriesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -87,7 +87,7 @@ func (client *SharedGalleriesClient) GetHandleResponse(resp *azcore.Response) (*
 
 // GetHandleError handles the Get error response.
 func (client *SharedGalleriesClient) GetHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -95,7 +95,7 @@ var err CloudError
 }
 
 // List - List shared galleries by subscription id or tenant id.
-func (client *SharedGalleriesClient) List(location string, options *SharedGalleriesListOptions) (SharedGalleryListPager) {
+func (client *SharedGalleriesClient) List(location string, options *SharedGalleriesListOptions) SharedGalleryListPager {
 	return &sharedGalleryListPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -138,10 +138,9 @@ func (client *SharedGalleriesClient) ListHandleResponse(resp *azcore.Response) (
 
 // ListHandleError handles the List error response.
 func (client *SharedGalleriesClient) ListHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

@@ -21,14 +21,14 @@ import (
 
 // VirtualMachineSizesOperations contains the methods for the VirtualMachineSizes group.
 type VirtualMachineSizesOperations interface {
-// List - This API is deprecated. Use Resources Skus [https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list]
+	// List - This API is deprecated. Use Resources Skus [https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list]
 	List(ctx context.Context, location string, options *VirtualMachineSizesListOptions) (*VirtualMachineSizeListResultResponse, error)
 }
 
 // VirtualMachineSizesClient implements the VirtualMachineSizesOperations interface.
 // Don't use this type directly, use NewVirtualMachineSizesClient() instead.
 type VirtualMachineSizesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -87,13 +87,12 @@ func (client *VirtualMachineSizesClient) ListHandleResponse(resp *azcore.Respons
 
 // ListHandleError handles the List error response.
 func (client *VirtualMachineSizesClient) ListHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
-
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}

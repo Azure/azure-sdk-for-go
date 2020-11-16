@@ -19,7 +19,7 @@ import (
 
 // Operations contains the methods for the Operations group.
 type Operations interface {
-// List - Gets a list of compute operations.
+	// List - Gets a list of compute operations.
 	List(ctx context.Context, options *OperationsListOptions) (*ComputeOperationListResultResponse, error)
 }
 
@@ -82,13 +82,12 @@ func (client *OperationsClient) ListHandleResponse(resp *azcore.Response) (*Comp
 
 // ListHandleError handles the List error response.
 func (client *OperationsClient) ListHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
-
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}

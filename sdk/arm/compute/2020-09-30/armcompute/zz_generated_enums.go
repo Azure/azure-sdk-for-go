@@ -10,13 +10,13 @@ package armcompute
 type AccessLevel string
 
 const (
-	AccessLevelNone AccessLevel = "None"
-	AccessLevelRead AccessLevel = "Read"
+	AccessLevelNone  AccessLevel = "None"
+	AccessLevelRead  AccessLevel = "Read"
 	AccessLevelWrite AccessLevel = "Write"
 )
 
 func PossibleAccessLevelValues() []AccessLevel {
-	return []AccessLevel{	
+	return []AccessLevel{
 		AccessLevelNone,
 		AccessLevelRead,
 		AccessLevelWrite,
@@ -31,14 +31,14 @@ func (c AccessLevel) ToPtr() *AccessLevel {
 type AggregatedReplicationState string
 
 const (
-	AggregatedReplicationStateCompleted AggregatedReplicationState = "Completed"
-	AggregatedReplicationStateFailed AggregatedReplicationState = "Failed"
+	AggregatedReplicationStateCompleted  AggregatedReplicationState = "Completed"
+	AggregatedReplicationStateFailed     AggregatedReplicationState = "Failed"
 	AggregatedReplicationStateInProgress AggregatedReplicationState = "InProgress"
-	AggregatedReplicationStateUnknown AggregatedReplicationState = "Unknown"
+	AggregatedReplicationStateUnknown    AggregatedReplicationState = "Unknown"
 )
 
 func PossibleAggregatedReplicationStateValues() []AggregatedReplicationState {
-	return []AggregatedReplicationState{	
+	return []AggregatedReplicationState{
 		AggregatedReplicationStateCompleted,
 		AggregatedReplicationStateFailed,
 		AggregatedReplicationStateInProgress,
@@ -60,7 +60,7 @@ const (
 )
 
 func PossibleAvailabilitySetSKUTypesValues() []AvailabilitySetSKUTypes {
-	return []AvailabilitySetSKUTypes{	
+	return []AvailabilitySetSKUTypes{
 		AvailabilitySetSKUTypesAligned,
 		AvailabilitySetSKUTypesClassic,
 	}
@@ -79,13 +79,13 @@ func (c AvailabilitySetSKUTypes) ToPtr() *AvailabilitySetSKUTypes {
 type CachingTypes string
 
 const (
-	CachingTypesNone CachingTypes = "None"
-	CachingTypesReadOnly CachingTypes = "ReadOnly"
+	CachingTypesNone      CachingTypes = "None"
+	CachingTypesReadOnly  CachingTypes = "ReadOnly"
 	CachingTypesReadWrite CachingTypes = "ReadWrite"
 )
 
 func PossibleCachingTypesValues() []CachingTypes {
-	return []CachingTypes{	
+	return []CachingTypes{
 		CachingTypesNone,
 		CachingTypesReadOnly,
 		CachingTypesReadWrite,
@@ -100,14 +100,14 @@ func (c CachingTypes) ToPtr() *CachingTypes {
 type ContainerServiceOrchestratorTypes string
 
 const (
-	ContainerServiceOrchestratorTypesSwarm ContainerServiceOrchestratorTypes = "Swarm"
-	ContainerServiceOrchestratorTypesDcos ContainerServiceOrchestratorTypes = "DCOS"
-	ContainerServiceOrchestratorTypesCustom ContainerServiceOrchestratorTypes = "Custom"
+	ContainerServiceOrchestratorTypesSwarm      ContainerServiceOrchestratorTypes = "Swarm"
+	ContainerServiceOrchestratorTypesDcos       ContainerServiceOrchestratorTypes = "DCOS"
+	ContainerServiceOrchestratorTypesCustom     ContainerServiceOrchestratorTypes = "Custom"
 	ContainerServiceOrchestratorTypesKubernetes ContainerServiceOrchestratorTypes = "Kubernetes"
 )
 
 func PossibleContainerServiceOrchestratorTypesValues() []ContainerServiceOrchestratorTypes {
-	return []ContainerServiceOrchestratorTypes{	
+	return []ContainerServiceOrchestratorTypes{
 		ContainerServiceOrchestratorTypesSwarm,
 		ContainerServiceOrchestratorTypesDcos,
 		ContainerServiceOrchestratorTypesCustom,
@@ -123,57 +123,57 @@ func (c ContainerServiceOrchestratorTypes) ToPtr() *ContainerServiceOrchestrator
 type ContainerServiceVMSizeTypes string
 
 const (
-	ContainerServiceVMSizeTypesStandardA0 ContainerServiceVMSizeTypes = "Standard_A0"
-	ContainerServiceVMSizeTypesStandardA1 ContainerServiceVMSizeTypes = "Standard_A1"
-	ContainerServiceVMSizeTypesStandardA10 ContainerServiceVMSizeTypes = "Standard_A10"
-	ContainerServiceVMSizeTypesStandardA11 ContainerServiceVMSizeTypes = "Standard_A11"
-	ContainerServiceVMSizeTypesStandardA2 ContainerServiceVMSizeTypes = "Standard_A2"
-	ContainerServiceVMSizeTypesStandardA3 ContainerServiceVMSizeTypes = "Standard_A3"
-	ContainerServiceVMSizeTypesStandardA4 ContainerServiceVMSizeTypes = "Standard_A4"
-	ContainerServiceVMSizeTypesStandardA5 ContainerServiceVMSizeTypes = "Standard_A5"
-	ContainerServiceVMSizeTypesStandardA6 ContainerServiceVMSizeTypes = "Standard_A6"
-	ContainerServiceVMSizeTypesStandardA7 ContainerServiceVMSizeTypes = "Standard_A7"
-	ContainerServiceVMSizeTypesStandardA8 ContainerServiceVMSizeTypes = "Standard_A8"
-	ContainerServiceVMSizeTypesStandardA9 ContainerServiceVMSizeTypes = "Standard_A9"
-	ContainerServiceVMSizeTypesStandardD1 ContainerServiceVMSizeTypes = "Standard_D1"
-	ContainerServiceVMSizeTypesStandardD11 ContainerServiceVMSizeTypes = "Standard_D11"
+	ContainerServiceVMSizeTypesStandardA0    ContainerServiceVMSizeTypes = "Standard_A0"
+	ContainerServiceVMSizeTypesStandardA1    ContainerServiceVMSizeTypes = "Standard_A1"
+	ContainerServiceVMSizeTypesStandardA10   ContainerServiceVMSizeTypes = "Standard_A10"
+	ContainerServiceVMSizeTypesStandardA11   ContainerServiceVMSizeTypes = "Standard_A11"
+	ContainerServiceVMSizeTypesStandardA2    ContainerServiceVMSizeTypes = "Standard_A2"
+	ContainerServiceVMSizeTypesStandardA3    ContainerServiceVMSizeTypes = "Standard_A3"
+	ContainerServiceVMSizeTypesStandardA4    ContainerServiceVMSizeTypes = "Standard_A4"
+	ContainerServiceVMSizeTypesStandardA5    ContainerServiceVMSizeTypes = "Standard_A5"
+	ContainerServiceVMSizeTypesStandardA6    ContainerServiceVMSizeTypes = "Standard_A6"
+	ContainerServiceVMSizeTypesStandardA7    ContainerServiceVMSizeTypes = "Standard_A7"
+	ContainerServiceVMSizeTypesStandardA8    ContainerServiceVMSizeTypes = "Standard_A8"
+	ContainerServiceVMSizeTypesStandardA9    ContainerServiceVMSizeTypes = "Standard_A9"
+	ContainerServiceVMSizeTypesStandardD1    ContainerServiceVMSizeTypes = "Standard_D1"
+	ContainerServiceVMSizeTypesStandardD11   ContainerServiceVMSizeTypes = "Standard_D11"
 	ContainerServiceVMSizeTypesStandardD11V2 ContainerServiceVMSizeTypes = "Standard_D11_v2"
-	ContainerServiceVMSizeTypesStandardD12 ContainerServiceVMSizeTypes = "Standard_D12"
+	ContainerServiceVMSizeTypesStandardD12   ContainerServiceVMSizeTypes = "Standard_D12"
 	ContainerServiceVMSizeTypesStandardD12V2 ContainerServiceVMSizeTypes = "Standard_D12_v2"
-	ContainerServiceVMSizeTypesStandardD13 ContainerServiceVMSizeTypes = "Standard_D13"
+	ContainerServiceVMSizeTypesStandardD13   ContainerServiceVMSizeTypes = "Standard_D13"
 	ContainerServiceVMSizeTypesStandardD13V2 ContainerServiceVMSizeTypes = "Standard_D13_v2"
-	ContainerServiceVMSizeTypesStandardD14 ContainerServiceVMSizeTypes = "Standard_D14"
+	ContainerServiceVMSizeTypesStandardD14   ContainerServiceVMSizeTypes = "Standard_D14"
 	ContainerServiceVMSizeTypesStandardD14V2 ContainerServiceVMSizeTypes = "Standard_D14_v2"
-	ContainerServiceVMSizeTypesStandardD1V2 ContainerServiceVMSizeTypes = "Standard_D1_v2"
-	ContainerServiceVMSizeTypesStandardD2 ContainerServiceVMSizeTypes = "Standard_D2"
-	ContainerServiceVMSizeTypesStandardD2V2 ContainerServiceVMSizeTypes = "Standard_D2_v2"
-	ContainerServiceVMSizeTypesStandardD3 ContainerServiceVMSizeTypes = "Standard_D3"
-	ContainerServiceVMSizeTypesStandardD3V2 ContainerServiceVMSizeTypes = "Standard_D3_v2"
-	ContainerServiceVMSizeTypesStandardD4 ContainerServiceVMSizeTypes = "Standard_D4"
-	ContainerServiceVMSizeTypesStandardD4V2 ContainerServiceVMSizeTypes = "Standard_D4_v2"
-	ContainerServiceVMSizeTypesStandardD5V2 ContainerServiceVMSizeTypes = "Standard_D5_v2"
-	ContainerServiceVMSizeTypesStandardDs1 ContainerServiceVMSizeTypes = "Standard_DS1"
-	ContainerServiceVMSizeTypesStandardDs11 ContainerServiceVMSizeTypes = "Standard_DS11"
-	ContainerServiceVMSizeTypesStandardDs12 ContainerServiceVMSizeTypes = "Standard_DS12"
-	ContainerServiceVMSizeTypesStandardDs13 ContainerServiceVMSizeTypes = "Standard_DS13"
-	ContainerServiceVMSizeTypesStandardDs14 ContainerServiceVMSizeTypes = "Standard_DS14"
-	ContainerServiceVMSizeTypesStandardDs2 ContainerServiceVMSizeTypes = "Standard_DS2"
-	ContainerServiceVMSizeTypesStandardDs3 ContainerServiceVMSizeTypes = "Standard_DS3"
-	ContainerServiceVMSizeTypesStandardDs4 ContainerServiceVMSizeTypes = "Standard_DS4"
-	ContainerServiceVMSizeTypesStandardG1 ContainerServiceVMSizeTypes = "Standard_G1"
-	ContainerServiceVMSizeTypesStandardG2 ContainerServiceVMSizeTypes = "Standard_G2"
-	ContainerServiceVMSizeTypesStandardG3 ContainerServiceVMSizeTypes = "Standard_G3"
-	ContainerServiceVMSizeTypesStandardG4 ContainerServiceVMSizeTypes = "Standard_G4"
-	ContainerServiceVMSizeTypesStandardG5 ContainerServiceVMSizeTypes = "Standard_G5"
-	ContainerServiceVMSizeTypesStandardGs1 ContainerServiceVMSizeTypes = "Standard_GS1"
-	ContainerServiceVMSizeTypesStandardGs2 ContainerServiceVMSizeTypes = "Standard_GS2"
-	ContainerServiceVMSizeTypesStandardGs3 ContainerServiceVMSizeTypes = "Standard_GS3"
-	ContainerServiceVMSizeTypesStandardGs4 ContainerServiceVMSizeTypes = "Standard_GS4"
-	ContainerServiceVMSizeTypesStandardGs5 ContainerServiceVMSizeTypes = "Standard_GS5"
+	ContainerServiceVMSizeTypesStandardD1V2  ContainerServiceVMSizeTypes = "Standard_D1_v2"
+	ContainerServiceVMSizeTypesStandardD2    ContainerServiceVMSizeTypes = "Standard_D2"
+	ContainerServiceVMSizeTypesStandardD2V2  ContainerServiceVMSizeTypes = "Standard_D2_v2"
+	ContainerServiceVMSizeTypesStandardD3    ContainerServiceVMSizeTypes = "Standard_D3"
+	ContainerServiceVMSizeTypesStandardD3V2  ContainerServiceVMSizeTypes = "Standard_D3_v2"
+	ContainerServiceVMSizeTypesStandardD4    ContainerServiceVMSizeTypes = "Standard_D4"
+	ContainerServiceVMSizeTypesStandardD4V2  ContainerServiceVMSizeTypes = "Standard_D4_v2"
+	ContainerServiceVMSizeTypesStandardD5V2  ContainerServiceVMSizeTypes = "Standard_D5_v2"
+	ContainerServiceVMSizeTypesStandardDs1   ContainerServiceVMSizeTypes = "Standard_DS1"
+	ContainerServiceVMSizeTypesStandardDs11  ContainerServiceVMSizeTypes = "Standard_DS11"
+	ContainerServiceVMSizeTypesStandardDs12  ContainerServiceVMSizeTypes = "Standard_DS12"
+	ContainerServiceVMSizeTypesStandardDs13  ContainerServiceVMSizeTypes = "Standard_DS13"
+	ContainerServiceVMSizeTypesStandardDs14  ContainerServiceVMSizeTypes = "Standard_DS14"
+	ContainerServiceVMSizeTypesStandardDs2   ContainerServiceVMSizeTypes = "Standard_DS2"
+	ContainerServiceVMSizeTypesStandardDs3   ContainerServiceVMSizeTypes = "Standard_DS3"
+	ContainerServiceVMSizeTypesStandardDs4   ContainerServiceVMSizeTypes = "Standard_DS4"
+	ContainerServiceVMSizeTypesStandardG1    ContainerServiceVMSizeTypes = "Standard_G1"
+	ContainerServiceVMSizeTypesStandardG2    ContainerServiceVMSizeTypes = "Standard_G2"
+	ContainerServiceVMSizeTypesStandardG3    ContainerServiceVMSizeTypes = "Standard_G3"
+	ContainerServiceVMSizeTypesStandardG4    ContainerServiceVMSizeTypes = "Standard_G4"
+	ContainerServiceVMSizeTypesStandardG5    ContainerServiceVMSizeTypes = "Standard_G5"
+	ContainerServiceVMSizeTypesStandardGs1   ContainerServiceVMSizeTypes = "Standard_GS1"
+	ContainerServiceVMSizeTypesStandardGs2   ContainerServiceVMSizeTypes = "Standard_GS2"
+	ContainerServiceVMSizeTypesStandardGs3   ContainerServiceVMSizeTypes = "Standard_GS3"
+	ContainerServiceVMSizeTypesStandardGs4   ContainerServiceVMSizeTypes = "Standard_GS4"
+	ContainerServiceVMSizeTypesStandardGs5   ContainerServiceVMSizeTypes = "Standard_GS5"
 )
 
 func PossibleContainerServiceVMSizeTypesValues() []ContainerServiceVMSizeTypes {
-	return []ContainerServiceVMSizeTypes{	
+	return []ContainerServiceVMSizeTypes{
 		ContainerServiceVMSizeTypesStandardA0,
 		ContainerServiceVMSizeTypesStandardA1,
 		ContainerServiceVMSizeTypesStandardA10,
@@ -237,13 +237,13 @@ func (c ContainerServiceVMSizeTypes) ToPtr() *ContainerServiceVMSizeTypes {
 type DedicatedHostLicenseTypes string
 
 const (
-	DedicatedHostLicenseTypesNone DedicatedHostLicenseTypes = "None"
-	DedicatedHostLicenseTypesWindowsServerHybrid DedicatedHostLicenseTypes = "Windows_Server_Hybrid"
+	DedicatedHostLicenseTypesNone                   DedicatedHostLicenseTypes = "None"
+	DedicatedHostLicenseTypesWindowsServerHybrid    DedicatedHostLicenseTypes = "Windows_Server_Hybrid"
 	DedicatedHostLicenseTypesWindowsServerPerpetual DedicatedHostLicenseTypes = "Windows_Server_Perpetual"
 )
 
 func PossibleDedicatedHostLicenseTypesValues() []DedicatedHostLicenseTypes {
-	return []DedicatedHostLicenseTypes{	
+	return []DedicatedHostLicenseTypes{
 		DedicatedHostLicenseTypesNone,
 		DedicatedHostLicenseTypesWindowsServerHybrid,
 		DedicatedHostLicenseTypesWindowsServerPerpetual,
@@ -262,7 +262,7 @@ const (
 )
 
 func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
-	return []DiffDiskOptions{	
+	return []DiffDiskOptions{
 		DiffDiskOptionsLocal,
 	}
 }
@@ -279,12 +279,12 @@ func (c DiffDiskOptions) ToPtr() *DiffDiskOptions {
 type DiffDiskPlacement string
 
 const (
-	DiffDiskPlacementCacheDisk DiffDiskPlacement = "CacheDisk"
+	DiffDiskPlacementCacheDisk    DiffDiskPlacement = "CacheDisk"
 	DiffDiskPlacementResourceDisk DiffDiskPlacement = "ResourceDisk"
 )
 
 func PossibleDiffDiskPlacementValues() []DiffDiskPlacement {
-	return []DiffDiskPlacement{	
+	return []DiffDiskPlacement{
 		DiffDiskPlacementCacheDisk,
 		DiffDiskPlacementResourceDisk,
 	}
@@ -315,7 +315,7 @@ const (
 )
 
 func PossibleDiskCreateOptionValues() []DiskCreateOption {
-	return []DiskCreateOption{	
+	return []DiskCreateOption{
 		DiskCreateOptionAttach,
 		DiskCreateOptionCopy,
 		DiskCreateOptionEmpty,
@@ -339,13 +339,13 @@ func (c DiskCreateOption) ToPtr() *DiskCreateOption {
 type DiskCreateOptionTypes string
 
 const (
-	DiskCreateOptionTypesAttach DiskCreateOptionTypes = "Attach"
-	DiskCreateOptionTypesEmpty DiskCreateOptionTypes = "Empty"
+	DiskCreateOptionTypesAttach    DiskCreateOptionTypes = "Attach"
+	DiskCreateOptionTypesEmpty     DiskCreateOptionTypes = "Empty"
 	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = "FromImage"
 )
 
 func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
-	return []DiskCreateOptionTypes{	
+	return []DiskCreateOptionTypes{
 		DiskCreateOptionTypesAttach,
 		DiskCreateOptionTypesEmpty,
 		DiskCreateOptionTypesFromImage,
@@ -364,7 +364,7 @@ const (
 )
 
 func PossibleDiskEncryptionSetIDentityTypeValues() []DiskEncryptionSetIDentityType {
-	return []DiskEncryptionSetIDentityType{	
+	return []DiskEncryptionSetIDentityType{
 		DiskEncryptionSetIDentityTypeSystemAssigned,
 	}
 }
@@ -378,15 +378,15 @@ type DiskEncryptionSetType string
 
 const (
 	// DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey - Resource using diskEncryptionSet would be encrypted at rest with Customer managed key that can
-// be changed and revoked by a customer.
+	// be changed and revoked by a customer.
 	DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey DiskEncryptionSetType = "EncryptionAtRestWithCustomerKey"
 	// DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys - Resource using diskEncryptionSet would be encrypted at rest with two layers of encryption.
-// One of the keys is Customer managed and the other key is Platform managed.
+	// One of the keys is Customer managed and the other key is Platform managed.
 	DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys DiskEncryptionSetType = "EncryptionAtRestWithPlatformAndCustomerKeys"
 )
 
 func PossibleDiskEncryptionSetTypeValues() []DiskEncryptionSetType {
-	return []DiskEncryptionSetType{	
+	return []DiskEncryptionSetType{
 		DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey,
 		DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys,
 	}
@@ -415,7 +415,7 @@ const (
 )
 
 func PossibleDiskStateValues() []DiskState {
-	return []DiskState{	
+	return []DiskState{
 		DiskStateActiveSas,
 		DiskStateActiveUpload,
 		DiskStateAttached,
@@ -440,12 +440,12 @@ const (
 	// DiskStorageAccountTypesStandardSsdlrs - Standard SSD locally redundant storage. Best for web servers, lightly used enterprise applications and dev/test.
 	DiskStorageAccountTypesStandardSsdlrs DiskStorageAccountTypes = "StandardSSD_LRS"
 	// DiskStorageAccountTypesUltraSsdlrs - Ultra SSD locally redundant storage. Best for IO-intensive workloads such as SAP HANA, top tier databases (for example,
-// SQL, Oracle), and other transaction-heavy workloads.
+	// SQL, Oracle), and other transaction-heavy workloads.
 	DiskStorageAccountTypesUltraSsdlrs DiskStorageAccountTypes = "UltraSSD_LRS"
 )
 
 func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
-	return []DiskStorageAccountTypes{	
+	return []DiskStorageAccountTypes{
 		DiskStorageAccountTypesPremiumLrs,
 		DiskStorageAccountTypesStandardLrs,
 		DiskStorageAccountTypesStandardSsdlrs,
@@ -464,15 +464,15 @@ const (
 	// EncryptionTypeEncryptionAtRestWithCustomerKey - Disk is encrypted at rest with Customer managed key that can be changed and revoked by a customer.
 	EncryptionTypeEncryptionAtRestWithCustomerKey EncryptionType = "EncryptionAtRestWithCustomerKey"
 	// EncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys - Disk is encrypted at rest with 2 layers of encryption. One of the keys is Customer managed
-// and the other key is Platform managed.
+	// and the other key is Platform managed.
 	EncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys EncryptionType = "EncryptionAtRestWithPlatformAndCustomerKeys"
 	// EncryptionTypeEncryptionAtRestWithPlatformKey - Disk is encrypted at rest with Platform managed key. It is the default encryption type. This is not a
-// valid encryption type for disk encryption sets.
+	// valid encryption type for disk encryption sets.
 	EncryptionTypeEncryptionAtRestWithPlatformKey EncryptionType = "EncryptionAtRestWithPlatformKey"
 )
 
 func PossibleEncryptionTypeValues() []EncryptionType {
-	return []EncryptionType{	
+	return []EncryptionType{
 		EncryptionTypeEncryptionAtRestWithCustomerKey,
 		EncryptionTypeEncryptionAtRestWithPlatformAndCustomerKeys,
 		EncryptionTypeEncryptionAtRestWithPlatformKey,
@@ -487,13 +487,13 @@ func (c EncryptionType) ToPtr() *EncryptionType {
 type Enum47 int32
 
 const (
-	Enum47Five Enum47 = 5
-	Enum47One Enum47 = 1
+	Enum47Five  Enum47 = 5
+	Enum47One   Enum47 = 1
 	Enum47Three Enum47 = 3
 )
 
 func PossibleEnum47Values() []Enum47 {
-	return []Enum47{	
+	return []Enum47{
 		Enum47Five,
 		Enum47One,
 		Enum47Three,
@@ -508,17 +508,17 @@ func (c Enum47) ToPtr() *Enum47 {
 type ExecutionState string
 
 const (
-	ExecutionStateCanceled ExecutionState = "Canceled"
-	ExecutionStateFailed ExecutionState = "Failed"
-	ExecutionStatePending ExecutionState = "Pending"
-	ExecutionStateRunning ExecutionState = "Running"
+	ExecutionStateCanceled  ExecutionState = "Canceled"
+	ExecutionStateFailed    ExecutionState = "Failed"
+	ExecutionStatePending   ExecutionState = "Pending"
+	ExecutionStateRunning   ExecutionState = "Running"
 	ExecutionStateSucceeded ExecutionState = "Succeeded"
-	ExecutionStateTimedOut ExecutionState = "TimedOut"
-	ExecutionStateUnknown ExecutionState = "Unknown"
+	ExecutionStateTimedOut  ExecutionState = "TimedOut"
+	ExecutionStateUnknown   ExecutionState = "Unknown"
 )
 
 func PossibleExecutionStateValues() []ExecutionState {
-	return []ExecutionState{	
+	return []ExecutionState{
 		ExecutionStateCanceled,
 		ExecutionStateFailed,
 		ExecutionStatePending,
@@ -537,16 +537,16 @@ func (c ExecutionState) ToPtr() *ExecutionState {
 type GalleryApplicationVersionPropertiesProvisioningState string
 
 const (
-	GalleryApplicationVersionPropertiesProvisioningStateCreating GalleryApplicationVersionPropertiesProvisioningState = "Creating"
-	GalleryApplicationVersionPropertiesProvisioningStateDeleting GalleryApplicationVersionPropertiesProvisioningState = "Deleting"
-	GalleryApplicationVersionPropertiesProvisioningStateFailed GalleryApplicationVersionPropertiesProvisioningState = "Failed"
+	GalleryApplicationVersionPropertiesProvisioningStateCreating  GalleryApplicationVersionPropertiesProvisioningState = "Creating"
+	GalleryApplicationVersionPropertiesProvisioningStateDeleting  GalleryApplicationVersionPropertiesProvisioningState = "Deleting"
+	GalleryApplicationVersionPropertiesProvisioningStateFailed    GalleryApplicationVersionPropertiesProvisioningState = "Failed"
 	GalleryApplicationVersionPropertiesProvisioningStateMigrating GalleryApplicationVersionPropertiesProvisioningState = "Migrating"
 	GalleryApplicationVersionPropertiesProvisioningStateSucceeded GalleryApplicationVersionPropertiesProvisioningState = "Succeeded"
-	GalleryApplicationVersionPropertiesProvisioningStateUpdating GalleryApplicationVersionPropertiesProvisioningState = "Updating"
+	GalleryApplicationVersionPropertiesProvisioningStateUpdating  GalleryApplicationVersionPropertiesProvisioningState = "Updating"
 )
 
 func PossibleGalleryApplicationVersionPropertiesProvisioningStateValues() []GalleryApplicationVersionPropertiesProvisioningState {
-	return []GalleryApplicationVersionPropertiesProvisioningState{	
+	return []GalleryApplicationVersionPropertiesProvisioningState{
 		GalleryApplicationVersionPropertiesProvisioningStateCreating,
 		GalleryApplicationVersionPropertiesProvisioningStateDeleting,
 		GalleryApplicationVersionPropertiesProvisioningStateFailed,
@@ -564,16 +564,16 @@ func (c GalleryApplicationVersionPropertiesProvisioningState) ToPtr() *GalleryAp
 type GalleryImagePropertiesProvisioningState string
 
 const (
-	GalleryImagePropertiesProvisioningStateCreating GalleryImagePropertiesProvisioningState = "Creating"
-	GalleryImagePropertiesProvisioningStateDeleting GalleryImagePropertiesProvisioningState = "Deleting"
-	GalleryImagePropertiesProvisioningStateFailed GalleryImagePropertiesProvisioningState = "Failed"
+	GalleryImagePropertiesProvisioningStateCreating  GalleryImagePropertiesProvisioningState = "Creating"
+	GalleryImagePropertiesProvisioningStateDeleting  GalleryImagePropertiesProvisioningState = "Deleting"
+	GalleryImagePropertiesProvisioningStateFailed    GalleryImagePropertiesProvisioningState = "Failed"
 	GalleryImagePropertiesProvisioningStateMigrating GalleryImagePropertiesProvisioningState = "Migrating"
 	GalleryImagePropertiesProvisioningStateSucceeded GalleryImagePropertiesProvisioningState = "Succeeded"
-	GalleryImagePropertiesProvisioningStateUpdating GalleryImagePropertiesProvisioningState = "Updating"
+	GalleryImagePropertiesProvisioningStateUpdating  GalleryImagePropertiesProvisioningState = "Updating"
 )
 
 func PossibleGalleryImagePropertiesProvisioningStateValues() []GalleryImagePropertiesProvisioningState {
-	return []GalleryImagePropertiesProvisioningState{	
+	return []GalleryImagePropertiesProvisioningState{
 		GalleryImagePropertiesProvisioningStateCreating,
 		GalleryImagePropertiesProvisioningStateDeleting,
 		GalleryImagePropertiesProvisioningStateFailed,
@@ -591,16 +591,16 @@ func (c GalleryImagePropertiesProvisioningState) ToPtr() *GalleryImageProperties
 type GalleryImageVersionPropertiesProvisioningState string
 
 const (
-	GalleryImageVersionPropertiesProvisioningStateCreating GalleryImageVersionPropertiesProvisioningState = "Creating"
-	GalleryImageVersionPropertiesProvisioningStateDeleting GalleryImageVersionPropertiesProvisioningState = "Deleting"
-	GalleryImageVersionPropertiesProvisioningStateFailed GalleryImageVersionPropertiesProvisioningState = "Failed"
+	GalleryImageVersionPropertiesProvisioningStateCreating  GalleryImageVersionPropertiesProvisioningState = "Creating"
+	GalleryImageVersionPropertiesProvisioningStateDeleting  GalleryImageVersionPropertiesProvisioningState = "Deleting"
+	GalleryImageVersionPropertiesProvisioningStateFailed    GalleryImageVersionPropertiesProvisioningState = "Failed"
 	GalleryImageVersionPropertiesProvisioningStateMigrating GalleryImageVersionPropertiesProvisioningState = "Migrating"
 	GalleryImageVersionPropertiesProvisioningStateSucceeded GalleryImageVersionPropertiesProvisioningState = "Succeeded"
-	GalleryImageVersionPropertiesProvisioningStateUpdating GalleryImageVersionPropertiesProvisioningState = "Updating"
+	GalleryImageVersionPropertiesProvisioningStateUpdating  GalleryImageVersionPropertiesProvisioningState = "Updating"
 )
 
 func PossibleGalleryImageVersionPropertiesProvisioningStateValues() []GalleryImageVersionPropertiesProvisioningState {
-	return []GalleryImageVersionPropertiesProvisioningState{	
+	return []GalleryImageVersionPropertiesProvisioningState{
 		GalleryImageVersionPropertiesProvisioningStateCreating,
 		GalleryImageVersionPropertiesProvisioningStateDeleting,
 		GalleryImageVersionPropertiesProvisioningStateFailed,
@@ -618,16 +618,16 @@ func (c GalleryImageVersionPropertiesProvisioningState) ToPtr() *GalleryImageVer
 type GalleryPropertiesProvisioningState string
 
 const (
-	GalleryPropertiesProvisioningStateCreating GalleryPropertiesProvisioningState = "Creating"
-	GalleryPropertiesProvisioningStateDeleting GalleryPropertiesProvisioningState = "Deleting"
-	GalleryPropertiesProvisioningStateFailed GalleryPropertiesProvisioningState = "Failed"
+	GalleryPropertiesProvisioningStateCreating  GalleryPropertiesProvisioningState = "Creating"
+	GalleryPropertiesProvisioningStateDeleting  GalleryPropertiesProvisioningState = "Deleting"
+	GalleryPropertiesProvisioningStateFailed    GalleryPropertiesProvisioningState = "Failed"
 	GalleryPropertiesProvisioningStateMigrating GalleryPropertiesProvisioningState = "Migrating"
 	GalleryPropertiesProvisioningStateSucceeded GalleryPropertiesProvisioningState = "Succeeded"
-	GalleryPropertiesProvisioningStateUpdating GalleryPropertiesProvisioningState = "Updating"
+	GalleryPropertiesProvisioningStateUpdating  GalleryPropertiesProvisioningState = "Updating"
 )
 
 func PossibleGalleryPropertiesProvisioningStateValues() []GalleryPropertiesProvisioningState {
-	return []GalleryPropertiesProvisioningState{	
+	return []GalleryPropertiesProvisioningState{
 		GalleryPropertiesProvisioningStateCreating,
 		GalleryPropertiesProvisioningStateDeleting,
 		GalleryPropertiesProvisioningStateFailed,
@@ -648,12 +648,12 @@ func (c GalleryPropertiesProvisioningState) ToPtr() *GalleryPropertiesProvisioni
 type GallerySharingPermissionTypes string
 
 const (
-	GallerySharingPermissionTypesGroups GallerySharingPermissionTypes = "Groups"
+	GallerySharingPermissionTypesGroups  GallerySharingPermissionTypes = "Groups"
 	GallerySharingPermissionTypesPrivate GallerySharingPermissionTypes = "Private"
 )
 
 func PossibleGallerySharingPermissionTypesValues() []GallerySharingPermissionTypes {
-	return []GallerySharingPermissionTypes{	
+	return []GallerySharingPermissionTypes{
 		GallerySharingPermissionTypesGroups,
 		GallerySharingPermissionTypesPrivate,
 	}
@@ -667,13 +667,13 @@ func (c GallerySharingPermissionTypes) ToPtr() *GallerySharingPermissionTypes {
 type HostCaching string
 
 const (
-	HostCachingNone HostCaching = "None"
-	HostCachingReadOnly HostCaching = "ReadOnly"
+	HostCachingNone      HostCaching = "None"
+	HostCachingReadOnly  HostCaching = "ReadOnly"
 	HostCachingReadWrite HostCaching = "ReadWrite"
 )
 
 func PossibleHostCachingValues() []HostCaching {
-	return []HostCaching{	
+	return []HostCaching{
 		HostCachingNone,
 		HostCachingReadOnly,
 		HostCachingReadWrite,
@@ -693,7 +693,7 @@ const (
 )
 
 func PossibleHyperVGenerationValues() []HyperVGeneration {
-	return []HyperVGeneration{	
+	return []HyperVGeneration{
 		HyperVGenerationV1,
 		HyperVGenerationV2,
 	}
@@ -712,7 +712,7 @@ const (
 )
 
 func PossibleHyperVGenerationTypeValues() []HyperVGenerationType {
-	return []HyperVGenerationType{	
+	return []HyperVGenerationType{
 		HyperVGenerationTypeV1,
 		HyperVGenerationTypeV2,
 	}
@@ -731,7 +731,7 @@ const (
 )
 
 func PossibleHyperVGenerationTypesValues() []HyperVGenerationTypes {
-	return []HyperVGenerationTypes{	
+	return []HyperVGenerationTypes{
 		HyperVGenerationTypesV1,
 		HyperVGenerationTypesV2,
 	}
@@ -751,7 +751,7 @@ const (
 )
 
 func PossibleIPVersionValues() []IPVersion {
-	return []IPVersion{	
+	return []IPVersion{
 		IPVersionIPv4,
 		IPVersionIPv6,
 	}
@@ -772,13 +772,13 @@ func (c IPVersion) ToPtr() *IPVersion {
 type InGuestPatchMode string
 
 const (
-	InGuestPatchModeAutomaticByOS InGuestPatchMode = "AutomaticByOS"
+	InGuestPatchModeAutomaticByOS       InGuestPatchMode = "AutomaticByOS"
 	InGuestPatchModeAutomaticByPlatform InGuestPatchMode = "AutomaticByPlatform"
-	InGuestPatchModeManual InGuestPatchMode = "Manual"
+	InGuestPatchModeManual              InGuestPatchMode = "Manual"
 )
 
 func PossibleInGuestPatchModeValues() []InGuestPatchMode {
-	return []InGuestPatchMode{	
+	return []InGuestPatchMode{
 		InGuestPatchModeAutomaticByOS,
 		InGuestPatchModeAutomaticByPlatform,
 		InGuestPatchModeManual,
@@ -793,14 +793,14 @@ func (c InGuestPatchMode) ToPtr() *InGuestPatchMode {
 type IntervalInMins string
 
 const (
-	IntervalInMinsThreeMins IntervalInMins = "ThreeMins"
-	IntervalInMinsFiveMins IntervalInMins = "FiveMins"
+	IntervalInMinsThreeMins  IntervalInMins = "ThreeMins"
+	IntervalInMinsFiveMins   IntervalInMins = "FiveMins"
 	IntervalInMinsThirtyMins IntervalInMins = "ThirtyMins"
-	IntervalInMinsSixtyMins IntervalInMins = "SixtyMins"
+	IntervalInMinsSixtyMins  IntervalInMins = "SixtyMins"
 )
 
 func PossibleIntervalInMinsValues() []IntervalInMins {
-	return []IntervalInMins{	
+	return []IntervalInMins{
 		IntervalInMinsThreeMins,
 		IntervalInMinsFiveMins,
 		IntervalInMinsThirtyMins,
@@ -816,14 +816,14 @@ func (c IntervalInMins) ToPtr() *IntervalInMins {
 type MaintenanceOperationResultCodeTypes string
 
 const (
-	MaintenanceOperationResultCodeTypesNone MaintenanceOperationResultCodeTypes = "None"
-	MaintenanceOperationResultCodeTypesRetryLater MaintenanceOperationResultCodeTypes = "RetryLater"
-	MaintenanceOperationResultCodeTypesMaintenanceAborted MaintenanceOperationResultCodeTypes = "MaintenanceAborted"
+	MaintenanceOperationResultCodeTypesNone                 MaintenanceOperationResultCodeTypes = "None"
+	MaintenanceOperationResultCodeTypesRetryLater           MaintenanceOperationResultCodeTypes = "RetryLater"
+	MaintenanceOperationResultCodeTypesMaintenanceAborted   MaintenanceOperationResultCodeTypes = "MaintenanceAborted"
 	MaintenanceOperationResultCodeTypesMaintenanceCompleted MaintenanceOperationResultCodeTypes = "MaintenanceCompleted"
 )
 
 func PossibleMaintenanceOperationResultCodeTypesValues() []MaintenanceOperationResultCodeTypes {
-	return []MaintenanceOperationResultCodeTypes{	
+	return []MaintenanceOperationResultCodeTypes{
 		MaintenanceOperationResultCodeTypesNone,
 		MaintenanceOperationResultCodeTypesRetryLater,
 		MaintenanceOperationResultCodeTypesMaintenanceAborted,
@@ -848,7 +848,7 @@ const (
 )
 
 func PossibleNetworkAccessPolicyValues() []NetworkAccessPolicy {
-	return []NetworkAccessPolicy{	
+	return []NetworkAccessPolicy{
 		NetworkAccessPolicyAllowAll,
 		NetworkAccessPolicyAllowPrivate,
 		NetworkAccessPolicyDenyAll,
@@ -870,7 +870,7 @@ const (
 )
 
 func PossibleOperatingSystemStateTypesValues() []OperatingSystemStateTypes {
-	return []OperatingSystemStateTypes{	
+	return []OperatingSystemStateTypes{
 		OperatingSystemStateTypesGeneralized,
 		OperatingSystemStateTypesSpecialized,
 	}
@@ -885,11 +885,11 @@ type OperatingSystemTypes string
 
 const (
 	OperatingSystemTypesWindows OperatingSystemTypes = "Windows"
-	OperatingSystemTypesLinux OperatingSystemTypes = "Linux"
+	OperatingSystemTypesLinux   OperatingSystemTypes = "Linux"
 )
 
 func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
-	return []OperatingSystemTypes{	
+	return []OperatingSystemTypes{
 		OperatingSystemTypesWindows,
 		OperatingSystemTypesLinux,
 	}
@@ -907,7 +907,7 @@ const (
 )
 
 func PossibleOrchestrationServiceNamesValues() []OrchestrationServiceNames {
-	return []OrchestrationServiceNames{	
+	return []OrchestrationServiceNames{
 		OrchestrationServiceNamesAutomaticRepairs,
 	}
 }
@@ -921,12 +921,12 @@ type OrchestrationServiceState string
 
 const (
 	OrchestrationServiceStateNotRunning OrchestrationServiceState = "NotRunning"
-	OrchestrationServiceStateRunning OrchestrationServiceState = "Running"
-	OrchestrationServiceStateSuspended OrchestrationServiceState = "Suspended"
+	OrchestrationServiceStateRunning    OrchestrationServiceState = "Running"
+	OrchestrationServiceStateSuspended  OrchestrationServiceState = "Suspended"
 )
 
 func PossibleOrchestrationServiceStateValues() []OrchestrationServiceState {
-	return []OrchestrationServiceState{	
+	return []OrchestrationServiceState{
 		OrchestrationServiceStateNotRunning,
 		OrchestrationServiceStateRunning,
 		OrchestrationServiceStateSuspended,
@@ -941,12 +941,12 @@ func (c OrchestrationServiceState) ToPtr() *OrchestrationServiceState {
 type OrchestrationServiceStateAction string
 
 const (
-	OrchestrationServiceStateActionResume OrchestrationServiceStateAction = "Resume"
+	OrchestrationServiceStateActionResume  OrchestrationServiceStateAction = "Resume"
 	OrchestrationServiceStateActionSuspend OrchestrationServiceStateAction = "Suspend"
 )
 
 func PossibleOrchestrationServiceStateActionValues() []OrchestrationServiceStateAction {
-	return []OrchestrationServiceStateAction{	
+	return []OrchestrationServiceStateAction{
 		OrchestrationServiceStateActionResume,
 		OrchestrationServiceStateActionSuspend,
 	}
@@ -960,16 +960,16 @@ func (c OrchestrationServiceStateAction) ToPtr() *OrchestrationServiceStateActio
 type PatchAssessmentState string
 
 const (
-	PatchAssessmentStateAvailable PatchAssessmentState = "Available"
-	PatchAssessmentStateExcluded PatchAssessmentState = "Excluded"
-	PatchAssessmentStateFailed PatchAssessmentState = "Failed"
-	PatchAssessmentStateInstalled PatchAssessmentState = "Installed"
+	PatchAssessmentStateAvailable   PatchAssessmentState = "Available"
+	PatchAssessmentStateExcluded    PatchAssessmentState = "Excluded"
+	PatchAssessmentStateFailed      PatchAssessmentState = "Failed"
+	PatchAssessmentStateInstalled   PatchAssessmentState = "Installed"
 	PatchAssessmentStateNotSelected PatchAssessmentState = "NotSelected"
-	PatchAssessmentStatePending PatchAssessmentState = "Pending"
+	PatchAssessmentStatePending     PatchAssessmentState = "Pending"
 )
 
 func PossiblePatchAssessmentStateValues() []PatchAssessmentState {
-	return []PatchAssessmentState{	
+	return []PatchAssessmentState{
 		PatchAssessmentStateAvailable,
 		PatchAssessmentStateExcluded,
 		PatchAssessmentStateFailed,
@@ -989,13 +989,13 @@ type PatchOperationStatus string
 
 const (
 	PatchOperationStatusCompletedWithWarnings PatchOperationStatus = "CompletedWithWarnings"
-	PatchOperationStatusFailed PatchOperationStatus = "Failed"
-	PatchOperationStatusInProgress PatchOperationStatus = "InProgress"
-	PatchOperationStatusSucceeded PatchOperationStatus = "Succeeded"
+	PatchOperationStatusFailed                PatchOperationStatus = "Failed"
+	PatchOperationStatusInProgress            PatchOperationStatus = "InProgress"
+	PatchOperationStatusSucceeded             PatchOperationStatus = "Succeeded"
 )
 
 func PossiblePatchOperationStatusValues() []PatchOperationStatus {
-	return []PatchOperationStatus{	
+	return []PatchOperationStatus{
 		PatchOperationStatusCompletedWithWarnings,
 		PatchOperationStatusFailed,
 		PatchOperationStatusInProgress,
@@ -1011,14 +1011,14 @@ func (c PatchOperationStatus) ToPtr() *PatchOperationStatus {
 type PrivateEndpointConnectionProvisioningState string
 
 const (
-	PrivateEndpointConnectionProvisioningStateCreating PrivateEndpointConnectionProvisioningState = "Creating"
-	PrivateEndpointConnectionProvisioningStateDeleting PrivateEndpointConnectionProvisioningState = "Deleting"
-	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = "Creating"
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
 	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
 )
 
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
-	return []PrivateEndpointConnectionProvisioningState{	
+	return []PrivateEndpointConnectionProvisioningState{
 		PrivateEndpointConnectionProvisioningStateCreating,
 		PrivateEndpointConnectionProvisioningStateDeleting,
 		PrivateEndpointConnectionProvisioningStateFailed,
@@ -1035,12 +1035,12 @@ type PrivateEndpointServiceConnectionStatus string
 
 const (
 	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
-	PrivateEndpointServiceConnectionStatusPending PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = "Pending"
 	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
 )
 
 func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
-	return []PrivateEndpointServiceConnectionStatus{	
+	return []PrivateEndpointServiceConnectionStatus{
 		PrivateEndpointServiceConnectionStatusApproved,
 		PrivateEndpointServiceConnectionStatusPending,
 		PrivateEndpointServiceConnectionStatusRejected,
@@ -1058,12 +1058,12 @@ func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceC
 type ProtocolTypes string
 
 const (
-	ProtocolTypesHTTP ProtocolTypes = "Http"
+	ProtocolTypesHTTP  ProtocolTypes = "Http"
 	ProtocolTypesHTTPs ProtocolTypes = "Https"
 )
 
 func PossibleProtocolTypesValues() []ProtocolTypes {
-	return []ProtocolTypes{	
+	return []ProtocolTypes{
 		ProtocolTypesHTTP,
 		ProtocolTypesHTTPs,
 	}
@@ -1081,11 +1081,11 @@ type ProximityPlacementGroupType string
 
 const (
 	ProximityPlacementGroupTypeStandard ProximityPlacementGroupType = "Standard"
-	ProximityPlacementGroupTypeUltra ProximityPlacementGroupType = "Ultra"
+	ProximityPlacementGroupTypeUltra    ProximityPlacementGroupType = "Ultra"
 )
 
 func PossibleProximityPlacementGroupTypeValues() []ProximityPlacementGroupType {
-	return []ProximityPlacementGroupType{	
+	return []ProximityPlacementGroupType{
 		ProximityPlacementGroupTypeStandard,
 		ProximityPlacementGroupTypeUltra,
 	}
@@ -1104,14 +1104,14 @@ type RebootStatus string
 
 const (
 	RebootStatusCompleted RebootStatus = "Completed"
-	RebootStatusFailed RebootStatus = "Failed"
+	RebootStatusFailed    RebootStatus = "Failed"
 	RebootStatusNotNeeded RebootStatus = "NotNeeded"
-	RebootStatusRequired RebootStatus = "Required"
-	RebootStatusStarted RebootStatus = "Started"
+	RebootStatusRequired  RebootStatus = "Required"
+	RebootStatusStarted   RebootStatus = "Started"
 )
 
 func PossibleRebootStatusValues() []RebootStatus {
-	return []RebootStatus{	
+	return []RebootStatus{
 		RebootStatusCompleted,
 		RebootStatusFailed,
 		RebootStatusNotNeeded,
@@ -1128,14 +1128,14 @@ func (c RebootStatus) ToPtr() *RebootStatus {
 type ReplicationState string
 
 const (
-	ReplicationStateCompleted ReplicationState = "Completed"
-	ReplicationStateFailed ReplicationState = "Failed"
+	ReplicationStateCompleted   ReplicationState = "Completed"
+	ReplicationStateFailed      ReplicationState = "Failed"
 	ReplicationStateReplicating ReplicationState = "Replicating"
-	ReplicationStateUnknown ReplicationState = "Unknown"
+	ReplicationStateUnknown     ReplicationState = "Unknown"
 )
 
 func PossibleReplicationStateValues() []ReplicationState {
-	return []ReplicationState{	
+	return []ReplicationState{
 		ReplicationStateCompleted,
 		ReplicationStateFailed,
 		ReplicationStateReplicating,
@@ -1154,7 +1154,7 @@ const (
 )
 
 func PossibleReplicationStatusTypesValues() []ReplicationStatusTypes {
-	return []ReplicationStatusTypes{	
+	return []ReplicationStatusTypes{
 		ReplicationStatusTypesReplicationStatus,
 	}
 }
@@ -1169,14 +1169,14 @@ func (c ReplicationStatusTypes) ToPtr() *ReplicationStatusTypes {
 type ResourceIDentityType string
 
 const (
-	ResourceIDentityTypeSystemAssigned ResourceIDentityType = "SystemAssigned"
-	ResourceIDentityTypeUserAssigned ResourceIDentityType = "UserAssigned"
+	ResourceIDentityTypeSystemAssigned             ResourceIDentityType = "SystemAssigned"
+	ResourceIDentityTypeUserAssigned               ResourceIDentityType = "UserAssigned"
 	ResourceIDentityTypeSystemAssignedUserAssigned ResourceIDentityType = "SystemAssigned, UserAssigned"
-	ResourceIDentityTypeNone ResourceIDentityType = "None"
+	ResourceIDentityTypeNone                       ResourceIDentityType = "None"
 )
 
 func PossibleResourceIDentityTypeValues() []ResourceIDentityType {
-	return []ResourceIDentityType{	
+	return []ResourceIDentityType{
 		ResourceIDentityTypeSystemAssigned,
 		ResourceIDentityTypeUserAssigned,
 		ResourceIDentityTypeSystemAssignedUserAssigned,
@@ -1193,12 +1193,12 @@ type ResourceSKUCapacityScaleType string
 
 const (
 	ResourceSKUCapacityScaleTypeAutomatic ResourceSKUCapacityScaleType = "Automatic"
-	ResourceSKUCapacityScaleTypeManual ResourceSKUCapacityScaleType = "Manual"
-	ResourceSKUCapacityScaleTypeNone ResourceSKUCapacityScaleType = "None"
+	ResourceSKUCapacityScaleTypeManual    ResourceSKUCapacityScaleType = "Manual"
+	ResourceSKUCapacityScaleTypeNone      ResourceSKUCapacityScaleType = "None"
 )
 
 func PossibleResourceSKUCapacityScaleTypeValues() []ResourceSKUCapacityScaleType {
-	return []ResourceSKUCapacityScaleType{	
+	return []ResourceSKUCapacityScaleType{
 		ResourceSKUCapacityScaleTypeAutomatic,
 		ResourceSKUCapacityScaleTypeManual,
 		ResourceSKUCapacityScaleTypeNone,
@@ -1213,12 +1213,12 @@ func (c ResourceSKUCapacityScaleType) ToPtr() *ResourceSKUCapacityScaleType {
 type ResourceSKURestrictionsReasonCode string
 
 const (
-	ResourceSKURestrictionsReasonCodeQuotaID ResourceSKURestrictionsReasonCode = "QuotaId"
+	ResourceSKURestrictionsReasonCodeQuotaID                     ResourceSKURestrictionsReasonCode = "QuotaId"
 	ResourceSKURestrictionsReasonCodeNotAvailableForSubscription ResourceSKURestrictionsReasonCode = "NotAvailableForSubscription"
 )
 
 func PossibleResourceSKURestrictionsReasonCodeValues() []ResourceSKURestrictionsReasonCode {
-	return []ResourceSKURestrictionsReasonCode{	
+	return []ResourceSKURestrictionsReasonCode{
 		ResourceSKURestrictionsReasonCodeQuotaID,
 		ResourceSKURestrictionsReasonCodeNotAvailableForSubscription,
 	}
@@ -1233,11 +1233,11 @@ type ResourceSKURestrictionsType string
 
 const (
 	ResourceSKURestrictionsTypeLocation ResourceSKURestrictionsType = "Location"
-	ResourceSKURestrictionsTypeZone ResourceSKURestrictionsType = "Zone"
+	ResourceSKURestrictionsTypeZone     ResourceSKURestrictionsType = "Zone"
 )
 
 func PossibleResourceSKURestrictionsTypeValues() []ResourceSKURestrictionsType {
-	return []ResourceSKURestrictionsType{	
+	return []ResourceSKURestrictionsType{
 		ResourceSKURestrictionsTypeLocation,
 		ResourceSKURestrictionsTypeZone,
 	}
@@ -1251,12 +1251,12 @@ func (c ResourceSKURestrictionsType) ToPtr() *ResourceSKURestrictionsType {
 type RollingUpgradeActionType string
 
 const (
-	RollingUpgradeActionTypeStart RollingUpgradeActionType = "Start"
+	RollingUpgradeActionTypeStart  RollingUpgradeActionType = "Start"
 	RollingUpgradeActionTypeCancel RollingUpgradeActionType = "Cancel"
 )
 
 func PossibleRollingUpgradeActionTypeValues() []RollingUpgradeActionType {
-	return []RollingUpgradeActionType{	
+	return []RollingUpgradeActionType{
 		RollingUpgradeActionTypeStart,
 		RollingUpgradeActionTypeCancel,
 	}
@@ -1271,13 +1271,13 @@ type RollingUpgradeStatusCode string
 
 const (
 	RollingUpgradeStatusCodeRollingForward RollingUpgradeStatusCode = "RollingForward"
-	RollingUpgradeStatusCodeCancelled RollingUpgradeStatusCode = "Cancelled"
-	RollingUpgradeStatusCodeCompleted RollingUpgradeStatusCode = "Completed"
-	RollingUpgradeStatusCodeFaulted RollingUpgradeStatusCode = "Faulted"
+	RollingUpgradeStatusCodeCancelled      RollingUpgradeStatusCode = "Cancelled"
+	RollingUpgradeStatusCodeCompleted      RollingUpgradeStatusCode = "Completed"
+	RollingUpgradeStatusCodeFaulted        RollingUpgradeStatusCode = "Faulted"
 )
 
 func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
-	return []RollingUpgradeStatusCode{	
+	return []RollingUpgradeStatusCode{
 		RollingUpgradeStatusCodeRollingForward,
 		RollingUpgradeStatusCodeCancelled,
 		RollingUpgradeStatusCodeCompleted,
@@ -1296,7 +1296,7 @@ const (
 )
 
 func PossibleSelectPermissionsValues() []SelectPermissions {
-	return []SelectPermissions{	
+	return []SelectPermissions{
 		SelectPermissionsPermissions,
 	}
 }
@@ -1309,12 +1309,12 @@ func (c SelectPermissions) ToPtr() *SelectPermissions {
 type SettingNames string
 
 const (
-	SettingNamesAutoLogon SettingNames = "AutoLogon"
+	SettingNamesAutoLogon          SettingNames = "AutoLogon"
 	SettingNamesFirstLogonCommands SettingNames = "FirstLogonCommands"
 )
 
 func PossibleSettingNamesValues() []SettingNames {
-	return []SettingNames{	
+	return []SettingNames{
 		SettingNamesAutoLogon,
 		SettingNamesFirstLogonCommands,
 	}
@@ -1331,7 +1331,7 @@ const (
 )
 
 func PossibleSharedToValuesValues() []SharedToValues {
-	return []SharedToValues{	
+	return []SharedToValues{
 		SharedToValuesTenant,
 	}
 }
@@ -1347,12 +1347,12 @@ func (c SharedToValues) ToPtr() *SharedToValues {
 type SharingProfileGroupTypes string
 
 const (
-	SharingProfileGroupTypesAadTenants SharingProfileGroupTypes = "AADTenants"
+	SharingProfileGroupTypesAadTenants    SharingProfileGroupTypes = "AADTenants"
 	SharingProfileGroupTypesSubscriptions SharingProfileGroupTypes = "Subscriptions"
 )
 
 func PossibleSharingProfileGroupTypesValues() []SharingProfileGroupTypes {
-	return []SharingProfileGroupTypes{	
+	return []SharingProfileGroupTypes{
 		SharingProfileGroupTypesAadTenants,
 		SharingProfileGroupTypesSubscriptions,
 	}
@@ -1370,13 +1370,13 @@ func (c SharingProfileGroupTypes) ToPtr() *SharingProfileGroupTypes {
 type SharingUpdateOperationTypes string
 
 const (
-	SharingUpdateOperationTypesAdd SharingUpdateOperationTypes = "Add"
+	SharingUpdateOperationTypesAdd    SharingUpdateOperationTypes = "Add"
 	SharingUpdateOperationTypesRemove SharingUpdateOperationTypes = "Remove"
-	SharingUpdateOperationTypesReset SharingUpdateOperationTypes = "Reset"
+	SharingUpdateOperationTypesReset  SharingUpdateOperationTypes = "Reset"
 )
 
 func PossibleSharingUpdateOperationTypesValues() []SharingUpdateOperationTypes {
-	return []SharingUpdateOperationTypes{	
+	return []SharingUpdateOperationTypes{
 		SharingUpdateOperationTypesAdd,
 		SharingUpdateOperationTypesRemove,
 		SharingUpdateOperationTypesReset,
@@ -1400,7 +1400,7 @@ const (
 )
 
 func PossibleSnapshotStorageAccountTypesValues() []SnapshotStorageAccountTypes {
-	return []SnapshotStorageAccountTypes{	
+	return []SnapshotStorageAccountTypes{
 		SnapshotStorageAccountTypesPremiumLrs,
 		SnapshotStorageAccountTypesStandardLrs,
 		SnapshotStorageAccountTypesStandardZrs,
@@ -1416,12 +1416,12 @@ type SoftwareUpdateRebootBehavior string
 
 const (
 	SoftwareUpdateRebootBehaviorAlwaysRequiresReboot SoftwareUpdateRebootBehavior = "AlwaysRequiresReboot"
-	SoftwareUpdateRebootBehaviorCanRequestReboot SoftwareUpdateRebootBehavior = "CanRequestReboot"
-	SoftwareUpdateRebootBehaviorNeverReboots SoftwareUpdateRebootBehavior = "NeverReboots"
+	SoftwareUpdateRebootBehaviorCanRequestReboot     SoftwareUpdateRebootBehavior = "CanRequestReboot"
+	SoftwareUpdateRebootBehaviorNeverReboots         SoftwareUpdateRebootBehavior = "NeverReboots"
 )
 
 func PossibleSoftwareUpdateRebootBehaviorValues() []SoftwareUpdateRebootBehavior {
-	return []SoftwareUpdateRebootBehavior{	
+	return []SoftwareUpdateRebootBehavior{
 		SoftwareUpdateRebootBehaviorAlwaysRequiresReboot,
 		SoftwareUpdateRebootBehaviorCanRequestReboot,
 		SoftwareUpdateRebootBehaviorNeverReboots,
@@ -1436,13 +1436,13 @@ func (c SoftwareUpdateRebootBehavior) ToPtr() *SoftwareUpdateRebootBehavior {
 type StatusLevelTypes string
 
 const (
-	StatusLevelTypesInfo StatusLevelTypes = "Info"
+	StatusLevelTypesInfo    StatusLevelTypes = "Info"
 	StatusLevelTypesWarning StatusLevelTypes = "Warning"
-	StatusLevelTypesError StatusLevelTypes = "Error"
+	StatusLevelTypesError   StatusLevelTypes = "Error"
 )
 
 func PossibleStatusLevelTypesValues() []StatusLevelTypes {
-	return []StatusLevelTypes{	
+	return []StatusLevelTypes{
 		StatusLevelTypesInfo,
 		StatusLevelTypesWarning,
 		StatusLevelTypesError,
@@ -1457,13 +1457,13 @@ func (c StatusLevelTypes) ToPtr() *StatusLevelTypes {
 type StorageAccountType string
 
 const (
-	StorageAccountTypePremiumLrs StorageAccountType = "Premium_LRS"
+	StorageAccountTypePremiumLrs  StorageAccountType = "Premium_LRS"
 	StorageAccountTypeStandardLrs StorageAccountType = "Standard_LRS"
 	StorageAccountTypeStandardZrs StorageAccountType = "Standard_ZRS"
 )
 
 func PossibleStorageAccountTypeValues() []StorageAccountType {
-	return []StorageAccountType{	
+	return []StorageAccountType{
 		StorageAccountTypePremiumLrs,
 		StorageAccountTypeStandardLrs,
 		StorageAccountTypeStandardZrs,
@@ -1484,14 +1484,14 @@ func (c StorageAccountType) ToPtr() *StorageAccountType {
 type StorageAccountTypes string
 
 const (
-	StorageAccountTypesPremiumLrs StorageAccountTypes = "Premium_LRS"
-	StorageAccountTypesStandardLrs StorageAccountTypes = "Standard_LRS"
+	StorageAccountTypesPremiumLrs     StorageAccountTypes = "Premium_LRS"
+	StorageAccountTypesStandardLrs    StorageAccountTypes = "Standard_LRS"
 	StorageAccountTypesStandardSsdlrs StorageAccountTypes = "StandardSSD_LRS"
-	StorageAccountTypesUltraSsdlrs StorageAccountTypes = "UltraSSD_LRS"
+	StorageAccountTypesUltraSsdlrs    StorageAccountTypes = "UltraSSD_LRS"
 )
 
 func PossibleStorageAccountTypesValues() []StorageAccountTypes {
-	return []StorageAccountTypes{	
+	return []StorageAccountTypes{
 		StorageAccountTypesPremiumLrs,
 		StorageAccountTypesStandardLrs,
 		StorageAccountTypesStandardSsdlrs,
@@ -1511,12 +1511,12 @@ type UpgradeMode string
 
 const (
 	UpgradeModeAutomatic UpgradeMode = "Automatic"
-	UpgradeModeManual UpgradeMode = "Manual"
-	UpgradeModeRolling UpgradeMode = "Rolling"
+	UpgradeModeManual    UpgradeMode = "Manual"
+	UpgradeModeRolling   UpgradeMode = "Rolling"
 )
 
 func PossibleUpgradeModeValues() []UpgradeMode {
-	return []UpgradeMode{	
+	return []UpgradeMode{
 		UpgradeModeAutomatic,
 		UpgradeModeManual,
 		UpgradeModeRolling,
@@ -1531,13 +1531,13 @@ func (c UpgradeMode) ToPtr() *UpgradeMode {
 type UpgradeOperationInvoker string
 
 const (
-	UpgradeOperationInvokerUnknown UpgradeOperationInvoker = "Unknown"
-	UpgradeOperationInvokerUser UpgradeOperationInvoker = "User"
+	UpgradeOperationInvokerUnknown  UpgradeOperationInvoker = "Unknown"
+	UpgradeOperationInvokerUser     UpgradeOperationInvoker = "User"
 	UpgradeOperationInvokerPlatform UpgradeOperationInvoker = "Platform"
 )
 
 func PossibleUpgradeOperationInvokerValues() []UpgradeOperationInvoker {
-	return []UpgradeOperationInvoker{	
+	return []UpgradeOperationInvoker{
 		UpgradeOperationInvokerUnknown,
 		UpgradeOperationInvokerUser,
 		UpgradeOperationInvokerPlatform,
@@ -1553,13 +1553,13 @@ type UpgradeState string
 
 const (
 	UpgradeStateRollingForward UpgradeState = "RollingForward"
-	UpgradeStateCancelled UpgradeState = "Cancelled"
-	UpgradeStateCompleted UpgradeState = "Completed"
-	UpgradeStateFaulted UpgradeState = "Faulted"
+	UpgradeStateCancelled      UpgradeState = "Cancelled"
+	UpgradeStateCompleted      UpgradeState = "Completed"
+	UpgradeStateFaulted        UpgradeState = "Faulted"
 )
 
 func PossibleUpgradeStateValues() []UpgradeState {
-	return []UpgradeState{	
+	return []UpgradeState{
 		UpgradeStateRollingForward,
 		UpgradeStateCancelled,
 		UpgradeStateCompleted,
@@ -1575,12 +1575,12 @@ func (c UpgradeState) ToPtr() *UpgradeState {
 type VMDiskTypes string
 
 const (
-	VMDiskTypesNone VMDiskTypes = "None"
+	VMDiskTypesNone      VMDiskTypes = "None"
 	VMDiskTypesUnmanaged VMDiskTypes = "Unmanaged"
 )
 
 func PossibleVMDiskTypesValues() []VMDiskTypes {
-	return []VMDiskTypes{	
+	return []VMDiskTypes{
 		VMDiskTypesNone,
 		VMDiskTypesUnmanaged,
 	}
@@ -1595,11 +1595,11 @@ type VirtualMachineEvictionPolicyTypes string
 
 const (
 	VirtualMachineEvictionPolicyTypesDeallocate VirtualMachineEvictionPolicyTypes = "Deallocate"
-	VirtualMachineEvictionPolicyTypesDelete VirtualMachineEvictionPolicyTypes = "Delete"
+	VirtualMachineEvictionPolicyTypesDelete     VirtualMachineEvictionPolicyTypes = "Delete"
 )
 
 func PossibleVirtualMachineEvictionPolicyTypesValues() []VirtualMachineEvictionPolicyTypes {
-	return []VirtualMachineEvictionPolicyTypes{	
+	return []VirtualMachineEvictionPolicyTypes{
 		VirtualMachineEvictionPolicyTypesDeallocate,
 		VirtualMachineEvictionPolicyTypesDelete,
 	}
@@ -1614,13 +1614,13 @@ func (c VirtualMachineEvictionPolicyTypes) ToPtr() *VirtualMachineEvictionPolicy
 type VirtualMachinePriorityTypes string
 
 const (
-	VirtualMachinePriorityTypesLow VirtualMachinePriorityTypes = "Low"
+	VirtualMachinePriorityTypesLow     VirtualMachinePriorityTypes = "Low"
 	VirtualMachinePriorityTypesRegular VirtualMachinePriorityTypes = "Regular"
-	VirtualMachinePriorityTypesSpot VirtualMachinePriorityTypes = "Spot"
+	VirtualMachinePriorityTypesSpot    VirtualMachinePriorityTypes = "Spot"
 )
 
 func PossibleVirtualMachinePriorityTypesValues() []VirtualMachinePriorityTypes {
-	return []VirtualMachinePriorityTypes{	
+	return []VirtualMachinePriorityTypes{
 		VirtualMachinePriorityTypesLow,
 		VirtualMachinePriorityTypesRegular,
 		VirtualMachinePriorityTypesSpot,
@@ -1636,11 +1636,11 @@ type VirtualMachineScaleSetSKUScaleType string
 
 const (
 	VirtualMachineScaleSetSKUScaleTypeAutomatic VirtualMachineScaleSetSKUScaleType = "Automatic"
-	VirtualMachineScaleSetSKUScaleTypeNone VirtualMachineScaleSetSKUScaleType = "None"
+	VirtualMachineScaleSetSKUScaleTypeNone      VirtualMachineScaleSetSKUScaleType = "None"
 )
 
 func PossibleVirtualMachineScaleSetSKUScaleTypeValues() []VirtualMachineScaleSetSKUScaleType {
-	return []VirtualMachineScaleSetSKUScaleType{	
+	return []VirtualMachineScaleSetSKUScaleType{
 		VirtualMachineScaleSetSKUScaleTypeAutomatic,
 		VirtualMachineScaleSetSKUScaleTypeNone,
 	}
@@ -1653,13 +1653,13 @@ func (c VirtualMachineScaleSetSKUScaleType) ToPtr() *VirtualMachineScaleSetSKUSc
 type VirtualMachineScaleSetScaleInRules string
 
 const (
-	VirtualMachineScaleSetScaleInRulesDefault VirtualMachineScaleSetScaleInRules = "Default"
+	VirtualMachineScaleSetScaleInRulesDefault  VirtualMachineScaleSetScaleInRules = "Default"
 	VirtualMachineScaleSetScaleInRulesNewestVM VirtualMachineScaleSetScaleInRules = "NewestVM"
 	VirtualMachineScaleSetScaleInRulesOldestVM VirtualMachineScaleSetScaleInRules = "OldestVM"
 )
 
 func PossibleVirtualMachineScaleSetScaleInRulesValues() []VirtualMachineScaleSetScaleInRules {
-	return []VirtualMachineScaleSetScaleInRules{	
+	return []VirtualMachineScaleSetScaleInRules{
 		VirtualMachineScaleSetScaleInRulesDefault,
 		VirtualMachineScaleSetScaleInRulesNewestVM,
 		VirtualMachineScaleSetScaleInRulesOldestVM,
@@ -1679,176 +1679,176 @@ func (c VirtualMachineScaleSetScaleInRules) ToPtr() *VirtualMachineScaleSetScale
 type VirtualMachineSizeTypes string
 
 const (
-	VirtualMachineSizeTypesBasicA0 VirtualMachineSizeTypes = "Basic_A0"
-	VirtualMachineSizeTypesBasicA1 VirtualMachineSizeTypes = "Basic_A1"
-	VirtualMachineSizeTypesBasicA2 VirtualMachineSizeTypes = "Basic_A2"
-	VirtualMachineSizeTypesBasicA3 VirtualMachineSizeTypes = "Basic_A3"
-	VirtualMachineSizeTypesBasicA4 VirtualMachineSizeTypes = "Basic_A4"
-	VirtualMachineSizeTypesStandardA0 VirtualMachineSizeTypes = "Standard_A0"
-	VirtualMachineSizeTypesStandardA1 VirtualMachineSizeTypes = "Standard_A1"
-	VirtualMachineSizeTypesStandardA10 VirtualMachineSizeTypes = "Standard_A10"
-	VirtualMachineSizeTypesStandardA11 VirtualMachineSizeTypes = "Standard_A11"
-	VirtualMachineSizeTypesStandardA1V2 VirtualMachineSizeTypes = "Standard_A1_v2"
-	VirtualMachineSizeTypesStandardA2 VirtualMachineSizeTypes = "Standard_A2"
-	VirtualMachineSizeTypesStandardA2Mv2 VirtualMachineSizeTypes = "Standard_A2m_v2"
-	VirtualMachineSizeTypesStandardA2V2 VirtualMachineSizeTypes = "Standard_A2_v2"
-	VirtualMachineSizeTypesStandardA3 VirtualMachineSizeTypes = "Standard_A3"
-	VirtualMachineSizeTypesStandardA4 VirtualMachineSizeTypes = "Standard_A4"
-	VirtualMachineSizeTypesStandardA4Mv2 VirtualMachineSizeTypes = "Standard_A4m_v2"
-	VirtualMachineSizeTypesStandardA4V2 VirtualMachineSizeTypes = "Standard_A4_v2"
-	VirtualMachineSizeTypesStandardA5 VirtualMachineSizeTypes = "Standard_A5"
-	VirtualMachineSizeTypesStandardA6 VirtualMachineSizeTypes = "Standard_A6"
-	VirtualMachineSizeTypesStandardA7 VirtualMachineSizeTypes = "Standard_A7"
-	VirtualMachineSizeTypesStandardA8 VirtualMachineSizeTypes = "Standard_A8"
-	VirtualMachineSizeTypesStandardA8Mv2 VirtualMachineSizeTypes = "Standard_A8m_v2"
-	VirtualMachineSizeTypesStandardA8V2 VirtualMachineSizeTypes = "Standard_A8_v2"
-	VirtualMachineSizeTypesStandardA9 VirtualMachineSizeTypes = "Standard_A9"
-	VirtualMachineSizeTypesStandardB1MS VirtualMachineSizeTypes = "Standard_B1ms"
-	VirtualMachineSizeTypesStandardB1S VirtualMachineSizeTypes = "Standard_B1s"
-	VirtualMachineSizeTypesStandardB2MS VirtualMachineSizeTypes = "Standard_B2ms"
-	VirtualMachineSizeTypesStandardB2S VirtualMachineSizeTypes = "Standard_B2s"
-	VirtualMachineSizeTypesStandardB4MS VirtualMachineSizeTypes = "Standard_B4ms"
-	VirtualMachineSizeTypesStandardB8MS VirtualMachineSizeTypes = "Standard_B8ms"
-	VirtualMachineSizeTypesStandardD1 VirtualMachineSizeTypes = "Standard_D1"
-	VirtualMachineSizeTypesStandardD11 VirtualMachineSizeTypes = "Standard_D11"
-	VirtualMachineSizeTypesStandardD11V2 VirtualMachineSizeTypes = "Standard_D11_v2"
-	VirtualMachineSizeTypesStandardD12 VirtualMachineSizeTypes = "Standard_D12"
-	VirtualMachineSizeTypesStandardD12V2 VirtualMachineSizeTypes = "Standard_D12_v2"
-	VirtualMachineSizeTypesStandardD13 VirtualMachineSizeTypes = "Standard_D13"
-	VirtualMachineSizeTypesStandardD13V2 VirtualMachineSizeTypes = "Standard_D13_v2"
-	VirtualMachineSizeTypesStandardD14 VirtualMachineSizeTypes = "Standard_D14"
-	VirtualMachineSizeTypesStandardD14V2 VirtualMachineSizeTypes = "Standard_D14_v2"
-	VirtualMachineSizeTypesStandardD15V2 VirtualMachineSizeTypes = "Standard_D15_v2"
-	VirtualMachineSizeTypesStandardD16Sv3 VirtualMachineSizeTypes = "Standard_D16s_v3"
-	VirtualMachineSizeTypesStandardD16V3 VirtualMachineSizeTypes = "Standard_D16_v3"
-	VirtualMachineSizeTypesStandardD1V2 VirtualMachineSizeTypes = "Standard_D1_v2"
-	VirtualMachineSizeTypesStandardD2 VirtualMachineSizeTypes = "Standard_D2"
-	VirtualMachineSizeTypesStandardD2Sv3 VirtualMachineSizeTypes = "Standard_D2s_v3"
-	VirtualMachineSizeTypesStandardD2V2 VirtualMachineSizeTypes = "Standard_D2_v2"
-	VirtualMachineSizeTypesStandardD2V3 VirtualMachineSizeTypes = "Standard_D2_v3"
-	VirtualMachineSizeTypesStandardD3 VirtualMachineSizeTypes = "Standard_D3"
-	VirtualMachineSizeTypesStandardD32Sv3 VirtualMachineSizeTypes = "Standard_D32s_v3"
-	VirtualMachineSizeTypesStandardD32V3 VirtualMachineSizeTypes = "Standard_D32_v3"
-	VirtualMachineSizeTypesStandardD3V2 VirtualMachineSizeTypes = "Standard_D3_v2"
-	VirtualMachineSizeTypesStandardD4 VirtualMachineSizeTypes = "Standard_D4"
-	VirtualMachineSizeTypesStandardD4Sv3 VirtualMachineSizeTypes = "Standard_D4s_v3"
-	VirtualMachineSizeTypesStandardD4V2 VirtualMachineSizeTypes = "Standard_D4_v2"
-	VirtualMachineSizeTypesStandardD4V3 VirtualMachineSizeTypes = "Standard_D4_v3"
-	VirtualMachineSizeTypesStandardD5V2 VirtualMachineSizeTypes = "Standard_D5_v2"
-	VirtualMachineSizeTypesStandardD64Sv3 VirtualMachineSizeTypes = "Standard_D64s_v3"
-	VirtualMachineSizeTypesStandardD64V3 VirtualMachineSizeTypes = "Standard_D64_v3"
-	VirtualMachineSizeTypesStandardD8Sv3 VirtualMachineSizeTypes = "Standard_D8s_v3"
-	VirtualMachineSizeTypesStandardD8V3 VirtualMachineSizeTypes = "Standard_D8_v3"
-	VirtualMachineSizeTypesStandardDs1 VirtualMachineSizeTypes = "Standard_DS1"
-	VirtualMachineSizeTypesStandardDs11 VirtualMachineSizeTypes = "Standard_DS11"
-	VirtualMachineSizeTypesStandardDs11V2 VirtualMachineSizeTypes = "Standard_DS11_v2"
-	VirtualMachineSizeTypesStandardDs12 VirtualMachineSizeTypes = "Standard_DS12"
-	VirtualMachineSizeTypesStandardDs12V2 VirtualMachineSizeTypes = "Standard_DS12_v2"
-	VirtualMachineSizeTypesStandardDs13 VirtualMachineSizeTypes = "Standard_DS13"
-	VirtualMachineSizeTypesStandardDs132V2 VirtualMachineSizeTypes = "Standard_DS13-2_v2"
-	VirtualMachineSizeTypesStandardDs134V2 VirtualMachineSizeTypes = "Standard_DS13-4_v2"
-	VirtualMachineSizeTypesStandardDs13V2 VirtualMachineSizeTypes = "Standard_DS13_v2"
-	VirtualMachineSizeTypesStandardDs14 VirtualMachineSizeTypes = "Standard_DS14"
-	VirtualMachineSizeTypesStandardDs144V2 VirtualMachineSizeTypes = "Standard_DS14-4_v2"
-	VirtualMachineSizeTypesStandardDs148V2 VirtualMachineSizeTypes = "Standard_DS14-8_v2"
-	VirtualMachineSizeTypesStandardDs14V2 VirtualMachineSizeTypes = "Standard_DS14_v2"
-	VirtualMachineSizeTypesStandardDs15V2 VirtualMachineSizeTypes = "Standard_DS15_v2"
-	VirtualMachineSizeTypesStandardDs1V2 VirtualMachineSizeTypes = "Standard_DS1_v2"
-	VirtualMachineSizeTypesStandardDs2 VirtualMachineSizeTypes = "Standard_DS2"
-	VirtualMachineSizeTypesStandardDs2V2 VirtualMachineSizeTypes = "Standard_DS2_v2"
-	VirtualMachineSizeTypesStandardDs3 VirtualMachineSizeTypes = "Standard_DS3"
-	VirtualMachineSizeTypesStandardDs3V2 VirtualMachineSizeTypes = "Standard_DS3_v2"
-	VirtualMachineSizeTypesStandardDs4 VirtualMachineSizeTypes = "Standard_DS4"
-	VirtualMachineSizeTypesStandardDs4V2 VirtualMachineSizeTypes = "Standard_DS4_v2"
-	VirtualMachineSizeTypesStandardDs5V2 VirtualMachineSizeTypes = "Standard_DS5_v2"
-	VirtualMachineSizeTypesStandardE16Sv3 VirtualMachineSizeTypes = "Standard_E16s_v3"
-	VirtualMachineSizeTypesStandardE16V3 VirtualMachineSizeTypes = "Standard_E16_v3"
-	VirtualMachineSizeTypesStandardE2Sv3 VirtualMachineSizeTypes = "Standard_E2s_v3"
-	VirtualMachineSizeTypesStandardE2V3 VirtualMachineSizeTypes = "Standard_E2_v3"
-	VirtualMachineSizeTypesStandardE3216V3 VirtualMachineSizeTypes = "Standard_E32-16_v3"
-	VirtualMachineSizeTypesStandardE328Sv3 VirtualMachineSizeTypes = "Standard_E32-8s_v3"
-	VirtualMachineSizeTypesStandardE32Sv3 VirtualMachineSizeTypes = "Standard_E32s_v3"
-	VirtualMachineSizeTypesStandardE32V3 VirtualMachineSizeTypes = "Standard_E32_v3"
-	VirtualMachineSizeTypesStandardE4Sv3 VirtualMachineSizeTypes = "Standard_E4s_v3"
-	VirtualMachineSizeTypesStandardE4V3 VirtualMachineSizeTypes = "Standard_E4_v3"
+	VirtualMachineSizeTypesBasicA0          VirtualMachineSizeTypes = "Basic_A0"
+	VirtualMachineSizeTypesBasicA1          VirtualMachineSizeTypes = "Basic_A1"
+	VirtualMachineSizeTypesBasicA2          VirtualMachineSizeTypes = "Basic_A2"
+	VirtualMachineSizeTypesBasicA3          VirtualMachineSizeTypes = "Basic_A3"
+	VirtualMachineSizeTypesBasicA4          VirtualMachineSizeTypes = "Basic_A4"
+	VirtualMachineSizeTypesStandardA0       VirtualMachineSizeTypes = "Standard_A0"
+	VirtualMachineSizeTypesStandardA1       VirtualMachineSizeTypes = "Standard_A1"
+	VirtualMachineSizeTypesStandardA10      VirtualMachineSizeTypes = "Standard_A10"
+	VirtualMachineSizeTypesStandardA11      VirtualMachineSizeTypes = "Standard_A11"
+	VirtualMachineSizeTypesStandardA1V2     VirtualMachineSizeTypes = "Standard_A1_v2"
+	VirtualMachineSizeTypesStandardA2       VirtualMachineSizeTypes = "Standard_A2"
+	VirtualMachineSizeTypesStandardA2Mv2    VirtualMachineSizeTypes = "Standard_A2m_v2"
+	VirtualMachineSizeTypesStandardA2V2     VirtualMachineSizeTypes = "Standard_A2_v2"
+	VirtualMachineSizeTypesStandardA3       VirtualMachineSizeTypes = "Standard_A3"
+	VirtualMachineSizeTypesStandardA4       VirtualMachineSizeTypes = "Standard_A4"
+	VirtualMachineSizeTypesStandardA4Mv2    VirtualMachineSizeTypes = "Standard_A4m_v2"
+	VirtualMachineSizeTypesStandardA4V2     VirtualMachineSizeTypes = "Standard_A4_v2"
+	VirtualMachineSizeTypesStandardA5       VirtualMachineSizeTypes = "Standard_A5"
+	VirtualMachineSizeTypesStandardA6       VirtualMachineSizeTypes = "Standard_A6"
+	VirtualMachineSizeTypesStandardA7       VirtualMachineSizeTypes = "Standard_A7"
+	VirtualMachineSizeTypesStandardA8       VirtualMachineSizeTypes = "Standard_A8"
+	VirtualMachineSizeTypesStandardA8Mv2    VirtualMachineSizeTypes = "Standard_A8m_v2"
+	VirtualMachineSizeTypesStandardA8V2     VirtualMachineSizeTypes = "Standard_A8_v2"
+	VirtualMachineSizeTypesStandardA9       VirtualMachineSizeTypes = "Standard_A9"
+	VirtualMachineSizeTypesStandardB1MS     VirtualMachineSizeTypes = "Standard_B1ms"
+	VirtualMachineSizeTypesStandardB1S      VirtualMachineSizeTypes = "Standard_B1s"
+	VirtualMachineSizeTypesStandardB2MS     VirtualMachineSizeTypes = "Standard_B2ms"
+	VirtualMachineSizeTypesStandardB2S      VirtualMachineSizeTypes = "Standard_B2s"
+	VirtualMachineSizeTypesStandardB4MS     VirtualMachineSizeTypes = "Standard_B4ms"
+	VirtualMachineSizeTypesStandardB8MS     VirtualMachineSizeTypes = "Standard_B8ms"
+	VirtualMachineSizeTypesStandardD1       VirtualMachineSizeTypes = "Standard_D1"
+	VirtualMachineSizeTypesStandardD11      VirtualMachineSizeTypes = "Standard_D11"
+	VirtualMachineSizeTypesStandardD11V2    VirtualMachineSizeTypes = "Standard_D11_v2"
+	VirtualMachineSizeTypesStandardD12      VirtualMachineSizeTypes = "Standard_D12"
+	VirtualMachineSizeTypesStandardD12V2    VirtualMachineSizeTypes = "Standard_D12_v2"
+	VirtualMachineSizeTypesStandardD13      VirtualMachineSizeTypes = "Standard_D13"
+	VirtualMachineSizeTypesStandardD13V2    VirtualMachineSizeTypes = "Standard_D13_v2"
+	VirtualMachineSizeTypesStandardD14      VirtualMachineSizeTypes = "Standard_D14"
+	VirtualMachineSizeTypesStandardD14V2    VirtualMachineSizeTypes = "Standard_D14_v2"
+	VirtualMachineSizeTypesStandardD15V2    VirtualMachineSizeTypes = "Standard_D15_v2"
+	VirtualMachineSizeTypesStandardD16Sv3   VirtualMachineSizeTypes = "Standard_D16s_v3"
+	VirtualMachineSizeTypesStandardD16V3    VirtualMachineSizeTypes = "Standard_D16_v3"
+	VirtualMachineSizeTypesStandardD1V2     VirtualMachineSizeTypes = "Standard_D1_v2"
+	VirtualMachineSizeTypesStandardD2       VirtualMachineSizeTypes = "Standard_D2"
+	VirtualMachineSizeTypesStandardD2Sv3    VirtualMachineSizeTypes = "Standard_D2s_v3"
+	VirtualMachineSizeTypesStandardD2V2     VirtualMachineSizeTypes = "Standard_D2_v2"
+	VirtualMachineSizeTypesStandardD2V3     VirtualMachineSizeTypes = "Standard_D2_v3"
+	VirtualMachineSizeTypesStandardD3       VirtualMachineSizeTypes = "Standard_D3"
+	VirtualMachineSizeTypesStandardD32Sv3   VirtualMachineSizeTypes = "Standard_D32s_v3"
+	VirtualMachineSizeTypesStandardD32V3    VirtualMachineSizeTypes = "Standard_D32_v3"
+	VirtualMachineSizeTypesStandardD3V2     VirtualMachineSizeTypes = "Standard_D3_v2"
+	VirtualMachineSizeTypesStandardD4       VirtualMachineSizeTypes = "Standard_D4"
+	VirtualMachineSizeTypesStandardD4Sv3    VirtualMachineSizeTypes = "Standard_D4s_v3"
+	VirtualMachineSizeTypesStandardD4V2     VirtualMachineSizeTypes = "Standard_D4_v2"
+	VirtualMachineSizeTypesStandardD4V3     VirtualMachineSizeTypes = "Standard_D4_v3"
+	VirtualMachineSizeTypesStandardD5V2     VirtualMachineSizeTypes = "Standard_D5_v2"
+	VirtualMachineSizeTypesStandardD64Sv3   VirtualMachineSizeTypes = "Standard_D64s_v3"
+	VirtualMachineSizeTypesStandardD64V3    VirtualMachineSizeTypes = "Standard_D64_v3"
+	VirtualMachineSizeTypesStandardD8Sv3    VirtualMachineSizeTypes = "Standard_D8s_v3"
+	VirtualMachineSizeTypesStandardD8V3     VirtualMachineSizeTypes = "Standard_D8_v3"
+	VirtualMachineSizeTypesStandardDs1      VirtualMachineSizeTypes = "Standard_DS1"
+	VirtualMachineSizeTypesStandardDs11     VirtualMachineSizeTypes = "Standard_DS11"
+	VirtualMachineSizeTypesStandardDs11V2   VirtualMachineSizeTypes = "Standard_DS11_v2"
+	VirtualMachineSizeTypesStandardDs12     VirtualMachineSizeTypes = "Standard_DS12"
+	VirtualMachineSizeTypesStandardDs12V2   VirtualMachineSizeTypes = "Standard_DS12_v2"
+	VirtualMachineSizeTypesStandardDs13     VirtualMachineSizeTypes = "Standard_DS13"
+	VirtualMachineSizeTypesStandardDs132V2  VirtualMachineSizeTypes = "Standard_DS13-2_v2"
+	VirtualMachineSizeTypesStandardDs134V2  VirtualMachineSizeTypes = "Standard_DS13-4_v2"
+	VirtualMachineSizeTypesStandardDs13V2   VirtualMachineSizeTypes = "Standard_DS13_v2"
+	VirtualMachineSizeTypesStandardDs14     VirtualMachineSizeTypes = "Standard_DS14"
+	VirtualMachineSizeTypesStandardDs144V2  VirtualMachineSizeTypes = "Standard_DS14-4_v2"
+	VirtualMachineSizeTypesStandardDs148V2  VirtualMachineSizeTypes = "Standard_DS14-8_v2"
+	VirtualMachineSizeTypesStandardDs14V2   VirtualMachineSizeTypes = "Standard_DS14_v2"
+	VirtualMachineSizeTypesStandardDs15V2   VirtualMachineSizeTypes = "Standard_DS15_v2"
+	VirtualMachineSizeTypesStandardDs1V2    VirtualMachineSizeTypes = "Standard_DS1_v2"
+	VirtualMachineSizeTypesStandardDs2      VirtualMachineSizeTypes = "Standard_DS2"
+	VirtualMachineSizeTypesStandardDs2V2    VirtualMachineSizeTypes = "Standard_DS2_v2"
+	VirtualMachineSizeTypesStandardDs3      VirtualMachineSizeTypes = "Standard_DS3"
+	VirtualMachineSizeTypesStandardDs3V2    VirtualMachineSizeTypes = "Standard_DS3_v2"
+	VirtualMachineSizeTypesStandardDs4      VirtualMachineSizeTypes = "Standard_DS4"
+	VirtualMachineSizeTypesStandardDs4V2    VirtualMachineSizeTypes = "Standard_DS4_v2"
+	VirtualMachineSizeTypesStandardDs5V2    VirtualMachineSizeTypes = "Standard_DS5_v2"
+	VirtualMachineSizeTypesStandardE16Sv3   VirtualMachineSizeTypes = "Standard_E16s_v3"
+	VirtualMachineSizeTypesStandardE16V3    VirtualMachineSizeTypes = "Standard_E16_v3"
+	VirtualMachineSizeTypesStandardE2Sv3    VirtualMachineSizeTypes = "Standard_E2s_v3"
+	VirtualMachineSizeTypesStandardE2V3     VirtualMachineSizeTypes = "Standard_E2_v3"
+	VirtualMachineSizeTypesStandardE3216V3  VirtualMachineSizeTypes = "Standard_E32-16_v3"
+	VirtualMachineSizeTypesStandardE328Sv3  VirtualMachineSizeTypes = "Standard_E32-8s_v3"
+	VirtualMachineSizeTypesStandardE32Sv3   VirtualMachineSizeTypes = "Standard_E32s_v3"
+	VirtualMachineSizeTypesStandardE32V3    VirtualMachineSizeTypes = "Standard_E32_v3"
+	VirtualMachineSizeTypesStandardE4Sv3    VirtualMachineSizeTypes = "Standard_E4s_v3"
+	VirtualMachineSizeTypesStandardE4V3     VirtualMachineSizeTypes = "Standard_E4_v3"
 	VirtualMachineSizeTypesStandardE6416Sv3 VirtualMachineSizeTypes = "Standard_E64-16s_v3"
 	VirtualMachineSizeTypesStandardE6432Sv3 VirtualMachineSizeTypes = "Standard_E64-32s_v3"
-	VirtualMachineSizeTypesStandardE64Sv3 VirtualMachineSizeTypes = "Standard_E64s_v3"
-	VirtualMachineSizeTypesStandardE64V3 VirtualMachineSizeTypes = "Standard_E64_v3"
-	VirtualMachineSizeTypesStandardE8Sv3 VirtualMachineSizeTypes = "Standard_E8s_v3"
-	VirtualMachineSizeTypesStandardE8V3 VirtualMachineSizeTypes = "Standard_E8_v3"
-	VirtualMachineSizeTypesStandardF1 VirtualMachineSizeTypes = "Standard_F1"
-	VirtualMachineSizeTypesStandardF16 VirtualMachineSizeTypes = "Standard_F16"
-	VirtualMachineSizeTypesStandardF16S VirtualMachineSizeTypes = "Standard_F16s"
-	VirtualMachineSizeTypesStandardF16Sv2 VirtualMachineSizeTypes = "Standard_F16s_v2"
-	VirtualMachineSizeTypesStandardF1S VirtualMachineSizeTypes = "Standard_F1s"
-	VirtualMachineSizeTypesStandardF2 VirtualMachineSizeTypes = "Standard_F2"
-	VirtualMachineSizeTypesStandardF2S VirtualMachineSizeTypes = "Standard_F2s"
-	VirtualMachineSizeTypesStandardF2Sv2 VirtualMachineSizeTypes = "Standard_F2s_v2"
-	VirtualMachineSizeTypesStandardF32Sv2 VirtualMachineSizeTypes = "Standard_F32s_v2"
-	VirtualMachineSizeTypesStandardF4 VirtualMachineSizeTypes = "Standard_F4"
-	VirtualMachineSizeTypesStandardF4S VirtualMachineSizeTypes = "Standard_F4s"
-	VirtualMachineSizeTypesStandardF4Sv2 VirtualMachineSizeTypes = "Standard_F4s_v2"
-	VirtualMachineSizeTypesStandardF64Sv2 VirtualMachineSizeTypes = "Standard_F64s_v2"
-	VirtualMachineSizeTypesStandardF72Sv2 VirtualMachineSizeTypes = "Standard_F72s_v2"
-	VirtualMachineSizeTypesStandardF8 VirtualMachineSizeTypes = "Standard_F8"
-	VirtualMachineSizeTypesStandardF8S VirtualMachineSizeTypes = "Standard_F8s"
-	VirtualMachineSizeTypesStandardF8Sv2 VirtualMachineSizeTypes = "Standard_F8s_v2"
-	VirtualMachineSizeTypesStandardG1 VirtualMachineSizeTypes = "Standard_G1"
-	VirtualMachineSizeTypesStandardG2 VirtualMachineSizeTypes = "Standard_G2"
-	VirtualMachineSizeTypesStandardG3 VirtualMachineSizeTypes = "Standard_G3"
-	VirtualMachineSizeTypesStandardG4 VirtualMachineSizeTypes = "Standard_G4"
-	VirtualMachineSizeTypesStandardG5 VirtualMachineSizeTypes = "Standard_G5"
-	VirtualMachineSizeTypesStandardGs1 VirtualMachineSizeTypes = "Standard_GS1"
-	VirtualMachineSizeTypesStandardGs2 VirtualMachineSizeTypes = "Standard_GS2"
-	VirtualMachineSizeTypesStandardGs3 VirtualMachineSizeTypes = "Standard_GS3"
-	VirtualMachineSizeTypesStandardGs4 VirtualMachineSizeTypes = "Standard_GS4"
-	VirtualMachineSizeTypesStandardGs44 VirtualMachineSizeTypes = "Standard_GS4-4"
-	VirtualMachineSizeTypesStandardGs48 VirtualMachineSizeTypes = "Standard_GS4-8"
-	VirtualMachineSizeTypesStandardGs5 VirtualMachineSizeTypes = "Standard_GS5"
-	VirtualMachineSizeTypesStandardGs516 VirtualMachineSizeTypes = "Standard_GS5-16"
-	VirtualMachineSizeTypesStandardGs58 VirtualMachineSizeTypes = "Standard_GS5-8"
-	VirtualMachineSizeTypesStandardH16 VirtualMachineSizeTypes = "Standard_H16"
-	VirtualMachineSizeTypesStandardH16M VirtualMachineSizeTypes = "Standard_H16m"
-	VirtualMachineSizeTypesStandardH16Mr VirtualMachineSizeTypes = "Standard_H16mr"
-	VirtualMachineSizeTypesStandardH16R VirtualMachineSizeTypes = "Standard_H16r"
-	VirtualMachineSizeTypesStandardH8 VirtualMachineSizeTypes = "Standard_H8"
-	VirtualMachineSizeTypesStandardH8M VirtualMachineSizeTypes = "Standard_H8m"
-	VirtualMachineSizeTypesStandardL16S VirtualMachineSizeTypes = "Standard_L16s"
-	VirtualMachineSizeTypesStandardL32S VirtualMachineSizeTypes = "Standard_L32s"
-	VirtualMachineSizeTypesStandardL4S VirtualMachineSizeTypes = "Standard_L4s"
-	VirtualMachineSizeTypesStandardL8S VirtualMachineSizeTypes = "Standard_L8s"
+	VirtualMachineSizeTypesStandardE64Sv3   VirtualMachineSizeTypes = "Standard_E64s_v3"
+	VirtualMachineSizeTypesStandardE64V3    VirtualMachineSizeTypes = "Standard_E64_v3"
+	VirtualMachineSizeTypesStandardE8Sv3    VirtualMachineSizeTypes = "Standard_E8s_v3"
+	VirtualMachineSizeTypesStandardE8V3     VirtualMachineSizeTypes = "Standard_E8_v3"
+	VirtualMachineSizeTypesStandardF1       VirtualMachineSizeTypes = "Standard_F1"
+	VirtualMachineSizeTypesStandardF16      VirtualMachineSizeTypes = "Standard_F16"
+	VirtualMachineSizeTypesStandardF16S     VirtualMachineSizeTypes = "Standard_F16s"
+	VirtualMachineSizeTypesStandardF16Sv2   VirtualMachineSizeTypes = "Standard_F16s_v2"
+	VirtualMachineSizeTypesStandardF1S      VirtualMachineSizeTypes = "Standard_F1s"
+	VirtualMachineSizeTypesStandardF2       VirtualMachineSizeTypes = "Standard_F2"
+	VirtualMachineSizeTypesStandardF2S      VirtualMachineSizeTypes = "Standard_F2s"
+	VirtualMachineSizeTypesStandardF2Sv2    VirtualMachineSizeTypes = "Standard_F2s_v2"
+	VirtualMachineSizeTypesStandardF32Sv2   VirtualMachineSizeTypes = "Standard_F32s_v2"
+	VirtualMachineSizeTypesStandardF4       VirtualMachineSizeTypes = "Standard_F4"
+	VirtualMachineSizeTypesStandardF4S      VirtualMachineSizeTypes = "Standard_F4s"
+	VirtualMachineSizeTypesStandardF4Sv2    VirtualMachineSizeTypes = "Standard_F4s_v2"
+	VirtualMachineSizeTypesStandardF64Sv2   VirtualMachineSizeTypes = "Standard_F64s_v2"
+	VirtualMachineSizeTypesStandardF72Sv2   VirtualMachineSizeTypes = "Standard_F72s_v2"
+	VirtualMachineSizeTypesStandardF8       VirtualMachineSizeTypes = "Standard_F8"
+	VirtualMachineSizeTypesStandardF8S      VirtualMachineSizeTypes = "Standard_F8s"
+	VirtualMachineSizeTypesStandardF8Sv2    VirtualMachineSizeTypes = "Standard_F8s_v2"
+	VirtualMachineSizeTypesStandardG1       VirtualMachineSizeTypes = "Standard_G1"
+	VirtualMachineSizeTypesStandardG2       VirtualMachineSizeTypes = "Standard_G2"
+	VirtualMachineSizeTypesStandardG3       VirtualMachineSizeTypes = "Standard_G3"
+	VirtualMachineSizeTypesStandardG4       VirtualMachineSizeTypes = "Standard_G4"
+	VirtualMachineSizeTypesStandardG5       VirtualMachineSizeTypes = "Standard_G5"
+	VirtualMachineSizeTypesStandardGs1      VirtualMachineSizeTypes = "Standard_GS1"
+	VirtualMachineSizeTypesStandardGs2      VirtualMachineSizeTypes = "Standard_GS2"
+	VirtualMachineSizeTypesStandardGs3      VirtualMachineSizeTypes = "Standard_GS3"
+	VirtualMachineSizeTypesStandardGs4      VirtualMachineSizeTypes = "Standard_GS4"
+	VirtualMachineSizeTypesStandardGs44     VirtualMachineSizeTypes = "Standard_GS4-4"
+	VirtualMachineSizeTypesStandardGs48     VirtualMachineSizeTypes = "Standard_GS4-8"
+	VirtualMachineSizeTypesStandardGs5      VirtualMachineSizeTypes = "Standard_GS5"
+	VirtualMachineSizeTypesStandardGs516    VirtualMachineSizeTypes = "Standard_GS5-16"
+	VirtualMachineSizeTypesStandardGs58     VirtualMachineSizeTypes = "Standard_GS5-8"
+	VirtualMachineSizeTypesStandardH16      VirtualMachineSizeTypes = "Standard_H16"
+	VirtualMachineSizeTypesStandardH16M     VirtualMachineSizeTypes = "Standard_H16m"
+	VirtualMachineSizeTypesStandardH16Mr    VirtualMachineSizeTypes = "Standard_H16mr"
+	VirtualMachineSizeTypesStandardH16R     VirtualMachineSizeTypes = "Standard_H16r"
+	VirtualMachineSizeTypesStandardH8       VirtualMachineSizeTypes = "Standard_H8"
+	VirtualMachineSizeTypesStandardH8M      VirtualMachineSizeTypes = "Standard_H8m"
+	VirtualMachineSizeTypesStandardL16S     VirtualMachineSizeTypes = "Standard_L16s"
+	VirtualMachineSizeTypesStandardL32S     VirtualMachineSizeTypes = "Standard_L32s"
+	VirtualMachineSizeTypesStandardL4S      VirtualMachineSizeTypes = "Standard_L4s"
+	VirtualMachineSizeTypesStandardL8S      VirtualMachineSizeTypes = "Standard_L8s"
 	VirtualMachineSizeTypesStandardM12832MS VirtualMachineSizeTypes = "Standard_M128-32ms"
 	VirtualMachineSizeTypesStandardM12864MS VirtualMachineSizeTypes = "Standard_M128-64ms"
-	VirtualMachineSizeTypesStandardM128MS VirtualMachineSizeTypes = "Standard_M128ms"
-	VirtualMachineSizeTypesStandardM128S VirtualMachineSizeTypes = "Standard_M128s"
-	VirtualMachineSizeTypesStandardM6416MS VirtualMachineSizeTypes = "Standard_M64-16ms"
-	VirtualMachineSizeTypesStandardM6432MS VirtualMachineSizeTypes = "Standard_M64-32ms"
-	VirtualMachineSizeTypesStandardM64MS VirtualMachineSizeTypes = "Standard_M64ms"
-	VirtualMachineSizeTypesStandardM64S VirtualMachineSizeTypes = "Standard_M64s"
-	VirtualMachineSizeTypesStandardNc12 VirtualMachineSizeTypes = "Standard_NC12"
-	VirtualMachineSizeTypesStandardNc12Sv2 VirtualMachineSizeTypes = "Standard_NC12s_v2"
-	VirtualMachineSizeTypesStandardNc12Sv3 VirtualMachineSizeTypes = "Standard_NC12s_v3"
-	VirtualMachineSizeTypesStandardNc24 VirtualMachineSizeTypes = "Standard_NC24"
-	VirtualMachineSizeTypesStandardNc24R VirtualMachineSizeTypes = "Standard_NC24r"
+	VirtualMachineSizeTypesStandardM128MS   VirtualMachineSizeTypes = "Standard_M128ms"
+	VirtualMachineSizeTypesStandardM128S    VirtualMachineSizeTypes = "Standard_M128s"
+	VirtualMachineSizeTypesStandardM6416MS  VirtualMachineSizeTypes = "Standard_M64-16ms"
+	VirtualMachineSizeTypesStandardM6432MS  VirtualMachineSizeTypes = "Standard_M64-32ms"
+	VirtualMachineSizeTypesStandardM64MS    VirtualMachineSizeTypes = "Standard_M64ms"
+	VirtualMachineSizeTypesStandardM64S     VirtualMachineSizeTypes = "Standard_M64s"
+	VirtualMachineSizeTypesStandardNc12     VirtualMachineSizeTypes = "Standard_NC12"
+	VirtualMachineSizeTypesStandardNc12Sv2  VirtualMachineSizeTypes = "Standard_NC12s_v2"
+	VirtualMachineSizeTypesStandardNc12Sv3  VirtualMachineSizeTypes = "Standard_NC12s_v3"
+	VirtualMachineSizeTypesStandardNc24     VirtualMachineSizeTypes = "Standard_NC24"
+	VirtualMachineSizeTypesStandardNc24R    VirtualMachineSizeTypes = "Standard_NC24r"
 	VirtualMachineSizeTypesStandardNc24RsV2 VirtualMachineSizeTypes = "Standard_NC24rs_v2"
 	VirtualMachineSizeTypesStandardNc24RsV3 VirtualMachineSizeTypes = "Standard_NC24rs_v3"
-	VirtualMachineSizeTypesStandardNc24Sv2 VirtualMachineSizeTypes = "Standard_NC24s_v2"
-	VirtualMachineSizeTypesStandardNc24Sv3 VirtualMachineSizeTypes = "Standard_NC24s_v3"
-	VirtualMachineSizeTypesStandardNc6 VirtualMachineSizeTypes = "Standard_NC6"
-	VirtualMachineSizeTypesStandardNc6Sv2 VirtualMachineSizeTypes = "Standard_NC6s_v2"
-	VirtualMachineSizeTypesStandardNc6Sv3 VirtualMachineSizeTypes = "Standard_NC6s_v3"
-	VirtualMachineSizeTypesStandardNd12S VirtualMachineSizeTypes = "Standard_ND12s"
-	VirtualMachineSizeTypesStandardNd24Rs VirtualMachineSizeTypes = "Standard_ND24rs"
-	VirtualMachineSizeTypesStandardNd24S VirtualMachineSizeTypes = "Standard_ND24s"
-	VirtualMachineSizeTypesStandardNd6S VirtualMachineSizeTypes = "Standard_ND6s"
-	VirtualMachineSizeTypesStandardNv12 VirtualMachineSizeTypes = "Standard_NV12"
-	VirtualMachineSizeTypesStandardNv24 VirtualMachineSizeTypes = "Standard_NV24"
-	VirtualMachineSizeTypesStandardNv6 VirtualMachineSizeTypes = "Standard_NV6"
+	VirtualMachineSizeTypesStandardNc24Sv2  VirtualMachineSizeTypes = "Standard_NC24s_v2"
+	VirtualMachineSizeTypesStandardNc24Sv3  VirtualMachineSizeTypes = "Standard_NC24s_v3"
+	VirtualMachineSizeTypesStandardNc6      VirtualMachineSizeTypes = "Standard_NC6"
+	VirtualMachineSizeTypesStandardNc6Sv2   VirtualMachineSizeTypes = "Standard_NC6s_v2"
+	VirtualMachineSizeTypesStandardNc6Sv3   VirtualMachineSizeTypes = "Standard_NC6s_v3"
+	VirtualMachineSizeTypesStandardNd12S    VirtualMachineSizeTypes = "Standard_ND12s"
+	VirtualMachineSizeTypesStandardNd24Rs   VirtualMachineSizeTypes = "Standard_ND24rs"
+	VirtualMachineSizeTypesStandardNd24S    VirtualMachineSizeTypes = "Standard_ND24s"
+	VirtualMachineSizeTypesStandardNd6S     VirtualMachineSizeTypes = "Standard_ND6s"
+	VirtualMachineSizeTypesStandardNv12     VirtualMachineSizeTypes = "Standard_NV12"
+	VirtualMachineSizeTypesStandardNv24     VirtualMachineSizeTypes = "Standard_NV24"
+	VirtualMachineSizeTypesStandardNv6      VirtualMachineSizeTypes = "Standard_NV6"
 )
 
 func PossibleVirtualMachineSizeTypesValues() []VirtualMachineSizeTypes {
-	return []VirtualMachineSizeTypes{	
+	return []VirtualMachineSizeTypes{
 		VirtualMachineSizeTypesBasicA0,
 		VirtualMachineSizeTypesBasicA1,
 		VirtualMachineSizeTypesBasicA2,
@@ -2021,4 +2021,3 @@ func PossibleVirtualMachineSizeTypesValues() []VirtualMachineSizeTypes {
 func (c VirtualMachineSizeTypes) ToPtr() *VirtualMachineSizeTypes {
 	return &c
 }
-

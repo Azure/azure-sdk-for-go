@@ -22,29 +22,29 @@ import (
 
 // SnapshotsOperations contains the methods for the Snapshots group.
 type SnapshotsOperations interface {
-// BeginCreateOrUpdate - Creates or updates a snapshot.
+	// BeginCreateOrUpdate - Creates or updates a snapshot.
 	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot Snapshot, options *SnapshotsCreateOrUpdateOptions) (*SnapshotPollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (SnapshotPoller, error)
-// BeginDelete - Deletes a snapshot.
+	// BeginDelete - Deletes a snapshot.
 	BeginDelete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
-// Get - Gets information about a snapshot.
+	// Get - Gets information about a snapshot.
 	Get(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsGetOptions) (*SnapshotResponse, error)
-// BeginGrantAccess - Grants access to a snapshot.
+	// BeginGrantAccess - Grants access to a snapshot.
 	BeginGrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsGrantAccessOptions) (*AccessURIPollerResponse, error)
 	// ResumeGrantAccess - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeGrantAccess(token string) (AccessURIPoller, error)
-// List - Lists snapshots under a subscription.
-	List(options *SnapshotsListOptions) (SnapshotListPager)
-// ListByResourceGroup - Lists snapshots under a resource group.
-	ListByResourceGroup(resourceGroupName string, options *SnapshotsListByResourceGroupOptions) (SnapshotListPager)
-// BeginRevokeAccess - Revokes access to a snapshot.
+	// List - Lists snapshots under a subscription.
+	List(options *SnapshotsListOptions) SnapshotListPager
+	// ListByResourceGroup - Lists snapshots under a resource group.
+	ListByResourceGroup(resourceGroupName string, options *SnapshotsListByResourceGroupOptions) SnapshotListPager
+	// BeginRevokeAccess - Revokes access to a snapshot.
 	BeginRevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsRevokeAccessOptions) (*HTTPPollerResponse, error)
 	// ResumeRevokeAccess - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeRevokeAccess(token string) (HTTPPoller, error)
-// BeginUpdate - Updates (patches) a snapshot.
+	// BeginUpdate - Updates (patches) a snapshot.
 	BeginUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsUpdateOptions) (*SnapshotPollerResponse, error)
 	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeUpdate(token string) (SnapshotPoller, error)
@@ -53,7 +53,7 @@ type SnapshotsOperations interface {
 // SnapshotsClient implements the SnapshotsOperations interface.
 // Don't use this type directly, use NewSnapshotsClient() instead.
 type SnapshotsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -80,7 +80,7 @@ func (client *SnapshotsClient) BeginCreateOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	poller := &snapshotPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -97,7 +97,7 @@ func (client *SnapshotsClient) ResumeCreateOrUpdate(token string) (SnapshotPolle
 	}
 	return &snapshotPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -114,7 +114,7 @@ func (client *SnapshotsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.CreateOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -143,15 +143,15 @@ func (client *SnapshotsClient) CreateOrUpdateHandleResponse(resp *azcore.Respons
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *SnapshotsClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsDeleteOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, snapshotName, options)
@@ -166,7 +166,7 @@ func (client *SnapshotsClient) BeginDelete(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -183,7 +183,7 @@ func (client *SnapshotsClient) ResumeDelete(token string) (HTTPPoller, error) {
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -200,7 +200,7 @@ func (client *SnapshotsClient) Delete(ctx context.Context, resourceGroupName str
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.DeleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // DeleteCreateRequest creates the Delete request.
@@ -222,15 +222,15 @@ func (client *SnapshotsClient) DeleteCreateRequest(ctx context.Context, resource
 
 // DeleteHandleError handles the Delete error response.
 func (client *SnapshotsClient) DeleteHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // Get - Gets information about a snapshot.
 func (client *SnapshotsClient) Get(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsGetOptions) (*SnapshotResponse, error) {
@@ -278,15 +278,15 @@ func (client *SnapshotsClient) GetHandleResponse(resp *azcore.Response) (*Snapsh
 
 // GetHandleError handles the Get error response.
 func (client *SnapshotsClient) GetHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData GrantAccessData, options *SnapshotsGrantAccessOptions) (*AccessURIPollerResponse, error) {
 	resp, err := client.GrantAccess(ctx, resourceGroupName, snapshotName, grantAccessData, options)
@@ -301,7 +301,7 @@ func (client *SnapshotsClient) BeginGrantAccess(ctx context.Context, resourceGro
 		return nil, err
 	}
 	poller := &accessUriPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -318,7 +318,7 @@ func (client *SnapshotsClient) ResumeGrantAccess(token string) (AccessURIPoller,
 	}
 	return &accessUriPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -335,7 +335,7 @@ func (client *SnapshotsClient) GrantAccess(ctx context.Context, resourceGroupNam
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.GrantAccessHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // GrantAccessCreateRequest creates the GrantAccess request.
@@ -364,18 +364,18 @@ func (client *SnapshotsClient) GrantAccessHandleResponse(resp *azcore.Response) 
 
 // GrantAccessHandleError handles the GrantAccess error response.
 func (client *SnapshotsClient) GrantAccessHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // List - Lists snapshots under a subscription.
-func (client *SnapshotsClient) List(options *SnapshotsListOptions) (SnapshotListPager) {
+func (client *SnapshotsClient) List(options *SnapshotsListOptions) SnapshotListPager {
 	return &snapshotListPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -414,18 +414,18 @@ func (client *SnapshotsClient) ListHandleResponse(resp *azcore.Response) (*Snaps
 
 // ListHandleError handles the List error response.
 func (client *SnapshotsClient) ListHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // ListByResourceGroup - Lists snapshots under a resource group.
-func (client *SnapshotsClient) ListByResourceGroup(resourceGroupName string, options *SnapshotsListByResourceGroupOptions) (SnapshotListPager) {
+func (client *SnapshotsClient) ListByResourceGroup(resourceGroupName string, options *SnapshotsListByResourceGroupOptions) SnapshotListPager {
 	return &snapshotListPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -465,15 +465,15 @@ func (client *SnapshotsClient) ListByResourceGroupHandleResponse(resp *azcore.Re
 
 // ListByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *SnapshotsClient) ListByResourceGroupHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, snapshotName string, options *SnapshotsRevokeAccessOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.RevokeAccess(ctx, resourceGroupName, snapshotName, options)
@@ -488,7 +488,7 @@ func (client *SnapshotsClient) BeginRevokeAccess(ctx context.Context, resourceGr
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -505,7 +505,7 @@ func (client *SnapshotsClient) ResumeRevokeAccess(token string) (HTTPPoller, err
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -522,7 +522,7 @@ func (client *SnapshotsClient) RevokeAccess(ctx context.Context, resourceGroupNa
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.RevokeAccessHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // RevokeAccessCreateRequest creates the RevokeAccess request.
@@ -544,15 +544,15 @@ func (client *SnapshotsClient) RevokeAccessCreateRequest(ctx context.Context, re
 
 // RevokeAccessHandleError handles the RevokeAccess error response.
 func (client *SnapshotsClient) RevokeAccessHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupName string, snapshotName string, snapshot SnapshotUpdate, options *SnapshotsUpdateOptions) (*SnapshotPollerResponse, error) {
 	resp, err := client.Update(ctx, resourceGroupName, snapshotName, snapshot, options)
@@ -567,7 +567,7 @@ func (client *SnapshotsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	poller := &snapshotPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -584,7 +584,7 @@ func (client *SnapshotsClient) ResumeUpdate(token string) (SnapshotPoller, error
 	}
 	return &snapshotPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -601,7 +601,7 @@ func (client *SnapshotsClient) Update(ctx context.Context, resourceGroupName str
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.UpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // UpdateCreateRequest creates the Update request.
@@ -630,13 +630,12 @@ func (client *SnapshotsClient) UpdateHandleResponse(resp *azcore.Response) (*Sna
 
 // UpdateHandleError handles the Update error response.
 func (client *SnapshotsClient) UpdateHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
-
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}

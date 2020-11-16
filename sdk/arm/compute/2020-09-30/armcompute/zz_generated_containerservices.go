@@ -22,35 +22,35 @@ import (
 
 // ContainerServicesOperations contains the methods for the ContainerServices group.
 type ContainerServicesOperations interface {
-// BeginCreateOrUpdate - Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
+	// BeginCreateOrUpdate - Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
 	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, containerServiceName string, parameters ContainerService, options *ContainerServicesCreateOrUpdateOptions) (*ContainerServicePollerResponse, error)
 	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeCreateOrUpdate(token string) (ContainerServicePoller, error)
-// BeginDelete - Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources
-// created as part of creating a container service, including
-// storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can
-// be deleted individually.
+	// BeginDelete - Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources
+	// created as part of creating a container service, including
+	// storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can
+	// be deleted individually.
 	BeginDelete(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesDeleteOptions) (*HTTPPollerResponse, error)
 	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
 	ResumeDelete(token string) (HTTPPoller, error)
-// Get - Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including
-// state, orchestrator, number of masters and
-// agents, and FQDNs of masters and agents.
+	// Get - Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including
+	// state, orchestrator, number of masters and
+	// agents, and FQDNs of masters and agents.
 	Get(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesGetOptions) (*ContainerServiceResponse, error)
-// List - Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator,
-// number of masters and agents, and FQDNs of
-// masters and agents.
-	List(options *ContainerServicesListOptions) (ContainerServiceListResultPager)
-// ListByResourceGroup - Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container
-// service including state, orchestrator, number of masters and
-// agents, and FQDNs of masters and agents.
-	ListByResourceGroup(resourceGroupName string, options *ContainerServicesListByResourceGroupOptions) (ContainerServiceListResultPager)
+	// List - Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator,
+	// number of masters and agents, and FQDNs of
+	// masters and agents.
+	List(options *ContainerServicesListOptions) ContainerServiceListResultPager
+	// ListByResourceGroup - Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container
+	// service including state, orchestrator, number of masters and
+	// agents, and FQDNs of masters and agents.
+	ListByResourceGroup(resourceGroupName string, options *ContainerServicesListByResourceGroupOptions) ContainerServiceListResultPager
 }
 
 // ContainerServicesClient implements the ContainerServicesOperations interface.
 // Don't use this type directly, use NewContainerServicesClient() instead.
 type ContainerServicesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -77,7 +77,7 @@ func (client *ContainerServicesClient) BeginCreateOrUpdate(ctx context.Context, 
 		return nil, err
 	}
 	poller := &containerServicePoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -94,7 +94,7 @@ func (client *ContainerServicesClient) ResumeCreateOrUpdate(token string) (Conta
 	}
 	return &containerServicePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -111,7 +111,7 @@ func (client *ContainerServicesClient) CreateOrUpdate(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.CreateOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -140,15 +140,15 @@ func (client *ContainerServicesClient) CreateOrUpdateHandleResponse(resp *azcore
 
 // CreateOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *ContainerServicesClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 func (client *ContainerServicesClient) BeginDelete(ctx context.Context, resourceGroupName string, containerServiceName string, options *ContainerServicesDeleteOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, containerServiceName, options)
@@ -163,7 +163,7 @@ func (client *ContainerServicesClient) BeginDelete(ctx context.Context, resource
 		return nil, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -180,7 +180,7 @@ func (client *ContainerServicesClient) ResumeDelete(token string) (HTTPPoller, e
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -200,7 +200,7 @@ func (client *ContainerServicesClient) Delete(ctx context.Context, resourceGroup
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.DeleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // DeleteCreateRequest creates the Delete request.
@@ -222,15 +222,15 @@ func (client *ContainerServicesClient) DeleteCreateRequest(ctx context.Context, 
 
 // DeleteHandleError handles the Delete error response.
 func (client *ContainerServicesClient) DeleteHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // Get - Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including
 // state, orchestrator, number of masters and
@@ -280,20 +280,20 @@ func (client *ContainerServicesClient) GetHandleResponse(resp *azcore.Response) 
 
 // GetHandleError handles the Get error response.
 func (client *ContainerServicesClient) GetHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // List - Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator,
 // number of masters and agents, and FQDNs of
 // masters and agents.
-func (client *ContainerServicesClient) List(options *ContainerServicesListOptions) (ContainerServiceListResultPager) {
+func (client *ContainerServicesClient) List(options *ContainerServicesListOptions) ContainerServiceListResultPager {
 	return &containerServiceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -332,20 +332,20 @@ func (client *ContainerServicesClient) ListHandleResponse(resp *azcore.Response)
 
 // ListHandleError handles the List error response.
 func (client *ContainerServicesClient) ListHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // ListByResourceGroup - Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container
 // service including state, orchestrator, number of masters and
 // agents, and FQDNs of masters and agents.
-func (client *ContainerServicesClient) ListByResourceGroup(resourceGroupName string, options *ContainerServicesListByResourceGroupOptions) (ContainerServiceListResultPager) {
+func (client *ContainerServicesClient) ListByResourceGroup(resourceGroupName string, options *ContainerServicesListByResourceGroupOptions) ContainerServiceListResultPager {
 	return &containerServiceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -385,13 +385,12 @@ func (client *ContainerServicesClient) ListByResourceGroupHandleResponse(resp *a
 
 // ListByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *ContainerServicesClient) ListByResourceGroupHandleError(resp *azcore.Response) error {
-body, err := ioutil.ReadAll(resp.Body)
-    if err != nil {
-      return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
-    }
-    if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
-
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+	}
+	if len(body) == 0 {
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}

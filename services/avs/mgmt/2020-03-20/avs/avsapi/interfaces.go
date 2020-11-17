@@ -68,7 +68,7 @@ var _ ClustersClientAPI = (*avs.ClustersClient)(nil)
 
 // HcxEnterpriseSitesClientAPI contains the set of methods on the HcxEnterpriseSitesClient type.
 type HcxEnterpriseSitesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, hcxEnterpriseSite interface{}) (result avs.HcxEnterpriseSite, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, hcxEnterpriseSite avs.HcxEnterpriseSite) (result avs.HcxEnterpriseSite, err error)
 	Delete(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string) (result avs.HcxEnterpriseSite, err error)
 	List(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.HcxEnterpriseSiteListPage, err error)
@@ -79,7 +79,7 @@ var _ HcxEnterpriseSitesClientAPI = (*avs.HcxEnterpriseSitesClient)(nil)
 
 // AuthorizationsClientAPI contains the set of methods on the AuthorizationsClient type.
 type AuthorizationsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, authorization interface{}) (result avs.AuthorizationsCreateOrUpdateFuture, err error)
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, authorization avs.ExpressRouteAuthorization) (result avs.AuthorizationsCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string) (result avs.AuthorizationsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string) (result avs.ExpressRouteAuthorization, err error)
 	List(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.ExpressRouteAuthorizationListPage, err error)

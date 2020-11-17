@@ -63,7 +63,8 @@ func ExampleVirtualMachinesOperations_BeginCreateOrUpdate() {
 					NetworkInterfaces: &[]armcompute.NetworkInterfaceReference{
 						{
 							SubResource: armcompute.SubResource{
-								ID: to.StringPtr("<NIC ID>"), // call armnetwork.NetworkInterfacesClient.Get to retreive an existing NIC and see the ID
+								// call armnetwork.NetworkInterfacesOperations.Get to retreive an existing NIC and see the ID
+								ID: to.StringPtr("<NIC ID>"),
 							},
 							Properties: &armcompute.NetworkInterfaceReferenceProperties{
 								Primary: to.BoolPtr(true),
@@ -142,11 +143,76 @@ func ExampleVirtualMachinesOperations_BeginCreateOrUpdate_withDisk() {
 							Lun:          to.Int32Ptr(0),
 							ManagedDisk: &armcompute.ManagedDiskParameters{
 								SubResource: armcompute.SubResource{
-									ID: to.StringPtr("<disk ID>"), // call armcompute.DisksClient.Get to retreive an existing disk and see the ID
+									// call armcompute.DisksOperations.Get to retreive an existing disk and see the ID
+									ID: to.StringPtr("<disk ID>"),
 								},
 							},
 						},
 					},
+				},
+			},
+		},
+		nil,
+	)
+	if err != nil {
+		log.Fatalf("failed to obtain a response: %v", err)
+	}
+	resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
+	if err != nil {
+		log.Fatalf("failed to obtain a response: %v", err)
+	}
+	log.Printf("VM ID: %v", *resp.VirtualMachine.ID)
+}
+
+func ExampleVirtualMachinesOperations_BeginCreateOrUpdate_withLoadBalancer() {
+	vmName := "<VM name>"
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	client := armcompute.NewVirtualMachinesClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	poller, err := client.BeginCreateOrUpdate(
+		context.Background(),
+		"<resource group name>",
+		vmName,
+		armcompute.VirtualMachine{
+			Resource: armcompute.Resource{
+				Name:     to.StringPtr(vmName),
+				Location: to.StringPtr("<Azure location>"),
+			},
+			Properties: &armcompute.VirtualMachineProperties{
+				HardwareProfile: &armcompute.HardwareProfile{
+					VMSize: armcompute.VirtualMachineSizeTypesStandardA0.ToPtr(),
+				},
+				StorageProfile: &armcompute.StorageProfile{
+					ImageReference: &armcompute.ImageReference{
+						Publisher: to.StringPtr("<publisher>"),
+						Offer:     to.StringPtr("<offer>"),
+						SKU:       to.StringPtr("<sku>"),
+						Version:   to.StringPtr("latest"),
+					},
+				},
+				OSProfile: &armcompute.OSProfile{
+					ComputerName:  to.StringPtr(vmName),
+					AdminUsername: to.StringPtr("azureuser"),
+					AdminPassword: to.StringPtr("password!1delete"),
+				},
+				NetworkProfile: &armcompute.NetworkProfile{
+					NetworkInterfaces: &[]armcompute.NetworkInterfaceReference{
+						{
+							SubResource: armcompute.SubResource{
+								// get the NIC ID by calling armnetwork.NetworkInterfacesOperations.Get and retreiving the ID from the desired NIC instance
+								ID: to.StringPtr("<NIC ID>"),
+							},
+							Properties: &armcompute.NetworkInterfaceReferenceProperties{
+								Primary: to.BoolPtr(true),
+							},
+						},
+					},
+				},
+				AvailabilitySet: &armcompute.SubResource{
+					// get the availability set ID by calling armcompute.AvailabilitySetsOperations.Get and retreiving the ID from the desired availability set instance
+					ID: to.StringPtr("<availability set ID>"),
 				},
 			},
 		},

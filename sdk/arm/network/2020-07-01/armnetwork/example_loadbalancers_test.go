@@ -128,7 +128,7 @@ func ExampleLoadBalancersOperations_BeginCreateOrUpdate() {
 	}
 	resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to create resource: %v", err)
 	}
 	log.Printf("load balancer ID: %v", *resp.LoadBalancer.ID)
 }
@@ -141,7 +141,7 @@ func ExampleLoadBalancersOperations_Get() {
 	client := armnetwork.NewLoadBalancersClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.Get(context.Background(), "<resource group name>", "<load balancer name>", nil)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to get resource: %v", err)
 	}
 	log.Printf("load balancer ID: %v", *resp.LoadBalancer.ID)
 }

@@ -41,7 +41,7 @@ func ExamplePublicIPAddressesOperations_BeginCreateOrUpdate() {
 	}
 	resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to create resource: %v", err)
 	}
 	log.Printf("public IP address ID: %v", *resp.PublicIPAddress.ID)
 }
@@ -54,7 +54,7 @@ func ExamplePublicIPAddressesOperations_Get() {
 	client := armnetwork.NewPublicIPAddressesClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.Get(context.Background(), "<resource group name>", "<IP name>", nil)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to get resource: %v", err)
 	}
 	log.Printf("public IP address ID: %v", *resp.PublicIPAddress.ID)
 }

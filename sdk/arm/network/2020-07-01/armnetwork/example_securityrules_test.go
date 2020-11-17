@@ -45,7 +45,7 @@ func ExampleSecurityRulesOperations_BeginCreateOrUpdate_allowSSH() {
 	}
 	resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to create resource: %v", err)
 	}
 	log.Printf("security rule ID: %v", *resp.SecurityRule.ID)
 }
@@ -81,7 +81,7 @@ func ExampleSecurityRulesOperations_BeginCreateOrUpdate_allowHTTP() {
 	}
 	resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to create resource: %v", err)
 	}
 	log.Printf("security rule ID: %v", *resp.SecurityRule.ID)
 }
@@ -117,7 +117,7 @@ func ExampleSecurityRulesOperations_BeginCreateOrUpdate_allowSQL() {
 	}
 	resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to create resource: %v", err)
 	}
 	log.Printf("security rule ID: %v", *resp.SecurityRule.ID)
 }
@@ -153,7 +153,7 @@ func ExampleSecurityRulesOperations_BeginCreateOrUpdate_denyOut() {
 	}
 	resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to create resource: %v", err)
 	}
 	log.Printf("security rule ID: %v", *resp.SecurityRule.ID)
 }

@@ -68,7 +68,7 @@ func ExampleNetworkInterfacesOperations_Get() {
 	client := armnetwork.NewNetworkInterfacesClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.Get(context.Background(), "<resource group name>", "<NIC name>", nil)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to get resource: %v", err)
 	}
 	log.Printf("NIC ID: %v", *resp.NetworkInterface.ID)
 }

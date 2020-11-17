@@ -42,7 +42,7 @@ func ExampleVirtualNetworksOperations_BeginCreateOrUpdate() {
 	}
 	resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to create resource: %v", err)
 	}
 	log.Printf("virtual network ID: %v", *resp.VirtualNetwork.ID)
 }
@@ -89,7 +89,7 @@ func ExampleVirtualNetworksOperations_BeginCreateOrUpdate_withSubnets() {
 	}
 	resp, err := poller.PollUntilDone(context.Background(), 30*time.Second)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to create resource: %v", err)
 	}
 	log.Printf("virtual network ID: %v", *resp.VirtualNetwork.ID)
 }
@@ -102,7 +102,7 @@ func ExampleVirtualNetworksOperations_Get() {
 	client := armnetwork.NewVirtualNetworksClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.Get(context.Background(), "<resource group name>", "<virtual network name>", nil)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to get resource: %v", err)
 	}
 	log.Printf("virtual network ID: %v", *resp.VirtualNetwork.ID)
 }

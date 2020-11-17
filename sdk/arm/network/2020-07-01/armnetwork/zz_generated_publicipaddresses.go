@@ -29,12 +29,18 @@ type PublicIPAddressesOperations interface {
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets the specified public IP address in a specified resource group.
 	Get(ctx context.Context, resourceGroupName string, publicIPAddressName string, options *PublicIPAddressesGetOptions) (*PublicIPAddressResponse, error)
+	// GetCloudServicePublicIPAddress - Get the specified public IP address in a cloud service.
+	GetCloudServicePublicIPAddress(ctx context.Context, resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, ipConfigurationName string, publicIPAddressName string, options *PublicIPAddressesGetCloudServicePublicIPAddressOptions) (*PublicIPAddressResponse, error)
 	// GetVirtualMachineScaleSetPublicIPAddress - Get the specified public IP address in a virtual machine scale set.
 	GetVirtualMachineScaleSetPublicIPAddress(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, publicIPAddressName string, options *PublicIPAddressesGetVirtualMachineScaleSetPublicIPAddressOptions) (*PublicIPAddressResponse, error)
 	// List - Gets all public IP addresses in a resource group.
 	List(resourceGroupName string, options *PublicIPAddressesListOptions) PublicIPAddressListResultPager
 	// ListAll - Gets all the public IP addresses in a subscription.
 	ListAll(options *PublicIPAddressesListAllOptions) PublicIPAddressListResultPager
+	// ListCloudServicePublicIPAddresses - Gets information about all public IP addresses on a cloud service level.
+	ListCloudServicePublicIPAddresses(resourceGroupName string, cloudServiceName string, options *PublicIPAddressesListCloudServicePublicIPAddressesOptions) PublicIPAddressListResultPager
+	// ListCloudServiceRoleInstancePublicIPAddresses - Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
+	ListCloudServiceRoleInstancePublicIPAddresses(resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesListCloudServiceRoleInstancePublicIPAddressesOptions) PublicIPAddressListResultPager
 	// ListVirtualMachineScaleSetPublicIPAddresses - Gets information about all public IP addresses on a virtual machine scale set level.
 	ListVirtualMachineScaleSetPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string, options *PublicIPAddressesListVirtualMachineScaleSetPublicIPAddressesOptions) PublicIPAddressListResultPager
 	// ListVirtualMachineScaleSetVMPublicIPaddresses - Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine
@@ -277,6 +283,66 @@ func (client *PublicIPAddressesClient) GetHandleError(resp *azcore.Response) err
 	return azcore.NewResponseError(&err, resp.Response)
 }
 
+// GetCloudServicePublicIPAddress - Get the specified public IP address in a cloud service.
+func (client *PublicIPAddressesClient) GetCloudServicePublicIPAddress(ctx context.Context, resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, ipConfigurationName string, publicIPAddressName string, options *PublicIPAddressesGetCloudServicePublicIPAddressOptions) (*PublicIPAddressResponse, error) {
+	req, err := client.GetCloudServicePublicIPAddressCreateRequest(ctx, resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, ipConfigurationName, publicIPAddressName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		return nil, client.GetCloudServicePublicIPAddressHandleError(resp)
+	}
+	result, err := client.GetCloudServicePublicIPAddressHandleResponse(resp)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// GetCloudServicePublicIPAddressCreateRequest creates the GetCloudServicePublicIPAddress request.
+func (client *PublicIPAddressesClient) GetCloudServicePublicIPAddressCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, ipConfigurationName string, publicIPAddressName string, options *PublicIPAddressesGetCloudServicePublicIPAddressOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses/{publicIpAddressName}"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{cloudServiceName}", url.PathEscape(cloudServiceName))
+	urlPath = strings.ReplaceAll(urlPath, "{roleInstanceName}", url.PathEscape(roleInstanceName))
+	urlPath = strings.ReplaceAll(urlPath, "{networkInterfaceName}", url.PathEscape(networkInterfaceName))
+	urlPath = strings.ReplaceAll(urlPath, "{ipConfigurationName}", url.PathEscape(ipConfigurationName))
+	urlPath = strings.ReplaceAll(urlPath, "{publicIpAddressName}", url.PathEscape(publicIPAddressName))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	query := req.URL.Query()
+	query.Set("api-version", "2020-07-01")
+	if options != nil && options.Expand != nil {
+		query.Set("$expand", *options.Expand)
+	}
+	req.URL.RawQuery = query.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// GetCloudServicePublicIPAddressHandleResponse handles the GetCloudServicePublicIPAddress response.
+func (client *PublicIPAddressesClient) GetCloudServicePublicIPAddressHandleResponse(resp *azcore.Response) (*PublicIPAddressResponse, error) {
+	result := PublicIPAddressResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.PublicIPAddress)
+}
+
+// GetCloudServicePublicIPAddressHandleError handles the GetCloudServicePublicIPAddress error response.
+func (client *PublicIPAddressesClient) GetCloudServicePublicIPAddressHandleError(resp *azcore.Response) error {
+	var err CloudError
+	if err := resp.UnmarshalAsJSON(&err); err != nil {
+		return err
+	}
+	return azcore.NewResponseError(&err, resp.Response)
+}
+
 // GetVirtualMachineScaleSetPublicIPAddress - Get the specified public IP address in a virtual machine scale set.
 func (client *PublicIPAddressesClient) GetVirtualMachineScaleSetPublicIPAddress(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, publicIPAddressName string, options *PublicIPAddressesGetVirtualMachineScaleSetPublicIPAddressOptions) (*PublicIPAddressResponse, error) {
 	req, err := client.GetVirtualMachineScaleSetPublicIPAddressCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIPAddressName, options)
@@ -425,6 +491,107 @@ func (client *PublicIPAddressesClient) ListAllHandleResponse(resp *azcore.Respon
 
 // ListAllHandleError handles the ListAll error response.
 func (client *PublicIPAddressesClient) ListAllHandleError(resp *azcore.Response) error {
+	var err CloudError
+	if err := resp.UnmarshalAsJSON(&err); err != nil {
+		return err
+	}
+	return azcore.NewResponseError(&err, resp.Response)
+}
+
+// ListCloudServicePublicIPAddresses - Gets information about all public IP addresses on a cloud service level.
+func (client *PublicIPAddressesClient) ListCloudServicePublicIPAddresses(resourceGroupName string, cloudServiceName string, options *PublicIPAddressesListCloudServicePublicIPAddressesOptions) PublicIPAddressListResultPager {
+	return &publicIPAddressListResultPager{
+		pipeline: client.con.Pipeline(),
+		requester: func(ctx context.Context) (*azcore.Request, error) {
+			return client.ListCloudServicePublicIPAddressesCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
+		},
+		responder: client.ListCloudServicePublicIPAddressesHandleResponse,
+		errorer:   client.ListCloudServicePublicIPAddressesHandleError,
+		advancer: func(ctx context.Context, resp *PublicIPAddressListResultResponse) (*azcore.Request, error) {
+			return azcore.NewRequest(ctx, http.MethodGet, *resp.PublicIPAddressListResult.NextLink)
+		},
+		statusCodes: []int{http.StatusOK},
+	}
+}
+
+// ListCloudServicePublicIPAddressesCreateRequest creates the ListCloudServicePublicIPAddresses request.
+func (client *PublicIPAddressesClient) ListCloudServicePublicIPAddressesCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *PublicIPAddressesListCloudServicePublicIPAddressesOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/publicipaddresses"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{cloudServiceName}", url.PathEscape(cloudServiceName))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	query := req.URL.Query()
+	query.Set("api-version", "2020-07-01")
+	req.URL.RawQuery = query.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// ListCloudServicePublicIPAddressesHandleResponse handles the ListCloudServicePublicIPAddresses response.
+func (client *PublicIPAddressesClient) ListCloudServicePublicIPAddressesHandleResponse(resp *azcore.Response) (*PublicIPAddressListResultResponse, error) {
+	result := PublicIPAddressListResultResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.PublicIPAddressListResult)
+}
+
+// ListCloudServicePublicIPAddressesHandleError handles the ListCloudServicePublicIPAddresses error response.
+func (client *PublicIPAddressesClient) ListCloudServicePublicIPAddressesHandleError(resp *azcore.Response) error {
+	var err CloudError
+	if err := resp.UnmarshalAsJSON(&err); err != nil {
+		return err
+	}
+	return azcore.NewResponseError(&err, resp.Response)
+}
+
+// ListCloudServiceRoleInstancePublicIPAddresses - Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
+func (client *PublicIPAddressesClient) ListCloudServiceRoleInstancePublicIPAddresses(resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesListCloudServiceRoleInstancePublicIPAddressesOptions) PublicIPAddressListResultPager {
+	return &publicIPAddressListResultPager{
+		pipeline: client.con.Pipeline(),
+		requester: func(ctx context.Context) (*azcore.Request, error) {
+			return client.ListCloudServiceRoleInstancePublicIPAddressesCreateRequest(ctx, resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, ipConfigurationName, options)
+		},
+		responder: client.ListCloudServiceRoleInstancePublicIPAddressesHandleResponse,
+		errorer:   client.ListCloudServiceRoleInstancePublicIPAddressesHandleError,
+		advancer: func(ctx context.Context, resp *PublicIPAddressListResultResponse) (*azcore.Request, error) {
+			return azcore.NewRequest(ctx, http.MethodGet, *resp.PublicIPAddressListResult.NextLink)
+		},
+		statusCodes: []int{http.StatusOK},
+	}
+}
+
+// ListCloudServiceRoleInstancePublicIPAddressesCreateRequest creates the ListCloudServiceRoleInstancePublicIPAddresses request.
+func (client *PublicIPAddressesClient) ListCloudServiceRoleInstancePublicIPAddressesCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesListCloudServiceRoleInstancePublicIPAddressesOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{cloudServiceName}", url.PathEscape(cloudServiceName))
+	urlPath = strings.ReplaceAll(urlPath, "{roleInstanceName}", url.PathEscape(roleInstanceName))
+	urlPath = strings.ReplaceAll(urlPath, "{networkInterfaceName}", url.PathEscape(networkInterfaceName))
+	urlPath = strings.ReplaceAll(urlPath, "{ipConfigurationName}", url.PathEscape(ipConfigurationName))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	query := req.URL.Query()
+	query.Set("api-version", "2020-07-01")
+	req.URL.RawQuery = query.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// ListCloudServiceRoleInstancePublicIPAddressesHandleResponse handles the ListCloudServiceRoleInstancePublicIPAddresses response.
+func (client *PublicIPAddressesClient) ListCloudServiceRoleInstancePublicIPAddressesHandleResponse(resp *azcore.Response) (*PublicIPAddressListResultResponse, error) {
+	result := PublicIPAddressListResultResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.PublicIPAddressListResult)
+}
+
+// ListCloudServiceRoleInstancePublicIPAddressesHandleError handles the ListCloudServiceRoleInstancePublicIPAddresses error response.
+func (client *PublicIPAddressesClient) ListCloudServiceRoleInstancePublicIPAddressesHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

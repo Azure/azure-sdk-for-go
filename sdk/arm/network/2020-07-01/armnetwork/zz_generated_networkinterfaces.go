@@ -29,6 +29,8 @@ type NetworkInterfacesOperations interface {
 	ResumeDelete(token string) (HTTPPoller, error)
 	// Get - Gets information about the specified network interface.
 	Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *NetworkInterfacesGetOptions) (*NetworkInterfaceResponse, error)
+	// GetCloudServiceNetworkInterface - Get the specified network interface in a cloud service.
+	GetCloudServiceNetworkInterface(ctx context.Context, resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, options *NetworkInterfacesGetCloudServiceNetworkInterfaceOptions) (*NetworkInterfaceResponse, error)
 	// BeginGetEffectiveRouteTable - Gets all route tables applied to a network interface.
 	BeginGetEffectiveRouteTable(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *NetworkInterfacesGetEffectiveRouteTableOptions) (*EffectiveRouteListResultPollerResponse, error)
 	// ResumeGetEffectiveRouteTable - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
@@ -41,6 +43,10 @@ type NetworkInterfacesOperations interface {
 	List(resourceGroupName string, options *NetworkInterfacesListOptions) NetworkInterfaceListResultPager
 	// ListAll - Gets all network interfaces in a subscription.
 	ListAll(options *NetworkInterfacesListAllOptions) NetworkInterfaceListResultPager
+	// ListCloudServiceNetworkInterfaces - Gets all network interfaces in a cloud service.
+	ListCloudServiceNetworkInterfaces(resourceGroupName string, cloudServiceName string, options *NetworkInterfacesListCloudServiceNetworkInterfacesOptions) NetworkInterfaceListResultPager
+	// ListCloudServiceRoleInstanceNetworkInterfaces - Gets information about all network interfaces in a role instance in a cloud service
+	ListCloudServiceRoleInstanceNetworkInterfaces(resourceGroupName string, cloudServiceName string, roleInstanceName string, options *NetworkInterfacesListCloudServiceRoleInstanceNetworkInterfacesOptions) NetworkInterfaceListResultPager
 	// BeginListEffectiveNetworkSecurityGroups - Gets all network security groups applied to a network interface.
 	BeginListEffectiveNetworkSecurityGroups(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *NetworkInterfacesListEffectiveNetworkSecurityGroupsOptions) (*EffectiveNetworkSecurityGroupListResultPollerResponse, error)
 	// ResumeListEffectiveNetworkSecurityGroups - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
@@ -281,6 +287,64 @@ func (client *NetworkInterfacesClient) GetHandleResponse(resp *azcore.Response) 
 
 // GetHandleError handles the Get error response.
 func (client *NetworkInterfacesClient) GetHandleError(resp *azcore.Response) error {
+	var err CloudError
+	if err := resp.UnmarshalAsJSON(&err); err != nil {
+		return err
+	}
+	return azcore.NewResponseError(&err, resp.Response)
+}
+
+// GetCloudServiceNetworkInterface - Get the specified network interface in a cloud service.
+func (client *NetworkInterfacesClient) GetCloudServiceNetworkInterface(ctx context.Context, resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, options *NetworkInterfacesGetCloudServiceNetworkInterfaceOptions) (*NetworkInterfaceResponse, error) {
+	req, err := client.GetCloudServiceNetworkInterfaceCreateRequest(ctx, resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		return nil, client.GetCloudServiceNetworkInterfaceHandleError(resp)
+	}
+	result, err := client.GetCloudServiceNetworkInterfaceHandleResponse(resp)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// GetCloudServiceNetworkInterfaceCreateRequest creates the GetCloudServiceNetworkInterface request.
+func (client *NetworkInterfacesClient) GetCloudServiceNetworkInterfaceCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, options *NetworkInterfacesGetCloudServiceNetworkInterfaceOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces/{networkInterfaceName}"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{cloudServiceName}", url.PathEscape(cloudServiceName))
+	urlPath = strings.ReplaceAll(urlPath, "{roleInstanceName}", url.PathEscape(roleInstanceName))
+	urlPath = strings.ReplaceAll(urlPath, "{networkInterfaceName}", url.PathEscape(networkInterfaceName))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	query := req.URL.Query()
+	query.Set("api-version", "2020-07-01")
+	if options != nil && options.Expand != nil {
+		query.Set("$expand", *options.Expand)
+	}
+	req.URL.RawQuery = query.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// GetCloudServiceNetworkInterfaceHandleResponse handles the GetCloudServiceNetworkInterface response.
+func (client *NetworkInterfacesClient) GetCloudServiceNetworkInterfaceHandleResponse(resp *azcore.Response) (*NetworkInterfaceResponse, error) {
+	result := NetworkInterfaceResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.NetworkInterface)
+}
+
+// GetCloudServiceNetworkInterfaceHandleError handles the GetCloudServiceNetworkInterface error response.
+func (client *NetworkInterfacesClient) GetCloudServiceNetworkInterfaceHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -576,6 +640,105 @@ func (client *NetworkInterfacesClient) ListAllHandleResponse(resp *azcore.Respon
 
 // ListAllHandleError handles the ListAll error response.
 func (client *NetworkInterfacesClient) ListAllHandleError(resp *azcore.Response) error {
+	var err CloudError
+	if err := resp.UnmarshalAsJSON(&err); err != nil {
+		return err
+	}
+	return azcore.NewResponseError(&err, resp.Response)
+}
+
+// ListCloudServiceNetworkInterfaces - Gets all network interfaces in a cloud service.
+func (client *NetworkInterfacesClient) ListCloudServiceNetworkInterfaces(resourceGroupName string, cloudServiceName string, options *NetworkInterfacesListCloudServiceNetworkInterfacesOptions) NetworkInterfaceListResultPager {
+	return &networkInterfaceListResultPager{
+		pipeline: client.con.Pipeline(),
+		requester: func(ctx context.Context) (*azcore.Request, error) {
+			return client.ListCloudServiceNetworkInterfacesCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
+		},
+		responder: client.ListCloudServiceNetworkInterfacesHandleResponse,
+		errorer:   client.ListCloudServiceNetworkInterfacesHandleError,
+		advancer: func(ctx context.Context, resp *NetworkInterfaceListResultResponse) (*azcore.Request, error) {
+			return azcore.NewRequest(ctx, http.MethodGet, *resp.NetworkInterfaceListResult.NextLink)
+		},
+		statusCodes: []int{http.StatusOK},
+	}
+}
+
+// ListCloudServiceNetworkInterfacesCreateRequest creates the ListCloudServiceNetworkInterfaces request.
+func (client *NetworkInterfacesClient) ListCloudServiceNetworkInterfacesCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *NetworkInterfacesListCloudServiceNetworkInterfacesOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/networkInterfaces"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{cloudServiceName}", url.PathEscape(cloudServiceName))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	query := req.URL.Query()
+	query.Set("api-version", "2020-07-01")
+	req.URL.RawQuery = query.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// ListCloudServiceNetworkInterfacesHandleResponse handles the ListCloudServiceNetworkInterfaces response.
+func (client *NetworkInterfacesClient) ListCloudServiceNetworkInterfacesHandleResponse(resp *azcore.Response) (*NetworkInterfaceListResultResponse, error) {
+	result := NetworkInterfaceListResultResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.NetworkInterfaceListResult)
+}
+
+// ListCloudServiceNetworkInterfacesHandleError handles the ListCloudServiceNetworkInterfaces error response.
+func (client *NetworkInterfacesClient) ListCloudServiceNetworkInterfacesHandleError(resp *azcore.Response) error {
+	var err CloudError
+	if err := resp.UnmarshalAsJSON(&err); err != nil {
+		return err
+	}
+	return azcore.NewResponseError(&err, resp.Response)
+}
+
+// ListCloudServiceRoleInstanceNetworkInterfaces - Gets information about all network interfaces in a role instance in a cloud service
+func (client *NetworkInterfacesClient) ListCloudServiceRoleInstanceNetworkInterfaces(resourceGroupName string, cloudServiceName string, roleInstanceName string, options *NetworkInterfacesListCloudServiceRoleInstanceNetworkInterfacesOptions) NetworkInterfaceListResultPager {
+	return &networkInterfaceListResultPager{
+		pipeline: client.con.Pipeline(),
+		requester: func(ctx context.Context) (*azcore.Request, error) {
+			return client.ListCloudServiceRoleInstanceNetworkInterfacesCreateRequest(ctx, resourceGroupName, cloudServiceName, roleInstanceName, options)
+		},
+		responder: client.ListCloudServiceRoleInstanceNetworkInterfacesHandleResponse,
+		errorer:   client.ListCloudServiceRoleInstanceNetworkInterfacesHandleError,
+		advancer: func(ctx context.Context, resp *NetworkInterfaceListResultResponse) (*azcore.Request, error) {
+			return azcore.NewRequest(ctx, http.MethodGet, *resp.NetworkInterfaceListResult.NextLink)
+		},
+		statusCodes: []int{http.StatusOK},
+	}
+}
+
+// ListCloudServiceRoleInstanceNetworkInterfacesCreateRequest creates the ListCloudServiceRoleInstanceNetworkInterfaces request.
+func (client *NetworkInterfacesClient) ListCloudServiceRoleInstanceNetworkInterfacesCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, roleInstanceName string, options *NetworkInterfacesListCloudServiceRoleInstanceNetworkInterfacesOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces"
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{cloudServiceName}", url.PathEscape(cloudServiceName))
+	urlPath = strings.ReplaceAll(urlPath, "{roleInstanceName}", url.PathEscape(roleInstanceName))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	query := req.URL.Query()
+	query.Set("api-version", "2020-07-01")
+	req.URL.RawQuery = query.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// ListCloudServiceRoleInstanceNetworkInterfacesHandleResponse handles the ListCloudServiceRoleInstanceNetworkInterfaces response.
+func (client *NetworkInterfacesClient) ListCloudServiceRoleInstanceNetworkInterfacesHandleResponse(resp *azcore.Response) (*NetworkInterfaceListResultResponse, error) {
+	result := NetworkInterfaceListResultResponse{RawResponse: resp.Response}
+	return &result, resp.UnmarshalAsJSON(&result.NetworkInterfaceListResult)
+}
+
+// ListCloudServiceRoleInstanceNetworkInterfacesHandleError handles the ListCloudServiceRoleInstanceNetworkInterfaces error response.
+func (client *NetworkInterfacesClient) ListCloudServiceRoleInstanceNetworkInterfacesHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

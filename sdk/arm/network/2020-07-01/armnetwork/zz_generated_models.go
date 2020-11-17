@@ -2789,7 +2789,7 @@ type BastionActiveSession struct {
 	SessionID *string `json:"sessionId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The time when the session started.
-	StartTime *interface{} `json:"startTime,omitempty" azure:"ro"`
+	StartTime interface{} `json:"startTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; The host name of the target.
 	TargetHostName *string `json:"targetHostName,omitempty" azure:"ro"`
@@ -9808,6 +9808,12 @@ type NetworkInterfacesDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
+// NetworkInterfacesGetCloudServiceNetworkInterfaceOptions contains the optional parameters for the NetworkInterfaces.GetCloudServiceNetworkInterface method.
+type NetworkInterfacesGetCloudServiceNetworkInterfaceOptions struct {
+	// Expands referenced resources.
+	Expand *string
+}
+
 // NetworkInterfacesGetEffectiveRouteTableOptions contains the optional parameters for the NetworkInterfaces.GetEffectiveRouteTable method.
 type NetworkInterfacesGetEffectiveRouteTableOptions struct {
 	// placeholder for future optional parameters
@@ -9835,6 +9841,18 @@ type NetworkInterfacesGetVirtualMachineScaleSetNetworkInterfaceOptions struct {
 
 // NetworkInterfacesListAllOptions contains the optional parameters for the NetworkInterfaces.ListAll method.
 type NetworkInterfacesListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkInterfacesListCloudServiceNetworkInterfacesOptions contains the optional parameters for the NetworkInterfaces.ListCloudServiceNetworkInterfaces
+// method.
+type NetworkInterfacesListCloudServiceNetworkInterfacesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkInterfacesListCloudServiceRoleInstanceNetworkInterfacesOptions contains the optional parameters for the NetworkInterfaces.ListCloudServiceRoleInstanceNetworkInterfaces
+// method.
+type NetworkInterfacesListCloudServiceRoleInstanceNetworkInterfacesOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -12161,6 +12179,12 @@ type PublicIPAddressesDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PublicIPAddressesGetCloudServicePublicIPAddressOptions contains the optional parameters for the PublicIPAddresses.GetCloudServicePublicIPAddress method.
+type PublicIPAddressesGetCloudServicePublicIPAddressOptions struct {
+	// Expands referenced resources.
+	Expand *string
+}
+
 // PublicIPAddressesGetOptions contains the optional parameters for the PublicIPAddresses.Get method.
 type PublicIPAddressesGetOptions struct {
 	// Expands referenced resources.
@@ -12176,6 +12200,18 @@ type PublicIPAddressesGetVirtualMachineScaleSetPublicIPAddressOptions struct {
 
 // PublicIPAddressesListAllOptions contains the optional parameters for the PublicIPAddresses.ListAll method.
 type PublicIPAddressesListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PublicIPAddressesListCloudServicePublicIPAddressesOptions contains the optional parameters for the PublicIPAddresses.ListCloudServicePublicIPAddresses
+// method.
+type PublicIPAddressesListCloudServicePublicIPAddressesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PublicIPAddressesListCloudServiceRoleInstancePublicIPAddressesOptions contains the optional parameters for the PublicIPAddresses.ListCloudServiceRoleInstancePublicIPAddresses
+// method.
+type PublicIPAddressesListCloudServiceRoleInstancePublicIPAddressesOptions struct {
 	// placeholder for future optional parameters
 }
 

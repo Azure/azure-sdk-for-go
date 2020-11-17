@@ -37,7 +37,7 @@ func ExampleKeysOperations_CreateIfNotExist() {
 				Kty: armkeyvault.JSONWebKeyTypeRsa.ToPtr(),
 			}}, nil)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to create the key: %v", err)
 	}
 	log.Printf("key ID: %v\n", *resp.Key.ID)
 }

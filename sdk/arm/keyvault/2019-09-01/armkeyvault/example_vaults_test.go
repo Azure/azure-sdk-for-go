@@ -40,7 +40,7 @@ func ExampleVaultsOperations_BeginCreateOrUpdate() {
 	}
 	resp, err := poll.PollUntilDone(context.Background(), 5*time.Second)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to create a vault: %v", err)
 	}
 	log.Printf("vault ID: %v\n", *resp.Vault.ID)
 }
@@ -87,7 +87,7 @@ func ExampleVaultsOperations_BeginCreateOrUpdate_withAccessPolicies() {
 	}
 	resp, err := poll.PollUntilDone(context.Background(), 5*time.Second)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to create a vault: %v", err)
 	}
 	log.Printf("vault ID: %v\n", *resp.Vault.ID)
 }
@@ -136,7 +136,7 @@ func ExampleVaultsOperations_BeginCreateOrUpdate_forDeployment() {
 	}
 	resp, err := poll.PollUntilDone(context.Background(), 5*time.Second)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to create a vault: %v", err)
 	}
 	log.Printf("vault ID: %v\n", *resp.Vault.ID)
 }
@@ -149,7 +149,7 @@ func ExampleVaultsOperations_Get() {
 	client := armkeyvault.NewVaultsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.Get(context.Background(), "<resource group name>", "<vault name>", nil)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to get the vault: %v", err)
 	}
 	log.Printf("vault ID: %v\n", *resp.Vault.ID)
 }
@@ -181,9 +181,8 @@ func ExampleVaultsOperations_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	client := armkeyvault.NewVaultsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
-	resp, err := client.Delete(context.Background(), "<resource group name>", "<vault name>", nil)
+	_, err = client.Delete(context.Background(), "<resource group name>", "<vault name>", nil)
 	if err != nil {
-		log.Fatalf("failed to obtain a response: %v", err)
+		log.Fatalf("failed to delete the vault: %v", err)
 	}
-	log.Printf("Vault deletion status code: %v\n", resp.StatusCode)
 }

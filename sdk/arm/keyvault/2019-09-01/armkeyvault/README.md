@@ -26,7 +26,7 @@ go get -u github.com/Azure/azure-sdk-for-go/sdk/arm/keyvault/2019-09-01/armkeyva
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Resource Graph` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Keyvault` label.
 
 # Contributing
 

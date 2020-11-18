@@ -6,9 +6,14 @@ The `armresources` module provides operations for working with Azure resources a
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/arm/resources/2020-06-01/armresources)
 
-# Getting started
+# Getting Started
 
-## Install the package
+## Prerequisites
+
+- an [Azure subscription](https://azure.microsoft.com/free/)
+- Go 1.13 or above
+
+## Install the Module
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
@@ -19,11 +24,6 @@ go get -u github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armreso
 ```
 
 Documentation and examples are available at [pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armresources](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armresources)
-
-## Prerequisites
-
-- an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
 
 ## Authorization
 

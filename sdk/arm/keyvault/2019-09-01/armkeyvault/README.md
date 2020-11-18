@@ -8,20 +8,48 @@ The `armkeyvault` module provides operations for working with Azure keyvault.
 
 # Getting started
 
-## Install the package
+## Prerequisites
+
+- an [Azure subscription](https://azure.microsoft.com/free/)
+- Go 1.13 or above
+
+## Install the module
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
 Install the Azure Keyvault module:
 
 ```sh
-go get -u github.com/Azure/azure-sdk-for-go/sdk/arm/keyvault/2019-09-01/armkeyvault
+go get github.com/Azure/azure-sdk-for-go/sdk/arm/keyvault/2019-09-01/armkeyvault
 ```
 
-## Prerequisites
+## Authorization
 
-- an [Azure subscription](https://azure.microsoft.com/free/)
-- Go 1.13 or above
+When creating a client, you will need to provide a credential for authenticating with Azure Keyvault.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+
+```go
+cred, err := azidentity.NewDefaultAzureCredential(nil)
+```
+
+For more information on authentication, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
+
+## Connecting to Azure Keyvault
+
+Once you have a credential, create a connection to the desired ARM endpoint.  The `armcore` module provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
+
+```go
+con := armcore.NewDefaultConnection(cred, nil)
+```
+
+For more information on ARM connections, please see the documentation for `armcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore).
+
+## Clients
+
+Azure Keyvault modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
+
+```go
+client := armkeyvault.NewVaultsClient(con, "<subscription ID>")
+```
 
 ## Provide Feedback
 

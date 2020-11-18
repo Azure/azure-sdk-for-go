@@ -371,8 +371,11 @@ func (page ApplicationResourceDescriptionListPage) Values() []ApplicationResourc
 }
 
 // Creates a new instance of the ApplicationResourceDescriptionListPage type.
-func NewApplicationResourceDescriptionListPage(getNextPage func(context.Context, ApplicationResourceDescriptionList) (ApplicationResourceDescriptionList, error)) ApplicationResourceDescriptionListPage {
-	return ApplicationResourceDescriptionListPage{fn: getNextPage}
+func NewApplicationResourceDescriptionListPage(cur ApplicationResourceDescriptionList, getNextPage func(context.Context, ApplicationResourceDescriptionList) (ApplicationResourceDescriptionList, error)) ApplicationResourceDescriptionListPage {
+	return ApplicationResourceDescriptionListPage{
+		fn:   getNextPage,
+		ardl: cur,
+	}
 }
 
 // ApplicationResourceProperties this type describes properties of an application resource.
@@ -1730,8 +1733,11 @@ func (page GatewayResourceDescriptionListPage) Values() []GatewayResourceDescrip
 }
 
 // Creates a new instance of the GatewayResourceDescriptionListPage type.
-func NewGatewayResourceDescriptionListPage(getNextPage func(context.Context, GatewayResourceDescriptionList) (GatewayResourceDescriptionList, error)) GatewayResourceDescriptionListPage {
-	return GatewayResourceDescriptionListPage{fn: getNextPage}
+func NewGatewayResourceDescriptionListPage(cur GatewayResourceDescriptionList, getNextPage func(context.Context, GatewayResourceDescriptionList) (GatewayResourceDescriptionList, error)) GatewayResourceDescriptionListPage {
+	return GatewayResourceDescriptionListPage{
+		fn:   getNextPage,
+		grdl: cur,
+	}
 }
 
 // GatewayResourceProperties this type describes properties of a gateway resource.
@@ -2241,8 +2247,11 @@ func (page NetworkResourceDescriptionListPage) Values() []NetworkResourceDescrip
 }
 
 // Creates a new instance of the NetworkResourceDescriptionListPage type.
-func NewNetworkResourceDescriptionListPage(getNextPage func(context.Context, NetworkResourceDescriptionList) (NetworkResourceDescriptionList, error)) NetworkResourceDescriptionListPage {
-	return NetworkResourceDescriptionListPage{fn: getNextPage}
+func NewNetworkResourceDescriptionListPage(cur NetworkResourceDescriptionList, getNextPage func(context.Context, NetworkResourceDescriptionList) (NetworkResourceDescriptionList, error)) NetworkResourceDescriptionListPage {
+	return NetworkResourceDescriptionListPage{
+		fn:   getNextPage,
+		nrdl: cur,
+	}
 }
 
 // BasicNetworkResourceProperties describes properties of a network resource.
@@ -2593,8 +2602,11 @@ func (page OperationListResultPage) Values() []OperationResult {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResult list of operations available at the listed Azure resource provider.
@@ -2922,8 +2934,11 @@ func (page SecretResourceDescriptionListPage) Values() []SecretResourceDescripti
 }
 
 // Creates a new instance of the SecretResourceDescriptionListPage type.
-func NewSecretResourceDescriptionListPage(getNextPage func(context.Context, SecretResourceDescriptionList) (SecretResourceDescriptionList, error)) SecretResourceDescriptionListPage {
-	return SecretResourceDescriptionListPage{fn: getNextPage}
+func NewSecretResourceDescriptionListPage(cur SecretResourceDescriptionList, getNextPage func(context.Context, SecretResourceDescriptionList) (SecretResourceDescriptionList, error)) SecretResourceDescriptionListPage {
+	return SecretResourceDescriptionListPage{
+		fn:   getNextPage,
+		srdl: cur,
+	}
 }
 
 // BasicSecretResourceProperties describes the properties of a secret resource.
@@ -3387,8 +3402,11 @@ func (page SecretValueResourceDescriptionListPage) Values() []SecretValueResourc
 }
 
 // Creates a new instance of the SecretValueResourceDescriptionListPage type.
-func NewSecretValueResourceDescriptionListPage(getNextPage func(context.Context, SecretValueResourceDescriptionList) (SecretValueResourceDescriptionList, error)) SecretValueResourceDescriptionListPage {
-	return SecretValueResourceDescriptionListPage{fn: getNextPage}
+func NewSecretValueResourceDescriptionListPage(cur SecretValueResourceDescriptionList, getNextPage func(context.Context, SecretValueResourceDescriptionList) (SecretValueResourceDescriptionList, error)) SecretValueResourceDescriptionListPage {
+	return SecretValueResourceDescriptionListPage{
+		fn:    getNextPage,
+		svrdl: cur,
+	}
 }
 
 // SecretValueResourceProperties this type describes properties of a secret value resource.
@@ -3609,8 +3627,11 @@ func (page ServiceReplicaDescriptionListPage) Values() []ServiceReplicaDescripti
 }
 
 // Creates a new instance of the ServiceReplicaDescriptionListPage type.
-func NewServiceReplicaDescriptionListPage(getNextPage func(context.Context, ServiceReplicaDescriptionList) (ServiceReplicaDescriptionList, error)) ServiceReplicaDescriptionListPage {
-	return ServiceReplicaDescriptionListPage{fn: getNextPage}
+func NewServiceReplicaDescriptionListPage(cur ServiceReplicaDescriptionList, getNextPage func(context.Context, ServiceReplicaDescriptionList) (ServiceReplicaDescriptionList, error)) ServiceReplicaDescriptionListPage {
+	return ServiceReplicaDescriptionListPage{
+		fn:   getNextPage,
+		srdl: cur,
+	}
 }
 
 // ServiceReplicaProperties describes the properties of a service replica.
@@ -3854,8 +3875,11 @@ func (page ServiceResourceDescriptionListPage) Values() []ServiceResourceDescrip
 }
 
 // Creates a new instance of the ServiceResourceDescriptionListPage type.
-func NewServiceResourceDescriptionListPage(getNextPage func(context.Context, ServiceResourceDescriptionList) (ServiceResourceDescriptionList, error)) ServiceResourceDescriptionListPage {
-	return ServiceResourceDescriptionListPage{fn: getNextPage}
+func NewServiceResourceDescriptionListPage(cur ServiceResourceDescriptionList, getNextPage func(context.Context, ServiceResourceDescriptionList) (ServiceResourceDescriptionList, error)) ServiceResourceDescriptionListPage {
+	return ServiceResourceDescriptionListPage{
+		fn:   getNextPage,
+		srdl: cur,
+	}
 }
 
 // ServiceResourceProperties this type describes properties of a service resource.
@@ -4262,9 +4286,6 @@ func (page VolumeResourceDescriptionListPage) Values() []VolumeResourceDescripti
 }
 
 // Creates a new instance of the VolumeResourceDescriptionListPage type.
-func NewVolumeResourceDescriptionListPage(getNextPage func(context.Context, VolumeResourceDescriptionList) (VolumeResourceDescriptionList, error)) VolumeResourceDescriptionListPage {
-	return VolumeResourceDescriptionListPage{fn: getNextPage}
-}
 
 // VolumeResourceProperties this type describes properties of a volume resource.
 type VolumeResourceProperties struct {

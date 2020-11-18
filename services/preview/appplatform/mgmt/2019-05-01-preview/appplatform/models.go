@@ -216,8 +216,11 @@ func (page AppResourceCollectionPage) Values() []AppResource {
 }
 
 // Creates a new instance of the AppResourceCollectionPage type.
-func NewAppResourceCollectionPage(getNextPage func(context.Context, AppResourceCollection) (AppResourceCollection, error)) AppResourceCollectionPage {
-	return AppResourceCollectionPage{fn: getNextPage}
+func NewAppResourceCollectionPage(cur AppResourceCollection, getNextPage func(context.Context, AppResourceCollection) (AppResourceCollection, error)) AppResourceCollectionPage {
+	return AppResourceCollectionPage{
+		fn:  getNextPage,
+		arc: cur,
+	}
 }
 
 // AppResourceProperties app resource properties payload
@@ -476,8 +479,11 @@ func (page AvailableOperationsPage) Values() []OperationDetail {
 }
 
 // Creates a new instance of the AvailableOperationsPage type.
-func NewAvailableOperationsPage(getNextPage func(context.Context, AvailableOperations) (AvailableOperations, error)) AvailableOperationsPage {
-	return AvailableOperationsPage{fn: getNextPage}
+func NewAvailableOperationsPage(cur AvailableOperations, getNextPage func(context.Context, AvailableOperations) (AvailableOperations, error)) AvailableOperationsPage {
+	return AvailableOperationsPage{
+		fn: getNextPage,
+		ao: cur,
+	}
 }
 
 // AvailableRuntimeVersions ...
@@ -663,8 +669,11 @@ func (page BindingResourceCollectionPage) Values() []BindingResource {
 }
 
 // Creates a new instance of the BindingResourceCollectionPage type.
-func NewBindingResourceCollectionPage(getNextPage func(context.Context, BindingResourceCollection) (BindingResourceCollection, error)) BindingResourceCollectionPage {
-	return BindingResourceCollectionPage{fn: getNextPage}
+func NewBindingResourceCollectionPage(cur BindingResourceCollection, getNextPage func(context.Context, BindingResourceCollection) (BindingResourceCollection, error)) BindingResourceCollectionPage {
+	return BindingResourceCollectionPage{
+		fn:  getNextPage,
+		brc: cur,
+	}
 }
 
 // BindingResourceProperties binding resource properties payload
@@ -916,8 +925,11 @@ func (page CertificateResourceCollectionPage) Values() []CertificateResource {
 }
 
 // Creates a new instance of the CertificateResourceCollectionPage type.
-func NewCertificateResourceCollectionPage(getNextPage func(context.Context, CertificateResourceCollection) (CertificateResourceCollection, error)) CertificateResourceCollectionPage {
-	return CertificateResourceCollectionPage{fn: getNextPage}
+func NewCertificateResourceCollectionPage(cur CertificateResourceCollection, getNextPage func(context.Context, CertificateResourceCollection) (CertificateResourceCollection, error)) CertificateResourceCollectionPage {
+	return CertificateResourceCollectionPage{
+		fn:  getNextPage,
+		crc: cur,
+	}
 }
 
 // CloudError an error response from the service.
@@ -1217,8 +1229,11 @@ func (page CustomDomainResourceCollectionPage) Values() []CustomDomainResource {
 }
 
 // Creates a new instance of the CustomDomainResourceCollectionPage type.
-func NewCustomDomainResourceCollectionPage(getNextPage func(context.Context, CustomDomainResourceCollection) (CustomDomainResourceCollection, error)) CustomDomainResourceCollectionPage {
-	return CustomDomainResourceCollectionPage{fn: getNextPage}
+func NewCustomDomainResourceCollectionPage(cur CustomDomainResourceCollection, getNextPage func(context.Context, CustomDomainResourceCollection) (CustomDomainResourceCollection, error)) CustomDomainResourceCollectionPage {
+	return CustomDomainResourceCollectionPage{
+		fn:   getNextPage,
+		cdrc: cur,
+	}
 }
 
 // CustomDomainValidatePayload custom domain validate payload.
@@ -1425,8 +1440,11 @@ func (page DeploymentResourceCollectionPage) Values() []DeploymentResource {
 }
 
 // Creates a new instance of the DeploymentResourceCollectionPage type.
-func NewDeploymentResourceCollectionPage(getNextPage func(context.Context, DeploymentResourceCollection) (DeploymentResourceCollection, error)) DeploymentResourceCollectionPage {
-	return DeploymentResourceCollectionPage{fn: getNextPage}
+func NewDeploymentResourceCollectionPage(cur DeploymentResourceCollection, getNextPage func(context.Context, DeploymentResourceCollection) (DeploymentResourceCollection, error)) DeploymentResourceCollectionPage {
+	return DeploymentResourceCollectionPage{
+		fn:  getNextPage,
+		drc: cur,
+	}
 }
 
 // DeploymentResourceProperties deployment resource properties payload
@@ -2045,8 +2063,11 @@ func (page ResourceSkuCollectionPage) Values() []ResourceSku {
 }
 
 // Creates a new instance of the ResourceSkuCollectionPage type.
-func NewResourceSkuCollectionPage(getNextPage func(context.Context, ResourceSkuCollection) (ResourceSkuCollection, error)) ResourceSkuCollectionPage {
-	return ResourceSkuCollectionPage{fn: getNextPage}
+func NewResourceSkuCollectionPage(cur ResourceSkuCollection, getNextPage func(context.Context, ResourceSkuCollection) (ResourceSkuCollection, error)) ResourceSkuCollectionPage {
+	return ResourceSkuCollectionPage{
+		fn:  getNextPage,
+		rsc: cur,
+	}
 }
 
 // ResourceSkuLocationInfo ...
@@ -2289,9 +2310,6 @@ func (page ServiceResourceListPage) Values() []ServiceResource {
 }
 
 // Creates a new instance of the ServiceResourceListPage type.
-func NewServiceResourceListPage(getNextPage func(context.Context, ServiceResourceList) (ServiceResourceList, error)) ServiceResourceListPage {
-	return ServiceResourceListPage{fn: getNextPage}
-}
 
 // ServicesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.

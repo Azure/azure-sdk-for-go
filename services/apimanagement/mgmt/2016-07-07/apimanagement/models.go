@@ -236,8 +236,11 @@ func (page APICollectionPage) Values() []APIContract {
 }
 
 // Creates a new instance of the APICollectionPage type.
-func NewAPICollectionPage(getNextPage func(context.Context, APICollection) (APICollection, error)) APICollectionPage {
-	return APICollectionPage{fn: getNextPage}
+func NewAPICollectionPage(cur APICollection, getNextPage func(context.Context, APICollection) (APICollection, error)) APICollectionPage {
+	return APICollectionPage{
+		fn:   getNextPage,
+		apic: cur,
+	}
 }
 
 // APIContract API details.
@@ -463,8 +466,11 @@ func (page AuthorizationServerCollectionPage) Values() []OAuth2AuthorizationServ
 }
 
 // Creates a new instance of the AuthorizationServerCollectionPage type.
-func NewAuthorizationServerCollectionPage(getNextPage func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error)) AuthorizationServerCollectionPage {
-	return AuthorizationServerCollectionPage{fn: getNextPage}
+func NewAuthorizationServerCollectionPage(cur AuthorizationServerCollection, getNextPage func(context.Context, AuthorizationServerCollection) (AuthorizationServerCollection, error)) AuthorizationServerCollectionPage {
+	return AuthorizationServerCollectionPage{
+		fn:  getNextPage,
+		asc: cur,
+	}
 }
 
 // BackendCollection paged Backend list representation.
@@ -621,8 +627,11 @@ func (page BackendCollectionPage) Values() []BackendResponse {
 }
 
 // Creates a new instance of the BackendCollectionPage type.
-func NewBackendCollectionPage(getNextPage func(context.Context, BackendCollection) (BackendCollection, error)) BackendCollectionPage {
-	return BackendCollectionPage{fn: getNextPage}
+func NewBackendCollectionPage(cur BackendCollection, getNextPage func(context.Context, BackendCollection) (BackendCollection, error)) BackendCollectionPage {
+	return BackendCollectionPage{
+		fn: getNextPage,
+		bc: cur,
+	}
 }
 
 // BackendContract parameters supplied to the Create Backend operation.
@@ -820,8 +829,11 @@ func (page CertificateCollectionPage) Values() []CertificateContract {
 }
 
 // Creates a new instance of the CertificateCollectionPage type.
-func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
-	return CertificateCollectionPage{fn: getNextPage}
+func NewCertificateCollectionPage(cur CertificateCollection, getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
+	return CertificateCollectionPage{
+		fn: getNextPage,
+		cc: cur,
+	}
 }
 
 // CertificateContract certificate details.
@@ -1070,8 +1082,11 @@ func (page GroupCollectionPage) Values() []GroupContract {
 }
 
 // Creates a new instance of the GroupCollectionPage type.
-func NewGroupCollectionPage(getNextPage func(context.Context, GroupCollection) (GroupCollection, error)) GroupCollectionPage {
-	return GroupCollectionPage{fn: getNextPage}
+func NewGroupCollectionPage(cur GroupCollection, getNextPage func(context.Context, GroupCollection) (GroupCollection, error)) GroupCollectionPage {
+	return GroupCollectionPage{
+		fn: getNextPage,
+		gc: cur,
+	}
 }
 
 // GroupContract developer group.
@@ -1335,8 +1350,11 @@ func (page LoggerCollectionPage) Values() []LoggerResponse {
 }
 
 // Creates a new instance of the LoggerCollectionPage type.
-func NewLoggerCollectionPage(getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
-	return LoggerCollectionPage{fn: getNextPage}
+func NewLoggerCollectionPage(cur LoggerCollection, getNextPage func(context.Context, LoggerCollection) (LoggerCollection, error)) LoggerCollectionPage {
+	return LoggerCollectionPage{
+		fn: getNextPage,
+		lc: cur,
+	}
 }
 
 // LoggerCreateParameters parameters supplied to the Create Logger operation.
@@ -1725,8 +1743,11 @@ func (page OpenIDConnectProviderCollectionPage) Values() []OpenidConnectProvider
 }
 
 // Creates a new instance of the OpenIDConnectProviderCollectionPage type.
-func NewOpenIDConnectProviderCollectionPage(getNextPage func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error)) OpenIDConnectProviderCollectionPage {
-	return OpenIDConnectProviderCollectionPage{fn: getNextPage}
+func NewOpenIDConnectProviderCollectionPage(cur OpenIDConnectProviderCollection, getNextPage func(context.Context, OpenIDConnectProviderCollection) (OpenIDConnectProviderCollection, error)) OpenIDConnectProviderCollectionPage {
+	return OpenIDConnectProviderCollectionPage{
+		fn:     getNextPage,
+		oidcpc: cur,
+	}
 }
 
 // OpenidConnectProviderContract openID Connect Providers Contract.
@@ -1928,8 +1949,11 @@ func (page OperationCollectionPage) Values() []OperationContract {
 }
 
 // Creates a new instance of the OperationCollectionPage type.
-func NewOperationCollectionPage(getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
-	return OperationCollectionPage{fn: getNextPage}
+func NewOperationCollectionPage(cur OperationCollection, getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
+	return OperationCollectionPage{
+		fn: getNextPage,
+		oc: cur,
+	}
 }
 
 // OperationContract api Operation details.
@@ -2184,8 +2208,11 @@ func (page ProductCollectionPage) Values() []ProductContract {
 }
 
 // Creates a new instance of the ProductCollectionPage type.
-func NewProductCollectionPage(getNextPage func(context.Context, ProductCollection) (ProductCollection, error)) ProductCollectionPage {
-	return ProductCollectionPage{fn: getNextPage}
+func NewProductCollectionPage(cur ProductCollection, getNextPage func(context.Context, ProductCollection) (ProductCollection, error)) ProductCollectionPage {
+	return ProductCollectionPage{
+		fn: getNextPage,
+		pc: cur,
+	}
 }
 
 // ProductContract product profile.
@@ -2408,8 +2435,11 @@ func (page PropertyCollectionPage) Values() []PropertyContract {
 }
 
 // Creates a new instance of the PropertyCollectionPage type.
-func NewPropertyCollectionPage(getNextPage func(context.Context, PropertyCollection) (PropertyCollection, error)) PropertyCollectionPage {
-	return PropertyCollectionPage{fn: getNextPage}
+func NewPropertyCollectionPage(cur PropertyCollection, getNextPage func(context.Context, PropertyCollection) (PropertyCollection, error)) PropertyCollectionPage {
+	return PropertyCollectionPage{
+		fn: getNextPage,
+		pc: cur,
+	}
 }
 
 // PropertyContract property details.
@@ -2674,8 +2704,11 @@ func (page ReportCollectionPage) Values() []ReportRecordContract {
 }
 
 // Creates a new instance of the ReportCollectionPage type.
-func NewReportCollectionPage(getNextPage func(context.Context, ReportCollection) (ReportCollection, error)) ReportCollectionPage {
-	return ReportCollectionPage{fn: getNextPage}
+func NewReportCollectionPage(cur ReportCollection, getNextPage func(context.Context, ReportCollection) (ReportCollection, error)) ReportCollectionPage {
+	return ReportCollectionPage{
+		fn: getNextPage,
+		rc: cur,
+	}
 }
 
 // ReportRecordContract report data.
@@ -3095,8 +3128,11 @@ func (page ServiceListResultPage) Values() []ServiceResource {
 }
 
 // Creates a new instance of the ServiceListResultPage type.
-func NewServiceListResultPage(getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
-	return ServiceListResultPage{fn: getNextPage}
+func NewServiceListResultPage(cur ServiceListResult, getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
+	return ServiceListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // ServiceManageDeploymentsParameters parameters supplied to the ManageDeployments operation.
@@ -3563,8 +3599,11 @@ func (page SubscriptionCollectionPage) Values() []SubscriptionContract {
 }
 
 // Creates a new instance of the SubscriptionCollectionPage type.
-func NewSubscriptionCollectionPage(getNextPage func(context.Context, SubscriptionCollection) (SubscriptionCollection, error)) SubscriptionCollectionPage {
-	return SubscriptionCollectionPage{fn: getNextPage}
+func NewSubscriptionCollectionPage(cur SubscriptionCollection, getNextPage func(context.Context, SubscriptionCollection) (SubscriptionCollection, error)) SubscriptionCollectionPage {
+	return SubscriptionCollectionPage{
+		fn: getNextPage,
+		sc: cur,
+	}
 }
 
 // SubscriptionContract subscription details.
@@ -3962,9 +4001,6 @@ func (page UserCollectionPage) Values() []UserContract {
 }
 
 // Creates a new instance of the UserCollectionPage type.
-func NewUserCollectionPage(getNextPage func(context.Context, UserCollection) (UserCollection, error)) UserCollectionPage {
-	return UserCollectionPage{fn: getNextPage}
-}
 
 // UserContract user profile.
 type UserContract struct {

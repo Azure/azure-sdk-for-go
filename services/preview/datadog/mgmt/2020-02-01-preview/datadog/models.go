@@ -195,8 +195,11 @@ func (page APIKeyListResponsePage) Values() []APIKey {
 }
 
 // Creates a new instance of the APIKeyListResponsePage type.
-func NewAPIKeyListResponsePage(getNextPage func(context.Context, APIKeyListResponse) (APIKeyListResponse, error)) APIKeyListResponsePage {
-	return APIKeyListResponsePage{fn: getNextPage}
+func NewAPIKeyListResponsePage(cur APIKeyListResponse, getNextPage func(context.Context, APIKeyListResponse) (APIKeyListResponse, error)) APIKeyListResponsePage {
+	return APIKeyListResponsePage{
+		fn:     getNextPage,
+		apiklr: cur,
+	}
 }
 
 // ErrorResponseBody ...
@@ -381,8 +384,11 @@ func (page HostListResponsePage) Values() []Host {
 }
 
 // Creates a new instance of the HostListResponsePage type.
-func NewHostListResponsePage(getNextPage func(context.Context, HostListResponse) (HostListResponse, error)) HostListResponsePage {
-	return HostListResponsePage{fn: getNextPage}
+func NewHostListResponsePage(cur HostListResponse, getNextPage func(context.Context, HostListResponse) (HostListResponse, error)) HostListResponsePage {
+	return HostListResponsePage{
+		fn:  getNextPage,
+		hlr: cur,
+	}
 }
 
 // HostMetadata ...
@@ -580,8 +586,11 @@ func (page LinkedResourceListResponsePage) Values() []LinkedResource {
 }
 
 // Creates a new instance of the LinkedResourceListResponsePage type.
-func NewLinkedResourceListResponsePage(getNextPage func(context.Context, LinkedResourceListResponse) (LinkedResourceListResponse, error)) LinkedResourceListResponsePage {
-	return LinkedResourceListResponsePage{fn: getNextPage}
+func NewLinkedResourceListResponsePage(cur LinkedResourceListResponse, getNextPage func(context.Context, LinkedResourceListResponse) (LinkedResourceListResponse, error)) LinkedResourceListResponsePage {
+	return LinkedResourceListResponsePage{
+		fn:   getNextPage,
+		lrlr: cur,
+	}
 }
 
 // LogRules set of rules for sending logs for the Monitor resource.
@@ -774,8 +783,11 @@ func (page MonitoredResourceListResponsePage) Values() []MonitoredResource {
 }
 
 // Creates a new instance of the MonitoredResourceListResponsePage type.
-func NewMonitoredResourceListResponsePage(getNextPage func(context.Context, MonitoredResourceListResponse) (MonitoredResourceListResponse, error)) MonitoredResourceListResponsePage {
-	return MonitoredResourceListResponsePage{fn: getNextPage}
+func NewMonitoredResourceListResponsePage(cur MonitoredResourceListResponse, getNextPage func(context.Context, MonitoredResourceListResponse) (MonitoredResourceListResponse, error)) MonitoredResourceListResponsePage {
+	return MonitoredResourceListResponsePage{
+		fn:   getNextPage,
+		mrlr: cur,
+	}
 }
 
 // MonitoringTagRules capture logs and metrics of Azure resources based on ARM tags.
@@ -951,8 +963,11 @@ func (page MonitoringTagRulesListResponsePage) Values() []MonitoringTagRules {
 }
 
 // Creates a new instance of the MonitoringTagRulesListResponsePage type.
-func NewMonitoringTagRulesListResponsePage(getNextPage func(context.Context, MonitoringTagRulesListResponse) (MonitoringTagRulesListResponse, error)) MonitoringTagRulesListResponsePage {
-	return MonitoringTagRulesListResponsePage{fn: getNextPage}
+func NewMonitoringTagRulesListResponsePage(cur MonitoringTagRulesListResponse, getNextPage func(context.Context, MonitoringTagRulesListResponse) (MonitoringTagRulesListResponse, error)) MonitoringTagRulesListResponsePage {
+	return MonitoringTagRulesListResponsePage{
+		fn:    getNextPage,
+		mtrlr: cur,
+	}
 }
 
 // MonitoringTagRulesProperties definition of the properties for a TagRules resource.
@@ -1190,8 +1205,11 @@ func (page MonitorResourceListResponsePage) Values() []MonitorResource {
 }
 
 // Creates a new instance of the MonitorResourceListResponsePage type.
-func NewMonitorResourceListResponsePage(getNextPage func(context.Context, MonitorResourceListResponse) (MonitorResourceListResponse, error)) MonitorResourceListResponsePage {
-	return MonitorResourceListResponsePage{fn: getNextPage}
+func NewMonitorResourceListResponsePage(cur MonitorResourceListResponse, getNextPage func(context.Context, MonitorResourceListResponse) (MonitorResourceListResponse, error)) MonitorResourceListResponsePage {
+	return MonitorResourceListResponsePage{
+		fn:   getNextPage,
+		mrlr: cur,
+	}
 }
 
 // MonitorResourceUpdateParameters the parameters for a PATCH request to a monitor resource.
@@ -1433,8 +1451,11 @@ func (page OperationListResultPage) Values() []OperationResult {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResult a Microsoft.Datadog REST API operation.
@@ -1705,9 +1726,6 @@ func (page SingleSignOnResourceListResponsePage) Values() []SingleSignOnResource
 }
 
 // Creates a new instance of the SingleSignOnResourceListResponsePage type.
-func NewSingleSignOnResourceListResponsePage(getNextPage func(context.Context, SingleSignOnResourceListResponse) (SingleSignOnResourceListResponse, error)) SingleSignOnResourceListResponsePage {
-	return SingleSignOnResourceListResponsePage{fn: getNextPage}
-}
 
 // UserInfo ...
 type UserInfo struct {

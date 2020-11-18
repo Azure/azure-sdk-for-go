@@ -241,8 +241,11 @@ func (page CommitmentAssociationListResultPage) Values() []CommitmentAssociation
 }
 
 // Creates a new instance of the CommitmentAssociationListResultPage type.
-func NewCommitmentAssociationListResultPage(getNextPage func(context.Context, CommitmentAssociationListResult) (CommitmentAssociationListResult, error)) CommitmentAssociationListResultPage {
-	return CommitmentAssociationListResultPage{fn: getNextPage}
+func NewCommitmentAssociationListResultPage(cur CommitmentAssociationListResult, getNextPage func(context.Context, CommitmentAssociationListResult) (CommitmentAssociationListResult, error)) CommitmentAssociationListResultPage {
+	return CommitmentAssociationListResultPage{
+		fn:   getNextPage,
+		calr: cur,
+	}
 }
 
 // CommitmentAssociationProperties properties of an Azure ML commitment association.
@@ -446,8 +449,11 @@ func (page ListResultPage) Values() []CommitmentPlan {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // MoveCommitmentAssociationRequest specifies the destination Azure ML commitment plan for a move operation.
@@ -722,9 +728,6 @@ func (page PlanUsageHistoryListResultPage) Values() []PlanUsageHistory {
 }
 
 // Creates a new instance of the PlanUsageHistoryListResultPage type.
-func NewPlanUsageHistoryListResultPage(getNextPage func(context.Context, PlanUsageHistoryListResult) (PlanUsageHistoryListResult, error)) PlanUsageHistoryListResultPage {
-	return PlanUsageHistoryListResultPage{fn: getNextPage}
-}
 
 // Properties properties of an Azure ML commitment plan.
 type Properties struct {

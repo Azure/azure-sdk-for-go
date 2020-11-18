@@ -889,8 +889,11 @@ func (page DataLakeStoreAccountListResultPage) Values() []DataLakeStoreAccountBa
 }
 
 // Creates a new instance of the DataLakeStoreAccountListResultPage type.
-func NewDataLakeStoreAccountListResultPage(getNextPage func(context.Context, DataLakeStoreAccountListResult) (DataLakeStoreAccountListResult, error)) DataLakeStoreAccountListResultPage {
-	return DataLakeStoreAccountListResultPage{fn: getNextPage}
+func NewDataLakeStoreAccountListResultPage(cur DataLakeStoreAccountListResult, getNextPage func(context.Context, DataLakeStoreAccountListResult) (DataLakeStoreAccountListResult, error)) DataLakeStoreAccountListResultPage {
+	return DataLakeStoreAccountListResultPage{
+		fn:     getNextPage,
+		dlsalr: cur,
+	}
 }
 
 // DataLakeStoreAccountProperties data Lake Store account properties information.
@@ -1199,8 +1202,11 @@ func (page FirewallRuleListResultPage) Values() []FirewallRule {
 }
 
 // Creates a new instance of the FirewallRuleListResultPage type.
-func NewFirewallRuleListResultPage(getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
-	return FirewallRuleListResultPage{fn: getNextPage}
+func NewFirewallRuleListResultPage(cur FirewallRuleListResult, getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
+	return FirewallRuleListResultPage{
+		fn:   getNextPage,
+		frlr: cur,
+	}
 }
 
 // FirewallRuleProperties the firewall rule properties.
@@ -1524,8 +1530,11 @@ func (page TrustedIDProviderListResultPage) Values() []TrustedIDProvider {
 }
 
 // Creates a new instance of the TrustedIDProviderListResultPage type.
-func NewTrustedIDProviderListResultPage(getNextPage func(context.Context, TrustedIDProviderListResult) (TrustedIDProviderListResult, error)) TrustedIDProviderListResultPage {
-	return TrustedIDProviderListResultPage{fn: getNextPage}
+func NewTrustedIDProviderListResultPage(cur TrustedIDProviderListResult, getNextPage func(context.Context, TrustedIDProviderListResult) (TrustedIDProviderListResult, error)) TrustedIDProviderListResultPage {
+	return TrustedIDProviderListResultPage{
+		fn:     getNextPage,
+		tidplr: cur,
+	}
 }
 
 // TrustedIDProviderProperties the trusted identity provider properties.
@@ -2173,9 +2182,6 @@ func (page VirtualNetworkRuleListResultPage) Values() []VirtualNetworkRule {
 }
 
 // Creates a new instance of the VirtualNetworkRuleListResultPage type.
-func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
-	return VirtualNetworkRuleListResultPage{fn: getNextPage}
-}
 
 // VirtualNetworkRuleProperties the virtual network rule properties.
 type VirtualNetworkRuleProperties struct {

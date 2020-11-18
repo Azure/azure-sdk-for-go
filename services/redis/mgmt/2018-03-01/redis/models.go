@@ -570,8 +570,11 @@ func (page FirewallRuleListResultPage) Values() []FirewallRule {
 }
 
 // Creates a new instance of the FirewallRuleListResultPage type.
-func NewFirewallRuleListResultPage(getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
-	return FirewallRuleListResultPage{fn: getNextPage}
+func NewFirewallRuleListResultPage(cur FirewallRuleListResult, getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
+	return FirewallRuleListResultPage{
+		fn:   getNextPage,
+		frlr: cur,
+	}
 }
 
 // FirewallRuleProperties specifies a range of IP addresses permitted to connect to the cache
@@ -965,8 +968,11 @@ func (page LinkedServerWithPropertiesListPage) Values() []LinkedServerWithProper
 }
 
 // Creates a new instance of the LinkedServerWithPropertiesListPage type.
-func NewLinkedServerWithPropertiesListPage(getNextPage func(context.Context, LinkedServerWithPropertiesList) (LinkedServerWithPropertiesList, error)) LinkedServerWithPropertiesListPage {
-	return LinkedServerWithPropertiesListPage{fn: getNextPage}
+func NewLinkedServerWithPropertiesListPage(cur LinkedServerWithPropertiesList, getNextPage func(context.Context, LinkedServerWithPropertiesList) (LinkedServerWithPropertiesList, error)) LinkedServerWithPropertiesListPage {
+	return LinkedServerWithPropertiesListPage{
+		fn:    getNextPage,
+		lswpl: cur,
+	}
 }
 
 // ListResult the response of list Redis operation.
@@ -1130,8 +1136,11 @@ func (page ListResultPage) Values() []ResourceType {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // NotificationListResponse the response of listUpgradeNotifications.
@@ -1334,8 +1343,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PatchSchedule response to put/get patch schedules for Redis cache.
@@ -1572,9 +1584,6 @@ func (page PatchScheduleListResultPage) Values() []PatchSchedule {
 }
 
 // Creates a new instance of the PatchScheduleListResultPage type.
-func NewPatchScheduleListResultPage(getNextPage func(context.Context, PatchScheduleListResult) (PatchScheduleListResult, error)) PatchScheduleListResultPage {
-	return PatchScheduleListResultPage{fn: getNextPage}
-}
 
 // Properties properties of the redis cache.
 type Properties struct {

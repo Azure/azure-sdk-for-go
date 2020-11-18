@@ -88,8 +88,8 @@ func New(subscriptionID string) BaseClient {
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOrganizationClient(subscriptionID string) OrganizationClient {
 	return original.NewOrganizationClient(subscriptionID)
@@ -105,9 +105,6 @@ func NewOrganizationOperationsClientWithBaseURI(baseURI string, subscriptionID s
 }
 func NewOrganizationResourceListResultIterator(page OrganizationResourceListResultPage) OrganizationResourceListResultIterator {
 	return original.NewOrganizationResourceListResultIterator(page)
-}
-func NewOrganizationResourceListResultPage(getNextPage func(context.Context, OrganizationResourceListResult) (OrganizationResourceListResult, error)) OrganizationResourceListResultPage {
-	return original.NewOrganizationResourceListResultPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

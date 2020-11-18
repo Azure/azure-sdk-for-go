@@ -529,8 +529,11 @@ func (page ApplicationDefinitionListResultPage) Values() []ApplicationDefinition
 }
 
 // Creates a new instance of the ApplicationDefinitionListResultPage type.
-func NewApplicationDefinitionListResultPage(getNextPage func(context.Context, ApplicationDefinitionListResult) (ApplicationDefinitionListResult, error)) ApplicationDefinitionListResultPage {
-	return ApplicationDefinitionListResultPage{fn: getNextPage}
+func NewApplicationDefinitionListResultPage(cur ApplicationDefinitionListResult, getNextPage func(context.Context, ApplicationDefinitionListResult) (ApplicationDefinitionListResult, error)) ApplicationDefinitionListResultPage {
+	return ApplicationDefinitionListResultPage{
+		fn:   getNextPage,
+		adlr: cur,
+	}
 }
 
 // ApplicationDefinitionProperties the managed application definition properties.
@@ -839,8 +842,11 @@ func (page ApplicationListResultPage) Values() []Application {
 }
 
 // Creates a new instance of the ApplicationListResultPage type.
-func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
-	return ApplicationListResultPage{fn: getNextPage}
+func NewApplicationListResultPage(cur ApplicationListResult, getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return ApplicationListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // ApplicationManagementPolicy managed application management policy.
@@ -1731,9 +1737,6 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // Plan plan for the managed application.
 type Plan struct {

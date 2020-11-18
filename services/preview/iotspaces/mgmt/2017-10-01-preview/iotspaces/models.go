@@ -275,8 +275,11 @@ func (page DescriptionListResultPage) Values() []Description {
 }
 
 // Creates a new instance of the DescriptionListResultPage type.
-func NewDescriptionListResultPage(getNextPage func(context.Context, DescriptionListResult) (DescriptionListResult, error)) DescriptionListResultPage {
-	return DescriptionListResultPage{fn: getNextPage}
+func NewDescriptionListResultPage(cur DescriptionListResult, getNextPage func(context.Context, DescriptionListResult) (DescriptionListResult, error)) DescriptionListResultPage {
+	return DescriptionListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // ErrorDetails error details.
@@ -505,9 +508,6 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // PatchDescription the description of the IoTSpaces service.
 type PatchDescription struct {

@@ -638,8 +638,11 @@ func (page DescendantListResultPage) Values() []DescendantInfo {
 }
 
 // Creates a new instance of the DescendantListResultPage type.
-func NewDescendantListResultPage(getNextPage func(context.Context, DescendantListResult) (DescendantListResult, error)) DescendantListResultPage {
-	return DescendantListResultPage{fn: getNextPage}
+func NewDescendantListResultPage(cur DescendantListResult, getNextPage func(context.Context, DescendantListResult) (DescendantListResult, error)) DescendantListResultPage {
+	return DescendantListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DescendantParentGroupInfo the ID of the parent management group.
@@ -996,8 +999,11 @@ func (page EntityListResultPage) Values() []EntityInfo {
 }
 
 // Creates a new instance of the EntityListResultPage type.
-func NewEntityListResultPage(getNextPage func(context.Context, EntityListResult) (EntityListResult, error)) EntityListResultPage {
-	return EntityListResultPage{fn: getNextPage}
+func NewEntityListResultPage(cur EntityListResult, getNextPage func(context.Context, EntityListResult) (EntityListResult, error)) EntityListResultPage {
+	return EntityListResultPage{
+		fn:  getNextPage,
+		elr: cur,
+	}
 }
 
 // EntityParentGroupInfo (Optional) The ID of the parent management group.
@@ -1432,8 +1438,11 @@ func (page ListResultPage) Values() []Info {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // ListSubscriptionUnderManagementGroup the details of all subscriptions under management group.
@@ -1598,8 +1607,11 @@ func (page ListSubscriptionUnderManagementGroupPage) Values() []SubscriptionUnde
 }
 
 // Creates a new instance of the ListSubscriptionUnderManagementGroupPage type.
-func NewListSubscriptionUnderManagementGroupPage(getNextPage func(context.Context, ListSubscriptionUnderManagementGroup) (ListSubscriptionUnderManagementGroup, error)) ListSubscriptionUnderManagementGroupPage {
-	return ListSubscriptionUnderManagementGroupPage{fn: getNextPage}
+func NewListSubscriptionUnderManagementGroupPage(cur ListSubscriptionUnderManagementGroup, getNextPage func(context.Context, ListSubscriptionUnderManagementGroup) (ListSubscriptionUnderManagementGroup, error)) ListSubscriptionUnderManagementGroupPage {
+	return ListSubscriptionUnderManagementGroupPage{
+		fn:    getNextPage,
+		lsumg: cur,
+	}
 }
 
 // ManagementGroup the management group details.
@@ -1854,9 +1866,6 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // OperationResults the results of an asynchronous operation.
 type OperationResults struct {

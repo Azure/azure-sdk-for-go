@@ -698,8 +698,11 @@ func (page ApplicationInsightsComponentListResultPage) Values() []ApplicationIns
 }
 
 // Creates a new instance of the ApplicationInsightsComponentListResultPage type.
-func NewApplicationInsightsComponentListResultPage(getNextPage func(context.Context, ApplicationInsightsComponentListResult) (ApplicationInsightsComponentListResult, error)) ApplicationInsightsComponentListResultPage {
-	return ApplicationInsightsComponentListResultPage{fn: getNextPage}
+func NewApplicationInsightsComponentListResultPage(cur ApplicationInsightsComponentListResult, getNextPage func(context.Context, ApplicationInsightsComponentListResult) (ApplicationInsightsComponentListResult, error)) ApplicationInsightsComponentListResultPage {
+	return ApplicationInsightsComponentListResultPage{
+		fn:    getNextPage,
+		aiclr: cur,
+	}
 }
 
 // ApplicationInsightsComponentProactiveDetectionConfiguration properties that define a ProactiveDetection
@@ -1140,8 +1143,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PrivateLinkScopedResource the private link scope resource reference.
@@ -1442,9 +1448,6 @@ func (page WebTestListResultPage) Values() []WebTest {
 }
 
 // Creates a new instance of the WebTestListResultPage type.
-func NewWebTestListResultPage(getNextPage func(context.Context, WebTestListResult) (WebTestListResult, error)) WebTestListResultPage {
-	return WebTestListResultPage{fn: getNextPage}
-}
 
 // WebTestProperties metadata describing a web test for an Azure resource.
 type WebTestProperties struct {

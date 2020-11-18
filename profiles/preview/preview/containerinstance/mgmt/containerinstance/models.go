@@ -19,11 +19,7 @@
 
 package containerinstance
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/preview/containerinstance/mgmt/2018-02-01-preview/containerinstance"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/preview/containerinstance/mgmt/2018-02-01-preview/containerinstance"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -112,9 +108,6 @@ func New(subscriptionID string) BaseClient {
 }
 func NewContainerGroupListResultIterator(page ContainerGroupListResultPage) ContainerGroupListResultIterator {
 	return original.NewContainerGroupListResultIterator(page)
-}
-func NewContainerGroupListResultPage(getNextPage func(context.Context, ContainerGroupListResult) (ContainerGroupListResult, error)) ContainerGroupListResultPage {
-	return original.NewContainerGroupListResultPage(getNextPage)
 }
 func NewContainerGroupUsageClient(subscriptionID string) ContainerGroupUsageClient {
 	return original.NewContainerGroupUsageClient(subscriptionID)

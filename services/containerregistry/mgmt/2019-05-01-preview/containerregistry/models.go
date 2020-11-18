@@ -255,8 +255,11 @@ func (page EventListResultPage) Values() []Event {
 }
 
 // Creates a new instance of the EventListResultPage type.
-func NewEventListResultPage(getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
-	return EventListResultPage{fn: getNextPage}
+func NewEventListResultPage(cur EventListResult, getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
+	return EventListResultPage{
+		fn:  getNextPage,
+		elr: cur,
+	}
 }
 
 // EventRequestMessage the event request message sent to the service URI.
@@ -647,8 +650,11 @@ func (page OperationListResultPage) Values() []OperationDefinition {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationMetricSpecificationDefinition the definition of Azure Monitoring metric.
@@ -1137,8 +1143,11 @@ func (page RegistryListResultPage) Values() []Registry {
 }
 
 // Creates a new instance of the RegistryListResultPage type.
-func NewRegistryListResultPage(getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
-	return RegistryListResultPage{fn: getNextPage}
+func NewRegistryListResultPage(cur RegistryListResult, getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
+	return RegistryListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // RegistryNameCheckRequest a request to check whether a container registry name is available.
@@ -1559,8 +1568,11 @@ func (page ReplicationListResultPage) Values() []Replication {
 }
 
 // Creates a new instance of the ReplicationListResultPage type.
-func NewReplicationListResultPage(getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
-	return ReplicationListResultPage{fn: getNextPage}
+func NewReplicationListResultPage(cur ReplicationListResult, getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
+	return ReplicationListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // ReplicationProperties the properties of a replication.
@@ -1932,8 +1944,11 @@ func (page ScopeMapListResultPage) Values() []ScopeMap {
 }
 
 // Creates a new instance of the ScopeMapListResultPage type.
-func NewScopeMapListResultPage(getNextPage func(context.Context, ScopeMapListResult) (ScopeMapListResult, error)) ScopeMapListResultPage {
-	return ScopeMapListResultPage{fn: getNextPage}
+func NewScopeMapListResultPage(cur ScopeMapListResult, getNextPage func(context.Context, ScopeMapListResult) (ScopeMapListResult, error)) ScopeMapListResultPage {
+	return ScopeMapListResultPage{
+		fn:   getNextPage,
+		smlr: cur,
+	}
 }
 
 // ScopeMapProperties the properties of a scope map.
@@ -2400,8 +2415,11 @@ func (page TokenListResultPage) Values() []Token {
 }
 
 // Creates a new instance of the TokenListResultPage type.
-func NewTokenListResultPage(getNextPage func(context.Context, TokenListResult) (TokenListResult, error)) TokenListResultPage {
-	return TokenListResultPage{fn: getNextPage}
+func NewTokenListResultPage(cur TokenListResult, getNextPage func(context.Context, TokenListResult) (TokenListResult, error)) TokenListResultPage {
+	return TokenListResultPage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }
 
 // TokenPassword the password that will be used for authenticating the token of a container registry.
@@ -2923,9 +2941,6 @@ func (page WebhookListResultPage) Values() []Webhook {
 }
 
 // Creates a new instance of the WebhookListResultPage type.
-func NewWebhookListResultPage(getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
-	return WebhookListResultPage{fn: getNextPage}
-}
 
 // WebhookProperties the properties of a webhook.
 type WebhookProperties struct {

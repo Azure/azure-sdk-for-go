@@ -123,8 +123,8 @@ func New(subscriptionID string) BaseClient {
 func NewIPFilterRuleListResultIterator(page IPFilterRuleListResultPage) IPFilterRuleListResultIterator {
 	return original.NewIPFilterRuleListResultIterator(page)
 }
-func NewIPFilterRuleListResultPage(getNextPage func(context.Context, IPFilterRuleListResult) (IPFilterRuleListResult, error)) IPFilterRuleListResultPage {
-	return original.NewIPFilterRuleListResultPage(getNextPage)
+func NewIPFilterRuleListResultPage(cur IPFilterRuleListResult, getNextPage func(context.Context, IPFilterRuleListResult) (IPFilterRuleListResult, error)) IPFilterRuleListResultPage {
+	return original.NewIPFilterRuleListResultPage(cur, getNextPage)
 }
 func NewNamespacesClient(subscriptionID string) NamespacesClient {
 	return original.NewNamespacesClient(subscriptionID)
@@ -135,8 +135,8 @@ func NewNamespacesClientWithBaseURI(baseURI string, subscriptionID string) Names
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -147,14 +147,11 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewSBNamespaceListResultIterator(page SBNamespaceListResultPage) SBNamespaceListResultIterator {
 	return original.NewSBNamespaceListResultIterator(page)
 }
-func NewSBNamespaceListResultPage(getNextPage func(context.Context, SBNamespaceListResult) (SBNamespaceListResult, error)) SBNamespaceListResultPage {
-	return original.NewSBNamespaceListResultPage(getNextPage)
+func NewSBNamespaceListResultPage(cur SBNamespaceListResult, getNextPage func(context.Context, SBNamespaceListResult) (SBNamespaceListResult, error)) SBNamespaceListResultPage {
+	return original.NewSBNamespaceListResultPage(cur, getNextPage)
 }
 func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
 	return original.NewVirtualNetworkRuleListResultIterator(page)
-}
-func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
-	return original.NewVirtualNetworkRuleListResultPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

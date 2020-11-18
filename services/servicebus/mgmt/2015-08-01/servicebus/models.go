@@ -305,8 +305,11 @@ func (page NamespaceListResultPage) Values() []NamespaceResource {
 }
 
 // Creates a new instance of the NamespaceListResultPage type.
-func NewNamespaceListResultPage(getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
-	return NamespaceListResultPage{fn: getNextPage}
+func NewNamespaceListResultPage(cur NamespaceListResult, getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
+	return NamespaceListResultPage{
+		fn:  getNextPage,
+		nlr: cur,
+	}
 }
 
 // NamespaceProperties properties of the namespace.
@@ -706,8 +709,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // QueueCreateOrUpdateParameters parameters supplied to the Create Or Update Queue operation.
@@ -928,8 +934,11 @@ func (page QueueListResultPage) Values() []QueueResource {
 }
 
 // Creates a new instance of the QueueListResultPage type.
-func NewQueueListResultPage(getNextPage func(context.Context, QueueListResult) (QueueListResult, error)) QueueListResultPage {
-	return QueueListResultPage{fn: getNextPage}
+func NewQueueListResultPage(cur QueueListResult, getNextPage func(context.Context, QueueListResult) (QueueListResult, error)) QueueListResultPage {
+	return QueueListResultPage{
+		fn:  getNextPage,
+		qlr: cur,
+	}
 }
 
 // QueueProperties the Queue Properties definition.
@@ -1382,8 +1391,11 @@ func (page SharedAccessAuthorizationRuleListResultPage) Values() []SharedAccessA
 }
 
 // Creates a new instance of the SharedAccessAuthorizationRuleListResultPage type.
-func NewSharedAccessAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessAuthorizationRuleListResult) (SharedAccessAuthorizationRuleListResult, error)) SharedAccessAuthorizationRuleListResultPage {
-	return SharedAccessAuthorizationRuleListResultPage{fn: getNextPage}
+func NewSharedAccessAuthorizationRuleListResultPage(cur SharedAccessAuthorizationRuleListResult, getNextPage func(context.Context, SharedAccessAuthorizationRuleListResult) (SharedAccessAuthorizationRuleListResult, error)) SharedAccessAuthorizationRuleListResultPage {
+	return SharedAccessAuthorizationRuleListResultPage{
+		fn:     getNextPage,
+		saarlr: cur,
+	}
 }
 
 // SharedAccessAuthorizationRuleProperties sharedAccessAuthorizationRule properties.
@@ -1706,8 +1718,11 @@ func (page SubscriptionListResultPage) Values() []SubscriptionResource {
 }
 
 // Creates a new instance of the SubscriptionListResultPage type.
-func NewSubscriptionListResultPage(getNextPage func(context.Context, SubscriptionListResult) (SubscriptionListResult, error)) SubscriptionListResultPage {
-	return SubscriptionListResultPage{fn: getNextPage}
+func NewSubscriptionListResultPage(cur SubscriptionListResult, getNextPage func(context.Context, SubscriptionListResult) (SubscriptionListResult, error)) SubscriptionListResultPage {
+	return SubscriptionListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // SubscriptionProperties description of Subscription Resource.
@@ -2089,9 +2104,6 @@ func (page TopicListResultPage) Values() []TopicResource {
 }
 
 // Creates a new instance of the TopicListResultPage type.
-func NewTopicListResultPage(getNextPage func(context.Context, TopicListResult) (TopicListResult, error)) TopicListResultPage {
-	return TopicListResultPage{fn: getNextPage}
-}
 
 // TopicProperties the Topic Properties definition.
 type TopicProperties struct {

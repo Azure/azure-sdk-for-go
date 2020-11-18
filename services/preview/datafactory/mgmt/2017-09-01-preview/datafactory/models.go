@@ -936,8 +936,11 @@ func (page ActivityRunsListResponsePage) Values() []ActivityRun {
 }
 
 // Creates a new instance of the ActivityRunsListResponsePage type.
-func NewActivityRunsListResponsePage(getNextPage func(context.Context, ActivityRunsListResponse) (ActivityRunsListResponse, error)) ActivityRunsListResponsePage {
-	return ActivityRunsListResponsePage{fn: getNextPage}
+func NewActivityRunsListResponsePage(cur ActivityRunsListResponse, getNextPage func(context.Context, ActivityRunsListResponse) (ActivityRunsListResponse, error)) ActivityRunsListResponsePage {
+	return ActivityRunsListResponsePage{
+		fn:   getNextPage,
+		arlr: cur,
+	}
 }
 
 // AmazonMWSLinkedService amazon Marketplace Web Service linked service.
@@ -27735,8 +27738,11 @@ func (page DatasetListResponsePage) Values() []DatasetResource {
 }
 
 // Creates a new instance of the DatasetListResponsePage type.
-func NewDatasetListResponsePage(getNextPage func(context.Context, DatasetListResponse) (DatasetListResponse, error)) DatasetListResponsePage {
-	return DatasetListResponsePage{fn: getNextPage}
+func NewDatasetListResponsePage(cur DatasetListResponse, getNextPage func(context.Context, DatasetListResponse) (DatasetListResponse, error)) DatasetListResponsePage {
+	return DatasetListResponsePage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DatasetReference dataset reference type.
@@ -35262,8 +35268,11 @@ func (page FactoryListResponsePage) Values() []Factory {
 }
 
 // Creates a new instance of the FactoryListResponsePage type.
-func NewFactoryListResponsePage(getNextPage func(context.Context, FactoryListResponse) (FactoryListResponse, error)) FactoryListResponsePage {
-	return FactoryListResponsePage{fn: getNextPage}
+func NewFactoryListResponsePage(cur FactoryListResponse, getNextPage func(context.Context, FactoryListResponse) (FactoryListResponse, error)) FactoryListResponsePage {
+	return FactoryListResponsePage{
+		fn:  getNextPage,
+		flr: cur,
+	}
 }
 
 // FactoryProperties factory resource properties.
@@ -52918,8 +52927,11 @@ func (page IntegrationRuntimeListResponsePage) Values() []IntegrationRuntimeReso
 }
 
 // Creates a new instance of the IntegrationRuntimeListResponsePage type.
-func NewIntegrationRuntimeListResponsePage(getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
-	return IntegrationRuntimeListResponsePage{fn: getNextPage}
+func NewIntegrationRuntimeListResponsePage(cur IntegrationRuntimeListResponse, getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
+	return IntegrationRuntimeListResponsePage{
+		fn:   getNextPage,
+		irlr: cur,
+	}
 }
 
 // IntegrationRuntimeMonitoringData get monitoring data response.
@@ -56538,8 +56550,11 @@ func (page LinkedServiceListResponsePage) Values() []LinkedServiceResource {
 }
 
 // Creates a new instance of the LinkedServiceListResponsePage type.
-func NewLinkedServiceListResponsePage(getNextPage func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error)) LinkedServiceListResponsePage {
-	return LinkedServiceListResponsePage{fn: getNextPage}
+func NewLinkedServiceListResponsePage(cur LinkedServiceListResponse, getNextPage func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error)) LinkedServiceListResponsePage {
+	return LinkedServiceListResponsePage{
+		fn:   getNextPage,
+		lslr: cur,
+	}
 }
 
 // LinkedServiceReference linked service reference type.
@@ -71223,8 +71238,11 @@ func (page PipelineListResponsePage) Values() []PipelineResource {
 }
 
 // Creates a new instance of the PipelineListResponsePage type.
-func NewPipelineListResponsePage(getNextPage func(context.Context, PipelineListResponse) (PipelineListResponse, error)) PipelineListResponsePage {
-	return PipelineListResponsePage{fn: getNextPage}
+func NewPipelineListResponsePage(cur PipelineListResponse, getNextPage func(context.Context, PipelineListResponse) (PipelineListResponse, error)) PipelineListResponsePage {
+	return PipelineListResponsePage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // PipelineReference pipeline reference type.
@@ -95724,8 +95742,11 @@ func (page TriggerListResponsePage) Values() []TriggerResource {
 }
 
 // Creates a new instance of the TriggerListResponsePage type.
-func NewTriggerListResponsePage(getNextPage func(context.Context, TriggerListResponse) (TriggerListResponse, error)) TriggerListResponsePage {
-	return TriggerListResponsePage{fn: getNextPage}
+func NewTriggerListResponsePage(cur TriggerListResponse, getNextPage func(context.Context, TriggerListResponse) (TriggerListResponse, error)) TriggerListResponsePage {
+	return TriggerListResponsePage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }
 
 // TriggerPipelineReference pipeline that needs to be triggered with the given parameters.
@@ -96111,9 +96132,6 @@ func (page TriggerRunListResponsePage) Values() []TriggerRun {
 }
 
 // Creates a new instance of the TriggerRunListResponsePage type.
-func NewTriggerRunListResponsePage(getNextPage func(context.Context, TriggerRunListResponse) (TriggerRunListResponse, error)) TriggerRunListResponsePage {
-	return TriggerRunListResponsePage{fn: getNextPage}
-}
 
 // TriggersStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type TriggersStartFuture struct {

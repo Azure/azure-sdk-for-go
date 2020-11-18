@@ -246,8 +246,8 @@ func NewAnnotationsClientWithBaseURI(baseURI string, subscriptionID string) Anno
 func NewApplicationInsightsComponentListResultIterator(page ApplicationInsightsComponentListResultPage) ApplicationInsightsComponentListResultIterator {
 	return original.NewApplicationInsightsComponentListResultIterator(page)
 }
-func NewApplicationInsightsComponentListResultPage(getNextPage func(context.Context, ApplicationInsightsComponentListResult) (ApplicationInsightsComponentListResult, error)) ApplicationInsightsComponentListResultPage {
-	return original.NewApplicationInsightsComponentListResultPage(getNextPage)
+func NewApplicationInsightsComponentListResultPage(cur ApplicationInsightsComponentListResult, getNextPage func(context.Context, ApplicationInsightsComponentListResult) (ApplicationInsightsComponentListResult, error)) ApplicationInsightsComponentListResultPage {
+	return original.NewApplicationInsightsComponentListResultPage(cur, getNextPage)
 }
 func NewComponentAvailableFeaturesClient(subscriptionID string) ComponentAvailableFeaturesClient {
 	return original.NewComponentAvailableFeaturesClient(subscriptionID)
@@ -294,8 +294,8 @@ func NewFavoritesClientWithBaseURI(baseURI string, subscriptionID string) Favori
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -311,9 +311,6 @@ func NewProactiveDetectionConfigurationsClientWithBaseURI(baseURI string, subscr
 }
 func NewWebTestListResultIterator(page WebTestListResultPage) WebTestListResultIterator {
 	return original.NewWebTestListResultIterator(page)
-}
-func NewWebTestListResultPage(getNextPage func(context.Context, WebTestListResult) (WebTestListResult, error)) WebTestListResultPage {
-	return original.NewWebTestListResultPage(getNextPage)
 }
 func NewWebTestLocationsClient(subscriptionID string) WebTestLocationsClient {
 	return original.NewWebTestLocationsClient(subscriptionID)

@@ -365,8 +365,11 @@ func (page ApplicationGroupListPage) Values() []ApplicationGroup {
 }
 
 // Creates a new instance of the ApplicationGroupListPage type.
-func NewApplicationGroupListPage(getNextPage func(context.Context, ApplicationGroupList) (ApplicationGroupList, error)) ApplicationGroupListPage {
-	return ApplicationGroupListPage{fn: getNextPage}
+func NewApplicationGroupListPage(cur ApplicationGroupList, getNextPage func(context.Context, ApplicationGroupList) (ApplicationGroupList, error)) ApplicationGroupListPage {
+	return ApplicationGroupListPage{
+		fn:  getNextPage,
+		agl: cur,
+	}
 }
 
 // ApplicationGroupPatch applicationGroup properties that can be patched.
@@ -656,8 +659,11 @@ func (page ApplicationListPage) Values() []Application {
 }
 
 // Creates a new instance of the ApplicationListPage type.
-func NewApplicationListPage(getNextPage func(context.Context, ApplicationList) (ApplicationList, error)) ApplicationListPage {
-	return ApplicationListPage{fn: getNextPage}
+func NewApplicationListPage(cur ApplicationList, getNextPage func(context.Context, ApplicationList) (ApplicationList, error)) ApplicationListPage {
+	return ApplicationListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // ApplicationPatch application properties that can be patched.
@@ -1245,8 +1251,11 @@ func (page HostPoolListPage) Values() []HostPool {
 }
 
 // Creates a new instance of the HostPoolListPage type.
-func NewHostPoolListPage(getNextPage func(context.Context, HostPoolList) (HostPoolList, error)) HostPoolListPage {
-	return HostPoolListPage{fn: getNextPage}
+func NewHostPoolListPage(cur HostPoolList, getNextPage func(context.Context, HostPoolList) (HostPoolList, error)) HostPoolListPage {
+	return HostPoolListPage{
+		fn:  getNextPage,
+		hpl: cur,
+	}
 }
 
 // HostPoolPatch hostPool properties that can be patched.
@@ -1744,8 +1753,11 @@ func (page SessionHostListPage) Values() []SessionHost {
 }
 
 // Creates a new instance of the SessionHostListPage type.
-func NewSessionHostListPage(getNextPage func(context.Context, SessionHostList) (SessionHostList, error)) SessionHostListPage {
-	return SessionHostListPage{fn: getNextPage}
+func NewSessionHostListPage(cur SessionHostList, getNextPage func(context.Context, SessionHostList) (SessionHostList, error)) SessionHostListPage {
+	return SessionHostListPage{
+		fn:  getNextPage,
+		shl: cur,
+	}
 }
 
 // SessionHostPatch sessionHost properties that can be patched.
@@ -2129,8 +2141,11 @@ func (page StartMenuItemListPage) Values() []StartMenuItem {
 }
 
 // Creates a new instance of the StartMenuItemListPage type.
-func NewStartMenuItemListPage(getNextPage func(context.Context, StartMenuItemList) (StartMenuItemList, error)) StartMenuItemListPage {
-	return StartMenuItemListPage{fn: getNextPage}
+func NewStartMenuItemListPage(cur StartMenuItemList, getNextPage func(context.Context, StartMenuItemList) (StartMenuItemList, error)) StartMenuItemListPage {
+	return StartMenuItemListPage{
+		fn:   getNextPage,
+		smil: cur,
+	}
 }
 
 // StartMenuItemProperties schema for StartMenuItem properties.
@@ -2409,8 +2424,11 @@ func (page UserSessionListPage) Values() []UserSession {
 }
 
 // Creates a new instance of the UserSessionListPage type.
-func NewUserSessionListPage(getNextPage func(context.Context, UserSessionList) (UserSessionList, error)) UserSessionListPage {
-	return UserSessionListPage{fn: getNextPage}
+func NewUserSessionListPage(cur UserSessionList, getNextPage func(context.Context, UserSessionList) (UserSessionList, error)) UserSessionListPage {
+	return UserSessionListPage{
+		fn:  getNextPage,
+		usl: cur,
+	}
 }
 
 // UserSessionProperties schema for UserSession properties.
@@ -2689,9 +2707,6 @@ func (page WorkspaceListPage) Values() []Workspace {
 }
 
 // Creates a new instance of the WorkspaceListPage type.
-func NewWorkspaceListPage(getNextPage func(context.Context, WorkspaceList) (WorkspaceList, error)) WorkspaceListPage {
-	return WorkspaceListPage{fn: getNextPage}
-}
 
 // WorkspacePatch workspace properties that can be patched.
 type WorkspacePatch struct {

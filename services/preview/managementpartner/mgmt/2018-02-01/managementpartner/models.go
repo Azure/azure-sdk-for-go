@@ -208,9 +208,6 @@ func (page OperationListPage) Values() []OperationResponse {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
-}
 
 // OperationResponse this is the management partner operations response
 type OperationResponse struct {

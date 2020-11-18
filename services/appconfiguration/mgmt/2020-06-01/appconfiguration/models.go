@@ -200,8 +200,11 @@ func (page APIKeyListResultPage) Values() []APIKey {
 }
 
 // Creates a new instance of the APIKeyListResultPage type.
-func NewAPIKeyListResultPage(getNextPage func(context.Context, APIKeyListResult) (APIKeyListResult, error)) APIKeyListResultPage {
-	return APIKeyListResultPage{fn: getNextPage}
+func NewAPIKeyListResultPage(cur APIKeyListResult, getNextPage func(context.Context, APIKeyListResult) (APIKeyListResult, error)) APIKeyListResultPage {
+	return APIKeyListResultPage{
+		fn:     getNextPage,
+		apiklr: cur,
+	}
 }
 
 // CheckNameAvailabilityParameters parameters used for checking whether a resource name is available.
@@ -494,8 +497,11 @@ func (page ConfigurationStoreListResultPage) Values() []ConfigurationStore {
 }
 
 // Creates a new instance of the ConfigurationStoreListResultPage type.
-func NewConfigurationStoreListResultPage(getNextPage func(context.Context, ConfigurationStoreListResult) (ConfigurationStoreListResult, error)) ConfigurationStoreListResultPage {
-	return ConfigurationStoreListResultPage{fn: getNextPage}
+func NewConfigurationStoreListResultPage(cur ConfigurationStoreListResult, getNextPage func(context.Context, ConfigurationStoreListResult) (ConfigurationStoreListResult, error)) ConfigurationStoreListResultPage {
+	return ConfigurationStoreListResultPage{
+		fn:   getNextPage,
+		cslr: cur,
+	}
 }
 
 // ConfigurationStoreProperties the properties of a configuration store.
@@ -955,8 +961,11 @@ func (page OperationDefinitionListResultPage) Values() []OperationDefinition {
 }
 
 // Creates a new instance of the OperationDefinitionListResultPage type.
-func NewOperationDefinitionListResultPage(getNextPage func(context.Context, OperationDefinitionListResult) (OperationDefinitionListResult, error)) OperationDefinitionListResultPage {
-	return OperationDefinitionListResultPage{fn: getNextPage}
+func NewOperationDefinitionListResultPage(cur OperationDefinitionListResult, getNextPage func(context.Context, OperationDefinitionListResult) (OperationDefinitionListResult, error)) OperationDefinitionListResultPage {
+	return OperationDefinitionListResultPage{
+		fn:   getNextPage,
+		odlr: cur,
+	}
 }
 
 // PrivateEndpoint private endpoint which a connection belongs to.
@@ -1191,8 +1200,11 @@ func (page PrivateEndpointConnectionListResultPage) Values() []PrivateEndpointCo
 }
 
 // Creates a new instance of the PrivateEndpointConnectionListResultPage type.
-func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
-	return PrivateEndpointConnectionListResultPage{fn: getNextPage}
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return PrivateEndpointConnectionListResultPage{
+		fn:    getNextPage,
+		peclr: cur,
+	}
 }
 
 // PrivateEndpointConnectionProperties properties of a private endpoint connection.
@@ -1566,9 +1578,6 @@ func (page PrivateLinkResourceListResultPage) Values() []PrivateLinkResource {
 }
 
 // Creates a new instance of the PrivateLinkResourceListResultPage type.
-func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
-	return PrivateLinkResourceListResultPage{fn: getNextPage}
-}
 
 // PrivateLinkResourceProperties properties of a private link resource.
 type PrivateLinkResourceProperties struct {

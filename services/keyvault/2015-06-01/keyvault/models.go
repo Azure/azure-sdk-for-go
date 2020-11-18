@@ -463,8 +463,11 @@ func (page CertificateIssuerListResultPage) Values() []CertificateIssuerItem {
 }
 
 // Creates a new instance of the CertificateIssuerListResultPage type.
-func NewCertificateIssuerListResultPage(getNextPage func(context.Context, CertificateIssuerListResult) (CertificateIssuerListResult, error)) CertificateIssuerListResultPage {
-	return CertificateIssuerListResultPage{fn: getNextPage}
+func NewCertificateIssuerListResultPage(cur CertificateIssuerListResult, getNextPage func(context.Context, CertificateIssuerListResult) (CertificateIssuerListResult, error)) CertificateIssuerListResultPage {
+	return CertificateIssuerListResultPage{
+		fn:   getNextPage,
+		cilr: cur,
+	}
 }
 
 // CertificateIssuerSetParameters the certificate issuer set parameters.
@@ -663,8 +666,11 @@ func (page CertificateListResultPage) Values() []CertificateItem {
 }
 
 // Creates a new instance of the CertificateListResultPage type.
-func NewCertificateListResultPage(getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
-	return CertificateListResultPage{fn: getNextPage}
+func NewCertificateListResultPage(cur CertificateListResult, getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
+	return CertificateListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // CertificateMergeParameters the certificate merge parameters
@@ -1142,8 +1148,11 @@ func (page KeyListResultPage) Values() []KeyItem {
 }
 
 // Creates a new instance of the KeyListResultPage type.
-func NewKeyListResultPage(getNextPage func(context.Context, KeyListResult) (KeyListResult, error)) KeyListResultPage {
-	return KeyListResultPage{fn: getNextPage}
+func NewKeyListResultPage(cur KeyListResult, getNextPage func(context.Context, KeyListResult) (KeyListResult, error)) KeyListResultPage {
+	return KeyListResultPage{
+		fn:  getNextPage,
+		klr: cur,
+	}
 }
 
 // KeyOperationResult the key operation result
@@ -1481,9 +1490,6 @@ func (page SecretListResultPage) Values() []SecretItem {
 }
 
 // Creates a new instance of the SecretListResultPage type.
-func NewSecretListResultPage(getNextPage func(context.Context, SecretListResult) (SecretListResult, error)) SecretListResultPage {
-	return SecretListResultPage{fn: getNextPage}
-}
 
 // SecretProperties properties of the key backing a certificate.
 type SecretProperties struct {

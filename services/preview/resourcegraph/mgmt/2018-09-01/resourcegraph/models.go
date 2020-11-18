@@ -527,8 +527,11 @@ func (page GraphQueryListResultPage) Values() []GraphQueryResource {
 }
 
 // Creates a new instance of the GraphQueryListResultPage type.
-func NewGraphQueryListResultPage(getNextPage func(context.Context, GraphQueryListResult) (GraphQueryListResult, error)) GraphQueryListResultPage {
-	return GraphQueryListResultPage{fn: getNextPage}
+func NewGraphQueryListResultPage(cur GraphQueryListResult, getNextPage func(context.Context, GraphQueryListResult) (GraphQueryListResult, error)) GraphQueryListResultPage {
+	return GraphQueryListResultPage{
+		fn:   getNextPage,
+		gqlr: cur,
+	}
 }
 
 // GraphQueryProperties properties that contain a graph query.
@@ -920,9 +923,6 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // QueryRequest describes a query to be executed.
 type QueryRequest struct {

@@ -277,8 +277,11 @@ func (page OperationListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OperationProperties extra Operation properties.
@@ -741,9 +744,6 @@ func (page ServiceResourceListPage) Values() []ServiceResource {
 }
 
 // Creates a new instance of the ServiceResourceListPage type.
-func NewServiceResourceListPage(getNextPage func(context.Context, ServiceResourceList) (ServiceResourceList, error)) ServiceResourceListPage {
-	return ServiceResourceListPage{fn: getNextPage}
-}
 
 // ServiceSpecification an object that describes a specification.
 type ServiceSpecification struct {

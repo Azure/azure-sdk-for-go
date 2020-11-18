@@ -671,8 +671,11 @@ func (page MachineExtensionsListResultPage) Values() []MachineExtension {
 }
 
 // Creates a new instance of the MachineExtensionsListResultPage type.
-func NewMachineExtensionsListResultPage(getNextPage func(context.Context, MachineExtensionsListResult) (MachineExtensionsListResult, error)) MachineExtensionsListResultPage {
-	return MachineExtensionsListResultPage{fn: getNextPage}
+func NewMachineExtensionsListResultPage(cur MachineExtensionsListResult, getNextPage func(context.Context, MachineExtensionsListResult) (MachineExtensionsListResult, error)) MachineExtensionsListResultPage {
+	return MachineExtensionsListResultPage{
+		fn:   getNextPage,
+		melr: cur,
+	}
 }
 
 // MachineExtensionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -964,9 +967,6 @@ func (page MachineListResultPage) Values() []Machine {
 }
 
 // Creates a new instance of the MachineListResultPage type.
-func NewMachineListResultPage(getNextPage func(context.Context, MachineListResult) (MachineListResult, error)) MachineListResultPage {
-	return MachineListResultPage{fn: getNextPage}
-}
 
 // MachineProperties describes the properties of a hybrid machine.
 type MachineProperties struct {

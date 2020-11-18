@@ -205,8 +205,11 @@ func (page AdvisorsResultListPage) Values() []Advisor {
 }
 
 // Creates a new instance of the AdvisorsResultListPage type.
-func NewAdvisorsResultListPage(getNextPage func(context.Context, AdvisorsResultList) (AdvisorsResultList, error)) AdvisorsResultListPage {
-	return AdvisorsResultListPage{fn: getNextPage}
+func NewAdvisorsResultListPage(cur AdvisorsResultList, getNextPage func(context.Context, AdvisorsResultList) (AdvisorsResultList, error)) AdvisorsResultListPage {
+	return AdvisorsResultListPage{
+		fn:  getNextPage,
+		arl: cur,
+	}
 }
 
 // AzureEntityResource the resource model definition for a Azure Resource Manager resource with an etag.
@@ -1109,8 +1112,11 @@ func (page PrivateEndpointConnectionListResultPage) Values() []PrivateEndpointCo
 }
 
 // Creates a new instance of the PrivateEndpointConnectionListResultPage type.
-func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
-	return PrivateEndpointConnectionListResultPage{fn: getNextPage}
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return PrivateEndpointConnectionListResultPage{
+		fn:    getNextPage,
+		peclr: cur,
+	}
 }
 
 // PrivateEndpointConnectionProperties properties of a private endpoint connection.
@@ -1387,8 +1393,11 @@ func (page PrivateLinkResourceListResultPage) Values() []PrivateLinkResource {
 }
 
 // Creates a new instance of the PrivateLinkResourceListResultPage type.
-func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
-	return PrivateLinkResourceListResultPage{fn: getNextPage}
+func NewPrivateLinkResourceListResultPage(cur PrivateLinkResourceListResult, getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return PrivateLinkResourceListResultPage{
+		fn:    getNextPage,
+		plrlr: cur,
+	}
 }
 
 // PrivateLinkResourceProperties properties of a private link resource.
@@ -1762,8 +1771,11 @@ func (page QueryTextsResultListPage) Values() []QueryText {
 }
 
 // Creates a new instance of the QueryTextsResultListPage type.
-func NewQueryTextsResultListPage(getNextPage func(context.Context, QueryTextsResultList) (QueryTextsResultList, error)) QueryTextsResultListPage {
-	return QueryTextsResultListPage{fn: getNextPage}
+func NewQueryTextsResultListPage(cur QueryTextsResultList, getNextPage func(context.Context, QueryTextsResultList) (QueryTextsResultList, error)) QueryTextsResultListPage {
+	return QueryTextsResultListPage{
+		fn:   getNextPage,
+		qtrl: cur,
+	}
 }
 
 // RecommendationAction represents a Recommendation Action.
@@ -2042,8 +2054,11 @@ func (page RecommendationActionsResultListPage) Values() []RecommendationAction 
 }
 
 // Creates a new instance of the RecommendationActionsResultListPage type.
-func NewRecommendationActionsResultListPage(getNextPage func(context.Context, RecommendationActionsResultList) (RecommendationActionsResultList, error)) RecommendationActionsResultListPage {
-	return RecommendationActionsResultListPage{fn: getNextPage}
+func NewRecommendationActionsResultListPage(cur RecommendationActionsResultList, getNextPage func(context.Context, RecommendationActionsResultList) (RecommendationActionsResultList, error)) RecommendationActionsResultListPage {
+	return RecommendationActionsResultListPage{
+		fn:   getNextPage,
+		rarl: cur,
+	}
 }
 
 // RecommendedActionSessionsOperationStatus recommendation action session operation status.
@@ -3356,8 +3371,11 @@ func (page TopQueryStatisticsResultListPage) Values() []QueryStatistic {
 }
 
 // Creates a new instance of the TopQueryStatisticsResultListPage type.
-func NewTopQueryStatisticsResultListPage(getNextPage func(context.Context, TopQueryStatisticsResultList) (TopQueryStatisticsResultList, error)) TopQueryStatisticsResultListPage {
-	return TopQueryStatisticsResultListPage{fn: getNextPage}
+func NewTopQueryStatisticsResultListPage(cur TopQueryStatisticsResultList, getNextPage func(context.Context, TopQueryStatisticsResultList) (TopQueryStatisticsResultList, error)) TopQueryStatisticsResultListPage {
+	return TopQueryStatisticsResultListPage{
+		fn:    getNextPage,
+		tqsrl: cur,
+	}
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource
@@ -3611,8 +3629,11 @@ func (page VirtualNetworkRuleListResultPage) Values() []VirtualNetworkRule {
 }
 
 // Creates a new instance of the VirtualNetworkRuleListResultPage type.
-func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
-	return VirtualNetworkRuleListResultPage{fn: getNextPage}
+func NewVirtualNetworkRuleListResultPage(cur VirtualNetworkRuleListResult, getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
+	return VirtualNetworkRuleListResultPage{
+		fn:    getNextPage,
+		vnrlr: cur,
+	}
 }
 
 // VirtualNetworkRuleProperties properties of a virtual network rule.
@@ -3985,6 +4006,3 @@ func (page WaitStatisticsResultListPage) Values() []WaitStatistic {
 }
 
 // Creates a new instance of the WaitStatisticsResultListPage type.
-func NewWaitStatisticsResultListPage(getNextPage func(context.Context, WaitStatisticsResultList) (WaitStatisticsResultList, error)) WaitStatisticsResultListPage {
-	return WaitStatisticsResultListPage{fn: getNextPage}
-}

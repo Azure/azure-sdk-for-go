@@ -19,11 +19,7 @@
 
 package storageimportexport
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2020-08-01/storageimportexport"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2020-08-01/storageimportexport"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -107,9 +103,6 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string, acceptLangu
 }
 func NewListJobsResponseIterator(page ListJobsResponsePage) ListJobsResponseIterator {
 	return original.NewListJobsResponseIterator(page)
-}
-func NewListJobsResponsePage(getNextPage func(context.Context, ListJobsResponse) (ListJobsResponse, error)) ListJobsResponsePage {
-	return original.NewListJobsResponsePage(getNextPage)
 }
 func NewLocationsClient(subscriptionID string, acceptLanguage string) LocationsClient {
 	return original.NewLocationsClient(subscriptionID, acceptLanguage)

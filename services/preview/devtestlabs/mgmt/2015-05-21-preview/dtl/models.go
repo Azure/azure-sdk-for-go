@@ -1863,8 +1863,11 @@ func (page ResponseWithContinuationArtifactPage) Values() []Artifact {
 }
 
 // Creates a new instance of the ResponseWithContinuationArtifactPage type.
-func NewResponseWithContinuationArtifactPage(getNextPage func(context.Context, ResponseWithContinuationArtifact) (ResponseWithContinuationArtifact, error)) ResponseWithContinuationArtifactPage {
-	return ResponseWithContinuationArtifactPage{fn: getNextPage}
+func NewResponseWithContinuationArtifactPage(cur ResponseWithContinuationArtifact, getNextPage func(context.Context, ResponseWithContinuationArtifact) (ResponseWithContinuationArtifact, error)) ResponseWithContinuationArtifactPage {
+	return ResponseWithContinuationArtifactPage{
+		fn:   getNextPage,
+		rwca: cur,
+	}
 }
 
 // ResponseWithContinuationArtifactSource the response of a list operation.
@@ -2020,8 +2023,11 @@ func (page ResponseWithContinuationArtifactSourcePage) Values() []ArtifactSource
 }
 
 // Creates a new instance of the ResponseWithContinuationArtifactSourcePage type.
-func NewResponseWithContinuationArtifactSourcePage(getNextPage func(context.Context, ResponseWithContinuationArtifactSource) (ResponseWithContinuationArtifactSource, error)) ResponseWithContinuationArtifactSourcePage {
-	return ResponseWithContinuationArtifactSourcePage{fn: getNextPage}
+func NewResponseWithContinuationArtifactSourcePage(cur ResponseWithContinuationArtifactSource, getNextPage func(context.Context, ResponseWithContinuationArtifactSource) (ResponseWithContinuationArtifactSource, error)) ResponseWithContinuationArtifactSourcePage {
+	return ResponseWithContinuationArtifactSourcePage{
+		fn:    getNextPage,
+		rwcas: cur,
+	}
 }
 
 // ResponseWithContinuationCost the response of a list operation.
@@ -2185,8 +2191,11 @@ func (page ResponseWithContinuationCostInsightPage) Values() []CostInsight {
 }
 
 // Creates a new instance of the ResponseWithContinuationCostInsightPage type.
-func NewResponseWithContinuationCostInsightPage(getNextPage func(context.Context, ResponseWithContinuationCostInsight) (ResponseWithContinuationCostInsight, error)) ResponseWithContinuationCostInsightPage {
-	return ResponseWithContinuationCostInsightPage{fn: getNextPage}
+func NewResponseWithContinuationCostInsightPage(cur ResponseWithContinuationCostInsight, getNextPage func(context.Context, ResponseWithContinuationCostInsight) (ResponseWithContinuationCostInsight, error)) ResponseWithContinuationCostInsightPage {
+	return ResponseWithContinuationCostInsightPage{
+		fn:    getNextPage,
+		rwcci: cur,
+	}
 }
 
 // ResponseWithContinuationCostIterator provides access to a complete listing of Cost values.
@@ -2332,8 +2341,11 @@ func (page ResponseWithContinuationCostPage) Values() []Cost {
 }
 
 // Creates a new instance of the ResponseWithContinuationCostPage type.
-func NewResponseWithContinuationCostPage(getNextPage func(context.Context, ResponseWithContinuationCost) (ResponseWithContinuationCost, error)) ResponseWithContinuationCostPage {
-	return ResponseWithContinuationCostPage{fn: getNextPage}
+func NewResponseWithContinuationCostPage(cur ResponseWithContinuationCost, getNextPage func(context.Context, ResponseWithContinuationCost) (ResponseWithContinuationCost, error)) ResponseWithContinuationCostPage {
+	return ResponseWithContinuationCostPage{
+		fn:   getNextPage,
+		rwcc: cur,
+	}
 }
 
 // ResponseWithContinuationCustomImage the response of a list operation.
@@ -2488,8 +2500,11 @@ func (page ResponseWithContinuationCustomImagePage) Values() []CustomImage {
 }
 
 // Creates a new instance of the ResponseWithContinuationCustomImagePage type.
-func NewResponseWithContinuationCustomImagePage(getNextPage func(context.Context, ResponseWithContinuationCustomImage) (ResponseWithContinuationCustomImage, error)) ResponseWithContinuationCustomImagePage {
-	return ResponseWithContinuationCustomImagePage{fn: getNextPage}
+func NewResponseWithContinuationCustomImagePage(cur ResponseWithContinuationCustomImage, getNextPage func(context.Context, ResponseWithContinuationCustomImage) (ResponseWithContinuationCustomImage, error)) ResponseWithContinuationCustomImagePage {
+	return ResponseWithContinuationCustomImagePage{
+		fn:    getNextPage,
+		rwcci: cur,
+	}
 }
 
 // ResponseWithContinuationFormula the response of a list operation.
@@ -2644,8 +2659,11 @@ func (page ResponseWithContinuationFormulaPage) Values() []Formula {
 }
 
 // Creates a new instance of the ResponseWithContinuationFormulaPage type.
-func NewResponseWithContinuationFormulaPage(getNextPage func(context.Context, ResponseWithContinuationFormula) (ResponseWithContinuationFormula, error)) ResponseWithContinuationFormulaPage {
-	return ResponseWithContinuationFormulaPage{fn: getNextPage}
+func NewResponseWithContinuationFormulaPage(cur ResponseWithContinuationFormula, getNextPage func(context.Context, ResponseWithContinuationFormula) (ResponseWithContinuationFormula, error)) ResponseWithContinuationFormulaPage {
+	return ResponseWithContinuationFormulaPage{
+		fn:   getNextPage,
+		rwcf: cur,
+	}
 }
 
 // ResponseWithContinuationGalleryImage the response of a list operation.
@@ -2800,8 +2818,11 @@ func (page ResponseWithContinuationGalleryImagePage) Values() []GalleryImage {
 }
 
 // Creates a new instance of the ResponseWithContinuationGalleryImagePage type.
-func NewResponseWithContinuationGalleryImagePage(getNextPage func(context.Context, ResponseWithContinuationGalleryImage) (ResponseWithContinuationGalleryImage, error)) ResponseWithContinuationGalleryImagePage {
-	return ResponseWithContinuationGalleryImagePage{fn: getNextPage}
+func NewResponseWithContinuationGalleryImagePage(cur ResponseWithContinuationGalleryImage, getNextPage func(context.Context, ResponseWithContinuationGalleryImage) (ResponseWithContinuationGalleryImage, error)) ResponseWithContinuationGalleryImagePage {
+	return ResponseWithContinuationGalleryImagePage{
+		fn:    getNextPage,
+		rwcgi: cur,
+	}
 }
 
 // ResponseWithContinuationLab the response of a list operation.
@@ -2956,8 +2977,11 @@ func (page ResponseWithContinuationLabPage) Values() []Lab {
 }
 
 // Creates a new instance of the ResponseWithContinuationLabPage type.
-func NewResponseWithContinuationLabPage(getNextPage func(context.Context, ResponseWithContinuationLab) (ResponseWithContinuationLab, error)) ResponseWithContinuationLabPage {
-	return ResponseWithContinuationLabPage{fn: getNextPage}
+func NewResponseWithContinuationLabPage(cur ResponseWithContinuationLab, getNextPage func(context.Context, ResponseWithContinuationLab) (ResponseWithContinuationLab, error)) ResponseWithContinuationLabPage {
+	return ResponseWithContinuationLabPage{
+		fn:   getNextPage,
+		rwcl: cur,
+	}
 }
 
 // ResponseWithContinuationLabVhd the response of a list operation.
@@ -3112,8 +3136,11 @@ func (page ResponseWithContinuationLabVhdPage) Values() []LabVhd {
 }
 
 // Creates a new instance of the ResponseWithContinuationLabVhdPage type.
-func NewResponseWithContinuationLabVhdPage(getNextPage func(context.Context, ResponseWithContinuationLabVhd) (ResponseWithContinuationLabVhd, error)) ResponseWithContinuationLabVhdPage {
-	return ResponseWithContinuationLabVhdPage{fn: getNextPage}
+func NewResponseWithContinuationLabVhdPage(cur ResponseWithContinuationLabVhd, getNextPage func(context.Context, ResponseWithContinuationLabVhd) (ResponseWithContinuationLabVhd, error)) ResponseWithContinuationLabVhdPage {
+	return ResponseWithContinuationLabVhdPage{
+		fn:    getNextPage,
+		rwclv: cur,
+	}
 }
 
 // ResponseWithContinuationLabVirtualMachine the response of a list operation.
@@ -3269,8 +3296,11 @@ func (page ResponseWithContinuationLabVirtualMachinePage) Values() []LabVirtualM
 }
 
 // Creates a new instance of the ResponseWithContinuationLabVirtualMachinePage type.
-func NewResponseWithContinuationLabVirtualMachinePage(getNextPage func(context.Context, ResponseWithContinuationLabVirtualMachine) (ResponseWithContinuationLabVirtualMachine, error)) ResponseWithContinuationLabVirtualMachinePage {
-	return ResponseWithContinuationLabVirtualMachinePage{fn: getNextPage}
+func NewResponseWithContinuationLabVirtualMachinePage(cur ResponseWithContinuationLabVirtualMachine, getNextPage func(context.Context, ResponseWithContinuationLabVirtualMachine) (ResponseWithContinuationLabVirtualMachine, error)) ResponseWithContinuationLabVirtualMachinePage {
+	return ResponseWithContinuationLabVirtualMachinePage{
+		fn:     getNextPage,
+		rwclvm: cur,
+	}
 }
 
 // ResponseWithContinuationPolicy the response of a list operation.
@@ -3425,8 +3455,11 @@ func (page ResponseWithContinuationPolicyPage) Values() []Policy {
 }
 
 // Creates a new instance of the ResponseWithContinuationPolicyPage type.
-func NewResponseWithContinuationPolicyPage(getNextPage func(context.Context, ResponseWithContinuationPolicy) (ResponseWithContinuationPolicy, error)) ResponseWithContinuationPolicyPage {
-	return ResponseWithContinuationPolicyPage{fn: getNextPage}
+func NewResponseWithContinuationPolicyPage(cur ResponseWithContinuationPolicy, getNextPage func(context.Context, ResponseWithContinuationPolicy) (ResponseWithContinuationPolicy, error)) ResponseWithContinuationPolicyPage {
+	return ResponseWithContinuationPolicyPage{
+		fn:   getNextPage,
+		rwcp: cur,
+	}
 }
 
 // ResponseWithContinuationSchedule the response of a list operation.
@@ -3581,8 +3614,11 @@ func (page ResponseWithContinuationSchedulePage) Values() []Schedule {
 }
 
 // Creates a new instance of the ResponseWithContinuationSchedulePage type.
-func NewResponseWithContinuationSchedulePage(getNextPage func(context.Context, ResponseWithContinuationSchedule) (ResponseWithContinuationSchedule, error)) ResponseWithContinuationSchedulePage {
-	return ResponseWithContinuationSchedulePage{fn: getNextPage}
+func NewResponseWithContinuationSchedulePage(cur ResponseWithContinuationSchedule, getNextPage func(context.Context, ResponseWithContinuationSchedule) (ResponseWithContinuationSchedule, error)) ResponseWithContinuationSchedulePage {
+	return ResponseWithContinuationSchedulePage{
+		fn:   getNextPage,
+		rwcs: cur,
+	}
 }
 
 // ResponseWithContinuationVirtualNetwork the response of a list operation.
@@ -3738,9 +3774,6 @@ func (page ResponseWithContinuationVirtualNetworkPage) Values() []VirtualNetwork
 }
 
 // Creates a new instance of the ResponseWithContinuationVirtualNetworkPage type.
-func NewResponseWithContinuationVirtualNetworkPage(getNextPage func(context.Context, ResponseWithContinuationVirtualNetwork) (ResponseWithContinuationVirtualNetwork, error)) ResponseWithContinuationVirtualNetworkPage {
-	return ResponseWithContinuationVirtualNetworkPage{fn: getNextPage}
-}
 
 // Schedule a schedule.
 type Schedule struct {

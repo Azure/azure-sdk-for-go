@@ -349,8 +349,11 @@ func (page ClusterListResultPage) Values() []Cluster {
 }
 
 // Creates a new instance of the ClusterListResultPage type.
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return ClusterListResultPage{fn: getNextPage}
+func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ClusterPatch the top level Log Analytics cluster resource container.
@@ -922,8 +925,11 @@ func (page DataSourceListResultPage) Values() []DataSource {
 }
 
 // Creates a new instance of the DataSourceListResultPage type.
-func NewDataSourceListResultPage(getNextPage func(context.Context, DataSourceListResult) (DataSourceListResult, error)) DataSourceListResultPage {
-	return DataSourceListResultPage{fn: getNextPage}
+func NewDataSourceListResultPage(cur DataSourceListResult, getNextPage func(context.Context, DataSourceListResult) (DataSourceListResult, error)) DataSourceListResultPage {
+	return DataSourceListResultPage{
+		fn:   getNextPage,
+		dslr: cur,
+	}
 }
 
 // Destination destination properties.
@@ -1583,8 +1589,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationStatus the status of operation.
@@ -2096,9 +2105,6 @@ func (page StorageInsightListResultPage) Values() []StorageInsight {
 }
 
 // Creates a new instance of the StorageInsightListResultPage type.
-func NewStorageInsightListResultPage(getNextPage func(context.Context, StorageInsightListResult) (StorageInsightListResult, error)) StorageInsightListResultPage {
-	return StorageInsightListResultPage{fn: getNextPage}
-}
 
 // StorageInsightProperties storage insight properties.
 type StorageInsightProperties struct {

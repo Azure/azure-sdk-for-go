@@ -603,8 +603,11 @@ func (page MoveCollectionResultListPage) Values() []MoveCollection {
 }
 
 // Creates a new instance of the MoveCollectionResultListPage type.
-func NewMoveCollectionResultListPage(getNextPage func(context.Context, MoveCollectionResultList) (MoveCollectionResultList, error)) MoveCollectionResultListPage {
-	return MoveCollectionResultListPage{fn: getNextPage}
+func NewMoveCollectionResultListPage(cur MoveCollectionResultList, getNextPage func(context.Context, MoveCollectionResultList) (MoveCollectionResultList, error)) MoveCollectionResultListPage {
+	return MoveCollectionResultListPage{
+		fn:   getNextPage,
+		mcrl: cur,
+	}
 }
 
 // MoveCollectionsCommitFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -960,9 +963,6 @@ func (page MoveResourceCollectionPage) Values() []MoveResource {
 }
 
 // Creates a new instance of the MoveResourceCollectionPage type.
-func NewMoveResourceCollectionPage(getNextPage func(context.Context, MoveResourceCollection) (MoveResourceCollection, error)) MoveResourceCollectionPage {
-	return MoveResourceCollectionPage{fn: getNextPage}
-}
 
 // MoveResourceDependency defines the dependency of the move resource.
 type MoveResourceDependency struct {

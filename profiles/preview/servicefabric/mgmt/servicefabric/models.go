@@ -19,11 +19,7 @@
 
 package servicefabric
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2019-03-01/servicefabric"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2019-03-01/servicefabric"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -355,9 +351,6 @@ func NewClustersClientWithBaseURI(baseURI string, subscriptionID string) Cluster
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
-}
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

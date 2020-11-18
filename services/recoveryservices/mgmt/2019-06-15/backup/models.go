@@ -9608,8 +9608,11 @@ func (page ClientDiscoveryResponsePage) Values() []ClientDiscoveryValueForSingle
 }
 
 // Creates a new instance of the ClientDiscoveryResponsePage type.
-func NewClientDiscoveryResponsePage(getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
-	return ClientDiscoveryResponsePage{fn: getNextPage}
+func NewClientDiscoveryResponsePage(cur ClientDiscoveryResponse, getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
+	return ClientDiscoveryResponsePage{
+		fn:  getNextPage,
+		cdr: cur,
+	}
 }
 
 // ClientDiscoveryValueForSingleAPI available operation details.
@@ -10861,8 +10864,11 @@ func (page EngineBaseResourceListPage) Values() []EngineBaseResource {
 }
 
 // Creates a new instance of the EngineBaseResourceListPage type.
-func NewEngineBaseResourceListPage(getNextPage func(context.Context, EngineBaseResourceList) (EngineBaseResourceList, error)) EngineBaseResourceListPage {
-	return EngineBaseResourceListPage{fn: getNextPage}
+func NewEngineBaseResourceListPage(cur EngineBaseResourceList, getNextPage func(context.Context, EngineBaseResourceList) (EngineBaseResourceList, error)) EngineBaseResourceListPage {
+	return EngineBaseResourceListPage{
+		fn:   getNextPage,
+		ebrl: cur,
+	}
 }
 
 // EngineExtendedInfo additional information on backup engine.
@@ -13017,8 +13023,11 @@ func (page JobResourceListPage) Values() []JobResource {
 }
 
 // Creates a new instance of the JobResourceListPage type.
-func NewJobResourceListPage(getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
-	return JobResourceListPage{fn: getNextPage}
+func NewJobResourceListPage(cur JobResourceList, getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
+	return JobResourceListPage{
+		fn:  getNextPage,
+		jrl: cur,
+	}
 }
 
 // KEKDetails KEK is encryption key for BEK.
@@ -14887,8 +14896,11 @@ func (page ProtectableContainerResourceListPage) Values() []ProtectableContainer
 }
 
 // Creates a new instance of the ProtectableContainerResourceListPage type.
-func NewProtectableContainerResourceListPage(getNextPage func(context.Context, ProtectableContainerResourceList) (ProtectableContainerResourceList, error)) ProtectableContainerResourceListPage {
-	return ProtectableContainerResourceListPage{fn: getNextPage}
+func NewProtectableContainerResourceListPage(cur ProtectableContainerResourceList, getNextPage func(context.Context, ProtectableContainerResourceList) (ProtectableContainerResourceList, error)) ProtectableContainerResourceListPage {
+	return ProtectableContainerResourceListPage{
+		fn:   getNextPage,
+		pcrl: cur,
+	}
 }
 
 // BasicProtectedItem base class for backup items.
@@ -15438,8 +15450,11 @@ func (page ProtectedItemResourceListPage) Values() []ProtectedItemResource {
 }
 
 // Creates a new instance of the ProtectedItemResourceListPage type.
-func NewProtectedItemResourceListPage(getNextPage func(context.Context, ProtectedItemResourceList) (ProtectedItemResourceList, error)) ProtectedItemResourceListPage {
-	return ProtectedItemResourceListPage{fn: getNextPage}
+func NewProtectedItemResourceListPage(cur ProtectedItemResourceList, getNextPage func(context.Context, ProtectedItemResourceList) (ProtectedItemResourceList, error)) ProtectedItemResourceListPage {
+	return ProtectedItemResourceListPage{
+		fn:   getNextPage,
+		pirl: cur,
+	}
 }
 
 // BasicProtectionContainer base class for container with backup items. Containers with specific workloads are derived
@@ -15932,8 +15947,11 @@ func (page ProtectionContainerResourceListPage) Values() []ProtectionContainerRe
 }
 
 // Creates a new instance of the ProtectionContainerResourceListPage type.
-func NewProtectionContainerResourceListPage(getNextPage func(context.Context, ProtectionContainerResourceList) (ProtectionContainerResourceList, error)) ProtectionContainerResourceListPage {
-	return ProtectionContainerResourceListPage{fn: getNextPage}
+func NewProtectionContainerResourceListPage(cur ProtectionContainerResourceList, getNextPage func(context.Context, ProtectionContainerResourceList) (ProtectionContainerResourceList, error)) ProtectionContainerResourceListPage {
+	return ProtectionContainerResourceListPage{
+		fn:   getNextPage,
+		pcrl: cur,
+	}
 }
 
 // BasicProtectionIntent base class for backup ProtectionIntent.
@@ -16354,8 +16372,11 @@ func (page ProtectionIntentResourceListPage) Values() []ProtectionIntentResource
 }
 
 // Creates a new instance of the ProtectionIntentResourceListPage type.
-func NewProtectionIntentResourceListPage(getNextPage func(context.Context, ProtectionIntentResourceList) (ProtectionIntentResourceList, error)) ProtectionIntentResourceListPage {
-	return ProtectionIntentResourceListPage{fn: getNextPage}
+func NewProtectionIntentResourceListPage(cur ProtectionIntentResourceList, getNextPage func(context.Context, ProtectionIntentResourceList) (ProtectionIntentResourceList, error)) ProtectionIntentResourceListPage {
+	return ProtectionIntentResourceListPage{
+		fn:   getNextPage,
+		pirl: cur,
+	}
 }
 
 // BasicProtectionPolicy base class for backup policy. Workload-specific backup policies are derived from this class.
@@ -16764,8 +16785,11 @@ func (page ProtectionPolicyResourceListPage) Values() []ProtectionPolicyResource
 }
 
 // Creates a new instance of the ProtectionPolicyResourceListPage type.
-func NewProtectionPolicyResourceListPage(getNextPage func(context.Context, ProtectionPolicyResourceList) (ProtectionPolicyResourceList, error)) ProtectionPolicyResourceListPage {
-	return ProtectionPolicyResourceListPage{fn: getNextPage}
+func NewProtectionPolicyResourceListPage(cur ProtectionPolicyResourceList, getNextPage func(context.Context, ProtectionPolicyResourceList) (ProtectionPolicyResourceList, error)) ProtectionPolicyResourceListPage {
+	return ProtectionPolicyResourceListPage{
+		fn:   getNextPage,
+		pprl: cur,
+	}
 }
 
 // BasicRecoveryPoint base class for backup copies. Workload-specific backup copies are derived from this class.
@@ -17217,8 +17241,11 @@ func (page RecoveryPointResourceListPage) Values() []RecoveryPointResource {
 }
 
 // Creates a new instance of the RecoveryPointResourceListPage type.
-func NewRecoveryPointResourceListPage(getNextPage func(context.Context, RecoveryPointResourceList) (RecoveryPointResourceList, error)) RecoveryPointResourceListPage {
-	return RecoveryPointResourceListPage{fn: getNextPage}
+func NewRecoveryPointResourceListPage(cur RecoveryPointResourceList, getNextPage func(context.Context, RecoveryPointResourceList) (RecoveryPointResourceList, error)) RecoveryPointResourceListPage {
+	return RecoveryPointResourceListPage{
+		fn:   getNextPage,
+		rprl: cur,
+	}
 }
 
 // RecoveryPointTierInformation recovery point tier information.
@@ -19051,8 +19078,11 @@ func (page WorkloadItemResourceListPage) Values() []WorkloadItemResource {
 }
 
 // Creates a new instance of the WorkloadItemResourceListPage type.
-func NewWorkloadItemResourceListPage(getNextPage func(context.Context, WorkloadItemResourceList) (WorkloadItemResourceList, error)) WorkloadItemResourceListPage {
-	return WorkloadItemResourceListPage{fn: getNextPage}
+func NewWorkloadItemResourceListPage(cur WorkloadItemResourceList, getNextPage func(context.Context, WorkloadItemResourceList) (WorkloadItemResourceList, error)) WorkloadItemResourceListPage {
+	return WorkloadItemResourceListPage{
+		fn:   getNextPage,
+		wirl: cur,
+	}
 }
 
 // BasicWorkloadProtectableItem base class for backup item. Workload-specific backup items are derived from this class.
@@ -19527,9 +19557,6 @@ func (page WorkloadProtectableItemResourceListPage) Values() []WorkloadProtectab
 }
 
 // Creates a new instance of the WorkloadProtectableItemResourceListPage type.
-func NewWorkloadProtectableItemResourceListPage(getNextPage func(context.Context, WorkloadProtectableItemResourceList) (WorkloadProtectableItemResourceList, error)) WorkloadProtectableItemResourceListPage {
-	return WorkloadProtectableItemResourceListPage{fn: getNextPage}
-}
 
 // YearlyRetentionSchedule yearly retention schedule.
 type YearlyRetentionSchedule struct {

@@ -19,11 +19,7 @@
 
 package webservices
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2016-05-01-preview/webservices"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2016-05-01-preview/webservices"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -166,9 +162,6 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 }
 func NewPaginatedWebServicesListIterator(page PaginatedWebServicesListPage) PaginatedWebServicesListIterator {
 	return original.NewPaginatedWebServicesListIterator(page)
-}
-func NewPaginatedWebServicesListPage(getNextPage func(context.Context, PaginatedWebServicesList) (PaginatedWebServicesList, error)) PaginatedWebServicesListPage {
-	return original.NewPaginatedWebServicesListPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

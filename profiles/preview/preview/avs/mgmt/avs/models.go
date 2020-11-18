@@ -124,8 +124,8 @@ func New(subscriptionID string) BaseClient {
 func NewClusterListIterator(page ClusterListPage) ClusterListIterator {
 	return original.NewClusterListIterator(page)
 }
-func NewClusterListPage(getNextPage func(context.Context, ClusterList) (ClusterList, error)) ClusterListPage {
-	return original.NewClusterListPage(getNextPage)
+func NewClusterListPage(cur ClusterList, getNextPage func(context.Context, ClusterList) (ClusterList, error)) ClusterListPage {
+	return original.NewClusterListPage(cur, getNextPage)
 }
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)
@@ -142,8 +142,8 @@ func NewLocationsClientWithBaseURI(baseURI string, subscriptionID string) Locati
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -153,9 +153,6 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 func NewPrivateCloudListIterator(page PrivateCloudListPage) PrivateCloudListIterator {
 	return original.NewPrivateCloudListIterator(page)
-}
-func NewPrivateCloudListPage(getNextPage func(context.Context, PrivateCloudList) (PrivateCloudList, error)) PrivateCloudListPage {
-	return original.NewPrivateCloudListPage(getNextPage)
 }
 func NewPrivateCloudsClient(subscriptionID string) PrivateCloudsClient {
 	return original.NewPrivateCloudsClient(subscriptionID)

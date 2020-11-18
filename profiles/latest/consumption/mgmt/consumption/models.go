@@ -195,8 +195,8 @@ func NewBudgetsClientWithBaseURI(baseURI string, subscriptionID string) BudgetsC
 func NewBudgetsListResultIterator(page BudgetsListResultPage) BudgetsListResultIterator {
 	return original.NewBudgetsListResultIterator(page)
 }
-func NewBudgetsListResultPage(getNextPage func(context.Context, BudgetsListResult) (BudgetsListResult, error)) BudgetsListResultPage {
-	return original.NewBudgetsListResultPage(getNextPage)
+func NewBudgetsListResultPage(cur BudgetsListResult, getNextPage func(context.Context, BudgetsListResult) (BudgetsListResult, error)) BudgetsListResultPage {
+	return original.NewBudgetsListResultPage(cur, getNextPage)
 }
 func NewChargesClient(subscriptionID string) ChargesClient {
 	return original.NewChargesClient(subscriptionID)
@@ -219,14 +219,14 @@ func NewMarketplacesClientWithBaseURI(baseURI string, subscriptionID string) Mar
 func NewMarketplacesListResultIterator(page MarketplacesListResultPage) MarketplacesListResultIterator {
 	return original.NewMarketplacesListResultIterator(page)
 }
-func NewMarketplacesListResultPage(getNextPage func(context.Context, MarketplacesListResult) (MarketplacesListResult, error)) MarketplacesListResultPage {
-	return original.NewMarketplacesListResultPage(getNextPage)
+func NewMarketplacesListResultPage(cur MarketplacesListResult, getNextPage func(context.Context, MarketplacesListResult) (MarketplacesListResult, error)) MarketplacesListResultPage {
+	return original.NewMarketplacesListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -243,8 +243,8 @@ func NewPriceSheetClientWithBaseURI(baseURI string, subscriptionID string) Price
 func NewReservationDetailsListResultIterator(page ReservationDetailsListResultPage) ReservationDetailsListResultIterator {
 	return original.NewReservationDetailsListResultIterator(page)
 }
-func NewReservationDetailsListResultPage(getNextPage func(context.Context, ReservationDetailsListResult) (ReservationDetailsListResult, error)) ReservationDetailsListResultPage {
-	return original.NewReservationDetailsListResultPage(getNextPage)
+func NewReservationDetailsListResultPage(cur ReservationDetailsListResult, getNextPage func(context.Context, ReservationDetailsListResult) (ReservationDetailsListResult, error)) ReservationDetailsListResultPage {
+	return original.NewReservationDetailsListResultPage(cur, getNextPage)
 }
 func NewReservationRecommendationsClient(subscriptionID string) ReservationRecommendationsClient {
 	return original.NewReservationRecommendationsClient(subscriptionID)
@@ -255,14 +255,14 @@ func NewReservationRecommendationsClientWithBaseURI(baseURI string, subscription
 func NewReservationRecommendationsListResultIterator(page ReservationRecommendationsListResultPage) ReservationRecommendationsListResultIterator {
 	return original.NewReservationRecommendationsListResultIterator(page)
 }
-func NewReservationRecommendationsListResultPage(getNextPage func(context.Context, ReservationRecommendationsListResult) (ReservationRecommendationsListResult, error)) ReservationRecommendationsListResultPage {
-	return original.NewReservationRecommendationsListResultPage(getNextPage)
+func NewReservationRecommendationsListResultPage(cur ReservationRecommendationsListResult, getNextPage func(context.Context, ReservationRecommendationsListResult) (ReservationRecommendationsListResult, error)) ReservationRecommendationsListResultPage {
+	return original.NewReservationRecommendationsListResultPage(cur, getNextPage)
 }
 func NewReservationSummariesListResultIterator(page ReservationSummariesListResultPage) ReservationSummariesListResultIterator {
 	return original.NewReservationSummariesListResultIterator(page)
 }
-func NewReservationSummariesListResultPage(getNextPage func(context.Context, ReservationSummariesListResult) (ReservationSummariesListResult, error)) ReservationSummariesListResultPage {
-	return original.NewReservationSummariesListResultPage(getNextPage)
+func NewReservationSummariesListResultPage(cur ReservationSummariesListResult, getNextPage func(context.Context, ReservationSummariesListResult) (ReservationSummariesListResult, error)) ReservationSummariesListResultPage {
+	return original.NewReservationSummariesListResultPage(cur, getNextPage)
 }
 func NewReservationsDetailsClient(subscriptionID string) ReservationsDetailsClient {
 	return original.NewReservationsDetailsClient(subscriptionID)
@@ -290,9 +290,6 @@ func NewUsageDetailsClientWithBaseURI(baseURI string, subscriptionID string) Usa
 }
 func NewUsageDetailsListResultIterator(page UsageDetailsListResultPage) UsageDetailsListResultIterator {
 	return original.NewUsageDetailsListResultIterator(page)
-}
-func NewUsageDetailsListResultPage(getNextPage func(context.Context, UsageDetailsListResult) (UsageDetailsListResult, error)) UsageDetailsListResultPage {
-	return original.NewUsageDetailsListResultPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

@@ -19,11 +19,7 @@
 
 package managedvirtualnetwork
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-06-01-preview/managedvirtualnetwork"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-06-01-preview/managedvirtualnetwork"
 
 type BaseClient = original.BaseClient
 type ManagedPrivateEndpoint = original.ManagedPrivateEndpoint
@@ -39,9 +35,6 @@ func New(endpoint string) BaseClient {
 }
 func NewManagedPrivateEndpointListResponseIterator(page ManagedPrivateEndpointListResponsePage) ManagedPrivateEndpointListResponseIterator {
 	return original.NewManagedPrivateEndpointListResponseIterator(page)
-}
-func NewManagedPrivateEndpointListResponsePage(getNextPage func(context.Context, ManagedPrivateEndpointListResponse) (ManagedPrivateEndpointListResponse, error)) ManagedPrivateEndpointListResponsePage {
-	return original.NewManagedPrivateEndpointListResponsePage(getNextPage)
 }
 func NewManagedPrivateEndpointsClient(endpoint string) ManagedPrivateEndpointsClient {
 	return original.NewManagedPrivateEndpointsClient(endpoint)

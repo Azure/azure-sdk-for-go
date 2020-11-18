@@ -111,14 +111,11 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewResourceProviderOperationListIterator(page ResourceProviderOperationListPage) ResourceProviderOperationListIterator {
 	return original.NewResourceProviderOperationListIterator(page)
 }
-func NewResourceProviderOperationListPage(getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
-	return original.NewResourceProviderOperationListPage(getNextPage)
+func NewResourceProviderOperationListPage(cur ResourceProviderOperationList, getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
+	return original.NewResourceProviderOperationListPage(cur, getNextPage)
 }
 func NewSourceControlConfigurationListIterator(page SourceControlConfigurationListPage) SourceControlConfigurationListIterator {
 	return original.NewSourceControlConfigurationListIterator(page)
-}
-func NewSourceControlConfigurationListPage(getNextPage func(context.Context, SourceControlConfigurationList) (SourceControlConfigurationList, error)) SourceControlConfigurationListPage {
-	return original.NewSourceControlConfigurationListPage(getNextPage)
 }
 func NewSourceControlConfigurationsClient(subscriptionID string) SourceControlConfigurationsClient {
 	return original.NewSourceControlConfigurationsClient(subscriptionID)

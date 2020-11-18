@@ -936,8 +936,11 @@ func (page FrontendEndpointsListResultPage) Values() []FrontendEndpoint {
 }
 
 // Creates a new instance of the FrontendEndpointsListResultPage type.
-func NewFrontendEndpointsListResultPage(getNextPage func(context.Context, FrontendEndpointsListResult) (FrontendEndpointsListResult, error)) FrontendEndpointsListResultPage {
-	return FrontendEndpointsListResultPage{fn: getNextPage}
+func NewFrontendEndpointsListResultPage(cur FrontendEndpointsListResult, getNextPage func(context.Context, FrontendEndpointsListResult) (FrontendEndpointsListResult, error)) FrontendEndpointsListResultPage {
+	return FrontendEndpointsListResultPage{
+		fn:   getNextPage,
+		felr: cur,
+	}
 }
 
 // FrontendEndpointUpdateParameters frontend endpoint used in routing rule
@@ -1256,8 +1259,11 @@ func (page ListResultPage) Values() []FrontDoor {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // LoadBalancingSettingsListResult result of the request to list load balancing settings. It contains a list of
@@ -2095,9 +2101,6 @@ func (page WebApplicationFirewallPolicyListResultPage) Values() []WebApplication
 }
 
 // Creates a new instance of the WebApplicationFirewallPolicyListResultPage type.
-func NewWebApplicationFirewallPolicyListResultPage(getNextPage func(context.Context, WebApplicationFirewallPolicyListResult) (WebApplicationFirewallPolicyListResult, error)) WebApplicationFirewallPolicyListResultPage {
-	return WebApplicationFirewallPolicyListResultPage{fn: getNextPage}
-}
 
 // WebApplicationFirewallPolicyPropertiesFormat defines web application firewall policy properties
 type WebApplicationFirewallPolicyPropertiesFormat struct {

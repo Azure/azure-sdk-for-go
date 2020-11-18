@@ -75,14 +75,11 @@ func NewEnterpriseKnowledgeGraphClientWithBaseURI(baseURI string, subscriptionID
 func NewEnterpriseKnowledgeGraphResponseListIterator(page EnterpriseKnowledgeGraphResponseListPage) EnterpriseKnowledgeGraphResponseListIterator {
 	return original.NewEnterpriseKnowledgeGraphResponseListIterator(page)
 }
-func NewEnterpriseKnowledgeGraphResponseListPage(getNextPage func(context.Context, EnterpriseKnowledgeGraphResponseList) (EnterpriseKnowledgeGraphResponseList, error)) EnterpriseKnowledgeGraphResponseListPage {
-	return original.NewEnterpriseKnowledgeGraphResponseListPage(getNextPage)
+func NewEnterpriseKnowledgeGraphResponseListPage(cur EnterpriseKnowledgeGraphResponseList, getNextPage func(context.Context, EnterpriseKnowledgeGraphResponseList) (EnterpriseKnowledgeGraphResponseList, error)) EnterpriseKnowledgeGraphResponseListPage {
+	return original.NewEnterpriseKnowledgeGraphResponseListPage(cur, getNextPage)
 }
 func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
 	return original.NewOperationEntityListResultIterator(page)
-}
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return original.NewOperationEntityListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

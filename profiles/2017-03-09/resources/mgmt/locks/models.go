@@ -19,11 +19,7 @@
 
 package locks
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-01-01/locks"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-01-01/locks"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -50,9 +46,6 @@ func New(subscriptionID string) BaseClient {
 }
 func NewManagementLockListResultIterator(page ManagementLockListResultPage) ManagementLockListResultIterator {
 	return original.NewManagementLockListResultIterator(page)
-}
-func NewManagementLockListResultPage(getNextPage func(context.Context, ManagementLockListResult) (ManagementLockListResult, error)) ManagementLockListResultPage {
-	return original.NewManagementLockListResultPage(getNextPage)
 }
 func NewManagementLocksClient(subscriptionID string) ManagementLocksClient {
 	return original.NewManagementLocksClient(subscriptionID)

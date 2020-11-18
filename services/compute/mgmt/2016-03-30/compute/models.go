@@ -334,8 +334,11 @@ func (page AvailabilitySetListResultPage) Values() []AvailabilitySet {
 }
 
 // Creates a new instance of the AvailabilitySetListResultPage type.
-func NewAvailabilitySetListResultPage(getNextPage func(context.Context, AvailabilitySetListResult) (AvailabilitySetListResult, error)) AvailabilitySetListResultPage {
-	return AvailabilitySetListResultPage{fn: getNextPage}
+func NewAvailabilitySetListResultPage(cur AvailabilitySetListResult, getNextPage func(context.Context, AvailabilitySetListResult) (AvailabilitySetListResult, error)) AvailabilitySetListResultPage {
+	return AvailabilitySetListResultPage{
+		fn:   getNextPage,
+		aslr: cur,
+	}
 }
 
 // AvailabilitySetProperties the instance view of a resource.
@@ -654,8 +657,11 @@ func (page ListUsagesResultPage) Values() []Usage {
 }
 
 // Creates a new instance of the ListUsagesResultPage type.
-func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
-	return ListUsagesResultPage{fn: getNextPage}
+func NewListUsagesResultPage(cur ListUsagesResult, getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return ListUsagesResultPage{
+		fn:  getNextPage,
+		lur: cur,
+	}
 }
 
 // ListVirtualMachineExtensionImage ...
@@ -1954,8 +1960,11 @@ func (page VirtualMachineListResultPage) Values() []VirtualMachine {
 }
 
 // Creates a new instance of the VirtualMachineListResultPage type.
-func NewVirtualMachineListResultPage(getNextPage func(context.Context, VirtualMachineListResult) (VirtualMachineListResult, error)) VirtualMachineListResultPage {
-	return VirtualMachineListResultPage{fn: getNextPage}
+func NewVirtualMachineListResultPage(cur VirtualMachineListResult, getNextPage func(context.Context, VirtualMachineListResult) (VirtualMachineListResult, error)) VirtualMachineListResultPage {
+	return VirtualMachineListResultPage{
+		fn:   getNextPage,
+		vmlr: cur,
+	}
 }
 
 // VirtualMachineProperties describes the properties of a Virtual Machine.
@@ -2530,8 +2539,11 @@ func (page VirtualMachineScaleSetListResultPage) Values() []VirtualMachineScaleS
 }
 
 // Creates a new instance of the VirtualMachineScaleSetListResultPage type.
-func NewVirtualMachineScaleSetListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListResult) (VirtualMachineScaleSetListResult, error)) VirtualMachineScaleSetListResultPage {
-	return VirtualMachineScaleSetListResultPage{fn: getNextPage}
+func NewVirtualMachineScaleSetListResultPage(cur VirtualMachineScaleSetListResult, getNextPage func(context.Context, VirtualMachineScaleSetListResult) (VirtualMachineScaleSetListResult, error)) VirtualMachineScaleSetListResultPage {
+	return VirtualMachineScaleSetListResultPage{
+		fn:     getNextPage,
+		vmsslr: cur,
+	}
 }
 
 // VirtualMachineScaleSetListSkusResult the Virtual Machine Scale Set List Skus operation response.
@@ -2687,8 +2699,11 @@ func (page VirtualMachineScaleSetListSkusResultPage) Values() []VirtualMachineSc
 }
 
 // Creates a new instance of the VirtualMachineScaleSetListSkusResultPage type.
-func NewVirtualMachineScaleSetListSkusResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListSkusResult) (VirtualMachineScaleSetListSkusResult, error)) VirtualMachineScaleSetListSkusResultPage {
-	return VirtualMachineScaleSetListSkusResultPage{fn: getNextPage}
+func NewVirtualMachineScaleSetListSkusResultPage(cur VirtualMachineScaleSetListSkusResult, getNextPage func(context.Context, VirtualMachineScaleSetListSkusResult) (VirtualMachineScaleSetListSkusResult, error)) VirtualMachineScaleSetListSkusResultPage {
+	return VirtualMachineScaleSetListSkusResultPage{
+		fn:      getNextPage,
+		vmsslsr: cur,
+	}
 }
 
 // VirtualMachineScaleSetListWithLinkResult the List Virtual Machine operation response.
@@ -2844,8 +2859,11 @@ func (page VirtualMachineScaleSetListWithLinkResultPage) Values() []VirtualMachi
 }
 
 // Creates a new instance of the VirtualMachineScaleSetListWithLinkResultPage type.
-func NewVirtualMachineScaleSetListWithLinkResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListWithLinkResult) (VirtualMachineScaleSetListWithLinkResult, error)) VirtualMachineScaleSetListWithLinkResultPage {
-	return VirtualMachineScaleSetListWithLinkResultPage{fn: getNextPage}
+func NewVirtualMachineScaleSetListWithLinkResultPage(cur VirtualMachineScaleSetListWithLinkResult, getNextPage func(context.Context, VirtualMachineScaleSetListWithLinkResult) (VirtualMachineScaleSetListWithLinkResult, error)) VirtualMachineScaleSetListWithLinkResultPage {
+	return VirtualMachineScaleSetListWithLinkResultPage{
+		fn:       getNextPage,
+		vmsslwlr: cur,
+	}
 }
 
 // VirtualMachineScaleSetNetworkConfiguration describes a virtual machine scale set network profile's network
@@ -3625,9 +3643,6 @@ func (page VirtualMachineScaleSetVMListResultPage) Values() []VirtualMachineScal
 }
 
 // Creates a new instance of the VirtualMachineScaleSetVMListResultPage type.
-func NewVirtualMachineScaleSetVMListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetVMListResult) (VirtualMachineScaleSetVMListResult, error)) VirtualMachineScaleSetVMListResultPage {
-	return VirtualMachineScaleSetVMListResultPage{fn: getNextPage}
-}
 
 // VirtualMachineScaleSetVMProfile describes a virtual machine scale set virtual machine profile.
 type VirtualMachineScaleSetVMProfile struct {

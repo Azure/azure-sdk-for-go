@@ -245,8 +245,11 @@ func (page OperationListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
@@ -539,9 +542,6 @@ func (page SpatialAnchorsAccountListPage) Values() []SpatialAnchorsAccount {
 }
 
 // Creates a new instance of the SpatialAnchorsAccountListPage type.
-func NewSpatialAnchorsAccountListPage(getNextPage func(context.Context, SpatialAnchorsAccountList) (SpatialAnchorsAccountList, error)) SpatialAnchorsAccountListPage {
-	return SpatialAnchorsAccountListPage{fn: getNextPage}
-}
 
 // SpatialAnchorsAccountProperties spatial Anchors Account Customize Properties
 type SpatialAnchorsAccountProperties struct {

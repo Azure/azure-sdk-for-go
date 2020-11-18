@@ -267,8 +267,11 @@ func (page DataLakeStoreAccountListResultPage) Values() []DataLakeStoreAccount {
 }
 
 // Creates a new instance of the DataLakeStoreAccountListResultPage type.
-func NewDataLakeStoreAccountListResultPage(getNextPage func(context.Context, DataLakeStoreAccountListResult) (DataLakeStoreAccountListResult, error)) DataLakeStoreAccountListResultPage {
-	return DataLakeStoreAccountListResultPage{fn: getNextPage}
+func NewDataLakeStoreAccountListResultPage(cur DataLakeStoreAccountListResult, getNextPage func(context.Context, DataLakeStoreAccountListResult) (DataLakeStoreAccountListResult, error)) DataLakeStoreAccountListResultPage {
+	return DataLakeStoreAccountListResultPage{
+		fn:     getNextPage,
+		dlsalr: cur,
+	}
 }
 
 // DataLakeStoreAccountProperties data Lake Store account properties information
@@ -465,9 +468,6 @@ func (page DataLakeStoreFirewallRuleListResultPage) Values() []FirewallRule {
 }
 
 // Creates a new instance of the DataLakeStoreFirewallRuleListResultPage type.
-func NewDataLakeStoreFirewallRuleListResultPage(getNextPage func(context.Context, DataLakeStoreFirewallRuleListResult) (DataLakeStoreFirewallRuleListResult, error)) DataLakeStoreFirewallRuleListResultPage {
-	return DataLakeStoreFirewallRuleListResultPage{fn: getNextPage}
-}
 
 // DeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DeleteFuture struct {

@@ -200,8 +200,11 @@ func (page APIKeyListResultPage) Values() []APIKey {
 }
 
 // Creates a new instance of the APIKeyListResultPage type.
-func NewAPIKeyListResultPage(getNextPage func(context.Context, APIKeyListResult) (APIKeyListResult, error)) APIKeyListResultPage {
-	return APIKeyListResultPage{fn: getNextPage}
+func NewAPIKeyListResultPage(cur APIKeyListResult, getNextPage func(context.Context, APIKeyListResult) (APIKeyListResult, error)) APIKeyListResultPage {
+	return APIKeyListResultPage{
+		fn:     getNextPage,
+		apiklr: cur,
+	}
 }
 
 // CheckNameAvailabilityParameters parameters used for checking whether a resource name is available.
@@ -494,8 +497,11 @@ func (page ConfigurationStoreListResultPage) Values() []ConfigurationStore {
 }
 
 // Creates a new instance of the ConfigurationStoreListResultPage type.
-func NewConfigurationStoreListResultPage(getNextPage func(context.Context, ConfigurationStoreListResult) (ConfigurationStoreListResult, error)) ConfigurationStoreListResultPage {
-	return ConfigurationStoreListResultPage{fn: getNextPage}
+func NewConfigurationStoreListResultPage(cur ConfigurationStoreListResult, getNextPage func(context.Context, ConfigurationStoreListResult) (ConfigurationStoreListResult, error)) ConfigurationStoreListResultPage {
+	return ConfigurationStoreListResultPage{
+		fn:   getNextPage,
+		cslr: cur,
+	}
 }
 
 // ConfigurationStoreProperties the properties of a configuration store.
@@ -864,9 +870,6 @@ func (page OperationDefinitionListResultPage) Values() []OperationDefinition {
 }
 
 // Creates a new instance of the OperationDefinitionListResultPage type.
-func NewOperationDefinitionListResultPage(getNextPage func(context.Context, OperationDefinitionListResult) (OperationDefinitionListResult, error)) OperationDefinitionListResultPage {
-	return OperationDefinitionListResultPage{fn: getNextPage}
-}
 
 // RegenerateKeyParameters the parameters used to regenerate an API key.
 type RegenerateKeyParameters struct {

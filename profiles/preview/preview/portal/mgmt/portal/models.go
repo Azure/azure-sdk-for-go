@@ -55,8 +55,8 @@ func New(subscriptionID string) BaseClient {
 func NewDashboardListResultIterator(page DashboardListResultPage) DashboardListResultIterator {
 	return original.NewDashboardListResultIterator(page)
 }
-func NewDashboardListResultPage(getNextPage func(context.Context, DashboardListResult) (DashboardListResult, error)) DashboardListResultPage {
-	return original.NewDashboardListResultPage(getNextPage)
+func NewDashboardListResultPage(cur DashboardListResult, getNextPage func(context.Context, DashboardListResult) (DashboardListResult, error)) DashboardListResultPage {
+	return original.NewDashboardListResultPage(cur, getNextPage)
 }
 func NewDashboardsClient(subscriptionID string) DashboardsClient {
 	return original.NewDashboardsClient(subscriptionID)
@@ -72,9 +72,6 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 func NewResourceProviderOperationListIterator(page ResourceProviderOperationListPage) ResourceProviderOperationListIterator {
 	return original.NewResourceProviderOperationListIterator(page)
-}
-func NewResourceProviderOperationListPage(getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
-	return original.NewResourceProviderOperationListPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

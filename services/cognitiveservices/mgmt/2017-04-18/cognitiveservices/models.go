@@ -276,8 +276,11 @@ func (page AccountListResultPage) Values() []Account {
 }
 
 // Creates a new instance of the AccountListResultPage type.
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return AccountListResultPage{fn: getNextPage}
+func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return AccountListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AccountProperties properties of Cognitive Services account.
@@ -655,8 +658,11 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 }
 
 // Creates a new instance of the OperationEntityListResultPage type.
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return OperationEntityListResultPage{fn: getNextPage}
+func NewOperationEntityListResultPage(cur OperationEntityListResult, getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return OperationEntityListResultPage{
+		fn:   getNextPage,
+		oelr: cur,
+	}
 }
 
 // PrivateEndpoint the Private Endpoint resource.
@@ -987,9 +993,6 @@ func (page ResourceSkusResultPage) Values() []ResourceSku {
 }
 
 // Creates a new instance of the ResourceSkusResultPage type.
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return ResourceSkusResultPage{fn: getNextPage}
-}
 
 // Sku the SKU of the cognitive services account.
 type Sku struct {

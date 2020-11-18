@@ -450,8 +450,11 @@ func (page BigDataPoolResourceInfoListResultPage) Values() []BigDataPoolResource
 }
 
 // Creates a new instance of the BigDataPoolResourceInfoListResultPage type.
-func NewBigDataPoolResourceInfoListResultPage(getNextPage func(context.Context, BigDataPoolResourceInfoListResult) (BigDataPoolResourceInfoListResult, error)) BigDataPoolResourceInfoListResultPage {
-	return BigDataPoolResourceInfoListResultPage{fn: getNextPage}
+func NewBigDataPoolResourceInfoListResultPage(cur BigDataPoolResourceInfoListResult, getNextPage func(context.Context, BigDataPoolResourceInfoListResult) (BigDataPoolResourceInfoListResult, error)) BigDataPoolResourceInfoListResultPage {
+	return BigDataPoolResourceInfoListResultPage{
+		fn:      getNextPage,
+		bdprilr: cur,
+	}
 }
 
 // BigDataPoolResourceProperties properties of a Big Data pool powered by Apache Spark
@@ -1902,8 +1905,11 @@ func (page IntegrationRuntimeListResponsePage) Values() []IntegrationRuntimeReso
 }
 
 // Creates a new instance of the IntegrationRuntimeListResponsePage type.
-func NewIntegrationRuntimeListResponsePage(getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
-	return IntegrationRuntimeListResponsePage{fn: getNextPage}
+func NewIntegrationRuntimeListResponsePage(cur IntegrationRuntimeListResponse, getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
+	return IntegrationRuntimeListResponsePage{
+		fn:   getNextPage,
+		irlr: cur,
+	}
 }
 
 // IntegrationRuntimeMonitoringData get monitoring data response.
@@ -2918,8 +2924,11 @@ func (page IPFirewallRuleInfoListResultPage) Values() []IPFirewallRuleInfo {
 }
 
 // Creates a new instance of the IPFirewallRuleInfoListResultPage type.
-func NewIPFirewallRuleInfoListResultPage(getNextPage func(context.Context, IPFirewallRuleInfoListResult) (IPFirewallRuleInfoListResult, error)) IPFirewallRuleInfoListResultPage {
-	return IPFirewallRuleInfoListResultPage{fn: getNextPage}
+func NewIPFirewallRuleInfoListResultPage(cur IPFirewallRuleInfoListResult, getNextPage func(context.Context, IPFirewallRuleInfoListResult) (IPFirewallRuleInfoListResult, error)) IPFirewallRuleInfoListResultPage {
+	return IPFirewallRuleInfoListResultPage{
+		fn:      getNextPage,
+		ipfrilr: cur,
+	}
 }
 
 // IPFirewallRuleProperties IP firewall rule properties
@@ -4085,8 +4094,11 @@ func (page PrivateEndpointConnectionListPage) Values() []PrivateEndpointConnecti
 }
 
 // Creates a new instance of the PrivateEndpointConnectionListPage type.
-func NewPrivateEndpointConnectionListPage(getNextPage func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error)) PrivateEndpointConnectionListPage {
-	return PrivateEndpointConnectionListPage{fn: getNextPage}
+func NewPrivateEndpointConnectionListPage(cur PrivateEndpointConnectionList, getNextPage func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error)) PrivateEndpointConnectionListPage {
+	return PrivateEndpointConnectionListPage{
+		fn:   getNextPage,
+		pecl: cur,
+	}
 }
 
 // PrivateEndpointConnectionProperties properties of a private endpoint connection.
@@ -4422,8 +4434,11 @@ func (page PrivateLinkHubInfoListResultPage) Values() []PrivateLinkHub {
 }
 
 // Creates a new instance of the PrivateLinkHubInfoListResultPage type.
-func NewPrivateLinkHubInfoListResultPage(getNextPage func(context.Context, PrivateLinkHubInfoListResult) (PrivateLinkHubInfoListResult, error)) PrivateLinkHubInfoListResultPage {
-	return PrivateLinkHubInfoListResultPage{fn: getNextPage}
+func NewPrivateLinkHubInfoListResultPage(cur PrivateLinkHubInfoListResult, getNextPage func(context.Context, PrivateLinkHubInfoListResult) (PrivateLinkHubInfoListResult, error)) PrivateLinkHubInfoListResultPage {
+	return PrivateLinkHubInfoListResultPage{
+		fn:     getNextPage,
+		plhilr: cur,
+	}
 }
 
 // PrivateLinkHubPatchInfo privateLinkHub patch details
@@ -4612,8 +4627,11 @@ func (page PrivateLinkResourceListResultPage) Values() []PrivateLinkResource {
 }
 
 // Creates a new instance of the PrivateLinkResourceListResultPage type.
-func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
-	return PrivateLinkResourceListResultPage{fn: getNextPage}
+func NewPrivateLinkResourceListResultPage(cur PrivateLinkResourceListResult, getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return PrivateLinkResourceListResultPage{
+		fn:    getNextPage,
+		plrlr: cur,
+	}
 }
 
 // PrivateLinkResourceProperties properties of a private link resource.
@@ -4955,8 +4973,11 @@ func (page ReplicationLinkListResultPage) Values() []ReplicationLink {
 }
 
 // Creates a new instance of the ReplicationLinkListResultPage type.
-func NewReplicationLinkListResultPage(getNextPage func(context.Context, ReplicationLinkListResult) (ReplicationLinkListResult, error)) ReplicationLinkListResultPage {
-	return ReplicationLinkListResultPage{fn: getNextPage}
+func NewReplicationLinkListResultPage(cur ReplicationLinkListResult, getNextPage func(context.Context, ReplicationLinkListResult) (ReplicationLinkListResult, error)) ReplicationLinkListResultPage {
+	return ReplicationLinkListResultPage{
+		fn:   getNextPage,
+		rllr: cur,
+	}
 }
 
 // ReplicationLinkProperties represents the properties of a Sql pool replication link.
@@ -5235,8 +5256,11 @@ func (page RestorePointListResultPage) Values() []RestorePoint {
 }
 
 // Creates a new instance of the RestorePointListResultPage type.
-func NewRestorePointListResultPage(getNextPage func(context.Context, RestorePointListResult) (RestorePointListResult, error)) RestorePointListResultPage {
-	return RestorePointListResultPage{fn: getNextPage}
+func NewRestorePointListResultPage(cur RestorePointListResult, getNextPage func(context.Context, RestorePointListResult) (RestorePointListResult, error)) RestorePointListResultPage {
+	return RestorePointListResultPage{
+		fn:   getNextPage,
+		rplr: cur,
+	}
 }
 
 // RestorePointProperties properties of a database restore point
@@ -5975,8 +5999,11 @@ func (page SensitivityLabelListResultPage) Values() []SensitivityLabel {
 }
 
 // Creates a new instance of the SensitivityLabelListResultPage type.
-func NewSensitivityLabelListResultPage(getNextPage func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error)) SensitivityLabelListResultPage {
-	return SensitivityLabelListResultPage{fn: getNextPage}
+func NewSensitivityLabelListResultPage(cur SensitivityLabelListResult, getNextPage func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error)) SensitivityLabelListResultPage {
+	return SensitivityLabelListResultPage{
+		fn:   getNextPage,
+		sllr: cur,
+	}
 }
 
 // SensitivityLabelProperties properties of a sensitivity label.
@@ -6465,8 +6492,11 @@ func (page SQLPoolBlobAuditingPolicySQLPoolOperationListResultPage) Values() []S
 }
 
 // Creates a new instance of the SQLPoolBlobAuditingPolicySQLPoolOperationListResultPage type.
-func NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultPage(getNextPage func(context.Context, SQLPoolBlobAuditingPolicySQLPoolOperationListResult) (SQLPoolBlobAuditingPolicySQLPoolOperationListResult, error)) SQLPoolBlobAuditingPolicySQLPoolOperationListResultPage {
-	return SQLPoolBlobAuditingPolicySQLPoolOperationListResultPage{fn: getNextPage}
+func NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultPage(cur SQLPoolBlobAuditingPolicySQLPoolOperationListResult, getNextPage func(context.Context, SQLPoolBlobAuditingPolicySQLPoolOperationListResult) (SQLPoolBlobAuditingPolicySQLPoolOperationListResult, error)) SQLPoolBlobAuditingPolicySQLPoolOperationListResultPage {
+	return SQLPoolBlobAuditingPolicySQLPoolOperationListResultPage{
+		fn:             getNextPage,
+		sqlpbapsqlpolr: cur,
+	}
 }
 
 // SQLPoolColumn a Sql pool column resource.
@@ -6693,8 +6723,11 @@ func (page SQLPoolColumnListResultPage) Values() []SQLPoolColumn {
 }
 
 // Creates a new instance of the SQLPoolColumnListResultPage type.
-func NewSQLPoolColumnListResultPage(getNextPage func(context.Context, SQLPoolColumnListResult) (SQLPoolColumnListResult, error)) SQLPoolColumnListResultPage {
-	return SQLPoolColumnListResultPage{fn: getNextPage}
+func NewSQLPoolColumnListResultPage(cur SQLPoolColumnListResult, getNextPage func(context.Context, SQLPoolColumnListResult) (SQLPoolColumnListResult, error)) SQLPoolColumnListResultPage {
+	return SQLPoolColumnListResultPage{
+		fn:      getNextPage,
+		sqlpclr: cur,
+	}
 }
 
 // SQLPoolColumnProperties sql pool column properties.
@@ -6968,8 +7001,11 @@ func (page SQLPoolInfoListResultPage) Values() []SQLPool {
 }
 
 // Creates a new instance of the SQLPoolInfoListResultPage type.
-func NewSQLPoolInfoListResultPage(getNextPage func(context.Context, SQLPoolInfoListResult) (SQLPoolInfoListResult, error)) SQLPoolInfoListResultPage {
-	return SQLPoolInfoListResultPage{fn: getNextPage}
+func NewSQLPoolInfoListResultPage(cur SQLPoolInfoListResult, getNextPage func(context.Context, SQLPoolInfoListResult) (SQLPoolInfoListResult, error)) SQLPoolInfoListResultPage {
+	return SQLPoolInfoListResultPage{
+		fn:      getNextPage,
+		sqlpilr: cur,
+	}
 }
 
 // SQLPoolOperation a Sql pool operation.
@@ -7370,8 +7406,11 @@ func (page SQLPoolSchemaListResultPage) Values() []SQLPoolSchema {
 }
 
 // Creates a new instance of the SQLPoolSchemaListResultPage type.
-func NewSQLPoolSchemaListResultPage(getNextPage func(context.Context, SQLPoolSchemaListResult) (SQLPoolSchemaListResult, error)) SQLPoolSchemaListResultPage {
-	return SQLPoolSchemaListResultPage{fn: getNextPage}
+func NewSQLPoolSchemaListResultPage(cur SQLPoolSchemaListResult, getNextPage func(context.Context, SQLPoolSchemaListResult) (SQLPoolSchemaListResult, error)) SQLPoolSchemaListResultPage {
+	return SQLPoolSchemaListResultPage{
+		fn:      getNextPage,
+		sqlpslr: cur,
+	}
 }
 
 // SQLPoolsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -7721,8 +7760,11 @@ func (page SQLPoolTableListResultPage) Values() []SQLPoolTable {
 }
 
 // Creates a new instance of the SQLPoolTableListResultPage type.
-func NewSQLPoolTableListResultPage(getNextPage func(context.Context, SQLPoolTableListResult) (SQLPoolTableListResult, error)) SQLPoolTableListResultPage {
-	return SQLPoolTableListResultPage{fn: getNextPage}
+func NewSQLPoolTableListResultPage(cur SQLPoolTableListResult, getNextPage func(context.Context, SQLPoolTableListResult) (SQLPoolTableListResult, error)) SQLPoolTableListResultPage {
+	return SQLPoolTableListResultPage{
+		fn:      getNextPage,
+		sqlptlr: cur,
+	}
 }
 
 // SQLPoolUsage the Sql pool usages.
@@ -7904,8 +7946,11 @@ func (page SQLPoolUsageListResultPage) Values() []SQLPoolUsage {
 }
 
 // Creates a new instance of the SQLPoolUsageListResultPage type.
-func NewSQLPoolUsageListResultPage(getNextPage func(context.Context, SQLPoolUsageListResult) (SQLPoolUsageListResult, error)) SQLPoolUsageListResultPage {
-	return SQLPoolUsageListResultPage{fn: getNextPage}
+func NewSQLPoolUsageListResultPage(cur SQLPoolUsageListResult, getNextPage func(context.Context, SQLPoolUsageListResult) (SQLPoolUsageListResult, error)) SQLPoolUsageListResultPage {
+	return SQLPoolUsageListResultPage{
+		fn:      getNextPage,
+		sqlpulr: cur,
+	}
 }
 
 // SQLPoolVulnerabilityAssessment a Sql pool vulnerability assessment.
@@ -8134,8 +8179,11 @@ func (page SQLPoolVulnerabilityAssessmentListResultPage) Values() []SQLPoolVulne
 }
 
 // Creates a new instance of the SQLPoolVulnerabilityAssessmentListResultPage type.
-func NewSQLPoolVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, SQLPoolVulnerabilityAssessmentListResult) (SQLPoolVulnerabilityAssessmentListResult, error)) SQLPoolVulnerabilityAssessmentListResultPage {
-	return SQLPoolVulnerabilityAssessmentListResultPage{fn: getNextPage}
+func NewSQLPoolVulnerabilityAssessmentListResultPage(cur SQLPoolVulnerabilityAssessmentListResult, getNextPage func(context.Context, SQLPoolVulnerabilityAssessmentListResult) (SQLPoolVulnerabilityAssessmentListResult, error)) SQLPoolVulnerabilityAssessmentListResultPage {
+	return SQLPoolVulnerabilityAssessmentListResultPage{
+		fn:       getNextPage,
+		sqlpvalr: cur,
+	}
 }
 
 // SQLPoolVulnerabilityAssessmentProperties properties of a Sql pool Vulnerability Assessment.
@@ -9281,8 +9329,11 @@ func (page VulnerabilityAssessmentScanRecordListResultPage) Values() []Vulnerabi
 }
 
 // Creates a new instance of the VulnerabilityAssessmentScanRecordListResultPage type.
-func NewVulnerabilityAssessmentScanRecordListResultPage(getNextPage func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error)) VulnerabilityAssessmentScanRecordListResultPage {
-	return VulnerabilityAssessmentScanRecordListResultPage{fn: getNextPage}
+func NewVulnerabilityAssessmentScanRecordListResultPage(cur VulnerabilityAssessmentScanRecordListResult, getNextPage func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error)) VulnerabilityAssessmentScanRecordListResultPage {
+	return VulnerabilityAssessmentScanRecordListResultPage{
+		fn:     getNextPage,
+		vasrlr: cur,
+	}
 }
 
 // VulnerabilityAssessmentScanRecordProperties properties of a vulnerability assessment scan record.
@@ -9697,9 +9748,6 @@ func (page WorkspaceInfoListResultPage) Values() []Workspace {
 }
 
 // Creates a new instance of the WorkspaceInfoListResultPage type.
-func NewWorkspaceInfoListResultPage(getNextPage func(context.Context, WorkspaceInfoListResult) (WorkspaceInfoListResult, error)) WorkspaceInfoListResultPage {
-	return WorkspaceInfoListResultPage{fn: getNextPage}
-}
 
 // WorkspacePatchInfo workspace patch details
 type WorkspacePatchInfo struct {

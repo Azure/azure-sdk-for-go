@@ -309,8 +309,11 @@ func (page AppListResultPage) Values() []App {
 }
 
 // Creates a new instance of the AppListResultPage type.
-func NewAppListResultPage(getNextPage func(context.Context, AppListResult) (AppListResult, error)) AppListResultPage {
-	return AppListResultPage{fn: getNextPage}
+func NewAppListResultPage(cur AppListResult, getNextPage func(context.Context, AppListResult) (AppListResult, error)) AppListResultPage {
+	return AppListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AppPatch the description of the IoT Central application.
@@ -669,8 +672,11 @@ func (page AppTemplatesResultPage) Values() []AppTemplate {
 }
 
 // Creates a new instance of the AppTemplatesResultPage type.
-func NewAppTemplatesResultPage(getNextPage func(context.Context, AppTemplatesResult) (AppTemplatesResult, error)) AppTemplatesResultPage {
-	return AppTemplatesResultPage{fn: getNextPage}
+func NewAppTemplatesResultPage(cur AppTemplatesResult, getNextPage func(context.Context, AppTemplatesResult) (AppTemplatesResult, error)) AppTemplatesResultPage {
+	return AppTemplatesResultPage{
+		fn:  getNextPage,
+		atr: cur,
+	}
 }
 
 // CloudError error details.
@@ -932,9 +938,6 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // Resource the common properties of an ARM resource.
 type Resource struct {

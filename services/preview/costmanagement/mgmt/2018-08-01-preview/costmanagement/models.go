@@ -265,8 +265,11 @@ func (page AlertListResultPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertListResultPage type.
-func NewAlertListResultPage(getNextPage func(context.Context, AlertListResult) (AlertListResult, error)) AlertListResultPage {
-	return AlertListResultPage{fn: getNextPage}
+func NewAlertListResultPage(cur AlertListResult, getNextPage func(context.Context, AlertListResult) (AlertListResult, error)) AlertListResultPage {
+	return AlertListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AlertProperties the properties of an Alert.
@@ -833,9 +836,6 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // Query ...
 type Query struct {

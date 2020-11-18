@@ -202,8 +202,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ResourceLink the resource link.
@@ -417,6 +420,3 @@ func (page ResourceLinkResultPage) Values() []ResourceLink {
 }
 
 // Creates a new instance of the ResourceLinkResultPage type.
-func NewResourceLinkResultPage(getNextPage func(context.Context, ResourceLinkResult) (ResourceLinkResult, error)) ResourceLinkResultPage {
-	return ResourceLinkResultPage{fn: getNextPage}
-}

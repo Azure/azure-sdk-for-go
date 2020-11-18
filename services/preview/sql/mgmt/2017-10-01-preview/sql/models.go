@@ -316,8 +316,11 @@ func (page BackupShortTermRetentionPolicyListResultPage) Values() []BackupShortT
 }
 
 // Creates a new instance of the BackupShortTermRetentionPolicyListResultPage type.
-func NewBackupShortTermRetentionPolicyListResultPage(getNextPage func(context.Context, BackupShortTermRetentionPolicyListResult) (BackupShortTermRetentionPolicyListResult, error)) BackupShortTermRetentionPolicyListResultPage {
-	return BackupShortTermRetentionPolicyListResultPage{fn: getNextPage}
+func NewBackupShortTermRetentionPolicyListResultPage(cur BackupShortTermRetentionPolicyListResult, getNextPage func(context.Context, BackupShortTermRetentionPolicyListResult) (BackupShortTermRetentionPolicyListResult, error)) BackupShortTermRetentionPolicyListResultPage {
+	return BackupShortTermRetentionPolicyListResultPage{
+		fn:      getNextPage,
+		bstrplr: cur,
+	}
 }
 
 // BackupShortTermRetentionPolicyProperties properties of a short term retention policy
@@ -625,8 +628,11 @@ func (page DatabaseListResultPage) Values() []Database {
 }
 
 // Creates a new instance of the DatabaseListResultPage type.
-func NewDatabaseListResultPage(getNextPage func(context.Context, DatabaseListResult) (DatabaseListResult, error)) DatabaseListResultPage {
-	return DatabaseListResultPage{fn: getNextPage}
+func NewDatabaseListResultPage(cur DatabaseListResult, getNextPage func(context.Context, DatabaseListResult) (DatabaseListResult, error)) DatabaseListResultPage {
+	return DatabaseListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DatabaseOperation a database operation.
@@ -853,8 +859,11 @@ func (page DatabaseOperationListResultPage) Values() []DatabaseOperation {
 }
 
 // Creates a new instance of the DatabaseOperationListResultPage type.
-func NewDatabaseOperationListResultPage(getNextPage func(context.Context, DatabaseOperationListResult) (DatabaseOperationListResult, error)) DatabaseOperationListResultPage {
-	return DatabaseOperationListResultPage{fn: getNextPage}
+func NewDatabaseOperationListResultPage(cur DatabaseOperationListResult, getNextPage func(context.Context, DatabaseOperationListResult) (DatabaseOperationListResult, error)) DatabaseOperationListResultPage {
+	return DatabaseOperationListResultPage{
+		fn:   getNextPage,
+		dolr: cur,
+	}
 }
 
 // DatabaseOperationProperties the properties of a database operation.
@@ -1485,8 +1494,11 @@ func (page DatabaseVulnerabilityAssessmentListResultPage) Values() []DatabaseVul
 }
 
 // Creates a new instance of the DatabaseVulnerabilityAssessmentListResultPage type.
-func NewDatabaseVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error)) DatabaseVulnerabilityAssessmentListResultPage {
-	return DatabaseVulnerabilityAssessmentListResultPage{fn: getNextPage}
+func NewDatabaseVulnerabilityAssessmentListResultPage(cur DatabaseVulnerabilityAssessmentListResult, getNextPage func(context.Context, DatabaseVulnerabilityAssessmentListResult) (DatabaseVulnerabilityAssessmentListResult, error)) DatabaseVulnerabilityAssessmentListResultPage {
+	return DatabaseVulnerabilityAssessmentListResultPage{
+		fn:    getNextPage,
+		dvalr: cur,
+	}
 }
 
 // DatabaseVulnerabilityAssessmentProperties properties of a database Vulnerability Assessment.
@@ -2020,8 +2032,11 @@ func (page ElasticPoolListResultPage) Values() []ElasticPool {
 }
 
 // Creates a new instance of the ElasticPoolListResultPage type.
-func NewElasticPoolListResultPage(getNextPage func(context.Context, ElasticPoolListResult) (ElasticPoolListResult, error)) ElasticPoolListResultPage {
-	return ElasticPoolListResultPage{fn: getNextPage}
+func NewElasticPoolListResultPage(cur ElasticPoolListResult, getNextPage func(context.Context, ElasticPoolListResult) (ElasticPoolListResult, error)) ElasticPoolListResultPage {
+	return ElasticPoolListResultPage{
+		fn:   getNextPage,
+		eplr: cur,
+	}
 }
 
 // ElasticPoolOperation a elastic pool operation.
@@ -2248,8 +2263,11 @@ func (page ElasticPoolOperationListResultPage) Values() []ElasticPoolOperation {
 }
 
 // Creates a new instance of the ElasticPoolOperationListResultPage type.
-func NewElasticPoolOperationListResultPage(getNextPage func(context.Context, ElasticPoolOperationListResult) (ElasticPoolOperationListResult, error)) ElasticPoolOperationListResultPage {
-	return ElasticPoolOperationListResultPage{fn: getNextPage}
+func NewElasticPoolOperationListResultPage(cur ElasticPoolOperationListResult, getNextPage func(context.Context, ElasticPoolOperationListResult) (ElasticPoolOperationListResult, error)) ElasticPoolOperationListResultPage {
+	return ElasticPoolOperationListResultPage{
+		fn:    getNextPage,
+		epolr: cur,
+	}
 }
 
 // ElasticPoolOperationProperties the properties of a elastic pool operation.
@@ -2788,8 +2806,11 @@ func (page InstanceFailoverGroupListResultPage) Values() []InstanceFailoverGroup
 }
 
 // Creates a new instance of the InstanceFailoverGroupListResultPage type.
-func NewInstanceFailoverGroupListResultPage(getNextPage func(context.Context, InstanceFailoverGroupListResult) (InstanceFailoverGroupListResult, error)) InstanceFailoverGroupListResultPage {
-	return InstanceFailoverGroupListResultPage{fn: getNextPage}
+func NewInstanceFailoverGroupListResultPage(cur InstanceFailoverGroupListResult, getNextPage func(context.Context, InstanceFailoverGroupListResult) (InstanceFailoverGroupListResult, error)) InstanceFailoverGroupListResultPage {
+	return InstanceFailoverGroupListResultPage{
+		fn:    getNextPage,
+		ifglr: cur,
+	}
 }
 
 // InstanceFailoverGroupProperties properties of a instance failover group.
@@ -3283,8 +3304,11 @@ func (page ManagedInstanceEncryptionProtectorListResultPage) Values() []ManagedI
 }
 
 // Creates a new instance of the ManagedInstanceEncryptionProtectorListResultPage type.
-func NewManagedInstanceEncryptionProtectorListResultPage(getNextPage func(context.Context, ManagedInstanceEncryptionProtectorListResult) (ManagedInstanceEncryptionProtectorListResult, error)) ManagedInstanceEncryptionProtectorListResultPage {
-	return ManagedInstanceEncryptionProtectorListResultPage{fn: getNextPage}
+func NewManagedInstanceEncryptionProtectorListResultPage(cur ManagedInstanceEncryptionProtectorListResult, getNextPage func(context.Context, ManagedInstanceEncryptionProtectorListResult) (ManagedInstanceEncryptionProtectorListResult, error)) ManagedInstanceEncryptionProtectorListResultPage {
+	return ManagedInstanceEncryptionProtectorListResultPage{
+		fn:     getNextPage,
+		mieplr: cur,
+	}
 }
 
 // ManagedInstanceEncryptionProtectorProperties properties for an encryption protector execution.
@@ -3628,8 +3652,11 @@ func (page ManagedInstanceKeyListResultPage) Values() []ManagedInstanceKey {
 }
 
 // Creates a new instance of the ManagedInstanceKeyListResultPage type.
-func NewManagedInstanceKeyListResultPage(getNextPage func(context.Context, ManagedInstanceKeyListResult) (ManagedInstanceKeyListResult, error)) ManagedInstanceKeyListResultPage {
-	return ManagedInstanceKeyListResultPage{fn: getNextPage}
+func NewManagedInstanceKeyListResultPage(cur ManagedInstanceKeyListResult, getNextPage func(context.Context, ManagedInstanceKeyListResult) (ManagedInstanceKeyListResult, error)) ManagedInstanceKeyListResultPage {
+	return ManagedInstanceKeyListResultPage{
+		fn:    getNextPage,
+		miklr: cur,
+	}
 }
 
 // ManagedInstanceKeyProperties properties for a key execution.
@@ -4075,8 +4102,11 @@ func (page RecoverableManagedDatabaseListResultPage) Values() []RecoverableManag
 }
 
 // Creates a new instance of the RecoverableManagedDatabaseListResultPage type.
-func NewRecoverableManagedDatabaseListResultPage(getNextPage func(context.Context, RecoverableManagedDatabaseListResult) (RecoverableManagedDatabaseListResult, error)) RecoverableManagedDatabaseListResultPage {
-	return RecoverableManagedDatabaseListResultPage{fn: getNextPage}
+func NewRecoverableManagedDatabaseListResultPage(cur RecoverableManagedDatabaseListResult, getNextPage func(context.Context, RecoverableManagedDatabaseListResult) (RecoverableManagedDatabaseListResult, error)) RecoverableManagedDatabaseListResultPage {
+	return RecoverableManagedDatabaseListResultPage{
+		fn:    getNextPage,
+		rmdlr: cur,
+	}
 }
 
 // RecoverableManagedDatabaseProperties the recoverable managed database's properties.
@@ -4542,9 +4572,6 @@ func (page VulnerabilityAssessmentScanRecordListResultPage) Values() []Vulnerabi
 }
 
 // Creates a new instance of the VulnerabilityAssessmentScanRecordListResultPage type.
-func NewVulnerabilityAssessmentScanRecordListResultPage(getNextPage func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error)) VulnerabilityAssessmentScanRecordListResultPage {
-	return VulnerabilityAssessmentScanRecordListResultPage{fn: getNextPage}
-}
 
 // VulnerabilityAssessmentScanRecordProperties properties of a vulnerability assessment scan record.
 type VulnerabilityAssessmentScanRecordProperties struct {

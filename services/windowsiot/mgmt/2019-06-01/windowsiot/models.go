@@ -312,8 +312,11 @@ func (page DeviceServiceDescriptionListResultPage) Values() []DeviceService {
 }
 
 // Creates a new instance of the DeviceServiceDescriptionListResultPage type.
-func NewDeviceServiceDescriptionListResultPage(getNextPage func(context.Context, DeviceServiceDescriptionListResult) (DeviceServiceDescriptionListResult, error)) DeviceServiceDescriptionListResultPage {
-	return DeviceServiceDescriptionListResultPage{fn: getNextPage}
+func NewDeviceServiceDescriptionListResultPage(cur DeviceServiceDescriptionListResult, getNextPage func(context.Context, DeviceServiceDescriptionListResult) (DeviceServiceDescriptionListResult, error)) DeviceServiceDescriptionListResultPage {
+	return DeviceServiceDescriptionListResultPage{
+		fn:    getNextPage,
+		dsdlr: cur,
+	}
 }
 
 // DeviceServiceNameAvailabilityInfo the properties indicating whether a given Windows IoT Device Service name
@@ -554,9 +557,6 @@ func (page OperationListResultPage) Values() []OperationEntity {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
 // required location and tags

@@ -427,8 +427,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
@@ -740,9 +743,6 @@ func (page UserAssignedIdentitiesListResultPage) Values() []Identity {
 }
 
 // Creates a new instance of the UserAssignedIdentitiesListResultPage type.
-func NewUserAssignedIdentitiesListResultPage(getNextPage func(context.Context, UserAssignedIdentitiesListResult) (UserAssignedIdentitiesListResult, error)) UserAssignedIdentitiesListResultPage {
-	return UserAssignedIdentitiesListResultPage{fn: getNextPage}
-}
 
 // UserAssignedIdentityProperties the properties associated with the user assigned identity.
 type UserAssignedIdentityProperties struct {

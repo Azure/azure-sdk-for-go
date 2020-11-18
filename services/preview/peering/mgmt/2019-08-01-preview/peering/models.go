@@ -372,8 +372,11 @@ func (page ListResultPage) Values() []Model {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // Location peering location is where connectivity could be established to the Microsoft Cloud Edge.
@@ -614,8 +617,11 @@ func (page LocationListResultPage) Values() []Location {
 }
 
 // Creates a new instance of the LocationListResultPage type.
-func NewLocationListResultPage(getNextPage func(context.Context, LocationListResult) (LocationListResult, error)) LocationListResultPage {
-	return LocationListResultPage{fn: getNextPage}
+func NewLocationListResultPage(cur LocationListResult, getNextPage func(context.Context, LocationListResult) (LocationListResult, error)) LocationListResultPage {
+	return LocationListResultPage{
+		fn:  getNextPage,
+		llr: cur,
+	}
 }
 
 // LocationProperties the properties that define a peering location.
@@ -949,8 +955,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PeerAsn the essential information related to the peer's ASN.
@@ -1178,8 +1187,11 @@ func (page PeerAsnListResultPage) Values() []PeerAsn {
 }
 
 // Creates a new instance of the PeerAsnListResultPage type.
-func NewPeerAsnListResultPage(getNextPage func(context.Context, PeerAsnListResult) (PeerAsnListResult, error)) PeerAsnListResultPage {
-	return PeerAsnListResultPage{fn: getNextPage}
+func NewPeerAsnListResultPage(cur PeerAsnListResult, getNextPage func(context.Context, PeerAsnListResult) (PeerAsnListResult, error)) PeerAsnListResultPage {
+	return PeerAsnListResultPage{
+		fn:   getNextPage,
+		palr: cur,
+	}
 }
 
 // PeerAsnProperties the properties that define a peer's ASN.
@@ -1519,8 +1531,11 @@ func (page ServiceListResultPage) Values() []Service {
 }
 
 // Creates a new instance of the ServiceListResultPage type.
-func NewServiceListResultPage(getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
-	return ServiceListResultPage{fn: getNextPage}
+func NewServiceListResultPage(cur ServiceListResult, getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
+	return ServiceListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // ServiceLocation peeringService location
@@ -1747,8 +1762,11 @@ func (page ServiceLocationListResultPage) Values() []ServiceLocation {
 }
 
 // Creates a new instance of the ServiceLocationListResultPage type.
-func NewServiceLocationListResultPage(getNextPage func(context.Context, ServiceLocationListResult) (ServiceLocationListResult, error)) ServiceLocationListResultPage {
-	return ServiceLocationListResultPage{fn: getNextPage}
+func NewServiceLocationListResultPage(cur ServiceLocationListResult, getNextPage func(context.Context, ServiceLocationListResult) (ServiceLocationListResult, error)) ServiceLocationListResultPage {
+	return ServiceLocationListResultPage{
+		fn:   getNextPage,
+		sllr: cur,
+	}
 }
 
 // ServiceLocationProperties the properties that define connectivity to the Peering Service Location.
@@ -1986,8 +2004,11 @@ func (page ServicePrefixListResultPage) Values() []ServicePrefix {
 }
 
 // Creates a new instance of the ServicePrefixListResultPage type.
-func NewServicePrefixListResultPage(getNextPage func(context.Context, ServicePrefixListResult) (ServicePrefixListResult, error)) ServicePrefixListResultPage {
-	return ServicePrefixListResultPage{fn: getNextPage}
+func NewServicePrefixListResultPage(cur ServicePrefixListResult, getNextPage func(context.Context, ServicePrefixListResult) (ServicePrefixListResult, error)) ServicePrefixListResultPage {
+	return ServicePrefixListResultPage{
+		fn:   getNextPage,
+		splr: cur,
+	}
 }
 
 // ServicePrefixProperties the peering service prefix properties class.
@@ -2263,9 +2284,6 @@ func (page ServiceProviderListResultPage) Values() []ServiceProvider {
 }
 
 // Creates a new instance of the ServiceProviderListResultPage type.
-func NewServiceProviderListResultPage(getNextPage func(context.Context, ServiceProviderListResult) (ServiceProviderListResult, error)) ServiceProviderListResultPage {
-	return ServiceProviderListResultPage{fn: getNextPage}
-}
 
 // ServiceProviderProperties the properties that define connectivity to the Peering Service Provider.
 type ServiceProviderProperties struct {

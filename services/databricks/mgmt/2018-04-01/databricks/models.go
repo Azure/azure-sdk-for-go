@@ -270,8 +270,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Resource the core properties of ARM resources
@@ -543,8 +546,11 @@ func (page VirtualNetworkPeeringListPage) Values() []VirtualNetworkPeering {
 }
 
 // Creates a new instance of the VirtualNetworkPeeringListPage type.
-func NewVirtualNetworkPeeringListPage(getNextPage func(context.Context, VirtualNetworkPeeringList) (VirtualNetworkPeeringList, error)) VirtualNetworkPeeringListPage {
-	return VirtualNetworkPeeringListPage{fn: getNextPage}
+func NewVirtualNetworkPeeringListPage(cur VirtualNetworkPeeringList, getNextPage func(context.Context, VirtualNetworkPeeringList) (VirtualNetworkPeeringList, error)) VirtualNetworkPeeringListPage {
+	return VirtualNetworkPeeringListPage{
+		fn:   getNextPage,
+		vnpl: cur,
+	}
 }
 
 // VirtualNetworkPeeringPropertiesFormat properties of the virtual network peering.
@@ -988,9 +994,6 @@ func (page WorkspaceListResultPage) Values() []Workspace {
 }
 
 // Creates a new instance of the WorkspaceListResultPage type.
-func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
-	return WorkspaceListResultPage{fn: getNextPage}
-}
 
 // WorkspaceProperties the workspace properties.
 type WorkspaceProperties struct {

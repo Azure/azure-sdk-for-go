@@ -369,8 +369,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OrganizationReference reference to an Azure DevOps Organization.
@@ -644,8 +647,11 @@ func (page PipelineListResultPage) Values() []Pipeline {
 }
 
 // Creates a new instance of the PipelineListResultPage type.
-func NewPipelineListResultPage(getNextPage func(context.Context, PipelineListResult) (PipelineListResult, error)) PipelineListResultPage {
-	return PipelineListResultPage{fn: getNextPage}
+func NewPipelineListResultPage(cur PipelineListResult, getNextPage func(context.Context, PipelineListResult) (PipelineListResult, error)) PipelineListResultPage {
+	return PipelineListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // PipelineProperties custom properties of a Pipeline.
@@ -887,9 +893,6 @@ func (page PipelineTemplateDefinitionListResultPage) Values() []PipelineTemplate
 }
 
 // Creates a new instance of the PipelineTemplateDefinitionListResultPage type.
-func NewPipelineTemplateDefinitionListResultPage(getNextPage func(context.Context, PipelineTemplateDefinitionListResult) (PipelineTemplateDefinitionListResult, error)) PipelineTemplateDefinitionListResultPage {
-	return PipelineTemplateDefinitionListResultPage{fn: getNextPage}
-}
 
 // PipelineUpdateParameters request payload used to update an existing Azure Pipeline.
 type PipelineUpdateParameters struct {

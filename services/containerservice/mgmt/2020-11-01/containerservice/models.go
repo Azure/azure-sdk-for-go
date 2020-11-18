@@ -359,8 +359,11 @@ func (page AgentPoolListResultPage) Values() []AgentPool {
 }
 
 // Creates a new instance of the AgentPoolListResultPage type.
-func NewAgentPoolListResultPage(getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
-	return AgentPoolListResultPage{fn: getNextPage}
+func NewAgentPoolListResultPage(cur AgentPoolListResult, getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
+	return AgentPoolListResultPage{
+		fn:   getNextPage,
+		aplr: cur,
+	}
 }
 
 // AgentPoolsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1407,9 +1410,6 @@ func (page ManagedClusterListResultPage) Values() []ManagedCluster {
 }
 
 // Creates a new instance of the ManagedClusterListResultPage type.
-func NewManagedClusterListResultPage(getNextPage func(context.Context, ManagedClusterListResult) (ManagedClusterListResult, error)) ManagedClusterListResultPage {
-	return ManagedClusterListResultPage{fn: getNextPage}
-}
 
 // ManagedClusterLoadBalancerProfile profile of the managed cluster load balancer.
 type ManagedClusterLoadBalancerProfile struct {

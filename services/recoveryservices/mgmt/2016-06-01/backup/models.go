@@ -2064,8 +2064,11 @@ func (page EngineBaseResourceListPage) Values() []EngineBaseResource {
 }
 
 // Creates a new instance of the EngineBaseResourceListPage type.
-func NewEngineBaseResourceListPage(getNextPage func(context.Context, EngineBaseResourceList) (EngineBaseResourceList, error)) EngineBaseResourceListPage {
-	return EngineBaseResourceListPage{fn: getNextPage}
+func NewEngineBaseResourceListPage(cur EngineBaseResourceList, getNextPage func(context.Context, EngineBaseResourceList) (EngineBaseResourceList, error)) EngineBaseResourceListPage {
+	return EngineBaseResourceListPage{
+		fn:   getNextPage,
+		ebrl: cur,
+	}
 }
 
 // ExportJobsOperationResultInfo this class is used to send blob details after exporting jobs.
@@ -3307,8 +3310,11 @@ func (page JobResourceListPage) Values() []JobResource {
 }
 
 // Creates a new instance of the JobResourceListPage type.
-func NewJobResourceListPage(getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
-	return JobResourceListPage{fn: getNextPage}
+func NewJobResourceListPage(cur JobResourceList, getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
+	return JobResourceListPage{
+		fn:  getNextPage,
+		jrl: cur,
+	}
 }
 
 // KEKDetails the Key Encryption Key (KEK) is the encryption key for the Bitlocker Encryption Key (BEK).
@@ -4916,8 +4922,11 @@ func (page ProtectedItemResourceListPage) Values() []ProtectedItemResource {
 }
 
 // Creates a new instance of the ProtectedItemResourceListPage type.
-func NewProtectedItemResourceListPage(getNextPage func(context.Context, ProtectedItemResourceList) (ProtectedItemResourceList, error)) ProtectedItemResourceListPage {
-	return ProtectedItemResourceListPage{fn: getNextPage}
+func NewProtectedItemResourceListPage(cur ProtectedItemResourceList, getNextPage func(context.Context, ProtectedItemResourceList) (ProtectedItemResourceList, error)) ProtectedItemResourceListPage {
+	return ProtectedItemResourceListPage{
+		fn:   getNextPage,
+		pirl: cur,
+	}
 }
 
 // BasicProtectionContainer the base class for a container with backup items. Containers with specific workloads are
@@ -6763,9 +6772,6 @@ func (page WorkloadProtectableItemResourceListPage) Values() []WorkloadProtectab
 }
 
 // Creates a new instance of the WorkloadProtectableItemResourceListPage type.
-func NewWorkloadProtectableItemResourceListPage(getNextPage func(context.Context, WorkloadProtectableItemResourceList) (WorkloadProtectableItemResourceList, error)) WorkloadProtectableItemResourceListPage {
-	return WorkloadProtectableItemResourceListPage{fn: getNextPage}
-}
 
 // YearlyRetentionSchedule yearly retention schedule.
 type YearlyRetentionSchedule struct {

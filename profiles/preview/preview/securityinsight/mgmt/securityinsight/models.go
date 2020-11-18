@@ -720,8 +720,8 @@ func NewActionsClientWithBaseURI(baseURI string, subscriptionID string) ActionsC
 func NewActionsListIterator(page ActionsListPage) ActionsListIterator {
 	return original.NewActionsListIterator(page)
 }
-func NewActionsListPage(getNextPage func(context.Context, ActionsList) (ActionsList, error)) ActionsListPage {
-	return original.NewActionsListPage(getNextPage)
+func NewActionsListPage(cur ActionsList, getNextPage func(context.Context, ActionsList) (ActionsList, error)) ActionsListPage {
+	return original.NewActionsListPage(cur, getNextPage)
 }
 func NewAlertRuleTemplatesClient(subscriptionID string) AlertRuleTemplatesClient {
 	return original.NewAlertRuleTemplatesClient(subscriptionID)
@@ -732,8 +732,8 @@ func NewAlertRuleTemplatesClientWithBaseURI(baseURI string, subscriptionID strin
 func NewAlertRuleTemplatesListIterator(page AlertRuleTemplatesListPage) AlertRuleTemplatesListIterator {
 	return original.NewAlertRuleTemplatesListIterator(page)
 }
-func NewAlertRuleTemplatesListPage(getNextPage func(context.Context, AlertRuleTemplatesList) (AlertRuleTemplatesList, error)) AlertRuleTemplatesListPage {
-	return original.NewAlertRuleTemplatesListPage(getNextPage)
+func NewAlertRuleTemplatesListPage(cur AlertRuleTemplatesList, getNextPage func(context.Context, AlertRuleTemplatesList) (AlertRuleTemplatesList, error)) AlertRuleTemplatesListPage {
+	return original.NewAlertRuleTemplatesListPage(cur, getNextPage)
 }
 func NewAlertRulesClient(subscriptionID string) AlertRulesClient {
 	return original.NewAlertRulesClient(subscriptionID)
@@ -744,8 +744,8 @@ func NewAlertRulesClientWithBaseURI(baseURI string, subscriptionID string) Alert
 func NewAlertRulesListIterator(page AlertRulesListPage) AlertRulesListIterator {
 	return original.NewAlertRulesListIterator(page)
 }
-func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
-	return original.NewAlertRulesListPage(getNextPage)
+func NewAlertRulesListPage(cur AlertRulesList, getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
+	return original.NewAlertRulesListPage(cur, getNextPage)
 }
 func NewBookmarkClient(subscriptionID string) BookmarkClient {
 	return original.NewBookmarkClient(subscriptionID)
@@ -756,8 +756,8 @@ func NewBookmarkClientWithBaseURI(baseURI string, subscriptionID string) Bookmar
 func NewBookmarkListIterator(page BookmarkListPage) BookmarkListIterator {
 	return original.NewBookmarkListIterator(page)
 }
-func NewBookmarkListPage(getNextPage func(context.Context, BookmarkList) (BookmarkList, error)) BookmarkListPage {
-	return original.NewBookmarkListPage(getNextPage)
+func NewBookmarkListPage(cur BookmarkList, getNextPage func(context.Context, BookmarkList) (BookmarkList, error)) BookmarkListPage {
+	return original.NewBookmarkListPage(cur, getNextPage)
 }
 func NewBookmarkRelationsClient(subscriptionID string) BookmarkRelationsClient {
 	return original.NewBookmarkRelationsClient(subscriptionID)
@@ -774,8 +774,8 @@ func NewBookmarksClientWithBaseURI(baseURI string, subscriptionID string) Bookma
 func NewCaseCommentListIterator(page CaseCommentListPage) CaseCommentListIterator {
 	return original.NewCaseCommentListIterator(page)
 }
-func NewCaseCommentListPage(getNextPage func(context.Context, CaseCommentList) (CaseCommentList, error)) CaseCommentListPage {
-	return original.NewCaseCommentListPage(getNextPage)
+func NewCaseCommentListPage(cur CaseCommentList, getNextPage func(context.Context, CaseCommentList) (CaseCommentList, error)) CaseCommentListPage {
+	return original.NewCaseCommentListPage(cur, getNextPage)
 }
 func NewCaseCommentsClient(subscriptionID string) CaseCommentsClient {
 	return original.NewCaseCommentsClient(subscriptionID)
@@ -786,14 +786,14 @@ func NewCaseCommentsClientWithBaseURI(baseURI string, subscriptionID string) Cas
 func NewCaseListIterator(page CaseListPage) CaseListIterator {
 	return original.NewCaseListIterator(page)
 }
-func NewCaseListPage(getNextPage func(context.Context, CaseList) (CaseList, error)) CaseListPage {
-	return original.NewCaseListPage(getNextPage)
+func NewCaseListPage(cur CaseList, getNextPage func(context.Context, CaseList) (CaseList, error)) CaseListPage {
+	return original.NewCaseListPage(cur, getNextPage)
 }
 func NewCaseRelationListIterator(page CaseRelationListPage) CaseRelationListIterator {
 	return original.NewCaseRelationListIterator(page)
 }
-func NewCaseRelationListPage(getNextPage func(context.Context, CaseRelationList) (CaseRelationList, error)) CaseRelationListPage {
-	return original.NewCaseRelationListPage(getNextPage)
+func NewCaseRelationListPage(cur CaseRelationList, getNextPage func(context.Context, CaseRelationList) (CaseRelationList, error)) CaseRelationListPage {
+	return original.NewCaseRelationListPage(cur, getNextPage)
 }
 func NewCaseRelationsClient(subscriptionID string) CaseRelationsClient {
 	return original.NewCaseRelationsClient(subscriptionID)
@@ -822,8 +822,8 @@ func NewCommentsClientWithBaseURI(baseURI string, subscriptionID string) Comment
 func NewDataConnectorListIterator(page DataConnectorListPage) DataConnectorListIterator {
 	return original.NewDataConnectorListIterator(page)
 }
-func NewDataConnectorListPage(getNextPage func(context.Context, DataConnectorList) (DataConnectorList, error)) DataConnectorListPage {
-	return original.NewDataConnectorListPage(getNextPage)
+func NewDataConnectorListPage(cur DataConnectorList, getNextPage func(context.Context, DataConnectorList) (DataConnectorList, error)) DataConnectorListPage {
+	return original.NewDataConnectorListPage(cur, getNextPage)
 }
 func NewDataConnectorsCheckRequirementsClient(subscriptionID string) DataConnectorsCheckRequirementsClient {
 	return original.NewDataConnectorsCheckRequirementsClient(subscriptionID)
@@ -852,8 +852,8 @@ func NewEntitiesRelationsClientWithBaseURI(baseURI string, subscriptionID string
 func NewEntityListIterator(page EntityListPage) EntityListIterator {
 	return original.NewEntityListIterator(page)
 }
-func NewEntityListPage(getNextPage func(context.Context, EntityList) (EntityList, error)) EntityListPage {
-	return original.NewEntityListPage(getNextPage)
+func NewEntityListPage(cur EntityList, getNextPage func(context.Context, EntityList) (EntityList, error)) EntityListPage {
+	return original.NewEntityListPage(cur, getNextPage)
 }
 func NewEntityQueriesClient(subscriptionID string) EntityQueriesClient {
 	return original.NewEntityQueriesClient(subscriptionID)
@@ -864,8 +864,8 @@ func NewEntityQueriesClientWithBaseURI(baseURI string, subscriptionID string) En
 func NewEntityQueryListIterator(page EntityQueryListPage) EntityQueryListIterator {
 	return original.NewEntityQueryListIterator(page)
 }
-func NewEntityQueryListPage(getNextPage func(context.Context, EntityQueryList) (EntityQueryList, error)) EntityQueryListPage {
-	return original.NewEntityQueryListPage(getNextPage)
+func NewEntityQueryListPage(cur EntityQueryList, getNextPage func(context.Context, EntityQueryList) (EntityQueryList, error)) EntityQueryListPage {
+	return original.NewEntityQueryListPage(cur, getNextPage)
 }
 func NewEntityRelationsClient(subscriptionID string) EntityRelationsClient {
 	return original.NewEntityRelationsClient(subscriptionID)
@@ -876,8 +876,8 @@ func NewEntityRelationsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewIncidentCommentListIterator(page IncidentCommentListPage) IncidentCommentListIterator {
 	return original.NewIncidentCommentListIterator(page)
 }
-func NewIncidentCommentListPage(getNextPage func(context.Context, IncidentCommentList) (IncidentCommentList, error)) IncidentCommentListPage {
-	return original.NewIncidentCommentListPage(getNextPage)
+func NewIncidentCommentListPage(cur IncidentCommentList, getNextPage func(context.Context, IncidentCommentList) (IncidentCommentList, error)) IncidentCommentListPage {
+	return original.NewIncidentCommentListPage(cur, getNextPage)
 }
 func NewIncidentCommentsClient(subscriptionID string) IncidentCommentsClient {
 	return original.NewIncidentCommentsClient(subscriptionID)
@@ -888,8 +888,8 @@ func NewIncidentCommentsClientWithBaseURI(baseURI string, subscriptionID string)
 func NewIncidentListIterator(page IncidentListPage) IncidentListIterator {
 	return original.NewIncidentListIterator(page)
 }
-func NewIncidentListPage(getNextPage func(context.Context, IncidentList) (IncidentList, error)) IncidentListPage {
-	return original.NewIncidentListPage(getNextPage)
+func NewIncidentListPage(cur IncidentList, getNextPage func(context.Context, IncidentList) (IncidentList, error)) IncidentListPage {
+	return original.NewIncidentListPage(cur, getNextPage)
 }
 func NewIncidentRelationsClient(subscriptionID string) IncidentRelationsClient {
 	return original.NewIncidentRelationsClient(subscriptionID)
@@ -906,8 +906,8 @@ func NewIncidentsClientWithBaseURI(baseURI string, subscriptionID string) Incide
 func NewOfficeConsentListIterator(page OfficeConsentListPage) OfficeConsentListIterator {
 	return original.NewOfficeConsentListIterator(page)
 }
-func NewOfficeConsentListPage(getNextPage func(context.Context, OfficeConsentList) (OfficeConsentList, error)) OfficeConsentListPage {
-	return original.NewOfficeConsentListPage(getNextPage)
+func NewOfficeConsentListPage(cur OfficeConsentList, getNextPage func(context.Context, OfficeConsentList) (OfficeConsentList, error)) OfficeConsentListPage {
+	return original.NewOfficeConsentListPage(cur, getNextPage)
 }
 func NewOfficeConsentsClient(subscriptionID string) OfficeConsentsClient {
 	return original.NewOfficeConsentsClient(subscriptionID)
@@ -924,8 +924,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewOperationsListIterator(page OperationsListPage) OperationsListIterator {
 	return original.NewOperationsListIterator(page)
 }
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return original.NewOperationsListPage(getNextPage)
+func NewOperationsListPage(cur OperationsList, getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
+	return original.NewOperationsListPage(cur, getNextPage)
 }
 func NewProductSettingsClient(subscriptionID string) ProductSettingsClient {
 	return original.NewProductSettingsClient(subscriptionID)
@@ -935,9 +935,6 @@ func NewProductSettingsClientWithBaseURI(baseURI string, subscriptionID string) 
 }
 func NewRelationListIterator(page RelationListPage) RelationListIterator {
 	return original.NewRelationListIterator(page)
-}
-func NewRelationListPage(getNextPage func(context.Context, RelationList) (RelationList, error)) RelationListPage {
-	return original.NewRelationListPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

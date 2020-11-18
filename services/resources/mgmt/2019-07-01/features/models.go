@@ -289,8 +289,11 @@ func (page DeploymentListResultPage) Values() []DeploymentExtended {
 }
 
 // Creates a new instance of the DeploymentListResultPage type.
-func NewDeploymentListResultPage(getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
-	return DeploymentListResultPage{fn: getNextPage}
+func NewDeploymentListResultPage(cur DeploymentListResult, getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
+	return DeploymentListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DeploymentOperation deployment operation information.
@@ -496,8 +499,11 @@ func (page DeploymentOperationsListResultPage) Values() []DeploymentOperation {
 }
 
 // Creates a new instance of the DeploymentOperationsListResultPage type.
-func NewDeploymentOperationsListResultPage(getNextPage func(context.Context, DeploymentOperationsListResult) (DeploymentOperationsListResult, error)) DeploymentOperationsListResultPage {
-	return DeploymentOperationsListResultPage{fn: getNextPage}
+func NewDeploymentOperationsListResultPage(cur DeploymentOperationsListResult, getNextPage func(context.Context, DeploymentOperationsListResult) (DeploymentOperationsListResult, error)) DeploymentOperationsListResultPage {
+	return DeploymentOperationsListResultPage{
+		fn:   getNextPage,
+		dolr: cur,
+	}
 }
 
 // DeploymentProperties deployment properties.
@@ -1347,8 +1353,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ParametersLink entity representing the reference to the deployment parameters.
@@ -1558,8 +1567,11 @@ func (page ProviderListResultPage) Values() []Provider {
 }
 
 // Creates a new instance of the ProviderListResultPage type.
-func NewProviderListResultPage(getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
-	return ProviderListResultPage{fn: getNextPage}
+func NewProviderListResultPage(cur ProviderListResult, getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
+	return ProviderListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // ProviderResourceType resource type managed by the resource provider.
@@ -1843,8 +1855,11 @@ func (page ResourceGroupListResultPage) Values() []ResourceGroup {
 }
 
 // Creates a new instance of the ResourceGroupListResultPage type.
-func NewResourceGroupListResultPage(getNextPage func(context.Context, ResourceGroupListResult) (ResourceGroupListResult, error)) ResourceGroupListResultPage {
-	return ResourceGroupListResultPage{fn: getNextPage}
+func NewResourceGroupListResultPage(cur ResourceGroupListResult, getNextPage func(context.Context, ResourceGroupListResult) (ResourceGroupListResult, error)) ResourceGroupListResultPage {
+	return ResourceGroupListResultPage{
+		fn:   getNextPage,
+		rglr: cur,
+	}
 }
 
 // ResourceGroupPatchable resource group information.
@@ -2067,8 +2082,11 @@ func (page ResourceListResultPage) Values() []GenericResourceExpanded {
 }
 
 // Creates a new instance of the ResourceListResultPage type.
-func NewResourceListResultPage(getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
-	return ResourceListResultPage{fn: getNextPage}
+func NewResourceListResultPage(cur ResourceListResult, getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
+	return ResourceListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // ResourceProviderOperationDisplayProperties resource provider operation's display properties.
@@ -2518,9 +2536,6 @@ func (page TagsListResultPage) Values() []TagDetails {
 }
 
 // Creates a new instance of the TagsListResultPage type.
-func NewTagsListResultPage(getNextPage func(context.Context, TagsListResult) (TagsListResult, error)) TagsListResultPage {
-	return TagsListResultPage{fn: getNextPage}
-}
 
 // TagValue tag information.
 type TagValue struct {

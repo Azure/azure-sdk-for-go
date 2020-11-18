@@ -270,8 +270,8 @@ func NewClientWithBaseURI(baseURI string) Client {
 func NewListIterator(page ListPage) ListIterator {
 	return original.NewListIterator(page)
 }
-func NewListPage(getNextPage func(context.Context, List) (List, error)) ListPage {
-	return original.NewListPage(getNextPage)
+func NewListPage(cur List, getNextPage func(context.Context, List) (List, error)) ListPage {
+	return original.NewListPage(cur, getNextPage)
 }
 func NewOperationClient() OperationClient {
 	return original.NewOperationClient()
@@ -282,8 +282,8 @@ func NewOperationClientWithBaseURI(baseURI string) OperationClient {
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOrderClient() OrderClient {
 	return original.NewOrderClient()
@@ -294,8 +294,8 @@ func NewOrderClientWithBaseURI(baseURI string) OrderClient {
 func NewOrderListIterator(page OrderListPage) OrderListIterator {
 	return original.NewOrderListIterator(page)
 }
-func NewOrderListPage(getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
-	return original.NewOrderListPage(getNextPage)
+func NewOrderListPage(cur OrderList, getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
+	return original.NewOrderListPage(cur, getNextPage)
 }
 func NewQuotaClient() QuotaClient {
 	return original.NewQuotaClient()
@@ -306,14 +306,11 @@ func NewQuotaClientWithBaseURI(baseURI string) QuotaClient {
 func NewQuotaLimitsIterator(page QuotaLimitsPage) QuotaLimitsIterator {
 	return original.NewQuotaLimitsIterator(page)
 }
-func NewQuotaLimitsPage(getNextPage func(context.Context, QuotaLimits) (QuotaLimits, error)) QuotaLimitsPage {
-	return original.NewQuotaLimitsPage(getNextPage)
+func NewQuotaLimitsPage(cur QuotaLimits, getNextPage func(context.Context, QuotaLimits) (QuotaLimits, error)) QuotaLimitsPage {
+	return original.NewQuotaLimitsPage(cur, getNextPage)
 }
 func NewQuotaRequestDetailsListIterator(page QuotaRequestDetailsListPage) QuotaRequestDetailsListIterator {
 	return original.NewQuotaRequestDetailsListIterator(page)
-}
-func NewQuotaRequestDetailsListPage(getNextPage func(context.Context, QuotaRequestDetailsList) (QuotaRequestDetailsList, error)) QuotaRequestDetailsListPage {
-	return original.NewQuotaRequestDetailsListPage(getNextPage)
 }
 func NewQuotaRequestStatusClient() QuotaRequestStatusClient {
 	return original.NewQuotaRequestStatusClient()

@@ -466,8 +466,11 @@ func (page AlertListPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertListPage type.
-func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
-	return AlertListPage{fn: getNextPage}
+func NewAlertListPage(cur AlertList, getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return AlertListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AlertNotificationProperties the properties of the alert notification settings.
@@ -848,8 +851,11 @@ func (page AvailableProviderOperationListPage) Values() []AvailableProviderOpera
 }
 
 // Creates a new instance of the AvailableProviderOperationListPage type.
-func NewAvailableProviderOperationListPage(getNextPage func(context.Context, AvailableProviderOperationList) (AvailableProviderOperationList, error)) AvailableProviderOperationListPage {
-	return AvailableProviderOperationListPage{fn: getNextPage}
+func NewAvailableProviderOperationListPage(cur AvailableProviderOperationList, getNextPage func(context.Context, AvailableProviderOperationList) (AvailableProviderOperationList, error)) AvailableProviderOperationListPage {
+	return AvailableProviderOperationListPage{
+		fn:   getNextPage,
+		apol: cur,
+	}
 }
 
 // Backup the backup.
@@ -1118,8 +1124,11 @@ func (page BackupListPage) Values() []Backup {
 }
 
 // Creates a new instance of the BackupListPage type.
-func NewBackupListPage(getNextPage func(context.Context, BackupList) (BackupList, error)) BackupListPage {
-	return BackupListPage{fn: getNextPage}
+func NewBackupListPage(cur BackupList, getNextPage func(context.Context, BackupList) (BackupList, error)) BackupListPage {
+	return BackupListPage{
+		fn: getNextPage,
+		bl: cur,
+	}
 }
 
 // BackupPoliciesBackupNowFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -3444,9 +3453,6 @@ func (page JobListPage) Values() []Job {
 }
 
 // Creates a new instance of the JobListPage type.
-func NewJobListPage(getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
-	return JobListPage{fn: getNextPage}
-}
 
 // JobProperties the properties of the job.
 type JobProperties struct {

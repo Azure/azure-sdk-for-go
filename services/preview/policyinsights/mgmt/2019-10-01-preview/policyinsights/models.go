@@ -1048,8 +1048,11 @@ func (page PolicyEventsQueryResultsPage) Values() []PolicyEvent {
 }
 
 // Creates a new instance of the PolicyEventsQueryResultsPage type.
-func NewPolicyEventsQueryResultsPage(getNextPage func(context.Context, PolicyEventsQueryResults) (PolicyEventsQueryResults, error)) PolicyEventsQueryResultsPage {
-	return PolicyEventsQueryResultsPage{fn: getNextPage}
+func NewPolicyEventsQueryResultsPage(cur PolicyEventsQueryResults, getNextPage func(context.Context, PolicyEventsQueryResults) (PolicyEventsQueryResults, error)) PolicyEventsQueryResultsPage {
+	return PolicyEventsQueryResultsPage{
+		fn:   getNextPage,
+		peqr: cur,
+	}
 }
 
 // PolicyGroupSummary policy definition group summary.
@@ -1285,8 +1288,11 @@ func (page PolicyMetadataCollectionPage) Values() []SlimPolicyMetadata {
 }
 
 // Creates a new instance of the PolicyMetadataCollectionPage type.
-func NewPolicyMetadataCollectionPage(getNextPage func(context.Context, PolicyMetadataCollection) (PolicyMetadataCollection, error)) PolicyMetadataCollectionPage {
-	return PolicyMetadataCollectionPage{fn: getNextPage}
+func NewPolicyMetadataCollectionPage(cur PolicyMetadataCollection, getNextPage func(context.Context, PolicyMetadataCollection) (PolicyMetadataCollection, error)) PolicyMetadataCollectionPage {
+	return PolicyMetadataCollectionPage{
+		fn:  getNextPage,
+		pmc: cur,
+	}
 }
 
 // PolicyMetadataProperties the properties of the policy metadata.
@@ -1991,8 +1997,11 @@ func (page PolicyStatesQueryResultsPage) Values() []PolicyState {
 }
 
 // Creates a new instance of the PolicyStatesQueryResultsPage type.
-func NewPolicyStatesQueryResultsPage(getNextPage func(context.Context, PolicyStatesQueryResults) (PolicyStatesQueryResults, error)) PolicyStatesQueryResultsPage {
-	return PolicyStatesQueryResultsPage{fn: getNextPage}
+func NewPolicyStatesQueryResultsPage(cur PolicyStatesQueryResults, getNextPage func(context.Context, PolicyStatesQueryResults) (PolicyStatesQueryResults, error)) PolicyStatesQueryResultsPage {
+	return PolicyStatesQueryResultsPage{
+		fn:   getNextPage,
+		psqr: cur,
+	}
 }
 
 // PolicyStatesTriggerResourceGroupEvaluationFuture an abstraction for monitoring and retrieving the results of
@@ -2208,8 +2217,11 @@ func (page PolicyTrackedResourcesQueryResultsPage) Values() []PolicyTrackedResou
 }
 
 // Creates a new instance of the PolicyTrackedResourcesQueryResultsPage type.
-func NewPolicyTrackedResourcesQueryResultsPage(getNextPage func(context.Context, PolicyTrackedResourcesQueryResults) (PolicyTrackedResourcesQueryResults, error)) PolicyTrackedResourcesQueryResultsPage {
-	return PolicyTrackedResourcesQueryResultsPage{fn: getNextPage}
+func NewPolicyTrackedResourcesQueryResultsPage(cur PolicyTrackedResourcesQueryResults, getNextPage func(context.Context, PolicyTrackedResourcesQueryResults) (PolicyTrackedResourcesQueryResults, error)) PolicyTrackedResourcesQueryResultsPage {
+	return PolicyTrackedResourcesQueryResultsPage{
+		fn:    getNextPage,
+		ptrqr: cur,
+	}
 }
 
 // QueryFailure error response.
@@ -2470,8 +2482,11 @@ func (page RemediationDeploymentsListResultPage) Values() []RemediationDeploymen
 }
 
 // Creates a new instance of the RemediationDeploymentsListResultPage type.
-func NewRemediationDeploymentsListResultPage(getNextPage func(context.Context, RemediationDeploymentsListResult) (RemediationDeploymentsListResult, error)) RemediationDeploymentsListResultPage {
-	return RemediationDeploymentsListResultPage{fn: getNextPage}
+func NewRemediationDeploymentsListResultPage(cur RemediationDeploymentsListResult, getNextPage func(context.Context, RemediationDeploymentsListResult) (RemediationDeploymentsListResult, error)) RemediationDeploymentsListResultPage {
+	return RemediationDeploymentsListResultPage{
+		fn:   getNextPage,
+		rdlr: cur,
+	}
 }
 
 // RemediationDeploymentSummary the deployment status summary for all deployments created by the remediation.
@@ -2642,9 +2657,6 @@ func (page RemediationListResultPage) Values() []Remediation {
 }
 
 // Creates a new instance of the RemediationListResultPage type.
-func NewRemediationListResultPage(getNextPage func(context.Context, RemediationListResult) (RemediationListResult, error)) RemediationListResultPage {
-	return RemediationListResultPage{fn: getNextPage}
-}
 
 // RemediationProperties the remediation properties.
 type RemediationProperties struct {

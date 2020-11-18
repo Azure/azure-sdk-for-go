@@ -361,8 +361,11 @@ func (page HyperVClusterCollectionPage) Values() []HyperVCluster {
 }
 
 // Creates a new instance of the HyperVClusterCollectionPage type.
-func NewHyperVClusterCollectionPage(getNextPage func(context.Context, HyperVClusterCollection) (HyperVClusterCollection, error)) HyperVClusterCollectionPage {
-	return HyperVClusterCollectionPage{fn: getNextPage}
+func NewHyperVClusterCollectionPage(cur HyperVClusterCollection, getNextPage func(context.Context, HyperVClusterCollection) (HyperVClusterCollection, error)) HyperVClusterCollectionPage {
+	return HyperVClusterCollectionPage{
+		fn:   getNextPage,
+		hvcc: cur,
+	}
 }
 
 // HyperVClusterProperties class for cluster properties.
@@ -595,8 +598,11 @@ func (page HyperVHostCollectionPage) Values() []HyperVHost {
 }
 
 // Creates a new instance of the HyperVHostCollectionPage type.
-func NewHyperVHostCollectionPage(getNextPage func(context.Context, HyperVHostCollection) (HyperVHostCollection, error)) HyperVHostCollectionPage {
-	return HyperVHostCollectionPage{fn: getNextPage}
+func NewHyperVHostCollectionPage(cur HyperVHostCollection, getNextPage func(context.Context, HyperVHostCollection) (HyperVHostCollection, error)) HyperVHostCollectionPage {
+	return HyperVHostCollectionPage{
+		fn:   getNextPage,
+		hvhc: cur,
+	}
 }
 
 // HyperVHostProperties class for host properties.
@@ -799,8 +805,11 @@ func (page HyperVJobCollectionPage) Values() []HyperVJob {
 }
 
 // Creates a new instance of the HyperVJobCollectionPage type.
-func NewHyperVJobCollectionPage(getNextPage func(context.Context, HyperVJobCollection) (HyperVJobCollection, error)) HyperVJobCollectionPage {
-	return HyperVJobCollectionPage{fn: getNextPage}
+func NewHyperVJobCollectionPage(cur HyperVJobCollection, getNextPage func(context.Context, HyperVJobCollection) (HyperVJobCollection, error)) HyperVJobCollectionPage {
+	return HyperVJobCollectionPage{
+		fn:   getNextPage,
+		hvjc: cur,
+	}
 }
 
 // HyperVMachine machine REST Resource.
@@ -968,8 +977,11 @@ func (page HyperVMachineCollectionPage) Values() []HyperVMachine {
 }
 
 // Creates a new instance of the HyperVMachineCollectionPage type.
-func NewHyperVMachineCollectionPage(getNextPage func(context.Context, HyperVMachineCollection) (HyperVMachineCollection, error)) HyperVMachineCollectionPage {
-	return HyperVMachineCollectionPage{fn: getNextPage}
+func NewHyperVMachineCollectionPage(cur HyperVMachineCollection, getNextPage func(context.Context, HyperVMachineCollection) (HyperVMachineCollection, error)) HyperVMachineCollectionPage {
+	return HyperVMachineCollectionPage{
+		fn:   getNextPage,
+		hvmc: cur,
+	}
 }
 
 // HyperVMachineProperties class for machine properties.
@@ -1227,8 +1239,11 @@ func (page HyperVRunAsAccountCollectionPage) Values() []HyperVRunAsAccount {
 }
 
 // Creates a new instance of the HyperVRunAsAccountCollectionPage type.
-func NewHyperVRunAsAccountCollectionPage(getNextPage func(context.Context, HyperVRunAsAccountCollection) (HyperVRunAsAccountCollection, error)) HyperVRunAsAccountCollectionPage {
-	return HyperVRunAsAccountCollectionPage{fn: getNextPage}
+func NewHyperVRunAsAccountCollectionPage(cur HyperVRunAsAccountCollection, getNextPage func(context.Context, HyperVRunAsAccountCollection) (HyperVRunAsAccountCollection, error)) HyperVRunAsAccountCollectionPage {
+	return HyperVRunAsAccountCollectionPage{
+		fn:     getNextPage,
+		hvraac: cur,
+	}
 }
 
 // HyperVSite site REST Resource.
@@ -1559,8 +1574,11 @@ func (page OperationResultListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationResultListPage type.
-func NewOperationResultListPage(getNextPage func(context.Context, OperationResultList) (OperationResultList, error)) OperationResultListPage {
-	return OperationResultListPage{fn: getNextPage}
+func NewOperationResultListPage(cur OperationResultList, getNextPage func(context.Context, OperationResultList) (OperationResultList, error)) OperationResultListPage {
+	return OperationResultListPage{
+		fn:  getNextPage,
+		orl: cur,
+	}
 }
 
 // OperationStatus operation status REST resource.
@@ -1849,8 +1867,11 @@ func (page SiteHealthSummaryCollectionPage) Values() []SiteHealthSummary {
 }
 
 // Creates a new instance of the SiteHealthSummaryCollectionPage type.
-func NewSiteHealthSummaryCollectionPage(getNextPage func(context.Context, SiteHealthSummaryCollection) (SiteHealthSummaryCollection, error)) SiteHealthSummaryCollectionPage {
-	return SiteHealthSummaryCollectionPage{fn: getNextPage}
+func NewSiteHealthSummaryCollectionPage(cur SiteHealthSummaryCollection, getNextPage func(context.Context, SiteHealthSummaryCollection) (SiteHealthSummaryCollection, error)) SiteHealthSummaryCollectionPage {
+	return SiteHealthSummaryCollectionPage{
+		fn:   getNextPage,
+		shsc: cur,
+	}
 }
 
 // SiteProperties class for site properties.
@@ -2109,8 +2130,11 @@ func (page VCenterCollectionPage) Values() []VCenter {
 }
 
 // Creates a new instance of the VCenterCollectionPage type.
-func NewVCenterCollectionPage(getNextPage func(context.Context, VCenterCollection) (VCenterCollection, error)) VCenterCollectionPage {
-	return VCenterCollectionPage{fn: getNextPage}
+func NewVCenterCollectionPage(cur VCenterCollection, getNextPage func(context.Context, VCenterCollection) (VCenterCollection, error)) VCenterCollectionPage {
+	return VCenterCollectionPage{
+		fn:  getNextPage,
+		vcc: cur,
+	}
 }
 
 // VCenterProperties class for vCenter properties.
@@ -2348,8 +2372,11 @@ func (page VMwareJobCollectionPage) Values() []VMwareJob {
 }
 
 // Creates a new instance of the VMwareJobCollectionPage type.
-func NewVMwareJobCollectionPage(getNextPage func(context.Context, VMwareJobCollection) (VMwareJobCollection, error)) VMwareJobCollectionPage {
-	return VMwareJobCollectionPage{fn: getNextPage}
+func NewVMwareJobCollectionPage(cur VMwareJobCollection, getNextPage func(context.Context, VMwareJobCollection) (VMwareJobCollection, error)) VMwareJobCollectionPage {
+	return VMwareJobCollectionPage{
+		fn:   getNextPage,
+		vmjc: cur,
+	}
 }
 
 // VMwareMachine machine REST Resource.
@@ -2517,8 +2544,11 @@ func (page VMwareMachineCollectionPage) Values() []VMwareMachine {
 }
 
 // Creates a new instance of the VMwareMachineCollectionPage type.
-func NewVMwareMachineCollectionPage(getNextPage func(context.Context, VMwareMachineCollection) (VMwareMachineCollection, error)) VMwareMachineCollectionPage {
-	return VMwareMachineCollectionPage{fn: getNextPage}
+func NewVMwareMachineCollectionPage(cur VMwareMachineCollection, getNextPage func(context.Context, VMwareMachineCollection) (VMwareMachineCollection, error)) VMwareMachineCollectionPage {
+	return VMwareMachineCollectionPage{
+		fn:   getNextPage,
+		vmmc: cur,
+	}
 }
 
 // VMwareMachineProperties class for machine properties.
@@ -2778,9 +2808,6 @@ func (page VMwareRunAsAccountCollectionPage) Values() []VMwareRunAsAccount {
 }
 
 // Creates a new instance of the VMwareRunAsAccountCollectionPage type.
-func NewVMwareRunAsAccountCollectionPage(getNextPage func(context.Context, VMwareRunAsAccountCollection) (VMwareRunAsAccountCollection, error)) VMwareRunAsAccountCollectionPage {
-	return VMwareRunAsAccountCollectionPage{fn: getNextPage}
-}
 
 // VMwareSite site REST Resource.
 type VMwareSite struct {

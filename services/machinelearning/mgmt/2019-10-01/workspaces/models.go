@@ -198,9 +198,6 @@ func (page ListResultPage) Values() []Workspace {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
-}
 
 // Operation azure Machine Learning Studio REST API operation
 type Operation struct {

@@ -1780,8 +1780,11 @@ func (page FunctionListResultPage) Values() []Function {
 }
 
 // Creates a new instance of the FunctionListResultPage type.
-func NewFunctionListResultPage(getNextPage func(context.Context, FunctionListResult) (FunctionListResult, error)) FunctionListResultPage {
-	return FunctionListResultPage{fn: getNextPage}
+func NewFunctionListResultPage(cur FunctionListResult, getNextPage func(context.Context, FunctionListResult) (FunctionListResult, error)) FunctionListResultPage {
+	return FunctionListResultPage{
+		fn:  getNextPage,
+		flr: cur,
+	}
 }
 
 // FunctionOutput describes the output of a function.
@@ -2206,8 +2209,11 @@ func (page InputListResultPage) Values() []Input {
 }
 
 // Creates a new instance of the InputListResultPage type.
-func NewInputListResultPage(getNextPage func(context.Context, InputListResult) (InputListResult, error)) InputListResultPage {
-	return InputListResultPage{fn: getNextPage}
+func NewInputListResultPage(cur InputListResult, getNextPage func(context.Context, InputListResult) (InputListResult, error)) InputListResultPage {
+	return InputListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // BasicInputProperties the properties that are associated with an input.
@@ -2909,8 +2915,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Output an output object, containing all information associated with the named output. All outputs are
@@ -3296,8 +3305,11 @@ func (page OutputListResultPage) Values() []Output {
 }
 
 // Creates a new instance of the OutputListResultPage type.
-func NewOutputListResultPage(getNextPage func(context.Context, OutputListResult) (OutputListResult, error)) OutputListResultPage {
-	return OutputListResultPage{fn: getNextPage}
+func NewOutputListResultPage(cur OutputListResult, getNextPage func(context.Context, OutputListResult) (OutputListResult, error)) OutputListResultPage {
+	return OutputListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OutputProperties the properties that are associated with an output.
@@ -4498,9 +4510,6 @@ func (page StreamingJobListResultPage) Values() []StreamingJob {
 }
 
 // Creates a new instance of the StreamingJobListResultPage type.
-func NewStreamingJobListResultPage(getNextPage func(context.Context, StreamingJobListResult) (StreamingJobListResult, error)) StreamingJobListResultPage {
-	return StreamingJobListResultPage{fn: getNextPage}
-}
 
 // StreamingJobProperties the properties that are associated with a streaming job.
 type StreamingJobProperties struct {

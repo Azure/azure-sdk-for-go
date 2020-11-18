@@ -298,8 +298,11 @@ func (page InvoicesListResultPage) Values() []Invoice {
 }
 
 // Creates a new instance of the InvoicesListResultPage type.
-func NewInvoicesListResultPage(getNextPage func(context.Context, InvoicesListResult) (InvoicesListResult, error)) InvoicesListResultPage {
-	return InvoicesListResultPage{fn: getNextPage}
+func NewInvoicesListResultPage(cur InvoicesListResult, getNextPage func(context.Context, InvoicesListResult) (InvoicesListResult, error)) InvoicesListResultPage {
+	return InvoicesListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // Operation a Billing REST API operation
@@ -482,9 +485,6 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // Resource the Resource model definition.
 type Resource struct {

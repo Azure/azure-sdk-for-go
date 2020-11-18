@@ -184,8 +184,11 @@ func (page AdministratorListResultPage) Values() []ServerAzureADAdministrator {
 }
 
 // Creates a new instance of the AdministratorListResultPage type.
-func NewAdministratorListResultPage(getNextPage func(context.Context, AdministratorListResult) (AdministratorListResult, error)) AdministratorListResultPage {
-	return AdministratorListResultPage{fn: getNextPage}
+func NewAdministratorListResultPage(cur AdministratorListResult, getNextPage func(context.Context, AdministratorListResult) (AdministratorListResult, error)) AdministratorListResultPage {
+	return AdministratorListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AdministratorProperties properties of a active directory administrator.
@@ -372,8 +375,11 @@ func (page DatabaseSecurityAlertListResultPage) Values() []DatabaseSecurityAlert
 }
 
 // Creates a new instance of the DatabaseSecurityAlertListResultPage type.
-func NewDatabaseSecurityAlertListResultPage(getNextPage func(context.Context, DatabaseSecurityAlertListResult) (DatabaseSecurityAlertListResult, error)) DatabaseSecurityAlertListResultPage {
-	return DatabaseSecurityAlertListResultPage{fn: getNextPage}
+func NewDatabaseSecurityAlertListResultPage(cur DatabaseSecurityAlertListResult, getNextPage func(context.Context, DatabaseSecurityAlertListResult) (DatabaseSecurityAlertListResult, error)) DatabaseSecurityAlertListResultPage {
+	return DatabaseSecurityAlertListResultPage{
+		fn:    getNextPage,
+		dsalr: cur,
+	}
 }
 
 // DatabaseSecurityAlertPolicy a database security alert policy.
@@ -762,8 +768,11 @@ func (page InstancePoolListResultPage) Values() []InstancePool {
 }
 
 // Creates a new instance of the InstancePoolListResultPage type.
-func NewInstancePoolListResultPage(getNextPage func(context.Context, InstancePoolListResult) (InstancePoolListResult, error)) InstancePoolListResultPage {
-	return InstancePoolListResultPage{fn: getNextPage}
+func NewInstancePoolListResultPage(cur InstancePoolListResult, getNextPage func(context.Context, InstancePoolListResult) (InstancePoolListResult, error)) InstancePoolListResultPage {
+	return InstancePoolListResultPage{
+		fn:   getNextPage,
+		iplr: cur,
+	}
 }
 
 // InstancePoolProperties properties of an instance pool.
@@ -1171,8 +1180,11 @@ func (page ManagedDatabaseListResultPage) Values() []ManagedDatabase {
 }
 
 // Creates a new instance of the ManagedDatabaseListResultPage type.
-func NewManagedDatabaseListResultPage(getNextPage func(context.Context, ManagedDatabaseListResult) (ManagedDatabaseListResult, error)) ManagedDatabaseListResultPage {
-	return ManagedDatabaseListResultPage{fn: getNextPage}
+func NewManagedDatabaseListResultPage(cur ManagedDatabaseListResult, getNextPage func(context.Context, ManagedDatabaseListResult) (ManagedDatabaseListResult, error)) ManagedDatabaseListResultPage {
+	return ManagedDatabaseListResultPage{
+		fn:   getNextPage,
+		mdlr: cur,
+	}
 }
 
 // ManagedDatabaseProperties the managed database's properties.
@@ -1780,8 +1792,11 @@ func (page ManagedInstanceListResultPage) Values() []ManagedInstance {
 }
 
 // Creates a new instance of the ManagedInstanceListResultPage type.
-func NewManagedInstanceListResultPage(getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
-	return ManagedInstanceListResultPage{fn: getNextPage}
+func NewManagedInstanceListResultPage(cur ManagedInstanceListResult, getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
+	return ManagedInstanceListResultPage{
+		fn:   getNextPage,
+		milr: cur,
+	}
 }
 
 // ManagedInstanceLongTermRetentionBackup a long term retention backup for a managed database.
@@ -2012,8 +2027,11 @@ func (page ManagedInstanceLongTermRetentionBackupListResultPage) Values() []Mana
 }
 
 // Creates a new instance of the ManagedInstanceLongTermRetentionBackupListResultPage type.
-func NewManagedInstanceLongTermRetentionBackupListResultPage(getNextPage func(context.Context, ManagedInstanceLongTermRetentionBackupListResult) (ManagedInstanceLongTermRetentionBackupListResult, error)) ManagedInstanceLongTermRetentionBackupListResultPage {
-	return ManagedInstanceLongTermRetentionBackupListResultPage{fn: getNextPage}
+func NewManagedInstanceLongTermRetentionBackupListResultPage(cur ManagedInstanceLongTermRetentionBackupListResult, getNextPage func(context.Context, ManagedInstanceLongTermRetentionBackupListResult) (ManagedInstanceLongTermRetentionBackupListResult, error)) ManagedInstanceLongTermRetentionBackupListResultPage {
+	return ManagedInstanceLongTermRetentionBackupListResultPage{
+		fn:       getNextPage,
+		miltrblr: cur,
+	}
 }
 
 // ManagedInstanceLongTermRetentionBackupProperties properties of a long term retention backup
@@ -2288,8 +2306,11 @@ func (page ManagedInstanceLongTermRetentionPolicyListResultPage) Values() []Mana
 }
 
 // Creates a new instance of the ManagedInstanceLongTermRetentionPolicyListResultPage type.
-func NewManagedInstanceLongTermRetentionPolicyListResultPage(getNextPage func(context.Context, ManagedInstanceLongTermRetentionPolicyListResult) (ManagedInstanceLongTermRetentionPolicyListResult, error)) ManagedInstanceLongTermRetentionPolicyListResultPage {
-	return ManagedInstanceLongTermRetentionPolicyListResultPage{fn: getNextPage}
+func NewManagedInstanceLongTermRetentionPolicyListResultPage(cur ManagedInstanceLongTermRetentionPolicyListResult, getNextPage func(context.Context, ManagedInstanceLongTermRetentionPolicyListResult) (ManagedInstanceLongTermRetentionPolicyListResult, error)) ManagedInstanceLongTermRetentionPolicyListResultPage {
+	return ManagedInstanceLongTermRetentionPolicyListResultPage{
+		fn:       getNextPage,
+		miltrplr: cur,
+	}
 }
 
 // ManagedInstanceOperation a managed instance operation.
@@ -2518,8 +2539,11 @@ func (page ManagedInstanceOperationListResultPage) Values() []ManagedInstanceOpe
 }
 
 // Creates a new instance of the ManagedInstanceOperationListResultPage type.
-func NewManagedInstanceOperationListResultPage(getNextPage func(context.Context, ManagedInstanceOperationListResult) (ManagedInstanceOperationListResult, error)) ManagedInstanceOperationListResultPage {
-	return ManagedInstanceOperationListResultPage{fn: getNextPage}
+func NewManagedInstanceOperationListResultPage(cur ManagedInstanceOperationListResult, getNextPage func(context.Context, ManagedInstanceOperationListResult) (ManagedInstanceOperationListResult, error)) ManagedInstanceOperationListResultPage {
+	return ManagedInstanceOperationListResultPage{
+		fn:    getNextPage,
+		miolr: cur,
+	}
 }
 
 // ManagedInstanceOperationParametersPair the parameters of a managed instance operation.
@@ -3059,8 +3083,11 @@ func (page ManagedInstanceVulnerabilityAssessmentListResultPage) Values() []Mana
 }
 
 // Creates a new instance of the ManagedInstanceVulnerabilityAssessmentListResultPage type.
-func NewManagedInstanceVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, ManagedInstanceVulnerabilityAssessmentListResult) (ManagedInstanceVulnerabilityAssessmentListResult, error)) ManagedInstanceVulnerabilityAssessmentListResultPage {
-	return ManagedInstanceVulnerabilityAssessmentListResultPage{fn: getNextPage}
+func NewManagedInstanceVulnerabilityAssessmentListResultPage(cur ManagedInstanceVulnerabilityAssessmentListResult, getNextPage func(context.Context, ManagedInstanceVulnerabilityAssessmentListResult) (ManagedInstanceVulnerabilityAssessmentListResult, error)) ManagedInstanceVulnerabilityAssessmentListResultPage {
+	return ManagedInstanceVulnerabilityAssessmentListResultPage{
+		fn:     getNextPage,
+		mivalr: cur,
+	}
 }
 
 // ManagedInstanceVulnerabilityAssessmentProperties properties of a managed instance vulnerability assessment.
@@ -3309,8 +3336,11 @@ func (page PrivateEndpointConnectionListResultPage) Values() []PrivateEndpointCo
 }
 
 // Creates a new instance of the PrivateEndpointConnectionListResultPage type.
-func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
-	return PrivateEndpointConnectionListResultPage{fn: getNextPage}
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return PrivateEndpointConnectionListResultPage{
+		fn:    getNextPage,
+		peclr: cur,
+	}
 }
 
 // PrivateEndpointConnectionProperties properties of a private endpoint connection.
@@ -3726,8 +3756,11 @@ func (page SensitivityLabelListResultPage) Values() []SensitivityLabel {
 }
 
 // Creates a new instance of the SensitivityLabelListResultPage type.
-func NewSensitivityLabelListResultPage(getNextPage func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error)) SensitivityLabelListResultPage {
-	return SensitivityLabelListResultPage{fn: getNextPage}
+func NewSensitivityLabelListResultPage(cur SensitivityLabelListResult, getNextPage func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error)) SensitivityLabelListResultPage {
+	return SensitivityLabelListResultPage{
+		fn:   getNextPage,
+		sllr: cur,
+	}
 }
 
 // SensitivityLabelProperties properties of a sensitivity label.
@@ -4118,8 +4151,11 @@ func (page ServerVulnerabilityAssessmentListResultPage) Values() []ServerVulnera
 }
 
 // Creates a new instance of the ServerVulnerabilityAssessmentListResultPage type.
-func NewServerVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, ServerVulnerabilityAssessmentListResult) (ServerVulnerabilityAssessmentListResult, error)) ServerVulnerabilityAssessmentListResultPage {
-	return ServerVulnerabilityAssessmentListResultPage{fn: getNextPage}
+func NewServerVulnerabilityAssessmentListResultPage(cur ServerVulnerabilityAssessmentListResult, getNextPage func(context.Context, ServerVulnerabilityAssessmentListResult) (ServerVulnerabilityAssessmentListResult, error)) ServerVulnerabilityAssessmentListResultPage {
+	return ServerVulnerabilityAssessmentListResultPage{
+		fn:    getNextPage,
+		svalr: cur,
+	}
 }
 
 // ServerVulnerabilityAssessmentProperties properties of a server Vulnerability Assessment.
@@ -4360,9 +4396,6 @@ func (page UsageListResultPage) Values() []Usage {
 }
 
 // Creates a new instance of the UsageListResultPage type.
-func NewUsageListResultPage(getNextPage func(context.Context, UsageListResult) (UsageListResult, error)) UsageListResultPage {
-	return UsageListResultPage{fn: getNextPage}
-}
 
 // VulnerabilityAssessmentRecurringScansProperties properties of a Vulnerability Assessment recurring scans.
 type VulnerabilityAssessmentRecurringScansProperties struct {

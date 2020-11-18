@@ -170,8 +170,8 @@ func NewClientWithBaseURI(baseURI string, operationResultID string, skip *int32,
 func NewDescendantListResultIterator(page DescendantListResultPage) DescendantListResultIterator {
 	return original.NewDescendantListResultIterator(page)
 }
-func NewDescendantListResultPage(getNextPage func(context.Context, DescendantListResult) (DescendantListResult, error)) DescendantListResultPage {
-	return original.NewDescendantListResultPage(getNextPage)
+func NewDescendantListResultPage(cur DescendantListResult, getNextPage func(context.Context, DescendantListResult) (DescendantListResult, error)) DescendantListResultPage {
+	return original.NewDescendantListResultPage(cur, getNextPage)
 }
 func NewEntitiesClient(operationResultID string, skip *int32, top *int32, skiptoken string) EntitiesClient {
 	return original.NewEntitiesClient(operationResultID, skip, top, skiptoken)
@@ -182,8 +182,8 @@ func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skip
 func NewEntityListResultIterator(page EntityListResultPage) EntityListResultIterator {
 	return original.NewEntityListResultIterator(page)
 }
-func NewEntityListResultPage(getNextPage func(context.Context, EntityListResult) (EntityListResult, error)) EntityListResultPage {
-	return original.NewEntityListResultPage(getNextPage)
+func NewEntityListResultPage(cur EntityListResult, getNextPage func(context.Context, EntityListResult) (EntityListResult, error)) EntityListResultPage {
+	return original.NewEntityListResultPage(cur, getNextPage)
 }
 func NewHierarchySettingsClient(operationResultID string, skip *int32, top *int32, skiptoken string) HierarchySettingsClient {
 	return original.NewHierarchySettingsClient(operationResultID, skip, top, skiptoken)
@@ -194,20 +194,17 @@ func NewHierarchySettingsClientWithBaseURI(baseURI string, operationResultID str
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
 }
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return original.NewListResultPage(getNextPage)
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(cur, getNextPage)
 }
 func NewListSubscriptionUnderManagementGroupIterator(page ListSubscriptionUnderManagementGroupPage) ListSubscriptionUnderManagementGroupIterator {
 	return original.NewListSubscriptionUnderManagementGroupIterator(page)
 }
-func NewListSubscriptionUnderManagementGroupPage(getNextPage func(context.Context, ListSubscriptionUnderManagementGroup) (ListSubscriptionUnderManagementGroup, error)) ListSubscriptionUnderManagementGroupPage {
-	return original.NewListSubscriptionUnderManagementGroupPage(getNextPage)
+func NewListSubscriptionUnderManagementGroupPage(cur ListSubscriptionUnderManagementGroup, getNextPage func(context.Context, ListSubscriptionUnderManagementGroup) (ListSubscriptionUnderManagementGroup, error)) ListSubscriptionUnderManagementGroupPage {
+	return original.NewListSubscriptionUnderManagementGroupPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
-}
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(operationResultID string, skip *int32, top *int32, skiptoken string) OperationsClient {
 	return original.NewOperationsClient(operationResultID, skip, top, skiptoken)

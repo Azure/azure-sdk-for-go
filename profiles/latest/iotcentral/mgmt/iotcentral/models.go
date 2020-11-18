@@ -73,14 +73,14 @@ func New(subscriptionID string) BaseClient {
 func NewAppListResultIterator(page AppListResultPage) AppListResultIterator {
 	return original.NewAppListResultIterator(page)
 }
-func NewAppListResultPage(getNextPage func(context.Context, AppListResult) (AppListResult, error)) AppListResultPage {
-	return original.NewAppListResultPage(getNextPage)
+func NewAppListResultPage(cur AppListResult, getNextPage func(context.Context, AppListResult) (AppListResult, error)) AppListResultPage {
+	return original.NewAppListResultPage(cur, getNextPage)
 }
 func NewAppTemplatesResultIterator(page AppTemplatesResultPage) AppTemplatesResultIterator {
 	return original.NewAppTemplatesResultIterator(page)
 }
-func NewAppTemplatesResultPage(getNextPage func(context.Context, AppTemplatesResult) (AppTemplatesResult, error)) AppTemplatesResultPage {
-	return original.NewAppTemplatesResultPage(getNextPage)
+func NewAppTemplatesResultPage(cur AppTemplatesResult, getNextPage func(context.Context, AppTemplatesResult) (AppTemplatesResult, error)) AppTemplatesResultPage {
+	return original.NewAppTemplatesResultPage(cur, getNextPage)
 }
 func NewAppsClient(subscriptionID string) AppsClient {
 	return original.NewAppsClient(subscriptionID)
@@ -90,9 +90,6 @@ func NewAppsClientWithBaseURI(baseURI string, subscriptionID string) AppsClient 
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
-}
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

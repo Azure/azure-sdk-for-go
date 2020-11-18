@@ -241,8 +241,11 @@ func (page ClientDiscoveryResponsePage) Values() []ClientDiscoveryValueForSingle
 }
 
 // Creates a new instance of the ClientDiscoveryResponsePage type.
-func NewClientDiscoveryResponsePage(getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
-	return ClientDiscoveryResponsePage{fn: getNextPage}
+func NewClientDiscoveryResponsePage(cur ClientDiscoveryResponse, getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
+	return ClientDiscoveryResponsePage{
+		fn:  getNextPage,
+		cdr: cur,
+	}
 }
 
 // ClientDiscoveryValueForSingleAPI available operation details.
@@ -658,8 +661,11 @@ func (page PrivateLinkResourcesPage) Values() []PrivateLinkResource {
 }
 
 // Creates a new instance of the PrivateLinkResourcesPage type.
-func NewPrivateLinkResourcesPage(getNextPage func(context.Context, PrivateLinkResources) (PrivateLinkResources, error)) PrivateLinkResourcesPage {
-	return PrivateLinkResourcesPage{fn: getNextPage}
+func NewPrivateLinkResourcesPage(cur PrivateLinkResources, getNextPage func(context.Context, PrivateLinkResources) (PrivateLinkResources, error)) PrivateLinkResourcesPage {
+	return PrivateLinkResourcesPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // PrivateLinkServiceConnectionState gets or sets private link service connection state.
@@ -1471,9 +1477,6 @@ func (page VaultListPage) Values() []Vault {
 }
 
 // Creates a new instance of the VaultListPage type.
-func NewVaultListPage(getNextPage func(context.Context, VaultList) (VaultList, error)) VaultListPage {
-	return VaultListPage{fn: getNextPage}
-}
 
 // VaultProperties properties of the vault.
 type VaultProperties struct {

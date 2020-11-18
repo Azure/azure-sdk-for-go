@@ -79,8 +79,8 @@ func New() BaseClient {
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()
@@ -90,9 +90,6 @@ func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
 }
 func NewRequestListResultIterator(page RequestListResultPage) RequestListResultIterator {
 	return original.NewRequestListResultIterator(page)
-}
-func NewRequestListResultPage(getNextPage func(context.Context, RequestListResult) (RequestListResult, error)) RequestListResultPage {
-	return original.NewRequestListResultPage(getNextPage)
 }
 func NewRequestsClient() RequestsClient {
 	return original.NewRequestsClient()

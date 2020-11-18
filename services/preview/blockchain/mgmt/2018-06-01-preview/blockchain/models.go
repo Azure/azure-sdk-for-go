@@ -233,8 +233,11 @@ func (page ConsortiumMemberCollectionPage) Values() []ConsortiumMember {
 }
 
 // Creates a new instance of the ConsortiumMemberCollectionPage type.
-func NewConsortiumMemberCollectionPage(getNextPage func(context.Context, ConsortiumMemberCollection) (ConsortiumMemberCollection, error)) ConsortiumMemberCollectionPage {
-	return ConsortiumMemberCollectionPage{fn: getNextPage}
+func NewConsortiumMemberCollectionPage(cur ConsortiumMemberCollection, getNextPage func(context.Context, ConsortiumMemberCollection) (ConsortiumMemberCollection, error)) ConsortiumMemberCollectionPage {
+	return ConsortiumMemberCollectionPage{
+		fn:  getNextPage,
+		cmc: cur,
+	}
 }
 
 // FirewallRule ip range for firewall rules
@@ -516,8 +519,11 @@ func (page MemberCollectionPage) Values() []Member {
 }
 
 // Creates a new instance of the MemberCollectionPage type.
-func NewMemberCollectionPage(getNextPage func(context.Context, MemberCollection) (MemberCollection, error)) MemberCollectionPage {
-	return MemberCollectionPage{fn: getNextPage}
+func NewMemberCollectionPage(cur MemberCollection, getNextPage func(context.Context, MemberCollection) (MemberCollection, error)) MemberCollectionPage {
+	return MemberCollectionPage{
+		fn: getNextPage,
+		mc: cur,
+	}
 }
 
 // MemberNodesSku payload of the blockchain member nodes Sku for a blockchain member.
@@ -910,8 +916,11 @@ func (page ResourceProviderOperationCollectionPage) Values() []ResourceProviderO
 }
 
 // Creates a new instance of the ResourceProviderOperationCollectionPage type.
-func NewResourceProviderOperationCollectionPage(getNextPage func(context.Context, ResourceProviderOperationCollection) (ResourceProviderOperationCollection, error)) ResourceProviderOperationCollectionPage {
-	return ResourceProviderOperationCollectionPage{fn: getNextPage}
+func NewResourceProviderOperationCollectionPage(cur ResourceProviderOperationCollection, getNextPage func(context.Context, ResourceProviderOperationCollection) (ResourceProviderOperationCollection, error)) ResourceProviderOperationCollectionPage {
+	return ResourceProviderOperationCollectionPage{
+		fn:   getNextPage,
+		rpoc: cur,
+	}
 }
 
 // ResourceProviderOperationDisplay operation display payload which is exposed in the response of the resource
@@ -1229,9 +1238,6 @@ func (page TransactionNodeCollectionPage) Values() []TransactionNode {
 }
 
 // Creates a new instance of the TransactionNodeCollectionPage type.
-func NewTransactionNodeCollectionPage(getNextPage func(context.Context, TransactionNodeCollection) (TransactionNodeCollection, error)) TransactionNodeCollectionPage {
-	return TransactionNodeCollectionPage{fn: getNextPage}
-}
 
 // TransactionNodeProperties payload of transaction node properties payload in the transaction node payload.
 type TransactionNodeProperties struct {

@@ -324,8 +324,11 @@ func (page AssociationsListPage) Values() []Association {
 }
 
 // Creates a new instance of the AssociationsListPage type.
-func NewAssociationsListPage(getNextPage func(context.Context, AssociationsList) (AssociationsList, error)) AssociationsListPage {
-	return AssociationsListPage{fn: getNextPage}
+func NewAssociationsListPage(cur AssociationsList, getNextPage func(context.Context, AssociationsList) (AssociationsList, error)) AssociationsListPage {
+	return AssociationsListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // CustomResourceProviderCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -715,8 +718,11 @@ func (page ListByCustomRPManifestPage) Values() []CustomRPManifest {
 }
 
 // Creates a new instance of the ListByCustomRPManifestPage type.
-func NewListByCustomRPManifestPage(getNextPage func(context.Context, ListByCustomRPManifest) (ListByCustomRPManifest, error)) ListByCustomRPManifestPage {
-	return ListByCustomRPManifestPage{fn: getNextPage}
+func NewListByCustomRPManifestPage(cur ListByCustomRPManifest, getNextPage func(context.Context, ListByCustomRPManifest) (ListByCustomRPManifest, error)) ListByCustomRPManifestPage {
+	return ListByCustomRPManifestPage{
+		fn:     getNextPage,
+		lbcrpm: cur,
+	}
 }
 
 // Resource the resource definition.
@@ -918,9 +924,6 @@ func (page ResourceProviderOperationListPage) Values() []ResourceProviderOperati
 }
 
 // Creates a new instance of the ResourceProviderOperationListPage type.
-func NewResourceProviderOperationListPage(getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
-	return ResourceProviderOperationListPage{fn: getNextPage}
-}
 
 // ResourceProvidersUpdate custom resource provider update information.
 type ResourceProvidersUpdate struct {

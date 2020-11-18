@@ -19,11 +19,7 @@
 
 package accesscontrol
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2020-02-01-preview/accesscontrol"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2020-02-01-preview/accesscontrol"
 
 type BaseClient = original.BaseClient
 type ErrorContract = original.ErrorContract
@@ -43,9 +39,6 @@ func New(endpoint string) BaseClient {
 }
 func NewRolesListResponseIterator(page RolesListResponsePage) RolesListResponseIterator {
 	return original.NewRolesListResponseIterator(page)
-}
-func NewRolesListResponsePage(getNextPage func(context.Context, RolesListResponse) (RolesListResponse, error)) RolesListResponsePage {
-	return original.NewRolesListResponsePage(getNextPage)
 }
 func NewWithoutDefaults(endpoint string) BaseClient {
 	return original.NewWithoutDefaults(endpoint)

@@ -373,8 +373,8 @@ func NewAccountClientWithBaseURI(baseURI string, subscriptionID string) AccountC
 func NewAccountListResultIterator(page AccountListResultPage) AccountListResultIterator {
 	return original.NewAccountListResultIterator(page)
 }
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return original.NewAccountListResultPage(getNextPage)
+func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return original.NewAccountListResultPage(cur, getNextPage)
 }
 func NewApplicationClient(subscriptionID string) ApplicationClient {
 	return original.NewApplicationClient(subscriptionID)
@@ -397,38 +397,38 @@ func NewCertificateClientWithBaseURI(baseURI string, subscriptionID string) Cert
 func NewListApplicationPackagesResultIterator(page ListApplicationPackagesResultPage) ListApplicationPackagesResultIterator {
 	return original.NewListApplicationPackagesResultIterator(page)
 }
-func NewListApplicationPackagesResultPage(getNextPage func(context.Context, ListApplicationPackagesResult) (ListApplicationPackagesResult, error)) ListApplicationPackagesResultPage {
-	return original.NewListApplicationPackagesResultPage(getNextPage)
+func NewListApplicationPackagesResultPage(cur ListApplicationPackagesResult, getNextPage func(context.Context, ListApplicationPackagesResult) (ListApplicationPackagesResult, error)) ListApplicationPackagesResultPage {
+	return original.NewListApplicationPackagesResultPage(cur, getNextPage)
 }
 func NewListApplicationsResultIterator(page ListApplicationsResultPage) ListApplicationsResultIterator {
 	return original.NewListApplicationsResultIterator(page)
 }
-func NewListApplicationsResultPage(getNextPage func(context.Context, ListApplicationsResult) (ListApplicationsResult, error)) ListApplicationsResultPage {
-	return original.NewListApplicationsResultPage(getNextPage)
+func NewListApplicationsResultPage(cur ListApplicationsResult, getNextPage func(context.Context, ListApplicationsResult) (ListApplicationsResult, error)) ListApplicationsResultPage {
+	return original.NewListApplicationsResultPage(cur, getNextPage)
 }
 func NewListCertificatesResultIterator(page ListCertificatesResultPage) ListCertificatesResultIterator {
 	return original.NewListCertificatesResultIterator(page)
 }
-func NewListCertificatesResultPage(getNextPage func(context.Context, ListCertificatesResult) (ListCertificatesResult, error)) ListCertificatesResultPage {
-	return original.NewListCertificatesResultPage(getNextPage)
+func NewListCertificatesResultPage(cur ListCertificatesResult, getNextPage func(context.Context, ListCertificatesResult) (ListCertificatesResult, error)) ListCertificatesResultPage {
+	return original.NewListCertificatesResultPage(cur, getNextPage)
 }
 func NewListPoolsResultIterator(page ListPoolsResultPage) ListPoolsResultIterator {
 	return original.NewListPoolsResultIterator(page)
 }
-func NewListPoolsResultPage(getNextPage func(context.Context, ListPoolsResult) (ListPoolsResult, error)) ListPoolsResultPage {
-	return original.NewListPoolsResultPage(getNextPage)
+func NewListPoolsResultPage(cur ListPoolsResult, getNextPage func(context.Context, ListPoolsResult) (ListPoolsResult, error)) ListPoolsResultPage {
+	return original.NewListPoolsResultPage(cur, getNextPage)
 }
 func NewListPrivateEndpointConnectionsResultIterator(page ListPrivateEndpointConnectionsResultPage) ListPrivateEndpointConnectionsResultIterator {
 	return original.NewListPrivateEndpointConnectionsResultIterator(page)
 }
-func NewListPrivateEndpointConnectionsResultPage(getNextPage func(context.Context, ListPrivateEndpointConnectionsResult) (ListPrivateEndpointConnectionsResult, error)) ListPrivateEndpointConnectionsResultPage {
-	return original.NewListPrivateEndpointConnectionsResultPage(getNextPage)
+func NewListPrivateEndpointConnectionsResultPage(cur ListPrivateEndpointConnectionsResult, getNextPage func(context.Context, ListPrivateEndpointConnectionsResult) (ListPrivateEndpointConnectionsResult, error)) ListPrivateEndpointConnectionsResultPage {
+	return original.NewListPrivateEndpointConnectionsResultPage(cur, getNextPage)
 }
 func NewListPrivateLinkResourcesResultIterator(page ListPrivateLinkResourcesResultPage) ListPrivateLinkResourcesResultIterator {
 	return original.NewListPrivateLinkResourcesResultIterator(page)
 }
-func NewListPrivateLinkResourcesResultPage(getNextPage func(context.Context, ListPrivateLinkResourcesResult) (ListPrivateLinkResourcesResult, error)) ListPrivateLinkResourcesResultPage {
-	return original.NewListPrivateLinkResourcesResultPage(getNextPage)
+func NewListPrivateLinkResourcesResultPage(cur ListPrivateLinkResourcesResult, getNextPage func(context.Context, ListPrivateLinkResourcesResult) (ListPrivateLinkResourcesResult, error)) ListPrivateLinkResourcesResultPage {
+	return original.NewListPrivateLinkResourcesResultPage(cur, getNextPage)
 }
 func NewLocationClient(subscriptionID string) LocationClient {
 	return original.NewLocationClient(subscriptionID)
@@ -438,9 +438,6 @@ func NewLocationClientWithBaseURI(baseURI string, subscriptionID string) Locatio
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
-}
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

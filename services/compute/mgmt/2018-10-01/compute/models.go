@@ -384,8 +384,11 @@ func (page AvailabilitySetListResultPage) Values() []AvailabilitySet {
 }
 
 // Creates a new instance of the AvailabilitySetListResultPage type.
-func NewAvailabilitySetListResultPage(getNextPage func(context.Context, AvailabilitySetListResult) (AvailabilitySetListResult, error)) AvailabilitySetListResultPage {
-	return AvailabilitySetListResultPage{fn: getNextPage}
+func NewAvailabilitySetListResultPage(cur AvailabilitySetListResult, getNextPage func(context.Context, AvailabilitySetListResult) (AvailabilitySetListResult, error)) AvailabilitySetListResultPage {
+	return AvailabilitySetListResultPage{
+		fn:   getNextPage,
+		aslr: cur,
+	}
 }
 
 // AvailabilitySetProperties the instance view of a resource.
@@ -816,8 +819,11 @@ func (page ContainerServiceListResultPage) Values() []ContainerService {
 }
 
 // Creates a new instance of the ContainerServiceListResultPage type.
-func NewContainerServiceListResultPage(getNextPage func(context.Context, ContainerServiceListResult) (ContainerServiceListResult, error)) ContainerServiceListResultPage {
-	return ContainerServiceListResultPage{fn: getNextPage}
+func NewContainerServiceListResultPage(cur ContainerServiceListResult, getNextPage func(context.Context, ContainerServiceListResult) (ContainerServiceListResult, error)) ContainerServiceListResultPage {
+	return ContainerServiceListResultPage{
+		fn:   getNextPage,
+		cslr: cur,
+	}
 }
 
 // ContainerServiceMasterProfile profile for the container service master.
@@ -1369,8 +1375,11 @@ func (page DiskListPage) Values() []Disk {
 }
 
 // Creates a new instance of the DiskListPage type.
-func NewDiskListPage(getNextPage func(context.Context, DiskList) (DiskList, error)) DiskListPage {
-	return DiskListPage{fn: getNextPage}
+func NewDiskListPage(cur DiskList, getNextPage func(context.Context, DiskList) (DiskList, error)) DiskListPage {
+	return DiskListPage{
+		fn: getNextPage,
+		dl: cur,
+	}
 }
 
 // DiskProperties disk resource properties.
@@ -2102,8 +2111,11 @@ func (page GalleryImageListPage) Values() []GalleryImage {
 }
 
 // Creates a new instance of the GalleryImageListPage type.
-func NewGalleryImageListPage(getNextPage func(context.Context, GalleryImageList) (GalleryImageList, error)) GalleryImageListPage {
-	return GalleryImageListPage{fn: getNextPage}
+func NewGalleryImageListPage(cur GalleryImageList, getNextPage func(context.Context, GalleryImageList) (GalleryImageList, error)) GalleryImageListPage {
+	return GalleryImageListPage{
+		fn:  getNextPage,
+		gil: cur,
+	}
 }
 
 // GalleryImageProperties describes the properties of a gallery Image Definition.
@@ -2473,8 +2485,11 @@ func (page GalleryImageVersionListPage) Values() []GalleryImageVersion {
 }
 
 // Creates a new instance of the GalleryImageVersionListPage type.
-func NewGalleryImageVersionListPage(getNextPage func(context.Context, GalleryImageVersionList) (GalleryImageVersionList, error)) GalleryImageVersionListPage {
-	return GalleryImageVersionListPage{fn: getNextPage}
+func NewGalleryImageVersionListPage(cur GalleryImageVersionList, getNextPage func(context.Context, GalleryImageVersionList) (GalleryImageVersionList, error)) GalleryImageVersionListPage {
+	return GalleryImageVersionListPage{
+		fn:   getNextPage,
+		givl: cur,
+	}
 }
 
 // GalleryImageVersionProperties describes the properties of a gallery Image Version.
@@ -2745,8 +2760,11 @@ func (page GalleryListPage) Values() []Gallery {
 }
 
 // Creates a new instance of the GalleryListPage type.
-func NewGalleryListPage(getNextPage func(context.Context, GalleryList) (GalleryList, error)) GalleryListPage {
-	return GalleryListPage{fn: getNextPage}
+func NewGalleryListPage(cur GalleryList, getNextPage func(context.Context, GalleryList) (GalleryList, error)) GalleryListPage {
+	return GalleryListPage{
+		fn: getNextPage,
+		gl: cur,
+	}
 }
 
 // GalleryOSDiskImage this is the OS disk image.
@@ -3071,8 +3089,11 @@ func (page ImageListResultPage) Values() []Image {
 }
 
 // Creates a new instance of the ImageListResultPage type.
-func NewImageListResultPage(getNextPage func(context.Context, ImageListResult) (ImageListResult, error)) ImageListResultPage {
-	return ImageListResultPage{fn: getNextPage}
+func NewImageListResultPage(cur ImageListResult, getNextPage func(context.Context, ImageListResult) (ImageListResult, error)) ImageListResultPage {
+	return ImageListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // ImageOSDisk describes an Operating System disk.
@@ -3506,8 +3527,11 @@ func (page ListUsagesResultPage) Values() []Usage {
 }
 
 // Creates a new instance of the ListUsagesResultPage type.
-func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
-	return ListUsagesResultPage{fn: getNextPage}
+func NewListUsagesResultPage(cur ListUsagesResult, getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return ListUsagesResultPage{
+		fn:  getNextPage,
+		lur: cur,
+	}
 }
 
 // ListVirtualMachineExtensionImage ...
@@ -4108,8 +4132,11 @@ func (page ProximityPlacementGroupListResultPage) Values() []ProximityPlacementG
 }
 
 // Creates a new instance of the ProximityPlacementGroupListResultPage type.
-func NewProximityPlacementGroupListResultPage(getNextPage func(context.Context, ProximityPlacementGroupListResult) (ProximityPlacementGroupListResult, error)) ProximityPlacementGroupListResultPage {
-	return ProximityPlacementGroupListResultPage{fn: getNextPage}
+func NewProximityPlacementGroupListResultPage(cur ProximityPlacementGroupListResult, getNextPage func(context.Context, ProximityPlacementGroupListResult) (ProximityPlacementGroupListResult, error)) ProximityPlacementGroupListResultPage {
+	return ProximityPlacementGroupListResultPage{
+		fn:    getNextPage,
+		ppglr: cur,
+	}
 }
 
 // ProximityPlacementGroupProperties describes the properties of a Proximity Placement Group.
@@ -4486,8 +4513,11 @@ func (page ResourceSkusResultPage) Values() []ResourceSku {
 }
 
 // Creates a new instance of the ResourceSkusResultPage type.
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return ResourceSkusResultPage{fn: getNextPage}
+func NewResourceSkusResultPage(cur ResourceSkusResult, getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return ResourceSkusResultPage{
+		fn:  getNextPage,
+		rsr: cur,
+	}
 }
 
 // RollbackStatusInfo information about rollback on failed VM instances after a OS Upgrade operation.
@@ -4851,8 +4881,11 @@ func (page RunCommandListResultPage) Values() []RunCommandDocumentBase {
 }
 
 // Creates a new instance of the RunCommandListResultPage type.
-func NewRunCommandListResultPage(getNextPage func(context.Context, RunCommandListResult) (RunCommandListResult, error)) RunCommandListResultPage {
-	return RunCommandListResultPage{fn: getNextPage}
+func NewRunCommandListResultPage(cur RunCommandListResult, getNextPage func(context.Context, RunCommandListResult) (RunCommandListResult, error)) RunCommandListResultPage {
+	return RunCommandListResultPage{
+		fn:   getNextPage,
+		rclr: cur,
+	}
 }
 
 // RunCommandParameterDefinition describes the properties of a run command parameter.
@@ -5161,8 +5194,11 @@ func (page SnapshotListPage) Values() []Snapshot {
 }
 
 // Creates a new instance of the SnapshotListPage type.
-func NewSnapshotListPage(getNextPage func(context.Context, SnapshotList) (SnapshotList, error)) SnapshotListPage {
-	return SnapshotListPage{fn: getNextPage}
+func NewSnapshotListPage(cur SnapshotList, getNextPage func(context.Context, SnapshotList) (SnapshotList, error)) SnapshotListPage {
+	return SnapshotListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
 }
 
 // SnapshotProperties snapshot resource properties.
@@ -6591,8 +6627,11 @@ func (page VirtualMachineListResultPage) Values() []VirtualMachine {
 }
 
 // Creates a new instance of the VirtualMachineListResultPage type.
-func NewVirtualMachineListResultPage(getNextPage func(context.Context, VirtualMachineListResult) (VirtualMachineListResult, error)) VirtualMachineListResultPage {
-	return VirtualMachineListResultPage{fn: getNextPage}
+func NewVirtualMachineListResultPage(cur VirtualMachineListResult, getNextPage func(context.Context, VirtualMachineListResult) (VirtualMachineListResult, error)) VirtualMachineListResultPage {
+	return VirtualMachineListResultPage{
+		fn:   getNextPage,
+		vmlr: cur,
+	}
 }
 
 // VirtualMachineProperties describes the properties of a Virtual Machine.
@@ -7054,8 +7093,11 @@ func (page VirtualMachineScaleSetExtensionListResultPage) Values() []VirtualMach
 }
 
 // Creates a new instance of the VirtualMachineScaleSetExtensionListResultPage type.
-func NewVirtualMachineScaleSetExtensionListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetExtensionListResult) (VirtualMachineScaleSetExtensionListResult, error)) VirtualMachineScaleSetExtensionListResultPage {
-	return VirtualMachineScaleSetExtensionListResultPage{fn: getNextPage}
+func NewVirtualMachineScaleSetExtensionListResultPage(cur VirtualMachineScaleSetExtensionListResult, getNextPage func(context.Context, VirtualMachineScaleSetExtensionListResult) (VirtualMachineScaleSetExtensionListResult, error)) VirtualMachineScaleSetExtensionListResultPage {
+	return VirtualMachineScaleSetExtensionListResultPage{
+		fn:      getNextPage,
+		vmsselr: cur,
+	}
 }
 
 // VirtualMachineScaleSetExtensionProfile describes a virtual machine scale set extension profile.
@@ -7478,8 +7520,11 @@ func (page VirtualMachineScaleSetListOSUpgradeHistoryPage) Values() []UpgradeOpe
 }
 
 // Creates a new instance of the VirtualMachineScaleSetListOSUpgradeHistoryPage type.
-func NewVirtualMachineScaleSetListOSUpgradeHistoryPage(getNextPage func(context.Context, VirtualMachineScaleSetListOSUpgradeHistory) (VirtualMachineScaleSetListOSUpgradeHistory, error)) VirtualMachineScaleSetListOSUpgradeHistoryPage {
-	return VirtualMachineScaleSetListOSUpgradeHistoryPage{fn: getNextPage}
+func NewVirtualMachineScaleSetListOSUpgradeHistoryPage(cur VirtualMachineScaleSetListOSUpgradeHistory, getNextPage func(context.Context, VirtualMachineScaleSetListOSUpgradeHistory) (VirtualMachineScaleSetListOSUpgradeHistory, error)) VirtualMachineScaleSetListOSUpgradeHistoryPage {
+	return VirtualMachineScaleSetListOSUpgradeHistoryPage{
+		fn:        getNextPage,
+		vmsslosuh: cur,
+	}
 }
 
 // VirtualMachineScaleSetListResult the List Virtual Machine operation response.
@@ -7635,8 +7680,11 @@ func (page VirtualMachineScaleSetListResultPage) Values() []VirtualMachineScaleS
 }
 
 // Creates a new instance of the VirtualMachineScaleSetListResultPage type.
-func NewVirtualMachineScaleSetListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListResult) (VirtualMachineScaleSetListResult, error)) VirtualMachineScaleSetListResultPage {
-	return VirtualMachineScaleSetListResultPage{fn: getNextPage}
+func NewVirtualMachineScaleSetListResultPage(cur VirtualMachineScaleSetListResult, getNextPage func(context.Context, VirtualMachineScaleSetListResult) (VirtualMachineScaleSetListResult, error)) VirtualMachineScaleSetListResultPage {
+	return VirtualMachineScaleSetListResultPage{
+		fn:     getNextPage,
+		vmsslr: cur,
+	}
 }
 
 // VirtualMachineScaleSetListSkusResult the Virtual Machine Scale Set List Skus operation response.
@@ -7792,8 +7840,11 @@ func (page VirtualMachineScaleSetListSkusResultPage) Values() []VirtualMachineSc
 }
 
 // Creates a new instance of the VirtualMachineScaleSetListSkusResultPage type.
-func NewVirtualMachineScaleSetListSkusResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListSkusResult) (VirtualMachineScaleSetListSkusResult, error)) VirtualMachineScaleSetListSkusResultPage {
-	return VirtualMachineScaleSetListSkusResultPage{fn: getNextPage}
+func NewVirtualMachineScaleSetListSkusResultPage(cur VirtualMachineScaleSetListSkusResult, getNextPage func(context.Context, VirtualMachineScaleSetListSkusResult) (VirtualMachineScaleSetListSkusResult, error)) VirtualMachineScaleSetListSkusResultPage {
+	return VirtualMachineScaleSetListSkusResultPage{
+		fn:      getNextPage,
+		vmsslsr: cur,
+	}
 }
 
 // VirtualMachineScaleSetListWithLinkResult the List Virtual Machine operation response.
@@ -7949,8 +8000,11 @@ func (page VirtualMachineScaleSetListWithLinkResultPage) Values() []VirtualMachi
 }
 
 // Creates a new instance of the VirtualMachineScaleSetListWithLinkResultPage type.
-func NewVirtualMachineScaleSetListWithLinkResultPage(getNextPage func(context.Context, VirtualMachineScaleSetListWithLinkResult) (VirtualMachineScaleSetListWithLinkResult, error)) VirtualMachineScaleSetListWithLinkResultPage {
-	return VirtualMachineScaleSetListWithLinkResultPage{fn: getNextPage}
+func NewVirtualMachineScaleSetListWithLinkResultPage(cur VirtualMachineScaleSetListWithLinkResult, getNextPage func(context.Context, VirtualMachineScaleSetListWithLinkResult) (VirtualMachineScaleSetListWithLinkResult, error)) VirtualMachineScaleSetListWithLinkResultPage {
+	return VirtualMachineScaleSetListWithLinkResultPage{
+		fn:       getNextPage,
+		vmsslwlr: cur,
+	}
 }
 
 // VirtualMachineScaleSetManagedDiskParameters describes the parameters of a ScaleSet managed disk.
@@ -9456,9 +9510,6 @@ func (page VirtualMachineScaleSetVMListResultPage) Values() []VirtualMachineScal
 }
 
 // Creates a new instance of the VirtualMachineScaleSetVMListResultPage type.
-func NewVirtualMachineScaleSetVMListResultPage(getNextPage func(context.Context, VirtualMachineScaleSetVMListResult) (VirtualMachineScaleSetVMListResult, error)) VirtualMachineScaleSetVMListResultPage {
-	return VirtualMachineScaleSetVMListResultPage{fn: getNextPage}
-}
 
 // VirtualMachineScaleSetVMProfile describes a virtual machine scale set virtual machine profile.
 type VirtualMachineScaleSetVMProfile struct {

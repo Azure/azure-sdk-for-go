@@ -195,8 +195,11 @@ func (page CapabilitiesListResultPage) Values() []CapabilityProperties {
 }
 
 // Creates a new instance of the CapabilitiesListResultPage type.
-func NewCapabilitiesListResultPage(getNextPage func(context.Context, CapabilitiesListResult) (CapabilitiesListResult, error)) CapabilitiesListResultPage {
-	return CapabilitiesListResultPage{fn: getNextPage}
+func NewCapabilitiesListResultPage(cur CapabilitiesListResult, getNextPage func(context.Context, CapabilitiesListResult) (CapabilitiesListResult, error)) CapabilitiesListResultPage {
+	return CapabilitiesListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // CapabilityProperties location capabilities.
@@ -437,8 +440,11 @@ func (page ConfigurationListResultPage) Values() []Configuration {
 }
 
 // Creates a new instance of the ConfigurationListResultPage type.
-func NewConfigurationListResultPage(getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
-	return ConfigurationListResultPage{fn: getNextPage}
+func NewConfigurationListResultPage(cur ConfigurationListResult, getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
+	return ConfigurationListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ConfigurationProperties the properties of a configuration.
@@ -753,8 +759,11 @@ func (page FirewallRuleListResultPage) Values() []FirewallRule {
 }
 
 // Creates a new instance of the FirewallRuleListResultPage type.
-func NewFirewallRuleListResultPage(getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
-	return FirewallRuleListResultPage{fn: getNextPage}
+func NewFirewallRuleListResultPage(cur FirewallRuleListResult, getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
+	return FirewallRuleListResultPage{
+		fn:   getNextPage,
+		frlr: cur,
+	}
 }
 
 // FirewallRuleProperties the properties of a server firewall rule.
@@ -1413,9 +1422,6 @@ func (page ServerListResultPage) Values() []Server {
 }
 
 // Creates a new instance of the ServerListResultPage type.
-func NewServerListResultPage(getNextPage func(context.Context, ServerListResult) (ServerListResult, error)) ServerListResultPage {
-	return ServerListResultPage{fn: getNextPage}
-}
 
 // ServerProperties the properties of a server.
 type ServerProperties struct {

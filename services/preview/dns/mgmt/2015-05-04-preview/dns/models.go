@@ -279,8 +279,11 @@ func (page RecordSetListResultPage) Values() []RecordSet {
 }
 
 // Creates a new instance of the RecordSetListResultPage type.
-func NewRecordSetListResultPage(getNextPage func(context.Context, RecordSetListResult) (RecordSetListResult, error)) RecordSetListResultPage {
-	return RecordSetListResultPage{fn: getNextPage}
+func NewRecordSetListResultPage(cur RecordSetListResult, getNextPage func(context.Context, RecordSetListResult) (RecordSetListResult, error)) RecordSetListResultPage {
+	return RecordSetListResultPage{
+		fn:   getNextPage,
+		rslr: cur,
+	}
 }
 
 // RecordSetProperties represents the properties of the records in the RecordSet.
@@ -574,9 +577,6 @@ func (page ZoneListResultPage) Values() []Zone {
 }
 
 // Creates a new instance of the ZoneListResultPage type.
-func NewZoneListResultPage(getNextPage func(context.Context, ZoneListResult) (ZoneListResult, error)) ZoneListResultPage {
-	return ZoneListResultPage{fn: getNextPage}
-}
 
 // ZoneProperties represents the properties of the zone.
 type ZoneProperties struct {

@@ -402,8 +402,11 @@ func (page DatabaseBlobAuditingPolicyListResultPage) Values() []DatabaseBlobAudi
 }
 
 // Creates a new instance of the DatabaseBlobAuditingPolicyListResultPage type.
-func NewDatabaseBlobAuditingPolicyListResultPage(getNextPage func(context.Context, DatabaseBlobAuditingPolicyListResult) (DatabaseBlobAuditingPolicyListResult, error)) DatabaseBlobAuditingPolicyListResultPage {
-	return DatabaseBlobAuditingPolicyListResultPage{fn: getNextPage}
+func NewDatabaseBlobAuditingPolicyListResultPage(cur DatabaseBlobAuditingPolicyListResult, getNextPage func(context.Context, DatabaseBlobAuditingPolicyListResult) (DatabaseBlobAuditingPolicyListResult, error)) DatabaseBlobAuditingPolicyListResultPage {
+	return DatabaseBlobAuditingPolicyListResultPage{
+		fn:     getNextPage,
+		dbaplr: cur,
+	}
 }
 
 // DatabaseBlobAuditingPolicyProperties properties of a database blob auditing policy.
@@ -2276,8 +2279,11 @@ func (page EncryptionProtectorListResultPage) Values() []EncryptionProtector {
 }
 
 // Creates a new instance of the EncryptionProtectorListResultPage type.
-func NewEncryptionProtectorListResultPage(getNextPage func(context.Context, EncryptionProtectorListResult) (EncryptionProtectorListResult, error)) EncryptionProtectorListResultPage {
-	return EncryptionProtectorListResultPage{fn: getNextPage}
+func NewEncryptionProtectorListResultPage(cur EncryptionProtectorListResult, getNextPage func(context.Context, EncryptionProtectorListResult) (EncryptionProtectorListResult, error)) EncryptionProtectorListResultPage {
+	return EncryptionProtectorListResultPage{
+		fn:   getNextPage,
+		eplr: cur,
+	}
 }
 
 // EncryptionProtectorProperties properties for an encryption protector execution.
@@ -2624,8 +2630,11 @@ func (page FailoverGroupListResultPage) Values() []FailoverGroup {
 }
 
 // Creates a new instance of the FailoverGroupListResultPage type.
-func NewFailoverGroupListResultPage(getNextPage func(context.Context, FailoverGroupListResult) (FailoverGroupListResult, error)) FailoverGroupListResultPage {
-	return FailoverGroupListResultPage{fn: getNextPage}
+func NewFailoverGroupListResultPage(cur FailoverGroupListResult, getNextPage func(context.Context, FailoverGroupListResult) (FailoverGroupListResult, error)) FailoverGroupListResultPage {
+	return FailoverGroupListResultPage{
+		fn:   getNextPage,
+		fglr: cur,
+	}
 }
 
 // FailoverGroupProperties properties of a failover group.
@@ -3625,8 +3634,11 @@ func (page ManagedInstanceListResultPage) Values() []ManagedInstance {
 }
 
 // Creates a new instance of the ManagedInstanceListResultPage type.
-func NewManagedInstanceListResultPage(getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
-	return ManagedInstanceListResultPage{fn: getNextPage}
+func NewManagedInstanceListResultPage(cur ManagedInstanceListResult, getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
+	return ManagedInstanceListResultPage{
+		fn:   getNextPage,
+		milr: cur,
+	}
 }
 
 // ManagedInstanceProperties the properties of a managed instance.
@@ -4178,8 +4190,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PartnerInfo partner server information for the failover group.
@@ -5596,8 +5611,11 @@ func (page ServerKeyListResultPage) Values() []ServerKey {
 }
 
 // Creates a new instance of the ServerKeyListResultPage type.
-func NewServerKeyListResultPage(getNextPage func(context.Context, ServerKeyListResult) (ServerKeyListResult, error)) ServerKeyListResultPage {
-	return ServerKeyListResultPage{fn: getNextPage}
+func NewServerKeyListResultPage(cur ServerKeyListResult, getNextPage func(context.Context, ServerKeyListResult) (ServerKeyListResult, error)) ServerKeyListResultPage {
+	return ServerKeyListResultPage{
+		fn:   getNextPage,
+		sklr: cur,
+	}
 }
 
 // ServerKeyProperties properties for a server key execution.
@@ -5835,8 +5853,11 @@ func (page ServerListResultPage) Values() []Server {
 }
 
 // Creates a new instance of the ServerListResultPage type.
-func NewServerListResultPage(getNextPage func(context.Context, ServerListResult) (ServerListResult, error)) ServerListResultPage {
-	return ServerListResultPage{fn: getNextPage}
+func NewServerListResultPage(cur ServerListResult, getNextPage func(context.Context, ServerListResult) (ServerListResult, error)) ServerListResultPage {
+	return ServerListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // ServerProperties the properties of a server.
@@ -6537,8 +6558,11 @@ func (page SubscriptionUsageListResultPage) Values() []SubscriptionUsage {
 }
 
 // Creates a new instance of the SubscriptionUsageListResultPage type.
-func NewSubscriptionUsageListResultPage(getNextPage func(context.Context, SubscriptionUsageListResult) (SubscriptionUsageListResult, error)) SubscriptionUsageListResultPage {
-	return SubscriptionUsageListResultPage{fn: getNextPage}
+func NewSubscriptionUsageListResultPage(cur SubscriptionUsageListResult, getNextPage func(context.Context, SubscriptionUsageListResult) (SubscriptionUsageListResult, error)) SubscriptionUsageListResultPage {
+	return SubscriptionUsageListResultPage{
+		fn:   getNextPage,
+		sulr: cur,
+	}
 }
 
 // SubscriptionUsageProperties properties of a subscription usage.
@@ -6858,8 +6882,11 @@ func (page SyncAgentLinkedDatabaseListResultPage) Values() []SyncAgentLinkedData
 }
 
 // Creates a new instance of the SyncAgentLinkedDatabaseListResultPage type.
-func NewSyncAgentLinkedDatabaseListResultPage(getNextPage func(context.Context, SyncAgentLinkedDatabaseListResult) (SyncAgentLinkedDatabaseListResult, error)) SyncAgentLinkedDatabaseListResultPage {
-	return SyncAgentLinkedDatabaseListResultPage{fn: getNextPage}
+func NewSyncAgentLinkedDatabaseListResultPage(cur SyncAgentLinkedDatabaseListResult, getNextPage func(context.Context, SyncAgentLinkedDatabaseListResult) (SyncAgentLinkedDatabaseListResult, error)) SyncAgentLinkedDatabaseListResultPage {
+	return SyncAgentLinkedDatabaseListResultPage{
+		fn:     getNextPage,
+		saldlr: cur,
+	}
 }
 
 // SyncAgentLinkedDatabaseProperties properties of an Azure SQL Database sync agent linked database.
@@ -7030,8 +7057,11 @@ func (page SyncAgentListResultPage) Values() []SyncAgent {
 }
 
 // Creates a new instance of the SyncAgentListResultPage type.
-func NewSyncAgentListResultPage(getNextPage func(context.Context, SyncAgentListResult) (SyncAgentListResult, error)) SyncAgentListResultPage {
-	return SyncAgentListResultPage{fn: getNextPage}
+func NewSyncAgentListResultPage(cur SyncAgentListResult, getNextPage func(context.Context, SyncAgentListResult) (SyncAgentListResult, error)) SyncAgentListResultPage {
+	return SyncAgentListResultPage{
+		fn:   getNextPage,
+		salr: cur,
+	}
 }
 
 // SyncAgentProperties properties of an Azure SQL Database sync agent.
@@ -7264,8 +7294,11 @@ func (page SyncDatabaseIDListResultPage) Values() []SyncDatabaseIDProperties {
 }
 
 // Creates a new instance of the SyncDatabaseIDListResultPage type.
-func NewSyncDatabaseIDListResultPage(getNextPage func(context.Context, SyncDatabaseIDListResult) (SyncDatabaseIDListResult, error)) SyncDatabaseIDListResultPage {
-	return SyncDatabaseIDListResultPage{fn: getNextPage}
+func NewSyncDatabaseIDListResultPage(cur SyncDatabaseIDListResult, getNextPage func(context.Context, SyncDatabaseIDListResult) (SyncDatabaseIDListResult, error)) SyncDatabaseIDListResultPage {
+	return SyncDatabaseIDListResultPage{
+		fn:     getNextPage,
+		sdidlr: cur,
+	}
 }
 
 // SyncDatabaseIDProperties properties of the sync database id.
@@ -7435,8 +7468,11 @@ func (page SyncFullSchemaPropertiesListResultPage) Values() []SyncFullSchemaProp
 }
 
 // Creates a new instance of the SyncFullSchemaPropertiesListResultPage type.
-func NewSyncFullSchemaPropertiesListResultPage(getNextPage func(context.Context, SyncFullSchemaPropertiesListResult) (SyncFullSchemaPropertiesListResult, error)) SyncFullSchemaPropertiesListResultPage {
-	return SyncFullSchemaPropertiesListResultPage{fn: getNextPage}
+func NewSyncFullSchemaPropertiesListResultPage(cur SyncFullSchemaPropertiesListResult, getNextPage func(context.Context, SyncFullSchemaPropertiesListResult) (SyncFullSchemaPropertiesListResult, error)) SyncFullSchemaPropertiesListResultPage {
+	return SyncFullSchemaPropertiesListResultPage{
+		fn:     getNextPage,
+		sfsplr: cur,
+	}
 }
 
 // SyncFullSchemaTable properties of the table in the database full schema.
@@ -7696,8 +7732,11 @@ func (page SyncGroupListResultPage) Values() []SyncGroup {
 }
 
 // Creates a new instance of the SyncGroupListResultPage type.
-func NewSyncGroupListResultPage(getNextPage func(context.Context, SyncGroupListResult) (SyncGroupListResult, error)) SyncGroupListResultPage {
-	return SyncGroupListResultPage{fn: getNextPage}
+func NewSyncGroupListResultPage(cur SyncGroupListResult, getNextPage func(context.Context, SyncGroupListResult) (SyncGroupListResult, error)) SyncGroupListResultPage {
+	return SyncGroupListResultPage{
+		fn:   getNextPage,
+		sglr: cur,
+	}
 }
 
 // SyncGroupLogListResult a list of sync group log properties.
@@ -7852,8 +7891,11 @@ func (page SyncGroupLogListResultPage) Values() []SyncGroupLogProperties {
 }
 
 // Creates a new instance of the SyncGroupLogListResultPage type.
-func NewSyncGroupLogListResultPage(getNextPage func(context.Context, SyncGroupLogListResult) (SyncGroupLogListResult, error)) SyncGroupLogListResultPage {
-	return SyncGroupLogListResultPage{fn: getNextPage}
+func NewSyncGroupLogListResultPage(cur SyncGroupLogListResult, getNextPage func(context.Context, SyncGroupLogListResult) (SyncGroupLogListResult, error)) SyncGroupLogListResultPage {
+	return SyncGroupLogListResultPage{
+		fn:    getNextPage,
+		sgllr: cur,
+	}
 }
 
 // SyncGroupLogProperties properties of an Azure SQL Database sync group log.
@@ -8269,8 +8311,11 @@ func (page SyncMemberListResultPage) Values() []SyncMember {
 }
 
 // Creates a new instance of the SyncMemberListResultPage type.
-func NewSyncMemberListResultPage(getNextPage func(context.Context, SyncMemberListResult) (SyncMemberListResult, error)) SyncMemberListResultPage {
-	return SyncMemberListResultPage{fn: getNextPage}
+func NewSyncMemberListResultPage(cur SyncMemberListResult, getNextPage func(context.Context, SyncMemberListResult) (SyncMemberListResult, error)) SyncMemberListResultPage {
+	return SyncMemberListResultPage{
+		fn:   getNextPage,
+		smlr: cur,
+	}
 }
 
 // SyncMemberProperties properties of a sync member.
@@ -8904,8 +8949,11 @@ func (page VirtualClusterListResultPage) Values() []VirtualCluster {
 }
 
 // Creates a new instance of the VirtualClusterListResultPage type.
-func NewVirtualClusterListResultPage(getNextPage func(context.Context, VirtualClusterListResult) (VirtualClusterListResult, error)) VirtualClusterListResultPage {
-	return VirtualClusterListResultPage{fn: getNextPage}
+func NewVirtualClusterListResultPage(cur VirtualClusterListResult, getNextPage func(context.Context, VirtualClusterListResult) (VirtualClusterListResult, error)) VirtualClusterListResultPage {
+	return VirtualClusterListResultPage{
+		fn:   getNextPage,
+		vclr: cur,
+	}
 }
 
 // VirtualClusterProperties the properties of a virtual cluster.
@@ -9257,9 +9305,6 @@ func (page VirtualNetworkRuleListResultPage) Values() []VirtualNetworkRule {
 }
 
 // Creates a new instance of the VirtualNetworkRuleListResultPage type.
-func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
-	return VirtualNetworkRuleListResultPage{fn: getNextPage}
-}
 
 // VirtualNetworkRuleProperties properties of a virtual network rule.
 type VirtualNetworkRuleProperties struct {

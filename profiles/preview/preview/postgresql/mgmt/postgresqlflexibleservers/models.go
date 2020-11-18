@@ -186,8 +186,8 @@ func New(subscriptionID string) BaseClient {
 func NewCapabilitiesListResultIterator(page CapabilitiesListResultPage) CapabilitiesListResultIterator {
 	return original.NewCapabilitiesListResultIterator(page)
 }
-func NewCapabilitiesListResultPage(getNextPage func(context.Context, CapabilitiesListResult) (CapabilitiesListResult, error)) CapabilitiesListResultPage {
-	return original.NewCapabilitiesListResultPage(getNextPage)
+func NewCapabilitiesListResultPage(cur CapabilitiesListResult, getNextPage func(context.Context, CapabilitiesListResult) (CapabilitiesListResult, error)) CapabilitiesListResultPage {
+	return original.NewCapabilitiesListResultPage(cur, getNextPage)
 }
 func NewCheckNameAvailabilityClient(subscriptionID string) CheckNameAvailabilityClient {
 	return original.NewCheckNameAvailabilityClient(subscriptionID)
@@ -198,8 +198,8 @@ func NewCheckNameAvailabilityClientWithBaseURI(baseURI string, subscriptionID st
 func NewConfigurationListResultIterator(page ConfigurationListResultPage) ConfigurationListResultIterator {
 	return original.NewConfigurationListResultIterator(page)
 }
-func NewConfigurationListResultPage(getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
-	return original.NewConfigurationListResultPage(getNextPage)
+func NewConfigurationListResultPage(cur ConfigurationListResult, getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
+	return original.NewConfigurationListResultPage(cur, getNextPage)
 }
 func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
 	return original.NewConfigurationsClient(subscriptionID)
@@ -210,8 +210,8 @@ func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) C
 func NewFirewallRuleListResultIterator(page FirewallRuleListResultPage) FirewallRuleListResultIterator {
 	return original.NewFirewallRuleListResultIterator(page)
 }
-func NewFirewallRuleListResultPage(getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
-	return original.NewFirewallRuleListResultPage(getNextPage)
+func NewFirewallRuleListResultPage(cur FirewallRuleListResult, getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
+	return original.NewFirewallRuleListResultPage(cur, getNextPage)
 }
 func NewFirewallRulesClient(subscriptionID string) FirewallRulesClient {
 	return original.NewFirewallRulesClient(subscriptionID)
@@ -233,9 +233,6 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 func NewServerListResultIterator(page ServerListResultPage) ServerListResultIterator {
 	return original.NewServerListResultIterator(page)
-}
-func NewServerListResultPage(getNextPage func(context.Context, ServerListResult) (ServerListResult, error)) ServerListResultPage {
-	return original.NewServerListResultPage(getNextPage)
 }
 func NewServersClient(subscriptionID string) ServersClient {
 	return original.NewServersClient(subscriptionID)

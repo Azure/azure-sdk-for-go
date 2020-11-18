@@ -123,8 +123,8 @@ func NewPolicyEventsClientWithBaseURI(baseURI string) PolicyEventsClient {
 func NewPolicyEventsQueryResultsIterator(page PolicyEventsQueryResultsPage) PolicyEventsQueryResultsIterator {
 	return original.NewPolicyEventsQueryResultsIterator(page)
 }
-func NewPolicyEventsQueryResultsPage(getNextPage func(context.Context, PolicyEventsQueryResults) (PolicyEventsQueryResults, error)) PolicyEventsQueryResultsPage {
-	return original.NewPolicyEventsQueryResultsPage(getNextPage)
+func NewPolicyEventsQueryResultsPage(cur PolicyEventsQueryResults, getNextPage func(context.Context, PolicyEventsQueryResults) (PolicyEventsQueryResults, error)) PolicyEventsQueryResultsPage {
+	return original.NewPolicyEventsQueryResultsPage(cur, getNextPage)
 }
 func NewPolicyMetadataClient() PolicyMetadataClient {
 	return original.NewPolicyMetadataClient()
@@ -135,8 +135,8 @@ func NewPolicyMetadataClientWithBaseURI(baseURI string) PolicyMetadataClient {
 func NewPolicyMetadataCollectionIterator(page PolicyMetadataCollectionPage) PolicyMetadataCollectionIterator {
 	return original.NewPolicyMetadataCollectionIterator(page)
 }
-func NewPolicyMetadataCollectionPage(getNextPage func(context.Context, PolicyMetadataCollection) (PolicyMetadataCollection, error)) PolicyMetadataCollectionPage {
-	return original.NewPolicyMetadataCollectionPage(getNextPage)
+func NewPolicyMetadataCollectionPage(cur PolicyMetadataCollection, getNextPage func(context.Context, PolicyMetadataCollection) (PolicyMetadataCollection, error)) PolicyMetadataCollectionPage {
+	return original.NewPolicyMetadataCollectionPage(cur, getNextPage)
 }
 func NewPolicyStatesClient() PolicyStatesClient {
 	return original.NewPolicyStatesClient()
@@ -147,8 +147,8 @@ func NewPolicyStatesClientWithBaseURI(baseURI string) PolicyStatesClient {
 func NewPolicyStatesQueryResultsIterator(page PolicyStatesQueryResultsPage) PolicyStatesQueryResultsIterator {
 	return original.NewPolicyStatesQueryResultsIterator(page)
 }
-func NewPolicyStatesQueryResultsPage(getNextPage func(context.Context, PolicyStatesQueryResults) (PolicyStatesQueryResults, error)) PolicyStatesQueryResultsPage {
-	return original.NewPolicyStatesQueryResultsPage(getNextPage)
+func NewPolicyStatesQueryResultsPage(cur PolicyStatesQueryResults, getNextPage func(context.Context, PolicyStatesQueryResults) (PolicyStatesQueryResults, error)) PolicyStatesQueryResultsPage {
+	return original.NewPolicyStatesQueryResultsPage(cur, getNextPage)
 }
 func NewPolicyTrackedResourcesClient() PolicyTrackedResourcesClient {
 	return original.NewPolicyTrackedResourcesClient()
@@ -159,20 +159,17 @@ func NewPolicyTrackedResourcesClientWithBaseURI(baseURI string) PolicyTrackedRes
 func NewPolicyTrackedResourcesQueryResultsIterator(page PolicyTrackedResourcesQueryResultsPage) PolicyTrackedResourcesQueryResultsIterator {
 	return original.NewPolicyTrackedResourcesQueryResultsIterator(page)
 }
-func NewPolicyTrackedResourcesQueryResultsPage(getNextPage func(context.Context, PolicyTrackedResourcesQueryResults) (PolicyTrackedResourcesQueryResults, error)) PolicyTrackedResourcesQueryResultsPage {
-	return original.NewPolicyTrackedResourcesQueryResultsPage(getNextPage)
+func NewPolicyTrackedResourcesQueryResultsPage(cur PolicyTrackedResourcesQueryResults, getNextPage func(context.Context, PolicyTrackedResourcesQueryResults) (PolicyTrackedResourcesQueryResults, error)) PolicyTrackedResourcesQueryResultsPage {
+	return original.NewPolicyTrackedResourcesQueryResultsPage(cur, getNextPage)
 }
 func NewRemediationDeploymentsListResultIterator(page RemediationDeploymentsListResultPage) RemediationDeploymentsListResultIterator {
 	return original.NewRemediationDeploymentsListResultIterator(page)
 }
-func NewRemediationDeploymentsListResultPage(getNextPage func(context.Context, RemediationDeploymentsListResult) (RemediationDeploymentsListResult, error)) RemediationDeploymentsListResultPage {
-	return original.NewRemediationDeploymentsListResultPage(getNextPage)
+func NewRemediationDeploymentsListResultPage(cur RemediationDeploymentsListResult, getNextPage func(context.Context, RemediationDeploymentsListResult) (RemediationDeploymentsListResult, error)) RemediationDeploymentsListResultPage {
+	return original.NewRemediationDeploymentsListResultPage(cur, getNextPage)
 }
 func NewRemediationListResultIterator(page RemediationListResultPage) RemediationListResultIterator {
 	return original.NewRemediationListResultIterator(page)
-}
-func NewRemediationListResultPage(getNextPage func(context.Context, RemediationListResult) (RemediationListResult, error)) RemediationListResultPage {
-	return original.NewRemediationListResultPage(getNextPage)
 }
 func NewRemediationsClient() RemediationsClient {
 	return original.NewRemediationsClient()

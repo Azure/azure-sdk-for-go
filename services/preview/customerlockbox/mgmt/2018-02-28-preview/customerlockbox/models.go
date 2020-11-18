@@ -306,8 +306,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // RequestListResult object containing a list of streaming jobs.
@@ -462,6 +465,3 @@ func (page RequestListResultPage) Values() []LockboxRequestResponse {
 }
 
 // Creates a new instance of the RequestListResultPage type.
-func NewRequestListResultPage(getNextPage func(context.Context, RequestListResult) (RequestListResult, error)) RequestListResultPage {
-	return RequestListResultPage{fn: getNextPage}
-}

@@ -455,8 +455,11 @@ func (page AccountListResultPage) Values() []Account {
 }
 
 // Creates a new instance of the AccountListResultPage type.
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return AccountListResultPage{fn: getNextPage}
+func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return AccountListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AccountProperties properties of the storage account.
@@ -1559,8 +1562,11 @@ func (page FileShareItemsPage) Values() []FileShareItem {
 }
 
 // Creates a new instance of the FileShareItemsPage type.
-func NewFileShareItemsPage(getNextPage func(context.Context, FileShareItems) (FileShareItems, error)) FileShareItemsPage {
-	return FileShareItemsPage{fn: getNextPage}
+func NewFileShareItemsPage(cur FileShareItems, getNextPage func(context.Context, FileShareItems) (FileShareItems, error)) FileShareItemsPage {
+	return FileShareItemsPage{
+		fn:  getNextPage,
+		fsi: cur,
+	}
 }
 
 // FileShareProperties the properties of the file share.
@@ -2097,9 +2103,6 @@ func (page ListContainerItemsPage) Values() []ListContainerItem {
 }
 
 // Creates a new instance of the ListContainerItemsPage type.
-func NewListContainerItemsPage(getNextPage func(context.Context, ListContainerItems) (ListContainerItems, error)) ListContainerItemsPage {
-	return ListContainerItemsPage{fn: getNextPage}
-}
 
 // ListServiceSasResponse the List service SAS credentials operation response.
 type ListServiceSasResponse struct {

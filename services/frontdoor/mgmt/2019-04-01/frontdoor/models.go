@@ -918,8 +918,11 @@ func (page FrontendEndpointsListResultPage) Values() []FrontendEndpoint {
 }
 
 // Creates a new instance of the FrontendEndpointsListResultPage type.
-func NewFrontendEndpointsListResultPage(getNextPage func(context.Context, FrontendEndpointsListResult) (FrontendEndpointsListResult, error)) FrontendEndpointsListResultPage {
-	return FrontendEndpointsListResultPage{fn: getNextPage}
+func NewFrontendEndpointsListResultPage(cur FrontendEndpointsListResult, getNextPage func(context.Context, FrontendEndpointsListResult) (FrontendEndpointsListResult, error)) FrontendEndpointsListResultPage {
+	return FrontendEndpointsListResultPage{
+		fn:   getNextPage,
+		felr: cur,
+	}
 }
 
 // FrontendEndpointUpdateParameters frontend endpoint used in routing rule
@@ -1238,8 +1241,11 @@ func (page ListResultPage) Values() []FrontDoor {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // LoadBalancingSettingsListResult result of the request to list load balancing settings. It contains a list of
@@ -1673,8 +1679,11 @@ func (page ManagedRuleSetDefinitionListPage) Values() []ManagedRuleSetDefinition
 }
 
 // Creates a new instance of the ManagedRuleSetDefinitionListPage type.
-func NewManagedRuleSetDefinitionListPage(getNextPage func(context.Context, ManagedRuleSetDefinitionList) (ManagedRuleSetDefinitionList, error)) ManagedRuleSetDefinitionListPage {
-	return ManagedRuleSetDefinitionListPage{fn: getNextPage}
+func NewManagedRuleSetDefinitionListPage(cur ManagedRuleSetDefinitionList, getNextPage func(context.Context, ManagedRuleSetDefinitionList) (ManagedRuleSetDefinitionList, error)) ManagedRuleSetDefinitionListPage {
+	return ManagedRuleSetDefinitionListPage{
+		fn:    getNextPage,
+		mrsdl: cur,
+	}
 }
 
 // ManagedRuleSetDefinitionProperties properties for a managed rule set definition.
@@ -2609,9 +2618,6 @@ func (page WebApplicationFirewallPolicyListPage) Values() []WebApplicationFirewa
 }
 
 // Creates a new instance of the WebApplicationFirewallPolicyListPage type.
-func NewWebApplicationFirewallPolicyListPage(getNextPage func(context.Context, WebApplicationFirewallPolicyList) (WebApplicationFirewallPolicyList, error)) WebApplicationFirewallPolicyListPage {
-	return WebApplicationFirewallPolicyListPage{fn: getNextPage}
-}
 
 // WebApplicationFirewallPolicyProperties defines web application firewall policy properties.
 type WebApplicationFirewallPolicyProperties struct {

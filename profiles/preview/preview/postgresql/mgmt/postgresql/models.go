@@ -19,11 +19,7 @@
 
 package postgresql
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2017-12-01-preview/postgresql"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2017-12-01-preview/postgresql"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -319,9 +315,6 @@ func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersC
 }
 func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
 	return original.NewVirtualNetworkRuleListResultIterator(page)
-}
-func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
-	return original.NewVirtualNetworkRuleListResultPage(getNextPage)
 }
 func NewVirtualNetworkRulesClient(subscriptionID string) VirtualNetworkRulesClient {
 	return original.NewVirtualNetworkRulesClient(subscriptionID)

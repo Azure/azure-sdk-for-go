@@ -303,8 +303,11 @@ func (page AvailabilityGroupListenerListResultPage) Values() []AvailabilityGroup
 }
 
 // Creates a new instance of the AvailabilityGroupListenerListResultPage type.
-func NewAvailabilityGroupListenerListResultPage(getNextPage func(context.Context, AvailabilityGroupListenerListResult) (AvailabilityGroupListenerListResult, error)) AvailabilityGroupListenerListResultPage {
-	return AvailabilityGroupListenerListResultPage{fn: getNextPage}
+func NewAvailabilityGroupListenerListResultPage(cur AvailabilityGroupListenerListResult, getNextPage func(context.Context, AvailabilityGroupListenerListResult) (AvailabilityGroupListenerListResult, error)) AvailabilityGroupListenerListResultPage {
+	return AvailabilityGroupListenerListResultPage{
+		fn:    getNextPage,
+		agllr: cur,
+	}
 }
 
 // AvailabilityGroupListenerProperties the properties of an availability group listener.
@@ -644,8 +647,11 @@ func (page GroupListResultPage) Values() []Group {
 }
 
 // Creates a new instance of the GroupListResultPage type.
-func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
-	return GroupListResultPage{fn: getNextPage}
+func NewGroupListResultPage(cur GroupListResult, getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return GroupListResultPage{
+		fn:  getNextPage,
+		glr: cur,
+	}
 }
 
 // GroupProperties the properties of a SQL virtual machine group.
@@ -942,8 +948,11 @@ func (page ListResultPage) Values() []SQLVirtualMachine {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // LoadBalancerConfiguration a load balancer configuration for an availability group listener.
@@ -1142,9 +1151,6 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // PrivateIPAddress a private IP address bound to the availability group listener.
 type PrivateIPAddress struct {

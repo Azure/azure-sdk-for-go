@@ -199,8 +199,8 @@ func New(subscriptionID string) BaseClient {
 func NewApplicationGroupListIterator(page ApplicationGroupListPage) ApplicationGroupListIterator {
 	return original.NewApplicationGroupListIterator(page)
 }
-func NewApplicationGroupListPage(getNextPage func(context.Context, ApplicationGroupList) (ApplicationGroupList, error)) ApplicationGroupListPage {
-	return original.NewApplicationGroupListPage(getNextPage)
+func NewApplicationGroupListPage(cur ApplicationGroupList, getNextPage func(context.Context, ApplicationGroupList) (ApplicationGroupList, error)) ApplicationGroupListPage {
+	return original.NewApplicationGroupListPage(cur, getNextPage)
 }
 func NewApplicationGroupsClient(subscriptionID string) ApplicationGroupsClient {
 	return original.NewApplicationGroupsClient(subscriptionID)
@@ -211,8 +211,8 @@ func NewApplicationGroupsClientWithBaseURI(baseURI string, subscriptionID string
 func NewApplicationListIterator(page ApplicationListPage) ApplicationListIterator {
 	return original.NewApplicationListIterator(page)
 }
-func NewApplicationListPage(getNextPage func(context.Context, ApplicationList) (ApplicationList, error)) ApplicationListPage {
-	return original.NewApplicationListPage(getNextPage)
+func NewApplicationListPage(cur ApplicationList, getNextPage func(context.Context, ApplicationList) (ApplicationList, error)) ApplicationListPage {
+	return original.NewApplicationListPage(cur, getNextPage)
 }
 func NewApplicationsClient(subscriptionID string) ApplicationsClient {
 	return original.NewApplicationsClient(subscriptionID)
@@ -229,8 +229,8 @@ func NewDesktopsClientWithBaseURI(baseURI string, subscriptionID string) Desktop
 func NewHostPoolListIterator(page HostPoolListPage) HostPoolListIterator {
 	return original.NewHostPoolListIterator(page)
 }
-func NewHostPoolListPage(getNextPage func(context.Context, HostPoolList) (HostPoolList, error)) HostPoolListPage {
-	return original.NewHostPoolListPage(getNextPage)
+func NewHostPoolListPage(cur HostPoolList, getNextPage func(context.Context, HostPoolList) (HostPoolList, error)) HostPoolListPage {
+	return original.NewHostPoolListPage(cur, getNextPage)
 }
 func NewHostPoolsClient(subscriptionID string) HostPoolsClient {
 	return original.NewHostPoolsClient(subscriptionID)
@@ -247,8 +247,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewSessionHostListIterator(page SessionHostListPage) SessionHostListIterator {
 	return original.NewSessionHostListIterator(page)
 }
-func NewSessionHostListPage(getNextPage func(context.Context, SessionHostList) (SessionHostList, error)) SessionHostListPage {
-	return original.NewSessionHostListPage(getNextPage)
+func NewSessionHostListPage(cur SessionHostList, getNextPage func(context.Context, SessionHostList) (SessionHostList, error)) SessionHostListPage {
+	return original.NewSessionHostListPage(cur, getNextPage)
 }
 func NewSessionHostsClient(subscriptionID string) SessionHostsClient {
 	return original.NewSessionHostsClient(subscriptionID)
@@ -259,8 +259,8 @@ func NewSessionHostsClientWithBaseURI(baseURI string, subscriptionID string) Ses
 func NewStartMenuItemListIterator(page StartMenuItemListPage) StartMenuItemListIterator {
 	return original.NewStartMenuItemListIterator(page)
 }
-func NewStartMenuItemListPage(getNextPage func(context.Context, StartMenuItemList) (StartMenuItemList, error)) StartMenuItemListPage {
-	return original.NewStartMenuItemListPage(getNextPage)
+func NewStartMenuItemListPage(cur StartMenuItemList, getNextPage func(context.Context, StartMenuItemList) (StartMenuItemList, error)) StartMenuItemListPage {
+	return original.NewStartMenuItemListPage(cur, getNextPage)
 }
 func NewStartMenuItemsClient(subscriptionID string) StartMenuItemsClient {
 	return original.NewStartMenuItemsClient(subscriptionID)
@@ -271,8 +271,8 @@ func NewStartMenuItemsClientWithBaseURI(baseURI string, subscriptionID string) S
 func NewUserSessionListIterator(page UserSessionListPage) UserSessionListIterator {
 	return original.NewUserSessionListIterator(page)
 }
-func NewUserSessionListPage(getNextPage func(context.Context, UserSessionList) (UserSessionList, error)) UserSessionListPage {
-	return original.NewUserSessionListPage(getNextPage)
+func NewUserSessionListPage(cur UserSessionList, getNextPage func(context.Context, UserSessionList) (UserSessionList, error)) UserSessionListPage {
+	return original.NewUserSessionListPage(cur, getNextPage)
 }
 func NewUserSessionsClient(subscriptionID string) UserSessionsClient {
 	return original.NewUserSessionsClient(subscriptionID)
@@ -285,9 +285,6 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func NewWorkspaceListIterator(page WorkspaceListPage) WorkspaceListIterator {
 	return original.NewWorkspaceListIterator(page)
-}
-func NewWorkspaceListPage(getNextPage func(context.Context, WorkspaceList) (WorkspaceList, error)) WorkspaceListPage {
-	return original.NewWorkspaceListPage(getNextPage)
 }
 func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClient(subscriptionID)

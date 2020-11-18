@@ -292,8 +292,11 @@ func (page IPFilterRuleListResultPage) Values() []IPFilterRule {
 }
 
 // Creates a new instance of the IPFilterRuleListResultPage type.
-func NewIPFilterRuleListResultPage(getNextPage func(context.Context, IPFilterRuleListResult) (IPFilterRuleListResult, error)) IPFilterRuleListResultPage {
-	return IPFilterRuleListResultPage{fn: getNextPage}
+func NewIPFilterRuleListResultPage(cur IPFilterRuleListResult, getNextPage func(context.Context, IPFilterRuleListResult) (IPFilterRuleListResult, error)) IPFilterRuleListResultPage {
+	return IPFilterRuleListResultPage{
+		fn:     getNextPage,
+		ipfrlr: cur,
+	}
 }
 
 // IPFilterRuleProperties properties supplied to create or update IpFilterRules
@@ -644,8 +647,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Resource the Resource definition for other than namespace.
@@ -951,8 +957,11 @@ func (page SBNamespaceListResultPage) Values() []SBNamespace {
 }
 
 // Creates a new instance of the SBNamespaceListResultPage type.
-func NewSBNamespaceListResultPage(getNextPage func(context.Context, SBNamespaceListResult) (SBNamespaceListResult, error)) SBNamespaceListResultPage {
-	return SBNamespaceListResultPage{fn: getNextPage}
+func NewSBNamespaceListResultPage(cur SBNamespaceListResult, getNextPage func(context.Context, SBNamespaceListResult) (SBNamespaceListResult, error)) SBNamespaceListResultPage {
+	return SBNamespaceListResultPage{
+		fn:    getNextPage,
+		sbnlr: cur,
+	}
 }
 
 // SBNamespaceProperties properties of the namespace.
@@ -1380,9 +1389,6 @@ func (page VirtualNetworkRuleListResultPage) Values() []VirtualNetworkRule {
 }
 
 // Creates a new instance of the VirtualNetworkRuleListResultPage type.
-func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
-	return VirtualNetworkRuleListResultPage{fn: getNextPage}
-}
 
 // VirtualNetworkRuleProperties properties supplied to create or update VirtualNetworkRules
 type VirtualNetworkRuleProperties struct {

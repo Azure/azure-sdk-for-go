@@ -354,8 +354,11 @@ func (page ResourceListResultPage) Values() []Resource {
 }
 
 // Creates a new instance of the ResourceListResultPage type.
-func NewResourceListResultPage(getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
-	return ResourceListResultPage{fn: getNextPage}
+func NewResourceListResultPage(cur ResourceListResult, getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
+	return ResourceListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // Sku SKU details
@@ -568,9 +571,6 @@ func (page VaultListResultPage) Values() []Vault {
 }
 
 // Creates a new instance of the VaultListResultPage type.
-func NewVaultListResultPage(getNextPage func(context.Context, VaultListResult) (VaultListResult, error)) VaultListResultPage {
-	return VaultListResultPage{fn: getNextPage}
-}
 
 // VaultProperties properties of the vault
 type VaultProperties struct {

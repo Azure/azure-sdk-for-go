@@ -454,8 +454,11 @@ func (page BudgetsListResultPage) Values() []Budget {
 }
 
 // Creates a new instance of the BudgetsListResultPage type.
-func NewBudgetsListResultPage(getNextPage func(context.Context, BudgetsListResult) (BudgetsListResult, error)) BudgetsListResultPage {
-	return BudgetsListResultPage{fn: getNextPage}
+func NewBudgetsListResultPage(cur BudgetsListResult, getNextPage func(context.Context, BudgetsListResult) (BudgetsListResult, error)) BudgetsListResultPage {
+	return BudgetsListResultPage{
+		fn:  getNextPage,
+		blr: cur,
+	}
 }
 
 // BudgetTimePeriod the start and end date for a budget.
@@ -1173,8 +1176,11 @@ func (page MarketplacesListResultPage) Values() []Marketplace {
 }
 
 // Creates a new instance of the MarketplacesListResultPage type.
-func NewMarketplacesListResultPage(getNextPage func(context.Context, MarketplacesListResult) (MarketplacesListResult, error)) MarketplacesListResultPage {
-	return MarketplacesListResultPage{fn: getNextPage}
+func NewMarketplacesListResultPage(cur MarketplacesListResult, getNextPage func(context.Context, MarketplacesListResult) (MarketplacesListResult, error)) MarketplacesListResultPage {
+	return MarketplacesListResultPage{
+		fn:  getNextPage,
+		mlr: cur,
+	}
 }
 
 // MeterDetails the properties of the meter detail.
@@ -1395,8 +1401,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PriceSheetModel price sheet result. It contains the pricesheet associated with billing period
@@ -1787,8 +1796,11 @@ func (page ReservationDetailsListResultPage) Values() []ReservationDetail {
 }
 
 // Creates a new instance of the ReservationDetailsListResultPage type.
-func NewReservationDetailsListResultPage(getNextPage func(context.Context, ReservationDetailsListResult) (ReservationDetailsListResult, error)) ReservationDetailsListResultPage {
-	return ReservationDetailsListResultPage{fn: getNextPage}
+func NewReservationDetailsListResultPage(cur ReservationDetailsListResult, getNextPage func(context.Context, ReservationDetailsListResult) (ReservationDetailsListResult, error)) ReservationDetailsListResultPage {
+	return ReservationDetailsListResultPage{
+		fn:   getNextPage,
+		rdlr: cur,
+	}
 }
 
 // ReservationRecommendation reservation recommendation resource.
@@ -2070,8 +2082,11 @@ func (page ReservationRecommendationsListResultPage) Values() []ReservationRecom
 }
 
 // Creates a new instance of the ReservationRecommendationsListResultPage type.
-func NewReservationRecommendationsListResultPage(getNextPage func(context.Context, ReservationRecommendationsListResult) (ReservationRecommendationsListResult, error)) ReservationRecommendationsListResultPage {
-	return ReservationRecommendationsListResultPage{fn: getNextPage}
+func NewReservationRecommendationsListResultPage(cur ReservationRecommendationsListResult, getNextPage func(context.Context, ReservationRecommendationsListResult) (ReservationRecommendationsListResult, error)) ReservationRecommendationsListResultPage {
+	return ReservationRecommendationsListResultPage{
+		fn:   getNextPage,
+		rrlr: cur,
+	}
 }
 
 // ReservationSummariesListResult result of listing reservation summaries.
@@ -2226,8 +2241,11 @@ func (page ReservationSummariesListResultPage) Values() []ReservationSummary {
 }
 
 // Creates a new instance of the ReservationSummariesListResultPage type.
-func NewReservationSummariesListResultPage(getNextPage func(context.Context, ReservationSummariesListResult) (ReservationSummariesListResult, error)) ReservationSummariesListResultPage {
-	return ReservationSummariesListResultPage{fn: getNextPage}
+func NewReservationSummariesListResultPage(cur ReservationSummariesListResult, getNextPage func(context.Context, ReservationSummariesListResult) (ReservationSummariesListResult, error)) ReservationSummariesListResultPage {
+	return ReservationSummariesListResultPage{
+		fn:   getNextPage,
+		rslr: cur,
+	}
 }
 
 // ReservationSummary reservation summary resource.
@@ -2751,6 +2769,3 @@ func (page UsageDetailsListResultPage) Values() []UsageDetail {
 }
 
 // Creates a new instance of the UsageDetailsListResultPage type.
-func NewUsageDetailsListResultPage(getNextPage func(context.Context, UsageDetailsListResult) (UsageDetailsListResult, error)) UsageDetailsListResultPage {
-	return UsageDetailsListResultPage{fn: getNextPage}
-}

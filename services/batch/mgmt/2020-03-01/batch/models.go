@@ -419,8 +419,11 @@ func (page AccountListResultPage) Values() []Account {
 }
 
 // Creates a new instance of the AccountListResultPage type.
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return AccountListResultPage{fn: getNextPage}
+func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return AccountListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AccountProperties account specific properties.
@@ -1438,8 +1441,11 @@ func (page ListApplicationPackagesResultPage) Values() []ApplicationPackage {
 }
 
 // Creates a new instance of the ListApplicationPackagesResultPage type.
-func NewListApplicationPackagesResultPage(getNextPage func(context.Context, ListApplicationPackagesResult) (ListApplicationPackagesResult, error)) ListApplicationPackagesResultPage {
-	return ListApplicationPackagesResultPage{fn: getNextPage}
+func NewListApplicationPackagesResultPage(cur ListApplicationPackagesResult, getNextPage func(context.Context, ListApplicationPackagesResult) (ListApplicationPackagesResult, error)) ListApplicationPackagesResultPage {
+	return ListApplicationPackagesResultPage{
+		fn:   getNextPage,
+		lapr: cur,
+	}
 }
 
 // ListApplicationsResult the result of performing list applications.
@@ -1594,8 +1600,11 @@ func (page ListApplicationsResultPage) Values() []Application {
 }
 
 // Creates a new instance of the ListApplicationsResultPage type.
-func NewListApplicationsResultPage(getNextPage func(context.Context, ListApplicationsResult) (ListApplicationsResult, error)) ListApplicationsResultPage {
-	return ListApplicationsResultPage{fn: getNextPage}
+func NewListApplicationsResultPage(cur ListApplicationsResult, getNextPage func(context.Context, ListApplicationsResult) (ListApplicationsResult, error)) ListApplicationsResultPage {
+	return ListApplicationsResultPage{
+		fn:  getNextPage,
+		lar: cur,
+	}
 }
 
 // ListCertificatesResult values returned by the List operation.
@@ -1750,8 +1759,11 @@ func (page ListCertificatesResultPage) Values() []Certificate {
 }
 
 // Creates a new instance of the ListCertificatesResultPage type.
-func NewListCertificatesResultPage(getNextPage func(context.Context, ListCertificatesResult) (ListCertificatesResult, error)) ListCertificatesResultPage {
-	return ListCertificatesResultPage{fn: getNextPage}
+func NewListCertificatesResultPage(cur ListCertificatesResult, getNextPage func(context.Context, ListCertificatesResult) (ListCertificatesResult, error)) ListCertificatesResultPage {
+	return ListCertificatesResultPage{
+		fn:  getNextPage,
+		lcr: cur,
+	}
 }
 
 // ListPoolsResult values returned by the List operation.
@@ -1906,8 +1918,11 @@ func (page ListPoolsResultPage) Values() []Pool {
 }
 
 // Creates a new instance of the ListPoolsResultPage type.
-func NewListPoolsResultPage(getNextPage func(context.Context, ListPoolsResult) (ListPoolsResult, error)) ListPoolsResultPage {
-	return ListPoolsResultPage{fn: getNextPage}
+func NewListPoolsResultPage(cur ListPoolsResult, getNextPage func(context.Context, ListPoolsResult) (ListPoolsResult, error)) ListPoolsResultPage {
+	return ListPoolsResultPage{
+		fn:  getNextPage,
+		lpr: cur,
+	}
 }
 
 // ListPrivateEndpointConnectionsResult values returned by the List operation.
@@ -2063,8 +2078,11 @@ func (page ListPrivateEndpointConnectionsResultPage) Values() []PrivateEndpointC
 }
 
 // Creates a new instance of the ListPrivateEndpointConnectionsResultPage type.
-func NewListPrivateEndpointConnectionsResultPage(getNextPage func(context.Context, ListPrivateEndpointConnectionsResult) (ListPrivateEndpointConnectionsResult, error)) ListPrivateEndpointConnectionsResultPage {
-	return ListPrivateEndpointConnectionsResultPage{fn: getNextPage}
+func NewListPrivateEndpointConnectionsResultPage(cur ListPrivateEndpointConnectionsResult, getNextPage func(context.Context, ListPrivateEndpointConnectionsResult) (ListPrivateEndpointConnectionsResult, error)) ListPrivateEndpointConnectionsResultPage {
+	return ListPrivateEndpointConnectionsResultPage{
+		fn:    getNextPage,
+		lpecr: cur,
+	}
 }
 
 // ListPrivateLinkResourcesResult values returned by the List operation.
@@ -2219,8 +2237,11 @@ func (page ListPrivateLinkResourcesResultPage) Values() []PrivateLinkResource {
 }
 
 // Creates a new instance of the ListPrivateLinkResourcesResultPage type.
-func NewListPrivateLinkResourcesResultPage(getNextPage func(context.Context, ListPrivateLinkResourcesResult) (ListPrivateLinkResourcesResult, error)) ListPrivateLinkResourcesResultPage {
-	return ListPrivateLinkResourcesResultPage{fn: getNextPage}
+func NewListPrivateLinkResourcesResultPage(cur ListPrivateLinkResourcesResult, getNextPage func(context.Context, ListPrivateLinkResourcesResult) (ListPrivateLinkResourcesResult, error)) ListPrivateLinkResourcesResultPage {
+	return ListPrivateLinkResourcesResultPage{
+		fn:    getNextPage,
+		lplrr: cur,
+	}
 }
 
 // LocationQuota quotas associated with a Batch region for a particular subscription.
@@ -2448,9 +2469,6 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // Pool contains information about a pool.
 type Pool struct {

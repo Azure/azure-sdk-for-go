@@ -350,8 +350,11 @@ func (page PrivateZoneListResultPage) Values() []PrivateZone {
 }
 
 // Creates a new instance of the PrivateZoneListResultPage type.
-func NewPrivateZoneListResultPage(getNextPage func(context.Context, PrivateZoneListResult) (PrivateZoneListResult, error)) PrivateZoneListResultPage {
-	return PrivateZoneListResultPage{fn: getNextPage}
+func NewPrivateZoneListResultPage(cur PrivateZoneListResult, getNextPage func(context.Context, PrivateZoneListResult) (PrivateZoneListResult, error)) PrivateZoneListResultPage {
+	return PrivateZoneListResultPage{
+		fn:   getNextPage,
+		pzlr: cur,
+	}
 }
 
 // PrivateZoneProperties represents the properties of the Private DNS zone.
@@ -718,8 +721,11 @@ func (page RecordSetListResultPage) Values() []RecordSet {
 }
 
 // Creates a new instance of the RecordSetListResultPage type.
-func NewRecordSetListResultPage(getNextPage func(context.Context, RecordSetListResult) (RecordSetListResult, error)) RecordSetListResultPage {
-	return RecordSetListResultPage{fn: getNextPage}
+func NewRecordSetListResultPage(cur RecordSetListResult, getNextPage func(context.Context, RecordSetListResult) (RecordSetListResult, error)) RecordSetListResultPage {
+	return RecordSetListResultPage{
+		fn:   getNextPage,
+		rslr: cur,
+	}
 }
 
 // RecordSetProperties represents the properties of the records in the record set.
@@ -1140,9 +1146,6 @@ func (page VirtualNetworkLinkListResultPage) Values() []VirtualNetworkLink {
 }
 
 // Creates a new instance of the VirtualNetworkLinkListResultPage type.
-func NewVirtualNetworkLinkListResultPage(getNextPage func(context.Context, VirtualNetworkLinkListResult) (VirtualNetworkLinkListResult, error)) VirtualNetworkLinkListResultPage {
-	return VirtualNetworkLinkListResultPage{fn: getNextPage}
-}
 
 // VirtualNetworkLinkProperties represents the properties of the Private DNS zone.
 type VirtualNetworkLinkProperties struct {

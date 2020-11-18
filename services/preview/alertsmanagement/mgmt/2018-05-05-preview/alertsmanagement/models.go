@@ -364,8 +364,11 @@ func (page AlertsListPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertsListPage type.
-func NewAlertsListPage(getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
-	return AlertsListPage{fn: getNextPage}
+func NewAlertsListPage(cur AlertsList, getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
+	return AlertsListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AlertsSummary summary of the alerts.
@@ -872,9 +875,6 @@ func (page OperationsListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationsListPage type.
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return OperationsListPage{fn: getNextPage}
-}
 
 // Resource an azure resource object
 type Resource struct {

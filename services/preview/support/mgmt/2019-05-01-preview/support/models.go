@@ -335,8 +335,11 @@ func (page CommunicationsListResultPage) Values() []CommunicationDetails {
 }
 
 // Creates a new instance of the CommunicationsListResultPage type.
-func NewCommunicationsListResultPage(getNextPage func(context.Context, CommunicationsListResult) (CommunicationsListResult, error)) CommunicationsListResultPage {
-	return CommunicationsListResultPage{fn: getNextPage}
+func NewCommunicationsListResultPage(cur CommunicationsListResult, getNextPage func(context.Context, CommunicationsListResult) (CommunicationsListResult, error)) CommunicationsListResultPage {
+	return CommunicationsListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ContactProfile contact information associated with support ticket.
@@ -1007,9 +1010,6 @@ func (page TicketsListResultPage) Values() []TicketDetails {
 }
 
 // Creates a new instance of the TicketsListResultPage type.
-func NewTicketsListResultPage(getNextPage func(context.Context, TicketsListResult) (TicketsListResult, error)) TicketsListResultPage {
-	return TicketsListResultPage{fn: getNextPage}
-}
 
 // UpdateContactProfile contact information associated with the support ticket.
 type UpdateContactProfile struct {

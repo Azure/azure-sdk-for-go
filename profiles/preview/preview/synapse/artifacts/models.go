@@ -1949,8 +1949,8 @@ func NewDataFlowDebugSessionClient(endpoint string) DataFlowDebugSessionClient {
 func NewDataFlowListResponseIterator(page DataFlowListResponsePage) DataFlowListResponseIterator {
 	return original.NewDataFlowListResponseIterator(page)
 }
-func NewDataFlowListResponsePage(getNextPage func(context.Context, DataFlowListResponse) (DataFlowListResponse, error)) DataFlowListResponsePage {
-	return original.NewDataFlowListResponsePage(getNextPage)
+func NewDataFlowListResponsePage(cur DataFlowListResponse, getNextPage func(context.Context, DataFlowListResponse) (DataFlowListResponse, error)) DataFlowListResponsePage {
+	return original.NewDataFlowListResponsePage(cur, getNextPage)
 }
 func NewDatasetClient(endpoint string) DatasetClient {
 	return original.NewDatasetClient(endpoint)
@@ -1958,8 +1958,8 @@ func NewDatasetClient(endpoint string) DatasetClient {
 func NewDatasetListResponseIterator(page DatasetListResponsePage) DatasetListResponseIterator {
 	return original.NewDatasetListResponseIterator(page)
 }
-func NewDatasetListResponsePage(getNextPage func(context.Context, DatasetListResponse) (DatasetListResponse, error)) DatasetListResponsePage {
-	return original.NewDatasetListResponsePage(getNextPage)
+func NewDatasetListResponsePage(cur DatasetListResponse, getNextPage func(context.Context, DatasetListResponse) (DatasetListResponse, error)) DatasetListResponsePage {
+	return original.NewDatasetListResponsePage(cur, getNextPage)
 }
 func NewLinkedServiceClient(endpoint string) LinkedServiceClient {
 	return original.NewLinkedServiceClient(endpoint)
@@ -1967,8 +1967,8 @@ func NewLinkedServiceClient(endpoint string) LinkedServiceClient {
 func NewLinkedServiceListResponseIterator(page LinkedServiceListResponsePage) LinkedServiceListResponseIterator {
 	return original.NewLinkedServiceListResponseIterator(page)
 }
-func NewLinkedServiceListResponsePage(getNextPage func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error)) LinkedServiceListResponsePage {
-	return original.NewLinkedServiceListResponsePage(getNextPage)
+func NewLinkedServiceListResponsePage(cur LinkedServiceListResponse, getNextPage func(context.Context, LinkedServiceListResponse) (LinkedServiceListResponse, error)) LinkedServiceListResponsePage {
+	return original.NewLinkedServiceListResponsePage(cur, getNextPage)
 }
 func NewNotebookClient(endpoint string) NotebookClient {
 	return original.NewNotebookClient(endpoint)
@@ -1976,8 +1976,8 @@ func NewNotebookClient(endpoint string) NotebookClient {
 func NewNotebookListResponseIterator(page NotebookListResponsePage) NotebookListResponseIterator {
 	return original.NewNotebookListResponseIterator(page)
 }
-func NewNotebookListResponsePage(getNextPage func(context.Context, NotebookListResponse) (NotebookListResponse, error)) NotebookListResponsePage {
-	return original.NewNotebookListResponsePage(getNextPage)
+func NewNotebookListResponsePage(cur NotebookListResponse, getNextPage func(context.Context, NotebookListResponse) (NotebookListResponse, error)) NotebookListResponsePage {
+	return original.NewNotebookListResponsePage(cur, getNextPage)
 }
 func NewPipelineClient(endpoint string) PipelineClient {
 	return original.NewPipelineClient(endpoint)
@@ -1985,8 +1985,8 @@ func NewPipelineClient(endpoint string) PipelineClient {
 func NewPipelineListResponseIterator(page PipelineListResponsePage) PipelineListResponseIterator {
 	return original.NewPipelineListResponseIterator(page)
 }
-func NewPipelineListResponsePage(getNextPage func(context.Context, PipelineListResponse) (PipelineListResponse, error)) PipelineListResponsePage {
-	return original.NewPipelineListResponsePage(getNextPage)
+func NewPipelineListResponsePage(cur PipelineListResponse, getNextPage func(context.Context, PipelineListResponse) (PipelineListResponse, error)) PipelineListResponsePage {
+	return original.NewPipelineListResponsePage(cur, getNextPage)
 }
 func NewPipelineRunClient(endpoint string) PipelineRunClient {
 	return original.NewPipelineRunClient(endpoint)
@@ -1994,8 +1994,8 @@ func NewPipelineRunClient(endpoint string) PipelineRunClient {
 func NewQueryDataFlowDebugSessionsResponseIterator(page QueryDataFlowDebugSessionsResponsePage) QueryDataFlowDebugSessionsResponseIterator {
 	return original.NewQueryDataFlowDebugSessionsResponseIterator(page)
 }
-func NewQueryDataFlowDebugSessionsResponsePage(getNextPage func(context.Context, QueryDataFlowDebugSessionsResponse) (QueryDataFlowDebugSessionsResponse, error)) QueryDataFlowDebugSessionsResponsePage {
-	return original.NewQueryDataFlowDebugSessionsResponsePage(getNextPage)
+func NewQueryDataFlowDebugSessionsResponsePage(cur QueryDataFlowDebugSessionsResponse, getNextPage func(context.Context, QueryDataFlowDebugSessionsResponse) (QueryDataFlowDebugSessionsResponse, error)) QueryDataFlowDebugSessionsResponsePage {
+	return original.NewQueryDataFlowDebugSessionsResponsePage(cur, getNextPage)
 }
 func NewSQLScriptClient(endpoint string) SQLScriptClient {
 	return original.NewSQLScriptClient(endpoint)
@@ -2003,8 +2003,8 @@ func NewSQLScriptClient(endpoint string) SQLScriptClient {
 func NewSQLScriptsListResponseIterator(page SQLScriptsListResponsePage) SQLScriptsListResponseIterator {
 	return original.NewSQLScriptsListResponseIterator(page)
 }
-func NewSQLScriptsListResponsePage(getNextPage func(context.Context, SQLScriptsListResponse) (SQLScriptsListResponse, error)) SQLScriptsListResponsePage {
-	return original.NewSQLScriptsListResponsePage(getNextPage)
+func NewSQLScriptsListResponsePage(cur SQLScriptsListResponse, getNextPage func(context.Context, SQLScriptsListResponse) (SQLScriptsListResponse, error)) SQLScriptsListResponsePage {
+	return original.NewSQLScriptsListResponsePage(cur, getNextPage)
 }
 func NewSparkJobDefinitionClient(endpoint string) SparkJobDefinitionClient {
 	return original.NewSparkJobDefinitionClient(endpoint)
@@ -2012,17 +2012,14 @@ func NewSparkJobDefinitionClient(endpoint string) SparkJobDefinitionClient {
 func NewSparkJobDefinitionsListResponseIterator(page SparkJobDefinitionsListResponsePage) SparkJobDefinitionsListResponseIterator {
 	return original.NewSparkJobDefinitionsListResponseIterator(page)
 }
-func NewSparkJobDefinitionsListResponsePage(getNextPage func(context.Context, SparkJobDefinitionsListResponse) (SparkJobDefinitionsListResponse, error)) SparkJobDefinitionsListResponsePage {
-	return original.NewSparkJobDefinitionsListResponsePage(getNextPage)
+func NewSparkJobDefinitionsListResponsePage(cur SparkJobDefinitionsListResponse, getNextPage func(context.Context, SparkJobDefinitionsListResponse) (SparkJobDefinitionsListResponse, error)) SparkJobDefinitionsListResponsePage {
+	return original.NewSparkJobDefinitionsListResponsePage(cur, getNextPage)
 }
 func NewTriggerClient(endpoint string) TriggerClient {
 	return original.NewTriggerClient(endpoint)
 }
 func NewTriggerListResponseIterator(page TriggerListResponsePage) TriggerListResponseIterator {
 	return original.NewTriggerListResponseIterator(page)
-}
-func NewTriggerListResponsePage(getNextPage func(context.Context, TriggerListResponse) (TriggerListResponse, error)) TriggerListResponsePage {
-	return original.NewTriggerListResponsePage(getNextPage)
 }
 func NewTriggerRunClient(endpoint string) TriggerRunClient {
 	return original.NewTriggerRunClient(endpoint)

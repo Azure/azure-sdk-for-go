@@ -726,8 +726,8 @@ func New(subscriptionID string) BaseClient {
 func NewBigDataPoolResourceInfoListResultIterator(page BigDataPoolResourceInfoListResultPage) BigDataPoolResourceInfoListResultIterator {
 	return original.NewBigDataPoolResourceInfoListResultIterator(page)
 }
-func NewBigDataPoolResourceInfoListResultPage(getNextPage func(context.Context, BigDataPoolResourceInfoListResult) (BigDataPoolResourceInfoListResult, error)) BigDataPoolResourceInfoListResultPage {
-	return original.NewBigDataPoolResourceInfoListResultPage(getNextPage)
+func NewBigDataPoolResourceInfoListResultPage(cur BigDataPoolResourceInfoListResult, getNextPage func(context.Context, BigDataPoolResourceInfoListResult) (BigDataPoolResourceInfoListResult, error)) BigDataPoolResourceInfoListResultPage {
+	return original.NewBigDataPoolResourceInfoListResultPage(cur, getNextPage)
 }
 func NewBigDataPoolsClient(subscriptionID string) BigDataPoolsClient {
 	return original.NewBigDataPoolsClient(subscriptionID)
@@ -738,8 +738,8 @@ func NewBigDataPoolsClientWithBaseURI(baseURI string, subscriptionID string) Big
 func NewIPFirewallRuleInfoListResultIterator(page IPFirewallRuleInfoListResultPage) IPFirewallRuleInfoListResultIterator {
 	return original.NewIPFirewallRuleInfoListResultIterator(page)
 }
-func NewIPFirewallRuleInfoListResultPage(getNextPage func(context.Context, IPFirewallRuleInfoListResult) (IPFirewallRuleInfoListResult, error)) IPFirewallRuleInfoListResultPage {
-	return original.NewIPFirewallRuleInfoListResultPage(getNextPage)
+func NewIPFirewallRuleInfoListResultPage(cur IPFirewallRuleInfoListResult, getNextPage func(context.Context, IPFirewallRuleInfoListResult) (IPFirewallRuleInfoListResult, error)) IPFirewallRuleInfoListResultPage {
+	return original.NewIPFirewallRuleInfoListResultPage(cur, getNextPage)
 }
 func NewIPFirewallRulesClient(subscriptionID string) IPFirewallRulesClient {
 	return original.NewIPFirewallRulesClient(subscriptionID)
@@ -768,8 +768,8 @@ func NewIntegrationRuntimeCredentialsClientWithBaseURI(baseURI string, subscript
 func NewIntegrationRuntimeListResponseIterator(page IntegrationRuntimeListResponsePage) IntegrationRuntimeListResponseIterator {
 	return original.NewIntegrationRuntimeListResponseIterator(page)
 }
-func NewIntegrationRuntimeListResponsePage(getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
-	return original.NewIntegrationRuntimeListResponsePage(getNextPage)
+func NewIntegrationRuntimeListResponsePage(cur IntegrationRuntimeListResponse, getNextPage func(context.Context, IntegrationRuntimeListResponse) (IntegrationRuntimeListResponse, error)) IntegrationRuntimeListResponsePage {
+	return original.NewIntegrationRuntimeListResponsePage(cur, getNextPage)
 }
 func NewIntegrationRuntimeMonitoringDataClient(subscriptionID string) IntegrationRuntimeMonitoringDataClient {
 	return original.NewIntegrationRuntimeMonitoringDataClient(subscriptionID)
@@ -816,8 +816,8 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewPrivateEndpointConnectionListIterator(page PrivateEndpointConnectionListPage) PrivateEndpointConnectionListIterator {
 	return original.NewPrivateEndpointConnectionListIterator(page)
 }
-func NewPrivateEndpointConnectionListPage(getNextPage func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error)) PrivateEndpointConnectionListPage {
-	return original.NewPrivateEndpointConnectionListPage(getNextPage)
+func NewPrivateEndpointConnectionListPage(cur PrivateEndpointConnectionList, getNextPage func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error)) PrivateEndpointConnectionListPage {
+	return original.NewPrivateEndpointConnectionListPage(cur, getNextPage)
 }
 func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
@@ -828,8 +828,8 @@ func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscription
 func NewPrivateLinkHubInfoListResultIterator(page PrivateLinkHubInfoListResultPage) PrivateLinkHubInfoListResultIterator {
 	return original.NewPrivateLinkHubInfoListResultIterator(page)
 }
-func NewPrivateLinkHubInfoListResultPage(getNextPage func(context.Context, PrivateLinkHubInfoListResult) (PrivateLinkHubInfoListResult, error)) PrivateLinkHubInfoListResultPage {
-	return original.NewPrivateLinkHubInfoListResultPage(getNextPage)
+func NewPrivateLinkHubInfoListResultPage(cur PrivateLinkHubInfoListResult, getNextPage func(context.Context, PrivateLinkHubInfoListResult) (PrivateLinkHubInfoListResult, error)) PrivateLinkHubInfoListResultPage {
+	return original.NewPrivateLinkHubInfoListResultPage(cur, getNextPage)
 }
 func NewPrivateLinkHubsClient(subscriptionID string) PrivateLinkHubsClient {
 	return original.NewPrivateLinkHubsClient(subscriptionID)
@@ -840,8 +840,8 @@ func NewPrivateLinkHubsClientWithBaseURI(baseURI string, subscriptionID string) 
 func NewPrivateLinkResourceListResultIterator(page PrivateLinkResourceListResultPage) PrivateLinkResourceListResultIterator {
 	return original.NewPrivateLinkResourceListResultIterator(page)
 }
-func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
-	return original.NewPrivateLinkResourceListResultPage(getNextPage)
+func NewPrivateLinkResourceListResultPage(cur PrivateLinkResourceListResult, getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return original.NewPrivateLinkResourceListResultPage(cur, getNextPage)
 }
 func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
 	return original.NewPrivateLinkResourcesClient(subscriptionID)
@@ -852,14 +852,14 @@ func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID str
 func NewReplicationLinkListResultIterator(page ReplicationLinkListResultPage) ReplicationLinkListResultIterator {
 	return original.NewReplicationLinkListResultIterator(page)
 }
-func NewReplicationLinkListResultPage(getNextPage func(context.Context, ReplicationLinkListResult) (ReplicationLinkListResult, error)) ReplicationLinkListResultPage {
-	return original.NewReplicationLinkListResultPage(getNextPage)
+func NewReplicationLinkListResultPage(cur ReplicationLinkListResult, getNextPage func(context.Context, ReplicationLinkListResult) (ReplicationLinkListResult, error)) ReplicationLinkListResultPage {
+	return original.NewReplicationLinkListResultPage(cur, getNextPage)
 }
 func NewRestorePointListResultIterator(page RestorePointListResultPage) RestorePointListResultIterator {
 	return original.NewRestorePointListResultIterator(page)
 }
-func NewRestorePointListResultPage(getNextPage func(context.Context, RestorePointListResult) (RestorePointListResult, error)) RestorePointListResultPage {
-	return original.NewRestorePointListResultPage(getNextPage)
+func NewRestorePointListResultPage(cur RestorePointListResult, getNextPage func(context.Context, RestorePointListResult) (RestorePointListResult, error)) RestorePointListResultPage {
+	return original.NewRestorePointListResultPage(cur, getNextPage)
 }
 func NewSQLPoolBlobAuditingPoliciesClient(subscriptionID string) SQLPoolBlobAuditingPoliciesClient {
 	return original.NewSQLPoolBlobAuditingPoliciesClient(subscriptionID)
@@ -870,14 +870,14 @@ func NewSQLPoolBlobAuditingPoliciesClientWithBaseURI(baseURI string, subscriptio
 func NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultIterator(page SQLPoolBlobAuditingPolicySQLPoolOperationListResultPage) SQLPoolBlobAuditingPolicySQLPoolOperationListResultIterator {
 	return original.NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultIterator(page)
 }
-func NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultPage(getNextPage func(context.Context, SQLPoolBlobAuditingPolicySQLPoolOperationListResult) (SQLPoolBlobAuditingPolicySQLPoolOperationListResult, error)) SQLPoolBlobAuditingPolicySQLPoolOperationListResultPage {
-	return original.NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultPage(getNextPage)
+func NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultPage(cur SQLPoolBlobAuditingPolicySQLPoolOperationListResult, getNextPage func(context.Context, SQLPoolBlobAuditingPolicySQLPoolOperationListResult) (SQLPoolBlobAuditingPolicySQLPoolOperationListResult, error)) SQLPoolBlobAuditingPolicySQLPoolOperationListResultPage {
+	return original.NewSQLPoolBlobAuditingPolicySQLPoolOperationListResultPage(cur, getNextPage)
 }
 func NewSQLPoolColumnListResultIterator(page SQLPoolColumnListResultPage) SQLPoolColumnListResultIterator {
 	return original.NewSQLPoolColumnListResultIterator(page)
 }
-func NewSQLPoolColumnListResultPage(getNextPage func(context.Context, SQLPoolColumnListResult) (SQLPoolColumnListResult, error)) SQLPoolColumnListResultPage {
-	return original.NewSQLPoolColumnListResultPage(getNextPage)
+func NewSQLPoolColumnListResultPage(cur SQLPoolColumnListResult, getNextPage func(context.Context, SQLPoolColumnListResult) (SQLPoolColumnListResult, error)) SQLPoolColumnListResultPage {
+	return original.NewSQLPoolColumnListResultPage(cur, getNextPage)
 }
 func NewSQLPoolConnectionPoliciesClient(subscriptionID string) SQLPoolConnectionPoliciesClient {
 	return original.NewSQLPoolConnectionPoliciesClient(subscriptionID)
@@ -900,8 +900,8 @@ func NewSQLPoolGeoBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID
 func NewSQLPoolInfoListResultIterator(page SQLPoolInfoListResultPage) SQLPoolInfoListResultIterator {
 	return original.NewSQLPoolInfoListResultIterator(page)
 }
-func NewSQLPoolInfoListResultPage(getNextPage func(context.Context, SQLPoolInfoListResult) (SQLPoolInfoListResult, error)) SQLPoolInfoListResultPage {
-	return original.NewSQLPoolInfoListResultPage(getNextPage)
+func NewSQLPoolInfoListResultPage(cur SQLPoolInfoListResult, getNextPage func(context.Context, SQLPoolInfoListResult) (SQLPoolInfoListResult, error)) SQLPoolInfoListResultPage {
+	return original.NewSQLPoolInfoListResultPage(cur, getNextPage)
 }
 func NewSQLPoolMetadataSyncConfigsClient(subscriptionID string) SQLPoolMetadataSyncConfigsClient {
 	return original.NewSQLPoolMetadataSyncConfigsClient(subscriptionID)
@@ -936,8 +936,8 @@ func NewSQLPoolRestorePointsClientWithBaseURI(baseURI string, subscriptionID str
 func NewSQLPoolSchemaListResultIterator(page SQLPoolSchemaListResultPage) SQLPoolSchemaListResultIterator {
 	return original.NewSQLPoolSchemaListResultIterator(page)
 }
-func NewSQLPoolSchemaListResultPage(getNextPage func(context.Context, SQLPoolSchemaListResult) (SQLPoolSchemaListResult, error)) SQLPoolSchemaListResultPage {
-	return original.NewSQLPoolSchemaListResultPage(getNextPage)
+func NewSQLPoolSchemaListResultPage(cur SQLPoolSchemaListResult, getNextPage func(context.Context, SQLPoolSchemaListResult) (SQLPoolSchemaListResult, error)) SQLPoolSchemaListResultPage {
+	return original.NewSQLPoolSchemaListResultPage(cur, getNextPage)
 }
 func NewSQLPoolSchemasClient(subscriptionID string) SQLPoolSchemasClient {
 	return original.NewSQLPoolSchemasClient(subscriptionID)
@@ -966,8 +966,8 @@ func NewSQLPoolTableColumnsClientWithBaseURI(baseURI string, subscriptionID stri
 func NewSQLPoolTableListResultIterator(page SQLPoolTableListResultPage) SQLPoolTableListResultIterator {
 	return original.NewSQLPoolTableListResultIterator(page)
 }
-func NewSQLPoolTableListResultPage(getNextPage func(context.Context, SQLPoolTableListResult) (SQLPoolTableListResult, error)) SQLPoolTableListResultPage {
-	return original.NewSQLPoolTableListResultPage(getNextPage)
+func NewSQLPoolTableListResultPage(cur SQLPoolTableListResult, getNextPage func(context.Context, SQLPoolTableListResult) (SQLPoolTableListResult, error)) SQLPoolTableListResultPage {
+	return original.NewSQLPoolTableListResultPage(cur, getNextPage)
 }
 func NewSQLPoolTablesClient(subscriptionID string) SQLPoolTablesClient {
 	return original.NewSQLPoolTablesClient(subscriptionID)
@@ -984,8 +984,8 @@ func NewSQLPoolTransparentDataEncryptionsClientWithBaseURI(baseURI string, subsc
 func NewSQLPoolUsageListResultIterator(page SQLPoolUsageListResultPage) SQLPoolUsageListResultIterator {
 	return original.NewSQLPoolUsageListResultIterator(page)
 }
-func NewSQLPoolUsageListResultPage(getNextPage func(context.Context, SQLPoolUsageListResult) (SQLPoolUsageListResult, error)) SQLPoolUsageListResultPage {
-	return original.NewSQLPoolUsageListResultPage(getNextPage)
+func NewSQLPoolUsageListResultPage(cur SQLPoolUsageListResult, getNextPage func(context.Context, SQLPoolUsageListResult) (SQLPoolUsageListResult, error)) SQLPoolUsageListResultPage {
+	return original.NewSQLPoolUsageListResultPage(cur, getNextPage)
 }
 func NewSQLPoolUsagesClient(subscriptionID string) SQLPoolUsagesClient {
 	return original.NewSQLPoolUsagesClient(subscriptionID)
@@ -996,8 +996,8 @@ func NewSQLPoolUsagesClientWithBaseURI(baseURI string, subscriptionID string) SQ
 func NewSQLPoolVulnerabilityAssessmentListResultIterator(page SQLPoolVulnerabilityAssessmentListResultPage) SQLPoolVulnerabilityAssessmentListResultIterator {
 	return original.NewSQLPoolVulnerabilityAssessmentListResultIterator(page)
 }
-func NewSQLPoolVulnerabilityAssessmentListResultPage(getNextPage func(context.Context, SQLPoolVulnerabilityAssessmentListResult) (SQLPoolVulnerabilityAssessmentListResult, error)) SQLPoolVulnerabilityAssessmentListResultPage {
-	return original.NewSQLPoolVulnerabilityAssessmentListResultPage(getNextPage)
+func NewSQLPoolVulnerabilityAssessmentListResultPage(cur SQLPoolVulnerabilityAssessmentListResult, getNextPage func(context.Context, SQLPoolVulnerabilityAssessmentListResult) (SQLPoolVulnerabilityAssessmentListResult, error)) SQLPoolVulnerabilityAssessmentListResultPage {
+	return original.NewSQLPoolVulnerabilityAssessmentListResultPage(cur, getNextPage)
 }
 func NewSQLPoolVulnerabilityAssessmentRuleBaselinesClient(subscriptionID string) SQLPoolVulnerabilityAssessmentRuleBaselinesClient {
 	return original.NewSQLPoolVulnerabilityAssessmentRuleBaselinesClient(subscriptionID)
@@ -1026,14 +1026,14 @@ func NewSQLPoolsClientWithBaseURI(baseURI string, subscriptionID string) SQLPool
 func NewSensitivityLabelListResultIterator(page SensitivityLabelListResultPage) SensitivityLabelListResultIterator {
 	return original.NewSensitivityLabelListResultIterator(page)
 }
-func NewSensitivityLabelListResultPage(getNextPage func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error)) SensitivityLabelListResultPage {
-	return original.NewSensitivityLabelListResultPage(getNextPage)
+func NewSensitivityLabelListResultPage(cur SensitivityLabelListResult, getNextPage func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error)) SensitivityLabelListResultPage {
+	return original.NewSensitivityLabelListResultPage(cur, getNextPage)
 }
 func NewVulnerabilityAssessmentScanRecordListResultIterator(page VulnerabilityAssessmentScanRecordListResultPage) VulnerabilityAssessmentScanRecordListResultIterator {
 	return original.NewVulnerabilityAssessmentScanRecordListResultIterator(page)
 }
-func NewVulnerabilityAssessmentScanRecordListResultPage(getNextPage func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error)) VulnerabilityAssessmentScanRecordListResultPage {
-	return original.NewVulnerabilityAssessmentScanRecordListResultPage(getNextPage)
+func NewVulnerabilityAssessmentScanRecordListResultPage(cur VulnerabilityAssessmentScanRecordListResult, getNextPage func(context.Context, VulnerabilityAssessmentScanRecordListResult) (VulnerabilityAssessmentScanRecordListResult, error)) VulnerabilityAssessmentScanRecordListResultPage {
+	return original.NewVulnerabilityAssessmentScanRecordListResultPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -1046,9 +1046,6 @@ func NewWorkspaceAadAdminsClientWithBaseURI(baseURI string, subscriptionID strin
 }
 func NewWorkspaceInfoListResultIterator(page WorkspaceInfoListResultPage) WorkspaceInfoListResultIterator {
 	return original.NewWorkspaceInfoListResultIterator(page)
-}
-func NewWorkspaceInfoListResultPage(getNextPage func(context.Context, WorkspaceInfoListResult) (WorkspaceInfoListResult, error)) WorkspaceInfoListResultPage {
-	return original.NewWorkspaceInfoListResultPage(getNextPage)
 }
 func NewWorkspaceManagedIdentitySQLControlSettingsClient(subscriptionID string) WorkspaceManagedIdentitySQLControlSettingsClient {
 	return original.NewWorkspaceManagedIdentitySQLControlSettingsClient(subscriptionID)

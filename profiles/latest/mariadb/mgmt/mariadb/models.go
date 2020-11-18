@@ -19,11 +19,7 @@
 
 package mariadb
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -284,9 +280,6 @@ func NewServersClientWithBaseURI(baseURI string, subscriptionID string) ServersC
 }
 func NewVirtualNetworkRuleListResultIterator(page VirtualNetworkRuleListResultPage) VirtualNetworkRuleListResultIterator {
 	return original.NewVirtualNetworkRuleListResultIterator(page)
-}
-func NewVirtualNetworkRuleListResultPage(getNextPage func(context.Context, VirtualNetworkRuleListResult) (VirtualNetworkRuleListResult, error)) VirtualNetworkRuleListResultPage {
-	return original.NewVirtualNetworkRuleListResultPage(getNextPage)
 }
 func NewVirtualNetworkRulesClient(subscriptionID string) VirtualNetworkRulesClient {
 	return original.NewVirtualNetworkRulesClient(subscriptionID)

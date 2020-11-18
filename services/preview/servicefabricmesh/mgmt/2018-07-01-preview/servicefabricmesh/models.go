@@ -324,8 +324,11 @@ func (page ApplicationResourceDescriptionListPage) Values() []ApplicationResourc
 }
 
 // Creates a new instance of the ApplicationResourceDescriptionListPage type.
-func NewApplicationResourceDescriptionListPage(getNextPage func(context.Context, ApplicationResourceDescriptionList) (ApplicationResourceDescriptionList, error)) ApplicationResourceDescriptionListPage {
-	return ApplicationResourceDescriptionListPage{fn: getNextPage}
+func NewApplicationResourceDescriptionListPage(cur ApplicationResourceDescriptionList, getNextPage func(context.Context, ApplicationResourceDescriptionList) (ApplicationResourceDescriptionList, error)) ApplicationResourceDescriptionListPage {
+	return ApplicationResourceDescriptionListPage{
+		fn:   getNextPage,
+		ardl: cur,
+	}
 }
 
 // ApplicationResourceProperties this type describes properties of an application resource.
@@ -1091,8 +1094,11 @@ func (page NetworkResourceDescriptionListPage) Values() []NetworkResourceDescrip
 }
 
 // Creates a new instance of the NetworkResourceDescriptionListPage type.
-func NewNetworkResourceDescriptionListPage(getNextPage func(context.Context, NetworkResourceDescriptionList) (NetworkResourceDescriptionList, error)) NetworkResourceDescriptionListPage {
-	return NetworkResourceDescriptionListPage{fn: getNextPage}
+func NewNetworkResourceDescriptionListPage(cur NetworkResourceDescriptionList, getNextPage func(context.Context, NetworkResourceDescriptionList) (NetworkResourceDescriptionList, error)) NetworkResourceDescriptionListPage {
+	return NetworkResourceDescriptionListPage{
+		fn:   getNextPage,
+		nrdl: cur,
+	}
 }
 
 // NetworkResourceProperties describes properties of a network resource.
@@ -1283,8 +1289,11 @@ func (page OperationListResultPage) Values() []OperationResult {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResult list of operations available at the listed Azure resource provider.
@@ -1527,8 +1536,11 @@ func (page ServiceListPage) Values() []ServiceResourceDescription {
 }
 
 // Creates a new instance of the ServiceListPage type.
-func NewServiceListPage(getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
-	return ServiceListPage{fn: getNextPage}
+func NewServiceListPage(cur ServiceList, getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
+	return ServiceListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
 }
 
 // ServiceReplicaDescription this type describes a replica of a service resource.
@@ -1699,8 +1711,11 @@ func (page ServiceReplicaListPage) Values() []ServiceReplicaDescription {
 }
 
 // Creates a new instance of the ServiceReplicaListPage type.
-func NewServiceReplicaListPage(getNextPage func(context.Context, ServiceReplicaList) (ServiceReplicaList, error)) ServiceReplicaListPage {
-	return ServiceReplicaListPage{fn: getNextPage}
+func NewServiceReplicaListPage(cur ServiceReplicaList, getNextPage func(context.Context, ServiceReplicaList) (ServiceReplicaList, error)) ServiceReplicaListPage {
+	return ServiceReplicaListPage{
+		fn:  getNextPage,
+		srl: cur,
+	}
 }
 
 // ServiceReplicaProperties describes the properties of a service replica.
@@ -2148,9 +2163,6 @@ func (page VolumeResourceDescriptionListPage) Values() []VolumeResourceDescripti
 }
 
 // Creates a new instance of the VolumeResourceDescriptionListPage type.
-func NewVolumeResourceDescriptionListPage(getNextPage func(context.Context, VolumeResourceDescriptionList) (VolumeResourceDescriptionList, error)) VolumeResourceDescriptionListPage {
-	return VolumeResourceDescriptionListPage{fn: getNextPage}
-}
 
 // VolumeResourceProperties describes properties of a volume resource.
 type VolumeResourceProperties struct {

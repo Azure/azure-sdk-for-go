@@ -292,8 +292,11 @@ func (page ConsumerGroupListResultPage) Values() []ConsumerGroupResource {
 }
 
 // Creates a new instance of the ConsumerGroupListResultPage type.
-func NewConsumerGroupListResultPage(getNextPage func(context.Context, ConsumerGroupListResult) (ConsumerGroupListResult, error)) ConsumerGroupListResultPage {
-	return ConsumerGroupListResultPage{fn: getNextPage}
+func NewConsumerGroupListResultPage(cur ConsumerGroupListResult, getNextPage func(context.Context, ConsumerGroupListResult) (ConsumerGroupListResult, error)) ConsumerGroupListResultPage {
+	return ConsumerGroupListResultPage{
+		fn:   getNextPage,
+		cglr: cur,
+	}
 }
 
 // ConsumerGroupProperties properties supplied to the Create Or Update Consumer Group operation.
@@ -635,8 +638,11 @@ func (page ListResultPage) Values() []ResourceType {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // NamespaceCreateOrUpdateParameters parameters supplied to the Create Or Update Namespace operation.
@@ -870,8 +876,11 @@ func (page NamespaceListResultPage) Values() []NamespaceResource {
 }
 
 // Creates a new instance of the NamespaceListResultPage type.
-func NewNamespaceListResultPage(getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
-	return NamespaceListResultPage{fn: getNextPage}
+func NewNamespaceListResultPage(cur NamespaceListResult, getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
+	return NamespaceListResultPage{
+		fn:  getNextPage,
+		nlr: cur,
+	}
 }
 
 // NamespaceProperties properties of the Namespace supplied for create or update Namespace operation
@@ -1280,8 +1289,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Properties properties supplied to the Create Or Update Event Hub operation.
@@ -1663,9 +1675,6 @@ func (page SharedAccessAuthorizationRuleListResultPage) Values() []SharedAccessA
 }
 
 // Creates a new instance of the SharedAccessAuthorizationRuleListResultPage type.
-func NewSharedAccessAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessAuthorizationRuleListResult) (SharedAccessAuthorizationRuleListResult, error)) SharedAccessAuthorizationRuleListResultPage {
-	return SharedAccessAuthorizationRuleListResultPage{fn: getNextPage}
-}
 
 // SharedAccessAuthorizationRuleProperties properties supplied to create or update
 // SharedAccessAuthorizationRule

@@ -397,9 +397,6 @@ func (page AccountListResultPage) Values() []Account {
 }
 
 // Creates a new instance of the AccountListResultPage type.
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return AccountListResultPage{fn: getNextPage}
-}
 
 // AccountProperties ...
 type AccountProperties struct {

@@ -302,8 +302,11 @@ func (page AccountListResultPage) Values() []Account {
 }
 
 // Creates a new instance of the AccountListResultPage type.
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return AccountListResultPage{fn: getNextPage}
+func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return AccountListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AccountProperties the properties of the billing account.
@@ -669,8 +672,11 @@ func (page AgreementListResultPage) Values() []Agreement {
 }
 
 // Creates a new instance of the AgreementListResultPage type.
-func NewAgreementListResultPage(getNextPage func(context.Context, AgreementListResult) (AgreementListResult, error)) AgreementListResultPage {
-	return AgreementListResultPage{fn: getNextPage}
+func NewAgreementListResultPage(cur AgreementListResult, getNextPage func(context.Context, AgreementListResult) (AgreementListResult, error)) AgreementListResultPage {
+	return AgreementListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AgreementProperties the properties of the agreement.
@@ -1016,8 +1022,11 @@ func (page CustomerListResultPage) Values() []Customer {
 }
 
 // Creates a new instance of the CustomerListResultPage type.
-func NewCustomerListResultPage(getNextPage func(context.Context, CustomerListResult) (CustomerListResult, error)) CustomerListResultPage {
-	return CustomerListResultPage{fn: getNextPage}
+func NewCustomerListResultPage(cur CustomerListResult, getNextPage func(context.Context, CustomerListResult) (CustomerListResult, error)) CustomerListResultPage {
+	return CustomerListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // CustomerProperties the properties of a customer.
@@ -1255,8 +1264,11 @@ func (page DepartmentListResultPage) Values() []Department {
 }
 
 // Creates a new instance of the DepartmentListResultPage type.
-func NewDepartmentListResultPage(getNextPage func(context.Context, DepartmentListResult) (DepartmentListResult, error)) DepartmentListResultPage {
-	return DepartmentListResultPage{fn: getNextPage}
+func NewDepartmentListResultPage(cur DepartmentListResult, getNextPage func(context.Context, DepartmentListResult) (DepartmentListResult, error)) DepartmentListResultPage {
+	return DepartmentListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DepartmentProperties the properties of the department.
@@ -1597,8 +1609,11 @@ func (page EnrollmentAccountListResultPage) Values() []EnrollmentAccount {
 }
 
 // Creates a new instance of the EnrollmentAccountListResultPage type.
-func NewEnrollmentAccountListResultPage(getNextPage func(context.Context, EnrollmentAccountListResult) (EnrollmentAccountListResult, error)) EnrollmentAccountListResultPage {
-	return EnrollmentAccountListResultPage{fn: getNextPage}
+func NewEnrollmentAccountListResultPage(cur EnrollmentAccountListResult, getNextPage func(context.Context, EnrollmentAccountListResult) (EnrollmentAccountListResult, error)) EnrollmentAccountListResultPage {
+	return EnrollmentAccountListResultPage{
+		fn:   getNextPage,
+		ealr: cur,
+	}
 }
 
 // EnrollmentAccountProperties the properties of the account.
@@ -1855,8 +1870,11 @@ func (page InvoiceListResultPage) Values() []InvoiceSummary {
 }
 
 // Creates a new instance of the InvoiceListResultPage type.
-func NewInvoiceListResultPage(getNextPage func(context.Context, InvoiceListResult) (InvoiceListResult, error)) InvoiceListResultPage {
-	return InvoiceListResultPage{fn: getNextPage}
+func NewInvoiceListResultPage(cur InvoiceListResult, getNextPage func(context.Context, InvoiceListResult) (InvoiceListResult, error)) InvoiceListResultPage {
+	return InvoiceListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // InvoiceSection an InvoiceSection resource.
@@ -2092,8 +2110,11 @@ func (page InvoiceSectionListResultPage) Values() []InvoiceSection {
 }
 
 // Creates a new instance of the InvoiceSectionListResultPage type.
-func NewInvoiceSectionListResultPage(getNextPage func(context.Context, InvoiceSectionListResult) (InvoiceSectionListResult, error)) InvoiceSectionListResultPage {
-	return InvoiceSectionListResultPage{fn: getNextPage}
+func NewInvoiceSectionListResultPage(cur InvoiceSectionListResult, getNextPage func(context.Context, InvoiceSectionListResult) (InvoiceSectionListResult, error)) InvoiceSectionListResultPage {
+	return InvoiceSectionListResultPage{
+		fn:   getNextPage,
+		islr: cur,
+	}
 }
 
 // InvoiceSectionProperties the properties of an InvoiceSection.
@@ -2569,8 +2590,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationStatus status of the Billing POST/PUT operation.
@@ -2849,8 +2873,11 @@ func (page PaymentMethodsListResultPage) Values() []PaymentMethod {
 }
 
 // Creates a new instance of the PaymentMethodsListResultPage type.
-func NewPaymentMethodsListResultPage(getNextPage func(context.Context, PaymentMethodsListResult) (PaymentMethodsListResult, error)) PaymentMethodsListResultPage {
-	return PaymentMethodsListResultPage{fn: getNextPage}
+func NewPaymentMethodsListResultPage(cur PaymentMethodsListResult, getNextPage func(context.Context, PaymentMethodsListResult) (PaymentMethodsListResult, error)) PaymentMethodsListResultPage {
+	return PaymentMethodsListResultPage{
+		fn:   getNextPage,
+		pmlr: cur,
+	}
 }
 
 // PaymentProperties the properties of the payment.
@@ -3150,8 +3177,11 @@ func (page ProductsListResultPage) Values() []ProductSummary {
 }
 
 // Creates a new instance of the ProductsListResultPage type.
-func NewProductsListResultPage(getNextPage func(context.Context, ProductsListResult) (ProductsListResult, error)) ProductsListResultPage {
-	return ProductsListResultPage{fn: getNextPage}
+func NewProductsListResultPage(cur ProductsListResult, getNextPage func(context.Context, ProductsListResult) (ProductsListResult, error)) ProductsListResultPage {
+	return ProductsListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // ProductSummary a product summary resource.
@@ -3517,8 +3547,11 @@ func (page ProfileListResultPage) Values() []Profile {
 }
 
 // Creates a new instance of the ProfileListResultPage type.
-func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
-	return ProfileListResultPage{fn: getNextPage}
+func NewProfileListResultPage(cur ProfileListResult, getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
+	return ProfileListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // ProfileProperties the properties of the billing profile.
@@ -3914,8 +3947,11 @@ func (page RecipientTransferDetailsListResultPage) Values() []RecipientTransferD
 }
 
 // Creates a new instance of the RecipientTransferDetailsListResultPage type.
-func NewRecipientTransferDetailsListResultPage(getNextPage func(context.Context, RecipientTransferDetailsListResult) (RecipientTransferDetailsListResult, error)) RecipientTransferDetailsListResultPage {
-	return RecipientTransferDetailsListResultPage{fn: getNextPage}
+func NewRecipientTransferDetailsListResultPage(cur RecipientTransferDetailsListResult, getNextPage func(context.Context, RecipientTransferDetailsListResult) (RecipientTransferDetailsListResult, error)) RecipientTransferDetailsListResultPage {
+	return RecipientTransferDetailsListResultPage{
+		fn:    getNextPage,
+		rtdlr: cur,
+	}
 }
 
 // RecipientTransferProperties transfer Details.
@@ -4401,8 +4437,11 @@ func (page SubscriptionsListResultPage) Values() []SubscriptionSummary {
 }
 
 // Creates a new instance of the SubscriptionsListResultPage type.
-func NewSubscriptionsListResultPage(getNextPage func(context.Context, SubscriptionsListResult) (SubscriptionsListResult, error)) SubscriptionsListResultPage {
-	return SubscriptionsListResultPage{fn: getNextPage}
+func NewSubscriptionsListResultPage(cur SubscriptionsListResult, getNextPage func(context.Context, SubscriptionsListResult) (SubscriptionsListResult, error)) SubscriptionsListResultPage {
+	return SubscriptionsListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // SubscriptionsTransferFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -4658,8 +4697,11 @@ func (page TransactionsListResultPage) Values() []TransactionsSummary {
 }
 
 // Creates a new instance of the TransactionsListResultPage type.
-func NewTransactionsListResultPage(getNextPage func(context.Context, TransactionsListResult) (TransactionsListResult, error)) TransactionsListResultPage {
-	return TransactionsListResultPage{fn: getNextPage}
+func NewTransactionsListResultPage(cur TransactionsListResult, getNextPage func(context.Context, TransactionsListResult) (TransactionsListResult, error)) TransactionsListResultPage {
+	return TransactionsListResultPage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }
 
 // TransactionsSummary a reservation transaction summary resource.
@@ -5074,9 +5116,6 @@ func (page TransferDetailsListResultPage) Values() []TransferDetails {
 }
 
 // Creates a new instance of the TransferDetailsListResultPage type.
-func NewTransferDetailsListResultPage(getNextPage func(context.Context, TransferDetailsListResult) (TransferDetailsListResult, error)) TransferDetailsListResultPage {
-	return TransferDetailsListResultPage{fn: getNextPage}
-}
 
 // TransferProductRequestProperties the properties of the product to initiate a transfer.
 type TransferProductRequestProperties struct {

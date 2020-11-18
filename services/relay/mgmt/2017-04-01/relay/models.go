@@ -271,8 +271,11 @@ func (page AuthorizationRuleListResultPage) Values() []AuthorizationRule {
 }
 
 // Creates a new instance of the AuthorizationRuleListResultPage type.
-func NewAuthorizationRuleListResultPage(getNextPage func(context.Context, AuthorizationRuleListResult) (AuthorizationRuleListResult, error)) AuthorizationRuleListResultPage {
-	return AuthorizationRuleListResultPage{fn: getNextPage}
+func NewAuthorizationRuleListResultPage(cur AuthorizationRuleListResult, getNextPage func(context.Context, AuthorizationRuleListResult) (AuthorizationRuleListResult, error)) AuthorizationRuleListResultPage {
+	return AuthorizationRuleListResultPage{
+		fn:   getNextPage,
+		arlr: cur,
+	}
 }
 
 // AuthorizationRuleProperties authorization rule properties.
@@ -544,8 +547,11 @@ func (page HybridConnectionListResultPage) Values() []HybridConnection {
 }
 
 // Creates a new instance of the HybridConnectionListResultPage type.
-func NewHybridConnectionListResultPage(getNextPage func(context.Context, HybridConnectionListResult) (HybridConnectionListResult, error)) HybridConnectionListResultPage {
-	return HybridConnectionListResultPage{fn: getNextPage}
+func NewHybridConnectionListResultPage(cur HybridConnectionListResult, getNextPage func(context.Context, HybridConnectionListResult) (HybridConnectionListResult, error)) HybridConnectionListResultPage {
+	return HybridConnectionListResultPage{
+		fn:   getNextPage,
+		hclr: cur,
+	}
 }
 
 // HybridConnectionProperties properties of the HybridConnection.
@@ -841,8 +847,11 @@ func (page NamespaceListResultPage) Values() []Namespace {
 }
 
 // Creates a new instance of the NamespaceListResultPage type.
-func NewNamespaceListResultPage(getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
-	return NamespaceListResultPage{fn: getNextPage}
+func NewNamespaceListResultPage(cur NamespaceListResult, getNextPage func(context.Context, NamespaceListResult) (NamespaceListResult, error)) NamespaceListResultPage {
+	return NamespaceListResultPage{
+		fn:  getNextPage,
+		nlr: cur,
+	}
 }
 
 // NamespaceProperties properties of the namespace.
@@ -1090,8 +1099,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // RegenerateAccessKeyParameters parameters supplied to the regenerate authorization rule operation, specifies
@@ -1531,6 +1543,3 @@ func (page WcfRelaysListResultPage) Values() []WcfRelay {
 }
 
 // Creates a new instance of the WcfRelaysListResultPage type.
-func NewWcfRelaysListResultPage(getNextPage func(context.Context, WcfRelaysListResult) (WcfRelaysListResult, error)) WcfRelaysListResultPage {
-	return WcfRelaysListResultPage{fn: getNextPage}
-}

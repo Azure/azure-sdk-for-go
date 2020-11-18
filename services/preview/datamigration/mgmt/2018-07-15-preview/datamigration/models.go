@@ -5643,8 +5643,11 @@ func (page FileListPage) Values() []ProjectFile {
 }
 
 // Creates a new instance of the FileListPage type.
-func NewFileListPage(getNextPage func(context.Context, FileList) (FileList, error)) FileListPage {
-	return FileListPage{fn: getNextPage}
+func NewFileListPage(cur FileList, getNextPage func(context.Context, FileList) (FileList, error)) FileListPage {
+	return FileListPage{
+		fn: getNextPage,
+		fl: cur,
+	}
 }
 
 // FileShare file share information with Path, Username, and Password.
@@ -16441,8 +16444,11 @@ func (page ProjectListPage) Values() []Project {
 }
 
 // Creates a new instance of the ProjectListPage type.
-func NewProjectListPage(getNextPage func(context.Context, ProjectList) (ProjectList, error)) ProjectListPage {
-	return ProjectListPage{fn: getNextPage}
+func NewProjectListPage(cur ProjectList, getNextPage func(context.Context, ProjectList) (ProjectList, error)) ProjectListPage {
+	return ProjectListPage{
+		fn: getNextPage,
+		pl: cur,
+	}
 }
 
 // ProjectMetadata common metadata for migration projects
@@ -17342,8 +17348,11 @@ func (page QuotaListPage) Values() []Quota {
 }
 
 // Creates a new instance of the QuotaListPage type.
-func NewQuotaListPage(getNextPage func(context.Context, QuotaList) (QuotaList, error)) QuotaListPage {
-	return QuotaListPage{fn: getNextPage}
+func NewQuotaListPage(cur QuotaList, getNextPage func(context.Context, QuotaList) (QuotaList, error)) QuotaListPage {
+	return QuotaListPage{
+		fn: getNextPage,
+		ql: cur,
+	}
 }
 
 // QuotaName the name of the quota
@@ -17600,8 +17609,11 @@ func (page ResourceSkusResultPage) Values() []ResourceSku {
 }
 
 // Creates a new instance of the ResourceSkusResultPage type.
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return ResourceSkusResultPage{fn: getNextPage}
+func NewResourceSkusResultPage(cur ResourceSkusResult, getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return ResourceSkusResultPage{
+		fn:  getNextPage,
+		rsr: cur,
+	}
 }
 
 // SchemaComparisonValidationResult results for schema comparison between the source and target
@@ -17972,8 +17984,11 @@ func (page ServiceListPage) Values() []Service {
 }
 
 // Creates a new instance of the ServiceListPage type.
-func NewServiceListPage(getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
-	return ServiceListPage{fn: getNextPage}
+func NewServiceListPage(cur ServiceList, getNextPage func(context.Context, ServiceList) (ServiceList, error)) ServiceListPage {
+	return ServiceListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
 }
 
 // ServiceOperation description of an action supported by the Database Migration Service
@@ -18148,8 +18163,11 @@ func (page ServiceOperationListPage) Values() []ServiceOperation {
 }
 
 // Creates a new instance of the ServiceOperationListPage type.
-func NewServiceOperationListPage(getNextPage func(context.Context, ServiceOperationList) (ServiceOperationList, error)) ServiceOperationListPage {
-	return ServiceOperationListPage{fn: getNextPage}
+func NewServiceOperationListPage(cur ServiceOperationList, getNextPage func(context.Context, ServiceOperationList) (ServiceOperationList, error)) ServiceOperationListPage {
+	return ServiceOperationListPage{
+		fn:  getNextPage,
+		sol: cur,
+	}
 }
 
 // ServiceProperties properties of the Database Migration Service instance
@@ -18391,8 +18409,11 @@ func (page ServiceSkuListPage) Values() []AvailableServiceSku {
 }
 
 // Creates a new instance of the ServiceSkuListPage type.
-func NewServiceSkuListPage(getNextPage func(context.Context, ServiceSkuList) (ServiceSkuList, error)) ServiceSkuListPage {
-	return ServiceSkuListPage{fn: getNextPage}
+func NewServiceSkuListPage(cur ServiceSkuList, getNextPage func(context.Context, ServiceSkuList) (ServiceSkuList, error)) ServiceSkuListPage {
+	return ServiceSkuListPage{
+		fn:  getNextPage,
+		ssl: cur,
+	}
 }
 
 // ServicesStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -18783,9 +18804,6 @@ func (page TaskListPage) Values() []ProjectTask {
 }
 
 // Creates a new instance of the TaskListPage type.
-func NewTaskListPage(getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
-	return TaskListPage{fn: getNextPage}
-}
 
 // TrackedResource ARM tracked top level resource.
 type TrackedResource struct {

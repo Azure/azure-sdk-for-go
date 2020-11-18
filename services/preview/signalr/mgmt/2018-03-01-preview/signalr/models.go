@@ -364,8 +364,11 @@ func (page OperationListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OperationProperties extra Operation properties.
@@ -603,8 +606,11 @@ func (page ResourceListPage) Values() []ResourceType {
 }
 
 // Creates a new instance of the ResourceListPage type.
-func NewResourceListPage(getNextPage func(context.Context, ResourceList) (ResourceList, error)) ResourceListPage {
-	return ResourceListPage{fn: getNextPage}
+func NewResourceListPage(cur ResourceList, getNextPage func(context.Context, ResourceList) (ResourceList, error)) ResourceListPage {
+	return ResourceListPage{
+		fn: getNextPage,
+		rl: cur,
+	}
 }
 
 // ResourceSku the billing information of the resource.(e.g. basic vs. standard)
@@ -989,9 +995,6 @@ func (page UsageListPage) Values() []Usage {
 }
 
 // Creates a new instance of the UsageListPage type.
-func NewUsageListPage(getNextPage func(context.Context, UsageList) (UsageList, error)) UsageListPage {
-	return UsageListPage{fn: getNextPage}
-}
 
 // UsageName localizable String object containing the name and a localized value.
 type UsageName struct {

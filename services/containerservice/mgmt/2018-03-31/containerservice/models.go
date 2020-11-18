@@ -452,8 +452,11 @@ func (page ListResultPage) Values() []ContainerService {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // ManagedCluster managed cluster.
@@ -898,9 +901,6 @@ func (page ManagedClusterListResultPage) Values() []ManagedCluster {
 }
 
 // Creates a new instance of the ManagedClusterListResultPage type.
-func NewManagedClusterListResultPage(getNextPage func(context.Context, ManagedClusterListResult) (ManagedClusterListResult, error)) ManagedClusterListResultPage {
-	return ManagedClusterListResultPage{fn: getNextPage}
-}
 
 // ManagedClusterPoolUpgradeProfile the list of available upgrade versions.
 type ManagedClusterPoolUpgradeProfile struct {

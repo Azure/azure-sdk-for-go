@@ -262,8 +262,11 @@ func (page ClassicAdministratorListResultPage) Values() []ClassicAdministrator {
 }
 
 // Creates a new instance of the ClassicAdministratorListResultPage type.
-func NewClassicAdministratorListResultPage(getNextPage func(context.Context, ClassicAdministratorListResult) (ClassicAdministratorListResult, error)) ClassicAdministratorListResultPage {
-	return ClassicAdministratorListResultPage{fn: getNextPage}
+func NewClassicAdministratorListResultPage(cur ClassicAdministratorListResult, getNextPage func(context.Context, ClassicAdministratorListResult) (ClassicAdministratorListResult, error)) ClassicAdministratorListResultPage {
+	return ClassicAdministratorListResultPage{
+		fn:   getNextPage,
+		calr: cur,
+	}
 }
 
 // ClassicAdministratorProperties classic Administrator properties.
@@ -438,8 +441,11 @@ func (page PermissionGetResultPage) Values() []Permission {
 }
 
 // Creates a new instance of the PermissionGetResultPage type.
-func NewPermissionGetResultPage(getNextPage func(context.Context, PermissionGetResult) (PermissionGetResult, error)) PermissionGetResultPage {
-	return PermissionGetResultPage{fn: getNextPage}
+func NewPermissionGetResultPage(cur PermissionGetResult, getNextPage func(context.Context, PermissionGetResult) (PermissionGetResult, error)) PermissionGetResultPage {
+	return PermissionGetResultPage{
+		fn:  getNextPage,
+		pgr: cur,
+	}
 }
 
 // ProviderOperation operation
@@ -628,8 +634,11 @@ func (page ProviderOperationsMetadataListResultPage) Values() []ProviderOperatio
 }
 
 // Creates a new instance of the ProviderOperationsMetadataListResultPage type.
-func NewProviderOperationsMetadataListResultPage(getNextPage func(context.Context, ProviderOperationsMetadataListResult) (ProviderOperationsMetadataListResult, error)) ProviderOperationsMetadataListResultPage {
-	return ProviderOperationsMetadataListResultPage{fn: getNextPage}
+func NewProviderOperationsMetadataListResultPage(cur ProviderOperationsMetadataListResult, getNextPage func(context.Context, ProviderOperationsMetadataListResult) (ProviderOperationsMetadataListResult, error)) ProviderOperationsMetadataListResultPage {
+	return ProviderOperationsMetadataListResultPage{
+		fn:    getNextPage,
+		pomlr: cur,
+	}
 }
 
 // ResourceType resource Type
@@ -914,8 +923,11 @@ func (page RoleAssignmentListResultPage) Values() []RoleAssignment {
 }
 
 // Creates a new instance of the RoleAssignmentListResultPage type.
-func NewRoleAssignmentListResultPage(getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
-	return RoleAssignmentListResultPage{fn: getNextPage}
+func NewRoleAssignmentListResultPage(cur RoleAssignmentListResult, getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
+	return RoleAssignmentListResultPage{
+		fn:   getNextPage,
+		ralr: cur,
+	}
 }
 
 // RoleAssignmentProperties role assignment properties.
@@ -1173,9 +1185,6 @@ func (page RoleDefinitionListResultPage) Values() []RoleDefinition {
 }
 
 // Creates a new instance of the RoleDefinitionListResultPage type.
-func NewRoleDefinitionListResultPage(getNextPage func(context.Context, RoleDefinitionListResult) (RoleDefinitionListResult, error)) RoleDefinitionListResultPage {
-	return RoleDefinitionListResultPage{fn: getNextPage}
-}
 
 // RoleDefinitionProperties role definition properties.
 type RoleDefinitionProperties struct {

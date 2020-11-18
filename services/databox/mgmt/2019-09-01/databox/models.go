@@ -378,8 +378,11 @@ func (page AvailableSkusResultPage) Values() []SkuInformation {
 }
 
 // Creates a new instance of the AvailableSkusResultPage type.
-func NewAvailableSkusResultPage(getNextPage func(context.Context, AvailableSkusResult) (AvailableSkusResult, error)) AvailableSkusResultPage {
-	return AvailableSkusResultPage{fn: getNextPage}
+func NewAvailableSkusResultPage(cur AvailableSkusResult, getNextPage func(context.Context, AvailableSkusResult) (AvailableSkusResult, error)) AvailableSkusResultPage {
+	return AvailableSkusResultPage{
+		fn:  getNextPage,
+		asr: cur,
+	}
 }
 
 // CancellationReason reason for cancellation.
@@ -2887,8 +2890,11 @@ func (page JobResourceListPage) Values() []JobResource {
 }
 
 // Creates a new instance of the JobResourceListPage type.
-func NewJobResourceListPage(getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
-	return JobResourceListPage{fn: getNextPage}
+func NewJobResourceListPage(cur JobResourceList, getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
+	return JobResourceListPage{
+		fn:  getNextPage,
+		jrl: cur,
+	}
 }
 
 // JobResourceUpdateParameter the JobResourceUpdateParameter.
@@ -3381,9 +3387,6 @@ func (page OperationListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
-}
 
 // PackageShippingDetails shipping details.
 type PackageShippingDetails struct {

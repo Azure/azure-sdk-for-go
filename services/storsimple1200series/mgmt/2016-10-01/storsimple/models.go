@@ -417,8 +417,11 @@ func (page AlertListPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertListPage type.
-func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
-	return AlertListPage{fn: getNextPage}
+func NewAlertListPage(cur AlertList, getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return AlertListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AlertProperties properties of alert
@@ -805,8 +808,11 @@ func (page AvailableProviderOperationsPage) Values() []AvailableProviderOperatio
 }
 
 // Creates a new instance of the AvailableProviderOperationsPage type.
-func NewAvailableProviderOperationsPage(getNextPage func(context.Context, AvailableProviderOperations) (AvailableProviderOperations, error)) AvailableProviderOperationsPage {
-	return AvailableProviderOperationsPage{fn: getNextPage}
+func NewAvailableProviderOperationsPage(cur AvailableProviderOperations, getNextPage func(context.Context, AvailableProviderOperations) (AvailableProviderOperations, error)) AvailableProviderOperationsPage {
+	return AvailableProviderOperationsPage{
+		fn:  getNextPage,
+		apo: cur,
+	}
 }
 
 // Backup the backup.
@@ -1123,8 +1129,11 @@ func (page BackupListPage) Values() []Backup {
 }
 
 // Creates a new instance of the BackupListPage type.
-func NewBackupListPage(getNextPage func(context.Context, BackupList) (BackupList, error)) BackupListPage {
-	return BackupListPage{fn: getNextPage}
+func NewBackupListPage(cur BackupList, getNextPage func(context.Context, BackupList) (BackupList, error)) BackupListPage {
+	return BackupListPage{
+		fn: getNextPage,
+		bl: cur,
+	}
 }
 
 // BackupProperties class represents Backup properties
@@ -3018,9 +3027,6 @@ func (page JobListPage) Values() []Job {
 }
 
 // Creates a new instance of the JobListPage type.
-func NewJobListPage(getNextPage func(context.Context, JobList) (JobList, error)) JobListPage {
-	return JobListPage{fn: getNextPage}
-}
 
 // JobProperties properties for the job
 type JobProperties struct {

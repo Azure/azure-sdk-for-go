@@ -298,9 +298,6 @@ func (page ListResultPage) Values() []ResourceType {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
-}
 
 // Properties parameters supplied to CreateOrUpdate Redis operation.
 type Properties struct {

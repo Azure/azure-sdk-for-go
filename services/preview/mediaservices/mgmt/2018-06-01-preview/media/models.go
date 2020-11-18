@@ -390,8 +390,11 @@ func (page AssetCollectionPage) Values() []Asset {
 }
 
 // Creates a new instance of the AssetCollectionPage type.
-func NewAssetCollectionPage(getNextPage func(context.Context, AssetCollection) (AssetCollection, error)) AssetCollectionPage {
-	return AssetCollectionPage{fn: getNextPage}
+func NewAssetCollectionPage(cur AssetCollection, getNextPage func(context.Context, AssetCollection) (AssetCollection, error)) AssetCollectionPage {
+	return AssetCollectionPage{
+		fn: getNextPage,
+		ac: cur,
+	}
 }
 
 // AssetContainerSas the Asset Storage container SAS URLs.
@@ -1322,8 +1325,11 @@ func (page ContentKeyPolicyCollectionPage) Values() []ContentKeyPolicy {
 }
 
 // Creates a new instance of the ContentKeyPolicyCollectionPage type.
-func NewContentKeyPolicyCollectionPage(getNextPage func(context.Context, ContentKeyPolicyCollection) (ContentKeyPolicyCollection, error)) ContentKeyPolicyCollectionPage {
-	return ContentKeyPolicyCollectionPage{fn: getNextPage}
+func NewContentKeyPolicyCollectionPage(cur ContentKeyPolicyCollection, getNextPage func(context.Context, ContentKeyPolicyCollection) (ContentKeyPolicyCollection, error)) ContentKeyPolicyCollectionPage {
+	return ContentKeyPolicyCollectionPage{
+		fn:   getNextPage,
+		ckpc: cur,
+	}
 }
 
 // BasicContentKeyPolicyConfiguration base class for Content Key Policy configuration. A derived class must be used to
@@ -3919,8 +3925,11 @@ func (page JobCollectionPage) Values() []Job {
 }
 
 // Creates a new instance of the JobCollectionPage type.
-func NewJobCollectionPage(getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
-	return JobCollectionPage{fn: getNextPage}
+func NewJobCollectionPage(cur JobCollection, getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
+	return JobCollectionPage{
+		fn: getNextPage,
+		jc: cur,
+	}
 }
 
 // JobError details of JobOutput errors.
@@ -5354,8 +5363,11 @@ func (page LiveEventListResultPage) Values() []LiveEvent {
 }
 
 // Creates a new instance of the LiveEventListResultPage type.
-func NewLiveEventListResultPage(getNextPage func(context.Context, LiveEventListResult) (LiveEventListResult, error)) LiveEventListResultPage {
-	return LiveEventListResultPage{fn: getNextPage}
+func NewLiveEventListResultPage(cur LiveEventListResult, getNextPage func(context.Context, LiveEventListResult) (LiveEventListResult, error)) LiveEventListResultPage {
+	return LiveEventListResultPage{
+		fn:   getNextPage,
+		lelr: cur,
+	}
 }
 
 // LiveEventPreview the Live Event preview.
@@ -5802,8 +5814,11 @@ func (page LiveOutputListResultPage) Values() []LiveOutput {
 }
 
 // Creates a new instance of the LiveOutputListResultPage type.
-func NewLiveOutputListResultPage(getNextPage func(context.Context, LiveOutputListResult) (LiveOutputListResult, error)) LiveOutputListResultPage {
-	return LiveOutputListResultPage{fn: getNextPage}
+func NewLiveOutputListResultPage(cur LiveOutputListResult, getNextPage func(context.Context, LiveOutputListResult) (LiveOutputListResult, error)) LiveOutputListResultPage {
+	return LiveOutputListResultPage{
+		fn:   getNextPage,
+		lolr: cur,
+	}
 }
 
 // LiveOutputProperties the JSON object that contains the properties required to create a Live Output.
@@ -6293,8 +6308,11 @@ func (page OperationCollectionPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationCollectionPage type.
-func NewOperationCollectionPage(getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
-	return OperationCollectionPage{fn: getNextPage}
+func NewOperationCollectionPage(cur OperationCollection, getNextPage func(context.Context, OperationCollection) (OperationCollection, error)) OperationCollectionPage {
+	return OperationCollectionPage{
+		fn: getNextPage,
+		oc: cur,
+	}
 }
 
 // OperationDisplay operation details.
@@ -7090,8 +7108,11 @@ func (page ServiceCollectionPage) Values() []Service {
 }
 
 // Creates a new instance of the ServiceCollectionPage type.
-func NewServiceCollectionPage(getNextPage func(context.Context, ServiceCollection) (ServiceCollection, error)) ServiceCollectionPage {
-	return ServiceCollectionPage{fn: getNextPage}
+func NewServiceCollectionPage(cur ServiceCollection, getNextPage func(context.Context, ServiceCollection) (ServiceCollection, error)) ServiceCollectionPage {
+	return ServiceCollectionPage{
+		fn: getNextPage,
+		sc: cur,
+	}
 }
 
 // ServiceProperties properties of the Media Services account.
@@ -7498,8 +7519,11 @@ func (page StreamingEndpointListResultPage) Values() []StreamingEndpoint {
 }
 
 // Creates a new instance of the StreamingEndpointListResultPage type.
-func NewStreamingEndpointListResultPage(getNextPage func(context.Context, StreamingEndpointListResult) (StreamingEndpointListResult, error)) StreamingEndpointListResultPage {
-	return StreamingEndpointListResultPage{fn: getNextPage}
+func NewStreamingEndpointListResultPage(cur StreamingEndpointListResult, getNextPage func(context.Context, StreamingEndpointListResult) (StreamingEndpointListResult, error)) StreamingEndpointListResultPage {
+	return StreamingEndpointListResultPage{
+		fn:   getNextPage,
+		selr: cur,
+	}
 }
 
 // StreamingEndpointProperties the StreamingEndpoint properties.
@@ -7954,8 +7978,11 @@ func (page StreamingLocatorCollectionPage) Values() []StreamingLocator {
 }
 
 // Creates a new instance of the StreamingLocatorCollectionPage type.
-func NewStreamingLocatorCollectionPage(getNextPage func(context.Context, StreamingLocatorCollection) (StreamingLocatorCollection, error)) StreamingLocatorCollectionPage {
-	return StreamingLocatorCollectionPage{fn: getNextPage}
+func NewStreamingLocatorCollectionPage(cur StreamingLocatorCollection, getNextPage func(context.Context, StreamingLocatorCollection) (StreamingLocatorCollection, error)) StreamingLocatorCollectionPage {
+	return StreamingLocatorCollectionPage{
+		fn:  getNextPage,
+		slc: cur,
+	}
 }
 
 // StreamingLocatorContentKey class for content key in Streaming Locator
@@ -8278,8 +8305,11 @@ func (page StreamingPolicyCollectionPage) Values() []StreamingPolicy {
 }
 
 // Creates a new instance of the StreamingPolicyCollectionPage type.
-func NewStreamingPolicyCollectionPage(getNextPage func(context.Context, StreamingPolicyCollection) (StreamingPolicyCollection, error)) StreamingPolicyCollectionPage {
-	return StreamingPolicyCollectionPage{fn: getNextPage}
+func NewStreamingPolicyCollectionPage(cur StreamingPolicyCollection, getNextPage func(context.Context, StreamingPolicyCollection) (StreamingPolicyCollection, error)) StreamingPolicyCollectionPage {
+	return StreamingPolicyCollectionPage{
+		fn:  getNextPage,
+		spc: cur,
+	}
 }
 
 // StreamingPolicyContentKey class to specify properties of content key
@@ -8613,8 +8643,11 @@ func (page SubscriptionMediaServiceCollectionPage) Values() []SubscriptionMediaS
 }
 
 // Creates a new instance of the SubscriptionMediaServiceCollectionPage type.
-func NewSubscriptionMediaServiceCollectionPage(getNextPage func(context.Context, SubscriptionMediaServiceCollection) (SubscriptionMediaServiceCollection, error)) SubscriptionMediaServiceCollectionPage {
-	return SubscriptionMediaServiceCollectionPage{fn: getNextPage}
+func NewSubscriptionMediaServiceCollectionPage(cur SubscriptionMediaServiceCollection, getNextPage func(context.Context, SubscriptionMediaServiceCollection) (SubscriptionMediaServiceCollection, error)) SubscriptionMediaServiceCollectionPage {
+	return SubscriptionMediaServiceCollectionPage{
+		fn:   getNextPage,
+		smsc: cur,
+	}
 }
 
 // SyncStorageKeysInput the input to the sync storage keys request.
@@ -8892,9 +8925,6 @@ func (page TransformCollectionPage) Values() []Transform {
 }
 
 // Creates a new instance of the TransformCollectionPage type.
-func NewTransformCollectionPage(getNextPage func(context.Context, TransformCollection) (TransformCollection, error)) TransformCollectionPage {
-	return TransformCollectionPage{fn: getNextPage}
-}
 
 // TransformOutput describes the properties of a TransformOutput, which are the rules to be applied while
 // generating the desired output.

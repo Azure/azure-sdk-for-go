@@ -700,8 +700,11 @@ func (page ImageTemplateListResultPage) Values() []ImageTemplate {
 }
 
 // Creates a new instance of the ImageTemplateListResultPage type.
-func NewImageTemplateListResultPage(getNextPage func(context.Context, ImageTemplateListResult) (ImageTemplateListResult, error)) ImageTemplateListResultPage {
-	return ImageTemplateListResultPage{fn: getNextPage}
+func NewImageTemplateListResultPage(cur ImageTemplateListResult, getNextPage func(context.Context, ImageTemplateListResult) (ImageTemplateListResult, error)) ImageTemplateListResultPage {
+	return ImageTemplateListResultPage{
+		fn:   getNextPage,
+		itlr: cur,
+	}
 }
 
 // ImageTemplateManagedImageDistributor distribute as a Managed Disk Image.
@@ -1687,8 +1690,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ProvisioningError describes the error happened when create or update an image template
@@ -1953,9 +1959,6 @@ func (page RunOutputCollectionPage) Values() []RunOutput {
 }
 
 // Creates a new instance of the RunOutputCollectionPage type.
-func NewRunOutputCollectionPage(getNextPage func(context.Context, RunOutputCollection) (RunOutputCollection, error)) RunOutputCollectionPage {
-	return RunOutputCollectionPage{fn: getNextPage}
-}
 
 // RunOutputProperties describes the properties of a run output
 type RunOutputProperties struct {

@@ -694,9 +694,6 @@ func (page PaginatedOperationalizationClustersListPage) Values() []Operationaliz
 }
 
 // Creates a new instance of the PaginatedOperationalizationClustersListPage type.
-func NewPaginatedOperationalizationClustersListPage(getNextPage func(context.Context, PaginatedOperationalizationClustersList) (PaginatedOperationalizationClustersList, error)) PaginatedOperationalizationClustersListPage {
-	return PaginatedOperationalizationClustersListPage{fn: getNextPage}
-}
 
 // Resource azure resource
 type Resource struct {

@@ -203,8 +203,11 @@ func (page APIOperationListResultPage) Values() []APIOperation {
 }
 
 // Creates a new instance of the APIOperationListResultPage type.
-func NewAPIOperationListResultPage(getNextPage func(context.Context, APIOperationListResult) (APIOperationListResult, error)) APIOperationListResultPage {
-	return APIOperationListResultPage{fn: getNextPage}
+func NewAPIOperationListResultPage(cur APIOperationListResult, getNextPage func(context.Context, APIOperationListResult) (APIOperationListResult, error)) APIOperationListResultPage {
+	return APIOperationListResultPage{
+		fn:     getNextPage,
+		apiolr: cur,
+	}
 }
 
 // Cache a Cache instance. Follows Azure Resource Manager standards:
@@ -610,8 +613,11 @@ func (page CachesListResultPage) Values() []Cache {
 }
 
 // Creates a new instance of the CachesListResultPage type.
-func NewCachesListResultPage(getNextPage func(context.Context, CachesListResult) (CachesListResult, error)) CachesListResultPage {
-	return CachesListResultPage{fn: getNextPage}
+func NewCachesListResultPage(cur CachesListResult, getNextPage func(context.Context, CachesListResult) (CachesListResult, error)) CachesListResultPage {
+	return CachesListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // CachesStartFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -966,8 +972,11 @@ func (page ResourceSkusResultPage) Values() []ResourceSku {
 }
 
 // Creates a new instance of the ResourceSkusResultPage type.
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return ResourceSkusResultPage{fn: getNextPage}
+func NewResourceSkusResultPage(cur ResourceSkusResult, getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
+	return ResourceSkusResultPage{
+		fn:  getNextPage,
+		rsr: cur,
+	}
 }
 
 // Restriction the restrictions preventing this SKU from being used.
@@ -1294,8 +1303,11 @@ func (page StorageTargetsResultPage) Values() []StorageTarget {
 }
 
 // Creates a new instance of the StorageTargetsResultPage type.
-func NewStorageTargetsResultPage(getNextPage func(context.Context, StorageTargetsResult) (StorageTargetsResult, error)) StorageTargetsResultPage {
-	return StorageTargetsResultPage{fn: getNextPage}
+func NewStorageTargetsResultPage(cur StorageTargetsResult, getNextPage func(context.Context, StorageTargetsResult) (StorageTargetsResult, error)) StorageTargetsResultPage {
+	return StorageTargetsResultPage{
+		fn:  getNextPage,
+		str: cur,
+	}
 }
 
 // UnknownTarget storage container for use as an Unknown Storage Target.
@@ -1481,6 +1493,3 @@ func (page UsageModelsResultPage) Values() []UsageModel {
 }
 
 // Creates a new instance of the UsageModelsResultPage type.
-func NewUsageModelsResultPage(getNextPage func(context.Context, UsageModelsResult) (UsageModelsResult, error)) UsageModelsResultPage {
-	return UsageModelsResultPage{fn: getNextPage}
-}

@@ -386,9 +386,6 @@ func (page ListResultPage) Values() []ContainerService {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
-}
 
 // MasterProfile profile for the container service master.
 type MasterProfile struct {

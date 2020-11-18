@@ -339,8 +339,11 @@ func (page ListResultPage) Values() []Model {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // Location location information.
@@ -656,6 +659,3 @@ func (page TenantListResultPage) Values() []TenantIDDescription {
 }
 
 // Creates a new instance of the TenantListResultPage type.
-func NewTenantListResultPage(getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
-	return TenantListResultPage{fn: getNextPage}
-}

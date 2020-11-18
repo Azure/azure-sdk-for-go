@@ -345,9 +345,6 @@ func (page MachineListResultPage) Values() []Machine {
 }
 
 // Creates a new instance of the MachineListResultPage type.
-func NewMachineListResultPage(getNextPage func(context.Context, MachineListResult) (MachineListResult, error)) MachineListResultPage {
-	return MachineListResultPage{fn: getNextPage}
-}
 
 // MachineProperties describes the properties of a hybrid machine.
 type MachineProperties struct {

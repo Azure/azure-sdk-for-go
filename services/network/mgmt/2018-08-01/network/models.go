@@ -548,8 +548,11 @@ func (page ApplicationGatewayAvailableSslPredefinedPoliciesPage) Values() []Appl
 }
 
 // Creates a new instance of the ApplicationGatewayAvailableSslPredefinedPoliciesPage type.
-func NewApplicationGatewayAvailableSslPredefinedPoliciesPage(getNextPage func(context.Context, ApplicationGatewayAvailableSslPredefinedPolicies) (ApplicationGatewayAvailableSslPredefinedPolicies, error)) ApplicationGatewayAvailableSslPredefinedPoliciesPage {
-	return ApplicationGatewayAvailableSslPredefinedPoliciesPage{fn: getNextPage}
+func NewApplicationGatewayAvailableSslPredefinedPoliciesPage(cur ApplicationGatewayAvailableSslPredefinedPolicies, getNextPage func(context.Context, ApplicationGatewayAvailableSslPredefinedPolicies) (ApplicationGatewayAvailableSslPredefinedPolicies, error)) ApplicationGatewayAvailableSslPredefinedPoliciesPage {
+	return ApplicationGatewayAvailableSslPredefinedPoliciesPage{
+		fn:     getNextPage,
+		agaspp: cur,
+	}
 }
 
 // ApplicationGatewayAvailableWafRuleSetsResult response for ApplicationGatewayAvailableWafRuleSets API service
@@ -1580,8 +1583,11 @@ func (page ApplicationGatewayListResultPage) Values() []ApplicationGateway {
 }
 
 // Creates a new instance of the ApplicationGatewayListResultPage type.
-func NewApplicationGatewayListResultPage(getNextPage func(context.Context, ApplicationGatewayListResult) (ApplicationGatewayListResult, error)) ApplicationGatewayListResultPage {
-	return ApplicationGatewayListResultPage{fn: getNextPage}
+func NewApplicationGatewayListResultPage(cur ApplicationGatewayListResult, getNextPage func(context.Context, ApplicationGatewayListResult) (ApplicationGatewayListResult, error)) ApplicationGatewayListResultPage {
+	return ApplicationGatewayListResultPage{
+		fn:   getNextPage,
+		aglr: cur,
+	}
 }
 
 // ApplicationGatewayPathRule path rule of URL path map of an application gateway.
@@ -3045,8 +3051,11 @@ func (page ApplicationSecurityGroupListResultPage) Values() []ApplicationSecurit
 }
 
 // Creates a new instance of the ApplicationSecurityGroupListResultPage type.
-func NewApplicationSecurityGroupListResultPage(getNextPage func(context.Context, ApplicationSecurityGroupListResult) (ApplicationSecurityGroupListResult, error)) ApplicationSecurityGroupListResultPage {
-	return ApplicationSecurityGroupListResultPage{fn: getNextPage}
+func NewApplicationSecurityGroupListResultPage(cur ApplicationSecurityGroupListResult, getNextPage func(context.Context, ApplicationSecurityGroupListResult) (ApplicationSecurityGroupListResult, error)) ApplicationSecurityGroupListResultPage {
+	return ApplicationSecurityGroupListResultPage{
+		fn:    getNextPage,
+		asglr: cur,
+	}
 }
 
 // ApplicationSecurityGroupPropertiesFormat application security group properties.
@@ -3263,8 +3272,11 @@ func (page AuthorizationListResultPage) Values() []ExpressRouteCircuitAuthorizat
 }
 
 // Creates a new instance of the AuthorizationListResultPage type.
-func NewAuthorizationListResultPage(getNextPage func(context.Context, AuthorizationListResult) (AuthorizationListResult, error)) AuthorizationListResultPage {
-	return AuthorizationListResultPage{fn: getNextPage}
+func NewAuthorizationListResultPage(cur AuthorizationListResult, getNextPage func(context.Context, AuthorizationListResult) (AuthorizationListResult, error)) AuthorizationListResultPage {
+	return AuthorizationListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AuthorizationPropertiesFormat ...
@@ -3462,8 +3474,11 @@ func (page AvailableDelegationsResultPage) Values() []AvailableDelegation {
 }
 
 // Creates a new instance of the AvailableDelegationsResultPage type.
-func NewAvailableDelegationsResultPage(getNextPage func(context.Context, AvailableDelegationsResult) (AvailableDelegationsResult, error)) AvailableDelegationsResultPage {
-	return AvailableDelegationsResultPage{fn: getNextPage}
+func NewAvailableDelegationsResultPage(cur AvailableDelegationsResult, getNextPage func(context.Context, AvailableDelegationsResult) (AvailableDelegationsResult, error)) AvailableDelegationsResultPage {
+	return AvailableDelegationsResultPage{
+		fn:  getNextPage,
+		adr: cur,
+	}
 }
 
 // AvailableProvidersList list of available countries with details.
@@ -4018,8 +4033,11 @@ func (page AzureFirewallFqdnTagListResultPage) Values() []AzureFirewallFqdnTag {
 }
 
 // Creates a new instance of the AzureFirewallFqdnTagListResultPage type.
-func NewAzureFirewallFqdnTagListResultPage(getNextPage func(context.Context, AzureFirewallFqdnTagListResult) (AzureFirewallFqdnTagListResult, error)) AzureFirewallFqdnTagListResultPage {
-	return AzureFirewallFqdnTagListResultPage{fn: getNextPage}
+func NewAzureFirewallFqdnTagListResultPage(cur AzureFirewallFqdnTagListResult, getNextPage func(context.Context, AzureFirewallFqdnTagListResult) (AzureFirewallFqdnTagListResult, error)) AzureFirewallFqdnTagListResultPage {
+	return AzureFirewallFqdnTagListResultPage{
+		fn:     getNextPage,
+		afftlr: cur,
+	}
 }
 
 // AzureFirewallFqdnTagPropertiesFormat azure Firewall FQDN Tag Properties
@@ -4271,8 +4289,11 @@ func (page AzureFirewallListResultPage) Values() []AzureFirewall {
 }
 
 // Creates a new instance of the AzureFirewallListResultPage type.
-func NewAzureFirewallListResultPage(getNextPage func(context.Context, AzureFirewallListResult) (AzureFirewallListResult, error)) AzureFirewallListResultPage {
-	return AzureFirewallListResultPage{fn: getNextPage}
+func NewAzureFirewallListResultPage(cur AzureFirewallListResult, getNextPage func(context.Context, AzureFirewallListResult) (AzureFirewallListResult, error)) AzureFirewallListResultPage {
+	return AzureFirewallListResultPage{
+		fn:   getNextPage,
+		aflr: cur,
+	}
 }
 
 // AzureFirewallNatRCAction azureFirewall NAT Rule Collection Action.
@@ -5020,8 +5041,11 @@ func (page BgpServiceCommunityListResultPage) Values() []BgpServiceCommunity {
 }
 
 // Creates a new instance of the BgpServiceCommunityListResultPage type.
-func NewBgpServiceCommunityListResultPage(getNextPage func(context.Context, BgpServiceCommunityListResult) (BgpServiceCommunityListResult, error)) BgpServiceCommunityListResultPage {
-	return BgpServiceCommunityListResultPage{fn: getNextPage}
+func NewBgpServiceCommunityListResultPage(cur BgpServiceCommunityListResult, getNextPage func(context.Context, BgpServiceCommunityListResult) (BgpServiceCommunityListResult, error)) BgpServiceCommunityListResultPage {
+	return BgpServiceCommunityListResultPage{
+		fn:    getNextPage,
+		bsclr: cur,
+	}
 }
 
 // BgpServiceCommunityPropertiesFormat properties of Service Community.
@@ -6190,8 +6214,11 @@ func (page DdosProtectionPlanListResultPage) Values() []DdosProtectionPlan {
 }
 
 // Creates a new instance of the DdosProtectionPlanListResultPage type.
-func NewDdosProtectionPlanListResultPage(getNextPage func(context.Context, DdosProtectionPlanListResult) (DdosProtectionPlanListResult, error)) DdosProtectionPlanListResultPage {
-	return DdosProtectionPlanListResultPage{fn: getNextPage}
+func NewDdosProtectionPlanListResultPage(cur DdosProtectionPlanListResult, getNextPage func(context.Context, DdosProtectionPlanListResult) (DdosProtectionPlanListResult, error)) DdosProtectionPlanListResultPage {
+	return DdosProtectionPlanListResultPage{
+		fn:    getNextPage,
+		dpplr: cur,
+	}
 }
 
 // DdosProtectionPlanPropertiesFormat dDoS protection plan properties.
@@ -6673,8 +6700,11 @@ func (page EndpointServicesListResultPage) Values() []EndpointServiceResult {
 }
 
 // Creates a new instance of the EndpointServicesListResultPage type.
-func NewEndpointServicesListResultPage(getNextPage func(context.Context, EndpointServicesListResult) (EndpointServicesListResult, error)) EndpointServicesListResultPage {
-	return EndpointServicesListResultPage{fn: getNextPage}
+func NewEndpointServicesListResultPage(cur EndpointServicesListResult, getNextPage func(context.Context, EndpointServicesListResult) (EndpointServicesListResult, error)) EndpointServicesListResultPage {
+	return EndpointServicesListResultPage{
+		fn:   getNextPage,
+		eslr: cur,
+	}
 }
 
 // Error ...
@@ -7310,8 +7340,11 @@ func (page ExpressRouteCircuitListResultPage) Values() []ExpressRouteCircuit {
 }
 
 // Creates a new instance of the ExpressRouteCircuitListResultPage type.
-func NewExpressRouteCircuitListResultPage(getNextPage func(context.Context, ExpressRouteCircuitListResult) (ExpressRouteCircuitListResult, error)) ExpressRouteCircuitListResultPage {
-	return ExpressRouteCircuitListResultPage{fn: getNextPage}
+func NewExpressRouteCircuitListResultPage(cur ExpressRouteCircuitListResult, getNextPage func(context.Context, ExpressRouteCircuitListResult) (ExpressRouteCircuitListResult, error)) ExpressRouteCircuitListResultPage {
+	return ExpressRouteCircuitListResultPage{
+		fn:    getNextPage,
+		erclr: cur,
+	}
 }
 
 // ExpressRouteCircuitPeering peering in an ExpressRouteCircuit resource.
@@ -7568,8 +7601,11 @@ func (page ExpressRouteCircuitPeeringListResultPage) Values() []ExpressRouteCirc
 }
 
 // Creates a new instance of the ExpressRouteCircuitPeeringListResultPage type.
-func NewExpressRouteCircuitPeeringListResultPage(getNextPage func(context.Context, ExpressRouteCircuitPeeringListResult) (ExpressRouteCircuitPeeringListResult, error)) ExpressRouteCircuitPeeringListResultPage {
-	return ExpressRouteCircuitPeeringListResultPage{fn: getNextPage}
+func NewExpressRouteCircuitPeeringListResultPage(cur ExpressRouteCircuitPeeringListResult, getNextPage func(context.Context, ExpressRouteCircuitPeeringListResult) (ExpressRouteCircuitPeeringListResult, error)) ExpressRouteCircuitPeeringListResultPage {
+	return ExpressRouteCircuitPeeringListResultPage{
+		fn:     getNextPage,
+		ercplr: cur,
+	}
 }
 
 // ExpressRouteCircuitPeeringPropertiesFormat ...
@@ -8443,8 +8479,11 @@ func (page ExpressRouteCrossConnectionListResultPage) Values() []ExpressRouteCro
 }
 
 // Creates a new instance of the ExpressRouteCrossConnectionListResultPage type.
-func NewExpressRouteCrossConnectionListResultPage(getNextPage func(context.Context, ExpressRouteCrossConnectionListResult) (ExpressRouteCrossConnectionListResult, error)) ExpressRouteCrossConnectionListResultPage {
-	return ExpressRouteCrossConnectionListResultPage{fn: getNextPage}
+func NewExpressRouteCrossConnectionListResultPage(cur ExpressRouteCrossConnectionListResult, getNextPage func(context.Context, ExpressRouteCrossConnectionListResult) (ExpressRouteCrossConnectionListResult, error)) ExpressRouteCrossConnectionListResultPage {
+	return ExpressRouteCrossConnectionListResultPage{
+		fn:     getNextPage,
+		ercclr: cur,
+	}
 }
 
 // ExpressRouteCrossConnectionPeering peering in an ExpressRoute Cross Connection resource.
@@ -8688,8 +8727,11 @@ func (page ExpressRouteCrossConnectionPeeringListPage) Values() []ExpressRouteCr
 }
 
 // Creates a new instance of the ExpressRouteCrossConnectionPeeringListPage type.
-func NewExpressRouteCrossConnectionPeeringListPage(getNextPage func(context.Context, ExpressRouteCrossConnectionPeeringList) (ExpressRouteCrossConnectionPeeringList, error)) ExpressRouteCrossConnectionPeeringListPage {
-	return ExpressRouteCrossConnectionPeeringListPage{fn: getNextPage}
+func NewExpressRouteCrossConnectionPeeringListPage(cur ExpressRouteCrossConnectionPeeringList, getNextPage func(context.Context, ExpressRouteCrossConnectionPeeringList) (ExpressRouteCrossConnectionPeeringList, error)) ExpressRouteCrossConnectionPeeringListPage {
+	return ExpressRouteCrossConnectionPeeringListPage{
+		fn:     getNextPage,
+		erccpl: cur,
+	}
 }
 
 // ExpressRouteCrossConnectionPeeringProperties ...
@@ -9484,8 +9526,11 @@ func (page ExpressRouteLinkListResultPage) Values() []ExpressRouteLink {
 }
 
 // Creates a new instance of the ExpressRouteLinkListResultPage type.
-func NewExpressRouteLinkListResultPage(getNextPage func(context.Context, ExpressRouteLinkListResult) (ExpressRouteLinkListResult, error)) ExpressRouteLinkListResultPage {
-	return ExpressRouteLinkListResultPage{fn: getNextPage}
+func NewExpressRouteLinkListResultPage(cur ExpressRouteLinkListResult, getNextPage func(context.Context, ExpressRouteLinkListResult) (ExpressRouteLinkListResult, error)) ExpressRouteLinkListResultPage {
+	return ExpressRouteLinkListResultPage{
+		fn:    getNextPage,
+		erllr: cur,
+	}
 }
 
 // ExpressRouteLinkPropertiesFormat properties specific to ExpressRouteLink resources.
@@ -9782,8 +9827,11 @@ func (page ExpressRoutePortListResultPage) Values() []ExpressRoutePort {
 }
 
 // Creates a new instance of the ExpressRoutePortListResultPage type.
-func NewExpressRoutePortListResultPage(getNextPage func(context.Context, ExpressRoutePortListResult) (ExpressRoutePortListResult, error)) ExpressRoutePortListResultPage {
-	return ExpressRoutePortListResultPage{fn: getNextPage}
+func NewExpressRoutePortListResultPage(cur ExpressRoutePortListResult, getNextPage func(context.Context, ExpressRoutePortListResult) (ExpressRoutePortListResult, error)) ExpressRoutePortListResultPage {
+	return ExpressRoutePortListResultPage{
+		fn:    getNextPage,
+		erplr: cur,
+	}
 }
 
 // ExpressRoutePortPropertiesFormat properties specific to ExpressRoutePort resources.
@@ -10150,8 +10198,11 @@ func (page ExpressRoutePortsLocationListResultPage) Values() []ExpressRoutePorts
 }
 
 // Creates a new instance of the ExpressRoutePortsLocationListResultPage type.
-func NewExpressRoutePortsLocationListResultPage(getNextPage func(context.Context, ExpressRoutePortsLocationListResult) (ExpressRoutePortsLocationListResult, error)) ExpressRoutePortsLocationListResultPage {
-	return ExpressRoutePortsLocationListResultPage{fn: getNextPage}
+func NewExpressRoutePortsLocationListResultPage(cur ExpressRoutePortsLocationListResult, getNextPage func(context.Context, ExpressRoutePortsLocationListResult) (ExpressRoutePortsLocationListResult, error)) ExpressRoutePortsLocationListResultPage {
+	return ExpressRoutePortsLocationListResultPage{
+		fn:     getNextPage,
+		erpllr: cur,
+	}
 }
 
 // ExpressRoutePortsLocationPropertiesFormat properties specific to ExpressRoutePorts peering location
@@ -10469,8 +10520,11 @@ func (page ExpressRouteServiceProviderListResultPage) Values() []ExpressRouteSer
 }
 
 // Creates a new instance of the ExpressRouteServiceProviderListResultPage type.
-func NewExpressRouteServiceProviderListResultPage(getNextPage func(context.Context, ExpressRouteServiceProviderListResult) (ExpressRouteServiceProviderListResult, error)) ExpressRouteServiceProviderListResultPage {
-	return ExpressRouteServiceProviderListResultPage{fn: getNextPage}
+func NewExpressRouteServiceProviderListResultPage(cur ExpressRouteServiceProviderListResult, getNextPage func(context.Context, ExpressRouteServiceProviderListResult) (ExpressRouteServiceProviderListResult, error)) ExpressRouteServiceProviderListResultPage {
+	return ExpressRouteServiceProviderListResultPage{
+		fn:     getNextPage,
+		ersplr: cur,
+	}
 }
 
 // ExpressRouteServiceProviderPropertiesFormat properties of ExpressRouteServiceProvider.
@@ -11198,8 +11252,11 @@ func (page InboundNatRuleListResultPage) Values() []InboundNatRule {
 }
 
 // Creates a new instance of the InboundNatRuleListResultPage type.
-func NewInboundNatRuleListResultPage(getNextPage func(context.Context, InboundNatRuleListResult) (InboundNatRuleListResult, error)) InboundNatRuleListResultPage {
-	return InboundNatRuleListResultPage{fn: getNextPage}
+func NewInboundNatRuleListResultPage(cur InboundNatRuleListResult, getNextPage func(context.Context, InboundNatRuleListResult) (InboundNatRuleListResult, error)) InboundNatRuleListResultPage {
+	return InboundNatRuleListResultPage{
+		fn:    getNextPage,
+		inrlr: cur,
+	}
 }
 
 // InboundNatRulePropertiesFormat properties of the inbound NAT rule.
@@ -11734,8 +11791,11 @@ func (page InterfaceEndpointListResultPage) Values() []InterfaceEndpoint {
 }
 
 // Creates a new instance of the InterfaceEndpointListResultPage type.
-func NewInterfaceEndpointListResultPage(getNextPage func(context.Context, InterfaceEndpointListResult) (InterfaceEndpointListResult, error)) InterfaceEndpointListResultPage {
-	return InterfaceEndpointListResultPage{fn: getNextPage}
+func NewInterfaceEndpointListResultPage(cur InterfaceEndpointListResult, getNextPage func(context.Context, InterfaceEndpointListResult) (InterfaceEndpointListResult, error)) InterfaceEndpointListResultPage {
+	return InterfaceEndpointListResultPage{
+		fn:   getNextPage,
+		ielr: cur,
+	}
 }
 
 // InterfaceEndpointProperties properties of the interface endpoint.
@@ -12065,8 +12125,11 @@ func (page InterfaceIPConfigurationListResultPage) Values() []InterfaceIPConfigu
 }
 
 // Creates a new instance of the InterfaceIPConfigurationListResultPage type.
-func NewInterfaceIPConfigurationListResultPage(getNextPage func(context.Context, InterfaceIPConfigurationListResult) (InterfaceIPConfigurationListResult, error)) InterfaceIPConfigurationListResultPage {
-	return InterfaceIPConfigurationListResultPage{fn: getNextPage}
+func NewInterfaceIPConfigurationListResultPage(cur InterfaceIPConfigurationListResult, getNextPage func(context.Context, InterfaceIPConfigurationListResult) (InterfaceIPConfigurationListResult, error)) InterfaceIPConfigurationListResultPage {
+	return InterfaceIPConfigurationListResultPage{
+		fn:     getNextPage,
+		iipclr: cur,
+	}
 }
 
 // InterfaceIPConfigurationPropertiesFormat properties of IP configuration.
@@ -12258,8 +12321,11 @@ func (page InterfaceListResultPage) Values() []Interface {
 }
 
 // Creates a new instance of the InterfaceListResultPage type.
-func NewInterfaceListResultPage(getNextPage func(context.Context, InterfaceListResult) (InterfaceListResult, error)) InterfaceListResultPage {
-	return InterfaceListResultPage{fn: getNextPage}
+func NewInterfaceListResultPage(cur InterfaceListResult, getNextPage func(context.Context, InterfaceListResult) (InterfaceListResult, error)) InterfaceListResultPage {
+	return InterfaceListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // InterfaceLoadBalancerListResult response for list ip configurations API service call.
@@ -12423,8 +12489,11 @@ func (page InterfaceLoadBalancerListResultPage) Values() []LoadBalancer {
 }
 
 // Creates a new instance of the InterfaceLoadBalancerListResultPage type.
-func NewInterfaceLoadBalancerListResultPage(getNextPage func(context.Context, InterfaceLoadBalancerListResult) (InterfaceLoadBalancerListResult, error)) InterfaceLoadBalancerListResultPage {
-	return InterfaceLoadBalancerListResultPage{fn: getNextPage}
+func NewInterfaceLoadBalancerListResultPage(cur InterfaceLoadBalancerListResult, getNextPage func(context.Context, InterfaceLoadBalancerListResult) (InterfaceLoadBalancerListResult, error)) InterfaceLoadBalancerListResultPage {
+	return InterfaceLoadBalancerListResultPage{
+		fn:    getNextPage,
+		ilblr: cur,
+	}
 }
 
 // InterfacePropertiesFormat networkInterface properties.
@@ -12886,8 +12955,11 @@ func (page InterfaceTapConfigurationListResultPage) Values() []InterfaceTapConfi
 }
 
 // Creates a new instance of the InterfaceTapConfigurationListResultPage type.
-func NewInterfaceTapConfigurationListResultPage(getNextPage func(context.Context, InterfaceTapConfigurationListResult) (InterfaceTapConfigurationListResult, error)) InterfaceTapConfigurationListResultPage {
-	return InterfaceTapConfigurationListResultPage{fn: getNextPage}
+func NewInterfaceTapConfigurationListResultPage(cur InterfaceTapConfigurationListResult, getNextPage func(context.Context, InterfaceTapConfigurationListResult) (InterfaceTapConfigurationListResult, error)) InterfaceTapConfigurationListResultPage {
+	return InterfaceTapConfigurationListResultPage{
+		fn:    getNextPage,
+		itclr: cur,
+	}
 }
 
 // InterfaceTapConfigurationPropertiesFormat properties of Virtual Network Tap configuration.
@@ -13368,8 +13440,11 @@ func (page ListHubVirtualNetworkConnectionsResultPage) Values() []HubVirtualNetw
 }
 
 // Creates a new instance of the ListHubVirtualNetworkConnectionsResultPage type.
-func NewListHubVirtualNetworkConnectionsResultPage(getNextPage func(context.Context, ListHubVirtualNetworkConnectionsResult) (ListHubVirtualNetworkConnectionsResult, error)) ListHubVirtualNetworkConnectionsResultPage {
-	return ListHubVirtualNetworkConnectionsResultPage{fn: getNextPage}
+func NewListHubVirtualNetworkConnectionsResultPage(cur ListHubVirtualNetworkConnectionsResult, getNextPage func(context.Context, ListHubVirtualNetworkConnectionsResult) (ListHubVirtualNetworkConnectionsResult, error)) ListHubVirtualNetworkConnectionsResultPage {
+	return ListHubVirtualNetworkConnectionsResultPage{
+		fn:     getNextPage,
+		lhvncr: cur,
+	}
 }
 
 // ListP2SVpnGatewaysResult result of the request to list P2SVpnGateways. It contains a list of P2SVpnGateways
@@ -13841,8 +13916,11 @@ func (page ListVirtualHubsResultPage) Values() []VirtualHub {
 }
 
 // Creates a new instance of the ListVirtualHubsResultPage type.
-func NewListVirtualHubsResultPage(getNextPage func(context.Context, ListVirtualHubsResult) (ListVirtualHubsResult, error)) ListVirtualHubsResultPage {
-	return ListVirtualHubsResultPage{fn: getNextPage}
+func NewListVirtualHubsResultPage(cur ListVirtualHubsResult, getNextPage func(context.Context, ListVirtualHubsResult) (ListVirtualHubsResult, error)) ListVirtualHubsResultPage {
+	return ListVirtualHubsResultPage{
+		fn:   getNextPage,
+		lvhr: cur,
+	}
 }
 
 // ListVirtualWANsResult result of the request to list VirtualWANs. It contains a list of VirtualWANs and a URL
@@ -13998,8 +14076,11 @@ func (page ListVirtualWANsResultPage) Values() []VirtualWAN {
 }
 
 // Creates a new instance of the ListVirtualWANsResultPage type.
-func NewListVirtualWANsResultPage(getNextPage func(context.Context, ListVirtualWANsResult) (ListVirtualWANsResult, error)) ListVirtualWANsResultPage {
-	return ListVirtualWANsResultPage{fn: getNextPage}
+func NewListVirtualWANsResultPage(cur ListVirtualWANsResult, getNextPage func(context.Context, ListVirtualWANsResult) (ListVirtualWANsResult, error)) ListVirtualWANsResultPage {
+	return ListVirtualWANsResultPage{
+		fn:     getNextPage,
+		lvwanr: cur,
+	}
 }
 
 // ListVpnConnectionsResult result of the request to list all vpn connections to a virtual wan vpn gateway. It
@@ -14155,8 +14236,11 @@ func (page ListVpnConnectionsResultPage) Values() []VpnConnection {
 }
 
 // Creates a new instance of the ListVpnConnectionsResultPage type.
-func NewListVpnConnectionsResultPage(getNextPage func(context.Context, ListVpnConnectionsResult) (ListVpnConnectionsResult, error)) ListVpnConnectionsResultPage {
-	return ListVpnConnectionsResultPage{fn: getNextPage}
+func NewListVpnConnectionsResultPage(cur ListVpnConnectionsResult, getNextPage func(context.Context, ListVpnConnectionsResult) (ListVpnConnectionsResult, error)) ListVpnConnectionsResultPage {
+	return ListVpnConnectionsResultPage{
+		fn:   getNextPage,
+		lvcr: cur,
+	}
 }
 
 // ListVpnGatewaysResult result of the request to list VpnGateways. It contains a list of VpnGateways and a URL
@@ -14312,8 +14396,11 @@ func (page ListVpnGatewaysResultPage) Values() []VpnGateway {
 }
 
 // Creates a new instance of the ListVpnGatewaysResultPage type.
-func NewListVpnGatewaysResultPage(getNextPage func(context.Context, ListVpnGatewaysResult) (ListVpnGatewaysResult, error)) ListVpnGatewaysResultPage {
-	return ListVpnGatewaysResultPage{fn: getNextPage}
+func NewListVpnGatewaysResultPage(cur ListVpnGatewaysResult, getNextPage func(context.Context, ListVpnGatewaysResult) (ListVpnGatewaysResult, error)) ListVpnGatewaysResultPage {
+	return ListVpnGatewaysResultPage{
+		fn:   getNextPage,
+		lvgr: cur,
+	}
 }
 
 // ListVpnSitesResult result of the request to list VpnSites. It contains a list of VpnSites and a URL nextLink
@@ -14469,8 +14556,11 @@ func (page ListVpnSitesResultPage) Values() []VpnSite {
 }
 
 // Creates a new instance of the ListVpnSitesResultPage type.
-func NewListVpnSitesResultPage(getNextPage func(context.Context, ListVpnSitesResult) (ListVpnSitesResult, error)) ListVpnSitesResultPage {
-	return ListVpnSitesResultPage{fn: getNextPage}
+func NewListVpnSitesResultPage(cur ListVpnSitesResult, getNextPage func(context.Context, ListVpnSitesResult) (ListVpnSitesResult, error)) ListVpnSitesResultPage {
+	return ListVpnSitesResultPage{
+		fn:   getNextPage,
+		lvsr: cur,
+	}
 }
 
 // LoadBalancer loadBalancer resource
@@ -14767,8 +14857,11 @@ func (page LoadBalancerBackendAddressPoolListResultPage) Values() []BackendAddre
 }
 
 // Creates a new instance of the LoadBalancerBackendAddressPoolListResultPage type.
-func NewLoadBalancerBackendAddressPoolListResultPage(getNextPage func(context.Context, LoadBalancerBackendAddressPoolListResult) (LoadBalancerBackendAddressPoolListResult, error)) LoadBalancerBackendAddressPoolListResultPage {
-	return LoadBalancerBackendAddressPoolListResultPage{fn: getNextPage}
+func NewLoadBalancerBackendAddressPoolListResultPage(cur LoadBalancerBackendAddressPoolListResult, getNextPage func(context.Context, LoadBalancerBackendAddressPoolListResult) (LoadBalancerBackendAddressPoolListResult, error)) LoadBalancerBackendAddressPoolListResultPage {
+	return LoadBalancerBackendAddressPoolListResultPage{
+		fn:      getNextPage,
+		lbbaplr: cur,
+	}
 }
 
 // LoadBalancerFrontendIPConfigurationListResult response for ListFrontendIPConfiguration API service call.
@@ -14933,8 +15026,11 @@ func (page LoadBalancerFrontendIPConfigurationListResultPage) Values() []Fronten
 }
 
 // Creates a new instance of the LoadBalancerFrontendIPConfigurationListResultPage type.
-func NewLoadBalancerFrontendIPConfigurationListResultPage(getNextPage func(context.Context, LoadBalancerFrontendIPConfigurationListResult) (LoadBalancerFrontendIPConfigurationListResult, error)) LoadBalancerFrontendIPConfigurationListResultPage {
-	return LoadBalancerFrontendIPConfigurationListResultPage{fn: getNextPage}
+func NewLoadBalancerFrontendIPConfigurationListResultPage(cur LoadBalancerFrontendIPConfigurationListResult, getNextPage func(context.Context, LoadBalancerFrontendIPConfigurationListResult) (LoadBalancerFrontendIPConfigurationListResult, error)) LoadBalancerFrontendIPConfigurationListResultPage {
+	return LoadBalancerFrontendIPConfigurationListResultPage{
+		fn:       getNextPage,
+		lbfipclr: cur,
+	}
 }
 
 // LoadBalancerListResult response for ListLoadBalancers API service call.
@@ -15098,8 +15194,11 @@ func (page LoadBalancerListResultPage) Values() []LoadBalancer {
 }
 
 // Creates a new instance of the LoadBalancerListResultPage type.
-func NewLoadBalancerListResultPage(getNextPage func(context.Context, LoadBalancerListResult) (LoadBalancerListResult, error)) LoadBalancerListResultPage {
-	return LoadBalancerListResultPage{fn: getNextPage}
+func NewLoadBalancerListResultPage(cur LoadBalancerListResult, getNextPage func(context.Context, LoadBalancerListResult) (LoadBalancerListResult, error)) LoadBalancerListResultPage {
+	return LoadBalancerListResultPage{
+		fn:   getNextPage,
+		lblr: cur,
+	}
 }
 
 // LoadBalancerLoadBalancingRuleListResult response for ListLoadBalancingRule API service call.
@@ -15264,8 +15363,11 @@ func (page LoadBalancerLoadBalancingRuleListResultPage) Values() []LoadBalancing
 }
 
 // Creates a new instance of the LoadBalancerLoadBalancingRuleListResultPage type.
-func NewLoadBalancerLoadBalancingRuleListResultPage(getNextPage func(context.Context, LoadBalancerLoadBalancingRuleListResult) (LoadBalancerLoadBalancingRuleListResult, error)) LoadBalancerLoadBalancingRuleListResultPage {
-	return LoadBalancerLoadBalancingRuleListResultPage{fn: getNextPage}
+func NewLoadBalancerLoadBalancingRuleListResultPage(cur LoadBalancerLoadBalancingRuleListResult, getNextPage func(context.Context, LoadBalancerLoadBalancingRuleListResult) (LoadBalancerLoadBalancingRuleListResult, error)) LoadBalancerLoadBalancingRuleListResultPage {
+	return LoadBalancerLoadBalancingRuleListResultPage{
+		fn:      getNextPage,
+		lblbrlr: cur,
+	}
 }
 
 // LoadBalancerOutboundRuleListResult response for ListOutboundRule API service call.
@@ -15429,8 +15531,11 @@ func (page LoadBalancerOutboundRuleListResultPage) Values() []OutboundRule {
 }
 
 // Creates a new instance of the LoadBalancerOutboundRuleListResultPage type.
-func NewLoadBalancerOutboundRuleListResultPage(getNextPage func(context.Context, LoadBalancerOutboundRuleListResult) (LoadBalancerOutboundRuleListResult, error)) LoadBalancerOutboundRuleListResultPage {
-	return LoadBalancerOutboundRuleListResultPage{fn: getNextPage}
+func NewLoadBalancerOutboundRuleListResultPage(cur LoadBalancerOutboundRuleListResult, getNextPage func(context.Context, LoadBalancerOutboundRuleListResult) (LoadBalancerOutboundRuleListResult, error)) LoadBalancerOutboundRuleListResultPage {
+	return LoadBalancerOutboundRuleListResultPage{
+		fn:     getNextPage,
+		lborlr: cur,
+	}
 }
 
 // LoadBalancerProbeListResult response for ListProbe API service call.
@@ -15594,8 +15699,11 @@ func (page LoadBalancerProbeListResultPage) Values() []Probe {
 }
 
 // Creates a new instance of the LoadBalancerProbeListResultPage type.
-func NewLoadBalancerProbeListResultPage(getNextPage func(context.Context, LoadBalancerProbeListResult) (LoadBalancerProbeListResult, error)) LoadBalancerProbeListResultPage {
-	return LoadBalancerProbeListResultPage{fn: getNextPage}
+func NewLoadBalancerProbeListResultPage(cur LoadBalancerProbeListResult, getNextPage func(context.Context, LoadBalancerProbeListResult) (LoadBalancerProbeListResult, error)) LoadBalancerProbeListResultPage {
+	return LoadBalancerProbeListResultPage{
+		fn:    getNextPage,
+		lbplr: cur,
+	}
 }
 
 // LoadBalancerPropertiesFormat properties of the load balancer.
@@ -16096,8 +16204,11 @@ func (page LocalNetworkGatewayListResultPage) Values() []LocalNetworkGateway {
 }
 
 // Creates a new instance of the LocalNetworkGatewayListResultPage type.
-func NewLocalNetworkGatewayListResultPage(getNextPage func(context.Context, LocalNetworkGatewayListResult) (LocalNetworkGatewayListResult, error)) LocalNetworkGatewayListResultPage {
-	return LocalNetworkGatewayListResultPage{fn: getNextPage}
+func NewLocalNetworkGatewayListResultPage(cur LocalNetworkGatewayListResult, getNextPage func(context.Context, LocalNetworkGatewayListResult) (LocalNetworkGatewayListResult, error)) LocalNetworkGatewayListResultPage {
+	return LocalNetworkGatewayListResultPage{
+		fn:    getNextPage,
+		lnglr: cur,
+	}
 }
 
 // LocalNetworkGatewayPropertiesFormat localNetworkGateway properties
@@ -16532,8 +16643,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationPropertiesFormat description of operation properties format.
@@ -18368,8 +18482,11 @@ func (page ProfileListResultPage) Values() []Profile {
 }
 
 // Creates a new instance of the ProfileListResultPage type.
-func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
-	return ProfileListResultPage{fn: getNextPage}
+func NewProfileListResultPage(cur ProfileListResult, getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
+	return ProfileListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // ProfilePropertiesFormat network profile properties.
@@ -18812,8 +18929,11 @@ func (page PublicIPAddressListResultPage) Values() []PublicIPAddress {
 }
 
 // Creates a new instance of the PublicIPAddressListResultPage type.
-func NewPublicIPAddressListResultPage(getNextPage func(context.Context, PublicIPAddressListResult) (PublicIPAddressListResult, error)) PublicIPAddressListResultPage {
-	return PublicIPAddressListResultPage{fn: getNextPage}
+func NewPublicIPAddressListResultPage(cur PublicIPAddressListResult, getNextPage func(context.Context, PublicIPAddressListResult) (PublicIPAddressListResult, error)) PublicIPAddressListResultPage {
+	return PublicIPAddressListResultPage{
+		fn:     getNextPage,
+		pipalr: cur,
+	}
 }
 
 // PublicIPAddressPropertiesFormat public IP address properties.
@@ -19258,8 +19378,11 @@ func (page PublicIPPrefixListResultPage) Values() []PublicIPPrefix {
 }
 
 // Creates a new instance of the PublicIPPrefixListResultPage type.
-func NewPublicIPPrefixListResultPage(getNextPage func(context.Context, PublicIPPrefixListResult) (PublicIPPrefixListResult, error)) PublicIPPrefixListResultPage {
-	return PublicIPPrefixListResultPage{fn: getNextPage}
+func NewPublicIPPrefixListResultPage(cur PublicIPPrefixListResult, getNextPage func(context.Context, PublicIPPrefixListResult) (PublicIPPrefixListResult, error)) PublicIPPrefixListResultPage {
+	return PublicIPPrefixListResultPage{
+		fn:     getNextPage,
+		pipplr: cur,
+	}
 }
 
 // PublicIPPrefixPropertiesFormat public IP prefix properties.
@@ -19812,8 +19935,11 @@ func (page RouteFilterListResultPage) Values() []RouteFilter {
 }
 
 // Creates a new instance of the RouteFilterListResultPage type.
-func NewRouteFilterListResultPage(getNextPage func(context.Context, RouteFilterListResult) (RouteFilterListResult, error)) RouteFilterListResultPage {
-	return RouteFilterListResultPage{fn: getNextPage}
+func NewRouteFilterListResultPage(cur RouteFilterListResult, getNextPage func(context.Context, RouteFilterListResult) (RouteFilterListResult, error)) RouteFilterListResultPage {
+	return RouteFilterListResultPage{
+		fn:   getNextPage,
+		rflr: cur,
+	}
 }
 
 // RouteFilterPropertiesFormat route Filter Resource
@@ -20082,8 +20208,11 @@ func (page RouteFilterRuleListResultPage) Values() []RouteFilterRule {
 }
 
 // Creates a new instance of the RouteFilterRuleListResultPage type.
-func NewRouteFilterRuleListResultPage(getNextPage func(context.Context, RouteFilterRuleListResult) (RouteFilterRuleListResult, error)) RouteFilterRuleListResultPage {
-	return RouteFilterRuleListResultPage{fn: getNextPage}
+func NewRouteFilterRuleListResultPage(cur RouteFilterRuleListResult, getNextPage func(context.Context, RouteFilterRuleListResult) (RouteFilterRuleListResult, error)) RouteFilterRuleListResultPage {
+	return RouteFilterRuleListResultPage{
+		fn:    getNextPage,
+		rfrlr: cur,
+	}
 }
 
 // RouteFilterRulePropertiesFormat route Filter Rule Resource
@@ -20427,8 +20556,11 @@ func (page RouteListResultPage) Values() []Route {
 }
 
 // Creates a new instance of the RouteListResultPage type.
-func NewRouteListResultPage(getNextPage func(context.Context, RouteListResult) (RouteListResult, error)) RouteListResultPage {
-	return RouteListResultPage{fn: getNextPage}
+func NewRouteListResultPage(cur RouteListResult, getNextPage func(context.Context, RouteListResult) (RouteListResult, error)) RouteListResultPage {
+	return RouteListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // RoutePropertiesFormat route resource
@@ -20764,8 +20896,11 @@ func (page RouteTableListResultPage) Values() []RouteTable {
 }
 
 // Creates a new instance of the RouteTableListResultPage type.
-func NewRouteTableListResultPage(getNextPage func(context.Context, RouteTableListResult) (RouteTableListResult, error)) RouteTableListResultPage {
-	return RouteTableListResultPage{fn: getNextPage}
+func NewRouteTableListResultPage(cur RouteTableListResult, getNextPage func(context.Context, RouteTableListResult) (RouteTableListResult, error)) RouteTableListResultPage {
+	return RouteTableListResultPage{
+		fn:   getNextPage,
+		rtlr: cur,
+	}
 }
 
 // RouteTablePropertiesFormat route Table resource
@@ -21146,8 +21281,11 @@ func (page SecurityGroupListResultPage) Values() []SecurityGroup {
 }
 
 // Creates a new instance of the SecurityGroupListResultPage type.
-func NewSecurityGroupListResultPage(getNextPage func(context.Context, SecurityGroupListResult) (SecurityGroupListResult, error)) SecurityGroupListResultPage {
-	return SecurityGroupListResultPage{fn: getNextPage}
+func NewSecurityGroupListResultPage(cur SecurityGroupListResult, getNextPage func(context.Context, SecurityGroupListResult) (SecurityGroupListResult, error)) SecurityGroupListResultPage {
+	return SecurityGroupListResultPage{
+		fn:   getNextPage,
+		sglr: cur,
+	}
 }
 
 // SecurityGroupNetworkInterface network interface and all its associated security rules.
@@ -21547,8 +21685,11 @@ func (page SecurityRuleListResultPage) Values() []SecurityRule {
 }
 
 // Creates a new instance of the SecurityRuleListResultPage type.
-func NewSecurityRuleListResultPage(getNextPage func(context.Context, SecurityRuleListResult) (SecurityRuleListResult, error)) SecurityRuleListResultPage {
-	return SecurityRuleListResultPage{fn: getNextPage}
+func NewSecurityRuleListResultPage(cur SecurityRuleListResult, getNextPage func(context.Context, SecurityRuleListResult) (SecurityRuleListResult, error)) SecurityRuleListResultPage {
+	return SecurityRuleListResultPage{
+		fn:   getNextPage,
+		srlr: cur,
+	}
 }
 
 // SecurityRulePropertiesFormat security rule resource.
@@ -22212,8 +22353,11 @@ func (page ServiceEndpointPolicyDefinitionListResultPage) Values() []ServiceEndp
 }
 
 // Creates a new instance of the ServiceEndpointPolicyDefinitionListResultPage type.
-func NewServiceEndpointPolicyDefinitionListResultPage(getNextPage func(context.Context, ServiceEndpointPolicyDefinitionListResult) (ServiceEndpointPolicyDefinitionListResult, error)) ServiceEndpointPolicyDefinitionListResultPage {
-	return ServiceEndpointPolicyDefinitionListResultPage{fn: getNextPage}
+func NewServiceEndpointPolicyDefinitionListResultPage(cur ServiceEndpointPolicyDefinitionListResult, getNextPage func(context.Context, ServiceEndpointPolicyDefinitionListResult) (ServiceEndpointPolicyDefinitionListResult, error)) ServiceEndpointPolicyDefinitionListResultPage {
+	return ServiceEndpointPolicyDefinitionListResultPage{
+		fn:     getNextPage,
+		sepdlr: cur,
+	}
 }
 
 // ServiceEndpointPolicyDefinitionPropertiesFormat service Endpoint policy definition resource.
@@ -22457,8 +22601,11 @@ func (page ServiceEndpointPolicyListResultPage) Values() []ServiceEndpointPolicy
 }
 
 // Creates a new instance of the ServiceEndpointPolicyListResultPage type.
-func NewServiceEndpointPolicyListResultPage(getNextPage func(context.Context, ServiceEndpointPolicyListResult) (ServiceEndpointPolicyListResult, error)) ServiceEndpointPolicyListResultPage {
-	return ServiceEndpointPolicyListResultPage{fn: getNextPage}
+func NewServiceEndpointPolicyListResultPage(cur ServiceEndpointPolicyListResult, getNextPage func(context.Context, ServiceEndpointPolicyListResult) (ServiceEndpointPolicyListResult, error)) ServiceEndpointPolicyListResultPage {
+	return ServiceEndpointPolicyListResultPage{
+		fn:    getNextPage,
+		seplr: cur,
+	}
 }
 
 // ServiceEndpointPolicyPropertiesFormat service Endpoint Policy resource.
@@ -22750,8 +22897,11 @@ func (page SubnetListResultPage) Values() []Subnet {
 }
 
 // Creates a new instance of the SubnetListResultPage type.
-func NewSubnetListResultPage(getNextPage func(context.Context, SubnetListResult) (SubnetListResult, error)) SubnetListResultPage {
-	return SubnetListResultPage{fn: getNextPage}
+func NewSubnetListResultPage(cur SubnetListResult, getNextPage func(context.Context, SubnetListResult) (SubnetListResult, error)) SubnetListResultPage {
+	return SubnetListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // SubnetPropertiesFormat properties of the subnet.
@@ -23269,8 +23419,11 @@ func (page UsagesListResultPage) Values() []Usage {
 }
 
 // Creates a new instance of the UsagesListResultPage type.
-func NewUsagesListResultPage(getNextPage func(context.Context, UsagesListResult) (UsagesListResult, error)) UsagesListResultPage {
-	return UsagesListResultPage{fn: getNextPage}
+func NewUsagesListResultPage(cur UsagesListResult, getNextPage func(context.Context, UsagesListResult) (UsagesListResult, error)) UsagesListResultPage {
+	return UsagesListResultPage{
+		fn:  getNextPage,
+		ulr: cur,
+	}
 }
 
 // VerificationIPFlowParameters parameters that define the IP flow to be verified.
@@ -24268,8 +24421,11 @@ func (page VirtualNetworkGatewayConnectionListResultPage) Values() []VirtualNetw
 }
 
 // Creates a new instance of the VirtualNetworkGatewayConnectionListResultPage type.
-func NewVirtualNetworkGatewayConnectionListResultPage(getNextPage func(context.Context, VirtualNetworkGatewayConnectionListResult) (VirtualNetworkGatewayConnectionListResult, error)) VirtualNetworkGatewayConnectionListResultPage {
-	return VirtualNetworkGatewayConnectionListResultPage{fn: getNextPage}
+func NewVirtualNetworkGatewayConnectionListResultPage(cur VirtualNetworkGatewayConnectionListResult, getNextPage func(context.Context, VirtualNetworkGatewayConnectionListResult) (VirtualNetworkGatewayConnectionListResult, error)) VirtualNetworkGatewayConnectionListResultPage {
+	return VirtualNetworkGatewayConnectionListResultPage{
+		fn:     getNextPage,
+		vngclr: cur,
+	}
 }
 
 // VirtualNetworkGatewayConnectionPropertiesFormat virtualNetworkGatewayConnection properties
@@ -24773,8 +24929,11 @@ func (page VirtualNetworkGatewayListConnectionsResultPage) Values() []VirtualNet
 }
 
 // Creates a new instance of the VirtualNetworkGatewayListConnectionsResultPage type.
-func NewVirtualNetworkGatewayListConnectionsResultPage(getNextPage func(context.Context, VirtualNetworkGatewayListConnectionsResult) (VirtualNetworkGatewayListConnectionsResult, error)) VirtualNetworkGatewayListConnectionsResultPage {
-	return VirtualNetworkGatewayListConnectionsResultPage{fn: getNextPage}
+func NewVirtualNetworkGatewayListConnectionsResultPage(cur VirtualNetworkGatewayListConnectionsResult, getNextPage func(context.Context, VirtualNetworkGatewayListConnectionsResult) (VirtualNetworkGatewayListConnectionsResult, error)) VirtualNetworkGatewayListConnectionsResultPage {
+	return VirtualNetworkGatewayListConnectionsResultPage{
+		fn:     getNextPage,
+		vnglcr: cur,
+	}
 }
 
 // VirtualNetworkGatewayListResult response for the ListVirtualNetworkGateways API service call.
@@ -24939,8 +25098,11 @@ func (page VirtualNetworkGatewayListResultPage) Values() []VirtualNetworkGateway
 }
 
 // Creates a new instance of the VirtualNetworkGatewayListResultPage type.
-func NewVirtualNetworkGatewayListResultPage(getNextPage func(context.Context, VirtualNetworkGatewayListResult) (VirtualNetworkGatewayListResult, error)) VirtualNetworkGatewayListResultPage {
-	return VirtualNetworkGatewayListResultPage{fn: getNextPage}
+func NewVirtualNetworkGatewayListResultPage(cur VirtualNetworkGatewayListResult, getNextPage func(context.Context, VirtualNetworkGatewayListResult) (VirtualNetworkGatewayListResult, error)) VirtualNetworkGatewayListResultPage {
+	return VirtualNetworkGatewayListResultPage{
+		fn:    getNextPage,
+		vnglr: cur,
+	}
 }
 
 // VirtualNetworkGatewayPropertiesFormat virtualNetworkGateway properties
@@ -25532,8 +25694,11 @@ func (page VirtualNetworkListResultPage) Values() []VirtualNetwork {
 }
 
 // Creates a new instance of the VirtualNetworkListResultPage type.
-func NewVirtualNetworkListResultPage(getNextPage func(context.Context, VirtualNetworkListResult) (VirtualNetworkListResult, error)) VirtualNetworkListResultPage {
-	return VirtualNetworkListResultPage{fn: getNextPage}
+func NewVirtualNetworkListResultPage(cur VirtualNetworkListResult, getNextPage func(context.Context, VirtualNetworkListResult) (VirtualNetworkListResult, error)) VirtualNetworkListResultPage {
+	return VirtualNetworkListResultPage{
+		fn:   getNextPage,
+		vnlr: cur,
+	}
 }
 
 // VirtualNetworkListUsageResult response for the virtual networks GetUsage API service call.
@@ -25697,8 +25862,11 @@ func (page VirtualNetworkListUsageResultPage) Values() []VirtualNetworkUsage {
 }
 
 // Creates a new instance of the VirtualNetworkListUsageResultPage type.
-func NewVirtualNetworkListUsageResultPage(getNextPage func(context.Context, VirtualNetworkListUsageResult) (VirtualNetworkListUsageResult, error)) VirtualNetworkListUsageResultPage {
-	return VirtualNetworkListUsageResultPage{fn: getNextPage}
+func NewVirtualNetworkListUsageResultPage(cur VirtualNetworkListUsageResult, getNextPage func(context.Context, VirtualNetworkListUsageResult) (VirtualNetworkListUsageResult, error)) VirtualNetworkListUsageResultPage {
+	return VirtualNetworkListUsageResultPage{
+		fn:    getNextPage,
+		vnlur: cur,
+	}
 }
 
 // VirtualNetworkPeering peerings in a virtual network resource.
@@ -25937,8 +26105,11 @@ func (page VirtualNetworkPeeringListResultPage) Values() []VirtualNetworkPeering
 }
 
 // Creates a new instance of the VirtualNetworkPeeringListResultPage type.
-func NewVirtualNetworkPeeringListResultPage(getNextPage func(context.Context, VirtualNetworkPeeringListResult) (VirtualNetworkPeeringListResult, error)) VirtualNetworkPeeringListResultPage {
-	return VirtualNetworkPeeringListResultPage{fn: getNextPage}
+func NewVirtualNetworkPeeringListResultPage(cur VirtualNetworkPeeringListResult, getNextPage func(context.Context, VirtualNetworkPeeringListResult) (VirtualNetworkPeeringListResult, error)) VirtualNetworkPeeringListResultPage {
+	return VirtualNetworkPeeringListResultPage{
+		fn:    getNextPage,
+		vnplr: cur,
+	}
 }
 
 // VirtualNetworkPeeringPropertiesFormat properties of the virtual network peering.
@@ -26386,9 +26557,6 @@ func (page VirtualNetworkTapListResultPage) Values() []VirtualNetworkTap {
 }
 
 // Creates a new instance of the VirtualNetworkTapListResultPage type.
-func NewVirtualNetworkTapListResultPage(getNextPage func(context.Context, VirtualNetworkTapListResult) (VirtualNetworkTapListResult, error)) VirtualNetworkTapListResultPage {
-	return VirtualNetworkTapListResultPage{fn: getNextPage}
-}
 
 // VirtualNetworkTapPropertiesFormat virtual Network Tap properties.
 type VirtualNetworkTapPropertiesFormat struct {

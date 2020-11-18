@@ -100,8 +100,8 @@ func NewClientWithBaseURI(baseURI string) Client {
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
 }
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return original.NewListResultPage(getNextPage)
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return original.NewListResultPage(cur, getNextPage)
 }
 func NewOperationClient() OperationClient {
 	return original.NewOperationClient()
@@ -123,9 +123,6 @@ func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
 }
 func NewTenantListResultIterator(page TenantListResultPage) TenantListResultIterator {
 	return original.NewTenantListResultIterator(page)
-}
-func NewTenantListResultPage(getNextPage func(context.Context, TenantListResult) (TenantListResult, error)) TenantListResultPage {
-	return original.NewTenantListResultPage(getNextPage)
 }
 func NewTenantsClient() TenantsClient {
 	return original.NewTenantsClient()

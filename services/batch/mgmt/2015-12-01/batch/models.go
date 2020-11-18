@@ -416,8 +416,11 @@ func (page AccountListResultPage) Values() []Account {
 }
 
 // Creates a new instance of the AccountListResultPage type.
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return AccountListResultPage{fn: getNextPage}
+func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return AccountListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AccountProperties account specific properties.
@@ -743,9 +746,6 @@ func (page ListApplicationsResultPage) Values() []Application {
 }
 
 // Creates a new instance of the ListApplicationsResultPage type.
-func NewListApplicationsResultPage(getNextPage func(context.Context, ListApplicationsResult) (ListApplicationsResult, error)) ListApplicationsResultPage {
-	return ListApplicationsResultPage{fn: getNextPage}
-}
 
 // LocationQuota quotas associated with a Batch region for a particular subscription.
 type LocationQuota struct {

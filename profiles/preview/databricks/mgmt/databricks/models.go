@@ -127,8 +127,8 @@ func New(subscriptionID string) BaseClient {
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -145,17 +145,14 @@ func NewVNetPeeringClientWithBaseURI(baseURI string, subscriptionID string) VNet
 func NewVirtualNetworkPeeringListIterator(page VirtualNetworkPeeringListPage) VirtualNetworkPeeringListIterator {
 	return original.NewVirtualNetworkPeeringListIterator(page)
 }
-func NewVirtualNetworkPeeringListPage(getNextPage func(context.Context, VirtualNetworkPeeringList) (VirtualNetworkPeeringList, error)) VirtualNetworkPeeringListPage {
-	return original.NewVirtualNetworkPeeringListPage(getNextPage)
+func NewVirtualNetworkPeeringListPage(cur VirtualNetworkPeeringList, getNextPage func(context.Context, VirtualNetworkPeeringList) (VirtualNetworkPeeringList, error)) VirtualNetworkPeeringListPage {
+	return original.NewVirtualNetworkPeeringListPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func NewWorkspaceListResultIterator(page WorkspaceListResultPage) WorkspaceListResultIterator {
 	return original.NewWorkspaceListResultIterator(page)
-}
-func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
-	return original.NewWorkspaceListResultPage(getNextPage)
 }
 func NewWorkspacesClient(subscriptionID string) WorkspacesClient {
 	return original.NewWorkspacesClient(subscriptionID)

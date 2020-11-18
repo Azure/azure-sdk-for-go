@@ -1258,9 +1258,6 @@ func (page OperationListResultPage) Values() []OperationResult {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // OperationResult available operation list result
 type OperationResult struct {

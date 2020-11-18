@@ -443,8 +443,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PageOfDataControllerResource ...
@@ -598,8 +601,11 @@ func (page PageOfDataControllerResourcePage) Values() []DataControllerResource {
 }
 
 // Creates a new instance of the PageOfDataControllerResourcePage type.
-func NewPageOfDataControllerResourcePage(getNextPage func(context.Context, PageOfDataControllerResource) (PageOfDataControllerResource, error)) PageOfDataControllerResourcePage {
-	return PageOfDataControllerResourcePage{fn: getNextPage}
+func NewPageOfDataControllerResourcePage(cur PageOfDataControllerResource, getNextPage func(context.Context, PageOfDataControllerResource) (PageOfDataControllerResource, error)) PageOfDataControllerResourcePage {
+	return PageOfDataControllerResourcePage{
+		fn:    getNextPage,
+		podcr: cur,
+	}
 }
 
 // Plan plan for the resource.
@@ -880,8 +886,11 @@ func (page PostgresInstanceListResultPage) Values() []PostgresInstance {
 }
 
 // Creates a new instance of the PostgresInstanceListResultPage type.
-func NewPostgresInstanceListResultPage(getNextPage func(context.Context, PostgresInstanceListResult) (PostgresInstanceListResult, error)) PostgresInstanceListResultPage {
-	return PostgresInstanceListResultPage{fn: getNextPage}
+func NewPostgresInstanceListResultPage(cur PostgresInstanceListResult, getNextPage func(context.Context, PostgresInstanceListResult) (PostgresInstanceListResult, error)) PostgresInstanceListResultPage {
+	return PostgresInstanceListResultPage{
+		fn:   getNextPage,
+		pilr: cur,
+	}
 }
 
 // PostgresInstanceProperties postgres Instance properties.
@@ -1316,8 +1325,11 @@ func (page SQLManagedInstanceListResultPage) Values() []SQLManagedInstance {
 }
 
 // Creates a new instance of the SQLManagedInstanceListResultPage type.
-func NewSQLManagedInstanceListResultPage(getNextPage func(context.Context, SQLManagedInstanceListResult) (SQLManagedInstanceListResult, error)) SQLManagedInstanceListResultPage {
-	return SQLManagedInstanceListResultPage{fn: getNextPage}
+func NewSQLManagedInstanceListResultPage(cur SQLManagedInstanceListResult, getNextPage func(context.Context, SQLManagedInstanceListResult) (SQLManagedInstanceListResult, error)) SQLManagedInstanceListResultPage {
+	return SQLManagedInstanceListResultPage{
+		fn:      getNextPage,
+		sqlmilr: cur,
+	}
 }
 
 // SQLManagedInstanceProperties properties of sqlManagedInstance.
@@ -1678,8 +1690,11 @@ func (page SQLServerInstanceListResultPage) Values() []SQLServerInstance {
 }
 
 // Creates a new instance of the SQLServerInstanceListResultPage type.
-func NewSQLServerInstanceListResultPage(getNextPage func(context.Context, SQLServerInstanceListResult) (SQLServerInstanceListResult, error)) SQLServerInstanceListResultPage {
-	return SQLServerInstanceListResultPage{fn: getNextPage}
+func NewSQLServerInstanceListResultPage(cur SQLServerInstanceListResult, getNextPage func(context.Context, SQLServerInstanceListResult) (SQLServerInstanceListResult, error)) SQLServerInstanceListResultPage {
+	return SQLServerInstanceListResultPage{
+		fn:      getNextPage,
+		sqlsilr: cur,
+	}
 }
 
 // SQLServerInstanceProperties properties of SqlServerInstance.
@@ -1888,8 +1903,11 @@ func (page SQLServerListResultPage) Values() []SQLServer {
 }
 
 // Creates a new instance of the SQLServerListResultPage type.
-func NewSQLServerListResultPage(getNextPage func(context.Context, SQLServerListResult) (SQLServerListResult, error)) SQLServerListResultPage {
-	return SQLServerListResultPage{fn: getNextPage}
+func NewSQLServerListResultPage(cur SQLServerListResult, getNextPage func(context.Context, SQLServerListResult) (SQLServerListResult, error)) SQLServerListResultPage {
+	return SQLServerListResultPage{
+		fn:     getNextPage,
+		sqlslr: cur,
+	}
 }
 
 // SQLServerProperties the SQL server properties.
@@ -2171,9 +2189,6 @@ func (page SQLServerRegistrationListResultPage) Values() []SQLServerRegistration
 }
 
 // Creates a new instance of the SQLServerRegistrationListResultPage type.
-func NewSQLServerRegistrationListResultPage(getNextPage func(context.Context, SQLServerRegistrationListResult) (SQLServerRegistrationListResult, error)) SQLServerRegistrationListResultPage {
-	return SQLServerRegistrationListResultPage{fn: getNextPage}
-}
 
 // SQLServerRegistrationProperties the SQL server Registration properties.
 type SQLServerRegistrationProperties struct {

@@ -2120,8 +2120,11 @@ func (page ProviderOperationResultPage) Values() []OperationMetadata {
 }
 
 // Creates a new instance of the ProviderOperationResultPage type.
-func NewProviderOperationResultPage(getNextPage func(context.Context, ProviderOperationResult) (ProviderOperationResult, error)) ProviderOperationResultPage {
-	return ProviderOperationResultPage{fn: getNextPage}
+func NewProviderOperationResultPage(cur ProviderOperationResult, getNextPage func(context.Context, ProviderOperationResult) (ProviderOperationResult, error)) ProviderOperationResultPage {
+	return ProviderOperationResultPage{
+		fn:  getNextPage,
+		por: cur,
+	}
 }
 
 // PublishPayload payload for Publish operation on EnvironmentSetting.
@@ -2443,8 +2446,11 @@ func (page ResponseWithContinuationEnvironmentPage) Values() []Environment {
 }
 
 // Creates a new instance of the ResponseWithContinuationEnvironmentPage type.
-func NewResponseWithContinuationEnvironmentPage(getNextPage func(context.Context, ResponseWithContinuationEnvironment) (ResponseWithContinuationEnvironment, error)) ResponseWithContinuationEnvironmentPage {
-	return ResponseWithContinuationEnvironmentPage{fn: getNextPage}
+func NewResponseWithContinuationEnvironmentPage(cur ResponseWithContinuationEnvironment, getNextPage func(context.Context, ResponseWithContinuationEnvironment) (ResponseWithContinuationEnvironment, error)) ResponseWithContinuationEnvironmentPage {
+	return ResponseWithContinuationEnvironmentPage{
+		fn:   getNextPage,
+		rwce: cur,
+	}
 }
 
 // ResponseWithContinuationEnvironmentSetting the response of a list operation.
@@ -2600,8 +2606,11 @@ func (page ResponseWithContinuationEnvironmentSettingPage) Values() []Environmen
 }
 
 // Creates a new instance of the ResponseWithContinuationEnvironmentSettingPage type.
-func NewResponseWithContinuationEnvironmentSettingPage(getNextPage func(context.Context, ResponseWithContinuationEnvironmentSetting) (ResponseWithContinuationEnvironmentSetting, error)) ResponseWithContinuationEnvironmentSettingPage {
-	return ResponseWithContinuationEnvironmentSettingPage{fn: getNextPage}
+func NewResponseWithContinuationEnvironmentSettingPage(cur ResponseWithContinuationEnvironmentSetting, getNextPage func(context.Context, ResponseWithContinuationEnvironmentSetting) (ResponseWithContinuationEnvironmentSetting, error)) ResponseWithContinuationEnvironmentSettingPage {
+	return ResponseWithContinuationEnvironmentSettingPage{
+		fn:    getNextPage,
+		rwces: cur,
+	}
 }
 
 // ResponseWithContinuationGalleryImage the response of a list operation.
@@ -2756,8 +2765,11 @@ func (page ResponseWithContinuationGalleryImagePage) Values() []GalleryImage {
 }
 
 // Creates a new instance of the ResponseWithContinuationGalleryImagePage type.
-func NewResponseWithContinuationGalleryImagePage(getNextPage func(context.Context, ResponseWithContinuationGalleryImage) (ResponseWithContinuationGalleryImage, error)) ResponseWithContinuationGalleryImagePage {
-	return ResponseWithContinuationGalleryImagePage{fn: getNextPage}
+func NewResponseWithContinuationGalleryImagePage(cur ResponseWithContinuationGalleryImage, getNextPage func(context.Context, ResponseWithContinuationGalleryImage) (ResponseWithContinuationGalleryImage, error)) ResponseWithContinuationGalleryImagePage {
+	return ResponseWithContinuationGalleryImagePage{
+		fn:    getNextPage,
+		rwcgi: cur,
+	}
 }
 
 // ResponseWithContinuationLab the response of a list operation.
@@ -2921,8 +2933,11 @@ func (page ResponseWithContinuationLabAccountPage) Values() []LabAccount {
 }
 
 // Creates a new instance of the ResponseWithContinuationLabAccountPage type.
-func NewResponseWithContinuationLabAccountPage(getNextPage func(context.Context, ResponseWithContinuationLabAccount) (ResponseWithContinuationLabAccount, error)) ResponseWithContinuationLabAccountPage {
-	return ResponseWithContinuationLabAccountPage{fn: getNextPage}
+func NewResponseWithContinuationLabAccountPage(cur ResponseWithContinuationLabAccount, getNextPage func(context.Context, ResponseWithContinuationLabAccount) (ResponseWithContinuationLabAccount, error)) ResponseWithContinuationLabAccountPage {
+	return ResponseWithContinuationLabAccountPage{
+		fn:    getNextPage,
+		rwcla: cur,
+	}
 }
 
 // ResponseWithContinuationLabIterator provides access to a complete listing of Lab values.
@@ -3068,8 +3083,11 @@ func (page ResponseWithContinuationLabPage) Values() []Lab {
 }
 
 // Creates a new instance of the ResponseWithContinuationLabPage type.
-func NewResponseWithContinuationLabPage(getNextPage func(context.Context, ResponseWithContinuationLab) (ResponseWithContinuationLab, error)) ResponseWithContinuationLabPage {
-	return ResponseWithContinuationLabPage{fn: getNextPage}
+func NewResponseWithContinuationLabPage(cur ResponseWithContinuationLab, getNextPage func(context.Context, ResponseWithContinuationLab) (ResponseWithContinuationLab, error)) ResponseWithContinuationLabPage {
+	return ResponseWithContinuationLabPage{
+		fn:   getNextPage,
+		rwcl: cur,
+	}
 }
 
 // ResponseWithContinuationUser the response of a list operation.
@@ -3224,9 +3242,6 @@ func (page ResponseWithContinuationUserPage) Values() []User {
 }
 
 // Creates a new instance of the ResponseWithContinuationUserPage type.
-func NewResponseWithContinuationUserPage(getNextPage func(context.Context, ResponseWithContinuationUser) (ResponseWithContinuationUser, error)) ResponseWithContinuationUserPage {
-	return ResponseWithContinuationUserPage{fn: getNextPage}
-}
 
 // SizeAvailability represents the size information
 type SizeAvailability struct {

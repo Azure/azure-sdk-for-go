@@ -508,8 +508,8 @@ func New(subscriptionID string) BaseClient {
 func NewAgentPoolListResultIterator(page AgentPoolListResultPage) AgentPoolListResultIterator {
 	return original.NewAgentPoolListResultIterator(page)
 }
-func NewAgentPoolListResultPage(getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
-	return original.NewAgentPoolListResultPage(getNextPage)
+func NewAgentPoolListResultPage(cur AgentPoolListResult, getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
+	return original.NewAgentPoolListResultPage(cur, getNextPage)
 }
 func NewAgentPoolsClient(subscriptionID string) AgentPoolsClient {
 	return original.NewAgentPoolsClient(subscriptionID)
@@ -520,14 +520,14 @@ func NewAgentPoolsClientWithBaseURI(baseURI string, subscriptionID string) Agent
 func NewEventListResultIterator(page EventListResultPage) EventListResultIterator {
 	return original.NewEventListResultIterator(page)
 }
-func NewEventListResultPage(getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
-	return original.NewEventListResultPage(getNextPage)
+func NewEventListResultPage(cur EventListResult, getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
+	return original.NewEventListResultPage(cur, getNextPage)
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -544,14 +544,14 @@ func NewRegistriesClientWithBaseURI(baseURI string, subscriptionID string) Regis
 func NewRegistryListResultIterator(page RegistryListResultPage) RegistryListResultIterator {
 	return original.NewRegistryListResultIterator(page)
 }
-func NewRegistryListResultPage(getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
-	return original.NewRegistryListResultPage(getNextPage)
+func NewRegistryListResultPage(cur RegistryListResult, getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
+	return original.NewRegistryListResultPage(cur, getNextPage)
 }
 func NewReplicationListResultIterator(page ReplicationListResultPage) ReplicationListResultIterator {
 	return original.NewReplicationListResultIterator(page)
 }
-func NewReplicationListResultPage(getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
-	return original.NewReplicationListResultPage(getNextPage)
+func NewReplicationListResultPage(cur ReplicationListResult, getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
+	return original.NewReplicationListResultPage(cur, getNextPage)
 }
 func NewReplicationsClient(subscriptionID string) ReplicationsClient {
 	return original.NewReplicationsClient(subscriptionID)
@@ -562,8 +562,8 @@ func NewReplicationsClientWithBaseURI(baseURI string, subscriptionID string) Rep
 func NewRunListResultIterator(page RunListResultPage) RunListResultIterator {
 	return original.NewRunListResultIterator(page)
 }
-func NewRunListResultPage(getNextPage func(context.Context, RunListResult) (RunListResult, error)) RunListResultPage {
-	return original.NewRunListResultPage(getNextPage)
+func NewRunListResultPage(cur RunListResult, getNextPage func(context.Context, RunListResult) (RunListResult, error)) RunListResultPage {
+	return original.NewRunListResultPage(cur, getNextPage)
 }
 func NewRunsClient(subscriptionID string) RunsClient {
 	return original.NewRunsClient(subscriptionID)
@@ -574,8 +574,8 @@ func NewRunsClientWithBaseURI(baseURI string, subscriptionID string) RunsClient 
 func NewScopeMapListResultIterator(page ScopeMapListResultPage) ScopeMapListResultIterator {
 	return original.NewScopeMapListResultIterator(page)
 }
-func NewScopeMapListResultPage(getNextPage func(context.Context, ScopeMapListResult) (ScopeMapListResult, error)) ScopeMapListResultPage {
-	return original.NewScopeMapListResultPage(getNextPage)
+func NewScopeMapListResultPage(cur ScopeMapListResult, getNextPage func(context.Context, ScopeMapListResult) (ScopeMapListResult, error)) ScopeMapListResultPage {
+	return original.NewScopeMapListResultPage(cur, getNextPage)
 }
 func NewScopeMapsClient(subscriptionID string) ScopeMapsClient {
 	return original.NewScopeMapsClient(subscriptionID)
@@ -586,14 +586,14 @@ func NewScopeMapsClientWithBaseURI(baseURI string, subscriptionID string) ScopeM
 func NewTaskListResultIterator(page TaskListResultPage) TaskListResultIterator {
 	return original.NewTaskListResultIterator(page)
 }
-func NewTaskListResultPage(getNextPage func(context.Context, TaskListResult) (TaskListResult, error)) TaskListResultPage {
-	return original.NewTaskListResultPage(getNextPage)
+func NewTaskListResultPage(cur TaskListResult, getNextPage func(context.Context, TaskListResult) (TaskListResult, error)) TaskListResultPage {
+	return original.NewTaskListResultPage(cur, getNextPage)
 }
 func NewTaskRunListResultIterator(page TaskRunListResultPage) TaskRunListResultIterator {
 	return original.NewTaskRunListResultIterator(page)
 }
-func NewTaskRunListResultPage(getNextPage func(context.Context, TaskRunListResult) (TaskRunListResult, error)) TaskRunListResultPage {
-	return original.NewTaskRunListResultPage(getNextPage)
+func NewTaskRunListResultPage(cur TaskRunListResult, getNextPage func(context.Context, TaskRunListResult) (TaskRunListResult, error)) TaskRunListResultPage {
+	return original.NewTaskRunListResultPage(cur, getNextPage)
 }
 func NewTaskRunsClient(subscriptionID string) TaskRunsClient {
 	return original.NewTaskRunsClient(subscriptionID)
@@ -610,8 +610,8 @@ func NewTasksClientWithBaseURI(baseURI string, subscriptionID string) TasksClien
 func NewTokenListResultIterator(page TokenListResultPage) TokenListResultIterator {
 	return original.NewTokenListResultIterator(page)
 }
-func NewTokenListResultPage(getNextPage func(context.Context, TokenListResult) (TokenListResult, error)) TokenListResultPage {
-	return original.NewTokenListResultPage(getNextPage)
+func NewTokenListResultPage(cur TokenListResult, getNextPage func(context.Context, TokenListResult) (TokenListResult, error)) TokenListResultPage {
+	return original.NewTokenListResultPage(cur, getNextPage)
 }
 func NewTokensClient(subscriptionID string) TokensClient {
 	return original.NewTokensClient(subscriptionID)
@@ -621,9 +621,6 @@ func NewTokensClientWithBaseURI(baseURI string, subscriptionID string) TokensCli
 }
 func NewWebhookListResultIterator(page WebhookListResultPage) WebhookListResultIterator {
 	return original.NewWebhookListResultIterator(page)
-}
-func NewWebhookListResultPage(getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
-	return original.NewWebhookListResultPage(getNextPage)
 }
 func NewWebhooksClient(subscriptionID string) WebhooksClient {
 	return original.NewWebhooksClient(subscriptionID)

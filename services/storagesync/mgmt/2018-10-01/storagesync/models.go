@@ -648,9 +648,6 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 }
 
 // Creates a new instance of the OperationEntityListResultPage type.
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return OperationEntityListResultPage{fn: getNextPage}
-}
 
 // PostBackupResponse post Backup Response
 type PostBackupResponse struct {

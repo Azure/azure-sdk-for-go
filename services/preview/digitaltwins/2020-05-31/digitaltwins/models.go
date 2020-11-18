@@ -233,8 +233,11 @@ func (page EventRouteCollectionPage) Values() []EventRoute {
 }
 
 // Creates a new instance of the EventRouteCollectionPage type.
-func NewEventRouteCollectionPage(getNextPage func(context.Context, EventRouteCollection) (EventRouteCollection, error)) EventRouteCollectionPage {
-	return EventRouteCollectionPage{fn: getNextPage}
+func NewEventRouteCollectionPage(cur EventRouteCollection, getNextPage func(context.Context, EventRouteCollection) (EventRouteCollection, error)) EventRouteCollectionPage {
+	return EventRouteCollectionPage{
+		fn:  getNextPage,
+		erc: cur,
+	}
 }
 
 // IncomingRelationship an incoming relationship.
@@ -400,8 +403,11 @@ func (page IncomingRelationshipCollectionPage) Values() []IncomingRelationship {
 }
 
 // Creates a new instance of the IncomingRelationshipCollectionPage type.
-func NewIncomingRelationshipCollectionPage(getNextPage func(context.Context, IncomingRelationshipCollection) (IncomingRelationshipCollection, error)) IncomingRelationshipCollectionPage {
-	return IncomingRelationshipCollectionPage{fn: getNextPage}
+func NewIncomingRelationshipCollectionPage(cur IncomingRelationshipCollection, getNextPage func(context.Context, IncomingRelationshipCollection) (IncomingRelationshipCollection, error)) IncomingRelationshipCollectionPage {
+	return IncomingRelationshipCollectionPage{
+		fn:  getNextPage,
+		irc: cur,
+	}
 }
 
 // InnerError a more specific error description than was provided by the containing error.
@@ -611,8 +617,11 @@ func (page PagedModelDataCollectionPage) Values() []ModelData {
 }
 
 // Creates a new instance of the PagedModelDataCollectionPage type.
-func NewPagedModelDataCollectionPage(getNextPage func(context.Context, PagedModelDataCollection) (PagedModelDataCollection, error)) PagedModelDataCollectionPage {
-	return PagedModelDataCollectionPage{fn: getNextPage}
+func NewPagedModelDataCollectionPage(cur PagedModelDataCollection, getNextPage func(context.Context, PagedModelDataCollection) (PagedModelDataCollection, error)) PagedModelDataCollectionPage {
+	return PagedModelDataCollectionPage{
+		fn:   getNextPage,
+		pmdc: cur,
+	}
 }
 
 // QueryResult the results of a query operation and an optional continuation token.
@@ -785,9 +794,6 @@ func (page RelationshipCollectionPage) Values() []interface{} {
 }
 
 // Creates a new instance of the RelationshipCollectionPage type.
-func NewRelationshipCollectionPage(getNextPage func(context.Context, RelationshipCollection) (RelationshipCollection, error)) RelationshipCollectionPage {
-	return RelationshipCollectionPage{fn: getNextPage}
-}
 
 // SetObject ...
 type SetObject struct {

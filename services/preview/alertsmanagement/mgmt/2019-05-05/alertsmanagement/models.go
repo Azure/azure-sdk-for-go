@@ -476,8 +476,11 @@ func (page ActionRulesListPage) Values() []ActionRule {
 }
 
 // Creates a new instance of the ActionRulesListPage type.
-func NewActionRulesListPage(getNextPage func(context.Context, ActionRulesList) (ActionRulesList, error)) ActionRulesListPage {
-	return ActionRulesListPage{fn: getNextPage}
+func NewActionRulesListPage(cur ActionRulesList, getNextPage func(context.Context, ActionRulesList) (ActionRulesList, error)) ActionRulesListPage {
+	return ActionRulesListPage{
+		fn:  getNextPage,
+		arl: cur,
+	}
 }
 
 // Alert an alert created in alert management service.
@@ -716,8 +719,11 @@ func (page AlertsListPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertsListPage type.
-func NewAlertsListPage(getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
-	return AlertsListPage{fn: getNextPage}
+func NewAlertsListPage(cur AlertsList, getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
+	return AlertsListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AlertsMetaData alert meta data information.
@@ -1285,8 +1291,11 @@ func (page OperationsListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationsListPage type.
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return OperationsListPage{fn: getNextPage}
+func NewOperationsListPage(cur OperationsList, getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
+	return OperationsListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // PatchObject data contract for patch
@@ -1725,9 +1734,6 @@ func (page SmartGroupsListPage) Values() []SmartGroup {
 }
 
 // Creates a new instance of the SmartGroupsListPage type.
-func NewSmartGroupsListPage(getNextPage func(context.Context, SmartGroupsList) (SmartGroupsList, error)) SmartGroupsListPage {
-	return SmartGroupsListPage{fn: getNextPage}
-}
 
 // Suppression action rule with suppression configuration
 type Suppression struct {

@@ -340,8 +340,11 @@ func (page EventHubConsumerGroupsListResultPage) Values() []string {
 }
 
 // Creates a new instance of the EventHubConsumerGroupsListResultPage type.
-func NewEventHubConsumerGroupsListResultPage(getNextPage func(context.Context, EventHubConsumerGroupsListResult) (EventHubConsumerGroupsListResult, error)) EventHubConsumerGroupsListResultPage {
-	return EventHubConsumerGroupsListResultPage{fn: getNextPage}
+func NewEventHubConsumerGroupsListResultPage(cur EventHubConsumerGroupsListResult, getNextPage func(context.Context, EventHubConsumerGroupsListResult) (EventHubConsumerGroupsListResult, error)) EventHubConsumerGroupsListResultPage {
+	return EventHubConsumerGroupsListResultPage{
+		fn:     getNextPage,
+		ehcglr: cur,
+	}
 }
 
 // EventHubProperties the properties of the provisioned Event Hub-compatible endpoint used by the IoT hub.
@@ -632,8 +635,11 @@ func (page IotHubDescriptionListResultPage) Values() []IotHubDescription {
 }
 
 // Creates a new instance of the IotHubDescriptionListResultPage type.
-func NewIotHubDescriptionListResultPage(getNextPage func(context.Context, IotHubDescriptionListResult) (IotHubDescriptionListResult, error)) IotHubDescriptionListResultPage {
-	return IotHubDescriptionListResultPage{fn: getNextPage}
+func NewIotHubDescriptionListResultPage(cur IotHubDescriptionListResult, getNextPage func(context.Context, IotHubDescriptionListResult) (IotHubDescriptionListResult, error)) IotHubDescriptionListResultPage {
+	return IotHubDescriptionListResultPage{
+		fn:    getNextPage,
+		ihdlr: cur,
+	}
 }
 
 // IotHubNameAvailabilityInfo the properties indicating whether a given IoT hub name is available.
@@ -894,8 +900,11 @@ func (page IotHubQuotaMetricInfoListResultPage) Values() []IotHubQuotaMetricInfo
 }
 
 // Creates a new instance of the IotHubQuotaMetricInfoListResultPage type.
-func NewIotHubQuotaMetricInfoListResultPage(getNextPage func(context.Context, IotHubQuotaMetricInfoListResult) (IotHubQuotaMetricInfoListResult, error)) IotHubQuotaMetricInfoListResultPage {
-	return IotHubQuotaMetricInfoListResultPage{fn: getNextPage}
+func NewIotHubQuotaMetricInfoListResultPage(cur IotHubQuotaMetricInfoListResult, getNextPage func(context.Context, IotHubQuotaMetricInfoListResult) (IotHubQuotaMetricInfoListResult, error)) IotHubQuotaMetricInfoListResultPage {
+	return IotHubQuotaMetricInfoListResultPage{
+		fn:      getNextPage,
+		ihqmilr: cur,
+	}
 }
 
 // IotHubResourceCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -1137,8 +1146,11 @@ func (page IotHubSkuDescriptionListResultPage) Values() []IotHubSkuDescription {
 }
 
 // Creates a new instance of the IotHubSkuDescriptionListResultPage type.
-func NewIotHubSkuDescriptionListResultPage(getNextPage func(context.Context, IotHubSkuDescriptionListResult) (IotHubSkuDescriptionListResult, error)) IotHubSkuDescriptionListResultPage {
-	return IotHubSkuDescriptionListResultPage{fn: getNextPage}
+func NewIotHubSkuDescriptionListResultPage(cur IotHubSkuDescriptionListResult, getNextPage func(context.Context, IotHubSkuDescriptionListResult) (IotHubSkuDescriptionListResult, error)) IotHubSkuDescriptionListResultPage {
+	return IotHubSkuDescriptionListResultPage{
+		fn:     getNextPage,
+		ihsdlr: cur,
+	}
 }
 
 // IotHubSkuInfo information about the SKU of the IoT hub.
@@ -1355,8 +1367,11 @@ func (page JobResponseListResultPage) Values() []JobResponse {
 }
 
 // Creates a new instance of the JobResponseListResultPage type.
-func NewJobResponseListResultPage(getNextPage func(context.Context, JobResponseListResult) (JobResponseListResult, error)) JobResponseListResultPage {
-	return JobResponseListResultPage{fn: getNextPage}
+func NewJobResponseListResultPage(cur JobResponseListResult, getNextPage func(context.Context, JobResponseListResult) (JobResponseListResult, error)) JobResponseListResultPage {
+	return JobResponseListResultPage{
+		fn:   getNextPage,
+		jrlr: cur,
+	}
 }
 
 // MessagingEndpointProperties the properties of the messaging endpoints used by this IoT hub.
@@ -1555,8 +1570,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationsMonitoringProperties the operations monitoring properties for the IoT hub. The possible keys to
@@ -1891,9 +1909,6 @@ func (page SharedAccessSignatureAuthorizationRuleListResultPage) Values() []Shar
 }
 
 // Creates a new instance of the SharedAccessSignatureAuthorizationRuleListResultPage type.
-func NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
-	return SharedAccessSignatureAuthorizationRuleListResultPage{fn: getNextPage}
-}
 
 // StorageEndpointProperties the properties of the Azure Storage endpoint for file upload.
 type StorageEndpointProperties struct {

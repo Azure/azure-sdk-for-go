@@ -560,8 +560,11 @@ func (page ComputePolicyListResultPage) Values() []ComputePolicy {
 }
 
 // Creates a new instance of the ComputePolicyListResultPage type.
-func NewComputePolicyListResultPage(getNextPage func(context.Context, ComputePolicyListResult) (ComputePolicyListResult, error)) ComputePolicyListResultPage {
-	return ComputePolicyListResultPage{fn: getNextPage}
+func NewComputePolicyListResultPage(cur ComputePolicyListResult, getNextPage func(context.Context, ComputePolicyListResult) (ComputePolicyListResult, error)) ComputePolicyListResultPage {
+	return ComputePolicyListResultPage{
+		fn:   getNextPage,
+		cplr: cur,
+	}
 }
 
 // ComputePolicyProperties the compute policy properties.
@@ -1218,8 +1221,11 @@ func (page DataLakeAnalyticsAccountListResultPage) Values() []DataLakeAnalyticsA
 }
 
 // Creates a new instance of the DataLakeAnalyticsAccountListResultPage type.
-func NewDataLakeAnalyticsAccountListResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListResult) (DataLakeAnalyticsAccountListResult, error)) DataLakeAnalyticsAccountListResultPage {
-	return DataLakeAnalyticsAccountListResultPage{fn: getNextPage}
+func NewDataLakeAnalyticsAccountListResultPage(cur DataLakeAnalyticsAccountListResult, getNextPage func(context.Context, DataLakeAnalyticsAccountListResult) (DataLakeAnalyticsAccountListResult, error)) DataLakeAnalyticsAccountListResultPage {
+	return DataLakeAnalyticsAccountListResultPage{
+		fn:     getNextPage,
+		dlaalr: cur,
+	}
 }
 
 // DataLakeAnalyticsAccountProperties the account specific properties that are associated with an underlying
@@ -1511,8 +1517,11 @@ func (page DataLakeStoreAccountInformationListResultPage) Values() []DataLakeSto
 }
 
 // Creates a new instance of the DataLakeStoreAccountInformationListResultPage type.
-func NewDataLakeStoreAccountInformationListResultPage(getNextPage func(context.Context, DataLakeStoreAccountInformationListResult) (DataLakeStoreAccountInformationListResult, error)) DataLakeStoreAccountInformationListResultPage {
-	return DataLakeStoreAccountInformationListResultPage{fn: getNextPage}
+func NewDataLakeStoreAccountInformationListResultPage(cur DataLakeStoreAccountInformationListResult, getNextPage func(context.Context, DataLakeStoreAccountInformationListResult) (DataLakeStoreAccountInformationListResult, error)) DataLakeStoreAccountInformationListResultPage {
+	return DataLakeStoreAccountInformationListResultPage{
+		fn:      getNextPage,
+		dlsailr: cur,
+	}
 }
 
 // DataLakeStoreAccountInformationProperties the Data Lake Store account properties.
@@ -1743,8 +1752,11 @@ func (page FirewallRuleListResultPage) Values() []FirewallRule {
 }
 
 // Creates a new instance of the FirewallRuleListResultPage type.
-func NewFirewallRuleListResultPage(getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
-	return FirewallRuleListResultPage{fn: getNextPage}
+func NewFirewallRuleListResultPage(cur FirewallRuleListResult, getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
+	return FirewallRuleListResultPage{
+		fn:   getNextPage,
+		frlr: cur,
+	}
 }
 
 // FirewallRuleProperties the firewall rule properties.
@@ -1976,8 +1988,11 @@ func (page SasTokenInformationListResultPage) Values() []SasTokenInformation {
 }
 
 // Creates a new instance of the SasTokenInformationListResultPage type.
-func NewSasTokenInformationListResultPage(getNextPage func(context.Context, SasTokenInformationListResult) (SasTokenInformationListResult, error)) SasTokenInformationListResultPage {
-	return SasTokenInformationListResultPage{fn: getNextPage}
+func NewSasTokenInformationListResultPage(cur SasTokenInformationListResult, getNextPage func(context.Context, SasTokenInformationListResult) (SasTokenInformationListResult, error)) SasTokenInformationListResultPage {
+	return SasTokenInformationListResultPage{
+		fn:    getNextPage,
+		stilr: cur,
+	}
 }
 
 // StorageAccountInformation azure Storage account information.
@@ -2203,8 +2218,11 @@ func (page StorageAccountInformationListResultPage) Values() []StorageAccountInf
 }
 
 // Creates a new instance of the StorageAccountInformationListResultPage type.
-func NewStorageAccountInformationListResultPage(getNextPage func(context.Context, StorageAccountInformationListResult) (StorageAccountInformationListResult, error)) StorageAccountInformationListResultPage {
-	return StorageAccountInformationListResultPage{fn: getNextPage}
+func NewStorageAccountInformationListResultPage(cur StorageAccountInformationListResult, getNextPage func(context.Context, StorageAccountInformationListResult) (StorageAccountInformationListResult, error)) StorageAccountInformationListResultPage {
+	return StorageAccountInformationListResultPage{
+		fn:    getNextPage,
+		sailr: cur,
+	}
 }
 
 // StorageAccountInformationProperties the Azure Storage account properties.
@@ -2436,9 +2454,6 @@ func (page StorageContainerListResultPage) Values() []StorageContainer {
 }
 
 // Creates a new instance of the StorageContainerListResultPage type.
-func NewStorageContainerListResultPage(getNextPage func(context.Context, StorageContainerListResult) (StorageContainerListResult, error)) StorageContainerListResultPage {
-	return StorageContainerListResultPage{fn: getNextPage}
-}
 
 // StorageContainerProperties azure Storage blob container properties information.
 type StorageContainerProperties struct {

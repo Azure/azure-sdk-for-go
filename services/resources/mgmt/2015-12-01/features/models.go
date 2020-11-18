@@ -199,8 +199,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationsListResult list of previewed features.
@@ -355,9 +358,6 @@ func (page OperationsListResultPage) Values() []Result {
 }
 
 // Creates a new instance of the OperationsListResultPage type.
-func NewOperationsListResultPage(getNextPage func(context.Context, OperationsListResult) (OperationsListResult, error)) OperationsListResultPage {
-	return OperationsListResultPage{fn: getNextPage}
-}
 
 // Properties information about feature.
 type Properties struct {

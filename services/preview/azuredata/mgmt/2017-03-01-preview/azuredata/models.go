@@ -217,8 +217,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ProxyResource ARM proxy resource.
@@ -456,8 +459,11 @@ func (page SQLServerListResultPage) Values() []SQLServer {
 }
 
 // Creates a new instance of the SQLServerListResultPage type.
-func NewSQLServerListResultPage(getNextPage func(context.Context, SQLServerListResult) (SQLServerListResult, error)) SQLServerListResultPage {
-	return SQLServerListResultPage{fn: getNextPage}
+func NewSQLServerListResultPage(cur SQLServerListResult, getNextPage func(context.Context, SQLServerListResult) (SQLServerListResult, error)) SQLServerListResultPage {
+	return SQLServerListResultPage{
+		fn:     getNextPage,
+		sqlslr: cur,
+	}
 }
 
 // SQLServerProperties the SQL server properties.
@@ -718,9 +724,6 @@ func (page SQLServerRegistrationListResultPage) Values() []SQLServerRegistration
 }
 
 // Creates a new instance of the SQLServerRegistrationListResultPage type.
-func NewSQLServerRegistrationListResultPage(getNextPage func(context.Context, SQLServerRegistrationListResult) (SQLServerRegistrationListResult, error)) SQLServerRegistrationListResultPage {
-	return SQLServerRegistrationListResultPage{fn: getNextPage}
-}
 
 // SQLServerRegistrationProperties the SQL server Registration properties.
 type SQLServerRegistrationProperties struct {

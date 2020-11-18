@@ -429,8 +429,11 @@ func (page CustomDomainListResultPage) Values() []CustomDomain {
 }
 
 // Creates a new instance of the CustomDomainListResultPage type.
-func NewCustomDomainListResultPage(getNextPage func(context.Context, CustomDomainListResult) (CustomDomainListResult, error)) CustomDomainListResultPage {
-	return CustomDomainListResultPage{fn: getNextPage}
+func NewCustomDomainListResultPage(cur CustomDomainListResult, getNextPage func(context.Context, CustomDomainListResult) (CustomDomainListResult, error)) CustomDomainListResultPage {
+	return CustomDomainListResultPage{
+		fn:   getNextPage,
+		cdlr: cur,
+	}
 }
 
 // CustomDomainParameters the customDomain JSON object required for custom domain creation or update.
@@ -2992,8 +2995,11 @@ func (page EdgenodeResultPage) Values() []EdgeNode {
 }
 
 // Creates a new instance of the EdgenodeResultPage type.
-func NewEdgenodeResultPage(getNextPage func(context.Context, EdgenodeResult) (EdgenodeResult, error)) EdgenodeResultPage {
-	return EdgenodeResultPage{fn: getNextPage}
+func NewEdgenodeResultPage(cur EdgenodeResult, getNextPage func(context.Context, EdgenodeResult) (EdgenodeResult, error)) EdgenodeResultPage {
+	return EdgenodeResultPage{
+		fn: getNextPage,
+		er: cur,
+	}
 }
 
 // Endpoint CDN endpoint is the entity within a CDN profile containing configuration information such as
@@ -3260,8 +3266,11 @@ func (page EndpointListResultPage) Values() []Endpoint {
 }
 
 // Creates a new instance of the EndpointListResultPage type.
-func NewEndpointListResultPage(getNextPage func(context.Context, EndpointListResult) (EndpointListResult, error)) EndpointListResultPage {
-	return EndpointListResultPage{fn: getNextPage}
+func NewEndpointListResultPage(cur EndpointListResult, getNextPage func(context.Context, EndpointListResult) (EndpointListResult, error)) EndpointListResultPage {
+	return EndpointListResultPage{
+		fn:  getNextPage,
+		elr: cur,
+	}
 }
 
 // EndpointProperties the JSON object that contains the properties required to create an endpoint.
@@ -3938,8 +3947,11 @@ func (page OperationsListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationsListResultPage type.
-func NewOperationsListResultPage(getNextPage func(context.Context, OperationsListResult) (OperationsListResult, error)) OperationsListResultPage {
-	return OperationsListResultPage{fn: getNextPage}
+func NewOperationsListResultPage(cur OperationsListResult, getNextPage func(context.Context, OperationsListResult) (OperationsListResult, error)) OperationsListResultPage {
+	return OperationsListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // Origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
@@ -4206,8 +4218,11 @@ func (page OriginListResultPage) Values() []Origin {
 }
 
 // Creates a new instance of the OriginListResultPage type.
-func NewOriginListResultPage(getNextPage func(context.Context, OriginListResult) (OriginListResult, error)) OriginListResultPage {
-	return OriginListResultPage{fn: getNextPage}
+func NewOriginListResultPage(cur OriginListResult, getNextPage func(context.Context, OriginListResult) (OriginListResult, error)) OriginListResultPage {
+	return OriginListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OriginProperties the JSON object that contains the properties of the origin.
@@ -4607,8 +4622,11 @@ func (page ProfileListResultPage) Values() []Profile {
 }
 
 // Creates a new instance of the ProfileListResultPage type.
-func NewProfileListResultPage(getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
-	return ProfileListResultPage{fn: getNextPage}
+func NewProfileListResultPage(cur ProfileListResult, getNextPage func(context.Context, ProfileListResult) (ProfileListResult, error)) ProfileListResultPage {
+	return ProfileListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // ProfileProperties the JSON object that contains the properties required to create a profile.
@@ -5001,9 +5019,6 @@ func (page ResourceUsageListResultPage) Values() []ResourceUsage {
 }
 
 // Creates a new instance of the ResourceUsageListResultPage type.
-func NewResourceUsageListResultPage(getNextPage func(context.Context, ResourceUsageListResult) (ResourceUsageListResult, error)) ResourceUsageListResultPage {
-	return ResourceUsageListResultPage{fn: getNextPage}
-}
 
 // Sku the pricing tier (defines a CDN provider, feature list and rate) of the CDN profile.
 type Sku struct {

@@ -196,9 +196,6 @@ func (page AvailabilityStatusListResultPage) Values() []AvailabilityStatus {
 }
 
 // Creates a new instance of the AvailabilityStatusListResultPage type.
-func NewAvailabilityStatusListResultPage(getNextPage func(context.Context, AvailabilityStatusListResult) (AvailabilityStatusListResult, error)) AvailabilityStatusListResultPage {
-	return AvailabilityStatusListResultPage{fn: getNextPage}
-}
 
 // AvailabilityStatusProperties properties of availability state.
 type AvailabilityStatusProperties struct {

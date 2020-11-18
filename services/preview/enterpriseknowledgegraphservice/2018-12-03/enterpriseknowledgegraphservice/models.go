@@ -238,8 +238,11 @@ func (page EnterpriseKnowledgeGraphResponseListPage) Values() []EnterpriseKnowle
 }
 
 // Creates a new instance of the EnterpriseKnowledgeGraphResponseListPage type.
-func NewEnterpriseKnowledgeGraphResponseListPage(getNextPage func(context.Context, EnterpriseKnowledgeGraphResponseList) (EnterpriseKnowledgeGraphResponseList, error)) EnterpriseKnowledgeGraphResponseListPage {
-	return EnterpriseKnowledgeGraphResponseListPage{fn: getNextPage}
+func NewEnterpriseKnowledgeGraphResponseListPage(cur EnterpriseKnowledgeGraphResponseList, getNextPage func(context.Context, EnterpriseKnowledgeGraphResponseList) (EnterpriseKnowledgeGraphResponseList, error)) EnterpriseKnowledgeGraphResponseListPage {
+	return EnterpriseKnowledgeGraphResponseListPage{
+		fn:    getNextPage,
+		ekgrl: cur,
+	}
 }
 
 // Error enterpriseKnowledgeGraph Service error object.
@@ -432,9 +435,6 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 }
 
 // Creates a new instance of the OperationEntityListResultPage type.
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return OperationEntityListResultPage{fn: getNextPage}
-}
 
 // Resource azure resource
 type Resource struct {

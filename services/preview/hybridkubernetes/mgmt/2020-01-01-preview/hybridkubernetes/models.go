@@ -412,8 +412,11 @@ func (page ConnectedClusterListPage) Values() []ConnectedCluster {
 }
 
 // Creates a new instance of the ConnectedClusterListPage type.
-func NewConnectedClusterListPage(getNextPage func(context.Context, ConnectedClusterList) (ConnectedClusterList, error)) ConnectedClusterListPage {
-	return ConnectedClusterListPage{fn: getNextPage}
+func NewConnectedClusterListPage(cur ConnectedClusterList, getNextPage func(context.Context, ConnectedClusterList) (ConnectedClusterList, error)) ConnectedClusterListPage {
+	return ConnectedClusterListPage{
+		fn:  getNextPage,
+		ccl: cur,
+	}
 }
 
 // ConnectedClusterPatch object containing updates for patch operations.
@@ -714,9 +717,6 @@ func (page OperationListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
-}
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
 // required location and tags

@@ -295,8 +295,11 @@ func (page ArmDisasterRecoveryListResultPage) Values() []ArmDisasterRecovery {
 }
 
 // Creates a new instance of the ArmDisasterRecoveryListResultPage type.
-func NewArmDisasterRecoveryListResultPage(getNextPage func(context.Context, ArmDisasterRecoveryListResult) (ArmDisasterRecoveryListResult, error)) ArmDisasterRecoveryListResultPage {
-	return ArmDisasterRecoveryListResultPage{fn: getNextPage}
+func NewArmDisasterRecoveryListResultPage(cur ArmDisasterRecoveryListResult, getNextPage func(context.Context, ArmDisasterRecoveryListResult) (ArmDisasterRecoveryListResult, error)) ArmDisasterRecoveryListResultPage {
+	return ArmDisasterRecoveryListResultPage{
+		fn:    getNextPage,
+		adrlr: cur,
+	}
 }
 
 // ArmDisasterRecoveryProperties properties required to the Create Or Update Alias(Disaster Recovery
@@ -741,8 +744,11 @@ func (page EventHubListResultPage) Values() []Eventhub {
 }
 
 // Creates a new instance of the EventHubListResultPage type.
-func NewEventHubListResultPage(getNextPage func(context.Context, EventHubListResult) (EventHubListResult, error)) EventHubListResultPage {
-	return EventHubListResultPage{fn: getNextPage}
+func NewEventHubListResultPage(cur EventHubListResult, getNextPage func(context.Context, EventHubListResult) (EventHubListResult, error)) EventHubListResultPage {
+	return EventHubListResultPage{
+		fn:   getNextPage,
+		ehlr: cur,
+	}
 }
 
 // EventhubProperties properties supplied to the Create Or Update Event Hub operation.
@@ -956,8 +962,11 @@ func (page MigrationConfigListResultPage) Values() []MigrationConfigProperties {
 }
 
 // Creates a new instance of the MigrationConfigListResultPage type.
-func NewMigrationConfigListResultPage(getNextPage func(context.Context, MigrationConfigListResult) (MigrationConfigListResult, error)) MigrationConfigListResultPage {
-	return MigrationConfigListResultPage{fn: getNextPage}
+func NewMigrationConfigListResultPage(cur MigrationConfigListResult, getNextPage func(context.Context, MigrationConfigListResult) (MigrationConfigListResult, error)) MigrationConfigListResultPage {
+	return MigrationConfigListResultPage{
+		fn:   getNextPage,
+		mclr: cur,
+	}
 }
 
 // MigrationConfigProperties single item in List or Get Migration Config operation
@@ -1364,8 +1373,11 @@ func (page NetworkRuleSetListResultPage) Values() []NetworkRuleSet {
 }
 
 // Creates a new instance of the NetworkRuleSetListResultPage type.
-func NewNetworkRuleSetListResultPage(getNextPage func(context.Context, NetworkRuleSetListResult) (NetworkRuleSetListResult, error)) NetworkRuleSetListResultPage {
-	return NetworkRuleSetListResultPage{fn: getNextPage}
+func NewNetworkRuleSetListResultPage(cur NetworkRuleSetListResult, getNextPage func(context.Context, NetworkRuleSetListResult) (NetworkRuleSetListResult, error)) NetworkRuleSetListResultPage {
+	return NetworkRuleSetListResultPage{
+		fn:    getNextPage,
+		nrslr: cur,
+	}
 }
 
 // NetworkRuleSetProperties networkRuleSet properties
@@ -1574,8 +1586,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PremiumMessagingRegions premium Messaging Region
@@ -1770,8 +1785,11 @@ func (page PremiumMessagingRegionsListResultPage) Values() []PremiumMessagingReg
 }
 
 // Creates a new instance of the PremiumMessagingRegionsListResultPage type.
-func NewPremiumMessagingRegionsListResultPage(getNextPage func(context.Context, PremiumMessagingRegionsListResult) (PremiumMessagingRegionsListResult, error)) PremiumMessagingRegionsListResultPage {
-	return PremiumMessagingRegionsListResultPage{fn: getNextPage}
+func NewPremiumMessagingRegionsListResultPage(cur PremiumMessagingRegionsListResult, getNextPage func(context.Context, PremiumMessagingRegionsListResult) (PremiumMessagingRegionsListResult, error)) PremiumMessagingRegionsListResultPage {
+	return PremiumMessagingRegionsListResultPage{
+		fn:    getNextPage,
+		pmrlr: cur,
+	}
 }
 
 // PremiumMessagingRegionsProperties ...
@@ -2052,8 +2070,11 @@ func (page RuleListResultPage) Values() []Rule {
 }
 
 // Creates a new instance of the RuleListResultPage type.
-func NewRuleListResultPage(getNextPage func(context.Context, RuleListResult) (RuleListResult, error)) RuleListResultPage {
-	return RuleListResultPage{fn: getNextPage}
+func NewRuleListResultPage(cur RuleListResult, getNextPage func(context.Context, RuleListResult) (RuleListResult, error)) RuleListResultPage {
+	return RuleListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // Ruleproperties description of Rule Resource.
@@ -2293,8 +2314,11 @@ func (page SBAuthorizationRuleListResultPage) Values() []SBAuthorizationRule {
 }
 
 // Creates a new instance of the SBAuthorizationRuleListResultPage type.
-func NewSBAuthorizationRuleListResultPage(getNextPage func(context.Context, SBAuthorizationRuleListResult) (SBAuthorizationRuleListResult, error)) SBAuthorizationRuleListResultPage {
-	return SBAuthorizationRuleListResultPage{fn: getNextPage}
+func NewSBAuthorizationRuleListResultPage(cur SBAuthorizationRuleListResult, getNextPage func(context.Context, SBAuthorizationRuleListResult) (SBAuthorizationRuleListResult, error)) SBAuthorizationRuleListResultPage {
+	return SBAuthorizationRuleListResultPage{
+		fn:     getNextPage,
+		sbarlr: cur,
+	}
 }
 
 // SBAuthorizationRuleProperties authorizationRule properties.
@@ -2570,8 +2594,11 @@ func (page SBNamespaceListResultPage) Values() []SBNamespace {
 }
 
 // Creates a new instance of the SBNamespaceListResultPage type.
-func NewSBNamespaceListResultPage(getNextPage func(context.Context, SBNamespaceListResult) (SBNamespaceListResult, error)) SBNamespaceListResultPage {
-	return SBNamespaceListResultPage{fn: getNextPage}
+func NewSBNamespaceListResultPage(cur SBNamespaceListResult, getNextPage func(context.Context, SBNamespaceListResult) (SBNamespaceListResult, error)) SBNamespaceListResultPage {
+	return SBNamespaceListResultPage{
+		fn:    getNextPage,
+		sbnlr: cur,
+	}
 }
 
 // SBNamespaceMigrate namespace Migrate Object
@@ -2933,8 +2960,11 @@ func (page SBQueueListResultPage) Values() []SBQueue {
 }
 
 // Creates a new instance of the SBQueueListResultPage type.
-func NewSBQueueListResultPage(getNextPage func(context.Context, SBQueueListResult) (SBQueueListResult, error)) SBQueueListResultPage {
-	return SBQueueListResultPage{fn: getNextPage}
+func NewSBQueueListResultPage(cur SBQueueListResult, getNextPage func(context.Context, SBQueueListResult) (SBQueueListResult, error)) SBQueueListResultPage {
+	return SBQueueListResultPage{
+		fn:    getNextPage,
+		sbqlr: cur,
+	}
 }
 
 // SBQueueProperties the Queue Properties definition.
@@ -3269,8 +3299,11 @@ func (page SBSubscriptionListResultPage) Values() []SBSubscription {
 }
 
 // Creates a new instance of the SBSubscriptionListResultPage type.
-func NewSBSubscriptionListResultPage(getNextPage func(context.Context, SBSubscriptionListResult) (SBSubscriptionListResult, error)) SBSubscriptionListResultPage {
-	return SBSubscriptionListResultPage{fn: getNextPage}
+func NewSBSubscriptionListResultPage(cur SBSubscriptionListResult, getNextPage func(context.Context, SBSubscriptionListResult) (SBSubscriptionListResult, error)) SBSubscriptionListResultPage {
+	return SBSubscriptionListResultPage{
+		fn:    getNextPage,
+		sbslr: cur,
+	}
 }
 
 // SBSubscriptionProperties description of Subscription Resource.
@@ -3578,9 +3611,6 @@ func (page SBTopicListResultPage) Values() []SBTopic {
 }
 
 // Creates a new instance of the SBTopicListResultPage type.
-func NewSBTopicListResultPage(getNextPage func(context.Context, SBTopicListResult) (SBTopicListResult, error)) SBTopicListResultPage {
-	return SBTopicListResultPage{fn: getNextPage}
-}
 
 // SBTopicProperties the Topic Properties definition.
 type SBTopicProperties struct {

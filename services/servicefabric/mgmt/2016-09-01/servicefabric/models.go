@@ -332,8 +332,11 @@ func (page ClusterCodeVersionsListResultPage) Values() []ClusterCodeVersionsResu
 }
 
 // Creates a new instance of the ClusterCodeVersionsListResultPage type.
-func NewClusterCodeVersionsListResultPage(getNextPage func(context.Context, ClusterCodeVersionsListResult) (ClusterCodeVersionsListResult, error)) ClusterCodeVersionsListResultPage {
-	return ClusterCodeVersionsListResultPage{fn: getNextPage}
+func NewClusterCodeVersionsListResultPage(cur ClusterCodeVersionsListResult, getNextPage func(context.Context, ClusterCodeVersionsListResult) (ClusterCodeVersionsListResult, error)) ClusterCodeVersionsListResultPage {
+	return ClusterCodeVersionsListResultPage{
+		fn:    getNextPage,
+		ccvlr: cur,
+	}
 }
 
 // ClusterCodeVersionsResult the result of the ServiceFabric runtime versions
@@ -576,8 +579,11 @@ func (page ClusterListResultPage) Values() []Cluster {
 }
 
 // Creates a new instance of the ClusterListResultPage type.
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return ClusterListResultPage{fn: getNextPage}
+func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ClusterProperties the cluster resource properties
@@ -1101,9 +1107,6 @@ func (page OperationListResultPage) Values() []OperationResult {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // OperationResult available operation list result
 type OperationResult struct {

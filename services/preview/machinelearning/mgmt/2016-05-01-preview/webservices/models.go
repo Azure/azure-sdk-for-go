@@ -465,9 +465,6 @@ func (page PaginatedWebServicesListPage) Values() []WebService {
 }
 
 // Creates a new instance of the PaginatedWebServicesListPage type.
-func NewPaginatedWebServicesListPage(getNextPage func(context.Context, PaginatedWebServicesList) (PaginatedWebServicesList, error)) PaginatedWebServicesListPage {
-	return PaginatedWebServicesListPage{fn: getNextPage}
-}
 
 // PatchFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type PatchFuture struct {

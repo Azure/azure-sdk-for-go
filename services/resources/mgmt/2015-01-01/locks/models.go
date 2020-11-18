@@ -181,9 +181,6 @@ func (page ManagementLockListResultPage) Values() []ManagementLockObject {
 }
 
 // Creates a new instance of the ManagementLockListResultPage type.
-func NewManagementLockListResultPage(getNextPage func(context.Context, ManagementLockListResult) (ManagementLockListResult, error)) ManagementLockListResultPage {
-	return ManagementLockListResultPage{fn: getNextPage}
-}
 
 // ManagementLockObject management lock information.
 type ManagementLockObject struct {

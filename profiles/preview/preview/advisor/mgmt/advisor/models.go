@@ -79,8 +79,8 @@ func New(subscriptionID string) BaseClient {
 func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
 	return original.NewOperationEntityListResultIterator(page)
 }
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return original.NewOperationEntityListResultPage(getNextPage)
+func NewOperationEntityListResultPage(cur OperationEntityListResult, getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return original.NewOperationEntityListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -96,9 +96,6 @@ func NewRecommendationsClientWithBaseURI(baseURI string, subscriptionID string) 
 }
 func NewResourceRecommendationBaseListResultIterator(page ResourceRecommendationBaseListResultPage) ResourceRecommendationBaseListResultIterator {
 	return original.NewResourceRecommendationBaseListResultIterator(page)
-}
-func NewResourceRecommendationBaseListResultPage(getNextPage func(context.Context, ResourceRecommendationBaseListResult) (ResourceRecommendationBaseListResult, error)) ResourceRecommendationBaseListResultPage {
-	return original.NewResourceRecommendationBaseListResultPage(getNextPage)
 }
 func NewSuppressionsClient(subscriptionID string) SuppressionsClient {
 	return original.NewSuppressionsClient(subscriptionID)

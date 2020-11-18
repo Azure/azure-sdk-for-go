@@ -223,8 +223,11 @@ func (page OperationListResultPage) Values() []OperationResult {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResult an Confluent REST API operation.
@@ -540,9 +543,6 @@ func (page OrganizationResourceListResultPage) Values() []OrganizationResource {
 }
 
 // Creates a new instance of the OrganizationResourceListResultPage type.
-func NewOrganizationResourceListResultPage(getNextPage func(context.Context, OrganizationResourceListResult) (OrganizationResourceListResult, error)) OrganizationResourceListResultPage {
-	return OrganizationResourceListResultPage{fn: getNextPage}
-}
 
 // OrganizationResourceProperties organization resource property
 type OrganizationResourceProperties struct {

@@ -486,8 +486,11 @@ func (page DeploymentListResultPage) Values() []DeploymentExtended {
 }
 
 // Creates a new instance of the DeploymentListResultPage type.
-func NewDeploymentListResultPage(getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
-	return DeploymentListResultPage{fn: getNextPage}
+func NewDeploymentListResultPage(cur DeploymentListResult, getNextPage func(context.Context, DeploymentListResult) (DeploymentListResult, error)) DeploymentListResultPage {
+	return DeploymentListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DeploymentOperation deployment operation information.
@@ -695,8 +698,11 @@ func (page DeploymentOperationsListResultPage) Values() []DeploymentOperation {
 }
 
 // Creates a new instance of the DeploymentOperationsListResultPage type.
-func NewDeploymentOperationsListResultPage(getNextPage func(context.Context, DeploymentOperationsListResult) (DeploymentOperationsListResult, error)) DeploymentOperationsListResultPage {
-	return DeploymentOperationsListResultPage{fn: getNextPage}
+func NewDeploymentOperationsListResultPage(cur DeploymentOperationsListResult, getNextPage func(context.Context, DeploymentOperationsListResult) (DeploymentOperationsListResult, error)) DeploymentOperationsListResultPage {
+	return DeploymentOperationsListResultPage{
+		fn:   getNextPage,
+		dolr: cur,
+	}
 }
 
 // DeploymentProperties deployment properties.
@@ -1702,8 +1708,11 @@ func (page GroupListResultPage) Values() []Group {
 }
 
 // Creates a new instance of the GroupListResultPage type.
-func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
-	return GroupListResultPage{fn: getNextPage}
+func NewGroupListResultPage(cur GroupListResult, getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return GroupListResultPage{
+		fn:  getNextPage,
+		glr: cur,
+	}
 }
 
 // GroupPatchable resource group information.
@@ -1992,8 +2001,11 @@ func (page ListResultPage) Values() []GenericResourceExpanded {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // MoveInfo parameters of move resources.
@@ -2229,8 +2241,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ParametersLink entity representing the reference to the deployment parameters.
@@ -2440,8 +2455,11 @@ func (page ProviderListResultPage) Values() []Provider {
 }
 
 // Creates a new instance of the ProviderListResultPage type.
-func NewProviderListResultPage(getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
-	return ProviderListResultPage{fn: getNextPage}
+func NewProviderListResultPage(cur ProviderListResult, getNextPage func(context.Context, ProviderListResult) (ProviderListResult, error)) ProviderListResultPage {
+	return ProviderListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // ProviderOperationDisplayProperties resource provider operation's display properties.
@@ -2808,9 +2826,6 @@ func (page TagsListResultPage) Values() []TagDetails {
 }
 
 // Creates a new instance of the TagsListResultPage type.
-func NewTagsListResultPage(getNextPage func(context.Context, TagsListResult) (TagsListResult, error)) TagsListResultPage {
-	return TagsListResultPage{fn: getNextPage}
-}
 
 // TagsPatchResource wrapper resource for tags patch API request only.
 type TagsPatchResource struct {

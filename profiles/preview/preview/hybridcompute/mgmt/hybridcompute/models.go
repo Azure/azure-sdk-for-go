@@ -19,11 +19,7 @@
 
 package hybridcompute
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/preview/hybridcompute/mgmt/2019-03-18-preview/hybridcompute"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/preview/hybridcompute/mgmt/2019-03-18-preview/hybridcompute"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -70,9 +66,6 @@ func New(subscriptionID string) BaseClient {
 }
 func NewMachineListResultIterator(page MachineListResultPage) MachineListResultIterator {
 	return original.NewMachineListResultIterator(page)
-}
-func NewMachineListResultPage(getNextPage func(context.Context, MachineListResult) (MachineListResult, error)) MachineListResultPage {
-	return original.NewMachineListResultPage(getNextPage)
 }
 func NewMachinesClient(subscriptionID string) MachinesClient {
 	return original.NewMachinesClient(subscriptionID)

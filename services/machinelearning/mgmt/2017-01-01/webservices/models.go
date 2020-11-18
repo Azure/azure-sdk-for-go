@@ -561,9 +561,6 @@ func (page PaginatedWebServicesListPage) Values() []WebService {
 }
 
 // Creates a new instance of the PaginatedWebServicesListPage type.
-func NewPaginatedWebServicesListPage(getNextPage func(context.Context, PaginatedWebServicesList) (PaginatedWebServicesList, error)) PaginatedWebServicesListPage {
-	return PaginatedWebServicesListPage{fn: getNextPage}
-}
 
 // Parameter web Service Parameter object for node and global parameter
 type Parameter struct {

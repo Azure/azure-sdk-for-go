@@ -202,8 +202,11 @@ func (page HybridUseBenefitListResultPage) Values() []HybridUseBenefitModel {
 }
 
 // Creates a new instance of the HybridUseBenefitListResultPage type.
-func NewHybridUseBenefitListResultPage(getNextPage func(context.Context, HybridUseBenefitListResult) (HybridUseBenefitListResult, error)) HybridUseBenefitListResultPage {
-	return HybridUseBenefitListResultPage{fn: getNextPage}
+func NewHybridUseBenefitListResultPage(cur HybridUseBenefitListResult, getNextPage func(context.Context, HybridUseBenefitListResult) (HybridUseBenefitListResult, error)) HybridUseBenefitListResultPage {
+	return HybridUseBenefitListResultPage{
+		fn:    getNextPage,
+		hublr: cur,
+	}
 }
 
 // HybridUseBenefitModel response on GET of a hybrid use benefit
@@ -478,9 +481,6 @@ func (page OperationListPage) Values() []OperationResponse {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
-}
 
 // OperationResponse operation response.
 type OperationResponse struct {

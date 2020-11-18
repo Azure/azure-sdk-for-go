@@ -289,8 +289,11 @@ func (page DeviceListResultPage) Values() []Device {
 }
 
 // Creates a new instance of the DeviceListResultPage type.
-func NewDeviceListResultPage(getNextPage func(context.Context, DeviceListResult) (DeviceListResult, error)) DeviceListResultPage {
-	return DeviceListResultPage{fn: getNextPage}
+func NewDeviceListResultPage(cur DeviceListResult, getNextPage func(context.Context, DeviceListResult) (DeviceListResult, error)) DeviceListResultPage {
+	return DeviceListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // BasicDevicePropertiesFormat hybrid network device properties.
@@ -707,8 +710,11 @@ func (page OperationListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OsProfile specifies the operating system settings for the role instance.
@@ -893,8 +899,11 @@ func (page PreviewSubscriptionsListPage) Values() []PreviewSubscription {
 }
 
 // Creates a new instance of the PreviewSubscriptionsListPage type.
-func NewPreviewSubscriptionsListPage(getNextPage func(context.Context, PreviewSubscriptionsList) (PreviewSubscriptionsList, error)) PreviewSubscriptionsListPage {
-	return PreviewSubscriptionsListPage{fn: getNextPage}
+func NewPreviewSubscriptionsListPage(cur PreviewSubscriptionsList, getNextPage func(context.Context, PreviewSubscriptionsList) (PreviewSubscriptionsList, error)) PreviewSubscriptionsListPage {
+	return PreviewSubscriptionsListPage{
+		fn:  getNextPage,
+		psl: cur,
+	}
 }
 
 // Resource common resource representation.
@@ -1222,8 +1231,11 @@ func (page VendorListResultPage) Values() []Vendor {
 }
 
 // Creates a new instance of the VendorListResultPage type.
-func NewVendorListResultPage(getNextPage func(context.Context, VendorListResult) (VendorListResult, error)) VendorListResultPage {
-	return VendorListResultPage{fn: getNextPage}
+func NewVendorListResultPage(cur VendorListResult, getNextPage func(context.Context, VendorListResult) (VendorListResult, error)) VendorListResultPage {
+	return VendorListResultPage{
+		fn:  getNextPage,
+		vlr: cur,
+	}
 }
 
 // VendorPropertiesFormat vendor properties.
@@ -1547,8 +1559,11 @@ func (page VendorSkuListResultPage) Values() []VendorSku {
 }
 
 // Creates a new instance of the VendorSkuListResultPage type.
-func NewVendorSkuListResultPage(getNextPage func(context.Context, VendorSkuListResult) (VendorSkuListResult, error)) VendorSkuListResultPage {
-	return VendorSkuListResultPage{fn: getNextPage}
+func NewVendorSkuListResultPage(cur VendorSkuListResult, getNextPage func(context.Context, VendorSkuListResult) (VendorSkuListResult, error)) VendorSkuListResultPage {
+	return VendorSkuListResultPage{
+		fn:   getNextPage,
+		vslr: cur,
+	}
 }
 
 // VendorSkuPreviewCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -1959,8 +1974,11 @@ func (page VendorVirtualNetworkFunctionListResultPage) Values() []VendorVirtualN
 }
 
 // Creates a new instance of the VendorVirtualNetworkFunctionListResultPage type.
-func NewVendorVirtualNetworkFunctionListResultPage(getNextPage func(context.Context, VendorVirtualNetworkFunctionListResult) (VendorVirtualNetworkFunctionListResult, error)) VendorVirtualNetworkFunctionListResultPage {
-	return VendorVirtualNetworkFunctionListResultPage{fn: getNextPage}
+func NewVendorVirtualNetworkFunctionListResultPage(cur VendorVirtualNetworkFunctionListResult, getNextPage func(context.Context, VendorVirtualNetworkFunctionListResult) (VendorVirtualNetworkFunctionListResult, error)) VendorVirtualNetworkFunctionListResultPage {
+	return VendorVirtualNetworkFunctionListResultPage{
+		fn:     getNextPage,
+		vvnflr: cur,
+	}
 }
 
 // VendorVirtualNetworkFunctionPropertiesFormat vendor virtual network function properties
@@ -2295,8 +2313,11 @@ func (page VirtualNetworkFunctionListResultPage) Values() []VirtualNetworkFuncti
 }
 
 // Creates a new instance of the VirtualNetworkFunctionListResultPage type.
-func NewVirtualNetworkFunctionListResultPage(getNextPage func(context.Context, VirtualNetworkFunctionListResult) (VirtualNetworkFunctionListResult, error)) VirtualNetworkFunctionListResultPage {
-	return VirtualNetworkFunctionListResultPage{fn: getNextPage}
+func NewVirtualNetworkFunctionListResultPage(cur VirtualNetworkFunctionListResult, getNextPage func(context.Context, VirtualNetworkFunctionListResult) (VirtualNetworkFunctionListResult, error)) VirtualNetworkFunctionListResultPage {
+	return VirtualNetworkFunctionListResultPage{
+		fn:    getNextPage,
+		vnflr: cur,
+	}
 }
 
 // VirtualNetworkFunctionPropertiesFormat hybrid network virtual network function properties.
@@ -2583,8 +2604,11 @@ func (page VirtualNetworkFunctionSkuDetailsPage) Values() []VirtualNetworkFuncti
 }
 
 // Creates a new instance of the VirtualNetworkFunctionSkuDetailsPage type.
-func NewVirtualNetworkFunctionSkuDetailsPage(getNextPage func(context.Context, VirtualNetworkFunctionSkuDetails) (VirtualNetworkFunctionSkuDetails, error)) VirtualNetworkFunctionSkuDetailsPage {
-	return VirtualNetworkFunctionSkuDetailsPage{fn: getNextPage}
+func NewVirtualNetworkFunctionSkuDetailsPage(cur VirtualNetworkFunctionSkuDetails, getNextPage func(context.Context, VirtualNetworkFunctionSkuDetails) (VirtualNetworkFunctionSkuDetails, error)) VirtualNetworkFunctionSkuDetailsPage {
+	return VirtualNetworkFunctionSkuDetailsPage{
+		fn:    getNextPage,
+		vnfsd: cur,
+	}
 }
 
 // VirtualNetworkFunctionSkuListResult a list of available hybrid network virtual network function skus.
@@ -2748,8 +2772,11 @@ func (page VirtualNetworkFunctionSkuListResultPage) Values() []SkuOverview {
 }
 
 // Creates a new instance of the VirtualNetworkFunctionSkuListResultPage type.
-func NewVirtualNetworkFunctionSkuListResultPage(getNextPage func(context.Context, VirtualNetworkFunctionSkuListResult) (VirtualNetworkFunctionSkuListResult, error)) VirtualNetworkFunctionSkuListResultPage {
-	return VirtualNetworkFunctionSkuListResultPage{fn: getNextPage}
+func NewVirtualNetworkFunctionSkuListResultPage(cur VirtualNetworkFunctionSkuListResult, getNextPage func(context.Context, VirtualNetworkFunctionSkuListResult) (VirtualNetworkFunctionSkuListResult, error)) VirtualNetworkFunctionSkuListResultPage {
+	return VirtualNetworkFunctionSkuListResultPage{
+		fn:     getNextPage,
+		vnfslr: cur,
+	}
 }
 
 // VirtualNetworkFunctionSkuRoleDetails the virtual network function user configuration.
@@ -3013,6 +3040,3 @@ func (page VirtualNetworkFunctionVendorListResultPage) Values() []VirtualNetwork
 }
 
 // Creates a new instance of the VirtualNetworkFunctionVendorListResultPage type.
-func NewVirtualNetworkFunctionVendorListResultPage(getNextPage func(context.Context, VirtualNetworkFunctionVendorListResult) (VirtualNetworkFunctionVendorListResult, error)) VirtualNetworkFunctionVendorListResultPage {
-	return VirtualNetworkFunctionVendorListResultPage{fn: getNextPage}
-}

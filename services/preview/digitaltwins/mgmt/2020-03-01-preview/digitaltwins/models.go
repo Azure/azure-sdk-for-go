@@ -375,8 +375,11 @@ func (page DescriptionListResultPage) Values() []Description {
 }
 
 // Creates a new instance of the DescriptionListResultPage type.
-func NewDescriptionListResultPage(getNextPage func(context.Context, DescriptionListResult) (DescriptionListResult, error)) DescriptionListResultPage {
-	return DescriptionListResultPage{fn: getNextPage}
+func NewDescriptionListResultPage(cur DescriptionListResult, getNextPage func(context.Context, DescriptionListResult) (DescriptionListResult, error)) DescriptionListResultPage {
+	return DescriptionListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // EndpointCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -658,8 +661,11 @@ func (page EndpointResourceListResultPage) Values() []EndpointResource {
 }
 
 // Creates a new instance of the EndpointResourceListResultPage type.
-func NewEndpointResourceListResultPage(getNextPage func(context.Context, EndpointResourceListResult) (EndpointResourceListResult, error)) EndpointResourceListResultPage {
-	return EndpointResourceListResultPage{fn: getNextPage}
+func NewEndpointResourceListResultPage(cur EndpointResourceListResult, getNextPage func(context.Context, EndpointResourceListResult) (EndpointResourceListResult, error)) EndpointResourceListResultPage {
+	return EndpointResourceListResultPage{
+		fn:   getNextPage,
+		erlr: cur,
+	}
 }
 
 // BasicEndpointResourceProperties properties related to Digital Twins Endpoint
@@ -1107,9 +1113,6 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // PatchDescription the description of the DigitalTwins service.
 type PatchDescription struct {

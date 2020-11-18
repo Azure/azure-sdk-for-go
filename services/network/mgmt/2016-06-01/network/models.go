@@ -961,8 +961,11 @@ func (page ApplicationGatewayListResultPage) Values() []ApplicationGateway {
 }
 
 // Creates a new instance of the ApplicationGatewayListResultPage type.
-func NewApplicationGatewayListResultPage(getNextPage func(context.Context, ApplicationGatewayListResult) (ApplicationGatewayListResult, error)) ApplicationGatewayListResultPage {
-	return ApplicationGatewayListResultPage{fn: getNextPage}
+func NewApplicationGatewayListResultPage(cur ApplicationGatewayListResult, getNextPage func(context.Context, ApplicationGatewayListResult) (ApplicationGatewayListResult, error)) ApplicationGatewayListResultPage {
+	return ApplicationGatewayListResultPage{
+		fn:   getNextPage,
+		aglr: cur,
+	}
 }
 
 // ApplicationGatewayPathRule path rule of URL path map of application gateway
@@ -1791,8 +1794,11 @@ func (page AuthorizationListResultPage) Values() []ExpressRouteCircuitAuthorizat
 }
 
 // Creates a new instance of the AuthorizationListResultPage type.
-func NewAuthorizationListResultPage(getNextPage func(context.Context, AuthorizationListResult) (AuthorizationListResult, error)) AuthorizationListResultPage {
-	return AuthorizationListResultPage{fn: getNextPage}
+func NewAuthorizationListResultPage(cur AuthorizationListResult, getNextPage func(context.Context, AuthorizationListResult) (AuthorizationListResult, error)) AuthorizationListResultPage {
+	return AuthorizationListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AuthorizationPropertiesFormat ...
@@ -2484,8 +2490,11 @@ func (page ExpressRouteCircuitListResultPage) Values() []ExpressRouteCircuit {
 }
 
 // Creates a new instance of the ExpressRouteCircuitListResultPage type.
-func NewExpressRouteCircuitListResultPage(getNextPage func(context.Context, ExpressRouteCircuitListResult) (ExpressRouteCircuitListResult, error)) ExpressRouteCircuitListResultPage {
-	return ExpressRouteCircuitListResultPage{fn: getNextPage}
+func NewExpressRouteCircuitListResultPage(cur ExpressRouteCircuitListResult, getNextPage func(context.Context, ExpressRouteCircuitListResult) (ExpressRouteCircuitListResult, error)) ExpressRouteCircuitListResultPage {
+	return ExpressRouteCircuitListResultPage{
+		fn:    getNextPage,
+		erclr: cur,
+	}
 }
 
 // ExpressRouteCircuitPeering peering in a ExpressRouteCircuit resource
@@ -2735,8 +2744,11 @@ func (page ExpressRouteCircuitPeeringListResultPage) Values() []ExpressRouteCirc
 }
 
 // Creates a new instance of the ExpressRouteCircuitPeeringListResultPage type.
-func NewExpressRouteCircuitPeeringListResultPage(getNextPage func(context.Context, ExpressRouteCircuitPeeringListResult) (ExpressRouteCircuitPeeringListResult, error)) ExpressRouteCircuitPeeringListResultPage {
-	return ExpressRouteCircuitPeeringListResultPage{fn: getNextPage}
+func NewExpressRouteCircuitPeeringListResultPage(cur ExpressRouteCircuitPeeringListResult, getNextPage func(context.Context, ExpressRouteCircuitPeeringListResult) (ExpressRouteCircuitPeeringListResult, error)) ExpressRouteCircuitPeeringListResultPage {
+	return ExpressRouteCircuitPeeringListResultPage{
+		fn:     getNextPage,
+		ercplr: cur,
+	}
 }
 
 // ExpressRouteCircuitPeeringPropertiesFormat ...
@@ -3342,8 +3354,11 @@ func (page ExpressRouteServiceProviderListResultPage) Values() []ExpressRouteSer
 }
 
 // Creates a new instance of the ExpressRouteServiceProviderListResultPage type.
-func NewExpressRouteServiceProviderListResultPage(getNextPage func(context.Context, ExpressRouteServiceProviderListResult) (ExpressRouteServiceProviderListResult, error)) ExpressRouteServiceProviderListResultPage {
-	return ExpressRouteServiceProviderListResultPage{fn: getNextPage}
+func NewExpressRouteServiceProviderListResultPage(cur ExpressRouteServiceProviderListResult, getNextPage func(context.Context, ExpressRouteServiceProviderListResult) (ExpressRouteServiceProviderListResult, error)) ExpressRouteServiceProviderListResultPage {
+	return ExpressRouteServiceProviderListResultPage{
+		fn:     getNextPage,
+		ersplr: cur,
+	}
 }
 
 // ExpressRouteServiceProviderPropertiesFormat properties of ExpressRouteServiceProvider
@@ -4085,8 +4100,11 @@ func (page InterfaceListResultPage) Values() []Interface {
 }
 
 // Creates a new instance of the InterfaceListResultPage type.
-func NewInterfaceListResultPage(getNextPage func(context.Context, InterfaceListResult) (InterfaceListResult, error)) InterfaceListResultPage {
-	return InterfaceListResultPage{fn: getNextPage}
+func NewInterfaceListResultPage(cur InterfaceListResult, getNextPage func(context.Context, InterfaceListResult) (InterfaceListResult, error)) InterfaceListResultPage {
+	return InterfaceListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // InterfacePropertiesFormat networkInterface properties.
@@ -4592,8 +4610,11 @@ func (page LoadBalancerListResultPage) Values() []LoadBalancer {
 }
 
 // Creates a new instance of the LoadBalancerListResultPage type.
-func NewLoadBalancerListResultPage(getNextPage func(context.Context, LoadBalancerListResult) (LoadBalancerListResult, error)) LoadBalancerListResultPage {
-	return LoadBalancerListResultPage{fn: getNextPage}
+func NewLoadBalancerListResultPage(cur LoadBalancerListResult, getNextPage func(context.Context, LoadBalancerListResult) (LoadBalancerListResult, error)) LoadBalancerListResultPage {
+	return LoadBalancerListResultPage{
+		fn:   getNextPage,
+		lblr: cur,
+	}
 }
 
 // LoadBalancerPropertiesFormat properties of Load Balancer
@@ -5043,8 +5064,11 @@ func (page LocalNetworkGatewayListResultPage) Values() []LocalNetworkGateway {
 }
 
 // Creates a new instance of the LocalNetworkGatewayListResultPage type.
-func NewLocalNetworkGatewayListResultPage(getNextPage func(context.Context, LocalNetworkGatewayListResult) (LocalNetworkGatewayListResult, error)) LocalNetworkGatewayListResultPage {
-	return LocalNetworkGatewayListResultPage{fn: getNextPage}
+func NewLocalNetworkGatewayListResultPage(cur LocalNetworkGatewayListResult, getNextPage func(context.Context, LocalNetworkGatewayListResult) (LocalNetworkGatewayListResult, error)) LocalNetworkGatewayListResultPage {
+	return LocalNetworkGatewayListResultPage{
+		fn:    getNextPage,
+		lnglr: cur,
+	}
 }
 
 // LocalNetworkGatewayPropertiesFormat localNetworkGateway properties
@@ -5658,8 +5682,11 @@ func (page PublicIPAddressListResultPage) Values() []PublicIPAddress {
 }
 
 // Creates a new instance of the PublicIPAddressListResultPage type.
-func NewPublicIPAddressListResultPage(getNextPage func(context.Context, PublicIPAddressListResult) (PublicIPAddressListResult, error)) PublicIPAddressListResultPage {
-	return PublicIPAddressListResultPage{fn: getNextPage}
+func NewPublicIPAddressListResultPage(cur PublicIPAddressListResult, getNextPage func(context.Context, PublicIPAddressListResult) (PublicIPAddressListResult, error)) PublicIPAddressListResultPage {
+	return PublicIPAddressListResultPage{
+		fn:     getNextPage,
+		pipalr: cur,
+	}
 }
 
 // PublicIPAddressPropertiesFormat publicIpAddress properties
@@ -6069,8 +6096,11 @@ func (page RouteListResultPage) Values() []Route {
 }
 
 // Creates a new instance of the RouteListResultPage type.
-func NewRouteListResultPage(getNextPage func(context.Context, RouteListResult) (RouteListResult, error)) RouteListResultPage {
-	return RouteListResultPage{fn: getNextPage}
+func NewRouteListResultPage(cur RouteListResult, getNextPage func(context.Context, RouteListResult) (RouteListResult, error)) RouteListResultPage {
+	return RouteListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // RoutePropertiesFormat route resource
@@ -6405,8 +6435,11 @@ func (page RouteTableListResultPage) Values() []RouteTable {
 }
 
 // Creates a new instance of the RouteTableListResultPage type.
-func NewRouteTableListResultPage(getNextPage func(context.Context, RouteTableListResult) (RouteTableListResult, error)) RouteTableListResultPage {
-	return RouteTableListResultPage{fn: getNextPage}
+func NewRouteTableListResultPage(cur RouteTableListResult, getNextPage func(context.Context, RouteTableListResult) (RouteTableListResult, error)) RouteTableListResultPage {
+	return RouteTableListResultPage{
+		fn:   getNextPage,
+		rtlr: cur,
+	}
 }
 
 // RouteTablePropertiesFormat route Table resource
@@ -6752,8 +6785,11 @@ func (page SecurityGroupListResultPage) Values() []SecurityGroup {
 }
 
 // Creates a new instance of the SecurityGroupListResultPage type.
-func NewSecurityGroupListResultPage(getNextPage func(context.Context, SecurityGroupListResult) (SecurityGroupListResult, error)) SecurityGroupListResultPage {
-	return SecurityGroupListResultPage{fn: getNextPage}
+func NewSecurityGroupListResultPage(cur SecurityGroupListResult, getNextPage func(context.Context, SecurityGroupListResult) (SecurityGroupListResult, error)) SecurityGroupListResultPage {
+	return SecurityGroupListResultPage{
+		fn:   getNextPage,
+		sglr: cur,
+	}
 }
 
 // SecurityGroupPropertiesFormat network Security Group resource
@@ -7076,8 +7112,11 @@ func (page SecurityRuleListResultPage) Values() []SecurityRule {
 }
 
 // Creates a new instance of the SecurityRuleListResultPage type.
-func NewSecurityRuleListResultPage(getNextPage func(context.Context, SecurityRuleListResult) (SecurityRuleListResult, error)) SecurityRuleListResultPage {
-	return SecurityRuleListResultPage{fn: getNextPage}
+func NewSecurityRuleListResultPage(cur SecurityRuleListResult, getNextPage func(context.Context, SecurityRuleListResult) (SecurityRuleListResult, error)) SecurityRuleListResultPage {
+	return SecurityRuleListResultPage{
+		fn:   getNextPage,
+		srlr: cur,
+	}
 }
 
 // SecurityRulePropertiesFormat ...
@@ -7396,8 +7435,11 @@ func (page SubnetListResultPage) Values() []Subnet {
 }
 
 // Creates a new instance of the SubnetListResultPage type.
-func NewSubnetListResultPage(getNextPage func(context.Context, SubnetListResult) (SubnetListResult, error)) SubnetListResultPage {
-	return SubnetListResultPage{fn: getNextPage}
+func NewSubnetListResultPage(cur SubnetListResult, getNextPage func(context.Context, SubnetListResult) (SubnetListResult, error)) SubnetListResultPage {
+	return SubnetListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // SubnetPropertiesFormat ...
@@ -7666,8 +7708,11 @@ func (page UsagesListResultPage) Values() []Usage {
 }
 
 // Creates a new instance of the UsagesListResultPage type.
-func NewUsagesListResultPage(getNextPage func(context.Context, UsagesListResult) (UsagesListResult, error)) UsagesListResultPage {
-	return UsagesListResultPage{fn: getNextPage}
+func NewUsagesListResultPage(cur UsagesListResult, getNextPage func(context.Context, UsagesListResult) (UsagesListResult, error)) UsagesListResultPage {
+	return UsagesListResultPage{
+		fn:  getNextPage,
+		ulr: cur,
+	}
 }
 
 // VirtualNetwork virtual Network resource
@@ -8174,8 +8219,11 @@ func (page VirtualNetworkGatewayConnectionListResultPage) Values() []VirtualNetw
 }
 
 // Creates a new instance of the VirtualNetworkGatewayConnectionListResultPage type.
-func NewVirtualNetworkGatewayConnectionListResultPage(getNextPage func(context.Context, VirtualNetworkGatewayConnectionListResult) (VirtualNetworkGatewayConnectionListResult, error)) VirtualNetworkGatewayConnectionListResultPage {
-	return VirtualNetworkGatewayConnectionListResultPage{fn: getNextPage}
+func NewVirtualNetworkGatewayConnectionListResultPage(cur VirtualNetworkGatewayConnectionListResult, getNextPage func(context.Context, VirtualNetworkGatewayConnectionListResult) (VirtualNetworkGatewayConnectionListResult, error)) VirtualNetworkGatewayConnectionListResultPage {
+	return VirtualNetworkGatewayConnectionListResultPage{
+		fn:     getNextPage,
+		vngclr: cur,
+	}
 }
 
 // VirtualNetworkGatewayConnectionPropertiesFormat virtualNetworkGatewayConnection properties
@@ -8562,8 +8610,11 @@ func (page VirtualNetworkGatewayListResultPage) Values() []VirtualNetworkGateway
 }
 
 // Creates a new instance of the VirtualNetworkGatewayListResultPage type.
-func NewVirtualNetworkGatewayListResultPage(getNextPage func(context.Context, VirtualNetworkGatewayListResult) (VirtualNetworkGatewayListResult, error)) VirtualNetworkGatewayListResultPage {
-	return VirtualNetworkGatewayListResultPage{fn: getNextPage}
+func NewVirtualNetworkGatewayListResultPage(cur VirtualNetworkGatewayListResult, getNextPage func(context.Context, VirtualNetworkGatewayListResult) (VirtualNetworkGatewayListResult, error)) VirtualNetworkGatewayListResultPage {
+	return VirtualNetworkGatewayListResultPage{
+		fn:    getNextPage,
+		vnglr: cur,
+	}
 }
 
 // VirtualNetworkGatewayPropertiesFormat virtualNetworkGateway properties
@@ -8835,8 +8886,11 @@ func (page VirtualNetworkListResultPage) Values() []VirtualNetwork {
 }
 
 // Creates a new instance of the VirtualNetworkListResultPage type.
-func NewVirtualNetworkListResultPage(getNextPage func(context.Context, VirtualNetworkListResult) (VirtualNetworkListResult, error)) VirtualNetworkListResultPage {
-	return VirtualNetworkListResultPage{fn: getNextPage}
+func NewVirtualNetworkListResultPage(cur VirtualNetworkListResult, getNextPage func(context.Context, VirtualNetworkListResult) (VirtualNetworkListResult, error)) VirtualNetworkListResultPage {
+	return VirtualNetworkListResultPage{
+		fn:   getNextPage,
+		vnlr: cur,
+	}
 }
 
 // VirtualNetworkPeering peerings in a VirtualNetwork resource
@@ -9074,9 +9128,6 @@ func (page VirtualNetworkPeeringListResultPage) Values() []VirtualNetworkPeering
 }
 
 // Creates a new instance of the VirtualNetworkPeeringListResultPage type.
-func NewVirtualNetworkPeeringListResultPage(getNextPage func(context.Context, VirtualNetworkPeeringListResult) (VirtualNetworkPeeringListResult, error)) VirtualNetworkPeeringListResultPage {
-	return VirtualNetworkPeeringListResultPage{fn: getNextPage}
-}
 
 // VirtualNetworkPeeringPropertiesFormat ...
 type VirtualNetworkPeeringPropertiesFormat struct {

@@ -1498,8 +1498,11 @@ func (page AlertCollectionPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertCollectionPage type.
-func NewAlertCollectionPage(getNextPage func(context.Context, AlertCollection) (AlertCollection, error)) AlertCollectionPage {
-	return AlertCollectionPage{fn: getNextPage}
+func NewAlertCollectionPage(cur AlertCollection, getNextPage func(context.Context, AlertCollection) (AlertCollection, error)) AlertCollectionPage {
+	return AlertCollectionPage{
+		fn: getNextPage,
+		ac: cur,
+	}
 }
 
 // AlertProperties the properties of an alert.
@@ -3359,8 +3362,11 @@ func (page EventCollectionPage) Values() []Event {
 }
 
 // Creates a new instance of the EventCollectionPage type.
-func NewEventCollectionPage(getNextPage func(context.Context, EventCollection) (EventCollection, error)) EventCollectionPage {
-	return EventCollectionPage{fn: getNextPage}
+func NewEventCollectionPage(cur EventCollection, getNextPage func(context.Context, EventCollection) (EventCollection, error)) EventCollectionPage {
+	return EventCollectionPage{
+		fn: getNextPage,
+		ec: cur,
+	}
 }
 
 // EventProperties the properties of a monitoring event.
@@ -4033,8 +4039,11 @@ func (page FabricCollectionPage) Values() []Fabric {
 }
 
 // Creates a new instance of the FabricCollectionPage type.
-func NewFabricCollectionPage(getNextPage func(context.Context, FabricCollection) (FabricCollection, error)) FabricCollectionPage {
-	return FabricCollectionPage{fn: getNextPage}
+func NewFabricCollectionPage(cur FabricCollection, getNextPage func(context.Context, FabricCollection) (FabricCollection, error)) FabricCollectionPage {
+	return FabricCollectionPage{
+		fn: getNextPage,
+		fc: cur,
+	}
 }
 
 // FabricCreationInput site details provided during the time of site creation
@@ -9324,8 +9333,11 @@ func (page JobCollectionPage) Values() []Job {
 }
 
 // Creates a new instance of the JobCollectionPage type.
-func NewJobCollectionPage(getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
-	return JobCollectionPage{fn: getNextPage}
+func NewJobCollectionPage(cur JobCollection, getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
+	return JobCollectionPage{
+		fn: getNextPage,
+		jc: cur,
+	}
 }
 
 // BasicJobDetails job details based on specific job type.
@@ -9973,8 +9985,11 @@ func (page LogicalNetworkCollectionPage) Values() []LogicalNetwork {
 }
 
 // Creates a new instance of the LogicalNetworkCollectionPage type.
-func NewLogicalNetworkCollectionPage(getNextPage func(context.Context, LogicalNetworkCollection) (LogicalNetworkCollection, error)) LogicalNetworkCollectionPage {
-	return LogicalNetworkCollectionPage{fn: getNextPage}
+func NewLogicalNetworkCollectionPage(cur LogicalNetworkCollection, getNextPage func(context.Context, LogicalNetworkCollection) (LogicalNetworkCollection, error)) LogicalNetworkCollectionPage {
+	return LogicalNetworkCollectionPage{
+		fn:  getNextPage,
+		lnc: cur,
+	}
 }
 
 // LogicalNetworkProperties logical Network Properties.
@@ -10398,8 +10413,11 @@ func (page MigrationItemCollectionPage) Values() []MigrationItem {
 }
 
 // Creates a new instance of the MigrationItemCollectionPage type.
-func NewMigrationItemCollectionPage(getNextPage func(context.Context, MigrationItemCollection) (MigrationItemCollection, error)) MigrationItemCollectionPage {
-	return MigrationItemCollectionPage{fn: getNextPage}
+func NewMigrationItemCollectionPage(cur MigrationItemCollection, getNextPage func(context.Context, MigrationItemCollection) (MigrationItemCollection, error)) MigrationItemCollectionPage {
+	return MigrationItemCollectionPage{
+		fn:  getNextPage,
+		mic: cur,
+	}
 }
 
 // MigrationItemProperties migration item properties.
@@ -10854,8 +10872,11 @@ func (page MigrationRecoveryPointCollectionPage) Values() []MigrationRecoveryPoi
 }
 
 // Creates a new instance of the MigrationRecoveryPointCollectionPage type.
-func NewMigrationRecoveryPointCollectionPage(getNextPage func(context.Context, MigrationRecoveryPointCollection) (MigrationRecoveryPointCollection, error)) MigrationRecoveryPointCollectionPage {
-	return MigrationRecoveryPointCollectionPage{fn: getNextPage}
+func NewMigrationRecoveryPointCollectionPage(cur MigrationRecoveryPointCollection, getNextPage func(context.Context, MigrationRecoveryPointCollection) (MigrationRecoveryPointCollection, error)) MigrationRecoveryPointCollectionPage {
+	return MigrationRecoveryPointCollectionPage{
+		fn:   getNextPage,
+		mrpc: cur,
+	}
 }
 
 // MigrationRecoveryPointProperties migration item recovery point properties.
@@ -11055,8 +11076,11 @@ func (page NetworkCollectionPage) Values() []Network {
 }
 
 // Creates a new instance of the NetworkCollectionPage type.
-func NewNetworkCollectionPage(getNextPage func(context.Context, NetworkCollection) (NetworkCollection, error)) NetworkCollectionPage {
-	return NetworkCollectionPage{fn: getNextPage}
+func NewNetworkCollectionPage(cur NetworkCollection, getNextPage func(context.Context, NetworkCollection) (NetworkCollection, error)) NetworkCollectionPage {
+	return NetworkCollectionPage{
+		fn: getNextPage,
+		nc: cur,
+	}
 }
 
 // NetworkMapping network Mapping model. Ideally it should have been possible to inherit this class from prev
@@ -11245,8 +11269,11 @@ func (page NetworkMappingCollectionPage) Values() []NetworkMapping {
 }
 
 // Creates a new instance of the NetworkMappingCollectionPage type.
-func NewNetworkMappingCollectionPage(getNextPage func(context.Context, NetworkMappingCollection) (NetworkMappingCollection, error)) NetworkMappingCollectionPage {
-	return NetworkMappingCollectionPage{fn: getNextPage}
+func NewNetworkMappingCollectionPage(cur NetworkMappingCollection, getNextPage func(context.Context, NetworkMappingCollection) (NetworkMappingCollection, error)) NetworkMappingCollectionPage {
+	return NetworkMappingCollectionPage{
+		fn:  getNextPage,
+		nmc: cur,
+	}
 }
 
 // BasicNetworkMappingFabricSpecificSettings network Mapping fabric specific settings.
@@ -11636,8 +11663,11 @@ func (page OperationsDiscoveryCollectionPage) Values() []OperationsDiscovery {
 }
 
 // Creates a new instance of the OperationsDiscoveryCollectionPage type.
-func NewOperationsDiscoveryCollectionPage(getNextPage func(context.Context, OperationsDiscoveryCollection) (OperationsDiscoveryCollection, error)) OperationsDiscoveryCollectionPage {
-	return OperationsDiscoveryCollectionPage{fn: getNextPage}
+func NewOperationsDiscoveryCollectionPage(cur OperationsDiscoveryCollection, getNextPage func(context.Context, OperationsDiscoveryCollection) (OperationsDiscoveryCollection, error)) OperationsDiscoveryCollectionPage {
+	return OperationsDiscoveryCollectionPage{
+		fn:  getNextPage,
+		odc: cur,
+	}
 }
 
 // OSDetails disk Details.
@@ -11891,8 +11921,11 @@ func (page PolicyCollectionPage) Values() []Policy {
 }
 
 // Creates a new instance of the PolicyCollectionPage type.
-func NewPolicyCollectionPage(getNextPage func(context.Context, PolicyCollection) (PolicyCollection, error)) PolicyCollectionPage {
-	return PolicyCollectionPage{fn: getNextPage}
+func NewPolicyCollectionPage(cur PolicyCollection, getNextPage func(context.Context, PolicyCollection) (PolicyCollection, error)) PolicyCollectionPage {
+	return PolicyCollectionPage{
+		fn: getNextPage,
+		pc: cur,
+	}
 }
 
 // PolicyProperties protection profile custom data details.
@@ -12472,8 +12505,11 @@ func (page ProtectableItemCollectionPage) Values() []ProtectableItem {
 }
 
 // Creates a new instance of the ProtectableItemCollectionPage type.
-func NewProtectableItemCollectionPage(getNextPage func(context.Context, ProtectableItemCollection) (ProtectableItemCollection, error)) ProtectableItemCollectionPage {
-	return ProtectableItemCollectionPage{fn: getNextPage}
+func NewProtectableItemCollectionPage(cur ProtectableItemCollection, getNextPage func(context.Context, ProtectableItemCollection) (ProtectableItemCollection, error)) ProtectableItemCollectionPage {
+	return ProtectableItemCollectionPage{
+		fn:  getNextPage,
+		pic: cur,
+	}
 }
 
 // ProtectableItemProperties replication protected item custom data details.
@@ -12770,8 +12806,11 @@ func (page ProtectionContainerCollectionPage) Values() []ProtectionContainer {
 }
 
 // Creates a new instance of the ProtectionContainerCollectionPage type.
-func NewProtectionContainerCollectionPage(getNextPage func(context.Context, ProtectionContainerCollection) (ProtectionContainerCollection, error)) ProtectionContainerCollectionPage {
-	return ProtectionContainerCollectionPage{fn: getNextPage}
+func NewProtectionContainerCollectionPage(cur ProtectionContainerCollection, getNextPage func(context.Context, ProtectionContainerCollection) (ProtectionContainerCollection, error)) ProtectionContainerCollectionPage {
+	return ProtectionContainerCollectionPage{
+		fn:  getNextPage,
+		pcc: cur,
+	}
 }
 
 // ProtectionContainerFabricSpecificDetails base class for fabric specific details of container.
@@ -12960,8 +12999,11 @@ func (page ProtectionContainerMappingCollectionPage) Values() []ProtectionContai
 }
 
 // Creates a new instance of the ProtectionContainerMappingCollectionPage type.
-func NewProtectionContainerMappingCollectionPage(getNextPage func(context.Context, ProtectionContainerMappingCollection) (ProtectionContainerMappingCollection, error)) ProtectionContainerMappingCollectionPage {
-	return ProtectionContainerMappingCollectionPage{fn: getNextPage}
+func NewProtectionContainerMappingCollectionPage(cur ProtectionContainerMappingCollection, getNextPage func(context.Context, ProtectionContainerMappingCollection) (ProtectionContainerMappingCollection, error)) ProtectionContainerMappingCollectionPage {
+	return ProtectionContainerMappingCollectionPage{
+		fn:   getNextPage,
+		pcmc: cur,
+	}
 }
 
 // ProtectionContainerMappingProperties protection container mapping properties.
@@ -13975,8 +14017,11 @@ func (page RecoveryPlanCollectionPage) Values() []RecoveryPlan {
 }
 
 // Creates a new instance of the RecoveryPlanCollectionPage type.
-func NewRecoveryPlanCollectionPage(getNextPage func(context.Context, RecoveryPlanCollection) (RecoveryPlanCollection, error)) RecoveryPlanCollectionPage {
-	return RecoveryPlanCollectionPage{fn: getNextPage}
+func NewRecoveryPlanCollectionPage(cur RecoveryPlanCollection, getNextPage func(context.Context, RecoveryPlanCollection) (RecoveryPlanCollection, error)) RecoveryPlanCollectionPage {
+	return RecoveryPlanCollectionPage{
+		fn:  getNextPage,
+		rpc: cur,
+	}
 }
 
 // RecoveryPlanGroup recovery plan group details.
@@ -14998,8 +15043,11 @@ func (page RecoveryPointCollectionPage) Values() []RecoveryPoint {
 }
 
 // Creates a new instance of the RecoveryPointCollectionPage type.
-func NewRecoveryPointCollectionPage(getNextPage func(context.Context, RecoveryPointCollection) (RecoveryPointCollection, error)) RecoveryPointCollectionPage {
-	return RecoveryPointCollectionPage{fn: getNextPage}
+func NewRecoveryPointCollectionPage(cur RecoveryPointCollection, getNextPage func(context.Context, RecoveryPointCollection) (RecoveryPointCollection, error)) RecoveryPointCollectionPage {
+	return RecoveryPointCollectionPage{
+		fn:  getNextPage,
+		rpc: cur,
+	}
 }
 
 // RecoveryPointProperties recovery point properties.
@@ -15233,8 +15281,11 @@ func (page RecoveryServicesProviderCollectionPage) Values() []RecoveryServicesPr
 }
 
 // Creates a new instance of the RecoveryServicesProviderCollectionPage type.
-func NewRecoveryServicesProviderCollectionPage(getNextPage func(context.Context, RecoveryServicesProviderCollection) (RecoveryServicesProviderCollection, error)) RecoveryServicesProviderCollectionPage {
-	return RecoveryServicesProviderCollectionPage{fn: getNextPage}
+func NewRecoveryServicesProviderCollectionPage(cur RecoveryServicesProviderCollection, getNextPage func(context.Context, RecoveryServicesProviderCollection) (RecoveryServicesProviderCollection, error)) RecoveryServicesProviderCollectionPage {
+	return RecoveryServicesProviderCollectionPage{
+		fn:   getNextPage,
+		rspc: cur,
+	}
 }
 
 // RecoveryServicesProviderProperties recovery services provider properties.
@@ -16183,8 +16234,11 @@ func (page ReplicationProtectedItemCollectionPage) Values() []ReplicationProtect
 }
 
 // Creates a new instance of the ReplicationProtectedItemCollectionPage type.
-func NewReplicationProtectedItemCollectionPage(getNextPage func(context.Context, ReplicationProtectedItemCollection) (ReplicationProtectedItemCollection, error)) ReplicationProtectedItemCollectionPage {
-	return ReplicationProtectedItemCollectionPage{fn: getNextPage}
+func NewReplicationProtectedItemCollectionPage(cur ReplicationProtectedItemCollection, getNextPage func(context.Context, ReplicationProtectedItemCollection) (ReplicationProtectedItemCollection, error)) ReplicationProtectedItemCollectionPage {
+	return ReplicationProtectedItemCollectionPage{
+		fn:   getNextPage,
+		rpic: cur,
+	}
 }
 
 // ReplicationProtectedItemProperties replication protected item custom data details.
@@ -18668,8 +18722,11 @@ func (page StorageClassificationCollectionPage) Values() []StorageClassification
 }
 
 // Creates a new instance of the StorageClassificationCollectionPage type.
-func NewStorageClassificationCollectionPage(getNextPage func(context.Context, StorageClassificationCollection) (StorageClassificationCollection, error)) StorageClassificationCollectionPage {
-	return StorageClassificationCollectionPage{fn: getNextPage}
+func NewStorageClassificationCollectionPage(cur StorageClassificationCollection, getNextPage func(context.Context, StorageClassificationCollection) (StorageClassificationCollection, error)) StorageClassificationCollectionPage {
+	return StorageClassificationCollectionPage{
+		fn:  getNextPage,
+		scc: cur,
+	}
 }
 
 // StorageClassificationMapping storage mapping object.
@@ -18852,8 +18909,11 @@ func (page StorageClassificationMappingCollectionPage) Values() []StorageClassif
 }
 
 // Creates a new instance of the StorageClassificationMappingCollectionPage type.
-func NewStorageClassificationMappingCollectionPage(getNextPage func(context.Context, StorageClassificationMappingCollection) (StorageClassificationMappingCollection, error)) StorageClassificationMappingCollectionPage {
-	return StorageClassificationMappingCollectionPage{fn: getNextPage}
+func NewStorageClassificationMappingCollectionPage(cur StorageClassificationMappingCollection, getNextPage func(context.Context, StorageClassificationMappingCollection) (StorageClassificationMappingCollection, error)) StorageClassificationMappingCollectionPage {
+	return StorageClassificationMappingCollectionPage{
+		fn:   getNextPage,
+		scmc: cur,
+	}
 }
 
 // StorageClassificationMappingInput storage mapping input.
@@ -19235,8 +19295,11 @@ func (page TargetComputeSizeCollectionPage) Values() []TargetComputeSize {
 }
 
 // Creates a new instance of the TargetComputeSizeCollectionPage type.
-func NewTargetComputeSizeCollectionPage(getNextPage func(context.Context, TargetComputeSizeCollection) (TargetComputeSizeCollection, error)) TargetComputeSizeCollectionPage {
-	return TargetComputeSizeCollectionPage{fn: getNextPage}
+func NewTargetComputeSizeCollectionPage(cur TargetComputeSizeCollection, getNextPage func(context.Context, TargetComputeSizeCollection) (TargetComputeSizeCollection, error)) TargetComputeSizeCollectionPage {
+	return TargetComputeSizeCollectionPage{
+		fn:   getNextPage,
+		tcsc: cur,
+	}
 }
 
 // TargetComputeSizeProperties represents applicable recovery vm sizes properties.
@@ -20473,9 +20536,6 @@ func (page VCenterCollectionPage) Values() []VCenter {
 }
 
 // Creates a new instance of the VCenterCollectionPage type.
-func NewVCenterCollectionPage(getNextPage func(context.Context, VCenterCollection) (VCenterCollection, error)) VCenterCollectionPage {
-	return VCenterCollectionPage{fn: getNextPage}
-}
 
 // VCenterProperties vCenter properties.
 type VCenterProperties struct {

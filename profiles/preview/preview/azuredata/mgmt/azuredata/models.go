@@ -158,8 +158,8 @@ func NewDataControllersClientWithBaseURI(baseURI string, subscriptionID string, 
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string, subscriptionID1 string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, subscriptionID1)
@@ -170,14 +170,14 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string, subsc
 func NewPageOfDataControllerResourceIterator(page PageOfDataControllerResourcePage) PageOfDataControllerResourceIterator {
 	return original.NewPageOfDataControllerResourceIterator(page)
 }
-func NewPageOfDataControllerResourcePage(getNextPage func(context.Context, PageOfDataControllerResource) (PageOfDataControllerResource, error)) PageOfDataControllerResourcePage {
-	return original.NewPageOfDataControllerResourcePage(getNextPage)
+func NewPageOfDataControllerResourcePage(cur PageOfDataControllerResource, getNextPage func(context.Context, PageOfDataControllerResource) (PageOfDataControllerResource, error)) PageOfDataControllerResourcePage {
+	return original.NewPageOfDataControllerResourcePage(cur, getNextPage)
 }
 func NewPostgresInstanceListResultIterator(page PostgresInstanceListResultPage) PostgresInstanceListResultIterator {
 	return original.NewPostgresInstanceListResultIterator(page)
 }
-func NewPostgresInstanceListResultPage(getNextPage func(context.Context, PostgresInstanceListResult) (PostgresInstanceListResult, error)) PostgresInstanceListResultPage {
-	return original.NewPostgresInstanceListResultPage(getNextPage)
+func NewPostgresInstanceListResultPage(cur PostgresInstanceListResult, getNextPage func(context.Context, PostgresInstanceListResult) (PostgresInstanceListResult, error)) PostgresInstanceListResultPage {
+	return original.NewPostgresInstanceListResultPage(cur, getNextPage)
 }
 func NewPostgresInstancesClient(subscriptionID string, subscriptionID1 string) PostgresInstancesClient {
 	return original.NewPostgresInstancesClient(subscriptionID, subscriptionID1)
@@ -188,8 +188,8 @@ func NewPostgresInstancesClientWithBaseURI(baseURI string, subscriptionID string
 func NewSQLManagedInstanceListResultIterator(page SQLManagedInstanceListResultPage) SQLManagedInstanceListResultIterator {
 	return original.NewSQLManagedInstanceListResultIterator(page)
 }
-func NewSQLManagedInstanceListResultPage(getNextPage func(context.Context, SQLManagedInstanceListResult) (SQLManagedInstanceListResult, error)) SQLManagedInstanceListResultPage {
-	return original.NewSQLManagedInstanceListResultPage(getNextPage)
+func NewSQLManagedInstanceListResultPage(cur SQLManagedInstanceListResult, getNextPage func(context.Context, SQLManagedInstanceListResult) (SQLManagedInstanceListResult, error)) SQLManagedInstanceListResultPage {
+	return original.NewSQLManagedInstanceListResultPage(cur, getNextPage)
 }
 func NewSQLManagedInstancesClient(subscriptionID string, subscriptionID1 string) SQLManagedInstancesClient {
 	return original.NewSQLManagedInstancesClient(subscriptionID, subscriptionID1)
@@ -200,8 +200,8 @@ func NewSQLManagedInstancesClientWithBaseURI(baseURI string, subscriptionID stri
 func NewSQLServerInstanceListResultIterator(page SQLServerInstanceListResultPage) SQLServerInstanceListResultIterator {
 	return original.NewSQLServerInstanceListResultIterator(page)
 }
-func NewSQLServerInstanceListResultPage(getNextPage func(context.Context, SQLServerInstanceListResult) (SQLServerInstanceListResult, error)) SQLServerInstanceListResultPage {
-	return original.NewSQLServerInstanceListResultPage(getNextPage)
+func NewSQLServerInstanceListResultPage(cur SQLServerInstanceListResult, getNextPage func(context.Context, SQLServerInstanceListResult) (SQLServerInstanceListResult, error)) SQLServerInstanceListResultPage {
+	return original.NewSQLServerInstanceListResultPage(cur, getNextPage)
 }
 func NewSQLServerInstancesClient(subscriptionID string, subscriptionID1 string) SQLServerInstancesClient {
 	return original.NewSQLServerInstancesClient(subscriptionID, subscriptionID1)
@@ -212,14 +212,11 @@ func NewSQLServerInstancesClientWithBaseURI(baseURI string, subscriptionID strin
 func NewSQLServerListResultIterator(page SQLServerListResultPage) SQLServerListResultIterator {
 	return original.NewSQLServerListResultIterator(page)
 }
-func NewSQLServerListResultPage(getNextPage func(context.Context, SQLServerListResult) (SQLServerListResult, error)) SQLServerListResultPage {
-	return original.NewSQLServerListResultPage(getNextPage)
+func NewSQLServerListResultPage(cur SQLServerListResult, getNextPage func(context.Context, SQLServerListResult) (SQLServerListResult, error)) SQLServerListResultPage {
+	return original.NewSQLServerListResultPage(cur, getNextPage)
 }
 func NewSQLServerRegistrationListResultIterator(page SQLServerRegistrationListResultPage) SQLServerRegistrationListResultIterator {
 	return original.NewSQLServerRegistrationListResultIterator(page)
-}
-func NewSQLServerRegistrationListResultPage(getNextPage func(context.Context, SQLServerRegistrationListResult) (SQLServerRegistrationListResult, error)) SQLServerRegistrationListResultPage {
-	return original.NewSQLServerRegistrationListResultPage(getNextPage)
 }
 func NewSQLServerRegistrationsClient(subscriptionID string, subscriptionID1 string) SQLServerRegistrationsClient {
 	return original.NewSQLServerRegistrationsClient(subscriptionID, subscriptionID1)

@@ -1088,8 +1088,11 @@ func (page IntegrationAccountAgreementListResultPage) Values() []IntegrationAcco
 }
 
 // Creates a new instance of the IntegrationAccountAgreementListResultPage type.
-func NewIntegrationAccountAgreementListResultPage(getNextPage func(context.Context, IntegrationAccountAgreementListResult) (IntegrationAccountAgreementListResult, error)) IntegrationAccountAgreementListResultPage {
-	return IntegrationAccountAgreementListResultPage{fn: getNextPage}
+func NewIntegrationAccountAgreementListResultPage(cur IntegrationAccountAgreementListResult, getNextPage func(context.Context, IntegrationAccountAgreementListResult) (IntegrationAccountAgreementListResult, error)) IntegrationAccountAgreementListResultPage {
+	return IntegrationAccountAgreementListResultPage{
+		fn:    getNextPage,
+		iaalr: cur,
+	}
 }
 
 // IntegrationAccountAgreementProperties the integration account agreement properties.
@@ -1395,8 +1398,11 @@ func (page IntegrationAccountCertificateListResultPage) Values() []IntegrationAc
 }
 
 // Creates a new instance of the IntegrationAccountCertificateListResultPage type.
-func NewIntegrationAccountCertificateListResultPage(getNextPage func(context.Context, IntegrationAccountCertificateListResult) (IntegrationAccountCertificateListResult, error)) IntegrationAccountCertificateListResultPage {
-	return IntegrationAccountCertificateListResultPage{fn: getNextPage}
+func NewIntegrationAccountCertificateListResultPage(cur IntegrationAccountCertificateListResult, getNextPage func(context.Context, IntegrationAccountCertificateListResult) (IntegrationAccountCertificateListResult, error)) IntegrationAccountCertificateListResultPage {
+	return IntegrationAccountCertificateListResultPage{
+		fn:    getNextPage,
+		iaclr: cur,
+	}
 }
 
 // IntegrationAccountCertificateProperties the integration account certificate properties.
@@ -1580,8 +1586,11 @@ func (page IntegrationAccountListResultPage) Values() []IntegrationAccount {
 }
 
 // Creates a new instance of the IntegrationAccountListResultPage type.
-func NewIntegrationAccountListResultPage(getNextPage func(context.Context, IntegrationAccountListResult) (IntegrationAccountListResult, error)) IntegrationAccountListResultPage {
-	return IntegrationAccountListResultPage{fn: getNextPage}
+func NewIntegrationAccountListResultPage(cur IntegrationAccountListResult, getNextPage func(context.Context, IntegrationAccountListResult) (IntegrationAccountListResult, error)) IntegrationAccountListResultPage {
+	return IntegrationAccountListResultPage{
+		fn:   getNextPage,
+		ialr: cur,
+	}
 }
 
 // IntegrationAccountMap the integration account map.
@@ -1844,8 +1853,11 @@ func (page IntegrationAccountMapListResultPage) Values() []IntegrationAccountMap
 }
 
 // Creates a new instance of the IntegrationAccountMapListResultPage type.
-func NewIntegrationAccountMapListResultPage(getNextPage func(context.Context, IntegrationAccountMapListResult) (IntegrationAccountMapListResult, error)) IntegrationAccountMapListResultPage {
-	return IntegrationAccountMapListResultPage{fn: getNextPage}
+func NewIntegrationAccountMapListResultPage(cur IntegrationAccountMapListResult, getNextPage func(context.Context, IntegrationAccountMapListResult) (IntegrationAccountMapListResult, error)) IntegrationAccountMapListResultPage {
+	return IntegrationAccountMapListResultPage{
+		fn:    getNextPage,
+		iamlr: cur,
+	}
 }
 
 // IntegrationAccountMapProperties the integration account map.
@@ -2155,8 +2167,11 @@ func (page IntegrationAccountPartnerListResultPage) Values() []IntegrationAccoun
 }
 
 // Creates a new instance of the IntegrationAccountPartnerListResultPage type.
-func NewIntegrationAccountPartnerListResultPage(getNextPage func(context.Context, IntegrationAccountPartnerListResult) (IntegrationAccountPartnerListResult, error)) IntegrationAccountPartnerListResultPage {
-	return IntegrationAccountPartnerListResultPage{fn: getNextPage}
+func NewIntegrationAccountPartnerListResultPage(cur IntegrationAccountPartnerListResult, getNextPage func(context.Context, IntegrationAccountPartnerListResult) (IntegrationAccountPartnerListResult, error)) IntegrationAccountPartnerListResultPage {
+	return IntegrationAccountPartnerListResultPage{
+		fn:    getNextPage,
+		iaplr: cur,
+	}
 }
 
 // IntegrationAccountPartnerProperties the integration account partner properties.
@@ -2444,8 +2459,11 @@ func (page IntegrationAccountRosettaNetProcessConfigurationListResultPage) Value
 }
 
 // Creates a new instance of the IntegrationAccountRosettaNetProcessConfigurationListResultPage type.
-func NewIntegrationAccountRosettaNetProcessConfigurationListResultPage(getNextPage func(context.Context, IntegrationAccountRosettaNetProcessConfigurationListResult) (IntegrationAccountRosettaNetProcessConfigurationListResult, error)) IntegrationAccountRosettaNetProcessConfigurationListResultPage {
-	return IntegrationAccountRosettaNetProcessConfigurationListResultPage{fn: getNextPage}
+func NewIntegrationAccountRosettaNetProcessConfigurationListResultPage(cur IntegrationAccountRosettaNetProcessConfigurationListResult, getNextPage func(context.Context, IntegrationAccountRosettaNetProcessConfigurationListResult) (IntegrationAccountRosettaNetProcessConfigurationListResult, error)) IntegrationAccountRosettaNetProcessConfigurationListResultPage {
+	return IntegrationAccountRosettaNetProcessConfigurationListResultPage{
+		fn:       getNextPage,
+		iarnpclr: cur,
+	}
 }
 
 // IntegrationAccountRosettaNetProcessConfigurationProperties the integration account RosettaNet process
@@ -2763,8 +2781,11 @@ func (page IntegrationAccountSchemaListResultPage) Values() []IntegrationAccount
 }
 
 // Creates a new instance of the IntegrationAccountSchemaListResultPage type.
-func NewIntegrationAccountSchemaListResultPage(getNextPage func(context.Context, IntegrationAccountSchemaListResult) (IntegrationAccountSchemaListResult, error)) IntegrationAccountSchemaListResultPage {
-	return IntegrationAccountSchemaListResultPage{fn: getNextPage}
+func NewIntegrationAccountSchemaListResultPage(cur IntegrationAccountSchemaListResult, getNextPage func(context.Context, IntegrationAccountSchemaListResult) (IntegrationAccountSchemaListResult, error)) IntegrationAccountSchemaListResultPage {
+	return IntegrationAccountSchemaListResultPage{
+		fn:    getNextPage,
+		iaslr: cur,
+	}
 }
 
 // IntegrationAccountSchemaProperties the integration account schema properties.
@@ -3078,8 +3099,11 @@ func (page IntegrationAccountSessionListResultPage) Values() []IntegrationAccoun
 }
 
 // Creates a new instance of the IntegrationAccountSessionListResultPage type.
-func NewIntegrationAccountSessionListResultPage(getNextPage func(context.Context, IntegrationAccountSessionListResult) (IntegrationAccountSessionListResult, error)) IntegrationAccountSessionListResultPage {
-	return IntegrationAccountSessionListResultPage{fn: getNextPage}
+func NewIntegrationAccountSessionListResultPage(cur IntegrationAccountSessionListResult, getNextPage func(context.Context, IntegrationAccountSessionListResult) (IntegrationAccountSessionListResult, error)) IntegrationAccountSessionListResultPage {
+	return IntegrationAccountSessionListResultPage{
+		fn:    getNextPage,
+		iaslr: cur,
+	}
 }
 
 // IntegrationAccountSessionProperties the integration account session properties.
@@ -3361,8 +3385,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResult the operation result definition.
@@ -3676,8 +3703,11 @@ func (page RequestHistoryListResultPage) Values() []RequestHistory {
 }
 
 // Creates a new instance of the RequestHistoryListResultPage type.
-func NewRequestHistoryListResultPage(getNextPage func(context.Context, RequestHistoryListResult) (RequestHistoryListResult, error)) RequestHistoryListResultPage {
-	return RequestHistoryListResultPage{fn: getNextPage}
+func NewRequestHistoryListResultPage(cur RequestHistoryListResult, getNextPage func(context.Context, RequestHistoryListResult) (RequestHistoryListResult, error)) RequestHistoryListResultPage {
+	return RequestHistoryListResultPage{
+		fn:   getNextPage,
+		rhlr: cur,
+	}
 }
 
 // RequestHistoryProperties the request history.
@@ -4147,8 +4177,11 @@ func (page WorkflowListResultPage) Values() []Workflow {
 }
 
 // Creates a new instance of the WorkflowListResultPage type.
-func NewWorkflowListResultPage(getNextPage func(context.Context, WorkflowListResult) (WorkflowListResult, error)) WorkflowListResultPage {
-	return WorkflowListResultPage{fn: getNextPage}
+func NewWorkflowListResultPage(cur WorkflowListResult, getNextPage func(context.Context, WorkflowListResult) (WorkflowListResult, error)) WorkflowListResultPage {
+	return WorkflowListResultPage{
+		fn:  getNextPage,
+		wlr: cur,
+	}
 }
 
 // WorkflowOutputParameter the workflow output parameter.
@@ -4544,8 +4577,11 @@ func (page WorkflowRunActionListResultPage) Values() []WorkflowRunAction {
 }
 
 // Creates a new instance of the WorkflowRunActionListResultPage type.
-func NewWorkflowRunActionListResultPage(getNextPage func(context.Context, WorkflowRunActionListResult) (WorkflowRunActionListResult, error)) WorkflowRunActionListResultPage {
-	return WorkflowRunActionListResultPage{fn: getNextPage}
+func NewWorkflowRunActionListResultPage(cur WorkflowRunActionListResult, getNextPage func(context.Context, WorkflowRunActionListResult) (WorkflowRunActionListResult, error)) WorkflowRunActionListResultPage {
+	return WorkflowRunActionListResultPage{
+		fn:    getNextPage,
+		wralr: cur,
+	}
 }
 
 // WorkflowRunActionProperties the workflow run action properties.
@@ -4916,8 +4952,11 @@ func (page WorkflowRunListResultPage) Values() []WorkflowRun {
 }
 
 // Creates a new instance of the WorkflowRunListResultPage type.
-func NewWorkflowRunListResultPage(getNextPage func(context.Context, WorkflowRunListResult) (WorkflowRunListResult, error)) WorkflowRunListResultPage {
-	return WorkflowRunListResultPage{fn: getNextPage}
+func NewWorkflowRunListResultPage(cur WorkflowRunListResult, getNextPage func(context.Context, WorkflowRunListResult) (WorkflowRunListResult, error)) WorkflowRunListResultPage {
+	return WorkflowRunListResultPage{
+		fn:   getNextPage,
+		wrlr: cur,
+	}
 }
 
 // WorkflowRunProperties the workflow run properties.
@@ -5338,8 +5377,11 @@ func (page WorkflowTriggerHistoryListResultPage) Values() []WorkflowTriggerHisto
 }
 
 // Creates a new instance of the WorkflowTriggerHistoryListResultPage type.
-func NewWorkflowTriggerHistoryListResultPage(getNextPage func(context.Context, WorkflowTriggerHistoryListResult) (WorkflowTriggerHistoryListResult, error)) WorkflowTriggerHistoryListResultPage {
-	return WorkflowTriggerHistoryListResultPage{fn: getNextPage}
+func NewWorkflowTriggerHistoryListResultPage(cur WorkflowTriggerHistoryListResult, getNextPage func(context.Context, WorkflowTriggerHistoryListResult) (WorkflowTriggerHistoryListResult, error)) WorkflowTriggerHistoryListResultPage {
+	return WorkflowTriggerHistoryListResultPage{
+		fn:    getNextPage,
+		wthlr: cur,
+	}
 }
 
 // WorkflowTriggerHistoryProperties the workflow trigger history properties.
@@ -5543,8 +5585,11 @@ func (page WorkflowTriggerListResultPage) Values() []WorkflowTrigger {
 }
 
 // Creates a new instance of the WorkflowTriggerListResultPage type.
-func NewWorkflowTriggerListResultPage(getNextPage func(context.Context, WorkflowTriggerListResult) (WorkflowTriggerListResult, error)) WorkflowTriggerListResultPage {
-	return WorkflowTriggerListResultPage{fn: getNextPage}
+func NewWorkflowTriggerListResultPage(cur WorkflowTriggerListResult, getNextPage func(context.Context, WorkflowTriggerListResult) (WorkflowTriggerListResult, error)) WorkflowTriggerListResultPage {
+	return WorkflowTriggerListResultPage{
+		fn:   getNextPage,
+		wtlr: cur,
+	}
 }
 
 // WorkflowTriggerProperties the workflow trigger properties.
@@ -5838,9 +5883,6 @@ func (page WorkflowVersionListResultPage) Values() []WorkflowVersion {
 }
 
 // Creates a new instance of the WorkflowVersionListResultPage type.
-func NewWorkflowVersionListResultPage(getNextPage func(context.Context, WorkflowVersionListResult) (WorkflowVersionListResult, error)) WorkflowVersionListResultPage {
-	return WorkflowVersionListResultPage{fn: getNextPage}
-}
 
 // WorkflowVersionProperties the workflow version properties.
 type WorkflowVersionProperties struct {

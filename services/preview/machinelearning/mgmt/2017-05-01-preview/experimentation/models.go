@@ -283,8 +283,11 @@ func (page AccountListResultPage) Values() []Account {
 }
 
 // Creates a new instance of the AccountListResultPage type.
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return AccountListResultPage{fn: getNextPage}
+func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return AccountListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AccountProperties the properties of a machine learning team account.
@@ -689,8 +692,11 @@ func (page ProjectListResultPage) Values() []Project {
 }
 
 // Creates a new instance of the ProjectListResultPage type.
-func NewProjectListResultPage(getNextPage func(context.Context, ProjectListResult) (ProjectListResult, error)) ProjectListResultPage {
-	return ProjectListResultPage{fn: getNextPage}
+func NewProjectListResultPage(cur ProjectListResult, getNextPage func(context.Context, ProjectListResult) (ProjectListResult, error)) ProjectListResultPage {
+	return ProjectListResultPage{
+		fn:  getNextPage,
+		plr: cur,
+	}
 }
 
 // ProjectProperties the properties of a machine learning project.
@@ -1078,9 +1084,6 @@ func (page WorkspaceListResultPage) Values() []Workspace {
 }
 
 // Creates a new instance of the WorkspaceListResultPage type.
-func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
-	return WorkspaceListResultPage{fn: getNextPage}
-}
 
 // WorkspaceProperties the properties of a machine learning team account workspace.
 type WorkspaceProperties struct {

@@ -359,8 +359,11 @@ func (page AgentPoolListResultPage) Values() []AgentPool {
 }
 
 // Creates a new instance of the AgentPoolListResultPage type.
-func NewAgentPoolListResultPage(getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
-	return AgentPoolListResultPage{fn: getNextPage}
+func NewAgentPoolListResultPage(cur AgentPoolListResult, getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
+	return AgentPoolListResultPage{
+		fn:   getNextPage,
+		aplr: cur,
+	}
 }
 
 // AgentPoolProfile profile for the container service agent pool.
@@ -939,8 +942,11 @@ func (page ListResultPage) Values() []ContainerService {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // ManagedCluster managed cluster.
@@ -1568,8 +1574,11 @@ func (page ManagedClusterListResultPage) Values() []ManagedCluster {
 }
 
 // Creates a new instance of the ManagedClusterListResultPage type.
-func NewManagedClusterListResultPage(getNextPage func(context.Context, ManagedClusterListResult) (ManagedClusterListResult, error)) ManagedClusterListResultPage {
-	return ManagedClusterListResultPage{fn: getNextPage}
+func NewManagedClusterListResultPage(cur ManagedClusterListResult, getNextPage func(context.Context, ManagedClusterListResult) (ManagedClusterListResult, error)) ManagedClusterListResultPage {
+	return ManagedClusterListResultPage{
+		fn:   getNextPage,
+		mclr: cur,
+	}
 }
 
 // ManagedClusterLoadBalancerProfile profile of the managed cluster load balancer
@@ -2497,9 +2506,6 @@ func (page OpenShiftManagedClusterListResultPage) Values() []OpenShiftManagedClu
 }
 
 // Creates a new instance of the OpenShiftManagedClusterListResultPage type.
-func NewOpenShiftManagedClusterListResultPage(getNextPage func(context.Context, OpenShiftManagedClusterListResult) (OpenShiftManagedClusterListResult, error)) OpenShiftManagedClusterListResultPage {
-	return OpenShiftManagedClusterListResultPage{fn: getNextPage}
-}
 
 // OpenShiftManagedClusterMasterPoolProfile openShiftManagedClusterMaterPoolProfile contains configuration for
 // OpenShift master VMs.

@@ -98,14 +98,11 @@ func NewConnectedClusterClientWithBaseURI(baseURI string, subscriptionID string)
 func NewConnectedClusterListIterator(page ConnectedClusterListPage) ConnectedClusterListIterator {
 	return original.NewConnectedClusterListIterator(page)
 }
-func NewConnectedClusterListPage(getNextPage func(context.Context, ConnectedClusterList) (ConnectedClusterList, error)) ConnectedClusterListPage {
-	return original.NewConnectedClusterListPage(getNextPage)
+func NewConnectedClusterListPage(cur ConnectedClusterList, getNextPage func(context.Context, ConnectedClusterList) (ConnectedClusterList, error)) ConnectedClusterListPage {
+	return original.NewConnectedClusterListPage(cur, getNextPage)
 }
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
-}
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

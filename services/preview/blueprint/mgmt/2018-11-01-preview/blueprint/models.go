@@ -324,8 +324,11 @@ func (page ArtifactListPage) Values() []BasicArtifact {
 }
 
 // Creates a new instance of the ArtifactListPage type.
-func NewArtifactListPage(getNextPage func(context.Context, ArtifactList) (ArtifactList, error)) ArtifactListPage {
-	return ArtifactListPage{fn: getNextPage}
+func NewArtifactListPage(cur ArtifactList, getNextPage func(context.Context, ArtifactList) (ArtifactList, error)) ArtifactListPage {
+	return ArtifactListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // ArtifactModel ...
@@ -660,8 +663,11 @@ func (page AssignmentListPage) Values() []Assignment {
 }
 
 // Creates a new instance of the AssignmentListPage type.
-func NewAssignmentListPage(getNextPage func(context.Context, AssignmentList) (AssignmentList, error)) AssignmentListPage {
-	return AssignmentListPage{fn: getNextPage}
+func NewAssignmentListPage(cur AssignmentList, getNextPage func(context.Context, AssignmentList) (AssignmentList, error)) AssignmentListPage {
+	return AssignmentListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AssignmentLockSettings defines how resources deployed by a blueprint assignment are locked.
@@ -908,8 +914,11 @@ func (page AssignmentOperationListPage) Values() []AssignmentOperation {
 }
 
 // Creates a new instance of the AssignmentOperationListPage type.
-func NewAssignmentOperationListPage(getNextPage func(context.Context, AssignmentOperationList) (AssignmentOperationList, error)) AssignmentOperationListPage {
-	return AssignmentOperationListPage{fn: getNextPage}
+func NewAssignmentOperationListPage(cur AssignmentOperationList, getNextPage func(context.Context, AssignmentOperationList) (AssignmentOperationList, error)) AssignmentOperationListPage {
+	return AssignmentOperationListPage{
+		fn:  getNextPage,
+		aol: cur,
+	}
 }
 
 // AssignmentOperationProperties properties of AssignmentOperation.
@@ -1172,8 +1181,11 @@ func (page ListPage) Values() []Model {
 }
 
 // Creates a new instance of the ListPage type.
-func NewListPage(getNextPage func(context.Context, List) (List, error)) ListPage {
-	return ListPage{fn: getNextPage}
+func NewListPage(cur List, getNextPage func(context.Context, List) (List, error)) ListPage {
+	return ListPage{
+		fn: getNextPage,
+		l:  cur,
+	}
 }
 
 // ManagedServiceIdentity managed identity generic object.
@@ -1811,9 +1823,6 @@ func (page PublishedBlueprintListPage) Values() []PublishedBlueprint {
 }
 
 // Creates a new instance of the PublishedBlueprintListPage type.
-func NewPublishedBlueprintListPage(getNextPage func(context.Context, PublishedBlueprintList) (PublishedBlueprintList, error)) PublishedBlueprintListPage {
-	return PublishedBlueprintListPage{fn: getNextPage}
-}
 
 // PublishedBlueprintProperties schema for published blueprint definition properties.
 type PublishedBlueprintProperties struct {

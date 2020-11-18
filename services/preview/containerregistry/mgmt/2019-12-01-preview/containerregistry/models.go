@@ -301,8 +301,11 @@ func (page AgentPoolListResultPage) Values() []AgentPool {
 }
 
 // Creates a new instance of the AgentPoolListResultPage type.
-func NewAgentPoolListResultPage(getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
-	return AgentPoolListResultPage{fn: getNextPage}
+func NewAgentPoolListResultPage(cur AgentPoolListResult, getNextPage func(context.Context, AgentPoolListResult) (AgentPoolListResult, error)) AgentPoolListResultPage {
+	return AgentPoolListResultPage{
+		fn:   getNextPage,
+		aplr: cur,
+	}
 }
 
 // AgentPoolProperties the properties of agent pool.
@@ -1346,8 +1349,11 @@ func (page EventListResultPage) Values() []Event {
 }
 
 // Creates a new instance of the EventListResultPage type.
-func NewEventListResultPage(getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
-	return EventListResultPage{fn: getNextPage}
+func NewEventListResultPage(cur EventListResult, getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
+	return EventListResultPage{
+		fn:  getNextPage,
+		elr: cur,
+	}
 }
 
 // EventRequestMessage the event request message sent to the service URI.
@@ -1673,8 +1679,11 @@ func (page ExportPipelineListResultPage) Values() []ExportPipeline {
 }
 
 // Creates a new instance of the ExportPipelineListResultPage type.
-func NewExportPipelineListResultPage(getNextPage func(context.Context, ExportPipelineListResult) (ExportPipelineListResult, error)) ExportPipelineListResultPage {
-	return ExportPipelineListResultPage{fn: getNextPage}
+func NewExportPipelineListResultPage(cur ExportPipelineListResult, getNextPage func(context.Context, ExportPipelineListResult) (ExportPipelineListResult, error)) ExportPipelineListResultPage {
+	return ExportPipelineListResultPage{
+		fn:   getNextPage,
+		eplr: cur,
+	}
 }
 
 // ExportPipelineProperties the properties of an export pipeline.
@@ -2334,8 +2343,11 @@ func (page ImportPipelineListResultPage) Values() []ImportPipeline {
 }
 
 // Creates a new instance of the ImportPipelineListResultPage type.
-func NewImportPipelineListResultPage(getNextPage func(context.Context, ImportPipelineListResult) (ImportPipelineListResult, error)) ImportPipelineListResultPage {
-	return ImportPipelineListResultPage{fn: getNextPage}
+func NewImportPipelineListResultPage(cur ImportPipelineListResult, getNextPage func(context.Context, ImportPipelineListResult) (ImportPipelineListResult, error)) ImportPipelineListResultPage {
+	return ImportPipelineListResultPage{
+		fn:   getNextPage,
+		iplr: cur,
+	}
 }
 
 // ImportPipelineProperties the properties of an import pipeline.
@@ -2747,8 +2759,11 @@ func (page OperationListResultPage) Values() []OperationDefinition {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationMetricSpecificationDefinition the definition of Azure Monitoring metric.
@@ -3021,8 +3036,11 @@ func (page PipelineRunListResultPage) Values() []PipelineRun {
 }
 
 // Creates a new instance of the PipelineRunListResultPage type.
-func NewPipelineRunListResultPage(getNextPage func(context.Context, PipelineRunListResult) (PipelineRunListResult, error)) PipelineRunListResultPage {
-	return PipelineRunListResultPage{fn: getNextPage}
+func NewPipelineRunListResultPage(cur PipelineRunListResult, getNextPage func(context.Context, PipelineRunListResult) (PipelineRunListResult, error)) PipelineRunListResultPage {
+	return PipelineRunListResultPage{
+		fn:   getNextPage,
+		prlr: cur,
+	}
 }
 
 // PipelineRunProperties the properties of a pipeline run.
@@ -3445,8 +3463,11 @@ func (page PrivateEndpointConnectionListResultPage) Values() []PrivateEndpointCo
 }
 
 // Creates a new instance of the PrivateEndpointConnectionListResultPage type.
-func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
-	return PrivateEndpointConnectionListResultPage{fn: getNextPage}
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return PrivateEndpointConnectionListResultPage{
+		fn:    getNextPage,
+		peclr: cur,
+	}
 }
 
 // PrivateEndpointConnectionProperties the properties of a private endpoint connection.
@@ -3754,8 +3775,11 @@ func (page PrivateLinkResourceListResultPage) Values() []PrivateLinkResource {
 }
 
 // Creates a new instance of the PrivateLinkResourceListResultPage type.
-func NewPrivateLinkResourceListResultPage(getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
-	return PrivateLinkResourceListResultPage{fn: getNextPage}
+func NewPrivateLinkResourceListResultPage(cur PrivateLinkResourceListResult, getNextPage func(context.Context, PrivateLinkResourceListResult) (PrivateLinkResourceListResult, error)) PrivateLinkResourceListResultPage {
+	return PrivateLinkResourceListResultPage{
+		fn:    getNextPage,
+		plrlr: cur,
+	}
 }
 
 // PrivateLinkResourceProperties the properties of a private link resource.
@@ -4256,8 +4280,11 @@ func (page RegistryListResultPage) Values() []Registry {
 }
 
 // Creates a new instance of the RegistryListResultPage type.
-func NewRegistryListResultPage(getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
-	return RegistryListResultPage{fn: getNextPage}
+func NewRegistryListResultPage(cur RegistryListResult, getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
+	return RegistryListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // RegistryNameCheckRequest a request to check whether a container registry name is available.
@@ -4713,8 +4740,11 @@ func (page ReplicationListResultPage) Values() []Replication {
 }
 
 // Creates a new instance of the ReplicationListResultPage type.
-func NewReplicationListResultPage(getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
-	return ReplicationListResultPage{fn: getNextPage}
+func NewReplicationListResultPage(cur ReplicationListResult, getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
+	return ReplicationListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // ReplicationProperties the properties of a replication.
@@ -5195,8 +5225,11 @@ func (page RunListResultPage) Values() []Run {
 }
 
 // Creates a new instance of the RunListResultPage type.
-func NewRunListResultPage(getNextPage func(context.Context, RunListResult) (RunListResult, error)) RunListResultPage {
-	return RunListResultPage{fn: getNextPage}
+func NewRunListResultPage(cur RunListResult, getNextPage func(context.Context, RunListResult) (RunListResult, error)) RunListResultPage {
+	return RunListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // RunProperties the properties for a run.
@@ -5706,8 +5739,11 @@ func (page ScopeMapListResultPage) Values() []ScopeMap {
 }
 
 // Creates a new instance of the ScopeMapListResultPage type.
-func NewScopeMapListResultPage(getNextPage func(context.Context, ScopeMapListResult) (ScopeMapListResult, error)) ScopeMapListResultPage {
-	return ScopeMapListResultPage{fn: getNextPage}
+func NewScopeMapListResultPage(cur ScopeMapListResult, getNextPage func(context.Context, ScopeMapListResult) (ScopeMapListResult, error)) ScopeMapListResultPage {
+	return ScopeMapListResultPage{
+		fn:   getNextPage,
+		smlr: cur,
+	}
 }
 
 // ScopeMapProperties the properties of a scope map.
@@ -6304,8 +6340,11 @@ func (page TaskListResultPage) Values() []Task {
 }
 
 // Creates a new instance of the TaskListResultPage type.
-func NewTaskListResultPage(getNextPage func(context.Context, TaskListResult) (TaskListResult, error)) TaskListResultPage {
-	return TaskListResultPage{fn: getNextPage}
+func NewTaskListResultPage(cur TaskListResult, getNextPage func(context.Context, TaskListResult) (TaskListResult, error)) TaskListResultPage {
+	return TaskListResultPage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }
 
 // TaskProperties the properties of a task.
@@ -6824,8 +6863,11 @@ func (page TaskRunListResultPage) Values() []TaskRun {
 }
 
 // Creates a new instance of the TaskRunListResultPage type.
-func NewTaskRunListResultPage(getNextPage func(context.Context, TaskRunListResult) (TaskRunListResult, error)) TaskRunListResultPage {
-	return TaskRunListResultPage{fn: getNextPage}
+func NewTaskRunListResultPage(cur TaskRunListResult, getNextPage func(context.Context, TaskRunListResult) (TaskRunListResult, error)) TaskRunListResultPage {
+	return TaskRunListResultPage{
+		fn:   getNextPage,
+		trlr: cur,
+	}
 }
 
 // TaskRunProperties the properties of task run.
@@ -7792,8 +7834,11 @@ func (page TokenListResultPage) Values() []Token {
 }
 
 // Creates a new instance of the TokenListResultPage type.
-func NewTokenListResultPage(getNextPage func(context.Context, TokenListResult) (TokenListResult, error)) TokenListResultPage {
-	return TokenListResultPage{fn: getNextPage}
+func NewTokenListResultPage(cur TokenListResult, getNextPage func(context.Context, TokenListResult) (TokenListResult, error)) TokenListResultPage {
+	return TokenListResultPage{
+		fn:  getNextPage,
+		tlr: cur,
+	}
 }
 
 // TokenPassword the password that will be used for authenticating the token of a container registry.
@@ -8343,9 +8388,6 @@ func (page WebhookListResultPage) Values() []Webhook {
 }
 
 // Creates a new instance of the WebhookListResultPage type.
-func NewWebhookListResultPage(getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
-	return WebhookListResultPage{fn: getNextPage}
-}
 
 // WebhookProperties the properties of a webhook.
 type WebhookProperties struct {

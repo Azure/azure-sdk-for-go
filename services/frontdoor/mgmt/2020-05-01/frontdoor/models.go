@@ -714,8 +714,11 @@ func (page ExperimentListPage) Values() []Experiment {
 }
 
 // Creates a new instance of the ExperimentListPage type.
-func NewExperimentListPage(getNextPage func(context.Context, ExperimentList) (ExperimentList, error)) ExperimentListPage {
-	return ExperimentListPage{fn: getNextPage}
+func NewExperimentListPage(cur ExperimentList, getNextPage func(context.Context, ExperimentList) (ExperimentList, error)) ExperimentListPage {
+	return ExperimentListPage{
+		fn: getNextPage,
+		el: cur,
+	}
 }
 
 // ExperimentProperties defines the properties of an experiment
@@ -1444,8 +1447,11 @@ func (page FrontendEndpointsListResultPage) Values() []FrontendEndpoint {
 }
 
 // Creates a new instance of the FrontendEndpointsListResultPage type.
-func NewFrontendEndpointsListResultPage(getNextPage func(context.Context, FrontendEndpointsListResult) (FrontendEndpointsListResult, error)) FrontendEndpointsListResultPage {
-	return FrontendEndpointsListResultPage{fn: getNextPage}
+func NewFrontendEndpointsListResultPage(cur FrontendEndpointsListResult, getNextPage func(context.Context, FrontendEndpointsListResult) (FrontendEndpointsListResult, error)) FrontendEndpointsListResultPage {
+	return FrontendEndpointsListResultPage{
+		fn:   getNextPage,
+		felr: cur,
+	}
 }
 
 // FrontendEndpointUpdateParameters frontend endpoint used in routing rule
@@ -1938,8 +1944,11 @@ func (page ListResultPage) Values() []FrontDoor {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // LoadBalancingSettingsListResult result of the request to list load balancing settings. It contains a list of
@@ -2389,8 +2398,11 @@ func (page ManagedRuleSetDefinitionListPage) Values() []ManagedRuleSetDefinition
 }
 
 // Creates a new instance of the ManagedRuleSetDefinitionListPage type.
-func NewManagedRuleSetDefinitionListPage(getNextPage func(context.Context, ManagedRuleSetDefinitionList) (ManagedRuleSetDefinitionList, error)) ManagedRuleSetDefinitionListPage {
-	return ManagedRuleSetDefinitionListPage{fn: getNextPage}
+func NewManagedRuleSetDefinitionListPage(cur ManagedRuleSetDefinitionList, getNextPage func(context.Context, ManagedRuleSetDefinitionList) (ManagedRuleSetDefinitionList, error)) ManagedRuleSetDefinitionListPage {
+	return ManagedRuleSetDefinitionListPage{
+		fn:    getNextPage,
+		mrsdl: cur,
+	}
 }
 
 // ManagedRuleSetDefinitionProperties properties for a managed rule set definition.
@@ -2836,8 +2848,11 @@ func (page PreconfiguredEndpointListPage) Values() []PreconfiguredEndpoint {
 }
 
 // Creates a new instance of the PreconfiguredEndpointListPage type.
-func NewPreconfiguredEndpointListPage(getNextPage func(context.Context, PreconfiguredEndpointList) (PreconfiguredEndpointList, error)) PreconfiguredEndpointListPage {
-	return PreconfiguredEndpointListPage{fn: getNextPage}
+func NewPreconfiguredEndpointListPage(cur PreconfiguredEndpointList, getNextPage func(context.Context, PreconfiguredEndpointList) (PreconfiguredEndpointList, error)) PreconfiguredEndpointListPage {
+	return PreconfiguredEndpointListPage{
+		fn:  getNextPage,
+		pel: cur,
+	}
 }
 
 // PreconfiguredEndpointProperties defines the properties of a preconfigured endpoint
@@ -3129,8 +3144,11 @@ func (page ProfileListPage) Values() []Profile {
 }
 
 // Creates a new instance of the ProfileListPage type.
-func NewProfileListPage(getNextPage func(context.Context, ProfileList) (ProfileList, error)) ProfileListPage {
-	return ProfileListPage{fn: getNextPage}
+func NewProfileListPage(cur ProfileList, getNextPage func(context.Context, ProfileList) (ProfileList, error)) ProfileListPage {
+	return ProfileListPage{
+		fn: getNextPage,
+		pl: cur,
+	}
 }
 
 // ProfileProperties defines the properties of an experiment
@@ -4043,8 +4061,11 @@ func (page RulesEngineListResultPage) Values() []RulesEngine {
 }
 
 // Creates a new instance of the RulesEngineListResultPage type.
-func NewRulesEngineListResultPage(getNextPage func(context.Context, RulesEngineListResult) (RulesEngineListResult, error)) RulesEngineListResultPage {
-	return RulesEngineListResultPage{fn: getNextPage}
+func NewRulesEngineListResultPage(cur RulesEngineListResult, getNextPage func(context.Context, RulesEngineListResult) (RulesEngineListResult, error)) RulesEngineListResultPage {
+	return RulesEngineListResultPage{
+		fn:   getNextPage,
+		relr: cur,
+	}
 }
 
 // RulesEngineMatchCondition define a match condition
@@ -4609,9 +4630,6 @@ func (page WebApplicationFirewallPolicyListPage) Values() []WebApplicationFirewa
 }
 
 // Creates a new instance of the WebApplicationFirewallPolicyListPage type.
-func NewWebApplicationFirewallPolicyListPage(getNextPage func(context.Context, WebApplicationFirewallPolicyList) (WebApplicationFirewallPolicyList, error)) WebApplicationFirewallPolicyListPage {
-	return WebApplicationFirewallPolicyListPage{fn: getNextPage}
-}
 
 // WebApplicationFirewallPolicyProperties defines web application firewall policy properties.
 type WebApplicationFirewallPolicyProperties struct {

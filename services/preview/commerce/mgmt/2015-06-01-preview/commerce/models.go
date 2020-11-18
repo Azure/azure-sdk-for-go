@@ -688,9 +688,6 @@ func (page UsageAggregationListResultPage) Values() []UsageAggregation {
 }
 
 // Creates a new instance of the UsageAggregationListResultPage type.
-func NewUsageAggregationListResultPage(getNextPage func(context.Context, UsageAggregationListResult) (UsageAggregationListResult, error)) UsageAggregationListResultPage {
-	return UsageAggregationListResultPage{fn: getNextPage}
-}
 
 // UsageSample describes a sample of the usageAggregation.
 type UsageSample struct {

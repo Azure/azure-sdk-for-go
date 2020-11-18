@@ -1078,8 +1078,11 @@ func (page DomainsListResultPage) Values() []Domain {
 }
 
 // Creates a new instance of the DomainsListResultPage type.
-func NewDomainsListResultPage(getNextPage func(context.Context, DomainsListResult) (DomainsListResult, error)) DomainsListResultPage {
-	return DomainsListResultPage{fn: getNextPage}
+func NewDomainsListResultPage(cur DomainsListResult, getNextPage func(context.Context, DomainsListResult) (DomainsListResult, error)) DomainsListResultPage {
+	return DomainsListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DomainsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -1393,8 +1396,11 @@ func (page DomainTopicsListResultPage) Values() []DomainTopic {
 }
 
 // Creates a new instance of the DomainTopicsListResultPage type.
-func NewDomainTopicsListResultPage(getNextPage func(context.Context, DomainTopicsListResult) (DomainTopicsListResult, error)) DomainTopicsListResultPage {
-	return DomainTopicsListResultPage{fn: getNextPage}
+func NewDomainTopicsListResultPage(cur DomainTopicsListResult, getNextPage func(context.Context, DomainTopicsListResult) (DomainTopicsListResult, error)) DomainTopicsListResultPage {
+	return DomainTopicsListResultPage{
+		fn:   getNextPage,
+		dtlr: cur,
+	}
 }
 
 // DomainUpdateParameterProperties information of domain update parameter properties.
@@ -1817,8 +1823,11 @@ func (page EventChannelsListResultPage) Values() []EventChannel {
 }
 
 // Creates a new instance of the EventChannelsListResultPage type.
-func NewEventChannelsListResultPage(getNextPage func(context.Context, EventChannelsListResult) (EventChannelsListResult, error)) EventChannelsListResultPage {
-	return EventChannelsListResultPage{fn: getNextPage}
+func NewEventChannelsListResultPage(cur EventChannelsListResult, getNextPage func(context.Context, EventChannelsListResult) (EventChannelsListResult, error)) EventChannelsListResultPage {
+	return EventChannelsListResultPage{
+		fn:   getNextPage,
+		eclr: cur,
+	}
 }
 
 // EventChannelSource properties of the source of an event channel.
@@ -2607,8 +2616,11 @@ func (page EventSubscriptionsListResultPage) Values() []EventSubscription {
 }
 
 // Creates a new instance of the EventSubscriptionsListResultPage type.
-func NewEventSubscriptionsListResultPage(getNextPage func(context.Context, EventSubscriptionsListResult) (EventSubscriptionsListResult, error)) EventSubscriptionsListResultPage {
-	return EventSubscriptionsListResultPage{fn: getNextPage}
+func NewEventSubscriptionsListResultPage(cur EventSubscriptionsListResult, getNextPage func(context.Context, EventSubscriptionsListResult) (EventSubscriptionsListResult, error)) EventSubscriptionsListResultPage {
+	return EventSubscriptionsListResultPage{
+		fn:   getNextPage,
+		eslr: cur,
+	}
 }
 
 // EventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -4210,8 +4222,11 @@ func (page PartnerNamespacesListResultPage) Values() []PartnerNamespace {
 }
 
 // Creates a new instance of the PartnerNamespacesListResultPage type.
-func NewPartnerNamespacesListResultPage(getNextPage func(context.Context, PartnerNamespacesListResult) (PartnerNamespacesListResult, error)) PartnerNamespacesListResultPage {
-	return PartnerNamespacesListResultPage{fn: getNextPage}
+func NewPartnerNamespacesListResultPage(cur PartnerNamespacesListResult, getNextPage func(context.Context, PartnerNamespacesListResult) (PartnerNamespacesListResult, error)) PartnerNamespacesListResultPage {
+	return PartnerNamespacesListResultPage{
+		fn:   getNextPage,
+		pnlr: cur,
+	}
 }
 
 // PartnerNamespacesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -4599,8 +4614,11 @@ func (page PartnerRegistrationsListResultPage) Values() []PartnerRegistration {
 }
 
 // Creates a new instance of the PartnerRegistrationsListResultPage type.
-func NewPartnerRegistrationsListResultPage(getNextPage func(context.Context, PartnerRegistrationsListResult) (PartnerRegistrationsListResult, error)) PartnerRegistrationsListResultPage {
-	return PartnerRegistrationsListResultPage{fn: getNextPage}
+func NewPartnerRegistrationsListResultPage(cur PartnerRegistrationsListResult, getNextPage func(context.Context, PartnerRegistrationsListResult) (PartnerRegistrationsListResult, error)) PartnerRegistrationsListResultPage {
+	return PartnerRegistrationsListResultPage{
+		fn:   getNextPage,
+		prlr: cur,
+	}
 }
 
 // PartnerRegistrationUpdateParameters properties of the Partner Registration update.
@@ -5043,8 +5061,11 @@ func (page PartnerTopicsListResultPage) Values() []PartnerTopic {
 }
 
 // Creates a new instance of the PartnerTopicsListResultPage type.
-func NewPartnerTopicsListResultPage(getNextPage func(context.Context, PartnerTopicsListResult) (PartnerTopicsListResult, error)) PartnerTopicsListResultPage {
-	return PartnerTopicsListResultPage{fn: getNextPage}
+func NewPartnerTopicsListResultPage(cur PartnerTopicsListResult, getNextPage func(context.Context, PartnerTopicsListResult) (PartnerTopicsListResult, error)) PartnerTopicsListResultPage {
+	return PartnerTopicsListResultPage{
+		fn:   getNextPage,
+		ptlr: cur,
+	}
 }
 
 // PartnerTopicType properties of a partner topic type.
@@ -5390,8 +5411,11 @@ func (page PrivateEndpointConnectionListResultPage) Values() []PrivateEndpointCo
 }
 
 // Creates a new instance of the PrivateEndpointConnectionListResultPage type.
-func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
-	return PrivateEndpointConnectionListResultPage{fn: getNextPage}
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return PrivateEndpointConnectionListResultPage{
+		fn:    getNextPage,
+		peclr: cur,
+	}
 }
 
 // PrivateEndpointConnectionProperties properties of the private endpoint connection resource.
@@ -5700,8 +5724,11 @@ func (page PrivateLinkResourcesListResultPage) Values() []PrivateLinkResource {
 }
 
 // Creates a new instance of the PrivateLinkResourcesListResultPage type.
-func NewPrivateLinkResourcesListResultPage(getNextPage func(context.Context, PrivateLinkResourcesListResult) (PrivateLinkResourcesListResult, error)) PrivateLinkResourcesListResultPage {
-	return PrivateLinkResourcesListResultPage{fn: getNextPage}
+func NewPrivateLinkResourcesListResultPage(cur PrivateLinkResourcesListResult, getNextPage func(context.Context, PrivateLinkResourcesListResult) (PrivateLinkResourcesListResult, error)) PrivateLinkResourcesListResultPage {
+	return PrivateLinkResourcesListResultPage{
+		fn:    getNextPage,
+		plrlr: cur,
+	}
 }
 
 // Resource definition of a Resource
@@ -7017,8 +7044,11 @@ func (page SystemTopicsListResultPage) Values() []SystemTopic {
 }
 
 // Creates a new instance of the SystemTopicsListResultPage type.
-func NewSystemTopicsListResultPage(getNextPage func(context.Context, SystemTopicsListResult) (SystemTopicsListResult, error)) SystemTopicsListResultPage {
-	return SystemTopicsListResultPage{fn: getNextPage}
+func NewSystemTopicsListResultPage(cur SystemTopicsListResult, getNextPage func(context.Context, SystemTopicsListResult) (SystemTopicsListResult, error)) SystemTopicsListResultPage {
+	return SystemTopicsListResultPage{
+		fn:   getNextPage,
+		stlr: cur,
+	}
 }
 
 // SystemTopicsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -7537,9 +7567,6 @@ func (page TopicsListResultPage) Values() []Topic {
 }
 
 // Creates a new instance of the TopicsListResultPage type.
-func NewTopicsListResultPage(getNextPage func(context.Context, TopicsListResult) (TopicsListResult, error)) TopicsListResultPage {
-	return TopicsListResultPage{fn: getNextPage}
-}
 
 // TopicsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type TopicsUpdateFuture struct {

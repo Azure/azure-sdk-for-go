@@ -1150,8 +1150,8 @@ func NewAdaptiveNetworkHardeningsClientWithBaseURI(baseURI string, subscriptionI
 func NewAdaptiveNetworkHardeningsListIterator(page AdaptiveNetworkHardeningsListPage) AdaptiveNetworkHardeningsListIterator {
 	return original.NewAdaptiveNetworkHardeningsListIterator(page)
 }
-func NewAdaptiveNetworkHardeningsListPage(getNextPage func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error)) AdaptiveNetworkHardeningsListPage {
-	return original.NewAdaptiveNetworkHardeningsListPage(getNextPage)
+func NewAdaptiveNetworkHardeningsListPage(cur AdaptiveNetworkHardeningsList, getNextPage func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error)) AdaptiveNetworkHardeningsListPage {
+	return original.NewAdaptiveNetworkHardeningsListPage(cur, getNextPage)
 }
 func NewAdvancedThreatProtectionClient(subscriptionID string, ascLocation string) AdvancedThreatProtectionClient {
 	return original.NewAdvancedThreatProtectionClient(subscriptionID, ascLocation)
@@ -1162,8 +1162,8 @@ func NewAdvancedThreatProtectionClientWithBaseURI(baseURI string, subscriptionID
 func NewAlertListIterator(page AlertListPage) AlertListIterator {
 	return original.NewAlertListIterator(page)
 }
-func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
-	return original.NewAlertListPage(getNextPage)
+func NewAlertListPage(cur AlertList, getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return original.NewAlertListPage(cur, getNextPage)
 }
 func NewAlertsClient(subscriptionID string, ascLocation string) AlertsClient {
 	return original.NewAlertsClient(subscriptionID, ascLocation)
@@ -1180,8 +1180,8 @@ func NewAlertsSuppressionRulesClientWithBaseURI(baseURI string, subscriptionID s
 func NewAlertsSuppressionRulesListIterator(page AlertsSuppressionRulesListPage) AlertsSuppressionRulesListIterator {
 	return original.NewAlertsSuppressionRulesListIterator(page)
 }
-func NewAlertsSuppressionRulesListPage(getNextPage func(context.Context, AlertsSuppressionRulesList) (AlertsSuppressionRulesList, error)) AlertsSuppressionRulesListPage {
-	return original.NewAlertsSuppressionRulesListPage(getNextPage)
+func NewAlertsSuppressionRulesListPage(cur AlertsSuppressionRulesList, getNextPage func(context.Context, AlertsSuppressionRulesList) (AlertsSuppressionRulesList, error)) AlertsSuppressionRulesListPage {
+	return original.NewAlertsSuppressionRulesListPage(cur, getNextPage)
 }
 func NewAllowedConnectionsClient(subscriptionID string, ascLocation string) AllowedConnectionsClient {
 	return original.NewAllowedConnectionsClient(subscriptionID, ascLocation)
@@ -1192,26 +1192,26 @@ func NewAllowedConnectionsClientWithBaseURI(baseURI string, subscriptionID strin
 func NewAllowedConnectionsListIterator(page AllowedConnectionsListPage) AllowedConnectionsListIterator {
 	return original.NewAllowedConnectionsListIterator(page)
 }
-func NewAllowedConnectionsListPage(getNextPage func(context.Context, AllowedConnectionsList) (AllowedConnectionsList, error)) AllowedConnectionsListPage {
-	return original.NewAllowedConnectionsListPage(getNextPage)
+func NewAllowedConnectionsListPage(cur AllowedConnectionsList, getNextPage func(context.Context, AllowedConnectionsList) (AllowedConnectionsList, error)) AllowedConnectionsListPage {
+	return original.NewAllowedConnectionsListPage(cur, getNextPage)
 }
 func NewAscLocationListIterator(page AscLocationListPage) AscLocationListIterator {
 	return original.NewAscLocationListIterator(page)
 }
-func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
-	return original.NewAscLocationListPage(getNextPage)
+func NewAscLocationListPage(cur AscLocationList, getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
+	return original.NewAscLocationListPage(cur, getNextPage)
 }
 func NewAssessmentListIterator(page AssessmentListPage) AssessmentListIterator {
 	return original.NewAssessmentListIterator(page)
 }
-func NewAssessmentListPage(getNextPage func(context.Context, AssessmentList) (AssessmentList, error)) AssessmentListPage {
-	return original.NewAssessmentListPage(getNextPage)
+func NewAssessmentListPage(cur AssessmentList, getNextPage func(context.Context, AssessmentList) (AssessmentList, error)) AssessmentListPage {
+	return original.NewAssessmentListPage(cur, getNextPage)
 }
 func NewAssessmentMetadataListIterator(page AssessmentMetadataListPage) AssessmentMetadataListIterator {
 	return original.NewAssessmentMetadataListIterator(page)
 }
-func NewAssessmentMetadataListPage(getNextPage func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)) AssessmentMetadataListPage {
-	return original.NewAssessmentMetadataListPage(getNextPage)
+func NewAssessmentMetadataListPage(cur AssessmentMetadataList, getNextPage func(context.Context, AssessmentMetadataList) (AssessmentMetadataList, error)) AssessmentMetadataListPage {
+	return original.NewAssessmentMetadataListPage(cur, getNextPage)
 }
 func NewAssessmentsClient(subscriptionID string, ascLocation string) AssessmentsClient {
 	return original.NewAssessmentsClient(subscriptionID, ascLocation)
@@ -1228,8 +1228,8 @@ func NewAssessmentsMetadataClientWithBaseURI(baseURI string, subscriptionID stri
 func NewAutoProvisioningSettingListIterator(page AutoProvisioningSettingListPage) AutoProvisioningSettingListIterator {
 	return original.NewAutoProvisioningSettingListIterator(page)
 }
-func NewAutoProvisioningSettingListPage(getNextPage func(context.Context, AutoProvisioningSettingList) (AutoProvisioningSettingList, error)) AutoProvisioningSettingListPage {
-	return original.NewAutoProvisioningSettingListPage(getNextPage)
+func NewAutoProvisioningSettingListPage(cur AutoProvisioningSettingList, getNextPage func(context.Context, AutoProvisioningSettingList) (AutoProvisioningSettingList, error)) AutoProvisioningSettingListPage {
+	return original.NewAutoProvisioningSettingListPage(cur, getNextPage)
 }
 func NewAutoProvisioningSettingsClient(subscriptionID string, ascLocation string) AutoProvisioningSettingsClient {
 	return original.NewAutoProvisioningSettingsClient(subscriptionID, ascLocation)
@@ -1240,8 +1240,8 @@ func NewAutoProvisioningSettingsClientWithBaseURI(baseURI string, subscriptionID
 func NewAutomationListIterator(page AutomationListPage) AutomationListIterator {
 	return original.NewAutomationListIterator(page)
 }
-func NewAutomationListPage(getNextPage func(context.Context, AutomationList) (AutomationList, error)) AutomationListPage {
-	return original.NewAutomationListPage(getNextPage)
+func NewAutomationListPage(cur AutomationList, getNextPage func(context.Context, AutomationList) (AutomationList, error)) AutomationListPage {
+	return original.NewAutomationListPage(cur, getNextPage)
 }
 func NewAutomationsClient(subscriptionID string, ascLocation string) AutomationsClient {
 	return original.NewAutomationsClient(subscriptionID, ascLocation)
@@ -1252,14 +1252,14 @@ func NewAutomationsClientWithBaseURI(baseURI string, subscriptionID string, ascL
 func NewComplianceListIterator(page ComplianceListPage) ComplianceListIterator {
 	return original.NewComplianceListIterator(page)
 }
-func NewComplianceListPage(getNextPage func(context.Context, ComplianceList) (ComplianceList, error)) ComplianceListPage {
-	return original.NewComplianceListPage(getNextPage)
+func NewComplianceListPage(cur ComplianceList, getNextPage func(context.Context, ComplianceList) (ComplianceList, error)) ComplianceListPage {
+	return original.NewComplianceListPage(cur, getNextPage)
 }
 func NewComplianceResultListIterator(page ComplianceResultListPage) ComplianceResultListIterator {
 	return original.NewComplianceResultListIterator(page)
 }
-func NewComplianceResultListPage(getNextPage func(context.Context, ComplianceResultList) (ComplianceResultList, error)) ComplianceResultListPage {
-	return original.NewComplianceResultListPage(getNextPage)
+func NewComplianceResultListPage(cur ComplianceResultList, getNextPage func(context.Context, ComplianceResultList) (ComplianceResultList, error)) ComplianceResultListPage {
+	return original.NewComplianceResultListPage(cur, getNextPage)
 }
 func NewComplianceResultsClient(subscriptionID string, ascLocation string) ComplianceResultsClient {
 	return original.NewComplianceResultsClient(subscriptionID, ascLocation)
@@ -1276,8 +1276,8 @@ func NewCompliancesClientWithBaseURI(baseURI string, subscriptionID string, ascL
 func NewConnectorSettingListIterator(page ConnectorSettingListPage) ConnectorSettingListIterator {
 	return original.NewConnectorSettingListIterator(page)
 }
-func NewConnectorSettingListPage(getNextPage func(context.Context, ConnectorSettingList) (ConnectorSettingList, error)) ConnectorSettingListPage {
-	return original.NewConnectorSettingListPage(getNextPage)
+func NewConnectorSettingListPage(cur ConnectorSettingList, getNextPage func(context.Context, ConnectorSettingList) (ConnectorSettingList, error)) ConnectorSettingListPage {
+	return original.NewConnectorSettingListPage(cur, getNextPage)
 }
 func NewConnectorsClient(subscriptionID string, ascLocation string) ConnectorsClient {
 	return original.NewConnectorsClient(subscriptionID, ascLocation)
@@ -1288,8 +1288,8 @@ func NewConnectorsClientWithBaseURI(baseURI string, subscriptionID string, ascLo
 func NewContactListIterator(page ContactListPage) ContactListIterator {
 	return original.NewContactListIterator(page)
 }
-func NewContactListPage(getNextPage func(context.Context, ContactList) (ContactList, error)) ContactListPage {
-	return original.NewContactListPage(getNextPage)
+func NewContactListPage(cur ContactList, getNextPage func(context.Context, ContactList) (ContactList, error)) ContactListPage {
+	return original.NewContactListPage(cur, getNextPage)
 }
 func NewContactsClient(subscriptionID string, ascLocation string) ContactsClient {
 	return original.NewContactsClient(subscriptionID, ascLocation)
@@ -1300,8 +1300,8 @@ func NewContactsClientWithBaseURI(baseURI string, subscriptionID string, ascLoca
 func NewDeviceSecurityGroupListIterator(page DeviceSecurityGroupListPage) DeviceSecurityGroupListIterator {
 	return original.NewDeviceSecurityGroupListIterator(page)
 }
-func NewDeviceSecurityGroupListPage(getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
-	return original.NewDeviceSecurityGroupListPage(getNextPage)
+func NewDeviceSecurityGroupListPage(cur DeviceSecurityGroupList, getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
+	return original.NewDeviceSecurityGroupListPage(cur, getNextPage)
 }
 func NewDeviceSecurityGroupsClient(subscriptionID string, ascLocation string) DeviceSecurityGroupsClient {
 	return original.NewDeviceSecurityGroupsClient(subscriptionID, ascLocation)
@@ -1312,8 +1312,8 @@ func NewDeviceSecurityGroupsClientWithBaseURI(baseURI string, subscriptionID str
 func NewDiscoveredSecuritySolutionListIterator(page DiscoveredSecuritySolutionListPage) DiscoveredSecuritySolutionListIterator {
 	return original.NewDiscoveredSecuritySolutionListIterator(page)
 }
-func NewDiscoveredSecuritySolutionListPage(getNextPage func(context.Context, DiscoveredSecuritySolutionList) (DiscoveredSecuritySolutionList, error)) DiscoveredSecuritySolutionListPage {
-	return original.NewDiscoveredSecuritySolutionListPage(getNextPage)
+func NewDiscoveredSecuritySolutionListPage(cur DiscoveredSecuritySolutionList, getNextPage func(context.Context, DiscoveredSecuritySolutionList) (DiscoveredSecuritySolutionList, error)) DiscoveredSecuritySolutionListPage {
+	return original.NewDiscoveredSecuritySolutionListPage(cur, getNextPage)
 }
 func NewDiscoveredSecuritySolutionsClient(subscriptionID string, ascLocation string) DiscoveredSecuritySolutionsClient {
 	return original.NewDiscoveredSecuritySolutionsClient(subscriptionID, ascLocation)
@@ -1324,8 +1324,8 @@ func NewDiscoveredSecuritySolutionsClientWithBaseURI(baseURI string, subscriptio
 func NewExternalSecuritySolutionListIterator(page ExternalSecuritySolutionListPage) ExternalSecuritySolutionListIterator {
 	return original.NewExternalSecuritySolutionListIterator(page)
 }
-func NewExternalSecuritySolutionListPage(getNextPage func(context.Context, ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error)) ExternalSecuritySolutionListPage {
-	return original.NewExternalSecuritySolutionListPage(getNextPage)
+func NewExternalSecuritySolutionListPage(cur ExternalSecuritySolutionList, getNextPage func(context.Context, ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error)) ExternalSecuritySolutionListPage {
+	return original.NewExternalSecuritySolutionListPage(cur, getNextPage)
 }
 func NewExternalSecuritySolutionsClient(subscriptionID string, ascLocation string) ExternalSecuritySolutionsClient {
 	return original.NewExternalSecuritySolutionsClient(subscriptionID, ascLocation)
@@ -1342,32 +1342,32 @@ func NewInformationProtectionPoliciesClientWithBaseURI(baseURI string, subscript
 func NewInformationProtectionPolicyListIterator(page InformationProtectionPolicyListPage) InformationProtectionPolicyListIterator {
 	return original.NewInformationProtectionPolicyListIterator(page)
 }
-func NewInformationProtectionPolicyListPage(getNextPage func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error)) InformationProtectionPolicyListPage {
-	return original.NewInformationProtectionPolicyListPage(getNextPage)
+func NewInformationProtectionPolicyListPage(cur InformationProtectionPolicyList, getNextPage func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error)) InformationProtectionPolicyListPage {
+	return original.NewInformationProtectionPolicyListPage(cur, getNextPage)
 }
 func NewIoTSecurityAggregatedAlertListIterator(page IoTSecurityAggregatedAlertListPage) IoTSecurityAggregatedAlertListIterator {
 	return original.NewIoTSecurityAggregatedAlertListIterator(page)
 }
-func NewIoTSecurityAggregatedAlertListPage(getNextPage func(context.Context, IoTSecurityAggregatedAlertList) (IoTSecurityAggregatedAlertList, error)) IoTSecurityAggregatedAlertListPage {
-	return original.NewIoTSecurityAggregatedAlertListPage(getNextPage)
+func NewIoTSecurityAggregatedAlertListPage(cur IoTSecurityAggregatedAlertList, getNextPage func(context.Context, IoTSecurityAggregatedAlertList) (IoTSecurityAggregatedAlertList, error)) IoTSecurityAggregatedAlertListPage {
+	return original.NewIoTSecurityAggregatedAlertListPage(cur, getNextPage)
 }
 func NewIoTSecurityAggregatedRecommendationListIterator(page IoTSecurityAggregatedRecommendationListPage) IoTSecurityAggregatedRecommendationListIterator {
 	return original.NewIoTSecurityAggregatedRecommendationListIterator(page)
 }
-func NewIoTSecurityAggregatedRecommendationListPage(getNextPage func(context.Context, IoTSecurityAggregatedRecommendationList) (IoTSecurityAggregatedRecommendationList, error)) IoTSecurityAggregatedRecommendationListPage {
-	return original.NewIoTSecurityAggregatedRecommendationListPage(getNextPage)
+func NewIoTSecurityAggregatedRecommendationListPage(cur IoTSecurityAggregatedRecommendationList, getNextPage func(context.Context, IoTSecurityAggregatedRecommendationList) (IoTSecurityAggregatedRecommendationList, error)) IoTSecurityAggregatedRecommendationListPage {
+	return original.NewIoTSecurityAggregatedRecommendationListPage(cur, getNextPage)
 }
 func NewIoTSecuritySolutionsListIterator(page IoTSecuritySolutionsListPage) IoTSecuritySolutionsListIterator {
 	return original.NewIoTSecuritySolutionsListIterator(page)
 }
-func NewIoTSecuritySolutionsListPage(getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
-	return original.NewIoTSecuritySolutionsListPage(getNextPage)
+func NewIoTSecuritySolutionsListPage(cur IoTSecuritySolutionsList, getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
+	return original.NewIoTSecuritySolutionsListPage(cur, getNextPage)
 }
 func NewIotAlertListIterator(page IotAlertListPage) IotAlertListIterator {
 	return original.NewIotAlertListIterator(page)
 }
-func NewIotAlertListPage(getNextPage func(context.Context, IotAlertList) (IotAlertList, error)) IotAlertListPage {
-	return original.NewIotAlertListPage(getNextPage)
+func NewIotAlertListPage(cur IotAlertList, getNextPage func(context.Context, IotAlertList) (IotAlertList, error)) IotAlertListPage {
+	return original.NewIotAlertListPage(cur, getNextPage)
 }
 func NewIotAlertTypesClient(subscriptionID string, ascLocation string) IotAlertTypesClient {
 	return original.NewIotAlertTypesClient(subscriptionID, ascLocation)
@@ -1390,8 +1390,8 @@ func NewIotDefenderSettingsClientWithBaseURI(baseURI string, subscriptionID stri
 func NewIotRecommendationListIterator(page IotRecommendationListPage) IotRecommendationListIterator {
 	return original.NewIotRecommendationListIterator(page)
 }
-func NewIotRecommendationListPage(getNextPage func(context.Context, IotRecommendationList) (IotRecommendationList, error)) IotRecommendationListPage {
-	return original.NewIotRecommendationListPage(getNextPage)
+func NewIotRecommendationListPage(cur IotRecommendationList, getNextPage func(context.Context, IotRecommendationList) (IotRecommendationList, error)) IotRecommendationListPage {
+	return original.NewIotRecommendationListPage(cur, getNextPage)
 }
 func NewIotRecommendationTypesClient(subscriptionID string, ascLocation string) IotRecommendationTypesClient {
 	return original.NewIotRecommendationTypesClient(subscriptionID, ascLocation)
@@ -1444,8 +1444,8 @@ func NewJitNetworkAccessPoliciesClientWithBaseURI(baseURI string, subscriptionID
 func NewJitNetworkAccessPoliciesListIterator(page JitNetworkAccessPoliciesListPage) JitNetworkAccessPoliciesListIterator {
 	return original.NewJitNetworkAccessPoliciesListIterator(page)
 }
-func NewJitNetworkAccessPoliciesListPage(getNextPage func(context.Context, JitNetworkAccessPoliciesList) (JitNetworkAccessPoliciesList, error)) JitNetworkAccessPoliciesListPage {
-	return original.NewJitNetworkAccessPoliciesListPage(getNextPage)
+func NewJitNetworkAccessPoliciesListPage(cur JitNetworkAccessPoliciesList, getNextPage func(context.Context, JitNetworkAccessPoliciesList) (JitNetworkAccessPoliciesList, error)) JitNetworkAccessPoliciesListPage {
+	return original.NewJitNetworkAccessPoliciesListPage(cur, getNextPage)
 }
 func NewLocationsClient(subscriptionID string, ascLocation string) LocationsClient {
 	return original.NewLocationsClient(subscriptionID, ascLocation)
@@ -1462,8 +1462,8 @@ func NewOnPremiseIotSensorsClientWithBaseURI(baseURI string, subscriptionID stri
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string, ascLocation string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID, ascLocation)
@@ -1480,8 +1480,8 @@ func NewPricingsClientWithBaseURI(baseURI string, subscriptionID string, ascLoca
 func NewRegulatoryComplianceAssessmentListIterator(page RegulatoryComplianceAssessmentListPage) RegulatoryComplianceAssessmentListIterator {
 	return original.NewRegulatoryComplianceAssessmentListIterator(page)
 }
-func NewRegulatoryComplianceAssessmentListPage(getNextPage func(context.Context, RegulatoryComplianceAssessmentList) (RegulatoryComplianceAssessmentList, error)) RegulatoryComplianceAssessmentListPage {
-	return original.NewRegulatoryComplianceAssessmentListPage(getNextPage)
+func NewRegulatoryComplianceAssessmentListPage(cur RegulatoryComplianceAssessmentList, getNextPage func(context.Context, RegulatoryComplianceAssessmentList) (RegulatoryComplianceAssessmentList, error)) RegulatoryComplianceAssessmentListPage {
+	return original.NewRegulatoryComplianceAssessmentListPage(cur, getNextPage)
 }
 func NewRegulatoryComplianceAssessmentsClient(subscriptionID string, ascLocation string) RegulatoryComplianceAssessmentsClient {
 	return original.NewRegulatoryComplianceAssessmentsClient(subscriptionID, ascLocation)
@@ -1492,8 +1492,8 @@ func NewRegulatoryComplianceAssessmentsClientWithBaseURI(baseURI string, subscri
 func NewRegulatoryComplianceControlListIterator(page RegulatoryComplianceControlListPage) RegulatoryComplianceControlListIterator {
 	return original.NewRegulatoryComplianceControlListIterator(page)
 }
-func NewRegulatoryComplianceControlListPage(getNextPage func(context.Context, RegulatoryComplianceControlList) (RegulatoryComplianceControlList, error)) RegulatoryComplianceControlListPage {
-	return original.NewRegulatoryComplianceControlListPage(getNextPage)
+func NewRegulatoryComplianceControlListPage(cur RegulatoryComplianceControlList, getNextPage func(context.Context, RegulatoryComplianceControlList) (RegulatoryComplianceControlList, error)) RegulatoryComplianceControlListPage {
+	return original.NewRegulatoryComplianceControlListPage(cur, getNextPage)
 }
 func NewRegulatoryComplianceControlsClient(subscriptionID string, ascLocation string) RegulatoryComplianceControlsClient {
 	return original.NewRegulatoryComplianceControlsClient(subscriptionID, ascLocation)
@@ -1504,8 +1504,8 @@ func NewRegulatoryComplianceControlsClientWithBaseURI(baseURI string, subscripti
 func NewRegulatoryComplianceStandardListIterator(page RegulatoryComplianceStandardListPage) RegulatoryComplianceStandardListIterator {
 	return original.NewRegulatoryComplianceStandardListIterator(page)
 }
-func NewRegulatoryComplianceStandardListPage(getNextPage func(context.Context, RegulatoryComplianceStandardList) (RegulatoryComplianceStandardList, error)) RegulatoryComplianceStandardListPage {
-	return original.NewRegulatoryComplianceStandardListPage(getNextPage)
+func NewRegulatoryComplianceStandardListPage(cur RegulatoryComplianceStandardList, getNextPage func(context.Context, RegulatoryComplianceStandardList) (RegulatoryComplianceStandardList, error)) RegulatoryComplianceStandardListPage {
+	return original.NewRegulatoryComplianceStandardListPage(cur, getNextPage)
 }
 func NewRegulatoryComplianceStandardsClient(subscriptionID string, ascLocation string) RegulatoryComplianceStandardsClient {
 	return original.NewRegulatoryComplianceStandardsClient(subscriptionID, ascLocation)
@@ -1516,8 +1516,8 @@ func NewRegulatoryComplianceStandardsClientWithBaseURI(baseURI string, subscript
 func NewSecureScoreControlDefinitionListIterator(page SecureScoreControlDefinitionListPage) SecureScoreControlDefinitionListIterator {
 	return original.NewSecureScoreControlDefinitionListIterator(page)
 }
-func NewSecureScoreControlDefinitionListPage(getNextPage func(context.Context, SecureScoreControlDefinitionList) (SecureScoreControlDefinitionList, error)) SecureScoreControlDefinitionListPage {
-	return original.NewSecureScoreControlDefinitionListPage(getNextPage)
+func NewSecureScoreControlDefinitionListPage(cur SecureScoreControlDefinitionList, getNextPage func(context.Context, SecureScoreControlDefinitionList) (SecureScoreControlDefinitionList, error)) SecureScoreControlDefinitionListPage {
+	return original.NewSecureScoreControlDefinitionListPage(cur, getNextPage)
 }
 func NewSecureScoreControlDefinitionsClient(subscriptionID string, ascLocation string) SecureScoreControlDefinitionsClient {
 	return original.NewSecureScoreControlDefinitionsClient(subscriptionID, ascLocation)
@@ -1528,8 +1528,8 @@ func NewSecureScoreControlDefinitionsClientWithBaseURI(baseURI string, subscript
 func NewSecureScoreControlListIterator(page SecureScoreControlListPage) SecureScoreControlListIterator {
 	return original.NewSecureScoreControlListIterator(page)
 }
-func NewSecureScoreControlListPage(getNextPage func(context.Context, SecureScoreControlList) (SecureScoreControlList, error)) SecureScoreControlListPage {
-	return original.NewSecureScoreControlListPage(getNextPage)
+func NewSecureScoreControlListPage(cur SecureScoreControlList, getNextPage func(context.Context, SecureScoreControlList) (SecureScoreControlList, error)) SecureScoreControlListPage {
+	return original.NewSecureScoreControlListPage(cur, getNextPage)
 }
 func NewSecureScoreControlsClient(subscriptionID string, ascLocation string) SecureScoreControlsClient {
 	return original.NewSecureScoreControlsClient(subscriptionID, ascLocation)
@@ -1546,8 +1546,8 @@ func NewSecureScoresClientWithBaseURI(baseURI string, subscriptionID string, asc
 func NewSecureScoresListIterator(page SecureScoresListPage) SecureScoresListIterator {
 	return original.NewSecureScoresListIterator(page)
 }
-func NewSecureScoresListPage(getNextPage func(context.Context, SecureScoresList) (SecureScoresList, error)) SecureScoresListPage {
-	return original.NewSecureScoresListPage(getNextPage)
+func NewSecureScoresListPage(cur SecureScoresList, getNextPage func(context.Context, SecureScoresList) (SecureScoresList, error)) SecureScoresListPage {
+	return original.NewSecureScoresListPage(cur, getNextPage)
 }
 func NewServerVulnerabilityAssessmentClient(subscriptionID string, ascLocation string) ServerVulnerabilityAssessmentClient {
 	return original.NewServerVulnerabilityAssessmentClient(subscriptionID, ascLocation)
@@ -1564,14 +1564,14 @@ func NewSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLoca
 func NewSettingsListIterator(page SettingsListPage) SettingsListIterator {
 	return original.NewSettingsListIterator(page)
 }
-func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
-	return original.NewSettingsListPage(getNextPage)
+func NewSettingsListPage(cur SettingsList, getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
+	return original.NewSettingsListPage(cur, getNextPage)
 }
 func NewSolutionListIterator(page SolutionListPage) SolutionListIterator {
 	return original.NewSolutionListIterator(page)
 }
-func NewSolutionListPage(getNextPage func(context.Context, SolutionList) (SolutionList, error)) SolutionListPage {
-	return original.NewSolutionListPage(getNextPage)
+func NewSolutionListPage(cur SolutionList, getNextPage func(context.Context, SolutionList) (SolutionList, error)) SolutionListPage {
+	return original.NewSolutionListPage(cur, getNextPage)
 }
 func NewSolutionsClient(subscriptionID string, ascLocation string) SolutionsClient {
 	return original.NewSolutionsClient(subscriptionID, ascLocation)
@@ -1588,8 +1588,8 @@ func NewSolutionsReferenceDataClientWithBaseURI(baseURI string, subscriptionID s
 func NewSubAssessmentListIterator(page SubAssessmentListPage) SubAssessmentListIterator {
 	return original.NewSubAssessmentListIterator(page)
 }
-func NewSubAssessmentListPage(getNextPage func(context.Context, SubAssessmentList) (SubAssessmentList, error)) SubAssessmentListPage {
-	return original.NewSubAssessmentListPage(getNextPage)
+func NewSubAssessmentListPage(cur SubAssessmentList, getNextPage func(context.Context, SubAssessmentList) (SubAssessmentList, error)) SubAssessmentListPage {
+	return original.NewSubAssessmentListPage(cur, getNextPage)
 }
 func NewSubAssessmentsClient(subscriptionID string, ascLocation string) SubAssessmentsClient {
 	return original.NewSubAssessmentsClient(subscriptionID, ascLocation)
@@ -1600,8 +1600,8 @@ func NewSubAssessmentsClientWithBaseURI(baseURI string, subscriptionID string, a
 func NewTaskListIterator(page TaskListPage) TaskListIterator {
 	return original.NewTaskListIterator(page)
 }
-func NewTaskListPage(getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
-	return original.NewTaskListPage(getNextPage)
+func NewTaskListPage(cur TaskList, getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
+	return original.NewTaskListPage(cur, getNextPage)
 }
 func NewTasksClient(subscriptionID string, ascLocation string) TasksClient {
 	return original.NewTasksClient(subscriptionID, ascLocation)
@@ -1618,17 +1618,14 @@ func NewTopologyClientWithBaseURI(baseURI string, subscriptionID string, ascLoca
 func NewTopologyListIterator(page TopologyListPage) TopologyListIterator {
 	return original.NewTopologyListIterator(page)
 }
-func NewTopologyListPage(getNextPage func(context.Context, TopologyList) (TopologyList, error)) TopologyListPage {
-	return original.NewTopologyListPage(getNextPage)
+func NewTopologyListPage(cur TopologyList, getNextPage func(context.Context, TopologyList) (TopologyList, error)) TopologyListPage {
+	return original.NewTopologyListPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string, ascLocation string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
 func NewWorkspaceSettingListIterator(page WorkspaceSettingListPage) WorkspaceSettingListIterator {
 	return original.NewWorkspaceSettingListIterator(page)
-}
-func NewWorkspaceSettingListPage(getNextPage func(context.Context, WorkspaceSettingList) (WorkspaceSettingList, error)) WorkspaceSettingListPage {
-	return original.NewWorkspaceSettingListPage(getNextPage)
 }
 func NewWorkspaceSettingsClient(subscriptionID string, ascLocation string) WorkspaceSettingsClient {
 	return original.NewWorkspaceSettingsClient(subscriptionID, ascLocation)

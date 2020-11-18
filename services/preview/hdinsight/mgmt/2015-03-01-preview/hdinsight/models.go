@@ -250,8 +250,11 @@ func (page ApplicationListResultPage) Values() []Application {
 }
 
 // Creates a new instance of the ApplicationListResultPage type.
-func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
-	return ApplicationListResultPage{fn: getNextPage}
+func NewApplicationListResultPage(cur ApplicationListResult, getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return ApplicationListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // ApplicationProperties the HDInsight cluster application GET response.
@@ -892,8 +895,11 @@ func (page ClusterListResultPage) Values() []Cluster {
 }
 
 // Creates a new instance of the ClusterListResultPage type.
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return ClusterListResultPage{fn: getNextPage}
+func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ClusterListRuntimeScriptActionDetailResult the list runtime script action detail response.
@@ -1497,8 +1503,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResource the azure async operation response.
@@ -1832,8 +1841,11 @@ func (page ScriptActionExecutionHistoryListPage) Values() []RuntimeScriptActionD
 }
 
 // Creates a new instance of the ScriptActionExecutionHistoryListPage type.
-func NewScriptActionExecutionHistoryListPage(getNextPage func(context.Context, ScriptActionExecutionHistoryList) (ScriptActionExecutionHistoryList, error)) ScriptActionExecutionHistoryListPage {
-	return ScriptActionExecutionHistoryListPage{fn: getNextPage}
+func NewScriptActionExecutionHistoryListPage(cur ScriptActionExecutionHistoryList, getNextPage func(context.Context, ScriptActionExecutionHistoryList) (ScriptActionExecutionHistoryList, error)) ScriptActionExecutionHistoryListPage {
+	return ScriptActionExecutionHistoryListPage{
+		fn:    getNextPage,
+		saehl: cur,
+	}
 }
 
 // ScriptActionExecutionSummary the execution summary of a script action.
@@ -2019,9 +2031,6 @@ func (page ScriptActionsListPage) Values() []RuntimeScriptActionDetail {
 }
 
 // Creates a new instance of the ScriptActionsListPage type.
-func NewScriptActionsListPage(getNextPage func(context.Context, ScriptActionsList) (ScriptActionsList, error)) ScriptActionsListPage {
-	return ScriptActionsListPage{fn: getNextPage}
-}
 
 // SecurityProfile the security profile which contains Ssh public key for the HDInsight cluster.
 type SecurityProfile struct {

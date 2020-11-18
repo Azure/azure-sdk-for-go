@@ -511,8 +511,11 @@ func (page DeletedVaultListResultPage) Values() []DeletedVault {
 }
 
 // Creates a new instance of the DeletedVaultListResultPage type.
-func NewDeletedVaultListResultPage(getNextPage func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error)) DeletedVaultListResultPage {
-	return DeletedVaultListResultPage{fn: getNextPage}
+func NewDeletedVaultListResultPage(cur DeletedVaultListResult, getNextPage func(context.Context, DeletedVaultListResult) (DeletedVaultListResult, error)) DeletedVaultListResultPage {
+	return DeletedVaultListResultPage{
+		fn:   getNextPage,
+		dvlr: cur,
+	}
 }
 
 // DeletedVaultProperties properties of the deleted vault.
@@ -799,8 +802,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationProperties properties of operation, include metric specifications.
@@ -1284,8 +1290,11 @@ func (page ResourceListResultPage) Values() []Resource {
 }
 
 // Creates a new instance of the ResourceListResultPage type.
-func NewResourceListResultPage(getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
-	return ResourceListResultPage{fn: getNextPage}
+func NewResourceListResultPage(cur ResourceListResult, getNextPage func(context.Context, ResourceListResult) (ResourceListResult, error)) ResourceListResultPage {
+	return ResourceListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // ServiceSpecification one property of operation, include log specifications.
@@ -1530,9 +1539,6 @@ func (page VaultListResultPage) Values() []Vault {
 }
 
 // Creates a new instance of the VaultListResultPage type.
-func NewVaultListResultPage(getNextPage func(context.Context, VaultListResult) (VaultListResult, error)) VaultListResultPage {
-	return VaultListResultPage{fn: getNextPage}
-}
 
 // VaultPatchParameters parameters for creating or updating a vault
 type VaultPatchParameters struct {

@@ -388,8 +388,11 @@ func (page OpenShiftClusterListPage) Values() []OpenShiftCluster {
 }
 
 // Creates a new instance of the OpenShiftClusterListPage type.
-func NewOpenShiftClusterListPage(getNextPage func(context.Context, OpenShiftClusterList) (OpenShiftClusterList, error)) OpenShiftClusterListPage {
-	return OpenShiftClusterListPage{fn: getNextPage}
+func NewOpenShiftClusterListPage(cur OpenShiftClusterList, getNextPage func(context.Context, OpenShiftClusterList) (OpenShiftClusterList, error)) OpenShiftClusterListPage {
+	return OpenShiftClusterListPage{
+		fn:   getNextPage,
+		oscl: cur,
+	}
 }
 
 // OpenShiftClusterProperties openShiftClusterProperties represents an OpenShift cluster's properties.
@@ -710,9 +713,6 @@ func (page OperationListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
-}
 
 // ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
 // required location and tags

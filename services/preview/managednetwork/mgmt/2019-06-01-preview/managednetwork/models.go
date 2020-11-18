@@ -300,8 +300,11 @@ func (page GroupListResultPage) Values() []Group {
 }
 
 // Creates a new instance of the GroupListResultPage type.
-func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
-	return GroupListResultPage{fn: getNextPage}
+func NewGroupListResultPage(cur GroupListResult, getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return GroupListResultPage{
+		fn:  getNextPage,
+		glr: cur,
+	}
 }
 
 // GroupProperties properties of a Managed Network Group
@@ -576,8 +579,11 @@ func (page ListResultPage) Values() []ManagedNetwork {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // ManagedNetwork the Managed Network resource
@@ -938,8 +944,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // PeeringPoliciesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -1174,8 +1183,11 @@ func (page PeeringPolicyListResultPage) Values() []PeeringPolicy {
 }
 
 // Creates a new instance of the PeeringPolicyListResultPage type.
-func NewPeeringPolicyListResultPage(getNextPage func(context.Context, PeeringPolicyListResult) (PeeringPolicyListResult, error)) PeeringPolicyListResultPage {
-	return PeeringPolicyListResultPage{fn: getNextPage}
+func NewPeeringPolicyListResultPage(cur PeeringPolicyListResult, getNextPage func(context.Context, PeeringPolicyListResult) (PeeringPolicyListResult, error)) PeeringPolicyListResultPage {
+	return PeeringPolicyListResultPage{
+		fn:   getNextPage,
+		pplr: cur,
+	}
 }
 
 // PeeringPolicyProperties properties of a Managed Network Peering Policy
@@ -1542,9 +1554,6 @@ func (page ScopeAssignmentListResultPage) Values() []ScopeAssignment {
 }
 
 // Creates a new instance of the ScopeAssignmentListResultPage type.
-func NewScopeAssignmentListResultPage(getNextPage func(context.Context, ScopeAssignmentListResult) (ScopeAssignmentListResult, error)) ScopeAssignmentListResultPage {
-	return ScopeAssignmentListResultPage{fn: getNextPage}
-}
 
 // ScopeAssignmentProperties properties of Managed Network
 type ScopeAssignmentProperties struct {

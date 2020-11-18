@@ -247,8 +247,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationResultsDescription the properties indicating the operation result of an operation on a service.
@@ -628,9 +631,6 @@ func (page ServicesDescriptionListResultPage) Values() []ServicesDescription {
 }
 
 // Creates a new instance of the ServicesDescriptionListResultPage type.
-func NewServicesDescriptionListResultPage(getNextPage func(context.Context, ServicesDescriptionListResult) (ServicesDescriptionListResult, error)) ServicesDescriptionListResultPage {
-	return ServicesDescriptionListResultPage{fn: getNextPage}
-}
 
 // ServicesNameAvailabilityInfo the properties indicating whether a given service name is available.
 type ServicesNameAvailabilityInfo struct {

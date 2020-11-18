@@ -254,8 +254,11 @@ func (page ListQueryKeysResultPage) Values() []QueryKey {
 }
 
 // Creates a new instance of the ListQueryKeysResultPage type.
-func NewListQueryKeysResultPage(getNextPage func(context.Context, ListQueryKeysResult) (ListQueryKeysResult, error)) ListQueryKeysResultPage {
-	return ListQueryKeysResultPage{fn: getNextPage}
+func NewListQueryKeysResultPage(cur ListQueryKeysResult, getNextPage func(context.Context, ListQueryKeysResult) (ListQueryKeysResult, error)) ListQueryKeysResultPage {
+	return ListQueryKeysResultPage{
+		fn:   getNextPage,
+		lqkr: cur,
+	}
 }
 
 // NetworkRuleSet network specific rules that determine how the Azure Cognitive Search service may be reached.
@@ -470,8 +473,11 @@ func (page PrivateEndpointConnectionListResultPage) Values() []PrivateEndpointCo
 }
 
 // Creates a new instance of the PrivateEndpointConnectionListResultPage type.
-func NewPrivateEndpointConnectionListResultPage(getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
-	return PrivateEndpointConnectionListResultPage{fn: getNextPage}
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return PrivateEndpointConnectionListResultPage{
+		fn:    getNextPage,
+		peclr: cur,
+	}
 }
 
 // PrivateEndpointConnectionProperties describes the properties of an existing Private Endpoint connection to
@@ -856,8 +862,11 @@ func (page ServiceListResultPage) Values() []Service {
 }
 
 // Creates a new instance of the ServiceListResultPage type.
-func NewServiceListResultPage(getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
-	return ServiceListResultPage{fn: getNextPage}
+func NewServiceListResultPage(cur ServiceListResult, getNextPage func(context.Context, ServiceListResult) (ServiceListResult, error)) ServiceListResultPage {
+	return ServiceListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // ServiceProperties properties of the Search service.
@@ -1139,9 +1148,6 @@ func (page SharedPrivateLinkResourceListResultPage) Values() []SharedPrivateLink
 }
 
 // Creates a new instance of the SharedPrivateLinkResourceListResultPage type.
-func NewSharedPrivateLinkResourceListResultPage(getNextPage func(context.Context, SharedPrivateLinkResourceListResult) (SharedPrivateLinkResourceListResult, error)) SharedPrivateLinkResourceListResultPage {
-	return SharedPrivateLinkResourceListResultPage{fn: getNextPage}
-}
 
 // SharedPrivateLinkResourceProperties describes the properties of an existing Shared Private Link Resource
 // managed by the Azure Cognitive Search service.

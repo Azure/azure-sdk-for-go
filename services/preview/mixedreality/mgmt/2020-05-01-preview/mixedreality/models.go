@@ -292,8 +292,11 @@ func (page OperationPagePage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationPagePage type.
-func NewOperationPagePage(getNextPage func(context.Context, OperationPage) (OperationPage, error)) OperationPagePage {
-	return OperationPagePage{fn: getNextPage}
+func NewOperationPagePage(cur OperationPage, getNextPage func(context.Context, OperationPage) (OperationPage, error)) OperationPagePage {
+	return OperationPagePage{
+		fn: getNextPage,
+		op: cur,
+	}
 }
 
 // Plan plan for the resource.
@@ -607,8 +610,11 @@ func (page RemoteRenderingAccountPagePage) Values() []RemoteRenderingAccount {
 }
 
 // Creates a new instance of the RemoteRenderingAccountPagePage type.
-func NewRemoteRenderingAccountPagePage(getNextPage func(context.Context, RemoteRenderingAccountPage) (RemoteRenderingAccountPage, error)) RemoteRenderingAccountPagePage {
-	return RemoteRenderingAccountPagePage{fn: getNextPage}
+func NewRemoteRenderingAccountPagePage(cur RemoteRenderingAccountPage, getNextPage func(context.Context, RemoteRenderingAccountPage) (RemoteRenderingAccountPage, error)) RemoteRenderingAccountPagePage {
+	return RemoteRenderingAccountPagePage{
+		fn:   getNextPage,
+		rrap: cur,
+	}
 }
 
 // Resource ...
@@ -987,9 +993,6 @@ func (page SpatialAnchorsAccountPagePage) Values() []SpatialAnchorsAccount {
 }
 
 // Creates a new instance of the SpatialAnchorsAccountPagePage type.
-func NewSpatialAnchorsAccountPagePage(getNextPage func(context.Context, SpatialAnchorsAccountPage) (SpatialAnchorsAccountPage, error)) SpatialAnchorsAccountPagePage {
-	return SpatialAnchorsAccountPagePage{fn: getNextPage}
-}
 
 // TrackedResource the resource model definition for a ARM tracked top level resource
 type TrackedResource struct {

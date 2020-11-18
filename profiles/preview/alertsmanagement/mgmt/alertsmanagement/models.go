@@ -208,8 +208,8 @@ func New(scope string, subscriptionID string, subscriptionID1 string) BaseClient
 func NewAlertRulesListIterator(page AlertRulesListPage) AlertRulesListIterator {
 	return original.NewAlertRulesListIterator(page)
 }
-func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
-	return original.NewAlertRulesListPage(getNextPage)
+func NewAlertRulesListPage(cur AlertRulesList, getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
+	return original.NewAlertRulesListPage(cur, getNextPage)
 }
 func NewAlertsClient(scope string, subscriptionID string, subscriptionID1 string) AlertsClient {
 	return original.NewAlertsClient(scope, subscriptionID, subscriptionID1)
@@ -220,8 +220,8 @@ func NewAlertsClientWithBaseURI(baseURI string, scope string, subscriptionID str
 func NewAlertsListIterator(page AlertsListPage) AlertsListIterator {
 	return original.NewAlertsListIterator(page)
 }
-func NewAlertsListPage(getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
-	return original.NewAlertsListPage(getNextPage)
+func NewAlertsListPage(cur AlertsList, getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
+	return original.NewAlertsListPage(cur, getNextPage)
 }
 func NewOperationsClient(scope string, subscriptionID string, subscriptionID1 string) OperationsClient {
 	return original.NewOperationsClient(scope, subscriptionID, subscriptionID1)
@@ -231,9 +231,6 @@ func NewOperationsClientWithBaseURI(baseURI string, scope string, subscriptionID
 }
 func NewOperationsListIterator(page OperationsListPage) OperationsListIterator {
 	return original.NewOperationsListIterator(page)
-}
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return original.NewOperationsListPage(getNextPage)
 }
 func NewSmartDetectorAlertRulesClient(scope string, subscriptionID string, subscriptionID1 string) SmartDetectorAlertRulesClient {
 	return original.NewSmartDetectorAlertRulesClient(scope, subscriptionID, subscriptionID1)

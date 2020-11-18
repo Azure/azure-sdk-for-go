@@ -197,8 +197,11 @@ func (page AvailabilityStatusListResultPage) Values() []AvailabilityStatus {
 }
 
 // Creates a new instance of the AvailabilityStatusListResultPage type.
-func NewAvailabilityStatusListResultPage(getNextPage func(context.Context, AvailabilityStatusListResult) (AvailabilityStatusListResult, error)) AvailabilityStatusListResultPage {
-	return AvailabilityStatusListResultPage{fn: getNextPage}
+func NewAvailabilityStatusListResultPage(cur AvailabilityStatusListResult, getNextPage func(context.Context, AvailabilityStatusListResult) (AvailabilityStatusListResult, error)) AvailabilityStatusListResultPage {
+	return AvailabilityStatusListResultPage{
+		fn:   getNextPage,
+		aslr: cur,
+	}
 }
 
 // AvailabilityStatusProperties properties of availability state.
@@ -432,9 +435,6 @@ func (page EmergingIssueListResultPage) Values() []EmergingIssuesGetResult {
 }
 
 // Creates a new instance of the EmergingIssueListResultPage type.
-func NewEmergingIssueListResultPage(getNextPage func(context.Context, EmergingIssueListResult) (EmergingIssueListResult, error)) EmergingIssueListResultPage {
-	return EmergingIssueListResultPage{fn: getNextPage}
-}
 
 // EmergingIssuesGetResult the Get EmergingIssues operation response.
 type EmergingIssuesGetResult struct {

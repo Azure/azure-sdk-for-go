@@ -235,9 +235,6 @@ func (page ManagedPrivateEndpointListResponsePage) Values() []ManagedPrivateEndp
 }
 
 // Creates a new instance of the ManagedPrivateEndpointListResponsePage type.
-func NewManagedPrivateEndpointListResponsePage(getNextPage func(context.Context, ManagedPrivateEndpointListResponse) (ManagedPrivateEndpointListResponse, error)) ManagedPrivateEndpointListResponsePage {
-	return ManagedPrivateEndpointListResponsePage{fn: getNextPage}
-}
 
 // ManagedPrivateEndpointProperties properties of a managed private endpoint
 type ManagedPrivateEndpointProperties struct {

@@ -180,8 +180,11 @@ func (page AccountListSupportedImagesResultPage) Values() []ImageInformation {
 }
 
 // Creates a new instance of the AccountListSupportedImagesResultPage type.
-func NewAccountListSupportedImagesResultPage(getNextPage func(context.Context, AccountListSupportedImagesResult) (AccountListSupportedImagesResult, error)) AccountListSupportedImagesResultPage {
-	return AccountListSupportedImagesResultPage{fn: getNextPage}
+func NewAccountListSupportedImagesResultPage(cur AccountListSupportedImagesResult, getNextPage func(context.Context, AccountListSupportedImagesResult) (AccountListSupportedImagesResult, error)) AccountListSupportedImagesResultPage {
+	return AccountListSupportedImagesResultPage{
+		fn:    getNextPage,
+		alsir: cur,
+	}
 }
 
 // AffinityInformation ...
@@ -340,8 +343,11 @@ func (page ApplicationListResultPage) Values() []ApplicationSummary {
 }
 
 // Creates a new instance of the ApplicationListResultPage type.
-func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
-	return ApplicationListResultPage{fn: getNextPage}
+func NewApplicationListResultPage(cur ApplicationListResult, getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return ApplicationListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // ApplicationPackageReference ...
@@ -606,8 +612,11 @@ func (page CertificateListResultPage) Values() []Certificate {
 }
 
 // Creates a new instance of the CertificateListResultPage type.
-func NewCertificateListResultPage(getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
-	return CertificateListResultPage{fn: getNextPage}
+func NewCertificateListResultPage(cur CertificateListResult, getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
+	return CertificateListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // CertificateReference ...
@@ -828,8 +837,11 @@ func (page CloudJobListPreparationAndReleaseTaskStatusResultPage) Values() []Job
 }
 
 // Creates a new instance of the CloudJobListPreparationAndReleaseTaskStatusResultPage type.
-func NewCloudJobListPreparationAndReleaseTaskStatusResultPage(getNextPage func(context.Context, CloudJobListPreparationAndReleaseTaskStatusResult) (CloudJobListPreparationAndReleaseTaskStatusResult, error)) CloudJobListPreparationAndReleaseTaskStatusResultPage {
-	return CloudJobListPreparationAndReleaseTaskStatusResultPage{fn: getNextPage}
+func NewCloudJobListPreparationAndReleaseTaskStatusResultPage(cur CloudJobListPreparationAndReleaseTaskStatusResult, getNextPage func(context.Context, CloudJobListPreparationAndReleaseTaskStatusResult) (CloudJobListPreparationAndReleaseTaskStatusResult, error)) CloudJobListPreparationAndReleaseTaskStatusResultPage {
+	return CloudJobListPreparationAndReleaseTaskStatusResultPage{
+		fn:        getNextPage,
+		cjlpartsr: cur,
+	}
 }
 
 // CloudJobListResult ...
@@ -982,8 +994,11 @@ func (page CloudJobListResultPage) Values() []CloudJob {
 }
 
 // Creates a new instance of the CloudJobListResultPage type.
-func NewCloudJobListResultPage(getNextPage func(context.Context, CloudJobListResult) (CloudJobListResult, error)) CloudJobListResultPage {
-	return CloudJobListResultPage{fn: getNextPage}
+func NewCloudJobListResultPage(cur CloudJobListResult, getNextPage func(context.Context, CloudJobListResult) (CloudJobListResult, error)) CloudJobListResultPage {
+	return CloudJobListResultPage{
+		fn:   getNextPage,
+		cjlr: cur,
+	}
 }
 
 // CloudJobSchedule ...
@@ -1162,8 +1177,11 @@ func (page CloudJobScheduleListResultPage) Values() []CloudJobSchedule {
 }
 
 // Creates a new instance of the CloudJobScheduleListResultPage type.
-func NewCloudJobScheduleListResultPage(getNextPage func(context.Context, CloudJobScheduleListResult) (CloudJobScheduleListResult, error)) CloudJobScheduleListResultPage {
-	return CloudJobScheduleListResultPage{fn: getNextPage}
+func NewCloudJobScheduleListResultPage(cur CloudJobScheduleListResult, getNextPage func(context.Context, CloudJobScheduleListResult) (CloudJobScheduleListResult, error)) CloudJobScheduleListResultPage {
+	return CloudJobScheduleListResultPage{
+		fn:    getNextPage,
+		cjslr: cur,
+	}
 }
 
 // CloudPool ...
@@ -1380,8 +1398,11 @@ func (page CloudPoolListResultPage) Values() []CloudPool {
 }
 
 // Creates a new instance of the CloudPoolListResultPage type.
-func NewCloudPoolListResultPage(getNextPage func(context.Context, CloudPoolListResult) (CloudPoolListResult, error)) CloudPoolListResultPage {
-	return CloudPoolListResultPage{fn: getNextPage}
+func NewCloudPoolListResultPage(cur CloudPoolListResult, getNextPage func(context.Context, CloudPoolListResult) (CloudPoolListResult, error)) CloudPoolListResultPage {
+	return CloudPoolListResultPage{
+		fn:   getNextPage,
+		cplr: cur,
+	}
 }
 
 // CloudServiceConfiguration ...
@@ -1599,8 +1620,11 @@ func (page CloudTaskListResultPage) Values() []CloudTask {
 }
 
 // Creates a new instance of the CloudTaskListResultPage type.
-func NewCloudTaskListResultPage(getNextPage func(context.Context, CloudTaskListResult) (CloudTaskListResult, error)) CloudTaskListResultPage {
-	return CloudTaskListResultPage{fn: getNextPage}
+func NewCloudTaskListResultPage(cur CloudTaskListResult, getNextPage func(context.Context, CloudTaskListResult) (CloudTaskListResult, error)) CloudTaskListResultPage {
+	return CloudTaskListResultPage{
+		fn:   getNextPage,
+		ctlr: cur,
+	}
 }
 
 // CloudTaskListSubtasksResult ...
@@ -1824,8 +1848,11 @@ func (page ComputeNodeListResultPage) Values() []ComputeNode {
 }
 
 // Creates a new instance of the ComputeNodeListResultPage type.
-func NewComputeNodeListResultPage(getNextPage func(context.Context, ComputeNodeListResult) (ComputeNodeListResult, error)) ComputeNodeListResultPage {
-	return ComputeNodeListResultPage{fn: getNextPage}
+func NewComputeNodeListResultPage(cur ComputeNodeListResult, getNextPage func(context.Context, ComputeNodeListResult) (ComputeNodeListResult, error)) ComputeNodeListResultPage {
+	return ComputeNodeListResultPage{
+		fn:   getNextPage,
+		cnlr: cur,
+	}
 }
 
 // ComputeNodeUser ...
@@ -2657,8 +2684,11 @@ func (page NodeFileListResultPage) Values() []NodeFile {
 }
 
 // Creates a new instance of the NodeFileListResultPage type.
-func NewNodeFileListResultPage(getNextPage func(context.Context, NodeFileListResult) (NodeFileListResult, error)) NodeFileListResultPage {
-	return NodeFileListResultPage{fn: getNextPage}
+func NewNodeFileListResultPage(cur NodeFileListResult, getNextPage func(context.Context, NodeFileListResult) (NodeFileListResult, error)) NodeFileListResultPage {
+	return NodeFileListResultPage{
+		fn:   getNextPage,
+		nflr: cur,
+	}
 }
 
 // NodeRebootParameter ...
@@ -2943,8 +2973,11 @@ func (page PoolListUsageMetricsResultPage) Values() []PoolUsageMetrics {
 }
 
 // Creates a new instance of the PoolListUsageMetricsResultPage type.
-func NewPoolListUsageMetricsResultPage(getNextPage func(context.Context, PoolListUsageMetricsResult) (PoolListUsageMetricsResult, error)) PoolListUsageMetricsResultPage {
-	return PoolListUsageMetricsResultPage{fn: getNextPage}
+func NewPoolListUsageMetricsResultPage(cur PoolListUsageMetricsResult, getNextPage func(context.Context, PoolListUsageMetricsResult) (PoolListUsageMetricsResult, error)) PoolListUsageMetricsResultPage {
+	return PoolListUsageMetricsResultPage{
+		fn:    getNextPage,
+		plumr: cur,
+	}
 }
 
 // PoolNodeCounts ...
@@ -3105,9 +3138,6 @@ func (page PoolNodeCountsListResultPage) Values() []PoolNodeCounts {
 }
 
 // Creates a new instance of the PoolNodeCountsListResultPage type.
-func NewPoolNodeCountsListResultPage(getNextPage func(context.Context, PoolNodeCountsListResult) (PoolNodeCountsListResult, error)) PoolNodeCountsListResultPage {
-	return PoolNodeCountsListResultPage{fn: getNextPage}
-}
 
 // PoolPatchParameter ...
 type PoolPatchParameter struct {

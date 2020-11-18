@@ -537,8 +537,11 @@ func (page ListPage) Values() []Response {
 }
 
 // Creates a new instance of the ListPage type.
-func NewListPage(getNextPage func(context.Context, List) (List, error)) ListPage {
-	return ListPage{fn: getNextPage}
+func NewListPage(cur List, getNextPage func(context.Context, List) (List, error)) ListPage {
+	return ListPage{
+		fn: getNextPage,
+		l:  cur,
+	}
 }
 
 // ListResponse ...
@@ -758,8 +761,11 @@ func (page OperationListPage) Values() []OperationResponse {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OperationResponse ...
@@ -931,8 +937,11 @@ func (page OrderListPage) Values() []OrderResponse {
 }
 
 // Creates a new instance of the OrderListPage type.
-func NewOrderListPage(getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
-	return OrderListPage{fn: getNextPage}
+func NewOrderListPage(cur OrderList, getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
+	return OrderListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OrderProperties ...
@@ -1540,8 +1549,11 @@ func (page QuotaLimitsPage) Values() []CurrentQuotaLimitBase {
 }
 
 // Creates a new instance of the QuotaLimitsPage type.
-func NewQuotaLimitsPage(getNextPage func(context.Context, QuotaLimits) (QuotaLimits, error)) QuotaLimitsPage {
-	return QuotaLimitsPage{fn: getNextPage}
+func NewQuotaLimitsPage(cur QuotaLimits, getNextPage func(context.Context, QuotaLimits) (QuotaLimits, error)) QuotaLimitsPage {
+	return QuotaLimitsPage{
+		fn: getNextPage,
+		ql: cur,
+	}
 }
 
 // QuotaLimitsResponse quota limits request response.
@@ -1816,9 +1828,6 @@ func (page QuotaRequestDetailsListPage) Values() []QuotaRequestDetails {
 }
 
 // Creates a new instance of the QuotaRequestDetailsListPage type.
-func NewQuotaRequestDetailsListPage(getNextPage func(context.Context, QuotaRequestDetailsList) (QuotaRequestDetailsList, error)) QuotaRequestDetailsListPage {
-	return QuotaRequestDetailsListPage{fn: getNextPage}
-}
 
 // QuotaRequestOneResourceProperties the details of quota request.
 type QuotaRequestOneResourceProperties struct {

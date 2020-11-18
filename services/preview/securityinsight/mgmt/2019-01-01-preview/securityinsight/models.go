@@ -1150,8 +1150,11 @@ func (page ActionsListPage) Values() []ActionResponse {
 }
 
 // Creates a new instance of the ActionsListPage type.
-func NewActionsListPage(getNextPage func(context.Context, ActionsList) (ActionsList, error)) ActionsListPage {
-	return ActionsListPage{fn: getNextPage}
+func NewActionsListPage(cur ActionsList, getNextPage func(context.Context, ActionsList) (ActionsList, error)) ActionsListPage {
+	return ActionsListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // BasicAggregations the aggregation.
@@ -1580,8 +1583,11 @@ func (page AlertRulesListPage) Values() []BasicAlertRule {
 }
 
 // Creates a new instance of the AlertRulesListPage type.
-func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
-	return AlertRulesListPage{fn: getNextPage}
+func NewAlertRulesListPage(cur AlertRulesList, getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
+	return AlertRulesListPage{
+		fn:  getNextPage,
+		arl: cur,
+	}
 }
 
 // BasicAlertRuleTemplate alert rule template.
@@ -1940,8 +1946,11 @@ func (page AlertRuleTemplatesListPage) Values() []BasicAlertRuleTemplate {
 }
 
 // Creates a new instance of the AlertRuleTemplatesListPage type.
-func NewAlertRuleTemplatesListPage(getNextPage func(context.Context, AlertRuleTemplatesList) (AlertRuleTemplatesList, error)) AlertRuleTemplatesListPage {
-	return AlertRuleTemplatesListPage{fn: getNextPage}
+func NewAlertRuleTemplatesListPage(cur AlertRuleTemplatesList, getNextPage func(context.Context, AlertRuleTemplatesList) (AlertRuleTemplatesList, error)) AlertRuleTemplatesListPage {
+	return AlertRuleTemplatesListPage{
+		fn:   getNextPage,
+		artl: cur,
+	}
 }
 
 // AlertsDataTypeOfDataConnector alerts data type for data connectors.
@@ -2964,8 +2973,11 @@ func (page BookmarkListPage) Values() []Bookmark {
 }
 
 // Creates a new instance of the BookmarkListPage type.
-func NewBookmarkListPage(getNextPage func(context.Context, BookmarkList) (BookmarkList, error)) BookmarkListPage {
-	return BookmarkListPage{fn: getNextPage}
+func NewBookmarkListPage(cur BookmarkList, getNextPage func(context.Context, BookmarkList) (BookmarkList, error)) BookmarkListPage {
+	return BookmarkListPage{
+		fn: getNextPage,
+		bl: cur,
+	}
 }
 
 // BookmarkProperties describes bookmark properties
@@ -3313,8 +3325,11 @@ func (page CaseCommentListPage) Values() []CaseComment {
 }
 
 // Creates a new instance of the CaseCommentListPage type.
-func NewCaseCommentListPage(getNextPage func(context.Context, CaseCommentList) (CaseCommentList, error)) CaseCommentListPage {
-	return CaseCommentListPage{fn: getNextPage}
+func NewCaseCommentListPage(cur CaseCommentList, getNextPage func(context.Context, CaseCommentList) (CaseCommentList, error)) CaseCommentListPage {
+	return CaseCommentListPage{
+		fn:  getNextPage,
+		ccl: cur,
+	}
 }
 
 // CaseCommentProperties case comment property bag.
@@ -3497,8 +3512,11 @@ func (page CaseListPage) Values() []Case {
 }
 
 // Creates a new instance of the CaseListPage type.
-func NewCaseListPage(getNextPage func(context.Context, CaseList) (CaseList, error)) CaseListPage {
-	return CaseListPage{fn: getNextPage}
+func NewCaseListPage(cur CaseList, getNextPage func(context.Context, CaseList) (CaseList, error)) CaseListPage {
+	return CaseListPage{
+		fn: getNextPage,
+		cl: cur,
+	}
 }
 
 // CaseProperties describes case properties
@@ -3834,8 +3852,11 @@ func (page CaseRelationListPage) Values() []CaseRelation {
 }
 
 // Creates a new instance of the CaseRelationListPage type.
-func NewCaseRelationListPage(getNextPage func(context.Context, CaseRelationList) (CaseRelationList, error)) CaseRelationListPage {
-	return CaseRelationListPage{fn: getNextPage}
+func NewCaseRelationListPage(cur CaseRelationList, getNextPage func(context.Context, CaseRelationList) (CaseRelationList, error)) CaseRelationListPage {
+	return CaseRelationListPage{
+		fn:  getNextPage,
+		crl: cur,
+	}
 }
 
 // CaseRelationProperties case relation properties
@@ -4613,8 +4634,11 @@ func (page DataConnectorListPage) Values() []BasicDataConnector {
 }
 
 // Creates a new instance of the DataConnectorListPage type.
-func NewDataConnectorListPage(getNextPage func(context.Context, DataConnectorList) (DataConnectorList, error)) DataConnectorListPage {
-	return DataConnectorListPage{fn: getNextPage}
+func NewDataConnectorListPage(cur DataConnectorList, getNextPage func(context.Context, DataConnectorList) (DataConnectorList, error)) DataConnectorListPage {
+	return DataConnectorListPage{
+		fn:  getNextPage,
+		dcl: cur,
+	}
 }
 
 // DataConnectorModel ...
@@ -5490,8 +5514,11 @@ func (page EntityListPage) Values() []BasicEntity {
 }
 
 // Creates a new instance of the EntityListPage type.
-func NewEntityListPage(getNextPage func(context.Context, EntityList) (EntityList, error)) EntityListPage {
-	return EntityListPage{fn: getNextPage}
+func NewEntityListPage(cur EntityList, getNextPage func(context.Context, EntityList) (EntityList, error)) EntityListPage {
+	return EntityListPage{
+		fn: getNextPage,
+		el: cur,
+	}
 }
 
 // EntityModel ...
@@ -5745,8 +5772,11 @@ func (page EntityQueryListPage) Values() []EntityQuery {
 }
 
 // Creates a new instance of the EntityQueryListPage type.
-func NewEntityQueryListPage(getNextPage func(context.Context, EntityQueryList) (EntityQueryList, error)) EntityQueryListPage {
-	return EntityQueryListPage{fn: getNextPage}
+func NewEntityQueryListPage(cur EntityQueryList, getNextPage func(context.Context, EntityQueryList) (EntityQueryList, error)) EntityQueryListPage {
+	return EntityQueryListPage{
+		fn:  getNextPage,
+		eql: cur,
+	}
 }
 
 // EntityQueryProperties describes entity query properties
@@ -7193,8 +7223,11 @@ func (page IncidentCommentListPage) Values() []IncidentComment {
 }
 
 // Creates a new instance of the IncidentCommentListPage type.
-func NewIncidentCommentListPage(getNextPage func(context.Context, IncidentCommentList) (IncidentCommentList, error)) IncidentCommentListPage {
-	return IncidentCommentListPage{fn: getNextPage}
+func NewIncidentCommentListPage(cur IncidentCommentList, getNextPage func(context.Context, IncidentCommentList) (IncidentCommentList, error)) IncidentCommentListPage {
+	return IncidentCommentListPage{
+		fn:  getNextPage,
+		icl: cur,
+	}
 }
 
 // IncidentCommentProperties incident comment property bag.
@@ -7414,8 +7447,11 @@ func (page IncidentListPage) Values() []Incident {
 }
 
 // Creates a new instance of the IncidentListPage type.
-func NewIncidentListPage(getNextPage func(context.Context, IncidentList) (IncidentList, error)) IncidentListPage {
-	return IncidentListPage{fn: getNextPage}
+func NewIncidentListPage(cur IncidentList, getNextPage func(context.Context, IncidentList) (IncidentList, error)) IncidentListPage {
+	return IncidentListPage{
+		fn: getNextPage,
+		il: cur,
+	}
 }
 
 // IncidentOwnerInfo information on the user an incident is assigned to
@@ -9274,8 +9310,11 @@ func (page OfficeConsentListPage) Values() []OfficeConsent {
 }
 
 // Creates a new instance of the OfficeConsentListPage type.
-func NewOfficeConsentListPage(getNextPage func(context.Context, OfficeConsentList) (OfficeConsentList, error)) OfficeConsentListPage {
-	return OfficeConsentListPage{fn: getNextPage}
+func NewOfficeConsentListPage(cur OfficeConsentList, getNextPage func(context.Context, OfficeConsentList) (OfficeConsentList, error)) OfficeConsentListPage {
+	return OfficeConsentListPage{
+		fn:  getNextPage,
+		ocl: cur,
+	}
 }
 
 // OfficeConsentProperties consent property bag.
@@ -9651,8 +9690,11 @@ func (page OperationsListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationsListPage type.
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return OperationsListPage{fn: getNextPage}
+func NewOperationsListPage(cur OperationsList, getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
+	return OperationsListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // ProcessEntity represents a process entity.
@@ -10532,9 +10574,6 @@ func (page RelationListPage) Values() []Relation {
 }
 
 // Creates a new instance of the RelationListPage type.
-func NewRelationListPage(getNextPage func(context.Context, RelationList) (RelationList, error)) RelationListPage {
-	return RelationListPage{fn: getNextPage}
-}
 
 // RelationNode relation node
 type RelationNode struct {

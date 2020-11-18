@@ -242,8 +242,8 @@ func New(subscriptionID string) BaseClient {
 func NewDeviceListResultIterator(page DeviceListResultPage) DeviceListResultIterator {
 	return original.NewDeviceListResultIterator(page)
 }
-func NewDeviceListResultPage(getNextPage func(context.Context, DeviceListResult) (DeviceListResult, error)) DeviceListResultPage {
-	return original.NewDeviceListResultPage(getNextPage)
+func NewDeviceListResultPage(cur DeviceListResult, getNextPage func(context.Context, DeviceListResult) (DeviceListResult, error)) DeviceListResultPage {
+	return original.NewDeviceListResultPage(cur, getNextPage)
 }
 func NewDevicesClient(subscriptionID string) DevicesClient {
 	return original.NewDevicesClient(subscriptionID)
@@ -254,8 +254,8 @@ func NewDevicesClientWithBaseURI(baseURI string, subscriptionID string) DevicesC
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
 }
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return original.NewOperationListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -266,20 +266,20 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewPreviewSubscriptionsListIterator(page PreviewSubscriptionsListPage) PreviewSubscriptionsListIterator {
 	return original.NewPreviewSubscriptionsListIterator(page)
 }
-func NewPreviewSubscriptionsListPage(getNextPage func(context.Context, PreviewSubscriptionsList) (PreviewSubscriptionsList, error)) PreviewSubscriptionsListPage {
-	return original.NewPreviewSubscriptionsListPage(getNextPage)
+func NewPreviewSubscriptionsListPage(cur PreviewSubscriptionsList, getNextPage func(context.Context, PreviewSubscriptionsList) (PreviewSubscriptionsList, error)) PreviewSubscriptionsListPage {
+	return original.NewPreviewSubscriptionsListPage(cur, getNextPage)
 }
 func NewVendorListResultIterator(page VendorListResultPage) VendorListResultIterator {
 	return original.NewVendorListResultIterator(page)
 }
-func NewVendorListResultPage(getNextPage func(context.Context, VendorListResult) (VendorListResult, error)) VendorListResultPage {
-	return original.NewVendorListResultPage(getNextPage)
+func NewVendorListResultPage(cur VendorListResult, getNextPage func(context.Context, VendorListResult) (VendorListResult, error)) VendorListResultPage {
+	return original.NewVendorListResultPage(cur, getNextPage)
 }
 func NewVendorSkuListResultIterator(page VendorSkuListResultPage) VendorSkuListResultIterator {
 	return original.NewVendorSkuListResultIterator(page)
 }
-func NewVendorSkuListResultPage(getNextPage func(context.Context, VendorSkuListResult) (VendorSkuListResult, error)) VendorSkuListResultPage {
-	return original.NewVendorSkuListResultPage(getNextPage)
+func NewVendorSkuListResultPage(cur VendorSkuListResult, getNextPage func(context.Context, VendorSkuListResult) (VendorSkuListResult, error)) VendorSkuListResultPage {
+	return original.NewVendorSkuListResultPage(cur, getNextPage)
 }
 func NewVendorSkuPreviewClient(subscriptionID string) VendorSkuPreviewClient {
 	return original.NewVendorSkuPreviewClient(subscriptionID)
@@ -296,8 +296,8 @@ func NewVendorSkusClientWithBaseURI(baseURI string, subscriptionID string) Vendo
 func NewVendorVirtualNetworkFunctionListResultIterator(page VendorVirtualNetworkFunctionListResultPage) VendorVirtualNetworkFunctionListResultIterator {
 	return original.NewVendorVirtualNetworkFunctionListResultIterator(page)
 }
-func NewVendorVirtualNetworkFunctionListResultPage(getNextPage func(context.Context, VendorVirtualNetworkFunctionListResult) (VendorVirtualNetworkFunctionListResult, error)) VendorVirtualNetworkFunctionListResultPage {
-	return original.NewVendorVirtualNetworkFunctionListResultPage(getNextPage)
+func NewVendorVirtualNetworkFunctionListResultPage(cur VendorVirtualNetworkFunctionListResult, getNextPage func(context.Context, VendorVirtualNetworkFunctionListResult) (VendorVirtualNetworkFunctionListResult, error)) VendorVirtualNetworkFunctionListResultPage {
+	return original.NewVendorVirtualNetworkFunctionListResultPage(cur, getNextPage)
 }
 func NewVendorVirtualNetworkFunctionsClient(subscriptionID string) VendorVirtualNetworkFunctionsClient {
 	return original.NewVendorVirtualNetworkFunctionsClient(subscriptionID)
@@ -314,26 +314,23 @@ func NewVendorsClientWithBaseURI(baseURI string, subscriptionID string) VendorsC
 func NewVirtualNetworkFunctionListResultIterator(page VirtualNetworkFunctionListResultPage) VirtualNetworkFunctionListResultIterator {
 	return original.NewVirtualNetworkFunctionListResultIterator(page)
 }
-func NewVirtualNetworkFunctionListResultPage(getNextPage func(context.Context, VirtualNetworkFunctionListResult) (VirtualNetworkFunctionListResult, error)) VirtualNetworkFunctionListResultPage {
-	return original.NewVirtualNetworkFunctionListResultPage(getNextPage)
+func NewVirtualNetworkFunctionListResultPage(cur VirtualNetworkFunctionListResult, getNextPage func(context.Context, VirtualNetworkFunctionListResult) (VirtualNetworkFunctionListResult, error)) VirtualNetworkFunctionListResultPage {
+	return original.NewVirtualNetworkFunctionListResultPage(cur, getNextPage)
 }
 func NewVirtualNetworkFunctionSkuDetailsIterator(page VirtualNetworkFunctionSkuDetailsPage) VirtualNetworkFunctionSkuDetailsIterator {
 	return original.NewVirtualNetworkFunctionSkuDetailsIterator(page)
 }
-func NewVirtualNetworkFunctionSkuDetailsPage(getNextPage func(context.Context, VirtualNetworkFunctionSkuDetails) (VirtualNetworkFunctionSkuDetails, error)) VirtualNetworkFunctionSkuDetailsPage {
-	return original.NewVirtualNetworkFunctionSkuDetailsPage(getNextPage)
+func NewVirtualNetworkFunctionSkuDetailsPage(cur VirtualNetworkFunctionSkuDetails, getNextPage func(context.Context, VirtualNetworkFunctionSkuDetails) (VirtualNetworkFunctionSkuDetails, error)) VirtualNetworkFunctionSkuDetailsPage {
+	return original.NewVirtualNetworkFunctionSkuDetailsPage(cur, getNextPage)
 }
 func NewVirtualNetworkFunctionSkuListResultIterator(page VirtualNetworkFunctionSkuListResultPage) VirtualNetworkFunctionSkuListResultIterator {
 	return original.NewVirtualNetworkFunctionSkuListResultIterator(page)
 }
-func NewVirtualNetworkFunctionSkuListResultPage(getNextPage func(context.Context, VirtualNetworkFunctionSkuListResult) (VirtualNetworkFunctionSkuListResult, error)) VirtualNetworkFunctionSkuListResultPage {
-	return original.NewVirtualNetworkFunctionSkuListResultPage(getNextPage)
+func NewVirtualNetworkFunctionSkuListResultPage(cur VirtualNetworkFunctionSkuListResult, getNextPage func(context.Context, VirtualNetworkFunctionSkuListResult) (VirtualNetworkFunctionSkuListResult, error)) VirtualNetworkFunctionSkuListResultPage {
+	return original.NewVirtualNetworkFunctionSkuListResultPage(cur, getNextPage)
 }
 func NewVirtualNetworkFunctionVendorListResultIterator(page VirtualNetworkFunctionVendorListResultPage) VirtualNetworkFunctionVendorListResultIterator {
 	return original.NewVirtualNetworkFunctionVendorListResultIterator(page)
-}
-func NewVirtualNetworkFunctionVendorListResultPage(getNextPage func(context.Context, VirtualNetworkFunctionVendorListResult) (VirtualNetworkFunctionVendorListResult, error)) VirtualNetworkFunctionVendorListResultPage {
-	return original.NewVirtualNetworkFunctionVendorListResultPage(getNextPage)
 }
 func NewVirtualNetworkFunctionVendorSkusClient(subscriptionID string) VirtualNetworkFunctionVendorSkusClient {
 	return original.NewVirtualNetworkFunctionVendorSkusClient(subscriptionID)

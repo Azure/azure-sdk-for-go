@@ -114,8 +114,8 @@ func New(subscriptionID string) BaseClient {
 func NewDomainServiceListResultIterator(page DomainServiceListResultPage) DomainServiceListResultIterator {
 	return original.NewDomainServiceListResultIterator(page)
 }
-func NewDomainServiceListResultPage(getNextPage func(context.Context, DomainServiceListResult) (DomainServiceListResult, error)) DomainServiceListResultPage {
-	return original.NewDomainServiceListResultPage(getNextPage)
+func NewDomainServiceListResultPage(cur DomainServiceListResult, getNextPage func(context.Context, DomainServiceListResult) (DomainServiceListResult, error)) DomainServiceListResultPage {
+	return original.NewDomainServiceListResultPage(cur, getNextPage)
 }
 func NewDomainServiceOperationsClient(subscriptionID string) DomainServiceOperationsClient {
 	return original.NewDomainServiceOperationsClient(subscriptionID)
@@ -131,9 +131,6 @@ func NewDomainServicesClientWithBaseURI(baseURI string, subscriptionID string) D
 }
 func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
 	return original.NewOperationEntityListResultIterator(page)
-}
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return original.NewOperationEntityListResultPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

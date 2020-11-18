@@ -19,11 +19,7 @@
 
 package compute
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2017-08-01-preview/compute"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2017-08-01-preview/compute"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -184,9 +180,6 @@ func NewOperationalizationClustersClientWithBaseURI(baseURI string, subscription
 }
 func NewPaginatedOperationalizationClustersListIterator(page PaginatedOperationalizationClustersListPage) PaginatedOperationalizationClustersListIterator {
 	return original.NewPaginatedOperationalizationClustersListIterator(page)
-}
-func NewPaginatedOperationalizationClustersListPage(getNextPage func(context.Context, PaginatedOperationalizationClustersList) (PaginatedOperationalizationClustersList, error)) PaginatedOperationalizationClustersListPage {
-	return original.NewPaginatedOperationalizationClustersListPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

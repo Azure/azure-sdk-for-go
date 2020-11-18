@@ -317,8 +317,11 @@ func (page DomainServiceListResultPage) Values() []DomainService {
 }
 
 // Creates a new instance of the DomainServiceListResultPage type.
-func NewDomainServiceListResultPage(getNextPage func(context.Context, DomainServiceListResult) (DomainServiceListResult, error)) DomainServiceListResultPage {
-	return DomainServiceListResultPage{fn: getNextPage}
+func NewDomainServiceListResultPage(cur DomainServiceListResult, getNextPage func(context.Context, DomainServiceListResult) (DomainServiceListResult, error)) DomainServiceListResultPage {
+	return DomainServiceListResultPage{
+		fn:   getNextPage,
+		dslr: cur,
+	}
 }
 
 // DomainServiceProperties properties of the Domain Service.
@@ -717,9 +720,6 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 }
 
 // Creates a new instance of the OperationEntityListResultPage type.
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return OperationEntityListResultPage{fn: getNextPage}
-}
 
 // Resource the Resource model definition.
 type Resource struct {

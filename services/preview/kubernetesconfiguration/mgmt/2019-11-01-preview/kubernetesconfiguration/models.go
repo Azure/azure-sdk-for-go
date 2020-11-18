@@ -284,8 +284,11 @@ func (page ResourceProviderOperationListPage) Values() []ResourceProviderOperati
 }
 
 // Creates a new instance of the ResourceProviderOperationListPage type.
-func NewResourceProviderOperationListPage(getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
-	return ResourceProviderOperationListPage{fn: getNextPage}
+func NewResourceProviderOperationListPage(cur ResourceProviderOperationList, getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
+	return ResourceProviderOperationListPage{
+		fn:   getNextPage,
+		rpol: cur,
+	}
 }
 
 // Result sample result definition
@@ -521,9 +524,6 @@ func (page SourceControlConfigurationListPage) Values() []SourceControlConfigura
 }
 
 // Creates a new instance of the SourceControlConfigurationListPage type.
-func NewSourceControlConfigurationListPage(getNextPage func(context.Context, SourceControlConfigurationList) (SourceControlConfigurationList, error)) SourceControlConfigurationListPage {
-	return SourceControlConfigurationListPage{fn: getNextPage}
-}
 
 // SourceControlConfigurationProperties properties to create a Source Control Configuration resource
 type SourceControlConfigurationProperties struct {

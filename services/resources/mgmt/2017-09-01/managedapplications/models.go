@@ -507,8 +507,11 @@ func (page ApplicationDefinitionListResultPage) Values() []ApplicationDefinition
 }
 
 // Creates a new instance of the ApplicationDefinitionListResultPage type.
-func NewApplicationDefinitionListResultPage(getNextPage func(context.Context, ApplicationDefinitionListResult) (ApplicationDefinitionListResult, error)) ApplicationDefinitionListResultPage {
-	return ApplicationDefinitionListResultPage{fn: getNextPage}
+func NewApplicationDefinitionListResultPage(cur ApplicationDefinitionListResult, getNextPage func(context.Context, ApplicationDefinitionListResult) (ApplicationDefinitionListResult, error)) ApplicationDefinitionListResultPage {
+	return ApplicationDefinitionListResultPage{
+		fn:   getNextPage,
+		adlr: cur,
+	}
 }
 
 // ApplicationDefinitionProperties the managed application definition properties.
@@ -789,9 +792,6 @@ func (page ApplicationListResultPage) Values() []Application {
 }
 
 // Creates a new instance of the ApplicationListResultPage type.
-func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
-	return ApplicationListResultPage{fn: getNextPage}
-}
 
 // ApplicationPatchable information about managed application.
 type ApplicationPatchable struct {

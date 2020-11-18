@@ -19,11 +19,7 @@
 
 package hardwaresecuritymodules
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/preview/hardwaresecuritymodules/mgmt/2018-10-31-preview/hardwaresecuritymodules"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/preview/hardwaresecuritymodules/mgmt/2018-10-31-preview/hardwaresecuritymodules"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -82,9 +78,6 @@ func NewDedicatedHsmClientWithBaseURI(baseURI string, subscriptionID string) Ded
 }
 func NewDedicatedHsmListResultIterator(page DedicatedHsmListResultPage) DedicatedHsmListResultIterator {
 	return original.NewDedicatedHsmListResultIterator(page)
-}
-func NewDedicatedHsmListResultPage(getNextPage func(context.Context, DedicatedHsmListResult) (DedicatedHsmListResult, error)) DedicatedHsmListResultPage {
-	return original.NewDedicatedHsmListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

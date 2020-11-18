@@ -506,8 +506,11 @@ func (page ApplianceDefinitionListResultPage) Values() []ApplianceDefinition {
 }
 
 // Creates a new instance of the ApplianceDefinitionListResultPage type.
-func NewApplianceDefinitionListResultPage(getNextPage func(context.Context, ApplianceDefinitionListResult) (ApplianceDefinitionListResult, error)) ApplianceDefinitionListResultPage {
-	return ApplianceDefinitionListResultPage{fn: getNextPage}
+func NewApplianceDefinitionListResultPage(cur ApplianceDefinitionListResult, getNextPage func(context.Context, ApplianceDefinitionListResult) (ApplianceDefinitionListResult, error)) ApplianceDefinitionListResultPage {
+	return ApplianceDefinitionListResultPage{
+		fn:   getNextPage,
+		adlr: cur,
+	}
 }
 
 // ApplianceDefinitionProperties the appliance definition properties.
@@ -782,8 +785,11 @@ func (page ApplianceListResultPage) Values() []Appliance {
 }
 
 // Creates a new instance of the ApplianceListResultPage type.
-func NewApplianceListResultPage(getNextPage func(context.Context, ApplianceListResult) (ApplianceListResult, error)) ApplianceListResultPage {
-	return ApplianceListResultPage{fn: getNextPage}
+func NewApplianceListResultPage(cur ApplianceListResult, getNextPage func(context.Context, ApplianceListResult) (ApplianceListResult, error)) ApplianceListResultPage {
+	return ApplianceListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AppliancePatchable information about appliance.
@@ -1377,9 +1383,6 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // Plan plan for the appliance.
 type Plan struct {

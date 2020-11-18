@@ -284,8 +284,11 @@ func (page ArmDisasterRecoveryListResultPage) Values() []ArmDisasterRecovery {
 }
 
 // Creates a new instance of the ArmDisasterRecoveryListResultPage type.
-func NewArmDisasterRecoveryListResultPage(getNextPage func(context.Context, ArmDisasterRecoveryListResult) (ArmDisasterRecoveryListResult, error)) ArmDisasterRecoveryListResultPage {
-	return ArmDisasterRecoveryListResultPage{fn: getNextPage}
+func NewArmDisasterRecoveryListResultPage(cur ArmDisasterRecoveryListResult, getNextPage func(context.Context, ArmDisasterRecoveryListResult) (ArmDisasterRecoveryListResult, error)) ArmDisasterRecoveryListResultPage {
+	return ArmDisasterRecoveryListResultPage{
+		fn:    getNextPage,
+		adrlr: cur,
+	}
 }
 
 // ArmDisasterRecoveryProperties properties required to the Create Or Update Alias(Disaster Recovery
@@ -540,8 +543,11 @@ func (page AuthorizationRuleListResultPage) Values() []AuthorizationRule {
 }
 
 // Creates a new instance of the AuthorizationRuleListResultPage type.
-func NewAuthorizationRuleListResultPage(getNextPage func(context.Context, AuthorizationRuleListResult) (AuthorizationRuleListResult, error)) AuthorizationRuleListResultPage {
-	return AuthorizationRuleListResultPage{fn: getNextPage}
+func NewAuthorizationRuleListResultPage(cur AuthorizationRuleListResult, getNextPage func(context.Context, AuthorizationRuleListResult) (AuthorizationRuleListResult, error)) AuthorizationRuleListResultPage {
+	return AuthorizationRuleListResultPage{
+		fn:   getNextPage,
+		arlr: cur,
+	}
 }
 
 // AuthorizationRuleProperties properties supplied to create or update AuthorizationRule
@@ -820,8 +826,11 @@ func (page ConsumerGroupListResultPage) Values() []ConsumerGroup {
 }
 
 // Creates a new instance of the ConsumerGroupListResultPage type.
-func NewConsumerGroupListResultPage(getNextPage func(context.Context, ConsumerGroupListResult) (ConsumerGroupListResult, error)) ConsumerGroupListResultPage {
-	return ConsumerGroupListResultPage{fn: getNextPage}
+func NewConsumerGroupListResultPage(cur ConsumerGroupListResult, getNextPage func(context.Context, ConsumerGroupListResult) (ConsumerGroupListResult, error)) ConsumerGroupListResultPage {
+	return ConsumerGroupListResultPage{
+		fn:   getNextPage,
+		cglr: cur,
+	}
 }
 
 // ConsumerGroupProperties single item in List or Get Consumer group operation
@@ -1174,8 +1183,11 @@ func (page EHNamespaceListResultPage) Values() []EHNamespace {
 }
 
 // Creates a new instance of the EHNamespaceListResultPage type.
-func NewEHNamespaceListResultPage(getNextPage func(context.Context, EHNamespaceListResult) (EHNamespaceListResult, error)) EHNamespaceListResultPage {
-	return EHNamespaceListResultPage{fn: getNextPage}
+func NewEHNamespaceListResultPage(cur EHNamespaceListResult, getNextPage func(context.Context, EHNamespaceListResult) (EHNamespaceListResult, error)) EHNamespaceListResultPage {
+	return EHNamespaceListResultPage{
+		fn:    getNextPage,
+		ehnlr: cur,
+	}
 }
 
 // EHNamespaceProperties namespace properties supplied for create namespace operation.
@@ -1374,8 +1386,11 @@ func (page ListResultPage) Values() []Model {
 }
 
 // Creates a new instance of the ListResultPage type.
-func NewListResultPage(getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
-	return ListResultPage{fn: getNextPage}
+func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListResult) (ListResult, error)) ListResultPage {
+	return ListResultPage{
+		fn: getNextPage,
+		lr: cur,
+	}
 }
 
 // MessagingPlan messaging Plan for the namespace
@@ -1682,8 +1697,11 @@ func (page MessagingRegionsListResultPage) Values() []MessagingRegions {
 }
 
 // Creates a new instance of the MessagingRegionsListResultPage type.
-func NewMessagingRegionsListResultPage(getNextPage func(context.Context, MessagingRegionsListResult) (MessagingRegionsListResult, error)) MessagingRegionsListResultPage {
-	return MessagingRegionsListResultPage{fn: getNextPage}
+func NewMessagingRegionsListResultPage(cur MessagingRegionsListResult, getNextPage func(context.Context, MessagingRegionsListResult) (MessagingRegionsListResult, error)) MessagingRegionsListResultPage {
+	return MessagingRegionsListResultPage{
+		fn:   getNextPage,
+		mrlr: cur,
+	}
 }
 
 // MessagingRegionsProperties properties of Messaging Region
@@ -2043,8 +2061,11 @@ func (page NetworkRuleSetListResultPage) Values() []NetworkRuleSet {
 }
 
 // Creates a new instance of the NetworkRuleSetListResultPage type.
-func NewNetworkRuleSetListResultPage(getNextPage func(context.Context, NetworkRuleSetListResult) (NetworkRuleSetListResult, error)) NetworkRuleSetListResultPage {
-	return NetworkRuleSetListResultPage{fn: getNextPage}
+func NewNetworkRuleSetListResultPage(cur NetworkRuleSetListResult, getNextPage func(context.Context, NetworkRuleSetListResult) (NetworkRuleSetListResult, error)) NetworkRuleSetListResultPage {
+	return NetworkRuleSetListResultPage{
+		fn:    getNextPage,
+		nrslr: cur,
+	}
 }
 
 // NetworkRuleSetProperties networkRuleSet properties
@@ -2253,9 +2274,6 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // Properties properties supplied to the Create Or Update Event Hub operation.
 type Properties struct {

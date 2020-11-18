@@ -226,8 +226,11 @@ func (page DataSourceListResultPage) Values() []DataSource {
 }
 
 // Creates a new instance of the DataSourceListResultPage type.
-func NewDataSourceListResultPage(getNextPage func(context.Context, DataSourceListResult) (DataSourceListResult, error)) DataSourceListResultPage {
-	return DataSourceListResultPage{fn: getNextPage}
+func NewDataSourceListResultPage(cur DataSourceListResult, getNextPage func(context.Context, DataSourceListResult) (DataSourceListResult, error)) DataSourceListResultPage {
+	return DataSourceListResultPage{
+		fn:   getNextPage,
+		dslr: cur,
+	}
 }
 
 // ErrorResponse describes the format of Error response.
@@ -600,9 +603,6 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // OperationStatus the status of operation.
 type OperationStatus struct {

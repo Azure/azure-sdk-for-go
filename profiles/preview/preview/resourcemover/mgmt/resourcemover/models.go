@@ -208,8 +208,8 @@ func New(subscriptionID string) BaseClient {
 func NewMoveCollectionResultListIterator(page MoveCollectionResultListPage) MoveCollectionResultListIterator {
 	return original.NewMoveCollectionResultListIterator(page)
 }
-func NewMoveCollectionResultListPage(getNextPage func(context.Context, MoveCollectionResultList) (MoveCollectionResultList, error)) MoveCollectionResultListPage {
-	return original.NewMoveCollectionResultListPage(getNextPage)
+func NewMoveCollectionResultListPage(cur MoveCollectionResultList, getNextPage func(context.Context, MoveCollectionResultList) (MoveCollectionResultList, error)) MoveCollectionResultListPage {
+	return original.NewMoveCollectionResultListPage(cur, getNextPage)
 }
 func NewMoveCollectionsClient(subscriptionID string) MoveCollectionsClient {
 	return original.NewMoveCollectionsClient(subscriptionID)
@@ -219,9 +219,6 @@ func NewMoveCollectionsClientWithBaseURI(baseURI string, subscriptionID string) 
 }
 func NewMoveResourceCollectionIterator(page MoveResourceCollectionPage) MoveResourceCollectionIterator {
 	return original.NewMoveResourceCollectionIterator(page)
-}
-func NewMoveResourceCollectionPage(getNextPage func(context.Context, MoveResourceCollection) (MoveResourceCollection, error)) MoveResourceCollectionPage {
-	return original.NewMoveResourceCollectionPage(getNextPage)
 }
 func NewMoveResourcesClient(subscriptionID string) MoveResourcesClient {
 	return original.NewMoveResourcesClient(subscriptionID)

@@ -319,8 +319,11 @@ func (page ComponentsCollectionPage) Values() []Component {
 }
 
 // Creates a new instance of the ComponentsCollectionPage type.
-func NewComponentsCollectionPage(getNextPage func(context.Context, ComponentsCollection) (ComponentsCollection, error)) ComponentsCollectionPage {
-	return ComponentsCollectionPage{fn: getNextPage}
+func NewComponentsCollectionPage(cur ComponentsCollection, getNextPage func(context.Context, ComponentsCollection) (ComponentsCollection, error)) ComponentsCollectionPage {
+	return ComponentsCollectionPage{
+		fn: getNextPage,
+		cc: cur,
+	}
 }
 
 // ErrorFieldContract error field contract.
@@ -725,8 +728,11 @@ func (page MonitorInstancesCollectionPage) Values() []MonitorInstance {
 }
 
 // Creates a new instance of the MonitorInstancesCollectionPage type.
-func NewMonitorInstancesCollectionPage(getNextPage func(context.Context, MonitorInstancesCollection) (MonitorInstancesCollection, error)) MonitorInstancesCollectionPage {
-	return MonitorInstancesCollectionPage{fn: getNextPage}
+func NewMonitorInstancesCollectionPage(cur MonitorInstancesCollection, getNextPage func(context.Context, MonitorInstancesCollection) (MonitorInstancesCollection, error)) MonitorInstancesCollectionPage {
+	return MonitorInstancesCollectionPage{
+		fn:  getNextPage,
+		mic: cur,
+	}
 }
 
 // MonitorProperties model for properties of a Monitor.
@@ -923,8 +929,11 @@ func (page MonitorsCollectionPage) Values() []Monitor {
 }
 
 // Creates a new instance of the MonitorsCollectionPage type.
-func NewMonitorsCollectionPage(getNextPage func(context.Context, MonitorsCollection) (MonitorsCollection, error)) MonitorsCollectionPage {
-	return MonitorsCollectionPage{fn: getNextPage}
+func NewMonitorsCollectionPage(cur MonitorsCollection, getNextPage func(context.Context, MonitorsCollection) (MonitorsCollection, error)) MonitorsCollectionPage {
+	return MonitorsCollectionPage{
+		fn: getNextPage,
+		mc: cur,
+	}
 }
 
 // NotificationSetting model for NotificationSetting.
@@ -1174,8 +1183,11 @@ func (page NotificationSettingsCollectionPage) Values() []NotificationSetting {
 }
 
 // Creates a new instance of the NotificationSettingsCollectionPage type.
-func NewNotificationSettingsCollectionPage(getNextPage func(context.Context, NotificationSettingsCollection) (NotificationSettingsCollection, error)) NotificationSettingsCollectionPage {
-	return NotificationSettingsCollectionPage{fn: getNextPage}
+func NewNotificationSettingsCollectionPage(cur NotificationSettingsCollection, getNextPage func(context.Context, NotificationSettingsCollection) (NotificationSettingsCollection, error)) NotificationSettingsCollectionPage {
+	return NotificationSettingsCollectionPage{
+		fn:  getNextPage,
+		nsc: cur,
+	}
 }
 
 // Operation operation supported by the resource provider.
@@ -1340,9 +1352,6 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
-}
 
 // OperationProperties properties of an operation supported by the resource provider.
 type OperationProperties struct {

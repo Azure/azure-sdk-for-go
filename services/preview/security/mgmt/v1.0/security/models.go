@@ -559,8 +559,11 @@ func (page AdaptiveNetworkHardeningsListPage) Values() []AdaptiveNetworkHardenin
 }
 
 // Creates a new instance of the AdaptiveNetworkHardeningsListPage type.
-func NewAdaptiveNetworkHardeningsListPage(getNextPage func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error)) AdaptiveNetworkHardeningsListPage {
-	return AdaptiveNetworkHardeningsListPage{fn: getNextPage}
+func NewAdaptiveNetworkHardeningsListPage(cur AdaptiveNetworkHardeningsList, getNextPage func(context.Context, AdaptiveNetworkHardeningsList) (AdaptiveNetworkHardeningsList, error)) AdaptiveNetworkHardeningsListPage {
+	return AdaptiveNetworkHardeningsListPage{
+		fn:   getNextPage,
+		anhl: cur,
+	}
 }
 
 // BasicAdditionalData details of the sub-assessment
@@ -1028,8 +1031,11 @@ func (page AlertListPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertListPage type.
-func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
-	return AlertListPage{fn: getNextPage}
+func NewAlertListPage(cur AlertList, getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return AlertListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AlertProperties describes security alert properties.
@@ -1370,8 +1376,11 @@ func (page AlertsSuppressionRulesListPage) Values() []AlertsSuppressionRule {
 }
 
 // Creates a new instance of the AlertsSuppressionRulesListPage type.
-func NewAlertsSuppressionRulesListPage(getNextPage func(context.Context, AlertsSuppressionRulesList) (AlertsSuppressionRulesList, error)) AlertsSuppressionRulesListPage {
-	return AlertsSuppressionRulesListPage{fn: getNextPage}
+func NewAlertsSuppressionRulesListPage(cur AlertsSuppressionRulesList, getNextPage func(context.Context, AlertsSuppressionRulesList) (AlertsSuppressionRulesList, error)) AlertsSuppressionRulesListPage {
+	return AlertsSuppressionRulesListPage{
+		fn:   getNextPage,
+		asrl: cur,
+	}
 }
 
 // AllowedConnectionsList list of all possible traffic between Azure resources
@@ -1526,8 +1535,11 @@ func (page AllowedConnectionsListPage) Values() []AllowedConnectionsResource {
 }
 
 // Creates a new instance of the AllowedConnectionsListPage type.
-func NewAllowedConnectionsListPage(getNextPage func(context.Context, AllowedConnectionsList) (AllowedConnectionsList, error)) AllowedConnectionsListPage {
-	return AllowedConnectionsListPage{fn: getNextPage}
+func NewAllowedConnectionsListPage(cur AllowedConnectionsList, getNextPage func(context.Context, AllowedConnectionsList) (AllowedConnectionsList, error)) AllowedConnectionsListPage {
+	return AllowedConnectionsListPage{
+		fn:  getNextPage,
+		acl: cur,
+	}
 }
 
 // AllowedConnectionsResource the resource whose properties describes the allowed traffic between Azure
@@ -2726,8 +2738,11 @@ func (page AscLocationListPage) Values() []AscLocation {
 }
 
 // Creates a new instance of the AscLocationListPage type.
-func NewAscLocationListPage(getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
-	return AscLocationListPage{fn: getNextPage}
+func NewAscLocationListPage(cur AscLocationList, getNextPage func(context.Context, AscLocationList) (AscLocationList, error)) AscLocationListPage {
+	return AscLocationListPage{
+		fn:  getNextPage,
+		all: cur,
+	}
 }
 
 // AtaExternalSecuritySolution represents an ATA security solution which sends logs to an OMS workspace
@@ -3516,8 +3531,11 @@ func (page AutomationListPage) Values() []Automation {
 }
 
 // Creates a new instance of the AutomationListPage type.
-func NewAutomationListPage(getNextPage func(context.Context, AutomationList) (AutomationList, error)) AutomationListPage {
-	return AutomationListPage{fn: getNextPage}
+func NewAutomationListPage(cur AutomationList, getNextPage func(context.Context, AutomationList) (AutomationList, error)) AutomationListPage {
+	return AutomationListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AutomationProperties a set of properties that defines the behavior of the automation configuration. To learn
@@ -3876,8 +3894,11 @@ func (page AutoProvisioningSettingListPage) Values() []AutoProvisioningSetting {
 }
 
 // Creates a new instance of the AutoProvisioningSettingListPage type.
-func NewAutoProvisioningSettingListPage(getNextPage func(context.Context, AutoProvisioningSettingList) (AutoProvisioningSettingList, error)) AutoProvisioningSettingListPage {
-	return AutoProvisioningSettingListPage{fn: getNextPage}
+func NewAutoProvisioningSettingListPage(cur AutoProvisioningSettingList, getNextPage func(context.Context, AutoProvisioningSettingList) (AutoProvisioningSettingList, error)) AutoProvisioningSettingListPage {
+	return AutoProvisioningSettingListPage{
+		fn:   getNextPage,
+		apsl: cur,
+	}
 }
 
 // AutoProvisioningSettingProperties describes properties of an auto provisioning setting
@@ -4520,8 +4541,11 @@ func (page ComplianceListPage) Values() []Compliance {
 }
 
 // Creates a new instance of the ComplianceListPage type.
-func NewComplianceListPage(getNextPage func(context.Context, ComplianceList) (ComplianceList, error)) ComplianceListPage {
-	return ComplianceListPage{fn: getNextPage}
+func NewComplianceListPage(cur ComplianceList, getNextPage func(context.Context, ComplianceList) (ComplianceList, error)) ComplianceListPage {
+	return ComplianceListPage{
+		fn: getNextPage,
+		cl: cur,
+	}
 }
 
 // ComplianceProperties the Compliance score (percentage) of a Subscription is a sum of all Resources'
@@ -4987,8 +5011,11 @@ func (page ConnectorSettingListPage) Values() []ConnectorSetting {
 }
 
 // Creates a new instance of the ConnectorSettingListPage type.
-func NewConnectorSettingListPage(getNextPage func(context.Context, ConnectorSettingList) (ConnectorSettingList, error)) ConnectorSettingListPage {
-	return ConnectorSettingListPage{fn: getNextPage}
+func NewConnectorSettingListPage(cur ConnectorSettingList, getNextPage func(context.Context, ConnectorSettingList) (ConnectorSettingList, error)) ConnectorSettingListPage {
+	return ConnectorSettingListPage{
+		fn:  getNextPage,
+		csl: cur,
+	}
 }
 
 // ConnectorSettingProperties describes properties of an connector setting
@@ -5256,8 +5283,11 @@ func (page ContactListPage) Values() []Contact {
 }
 
 // Creates a new instance of the ContactListPage type.
-func NewContactListPage(getNextPage func(context.Context, ContactList) (ContactList, error)) ContactListPage {
-	return ContactListPage{fn: getNextPage}
+func NewContactListPage(cur ContactList, getNextPage func(context.Context, ContactList) (ContactList, error)) ContactListPage {
+	return ContactListPage{
+		fn: getNextPage,
+		cl: cur,
+	}
 }
 
 // ContactProperties describes security contact properties
@@ -6190,8 +6220,11 @@ func (page DeviceSecurityGroupListPage) Values() []DeviceSecurityGroup {
 }
 
 // Creates a new instance of the DeviceSecurityGroupListPage type.
-func NewDeviceSecurityGroupListPage(getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
-	return DeviceSecurityGroupListPage{fn: getNextPage}
+func NewDeviceSecurityGroupListPage(cur DeviceSecurityGroupList, getNextPage func(context.Context, DeviceSecurityGroupList) (DeviceSecurityGroupList, error)) DeviceSecurityGroupListPage {
+	return DeviceSecurityGroupListPage{
+		fn:   getNextPage,
+		dsgl: cur,
+	}
 }
 
 // DeviceSecurityGroupProperties describes properties of a security group.
@@ -6688,8 +6721,11 @@ func (page DiscoveredSecuritySolutionListPage) Values() []DiscoveredSecuritySolu
 }
 
 // Creates a new instance of the DiscoveredSecuritySolutionListPage type.
-func NewDiscoveredSecuritySolutionListPage(getNextPage func(context.Context, DiscoveredSecuritySolutionList) (DiscoveredSecuritySolutionList, error)) DiscoveredSecuritySolutionListPage {
-	return DiscoveredSecuritySolutionListPage{fn: getNextPage}
+func NewDiscoveredSecuritySolutionListPage(cur DiscoveredSecuritySolutionList, getNextPage func(context.Context, DiscoveredSecuritySolutionList) (DiscoveredSecuritySolutionList, error)) DiscoveredSecuritySolutionListPage {
+	return DiscoveredSecuritySolutionListPage{
+		fn:   getNextPage,
+		dssl: cur,
+	}
 }
 
 // DiscoveredSecuritySolutionProperties ...
@@ -7022,8 +7058,11 @@ func (page ExternalSecuritySolutionListPage) Values() []BasicExternalSecuritySol
 }
 
 // Creates a new instance of the ExternalSecuritySolutionListPage type.
-func NewExternalSecuritySolutionListPage(getNextPage func(context.Context, ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error)) ExternalSecuritySolutionListPage {
-	return ExternalSecuritySolutionListPage{fn: getNextPage}
+func NewExternalSecuritySolutionListPage(cur ExternalSecuritySolutionList, getNextPage func(context.Context, ExternalSecuritySolutionList) (ExternalSecuritySolutionList, error)) ExternalSecuritySolutionListPage {
+	return ExternalSecuritySolutionListPage{
+		fn:   getNextPage,
+		essl: cur,
+	}
 }
 
 // ExternalSecuritySolutionModel ...
@@ -8460,8 +8499,11 @@ func (page InformationProtectionPolicyListPage) Values() []InformationProtection
 }
 
 // Creates a new instance of the InformationProtectionPolicyListPage type.
-func NewInformationProtectionPolicyListPage(getNextPage func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error)) InformationProtectionPolicyListPage {
-	return InformationProtectionPolicyListPage{fn: getNextPage}
+func NewInformationProtectionPolicyListPage(cur InformationProtectionPolicyList, getNextPage func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error)) InformationProtectionPolicyListPage {
+	return InformationProtectionPolicyListPage{
+		fn:   getNextPage,
+		ippl: cur,
+	}
 }
 
 // InformationProtectionPolicyProperties describes properties of an information protection policy.
@@ -8666,8 +8708,11 @@ func (page JitNetworkAccessPoliciesListPage) Values() []JitNetworkAccessPolicy {
 }
 
 // Creates a new instance of the JitNetworkAccessPoliciesListPage type.
-func NewJitNetworkAccessPoliciesListPage(getNextPage func(context.Context, JitNetworkAccessPoliciesList) (JitNetworkAccessPoliciesList, error)) JitNetworkAccessPoliciesListPage {
-	return JitNetworkAccessPoliciesListPage{fn: getNextPage}
+func NewJitNetworkAccessPoliciesListPage(cur JitNetworkAccessPoliciesList, getNextPage func(context.Context, JitNetworkAccessPoliciesList) (JitNetworkAccessPoliciesList, error)) JitNetworkAccessPoliciesListPage {
+	return JitNetworkAccessPoliciesListPage{
+		fn:    getNextPage,
+		jnapl: cur,
+	}
 }
 
 // JitNetworkAccessPolicy ...
@@ -10255,8 +10300,11 @@ func (page OperationListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // PathRecommendation represents a path that is recommended to be allowed and its properties
@@ -10512,8 +10560,11 @@ func (page PricingListPage) Values() []Pricing {
 }
 
 // Creates a new instance of the PricingListPage type.
-func NewPricingListPage(getNextPage func(context.Context, PricingList) (PricingList, error)) PricingListPage {
-	return PricingListPage{fn: getNextPage}
+func NewPricingListPage(cur PricingList, getNextPage func(context.Context, PricingList) (PricingList, error)) PricingListPage {
+	return PricingListPage{
+		fn: getNextPage,
+		pl: cur,
+	}
 }
 
 // PricingProperties pricing data
@@ -11162,8 +11213,11 @@ func (page RegulatoryComplianceAssessmentListPage) Values() []RegulatoryComplian
 }
 
 // Creates a new instance of the RegulatoryComplianceAssessmentListPage type.
-func NewRegulatoryComplianceAssessmentListPage(getNextPage func(context.Context, RegulatoryComplianceAssessmentList) (RegulatoryComplianceAssessmentList, error)) RegulatoryComplianceAssessmentListPage {
-	return RegulatoryComplianceAssessmentListPage{fn: getNextPage}
+func NewRegulatoryComplianceAssessmentListPage(cur RegulatoryComplianceAssessmentList, getNextPage func(context.Context, RegulatoryComplianceAssessmentList) (RegulatoryComplianceAssessmentList, error)) RegulatoryComplianceAssessmentListPage {
+	return RegulatoryComplianceAssessmentListPage{
+		fn:   getNextPage,
+		rcal: cur,
+	}
 }
 
 // RegulatoryComplianceAssessmentProperties regulatory compliance assessment data
@@ -11430,8 +11484,11 @@ func (page RegulatoryComplianceControlListPage) Values() []RegulatoryComplianceC
 }
 
 // Creates a new instance of the RegulatoryComplianceControlListPage type.
-func NewRegulatoryComplianceControlListPage(getNextPage func(context.Context, RegulatoryComplianceControlList) (RegulatoryComplianceControlList, error)) RegulatoryComplianceControlListPage {
-	return RegulatoryComplianceControlListPage{fn: getNextPage}
+func NewRegulatoryComplianceControlListPage(cur RegulatoryComplianceControlList, getNextPage func(context.Context, RegulatoryComplianceControlList) (RegulatoryComplianceControlList, error)) RegulatoryComplianceControlListPage {
+	return RegulatoryComplianceControlListPage{
+		fn:   getNextPage,
+		rccl: cur,
+	}
 }
 
 // RegulatoryComplianceControlProperties regulatory compliance control data
@@ -11691,8 +11748,11 @@ func (page RegulatoryComplianceStandardListPage) Values() []RegulatoryCompliance
 }
 
 // Creates a new instance of the RegulatoryComplianceStandardListPage type.
-func NewRegulatoryComplianceStandardListPage(getNextPage func(context.Context, RegulatoryComplianceStandardList) (RegulatoryComplianceStandardList, error)) RegulatoryComplianceStandardListPage {
-	return RegulatoryComplianceStandardListPage{fn: getNextPage}
+func NewRegulatoryComplianceStandardListPage(cur RegulatoryComplianceStandardList, getNextPage func(context.Context, RegulatoryComplianceStandardList) (RegulatoryComplianceStandardList, error)) RegulatoryComplianceStandardListPage {
+	return RegulatoryComplianceStandardListPage{
+		fn:   getNextPage,
+		rcsl: cur,
+	}
 }
 
 // RegulatoryComplianceStandardProperties regulatory compliance standard data
@@ -12147,8 +12207,11 @@ func (page SecureScoreControlDefinitionListPage) Values() []SecureScoreControlDe
 }
 
 // Creates a new instance of the SecureScoreControlDefinitionListPage type.
-func NewSecureScoreControlDefinitionListPage(getNextPage func(context.Context, SecureScoreControlDefinitionList) (SecureScoreControlDefinitionList, error)) SecureScoreControlDefinitionListPage {
-	return SecureScoreControlDefinitionListPage{fn: getNextPage}
+func NewSecureScoreControlDefinitionListPage(cur SecureScoreControlDefinitionList, getNextPage func(context.Context, SecureScoreControlDefinitionList) (SecureScoreControlDefinitionList, error)) SecureScoreControlDefinitionListPage {
+	return SecureScoreControlDefinitionListPage{
+		fn:    getNextPage,
+		sscdl: cur,
+	}
 }
 
 // SecureScoreControlDefinitionSource the type of the security control (For example, BuiltIn)
@@ -12381,8 +12444,11 @@ func (page SecureScoreControlListPage) Values() []SecureScoreControlDetails {
 }
 
 // Creates a new instance of the SecureScoreControlListPage type.
-func NewSecureScoreControlListPage(getNextPage func(context.Context, SecureScoreControlList) (SecureScoreControlList, error)) SecureScoreControlListPage {
-	return SecureScoreControlListPage{fn: getNextPage}
+func NewSecureScoreControlListPage(cur SecureScoreControlList, getNextPage func(context.Context, SecureScoreControlList) (SecureScoreControlList, error)) SecureScoreControlListPage {
+	return SecureScoreControlListPage{
+		fn:   getNextPage,
+		sscl: cur,
+	}
 }
 
 // SecureScoreControlScore calculation result data
@@ -12782,8 +12848,11 @@ func (page SecureScoresListPage) Values() []SecureScoreItem {
 }
 
 // Creates a new instance of the SecureScoresListPage type.
-func NewSecureScoresListPage(getNextPage func(context.Context, SecureScoresList) (SecureScoresList, error)) SecureScoresListPage {
-	return SecureScoresListPage{fn: getNextPage}
+func NewSecureScoresListPage(cur SecureScoresList, getNextPage func(context.Context, SecureScoresList) (SecureScoresList, error)) SecureScoresListPage {
+	return SecureScoresListPage{
+		fn:  getNextPage,
+		ssl: cur,
+	}
 }
 
 // SensitivityLabel the sensitivity label.
@@ -13067,8 +13136,11 @@ func (page SettingsListPage) Values() []Setting {
 }
 
 // Creates a new instance of the SettingsListPage type.
-func NewSettingsListPage(getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
-	return SettingsListPage{fn: getNextPage}
+func NewSettingsListPage(cur SettingsList, getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
+	return SettingsListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
 }
 
 // SQLServerVulnerabilityProperties details of the resource that was assessed
@@ -13340,8 +13412,11 @@ func (page SubAssessmentListPage) Values() []SubAssessment {
 }
 
 // Creates a new instance of the SubAssessmentListPage type.
-func NewSubAssessmentListPage(getNextPage func(context.Context, SubAssessmentList) (SubAssessmentList, error)) SubAssessmentListPage {
-	return SubAssessmentListPage{fn: getNextPage}
+func NewSubAssessmentListPage(cur SubAssessmentList, getNextPage func(context.Context, SubAssessmentList) (SubAssessmentList, error)) SubAssessmentListPage {
+	return SubAssessmentListPage{
+		fn:  getNextPage,
+		sal: cur,
+	}
 }
 
 // SubAssessmentProperties describes properties of an sub-assessment.
@@ -13736,8 +13811,11 @@ func (page TaskListPage) Values() []Task {
 }
 
 // Creates a new instance of the TaskListPage type.
-func NewTaskListPage(getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
-	return TaskListPage{fn: getNextPage}
+func NewTaskListPage(cur TaskList, getNextPage func(context.Context, TaskList) (TaskList, error)) TaskListPage {
+	return TaskListPage{
+		fn: getNextPage,
+		tl: cur,
+	}
 }
 
 // TaskParameters changing set of properties, depending on the task type that is derived from the name field
@@ -14588,8 +14666,11 @@ func (page TopologyListPage) Values() []TopologyResource {
 }
 
 // Creates a new instance of the TopologyListPage type.
-func NewTopologyListPage(getNextPage func(context.Context, TopologyList) (TopologyList, error)) TopologyListPage {
-	return TopologyListPage{fn: getNextPage}
+func NewTopologyListPage(cur TopologyList, getNextPage func(context.Context, TopologyList) (TopologyList, error)) TopologyListPage {
+	return TopologyListPage{
+		fn: getNextPage,
+		tl: cur,
+	}
 }
 
 // TopologyResource ...
@@ -15390,9 +15471,6 @@ func (page WorkspaceSettingListPage) Values() []WorkspaceSetting {
 }
 
 // Creates a new instance of the WorkspaceSettingListPage type.
-func NewWorkspaceSettingListPage(getNextPage func(context.Context, WorkspaceSettingList) (WorkspaceSettingList, error)) WorkspaceSettingListPage {
-	return WorkspaceSettingListPage{fn: getNextPage}
-}
 
 // WorkspaceSettingProperties workspace setting data
 type WorkspaceSettingProperties struct {

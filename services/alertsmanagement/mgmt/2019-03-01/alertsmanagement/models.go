@@ -369,8 +369,11 @@ func (page AlertRulesListPage) Values() []AlertRule {
 }
 
 // Creates a new instance of the AlertRulesListPage type.
-func NewAlertRulesListPage(getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
-	return AlertRulesListPage{fn: getNextPage}
+func NewAlertRulesListPage(cur AlertRulesList, getNextPage func(context.Context, AlertRulesList) (AlertRulesList, error)) AlertRulesListPage {
+	return AlertRulesListPage{
+		fn:  getNextPage,
+		arl: cur,
+	}
 }
 
 // AlertsList list the alerts.
@@ -525,8 +528,11 @@ func (page AlertsListPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertsListPage type.
-func NewAlertsListPage(getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
-	return AlertsListPage{fn: getNextPage}
+func NewAlertsListPage(cur AlertsList, getNextPage func(context.Context, AlertsList) (AlertsList, error)) AlertsListPage {
+	return AlertsListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AlertsSummary summary of alerts based on the input filters and 'groupby' parameters.
@@ -869,9 +875,6 @@ func (page OperationsListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationsListPage type.
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return OperationsListPage{fn: getNextPage}
-}
 
 // ProxyResource an azure resource object
 type ProxyResource struct {

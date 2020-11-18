@@ -120,14 +120,11 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 func NewDataLakeStoreAccountListResultIterator(page DataLakeStoreAccountListResultPage) DataLakeStoreAccountListResultIterator {
 	return original.NewDataLakeStoreAccountListResultIterator(page)
 }
-func NewDataLakeStoreAccountListResultPage(getNextPage func(context.Context, DataLakeStoreAccountListResult) (DataLakeStoreAccountListResult, error)) DataLakeStoreAccountListResultPage {
-	return original.NewDataLakeStoreAccountListResultPage(getNextPage)
+func NewDataLakeStoreAccountListResultPage(cur DataLakeStoreAccountListResult, getNextPage func(context.Context, DataLakeStoreAccountListResult) (DataLakeStoreAccountListResult, error)) DataLakeStoreAccountListResultPage {
+	return original.NewDataLakeStoreAccountListResultPage(cur, getNextPage)
 }
 func NewDataLakeStoreFirewallRuleListResultIterator(page DataLakeStoreFirewallRuleListResultPage) DataLakeStoreFirewallRuleListResultIterator {
 	return original.NewDataLakeStoreFirewallRuleListResultIterator(page)
-}
-func NewDataLakeStoreFirewallRuleListResultPage(getNextPage func(context.Context, DataLakeStoreFirewallRuleListResult) (DataLakeStoreFirewallRuleListResult, error)) DataLakeStoreFirewallRuleListResultPage {
-	return original.NewDataLakeStoreFirewallRuleListResultPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

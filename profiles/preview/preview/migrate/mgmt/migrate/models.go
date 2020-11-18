@@ -245,8 +245,8 @@ func NewHyperVClusterClientWithBaseURI(baseURI string) HyperVClusterClient {
 func NewHyperVClusterCollectionIterator(page HyperVClusterCollectionPage) HyperVClusterCollectionIterator {
 	return original.NewHyperVClusterCollectionIterator(page)
 }
-func NewHyperVClusterCollectionPage(getNextPage func(context.Context, HyperVClusterCollection) (HyperVClusterCollection, error)) HyperVClusterCollectionPage {
-	return original.NewHyperVClusterCollectionPage(getNextPage)
+func NewHyperVClusterCollectionPage(cur HyperVClusterCollection, getNextPage func(context.Context, HyperVClusterCollection) (HyperVClusterCollection, error)) HyperVClusterCollectionPage {
+	return original.NewHyperVClusterCollectionPage(cur, getNextPage)
 }
 func NewHyperVHostClient() HyperVHostClient {
 	return original.NewHyperVHostClient()
@@ -257,14 +257,14 @@ func NewHyperVHostClientWithBaseURI(baseURI string) HyperVHostClient {
 func NewHyperVHostCollectionIterator(page HyperVHostCollectionPage) HyperVHostCollectionIterator {
 	return original.NewHyperVHostCollectionIterator(page)
 }
-func NewHyperVHostCollectionPage(getNextPage func(context.Context, HyperVHostCollection) (HyperVHostCollection, error)) HyperVHostCollectionPage {
-	return original.NewHyperVHostCollectionPage(getNextPage)
+func NewHyperVHostCollectionPage(cur HyperVHostCollection, getNextPage func(context.Context, HyperVHostCollection) (HyperVHostCollection, error)) HyperVHostCollectionPage {
+	return original.NewHyperVHostCollectionPage(cur, getNextPage)
 }
 func NewHyperVJobCollectionIterator(page HyperVJobCollectionPage) HyperVJobCollectionIterator {
 	return original.NewHyperVJobCollectionIterator(page)
 }
-func NewHyperVJobCollectionPage(getNextPage func(context.Context, HyperVJobCollection) (HyperVJobCollection, error)) HyperVJobCollectionPage {
-	return original.NewHyperVJobCollectionPage(getNextPage)
+func NewHyperVJobCollectionPage(cur HyperVJobCollection, getNextPage func(context.Context, HyperVJobCollection) (HyperVJobCollection, error)) HyperVJobCollectionPage {
+	return original.NewHyperVJobCollectionPage(cur, getNextPage)
 }
 func NewHyperVJobsClient() HyperVJobsClient {
 	return original.NewHyperVJobsClient()
@@ -275,8 +275,8 @@ func NewHyperVJobsClientWithBaseURI(baseURI string) HyperVJobsClient {
 func NewHyperVMachineCollectionIterator(page HyperVMachineCollectionPage) HyperVMachineCollectionIterator {
 	return original.NewHyperVMachineCollectionIterator(page)
 }
-func NewHyperVMachineCollectionPage(getNextPage func(context.Context, HyperVMachineCollection) (HyperVMachineCollection, error)) HyperVMachineCollectionPage {
-	return original.NewHyperVMachineCollectionPage(getNextPage)
+func NewHyperVMachineCollectionPage(cur HyperVMachineCollection, getNextPage func(context.Context, HyperVMachineCollection) (HyperVMachineCollection, error)) HyperVMachineCollectionPage {
+	return original.NewHyperVMachineCollectionPage(cur, getNextPage)
 }
 func NewHyperVMachinesClient() HyperVMachinesClient {
 	return original.NewHyperVMachinesClient()
@@ -293,8 +293,8 @@ func NewHyperVOperationsStatusClientWithBaseURI(baseURI string) HyperVOperations
 func NewHyperVRunAsAccountCollectionIterator(page HyperVRunAsAccountCollectionPage) HyperVRunAsAccountCollectionIterator {
 	return original.NewHyperVRunAsAccountCollectionIterator(page)
 }
-func NewHyperVRunAsAccountCollectionPage(getNextPage func(context.Context, HyperVRunAsAccountCollection) (HyperVRunAsAccountCollection, error)) HyperVRunAsAccountCollectionPage {
-	return original.NewHyperVRunAsAccountCollectionPage(getNextPage)
+func NewHyperVRunAsAccountCollectionPage(cur HyperVRunAsAccountCollection, getNextPage func(context.Context, HyperVRunAsAccountCollection) (HyperVRunAsAccountCollection, error)) HyperVRunAsAccountCollectionPage {
+	return original.NewHyperVRunAsAccountCollectionPage(cur, getNextPage)
 }
 func NewHyperVRunAsAccountsClient() HyperVRunAsAccountsClient {
 	return original.NewHyperVRunAsAccountsClient()
@@ -323,8 +323,8 @@ func NewMachinesClientWithBaseURI(baseURI string) MachinesClient {
 func NewOperationResultListIterator(page OperationResultListPage) OperationResultListIterator {
 	return original.NewOperationResultListIterator(page)
 }
-func NewOperationResultListPage(getNextPage func(context.Context, OperationResultList) (OperationResultList, error)) OperationResultListPage {
-	return original.NewOperationResultListPage(getNextPage)
+func NewOperationResultListPage(cur OperationResultList, getNextPage func(context.Context, OperationResultList) (OperationResultList, error)) OperationResultListPage {
+	return original.NewOperationResultListPage(cur, getNextPage)
 }
 func NewOperationsClient() OperationsClient {
 	return original.NewOperationsClient()
@@ -341,8 +341,8 @@ func NewRunAsAccountsClientWithBaseURI(baseURI string) RunAsAccountsClient {
 func NewSiteHealthSummaryCollectionIterator(page SiteHealthSummaryCollectionPage) SiteHealthSummaryCollectionIterator {
 	return original.NewSiteHealthSummaryCollectionIterator(page)
 }
-func NewSiteHealthSummaryCollectionPage(getNextPage func(context.Context, SiteHealthSummaryCollection) (SiteHealthSummaryCollection, error)) SiteHealthSummaryCollectionPage {
-	return original.NewSiteHealthSummaryCollectionPage(getNextPage)
+func NewSiteHealthSummaryCollectionPage(cur SiteHealthSummaryCollection, getNextPage func(context.Context, SiteHealthSummaryCollection) (SiteHealthSummaryCollection, error)) SiteHealthSummaryCollectionPage {
+	return original.NewSiteHealthSummaryCollectionPage(cur, getNextPage)
 }
 func NewSitesClient() SitesClient {
 	return original.NewSitesClient()
@@ -359,20 +359,20 @@ func NewVCenterClientWithBaseURI(baseURI string) VCenterClient {
 func NewVCenterCollectionIterator(page VCenterCollectionPage) VCenterCollectionIterator {
 	return original.NewVCenterCollectionIterator(page)
 }
-func NewVCenterCollectionPage(getNextPage func(context.Context, VCenterCollection) (VCenterCollection, error)) VCenterCollectionPage {
-	return original.NewVCenterCollectionPage(getNextPage)
+func NewVCenterCollectionPage(cur VCenterCollection, getNextPage func(context.Context, VCenterCollection) (VCenterCollection, error)) VCenterCollectionPage {
+	return original.NewVCenterCollectionPage(cur, getNextPage)
 }
 func NewVMwareJobCollectionIterator(page VMwareJobCollectionPage) VMwareJobCollectionIterator {
 	return original.NewVMwareJobCollectionIterator(page)
 }
-func NewVMwareJobCollectionPage(getNextPage func(context.Context, VMwareJobCollection) (VMwareJobCollection, error)) VMwareJobCollectionPage {
-	return original.NewVMwareJobCollectionPage(getNextPage)
+func NewVMwareJobCollectionPage(cur VMwareJobCollection, getNextPage func(context.Context, VMwareJobCollection) (VMwareJobCollection, error)) VMwareJobCollectionPage {
+	return original.NewVMwareJobCollectionPage(cur, getNextPage)
 }
 func NewVMwareMachineCollectionIterator(page VMwareMachineCollectionPage) VMwareMachineCollectionIterator {
 	return original.NewVMwareMachineCollectionIterator(page)
 }
-func NewVMwareMachineCollectionPage(getNextPage func(context.Context, VMwareMachineCollection) (VMwareMachineCollection, error)) VMwareMachineCollectionPage {
-	return original.NewVMwareMachineCollectionPage(getNextPage)
+func NewVMwareMachineCollectionPage(cur VMwareMachineCollection, getNextPage func(context.Context, VMwareMachineCollection) (VMwareMachineCollection, error)) VMwareMachineCollectionPage {
+	return original.NewVMwareMachineCollectionPage(cur, getNextPage)
 }
 func NewVMwareOperationsStatusClient() VMwareOperationsStatusClient {
 	return original.NewVMwareOperationsStatusClient()
@@ -382,9 +382,6 @@ func NewVMwareOperationsStatusClientWithBaseURI(baseURI string) VMwareOperations
 }
 func NewVMwareRunAsAccountCollectionIterator(page VMwareRunAsAccountCollectionPage) VMwareRunAsAccountCollectionIterator {
 	return original.NewVMwareRunAsAccountCollectionIterator(page)
-}
-func NewVMwareRunAsAccountCollectionPage(getNextPage func(context.Context, VMwareRunAsAccountCollection) (VMwareRunAsAccountCollection, error)) VMwareRunAsAccountCollectionPage {
-	return original.NewVMwareRunAsAccountCollectionPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)

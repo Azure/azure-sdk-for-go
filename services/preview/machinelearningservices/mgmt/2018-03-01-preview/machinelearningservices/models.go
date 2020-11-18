@@ -1088,8 +1088,11 @@ func (page PaginatedComputeResourcesListPage) Values() []ComputeResource {
 }
 
 // Creates a new instance of the PaginatedComputeResourcesListPage type.
-func NewPaginatedComputeResourcesListPage(getNextPage func(context.Context, PaginatedComputeResourcesList) (PaginatedComputeResourcesList, error)) PaginatedComputeResourcesListPage {
-	return PaginatedComputeResourcesListPage{fn: getNextPage}
+func NewPaginatedComputeResourcesListPage(cur PaginatedComputeResourcesList, getNextPage func(context.Context, PaginatedComputeResourcesList) (PaginatedComputeResourcesList, error)) PaginatedComputeResourcesListPage {
+	return PaginatedComputeResourcesListPage{
+		fn:   getNextPage,
+		pcrl: cur,
+	}
 }
 
 // Password ...
@@ -1599,9 +1602,6 @@ func (page WorkspaceListResultPage) Values() []Workspace {
 }
 
 // Creates a new instance of the WorkspaceListResultPage type.
-func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
-	return WorkspaceListResultPage{fn: getNextPage}
-}
 
 // WorkspaceProperties the properties of a machine learning workspace.
 type WorkspaceProperties struct {

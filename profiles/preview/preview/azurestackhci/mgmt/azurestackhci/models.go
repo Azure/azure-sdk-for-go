@@ -19,11 +19,7 @@
 
 package azurestackhci
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/preview/azurestackhci/mgmt/2020-03-01-preview/azurestackhci"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/preview/azurestackhci/mgmt/2020-03-01-preview/azurestackhci"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -76,9 +72,6 @@ func New(subscriptionID string) BaseClient {
 }
 func NewClusterListIterator(page ClusterListPage) ClusterListIterator {
 	return original.NewClusterListIterator(page)
-}
-func NewClusterListPage(getNextPage func(context.Context, ClusterList) (ClusterList, error)) ClusterListPage {
-	return original.NewClusterListPage(getNextPage)
 }
 func NewClustersClient(subscriptionID string) ClustersClient {
 	return original.NewClustersClient(subscriptionID)

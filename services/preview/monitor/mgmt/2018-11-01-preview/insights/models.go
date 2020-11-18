@@ -1171,8 +1171,11 @@ func (page AutoscaleSettingResourceCollectionPage) Values() []AutoscaleSettingRe
 }
 
 // Creates a new instance of the AutoscaleSettingResourceCollectionPage type.
-func NewAutoscaleSettingResourceCollectionPage(getNextPage func(context.Context, AutoscaleSettingResourceCollection) (AutoscaleSettingResourceCollection, error)) AutoscaleSettingResourceCollectionPage {
-	return AutoscaleSettingResourceCollectionPage{fn: getNextPage}
+func NewAutoscaleSettingResourceCollectionPage(cur AutoscaleSettingResourceCollection, getNextPage func(context.Context, AutoscaleSettingResourceCollection) (AutoscaleSettingResourceCollection, error)) AutoscaleSettingResourceCollectionPage {
+	return AutoscaleSettingResourceCollectionPage{
+		fn:   getNextPage,
+		asrc: cur,
+	}
 }
 
 // AutoscaleSettingResourcePatch the autoscale setting object for patch operations.
@@ -2071,9 +2074,6 @@ func (page EventDataCollectionPage) Values() []EventData {
 }
 
 // Creates a new instance of the EventDataCollectionPage type.
-func NewEventDataCollectionPage(getNextPage func(context.Context, EventDataCollection) (EventDataCollection, error)) EventDataCollectionPage {
-	return EventDataCollectionPage{fn: getNextPage}
-}
 
 // HTTPRequestInfo the Http request info.
 type HTTPRequestInfo struct {

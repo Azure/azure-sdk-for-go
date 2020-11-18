@@ -1089,8 +1089,11 @@ func (page ApplicationListResultPage) Values() []Application {
 }
 
 // Creates a new instance of the ApplicationListResultPage type.
-func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
-	return ApplicationListResultPage{fn: getNextPage}
+func NewApplicationListResultPage(cur ApplicationListResult, getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return ApplicationListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // ApplicationUpdateParameters request parameters for updating a new application.
@@ -1652,8 +1655,11 @@ func (page DirectoryObjectListResultPage) Values() []BasicDirectoryObject {
 }
 
 // Creates a new instance of the DirectoryObjectListResultPage type.
-func NewDirectoryObjectListResultPage(getNextPage func(context.Context, DirectoryObjectListResult) (DirectoryObjectListResult, error)) DirectoryObjectListResultPage {
-	return DirectoryObjectListResultPage{fn: getNextPage}
+func NewDirectoryObjectListResultPage(cur DirectoryObjectListResult, getNextPage func(context.Context, DirectoryObjectListResult) (DirectoryObjectListResult, error)) DirectoryObjectListResultPage {
+	return DirectoryObjectListResultPage{
+		fn:   getNextPage,
+		dolr: cur,
+	}
 }
 
 // Domain active Directory Domain information.
@@ -2239,8 +2245,11 @@ func (page GroupListResultPage) Values() []ADGroup {
 }
 
 // Creates a new instance of the GroupListResultPage type.
-func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
-	return GroupListResultPage{fn: getNextPage}
+func NewGroupListResultPage(cur GroupListResult, getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return GroupListResultPage{
+		fn:  getNextPage,
+		glr: cur,
+	}
 }
 
 // InformationalURL represents a group of URIs that provide terms of service, marketing, support and privacy
@@ -3607,8 +3616,11 @@ func (page ServicePrincipalListResultPage) Values() []ServicePrincipal {
 }
 
 // Creates a new instance of the ServicePrincipalListResultPage type.
-func NewServicePrincipalListResultPage(getNextPage func(context.Context, ServicePrincipalListResult) (ServicePrincipalListResult, error)) ServicePrincipalListResultPage {
-	return ServicePrincipalListResultPage{fn: getNextPage}
+func NewServicePrincipalListResultPage(cur ServicePrincipalListResult, getNextPage func(context.Context, ServicePrincipalListResult) (ServicePrincipalListResult, error)) ServicePrincipalListResultPage {
+	return ServicePrincipalListResultPage{
+		fn:   getNextPage,
+		splr: cur,
+	}
 }
 
 // ServicePrincipalObjectResult service Principal Object Result.
@@ -4482,9 +4494,6 @@ func (page UserListResultPage) Values() []User {
 }
 
 // Creates a new instance of the UserListResultPage type.
-func NewUserListResultPage(getNextPage func(context.Context, UserListResult) (UserListResult, error)) UserListResultPage {
-	return UserListResultPage{fn: getNextPage}
-}
 
 // UserUpdateParameters request parameters for updating an existing work or school account user.
 type UserUpdateParameters struct {

@@ -127,8 +127,8 @@ func New() BaseClient {
 func NewAssignmentListResultIterator(page AssignmentListResultPage) AssignmentListResultIterator {
 	return original.NewAssignmentListResultIterator(page)
 }
-func NewAssignmentListResultPage(getNextPage func(context.Context, AssignmentListResult) (AssignmentListResult, error)) AssignmentListResultPage {
-	return original.NewAssignmentListResultPage(getNextPage)
+func NewAssignmentListResultPage(cur AssignmentListResult, getNextPage func(context.Context, AssignmentListResult) (AssignmentListResult, error)) AssignmentListResultPage {
+	return original.NewAssignmentListResultPage(cur, getNextPage)
 }
 func NewAssignmentsClient() AssignmentsClient {
 	return original.NewAssignmentsClient()
@@ -139,8 +139,8 @@ func NewAssignmentsClientWithBaseURI(baseURI string) AssignmentsClient {
 func NewDefinitionListResultIterator(page DefinitionListResultPage) DefinitionListResultIterator {
 	return original.NewDefinitionListResultIterator(page)
 }
-func NewDefinitionListResultPage(getNextPage func(context.Context, DefinitionListResult) (DefinitionListResult, error)) DefinitionListResultPage {
-	return original.NewDefinitionListResultPage(getNextPage)
+func NewDefinitionListResultPage(cur DefinitionListResult, getNextPage func(context.Context, DefinitionListResult) (DefinitionListResult, error)) DefinitionListResultPage {
+	return original.NewDefinitionListResultPage(cur, getNextPage)
 }
 func NewDefinitionsClient() DefinitionsClient {
 	return original.NewDefinitionsClient()
@@ -151,8 +151,8 @@ func NewDefinitionsClientWithBaseURI(baseURI string) DefinitionsClient {
 func NewExemptionListResultIterator(page ExemptionListResultPage) ExemptionListResultIterator {
 	return original.NewExemptionListResultIterator(page)
 }
-func NewExemptionListResultPage(getNextPage func(context.Context, ExemptionListResult) (ExemptionListResult, error)) ExemptionListResultPage {
-	return original.NewExemptionListResultPage(getNextPage)
+func NewExemptionListResultPage(cur ExemptionListResult, getNextPage func(context.Context, ExemptionListResult) (ExemptionListResult, error)) ExemptionListResultPage {
+	return original.NewExemptionListResultPage(cur, getNextPage)
 }
 func NewExemptionsClient() ExemptionsClient {
 	return original.NewExemptionsClient()
@@ -162,9 +162,6 @@ func NewExemptionsClientWithBaseURI(baseURI string) ExemptionsClient {
 }
 func NewSetDefinitionListResultIterator(page SetDefinitionListResultPage) SetDefinitionListResultIterator {
 	return original.NewSetDefinitionListResultIterator(page)
-}
-func NewSetDefinitionListResultPage(getNextPage func(context.Context, SetDefinitionListResult) (SetDefinitionListResult, error)) SetDefinitionListResultPage {
-	return original.NewSetDefinitionListResultPage(getNextPage)
 }
 func NewSetDefinitionsClient() SetDefinitionsClient {
 	return original.NewSetDefinitionsClient()

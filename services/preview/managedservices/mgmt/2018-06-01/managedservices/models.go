@@ -266,8 +266,11 @@ func (page RegistrationAssignmentListPage) Values() []RegistrationAssignment {
 }
 
 // Creates a new instance of the RegistrationAssignmentListPage type.
-func NewRegistrationAssignmentListPage(getNextPage func(context.Context, RegistrationAssignmentList) (RegistrationAssignmentList, error)) RegistrationAssignmentListPage {
-	return RegistrationAssignmentListPage{fn: getNextPage}
+func NewRegistrationAssignmentListPage(cur RegistrationAssignmentList, getNextPage func(context.Context, RegistrationAssignmentList) (RegistrationAssignmentList, error)) RegistrationAssignmentListPage {
+	return RegistrationAssignmentListPage{
+		fn:  getNextPage,
+		ral: cur,
+	}
 }
 
 // RegistrationAssignmentProperties properties of a registration assignment.
@@ -516,9 +519,6 @@ func (page RegistrationDefinitionListPage) Values() []RegistrationDefinition {
 }
 
 // Creates a new instance of the RegistrationDefinitionListPage type.
-func NewRegistrationDefinitionListPage(getNextPage func(context.Context, RegistrationDefinitionList) (RegistrationDefinitionList, error)) RegistrationDefinitionListPage {
-	return RegistrationDefinitionListPage{fn: getNextPage}
-}
 
 // RegistrationDefinitionProperties properties of a registration definition.
 type RegistrationDefinitionProperties struct {

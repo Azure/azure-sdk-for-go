@@ -146,8 +146,8 @@ func New(tenantID string) BaseClient {
 func NewApplicationListResultIterator(page ApplicationListResultPage) ApplicationListResultIterator {
 	return original.NewApplicationListResultIterator(page)
 }
-func NewApplicationListResultPage(getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
-	return original.NewApplicationListResultPage(getNextPage)
+func NewApplicationListResultPage(cur ApplicationListResult, getNextPage func(context.Context, ApplicationListResult) (ApplicationListResult, error)) ApplicationListResultPage {
+	return original.NewApplicationListResultPage(cur, getNextPage)
 }
 func NewApplicationsClient(tenantID string) ApplicationsClient {
 	return original.NewApplicationsClient(tenantID)
@@ -164,8 +164,8 @@ func NewDeletedApplicationsClientWithBaseURI(baseURI string, tenantID string) De
 func NewDirectoryObjectListResultIterator(page DirectoryObjectListResultPage) DirectoryObjectListResultIterator {
 	return original.NewDirectoryObjectListResultIterator(page)
 }
-func NewDirectoryObjectListResultPage(getNextPage func(context.Context, DirectoryObjectListResult) (DirectoryObjectListResult, error)) DirectoryObjectListResultPage {
-	return original.NewDirectoryObjectListResultPage(getNextPage)
+func NewDirectoryObjectListResultPage(cur DirectoryObjectListResult, getNextPage func(context.Context, DirectoryObjectListResult) (DirectoryObjectListResult, error)) DirectoryObjectListResultPage {
+	return original.NewDirectoryObjectListResultPage(cur, getNextPage)
 }
 func NewDomainsClient(tenantID string) DomainsClient {
 	return original.NewDomainsClient(tenantID)
@@ -176,8 +176,8 @@ func NewDomainsClientWithBaseURI(baseURI string, tenantID string) DomainsClient 
 func NewGroupListResultIterator(page GroupListResultPage) GroupListResultIterator {
 	return original.NewGroupListResultIterator(page)
 }
-func NewGroupListResultPage(getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
-	return original.NewGroupListResultPage(getNextPage)
+func NewGroupListResultPage(cur GroupListResult, getNextPage func(context.Context, GroupListResult) (GroupListResult, error)) GroupListResultPage {
+	return original.NewGroupListResultPage(cur, getNextPage)
 }
 func NewGroupsClient(tenantID string) GroupsClient {
 	return original.NewGroupsClient(tenantID)
@@ -206,8 +206,8 @@ func NewObjectsClientWithBaseURI(baseURI string, tenantID string) ObjectsClient 
 func NewServicePrincipalListResultIterator(page ServicePrincipalListResultPage) ServicePrincipalListResultIterator {
 	return original.NewServicePrincipalListResultIterator(page)
 }
-func NewServicePrincipalListResultPage(getNextPage func(context.Context, ServicePrincipalListResult) (ServicePrincipalListResult, error)) ServicePrincipalListResultPage {
-	return original.NewServicePrincipalListResultPage(getNextPage)
+func NewServicePrincipalListResultPage(cur ServicePrincipalListResult, getNextPage func(context.Context, ServicePrincipalListResult) (ServicePrincipalListResult, error)) ServicePrincipalListResultPage {
+	return original.NewServicePrincipalListResultPage(cur, getNextPage)
 }
 func NewServicePrincipalsClient(tenantID string) ServicePrincipalsClient {
 	return original.NewServicePrincipalsClient(tenantID)
@@ -223,9 +223,6 @@ func NewSignedInUserClientWithBaseURI(baseURI string, tenantID string) SignedInU
 }
 func NewUserListResultIterator(page UserListResultPage) UserListResultIterator {
 	return original.NewUserListResultIterator(page)
-}
-func NewUserListResultPage(getNextPage func(context.Context, UserListResult) (UserListResult, error)) UserListResultPage {
-	return original.NewUserListResultPage(getNextPage)
 }
 func NewUsersClient(tenantID string) UsersClient {
 	return original.NewUsersClient(tenantID)

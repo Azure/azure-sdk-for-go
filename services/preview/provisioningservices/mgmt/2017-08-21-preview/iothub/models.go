@@ -407,8 +407,11 @@ func (page IotDpsSkuDefinitionListResultPage) Values() []IotDpsSkuDefinition {
 }
 
 // Creates a new instance of the IotDpsSkuDefinitionListResultPage type.
-func NewIotDpsSkuDefinitionListResultPage(getNextPage func(context.Context, IotDpsSkuDefinitionListResult) (IotDpsSkuDefinitionListResult, error)) IotDpsSkuDefinitionListResultPage {
-	return IotDpsSkuDefinitionListResultPage{fn: getNextPage}
+func NewIotDpsSkuDefinitionListResultPage(cur IotDpsSkuDefinitionListResult, getNextPage func(context.Context, IotDpsSkuDefinitionListResult) (IotDpsSkuDefinitionListResult, error)) IotDpsSkuDefinitionListResultPage {
+	return IotDpsSkuDefinitionListResultPage{
+		fn:     getNextPage,
+		idsdlr: cur,
+	}
 }
 
 // IotDpsSkuInfo list of possible provisioning service SKUs.
@@ -628,8 +631,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // ProvisioningServiceDescription the description of the provisioning service.
@@ -833,8 +839,11 @@ func (page ProvisioningServiceDescriptionListResultPage) Values() []Provisioning
 }
 
 // Creates a new instance of the ProvisioningServiceDescriptionListResultPage type.
-func NewProvisioningServiceDescriptionListResultPage(getNextPage func(context.Context, ProvisioningServiceDescriptionListResult) (ProvisioningServiceDescriptionListResult, error)) ProvisioningServiceDescriptionListResultPage {
-	return ProvisioningServiceDescriptionListResultPage{fn: getNextPage}
+func NewProvisioningServiceDescriptionListResultPage(cur ProvisioningServiceDescriptionListResult, getNextPage func(context.Context, ProvisioningServiceDescriptionListResult) (ProvisioningServiceDescriptionListResult, error)) ProvisioningServiceDescriptionListResultPage {
+	return ProvisioningServiceDescriptionListResultPage{
+		fn:    getNextPage,
+		psdlr: cur,
+	}
 }
 
 // Resource the common properties of an Azure resource.
@@ -1038,9 +1047,6 @@ func (page SharedAccessSignatureAuthorizationRuleListResultPage) Values() []Shar
 }
 
 // Creates a new instance of the SharedAccessSignatureAuthorizationRuleListResultPage type.
-func NewSharedAccessSignatureAuthorizationRuleListResultPage(getNextPage func(context.Context, SharedAccessSignatureAuthorizationRuleListResult) (SharedAccessSignatureAuthorizationRuleListResult, error)) SharedAccessSignatureAuthorizationRuleListResultPage {
-	return SharedAccessSignatureAuthorizationRuleListResultPage{fn: getNextPage}
-}
 
 // VerificationCodeRequest certificate to generate verification code for.
 type VerificationCodeRequest struct {

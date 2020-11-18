@@ -375,9 +375,6 @@ func (page DedicatedHsmListResultPage) Values() []DedicatedHsm {
 }
 
 // Creates a new instance of the DedicatedHsmListResultPage type.
-func NewDedicatedHsmListResultPage(getNextPage func(context.Context, DedicatedHsmListResult) (DedicatedHsmListResult, error)) DedicatedHsmListResultPage {
-	return DedicatedHsmListResultPage{fn: getNextPage}
-}
 
 // DedicatedHsmOperation REST API operation
 type DedicatedHsmOperation struct {

@@ -1826,8 +1826,11 @@ func (page ListAmlUserFeatureResultPage) Values() []AmlUserFeature {
 }
 
 // Creates a new instance of the ListAmlUserFeatureResultPage type.
-func NewListAmlUserFeatureResultPage(getNextPage func(context.Context, ListAmlUserFeatureResult) (ListAmlUserFeatureResult, error)) ListAmlUserFeatureResultPage {
-	return ListAmlUserFeatureResultPage{fn: getNextPage}
+func NewListAmlUserFeatureResultPage(cur ListAmlUserFeatureResult, getNextPage func(context.Context, ListAmlUserFeatureResult) (ListAmlUserFeatureResult, error)) ListAmlUserFeatureResultPage {
+	return ListAmlUserFeatureResultPage{
+		fn:    getNextPage,
+		laufr: cur,
+	}
 }
 
 // ListUsagesResult the List Usages operation response.
@@ -1982,8 +1985,11 @@ func (page ListUsagesResultPage) Values() []Usage {
 }
 
 // Creates a new instance of the ListUsagesResultPage type.
-func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
-	return ListUsagesResultPage{fn: getNextPage}
+func NewListUsagesResultPage(cur ListUsagesResult, getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return ListUsagesResultPage{
+		fn:  getNextPage,
+		lur: cur,
+	}
 }
 
 // ListWorkspaceKeysResult ...
@@ -2151,8 +2157,11 @@ func (page ListWorkspaceQuotasPage) Values() []ResourceQuota {
 }
 
 // Creates a new instance of the ListWorkspaceQuotasPage type.
-func NewListWorkspaceQuotasPage(getNextPage func(context.Context, ListWorkspaceQuotas) (ListWorkspaceQuotas, error)) ListWorkspaceQuotasPage {
-	return ListWorkspaceQuotasPage{fn: getNextPage}
+func NewListWorkspaceQuotasPage(cur ListWorkspaceQuotas, getNextPage func(context.Context, ListWorkspaceQuotas) (ListWorkspaceQuotas, error)) ListWorkspaceQuotasPage {
+	return ListWorkspaceQuotasPage{
+		fn:  getNextPage,
+		lwq: cur,
+	}
 }
 
 // MachineLearningComputeCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -2432,8 +2441,11 @@ func (page PaginatedComputeResourcesListPage) Values() []ComputeResource {
 }
 
 // Creates a new instance of the PaginatedComputeResourcesListPage type.
-func NewPaginatedComputeResourcesListPage(getNextPage func(context.Context, PaginatedComputeResourcesList) (PaginatedComputeResourcesList, error)) PaginatedComputeResourcesListPage {
-	return PaginatedComputeResourcesListPage{fn: getNextPage}
+func NewPaginatedComputeResourcesListPage(cur PaginatedComputeResourcesList, getNextPage func(context.Context, PaginatedComputeResourcesList) (PaginatedComputeResourcesList, error)) PaginatedComputeResourcesListPage {
+	return PaginatedComputeResourcesListPage{
+		fn:   getNextPage,
+		pcrl: cur,
+	}
 }
 
 // Password ...
@@ -3076,8 +3088,11 @@ func (page SkuListResultPage) Values() []WorkspaceSku {
 }
 
 // Creates a new instance of the SkuListResultPage type.
-func NewSkuListResultPage(getNextPage func(context.Context, SkuListResult) (SkuListResult, error)) SkuListResultPage {
-	return SkuListResultPage{fn: getNextPage}
+func NewSkuListResultPage(cur SkuListResult, getNextPage func(context.Context, SkuListResult) (SkuListResult, error)) SkuListResultPage {
+	return SkuListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // SslConfiguration the ssl configuration for scoring
@@ -3646,9 +3661,6 @@ func (page WorkspaceListResultPage) Values() []Workspace {
 }
 
 // Creates a new instance of the WorkspaceListResultPage type.
-func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
-	return WorkspaceListResultPage{fn: getNextPage}
-}
 
 // WorkspaceProperties the properties of a machine learning workspace.
 type WorkspaceProperties struct {

@@ -427,8 +427,11 @@ func (page ClusterListResultPage) Values() []Cluster {
 }
 
 // Creates a new instance of the ClusterListResultPage type.
-func NewClusterListResultPage(getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
-	return ClusterListResultPage{fn: getNextPage}
+func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Context, ClusterListResult) (ClusterListResult, error)) ClusterListResultPage {
+	return ClusterListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ClusterProperties cluster properties.
@@ -890,8 +893,11 @@ func (page ExperimentListResultPage) Values() []Experiment {
 }
 
 // Creates a new instance of the ExperimentListResultPage type.
-func NewExperimentListResultPage(getNextPage func(context.Context, ExperimentListResult) (ExperimentListResult, error)) ExperimentListResultPage {
-	return ExperimentListResultPage{fn: getNextPage}
+func NewExperimentListResultPage(cur ExperimentListResult, getNextPage func(context.Context, ExperimentListResult) (ExperimentListResult, error)) ExperimentListResultPage {
+	return ExperimentListResultPage{
+		fn:  getNextPage,
+		elr: cur,
+	}
 }
 
 // ExperimentProperties experiment properties.
@@ -1180,8 +1186,11 @@ func (page FileListResultPage) Values() []File {
 }
 
 // Creates a new instance of the FileListResultPage type.
-func NewFileListResultPage(getNextPage func(context.Context, FileListResult) (FileListResult, error)) FileListResultPage {
-	return FileListResultPage{fn: getNextPage}
+func NewFileListResultPage(cur FileListResult, getNextPage func(context.Context, FileListResult) (FileListResult, error)) FileListResultPage {
+	return FileListResultPage{
+		fn:  getNextPage,
+		flr: cur,
+	}
 }
 
 // FileProperties file properties.
@@ -1477,8 +1486,11 @@ func (page FileServerListResultPage) Values() []FileServer {
 }
 
 // Creates a new instance of the FileServerListResultPage type.
-func NewFileServerListResultPage(getNextPage func(context.Context, FileServerListResult) (FileServerListResult, error)) FileServerListResultPage {
-	return FileServerListResultPage{fn: getNextPage}
+func NewFileServerListResultPage(cur FileServerListResult, getNextPage func(context.Context, FileServerListResult) (FileServerListResult, error)) FileServerListResultPage {
+	return FileServerListResultPage{
+		fn:   getNextPage,
+		fslr: cur,
+	}
 }
 
 // FileServerProperties file Server properties.
@@ -1943,8 +1955,11 @@ func (page JobListResultPage) Values() []Job {
 }
 
 // Creates a new instance of the JobListResultPage type.
-func NewJobListResultPage(getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
-	return JobListResultPage{fn: getNextPage}
+func NewJobListResultPage(cur JobListResult, getNextPage func(context.Context, JobListResult) (JobListResult, error)) JobListResultPage {
+	return JobListResultPage{
+		fn:  getNextPage,
+		jlr: cur,
+	}
 }
 
 // JobPreparation job preparation settings.
@@ -2331,8 +2346,11 @@ func (page ListUsagesResultPage) Values() []Usage {
 }
 
 // Creates a new instance of the ListUsagesResultPage type.
-func NewListUsagesResultPage(getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
-	return ListUsagesResultPage{fn: getNextPage}
+func NewListUsagesResultPage(cur ListUsagesResult, getNextPage func(context.Context, ListUsagesResult) (ListUsagesResult, error)) ListUsagesResultPage {
+	return ListUsagesResultPage{
+		fn:  getNextPage,
+		lur: cur,
+	}
 }
 
 // ManualScaleSettings manual scale settings for the cluster.
@@ -2584,8 +2602,11 @@ func (page OperationListResultPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OutputDirectory output directory for the job.
@@ -2801,8 +2822,11 @@ func (page RemoteLoginInformationListResultPage) Values() []RemoteLoginInformati
 }
 
 // Creates a new instance of the RemoteLoginInformationListResultPage type.
-func NewRemoteLoginInformationListResultPage(getNextPage func(context.Context, RemoteLoginInformationListResult) (RemoteLoginInformationListResult, error)) RemoteLoginInformationListResultPage {
-	return RemoteLoginInformationListResultPage{fn: getNextPage}
+func NewRemoteLoginInformationListResultPage(cur RemoteLoginInformationListResult, getNextPage func(context.Context, RemoteLoginInformationListResult) (RemoteLoginInformationListResult, error)) RemoteLoginInformationListResultPage {
+	return RemoteLoginInformationListResultPage{
+		fn:    getNextPage,
+		rlilr: cur,
+	}
 }
 
 // Resource a definition of an Azure resource.
@@ -3210,9 +3234,6 @@ func (page WorkspaceListResultPage) Values() []Workspace {
 }
 
 // Creates a new instance of the WorkspaceListResultPage type.
-func NewWorkspaceListResultPage(getNextPage func(context.Context, WorkspaceListResult) (WorkspaceListResult, error)) WorkspaceListResultPage {
-	return WorkspaceListResultPage{fn: getNextPage}
-}
 
 // WorkspaceProperties workspace specific properties.
 type WorkspaceProperties struct {

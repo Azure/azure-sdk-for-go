@@ -294,8 +294,11 @@ func (page DataLakeAnalyticsAccountListDataLakeStoreResultPage) Values() []DataL
 }
 
 // Creates a new instance of the DataLakeAnalyticsAccountListDataLakeStoreResultPage type.
-func NewDataLakeAnalyticsAccountListDataLakeStoreResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListDataLakeStoreResult) (DataLakeAnalyticsAccountListDataLakeStoreResult, error)) DataLakeAnalyticsAccountListDataLakeStoreResultPage {
-	return DataLakeAnalyticsAccountListDataLakeStoreResultPage{fn: getNextPage}
+func NewDataLakeAnalyticsAccountListDataLakeStoreResultPage(cur DataLakeAnalyticsAccountListDataLakeStoreResult, getNextPage func(context.Context, DataLakeAnalyticsAccountListDataLakeStoreResult) (DataLakeAnalyticsAccountListDataLakeStoreResult, error)) DataLakeAnalyticsAccountListDataLakeStoreResultPage {
+	return DataLakeAnalyticsAccountListDataLakeStoreResultPage{
+		fn:        getNextPage,
+		dlaaldlsr: cur,
+	}
 }
 
 // DataLakeAnalyticsAccountListResult dataLakeAnalytics Account list information.
@@ -451,8 +454,11 @@ func (page DataLakeAnalyticsAccountListResultPage) Values() []DataLakeAnalyticsA
 }
 
 // Creates a new instance of the DataLakeAnalyticsAccountListResultPage type.
-func NewDataLakeAnalyticsAccountListResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListResult) (DataLakeAnalyticsAccountListResult, error)) DataLakeAnalyticsAccountListResultPage {
-	return DataLakeAnalyticsAccountListResultPage{fn: getNextPage}
+func NewDataLakeAnalyticsAccountListResultPage(cur DataLakeAnalyticsAccountListResult, getNextPage func(context.Context, DataLakeAnalyticsAccountListResult) (DataLakeAnalyticsAccountListResult, error)) DataLakeAnalyticsAccountListResultPage {
+	return DataLakeAnalyticsAccountListResultPage{
+		fn:     getNextPage,
+		dlaalr: cur,
+	}
 }
 
 // DataLakeAnalyticsAccountListStorageAccountsResult azure Storage Account list information.
@@ -610,8 +616,11 @@ func (page DataLakeAnalyticsAccountListStorageAccountsResultPage) Values() []Sto
 }
 
 // Creates a new instance of the DataLakeAnalyticsAccountListStorageAccountsResultPage type.
-func NewDataLakeAnalyticsAccountListStorageAccountsResultPage(getNextPage func(context.Context, DataLakeAnalyticsAccountListStorageAccountsResult) (DataLakeAnalyticsAccountListStorageAccountsResult, error)) DataLakeAnalyticsAccountListStorageAccountsResultPage {
-	return DataLakeAnalyticsAccountListStorageAccountsResultPage{fn: getNextPage}
+func NewDataLakeAnalyticsAccountListStorageAccountsResultPage(cur DataLakeAnalyticsAccountListStorageAccountsResult, getNextPage func(context.Context, DataLakeAnalyticsAccountListStorageAccountsResult) (DataLakeAnalyticsAccountListStorageAccountsResult, error)) DataLakeAnalyticsAccountListStorageAccountsResultPage {
+	return DataLakeAnalyticsAccountListStorageAccountsResultPage{
+		fn:       getNextPage,
+		dlaalsar: cur,
+	}
 }
 
 // DataLakeAnalyticsAccountProperties the account specific properties that are associated with an underlying
@@ -882,8 +891,11 @@ func (page ListBlobContainersResultPage) Values() []BlobContainer {
 }
 
 // Creates a new instance of the ListBlobContainersResultPage type.
-func NewListBlobContainersResultPage(getNextPage func(context.Context, ListBlobContainersResult) (ListBlobContainersResult, error)) ListBlobContainersResultPage {
-	return ListBlobContainersResultPage{fn: getNextPage}
+func NewListBlobContainersResultPage(cur ListBlobContainersResult, getNextPage func(context.Context, ListBlobContainersResult) (ListBlobContainersResult, error)) ListBlobContainersResultPage {
+	return ListBlobContainersResultPage{
+		fn:   getNextPage,
+		lbcr: cur,
+	}
 }
 
 // ListSasTokensResult the SAS response that contains the storage account, container and associated SAS token
@@ -1039,9 +1051,6 @@ func (page ListSasTokensResultPage) Values() []SasTokenInfo {
 }
 
 // Creates a new instance of the ListSasTokensResultPage type.
-func NewListSasTokensResultPage(getNextPage func(context.Context, ListSasTokensResult) (ListSasTokensResult, error)) ListSasTokensResultPage {
-	return ListSasTokensResultPage{fn: getNextPage}
-}
 
 // SasTokenInfo SAS token information.
 type SasTokenInfo struct {

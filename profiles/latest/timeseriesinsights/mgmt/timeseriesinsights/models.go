@@ -19,11 +19,7 @@
 
 package timeseriesinsights
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2020-05-15/timeseriesinsights"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2020-05-15/timeseriesinsights"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -255,9 +251,6 @@ func NewEventSourcesClientWithBaseURI(baseURI string, subscriptionID string) Eve
 }
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
-}
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

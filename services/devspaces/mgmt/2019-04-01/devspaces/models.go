@@ -358,8 +358,11 @@ func (page ControllerListPage) Values() []Controller {
 }
 
 // Creates a new instance of the ControllerListPage type.
-func NewControllerListPage(getNextPage func(context.Context, ControllerList) (ControllerList, error)) ControllerListPage {
-	return ControllerListPage{fn: getNextPage}
+func NewControllerListPage(cur ControllerList, getNextPage func(context.Context, ControllerList) (ControllerList, error)) ControllerListPage {
+	return ControllerListPage{
+		fn: getNextPage,
+		cl: cur,
+	}
 }
 
 // ControllerProperties ...
@@ -826,9 +829,6 @@ func (page ResourceProviderOperationListPage) Values() []ResourceProviderOperati
 }
 
 // Creates a new instance of the ResourceProviderOperationListPage type.
-func NewResourceProviderOperationListPage(getNextPage func(context.Context, ResourceProviderOperationList) (ResourceProviderOperationList, error)) ResourceProviderOperationListPage {
-	return ResourceProviderOperationListPage{fn: getNextPage}
-}
 
 // Sku model representing SKU for Azure Dev Spaces Controller.
 type Sku struct {

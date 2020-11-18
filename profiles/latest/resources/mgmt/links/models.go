@@ -56,8 +56,8 @@ func New(subscriptionID string) BaseClient {
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(getNextPage)
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return original.NewOperationListResultPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -67,9 +67,6 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 func NewResourceLinkResultIterator(page ResourceLinkResultPage) ResourceLinkResultIterator {
 	return original.NewResourceLinkResultIterator(page)
-}
-func NewResourceLinkResultPage(getNextPage func(context.Context, ResourceLinkResult) (ResourceLinkResult, error)) ResourceLinkResultPage {
-	return original.NewResourceLinkResultPage(getNextPage)
 }
 func NewResourceLinksClient(subscriptionID string) ResourceLinksClient {
 	return original.NewResourceLinksClient(subscriptionID)

@@ -209,8 +209,11 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 }
 
 // Creates a new instance of the OperationEntityListResultPage type.
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return OperationEntityListResultPage{fn: getNextPage}
+func NewOperationEntityListResultPage(cur OperationEntityListResult, getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return OperationEntityListResultPage{
+		fn:   getNextPage,
+		oelr: cur,
+	}
 }
 
 // RecommendationProperties the properties of the recommendation.
@@ -509,9 +512,6 @@ func (page ResourceRecommendationBaseListResultPage) Values() []ResourceRecommen
 }
 
 // Creates a new instance of the ResourceRecommendationBaseListResultPage type.
-func NewResourceRecommendationBaseListResultPage(getNextPage func(context.Context, ResourceRecommendationBaseListResult) (ResourceRecommendationBaseListResult, error)) ResourceRecommendationBaseListResultPage {
-	return ResourceRecommendationBaseListResultPage{fn: getNextPage}
-}
 
 // ShortDescription a summary of the recommendation.
 type ShortDescription struct {

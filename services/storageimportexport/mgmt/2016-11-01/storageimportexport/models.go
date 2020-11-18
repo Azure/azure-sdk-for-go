@@ -419,9 +419,6 @@ func (page ListJobsResponsePage) Values() []JobResponse {
 }
 
 // Creates a new instance of the ListJobsResponsePage type.
-func NewListJobsResponsePage(getNextPage func(context.Context, ListJobsResponse) (ListJobsResponse, error)) ListJobsResponsePage {
-	return ListJobsResponsePage{fn: getNextPage}
-}
 
 // ListOperationsResponse list operations response
 type ListOperationsResponse struct {

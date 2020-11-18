@@ -471,8 +471,11 @@ func (page ArmTemplateListPage) Values() []ArmTemplate {
 }
 
 // Creates a new instance of the ArmTemplateListPage type.
-func NewArmTemplateListPage(getNextPage func(context.Context, ArmTemplateList) (ArmTemplateList, error)) ArmTemplateListPage {
-	return ArmTemplateListPage{fn: getNextPage}
+func NewArmTemplateListPage(cur ArmTemplateList, getNextPage func(context.Context, ArmTemplateList) (ArmTemplateList, error)) ArmTemplateListPage {
+	return ArmTemplateListPage{
+		fn:  getNextPage,
+		atl: cur,
+	}
 }
 
 // ArmTemplateParameterProperties properties of an Azure Resource Manager template parameter.
@@ -820,8 +823,11 @@ func (page ArtifactListPage) Values() []Artifact {
 }
 
 // Creates a new instance of the ArtifactListPage type.
-func NewArtifactListPage(getNextPage func(context.Context, ArtifactList) (ArtifactList, error)) ArtifactListPage {
-	return ArtifactListPage{fn: getNextPage}
+func NewArtifactListPage(cur ArtifactList, getNextPage func(context.Context, ArtifactList) (ArtifactList, error)) ArtifactListPage {
+	return ArtifactListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // ArtifactParameterProperties properties of an artifact parameter.
@@ -1166,8 +1172,11 @@ func (page ArtifactSourceListPage) Values() []ArtifactSource {
 }
 
 // Creates a new instance of the ArtifactSourceListPage type.
-func NewArtifactSourceListPage(getNextPage func(context.Context, ArtifactSourceList) (ArtifactSourceList, error)) ArtifactSourceListPage {
-	return ArtifactSourceListPage{fn: getNextPage}
+func NewArtifactSourceListPage(cur ArtifactSourceList, getNextPage func(context.Context, ArtifactSourceList) (ArtifactSourceList, error)) ArtifactSourceListPage {
+	return ArtifactSourceListPage{
+		fn:  getNextPage,
+		asl: cur,
+	}
 }
 
 // ArtifactSourceProperties properties of an artifact source.
@@ -1702,8 +1711,11 @@ func (page CustomImageListPage) Values() []CustomImage {
 }
 
 // Creates a new instance of the CustomImageListPage type.
-func NewCustomImageListPage(getNextPage func(context.Context, CustomImageList) (CustomImageList, error)) CustomImageListPage {
-	return CustomImageListPage{fn: getNextPage}
+func NewCustomImageListPage(cur CustomImageList, getNextPage func(context.Context, CustomImageList) (CustomImageList, error)) CustomImageListPage {
+	return CustomImageListPage{
+		fn:  getNextPage,
+		cil: cur,
+	}
 }
 
 // CustomImageProperties properties of a custom image.
@@ -2267,8 +2279,11 @@ func (page DiskListPage) Values() []Disk {
 }
 
 // Creates a new instance of the DiskListPage type.
-func NewDiskListPage(getNextPage func(context.Context, DiskList) (DiskList, error)) DiskListPage {
-	return DiskListPage{fn: getNextPage}
+func NewDiskListPage(cur DiskList, getNextPage func(context.Context, DiskList) (DiskList, error)) DiskListPage {
+	return DiskListPage{
+		fn: getNextPage,
+		dl: cur,
+	}
 }
 
 // DiskProperties properties of a disk.
@@ -2757,8 +2772,11 @@ func (page EnvironmentListPage) Values() []Environment {
 }
 
 // Creates a new instance of the EnvironmentListPage type.
-func NewEnvironmentListPage(getNextPage func(context.Context, EnvironmentList) (EnvironmentList, error)) EnvironmentListPage {
-	return EnvironmentListPage{fn: getNextPage}
+func NewEnvironmentListPage(cur EnvironmentList, getNextPage func(context.Context, EnvironmentList) (EnvironmentList, error)) EnvironmentListPage {
+	return EnvironmentListPage{
+		fn: getNextPage,
+		el: cur,
+	}
 }
 
 // EnvironmentProperties properties of an environment.
@@ -3216,8 +3234,11 @@ func (page FormulaListPage) Values() []Formula {
 }
 
 // Creates a new instance of the FormulaListPage type.
-func NewFormulaListPage(getNextPage func(context.Context, FormulaList) (FormulaList, error)) FormulaListPage {
-	return FormulaListPage{fn: getNextPage}
+func NewFormulaListPage(cur FormulaList, getNextPage func(context.Context, FormulaList) (FormulaList, error)) FormulaListPage {
+	return FormulaListPage{
+		fn: getNextPage,
+		fl: cur,
+	}
 }
 
 // FormulaProperties properties of a formula.
@@ -3568,8 +3589,11 @@ func (page GalleryImageListPage) Values() []GalleryImage {
 }
 
 // Creates a new instance of the GalleryImageListPage type.
-func NewGalleryImageListPage(getNextPage func(context.Context, GalleryImageList) (GalleryImageList, error)) GalleryImageListPage {
-	return GalleryImageListPage{fn: getNextPage}
+func NewGalleryImageListPage(cur GalleryImageList, getNextPage func(context.Context, GalleryImageList) (GalleryImageList, error)) GalleryImageListPage {
+	return GalleryImageListPage{
+		fn:  getNextPage,
+		gil: cur,
+	}
 }
 
 // GalleryImageProperties properties of a gallery image.
@@ -4294,8 +4318,11 @@ func (page LabListPage) Values() []Lab {
 }
 
 // Creates a new instance of the LabListPage type.
-func NewLabListPage(getNextPage func(context.Context, LabList) (LabList, error)) LabListPage {
-	return LabListPage{fn: getNextPage}
+func NewLabListPage(cur LabList, getNextPage func(context.Context, LabList) (LabList, error)) LabListPage {
+	return LabListPage{
+		fn: getNextPage,
+		ll: cur,
+	}
 }
 
 // LabProperties properties of a lab.
@@ -4764,8 +4791,11 @@ func (page LabVhdListPage) Values() []LabVhd {
 }
 
 // Creates a new instance of the LabVhdListPage type.
-func NewLabVhdListPage(getNextPage func(context.Context, LabVhdList) (LabVhdList, error)) LabVhdListPage {
-	return LabVhdListPage{fn: getNextPage}
+func NewLabVhdListPage(cur LabVhdList, getNextPage func(context.Context, LabVhdList) (LabVhdList, error)) LabVhdListPage {
+	return LabVhdListPage{
+		fn:  getNextPage,
+		lvl: cur,
+	}
 }
 
 // LabVirtualMachine a virtual machine.
@@ -5372,8 +5402,11 @@ func (page LabVirtualMachineListPage) Values() []LabVirtualMachine {
 }
 
 // Creates a new instance of the LabVirtualMachineListPage type.
-func NewLabVirtualMachineListPage(getNextPage func(context.Context, LabVirtualMachineList) (LabVirtualMachineList, error)) LabVirtualMachineListPage {
-	return LabVirtualMachineListPage{fn: getNextPage}
+func NewLabVirtualMachineListPage(cur LabVirtualMachineList, getNextPage func(context.Context, LabVirtualMachineList) (LabVirtualMachineList, error)) LabVirtualMachineListPage {
+	return LabVirtualMachineListPage{
+		fn:   getNextPage,
+		lvml: cur,
+	}
 }
 
 // LabVirtualMachineProperties properties of a virtual machine.
@@ -5977,8 +6010,11 @@ func (page NotificationChannelListPage) Values() []NotificationChannel {
 }
 
 // Creates a new instance of the NotificationChannelListPage type.
-func NewNotificationChannelListPage(getNextPage func(context.Context, NotificationChannelList) (NotificationChannelList, error)) NotificationChannelListPage {
-	return NotificationChannelListPage{fn: getNextPage}
+func NewNotificationChannelListPage(cur NotificationChannelList, getNextPage func(context.Context, NotificationChannelList) (NotificationChannelList, error)) NotificationChannelListPage {
+	return NotificationChannelListPage{
+		fn:  getNextPage,
+		ncl: cur,
+	}
 }
 
 // NotificationChannelProperties properties of a schedule.
@@ -6439,8 +6475,11 @@ func (page PolicyListPage) Values() []Policy {
 }
 
 // Creates a new instance of the PolicyListPage type.
-func NewPolicyListPage(getNextPage func(context.Context, PolicyList) (PolicyList, error)) PolicyListPage {
-	return PolicyListPage{fn: getNextPage}
+func NewPolicyListPage(cur PolicyList, getNextPage func(context.Context, PolicyList) (PolicyList, error)) PolicyListPage {
+	return PolicyListPage{
+		fn: getNextPage,
+		pl: cur,
+	}
 }
 
 // PolicyProperties properties of a Policy.
@@ -6698,8 +6737,11 @@ func (page ProviderOperationResultPage) Values() []OperationMetadata {
 }
 
 // Creates a new instance of the ProviderOperationResultPage type.
-func NewProviderOperationResultPage(getNextPage func(context.Context, ProviderOperationResult) (ProviderOperationResult, error)) ProviderOperationResultPage {
-	return ProviderOperationResultPage{fn: getNextPage}
+func NewProviderOperationResultPage(cur ProviderOperationResult, getNextPage func(context.Context, ProviderOperationResult) (ProviderOperationResult, error)) ProviderOperationResultPage {
+	return ProviderOperationResultPage{
+		fn:  getNextPage,
+		por: cur,
+	}
 }
 
 // RdpConnection represents a .rdp file
@@ -7257,8 +7299,11 @@ func (page ScheduleListPage) Values() []Schedule {
 }
 
 // Creates a new instance of the ScheduleListPage type.
-func NewScheduleListPage(getNextPage func(context.Context, ScheduleList) (ScheduleList, error)) ScheduleListPage {
-	return ScheduleListPage{fn: getNextPage}
+func NewScheduleListPage(cur ScheduleList, getNextPage func(context.Context, ScheduleList) (ScheduleList, error)) ScheduleListPage {
+	return ScheduleListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
 }
 
 // ScheduleProperties properties of a schedule.
@@ -7665,8 +7710,11 @@ func (page SecretListPage) Values() []Secret {
 }
 
 // Creates a new instance of the SecretListPage type.
-func NewSecretListPage(getNextPage func(context.Context, SecretList) (SecretList, error)) SecretListPage {
-	return SecretListPage{fn: getNextPage}
+func NewSecretListPage(cur SecretList, getNextPage func(context.Context, SecretList) (SecretList, error)) SecretListPage {
+	return SecretListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
 }
 
 // SecretProperties properties of a secret.
@@ -8029,8 +8077,11 @@ func (page ServiceFabricListPage) Values() []ServiceFabric {
 }
 
 // Creates a new instance of the ServiceFabricListPage type.
-func NewServiceFabricListPage(getNextPage func(context.Context, ServiceFabricList) (ServiceFabricList, error)) ServiceFabricListPage {
-	return ServiceFabricListPage{fn: getNextPage}
+func NewServiceFabricListPage(cur ServiceFabricList, getNextPage func(context.Context, ServiceFabricList) (ServiceFabricList, error)) ServiceFabricListPage {
+	return ServiceFabricListPage{
+		fn:  getNextPage,
+		sfl: cur,
+	}
 }
 
 // ServiceFabricProperties properties of a service fabric.
@@ -8694,8 +8745,11 @@ func (page UserListPage) Values() []User {
 }
 
 // Creates a new instance of the UserListPage type.
-func NewUserListPage(getNextPage func(context.Context, UserList) (UserList, error)) UserListPage {
-	return UserListPage{fn: getNextPage}
+func NewUserListPage(cur UserList, getNextPage func(context.Context, UserList) (UserList, error)) UserListPage {
+	return UserListPage{
+		fn: getNextPage,
+		ul: cur,
+	}
 }
 
 // UserProperties properties of a lab user profile.
@@ -9433,9 +9487,6 @@ func (page VirtualNetworkListPage) Values() []VirtualNetwork {
 }
 
 // Creates a new instance of the VirtualNetworkListPage type.
-func NewVirtualNetworkListPage(getNextPage func(context.Context, VirtualNetworkList) (VirtualNetworkList, error)) VirtualNetworkListPage {
-	return VirtualNetworkListPage{fn: getNextPage}
-}
 
 // VirtualNetworkProperties properties of a virtual network.
 type VirtualNetworkProperties struct {

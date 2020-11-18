@@ -195,8 +195,11 @@ func (page CapabilitiesListResultPage) Values() []CapabilityProperties {
 }
 
 // Creates a new instance of the CapabilitiesListResultPage type.
-func NewCapabilitiesListResultPage(getNextPage func(context.Context, CapabilitiesListResult) (CapabilitiesListResult, error)) CapabilitiesListResultPage {
-	return CapabilitiesListResultPage{fn: getNextPage}
+func NewCapabilitiesListResultPage(cur CapabilitiesListResult, getNextPage func(context.Context, CapabilitiesListResult) (CapabilitiesListResult, error)) CapabilitiesListResultPage {
+	return CapabilitiesListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // CapabilityProperties location capabilities.
@@ -438,8 +441,11 @@ func (page ConfigurationListResultPage) Values() []Configuration {
 }
 
 // Creates a new instance of the ConfigurationListResultPage type.
-func NewConfigurationListResultPage(getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
-	return ConfigurationListResultPage{fn: getNextPage}
+func NewConfigurationListResultPage(cur ConfigurationListResult, getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
+	return ConfigurationListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // ConfigurationProperties the properties of a configuration.
@@ -730,8 +736,11 @@ func (page DatabaseListResultPage) Values() []Database {
 }
 
 // Creates a new instance of the DatabaseListResultPage type.
-func NewDatabaseListResultPage(getNextPage func(context.Context, DatabaseListResult) (DatabaseListResult, error)) DatabaseListResultPage {
-	return DatabaseListResultPage{fn: getNextPage}
+func NewDatabaseListResultPage(cur DatabaseListResult, getNextPage func(context.Context, DatabaseListResult) (DatabaseListResult, error)) DatabaseListResultPage {
+	return DatabaseListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DatabaseProperties the properties of a database.
@@ -1055,8 +1064,11 @@ func (page FirewallRuleListResultPage) Values() []FirewallRule {
 }
 
 // Creates a new instance of the FirewallRuleListResultPage type.
-func NewFirewallRuleListResultPage(getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
-	return FirewallRuleListResultPage{fn: getNextPage}
+func NewFirewallRuleListResultPage(cur FirewallRuleListResult, getNextPage func(context.Context, FirewallRuleListResult) (FirewallRuleListResult, error)) FirewallRuleListResultPage {
+	return FirewallRuleListResultPage{
+		fn:   getNextPage,
+		frlr: cur,
+	}
 }
 
 // FirewallRuleProperties the properties of a server firewall rule.
@@ -1783,8 +1795,11 @@ func (page ServerKeyListResultPage) Values() []ServerKey {
 }
 
 // Creates a new instance of the ServerKeyListResultPage type.
-func NewServerKeyListResultPage(getNextPage func(context.Context, ServerKeyListResult) (ServerKeyListResult, error)) ServerKeyListResultPage {
-	return ServerKeyListResultPage{fn: getNextPage}
+func NewServerKeyListResultPage(cur ServerKeyListResult, getNextPage func(context.Context, ServerKeyListResult) (ServerKeyListResult, error)) ServerKeyListResultPage {
+	return ServerKeyListResultPage{
+		fn:   getNextPage,
+		sklr: cur,
+	}
 }
 
 // ServerKeyProperties properties for a key execution.
@@ -2012,9 +2027,6 @@ func (page ServerListResultPage) Values() []Server {
 }
 
 // Creates a new instance of the ServerListResultPage type.
-func NewServerListResultPage(getNextPage func(context.Context, ServerListResult) (ServerListResult, error)) ServerListResultPage {
-	return ServerListResultPage{fn: getNextPage}
-}
 
 // ServerProperties the properties of a server.
 type ServerProperties struct {

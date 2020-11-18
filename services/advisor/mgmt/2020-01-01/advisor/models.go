@@ -279,8 +279,11 @@ func (page ConfigurationListResultPage) Values() []ConfigData {
 }
 
 // Creates a new instance of the ConfigurationListResultPage type.
-func NewConfigurationListResultPage(getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
-	return ConfigurationListResultPage{fn: getNextPage}
+func NewConfigurationListResultPage(cur ConfigurationListResult, getNextPage func(context.Context, ConfigurationListResult) (ConfigurationListResult, error)) ConfigurationListResultPage {
+	return ConfigurationListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // DigestConfig advisor Digest configuration entity
@@ -532,8 +535,11 @@ func (page MetadataEntityListResultPage) Values() []MetadataEntity {
 }
 
 // Creates a new instance of the MetadataEntityListResultPage type.
-func NewMetadataEntityListResultPage(getNextPage func(context.Context, MetadataEntityListResult) (MetadataEntityListResult, error)) MetadataEntityListResultPage {
-	return MetadataEntityListResultPage{fn: getNextPage}
+func NewMetadataEntityListResultPage(cur MetadataEntityListResult, getNextPage func(context.Context, MetadataEntityListResult) (MetadataEntityListResult, error)) MetadataEntityListResultPage {
+	return MetadataEntityListResultPage{
+		fn:   getNextPage,
+		melr: cur,
+	}
 }
 
 // MetadataEntityProperties the metadata entity properties
@@ -728,8 +734,11 @@ func (page OperationEntityListResultPage) Values() []OperationEntity {
 }
 
 // Creates a new instance of the OperationEntityListResultPage type.
-func NewOperationEntityListResultPage(getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
-	return OperationEntityListResultPage{fn: getNextPage}
+func NewOperationEntityListResultPage(cur OperationEntityListResult, getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
+	return OperationEntityListResultPage{
+		fn:   getNextPage,
+		oelr: cur,
+	}
 }
 
 // RecommendationProperties the properties of the recommendation.
@@ -1046,8 +1055,11 @@ func (page ResourceRecommendationBaseListResultPage) Values() []ResourceRecommen
 }
 
 // Creates a new instance of the ResourceRecommendationBaseListResultPage type.
-func NewResourceRecommendationBaseListResultPage(getNextPage func(context.Context, ResourceRecommendationBaseListResult) (ResourceRecommendationBaseListResult, error)) ResourceRecommendationBaseListResultPage {
-	return ResourceRecommendationBaseListResultPage{fn: getNextPage}
+func NewResourceRecommendationBaseListResultPage(cur ResourceRecommendationBaseListResult, getNextPage func(context.Context, ResourceRecommendationBaseListResult) (ResourceRecommendationBaseListResult, error)) ResourceRecommendationBaseListResultPage {
+	return ResourceRecommendationBaseListResultPage{
+		fn:    getNextPage,
+		rrblr: cur,
+	}
 }
 
 // SetObject ...
@@ -1290,9 +1302,6 @@ func (page SuppressionContractListResultPage) Values() []SuppressionContract {
 }
 
 // Creates a new instance of the SuppressionContractListResultPage type.
-func NewSuppressionContractListResultPage(getNextPage func(context.Context, SuppressionContractListResult) (SuppressionContractListResult, error)) SuppressionContractListResultPage {
-	return SuppressionContractListResultPage{fn: getNextPage}
-}
 
 // SuppressionProperties the properties of the suppression.
 type SuppressionProperties struct {

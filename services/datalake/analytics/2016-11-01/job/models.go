@@ -620,8 +620,11 @@ func (page InfoListResultPage) Values() []InformationBasic {
 }
 
 // Creates a new instance of the InfoListResultPage type.
-func NewInfoListResultPage(getNextPage func(context.Context, InfoListResult) (InfoListResult, error)) InfoListResultPage {
-	return InfoListResultPage{fn: getNextPage}
+func NewInfoListResultPage(cur InfoListResult, getNextPage func(context.Context, InfoListResult) (InfoListResult, error)) InfoListResultPage {
+	return InfoListResultPage{
+		fn:  getNextPage,
+		ilr: cur,
+	}
 }
 
 // Information the extended Data Lake Analytics job information properties returned when retrieving a specific
@@ -1130,8 +1133,11 @@ func (page PipelineInformationListResultPage) Values() []PipelineInformation {
 }
 
 // Creates a new instance of the PipelineInformationListResultPage type.
-func NewPipelineInformationListResultPage(getNextPage func(context.Context, PipelineInformationListResult) (PipelineInformationListResult, error)) PipelineInformationListResultPage {
-	return PipelineInformationListResultPage{fn: getNextPage}
+func NewPipelineInformationListResultPage(cur PipelineInformationListResult, getNextPage func(context.Context, PipelineInformationListResult) (PipelineInformationListResult, error)) PipelineInformationListResultPage {
+	return PipelineInformationListResultPage{
+		fn:   getNextPage,
+		pilr: cur,
+	}
 }
 
 // PipelineRunInformation run info for a specific job pipeline.
@@ -1409,9 +1415,6 @@ func (page RecurrenceInformationListResultPage) Values() []RecurrenceInformation
 }
 
 // Creates a new instance of the RecurrenceInformationListResultPage type.
-func NewRecurrenceInformationListResultPage(getNextPage func(context.Context, RecurrenceInformationListResult) (RecurrenceInformationListResult, error)) RecurrenceInformationListResultPage {
-	return RecurrenceInformationListResultPage{fn: getNextPage}
-}
 
 // RelationshipProperties job relationship information properties including pipeline information, correlation
 // information, etc.

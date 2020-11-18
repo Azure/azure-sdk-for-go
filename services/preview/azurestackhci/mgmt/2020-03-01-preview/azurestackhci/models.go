@@ -304,9 +304,6 @@ func (page ClusterListPage) Values() []Cluster {
 }
 
 // Creates a new instance of the ClusterListPage type.
-func NewClusterListPage(getNextPage func(context.Context, ClusterList) (ClusterList, error)) ClusterListPage {
-	return ClusterListPage{fn: getNextPage}
-}
 
 // ClusterNode cluster node details.
 type ClusterNode struct {

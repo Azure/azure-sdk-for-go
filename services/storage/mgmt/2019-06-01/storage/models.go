@@ -468,8 +468,11 @@ func (page AccountListResultPage) Values() []Account {
 }
 
 // Creates a new instance of the AccountListResultPage type.
-func NewAccountListResultPage(getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
-	return AccountListResultPage{fn: getNextPage}
+func NewAccountListResultPage(cur AccountListResult, getNextPage func(context.Context, AccountListResult) (AccountListResult, error)) AccountListResultPage {
+	return AccountListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AccountMicrosoftEndpoints the URIs that are used to perform a retrieval of a public blob, queue, table, web
@@ -1475,8 +1478,11 @@ func (page EncryptionScopeListResultPage) Values() []EncryptionScope {
 }
 
 // Creates a new instance of the EncryptionScopeListResultPage type.
-func NewEncryptionScopeListResultPage(getNextPage func(context.Context, EncryptionScopeListResult) (EncryptionScopeListResult, error)) EncryptionScopeListResultPage {
-	return EncryptionScopeListResultPage{fn: getNextPage}
+func NewEncryptionScopeListResultPage(cur EncryptionScopeListResult, getNextPage func(context.Context, EncryptionScopeListResult) (EncryptionScopeListResult, error)) EncryptionScopeListResultPage {
+	return EncryptionScopeListResultPage{
+		fn:   getNextPage,
+		eslr: cur,
+	}
 }
 
 // EncryptionScopeProperties properties of the encryption scope.
@@ -2001,8 +2007,11 @@ func (page FileShareItemsPage) Values() []FileShareItem {
 }
 
 // Creates a new instance of the FileShareItemsPage type.
-func NewFileShareItemsPage(getNextPage func(context.Context, FileShareItems) (FileShareItems, error)) FileShareItemsPage {
-	return FileShareItemsPage{fn: getNextPage}
+func NewFileShareItemsPage(cur FileShareItems, getNextPage func(context.Context, FileShareItems) (FileShareItems, error)) FileShareItemsPage {
+	return FileShareItemsPage{
+		fn:  getNextPage,
+		fsi: cur,
+	}
 }
 
 // FileShareProperties the properties of the file share.
@@ -2592,8 +2601,11 @@ func (page ListContainerItemsPage) Values() []ListContainerItem {
 }
 
 // Creates a new instance of the ListContainerItemsPage type.
-func NewListContainerItemsPage(getNextPage func(context.Context, ListContainerItems) (ListContainerItems, error)) ListContainerItemsPage {
-	return ListContainerItemsPage{fn: getNextPage}
+func NewListContainerItemsPage(cur ListContainerItems, getNextPage func(context.Context, ListContainerItems) (ListContainerItems, error)) ListContainerItemsPage {
+	return ListContainerItemsPage{
+		fn:  getNextPage,
+		lci: cur,
+	}
 }
 
 // ListQueue ...
@@ -2835,8 +2847,11 @@ func (page ListQueueResourcePage) Values() []ListQueue {
 }
 
 // Creates a new instance of the ListQueueResourcePage type.
-func NewListQueueResourcePage(getNextPage func(context.Context, ListQueueResource) (ListQueueResource, error)) ListQueueResourcePage {
-	return ListQueueResourcePage{fn: getNextPage}
+func NewListQueueResourcePage(cur ListQueueResource, getNextPage func(context.Context, ListQueueResource) (ListQueueResource, error)) ListQueueResourcePage {
+	return ListQueueResourcePage{
+		fn:  getNextPage,
+		lqr: cur,
+	}
 }
 
 // ListQueueServices ...
@@ -3005,9 +3020,6 @@ func (page ListTableResourcePage) Values() []Table {
 }
 
 // Creates a new instance of the ListTableResourcePage type.
-func NewListTableResourcePage(getNextPage func(context.Context, ListTableResource) (ListTableResource, error)) ListTableResourcePage {
-	return ListTableResourcePage{fn: getNextPage}
-}
 
 // ListTableServices ...
 type ListTableServices struct {

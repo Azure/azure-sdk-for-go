@@ -347,8 +347,11 @@ func (page AppCollectionPage) Values() []Site {
 }
 
 // Creates a new instance of the AppCollectionPage type.
-func NewAppCollectionPage(getNextPage func(context.Context, AppCollection) (AppCollection, error)) AppCollectionPage {
-	return AppCollectionPage{fn: getNextPage}
+func NewAppCollectionPage(cur AppCollection, getNextPage func(context.Context, AppCollection) (AppCollection, error)) AppCollectionPage {
+	return AppCollectionPage{
+		fn: getNextPage,
+		ac: cur,
+	}
 }
 
 // AppInstanceCollection collection of app instances.
@@ -512,8 +515,11 @@ func (page AppInstanceCollectionPage) Values() []SiteInstance {
 }
 
 // Creates a new instance of the AppInstanceCollectionPage type.
-func NewAppInstanceCollectionPage(getNextPage func(context.Context, AppInstanceCollection) (AppInstanceCollection, error)) AppInstanceCollectionPage {
-	return AppInstanceCollectionPage{fn: getNextPage}
+func NewAppInstanceCollectionPage(cur AppInstanceCollection, getNextPage func(context.Context, AppInstanceCollection) (AppInstanceCollection, error)) AppInstanceCollectionPage {
+	return AppInstanceCollectionPage{
+		fn:  getNextPage,
+		aic: cur,
+	}
 }
 
 // ApplicationLogsConfig application logs configuration.
@@ -701,8 +707,11 @@ func (page ApplicationStackCollectionPage) Values() []ApplicationStack {
 }
 
 // Creates a new instance of the ApplicationStackCollectionPage type.
-func NewApplicationStackCollectionPage(getNextPage func(context.Context, ApplicationStackCollection) (ApplicationStackCollection, error)) ApplicationStackCollectionPage {
-	return ApplicationStackCollectionPage{fn: getNextPage}
+func NewApplicationStackCollectionPage(cur ApplicationStackCollection, getNextPage func(context.Context, ApplicationStackCollection) (ApplicationStackCollection, error)) ApplicationStackCollectionPage {
+	return ApplicationStackCollectionPage{
+		fn:  getNextPage,
+		asc: cur,
+	}
 }
 
 // AppsCreateFunctionFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1179,8 +1188,11 @@ func (page AppServiceCertificateCollectionPage) Values() []AppServiceCertificate
 }
 
 // Creates a new instance of the AppServiceCertificateCollectionPage type.
-func NewAppServiceCertificateCollectionPage(getNextPage func(context.Context, AppServiceCertificateCollection) (AppServiceCertificateCollection, error)) AppServiceCertificateCollectionPage {
-	return AppServiceCertificateCollectionPage{fn: getNextPage}
+func NewAppServiceCertificateCollectionPage(cur AppServiceCertificateCollection, getNextPage func(context.Context, AppServiceCertificateCollection) (AppServiceCertificateCollection, error)) AppServiceCertificateCollectionPage {
+	return AppServiceCertificateCollectionPage{
+		fn:   getNextPage,
+		ascc: cur,
+	}
 }
 
 // AppServiceCertificateOrder SSL certificate purchase order.
@@ -1460,8 +1472,11 @@ func (page AppServiceCertificateOrderCollectionPage) Values() []AppServiceCertif
 }
 
 // Creates a new instance of the AppServiceCertificateOrderCollectionPage type.
-func NewAppServiceCertificateOrderCollectionPage(getNextPage func(context.Context, AppServiceCertificateOrderCollection) (AppServiceCertificateOrderCollection, error)) AppServiceCertificateOrderCollectionPage {
-	return AppServiceCertificateOrderCollectionPage{fn: getNextPage}
+func NewAppServiceCertificateOrderCollectionPage(cur AppServiceCertificateOrderCollection, getNextPage func(context.Context, AppServiceCertificateOrderCollection) (AppServiceCertificateOrderCollection, error)) AppServiceCertificateOrderCollectionPage {
+	return AppServiceCertificateOrderCollectionPage{
+		fn:    getNextPage,
+		ascoc: cur,
+	}
 }
 
 // AppServiceCertificateOrderPatchResource ARM resource for a certificate order that is purchased through
@@ -2269,8 +2284,11 @@ func (page AppServiceEnvironmentCollectionPage) Values() []AppServiceEnvironment
 }
 
 // Creates a new instance of the AppServiceEnvironmentCollectionPage type.
-func NewAppServiceEnvironmentCollectionPage(getNextPage func(context.Context, AppServiceEnvironmentCollection) (AppServiceEnvironmentCollection, error)) AppServiceEnvironmentCollectionPage {
-	return AppServiceEnvironmentCollectionPage{fn: getNextPage}
+func NewAppServiceEnvironmentCollectionPage(cur AppServiceEnvironmentCollection, getNextPage func(context.Context, AppServiceEnvironmentCollection) (AppServiceEnvironmentCollection, error)) AppServiceEnvironmentCollectionPage {
+	return AppServiceEnvironmentCollectionPage{
+		fn:   getNextPage,
+		asec: cur,
+	}
 }
 
 // AppServiceEnvironmentPatchResource ARM resource for a app service environment.
@@ -3047,8 +3065,11 @@ func (page AppServicePlanCollectionPage) Values() []AppServicePlan {
 }
 
 // Creates a new instance of the AppServicePlanCollectionPage type.
-func NewAppServicePlanCollectionPage(getNextPage func(context.Context, AppServicePlanCollection) (AppServicePlanCollection, error)) AppServicePlanCollectionPage {
-	return AppServicePlanCollectionPage{fn: getNextPage}
+func NewAppServicePlanCollectionPage(cur AppServicePlanCollection, getNextPage func(context.Context, AppServicePlanCollection) (AppServicePlanCollection, error)) AppServicePlanCollectionPage {
+	return AppServicePlanCollectionPage{
+		fn:   getNextPage,
+		aspc: cur,
+	}
 }
 
 // AppServicePlanPatchResource ARM resource for a app service plan.
@@ -4236,8 +4257,11 @@ func (page BackupItemCollectionPage) Values() []BackupItem {
 }
 
 // Creates a new instance of the BackupItemCollectionPage type.
-func NewBackupItemCollectionPage(getNextPage func(context.Context, BackupItemCollection) (BackupItemCollection, error)) BackupItemCollectionPage {
-	return BackupItemCollectionPage{fn: getNextPage}
+func NewBackupItemCollectionPage(cur BackupItemCollection, getNextPage func(context.Context, BackupItemCollection) (BackupItemCollection, error)) BackupItemCollectionPage {
+	return BackupItemCollectionPage{
+		fn:  getNextPage,
+		bic: cur,
+	}
 }
 
 // BackupItemProperties backupItem resource specific properties
@@ -4659,8 +4683,11 @@ func (page BillingMeterCollectionPage) Values() []BillingMeter {
 }
 
 // Creates a new instance of the BillingMeterCollectionPage type.
-func NewBillingMeterCollectionPage(getNextPage func(context.Context, BillingMeterCollection) (BillingMeterCollection, error)) BillingMeterCollectionPage {
-	return BillingMeterCollectionPage{fn: getNextPage}
+func NewBillingMeterCollectionPage(cur BillingMeterCollection, getNextPage func(context.Context, BillingMeterCollection) (BillingMeterCollection, error)) BillingMeterCollectionPage {
+	return BillingMeterCollectionPage{
+		fn:  getNextPage,
+		bmc: cur,
+	}
 }
 
 // BillingMeterProperties billingMeter resource specific properties
@@ -4965,8 +4992,11 @@ func (page CertificateCollectionPage) Values() []Certificate {
 }
 
 // Creates a new instance of the CertificateCollectionPage type.
-func NewCertificateCollectionPage(getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
-	return CertificateCollectionPage{fn: getNextPage}
+func NewCertificateCollectionPage(cur CertificateCollection, getNextPage func(context.Context, CertificateCollection) (CertificateCollection, error)) CertificateCollectionPage {
+	return CertificateCollectionPage{
+		fn: getNextPage,
+		cc: cur,
+	}
 }
 
 // CertificateDetails SSL certificate details.
@@ -5784,8 +5814,11 @@ func (page ContinuousWebJobCollectionPage) Values() []ContinuousWebJob {
 }
 
 // Creates a new instance of the ContinuousWebJobCollectionPage type.
-func NewContinuousWebJobCollectionPage(getNextPage func(context.Context, ContinuousWebJobCollection) (ContinuousWebJobCollection, error)) ContinuousWebJobCollectionPage {
-	return ContinuousWebJobCollectionPage{fn: getNextPage}
+func NewContinuousWebJobCollectionPage(cur ContinuousWebJobCollection, getNextPage func(context.Context, ContinuousWebJobCollection) (ContinuousWebJobCollection, error)) ContinuousWebJobCollectionPage {
+	return ContinuousWebJobCollectionPage{
+		fn:   getNextPage,
+		cwjc: cur,
+	}
 }
 
 // ContinuousWebJobProperties continuousWebJob resource specific properties
@@ -6027,8 +6060,11 @@ func (page CsmOperationCollectionPage) Values() []CsmOperationDescription {
 }
 
 // Creates a new instance of the CsmOperationCollectionPage type.
-func NewCsmOperationCollectionPage(getNextPage func(context.Context, CsmOperationCollection) (CsmOperationCollection, error)) CsmOperationCollectionPage {
-	return CsmOperationCollectionPage{fn: getNextPage}
+func NewCsmOperationCollectionPage(cur CsmOperationCollection, getNextPage func(context.Context, CsmOperationCollection) (CsmOperationCollection, error)) CsmOperationCollectionPage {
+	return CsmOperationCollectionPage{
+		fn:  getNextPage,
+		coc: cur,
+	}
 }
 
 // CsmOperationDescription description of an operation available for Microsoft.Web resource provider.
@@ -6246,8 +6282,11 @@ func (page CsmUsageQuotaCollectionPage) Values() []CsmUsageQuota {
 }
 
 // Creates a new instance of the CsmUsageQuotaCollectionPage type.
-func NewCsmUsageQuotaCollectionPage(getNextPage func(context.Context, CsmUsageQuotaCollection) (CsmUsageQuotaCollection, error)) CsmUsageQuotaCollectionPage {
-	return CsmUsageQuotaCollectionPage{fn: getNextPage}
+func NewCsmUsageQuotaCollectionPage(cur CsmUsageQuotaCollection, getNextPage func(context.Context, CsmUsageQuotaCollection) (CsmUsageQuotaCollection, error)) CsmUsageQuotaCollectionPage {
+	return CsmUsageQuotaCollectionPage{
+		fn:   getNextPage,
+		cuqc: cur,
+	}
 }
 
 // CustomHostnameAnalysisResult custom domain analysis.
@@ -6830,8 +6869,11 @@ func (page DeletedWebAppCollectionPage) Values() []DeletedSite {
 }
 
 // Creates a new instance of the DeletedWebAppCollectionPage type.
-func NewDeletedWebAppCollectionPage(getNextPage func(context.Context, DeletedWebAppCollection) (DeletedWebAppCollection, error)) DeletedWebAppCollectionPage {
-	return DeletedWebAppCollectionPage{fn: getNextPage}
+func NewDeletedWebAppCollectionPage(cur DeletedWebAppCollection, getNextPage func(context.Context, DeletedWebAppCollection) (DeletedWebAppCollection, error)) DeletedWebAppCollectionPage {
+	return DeletedWebAppCollectionPage{
+		fn:   getNextPage,
+		dwac: cur,
+	}
 }
 
 // Deployment user credentials used for publishing activity.
@@ -7082,8 +7124,11 @@ func (page DeploymentCollectionPage) Values() []Deployment {
 }
 
 // Creates a new instance of the DeploymentCollectionPage type.
-func NewDeploymentCollectionPage(getNextPage func(context.Context, DeploymentCollection) (DeploymentCollection, error)) DeploymentCollectionPage {
-	return DeploymentCollectionPage{fn: getNextPage}
+func NewDeploymentCollectionPage(cur DeploymentCollection, getNextPage func(context.Context, DeploymentCollection) (DeploymentCollection, error)) DeploymentCollectionPage {
+	return DeploymentCollectionPage{
+		fn: getNextPage,
+		dc: cur,
+	}
 }
 
 // DeploymentLocations list of available locations (regions or App Service Environments) for
@@ -7498,8 +7543,11 @@ func (page DetectorResponseCollectionPage) Values() []DetectorResponse {
 }
 
 // Creates a new instance of the DetectorResponseCollectionPage type.
-func NewDetectorResponseCollectionPage(getNextPage func(context.Context, DetectorResponseCollection) (DetectorResponseCollection, error)) DetectorResponseCollectionPage {
-	return DetectorResponseCollectionPage{fn: getNextPage}
+func NewDetectorResponseCollectionPage(cur DetectorResponseCollection, getNextPage func(context.Context, DetectorResponseCollection) (DetectorResponseCollection, error)) DetectorResponseCollectionPage {
+	return DetectorResponseCollectionPage{
+		fn:  getNextPage,
+		drc: cur,
+	}
 }
 
 // DetectorResponseProperties detectorResponse resource specific properties
@@ -7758,8 +7806,11 @@ func (page DiagnosticAnalysisCollectionPage) Values() []AnalysisDefinition {
 }
 
 // Creates a new instance of the DiagnosticAnalysisCollectionPage type.
-func NewDiagnosticAnalysisCollectionPage(getNextPage func(context.Context, DiagnosticAnalysisCollection) (DiagnosticAnalysisCollection, error)) DiagnosticAnalysisCollectionPage {
-	return DiagnosticAnalysisCollectionPage{fn: getNextPage}
+func NewDiagnosticAnalysisCollectionPage(cur DiagnosticAnalysisCollection, getNextPage func(context.Context, DiagnosticAnalysisCollection) (DiagnosticAnalysisCollection, error)) DiagnosticAnalysisCollectionPage {
+	return DiagnosticAnalysisCollectionPage{
+		fn:  getNextPage,
+		dac: cur,
+	}
 }
 
 // DiagnosticAnalysisProperties diagnosticAnalysis resource specific properties
@@ -8024,8 +8075,11 @@ func (page DiagnosticCategoryCollectionPage) Values() []DiagnosticCategory {
 }
 
 // Creates a new instance of the DiagnosticCategoryCollectionPage type.
-func NewDiagnosticCategoryCollectionPage(getNextPage func(context.Context, DiagnosticCategoryCollection) (DiagnosticCategoryCollection, error)) DiagnosticCategoryCollectionPage {
-	return DiagnosticCategoryCollectionPage{fn: getNextPage}
+func NewDiagnosticCategoryCollectionPage(cur DiagnosticCategoryCollection, getNextPage func(context.Context, DiagnosticCategoryCollection) (DiagnosticCategoryCollection, error)) DiagnosticCategoryCollectionPage {
+	return DiagnosticCategoryCollectionPage{
+		fn:  getNextPage,
+		dcc: cur,
+	}
 }
 
 // DiagnosticCategoryProperties diagnosticCategory resource specific properties
@@ -8203,8 +8257,11 @@ func (page DiagnosticDetectorCollectionPage) Values() []DetectorDefinition {
 }
 
 // Creates a new instance of the DiagnosticDetectorCollectionPage type.
-func NewDiagnosticDetectorCollectionPage(getNextPage func(context.Context, DiagnosticDetectorCollection) (DiagnosticDetectorCollection, error)) DiagnosticDetectorCollectionPage {
-	return DiagnosticDetectorCollectionPage{fn: getNextPage}
+func NewDiagnosticDetectorCollectionPage(cur DiagnosticDetectorCollection, getNextPage func(context.Context, DiagnosticDetectorCollection) (DiagnosticDetectorCollection, error)) DiagnosticDetectorCollectionPage {
+	return DiagnosticDetectorCollectionPage{
+		fn:  getNextPage,
+		ddc: cur,
+	}
 }
 
 // DiagnosticDetectorResponse class representing Response from Diagnostic Detectors
@@ -8645,8 +8702,11 @@ func (page DomainCollectionPage) Values() []Domain {
 }
 
 // Creates a new instance of the DomainCollectionPage type.
-func NewDomainCollectionPage(getNextPage func(context.Context, DomainCollection) (DomainCollection, error)) DomainCollectionPage {
-	return DomainCollectionPage{fn: getNextPage}
+func NewDomainCollectionPage(cur DomainCollection, getNextPage func(context.Context, DomainCollection) (DomainCollection, error)) DomainCollectionPage {
+	return DomainCollectionPage{
+		fn: getNextPage,
+		dc: cur,
+	}
 }
 
 // DomainControlCenterSsoRequest single sign-on request information for domain management.
@@ -8909,8 +8969,11 @@ func (page DomainOwnershipIdentifierCollectionPage) Values() []DomainOwnershipId
 }
 
 // Creates a new instance of the DomainOwnershipIdentifierCollectionPage type.
-func NewDomainOwnershipIdentifierCollectionPage(getNextPage func(context.Context, DomainOwnershipIdentifierCollection) (DomainOwnershipIdentifierCollection, error)) DomainOwnershipIdentifierCollectionPage {
-	return DomainOwnershipIdentifierCollectionPage{fn: getNextPage}
+func NewDomainOwnershipIdentifierCollectionPage(cur DomainOwnershipIdentifierCollection, getNextPage func(context.Context, DomainOwnershipIdentifierCollection) (DomainOwnershipIdentifierCollection, error)) DomainOwnershipIdentifierCollectionPage {
+	return DomainOwnershipIdentifierCollectionPage{
+		fn:   getNextPage,
+		doic: cur,
+	}
 }
 
 // DomainOwnershipIdentifierProperties domainOwnershipIdentifier resource specific properties
@@ -9536,8 +9599,11 @@ func (page FunctionEnvelopeCollectionPage) Values() []FunctionEnvelope {
 }
 
 // Creates a new instance of the FunctionEnvelopeCollectionPage type.
-func NewFunctionEnvelopeCollectionPage(getNextPage func(context.Context, FunctionEnvelopeCollection) (FunctionEnvelopeCollection, error)) FunctionEnvelopeCollectionPage {
-	return FunctionEnvelopeCollectionPage{fn: getNextPage}
+func NewFunctionEnvelopeCollectionPage(cur FunctionEnvelopeCollection, getNextPage func(context.Context, FunctionEnvelopeCollection) (FunctionEnvelopeCollection, error)) FunctionEnvelopeCollectionPage {
+	return FunctionEnvelopeCollectionPage{
+		fn:  getNextPage,
+		fec: cur,
+	}
 }
 
 // FunctionEnvelopeProperties functionEnvelope resource specific properties
@@ -9965,8 +10031,11 @@ func (page GeoRegionCollectionPage) Values() []GeoRegion {
 }
 
 // Creates a new instance of the GeoRegionCollectionPage type.
-func NewGeoRegionCollectionPage(getNextPage func(context.Context, GeoRegionCollection) (GeoRegionCollection, error)) GeoRegionCollectionPage {
-	return GeoRegionCollectionPage{fn: getNextPage}
+func NewGeoRegionCollectionPage(cur GeoRegionCollection, getNextPage func(context.Context, GeoRegionCollection) (GeoRegionCollection, error)) GeoRegionCollectionPage {
+	return GeoRegionCollectionPage{
+		fn:  getNextPage,
+		grc: cur,
+	}
 }
 
 // GeoRegionProperties geoRegion resource specific properties
@@ -10333,8 +10402,11 @@ func (page HostNameBindingCollectionPage) Values() []HostNameBinding {
 }
 
 // Creates a new instance of the HostNameBindingCollectionPage type.
-func NewHostNameBindingCollectionPage(getNextPage func(context.Context, HostNameBindingCollection) (HostNameBindingCollection, error)) HostNameBindingCollectionPage {
-	return HostNameBindingCollectionPage{fn: getNextPage}
+func NewHostNameBindingCollectionPage(cur HostNameBindingCollection, getNextPage func(context.Context, HostNameBindingCollection) (HostNameBindingCollection, error)) HostNameBindingCollectionPage {
+	return HostNameBindingCollectionPage{
+		fn:   getNextPage,
+		hnbc: cur,
+	}
 }
 
 // HostNameBindingProperties hostNameBinding resource specific properties
@@ -10661,8 +10733,11 @@ func (page HybridConnectionCollectionPage) Values() []HybridConnection {
 }
 
 // Creates a new instance of the HybridConnectionCollectionPage type.
-func NewHybridConnectionCollectionPage(getNextPage func(context.Context, HybridConnectionCollection) (HybridConnectionCollection, error)) HybridConnectionCollectionPage {
-	return HybridConnectionCollectionPage{fn: getNextPage}
+func NewHybridConnectionCollectionPage(cur HybridConnectionCollection, getNextPage func(context.Context, HybridConnectionCollection) (HybridConnectionCollection, error)) HybridConnectionCollectionPage {
+	return HybridConnectionCollectionPage{
+		fn:  getNextPage,
+		hcc: cur,
+	}
 }
 
 // HybridConnectionKey hybrid Connection key contract. This has the send key name and value for a Hybrid
@@ -11126,8 +11201,11 @@ func (page IdentifierCollectionPage) Values() []Identifier {
 }
 
 // Creates a new instance of the IdentifierCollectionPage type.
-func NewIdentifierCollectionPage(getNextPage func(context.Context, IdentifierCollection) (IdentifierCollection, error)) IdentifierCollectionPage {
-	return IdentifierCollectionPage{fn: getNextPage}
+func NewIdentifierCollectionPage(cur IdentifierCollection, getNextPage func(context.Context, IdentifierCollection) (IdentifierCollection, error)) IdentifierCollectionPage {
+	return IdentifierCollectionPage{
+		fn: getNextPage,
+		ic: cur,
+	}
 }
 
 // IdentifierProperties identifier resource specific properties
@@ -11309,8 +11387,11 @@ func (page InboundEnvironmentEndpointCollectionPage) Values() []InboundEnvironme
 }
 
 // Creates a new instance of the InboundEnvironmentEndpointCollectionPage type.
-func NewInboundEnvironmentEndpointCollectionPage(getNextPage func(context.Context, InboundEnvironmentEndpointCollection) (InboundEnvironmentEndpointCollection, error)) InboundEnvironmentEndpointCollectionPage {
-	return InboundEnvironmentEndpointCollectionPage{fn: getNextPage}
+func NewInboundEnvironmentEndpointCollectionPage(cur InboundEnvironmentEndpointCollection, getNextPage func(context.Context, InboundEnvironmentEndpointCollection) (InboundEnvironmentEndpointCollection, error)) InboundEnvironmentEndpointCollectionPage {
+	return InboundEnvironmentEndpointCollectionPage{
+		fn:   getNextPage,
+		ieec: cur,
+	}
 }
 
 // IPSecurityRestriction IP security restriction on an app.
@@ -11588,8 +11669,11 @@ func (page JobCollectionPage) Values() []Job {
 }
 
 // Creates a new instance of the JobCollectionPage type.
-func NewJobCollectionPage(getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
-	return JobCollectionPage{fn: getNextPage}
+func NewJobCollectionPage(cur JobCollection, getNextPage func(context.Context, JobCollection) (JobCollection, error)) JobCollectionPage {
+	return JobCollectionPage{
+		fn: getNextPage,
+		jc: cur,
+	}
 }
 
 // JobProperties webJob resource specific properties
@@ -12570,8 +12654,11 @@ func (page NameIdentifierCollectionPage) Values() []NameIdentifier {
 }
 
 // Creates a new instance of the NameIdentifierCollectionPage type.
-func NewNameIdentifierCollectionPage(getNextPage func(context.Context, NameIdentifierCollection) (NameIdentifierCollection, error)) NameIdentifierCollectionPage {
-	return NameIdentifierCollectionPage{fn: getNextPage}
+func NewNameIdentifierCollectionPage(cur NameIdentifierCollection, getNextPage func(context.Context, NameIdentifierCollection) (NameIdentifierCollection, error)) NameIdentifierCollectionPage {
+	return NameIdentifierCollectionPage{
+		fn:  getNextPage,
+		nic: cur,
+	}
 }
 
 // NameValuePair name value pair.
@@ -12896,8 +12983,11 @@ func (page OutboundEnvironmentEndpointCollectionPage) Values() []OutboundEnviron
 }
 
 // Creates a new instance of the OutboundEnvironmentEndpointCollectionPage type.
-func NewOutboundEnvironmentEndpointCollectionPage(getNextPage func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error)) OutboundEnvironmentEndpointCollectionPage {
-	return OutboundEnvironmentEndpointCollectionPage{fn: getNextPage}
+func NewOutboundEnvironmentEndpointCollectionPage(cur OutboundEnvironmentEndpointCollection, getNextPage func(context.Context, OutboundEnvironmentEndpointCollection) (OutboundEnvironmentEndpointCollection, error)) OutboundEnvironmentEndpointCollectionPage {
+	return OutboundEnvironmentEndpointCollectionPage{
+		fn:   getNextPage,
+		oeec: cur,
+	}
 }
 
 // PerfMonCounterCollection collection of performance monitor counters.
@@ -13061,8 +13151,11 @@ func (page PerfMonCounterCollectionPage) Values() []PerfMonResponse {
 }
 
 // Creates a new instance of the PerfMonCounterCollectionPage type.
-func NewPerfMonCounterCollectionPage(getNextPage func(context.Context, PerfMonCounterCollection) (PerfMonCounterCollection, error)) PerfMonCounterCollectionPage {
-	return PerfMonCounterCollectionPage{fn: getNextPage}
+func NewPerfMonCounterCollectionPage(cur PerfMonCounterCollection, getNextPage func(context.Context, PerfMonCounterCollection) (PerfMonCounterCollection, error)) PerfMonCounterCollectionPage {
+	return PerfMonCounterCollectionPage{
+		fn:   getNextPage,
+		pmcc: cur,
+	}
 }
 
 // PerfMonResponse performance monitor API response.
@@ -13461,8 +13554,11 @@ func (page PremierAddOnOfferCollectionPage) Values() []PremierAddOnOffer {
 }
 
 // Creates a new instance of the PremierAddOnOfferCollectionPage type.
-func NewPremierAddOnOfferCollectionPage(getNextPage func(context.Context, PremierAddOnOfferCollection) (PremierAddOnOfferCollection, error)) PremierAddOnOfferCollectionPage {
-	return PremierAddOnOfferCollectionPage{fn: getNextPage}
+func NewPremierAddOnOfferCollectionPage(cur PremierAddOnOfferCollection, getNextPage func(context.Context, PremierAddOnOfferCollection) (PremierAddOnOfferCollection, error)) PremierAddOnOfferCollectionPage {
+	return PremierAddOnOfferCollectionPage{
+		fn:    getNextPage,
+		paooc: cur,
+	}
 }
 
 // PremierAddOnOfferProperties premierAddOnOffer resource specific properties
@@ -13966,8 +14062,11 @@ func (page ProcessInfoCollectionPage) Values() []ProcessInfo {
 }
 
 // Creates a new instance of the ProcessInfoCollectionPage type.
-func NewProcessInfoCollectionPage(getNextPage func(context.Context, ProcessInfoCollection) (ProcessInfoCollection, error)) ProcessInfoCollectionPage {
-	return ProcessInfoCollectionPage{fn: getNextPage}
+func NewProcessInfoCollectionPage(cur ProcessInfoCollection, getNextPage func(context.Context, ProcessInfoCollection) (ProcessInfoCollection, error)) ProcessInfoCollectionPage {
+	return ProcessInfoCollectionPage{
+		fn:  getNextPage,
+		pic: cur,
+	}
 }
 
 // ProcessInfoProperties processInfo resource specific properties
@@ -14405,8 +14504,11 @@ func (page ProcessModuleInfoCollectionPage) Values() []ProcessModuleInfo {
 }
 
 // Creates a new instance of the ProcessModuleInfoCollectionPage type.
-func NewProcessModuleInfoCollectionPage(getNextPage func(context.Context, ProcessModuleInfoCollection) (ProcessModuleInfoCollection, error)) ProcessModuleInfoCollectionPage {
-	return ProcessModuleInfoCollectionPage{fn: getNextPage}
+func NewProcessModuleInfoCollectionPage(cur ProcessModuleInfoCollection, getNextPage func(context.Context, ProcessModuleInfoCollection) (ProcessModuleInfoCollection, error)) ProcessModuleInfoCollectionPage {
+	return ProcessModuleInfoCollectionPage{
+		fn:   getNextPage,
+		pmic: cur,
+	}
 }
 
 // ProcessModuleInfoProperties processModuleInfo resource specific properties
@@ -14683,8 +14785,11 @@ func (page ProcessThreadInfoCollectionPage) Values() []ProcessThreadInfo {
 }
 
 // Creates a new instance of the ProcessThreadInfoCollectionPage type.
-func NewProcessThreadInfoCollectionPage(getNextPage func(context.Context, ProcessThreadInfoCollection) (ProcessThreadInfoCollection, error)) ProcessThreadInfoCollectionPage {
-	return ProcessThreadInfoCollectionPage{fn: getNextPage}
+func NewProcessThreadInfoCollectionPage(cur ProcessThreadInfoCollection, getNextPage func(context.Context, ProcessThreadInfoCollection) (ProcessThreadInfoCollection, error)) ProcessThreadInfoCollectionPage {
+	return ProcessThreadInfoCollectionPage{
+		fn:   getNextPage,
+		ptic: cur,
+	}
 }
 
 // ProcessThreadInfoProperties processThreadInfo resource specific properties
@@ -15028,8 +15133,11 @@ func (page PublicCertificateCollectionPage) Values() []PublicCertificate {
 }
 
 // Creates a new instance of the PublicCertificateCollectionPage type.
-func NewPublicCertificateCollectionPage(getNextPage func(context.Context, PublicCertificateCollection) (PublicCertificateCollection, error)) PublicCertificateCollectionPage {
-	return PublicCertificateCollectionPage{fn: getNextPage}
+func NewPublicCertificateCollectionPage(cur PublicCertificateCollection, getNextPage func(context.Context, PublicCertificateCollection) (PublicCertificateCollection, error)) PublicCertificateCollectionPage {
+	return PublicCertificateCollectionPage{
+		fn:  getNextPage,
+		pcc: cur,
+	}
 }
 
 // PublicCertificateProperties publicCertificate resource specific properties
@@ -15433,8 +15541,11 @@ func (page RecommendationCollectionPage) Values() []Recommendation {
 }
 
 // Creates a new instance of the RecommendationCollectionPage type.
-func NewRecommendationCollectionPage(getNextPage func(context.Context, RecommendationCollection) (RecommendationCollection, error)) RecommendationCollectionPage {
-	return RecommendationCollectionPage{fn: getNextPage}
+func NewRecommendationCollectionPage(cur RecommendationCollection, getNextPage func(context.Context, RecommendationCollection) (RecommendationCollection, error)) RecommendationCollectionPage {
+	return RecommendationCollectionPage{
+		fn: getNextPage,
+		rc: cur,
+	}
 }
 
 // RecommendationProperties recommendation resource specific properties
@@ -16221,8 +16332,11 @@ func (page ResourceCollectionPage) Values() []string {
 }
 
 // Creates a new instance of the ResourceCollectionPage type.
-func NewResourceCollectionPage(getNextPage func(context.Context, ResourceCollection) (ResourceCollection, error)) ResourceCollectionPage {
-	return ResourceCollectionPage{fn: getNextPage}
+func NewResourceCollectionPage(cur ResourceCollection, getNextPage func(context.Context, ResourceCollection) (ResourceCollection, error)) ResourceCollectionPage {
+	return ResourceCollectionPage{
+		fn: getNextPage,
+		rc: cur,
+	}
 }
 
 // ResourceHealthMetadata used for getting ResourceHealthCheck settings.
@@ -16474,8 +16588,11 @@ func (page ResourceHealthMetadataCollectionPage) Values() []ResourceHealthMetada
 }
 
 // Creates a new instance of the ResourceHealthMetadataCollectionPage type.
-func NewResourceHealthMetadataCollectionPage(getNextPage func(context.Context, ResourceHealthMetadataCollection) (ResourceHealthMetadataCollection, error)) ResourceHealthMetadataCollectionPage {
-	return ResourceHealthMetadataCollectionPage{fn: getNextPage}
+func NewResourceHealthMetadataCollectionPage(cur ResourceHealthMetadataCollection, getNextPage func(context.Context, ResourceHealthMetadataCollection) (ResourceHealthMetadataCollection, error)) ResourceHealthMetadataCollectionPage {
+	return ResourceHealthMetadataCollectionPage{
+		fn:   getNextPage,
+		rhmc: cur,
+	}
 }
 
 // ResourceHealthMetadataProperties resourceHealthMetadata resource specific properties
@@ -16677,8 +16794,11 @@ func (page ResourceMetricCollectionPage) Values() []ResourceMetric {
 }
 
 // Creates a new instance of the ResourceMetricCollectionPage type.
-func NewResourceMetricCollectionPage(getNextPage func(context.Context, ResourceMetricCollection) (ResourceMetricCollection, error)) ResourceMetricCollectionPage {
-	return ResourceMetricCollectionPage{fn: getNextPage}
+func NewResourceMetricCollectionPage(cur ResourceMetricCollection, getNextPage func(context.Context, ResourceMetricCollection) (ResourceMetricCollection, error)) ResourceMetricCollectionPage {
+	return ResourceMetricCollectionPage{
+		fn:  getNextPage,
+		rmc: cur,
+	}
 }
 
 // ResourceMetricDefinition metadata for the metrics.
@@ -16929,8 +17049,11 @@ func (page ResourceMetricDefinitionCollectionPage) Values() []ResourceMetricDefi
 }
 
 // Creates a new instance of the ResourceMetricDefinitionCollectionPage type.
-func NewResourceMetricDefinitionCollectionPage(getNextPage func(context.Context, ResourceMetricDefinitionCollection) (ResourceMetricDefinitionCollection, error)) ResourceMetricDefinitionCollectionPage {
-	return ResourceMetricDefinitionCollectionPage{fn: getNextPage}
+func NewResourceMetricDefinitionCollectionPage(cur ResourceMetricDefinitionCollection, getNextPage func(context.Context, ResourceMetricDefinitionCollection) (ResourceMetricDefinitionCollection, error)) ResourceMetricDefinitionCollectionPage {
+	return ResourceMetricDefinitionCollectionPage{
+		fn:   getNextPage,
+		rmdc: cur,
+	}
 }
 
 // ResourceMetricDefinitionProperties resourceMetricDefinition resource specific properties
@@ -17994,8 +18117,11 @@ func (page SiteConfigResourceCollectionPage) Values() []SiteConfigResource {
 }
 
 // Creates a new instance of the SiteConfigResourceCollectionPage type.
-func NewSiteConfigResourceCollectionPage(getNextPage func(context.Context, SiteConfigResourceCollection) (SiteConfigResourceCollection, error)) SiteConfigResourceCollectionPage {
-	return SiteConfigResourceCollectionPage{fn: getNextPage}
+func NewSiteConfigResourceCollectionPage(cur SiteConfigResourceCollection, getNextPage func(context.Context, SiteConfigResourceCollection) (SiteConfigResourceCollection, error)) SiteConfigResourceCollectionPage {
+	return SiteConfigResourceCollectionPage{
+		fn:   getNextPage,
+		scrc: cur,
+	}
 }
 
 // SiteConfigurationSnapshotInfo a snapshot of a web app configuration.
@@ -18247,8 +18373,11 @@ func (page SiteConfigurationSnapshotInfoCollectionPage) Values() []SiteConfigura
 }
 
 // Creates a new instance of the SiteConfigurationSnapshotInfoCollectionPage type.
-func NewSiteConfigurationSnapshotInfoCollectionPage(getNextPage func(context.Context, SiteConfigurationSnapshotInfoCollection) (SiteConfigurationSnapshotInfoCollection, error)) SiteConfigurationSnapshotInfoCollectionPage {
-	return SiteConfigurationSnapshotInfoCollectionPage{fn: getNextPage}
+func NewSiteConfigurationSnapshotInfoCollectionPage(cur SiteConfigurationSnapshotInfoCollection, getNextPage func(context.Context, SiteConfigurationSnapshotInfoCollection) (SiteConfigurationSnapshotInfoCollection, error)) SiteConfigurationSnapshotInfoCollectionPage {
+	return SiteConfigurationSnapshotInfoCollectionPage{
+		fn:    getNextPage,
+		scsic: cur,
+	}
 }
 
 // SiteConfigurationSnapshotInfoProperties siteConfigurationSnapshotInfo resource specific properties
@@ -18507,8 +18636,11 @@ func (page SiteExtensionInfoCollectionPage) Values() []SiteExtensionInfo {
 }
 
 // Creates a new instance of the SiteExtensionInfoCollectionPage type.
-func NewSiteExtensionInfoCollectionPage(getNextPage func(context.Context, SiteExtensionInfoCollection) (SiteExtensionInfoCollection, error)) SiteExtensionInfoCollectionPage {
-	return SiteExtensionInfoCollectionPage{fn: getNextPage}
+func NewSiteExtensionInfoCollectionPage(cur SiteExtensionInfoCollection, getNextPage func(context.Context, SiteExtensionInfoCollection) (SiteExtensionInfoCollection, error)) SiteExtensionInfoCollectionPage {
+	return SiteExtensionInfoCollectionPage{
+		fn:   getNextPage,
+		seic: cur,
+	}
 }
 
 // SiteExtensionInfoProperties siteExtensionInfo resource specific properties
@@ -19574,8 +19706,11 @@ func (page SkuInfoCollectionPage) Values() []SkuInfo {
 }
 
 // Creates a new instance of the SkuInfoCollectionPage type.
-func NewSkuInfoCollectionPage(getNextPage func(context.Context, SkuInfoCollection) (SkuInfoCollection, error)) SkuInfoCollectionPage {
-	return SkuInfoCollectionPage{fn: getNextPage}
+func NewSkuInfoCollectionPage(cur SkuInfoCollection, getNextPage func(context.Context, SkuInfoCollection) (SkuInfoCollection, error)) SkuInfoCollectionPage {
+	return SkuInfoCollectionPage{
+		fn:  getNextPage,
+		sic: cur,
+	}
 }
 
 // SkuInfos collection of SKU information.
@@ -19934,8 +20069,11 @@ func (page SlotDifferenceCollectionPage) Values() []SlotDifference {
 }
 
 // Creates a new instance of the SlotDifferenceCollectionPage type.
-func NewSlotDifferenceCollectionPage(getNextPage func(context.Context, SlotDifferenceCollection) (SlotDifferenceCollection, error)) SlotDifferenceCollectionPage {
-	return SlotDifferenceCollectionPage{fn: getNextPage}
+func NewSlotDifferenceCollectionPage(cur SlotDifferenceCollection, getNextPage func(context.Context, SlotDifferenceCollection) (SlotDifferenceCollection, error)) SlotDifferenceCollectionPage {
+	return SlotDifferenceCollectionPage{
+		fn:  getNextPage,
+		sdc: cur,
+	}
 }
 
 // SlotDifferenceProperties slotDifference resource specific properties
@@ -20223,8 +20361,11 @@ func (page SnapshotCollectionPage) Values() []Snapshot {
 }
 
 // Creates a new instance of the SnapshotCollectionPage type.
-func NewSnapshotCollectionPage(getNextPage func(context.Context, SnapshotCollection) (SnapshotCollection, error)) SnapshotCollectionPage {
-	return SnapshotCollectionPage{fn: getNextPage}
+func NewSnapshotCollectionPage(cur SnapshotCollection, getNextPage func(context.Context, SnapshotCollection) (SnapshotCollection, error)) SnapshotCollectionPage {
+	return SnapshotCollectionPage{
+		fn: getNextPage,
+		sc: cur,
+	}
 }
 
 // SnapshotProperties snapshot resource specific properties
@@ -20613,8 +20754,11 @@ func (page SourceControlCollectionPage) Values() []SourceControl {
 }
 
 // Creates a new instance of the SourceControlCollectionPage type.
-func NewSourceControlCollectionPage(getNextPage func(context.Context, SourceControlCollection) (SourceControlCollection, error)) SourceControlCollectionPage {
-	return SourceControlCollectionPage{fn: getNextPage}
+func NewSourceControlCollectionPage(cur SourceControlCollection, getNextPage func(context.Context, SourceControlCollection) (SourceControlCollection, error)) SourceControlCollectionPage {
+	return SourceControlCollectionPage{
+		fn:  getNextPage,
+		scc: cur,
+	}
 }
 
 // SourceControlProperties sourceControl resource specific properties
@@ -20846,8 +20990,11 @@ func (page StampCapacityCollectionPage) Values() []StampCapacity {
 }
 
 // Creates a new instance of the StampCapacityCollectionPage type.
-func NewStampCapacityCollectionPage(getNextPage func(context.Context, StampCapacityCollection) (StampCapacityCollection, error)) StampCapacityCollectionPage {
-	return StampCapacityCollectionPage{fn: getNextPage}
+func NewStampCapacityCollectionPage(cur StampCapacityCollection, getNextPage func(context.Context, StampCapacityCollection) (StampCapacityCollection, error)) StampCapacityCollectionPage {
+	return StampCapacityCollectionPage{
+		fn:  getNextPage,
+		scc: cur,
+	}
 }
 
 // StatusCodesBasedTrigger trigger based on status code.
@@ -21357,8 +21504,11 @@ func (page TldLegalAgreementCollectionPage) Values() []TldLegalAgreement {
 }
 
 // Creates a new instance of the TldLegalAgreementCollectionPage type.
-func NewTldLegalAgreementCollectionPage(getNextPage func(context.Context, TldLegalAgreementCollection) (TldLegalAgreementCollection, error)) TldLegalAgreementCollectionPage {
-	return TldLegalAgreementCollectionPage{fn: getNextPage}
+func NewTldLegalAgreementCollectionPage(cur TldLegalAgreementCollection, getNextPage func(context.Context, TldLegalAgreementCollection) (TldLegalAgreementCollection, error)) TldLegalAgreementCollectionPage {
+	return TldLegalAgreementCollectionPage{
+		fn:   getNextPage,
+		tlac: cur,
+	}
 }
 
 // TopLevelDomain a top level domain object.
@@ -21617,8 +21767,11 @@ func (page TopLevelDomainCollectionPage) Values() []TopLevelDomain {
 }
 
 // Creates a new instance of the TopLevelDomainCollectionPage type.
-func NewTopLevelDomainCollectionPage(getNextPage func(context.Context, TopLevelDomainCollection) (TopLevelDomainCollection, error)) TopLevelDomainCollectionPage {
-	return TopLevelDomainCollectionPage{fn: getNextPage}
+func NewTopLevelDomainCollectionPage(cur TopLevelDomainCollection, getNextPage func(context.Context, TopLevelDomainCollection) (TopLevelDomainCollection, error)) TopLevelDomainCollectionPage {
+	return TopLevelDomainCollectionPage{
+		fn:   getNextPage,
+		tldc: cur,
+	}
 }
 
 // TopLevelDomainProperties topLevelDomain resource specific properties
@@ -21875,8 +22028,11 @@ func (page TriggeredJobHistoryCollectionPage) Values() []TriggeredJobHistory {
 }
 
 // Creates a new instance of the TriggeredJobHistoryCollectionPage type.
-func NewTriggeredJobHistoryCollectionPage(getNextPage func(context.Context, TriggeredJobHistoryCollection) (TriggeredJobHistoryCollection, error)) TriggeredJobHistoryCollectionPage {
-	return TriggeredJobHistoryCollectionPage{fn: getNextPage}
+func NewTriggeredJobHistoryCollectionPage(cur TriggeredJobHistoryCollection, getNextPage func(context.Context, TriggeredJobHistoryCollection) (TriggeredJobHistoryCollection, error)) TriggeredJobHistoryCollectionPage {
+	return TriggeredJobHistoryCollectionPage{
+		fn:   getNextPage,
+		tjhc: cur,
+	}
 }
 
 // TriggeredJobHistoryProperties triggeredJobHistory resource specific properties
@@ -22245,8 +22401,11 @@ func (page TriggeredWebJobCollectionPage) Values() []TriggeredWebJob {
 }
 
 // Creates a new instance of the TriggeredWebJobCollectionPage type.
-func NewTriggeredWebJobCollectionPage(getNextPage func(context.Context, TriggeredWebJobCollection) (TriggeredWebJobCollection, error)) TriggeredWebJobCollectionPage {
-	return TriggeredWebJobCollectionPage{fn: getNextPage}
+func NewTriggeredWebJobCollectionPage(cur TriggeredWebJobCollection, getNextPage func(context.Context, TriggeredWebJobCollection) (TriggeredWebJobCollection, error)) TriggeredWebJobCollectionPage {
+	return TriggeredWebJobCollectionPage{
+		fn:   getNextPage,
+		twjc: cur,
+	}
 }
 
 // TriggeredWebJobProperties triggeredWebJob resource specific properties
@@ -22556,8 +22715,11 @@ func (page UsageCollectionPage) Values() []Usage {
 }
 
 // Creates a new instance of the UsageCollectionPage type.
-func NewUsageCollectionPage(getNextPage func(context.Context, UsageCollection) (UsageCollection, error)) UsageCollectionPage {
-	return UsageCollectionPage{fn: getNextPage}
+func NewUsageCollectionPage(cur UsageCollection, getNextPage func(context.Context, UsageCollection) (UsageCollection, error)) UsageCollectionPage {
+	return UsageCollectionPage{
+		fn: getNextPage,
+		uc: cur,
+	}
 }
 
 // UsageProperties usage resource specific properties
@@ -23668,9 +23830,6 @@ func (page WorkerPoolCollectionPage) Values() []WorkerPoolResource {
 }
 
 // Creates a new instance of the WorkerPoolCollectionPage type.
-func NewWorkerPoolCollectionPage(getNextPage func(context.Context, WorkerPoolCollection) (WorkerPoolCollection, error)) WorkerPoolCollectionPage {
-	return WorkerPoolCollectionPage{fn: getNextPage}
-}
 
 // WorkerPoolResource worker pool of an App Service Environment ARM resource.
 type WorkerPoolResource struct {

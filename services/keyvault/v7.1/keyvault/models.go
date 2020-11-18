@@ -562,8 +562,11 @@ func (page CertificateIssuerListResultPage) Values() []CertificateIssuerItem {
 }
 
 // Creates a new instance of the CertificateIssuerListResultPage type.
-func NewCertificateIssuerListResultPage(getNextPage func(context.Context, CertificateIssuerListResult) (CertificateIssuerListResult, error)) CertificateIssuerListResultPage {
-	return CertificateIssuerListResultPage{fn: getNextPage}
+func NewCertificateIssuerListResultPage(cur CertificateIssuerListResult, getNextPage func(context.Context, CertificateIssuerListResult) (CertificateIssuerListResult, error)) CertificateIssuerListResultPage {
+	return CertificateIssuerListResultPage{
+		fn:   getNextPage,
+		cilr: cur,
+	}
 }
 
 // CertificateIssuerSetParameters the certificate issuer set parameters.
@@ -762,8 +765,11 @@ func (page CertificateListResultPage) Values() []CertificateItem {
 }
 
 // Creates a new instance of the CertificateListResultPage type.
-func NewCertificateListResultPage(getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
-	return CertificateListResultPage{fn: getNextPage}
+func NewCertificateListResultPage(cur CertificateListResult, getNextPage func(context.Context, CertificateListResult) (CertificateListResult, error)) CertificateListResultPage {
+	return CertificateListResultPage{
+		fn:  getNextPage,
+		clr: cur,
+	}
 }
 
 // CertificateMergeParameters the certificate merge parameters
@@ -1122,8 +1128,11 @@ func (page DeletedCertificateListResultPage) Values() []DeletedCertificateItem {
 }
 
 // Creates a new instance of the DeletedCertificateListResultPage type.
-func NewDeletedCertificateListResultPage(getNextPage func(context.Context, DeletedCertificateListResult) (DeletedCertificateListResult, error)) DeletedCertificateListResultPage {
-	return DeletedCertificateListResultPage{fn: getNextPage}
+func NewDeletedCertificateListResultPage(cur DeletedCertificateListResult, getNextPage func(context.Context, DeletedCertificateListResult) (DeletedCertificateListResult, error)) DeletedCertificateListResultPage {
+	return DeletedCertificateListResultPage{
+		fn:   getNextPage,
+		dclr: cur,
+	}
 }
 
 // DeletedKeyBundle a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
@@ -1341,8 +1350,11 @@ func (page DeletedKeyListResultPage) Values() []DeletedKeyItem {
 }
 
 // Creates a new instance of the DeletedKeyListResultPage type.
-func NewDeletedKeyListResultPage(getNextPage func(context.Context, DeletedKeyListResult) (DeletedKeyListResult, error)) DeletedKeyListResultPage {
-	return DeletedKeyListResultPage{fn: getNextPage}
+func NewDeletedKeyListResultPage(cur DeletedKeyListResult, getNextPage func(context.Context, DeletedKeyListResult) (DeletedKeyListResult, error)) DeletedKeyListResultPage {
+	return DeletedKeyListResultPage{
+		fn:   getNextPage,
+		dklr: cur,
+	}
 }
 
 // DeletedSasDefinitionBundle a deleted SAS definition bundle consisting of its previous id, attributes and
@@ -1551,8 +1563,11 @@ func (page DeletedSasDefinitionListResultPage) Values() []DeletedSasDefinitionIt
 }
 
 // Creates a new instance of the DeletedSasDefinitionListResultPage type.
-func NewDeletedSasDefinitionListResultPage(getNextPage func(context.Context, DeletedSasDefinitionListResult) (DeletedSasDefinitionListResult, error)) DeletedSasDefinitionListResultPage {
-	return DeletedSasDefinitionListResultPage{fn: getNextPage}
+func NewDeletedSasDefinitionListResultPage(cur DeletedSasDefinitionListResult, getNextPage func(context.Context, DeletedSasDefinitionListResult) (DeletedSasDefinitionListResult, error)) DeletedSasDefinitionListResultPage {
+	return DeletedSasDefinitionListResultPage{
+		fn:    getNextPage,
+		dsdlr: cur,
+	}
 }
 
 // DeletedSecretBundle a Deleted Secret consisting of its previous id, attributes and its tags, as well as
@@ -1788,8 +1803,11 @@ func (page DeletedSecretListResultPage) Values() []DeletedSecretItem {
 }
 
 // Creates a new instance of the DeletedSecretListResultPage type.
-func NewDeletedSecretListResultPage(getNextPage func(context.Context, DeletedSecretListResult) (DeletedSecretListResult, error)) DeletedSecretListResultPage {
-	return DeletedSecretListResultPage{fn: getNextPage}
+func NewDeletedSecretListResultPage(cur DeletedSecretListResult, getNextPage func(context.Context, DeletedSecretListResult) (DeletedSecretListResult, error)) DeletedSecretListResultPage {
+	return DeletedSecretListResultPage{
+		fn:   getNextPage,
+		dslr: cur,
+	}
 }
 
 // DeletedStorageAccountItem the deleted storage account item containing metadata about the deleted storage
@@ -1998,8 +2016,11 @@ func (page DeletedStorageListResultPage) Values() []DeletedStorageAccountItem {
 }
 
 // Creates a new instance of the DeletedStorageListResultPage type.
-func NewDeletedStorageListResultPage(getNextPage func(context.Context, DeletedStorageListResult) (DeletedStorageListResult, error)) DeletedStorageListResultPage {
-	return DeletedStorageListResultPage{fn: getNextPage}
+func NewDeletedStorageListResultPage(cur DeletedStorageListResult, getNextPage func(context.Context, DeletedStorageListResult) (DeletedStorageListResult, error)) DeletedStorageListResultPage {
+	return DeletedStorageListResultPage{
+		fn:   getNextPage,
+		dslr: cur,
+	}
 }
 
 // Error the key vault server error.
@@ -2379,8 +2400,11 @@ func (page KeyListResultPage) Values() []KeyItem {
 }
 
 // Creates a new instance of the KeyListResultPage type.
-func NewKeyListResultPage(getNextPage func(context.Context, KeyListResult) (KeyListResult, error)) KeyListResultPage {
-	return KeyListResultPage{fn: getNextPage}
+func NewKeyListResultPage(cur KeyListResult, getNextPage func(context.Context, KeyListResult) (KeyListResult, error)) KeyListResultPage {
+	return KeyListResultPage{
+		fn:  getNextPage,
+		klr: cur,
+	}
 }
 
 // KeyOperationResult the key operation result.
@@ -2727,8 +2751,11 @@ func (page SasDefinitionListResultPage) Values() []SasDefinitionItem {
 }
 
 // Creates a new instance of the SasDefinitionListResultPage type.
-func NewSasDefinitionListResultPage(getNextPage func(context.Context, SasDefinitionListResult) (SasDefinitionListResult, error)) SasDefinitionListResultPage {
-	return SasDefinitionListResultPage{fn: getNextPage}
+func NewSasDefinitionListResultPage(cur SasDefinitionListResult, getNextPage func(context.Context, SasDefinitionListResult) (SasDefinitionListResult, error)) SasDefinitionListResultPage {
+	return SasDefinitionListResultPage{
+		fn:   getNextPage,
+		sdlr: cur,
+	}
 }
 
 // SasDefinitionUpdateParameters the SAS definition update parameters.
@@ -2998,8 +3025,11 @@ func (page SecretListResultPage) Values() []SecretItem {
 }
 
 // Creates a new instance of the SecretListResultPage type.
-func NewSecretListResultPage(getNextPage func(context.Context, SecretListResult) (SecretListResult, error)) SecretListResultPage {
-	return SecretListResultPage{fn: getNextPage}
+func NewSecretListResultPage(cur SecretListResult, getNextPage func(context.Context, SecretListResult) (SecretListResult, error)) SecretListResultPage {
+	return SecretListResultPage{
+		fn:  getNextPage,
+		slr: cur,
+	}
 }
 
 // SecretProperties properties of the key backing a certificate.
@@ -3350,9 +3380,6 @@ func (page StorageListResultPage) Values() []StorageAccountItem {
 }
 
 // Creates a new instance of the StorageListResultPage type.
-func NewStorageListResultPage(getNextPage func(context.Context, StorageListResult) (StorageListResult, error)) StorageListResultPage {
-	return StorageListResultPage{fn: getNextPage}
-}
 
 // StorageRestoreParameters the secret restore parameters.
 type StorageRestoreParameters struct {

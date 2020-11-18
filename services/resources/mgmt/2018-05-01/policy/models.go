@@ -296,8 +296,11 @@ func (page AssignmentListResultPage) Values() []Assignment {
 }
 
 // Creates a new instance of the AssignmentListResultPage type.
-func NewAssignmentListResultPage(getNextPage func(context.Context, AssignmentListResult) (AssignmentListResult, error)) AssignmentListResultPage {
-	return AssignmentListResultPage{fn: getNextPage}
+func NewAssignmentListResultPage(cur AssignmentListResult, getNextPage func(context.Context, AssignmentListResult) (AssignmentListResult, error)) AssignmentListResultPage {
+	return AssignmentListResultPage{
+		fn:  getNextPage,
+		alr: cur,
+	}
 }
 
 // AssignmentProperties the policy assignment properties.
@@ -543,8 +546,11 @@ func (page DefinitionListResultPage) Values() []Definition {
 }
 
 // Creates a new instance of the DefinitionListResultPage type.
-func NewDefinitionListResultPage(getNextPage func(context.Context, DefinitionListResult) (DefinitionListResult, error)) DefinitionListResultPage {
-	return DefinitionListResultPage{fn: getNextPage}
+func NewDefinitionListResultPage(cur DefinitionListResult, getNextPage func(context.Context, DefinitionListResult) (DefinitionListResult, error)) DefinitionListResultPage {
+	return DefinitionListResultPage{
+		fn:  getNextPage,
+		dlr: cur,
+	}
 }
 
 // DefinitionProperties the policy definition properties.
@@ -828,9 +834,6 @@ func (page SetDefinitionListResultPage) Values() []SetDefinition {
 }
 
 // Creates a new instance of the SetDefinitionListResultPage type.
-func NewSetDefinitionListResultPage(getNextPage func(context.Context, SetDefinitionListResult) (SetDefinitionListResult, error)) SetDefinitionListResultPage {
-	return SetDefinitionListResultPage{fn: getNextPage}
-}
 
 // SetDefinitionProperties the policy set definition properties.
 type SetDefinitionProperties struct {

@@ -370,14 +370,14 @@ func New(subscriptionID string) BaseClient {
 func NewAvailableSkusResultIterator(page AvailableSkusResultPage) AvailableSkusResultIterator {
 	return original.NewAvailableSkusResultIterator(page)
 }
-func NewAvailableSkusResultPage(getNextPage func(context.Context, AvailableSkusResult) (AvailableSkusResult, error)) AvailableSkusResultPage {
-	return original.NewAvailableSkusResultPage(getNextPage)
+func NewAvailableSkusResultPage(cur AvailableSkusResult, getNextPage func(context.Context, AvailableSkusResult) (AvailableSkusResult, error)) AvailableSkusResultPage {
+	return original.NewAvailableSkusResultPage(cur, getNextPage)
 }
 func NewJobResourceListIterator(page JobResourceListPage) JobResourceListIterator {
 	return original.NewJobResourceListIterator(page)
 }
-func NewJobResourceListPage(getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
-	return original.NewJobResourceListPage(getNextPage)
+func NewJobResourceListPage(cur JobResourceList, getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
+	return original.NewJobResourceListPage(cur, getNextPage)
 }
 func NewJobsClient(subscriptionID string) JobsClient {
 	return original.NewJobsClient(subscriptionID)
@@ -387,9 +387,6 @@ func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient 
 }
 func NewOperationListIterator(page OperationListPage) OperationListIterator {
 	return original.NewOperationListIterator(page)
-}
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return original.NewOperationListPage(getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)

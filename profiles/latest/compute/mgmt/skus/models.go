@@ -19,11 +19,7 @@
 
 package skus
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-09-01/skus"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-09-01/skus"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
@@ -75,9 +71,6 @@ func NewResourceSkusClientWithBaseURI(baseURI string, subscriptionID string) Res
 }
 func NewResourceSkusResultIterator(page ResourceSkusResultPage) ResourceSkusResultIterator {
 	return original.NewResourceSkusResultIterator(page)
-}
-func NewResourceSkusResultPage(getNextPage func(context.Context, ResourceSkusResult) (ResourceSkusResult, error)) ResourceSkusResultPage {
-	return original.NewResourceSkusResultPage(getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)

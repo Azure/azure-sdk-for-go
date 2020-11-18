@@ -281,8 +281,11 @@ func (page AlertListPage) Values() []Alert {
 }
 
 // Creates a new instance of the AlertListPage type.
-func NewAlertListPage(getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
-	return AlertListPage{fn: getNextPage}
+func NewAlertListPage(cur AlertList, getNextPage func(context.Context, AlertList) (AlertList, error)) AlertListPage {
+	return AlertListPage{
+		fn: getNextPage,
+		al: cur,
+	}
 }
 
 // AlertProperties properties of alert.
@@ -634,8 +637,11 @@ func (page BandwidthSchedulesListPage) Values() []BandwidthSchedule {
 }
 
 // Creates a new instance of the BandwidthSchedulesListPage type.
-func NewBandwidthSchedulesListPage(getNextPage func(context.Context, BandwidthSchedulesList) (BandwidthSchedulesList, error)) BandwidthSchedulesListPage {
-	return BandwidthSchedulesListPage{fn: getNextPage}
+func NewBandwidthSchedulesListPage(cur BandwidthSchedulesList, getNextPage func(context.Context, BandwidthSchedulesList) (BandwidthSchedulesList, error)) BandwidthSchedulesListPage {
+	return BandwidthSchedulesListPage{
+		fn:  getNextPage,
+		bsl: cur,
+	}
 }
 
 // ClientAccessRight the mapping between a particular client IP and the type of access client has on the NFS
@@ -900,8 +906,11 @@ func (page ContainerListPage) Values() []Container {
 }
 
 // Creates a new instance of the ContainerListPage type.
-func NewContainerListPage(getNextPage func(context.Context, ContainerList) (ContainerList, error)) ContainerListPage {
-	return ContainerListPage{fn: getNextPage}
+func NewContainerListPage(cur ContainerList, getNextPage func(context.Context, ContainerList) (ContainerList, error)) ContainerListPage {
+	return ContainerListPage{
+		fn: getNextPage,
+		cl: cur,
+	}
 }
 
 // ContainerProperties the container properties.
@@ -1375,8 +1384,11 @@ func (page DeviceListPage) Values() []Device {
 }
 
 // Creates a new instance of the DeviceListPage type.
-func NewDeviceListPage(getNextPage func(context.Context, DeviceList) (DeviceList, error)) DeviceListPage {
-	return DeviceListPage{fn: getNextPage}
+func NewDeviceListPage(cur DeviceList, getNextPage func(context.Context, DeviceList) (DeviceList, error)) DeviceListPage {
+	return DeviceListPage{
+		fn: getNextPage,
+		dl: cur,
+	}
 }
 
 // DevicePatch the Data Box Edge/Gateway device patch.
@@ -2566,8 +2578,11 @@ func (page OperationsListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationsListPage type.
-func NewOperationsListPage(getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
-	return OperationsListPage{fn: getNextPage}
+func NewOperationsListPage(cur OperationsList, getNextPage func(context.Context, OperationsList) (OperationsList, error)) OperationsListPage {
+	return OperationsListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // Order the order details.
@@ -2795,8 +2810,11 @@ func (page OrderListPage) Values() []Order {
 }
 
 // Creates a new instance of the OrderListPage type.
-func NewOrderListPage(getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
-	return OrderListPage{fn: getNextPage}
+func NewOrderListPage(cur OrderList, getNextPage func(context.Context, OrderList) (OrderList, error)) OrderListPage {
+	return OrderListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // OrderProperties order properties.
@@ -3344,8 +3362,11 @@ func (page RoleListPage) Values() []BasicRole {
 }
 
 // Creates a new instance of the RoleListPage type.
-func NewRoleListPage(getNextPage func(context.Context, RoleList) (RoleList, error)) RoleListPage {
-	return RoleListPage{fn: getNextPage}
+func NewRoleListPage(cur RoleList, getNextPage func(context.Context, RoleList) (RoleList, error)) RoleListPage {
+	return RoleListPage{
+		fn: getNextPage,
+		rl: cur,
+	}
 }
 
 // RoleModel ...
@@ -3740,8 +3761,11 @@ func (page ShareListPage) Values() []Share {
 }
 
 // Creates a new instance of the ShareListPage type.
-func NewShareListPage(getNextPage func(context.Context, ShareList) (ShareList, error)) ShareListPage {
-	return ShareListPage{fn: getNextPage}
+func NewShareListPage(cur ShareList, getNextPage func(context.Context, ShareList) (ShareList, error)) ShareListPage {
+	return ShareListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
 }
 
 // ShareProperties the share properties.
@@ -4230,8 +4254,11 @@ func (page StorageAccountCredentialListPage) Values() []StorageAccountCredential
 }
 
 // Creates a new instance of the StorageAccountCredentialListPage type.
-func NewStorageAccountCredentialListPage(getNextPage func(context.Context, StorageAccountCredentialList) (StorageAccountCredentialList, error)) StorageAccountCredentialListPage {
-	return StorageAccountCredentialListPage{fn: getNextPage}
+func NewStorageAccountCredentialListPage(cur StorageAccountCredentialList, getNextPage func(context.Context, StorageAccountCredentialList) (StorageAccountCredentialList, error)) StorageAccountCredentialListPage {
+	return StorageAccountCredentialListPage{
+		fn:   getNextPage,
+		sacl: cur,
+	}
 }
 
 // StorageAccountCredentialProperties the storage account credential properties.
@@ -4458,8 +4485,11 @@ func (page StorageAccountListPage) Values() []StorageAccount {
 }
 
 // Creates a new instance of the StorageAccountListPage type.
-func NewStorageAccountListPage(getNextPage func(context.Context, StorageAccountList) (StorageAccountList, error)) StorageAccountListPage {
-	return StorageAccountListPage{fn: getNextPage}
+func NewStorageAccountListPage(cur StorageAccountList, getNextPage func(context.Context, StorageAccountList) (StorageAccountList, error)) StorageAccountListPage {
+	return StorageAccountListPage{
+		fn:  getNextPage,
+		sal: cur,
+	}
 }
 
 // StorageAccountProperties the storage account properties.
@@ -4841,8 +4871,11 @@ func (page TriggerListPage) Values() []BasicTrigger {
 }
 
 // Creates a new instance of the TriggerListPage type.
-func NewTriggerListPage(getNextPage func(context.Context, TriggerList) (TriggerList, error)) TriggerListPage {
-	return TriggerListPage{fn: getNextPage}
+func NewTriggerListPage(cur TriggerList, getNextPage func(context.Context, TriggerList) (TriggerList, error)) TriggerListPage {
+	return TriggerListPage{
+		fn: getNextPage,
+		tl: cur,
+	}
 }
 
 // TriggerModel ...
@@ -5370,9 +5403,6 @@ func (page UserListPage) Values() []User {
 }
 
 // Creates a new instance of the UserListPage type.
-func NewUserListPage(getNextPage func(context.Context, UserList) (UserList, error)) UserListPage {
-	return UserListPage{fn: getNextPage}
-}
 
 // UserProperties the user properties.
 type UserProperties struct {

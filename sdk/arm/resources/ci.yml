@@ -10,6 +10,6 @@ pr:
     - sdk/arm/resources/
 
 stages:
-- template: ../../../.eng/pipelines/templates/jobs/archetype-sdk-client-samples.yml
+- template: ../../../eng/pipelines/templates/jobs/archetype-sdk-client-samples.yml
   parameters:
-    ServiceDirectory: 'resources'
+    ServiceDirectory: 'arm/resources'

@@ -10,6 +10,6 @@ pr:
     - sdk/arm/keyvault/
 
 stages:
-- template: ../../../.eng/pipelines/templates/jobs/archetype-sdk-client-samples.yml
+- template: ../../../eng/pipelines/templates/jobs/archetype-sdk-client-samples.yml
   parameters:
-    ServiceDirectory: 'keyvault'
+    ServiceDirectory: 'arm/keyvault'

@@ -6,6 +6,7 @@
 package armcore
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -452,6 +453,8 @@ func (pt *pollingTrackerBase) updateRawBody() error {
 			pt.Err = err
 			return pt.Err
 		}
+		// put the body back so it's available to other callers
+		pt.resp.Body = ioutil.NopCloser(bytes.NewReader(b))
 		// observed in 204 responses over HTTP/2.0; the content length is -1 but body is empty
 		if len(b) == 0 {
 			return nil

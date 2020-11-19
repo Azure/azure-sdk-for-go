@@ -2,7 +2,6 @@ package changelog
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
@@ -22,7 +21,6 @@ func NewChangelogForPackage(pkgDir string) (c *Changelog, err error) {
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("Exports of package '%s': %+v", pkgDir, rhs)
 	// stash everything and get the previous status of the package
 	if err := stashEverything(); err != nil {
 		return nil, err
@@ -36,7 +34,6 @@ func NewChangelogForPackage(pkgDir string) (c *Changelog, err error) {
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("Exports of original package '%s': %+v", pkgDir, lhs)
 	return getChangelogForPackage(pkgDir, lhs, rhs)
 }
 

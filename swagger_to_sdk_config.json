@@ -4,6 +4,7 @@
     "generateScript": {
       "path": "go run ./tools/generator/main.go",
       "stderr": {
+        "showInComment": "^\\[AUTOREST\\]",
         "scriptError": "^\\[ERROR\\]",
         "scriptWarning": "^\\[WARNING\\]"
       }

@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/changelog"
 	"log"
 	"os"
 	"os/exec"
@@ -11,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/changelog"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/model"
 	"github.com/spf13/cobra"
 )
@@ -109,7 +109,7 @@ func generate(input *model.GenerateInput, optionPath string) (*model.GenerateOut
 	log.Printf("Autorest options: \n%s", options.String())
 
 	// iterate over all the readme
-	var results []model.PackageResult
+	results := make([]model.PackageResult, 0)
 	for _, readme := range input.RelatedReadmeMdFiles {
 		log.Printf("Processing readme '%s'...", readme)
 		task := autorest.Task{

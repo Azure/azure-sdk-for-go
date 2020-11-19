@@ -50,7 +50,7 @@ type InstallInstructionScriptInput struct {
 
 // GenerateOutput ...
 type GenerateOutput struct {
-	Packages []PackageResult `json:"packages,omitempty"`
+	Packages []PackageResult `json:"packages"`
 }
 
 // String ...

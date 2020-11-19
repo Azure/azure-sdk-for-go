@@ -378,8 +378,11 @@ func (page AvailableSkusResultPage) Values() []SkuInformation {
 }
 
 // Creates a new instance of the AvailableSkusResultPage type.
-func NewAvailableSkusResultPage(getNextPage func(context.Context, AvailableSkusResult) (AvailableSkusResult, error)) AvailableSkusResultPage {
-	return AvailableSkusResultPage{fn: getNextPage}
+func NewAvailableSkusResultPage(cur AvailableSkusResult, getNextPage func(context.Context, AvailableSkusResult) (AvailableSkusResult, error)) AvailableSkusResultPage {
+	return AvailableSkusResultPage{
+		fn:  getNextPage,
+		asr: cur,
+	}
 }
 
 // CancellationReason reason for cancellation.
@@ -2887,8 +2890,11 @@ func (page JobResourceListPage) Values() []JobResource {
 }
 
 // Creates a new instance of the JobResourceListPage type.
-func NewJobResourceListPage(getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
-	return JobResourceListPage{fn: getNextPage}
+func NewJobResourceListPage(cur JobResourceList, getNextPage func(context.Context, JobResourceList) (JobResourceList, error)) JobResourceListPage {
+	return JobResourceListPage{
+		fn:  getNextPage,
+		jrl: cur,
+	}
 }
 
 // JobResourceUpdateParameter the JobResourceUpdateParameter.
@@ -3381,8 +3387,11 @@ func (page OperationListPage) Values() []Operation {
 }
 
 // Creates a new instance of the OperationListPage type.
-func NewOperationListPage(getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
-	return OperationListPage{fn: getNextPage}
+func NewOperationListPage(cur OperationList, getNextPage func(context.Context, OperationList) (OperationList, error)) OperationListPage {
+	return OperationListPage{
+		fn: getNextPage,
+		ol: cur,
+	}
 }
 
 // PackageShippingDetails shipping details.
@@ -3704,7 +3713,8 @@ func (sar ScheduleAvailabilityRequest) AsBasicScheduleAvailabilityRequest() (Bas
 	return &sar, true
 }
 
-// ScheduleAvailabilityRequestType request body to get the availability for scheduling data box orders orders.
+// ScheduleAvailabilityRequestType request body to get the availability for scheduling data box orders
+// orders.
 type ScheduleAvailabilityRequestType struct {
 	// StorageLocation - Location for data transfer.
 	// For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
@@ -4123,8 +4133,8 @@ func (siatcjvr SubscriptionIsAllowedToCreateJobValidationRequest) AsBasicValidat
 	return &siatcjvr, true
 }
 
-// SubscriptionIsAllowedToCreateJobValidationResponseProperties properties of subscription permission to create
-// job validation response.
+// SubscriptionIsAllowedToCreateJobValidationResponseProperties properties of subscription permission to
+// create job validation response.
 type SubscriptionIsAllowedToCreateJobValidationResponseProperties struct {
 	// Status - READ-ONLY; Validation status of subscription permission to create job. Possible values include: 'ValidationStatusValid', 'ValidationStatusInvalid', 'ValidationStatusSkipped'
 	Status ValidationStatus `json:"status,omitempty"`

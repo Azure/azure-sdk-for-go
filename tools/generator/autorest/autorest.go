@@ -55,14 +55,14 @@ func (t *Task) executeAutorest(options []string) error {
 	go func() {
 		for errScanner.Scan() {
 			line := errScanner.Text()
-			fmt.Fprintln(os.Stderr, "[AUTOREST] " + line)
+			fmt.Fprintln(os.Stderr, "[AUTOREST] "+line)
 		}
 	}()
 
 	go func() {
 		for outScanner.Scan() {
 			line := outScanner.Text()
-			fmt.Fprintln(os.Stdout, "[AUTOREST] " + line)
+			fmt.Fprintln(os.Stdout, "[AUTOREST] "+line)
 		}
 	}()
 

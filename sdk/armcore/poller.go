@@ -458,7 +458,8 @@ func (pt *pollingTrackerBase) updateRawBody() error {
 		if seeker, ok := pt.resp.Body.(io.Seeker); ok {
 			_, err = seeker.Seek(0, io.SeekStart)
 			if err != nil {
-				return err
+				pt.Err = err
+				return pt.Err
 			}
 		} else {
 			// put the body back so it's available to other callers

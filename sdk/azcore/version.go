@@ -9,6 +9,6 @@ const (
 	// UserAgent is the string to be used in the user agent string when making requests.
 	UserAgent = "azcore/" + Version
 
-	// Version is the semantic version (see http://semver.org) of the pipeline package.
-	Version = "0.13.0"
+	// Version is the semantic version (see http://semver.org) of this module.
+	Version = "v0.13.4"
 )

@@ -64,6 +64,8 @@ func NewTelemetryPolicy(o *TelemetryOptions) Policy {
 		b.WriteString(o.Value)
 		b.WriteRune(' ')
 	}
+	b.WriteString(UserAgent)
+	b.WriteRune(' ')
 	b.WriteString(platformInfo)
 	tp.telemetryValue = b.String()
 	return &tp

@@ -32,9 +32,11 @@ func (r *Response) payload() ([]byte, error) {
 		return buf.Bytes(), nil
 	}
 	bytesBody, err := ioutil.ReadAll(r.Body)
+	r.Body.Close()
 	if err != nil {
 		return nil, err
 	}
+	r.Body = &nopClosingBytesReader{s: bytesBody, i: 0}
 	return bytesBody, nil
 }
 
@@ -139,6 +141,7 @@ func (r *Response) Drain() {
 }
 
 // removeBOM removes any byte-order mark prefix from the payload if present.
+// NOTE: you MUST call payload() before calling this method
 func (r *Response) removeBOM() error {
 	payload, err := r.payload()
 	if err != nil {

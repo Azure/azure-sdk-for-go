@@ -68,7 +68,10 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteredResp)))
 	// response for original request (different status code than any of the other responses)
 	srv.AppendResponse(mock.WithStatusCode(http.StatusAccepted))
-	pl := azcore.NewPipeline(srv, NewRPRegistrationPolicy(srv.URL(), azcore.AnonymousCredential(), testRPRegistrationOptions(srv)))
+	opt := DefaultConnectionOptions()
+	opt.HTTPClient = srv
+	opt.RegisterRPOptions = *testRPRegistrationOptions(srv)
+	con := NewConnection(srv.URL(), mockTokenCred{}, &opt)
 	req, err := azcore.NewRequest(context.Background(), http.MethodGet, azcore.JoinPaths(srv.URL(), requestEndpoint))
 	if err != nil {
 		t.Fatal(err)
@@ -83,7 +86,7 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
 		logEntries++
 	})
-	resp, err := pl.Do(req)
+	resp, err := con.Pipeline().Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -100,6 +103,9 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 	// 4th is for end
 	if logEntries != 4 {
 		t.Fatalf("expected 4 log entries, got %d", logEntries)
+	}
+	if ua := resp.Request.Header.Get(azcore.HeaderUserAgent); !strings.HasPrefix(ua, UserAgent) {
+		t.Fatalf("unexpected User-Agent %s", ua)
 	}
 }
 

@@ -49,6 +49,10 @@ type RegistrationOptions struct {
 	// Retry configures the built-in retry policy behavior.
 	// Defaults to azcore.DefaultRetryOptions()
 	Retry azcore.RetryOptions
+
+	// Telemetry configures the built-in telemetry policy behavior.
+	// Defaults to azcore.DefaultTelemetryOptions()
+	Telemetry azcore.TelemetryOptions
 }
 
 // DefaultRegistrationOptions returns an instance of RegistrationOptions initialized with default values.
@@ -58,6 +62,7 @@ func DefaultRegistrationOptions() RegistrationOptions {
 		PollingDelay:    15 * time.Second,
 		PollingDuration: 5 * time.Minute,
 		Retry:           azcore.DefaultRetryOptions(),
+		Telemetry:       azcore.DefaultTelemetryOptions(),
 	}
 }
 
@@ -72,6 +77,7 @@ func NewRPRegistrationPolicy(endpoint string, cred azcore.Credential, o *Registr
 		o = &def
 	}
 	p := azcore.NewPipeline(o.HTTPClient,
+		azcore.NewTelemetryPolicy(&o.Telemetry),
 		azcore.NewRetryPolicy(&o.Retry),
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
 		azcore.NewLogPolicy(nil))

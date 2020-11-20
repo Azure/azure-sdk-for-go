@@ -484,7 +484,8 @@ func (client VirtualMachineScaleSetVMsClient) ListComplete(ctx context.Context, 
 	return
 }
 
-// PerformMaintenance performs maintenance on a virtual machine in a VM scale set.
+// PerformMaintenance shuts down the virtual machine in a VMScaleSet, moves it to an already updated node, and powers
+// it back on during the self-service phase of planned maintenance.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // VMScaleSetName - the name of the VM scale set.

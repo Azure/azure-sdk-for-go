@@ -55,6 +55,11 @@ type aadIdentityClient struct {
 // will be used to retrieve tokens and authenticate
 func newAADIdentityClient(authorityHost string, options pipelineOptions) (*aadIdentityClient, error) {
 	logEnvVars()
+	if options.Telemetry.Value == "" {
+		options.Telemetry.Value = UserAgent
+	} else {
+		options.Telemetry.Value += " " + UserAgent
+	}
 	return &aadIdentityClient{authorityHost: authorityHost, pipeline: newDefaultPipeline(options)}, nil
 }
 

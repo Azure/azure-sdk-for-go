@@ -186,7 +186,11 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 			http.StatusNotExtended,                    // 510
 			http.StatusNetworkAuthenticationRequired), // 511
 	}
-
+	if o.Telemetry.Value == "" {
+		o.Telemetry.Value = UserAgent
+	} else {
+		o.Telemetry.Value += " " + UserAgent
+	}
 	return azcore.NewPipeline(
 		o.HTTPClient,
 		azcore.NewTelemetryPolicy(&o.Telemetry),

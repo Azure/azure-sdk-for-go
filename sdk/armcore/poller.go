@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -453,8 +454,16 @@ func (pt *pollingTrackerBase) updateRawBody() error {
 			pt.Err = err
 			return pt.Err
 		}
-		// put the body back so it's available to other callers
-		pt.resp.Body = ioutil.NopCloser(bytes.NewReader(b))
+		// seek back to the beginning of the body or reassign the information to the body
+		if seeker, ok := pt.resp.Body.(io.Seeker); ok {
+			_, err = seeker.Seek(0, io.SeekStart)
+			if err != nil {
+				return err
+			}
+		} else {
+			// put the body back so it's available to other callers
+			pt.resp.Body = ioutil.NopCloser(bytes.NewReader(b))
+		}
 		// observed in 204 responses over HTTP/2.0; the content length is -1 but body is empty
 		if len(b) == 0 {
 			return nil

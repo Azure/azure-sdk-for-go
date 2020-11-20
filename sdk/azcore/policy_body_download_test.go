@@ -7,6 +7,7 @@ package azcore
 
 import (
 	"context"
+	"io"
 	"net/http"
 	"testing"
 
@@ -28,11 +29,15 @@ func TestDownloadBody(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(resp.payload()) == 0 {
+	payload, err := resp.payload()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(payload) == 0 {
 		t.Fatal("missing payload")
 	}
-	if string(resp.payload()) != message {
-		t.Fatalf("unexpected response: %s", string(resp.payload()))
+	if string(payload) != message {
+		t.Fatalf("unexpected response: %s", string(payload))
 	}
 }
 
@@ -52,8 +57,12 @@ func TestSkipBodyDownload(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(resp.payload()) > 0 {
-		t.Fatalf("unexpected download: %s", string(resp.payload()))
+	payload, err := resp.payload()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if string(payload) != message {
+		t.Fatalf("unexpected body: %s", string(payload))
 	}
 }
 
@@ -71,7 +80,11 @@ func TestDownloadBodyFail(t *testing.T) {
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
-	if resp.payload() != nil {
+	payload, err := resp.payload()
+	if err == nil {
+		t.Fatalf("expected an error")
+	}
+	if payload != nil {
 		t.Fatal("expected nil payload")
 	}
 }
@@ -93,11 +106,15 @@ func TestDownloadBodyWithRetryGet(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(resp.payload()) == 0 {
+	payload, err := resp.payload()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(payload) == 0 {
 		t.Fatal("missing payload")
 	}
-	if string(resp.payload()) != message {
-		t.Fatalf("unexpected response: %s", string(resp.payload()))
+	if string(payload) != message {
+		t.Fatalf("unexpected response: %s", string(payload))
 	}
 	if r := srv.Requests(); r != 3 {
 		t.Fatalf("expected %d requests, got %d", 3, r)
@@ -121,11 +138,15 @@ func TestDownloadBodyWithRetryDelete(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(resp.payload()) == 0 {
+	payload, err := resp.payload()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(payload) == 0 {
 		t.Fatal("missing payload")
 	}
-	if string(resp.payload()) != message {
-		t.Fatalf("unexpected response: %s", string(resp.payload()))
+	if string(payload) != message {
+		t.Fatalf("unexpected response: %s", string(payload))
 	}
 	if r := srv.Requests(); r != 3 {
 		t.Fatalf("expected %d requests, got %d", 3, r)
@@ -149,11 +170,15 @@ func TestDownloadBodyWithRetryPut(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(resp.payload()) == 0 {
+	payload, err := resp.payload()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(payload) == 0 {
 		t.Fatal("missing payload")
 	}
-	if string(resp.payload()) != message {
-		t.Fatalf("unexpected response: %s", string(resp.payload()))
+	if string(payload) != message {
+		t.Fatalf("unexpected response: %s", string(payload))
 	}
 	if r := srv.Requests(); r != 3 {
 		t.Fatalf("expected %d requests, got %d", 3, r)
@@ -180,7 +205,11 @@ func TestDownloadBodyWithRetryPatch(t *testing.T) {
 	if _, ok := err.(*bodyDownloadError); !ok {
 		t.Fatal("expected *bodyDownloadError type")
 	}
-	if len(resp.payload()) != 0 {
+	payload, err := resp.payload()
+	if err == nil {
+		t.Fatalf("expected an error")
+	}
+	if len(payload) != 0 {
 		t.Fatal("unexpected payload")
 	}
 	// should be only one request, no retires
@@ -206,10 +235,11 @@ func TestDownloadBodyWithRetryPost(t *testing.T) {
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
-	if _, ok := err.(*bodyDownloadError); !ok {
-		t.Fatal("expected *bodyDownloadError type")
+	payload, err := resp.payload()
+	if err == nil {
+		t.Fatalf("expected an error")
 	}
-	if len(resp.payload()) != 0 {
+	if len(payload) != 0 {
 		t.Fatal("unexpected payload")
 	}
 	// should be only one request, no retires
@@ -234,10 +264,64 @@ func TestSkipBodyDownloadWith400(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if len(resp.payload()) == 0 {
+	payload, err := resp.payload()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(payload) == 0 {
 		t.Fatal("missing payload")
 	}
-	if string(resp.payload()) != message {
-		t.Fatalf("unexpected response: %s", string(resp.payload()))
+	if string(payload) != message {
+		t.Fatalf("unexpected response: %s", string(payload))
+	}
+}
+
+func TestReadBodyAfterSeek(t *testing.T) {
+	const message = "downloaded"
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(message)))
+	srv.AppendResponse(mock.WithBody([]byte(message)))
+	// download policy is automatically added during pipeline construction
+	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	payload, err := resp.payload()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if string(payload) != message {
+		t.Fatal("incorrect payload")
+	}
+	nb, ok := resp.Body.(*nopClosingBytesReader)
+	if !ok {
+		t.Fatalf("unexpected body type: %t", resp.Body)
+	}
+	i, err := nb.Seek(0, io.SeekStart)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if i != 0 {
+		t.Fatalf("did not seek correctly")
+	}
+	i, err = nb.Seek(5, io.SeekCurrent)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if i != 5 {
+		t.Fatalf("did not seek correctly")
+	}
+	i, err = nb.Seek(5, io.SeekCurrent)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if i != 10 {
+		t.Fatalf("did not seek correctly")
 	}
 }

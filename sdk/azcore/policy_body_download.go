@@ -6,6 +6,7 @@
 package azcore
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -71,7 +72,7 @@ type bodyDownloadPolicyOpValues struct {
 	skip bool
 }
 
-// nopClosingBytesReader is an io.ReadCloser around a byte slice.
+// nopClosingBytesReader is an io.ReadSeekCloser around a byte slice.
 // It also provides direct access to the byte slice.
 type nopClosingBytesReader struct {
 	s []byte
@@ -102,4 +103,24 @@ func (r *nopClosingBytesReader) Read(b []byte) (n int, err error) {
 func (r *nopClosingBytesReader) Set(b []byte) {
 	r.s = b
 	r.i = 0
+}
+
+// Seek implements the io.Seeker interface.
+func (r *nopClosingBytesReader) Seek(offset int64, whence int) (int64, error) {
+	var i int64
+	switch whence {
+	case io.SeekStart:
+		i = offset
+	case io.SeekCurrent:
+		i = r.i + offset
+	case io.SeekEnd:
+		i = int64(len(r.s)) + offset
+	default:
+		return 0, errors.New("nopClosingBytesReader: invalid whence")
+	}
+	if i < 0 {
+		return 0, errors.New("nopClosingBytesReader: negative position")
+	}
+	r.i = i
+	return i, nil
 }

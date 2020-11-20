@@ -26,15 +26,18 @@ type Response struct {
 	*http.Response
 }
 
-func (r *Response) payload() []byte {
-	if r.Body == nil {
-		return nil
-	}
+func (r *Response) payload() ([]byte, error) {
 	// r.Body won't be a nopClosingBytesReader if downloading was skipped
 	if buf, ok := r.Body.(*nopClosingBytesReader); ok {
-		return buf.Bytes()
+		return buf.Bytes(), nil
 	}
-	return nil
+	bytesBody, err := ioutil.ReadAll(r.Body)
+	r.Body.Close()
+	if err != nil {
+		return nil, err
+	}
+	r.Body = &nopClosingBytesReader{s: bytesBody, i: 0}
+	return bytesBody, nil
 }
 
 // HasStatusCode returns true if the Response's status code is one of the specified values.
@@ -52,10 +55,14 @@ func (r *Response) HasStatusCode(statusCodes ...int) bool {
 
 // UnmarshalAsByteArray will base-64 decode the received payload and place the result into the value pointed to by v.
 func (r *Response) UnmarshalAsByteArray(v **[]byte, format Base64Encoding) error {
-	if len(r.payload()) == 0 {
+	p, err := r.payload()
+	if err != nil {
+		return err
+	}
+	if len(p) == 0 {
 		return nil
 	}
-	payload := string(r.payload())
+	payload := string(p)
 	if payload[0] == '"' {
 		// remove surrounding quotes
 		payload = payload[1 : len(payload)-1]
@@ -84,12 +91,19 @@ func (r *Response) UnmarshalAsByteArray(v **[]byte, format Base64Encoding) error
 // UnmarshalAsJSON calls json.Unmarshal() to unmarshal the received payload into the value pointed to by v.
 // If no payload was received a RequestError is returned.  If json.Unmarshal fails a UnmarshalError is returned.
 func (r *Response) UnmarshalAsJSON(v interface{}) error {
+	payload, err := r.payload()
+	if err != nil {
+		return err
+	}
 	// TODO: verify early exit is correct
-	if len(r.payload()) == 0 {
+	if len(payload) == 0 {
 		return nil
 	}
-	r.removeBOM()
-	err := json.Unmarshal(r.payload(), v)
+	err = r.removeBOM()
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(payload, v)
 	if err != nil {
 		err = fmt.Errorf("unmarshalling type %s: %w", reflect.TypeOf(v).Elem().Name(), err)
 	}
@@ -99,12 +113,19 @@ func (r *Response) UnmarshalAsJSON(v interface{}) error {
 // UnmarshalAsXML calls xml.Unmarshal() to unmarshal the received payload into the value pointed to by v.
 // If no payload was received a RequestError is returned.  If xml.Unmarshal fails a UnmarshalError is returned.
 func (r *Response) UnmarshalAsXML(v interface{}) error {
+	payload, err := r.payload()
+	if err != nil {
+		return err
+	}
 	// TODO: verify early exit is correct
-	if len(r.payload()) == 0 {
+	if len(payload) == 0 {
 		return nil
 	}
-	r.removeBOM()
-	err := xml.Unmarshal(r.payload(), v)
+	err = r.removeBOM()
+	if err != nil {
+		return err
+	}
+	err = xml.Unmarshal(payload, v)
 	if err != nil {
 		err = fmt.Errorf("unmarshalling type %s: %w", reflect.TypeOf(v).Elem().Name(), err)
 	}
@@ -120,12 +141,17 @@ func (r *Response) Drain() {
 }
 
 // removeBOM removes any byte-order mark prefix from the payload if present.
-func (r *Response) removeBOM() {
+func (r *Response) removeBOM() error {
+	payload, err := r.payload()
+	if err != nil {
+		return err
+	}
 	// UTF8
-	trimmed := bytes.TrimPrefix(r.payload(), []byte("\xef\xbb\xbf"))
-	if len(trimmed) < len(r.payload()) {
+	trimmed := bytes.TrimPrefix(payload, []byte("\xef\xbb\xbf"))
+	if len(trimmed) < len(payload) {
 		r.Body.(*nopClosingBytesReader).Set(trimmed)
 	}
+	return nil
 }
 
 // helper to reduce nil Response checks

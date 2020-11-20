@@ -83,6 +83,32 @@ func TestResponseUnmarshalJSON(t *testing.T) {
 	}
 }
 
+func TestResponseUnmarshalJSONskipDownload(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithBody([]byte(`{ "someInt": 1, "someString": "s" }`)))
+	pl := NewPipeline(srv)
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	req.SkipBodyDownload()
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	var tx testJSON
+	if err := resp.UnmarshalAsJSON(&tx); err != nil {
+		t.Fatalf("unexpected error unmarshalling: %v", err)
+	}
+	if tx.SomeInt != 1 || tx.SomeString != "s" {
+		t.Fatal("unexpected value")
+	}
+}
+
 func TestResponseUnmarshalJSONNoBody(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()

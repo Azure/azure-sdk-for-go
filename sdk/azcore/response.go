@@ -141,7 +141,6 @@ func (r *Response) Drain() {
 }
 
 // removeBOM removes any byte-order mark prefix from the payload if present.
-// NOTE: you MUST call payload() before calling this method
 func (r *Response) removeBOM() error {
 	payload, err := r.payload()
 	if err != nil {

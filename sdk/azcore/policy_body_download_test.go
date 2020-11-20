@@ -303,32 +303,25 @@ func TestReadBodyAfterSeek(t *testing.T) {
 	if !ok {
 		t.Fatalf("unexpected body type: %t", resp.Body)
 	}
-	_, err = nb.Seek(0, io.SeekStart)
+	i, err := nb.Seek(0, io.SeekStart)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if nb.i != 0 {
+	if i != 0 {
 		t.Fatalf("did not seek correctly")
 	}
-	_, err = nb.Seek(5, io.SeekCurrent)
+	i, err = nb.Seek(5, io.SeekCurrent)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if nb.i != 5 {
+	if i != 5 {
 		t.Fatalf("did not seek correctly")
 	}
-	_, err = nb.Seek(5, io.SeekCurrent)
+	i, err = nb.Seek(5, io.SeekCurrent)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if nb.i != 10 {
+	if i != 10 {
 		t.Fatalf("did not seek correctly")
 	}
-	// payload, err = resp.payload()
-	// if err != nil {
-	// 	t.Fatalf("unexpected error: %v", err)
-	// }
-	// if string(payload) != message {
-	// 	t.Fatalf("unexpected response: %s", string(payload))
-	// }
 }

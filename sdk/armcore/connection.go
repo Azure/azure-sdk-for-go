@@ -63,6 +63,11 @@ func NewConnection(endpoint string, cred azcore.TokenCredential, options *Connec
 		o := DefaultConnectionOptions()
 		options = &o
 	}
+	if options.Telemetry.Value == "" {
+		options.Telemetry.Value = UserAgent
+	} else {
+		options.Telemetry.Value += " " + UserAgent
+	}
 	p := azcore.NewPipeline(options.HTTPClient,
 		azcore.NewTelemetryPolicy(&options.Telemetry),
 		NewRPRegistrationPolicy(endpoint, cred, &options.RegisterRPOptions),

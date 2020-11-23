@@ -19,13 +19,7 @@ import (
 	"strings"
 )
 
-// SKUsOperations contains the methods for the SKUs group.
-type SKUsOperations interface {
-	// List - Lists the available SKUs supported by Microsoft.Storage for given subscription.
-	List(ctx context.Context, options *SKUsListOptions) (*StorageSKUListResultResponse, error)
-}
-
-// SKUsClient implements the SKUsOperations interface.
+// SKUsClient contains the methods for the SKUs group.
 // Don't use this type directly, use NewSKUsClient() instead.
 type SKUsClient struct {
 	con            *armcore.Connection
@@ -33,18 +27,18 @@ type SKUsClient struct {
 }
 
 // NewSKUsClient creates a new instance of SKUsClient with the specified values.
-func NewSKUsClient(con *armcore.Connection, subscriptionID string) SKUsOperations {
-	return &SKUsClient{con: con, subscriptionID: subscriptionID}
+func NewSKUsClient(con *armcore.Connection, subscriptionID string) SKUsClient {
+	return SKUsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *SKUsClient) Pipeline() azcore.Pipeline {
+func (client SKUsClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // List - Lists the available SKUs supported by Microsoft.Storage for given subscription.
-func (client *SKUsClient) List(ctx context.Context, options *SKUsListOptions) (*StorageSKUListResultResponse, error) {
-	req, err := client.ListCreateRequest(ctx, options)
+func (client SKUsClient) List(ctx context.Context, options *SKUsListOptions) (*StorageSKUListResultResponse, error) {
+	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,17 +47,17 @@ func (client *SKUsClient) List(ctx context.Context, options *SKUsListOptions) (*
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.ListHandleError(resp)
+		return nil, client.listHandleError(resp)
 	}
-	result, err := client.ListHandleResponse(resp)
+	result, err := client.listHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// ListCreateRequest creates the List request.
-func (client *SKUsClient) ListCreateRequest(ctx context.Context, options *SKUsListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client SKUsClient) listCreateRequest(ctx context.Context, options *SKUsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/skus"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -78,14 +72,14 @@ func (client *SKUsClient) ListCreateRequest(ctx context.Context, options *SKUsLi
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *SKUsClient) ListHandleResponse(resp *azcore.Response) (*StorageSKUListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client SKUsClient) listHandleResponse(resp *azcore.Response) (*StorageSKUListResultResponse, error) {
 	result := StorageSKUListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.StorageSKUListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *SKUsClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client SKUsClient) listHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)

@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleBlobContainersOperations_Create() {
+func ExampleBlobContainersClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -32,7 +32,7 @@ func ExampleBlobContainersOperations_Create() {
 	log.Printf("blob container ID: %v\n", *resp.BlobContainer.ID)
 }
 
-func ExampleBlobContainersOperations_Get() {
+func ExampleBlobContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -49,7 +49,7 @@ func ExampleBlobContainersOperations_Get() {
 	log.Printf("blob container ID: %v\n", *resp.BlobContainer.ID)
 }
 
-func ExampleBlobContainersOperations_List() {
+func ExampleBlobContainersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -70,7 +70,7 @@ func ExampleBlobContainersOperations_List() {
 	}
 }
 
-func ExampleBlobContainersOperations_Delete() {
+func ExampleBlobContainersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

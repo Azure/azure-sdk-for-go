@@ -19,17 +19,7 @@ import (
 	"strings"
 )
 
-// ManagementPoliciesOperations contains the methods for the ManagementPolicies group.
-type ManagementPoliciesOperations interface {
-	// CreateOrUpdate - Sets the managementpolicy to the specified storage account.
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesCreateOrUpdateOptions) (*ManagementPolicyResponse, error)
-	// Delete - Deletes the managementpolicy associated with the specified storage account.
-	Delete(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesDeleteOptions) (*http.Response, error)
-	// Get - Gets the managementpolicy associated with the specified storage account.
-	Get(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesGetOptions) (*ManagementPolicyResponse, error)
-}
-
-// ManagementPoliciesClient implements the ManagementPoliciesOperations interface.
+// ManagementPoliciesClient contains the methods for the ManagementPolicies group.
 // Don't use this type directly, use NewManagementPoliciesClient() instead.
 type ManagementPoliciesClient struct {
 	con            *armcore.Connection
@@ -37,18 +27,18 @@ type ManagementPoliciesClient struct {
 }
 
 // NewManagementPoliciesClient creates a new instance of ManagementPoliciesClient with the specified values.
-func NewManagementPoliciesClient(con *armcore.Connection, subscriptionID string) ManagementPoliciesOperations {
-	return &ManagementPoliciesClient{con: con, subscriptionID: subscriptionID}
+func NewManagementPoliciesClient(con *armcore.Connection, subscriptionID string) ManagementPoliciesClient {
+	return ManagementPoliciesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *ManagementPoliciesClient) Pipeline() azcore.Pipeline {
+func (client ManagementPoliciesClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // CreateOrUpdate - Sets the managementpolicy to the specified storage account.
-func (client *ManagementPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesCreateOrUpdateOptions) (*ManagementPolicyResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, properties, options)
+func (client ManagementPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesCreateOrUpdateOptions) (*ManagementPolicyResponse, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, properties, options)
 	if err != nil {
 		return nil, err
 	}
@@ -57,17 +47,17 @@ func (client *ManagementPoliciesClient) CreateOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.CreateOrUpdateHandleError(resp)
+		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
+	result, err := client.createOrUpdateHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagementPoliciesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesCreateOrUpdateOptions) (*azcore.Request, error) {
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client ManagementPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, properties ManagementPolicy, options *ManagementPoliciesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -85,14 +75,14 @@ func (client *ManagementPoliciesClient) CreateOrUpdateCreateRequest(ctx context.
 	return req, req.MarshalAsJSON(properties)
 }
 
-// CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ManagementPoliciesClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*ManagementPolicyResponse, error) {
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client ManagementPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (*ManagementPolicyResponse, error) {
 	result := ManagementPolicyResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ManagementPolicy)
 }
 
-// CreateOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ManagementPoliciesClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
+// createOrUpdateHandleError handles the CreateOrUpdate error response.
+func (client ManagementPoliciesClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -104,8 +94,8 @@ func (client *ManagementPoliciesClient) CreateOrUpdateHandleError(resp *azcore.R
 }
 
 // Delete - Deletes the managementpolicy associated with the specified storage account.
-func (client *ManagementPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesDeleteOptions) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, options)
+func (client ManagementPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -114,13 +104,13 @@ func (client *ManagementPoliciesClient) Delete(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	return resp.Response, nil
 }
 
-// DeleteCreateRequest creates the Delete request.
-func (client *ManagementPoliciesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesDeleteOptions) (*azcore.Request, error) {
+// deleteCreateRequest creates the Delete request.
+func (client ManagementPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -137,8 +127,8 @@ func (client *ManagementPoliciesClient) DeleteCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// DeleteHandleError handles the Delete error response.
-func (client *ManagementPoliciesClient) DeleteHandleError(resp *azcore.Response) error {
+// deleteHandleError handles the Delete error response.
+func (client ManagementPoliciesClient) deleteHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -150,8 +140,8 @@ func (client *ManagementPoliciesClient) DeleteHandleError(resp *azcore.Response)
 }
 
 // Get - Gets the managementpolicy associated with the specified storage account.
-func (client *ManagementPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesGetOptions) (*ManagementPolicyResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, options)
+func (client ManagementPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesGetOptions) (*ManagementPolicyResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, managementPolicyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -160,17 +150,17 @@ func (client *ManagementPoliciesClient) Get(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *ManagementPoliciesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client ManagementPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managementPolicyName ManagementPolicyName, options *ManagementPoliciesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -188,14 +178,14 @@ func (client *ManagementPoliciesClient) GetCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *ManagementPoliciesClient) GetHandleResponse(resp *azcore.Response) (*ManagementPolicyResponse, error) {
+// getHandleResponse handles the Get response.
+func (client ManagementPoliciesClient) getHandleResponse(resp *azcore.Response) (*ManagementPolicyResponse, error) {
 	result := ManagementPolicyResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ManagementPolicy)
 }
 
-// GetHandleError handles the Get error response.
-func (client *ManagementPoliciesClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client ManagementPoliciesClient) getHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)

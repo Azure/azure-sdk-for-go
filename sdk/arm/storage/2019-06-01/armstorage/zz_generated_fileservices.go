@@ -16,17 +16,7 @@ import (
 	"strings"
 )
 
-// FileServicesOperations contains the methods for the FileServices group.
-type FileServicesOperations interface {
-	// GetServiceProperties - Gets the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing) rules.
-	GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesGetServicePropertiesOptions) (*FileServicePropertiesResponse, error)
-	// List - List all file services in storage accounts
-	List(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesListOptions) (*FileServiceItemsResponse, error)
-	// SetServiceProperties - Sets the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing) rules.
-	SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters FileServiceProperties, options *FileServicesSetServicePropertiesOptions) (*FileServicePropertiesResponse, error)
-}
-
-// FileServicesClient implements the FileServicesOperations interface.
+// FileServicesClient contains the methods for the FileServices group.
 // Don't use this type directly, use NewFileServicesClient() instead.
 type FileServicesClient struct {
 	con            *armcore.Connection
@@ -34,18 +24,18 @@ type FileServicesClient struct {
 }
 
 // NewFileServicesClient creates a new instance of FileServicesClient with the specified values.
-func NewFileServicesClient(con *armcore.Connection, subscriptionID string) FileServicesOperations {
-	return &FileServicesClient{con: con, subscriptionID: subscriptionID}
+func NewFileServicesClient(con *armcore.Connection, subscriptionID string) FileServicesClient {
+	return FileServicesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *FileServicesClient) Pipeline() azcore.Pipeline {
+func (client FileServicesClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // GetServiceProperties - Gets the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing) rules.
-func (client *FileServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesGetServicePropertiesOptions) (*FileServicePropertiesResponse, error) {
-	req, err := client.GetServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client FileServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesGetServicePropertiesOptions) (*FileServicePropertiesResponse, error) {
+	req, err := client.getServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -54,17 +44,17 @@ func (client *FileServicesClient) GetServiceProperties(ctx context.Context, reso
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetServicePropertiesHandleError(resp)
+		return nil, client.getServicePropertiesHandleError(resp)
 	}
-	result, err := client.GetServicePropertiesHandleResponse(resp)
+	result, err := client.getServicePropertiesHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetServicePropertiesCreateRequest creates the GetServiceProperties request.
-func (client *FileServicesClient) GetServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesGetServicePropertiesOptions) (*azcore.Request, error) {
+// getServicePropertiesCreateRequest creates the GetServiceProperties request.
+func (client FileServicesClient) getServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesGetServicePropertiesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/{FileServicesName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -82,14 +72,14 @@ func (client *FileServicesClient) GetServicePropertiesCreateRequest(ctx context.
 	return req, nil
 }
 
-// GetServicePropertiesHandleResponse handles the GetServiceProperties response.
-func (client *FileServicesClient) GetServicePropertiesHandleResponse(resp *azcore.Response) (*FileServicePropertiesResponse, error) {
+// getServicePropertiesHandleResponse handles the GetServiceProperties response.
+func (client FileServicesClient) getServicePropertiesHandleResponse(resp *azcore.Response) (*FileServicePropertiesResponse, error) {
 	result := FileServicePropertiesResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.FileServiceProperties)
 }
 
-// GetServicePropertiesHandleError handles the GetServiceProperties error response.
-func (client *FileServicesClient) GetServicePropertiesHandleError(resp *azcore.Response) error {
+// getServicePropertiesHandleError handles the GetServiceProperties error response.
+func (client FileServicesClient) getServicePropertiesHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -98,8 +88,8 @@ func (client *FileServicesClient) GetServicePropertiesHandleError(resp *azcore.R
 }
 
 // List - List all file services in storage accounts
-func (client *FileServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesListOptions) (*FileServiceItemsResponse, error) {
-	req, err := client.ListCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client FileServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesListOptions) (*FileServiceItemsResponse, error) {
+	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -108,17 +98,17 @@ func (client *FileServicesClient) List(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.ListHandleError(resp)
+		return nil, client.listHandleError(resp)
 	}
-	result, err := client.ListHandleResponse(resp)
+	result, err := client.listHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// ListCreateRequest creates the List request.
-func (client *FileServicesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client FileServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *FileServicesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -135,14 +125,14 @@ func (client *FileServicesClient) ListCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *FileServicesClient) ListHandleResponse(resp *azcore.Response) (*FileServiceItemsResponse, error) {
+// listHandleResponse handles the List response.
+func (client FileServicesClient) listHandleResponse(resp *azcore.Response) (*FileServiceItemsResponse, error) {
 	result := FileServiceItemsResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.FileServiceItems)
 }
 
-// ListHandleError handles the List error response.
-func (client *FileServicesClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client FileServicesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -151,8 +141,8 @@ func (client *FileServicesClient) ListHandleError(resp *azcore.Response) error {
 }
 
 // SetServiceProperties - Sets the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing) rules.
-func (client *FileServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters FileServiceProperties, options *FileServicesSetServicePropertiesOptions) (*FileServicePropertiesResponse, error) {
-	req, err := client.SetServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
+func (client FileServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters FileServiceProperties, options *FileServicesSetServicePropertiesOptions) (*FileServicePropertiesResponse, error) {
+	req, err := client.setServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -161,17 +151,17 @@ func (client *FileServicesClient) SetServiceProperties(ctx context.Context, reso
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.SetServicePropertiesHandleError(resp)
+		return nil, client.setServicePropertiesHandleError(resp)
 	}
-	result, err := client.SetServicePropertiesHandleResponse(resp)
+	result, err := client.setServicePropertiesHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// SetServicePropertiesCreateRequest creates the SetServiceProperties request.
-func (client *FileServicesClient) SetServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters FileServiceProperties, options *FileServicesSetServicePropertiesOptions) (*azcore.Request, error) {
+// setServicePropertiesCreateRequest creates the SetServiceProperties request.
+func (client FileServicesClient) setServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters FileServiceProperties, options *FileServicesSetServicePropertiesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/{FileServicesName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -189,14 +179,14 @@ func (client *FileServicesClient) SetServicePropertiesCreateRequest(ctx context.
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// SetServicePropertiesHandleResponse handles the SetServiceProperties response.
-func (client *FileServicesClient) SetServicePropertiesHandleResponse(resp *azcore.Response) (*FileServicePropertiesResponse, error) {
+// setServicePropertiesHandleResponse handles the SetServiceProperties response.
+func (client FileServicesClient) setServicePropertiesHandleResponse(resp *azcore.Response) (*FileServicePropertiesResponse, error) {
 	result := FileServicePropertiesResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.FileServiceProperties)
 }
 
-// SetServicePropertiesHandleError handles the SetServiceProperties error response.
-func (client *FileServicesClient) SetServicePropertiesHandleError(resp *azcore.Response) error {
+// setServicePropertiesHandleError handles the SetServiceProperties error response.
+func (client FileServicesClient) setServicePropertiesHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

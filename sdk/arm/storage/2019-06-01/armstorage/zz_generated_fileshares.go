@@ -16,26 +16,7 @@ import (
 	"strings"
 )
 
-// FileSharesOperations contains the methods for the FileShares group.
-type FileSharesOperations interface {
-	// Create - Creates a new share under the specified account as described by request body. The share resource includes metadata and properties for that share.
-	// It does not include a list of the files contained by
-	// the share.
-	Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesCreateOptions) (*FileShareResponse, error)
-	// Delete - Deletes specified share under its account.
-	Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesDeleteOptions) (*http.Response, error)
-	// Get - Gets properties of a specified share.
-	Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesGetOptions) (*FileShareResponse, error)
-	// List - Lists all shares.
-	List(resourceGroupName string, accountName string, options *FileSharesListOptions) FileShareItemsPager
-	// Restore - Restore a file share within a valid retention days if share soft delete is enabled
-	Restore(ctx context.Context, resourceGroupName string, accountName string, shareName string, deletedShare DeletedShare, options *FileSharesRestoreOptions) (*http.Response, error)
-	// Update - Updates share properties as specified in request body. Properties not mentioned in the request will not be changed. Update fails if the specified
-	// share does not already exist.
-	Update(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesUpdateOptions) (*FileShareResponse, error)
-}
-
-// FileSharesClient implements the FileSharesOperations interface.
+// FileSharesClient contains the methods for the FileShares group.
 // Don't use this type directly, use NewFileSharesClient() instead.
 type FileSharesClient struct {
 	con            *armcore.Connection
@@ -43,20 +24,20 @@ type FileSharesClient struct {
 }
 
 // NewFileSharesClient creates a new instance of FileSharesClient with the specified values.
-func NewFileSharesClient(con *armcore.Connection, subscriptionID string) FileSharesOperations {
-	return &FileSharesClient{con: con, subscriptionID: subscriptionID}
+func NewFileSharesClient(con *armcore.Connection, subscriptionID string) FileSharesClient {
+	return FileSharesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *FileSharesClient) Pipeline() azcore.Pipeline {
+func (client FileSharesClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // Create - Creates a new share under the specified account as described by request body. The share resource includes metadata and properties for that share.
 // It does not include a list of the files contained by
 // the share.
-func (client *FileSharesClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesCreateOptions) (*FileShareResponse, error) {
-	req, err := client.CreateCreateRequest(ctx, resourceGroupName, accountName, shareName, fileShare, options)
+func (client FileSharesClient) Create(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesCreateOptions) (*FileShareResponse, error) {
+	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, shareName, fileShare, options)
 	if err != nil {
 		return nil, err
 	}
@@ -65,17 +46,17 @@ func (client *FileSharesClient) Create(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateHandleError(resp)
+		return nil, client.createHandleError(resp)
 	}
-	result, err := client.CreateHandleResponse(resp)
+	result, err := client.createHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// CreateCreateRequest creates the Create request.
-func (client *FileSharesClient) CreateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesCreateOptions) (*azcore.Request, error) {
+// createCreateRequest creates the Create request.
+func (client FileSharesClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesCreateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares/{shareName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -93,14 +74,14 @@ func (client *FileSharesClient) CreateCreateRequest(ctx context.Context, resourc
 	return req, req.MarshalAsJSON(fileShare)
 }
 
-// CreateHandleResponse handles the Create response.
-func (client *FileSharesClient) CreateHandleResponse(resp *azcore.Response) (*FileShareResponse, error) {
+// createHandleResponse handles the Create response.
+func (client FileSharesClient) createHandleResponse(resp *azcore.Response) (*FileShareResponse, error) {
 	result := FileShareResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.FileShare)
 }
 
-// CreateHandleError handles the Create error response.
-func (client *FileSharesClient) CreateHandleError(resp *azcore.Response) error {
+// createHandleError handles the Create error response.
+func (client FileSharesClient) createHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -109,8 +90,8 @@ func (client *FileSharesClient) CreateHandleError(resp *azcore.Response) error {
 }
 
 // Delete - Deletes specified share under its account.
-func (client *FileSharesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesDeleteOptions) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
+func (client FileSharesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -119,13 +100,13 @@ func (client *FileSharesClient) Delete(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	return resp.Response, nil
 }
 
-// DeleteCreateRequest creates the Delete request.
-func (client *FileSharesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesDeleteOptions) (*azcore.Request, error) {
+// deleteCreateRequest creates the Delete request.
+func (client FileSharesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares/{shareName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -143,8 +124,8 @@ func (client *FileSharesClient) DeleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// DeleteHandleError handles the Delete error response.
-func (client *FileSharesClient) DeleteHandleError(resp *azcore.Response) error {
+// deleteHandleError handles the Delete error response.
+func (client FileSharesClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -153,8 +134,8 @@ func (client *FileSharesClient) DeleteHandleError(resp *azcore.Response) error {
 }
 
 // Get - Gets properties of a specified share.
-func (client *FileSharesClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesGetOptions) (*FileShareResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
+func (client FileSharesClient) Get(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesGetOptions) (*FileShareResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, shareName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -163,17 +144,17 @@ func (client *FileSharesClient) Get(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *FileSharesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client FileSharesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, options *FileSharesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares/{shareName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -194,14 +175,14 @@ func (client *FileSharesClient) GetCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *FileSharesClient) GetHandleResponse(resp *azcore.Response) (*FileShareResponse, error) {
+// getHandleResponse handles the Get response.
+func (client FileSharesClient) getHandleResponse(resp *azcore.Response) (*FileShareResponse, error) {
 	result := FileShareResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.FileShare)
 }
 
-// GetHandleError handles the Get error response.
-func (client *FileSharesClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client FileSharesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -210,14 +191,14 @@ func (client *FileSharesClient) GetHandleError(resp *azcore.Response) error {
 }
 
 // List - Lists all shares.
-func (client *FileSharesClient) List(resourceGroupName string, accountName string, options *FileSharesListOptions) FileShareItemsPager {
+func (client FileSharesClient) List(resourceGroupName string, accountName string, options *FileSharesListOptions) FileShareItemsPager {
 	return &fileShareItemsPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, accountName, options)
+			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *FileShareItemsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.FileShareItems.NextLink)
 		},
@@ -225,8 +206,8 @@ func (client *FileSharesClient) List(resourceGroupName string, accountName strin
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *FileSharesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *FileSharesListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client FileSharesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *FileSharesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -252,14 +233,14 @@ func (client *FileSharesClient) ListCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *FileSharesClient) ListHandleResponse(resp *azcore.Response) (*FileShareItemsResponse, error) {
+// listHandleResponse handles the List response.
+func (client FileSharesClient) listHandleResponse(resp *azcore.Response) (*FileShareItemsResponse, error) {
 	result := FileShareItemsResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.FileShareItems)
 }
 
-// ListHandleError handles the List error response.
-func (client *FileSharesClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client FileSharesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -268,8 +249,8 @@ func (client *FileSharesClient) ListHandleError(resp *azcore.Response) error {
 }
 
 // Restore - Restore a file share within a valid retention days if share soft delete is enabled
-func (client *FileSharesClient) Restore(ctx context.Context, resourceGroupName string, accountName string, shareName string, deletedShare DeletedShare, options *FileSharesRestoreOptions) (*http.Response, error) {
-	req, err := client.RestoreCreateRequest(ctx, resourceGroupName, accountName, shareName, deletedShare, options)
+func (client FileSharesClient) Restore(ctx context.Context, resourceGroupName string, accountName string, shareName string, deletedShare DeletedShare, options *FileSharesRestoreOptions) (*http.Response, error) {
+	req, err := client.restoreCreateRequest(ctx, resourceGroupName, accountName, shareName, deletedShare, options)
 	if err != nil {
 		return nil, err
 	}
@@ -278,13 +259,13 @@ func (client *FileSharesClient) Restore(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.RestoreHandleError(resp)
+		return nil, client.restoreHandleError(resp)
 	}
 	return resp.Response, nil
 }
 
-// RestoreCreateRequest creates the Restore request.
-func (client *FileSharesClient) RestoreCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, deletedShare DeletedShare, options *FileSharesRestoreOptions) (*azcore.Request, error) {
+// restoreCreateRequest creates the Restore request.
+func (client FileSharesClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, deletedShare DeletedShare, options *FileSharesRestoreOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares/{shareName}/restore"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -302,8 +283,8 @@ func (client *FileSharesClient) RestoreCreateRequest(ctx context.Context, resour
 	return req, req.MarshalAsJSON(deletedShare)
 }
 
-// RestoreHandleError handles the Restore error response.
-func (client *FileSharesClient) RestoreHandleError(resp *azcore.Response) error {
+// restoreHandleError handles the Restore error response.
+func (client FileSharesClient) restoreHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -313,8 +294,8 @@ func (client *FileSharesClient) RestoreHandleError(resp *azcore.Response) error 
 
 // Update - Updates share properties as specified in request body. Properties not mentioned in the request will not be changed. Update fails if the specified
 // share does not already exist.
-func (client *FileSharesClient) Update(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesUpdateOptions) (*FileShareResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, accountName, shareName, fileShare, options)
+func (client FileSharesClient) Update(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesUpdateOptions) (*FileShareResponse, error) {
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, shareName, fileShare, options)
 	if err != nil {
 		return nil, err
 	}
@@ -323,17 +304,17 @@ func (client *FileSharesClient) Update(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.UpdateHandleError(resp)
+		return nil, client.updateHandleError(resp)
 	}
-	result, err := client.UpdateHandleResponse(resp)
+	result, err := client.updateHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// UpdateCreateRequest creates the Update request.
-func (client *FileSharesClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesUpdateOptions) (*azcore.Request, error) {
+// updateCreateRequest creates the Update request.
+func (client FileSharesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, shareName string, fileShare FileShare, options *FileSharesUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares/{shareName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -351,14 +332,14 @@ func (client *FileSharesClient) UpdateCreateRequest(ctx context.Context, resourc
 	return req, req.MarshalAsJSON(fileShare)
 }
 
-// UpdateHandleResponse handles the Update response.
-func (client *FileSharesClient) UpdateHandleResponse(resp *azcore.Response) (*FileShareResponse, error) {
+// updateHandleResponse handles the Update response.
+func (client FileSharesClient) updateHandleResponse(resp *azcore.Response) (*FileShareResponse, error) {
 	result := FileShareResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.FileShare)
 }
 
-// UpdateHandleError handles the Update error response.
-func (client *FileSharesClient) UpdateHandleError(resp *azcore.Response) error {
+// updateHandleError handles the Update error response.
+func (client FileSharesClient) updateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

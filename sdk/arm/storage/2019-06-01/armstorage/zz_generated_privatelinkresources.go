@@ -19,13 +19,7 @@ import (
 	"strings"
 )
 
-// PrivateLinkResourcesOperations contains the methods for the PrivateLinkResources group.
-type PrivateLinkResourcesOperations interface {
-	// ListByStorageAccount - Gets the private link resources that need to be created for a storage account.
-	ListByStorageAccount(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesListByStorageAccountOptions) (*PrivateLinkResourceListResultResponse, error)
-}
-
-// PrivateLinkResourcesClient implements the PrivateLinkResourcesOperations interface.
+// PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
 	con            *armcore.Connection
@@ -33,18 +27,18 @@ type PrivateLinkResourcesClient struct {
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
-func NewPrivateLinkResourcesClient(con *armcore.Connection, subscriptionID string) PrivateLinkResourcesOperations {
-	return &PrivateLinkResourcesClient{con: con, subscriptionID: subscriptionID}
+func NewPrivateLinkResourcesClient(con *armcore.Connection, subscriptionID string) PrivateLinkResourcesClient {
+	return PrivateLinkResourcesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *PrivateLinkResourcesClient) Pipeline() azcore.Pipeline {
+func (client PrivateLinkResourcesClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // ListByStorageAccount - Gets the private link resources that need to be created for a storage account.
-func (client *PrivateLinkResourcesClient) ListByStorageAccount(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesListByStorageAccountOptions) (*PrivateLinkResourceListResultResponse, error) {
-	req, err := client.ListByStorageAccountCreateRequest(ctx, resourceGroupName, accountName, options)
+func (client PrivateLinkResourcesClient) ListByStorageAccount(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesListByStorageAccountOptions) (*PrivateLinkResourceListResultResponse, error) {
+	req, err := client.listByStorageAccountCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,17 +47,17 @@ func (client *PrivateLinkResourcesClient) ListByStorageAccount(ctx context.Conte
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.ListByStorageAccountHandleError(resp)
+		return nil, client.listByStorageAccountHandleError(resp)
 	}
-	result, err := client.ListByStorageAccountHandleResponse(resp)
+	result, err := client.listByStorageAccountHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// ListByStorageAccountCreateRequest creates the ListByStorageAccount request.
-func (client *PrivateLinkResourcesClient) ListByStorageAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesListByStorageAccountOptions) (*azcore.Request, error) {
+// listByStorageAccountCreateRequest creates the ListByStorageAccount request.
+func (client PrivateLinkResourcesClient) listByStorageAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PrivateLinkResourcesListByStorageAccountOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/privateLinkResources"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -80,14 +74,14 @@ func (client *PrivateLinkResourcesClient) ListByStorageAccountCreateRequest(ctx 
 	return req, nil
 }
 
-// ListByStorageAccountHandleResponse handles the ListByStorageAccount response.
-func (client *PrivateLinkResourcesClient) ListByStorageAccountHandleResponse(resp *azcore.Response) (*PrivateLinkResourceListResultResponse, error) {
+// listByStorageAccountHandleResponse handles the ListByStorageAccount response.
+func (client PrivateLinkResourcesClient) listByStorageAccountHandleResponse(resp *azcore.Response) (*PrivateLinkResourceListResultResponse, error) {
 	result := PrivateLinkResourceListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.PrivateLinkResourceListResult)
 }
 
-// ListByStorageAccountHandleError handles the ListByStorageAccount error response.
-func (client *PrivateLinkResourcesClient) ListByStorageAccountHandleError(resp *azcore.Response) error {
+// listByStorageAccountHandleError handles the ListByStorageAccount error response.
+func (client PrivateLinkResourcesClient) listByStorageAccountHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)

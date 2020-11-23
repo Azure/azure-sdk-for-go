@@ -19,48 +19,7 @@ import (
 	"strings"
 )
 
-// BlobContainersOperations contains the methods for the BlobContainers group.
-type BlobContainersOperations interface {
-	// ClearLegalHold - Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold clears out only the
-	// specified tags in the request.
-	ClearLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersClearLegalHoldOptions) (*LegalHoldResponse, error)
-	// Create - Creates a new container under the specified account as described by request body. The container resource includes metadata and properties for
-	// that container. It does not include a list of the blobs
-	// contained by the container.
-	Create(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersCreateOptions) (*BlobContainerResponse, error)
-	// CreateOrUpdateImmutabilityPolicy - Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for this
-	// operation.
-	CreateOrUpdateImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersCreateOrUpdateImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error)
-	// Delete - Deletes specified container under its account.
-	Delete(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersDeleteOptions) (*http.Response, error)
-	// DeleteImmutabilityPolicy - Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to 0. ETag in
-	// If-Match is required for this operation. Deleting a locked immutability
-	// policy is not allowed, the only way is to delete the container after deleting all expired blobs inside the policy locked container.
-	DeleteImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersDeleteImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error)
-	// ExtendImmutabilityPolicy - Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a Locked policy
-	// will be this action. ETag in If-Match is required for this operation.
-	ExtendImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersExtendImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error)
-	// Get - Gets properties of a specified container.
-	Get(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetOptions) (*BlobContainerResponse, error)
-	// GetImmutabilityPolicy - Gets the existing immutability policy along with the corresponding ETag in response headers and body.
-	GetImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error)
-	// Lease - The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds,
-	// or can be infinite.
-	Lease(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersLeaseOptions) (*LeaseContainerResponseResponse, error)
-	// List - Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
-	List(resourceGroupName string, accountName string, options *BlobContainersListOptions) ListContainerItemsPager
-	// LockImmutabilityPolicy - Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is ExtendImmutabilityPolicy action.
-	// ETag in If-Match is required for this operation.
-	LockImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersLockImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error)
-	// SetLegalHold - Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append pattern and does not clear
-	// out the existing tags that are not specified in the request.
-	SetLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersSetLegalHoldOptions) (*LegalHoldResponse, error)
-	// Update - Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged. Update fails if the specified
-	// container doesn't already exist.
-	Update(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersUpdateOptions) (*BlobContainerResponse, error)
-}
-
-// BlobContainersClient implements the BlobContainersOperations interface.
+// BlobContainersClient contains the methods for the BlobContainers group.
 // Don't use this type directly, use NewBlobContainersClient() instead.
 type BlobContainersClient struct {
 	con            *armcore.Connection
@@ -68,19 +27,19 @@ type BlobContainersClient struct {
 }
 
 // NewBlobContainersClient creates a new instance of BlobContainersClient with the specified values.
-func NewBlobContainersClient(con *armcore.Connection, subscriptionID string) BlobContainersOperations {
-	return &BlobContainersClient{con: con, subscriptionID: subscriptionID}
+func NewBlobContainersClient(con *armcore.Connection, subscriptionID string) BlobContainersClient {
+	return BlobContainersClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *BlobContainersClient) Pipeline() azcore.Pipeline {
+func (client BlobContainersClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // ClearLegalHold - Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold clears out only the
 // specified tags in the request.
-func (client *BlobContainersClient) ClearLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersClearLegalHoldOptions) (*LegalHoldResponse, error) {
-	req, err := client.ClearLegalHoldCreateRequest(ctx, resourceGroupName, accountName, containerName, legalHold, options)
+func (client BlobContainersClient) ClearLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersClearLegalHoldOptions) (*LegalHoldResponse, error) {
+	req, err := client.clearLegalHoldCreateRequest(ctx, resourceGroupName, accountName, containerName, legalHold, options)
 	if err != nil {
 		return nil, err
 	}
@@ -89,17 +48,17 @@ func (client *BlobContainersClient) ClearLegalHold(ctx context.Context, resource
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.ClearLegalHoldHandleError(resp)
+		return nil, client.clearLegalHoldHandleError(resp)
 	}
-	result, err := client.ClearLegalHoldHandleResponse(resp)
+	result, err := client.clearLegalHoldHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// ClearLegalHoldCreateRequest creates the ClearLegalHold request.
-func (client *BlobContainersClient) ClearLegalHoldCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersClearLegalHoldOptions) (*azcore.Request, error) {
+// clearLegalHoldCreateRequest creates the ClearLegalHold request.
+func (client BlobContainersClient) clearLegalHoldCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersClearLegalHoldOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/clearLegalHold"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -117,14 +76,14 @@ func (client *BlobContainersClient) ClearLegalHoldCreateRequest(ctx context.Cont
 	return req, req.MarshalAsJSON(legalHold)
 }
 
-// ClearLegalHoldHandleResponse handles the ClearLegalHold response.
-func (client *BlobContainersClient) ClearLegalHoldHandleResponse(resp *azcore.Response) (*LegalHoldResponse, error) {
+// clearLegalHoldHandleResponse handles the ClearLegalHold response.
+func (client BlobContainersClient) clearLegalHoldHandleResponse(resp *azcore.Response) (*LegalHoldResponse, error) {
 	result := LegalHoldResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.LegalHold)
 }
 
-// ClearLegalHoldHandleError handles the ClearLegalHold error response.
-func (client *BlobContainersClient) ClearLegalHoldHandleError(resp *azcore.Response) error {
+// clearLegalHoldHandleError handles the ClearLegalHold error response.
+func (client BlobContainersClient) clearLegalHoldHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -138,8 +97,8 @@ func (client *BlobContainersClient) ClearLegalHoldHandleError(resp *azcore.Respo
 // Create - Creates a new container under the specified account as described by request body. The container resource includes metadata and properties for
 // that container. It does not include a list of the blobs
 // contained by the container.
-func (client *BlobContainersClient) Create(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersCreateOptions) (*BlobContainerResponse, error) {
-	req, err := client.CreateCreateRequest(ctx, resourceGroupName, accountName, containerName, blobContainer, options)
+func (client BlobContainersClient) Create(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersCreateOptions) (*BlobContainerResponse, error) {
+	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, containerName, blobContainer, options)
 	if err != nil {
 		return nil, err
 	}
@@ -148,17 +107,17 @@ func (client *BlobContainersClient) Create(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateHandleError(resp)
+		return nil, client.createHandleError(resp)
 	}
-	result, err := client.CreateHandleResponse(resp)
+	result, err := client.createHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// CreateCreateRequest creates the Create request.
-func (client *BlobContainersClient) CreateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersCreateOptions) (*azcore.Request, error) {
+// createCreateRequest creates the Create request.
+func (client BlobContainersClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersCreateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -176,14 +135,14 @@ func (client *BlobContainersClient) CreateCreateRequest(ctx context.Context, res
 	return req, req.MarshalAsJSON(blobContainer)
 }
 
-// CreateHandleResponse handles the Create response.
-func (client *BlobContainersClient) CreateHandleResponse(resp *azcore.Response) (*BlobContainerResponse, error) {
+// createHandleResponse handles the Create response.
+func (client BlobContainersClient) createHandleResponse(resp *azcore.Response) (*BlobContainerResponse, error) {
 	result := BlobContainerResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.BlobContainer)
 }
 
-// CreateHandleError handles the Create error response.
-func (client *BlobContainersClient) CreateHandleError(resp *azcore.Response) error {
+// createHandleError handles the Create error response.
+func (client BlobContainersClient) createHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -196,8 +155,8 @@ func (client *BlobContainersClient) CreateHandleError(resp *azcore.Response) err
 
 // CreateOrUpdateImmutabilityPolicy - Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for this
 // operation.
-func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersCreateOrUpdateImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
-	req, err := client.CreateOrUpdateImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
+func (client BlobContainersClient) CreateOrUpdateImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersCreateOrUpdateImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
+	req, err := client.createOrUpdateImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -206,17 +165,17 @@ func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicy(ctx context
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.CreateOrUpdateImmutabilityPolicyHandleError(resp)
+		return nil, client.createOrUpdateImmutabilityPolicyHandleError(resp)
 	}
-	result, err := client.CreateOrUpdateImmutabilityPolicyHandleResponse(resp)
+	result, err := client.createOrUpdateImmutabilityPolicyHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// CreateOrUpdateImmutabilityPolicyCreateRequest creates the CreateOrUpdateImmutabilityPolicy request.
-func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersCreateOrUpdateImmutabilityPolicyOptions) (*azcore.Request, error) {
+// createOrUpdateImmutabilityPolicyCreateRequest creates the CreateOrUpdateImmutabilityPolicy request.
+func (client BlobContainersClient) createOrUpdateImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersCreateOrUpdateImmutabilityPolicyOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies/{immutabilityPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -241,8 +200,8 @@ func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicyCreateReques
 	return req, nil
 }
 
-// CreateOrUpdateImmutabilityPolicyHandleResponse handles the CreateOrUpdateImmutabilityPolicy response.
-func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
+// createOrUpdateImmutabilityPolicyHandleResponse handles the CreateOrUpdateImmutabilityPolicy response.
+func (client BlobContainersClient) createOrUpdateImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
 	result := ImmutabilityPolicyResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
@@ -250,8 +209,8 @@ func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicyHandleRespon
 	return &result, resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
 }
 
-// CreateOrUpdateImmutabilityPolicyHandleError handles the CreateOrUpdateImmutabilityPolicy error response.
-func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicyHandleError(resp *azcore.Response) error {
+// createOrUpdateImmutabilityPolicyHandleError handles the CreateOrUpdateImmutabilityPolicy error response.
+func (client BlobContainersClient) createOrUpdateImmutabilityPolicyHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -263,8 +222,8 @@ func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicyHandleError(
 }
 
 // Delete - Deletes specified container under its account.
-func (client *BlobContainersClient) Delete(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersDeleteOptions) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
+func (client BlobContainersClient) Delete(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -273,13 +232,13 @@ func (client *BlobContainersClient) Delete(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	return resp.Response, nil
 }
 
-// DeleteCreateRequest creates the Delete request.
-func (client *BlobContainersClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersDeleteOptions) (*azcore.Request, error) {
+// deleteCreateRequest creates the Delete request.
+func (client BlobContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -296,8 +255,8 @@ func (client *BlobContainersClient) DeleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// DeleteHandleError handles the Delete error response.
-func (client *BlobContainersClient) DeleteHandleError(resp *azcore.Response) error {
+// deleteHandleError handles the Delete error response.
+func (client BlobContainersClient) deleteHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -311,8 +270,8 @@ func (client *BlobContainersClient) DeleteHandleError(resp *azcore.Response) err
 // DeleteImmutabilityPolicy - Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to 0. ETag in
 // If-Match is required for this operation. Deleting a locked immutability
 // policy is not allowed, the only way is to delete the container after deleting all expired blobs inside the policy locked container.
-func (client *BlobContainersClient) DeleteImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersDeleteImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
-	req, err := client.DeleteImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
+func (client BlobContainersClient) DeleteImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersDeleteImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
+	req, err := client.deleteImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
 	if err != nil {
 		return nil, err
 	}
@@ -321,17 +280,17 @@ func (client *BlobContainersClient) DeleteImmutabilityPolicy(ctx context.Context
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.DeleteImmutabilityPolicyHandleError(resp)
+		return nil, client.deleteImmutabilityPolicyHandleError(resp)
 	}
-	result, err := client.DeleteImmutabilityPolicyHandleResponse(resp)
+	result, err := client.deleteImmutabilityPolicyHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// DeleteImmutabilityPolicyCreateRequest creates the DeleteImmutabilityPolicy request.
-func (client *BlobContainersClient) DeleteImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersDeleteImmutabilityPolicyOptions) (*azcore.Request, error) {
+// deleteImmutabilityPolicyCreateRequest creates the DeleteImmutabilityPolicy request.
+func (client BlobContainersClient) deleteImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersDeleteImmutabilityPolicyOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies/{immutabilityPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -351,8 +310,8 @@ func (client *BlobContainersClient) DeleteImmutabilityPolicyCreateRequest(ctx co
 	return req, nil
 }
 
-// DeleteImmutabilityPolicyHandleResponse handles the DeleteImmutabilityPolicy response.
-func (client *BlobContainersClient) DeleteImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
+// deleteImmutabilityPolicyHandleResponse handles the DeleteImmutabilityPolicy response.
+func (client BlobContainersClient) deleteImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
 	result := ImmutabilityPolicyResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
@@ -360,8 +319,8 @@ func (client *BlobContainersClient) DeleteImmutabilityPolicyHandleResponse(resp 
 	return &result, resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
 }
 
-// DeleteImmutabilityPolicyHandleError handles the DeleteImmutabilityPolicy error response.
-func (client *BlobContainersClient) DeleteImmutabilityPolicyHandleError(resp *azcore.Response) error {
+// deleteImmutabilityPolicyHandleError handles the DeleteImmutabilityPolicy error response.
+func (client BlobContainersClient) deleteImmutabilityPolicyHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -374,8 +333,8 @@ func (client *BlobContainersClient) DeleteImmutabilityPolicyHandleError(resp *az
 
 // ExtendImmutabilityPolicy - Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a Locked policy
 // will be this action. ETag in If-Match is required for this operation.
-func (client *BlobContainersClient) ExtendImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersExtendImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
-	req, err := client.ExtendImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
+func (client BlobContainersClient) ExtendImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersExtendImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
+	req, err := client.extendImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
 	if err != nil {
 		return nil, err
 	}
@@ -384,17 +343,17 @@ func (client *BlobContainersClient) ExtendImmutabilityPolicy(ctx context.Context
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.ExtendImmutabilityPolicyHandleError(resp)
+		return nil, client.extendImmutabilityPolicyHandleError(resp)
 	}
-	result, err := client.ExtendImmutabilityPolicyHandleResponse(resp)
+	result, err := client.extendImmutabilityPolicyHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// ExtendImmutabilityPolicyCreateRequest creates the ExtendImmutabilityPolicy request.
-func (client *BlobContainersClient) ExtendImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersExtendImmutabilityPolicyOptions) (*azcore.Request, error) {
+// extendImmutabilityPolicyCreateRequest creates the ExtendImmutabilityPolicy request.
+func (client BlobContainersClient) extendImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersExtendImmutabilityPolicyOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies/default/extend"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -416,8 +375,8 @@ func (client *BlobContainersClient) ExtendImmutabilityPolicyCreateRequest(ctx co
 	return req, nil
 }
 
-// ExtendImmutabilityPolicyHandleResponse handles the ExtendImmutabilityPolicy response.
-func (client *BlobContainersClient) ExtendImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
+// extendImmutabilityPolicyHandleResponse handles the ExtendImmutabilityPolicy response.
+func (client BlobContainersClient) extendImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
 	result := ImmutabilityPolicyResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
@@ -425,8 +384,8 @@ func (client *BlobContainersClient) ExtendImmutabilityPolicyHandleResponse(resp 
 	return &result, resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
 }
 
-// ExtendImmutabilityPolicyHandleError handles the ExtendImmutabilityPolicy error response.
-func (client *BlobContainersClient) ExtendImmutabilityPolicyHandleError(resp *azcore.Response) error {
+// extendImmutabilityPolicyHandleError handles the ExtendImmutabilityPolicy error response.
+func (client BlobContainersClient) extendImmutabilityPolicyHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -438,8 +397,8 @@ func (client *BlobContainersClient) ExtendImmutabilityPolicyHandleError(resp *az
 }
 
 // Get - Gets properties of a specified container.
-func (client *BlobContainersClient) Get(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetOptions) (*BlobContainerResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
+func (client BlobContainersClient) Get(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetOptions) (*BlobContainerResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -448,17 +407,17 @@ func (client *BlobContainersClient) Get(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *BlobContainersClient) GetCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client BlobContainersClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -476,14 +435,14 @@ func (client *BlobContainersClient) GetCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *BlobContainersClient) GetHandleResponse(resp *azcore.Response) (*BlobContainerResponse, error) {
+// getHandleResponse handles the Get response.
+func (client BlobContainersClient) getHandleResponse(resp *azcore.Response) (*BlobContainerResponse, error) {
 	result := BlobContainerResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.BlobContainer)
 }
 
-// GetHandleError handles the Get error response.
-func (client *BlobContainersClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client BlobContainersClient) getHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -495,8 +454,8 @@ func (client *BlobContainersClient) GetHandleError(resp *azcore.Response) error 
 }
 
 // GetImmutabilityPolicy - Gets the existing immutability policy along with the corresponding ETag in response headers and body.
-func (client *BlobContainersClient) GetImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
-	req, err := client.GetImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
+func (client BlobContainersClient) GetImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
+	req, err := client.getImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -505,17 +464,17 @@ func (client *BlobContainersClient) GetImmutabilityPolicy(ctx context.Context, r
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetImmutabilityPolicyHandleError(resp)
+		return nil, client.getImmutabilityPolicyHandleError(resp)
 	}
-	result, err := client.GetImmutabilityPolicyHandleResponse(resp)
+	result, err := client.getImmutabilityPolicyHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetImmutabilityPolicyCreateRequest creates the GetImmutabilityPolicy request.
-func (client *BlobContainersClient) GetImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetImmutabilityPolicyOptions) (*azcore.Request, error) {
+// getImmutabilityPolicyCreateRequest creates the GetImmutabilityPolicy request.
+func (client BlobContainersClient) getImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetImmutabilityPolicyOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies/{immutabilityPolicyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -537,8 +496,8 @@ func (client *BlobContainersClient) GetImmutabilityPolicyCreateRequest(ctx conte
 	return req, nil
 }
 
-// GetImmutabilityPolicyHandleResponse handles the GetImmutabilityPolicy response.
-func (client *BlobContainersClient) GetImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
+// getImmutabilityPolicyHandleResponse handles the GetImmutabilityPolicy response.
+func (client BlobContainersClient) getImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
 	result := ImmutabilityPolicyResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
@@ -546,8 +505,8 @@ func (client *BlobContainersClient) GetImmutabilityPolicyHandleResponse(resp *az
 	return &result, resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
 }
 
-// GetImmutabilityPolicyHandleError handles the GetImmutabilityPolicy error response.
-func (client *BlobContainersClient) GetImmutabilityPolicyHandleError(resp *azcore.Response) error {
+// getImmutabilityPolicyHandleError handles the GetImmutabilityPolicy error response.
+func (client BlobContainersClient) getImmutabilityPolicyHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -560,8 +519,8 @@ func (client *BlobContainersClient) GetImmutabilityPolicyHandleError(resp *azcor
 
 // Lease - The Lease Container operation establishes and manages a lock on a container for delete operations. The lock duration can be 15 to 60 seconds,
 // or can be infinite.
-func (client *BlobContainersClient) Lease(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersLeaseOptions) (*LeaseContainerResponseResponse, error) {
-	req, err := client.LeaseCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
+func (client BlobContainersClient) Lease(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersLeaseOptions) (*LeaseContainerResponseResponse, error) {
+	req, err := client.leaseCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -570,17 +529,17 @@ func (client *BlobContainersClient) Lease(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.LeaseHandleError(resp)
+		return nil, client.leaseHandleError(resp)
 	}
-	result, err := client.LeaseHandleResponse(resp)
+	result, err := client.leaseHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// LeaseCreateRequest creates the Lease request.
-func (client *BlobContainersClient) LeaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersLeaseOptions) (*azcore.Request, error) {
+// leaseCreateRequest creates the Lease request.
+func (client BlobContainersClient) leaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersLeaseOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/lease"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -601,14 +560,14 @@ func (client *BlobContainersClient) LeaseCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// LeaseHandleResponse handles the Lease response.
-func (client *BlobContainersClient) LeaseHandleResponse(resp *azcore.Response) (*LeaseContainerResponseResponse, error) {
+// leaseHandleResponse handles the Lease response.
+func (client BlobContainersClient) leaseHandleResponse(resp *azcore.Response) (*LeaseContainerResponseResponse, error) {
 	result := LeaseContainerResponseResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.LeaseContainerResponse)
 }
 
-// LeaseHandleError handles the Lease error response.
-func (client *BlobContainersClient) LeaseHandleError(resp *azcore.Response) error {
+// leaseHandleError handles the Lease error response.
+func (client BlobContainersClient) leaseHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -620,14 +579,14 @@ func (client *BlobContainersClient) LeaseHandleError(resp *azcore.Response) erro
 }
 
 // List - Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation token.
-func (client *BlobContainersClient) List(resourceGroupName string, accountName string, options *BlobContainersListOptions) ListContainerItemsPager {
+func (client BlobContainersClient) List(resourceGroupName string, accountName string, options *BlobContainersListOptions) ListContainerItemsPager {
 	return &listContainerItemsPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, accountName, options)
+			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *ListContainerItemsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListContainerItems.NextLink)
 		},
@@ -635,8 +594,8 @@ func (client *BlobContainersClient) List(resourceGroupName string, accountName s
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *BlobContainersClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *BlobContainersListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client BlobContainersClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *BlobContainersListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -662,14 +621,14 @@ func (client *BlobContainersClient) ListCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *BlobContainersClient) ListHandleResponse(resp *azcore.Response) (*ListContainerItemsResponse, error) {
+// listHandleResponse handles the List response.
+func (client BlobContainersClient) listHandleResponse(resp *azcore.Response) (*ListContainerItemsResponse, error) {
 	result := ListContainerItemsResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ListContainerItems)
 }
 
-// ListHandleError handles the List error response.
-func (client *BlobContainersClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client BlobContainersClient) listHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -682,8 +641,8 @@ func (client *BlobContainersClient) ListHandleError(resp *azcore.Response) error
 
 // LockImmutabilityPolicy - Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is ExtendImmutabilityPolicy action.
 // ETag in If-Match is required for this operation.
-func (client *BlobContainersClient) LockImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersLockImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
-	req, err := client.LockImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
+func (client BlobContainersClient) LockImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersLockImmutabilityPolicyOptions) (*ImmutabilityPolicyResponse, error) {
+	req, err := client.lockImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
 	if err != nil {
 		return nil, err
 	}
@@ -692,17 +651,17 @@ func (client *BlobContainersClient) LockImmutabilityPolicy(ctx context.Context, 
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.LockImmutabilityPolicyHandleError(resp)
+		return nil, client.lockImmutabilityPolicyHandleError(resp)
 	}
-	result, err := client.LockImmutabilityPolicyHandleResponse(resp)
+	result, err := client.lockImmutabilityPolicyHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// LockImmutabilityPolicyCreateRequest creates the LockImmutabilityPolicy request.
-func (client *BlobContainersClient) LockImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersLockImmutabilityPolicyOptions) (*azcore.Request, error) {
+// lockImmutabilityPolicyCreateRequest creates the LockImmutabilityPolicy request.
+func (client BlobContainersClient) lockImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersLockImmutabilityPolicyOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies/default/lock"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -721,8 +680,8 @@ func (client *BlobContainersClient) LockImmutabilityPolicyCreateRequest(ctx cont
 	return req, nil
 }
 
-// LockImmutabilityPolicyHandleResponse handles the LockImmutabilityPolicy response.
-func (client *BlobContainersClient) LockImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
+// lockImmutabilityPolicyHandleResponse handles the LockImmutabilityPolicy response.
+func (client BlobContainersClient) lockImmutabilityPolicyHandleResponse(resp *azcore.Response) (*ImmutabilityPolicyResponse, error) {
 	result := ImmutabilityPolicyResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
@@ -730,8 +689,8 @@ func (client *BlobContainersClient) LockImmutabilityPolicyHandleResponse(resp *a
 	return &result, resp.UnmarshalAsJSON(&result.ImmutabilityPolicy)
 }
 
-// LockImmutabilityPolicyHandleError handles the LockImmutabilityPolicy error response.
-func (client *BlobContainersClient) LockImmutabilityPolicyHandleError(resp *azcore.Response) error {
+// lockImmutabilityPolicyHandleError handles the LockImmutabilityPolicy error response.
+func (client BlobContainersClient) lockImmutabilityPolicyHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -744,8 +703,8 @@ func (client *BlobContainersClient) LockImmutabilityPolicyHandleError(resp *azco
 
 // SetLegalHold - Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append pattern and does not clear
 // out the existing tags that are not specified in the request.
-func (client *BlobContainersClient) SetLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersSetLegalHoldOptions) (*LegalHoldResponse, error) {
-	req, err := client.SetLegalHoldCreateRequest(ctx, resourceGroupName, accountName, containerName, legalHold, options)
+func (client BlobContainersClient) SetLegalHold(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersSetLegalHoldOptions) (*LegalHoldResponse, error) {
+	req, err := client.setLegalHoldCreateRequest(ctx, resourceGroupName, accountName, containerName, legalHold, options)
 	if err != nil {
 		return nil, err
 	}
@@ -754,17 +713,17 @@ func (client *BlobContainersClient) SetLegalHold(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.SetLegalHoldHandleError(resp)
+		return nil, client.setLegalHoldHandleError(resp)
 	}
-	result, err := client.SetLegalHoldHandleResponse(resp)
+	result, err := client.setLegalHoldHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// SetLegalHoldCreateRequest creates the SetLegalHold request.
-func (client *BlobContainersClient) SetLegalHoldCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersSetLegalHoldOptions) (*azcore.Request, error) {
+// setLegalHoldCreateRequest creates the SetLegalHold request.
+func (client BlobContainersClient) setLegalHoldCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, options *BlobContainersSetLegalHoldOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/setLegalHold"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -782,14 +741,14 @@ func (client *BlobContainersClient) SetLegalHoldCreateRequest(ctx context.Contex
 	return req, req.MarshalAsJSON(legalHold)
 }
 
-// SetLegalHoldHandleResponse handles the SetLegalHold response.
-func (client *BlobContainersClient) SetLegalHoldHandleResponse(resp *azcore.Response) (*LegalHoldResponse, error) {
+// setLegalHoldHandleResponse handles the SetLegalHold response.
+func (client BlobContainersClient) setLegalHoldHandleResponse(resp *azcore.Response) (*LegalHoldResponse, error) {
 	result := LegalHoldResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.LegalHold)
 }
 
-// SetLegalHoldHandleError handles the SetLegalHold error response.
-func (client *BlobContainersClient) SetLegalHoldHandleError(resp *azcore.Response) error {
+// setLegalHoldHandleError handles the SetLegalHold error response.
+func (client BlobContainersClient) setLegalHoldHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -802,8 +761,8 @@ func (client *BlobContainersClient) SetLegalHoldHandleError(resp *azcore.Respons
 
 // Update - Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged. Update fails if the specified
 // container doesn't already exist.
-func (client *BlobContainersClient) Update(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersUpdateOptions) (*BlobContainerResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, accountName, containerName, blobContainer, options)
+func (client BlobContainersClient) Update(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersUpdateOptions) (*BlobContainerResponse, error) {
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, containerName, blobContainer, options)
 	if err != nil {
 		return nil, err
 	}
@@ -812,17 +771,17 @@ func (client *BlobContainersClient) Update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.UpdateHandleError(resp)
+		return nil, client.updateHandleError(resp)
 	}
-	result, err := client.UpdateHandleResponse(resp)
+	result, err := client.updateHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// UpdateCreateRequest creates the Update request.
-func (client *BlobContainersClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersUpdateOptions) (*azcore.Request, error) {
+// updateCreateRequest creates the Update request.
+func (client BlobContainersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, options *BlobContainersUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -840,14 +799,14 @@ func (client *BlobContainersClient) UpdateCreateRequest(ctx context.Context, res
 	return req, req.MarshalAsJSON(blobContainer)
 }
 
-// UpdateHandleResponse handles the Update response.
-func (client *BlobContainersClient) UpdateHandleResponse(resp *azcore.Response) (*BlobContainerResponse, error) {
+// updateHandleResponse handles the Update response.
+func (client BlobContainersClient) updateHandleResponse(resp *azcore.Response) (*BlobContainerResponse, error) {
 	result := BlobContainerResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.BlobContainer)
 }
 
-// UpdateHandleError handles the Update error response.
-func (client *BlobContainersClient) UpdateHandleError(resp *azcore.Response) error {
+// updateHandleError handles the Update error response.
+func (client BlobContainersClient) updateHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)

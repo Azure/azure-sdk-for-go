@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleStorageAccountsOperations_BeginCreate() {
+func ExampleStorageAccountsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -47,7 +47,7 @@ func ExampleStorageAccountsOperations_BeginCreate() {
 	log.Printf("storage account ID: %v\n", *resp.StorageAccount.ID)
 }
 
-func ExampleStorageAccountsOperations_List() {
+func ExampleStorageAccountsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -68,7 +68,7 @@ func ExampleStorageAccountsOperations_List() {
 	}
 }
 
-func ExampleStorageAccountsOperations_ListByResourceGroup() {
+func ExampleStorageAccountsClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -83,7 +83,7 @@ func ExampleStorageAccountsOperations_ListByResourceGroup() {
 	}
 }
 
-func ExampleStorageAccountsOperations_CheckNameAvailability() {
+func ExampleStorageAccountsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -102,7 +102,7 @@ func ExampleStorageAccountsOperations_CheckNameAvailability() {
 	log.Printf("name availability: %v", *resp.CheckNameAvailabilityResult.NameAvailable)
 }
 
-func ExampleStorageAccountsOperations_ListKeys() {
+func ExampleStorageAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -117,7 +117,7 @@ func ExampleStorageAccountsOperations_ListKeys() {
 	}
 }
 
-func ExampleStorageAccountsOperations_GetProperties() {
+func ExampleStorageAccountsClient_GetProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -130,7 +130,7 @@ func ExampleStorageAccountsOperations_GetProperties() {
 	log.Printf("storage account properties Access Tier: %v", *resp.StorageAccount.Properties.AccessTier)
 }
 
-func ExampleStorageAccountsOperations_RegenerateKey() {
+func ExampleStorageAccountsClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -145,7 +145,7 @@ func ExampleStorageAccountsOperations_RegenerateKey() {
 	}
 }
 
-func ExampleStorageAccountsOperations_Update() {
+func ExampleStorageAccountsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -164,7 +164,7 @@ func ExampleStorageAccountsOperations_Update() {
 	}
 	log.Printf("storage account ID: %v", *resp.StorageAccount.ID)
 }
-func ExampleStorageAccountsOperations_Delete() {
+func ExampleStorageAccountsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

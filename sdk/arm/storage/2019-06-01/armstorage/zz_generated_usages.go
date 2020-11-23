@@ -19,13 +19,7 @@ import (
 	"strings"
 )
 
-// UsagesOperations contains the methods for the Usages group.
-type UsagesOperations interface {
-	// ListByLocation - Gets the current usage count and the limit for the resources of the location under the subscription.
-	ListByLocation(ctx context.Context, location string, options *UsagesListByLocationOptions) (*UsageListResultResponse, error)
-}
-
-// UsagesClient implements the UsagesOperations interface.
+// UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
 type UsagesClient struct {
 	con            *armcore.Connection
@@ -33,18 +27,18 @@ type UsagesClient struct {
 }
 
 // NewUsagesClient creates a new instance of UsagesClient with the specified values.
-func NewUsagesClient(con *armcore.Connection, subscriptionID string) UsagesOperations {
-	return &UsagesClient{con: con, subscriptionID: subscriptionID}
+func NewUsagesClient(con *armcore.Connection, subscriptionID string) UsagesClient {
+	return UsagesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *UsagesClient) Pipeline() azcore.Pipeline {
+func (client UsagesClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // ListByLocation - Gets the current usage count and the limit for the resources of the location under the subscription.
-func (client *UsagesClient) ListByLocation(ctx context.Context, location string, options *UsagesListByLocationOptions) (*UsageListResultResponse, error) {
-	req, err := client.ListByLocationCreateRequest(ctx, location, options)
+func (client UsagesClient) ListByLocation(ctx context.Context, location string, options *UsagesListByLocationOptions) (*UsageListResultResponse, error) {
+	req, err := client.listByLocationCreateRequest(ctx, location, options)
 	if err != nil {
 		return nil, err
 	}
@@ -53,17 +47,17 @@ func (client *UsagesClient) ListByLocation(ctx context.Context, location string,
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.ListByLocationHandleError(resp)
+		return nil, client.listByLocationHandleError(resp)
 	}
-	result, err := client.ListByLocationHandleResponse(resp)
+	result, err := client.listByLocationHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// ListByLocationCreateRequest creates the ListByLocation request.
-func (client *UsagesClient) ListByLocationCreateRequest(ctx context.Context, location string, options *UsagesListByLocationOptions) (*azcore.Request, error) {
+// listByLocationCreateRequest creates the ListByLocation request.
+func (client UsagesClient) listByLocationCreateRequest(ctx context.Context, location string, options *UsagesListByLocationOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/usages"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
@@ -79,14 +73,14 @@ func (client *UsagesClient) ListByLocationCreateRequest(ctx context.Context, loc
 	return req, nil
 }
 
-// ListByLocationHandleResponse handles the ListByLocation response.
-func (client *UsagesClient) ListByLocationHandleResponse(resp *azcore.Response) (*UsageListResultResponse, error) {
+// listByLocationHandleResponse handles the ListByLocation response.
+func (client UsagesClient) listByLocationHandleResponse(resp *azcore.Response) (*UsageListResultResponse, error) {
 	result := UsageListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.UsageListResult)
 }
 
-// ListByLocationHandleError handles the ListByLocation error response.
-func (client *UsagesClient) ListByLocationHandleError(resp *azcore.Response) error {
+// listByLocationHandleError handles the ListByLocation error response.
+func (client UsagesClient) listByLocationHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)

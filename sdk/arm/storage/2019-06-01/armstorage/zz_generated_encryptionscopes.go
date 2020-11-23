@@ -19,21 +19,7 @@ import (
 	"strings"
 )
 
-// EncryptionScopesOperations contains the methods for the EncryptionScopes group.
-type EncryptionScopesOperations interface {
-	// Get - Returns the properties for the specified encryption scope.
-	Get(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesGetOptions) (*EncryptionScopeResponse, error)
-	// List - Lists all the encryption scopes available under the specified storage account.
-	List(resourceGroupName string, accountName string, options *EncryptionScopesListOptions) EncryptionScopeListResultPager
-	// Patch - Update encryption scope properties as specified in the request body. Update fails if the specified encryption scope does not already exist.
-	Patch(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesPatchOptions) (*EncryptionScopeResponse, error)
-	// Put - Synchronously creates or updates an encryption scope under the specified storage account. If an encryption scope is already created and a subsequent
-	// request is issued with different properties, the
-	// encryption scope properties will be updated per the specified request.
-	Put(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesPutOptions) (*EncryptionScopeResponse, error)
-}
-
-// EncryptionScopesClient implements the EncryptionScopesOperations interface.
+// EncryptionScopesClient contains the methods for the EncryptionScopes group.
 // Don't use this type directly, use NewEncryptionScopesClient() instead.
 type EncryptionScopesClient struct {
 	con            *armcore.Connection
@@ -41,18 +27,18 @@ type EncryptionScopesClient struct {
 }
 
 // NewEncryptionScopesClient creates a new instance of EncryptionScopesClient with the specified values.
-func NewEncryptionScopesClient(con *armcore.Connection, subscriptionID string) EncryptionScopesOperations {
-	return &EncryptionScopesClient{con: con, subscriptionID: subscriptionID}
+func NewEncryptionScopesClient(con *armcore.Connection, subscriptionID string) EncryptionScopesClient {
+	return EncryptionScopesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *EncryptionScopesClient) Pipeline() azcore.Pipeline {
+func (client EncryptionScopesClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // Get - Returns the properties for the specified encryption scope.
-func (client *EncryptionScopesClient) Get(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesGetOptions) (*EncryptionScopeResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, accountName, encryptionScopeName, options)
+func (client EncryptionScopesClient) Get(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesGetOptions) (*EncryptionScopeResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, encryptionScopeName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -61,17 +47,17 @@ func (client *EncryptionScopesClient) Get(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *EncryptionScopesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client EncryptionScopesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -89,14 +75,14 @@ func (client *EncryptionScopesClient) GetCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *EncryptionScopesClient) GetHandleResponse(resp *azcore.Response) (*EncryptionScopeResponse, error) {
+// getHandleResponse handles the Get response.
+func (client EncryptionScopesClient) getHandleResponse(resp *azcore.Response) (*EncryptionScopeResponse, error) {
 	result := EncryptionScopeResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.EncryptionScope)
 }
 
-// GetHandleError handles the Get error response.
-func (client *EncryptionScopesClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client EncryptionScopesClient) getHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -105,14 +91,14 @@ func (client *EncryptionScopesClient) GetHandleError(resp *azcore.Response) erro
 }
 
 // List - Lists all the encryption scopes available under the specified storage account.
-func (client *EncryptionScopesClient) List(resourceGroupName string, accountName string, options *EncryptionScopesListOptions) EncryptionScopeListResultPager {
+func (client EncryptionScopesClient) List(resourceGroupName string, accountName string, options *EncryptionScopesListOptions) EncryptionScopeListResultPager {
 	return &encryptionScopeListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, accountName, options)
+			return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *EncryptionScopeListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.EncryptionScopeListResult.NextLink)
 		},
@@ -120,8 +106,8 @@ func (client *EncryptionScopesClient) List(resourceGroupName string, accountName
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *EncryptionScopesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *EncryptionScopesListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client EncryptionScopesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *EncryptionScopesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/encryptionScopes"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -138,14 +124,14 @@ func (client *EncryptionScopesClient) ListCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *EncryptionScopesClient) ListHandleResponse(resp *azcore.Response) (*EncryptionScopeListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client EncryptionScopesClient) listHandleResponse(resp *azcore.Response) (*EncryptionScopeListResultResponse, error) {
 	result := EncryptionScopeListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.EncryptionScopeListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *EncryptionScopesClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client EncryptionScopesClient) listHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -157,8 +143,8 @@ func (client *EncryptionScopesClient) ListHandleError(resp *azcore.Response) err
 }
 
 // Patch - Update encryption scope properties as specified in the request body. Update fails if the specified encryption scope does not already exist.
-func (client *EncryptionScopesClient) Patch(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesPatchOptions) (*EncryptionScopeResponse, error) {
-	req, err := client.PatchCreateRequest(ctx, resourceGroupName, accountName, encryptionScopeName, encryptionScope, options)
+func (client EncryptionScopesClient) Patch(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesPatchOptions) (*EncryptionScopeResponse, error) {
+	req, err := client.patchCreateRequest(ctx, resourceGroupName, accountName, encryptionScopeName, encryptionScope, options)
 	if err != nil {
 		return nil, err
 	}
@@ -167,17 +153,17 @@ func (client *EncryptionScopesClient) Patch(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.PatchHandleError(resp)
+		return nil, client.patchHandleError(resp)
 	}
-	result, err := client.PatchHandleResponse(resp)
+	result, err := client.patchHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// PatchCreateRequest creates the Patch request.
-func (client *EncryptionScopesClient) PatchCreateRequest(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesPatchOptions) (*azcore.Request, error) {
+// patchCreateRequest creates the Patch request.
+func (client EncryptionScopesClient) patchCreateRequest(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesPatchOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -195,14 +181,14 @@ func (client *EncryptionScopesClient) PatchCreateRequest(ctx context.Context, re
 	return req, req.MarshalAsJSON(encryptionScope)
 }
 
-// PatchHandleResponse handles the Patch response.
-func (client *EncryptionScopesClient) PatchHandleResponse(resp *azcore.Response) (*EncryptionScopeResponse, error) {
+// patchHandleResponse handles the Patch response.
+func (client EncryptionScopesClient) patchHandleResponse(resp *azcore.Response) (*EncryptionScopeResponse, error) {
 	result := EncryptionScopeResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.EncryptionScope)
 }
 
-// PatchHandleError handles the Patch error response.
-func (client *EncryptionScopesClient) PatchHandleError(resp *azcore.Response) error {
+// patchHandleError handles the Patch error response.
+func (client EncryptionScopesClient) patchHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -213,8 +199,8 @@ func (client *EncryptionScopesClient) PatchHandleError(resp *azcore.Response) er
 // Put - Synchronously creates or updates an encryption scope under the specified storage account. If an encryption scope is already created and a subsequent
 // request is issued with different properties, the
 // encryption scope properties will be updated per the specified request.
-func (client *EncryptionScopesClient) Put(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesPutOptions) (*EncryptionScopeResponse, error) {
-	req, err := client.PutCreateRequest(ctx, resourceGroupName, accountName, encryptionScopeName, encryptionScope, options)
+func (client EncryptionScopesClient) Put(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesPutOptions) (*EncryptionScopeResponse, error) {
+	req, err := client.putCreateRequest(ctx, resourceGroupName, accountName, encryptionScopeName, encryptionScope, options)
 	if err != nil {
 		return nil, err
 	}
@@ -223,17 +209,17 @@ func (client *EncryptionScopesClient) Put(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.PutHandleError(resp)
+		return nil, client.putHandleError(resp)
 	}
-	result, err := client.PutHandleResponse(resp)
+	result, err := client.putHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// PutCreateRequest creates the Put request.
-func (client *EncryptionScopesClient) PutCreateRequest(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesPutOptions) (*azcore.Request, error) {
+// putCreateRequest creates the Put request.
+func (client EncryptionScopesClient) putCreateRequest(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, options *EncryptionScopesPutOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/encryptionScopes/{encryptionScopeName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
@@ -251,14 +237,14 @@ func (client *EncryptionScopesClient) PutCreateRequest(ctx context.Context, reso
 	return req, req.MarshalAsJSON(encryptionScope)
 }
 
-// PutHandleResponse handles the Put response.
-func (client *EncryptionScopesClient) PutHandleResponse(resp *azcore.Response) (*EncryptionScopeResponse, error) {
+// putHandleResponse handles the Put response.
+func (client EncryptionScopesClient) putHandleResponse(resp *azcore.Response) (*EncryptionScopeResponse, error) {
 	result := EncryptionScopeResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.EncryptionScope)
 }
 
-// PutHandleError handles the Put error response.
-func (client *EncryptionScopesClient) PutHandleError(resp *azcore.Response) error {
+// putHandleError handles the Put error response.
+func (client EncryptionScopesClient) putHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

@@ -1,6 +1,7 @@
 package autorest
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -35,9 +36,36 @@ func (t *Task) executeAutorest(options []string) error {
 	arguments := append(options, t.AbsReadmeMd)
 	c := exec.Command("autorest", arguments...)
 	log.Printf("Executing autorest with parameters: %+v", arguments)
-	c.Stdout = os.Stdout
-	c.Stderr = os.Stderr
-	c.Start()
+
+	stdout, _ := c.StdoutPipe()
+	stderr, _ := c.StderrPipe()
+	errScanner := bufio.NewScanner(stderr)
+	errScanner.Split(bufio.ScanLines)
+	outScanner := bufio.NewScanner(stdout)
+	outScanner.Split(bufio.ScanLines)
+
+	if err := c.Start(); err != nil {
+		return &TaskError{
+			AbsReadmeMd: t.AbsReadmeMd,
+			Script:      "autorest",
+			Message:     err.Error(),
+		}
+	}
+
+	go func() {
+		for errScanner.Scan() {
+			line := errScanner.Text()
+			fmt.Fprintln(os.Stderr, "[AUTOREST] "+line)
+		}
+	}()
+
+	go func() {
+		for outScanner.Scan() {
+			line := outScanner.Text()
+			fmt.Fprintln(os.Stdout, "[AUTOREST] "+line)
+		}
+	}()
+
 	if err := c.Wait(); err != nil {
 		return &TaskError{
 			AbsReadmeMd: t.AbsReadmeMd,

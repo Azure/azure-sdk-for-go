@@ -31,8 +31,8 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2018-02-01/containerregistry"
 
-// Actor the agent that initiated the event. For most situations, this could be from the authorization context
-// of the request.
+// Actor the agent that initiated the event. For most situations, this could be from the authorization
+// context of the request.
 type Actor struct {
 	// Name - The subject or username associated with the request context that generated the event.
 	Name *string `json:"name,omitempty"`
@@ -289,8 +289,11 @@ func (page BuildArgumentListPage) Values() []BuildArgument {
 }
 
 // Creates a new instance of the BuildArgumentListPage type.
-func NewBuildArgumentListPage(getNextPage func(context.Context, BuildArgumentList) (BuildArgumentList, error)) BuildArgumentListPage {
-	return BuildArgumentListPage{fn: getNextPage}
+func NewBuildArgumentListPage(cur BuildArgumentList, getNextPage func(context.Context, BuildArgumentList) (BuildArgumentList, error)) BuildArgumentListPage {
+	return BuildArgumentListPage{
+		fn:  getNextPage,
+		bal: cur,
+	}
 }
 
 // BuildFilter properties that are enabled for Odata querying.
@@ -472,8 +475,11 @@ func (page BuildListResultPage) Values() []Build {
 }
 
 // Creates a new instance of the BuildListResultPage type.
-func NewBuildListResultPage(getNextPage func(context.Context, BuildListResult) (BuildListResult, error)) BuildListResultPage {
-	return BuildListResultPage{fn: getNextPage}
+func NewBuildListResultPage(cur BuildListResult, getNextPage func(context.Context, BuildListResult) (BuildListResult, error)) BuildListResultPage {
+	return BuildListResultPage{
+		fn:  getNextPage,
+		blr: cur,
+	}
 }
 
 // BuildProperties the properties for a build.
@@ -752,8 +758,11 @@ func (page BuildStepListPage) Values() []BuildStep {
 }
 
 // Creates a new instance of the BuildStepListPage type.
-func NewBuildStepListPage(getNextPage func(context.Context, BuildStepList) (BuildStepList, error)) BuildStepListPage {
-	return BuildStepListPage{fn: getNextPage}
+func NewBuildStepListPage(cur BuildStepList, getNextPage func(context.Context, BuildStepList) (BuildStepList, error)) BuildStepListPage {
+	return BuildStepListPage{
+		fn:  getNextPage,
+		bsl: cur,
+	}
 }
 
 // BasicBuildStepProperties base properties for any build step.
@@ -906,7 +915,8 @@ func (bspup BuildStepPropertiesUpdateParameters) AsBasicBuildStepPropertiesUpdat
 	return &bspup, true
 }
 
-// BuildStepsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// BuildStepsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type BuildStepsCreateFuture struct {
 	azure.Future
 }
@@ -934,7 +944,8 @@ func (future *BuildStepsCreateFuture) Result(client BuildStepsClient) (bs BuildS
 	return
 }
 
-// BuildStepsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// BuildStepsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type BuildStepsDeleteFuture struct {
 	azure.Future
 }
@@ -956,7 +967,8 @@ func (future *BuildStepsDeleteFuture) Result(client BuildStepsClient) (ar autore
 	return
 }
 
-// BuildStepsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// BuildStepsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type BuildStepsUpdateFuture struct {
 	azure.Future
 }
@@ -1062,8 +1074,8 @@ func (future *BuildsUpdateFuture) Result(client BuildsClient) (b Build, err erro
 	return
 }
 
-// BuildTask the build task that has the resource properties and all build items. The build task will have all
-// information to schedule a build against it.
+// BuildTask the build task that has the resource properties and all build items. The build task will have
+// all information to schedule a build against it.
 type BuildTask struct {
 	autorest.Response `json:"-"`
 	// BuildTaskProperties - The properties of a build task.
@@ -1363,8 +1375,11 @@ func (page BuildTaskListResultPage) Values() []BuildTask {
 }
 
 // Creates a new instance of the BuildTaskListResultPage type.
-func NewBuildTaskListResultPage(getNextPage func(context.Context, BuildTaskListResult) (BuildTaskListResult, error)) BuildTaskListResultPage {
-	return BuildTaskListResultPage{fn: getNextPage}
+func NewBuildTaskListResultPage(cur BuildTaskListResult, getNextPage func(context.Context, BuildTaskListResult) (BuildTaskListResult, error)) BuildTaskListResultPage {
+	return BuildTaskListResultPage{
+		fn:   getNextPage,
+		btlr: cur,
+	}
 }
 
 // BuildTaskProperties the properties of a build task.
@@ -1420,7 +1435,8 @@ type BuildTaskPropertiesUpdateParameters struct {
 	SourceRepository *SourceRepositoryUpdateParameters `json:"sourceRepository,omitempty"`
 }
 
-// BuildTasksCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// BuildTasksCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type BuildTasksCreateFuture struct {
 	azure.Future
 }
@@ -1448,7 +1464,8 @@ func (future *BuildTasksCreateFuture) Result(client BuildTasksClient) (bt BuildT
 	return
 }
 
-// BuildTasksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// BuildTasksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type BuildTasksDeleteFuture struct {
 	azure.Future
 }
@@ -1470,7 +1487,8 @@ func (future *BuildTasksDeleteFuture) Result(client BuildTasksClient) (ar autore
 	return
 }
 
-// BuildTasksUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// BuildTasksUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type BuildTasksUpdateFuture struct {
 	azure.Future
 }
@@ -1911,8 +1929,11 @@ func (page EventListResultPage) Values() []Event {
 }
 
 // Creates a new instance of the EventListResultPage type.
-func NewEventListResultPage(getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
-	return EventListResultPage{fn: getNextPage}
+func NewEventListResultPage(cur EventListResult, getNextPage func(context.Context, EventListResult) (EventListResult, error)) EventListResultPage {
+	return EventListResultPage{
+		fn:  getNextPage,
+		elr: cur,
+	}
 }
 
 // EventRequestMessage the event request message sent to the service URI.
@@ -2319,8 +2340,11 @@ func (page OperationListResultPage) Values() []OperationDefinition {
 }
 
 // Creates a new instance of the OperationListResultPage type.
-func NewOperationListResultPage(getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return OperationListResultPage{fn: getNextPage}
+func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
+	return OperationListResultPage{
+		fn:  getNextPage,
+		olr: cur,
+	}
 }
 
 // OperationMetricSpecificationDefinition the definition of Azure Monitoring metric.
@@ -2543,7 +2567,8 @@ type RegenerateCredentialParameters struct {
 	Name PasswordName `json:"name,omitempty"`
 }
 
-// RegistriesCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// RegistriesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type RegistriesCreateFuture struct {
 	azure.Future
 }
@@ -2571,7 +2596,8 @@ func (future *RegistriesCreateFuture) Result(client RegistriesClient) (r Registr
 	return
 }
 
-// RegistriesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// RegistriesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type RegistriesDeleteFuture struct {
 	azure.Future
 }
@@ -2645,7 +2671,8 @@ func (future *RegistriesQueueBuildFuture) Result(client RegistriesClient) (b Bui
 	return
 }
 
-// RegistriesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// RegistriesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type RegistriesUpdateFuture struct {
 	azure.Future
 }
@@ -2673,8 +2700,8 @@ func (future *RegistriesUpdateFuture) Result(client RegistriesClient) (r Registr
 	return
 }
 
-// RegistriesUpdatePoliciesFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
+// RegistriesUpdatePoliciesFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
 type RegistriesUpdatePoliciesFuture struct {
 	azure.Future
 }
@@ -2978,8 +3005,11 @@ func (page RegistryListResultPage) Values() []Registry {
 }
 
 // Creates a new instance of the RegistryListResultPage type.
-func NewRegistryListResultPage(getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
-	return RegistryListResultPage{fn: getNextPage}
+func NewRegistryListResultPage(cur RegistryListResult, getNextPage func(context.Context, RegistryListResult) (RegistryListResult, error)) RegistryListResultPage {
+	return RegistryListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // RegistryNameCheckRequest a request to check whether a container registry name is available.
@@ -3400,8 +3430,11 @@ func (page ReplicationListResultPage) Values() []Replication {
 }
 
 // Creates a new instance of the ReplicationListResultPage type.
-func NewReplicationListResultPage(getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
-	return ReplicationListResultPage{fn: getNextPage}
+func NewReplicationListResultPage(cur ReplicationListResult, getNextPage func(context.Context, ReplicationListResult) (ReplicationListResult, error)) ReplicationListResultPage {
+	return ReplicationListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
 }
 
 // ReplicationProperties the properties of a replication.
@@ -3565,8 +3598,8 @@ func (s Sku) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Source the registry node that generated the event. Put differently, while the actor initiates the event, the
-// source generates it.
+// Source the registry node that generated the event. Put differently, while the actor initiates the event,
+// the source generates it.
 type Source struct {
 	// Addr - The IP or hostname and the port of the registry node that generated the event. Generally, this will be resolved by os.Hostname() along with the running port.
 	Addr *string `json:"addr,omitempty"`
@@ -3628,8 +3661,8 @@ type Status struct {
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 }
 
-// StorageAccountProperties the properties of a storage account for a container registry. Only applicable to
-// Classic SKU.
+// StorageAccountProperties the properties of a storage account for a container registry. Only applicable
+// to Classic SKU.
 type StorageAccountProperties struct {
 	// ID - The resource ID of the storage account.
 	ID *string `json:"id,omitempty"`
@@ -3993,8 +4026,11 @@ func (page WebhookListResultPage) Values() []Webhook {
 }
 
 // Creates a new instance of the WebhookListResultPage type.
-func NewWebhookListResultPage(getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
-	return WebhookListResultPage{fn: getNextPage}
+func NewWebhookListResultPage(cur WebhookListResult, getNextPage func(context.Context, WebhookListResult) (WebhookListResult, error)) WebhookListResultPage {
+	return WebhookListResultPage{
+		fn:  getNextPage,
+		wlr: cur,
+	}
 }
 
 // WebhookProperties the properties of a webhook.
@@ -4094,7 +4130,8 @@ func (wpup WebhookPropertiesUpdateParameters) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// WebhooksCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// WebhooksCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type WebhooksCreateFuture struct {
 	azure.Future
 }
@@ -4122,7 +4159,8 @@ func (future *WebhooksCreateFuture) Result(client WebhooksClient) (w Webhook, er
 	return
 }
 
-// WebhooksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// WebhooksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type WebhooksDeleteFuture struct {
 	azure.Future
 }
@@ -4144,7 +4182,8 @@ func (future *WebhooksDeleteFuture) Result(client WebhooksClient) (ar autorest.R
 	return
 }
 
-// WebhooksUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// WebhooksUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type WebhooksUpdateFuture struct {
 	azure.Future
 }

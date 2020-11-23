@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleVirtualMachineScaleSetsOperations_BeginCreateOrUpdate() {
+func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate() {
 	vmssName := "<VM scale set name>"
 	username := "<username>"
 	password := "<password>"
@@ -25,7 +25,7 @@ func ExampleVirtualMachineScaleSetsOperations_BeginCreateOrUpdate() {
 	offer := "<offer>"
 	publisher := "<publisher>"
 	sku := "<sku>"
-	// Retreive the subnet ID of an existing subnet by calling armnetwork.SubnetsOperations.Get to retreive the
+	// Retreive the subnet ID of an existing subnet by calling armnetwork.SubnetsClient.Get to retreive the
 	// the subnet instance that will be assigned to the virtual machine scale set.
 	subnetID := "<subnet ID>"
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -115,7 +115,7 @@ func ExampleVirtualMachineScaleSetsOperations_BeginCreateOrUpdate() {
 	log.Printf("VM scale set ID: %v", *resp.VirtualMachineScaleSet.ID)
 }
 
-func ExampleVirtualMachineScaleSetsOperations_Get() {
+func ExampleVirtualMachineScaleSetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -128,7 +128,7 @@ func ExampleVirtualMachineScaleSetsOperations_Get() {
 	log.Printf("VM scale set ID: %s", *resp.VirtualMachineScaleSet.ID)
 }
 
-func ExampleVirtualMachineScaleSetsOperations_BeginUpdate() {
+func ExampleVirtualMachineScaleSetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -158,7 +158,7 @@ func ExampleVirtualMachineScaleSetsOperations_BeginUpdate() {
 	log.Printf("VM scale set ID: %v", *resp.VirtualMachineScaleSet.ID)
 }
 
-func ExampleVirtualMachineScaleSetsOperations_BeginDeallocate() {
+func ExampleVirtualMachineScaleSetsClient_BeginDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -174,7 +174,7 @@ func ExampleVirtualMachineScaleSetsOperations_BeginDeallocate() {
 	}
 }
 
-func ExampleVirtualMachineScaleSetsOperations_BeginStart() {
+func ExampleVirtualMachineScaleSetsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -190,7 +190,7 @@ func ExampleVirtualMachineScaleSetsOperations_BeginStart() {
 	}
 }
 
-func ExampleVirtualMachineScaleSetsOperations_BeginRestart() {
+func ExampleVirtualMachineScaleSetsClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -206,7 +206,7 @@ func ExampleVirtualMachineScaleSetsOperations_BeginRestart() {
 	}
 }
 
-func ExampleVirtualMachineScaleSetsOperations_BeginPowerOff() {
+func ExampleVirtualMachineScaleSetsClient_BeginPowerOff() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

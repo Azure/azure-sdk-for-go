@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleVirtualMachinesOperations_BeginCreateOrUpdate() {
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	// replace with your own value
 	vmName := "<VM name>"
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -65,7 +65,7 @@ func ExampleVirtualMachinesOperations_BeginCreateOrUpdate() {
 					NetworkInterfaces: &[]armcompute.NetworkInterfaceReference{
 						{
 							SubResource: armcompute.SubResource{
-								// call armnetwork.NetworkInterfacesOperations.Get to retreive an existing NIC and see the ID
+								// call armnetwork.NetworkInterfacesClient.Get to retreive an existing NIC and see the ID
 								ID: to.StringPtr("<NIC ID>"),
 							},
 							Properties: &armcompute.NetworkInterfaceReferenceProperties{
@@ -88,7 +88,7 @@ func ExampleVirtualMachinesOperations_BeginCreateOrUpdate() {
 	log.Printf("VM ID: %v", *resp.VirtualMachine.ID)
 }
 
-func ExampleVirtualMachinesOperations_BeginCreateOrUpdate_withDisk() {
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_withDisk() {
 	vmName := "<VM name>"
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleVirtualMachinesOperations_BeginCreateOrUpdate_withDisk() {
 							Lun:          to.Int32Ptr(0),
 							ManagedDisk: &armcompute.ManagedDiskParameters{
 								SubResource: armcompute.SubResource{
-									// call armcompute.DisksOperations.Get to retreive an existing disk and see the ID
+									// call armcompute.DisksClient.Get to retreive an existing disk and see the ID
 									ID: to.StringPtr("<disk ID>"),
 								},
 							},
@@ -166,7 +166,7 @@ func ExampleVirtualMachinesOperations_BeginCreateOrUpdate_withDisk() {
 	log.Printf("VM ID: %v", *resp.VirtualMachine.ID)
 }
 
-func ExampleVirtualMachinesOperations_BeginCreateOrUpdate_withLoadBalancer() {
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_withLoadBalancer() {
 	vmName := "<VM name>"
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,7 +203,7 @@ func ExampleVirtualMachinesOperations_BeginCreateOrUpdate_withLoadBalancer() {
 					NetworkInterfaces: &[]armcompute.NetworkInterfaceReference{
 						{
 							SubResource: armcompute.SubResource{
-								// get the NIC ID by calling armnetwork.NetworkInterfacesOperations.Get and retreiving the ID from the desired NIC instance
+								// get the NIC ID by calling armnetwork.NetworkInterfacesClient.Get and retreiving the ID from the desired NIC instance
 								ID: to.StringPtr("<NIC ID>"),
 							},
 							Properties: &armcompute.NetworkInterfaceReferenceProperties{
@@ -213,7 +213,7 @@ func ExampleVirtualMachinesOperations_BeginCreateOrUpdate_withLoadBalancer() {
 					},
 				},
 				AvailabilitySet: &armcompute.SubResource{
-					// get the availability set ID by calling armcompute.AvailabilitySetsOperations.Get and retreiving the ID from the desired availability set instance
+					// get the availability set ID by calling armcompute.AvailabilitySetsClient.Get and retreiving the ID from the desired availability set instance
 					ID: to.StringPtr("<availability set ID>"),
 				},
 			},
@@ -230,7 +230,7 @@ func ExampleVirtualMachinesOperations_BeginCreateOrUpdate_withLoadBalancer() {
 	log.Printf("VM ID: %v", *resp.VirtualMachine.ID)
 }
 
-func ExampleVirtualMachinesOperations_Get() {
+func ExampleVirtualMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -243,7 +243,7 @@ func ExampleVirtualMachinesOperations_Get() {
 	log.Printf("VM ID: %s", *resp.VirtualMachine.ID)
 }
 
-func ExampleVirtualMachinesOperations_BeginDeallocate() {
+func ExampleVirtualMachinesClient_BeginDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -259,7 +259,7 @@ func ExampleVirtualMachinesOperations_BeginDeallocate() {
 	}
 }
 
-func ExampleVirtualMachinesOperations_BeginUpdate() {
+func ExampleVirtualMachinesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -289,7 +289,7 @@ func ExampleVirtualMachinesOperations_BeginUpdate() {
 	log.Printf("ID of the updated vm: %s", *resp.VirtualMachine.ID)
 }
 
-func ExampleVirtualMachinesOperations_BeginStart() {
+func ExampleVirtualMachinesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -310,7 +310,7 @@ func ExampleVirtualMachinesOperations_BeginStart() {
 	}
 }
 
-func ExampleVirtualMachinesOperations_BeginRestart() {
+func ExampleVirtualMachinesClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -331,7 +331,7 @@ func ExampleVirtualMachinesOperations_BeginRestart() {
 	}
 }
 
-func ExampleVirtualMachinesOperations_BeginPowerOff() {
+func ExampleVirtualMachinesClient_BeginPowerOff() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

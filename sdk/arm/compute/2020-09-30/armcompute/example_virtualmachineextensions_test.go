@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleVirtualMachineExtensionsOperations_BeginCreateOrUpdate() {
+func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -65,7 +65,7 @@ func ExampleVirtualMachineExtensionsOperations_BeginCreateOrUpdate() {
 	log.Printf("VM extension ID: %v", *resp.VirtualMachineExtension.ID)
 }
 
-func ExampleVirtualMachineExtensionsOperations_Get() {
+func ExampleVirtualMachineExtensionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

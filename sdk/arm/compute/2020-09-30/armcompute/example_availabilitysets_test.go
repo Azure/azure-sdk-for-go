@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleAvailabilitySetsOperations_CreateOrUpdate() {
+func ExampleAvailabilitySetsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -46,7 +46,7 @@ func ExampleAvailabilitySetsOperations_CreateOrUpdate() {
 	log.Printf("Availability set ID: %v", *resp.AvailabilitySet.ID)
 }
 
-func ExampleAvailabilitySetsOperations_Get() {
+func ExampleAvailabilitySetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleDisksOperations_BeginCreateOrUpdate() {
+func ExampleDisksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -50,7 +50,7 @@ func ExampleDisksOperations_BeginCreateOrUpdate() {
 	log.Printf("disk ID: %v", *resp.Disk.ID)
 }
 
-func ExampleDisksOperations_Get() {
+func ExampleDisksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

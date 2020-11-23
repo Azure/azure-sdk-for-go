@@ -19,29 +19,7 @@ import (
 	"strings"
 )
 
-// SSHPublicKeysOperations contains the methods for the SSHPublicKeys group.
-type SSHPublicKeysOperations interface {
-	// Create - Creates a new SSH public key resource.
-	Create(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters SSHPublicKeyResource, options *SSHPublicKeysCreateOptions) (*SSHPublicKeyResourceResponse, error)
-	// Delete - Delete an SSH public key.
-	Delete(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysDeleteOptions) (*http.Response, error)
-	// GenerateKeyPair - Generates and returns a public/private key pair and populates the SSH public key resource with the public key. The length of the key
-	// will be 3072 bits. This operation can only be performed once per
-	// SSH public key resource.
-	GenerateKeyPair(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysGenerateKeyPairOptions) (*SSHPublicKeyGenerateKeyPairResultResponse, error)
-	// Get - Retrieves information about an SSH public key.
-	Get(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysGetOptions) (*SSHPublicKeyResourceResponse, error)
-	// ListByResourceGroup - Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to get the next page
-	// of SSH public keys.
-	ListByResourceGroup(resourceGroupName string, options *SSHPublicKeysListByResourceGroupOptions) SSHPublicKeysGroupListResultPager
-	// ListBySubscription - Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next page of SSH public
-	// keys.
-	ListBySubscription(options *SSHPublicKeysListBySubscriptionOptions) SSHPublicKeysGroupListResultPager
-	// Update - Updates a new SSH public key resource.
-	Update(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters SSHPublicKeyUpdateResource, options *SSHPublicKeysUpdateOptions) (*SSHPublicKeyResourceResponse, error)
-}
-
-// SSHPublicKeysClient implements the SSHPublicKeysOperations interface.
+// SSHPublicKeysClient contains the methods for the SSHPublicKeys group.
 // Don't use this type directly, use NewSSHPublicKeysClient() instead.
 type SSHPublicKeysClient struct {
 	con            *armcore.Connection
@@ -49,18 +27,18 @@ type SSHPublicKeysClient struct {
 }
 
 // NewSSHPublicKeysClient creates a new instance of SSHPublicKeysClient with the specified values.
-func NewSSHPublicKeysClient(con *armcore.Connection, subscriptionID string) SSHPublicKeysOperations {
-	return &SSHPublicKeysClient{con: con, subscriptionID: subscriptionID}
+func NewSSHPublicKeysClient(con *armcore.Connection, subscriptionID string) SSHPublicKeysClient {
+	return SSHPublicKeysClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *SSHPublicKeysClient) Pipeline() azcore.Pipeline {
+func (client SSHPublicKeysClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // Create - Creates a new SSH public key resource.
-func (client *SSHPublicKeysClient) Create(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters SSHPublicKeyResource, options *SSHPublicKeysCreateOptions) (*SSHPublicKeyResourceResponse, error) {
-	req, err := client.CreateCreateRequest(ctx, resourceGroupName, sshPublicKeyName, parameters, options)
+func (client SSHPublicKeysClient) Create(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters SSHPublicKeyResource, options *SSHPublicKeysCreateOptions) (*SSHPublicKeyResourceResponse, error) {
+	req, err := client.createCreateRequest(ctx, resourceGroupName, sshPublicKeyName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -69,17 +47,17 @@ func (client *SSHPublicKeysClient) Create(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateHandleError(resp)
+		return nil, client.createHandleError(resp)
 	}
-	result, err := client.CreateHandleResponse(resp)
+	result, err := client.createHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// CreateCreateRequest creates the Create request.
-func (client *SSHPublicKeysClient) CreateCreateRequest(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters SSHPublicKeyResource, options *SSHPublicKeysCreateOptions) (*azcore.Request, error) {
+// createCreateRequest creates the Create request.
+func (client SSHPublicKeysClient) createCreateRequest(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters SSHPublicKeyResource, options *SSHPublicKeysCreateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{sshPublicKeyName}", url.PathEscape(sshPublicKeyName))
@@ -96,14 +74,14 @@ func (client *SSHPublicKeysClient) CreateCreateRequest(ctx context.Context, reso
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// CreateHandleResponse handles the Create response.
-func (client *SSHPublicKeysClient) CreateHandleResponse(resp *azcore.Response) (*SSHPublicKeyResourceResponse, error) {
+// createHandleResponse handles the Create response.
+func (client SSHPublicKeysClient) createHandleResponse(resp *azcore.Response) (*SSHPublicKeyResourceResponse, error) {
 	result := SSHPublicKeyResourceResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.SSHPublicKeyResource)
 }
 
-// CreateHandleError handles the Create error response.
-func (client *SSHPublicKeysClient) CreateHandleError(resp *azcore.Response) error {
+// createHandleError handles the Create error response.
+func (client SSHPublicKeysClient) createHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -115,8 +93,8 @@ func (client *SSHPublicKeysClient) CreateHandleError(resp *azcore.Response) erro
 }
 
 // Delete - Delete an SSH public key.
-func (client *SSHPublicKeysClient) Delete(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysDeleteOptions) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, sshPublicKeyName, options)
+func (client SSHPublicKeysClient) Delete(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, sshPublicKeyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -125,13 +103,13 @@ func (client *SSHPublicKeysClient) Delete(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	return resp.Response, nil
 }
 
-// DeleteCreateRequest creates the Delete request.
-func (client *SSHPublicKeysClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysDeleteOptions) (*azcore.Request, error) {
+// deleteCreateRequest creates the Delete request.
+func (client SSHPublicKeysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{sshPublicKeyName}", url.PathEscape(sshPublicKeyName))
@@ -147,8 +125,8 @@ func (client *SSHPublicKeysClient) DeleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// DeleteHandleError handles the Delete error response.
-func (client *SSHPublicKeysClient) DeleteHandleError(resp *azcore.Response) error {
+// deleteHandleError handles the Delete error response.
+func (client SSHPublicKeysClient) deleteHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -162,8 +140,8 @@ func (client *SSHPublicKeysClient) DeleteHandleError(resp *azcore.Response) erro
 // GenerateKeyPair - Generates and returns a public/private key pair and populates the SSH public key resource with the public key. The length of the key
 // will be 3072 bits. This operation can only be performed once per
 // SSH public key resource.
-func (client *SSHPublicKeysClient) GenerateKeyPair(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysGenerateKeyPairOptions) (*SSHPublicKeyGenerateKeyPairResultResponse, error) {
-	req, err := client.GenerateKeyPairCreateRequest(ctx, resourceGroupName, sshPublicKeyName, options)
+func (client SSHPublicKeysClient) GenerateKeyPair(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysGenerateKeyPairOptions) (*SSHPublicKeyGenerateKeyPairResultResponse, error) {
+	req, err := client.generateKeyPairCreateRequest(ctx, resourceGroupName, sshPublicKeyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -172,17 +150,17 @@ func (client *SSHPublicKeysClient) GenerateKeyPair(ctx context.Context, resource
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GenerateKeyPairHandleError(resp)
+		return nil, client.generateKeyPairHandleError(resp)
 	}
-	result, err := client.GenerateKeyPairHandleResponse(resp)
+	result, err := client.generateKeyPairHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GenerateKeyPairCreateRequest creates the GenerateKeyPair request.
-func (client *SSHPublicKeysClient) GenerateKeyPairCreateRequest(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysGenerateKeyPairOptions) (*azcore.Request, error) {
+// generateKeyPairCreateRequest creates the GenerateKeyPair request.
+func (client SSHPublicKeysClient) generateKeyPairCreateRequest(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysGenerateKeyPairOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}/generateKeyPair"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{sshPublicKeyName}", url.PathEscape(sshPublicKeyName))
@@ -199,14 +177,14 @@ func (client *SSHPublicKeysClient) GenerateKeyPairCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// GenerateKeyPairHandleResponse handles the GenerateKeyPair response.
-func (client *SSHPublicKeysClient) GenerateKeyPairHandleResponse(resp *azcore.Response) (*SSHPublicKeyGenerateKeyPairResultResponse, error) {
+// generateKeyPairHandleResponse handles the GenerateKeyPair response.
+func (client SSHPublicKeysClient) generateKeyPairHandleResponse(resp *azcore.Response) (*SSHPublicKeyGenerateKeyPairResultResponse, error) {
 	result := SSHPublicKeyGenerateKeyPairResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.SSHPublicKeyGenerateKeyPairResult)
 }
 
-// GenerateKeyPairHandleError handles the GenerateKeyPair error response.
-func (client *SSHPublicKeysClient) GenerateKeyPairHandleError(resp *azcore.Response) error {
+// generateKeyPairHandleError handles the GenerateKeyPair error response.
+func (client SSHPublicKeysClient) generateKeyPairHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -218,8 +196,8 @@ func (client *SSHPublicKeysClient) GenerateKeyPairHandleError(resp *azcore.Respo
 }
 
 // Get - Retrieves information about an SSH public key.
-func (client *SSHPublicKeysClient) Get(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysGetOptions) (*SSHPublicKeyResourceResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, sshPublicKeyName, options)
+func (client SSHPublicKeysClient) Get(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysGetOptions) (*SSHPublicKeyResourceResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, sshPublicKeyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -228,17 +206,17 @@ func (client *SSHPublicKeysClient) Get(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *SSHPublicKeysClient) GetCreateRequest(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client SSHPublicKeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *SSHPublicKeysGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{sshPublicKeyName}", url.PathEscape(sshPublicKeyName))
@@ -255,14 +233,14 @@ func (client *SSHPublicKeysClient) GetCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *SSHPublicKeysClient) GetHandleResponse(resp *azcore.Response) (*SSHPublicKeyResourceResponse, error) {
+// getHandleResponse handles the Get response.
+func (client SSHPublicKeysClient) getHandleResponse(resp *azcore.Response) (*SSHPublicKeyResourceResponse, error) {
 	result := SSHPublicKeyResourceResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.SSHPublicKeyResource)
 }
 
-// GetHandleError handles the Get error response.
-func (client *SSHPublicKeysClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client SSHPublicKeysClient) getHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -275,14 +253,14 @@ func (client *SSHPublicKeysClient) GetHandleError(resp *azcore.Response) error {
 
 // ListByResourceGroup - Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to get the next page
 // of SSH public keys.
-func (client *SSHPublicKeysClient) ListByResourceGroup(resourceGroupName string, options *SSHPublicKeysListByResourceGroupOptions) SSHPublicKeysGroupListResultPager {
+func (client SSHPublicKeysClient) ListByResourceGroup(resourceGroupName string, options *SSHPublicKeysListByResourceGroupOptions) SSHPublicKeysGroupListResultPager {
 	return &sshPublicKeysGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.ListByResourceGroupHandleResponse,
-		errorer:   client.ListByResourceGroupHandleError,
+		responder: client.listByResourceGroupHandleResponse,
+		errorer:   client.listByResourceGroupHandleError,
 		advancer: func(ctx context.Context, resp *SSHPublicKeysGroupListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SSHPublicKeysGroupListResult.NextLink)
 		},
@@ -290,8 +268,8 @@ func (client *SSHPublicKeysClient) ListByResourceGroup(resourceGroupName string,
 	}
 }
 
-// ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *SSHPublicKeysClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *SSHPublicKeysListByResourceGroupOptions) (*azcore.Request, error) {
+// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
+func (client SSHPublicKeysClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *SSHPublicKeysListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -307,14 +285,14 @@ func (client *SSHPublicKeysClient) ListByResourceGroupCreateRequest(ctx context.
 	return req, nil
 }
 
-// ListByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *SSHPublicKeysClient) ListByResourceGroupHandleResponse(resp *azcore.Response) (*SSHPublicKeysGroupListResultResponse, error) {
+// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
+func (client SSHPublicKeysClient) listByResourceGroupHandleResponse(resp *azcore.Response) (*SSHPublicKeysGroupListResultResponse, error) {
 	result := SSHPublicKeysGroupListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.SSHPublicKeysGroupListResult)
 }
 
-// ListByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *SSHPublicKeysClient) ListByResourceGroupHandleError(resp *azcore.Response) error {
+// listByResourceGroupHandleError handles the ListByResourceGroup error response.
+func (client SSHPublicKeysClient) listByResourceGroupHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -327,14 +305,14 @@ func (client *SSHPublicKeysClient) ListByResourceGroupHandleError(resp *azcore.R
 
 // ListBySubscription - Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next page of SSH public
 // keys.
-func (client *SSHPublicKeysClient) ListBySubscription(options *SSHPublicKeysListBySubscriptionOptions) SSHPublicKeysGroupListResultPager {
+func (client SSHPublicKeysClient) ListBySubscription(options *SSHPublicKeysListBySubscriptionOptions) SSHPublicKeysGroupListResultPager {
 	return &sshPublicKeysGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListBySubscriptionCreateRequest(ctx, options)
+			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		responder: client.ListBySubscriptionHandleResponse,
-		errorer:   client.ListBySubscriptionHandleError,
+		responder: client.listBySubscriptionHandleResponse,
+		errorer:   client.listBySubscriptionHandleError,
 		advancer: func(ctx context.Context, resp *SSHPublicKeysGroupListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.SSHPublicKeysGroupListResult.NextLink)
 		},
@@ -342,8 +320,8 @@ func (client *SSHPublicKeysClient) ListBySubscription(options *SSHPublicKeysList
 	}
 }
 
-// ListBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *SSHPublicKeysClient) ListBySubscriptionCreateRequest(ctx context.Context, options *SSHPublicKeysListBySubscriptionOptions) (*azcore.Request, error) {
+// listBySubscriptionCreateRequest creates the ListBySubscription request.
+func (client SSHPublicKeysClient) listBySubscriptionCreateRequest(ctx context.Context, options *SSHPublicKeysListBySubscriptionOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/sshPublicKeys"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -358,14 +336,14 @@ func (client *SSHPublicKeysClient) ListBySubscriptionCreateRequest(ctx context.C
 	return req, nil
 }
 
-// ListBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *SSHPublicKeysClient) ListBySubscriptionHandleResponse(resp *azcore.Response) (*SSHPublicKeysGroupListResultResponse, error) {
+// listBySubscriptionHandleResponse handles the ListBySubscription response.
+func (client SSHPublicKeysClient) listBySubscriptionHandleResponse(resp *azcore.Response) (*SSHPublicKeysGroupListResultResponse, error) {
 	result := SSHPublicKeysGroupListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.SSHPublicKeysGroupListResult)
 }
 
-// ListBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *SSHPublicKeysClient) ListBySubscriptionHandleError(resp *azcore.Response) error {
+// listBySubscriptionHandleError handles the ListBySubscription error response.
+func (client SSHPublicKeysClient) listBySubscriptionHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -377,8 +355,8 @@ func (client *SSHPublicKeysClient) ListBySubscriptionHandleError(resp *azcore.Re
 }
 
 // Update - Updates a new SSH public key resource.
-func (client *SSHPublicKeysClient) Update(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters SSHPublicKeyUpdateResource, options *SSHPublicKeysUpdateOptions) (*SSHPublicKeyResourceResponse, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, sshPublicKeyName, parameters, options)
+func (client SSHPublicKeysClient) Update(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters SSHPublicKeyUpdateResource, options *SSHPublicKeysUpdateOptions) (*SSHPublicKeyResourceResponse, error) {
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, sshPublicKeyName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -387,17 +365,17 @@ func (client *SSHPublicKeysClient) Update(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.UpdateHandleError(resp)
+		return nil, client.updateHandleError(resp)
 	}
-	result, err := client.UpdateHandleResponse(resp)
+	result, err := client.updateHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// UpdateCreateRequest creates the Update request.
-func (client *SSHPublicKeysClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters SSHPublicKeyUpdateResource, options *SSHPublicKeysUpdateOptions) (*azcore.Request, error) {
+// updateCreateRequest creates the Update request.
+func (client SSHPublicKeysClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters SSHPublicKeyUpdateResource, options *SSHPublicKeysUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/sshPublicKeys/{sshPublicKeyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{sshPublicKeyName}", url.PathEscape(sshPublicKeyName))
@@ -414,14 +392,14 @@ func (client *SSHPublicKeysClient) UpdateCreateRequest(ctx context.Context, reso
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// UpdateHandleResponse handles the Update response.
-func (client *SSHPublicKeysClient) UpdateHandleResponse(resp *azcore.Response) (*SSHPublicKeyResourceResponse, error) {
+// updateHandleResponse handles the Update response.
+func (client SSHPublicKeysClient) updateHandleResponse(resp *azcore.Response) (*SSHPublicKeyResourceResponse, error) {
 	result := SSHPublicKeyResourceResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.SSHPublicKeyResource)
 }
 
-// UpdateHandleError handles the Update error response.
-func (client *SSHPublicKeysClient) UpdateHandleError(resp *azcore.Response) error {
+// updateHandleError handles the Update error response.
+func (client SSHPublicKeysClient) updateHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)

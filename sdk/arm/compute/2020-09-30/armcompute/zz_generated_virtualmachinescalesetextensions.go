@@ -20,27 +20,7 @@ import (
 	"time"
 )
 
-// VirtualMachineScaleSetExtensionsOperations contains the methods for the VirtualMachineScaleSetExtensions group.
-type VirtualMachineScaleSetExtensionsOperations interface {
-	// BeginCreateOrUpdate - The operation to create or update an extension.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtension, options *VirtualMachineScaleSetExtensionsCreateOrUpdateOptions) (*VirtualMachineScaleSetExtensionPollerResponse, error)
-	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeCreateOrUpdate(token string) (VirtualMachineScaleSetExtensionPoller, error)
-	// BeginDelete - The operation to delete the extension.
-	BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsDeleteOptions) (*HTTPPollerResponse, error)
-	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeDelete(token string) (HTTPPoller, error)
-	// Get - The operation to get the extension.
-	Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsGetOptions) (*VirtualMachineScaleSetExtensionResponse, error)
-	// List - Gets a list of all extensions in a VM scale set.
-	List(resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetExtensionsListOptions) VirtualMachineScaleSetExtensionListResultPager
-	// BeginUpdate - The operation to update an extension.
-	BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtensionUpdate, options *VirtualMachineScaleSetExtensionsUpdateOptions) (*VirtualMachineScaleSetExtensionPollerResponse, error)
-	// ResumeUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeUpdate(token string) (VirtualMachineScaleSetExtensionPoller, error)
-}
-
-// VirtualMachineScaleSetExtensionsClient implements the VirtualMachineScaleSetExtensionsOperations interface.
+// VirtualMachineScaleSetExtensionsClient contains the methods for the VirtualMachineScaleSetExtensions group.
 // Don't use this type directly, use NewVirtualMachineScaleSetExtensionsClient() instead.
 type VirtualMachineScaleSetExtensionsClient struct {
 	con            *armcore.Connection
@@ -48,16 +28,17 @@ type VirtualMachineScaleSetExtensionsClient struct {
 }
 
 // NewVirtualMachineScaleSetExtensionsClient creates a new instance of VirtualMachineScaleSetExtensionsClient with the specified values.
-func NewVirtualMachineScaleSetExtensionsClient(con *armcore.Connection, subscriptionID string) VirtualMachineScaleSetExtensionsOperations {
-	return &VirtualMachineScaleSetExtensionsClient{con: con, subscriptionID: subscriptionID}
+func NewVirtualMachineScaleSetExtensionsClient(con *armcore.Connection, subscriptionID string) VirtualMachineScaleSetExtensionsClient {
+	return VirtualMachineScaleSetExtensionsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *VirtualMachineScaleSetExtensionsClient) Pipeline() azcore.Pipeline {
+func (client VirtualMachineScaleSetExtensionsClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
-func (client *VirtualMachineScaleSetExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtension, options *VirtualMachineScaleSetExtensionsCreateOrUpdateOptions) (*VirtualMachineScaleSetExtensionPollerResponse, error) {
+// BeginCreateOrUpdate - The operation to create or update an extension.
+func (client VirtualMachineScaleSetExtensionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtension, options *VirtualMachineScaleSetExtensionsCreateOrUpdateOptions) (*VirtualMachineScaleSetExtensionPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
@@ -65,7 +46,7 @@ func (client *VirtualMachineScaleSetExtensionsClient) BeginCreateOrUpdate(ctx co
 	result := &VirtualMachineScaleSetExtensionPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VirtualMachineScaleSetExtensionsClient.CreateOrUpdate", "", resp, client.CreateOrUpdateHandleError)
+	pt, err := armcore.NewPoller("VirtualMachineScaleSetExtensionsClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -80,8 +61,10 @@ func (client *VirtualMachineScaleSetExtensionsClient) BeginCreateOrUpdate(ctx co
 	return result, nil
 }
 
-func (client *VirtualMachineScaleSetExtensionsClient) ResumeCreateOrUpdate(token string) (VirtualMachineScaleSetExtensionPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetExtensionsClient.CreateOrUpdate", token, client.CreateOrUpdateHandleError)
+// ResumeCreateOrUpdate creates a new VirtualMachineScaleSetExtensionPoller from the specified resume token.
+// token - The value must come from a previous call to VirtualMachineScaleSetExtensionPoller.ResumeToken().
+func (client VirtualMachineScaleSetExtensionsClient) ResumeCreateOrUpdate(token string) (VirtualMachineScaleSetExtensionPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetExtensionsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -92,8 +75,8 @@ func (client *VirtualMachineScaleSetExtensionsClient) ResumeCreateOrUpdate(token
 }
 
 // CreateOrUpdate - The operation to create or update an extension.
-func (client *VirtualMachineScaleSetExtensionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtension, options *VirtualMachineScaleSetExtensionsCreateOrUpdateOptions) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, options)
+func (client VirtualMachineScaleSetExtensionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtension, options *VirtualMachineScaleSetExtensionsCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -102,13 +85,13 @@ func (client *VirtualMachineScaleSetExtensionsClient) CreateOrUpdate(ctx context
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
+		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
-// CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualMachineScaleSetExtensionsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtension, options *VirtualMachineScaleSetExtensionsCreateOrUpdateOptions) (*azcore.Request, error) {
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client VirtualMachineScaleSetExtensionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtension, options *VirtualMachineScaleSetExtensionsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/extensions/{vmssExtensionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
@@ -126,14 +109,14 @@ func (client *VirtualMachineScaleSetExtensionsClient) CreateOrUpdateCreateReques
 	return req, req.MarshalAsJSON(extensionParameters)
 }
 
-// CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *VirtualMachineScaleSetExtensionsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*VirtualMachineScaleSetExtensionResponse, error) {
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client VirtualMachineScaleSetExtensionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*VirtualMachineScaleSetExtensionResponse, error) {
 	result := VirtualMachineScaleSetExtensionResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineScaleSetExtension)
 }
 
-// CreateOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VirtualMachineScaleSetExtensionsClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
+// createOrUpdateHandleError handles the CreateOrUpdate error response.
+func (client VirtualMachineScaleSetExtensionsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -144,7 +127,8 @@ func (client *VirtualMachineScaleSetExtensionsClient) CreateOrUpdateHandleError(
 	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-func (client *VirtualMachineScaleSetExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsDeleteOptions) (*HTTPPollerResponse, error) {
+// BeginDelete - The operation to delete the extension.
+func (client VirtualMachineScaleSetExtensionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsDeleteOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, options)
 	if err != nil {
 		return nil, err
@@ -152,7 +136,7 @@ func (client *VirtualMachineScaleSetExtensionsClient) BeginDelete(ctx context.Co
 	result := &HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VirtualMachineScaleSetExtensionsClient.Delete", "", resp, client.DeleteHandleError)
+	pt, err := armcore.NewPoller("VirtualMachineScaleSetExtensionsClient.Delete", "", resp, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -167,8 +151,10 @@ func (client *VirtualMachineScaleSetExtensionsClient) BeginDelete(ctx context.Co
 	return result, nil
 }
 
-func (client *VirtualMachineScaleSetExtensionsClient) ResumeDelete(token string) (HTTPPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetExtensionsClient.Delete", token, client.DeleteHandleError)
+// ResumeDelete creates a new HTTPPoller from the specified resume token.
+// token - The value must come from a previous call to HTTPPoller.ResumeToken().
+func (client VirtualMachineScaleSetExtensionsClient) ResumeDelete(token string) (HTTPPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetExtensionsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -179,8 +165,8 @@ func (client *VirtualMachineScaleSetExtensionsClient) ResumeDelete(token string)
 }
 
 // Delete - The operation to delete the extension.
-func (client *VirtualMachineScaleSetExtensionsClient) Delete(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsDeleteOptions) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, options)
+func (client VirtualMachineScaleSetExtensionsClient) Delete(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsDeleteOptions) (*azcore.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -189,13 +175,13 @@ func (client *VirtualMachineScaleSetExtensionsClient) Delete(ctx context.Context
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
-// DeleteCreateRequest creates the Delete request.
-func (client *VirtualMachineScaleSetExtensionsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsDeleteOptions) (*azcore.Request, error) {
+// deleteCreateRequest creates the Delete request.
+func (client VirtualMachineScaleSetExtensionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/extensions/{vmssExtensionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
@@ -212,8 +198,8 @@ func (client *VirtualMachineScaleSetExtensionsClient) DeleteCreateRequest(ctx co
 	return req, nil
 }
 
-// DeleteHandleError handles the Delete error response.
-func (client *VirtualMachineScaleSetExtensionsClient) DeleteHandleError(resp *azcore.Response) error {
+// deleteHandleError handles the Delete error response.
+func (client VirtualMachineScaleSetExtensionsClient) deleteHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -225,8 +211,8 @@ func (client *VirtualMachineScaleSetExtensionsClient) DeleteHandleError(resp *az
 }
 
 // Get - The operation to get the extension.
-func (client *VirtualMachineScaleSetExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsGetOptions) (*VirtualMachineScaleSetExtensionResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, options)
+func (client VirtualMachineScaleSetExtensionsClient) Get(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsGetOptions) (*VirtualMachineScaleSetExtensionResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -235,17 +221,17 @@ func (client *VirtualMachineScaleSetExtensionsClient) Get(ctx context.Context, r
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *VirtualMachineScaleSetExtensionsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client VirtualMachineScaleSetExtensionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, options *VirtualMachineScaleSetExtensionsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/extensions/{vmssExtensionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
@@ -266,14 +252,14 @@ func (client *VirtualMachineScaleSetExtensionsClient) GetCreateRequest(ctx conte
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *VirtualMachineScaleSetExtensionsClient) GetHandleResponse(resp *azcore.Response) (*VirtualMachineScaleSetExtensionResponse, error) {
+// getHandleResponse handles the Get response.
+func (client VirtualMachineScaleSetExtensionsClient) getHandleResponse(resp *azcore.Response) (*VirtualMachineScaleSetExtensionResponse, error) {
 	result := VirtualMachineScaleSetExtensionResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineScaleSetExtension)
 }
 
-// GetHandleError handles the Get error response.
-func (client *VirtualMachineScaleSetExtensionsClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client VirtualMachineScaleSetExtensionsClient) getHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -285,14 +271,14 @@ func (client *VirtualMachineScaleSetExtensionsClient) GetHandleError(resp *azcor
 }
 
 // List - Gets a list of all extensions in a VM scale set.
-func (client *VirtualMachineScaleSetExtensionsClient) List(resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetExtensionsListOptions) VirtualMachineScaleSetExtensionListResultPager {
+func (client VirtualMachineScaleSetExtensionsClient) List(resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetExtensionsListOptions) VirtualMachineScaleSetExtensionListResultPager {
 	return &virtualMachineScaleSetExtensionListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, vmScaleSetName, options)
+			return client.listCreateRequest(ctx, resourceGroupName, vmScaleSetName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *VirtualMachineScaleSetExtensionListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.VirtualMachineScaleSetExtensionListResult.NextLink)
 		},
@@ -300,8 +286,8 @@ func (client *VirtualMachineScaleSetExtensionsClient) List(resourceGroupName str
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *VirtualMachineScaleSetExtensionsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetExtensionsListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client VirtualMachineScaleSetExtensionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *VirtualMachineScaleSetExtensionsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/extensions"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
@@ -318,14 +304,14 @@ func (client *VirtualMachineScaleSetExtensionsClient) ListCreateRequest(ctx cont
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *VirtualMachineScaleSetExtensionsClient) ListHandleResponse(resp *azcore.Response) (*VirtualMachineScaleSetExtensionListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client VirtualMachineScaleSetExtensionsClient) listHandleResponse(resp *azcore.Response) (*VirtualMachineScaleSetExtensionListResultResponse, error) {
 	result := VirtualMachineScaleSetExtensionListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineScaleSetExtensionListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *VirtualMachineScaleSetExtensionsClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client VirtualMachineScaleSetExtensionsClient) listHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
@@ -336,7 +322,8 @@ func (client *VirtualMachineScaleSetExtensionsClient) ListHandleError(resp *azco
 	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
 }
 
-func (client *VirtualMachineScaleSetExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtensionUpdate, options *VirtualMachineScaleSetExtensionsUpdateOptions) (*VirtualMachineScaleSetExtensionPollerResponse, error) {
+// BeginUpdate - The operation to update an extension.
+func (client VirtualMachineScaleSetExtensionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtensionUpdate, options *VirtualMachineScaleSetExtensionsUpdateOptions) (*VirtualMachineScaleSetExtensionPollerResponse, error) {
 	resp, err := client.Update(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
@@ -344,7 +331,7 @@ func (client *VirtualMachineScaleSetExtensionsClient) BeginUpdate(ctx context.Co
 	result := &VirtualMachineScaleSetExtensionPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VirtualMachineScaleSetExtensionsClient.Update", "", resp, client.UpdateHandleError)
+	pt, err := armcore.NewPoller("VirtualMachineScaleSetExtensionsClient.Update", "", resp, client.updateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -359,8 +346,10 @@ func (client *VirtualMachineScaleSetExtensionsClient) BeginUpdate(ctx context.Co
 	return result, nil
 }
 
-func (client *VirtualMachineScaleSetExtensionsClient) ResumeUpdate(token string) (VirtualMachineScaleSetExtensionPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetExtensionsClient.Update", token, client.UpdateHandleError)
+// ResumeUpdate creates a new VirtualMachineScaleSetExtensionPoller from the specified resume token.
+// token - The value must come from a previous call to VirtualMachineScaleSetExtensionPoller.ResumeToken().
+func (client VirtualMachineScaleSetExtensionsClient) ResumeUpdate(token string) (VirtualMachineScaleSetExtensionPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetExtensionsClient.Update", token, client.updateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -371,8 +360,8 @@ func (client *VirtualMachineScaleSetExtensionsClient) ResumeUpdate(token string)
 }
 
 // Update - The operation to update an extension.
-func (client *VirtualMachineScaleSetExtensionsClient) Update(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtensionUpdate, options *VirtualMachineScaleSetExtensionsUpdateOptions) (*azcore.Response, error) {
-	req, err := client.UpdateCreateRequest(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, options)
+func (client VirtualMachineScaleSetExtensionsClient) Update(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtensionUpdate, options *VirtualMachineScaleSetExtensionsUpdateOptions) (*azcore.Response, error) {
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, vmScaleSetName, vmssExtensionName, extensionParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -381,13 +370,13 @@ func (client *VirtualMachineScaleSetExtensionsClient) Update(ctx context.Context
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.UpdateHandleError(resp)
+		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
-// UpdateCreateRequest creates the Update request.
-func (client *VirtualMachineScaleSetExtensionsClient) UpdateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtensionUpdate, options *VirtualMachineScaleSetExtensionsUpdateOptions) (*azcore.Request, error) {
+// updateCreateRequest creates the Update request.
+func (client VirtualMachineScaleSetExtensionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, vmssExtensionName string, extensionParameters VirtualMachineScaleSetExtensionUpdate, options *VirtualMachineScaleSetExtensionsUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/extensions/{vmssExtensionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
@@ -405,14 +394,14 @@ func (client *VirtualMachineScaleSetExtensionsClient) UpdateCreateRequest(ctx co
 	return req, req.MarshalAsJSON(extensionParameters)
 }
 
-// UpdateHandleResponse handles the Update response.
-func (client *VirtualMachineScaleSetExtensionsClient) UpdateHandleResponse(resp *azcore.Response) (*VirtualMachineScaleSetExtensionResponse, error) {
+// updateHandleResponse handles the Update response.
+func (client VirtualMachineScaleSetExtensionsClient) updateHandleResponse(resp *azcore.Response) (*VirtualMachineScaleSetExtensionResponse, error) {
 	result := VirtualMachineScaleSetExtensionResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.VirtualMachineScaleSetExtension)
 }
 
-// UpdateHandleError handles the Update error response.
-func (client *VirtualMachineScaleSetExtensionsClient) UpdateHandleError(resp *azcore.Response) error {
+// updateHandleError handles the Update error response.
+func (client VirtualMachineScaleSetExtensionsClient) updateHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)

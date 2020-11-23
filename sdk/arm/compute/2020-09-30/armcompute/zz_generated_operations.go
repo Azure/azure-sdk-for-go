@@ -17,31 +17,25 @@ import (
 	"net/http"
 )
 
-// Operations contains the methods for the Operations group.
-type Operations interface {
-	// List - Gets a list of compute operations.
-	List(ctx context.Context, options *OperationsListOptions) (*ComputeOperationListResultResponse, error)
-}
-
-// OperationsClient implements the Operations interface.
+// OperationsClient contains the methods for the Operations group.
 // Don't use this type directly, use NewOperationsClient() instead.
 type OperationsClient struct {
 	con *armcore.Connection
 }
 
 // NewOperationsClient creates a new instance of OperationsClient with the specified values.
-func NewOperationsClient(con *armcore.Connection) Operations {
-	return &OperationsClient{con: con}
+func NewOperationsClient(con *armcore.Connection) OperationsClient {
+	return OperationsClient{con: con}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *OperationsClient) Pipeline() azcore.Pipeline {
+func (client OperationsClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // List - Gets a list of compute operations.
-func (client *OperationsClient) List(ctx context.Context, options *OperationsListOptions) (*ComputeOperationListResultResponse, error) {
-	req, err := client.ListCreateRequest(ctx, options)
+func (client OperationsClient) List(ctx context.Context, options *OperationsListOptions) (*ComputeOperationListResultResponse, error) {
+	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
 		return nil, err
 	}
@@ -50,17 +44,17 @@ func (client *OperationsClient) List(ctx context.Context, options *OperationsLis
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.ListHandleError(resp)
+		return nil, client.listHandleError(resp)
 	}
-	result, err := client.ListHandleResponse(resp)
+	result, err := client.listHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// ListCreateRequest creates the List request.
-func (client *OperationsClient) ListCreateRequest(ctx context.Context, options *OperationsListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client OperationsClient) listCreateRequest(ctx context.Context, options *OperationsListOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Compute/operations"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -74,14 +68,14 @@ func (client *OperationsClient) ListCreateRequest(ctx context.Context, options *
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *OperationsClient) ListHandleResponse(resp *azcore.Response) (*ComputeOperationListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client OperationsClient) listHandleResponse(resp *azcore.Response) (*ComputeOperationListResultResponse, error) {
 	result := ComputeOperationListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ComputeOperationListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *OperationsClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client OperationsClient) listHandleError(resp *azcore.Response) error {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)

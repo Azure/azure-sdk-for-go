@@ -16,23 +16,7 @@ import (
 	"strings"
 )
 
-// KeysOperations contains the methods for the Keys group.
-type KeysOperations interface {
-	// CreateIfNotExist - Creates the first version of a new key if it does not exist. If it already exists, then the existing key is returned without any write
-	// operations being performed. This API does not create subsequent
-	// versions, and does not update existing keys.
-	CreateIfNotExist(ctx context.Context, resourceGroupName string, vaultName string, keyName string, parameters KeyCreateParameters, options *KeysCreateIfNotExistOptions) (*KeyResponse, error)
-	// Get - Gets the current version of the specified key from the specified key vault.
-	Get(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysGetOptions) (*KeyResponse, error)
-	// GetVersion - Gets the specified version of the specified key in the specified key vault.
-	GetVersion(ctx context.Context, resourceGroupName string, vaultName string, keyName string, keyVersion string, options *KeysGetVersionOptions) (*KeyResponse, error)
-	// List - Lists the keys in the specified key vault.
-	List(resourceGroupName string, vaultName string, options *KeysListOptions) KeyListResultPager
-	// ListVersions - Lists the versions of the specified key in the specified key vault.
-	ListVersions(resourceGroupName string, vaultName string, keyName string, options *KeysListVersionsOptions) KeyListResultPager
-}
-
-// KeysClient implements the KeysOperations interface.
+// KeysClient contains the methods for the Keys group.
 // Don't use this type directly, use NewKeysClient() instead.
 type KeysClient struct {
 	con            *armcore.Connection
@@ -40,20 +24,20 @@ type KeysClient struct {
 }
 
 // NewKeysClient creates a new instance of KeysClient with the specified values.
-func NewKeysClient(con *armcore.Connection, subscriptionID string) KeysOperations {
-	return &KeysClient{con: con, subscriptionID: subscriptionID}
+func NewKeysClient(con *armcore.Connection, subscriptionID string) KeysClient {
+	return KeysClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *KeysClient) Pipeline() azcore.Pipeline {
+func (client KeysClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // CreateIfNotExist - Creates the first version of a new key if it does not exist. If it already exists, then the existing key is returned without any write
 // operations being performed. This API does not create subsequent
 // versions, and does not update existing keys.
-func (client *KeysClient) CreateIfNotExist(ctx context.Context, resourceGroupName string, vaultName string, keyName string, parameters KeyCreateParameters, options *KeysCreateIfNotExistOptions) (*KeyResponse, error) {
-	req, err := client.CreateIfNotExistCreateRequest(ctx, resourceGroupName, vaultName, keyName, parameters, options)
+func (client KeysClient) CreateIfNotExist(ctx context.Context, resourceGroupName string, vaultName string, keyName string, parameters KeyCreateParameters, options *KeysCreateIfNotExistOptions) (*KeyResponse, error) {
+	req, err := client.createIfNotExistCreateRequest(ctx, resourceGroupName, vaultName, keyName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,17 +46,17 @@ func (client *KeysClient) CreateIfNotExist(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.CreateIfNotExistHandleError(resp)
+		return nil, client.createIfNotExistHandleError(resp)
 	}
-	result, err := client.CreateIfNotExistHandleResponse(resp)
+	result, err := client.createIfNotExistHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// CreateIfNotExistCreateRequest creates the CreateIfNotExist request.
-func (client *KeysClient) CreateIfNotExistCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, parameters KeyCreateParameters, options *KeysCreateIfNotExistOptions) (*azcore.Request, error) {
+// createIfNotExistCreateRequest creates the CreateIfNotExist request.
+func (client KeysClient) createIfNotExistCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, parameters KeyCreateParameters, options *KeysCreateIfNotExistOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys/{keyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -90,14 +74,14 @@ func (client *KeysClient) CreateIfNotExistCreateRequest(ctx context.Context, res
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// CreateIfNotExistHandleResponse handles the CreateIfNotExist response.
-func (client *KeysClient) CreateIfNotExistHandleResponse(resp *azcore.Response) (*KeyResponse, error) {
+// createIfNotExistHandleResponse handles the CreateIfNotExist response.
+func (client KeysClient) createIfNotExistHandleResponse(resp *azcore.Response) (*KeyResponse, error) {
 	result := KeyResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.Key)
 }
 
-// CreateIfNotExistHandleError handles the CreateIfNotExist error response.
-func (client *KeysClient) CreateIfNotExistHandleError(resp *azcore.Response) error {
+// createIfNotExistHandleError handles the CreateIfNotExist error response.
+func (client KeysClient) createIfNotExistHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -106,8 +90,8 @@ func (client *KeysClient) CreateIfNotExistHandleError(resp *azcore.Response) err
 }
 
 // Get - Gets the current version of the specified key from the specified key vault.
-func (client *KeysClient) Get(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysGetOptions) (*KeyResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, vaultName, keyName, options)
+func (client KeysClient) Get(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysGetOptions) (*KeyResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, keyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -116,17 +100,17 @@ func (client *KeysClient) Get(ctx context.Context, resourceGroupName string, vau
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *KeysClient) GetCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client KeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys/{keyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -144,14 +128,14 @@ func (client *KeysClient) GetCreateRequest(ctx context.Context, resourceGroupNam
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *KeysClient) GetHandleResponse(resp *azcore.Response) (*KeyResponse, error) {
+// getHandleResponse handles the Get response.
+func (client KeysClient) getHandleResponse(resp *azcore.Response) (*KeyResponse, error) {
 	result := KeyResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.Key)
 }
 
-// GetHandleError handles the Get error response.
-func (client *KeysClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client KeysClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -160,8 +144,8 @@ func (client *KeysClient) GetHandleError(resp *azcore.Response) error {
 }
 
 // GetVersion - Gets the specified version of the specified key in the specified key vault.
-func (client *KeysClient) GetVersion(ctx context.Context, resourceGroupName string, vaultName string, keyName string, keyVersion string, options *KeysGetVersionOptions) (*KeyResponse, error) {
-	req, err := client.GetVersionCreateRequest(ctx, resourceGroupName, vaultName, keyName, keyVersion, options)
+func (client KeysClient) GetVersion(ctx context.Context, resourceGroupName string, vaultName string, keyName string, keyVersion string, options *KeysGetVersionOptions) (*KeyResponse, error) {
+	req, err := client.getVersionCreateRequest(ctx, resourceGroupName, vaultName, keyName, keyVersion, options)
 	if err != nil {
 		return nil, err
 	}
@@ -170,17 +154,17 @@ func (client *KeysClient) GetVersion(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetVersionHandleError(resp)
+		return nil, client.getVersionHandleError(resp)
 	}
-	result, err := client.GetVersionHandleResponse(resp)
+	result, err := client.getVersionHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetVersionCreateRequest creates the GetVersion request.
-func (client *KeysClient) GetVersionCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, keyVersion string, options *KeysGetVersionOptions) (*azcore.Request, error) {
+// getVersionCreateRequest creates the GetVersion request.
+func (client KeysClient) getVersionCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, keyVersion string, options *KeysGetVersionOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys/{keyName}/versions/{keyVersion}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -199,14 +183,14 @@ func (client *KeysClient) GetVersionCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// GetVersionHandleResponse handles the GetVersion response.
-func (client *KeysClient) GetVersionHandleResponse(resp *azcore.Response) (*KeyResponse, error) {
+// getVersionHandleResponse handles the GetVersion response.
+func (client KeysClient) getVersionHandleResponse(resp *azcore.Response) (*KeyResponse, error) {
 	result := KeyResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.Key)
 }
 
-// GetVersionHandleError handles the GetVersion error response.
-func (client *KeysClient) GetVersionHandleError(resp *azcore.Response) error {
+// getVersionHandleError handles the GetVersion error response.
+func (client KeysClient) getVersionHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -215,14 +199,14 @@ func (client *KeysClient) GetVersionHandleError(resp *azcore.Response) error {
 }
 
 // List - Lists the keys in the specified key vault.
-func (client *KeysClient) List(resourceGroupName string, vaultName string, options *KeysListOptions) KeyListResultPager {
+func (client KeysClient) List(resourceGroupName string, vaultName string, options *KeysListOptions) KeyListResultPager {
 	return &keyListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, vaultName, options)
+			return client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *KeyListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.KeyListResult.NextLink)
 		},
@@ -230,8 +214,8 @@ func (client *KeysClient) List(resourceGroupName string, vaultName string, optio
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *KeysClient) ListCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *KeysListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client KeysClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *KeysListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -248,14 +232,14 @@ func (client *KeysClient) ListCreateRequest(ctx context.Context, resourceGroupNa
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *KeysClient) ListHandleResponse(resp *azcore.Response) (*KeyListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client KeysClient) listHandleResponse(resp *azcore.Response) (*KeyListResultResponse, error) {
 	result := KeyListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.KeyListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *KeysClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client KeysClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -264,14 +248,14 @@ func (client *KeysClient) ListHandleError(resp *azcore.Response) error {
 }
 
 // ListVersions - Lists the versions of the specified key in the specified key vault.
-func (client *KeysClient) ListVersions(resourceGroupName string, vaultName string, keyName string, options *KeysListVersionsOptions) KeyListResultPager {
+func (client KeysClient) ListVersions(resourceGroupName string, vaultName string, keyName string, options *KeysListVersionsOptions) KeyListResultPager {
 	return &keyListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListVersionsCreateRequest(ctx, resourceGroupName, vaultName, keyName, options)
+			return client.listVersionsCreateRequest(ctx, resourceGroupName, vaultName, keyName, options)
 		},
-		responder: client.ListVersionsHandleResponse,
-		errorer:   client.ListVersionsHandleError,
+		responder: client.listVersionsHandleResponse,
+		errorer:   client.listVersionsHandleError,
 		advancer: func(ctx context.Context, resp *KeyListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.KeyListResult.NextLink)
 		},
@@ -279,8 +263,8 @@ func (client *KeysClient) ListVersions(resourceGroupName string, vaultName strin
 	}
 }
 
-// ListVersionsCreateRequest creates the ListVersions request.
-func (client *KeysClient) ListVersionsCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysListVersionsOptions) (*azcore.Request, error) {
+// listVersionsCreateRequest creates the ListVersions request.
+func (client KeysClient) listVersionsCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysListVersionsOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys/{keyName}/versions"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -298,14 +282,14 @@ func (client *KeysClient) ListVersionsCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// ListVersionsHandleResponse handles the ListVersions response.
-func (client *KeysClient) ListVersionsHandleResponse(resp *azcore.Response) (*KeyListResultResponse, error) {
+// listVersionsHandleResponse handles the ListVersions response.
+func (client KeysClient) listVersionsHandleResponse(resp *azcore.Response) (*KeyListResultResponse, error) {
 	result := KeyListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.KeyListResult)
 }
 
-// ListVersionsHandleError handles the ListVersions error response.
-func (client *KeysClient) ListVersionsHandleError(resp *azcore.Response) error {
+// listVersionsHandleError handles the ListVersions error response.
+func (client KeysClient) listVersionsHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

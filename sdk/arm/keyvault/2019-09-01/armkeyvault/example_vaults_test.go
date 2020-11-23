@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleVaultsOperations_BeginCreateOrUpdate() {
+func ExampleVaultsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -47,7 +47,7 @@ func ExampleVaultsOperations_BeginCreateOrUpdate() {
 	log.Printf("vault ID: %v\n", *resp.Vault.ID)
 }
 
-func ExampleVaultsOperations_BeginCreateOrUpdate_withAccessPolicies() {
+func ExampleVaultsClient_BeginCreateOrUpdate_withAccessPolicies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -94,7 +94,7 @@ func ExampleVaultsOperations_BeginCreateOrUpdate_withAccessPolicies() {
 	log.Printf("vault ID: %v\n", *resp.Vault.ID)
 }
 
-func ExampleVaultsOperations_BeginCreateOrUpdate_forDeployment() {
+func ExampleVaultsClient_BeginCreateOrUpdate_forDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -143,7 +143,7 @@ func ExampleVaultsOperations_BeginCreateOrUpdate_forDeployment() {
 	log.Printf("vault ID: %v\n", *resp.Vault.ID)
 }
 
-func ExampleVaultsOperations_Get() {
+func ExampleVaultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -156,7 +156,7 @@ func ExampleVaultsOperations_Get() {
 	log.Printf("vault ID: %v\n", *resp.Vault.ID)
 }
 
-func ExampleVaultsOperations_List() {
+func ExampleVaultsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -177,7 +177,7 @@ func ExampleVaultsOperations_List() {
 	}
 }
 
-func ExampleVaultsOperations_Delete() {
+func ExampleVaultsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

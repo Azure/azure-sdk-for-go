@@ -16,13 +16,7 @@ import (
 	"strings"
 )
 
-// LoadBalancerNetworkInterfacesOperations contains the methods for the LoadBalancerNetworkInterfaces group.
-type LoadBalancerNetworkInterfacesOperations interface {
-	// List - Gets associated load balancer network interfaces.
-	List(resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesListOptions) NetworkInterfaceListResultPager
-}
-
-// LoadBalancerNetworkInterfacesClient implements the LoadBalancerNetworkInterfacesOperations interface.
+// LoadBalancerNetworkInterfacesClient contains the methods for the LoadBalancerNetworkInterfaces group.
 // Don't use this type directly, use NewLoadBalancerNetworkInterfacesClient() instead.
 type LoadBalancerNetworkInterfacesClient struct {
 	con            *armcore.Connection
@@ -30,24 +24,24 @@ type LoadBalancerNetworkInterfacesClient struct {
 }
 
 // NewLoadBalancerNetworkInterfacesClient creates a new instance of LoadBalancerNetworkInterfacesClient with the specified values.
-func NewLoadBalancerNetworkInterfacesClient(con *armcore.Connection, subscriptionID string) LoadBalancerNetworkInterfacesOperations {
-	return &LoadBalancerNetworkInterfacesClient{con: con, subscriptionID: subscriptionID}
+func NewLoadBalancerNetworkInterfacesClient(con *armcore.Connection, subscriptionID string) LoadBalancerNetworkInterfacesClient {
+	return LoadBalancerNetworkInterfacesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *LoadBalancerNetworkInterfacesClient) Pipeline() azcore.Pipeline {
+func (client LoadBalancerNetworkInterfacesClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // List - Gets associated load balancer network interfaces.
-func (client *LoadBalancerNetworkInterfacesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesListOptions) NetworkInterfaceListResultPager {
+func (client LoadBalancerNetworkInterfacesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesListOptions) NetworkInterfaceListResultPager {
 	return &networkInterfaceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
+			return client.listCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *NetworkInterfaceListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.NetworkInterfaceListResult.NextLink)
 		},
@@ -55,8 +49,8 @@ func (client *LoadBalancerNetworkInterfacesClient) List(resourceGroupName string
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *LoadBalancerNetworkInterfacesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client LoadBalancerNetworkInterfacesClient) listCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/networkInterfaces"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -73,14 +67,14 @@ func (client *LoadBalancerNetworkInterfacesClient) ListCreateRequest(ctx context
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *LoadBalancerNetworkInterfacesClient) ListHandleResponse(resp *azcore.Response) (*NetworkInterfaceListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client LoadBalancerNetworkInterfacesClient) listHandleResponse(resp *azcore.Response) (*NetworkInterfaceListResultResponse, error) {
 	result := NetworkInterfaceListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.NetworkInterfaceListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *LoadBalancerNetworkInterfacesClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client LoadBalancerNetworkInterfacesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

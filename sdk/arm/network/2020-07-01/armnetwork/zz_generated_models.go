@@ -15207,13 +15207,10 @@ type VirtualNetworkPeeringPropertiesFormat struct {
 	// The status of the virtual network peering.
 	PeeringState *VirtualNetworkPeeringState `json:"peeringState,omitempty"`
 
-	// The peering sync status of the virtual network peering.
-	PeeringSyncLevel *VirtualNetworkPeeringLevel `json:"peeringSyncLevel,omitempty"`
-
 	// READ-ONLY; The provisioning state of the virtual network peering resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
-	// The reference to the address space peered with the remote virtual network.
+	// The reference to the remote virtual network address space.
 	RemoteAddressSpace *AddressSpace `json:"remoteAddressSpace,omitempty"`
 
 	// The reference to the remote virtual network's Bgp Communities.
@@ -15223,12 +15220,6 @@ type VirtualNetworkPeeringPropertiesFormat struct {
 	// preview and learn more
 	// (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
 	RemoteVirtualNetwork *SubResource `json:"remoteVirtualNetwork,omitempty"`
-
-	// The reference to the current address space of the remote virtual network.
-	RemoteVirtualNetworkAddressSpace *AddressSpace `json:"remoteVirtualNetworkAddressSpace,omitempty"`
-
-	// Provided when user wants to sync the peering with address space on the remote virtual network after the address space is updated.
-	SyncRemoteAddressSpace *bool `json:"syncRemoteAddressSpace,omitempty"`
 
 	// If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering is also true, virtual network
 	// will use gateways of remote virtual network

@@ -17,27 +17,7 @@ import (
 	"time"
 )
 
-// CustomIPPrefixesOperations contains the methods for the CustomIPPrefixes group.
-type CustomIPPrefixesOperations interface {
-	// BeginCreateOrUpdate - Creates or updates a custom IP prefix.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters CustomIPPrefix, options *CustomIPPrefixesCreateOrUpdateOptions) (*CustomIPPrefixPollerResponse, error)
-	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeCreateOrUpdate(token string) (CustomIPPrefixPoller, error)
-	// BeginDelete - Deletes the specified custom IP prefix.
-	BeginDelete(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesDeleteOptions) (*HTTPPollerResponse, error)
-	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeDelete(token string) (HTTPPoller, error)
-	// Get - Gets the specified custom IP prefix in a specified resource group.
-	Get(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesGetOptions) (*CustomIPPrefixResponse, error)
-	// List - Gets all custom IP prefixes in a resource group.
-	List(resourceGroupName string, options *CustomIPPrefixesListOptions) CustomIPPrefixListResultPager
-	// ListAll - Gets all the custom IP prefixes in a subscription.
-	ListAll(options *CustomIPPrefixesListAllOptions) CustomIPPrefixListResultPager
-	// UpdateTags - Updates custom IP prefix tags.
-	UpdateTags(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters TagsObject, options *CustomIPPrefixesUpdateTagsOptions) (*CustomIPPrefixResponse, error)
-}
-
-// CustomIPPrefixesClient implements the CustomIPPrefixesOperations interface.
+// CustomIPPrefixesClient contains the methods for the CustomIPPrefixes group.
 // Don't use this type directly, use NewCustomIPPrefixesClient() instead.
 type CustomIPPrefixesClient struct {
 	con            *armcore.Connection
@@ -45,16 +25,17 @@ type CustomIPPrefixesClient struct {
 }
 
 // NewCustomIPPrefixesClient creates a new instance of CustomIPPrefixesClient with the specified values.
-func NewCustomIPPrefixesClient(con *armcore.Connection, subscriptionID string) CustomIPPrefixesOperations {
-	return &CustomIPPrefixesClient{con: con, subscriptionID: subscriptionID}
+func NewCustomIPPrefixesClient(con *armcore.Connection, subscriptionID string) CustomIPPrefixesClient {
+	return CustomIPPrefixesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *CustomIPPrefixesClient) Pipeline() azcore.Pipeline {
+func (client CustomIPPrefixesClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
-func (client *CustomIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters CustomIPPrefix, options *CustomIPPrefixesCreateOrUpdateOptions) (*CustomIPPrefixPollerResponse, error) {
+// BeginCreateOrUpdate - Creates or updates a custom IP prefix.
+func (client CustomIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters CustomIPPrefix, options *CustomIPPrefixesCreateOrUpdateOptions) (*CustomIPPrefixPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, customIPPrefixName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -62,7 +43,7 @@ func (client *CustomIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, r
 	result := &CustomIPPrefixPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("CustomIPPrefixesClient.CreateOrUpdate", "location", resp, client.CreateOrUpdateHandleError)
+	pt, err := armcore.NewPoller("CustomIPPrefixesClient.CreateOrUpdate", "location", resp, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -77,8 +58,10 @@ func (client *CustomIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, r
 	return result, nil
 }
 
-func (client *CustomIPPrefixesClient) ResumeCreateOrUpdate(token string) (CustomIPPrefixPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("CustomIPPrefixesClient.CreateOrUpdate", token, client.CreateOrUpdateHandleError)
+// ResumeCreateOrUpdate creates a new CustomIPPrefixPoller from the specified resume token.
+// token - The value must come from a previous call to CustomIPPrefixPoller.ResumeToken().
+func (client CustomIPPrefixesClient) ResumeCreateOrUpdate(token string) (CustomIPPrefixPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("CustomIPPrefixesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -89,8 +72,8 @@ func (client *CustomIPPrefixesClient) ResumeCreateOrUpdate(token string) (Custom
 }
 
 // CreateOrUpdate - Creates or updates a custom IP prefix.
-func (client *CustomIPPrefixesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters CustomIPPrefix, options *CustomIPPrefixesCreateOrUpdateOptions) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, customIPPrefixName, parameters, options)
+func (client CustomIPPrefixesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters CustomIPPrefix, options *CustomIPPrefixesCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, customIPPrefixName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -99,13 +82,13 @@ func (client *CustomIPPrefixesClient) CreateOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
+		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
-// CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CustomIPPrefixesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters CustomIPPrefix, options *CustomIPPrefixesCreateOrUpdateOptions) (*azcore.Request, error) {
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client CustomIPPrefixesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters CustomIPPrefix, options *CustomIPPrefixesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/customIpPrefixes/{customIpPrefixName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{customIpPrefixName}", url.PathEscape(customIPPrefixName))
@@ -122,14 +105,14 @@ func (client *CustomIPPrefixesClient) CreateOrUpdateCreateRequest(ctx context.Co
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CustomIPPrefixesClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*CustomIPPrefixResponse, error) {
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client CustomIPPrefixesClient) createOrUpdateHandleResponse(resp *azcore.Response) (*CustomIPPrefixResponse, error) {
 	result := CustomIPPrefixResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.CustomIPPrefix)
 }
 
-// CreateOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CustomIPPrefixesClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
+// createOrUpdateHandleError handles the CreateOrUpdate error response.
+func (client CustomIPPrefixesClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -137,7 +120,8 @@ func (client *CustomIPPrefixesClient) CreateOrUpdateHandleError(resp *azcore.Res
 	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *CustomIPPrefixesClient) BeginDelete(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesDeleteOptions) (*HTTPPollerResponse, error) {
+// BeginDelete - Deletes the specified custom IP prefix.
+func (client CustomIPPrefixesClient) BeginDelete(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesDeleteOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, customIPPrefixName, options)
 	if err != nil {
 		return nil, err
@@ -145,7 +129,7 @@ func (client *CustomIPPrefixesClient) BeginDelete(ctx context.Context, resourceG
 	result := &HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("CustomIPPrefixesClient.Delete", "location", resp, client.DeleteHandleError)
+	pt, err := armcore.NewPoller("CustomIPPrefixesClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -160,8 +144,10 @@ func (client *CustomIPPrefixesClient) BeginDelete(ctx context.Context, resourceG
 	return result, nil
 }
 
-func (client *CustomIPPrefixesClient) ResumeDelete(token string) (HTTPPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("CustomIPPrefixesClient.Delete", token, client.DeleteHandleError)
+// ResumeDelete creates a new HTTPPoller from the specified resume token.
+// token - The value must come from a previous call to HTTPPoller.ResumeToken().
+func (client CustomIPPrefixesClient) ResumeDelete(token string) (HTTPPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("CustomIPPrefixesClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -172,8 +158,8 @@ func (client *CustomIPPrefixesClient) ResumeDelete(token string) (HTTPPoller, er
 }
 
 // Delete - Deletes the specified custom IP prefix.
-func (client *CustomIPPrefixesClient) Delete(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesDeleteOptions) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, customIPPrefixName, options)
+func (client CustomIPPrefixesClient) Delete(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesDeleteOptions) (*azcore.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, customIPPrefixName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -182,13 +168,13 @@ func (client *CustomIPPrefixesClient) Delete(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
-// DeleteCreateRequest creates the Delete request.
-func (client *CustomIPPrefixesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesDeleteOptions) (*azcore.Request, error) {
+// deleteCreateRequest creates the Delete request.
+func (client CustomIPPrefixesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/customIpPrefixes/{customIpPrefixName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{customIpPrefixName}", url.PathEscape(customIPPrefixName))
@@ -205,8 +191,8 @@ func (client *CustomIPPrefixesClient) DeleteCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// DeleteHandleError handles the Delete error response.
-func (client *CustomIPPrefixesClient) DeleteHandleError(resp *azcore.Response) error {
+// deleteHandleError handles the Delete error response.
+func (client CustomIPPrefixesClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -215,8 +201,8 @@ func (client *CustomIPPrefixesClient) DeleteHandleError(resp *azcore.Response) e
 }
 
 // Get - Gets the specified custom IP prefix in a specified resource group.
-func (client *CustomIPPrefixesClient) Get(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesGetOptions) (*CustomIPPrefixResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, customIPPrefixName, options)
+func (client CustomIPPrefixesClient) Get(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesGetOptions) (*CustomIPPrefixResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, customIPPrefixName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -225,17 +211,17 @@ func (client *CustomIPPrefixesClient) Get(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *CustomIPPrefixesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client CustomIPPrefixesClient) getCreateRequest(ctx context.Context, resourceGroupName string, customIPPrefixName string, options *CustomIPPrefixesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/customIpPrefixes/{customIpPrefixName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{customIpPrefixName}", url.PathEscape(customIPPrefixName))
@@ -255,14 +241,14 @@ func (client *CustomIPPrefixesClient) GetCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *CustomIPPrefixesClient) GetHandleResponse(resp *azcore.Response) (*CustomIPPrefixResponse, error) {
+// getHandleResponse handles the Get response.
+func (client CustomIPPrefixesClient) getHandleResponse(resp *azcore.Response) (*CustomIPPrefixResponse, error) {
 	result := CustomIPPrefixResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.CustomIPPrefix)
 }
 
-// GetHandleError handles the Get error response.
-func (client *CustomIPPrefixesClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client CustomIPPrefixesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -271,14 +257,14 @@ func (client *CustomIPPrefixesClient) GetHandleError(resp *azcore.Response) erro
 }
 
 // List - Gets all custom IP prefixes in a resource group.
-func (client *CustomIPPrefixesClient) List(resourceGroupName string, options *CustomIPPrefixesListOptions) CustomIPPrefixListResultPager {
+func (client CustomIPPrefixesClient) List(resourceGroupName string, options *CustomIPPrefixesListOptions) CustomIPPrefixListResultPager {
 	return &customIPPrefixListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, options)
+			return client.listCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *CustomIPPrefixListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.CustomIPPrefixListResult.NextLink)
 		},
@@ -286,8 +272,8 @@ func (client *CustomIPPrefixesClient) List(resourceGroupName string, options *Cu
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *CustomIPPrefixesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, options *CustomIPPrefixesListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client CustomIPPrefixesClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *CustomIPPrefixesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/customIpPrefixes"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -303,14 +289,14 @@ func (client *CustomIPPrefixesClient) ListCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *CustomIPPrefixesClient) ListHandleResponse(resp *azcore.Response) (*CustomIPPrefixListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client CustomIPPrefixesClient) listHandleResponse(resp *azcore.Response) (*CustomIPPrefixListResultResponse, error) {
 	result := CustomIPPrefixListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.CustomIPPrefixListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *CustomIPPrefixesClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client CustomIPPrefixesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -319,14 +305,14 @@ func (client *CustomIPPrefixesClient) ListHandleError(resp *azcore.Response) err
 }
 
 // ListAll - Gets all the custom IP prefixes in a subscription.
-func (client *CustomIPPrefixesClient) ListAll(options *CustomIPPrefixesListAllOptions) CustomIPPrefixListResultPager {
+func (client CustomIPPrefixesClient) ListAll(options *CustomIPPrefixesListAllOptions) CustomIPPrefixListResultPager {
 	return &customIPPrefixListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListAllCreateRequest(ctx, options)
+			return client.listAllCreateRequest(ctx, options)
 		},
-		responder: client.ListAllHandleResponse,
-		errorer:   client.ListAllHandleError,
+		responder: client.listAllHandleResponse,
+		errorer:   client.listAllHandleError,
 		advancer: func(ctx context.Context, resp *CustomIPPrefixListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.CustomIPPrefixListResult.NextLink)
 		},
@@ -334,8 +320,8 @@ func (client *CustomIPPrefixesClient) ListAll(options *CustomIPPrefixesListAllOp
 	}
 }
 
-// ListAllCreateRequest creates the ListAll request.
-func (client *CustomIPPrefixesClient) ListAllCreateRequest(ctx context.Context, options *CustomIPPrefixesListAllOptions) (*azcore.Request, error) {
+// listAllCreateRequest creates the ListAll request.
+func (client CustomIPPrefixesClient) listAllCreateRequest(ctx context.Context, options *CustomIPPrefixesListAllOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/customIpPrefixes"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -350,14 +336,14 @@ func (client *CustomIPPrefixesClient) ListAllCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// ListAllHandleResponse handles the ListAll response.
-func (client *CustomIPPrefixesClient) ListAllHandleResponse(resp *azcore.Response) (*CustomIPPrefixListResultResponse, error) {
+// listAllHandleResponse handles the ListAll response.
+func (client CustomIPPrefixesClient) listAllHandleResponse(resp *azcore.Response) (*CustomIPPrefixListResultResponse, error) {
 	result := CustomIPPrefixListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.CustomIPPrefixListResult)
 }
 
-// ListAllHandleError handles the ListAll error response.
-func (client *CustomIPPrefixesClient) ListAllHandleError(resp *azcore.Response) error {
+// listAllHandleError handles the ListAll error response.
+func (client CustomIPPrefixesClient) listAllHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -366,8 +352,8 @@ func (client *CustomIPPrefixesClient) ListAllHandleError(resp *azcore.Response) 
 }
 
 // UpdateTags - Updates custom IP prefix tags.
-func (client *CustomIPPrefixesClient) UpdateTags(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters TagsObject, options *CustomIPPrefixesUpdateTagsOptions) (*CustomIPPrefixResponse, error) {
-	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, customIPPrefixName, parameters, options)
+func (client CustomIPPrefixesClient) UpdateTags(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters TagsObject, options *CustomIPPrefixesUpdateTagsOptions) (*CustomIPPrefixResponse, error) {
+	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, customIPPrefixName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -376,17 +362,17 @@ func (client *CustomIPPrefixesClient) UpdateTags(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.UpdateTagsHandleError(resp)
+		return nil, client.updateTagsHandleError(resp)
 	}
-	result, err := client.UpdateTagsHandleResponse(resp)
+	result, err := client.updateTagsHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// UpdateTagsCreateRequest creates the UpdateTags request.
-func (client *CustomIPPrefixesClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters TagsObject, options *CustomIPPrefixesUpdateTagsOptions) (*azcore.Request, error) {
+// updateTagsCreateRequest creates the UpdateTags request.
+func (client CustomIPPrefixesClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, customIPPrefixName string, parameters TagsObject, options *CustomIPPrefixesUpdateTagsOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/customIpPrefixes/{customIpPrefixName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{customIpPrefixName}", url.PathEscape(customIPPrefixName))
@@ -403,14 +389,14 @@ func (client *CustomIPPrefixesClient) UpdateTagsCreateRequest(ctx context.Contex
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// UpdateTagsHandleResponse handles the UpdateTags response.
-func (client *CustomIPPrefixesClient) UpdateTagsHandleResponse(resp *azcore.Response) (*CustomIPPrefixResponse, error) {
+// updateTagsHandleResponse handles the UpdateTags response.
+func (client CustomIPPrefixesClient) updateTagsHandleResponse(resp *azcore.Response) (*CustomIPPrefixResponse, error) {
 	result := CustomIPPrefixResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.CustomIPPrefix)
 }
 
-// UpdateTagsHandleError handles the UpdateTags error response.
-func (client *CustomIPPrefixesClient) UpdateTagsHandleError(resp *azcore.Response) error {
+// updateTagsHandleError handles the UpdateTags error response.
+func (client CustomIPPrefixesClient) updateTagsHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

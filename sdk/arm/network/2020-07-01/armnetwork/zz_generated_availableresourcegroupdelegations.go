@@ -16,13 +16,7 @@ import (
 	"strings"
 )
 
-// AvailableResourceGroupDelegationsOperations contains the methods for the AvailableResourceGroupDelegations group.
-type AvailableResourceGroupDelegationsOperations interface {
-	// List - Gets all of the available subnet delegations for this resource group in this region.
-	List(location string, resourceGroupName string, options *AvailableResourceGroupDelegationsListOptions) AvailableDelegationsResultPager
-}
-
-// AvailableResourceGroupDelegationsClient implements the AvailableResourceGroupDelegationsOperations interface.
+// AvailableResourceGroupDelegationsClient contains the methods for the AvailableResourceGroupDelegations group.
 // Don't use this type directly, use NewAvailableResourceGroupDelegationsClient() instead.
 type AvailableResourceGroupDelegationsClient struct {
 	con            *armcore.Connection
@@ -30,24 +24,24 @@ type AvailableResourceGroupDelegationsClient struct {
 }
 
 // NewAvailableResourceGroupDelegationsClient creates a new instance of AvailableResourceGroupDelegationsClient with the specified values.
-func NewAvailableResourceGroupDelegationsClient(con *armcore.Connection, subscriptionID string) AvailableResourceGroupDelegationsOperations {
-	return &AvailableResourceGroupDelegationsClient{con: con, subscriptionID: subscriptionID}
+func NewAvailableResourceGroupDelegationsClient(con *armcore.Connection, subscriptionID string) AvailableResourceGroupDelegationsClient {
+	return AvailableResourceGroupDelegationsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *AvailableResourceGroupDelegationsClient) Pipeline() azcore.Pipeline {
+func (client AvailableResourceGroupDelegationsClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // List - Gets all of the available subnet delegations for this resource group in this region.
-func (client *AvailableResourceGroupDelegationsClient) List(location string, resourceGroupName string, options *AvailableResourceGroupDelegationsListOptions) AvailableDelegationsResultPager {
+func (client AvailableResourceGroupDelegationsClient) List(location string, resourceGroupName string, options *AvailableResourceGroupDelegationsListOptions) AvailableDelegationsResultPager {
 	return &availableDelegationsResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, location, resourceGroupName, options)
+			return client.listCreateRequest(ctx, location, resourceGroupName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *AvailableDelegationsResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AvailableDelegationsResult.NextLink)
 		},
@@ -55,8 +49,8 @@ func (client *AvailableResourceGroupDelegationsClient) List(location string, res
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *AvailableResourceGroupDelegationsClient) ListCreateRequest(ctx context.Context, location string, resourceGroupName string, options *AvailableResourceGroupDelegationsListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client AvailableResourceGroupDelegationsClient) listCreateRequest(ctx context.Context, location string, resourceGroupName string, options *AvailableResourceGroupDelegationsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations/{location}/availableDelegations"
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -73,14 +67,14 @@ func (client *AvailableResourceGroupDelegationsClient) ListCreateRequest(ctx con
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *AvailableResourceGroupDelegationsClient) ListHandleResponse(resp *azcore.Response) (*AvailableDelegationsResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client AvailableResourceGroupDelegationsClient) listHandleResponse(resp *azcore.Response) (*AvailableDelegationsResultResponse, error) {
 	result := AvailableDelegationsResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.AvailableDelegationsResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *AvailableResourceGroupDelegationsClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client AvailableResourceGroupDelegationsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

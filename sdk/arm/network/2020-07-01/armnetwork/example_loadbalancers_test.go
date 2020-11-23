@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleLoadBalancersOperations_BeginCreateOrUpdate() {
+func ExampleLoadBalancersClient_BeginCreateOrUpdate() {
 	// populate the following variables with your specific information
 	resourceGroupName := "<resource group name>"
 	location := "<Azure location>"
@@ -26,7 +26,7 @@ func ExampleLoadBalancersOperations_BeginCreateOrUpdate() {
 	backEndAddressPoolName := "<backend address pool name>"
 	probeName := "<probe name>"
 	idPrefix := fmt.Sprintf("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/loadBalancers", "<subscription ID>", resourceGroupName)
-	// Replace the "ipAddress" variable with a call to armnetwork.PublicIPAddressesOperations.Get to retreive the
+	// Replace the "ipAddress" variable with a call to armnetwork.PublicIPAddressesClient.Get to retreive the
 	// public IP address instance that will be assigned to the load balancer.
 	var ipAddress *armnetwork.PublicIPAddress
 
@@ -135,7 +135,7 @@ func ExampleLoadBalancersOperations_BeginCreateOrUpdate() {
 	log.Printf("load balancer ID: %v", *resp.LoadBalancer.ID)
 }
 
-func ExampleLoadBalancersOperations_Get() {
+func ExampleLoadBalancersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -148,7 +148,7 @@ func ExampleLoadBalancersOperations_Get() {
 	log.Printf("load balancer ID: %v", *resp.LoadBalancer.ID)
 }
 
-func ExampleLoadBalancersOperations_BeginDelete() {
+func ExampleLoadBalancersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

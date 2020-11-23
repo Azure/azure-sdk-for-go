@@ -14,37 +14,31 @@ import (
 	"net/http"
 )
 
-// Operations contains the methods for the Operations group.
-type Operations interface {
-	// List - Lists all of the available Network Rest API operations.
-	List(options *OperationsListOptions) OperationListResultPager
-}
-
-// OperationsClient implements the Operations interface.
+// OperationsClient contains the methods for the Operations group.
 // Don't use this type directly, use NewOperationsClient() instead.
 type OperationsClient struct {
 	con *armcore.Connection
 }
 
 // NewOperationsClient creates a new instance of OperationsClient with the specified values.
-func NewOperationsClient(con *armcore.Connection) Operations {
-	return &OperationsClient{con: con}
+func NewOperationsClient(con *armcore.Connection) OperationsClient {
+	return OperationsClient{con: con}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *OperationsClient) Pipeline() azcore.Pipeline {
+func (client OperationsClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // List - Lists all of the available Network Rest API operations.
-func (client *OperationsClient) List(options *OperationsListOptions) OperationListResultPager {
+func (client OperationsClient) List(options *OperationsListOptions) OperationListResultPager {
 	return &operationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, options)
+			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *OperationListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.OperationListResult.NextLink)
 		},
@@ -52,8 +46,8 @@ func (client *OperationsClient) List(options *OperationsListOptions) OperationLi
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *OperationsClient) ListCreateRequest(ctx context.Context, options *OperationsListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client OperationsClient) listCreateRequest(ctx context.Context, options *OperationsListOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Network/operations"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -67,14 +61,14 @@ func (client *OperationsClient) ListCreateRequest(ctx context.Context, options *
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *OperationsClient) ListHandleResponse(resp *azcore.Response) (*OperationListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client OperationsClient) listHandleResponse(resp *azcore.Response) (*OperationListResultResponse, error) {
 	result := OperationListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.OperationListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *OperationsClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client OperationsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

@@ -17,15 +17,7 @@ import (
 	"time"
 )
 
-// VpnServerConfigurationsAssociatedWithVirtualWanOperations contains the methods for the VpnServerConfigurationsAssociatedWithVirtualWan group.
-type VpnServerConfigurationsAssociatedWithVirtualWanOperations interface {
-	// BeginList - Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-	BeginList(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanListOptions) (*VpnServerConfigurationsResponsePollerResponse, error)
-	// ResumeList - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeList(token string) (VpnServerConfigurationsResponsePoller, error)
-}
-
-// VpnServerConfigurationsAssociatedWithVirtualWanClient implements the VpnServerConfigurationsAssociatedWithVirtualWanOperations interface.
+// VpnServerConfigurationsAssociatedWithVirtualWanClient contains the methods for the VpnServerConfigurationsAssociatedWithVirtualWan group.
 // Don't use this type directly, use NewVpnServerConfigurationsAssociatedWithVirtualWanClient() instead.
 type VpnServerConfigurationsAssociatedWithVirtualWanClient struct {
 	con            *armcore.Connection
@@ -33,16 +25,17 @@ type VpnServerConfigurationsAssociatedWithVirtualWanClient struct {
 }
 
 // NewVpnServerConfigurationsAssociatedWithVirtualWanClient creates a new instance of VpnServerConfigurationsAssociatedWithVirtualWanClient with the specified values.
-func NewVpnServerConfigurationsAssociatedWithVirtualWanClient(con *armcore.Connection, subscriptionID string) VpnServerConfigurationsAssociatedWithVirtualWanOperations {
-	return &VpnServerConfigurationsAssociatedWithVirtualWanClient{con: con, subscriptionID: subscriptionID}
+func NewVpnServerConfigurationsAssociatedWithVirtualWanClient(con *armcore.Connection, subscriptionID string) VpnServerConfigurationsAssociatedWithVirtualWanClient {
+	return VpnServerConfigurationsAssociatedWithVirtualWanClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *VpnServerConfigurationsAssociatedWithVirtualWanClient) Pipeline() azcore.Pipeline {
+func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
-func (client *VpnServerConfigurationsAssociatedWithVirtualWanClient) BeginList(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanListOptions) (*VpnServerConfigurationsResponsePollerResponse, error) {
+// BeginList - Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
+func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) BeginList(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanListOptions) (*VpnServerConfigurationsResponsePollerResponse, error) {
 	resp, err := client.List(ctx, resourceGroupName, virtualWanName, options)
 	if err != nil {
 		return nil, err
@@ -50,7 +43,7 @@ func (client *VpnServerConfigurationsAssociatedWithVirtualWanClient) BeginList(c
 	result := &VpnServerConfigurationsResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VpnServerConfigurationsAssociatedWithVirtualWanClient.List", "location", resp, client.ListHandleError)
+	pt, err := armcore.NewPoller("VpnServerConfigurationsAssociatedWithVirtualWanClient.List", "location", resp, client.listHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -65,8 +58,10 @@ func (client *VpnServerConfigurationsAssociatedWithVirtualWanClient) BeginList(c
 	return result, nil
 }
 
-func (client *VpnServerConfigurationsAssociatedWithVirtualWanClient) ResumeList(token string) (VpnServerConfigurationsResponsePoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VpnServerConfigurationsAssociatedWithVirtualWanClient.List", token, client.ListHandleError)
+// ResumeList creates a new VpnServerConfigurationsResponsePoller from the specified resume token.
+// token - The value must come from a previous call to VpnServerConfigurationsResponsePoller.ResumeToken().
+func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) ResumeList(token string) (VpnServerConfigurationsResponsePoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("VpnServerConfigurationsAssociatedWithVirtualWanClient.List", token, client.listHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -77,8 +72,8 @@ func (client *VpnServerConfigurationsAssociatedWithVirtualWanClient) ResumeList(
 }
 
 // List - Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
-func (client *VpnServerConfigurationsAssociatedWithVirtualWanClient) List(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanListOptions) (*azcore.Response, error) {
-	req, err := client.ListCreateRequest(ctx, resourceGroupName, virtualWanName, options)
+func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) List(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanListOptions) (*azcore.Response, error) {
+	req, err := client.listCreateRequest(ctx, resourceGroupName, virtualWanName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -87,13 +82,13 @@ func (client *VpnServerConfigurationsAssociatedWithVirtualWanClient) List(ctx co
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.ListHandleError(resp)
+		return nil, client.listHandleError(resp)
 	}
 	return resp, nil
 }
 
-// ListCreateRequest creates the List request.
-func (client *VpnServerConfigurationsAssociatedWithVirtualWanClient) ListCreateRequest(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualWanName string, options *VpnServerConfigurationsAssociatedWithVirtualWanListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWANName}/vpnServerConfigurations"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -110,14 +105,14 @@ func (client *VpnServerConfigurationsAssociatedWithVirtualWanClient) ListCreateR
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *VpnServerConfigurationsAssociatedWithVirtualWanClient) ListHandleResponse(resp *azcore.Response) (*VpnServerConfigurationsResponseResponse, error) {
+// listHandleResponse handles the List response.
+func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) listHandleResponse(resp *azcore.Response) (*VpnServerConfigurationsResponseResponse, error) {
 	result := VpnServerConfigurationsResponseResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.VpnServerConfigurationsResponse)
 }
 
-// ListHandleError handles the List error response.
-func (client *VpnServerConfigurationsAssociatedWithVirtualWanClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

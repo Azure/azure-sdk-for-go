@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExamplePublicIPAddressesOperations_BeginCreateOrUpdate() {
+func ExamplePublicIPAddressesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -48,7 +48,7 @@ func ExamplePublicIPAddressesOperations_BeginCreateOrUpdate() {
 	log.Printf("public IP address ID: %v", *resp.PublicIPAddress.ID)
 }
 
-func ExamplePublicIPAddressesOperations_Get() {
+func ExamplePublicIPAddressesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -61,7 +61,7 @@ func ExamplePublicIPAddressesOperations_Get() {
 	log.Printf("public IP address ID: %v", *resp.PublicIPAddress.ID)
 }
 
-func ExamplePublicIPAddressesOperations_BeginDelete() {
+func ExamplePublicIPAddressesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

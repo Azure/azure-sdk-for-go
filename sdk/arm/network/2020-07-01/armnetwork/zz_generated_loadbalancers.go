@@ -17,27 +17,7 @@ import (
 	"time"
 )
 
-// LoadBalancersOperations contains the methods for the LoadBalancers group.
-type LoadBalancersOperations interface {
-	// BeginCreateOrUpdate - Creates or updates a load balancer.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (*LoadBalancerPollerResponse, error)
-	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeCreateOrUpdate(token string) (LoadBalancerPoller, error)
-	// BeginDelete - Deletes the specified load balancer.
-	BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (*HTTPPollerResponse, error)
-	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeDelete(token string) (HTTPPoller, error)
-	// Get - Gets the specified load balancer.
-	Get(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersGetOptions) (*LoadBalancerResponse, error)
-	// List - Gets all the load balancers in a resource group.
-	List(resourceGroupName string, options *LoadBalancersListOptions) LoadBalancerListResultPager
-	// ListAll - Gets all the load balancers in a subscription.
-	ListAll(options *LoadBalancersListAllOptions) LoadBalancerListResultPager
-	// UpdateTags - Updates a load balancer tags.
-	UpdateTags(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters TagsObject, options *LoadBalancersUpdateTagsOptions) (*LoadBalancerResponse, error)
-}
-
-// LoadBalancersClient implements the LoadBalancersOperations interface.
+// LoadBalancersClient contains the methods for the LoadBalancers group.
 // Don't use this type directly, use NewLoadBalancersClient() instead.
 type LoadBalancersClient struct {
 	con            *armcore.Connection
@@ -45,16 +25,17 @@ type LoadBalancersClient struct {
 }
 
 // NewLoadBalancersClient creates a new instance of LoadBalancersClient with the specified values.
-func NewLoadBalancersClient(con *armcore.Connection, subscriptionID string) LoadBalancersOperations {
-	return &LoadBalancersClient{con: con, subscriptionID: subscriptionID}
+func NewLoadBalancersClient(con *armcore.Connection, subscriptionID string) LoadBalancersClient {
+	return LoadBalancersClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *LoadBalancersClient) Pipeline() azcore.Pipeline {
+func (client LoadBalancersClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
-func (client *LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (*LoadBalancerPollerResponse, error) {
+// BeginCreateOrUpdate - Creates or updates a load balancer.
+func (client LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (*LoadBalancerPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, loadBalancerName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -62,7 +43,7 @@ func (client *LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, reso
 	result := &LoadBalancerPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("LoadBalancersClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
+	pt, err := armcore.NewPoller("LoadBalancersClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -77,8 +58,10 @@ func (client *LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, reso
 	return result, nil
 }
 
-func (client *LoadBalancersClient) ResumeCreateOrUpdate(token string) (LoadBalancerPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("LoadBalancersClient.CreateOrUpdate", token, client.CreateOrUpdateHandleError)
+// ResumeCreateOrUpdate creates a new LoadBalancerPoller from the specified resume token.
+// token - The value must come from a previous call to LoadBalancerPoller.ResumeToken().
+func (client LoadBalancersClient) ResumeCreateOrUpdate(token string) (LoadBalancerPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("LoadBalancersClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -89,8 +72,8 @@ func (client *LoadBalancersClient) ResumeCreateOrUpdate(token string) (LoadBalan
 }
 
 // CreateOrUpdate - Creates or updates a load balancer.
-func (client *LoadBalancersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, loadBalancerName, parameters, options)
+func (client LoadBalancersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, loadBalancerName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -99,13 +82,13 @@ func (client *LoadBalancersClient) CreateOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
+		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
-// CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LoadBalancersClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (*azcore.Request, error) {
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -122,14 +105,14 @@ func (client *LoadBalancersClient) CreateOrUpdateCreateRequest(ctx context.Conte
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *LoadBalancersClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*LoadBalancerResponse, error) {
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client LoadBalancersClient) createOrUpdateHandleResponse(resp *azcore.Response) (*LoadBalancerResponse, error) {
 	result := LoadBalancerResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.LoadBalancer)
 }
 
-// CreateOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *LoadBalancersClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
+// createOrUpdateHandleError handles the CreateOrUpdate error response.
+func (client LoadBalancersClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -137,7 +120,8 @@ func (client *LoadBalancersClient) CreateOrUpdateHandleError(resp *azcore.Respon
 	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *LoadBalancersClient) BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (*HTTPPollerResponse, error) {
+// BeginDelete - Deletes the specified load balancer.
+func (client LoadBalancersClient) BeginDelete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, loadBalancerName, options)
 	if err != nil {
 		return nil, err
@@ -145,7 +129,7 @@ func (client *LoadBalancersClient) BeginDelete(ctx context.Context, resourceGrou
 	result := &HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("LoadBalancersClient.Delete", "location", resp, client.DeleteHandleError)
+	pt, err := armcore.NewPoller("LoadBalancersClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -160,8 +144,10 @@ func (client *LoadBalancersClient) BeginDelete(ctx context.Context, resourceGrou
 	return result, nil
 }
 
-func (client *LoadBalancersClient) ResumeDelete(token string) (HTTPPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("LoadBalancersClient.Delete", token, client.DeleteHandleError)
+// ResumeDelete creates a new HTTPPoller from the specified resume token.
+// token - The value must come from a previous call to HTTPPoller.ResumeToken().
+func (client LoadBalancersClient) ResumeDelete(token string) (HTTPPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("LoadBalancersClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -172,8 +158,8 @@ func (client *LoadBalancersClient) ResumeDelete(token string) (HTTPPoller, error
 }
 
 // Delete - Deletes the specified load balancer.
-func (client *LoadBalancersClient) Delete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
+func (client LoadBalancersClient) Delete(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (*azcore.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -182,13 +168,13 @@ func (client *LoadBalancersClient) Delete(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
-// DeleteCreateRequest creates the Delete request.
-func (client *LoadBalancersClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (*azcore.Request, error) {
+// deleteCreateRequest creates the Delete request.
+func (client LoadBalancersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -205,8 +191,8 @@ func (client *LoadBalancersClient) DeleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// DeleteHandleError handles the Delete error response.
-func (client *LoadBalancersClient) DeleteHandleError(resp *azcore.Response) error {
+// deleteHandleError handles the Delete error response.
+func (client LoadBalancersClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -215,8 +201,8 @@ func (client *LoadBalancersClient) DeleteHandleError(resp *azcore.Response) erro
 }
 
 // Get - Gets the specified load balancer.
-func (client *LoadBalancersClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersGetOptions) (*LoadBalancerResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
+func (client LoadBalancersClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersGetOptions) (*LoadBalancerResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, loadBalancerName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -225,17 +211,17 @@ func (client *LoadBalancersClient) Get(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *LoadBalancersClient) GetCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client LoadBalancersClient) getCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, options *LoadBalancersGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -255,14 +241,14 @@ func (client *LoadBalancersClient) GetCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *LoadBalancersClient) GetHandleResponse(resp *azcore.Response) (*LoadBalancerResponse, error) {
+// getHandleResponse handles the Get response.
+func (client LoadBalancersClient) getHandleResponse(resp *azcore.Response) (*LoadBalancerResponse, error) {
 	result := LoadBalancerResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.LoadBalancer)
 }
 
-// GetHandleError handles the Get error response.
-func (client *LoadBalancersClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client LoadBalancersClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -271,14 +257,14 @@ func (client *LoadBalancersClient) GetHandleError(resp *azcore.Response) error {
 }
 
 // List - Gets all the load balancers in a resource group.
-func (client *LoadBalancersClient) List(resourceGroupName string, options *LoadBalancersListOptions) LoadBalancerListResultPager {
+func (client LoadBalancersClient) List(resourceGroupName string, options *LoadBalancersListOptions) LoadBalancerListResultPager {
 	return &loadBalancerListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, options)
+			return client.listCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *LoadBalancerListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.LoadBalancerListResult.NextLink)
 		},
@@ -286,8 +272,8 @@ func (client *LoadBalancersClient) List(resourceGroupName string, options *LoadB
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *LoadBalancersClient) ListCreateRequest(ctx context.Context, resourceGroupName string, options *LoadBalancersListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client LoadBalancersClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *LoadBalancersListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -303,14 +289,14 @@ func (client *LoadBalancersClient) ListCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *LoadBalancersClient) ListHandleResponse(resp *azcore.Response) (*LoadBalancerListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client LoadBalancersClient) listHandleResponse(resp *azcore.Response) (*LoadBalancerListResultResponse, error) {
 	result := LoadBalancerListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.LoadBalancerListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *LoadBalancersClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client LoadBalancersClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -319,14 +305,14 @@ func (client *LoadBalancersClient) ListHandleError(resp *azcore.Response) error 
 }
 
 // ListAll - Gets all the load balancers in a subscription.
-func (client *LoadBalancersClient) ListAll(options *LoadBalancersListAllOptions) LoadBalancerListResultPager {
+func (client LoadBalancersClient) ListAll(options *LoadBalancersListAllOptions) LoadBalancerListResultPager {
 	return &loadBalancerListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListAllCreateRequest(ctx, options)
+			return client.listAllCreateRequest(ctx, options)
 		},
-		responder: client.ListAllHandleResponse,
-		errorer:   client.ListAllHandleError,
+		responder: client.listAllHandleResponse,
+		errorer:   client.listAllHandleError,
 		advancer: func(ctx context.Context, resp *LoadBalancerListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.LoadBalancerListResult.NextLink)
 		},
@@ -334,8 +320,8 @@ func (client *LoadBalancersClient) ListAll(options *LoadBalancersListAllOptions)
 	}
 }
 
-// ListAllCreateRequest creates the ListAll request.
-func (client *LoadBalancersClient) ListAllCreateRequest(ctx context.Context, options *LoadBalancersListAllOptions) (*azcore.Request, error) {
+// listAllCreateRequest creates the ListAll request.
+func (client LoadBalancersClient) listAllCreateRequest(ctx context.Context, options *LoadBalancersListAllOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/loadBalancers"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -350,14 +336,14 @@ func (client *LoadBalancersClient) ListAllCreateRequest(ctx context.Context, opt
 	return req, nil
 }
 
-// ListAllHandleResponse handles the ListAll response.
-func (client *LoadBalancersClient) ListAllHandleResponse(resp *azcore.Response) (*LoadBalancerListResultResponse, error) {
+// listAllHandleResponse handles the ListAll response.
+func (client LoadBalancersClient) listAllHandleResponse(resp *azcore.Response) (*LoadBalancerListResultResponse, error) {
 	result := LoadBalancerListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.LoadBalancerListResult)
 }
 
-// ListAllHandleError handles the ListAll error response.
-func (client *LoadBalancersClient) ListAllHandleError(resp *azcore.Response) error {
+// listAllHandleError handles the ListAll error response.
+func (client LoadBalancersClient) listAllHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -366,8 +352,8 @@ func (client *LoadBalancersClient) ListAllHandleError(resp *azcore.Response) err
 }
 
 // UpdateTags - Updates a load balancer tags.
-func (client *LoadBalancersClient) UpdateTags(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters TagsObject, options *LoadBalancersUpdateTagsOptions) (*LoadBalancerResponse, error) {
-	req, err := client.UpdateTagsCreateRequest(ctx, resourceGroupName, loadBalancerName, parameters, options)
+func (client LoadBalancersClient) UpdateTags(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters TagsObject, options *LoadBalancersUpdateTagsOptions) (*LoadBalancerResponse, error) {
+	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, loadBalancerName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -376,17 +362,17 @@ func (client *LoadBalancersClient) UpdateTags(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.UpdateTagsHandleError(resp)
+		return nil, client.updateTagsHandleError(resp)
 	}
-	result, err := client.UpdateTagsHandleResponse(resp)
+	result, err := client.updateTagsHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// UpdateTagsCreateRequest creates the UpdateTags request.
-func (client *LoadBalancersClient) UpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters TagsObject, options *LoadBalancersUpdateTagsOptions) (*azcore.Request, error) {
+// updateTagsCreateRequest creates the UpdateTags request.
+func (client LoadBalancersClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, loadBalancerName string, parameters TagsObject, options *LoadBalancersUpdateTagsOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
@@ -403,14 +389,14 @@ func (client *LoadBalancersClient) UpdateTagsCreateRequest(ctx context.Context, 
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// UpdateTagsHandleResponse handles the UpdateTags response.
-func (client *LoadBalancersClient) UpdateTagsHandleResponse(resp *azcore.Response) (*LoadBalancerResponse, error) {
+// updateTagsHandleResponse handles the UpdateTags response.
+func (client LoadBalancersClient) updateTagsHandleResponse(resp *azcore.Response) (*LoadBalancerResponse, error) {
 	result := LoadBalancerResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.LoadBalancer)
 }
 
-// UpdateTagsHandleError handles the UpdateTags error response.
-func (client *LoadBalancersClient) UpdateTagsHandleError(resp *azcore.Response) error {
+// updateTagsHandleError handles the UpdateTags error response.
+func (client LoadBalancersClient) updateTagsHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

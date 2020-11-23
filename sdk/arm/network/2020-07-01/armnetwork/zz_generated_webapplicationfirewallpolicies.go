@@ -17,23 +17,7 @@ import (
 	"time"
 )
 
-// WebApplicationFirewallPoliciesOperations contains the methods for the WebApplicationFirewallPolicies group.
-type WebApplicationFirewallPoliciesOperations interface {
-	// CreateOrUpdate - Creates or update policy with specified rule set name within a resource group.
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy, options *WebApplicationFirewallPoliciesCreateOrUpdateOptions) (*WebApplicationFirewallPolicyResponse, error)
-	// BeginDelete - Deletes Policy.
-	BeginDelete(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesDeleteOptions) (*HTTPPollerResponse, error)
-	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeDelete(token string) (HTTPPoller, error)
-	// Get - Retrieve protection policy with specified name within a resource group.
-	Get(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesGetOptions) (*WebApplicationFirewallPolicyResponse, error)
-	// List - Lists all of the protection policies within a resource group.
-	List(resourceGroupName string, options *WebApplicationFirewallPoliciesListOptions) WebApplicationFirewallPolicyListResultPager
-	// ListAll - Gets all the WAF policies in a subscription.
-	ListAll(options *WebApplicationFirewallPoliciesListAllOptions) WebApplicationFirewallPolicyListResultPager
-}
-
-// WebApplicationFirewallPoliciesClient implements the WebApplicationFirewallPoliciesOperations interface.
+// WebApplicationFirewallPoliciesClient contains the methods for the WebApplicationFirewallPolicies group.
 // Don't use this type directly, use NewWebApplicationFirewallPoliciesClient() instead.
 type WebApplicationFirewallPoliciesClient struct {
 	con            *armcore.Connection
@@ -41,18 +25,18 @@ type WebApplicationFirewallPoliciesClient struct {
 }
 
 // NewWebApplicationFirewallPoliciesClient creates a new instance of WebApplicationFirewallPoliciesClient with the specified values.
-func NewWebApplicationFirewallPoliciesClient(con *armcore.Connection, subscriptionID string) WebApplicationFirewallPoliciesOperations {
-	return &WebApplicationFirewallPoliciesClient{con: con, subscriptionID: subscriptionID}
+func NewWebApplicationFirewallPoliciesClient(con *armcore.Connection, subscriptionID string) WebApplicationFirewallPoliciesClient {
+	return WebApplicationFirewallPoliciesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *WebApplicationFirewallPoliciesClient) Pipeline() azcore.Pipeline {
+func (client WebApplicationFirewallPoliciesClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // CreateOrUpdate - Creates or update policy with specified rule set name within a resource group.
-func (client *WebApplicationFirewallPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy, options *WebApplicationFirewallPoliciesCreateOrUpdateOptions) (*WebApplicationFirewallPolicyResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, policyName, parameters, options)
+func (client WebApplicationFirewallPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy, options *WebApplicationFirewallPoliciesCreateOrUpdateOptions) (*WebApplicationFirewallPolicyResponse, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, policyName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -61,17 +45,17 @@ func (client *WebApplicationFirewallPoliciesClient) CreateOrUpdate(ctx context.C
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
+		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
+	result, err := client.createOrUpdateHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *WebApplicationFirewallPoliciesClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy, options *WebApplicationFirewallPoliciesCreateOrUpdateOptions) (*azcore.Request, error) {
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client WebApplicationFirewallPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, policyName string, parameters WebApplicationFirewallPolicy, options *WebApplicationFirewallPoliciesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/{policyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
@@ -88,14 +72,14 @@ func (client *WebApplicationFirewallPoliciesClient) CreateOrUpdateCreateRequest(
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *WebApplicationFirewallPoliciesClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*WebApplicationFirewallPolicyResponse, error) {
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client WebApplicationFirewallPoliciesClient) createOrUpdateHandleResponse(resp *azcore.Response) (*WebApplicationFirewallPolicyResponse, error) {
 	result := WebApplicationFirewallPolicyResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.WebApplicationFirewallPolicy)
 }
 
-// CreateOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *WebApplicationFirewallPoliciesClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
+// createOrUpdateHandleError handles the CreateOrUpdate error response.
+func (client WebApplicationFirewallPoliciesClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -103,7 +87,8 @@ func (client *WebApplicationFirewallPoliciesClient) CreateOrUpdateHandleError(re
 	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *WebApplicationFirewallPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesDeleteOptions) (*HTTPPollerResponse, error) {
+// BeginDelete - Deletes Policy.
+func (client WebApplicationFirewallPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesDeleteOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, policyName, options)
 	if err != nil {
 		return nil, err
@@ -111,7 +96,7 @@ func (client *WebApplicationFirewallPoliciesClient) BeginDelete(ctx context.Cont
 	result := &HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("WebApplicationFirewallPoliciesClient.Delete", "location", resp, client.DeleteHandleError)
+	pt, err := armcore.NewPoller("WebApplicationFirewallPoliciesClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -126,8 +111,10 @@ func (client *WebApplicationFirewallPoliciesClient) BeginDelete(ctx context.Cont
 	return result, nil
 }
 
-func (client *WebApplicationFirewallPoliciesClient) ResumeDelete(token string) (HTTPPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("WebApplicationFirewallPoliciesClient.Delete", token, client.DeleteHandleError)
+// ResumeDelete creates a new HTTPPoller from the specified resume token.
+// token - The value must come from a previous call to HTTPPoller.ResumeToken().
+func (client WebApplicationFirewallPoliciesClient) ResumeDelete(token string) (HTTPPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("WebApplicationFirewallPoliciesClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -138,8 +125,8 @@ func (client *WebApplicationFirewallPoliciesClient) ResumeDelete(token string) (
 }
 
 // Delete - Deletes Policy.
-func (client *WebApplicationFirewallPoliciesClient) Delete(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesDeleteOptions) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, policyName, options)
+func (client WebApplicationFirewallPoliciesClient) Delete(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesDeleteOptions) (*azcore.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, policyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -148,13 +135,13 @@ func (client *WebApplicationFirewallPoliciesClient) Delete(ctx context.Context, 
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
-// DeleteCreateRequest creates the Delete request.
-func (client *WebApplicationFirewallPoliciesClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesDeleteOptions) (*azcore.Request, error) {
+// deleteCreateRequest creates the Delete request.
+func (client WebApplicationFirewallPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/{policyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
@@ -171,8 +158,8 @@ func (client *WebApplicationFirewallPoliciesClient) DeleteCreateRequest(ctx cont
 	return req, nil
 }
 
-// DeleteHandleError handles the Delete error response.
-func (client *WebApplicationFirewallPoliciesClient) DeleteHandleError(resp *azcore.Response) error {
+// deleteHandleError handles the Delete error response.
+func (client WebApplicationFirewallPoliciesClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -181,8 +168,8 @@ func (client *WebApplicationFirewallPoliciesClient) DeleteHandleError(resp *azco
 }
 
 // Get - Retrieve protection policy with specified name within a resource group.
-func (client *WebApplicationFirewallPoliciesClient) Get(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesGetOptions) (*WebApplicationFirewallPolicyResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, policyName, options)
+func (client WebApplicationFirewallPoliciesClient) Get(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesGetOptions) (*WebApplicationFirewallPolicyResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, policyName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -191,17 +178,17 @@ func (client *WebApplicationFirewallPoliciesClient) Get(ctx context.Context, res
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *WebApplicationFirewallPoliciesClient) GetCreateRequest(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client WebApplicationFirewallPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/{policyName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{policyName}", url.PathEscape(policyName))
@@ -218,14 +205,14 @@ func (client *WebApplicationFirewallPoliciesClient) GetCreateRequest(ctx context
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *WebApplicationFirewallPoliciesClient) GetHandleResponse(resp *azcore.Response) (*WebApplicationFirewallPolicyResponse, error) {
+// getHandleResponse handles the Get response.
+func (client WebApplicationFirewallPoliciesClient) getHandleResponse(resp *azcore.Response) (*WebApplicationFirewallPolicyResponse, error) {
 	result := WebApplicationFirewallPolicyResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.WebApplicationFirewallPolicy)
 }
 
-// GetHandleError handles the Get error response.
-func (client *WebApplicationFirewallPoliciesClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client WebApplicationFirewallPoliciesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -234,14 +221,14 @@ func (client *WebApplicationFirewallPoliciesClient) GetHandleError(resp *azcore.
 }
 
 // List - Lists all of the protection policies within a resource group.
-func (client *WebApplicationFirewallPoliciesClient) List(resourceGroupName string, options *WebApplicationFirewallPoliciesListOptions) WebApplicationFirewallPolicyListResultPager {
+func (client WebApplicationFirewallPoliciesClient) List(resourceGroupName string, options *WebApplicationFirewallPoliciesListOptions) WebApplicationFirewallPolicyListResultPager {
 	return &webApplicationFirewallPolicyListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, options)
+			return client.listCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *WebApplicationFirewallPolicyListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebApplicationFirewallPolicyListResult.NextLink)
 		},
@@ -249,8 +236,8 @@ func (client *WebApplicationFirewallPoliciesClient) List(resourceGroupName strin
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *WebApplicationFirewallPoliciesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, options *WebApplicationFirewallPoliciesListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client WebApplicationFirewallPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *WebApplicationFirewallPoliciesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -266,14 +253,14 @@ func (client *WebApplicationFirewallPoliciesClient) ListCreateRequest(ctx contex
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *WebApplicationFirewallPoliciesClient) ListHandleResponse(resp *azcore.Response) (*WebApplicationFirewallPolicyListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client WebApplicationFirewallPoliciesClient) listHandleResponse(resp *azcore.Response) (*WebApplicationFirewallPolicyListResultResponse, error) {
 	result := WebApplicationFirewallPolicyListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.WebApplicationFirewallPolicyListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *WebApplicationFirewallPoliciesClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client WebApplicationFirewallPoliciesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -282,14 +269,14 @@ func (client *WebApplicationFirewallPoliciesClient) ListHandleError(resp *azcore
 }
 
 // ListAll - Gets all the WAF policies in a subscription.
-func (client *WebApplicationFirewallPoliciesClient) ListAll(options *WebApplicationFirewallPoliciesListAllOptions) WebApplicationFirewallPolicyListResultPager {
+func (client WebApplicationFirewallPoliciesClient) ListAll(options *WebApplicationFirewallPoliciesListAllOptions) WebApplicationFirewallPolicyListResultPager {
 	return &webApplicationFirewallPolicyListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListAllCreateRequest(ctx, options)
+			return client.listAllCreateRequest(ctx, options)
 		},
-		responder: client.ListAllHandleResponse,
-		errorer:   client.ListAllHandleError,
+		responder: client.listAllHandleResponse,
+		errorer:   client.listAllHandleError,
 		advancer: func(ctx context.Context, resp *WebApplicationFirewallPolicyListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebApplicationFirewallPolicyListResult.NextLink)
 		},
@@ -297,8 +284,8 @@ func (client *WebApplicationFirewallPoliciesClient) ListAll(options *WebApplicat
 	}
 }
 
-// ListAllCreateRequest creates the ListAll request.
-func (client *WebApplicationFirewallPoliciesClient) ListAllCreateRequest(ctx context.Context, options *WebApplicationFirewallPoliciesListAllOptions) (*azcore.Request, error) {
+// listAllCreateRequest creates the ListAll request.
+func (client WebApplicationFirewallPoliciesClient) listAllCreateRequest(ctx context.Context, options *WebApplicationFirewallPoliciesListAllOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -313,14 +300,14 @@ func (client *WebApplicationFirewallPoliciesClient) ListAllCreateRequest(ctx con
 	return req, nil
 }
 
-// ListAllHandleResponse handles the ListAll response.
-func (client *WebApplicationFirewallPoliciesClient) ListAllHandleResponse(resp *azcore.Response) (*WebApplicationFirewallPolicyListResultResponse, error) {
+// listAllHandleResponse handles the ListAll response.
+func (client WebApplicationFirewallPoliciesClient) listAllHandleResponse(resp *azcore.Response) (*WebApplicationFirewallPolicyListResultResponse, error) {
 	result := WebApplicationFirewallPolicyListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.WebApplicationFirewallPolicyListResult)
 }
 
-// ListAllHandleError handles the ListAll error response.
-func (client *WebApplicationFirewallPoliciesClient) ListAllHandleError(resp *azcore.Response) error {
+// listAllHandleError handles the ListAll error response.
+func (client WebApplicationFirewallPoliciesClient) listAllHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

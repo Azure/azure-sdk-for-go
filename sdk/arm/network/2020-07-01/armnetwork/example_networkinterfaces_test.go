@@ -16,11 +16,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleNetworkInterfacesOperations_BeginCreateOrUpdate() {
-	// Replace the "subnet" variable with a call to armnetwork.SubnetsOperations.Get to retreive the subnet
+func ExampleNetworkInterfacesClient_BeginCreateOrUpdate() {
+	// Replace the "subnet" variable with a call to armnetwork.SubnetsClient.Get to retreive the subnet
 	// instance that will be assigned to the network interface.
 	var subnet *armnetwork.Subnet
-	// Replace the "ipAddress" variable with a call to armnetwork.PublicIPAddressesOperations.Get to retreive the
+	// Replace the "ipAddress" variable with a call to armnetwork.PublicIPAddressesClient.Get to retreive the
 	// public IP address instance that will be assigned to the network interface.
 	var ipAddress *armnetwork.PublicIPAddress
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -62,7 +62,7 @@ func ExampleNetworkInterfacesOperations_BeginCreateOrUpdate() {
 	log.Printf("NIC ID: %v", *resp.NetworkInterface.ID)
 }
 
-func ExampleNetworkInterfacesOperations_Get() {
+func ExampleNetworkInterfacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -75,7 +75,7 @@ func ExampleNetworkInterfacesOperations_Get() {
 	log.Printf("NIC ID: %v", *resp.NetworkInterface.ID)
 }
 
-func ExampleNetworkInterfacesOperations_BeginDelete() {
+func ExampleNetworkInterfacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

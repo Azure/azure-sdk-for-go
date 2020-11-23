@@ -17,15 +17,7 @@ import (
 	"time"
 )
 
-// InboundSecurityRuleOperations contains the methods for the InboundSecurityRule group.
-type InboundSecurityRuleOperations interface {
-	// BeginCreateOrUpdate - Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, options *InboundSecurityRuleCreateOrUpdateOptions) (*InboundSecurityRulePollerResponse, error)
-	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeCreateOrUpdate(token string) (InboundSecurityRulePoller, error)
-}
-
-// InboundSecurityRuleClient implements the InboundSecurityRuleOperations interface.
+// InboundSecurityRuleClient contains the methods for the InboundSecurityRule group.
 // Don't use this type directly, use NewInboundSecurityRuleClient() instead.
 type InboundSecurityRuleClient struct {
 	con            *armcore.Connection
@@ -33,16 +25,17 @@ type InboundSecurityRuleClient struct {
 }
 
 // NewInboundSecurityRuleClient creates a new instance of InboundSecurityRuleClient with the specified values.
-func NewInboundSecurityRuleClient(con *armcore.Connection, subscriptionID string) InboundSecurityRuleOperations {
-	return &InboundSecurityRuleClient{con: con, subscriptionID: subscriptionID}
+func NewInboundSecurityRuleClient(con *armcore.Connection, subscriptionID string) InboundSecurityRuleClient {
+	return InboundSecurityRuleClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *InboundSecurityRuleClient) Pipeline() azcore.Pipeline {
+func (client InboundSecurityRuleClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
-func (client *InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, options *InboundSecurityRuleCreateOrUpdateOptions) (*InboundSecurityRulePollerResponse, error) {
+// BeginCreateOrUpdate - Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
+func (client InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, options *InboundSecurityRuleCreateOrUpdateOptions) (*InboundSecurityRulePollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, networkVirtualApplianceName, ruleCollectionName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -50,7 +43,7 @@ func (client *InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context
 	result := &InboundSecurityRulePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("InboundSecurityRuleClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
+	pt, err := armcore.NewPoller("InboundSecurityRuleClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -65,8 +58,10 @@ func (client *InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context
 	return result, nil
 }
 
-func (client *InboundSecurityRuleClient) ResumeCreateOrUpdate(token string) (InboundSecurityRulePoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("InboundSecurityRuleClient.CreateOrUpdate", token, client.CreateOrUpdateHandleError)
+// ResumeCreateOrUpdate creates a new InboundSecurityRulePoller from the specified resume token.
+// token - The value must come from a previous call to InboundSecurityRulePoller.ResumeToken().
+func (client InboundSecurityRuleClient) ResumeCreateOrUpdate(token string) (InboundSecurityRulePoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("InboundSecurityRuleClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -77,8 +72,8 @@ func (client *InboundSecurityRuleClient) ResumeCreateOrUpdate(token string) (Inb
 }
 
 // CreateOrUpdate - Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-func (client *InboundSecurityRuleClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, options *InboundSecurityRuleCreateOrUpdateOptions) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, ruleCollectionName, parameters, options)
+func (client InboundSecurityRuleClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, options *InboundSecurityRuleCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkVirtualApplianceName, ruleCollectionName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -87,13 +82,13 @@ func (client *InboundSecurityRuleClient) CreateOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
+		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
-// CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *InboundSecurityRuleClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, options *InboundSecurityRuleCreateOrUpdateOptions) (*azcore.Request, error) {
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client InboundSecurityRuleClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, ruleCollectionName string, parameters InboundSecurityRule, options *InboundSecurityRuleCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkVirtualAppliances/{networkVirtualApplianceName}/inboundSecurityRules/{ruleCollectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{networkVirtualApplianceName}", url.PathEscape(networkVirtualApplianceName))
@@ -111,14 +106,14 @@ func (client *InboundSecurityRuleClient) CreateOrUpdateCreateRequest(ctx context
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *InboundSecurityRuleClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*InboundSecurityRuleResponse, error) {
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client InboundSecurityRuleClient) createOrUpdateHandleResponse(resp *azcore.Response) (*InboundSecurityRuleResponse, error) {
 	result := InboundSecurityRuleResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.InboundSecurityRule)
 }
 
-// CreateOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *InboundSecurityRuleClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
+// createOrUpdateHandleError handles the CreateOrUpdate error response.
+func (client InboundSecurityRuleClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

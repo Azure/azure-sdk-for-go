@@ -17,23 +17,7 @@ import (
 	"time"
 )
 
-// VirtualHubIPConfigurationOperations contains the methods for the VirtualHubIPConfiguration group.
-type VirtualHubIPConfigurationOperations interface {
-	// BeginCreateOrUpdate - Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing VirtualHubIpConfiguration.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, parameters HubIPConfiguration, options *VirtualHubIPConfigurationCreateOrUpdateOptions) (*HubIPConfigurationPollerResponse, error)
-	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeCreateOrUpdate(token string) (HubIPConfigurationPoller, error)
-	// BeginDelete - Deletes a VirtualHubIpConfiguration.
-	BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationDeleteOptions) (*HTTPPollerResponse, error)
-	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeDelete(token string) (HTTPPoller, error)
-	// Get - Retrieves the details of a Virtual Hub Ip configuration.
-	Get(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationGetOptions) (*HubIPConfigurationResponse, error)
-	// List - Retrieves the details of all VirtualHubIpConfigurations.
-	List(resourceGroupName string, virtualHubName string, options *VirtualHubIPConfigurationListOptions) ListVirtualHubIPConfigurationResultsPager
-}
-
-// VirtualHubIPConfigurationClient implements the VirtualHubIPConfigurationOperations interface.
+// VirtualHubIPConfigurationClient contains the methods for the VirtualHubIPConfiguration group.
 // Don't use this type directly, use NewVirtualHubIPConfigurationClient() instead.
 type VirtualHubIPConfigurationClient struct {
 	con            *armcore.Connection
@@ -41,16 +25,17 @@ type VirtualHubIPConfigurationClient struct {
 }
 
 // NewVirtualHubIPConfigurationClient creates a new instance of VirtualHubIPConfigurationClient with the specified values.
-func NewVirtualHubIPConfigurationClient(con *armcore.Connection, subscriptionID string) VirtualHubIPConfigurationOperations {
-	return &VirtualHubIPConfigurationClient{con: con, subscriptionID: subscriptionID}
+func NewVirtualHubIPConfigurationClient(con *armcore.Connection, subscriptionID string) VirtualHubIPConfigurationClient {
+	return VirtualHubIPConfigurationClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *VirtualHubIPConfigurationClient) Pipeline() azcore.Pipeline {
+func (client VirtualHubIPConfigurationClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
-func (client *VirtualHubIPConfigurationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, parameters HubIPConfiguration, options *VirtualHubIPConfigurationCreateOrUpdateOptions) (*HubIPConfigurationPollerResponse, error) {
+// BeginCreateOrUpdate - Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing VirtualHubIpConfiguration.
+func (client VirtualHubIPConfigurationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, parameters HubIPConfiguration, options *VirtualHubIPConfigurationCreateOrUpdateOptions) (*HubIPConfigurationPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, virtualHubName, ipConfigName, parameters, options)
 	if err != nil {
 		return nil, err
@@ -58,7 +43,7 @@ func (client *VirtualHubIPConfigurationClient) BeginCreateOrUpdate(ctx context.C
 	result := &HubIPConfigurationPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VirtualHubIPConfigurationClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
+	pt, err := armcore.NewPoller("VirtualHubIPConfigurationClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -73,8 +58,10 @@ func (client *VirtualHubIPConfigurationClient) BeginCreateOrUpdate(ctx context.C
 	return result, nil
 }
 
-func (client *VirtualHubIPConfigurationClient) ResumeCreateOrUpdate(token string) (HubIPConfigurationPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VirtualHubIPConfigurationClient.CreateOrUpdate", token, client.CreateOrUpdateHandleError)
+// ResumeCreateOrUpdate creates a new HubIPConfigurationPoller from the specified resume token.
+// token - The value must come from a previous call to HubIPConfigurationPoller.ResumeToken().
+func (client VirtualHubIPConfigurationClient) ResumeCreateOrUpdate(token string) (HubIPConfigurationPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("VirtualHubIPConfigurationClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -85,8 +72,8 @@ func (client *VirtualHubIPConfigurationClient) ResumeCreateOrUpdate(token string
 }
 
 // CreateOrUpdate - Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing VirtualHubIpConfiguration.
-func (client *VirtualHubIPConfigurationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, parameters HubIPConfiguration, options *VirtualHubIPConfigurationCreateOrUpdateOptions) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, ipConfigName, parameters, options)
+func (client VirtualHubIPConfigurationClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, parameters HubIPConfiguration, options *VirtualHubIPConfigurationCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, ipConfigName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -95,13 +82,13 @@ func (client *VirtualHubIPConfigurationClient) CreateOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
+		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
-// CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualHubIPConfigurationClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, parameters HubIPConfiguration, options *VirtualHubIPConfigurationCreateOrUpdateOptions) (*azcore.Request, error) {
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client VirtualHubIPConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, parameters HubIPConfiguration, options *VirtualHubIPConfigurationCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/ipConfigurations/{ipConfigName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -119,14 +106,14 @@ func (client *VirtualHubIPConfigurationClient) CreateOrUpdateCreateRequest(ctx c
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *VirtualHubIPConfigurationClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*HubIPConfigurationResponse, error) {
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client VirtualHubIPConfigurationClient) createOrUpdateHandleResponse(resp *azcore.Response) (*HubIPConfigurationResponse, error) {
 	result := HubIPConfigurationResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.HubIPConfiguration)
 }
 
-// CreateOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VirtualHubIPConfigurationClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
+// createOrUpdateHandleError handles the CreateOrUpdate error response.
+func (client VirtualHubIPConfigurationClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -134,7 +121,8 @@ func (client *VirtualHubIPConfigurationClient) CreateOrUpdateHandleError(resp *a
 	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *VirtualHubIPConfigurationClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationDeleteOptions) (*HTTPPollerResponse, error) {
+// BeginDelete - Deletes a VirtualHubIpConfiguration.
+func (client VirtualHubIPConfigurationClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationDeleteOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, virtualHubName, ipConfigName, options)
 	if err != nil {
 		return nil, err
@@ -142,7 +130,7 @@ func (client *VirtualHubIPConfigurationClient) BeginDelete(ctx context.Context, 
 	result := &HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VirtualHubIPConfigurationClient.Delete", "location", resp, client.DeleteHandleError)
+	pt, err := armcore.NewPoller("VirtualHubIPConfigurationClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -157,8 +145,10 @@ func (client *VirtualHubIPConfigurationClient) BeginDelete(ctx context.Context, 
 	return result, nil
 }
 
-func (client *VirtualHubIPConfigurationClient) ResumeDelete(token string) (HTTPPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VirtualHubIPConfigurationClient.Delete", token, client.DeleteHandleError)
+// ResumeDelete creates a new HTTPPoller from the specified resume token.
+// token - The value must come from a previous call to HTTPPoller.ResumeToken().
+func (client VirtualHubIPConfigurationClient) ResumeDelete(token string) (HTTPPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("VirtualHubIPConfigurationClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -169,8 +159,8 @@ func (client *VirtualHubIPConfigurationClient) ResumeDelete(token string) (HTTPP
 }
 
 // Delete - Deletes a VirtualHubIpConfiguration.
-func (client *VirtualHubIPConfigurationClient) Delete(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationDeleteOptions) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, virtualHubName, ipConfigName, options)
+func (client VirtualHubIPConfigurationClient) Delete(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationDeleteOptions) (*azcore.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, ipConfigName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -179,13 +169,13 @@ func (client *VirtualHubIPConfigurationClient) Delete(ctx context.Context, resou
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
-// DeleteCreateRequest creates the Delete request.
-func (client *VirtualHubIPConfigurationClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationDeleteOptions) (*azcore.Request, error) {
+// deleteCreateRequest creates the Delete request.
+func (client VirtualHubIPConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/ipConfigurations/{ipConfigName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -203,8 +193,8 @@ func (client *VirtualHubIPConfigurationClient) DeleteCreateRequest(ctx context.C
 	return req, nil
 }
 
-// DeleteHandleError handles the Delete error response.
-func (client *VirtualHubIPConfigurationClient) DeleteHandleError(resp *azcore.Response) error {
+// deleteHandleError handles the Delete error response.
+func (client VirtualHubIPConfigurationClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -213,8 +203,8 @@ func (client *VirtualHubIPConfigurationClient) DeleteHandleError(resp *azcore.Re
 }
 
 // Get - Retrieves the details of a Virtual Hub Ip configuration.
-func (client *VirtualHubIPConfigurationClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationGetOptions) (*HubIPConfigurationResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, virtualHubName, ipConfigName, options)
+func (client VirtualHubIPConfigurationClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationGetOptions) (*HubIPConfigurationResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, ipConfigName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -223,17 +213,17 @@ func (client *VirtualHubIPConfigurationClient) Get(ctx context.Context, resource
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *VirtualHubIPConfigurationClient) GetCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client VirtualHubIPConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/ipConfigurations/{ipConfigName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -251,14 +241,14 @@ func (client *VirtualHubIPConfigurationClient) GetCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *VirtualHubIPConfigurationClient) GetHandleResponse(resp *azcore.Response) (*HubIPConfigurationResponse, error) {
+// getHandleResponse handles the Get response.
+func (client VirtualHubIPConfigurationClient) getHandleResponse(resp *azcore.Response) (*HubIPConfigurationResponse, error) {
 	result := HubIPConfigurationResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.HubIPConfiguration)
 }
 
-// GetHandleError handles the Get error response.
-func (client *VirtualHubIPConfigurationClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client VirtualHubIPConfigurationClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -267,14 +257,14 @@ func (client *VirtualHubIPConfigurationClient) GetHandleError(resp *azcore.Respo
 }
 
 // List - Retrieves the details of all VirtualHubIpConfigurations.
-func (client *VirtualHubIPConfigurationClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubIPConfigurationListOptions) ListVirtualHubIPConfigurationResultsPager {
+func (client VirtualHubIPConfigurationClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubIPConfigurationListOptions) ListVirtualHubIPConfigurationResultsPager {
 	return &listVirtualHubIPConfigurationResultsPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, virtualHubName, options)
+			return client.listCreateRequest(ctx, resourceGroupName, virtualHubName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *ListVirtualHubIPConfigurationResultsResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListVirtualHubIPConfigurationResults.NextLink)
 		},
@@ -282,8 +272,8 @@ func (client *VirtualHubIPConfigurationClient) List(resourceGroupName string, vi
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *VirtualHubIPConfigurationClient) ListCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubIPConfigurationListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client VirtualHubIPConfigurationClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubIPConfigurationListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/ipConfigurations"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -300,14 +290,14 @@ func (client *VirtualHubIPConfigurationClient) ListCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *VirtualHubIPConfigurationClient) ListHandleResponse(resp *azcore.Response) (*ListVirtualHubIPConfigurationResultsResponse, error) {
+// listHandleResponse handles the List response.
+func (client VirtualHubIPConfigurationClient) listHandleResponse(resp *azcore.Response) (*ListVirtualHubIPConfigurationResultsResponse, error) {
 	result := ListVirtualHubIPConfigurationResultsResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ListVirtualHubIPConfigurationResults)
 }
 
-// ListHandleError handles the List error response.
-func (client *VirtualHubIPConfigurationClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client VirtualHubIPConfigurationClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

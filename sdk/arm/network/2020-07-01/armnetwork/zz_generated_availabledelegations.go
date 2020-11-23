@@ -16,13 +16,7 @@ import (
 	"strings"
 )
 
-// AvailableDelegationsOperations contains the methods for the AvailableDelegations group.
-type AvailableDelegationsOperations interface {
-	// List - Gets all of the available subnet delegations for this subscription in this region.
-	List(location string, options *AvailableDelegationsListOptions) AvailableDelegationsResultPager
-}
-
-// AvailableDelegationsClient implements the AvailableDelegationsOperations interface.
+// AvailableDelegationsClient contains the methods for the AvailableDelegations group.
 // Don't use this type directly, use NewAvailableDelegationsClient() instead.
 type AvailableDelegationsClient struct {
 	con            *armcore.Connection
@@ -30,24 +24,24 @@ type AvailableDelegationsClient struct {
 }
 
 // NewAvailableDelegationsClient creates a new instance of AvailableDelegationsClient with the specified values.
-func NewAvailableDelegationsClient(con *armcore.Connection, subscriptionID string) AvailableDelegationsOperations {
-	return &AvailableDelegationsClient{con: con, subscriptionID: subscriptionID}
+func NewAvailableDelegationsClient(con *armcore.Connection, subscriptionID string) AvailableDelegationsClient {
+	return AvailableDelegationsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *AvailableDelegationsClient) Pipeline() azcore.Pipeline {
+func (client AvailableDelegationsClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // List - Gets all of the available subnet delegations for this subscription in this region.
-func (client *AvailableDelegationsClient) List(location string, options *AvailableDelegationsListOptions) AvailableDelegationsResultPager {
+func (client AvailableDelegationsClient) List(location string, options *AvailableDelegationsListOptions) AvailableDelegationsResultPager {
 	return &availableDelegationsResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, location, options)
+			return client.listCreateRequest(ctx, location, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *AvailableDelegationsResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.AvailableDelegationsResult.NextLink)
 		},
@@ -55,8 +49,8 @@ func (client *AvailableDelegationsClient) List(location string, options *Availab
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *AvailableDelegationsClient) ListCreateRequest(ctx context.Context, location string, options *AvailableDelegationsListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client AvailableDelegationsClient) listCreateRequest(ctx context.Context, location string, options *AvailableDelegationsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/availableDelegations"
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -72,14 +66,14 @@ func (client *AvailableDelegationsClient) ListCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *AvailableDelegationsClient) ListHandleResponse(resp *azcore.Response) (*AvailableDelegationsResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client AvailableDelegationsClient) listHandleResponse(resp *azcore.Response) (*AvailableDelegationsResultResponse, error) {
 	result := AvailableDelegationsResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.AvailableDelegationsResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *AvailableDelegationsClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client AvailableDelegationsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

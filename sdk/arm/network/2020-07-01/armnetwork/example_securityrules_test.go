@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleSecurityRulesOperations_BeginCreateOrUpdate_allowSSH() {
+func ExampleSecurityRulesClient_BeginCreateOrUpdate_allowSSH() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -52,7 +52,7 @@ func ExampleSecurityRulesOperations_BeginCreateOrUpdate_allowSSH() {
 	log.Printf("security rule ID: %v", *resp.SecurityRule.ID)
 }
 
-func ExampleSecurityRulesOperations_BeginCreateOrUpdate_allowHTTP() {
+func ExampleSecurityRulesClient_BeginCreateOrUpdate_allowHTTP() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -88,7 +88,7 @@ func ExampleSecurityRulesOperations_BeginCreateOrUpdate_allowHTTP() {
 	log.Printf("security rule ID: %v", *resp.SecurityRule.ID)
 }
 
-func ExampleSecurityRulesOperations_BeginCreateOrUpdate_allowSQL() {
+func ExampleSecurityRulesClient_BeginCreateOrUpdate_allowSQL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -124,7 +124,7 @@ func ExampleSecurityRulesOperations_BeginCreateOrUpdate_allowSQL() {
 	log.Printf("security rule ID: %v", *resp.SecurityRule.ID)
 }
 
-func ExampleSecurityRulesOperations_BeginCreateOrUpdate_denyOut() {
+func ExampleSecurityRulesClient_BeginCreateOrUpdate_denyOut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

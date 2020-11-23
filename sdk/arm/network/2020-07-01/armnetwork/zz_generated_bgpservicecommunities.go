@@ -16,13 +16,7 @@ import (
 	"strings"
 )
 
-// BgpServiceCommunitiesOperations contains the methods for the BgpServiceCommunities group.
-type BgpServiceCommunitiesOperations interface {
-	// List - Gets all the available bgp service communities.
-	List(options *BgpServiceCommunitiesListOptions) BgpServiceCommunityListResultPager
-}
-
-// BgpServiceCommunitiesClient implements the BgpServiceCommunitiesOperations interface.
+// BgpServiceCommunitiesClient contains the methods for the BgpServiceCommunities group.
 // Don't use this type directly, use NewBgpServiceCommunitiesClient() instead.
 type BgpServiceCommunitiesClient struct {
 	con            *armcore.Connection
@@ -30,24 +24,24 @@ type BgpServiceCommunitiesClient struct {
 }
 
 // NewBgpServiceCommunitiesClient creates a new instance of BgpServiceCommunitiesClient with the specified values.
-func NewBgpServiceCommunitiesClient(con *armcore.Connection, subscriptionID string) BgpServiceCommunitiesOperations {
-	return &BgpServiceCommunitiesClient{con: con, subscriptionID: subscriptionID}
+func NewBgpServiceCommunitiesClient(con *armcore.Connection, subscriptionID string) BgpServiceCommunitiesClient {
+	return BgpServiceCommunitiesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *BgpServiceCommunitiesClient) Pipeline() azcore.Pipeline {
+func (client BgpServiceCommunitiesClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // List - Gets all the available bgp service communities.
-func (client *BgpServiceCommunitiesClient) List(options *BgpServiceCommunitiesListOptions) BgpServiceCommunityListResultPager {
+func (client BgpServiceCommunitiesClient) List(options *BgpServiceCommunitiesListOptions) BgpServiceCommunityListResultPager {
 	return &bgpServiceCommunityListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, options)
+			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *BgpServiceCommunityListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.BgpServiceCommunityListResult.NextLink)
 		},
@@ -55,8 +49,8 @@ func (client *BgpServiceCommunitiesClient) List(options *BgpServiceCommunitiesLi
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *BgpServiceCommunitiesClient) ListCreateRequest(ctx context.Context, options *BgpServiceCommunitiesListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client BgpServiceCommunitiesClient) listCreateRequest(ctx context.Context, options *BgpServiceCommunitiesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/bgpServiceCommunities"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -71,14 +65,14 @@ func (client *BgpServiceCommunitiesClient) ListCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *BgpServiceCommunitiesClient) ListHandleResponse(resp *azcore.Response) (*BgpServiceCommunityListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client BgpServiceCommunitiesClient) listHandleResponse(resp *azcore.Response) (*BgpServiceCommunityListResultResponse, error) {
 	result := BgpServiceCommunityListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.BgpServiceCommunityListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *BgpServiceCommunitiesClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client BgpServiceCommunitiesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

@@ -16,13 +16,7 @@ import (
 	"strings"
 )
 
-// AvailableEndpointServicesOperations contains the methods for the AvailableEndpointServices group.
-type AvailableEndpointServicesOperations interface {
-	// List - List what values of endpoint services are available for use.
-	List(location string, options *AvailableEndpointServicesListOptions) EndpointServicesListResultPager
-}
-
-// AvailableEndpointServicesClient implements the AvailableEndpointServicesOperations interface.
+// AvailableEndpointServicesClient contains the methods for the AvailableEndpointServices group.
 // Don't use this type directly, use NewAvailableEndpointServicesClient() instead.
 type AvailableEndpointServicesClient struct {
 	con            *armcore.Connection
@@ -30,24 +24,24 @@ type AvailableEndpointServicesClient struct {
 }
 
 // NewAvailableEndpointServicesClient creates a new instance of AvailableEndpointServicesClient with the specified values.
-func NewAvailableEndpointServicesClient(con *armcore.Connection, subscriptionID string) AvailableEndpointServicesOperations {
-	return &AvailableEndpointServicesClient{con: con, subscriptionID: subscriptionID}
+func NewAvailableEndpointServicesClient(con *armcore.Connection, subscriptionID string) AvailableEndpointServicesClient {
+	return AvailableEndpointServicesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *AvailableEndpointServicesClient) Pipeline() azcore.Pipeline {
+func (client AvailableEndpointServicesClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // List - List what values of endpoint services are available for use.
-func (client *AvailableEndpointServicesClient) List(location string, options *AvailableEndpointServicesListOptions) EndpointServicesListResultPager {
+func (client AvailableEndpointServicesClient) List(location string, options *AvailableEndpointServicesListOptions) EndpointServicesListResultPager {
 	return &endpointServicesListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, location, options)
+			return client.listCreateRequest(ctx, location, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *EndpointServicesListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.EndpointServicesListResult.NextLink)
 		},
@@ -55,8 +49,8 @@ func (client *AvailableEndpointServicesClient) List(location string, options *Av
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *AvailableEndpointServicesClient) ListCreateRequest(ctx context.Context, location string, options *AvailableEndpointServicesListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client AvailableEndpointServicesClient) listCreateRequest(ctx context.Context, location string, options *AvailableEndpointServicesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/virtualNetworkAvailableEndpointServices"
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -72,14 +66,14 @@ func (client *AvailableEndpointServicesClient) ListCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *AvailableEndpointServicesClient) ListHandleResponse(resp *azcore.Response) (*EndpointServicesListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client AvailableEndpointServicesClient) listHandleResponse(resp *azcore.Response) (*EndpointServicesListResultResponse, error) {
 	result := EndpointServicesListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.EndpointServicesListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *AvailableEndpointServicesClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client AvailableEndpointServicesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

@@ -17,23 +17,7 @@ import (
 	"time"
 )
 
-// ExpressRouteCrossConnectionPeeringsOperations contains the methods for the ExpressRouteCrossConnectionPeerings group.
-type ExpressRouteCrossConnectionPeeringsOperations interface {
-	// BeginCreateOrUpdate - Creates or updates a peering in the specified ExpressRouteCrossConnection.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, peeringParameters ExpressRouteCrossConnectionPeering, options *ExpressRouteCrossConnectionPeeringsCreateOrUpdateOptions) (*ExpressRouteCrossConnectionPeeringPollerResponse, error)
-	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeCreateOrUpdate(token string) (ExpressRouteCrossConnectionPeeringPoller, error)
-	// BeginDelete - Deletes the specified peering from the ExpressRouteCrossConnection.
-	BeginDelete(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsDeleteOptions) (*HTTPPollerResponse, error)
-	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeDelete(token string) (HTTPPoller, error)
-	// Get - Gets the specified peering for the ExpressRouteCrossConnection.
-	Get(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsGetOptions) (*ExpressRouteCrossConnectionPeeringResponse, error)
-	// List - Gets all peerings in a specified ExpressRouteCrossConnection.
-	List(resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionPeeringsListOptions) ExpressRouteCrossConnectionPeeringListPager
-}
-
-// ExpressRouteCrossConnectionPeeringsClient implements the ExpressRouteCrossConnectionPeeringsOperations interface.
+// ExpressRouteCrossConnectionPeeringsClient contains the methods for the ExpressRouteCrossConnectionPeerings group.
 // Don't use this type directly, use NewExpressRouteCrossConnectionPeeringsClient() instead.
 type ExpressRouteCrossConnectionPeeringsClient struct {
 	con            *armcore.Connection
@@ -41,16 +25,17 @@ type ExpressRouteCrossConnectionPeeringsClient struct {
 }
 
 // NewExpressRouteCrossConnectionPeeringsClient creates a new instance of ExpressRouteCrossConnectionPeeringsClient with the specified values.
-func NewExpressRouteCrossConnectionPeeringsClient(con *armcore.Connection, subscriptionID string) ExpressRouteCrossConnectionPeeringsOperations {
-	return &ExpressRouteCrossConnectionPeeringsClient{con: con, subscriptionID: subscriptionID}
+func NewExpressRouteCrossConnectionPeeringsClient(con *armcore.Connection, subscriptionID string) ExpressRouteCrossConnectionPeeringsClient {
+	return ExpressRouteCrossConnectionPeeringsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *ExpressRouteCrossConnectionPeeringsClient) Pipeline() azcore.Pipeline {
+func (client ExpressRouteCrossConnectionPeeringsClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
-func (client *ExpressRouteCrossConnectionPeeringsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, peeringParameters ExpressRouteCrossConnectionPeering, options *ExpressRouteCrossConnectionPeeringsCreateOrUpdateOptions) (*ExpressRouteCrossConnectionPeeringPollerResponse, error) {
+// BeginCreateOrUpdate - Creates or updates a peering in the specified ExpressRouteCrossConnection.
+func (client ExpressRouteCrossConnectionPeeringsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, peeringParameters ExpressRouteCrossConnectionPeering, options *ExpressRouteCrossConnectionPeeringsCreateOrUpdateOptions) (*ExpressRouteCrossConnectionPeeringPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, crossConnectionName, peeringName, peeringParameters, options)
 	if err != nil {
 		return nil, err
@@ -58,7 +43,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) BeginCreateOrUpdate(ctx
 	result := &ExpressRouteCrossConnectionPeeringPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCrossConnectionPeeringsClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
+	pt, err := armcore.NewPoller("ExpressRouteCrossConnectionPeeringsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -73,8 +58,10 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) BeginCreateOrUpdate(ctx
 	return result, nil
 }
 
-func (client *ExpressRouteCrossConnectionPeeringsClient) ResumeCreateOrUpdate(token string) (ExpressRouteCrossConnectionPeeringPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCrossConnectionPeeringsClient.CreateOrUpdate", token, client.CreateOrUpdateHandleError)
+// ResumeCreateOrUpdate creates a new ExpressRouteCrossConnectionPeeringPoller from the specified resume token.
+// token - The value must come from a previous call to ExpressRouteCrossConnectionPeeringPoller.ResumeToken().
+func (client ExpressRouteCrossConnectionPeeringsClient) ResumeCreateOrUpdate(token string) (ExpressRouteCrossConnectionPeeringPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCrossConnectionPeeringsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -85,8 +72,8 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) ResumeCreateOrUpdate(to
 }
 
 // CreateOrUpdate - Creates or updates a peering in the specified ExpressRouteCrossConnection.
-func (client *ExpressRouteCrossConnectionPeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, peeringParameters ExpressRouteCrossConnectionPeering, options *ExpressRouteCrossConnectionPeeringsCreateOrUpdateOptions) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, crossConnectionName, peeringName, peeringParameters, options)
+func (client ExpressRouteCrossConnectionPeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, peeringParameters ExpressRouteCrossConnectionPeering, options *ExpressRouteCrossConnectionPeeringsCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, crossConnectionName, peeringName, peeringParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -95,13 +82,13 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) CreateOrUpdate(ctx cont
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
+		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
-// CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ExpressRouteCrossConnectionPeeringsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, peeringParameters ExpressRouteCrossConnectionPeering, options *ExpressRouteCrossConnectionPeeringsCreateOrUpdateOptions) (*azcore.Request, error) {
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client ExpressRouteCrossConnectionPeeringsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, peeringParameters ExpressRouteCrossConnectionPeering, options *ExpressRouteCrossConnectionPeeringsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCrossConnections/{crossConnectionName}/peerings/{peeringName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{crossConnectionName}", url.PathEscape(crossConnectionName))
@@ -119,14 +106,14 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) CreateOrUpdateCreateReq
 	return req, req.MarshalAsJSON(peeringParameters)
 }
 
-// CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ExpressRouteCrossConnectionPeeringsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteCrossConnectionPeeringResponse, error) {
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client ExpressRouteCrossConnectionPeeringsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteCrossConnectionPeeringResponse, error) {
 	result := ExpressRouteCrossConnectionPeeringResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnectionPeering)
 }
 
-// CreateOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ExpressRouteCrossConnectionPeeringsClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
+// createOrUpdateHandleError handles the CreateOrUpdate error response.
+func (client ExpressRouteCrossConnectionPeeringsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -134,7 +121,8 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) CreateOrUpdateHandleErr
 	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *ExpressRouteCrossConnectionPeeringsClient) BeginDelete(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsDeleteOptions) (*HTTPPollerResponse, error) {
+// BeginDelete - Deletes the specified peering from the ExpressRouteCrossConnection.
+func (client ExpressRouteCrossConnectionPeeringsClient) BeginDelete(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsDeleteOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, crossConnectionName, peeringName, options)
 	if err != nil {
 		return nil, err
@@ -142,7 +130,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) BeginDelete(ctx context
 	result := &HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCrossConnectionPeeringsClient.Delete", "location", resp, client.DeleteHandleError)
+	pt, err := armcore.NewPoller("ExpressRouteCrossConnectionPeeringsClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -157,8 +145,10 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) BeginDelete(ctx context
 	return result, nil
 }
 
-func (client *ExpressRouteCrossConnectionPeeringsClient) ResumeDelete(token string) (HTTPPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCrossConnectionPeeringsClient.Delete", token, client.DeleteHandleError)
+// ResumeDelete creates a new HTTPPoller from the specified resume token.
+// token - The value must come from a previous call to HTTPPoller.ResumeToken().
+func (client ExpressRouteCrossConnectionPeeringsClient) ResumeDelete(token string) (HTTPPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCrossConnectionPeeringsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -169,8 +159,8 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) ResumeDelete(token stri
 }
 
 // Delete - Deletes the specified peering from the ExpressRouteCrossConnection.
-func (client *ExpressRouteCrossConnectionPeeringsClient) Delete(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsDeleteOptions) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, crossConnectionName, peeringName, options)
+func (client ExpressRouteCrossConnectionPeeringsClient) Delete(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsDeleteOptions) (*azcore.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, crossConnectionName, peeringName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -179,13 +169,13 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) Delete(ctx context.Cont
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
-// DeleteCreateRequest creates the Delete request.
-func (client *ExpressRouteCrossConnectionPeeringsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsDeleteOptions) (*azcore.Request, error) {
+// deleteCreateRequest creates the Delete request.
+func (client ExpressRouteCrossConnectionPeeringsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCrossConnections/{crossConnectionName}/peerings/{peeringName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{crossConnectionName}", url.PathEscape(crossConnectionName))
@@ -203,8 +193,8 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) DeleteCreateRequest(ctx
 	return req, nil
 }
 
-// DeleteHandleError handles the Delete error response.
-func (client *ExpressRouteCrossConnectionPeeringsClient) DeleteHandleError(resp *azcore.Response) error {
+// deleteHandleError handles the Delete error response.
+func (client ExpressRouteCrossConnectionPeeringsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -213,8 +203,8 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) DeleteHandleError(resp 
 }
 
 // Get - Gets the specified peering for the ExpressRouteCrossConnection.
-func (client *ExpressRouteCrossConnectionPeeringsClient) Get(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsGetOptions) (*ExpressRouteCrossConnectionPeeringResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, crossConnectionName, peeringName, options)
+func (client ExpressRouteCrossConnectionPeeringsClient) Get(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsGetOptions) (*ExpressRouteCrossConnectionPeeringResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, crossConnectionName, peeringName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -223,17 +213,17 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) Get(ctx context.Context
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *ExpressRouteCrossConnectionPeeringsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client ExpressRouteCrossConnectionPeeringsClient) getCreateRequest(ctx context.Context, resourceGroupName string, crossConnectionName string, peeringName string, options *ExpressRouteCrossConnectionPeeringsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCrossConnections/{crossConnectionName}/peerings/{peeringName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{crossConnectionName}", url.PathEscape(crossConnectionName))
@@ -251,14 +241,14 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) GetCreateRequest(ctx co
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *ExpressRouteCrossConnectionPeeringsClient) GetHandleResponse(resp *azcore.Response) (*ExpressRouteCrossConnectionPeeringResponse, error) {
+// getHandleResponse handles the Get response.
+func (client ExpressRouteCrossConnectionPeeringsClient) getHandleResponse(resp *azcore.Response) (*ExpressRouteCrossConnectionPeeringResponse, error) {
 	result := ExpressRouteCrossConnectionPeeringResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnectionPeering)
 }
 
-// GetHandleError handles the Get error response.
-func (client *ExpressRouteCrossConnectionPeeringsClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client ExpressRouteCrossConnectionPeeringsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -267,14 +257,14 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) GetHandleError(resp *az
 }
 
 // List - Gets all peerings in a specified ExpressRouteCrossConnection.
-func (client *ExpressRouteCrossConnectionPeeringsClient) List(resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionPeeringsListOptions) ExpressRouteCrossConnectionPeeringListPager {
+func (client ExpressRouteCrossConnectionPeeringsClient) List(resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionPeeringsListOptions) ExpressRouteCrossConnectionPeeringListPager {
 	return &expressRouteCrossConnectionPeeringListPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, crossConnectionName, options)
+			return client.listCreateRequest(ctx, resourceGroupName, crossConnectionName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *ExpressRouteCrossConnectionPeeringListResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ExpressRouteCrossConnectionPeeringList.NextLink)
 		},
@@ -282,8 +272,8 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) List(resourceGroupName 
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *ExpressRouteCrossConnectionPeeringsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionPeeringsListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client ExpressRouteCrossConnectionPeeringsClient) listCreateRequest(ctx context.Context, resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionPeeringsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCrossConnections/{crossConnectionName}/peerings"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{crossConnectionName}", url.PathEscape(crossConnectionName))
@@ -300,14 +290,14 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) ListCreateRequest(ctx c
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *ExpressRouteCrossConnectionPeeringsClient) ListHandleResponse(resp *azcore.Response) (*ExpressRouteCrossConnectionPeeringListResponse, error) {
+// listHandleResponse handles the List response.
+func (client ExpressRouteCrossConnectionPeeringsClient) listHandleResponse(resp *azcore.Response) (*ExpressRouteCrossConnectionPeeringListResponse, error) {
 	result := ExpressRouteCrossConnectionPeeringListResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCrossConnectionPeeringList)
 }
 
-// ListHandleError handles the List error response.
-func (client *ExpressRouteCrossConnectionPeeringsClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client ExpressRouteCrossConnectionPeeringsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

@@ -2957,29 +2957,6 @@ func (c VirtualNetworkGatewayType) ToPtr() *VirtualNetworkGatewayType {
 	return &c
 }
 
-// VirtualNetworkPeeringLevel - The peering sync status of the virtual network peering.
-type VirtualNetworkPeeringLevel string
-
-const (
-	VirtualNetworkPeeringLevelFullySynced            VirtualNetworkPeeringLevel = "FullySynced"
-	VirtualNetworkPeeringLevelLocalAndRemoteUnsynced VirtualNetworkPeeringLevel = "LocalAndRemoteUnsynced"
-	VirtualNetworkPeeringLevelLocalUnsynced          VirtualNetworkPeeringLevel = "LocalUnsynced"
-	VirtualNetworkPeeringLevelRemoteUnsynced         VirtualNetworkPeeringLevel = "RemoteUnsynced"
-)
-
-func PossibleVirtualNetworkPeeringLevelValues() []VirtualNetworkPeeringLevel {
-	return []VirtualNetworkPeeringLevel{
-		VirtualNetworkPeeringLevelFullySynced,
-		VirtualNetworkPeeringLevelLocalAndRemoteUnsynced,
-		VirtualNetworkPeeringLevelLocalUnsynced,
-		VirtualNetworkPeeringLevelRemoteUnsynced,
-	}
-}
-
-func (c VirtualNetworkPeeringLevel) ToPtr() *VirtualNetworkPeeringLevel {
-	return &c
-}
-
 // VirtualNetworkPeeringState - The status of the virtual network peering.
 type VirtualNetworkPeeringState string
 

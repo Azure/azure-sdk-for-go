@@ -16,13 +16,7 @@ import (
 	"strings"
 )
 
-// ApplicationGatewayPrivateLinkResourcesOperations contains the methods for the ApplicationGatewayPrivateLinkResources group.
-type ApplicationGatewayPrivateLinkResourcesOperations interface {
-	// List - Lists all private link resources on an application gateway.
-	List(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesListOptions) ApplicationGatewayPrivateLinkResourceListResultPager
-}
-
-// ApplicationGatewayPrivateLinkResourcesClient implements the ApplicationGatewayPrivateLinkResourcesOperations interface.
+// ApplicationGatewayPrivateLinkResourcesClient contains the methods for the ApplicationGatewayPrivateLinkResources group.
 // Don't use this type directly, use NewApplicationGatewayPrivateLinkResourcesClient() instead.
 type ApplicationGatewayPrivateLinkResourcesClient struct {
 	con            *armcore.Connection
@@ -30,24 +24,24 @@ type ApplicationGatewayPrivateLinkResourcesClient struct {
 }
 
 // NewApplicationGatewayPrivateLinkResourcesClient creates a new instance of ApplicationGatewayPrivateLinkResourcesClient with the specified values.
-func NewApplicationGatewayPrivateLinkResourcesClient(con *armcore.Connection, subscriptionID string) ApplicationGatewayPrivateLinkResourcesOperations {
-	return &ApplicationGatewayPrivateLinkResourcesClient{con: con, subscriptionID: subscriptionID}
+func NewApplicationGatewayPrivateLinkResourcesClient(con *armcore.Connection, subscriptionID string) ApplicationGatewayPrivateLinkResourcesClient {
+	return ApplicationGatewayPrivateLinkResourcesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *ApplicationGatewayPrivateLinkResourcesClient) Pipeline() azcore.Pipeline {
+func (client ApplicationGatewayPrivateLinkResourcesClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // List - Lists all private link resources on an application gateway.
-func (client *ApplicationGatewayPrivateLinkResourcesClient) List(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesListOptions) ApplicationGatewayPrivateLinkResourceListResultPager {
+func (client ApplicationGatewayPrivateLinkResourcesClient) List(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesListOptions) ApplicationGatewayPrivateLinkResourceListResultPager {
 	return &applicationGatewayPrivateLinkResourceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
+			return client.listCreateRequest(ctx, resourceGroupName, applicationGatewayName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *ApplicationGatewayPrivateLinkResourceListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ApplicationGatewayPrivateLinkResourceListResult.NextLink)
 		},
@@ -55,8 +49,8 @@ func (client *ApplicationGatewayPrivateLinkResourcesClient) List(resourceGroupNa
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *ApplicationGatewayPrivateLinkResourcesClient) ListCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client ApplicationGatewayPrivateLinkResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/privateLinkResources"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{applicationGatewayName}", url.PathEscape(applicationGatewayName))
@@ -73,14 +67,14 @@ func (client *ApplicationGatewayPrivateLinkResourcesClient) ListCreateRequest(ct
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *ApplicationGatewayPrivateLinkResourcesClient) ListHandleResponse(resp *azcore.Response) (*ApplicationGatewayPrivateLinkResourceListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client ApplicationGatewayPrivateLinkResourcesClient) listHandleResponse(resp *azcore.Response) (*ApplicationGatewayPrivateLinkResourceListResultResponse, error) {
 	result := ApplicationGatewayPrivateLinkResourceListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ApplicationGatewayPrivateLinkResourceListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *ApplicationGatewayPrivateLinkResourcesClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client ApplicationGatewayPrivateLinkResourcesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

@@ -17,23 +17,7 @@ import (
 	"time"
 )
 
-// ServiceEndpointPolicyDefinitionsOperations contains the methods for the ServiceEndpointPolicyDefinitions group.
-type ServiceEndpointPolicyDefinitionsOperations interface {
-	// BeginCreateOrUpdate - Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition, options *ServiceEndpointPolicyDefinitionsCreateOrUpdateOptions) (*ServiceEndpointPolicyDefinitionPollerResponse, error)
-	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeCreateOrUpdate(token string) (ServiceEndpointPolicyDefinitionPoller, error)
-	// BeginDelete - Deletes the specified ServiceEndpoint policy definitions.
-	BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsDeleteOptions) (*HTTPPollerResponse, error)
-	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeDelete(token string) (HTTPPoller, error)
-	// Get - Get the specified service endpoint policy definitions from service endpoint policy.
-	Get(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsGetOptions) (*ServiceEndpointPolicyDefinitionResponse, error)
-	// ListByResourceGroup - Gets all service endpoint policy definitions in a service end point policy.
-	ListByResourceGroup(resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPolicyDefinitionsListByResourceGroupOptions) ServiceEndpointPolicyDefinitionListResultPager
-}
-
-// ServiceEndpointPolicyDefinitionsClient implements the ServiceEndpointPolicyDefinitionsOperations interface.
+// ServiceEndpointPolicyDefinitionsClient contains the methods for the ServiceEndpointPolicyDefinitions group.
 // Don't use this type directly, use NewServiceEndpointPolicyDefinitionsClient() instead.
 type ServiceEndpointPolicyDefinitionsClient struct {
 	con            *armcore.Connection
@@ -41,16 +25,17 @@ type ServiceEndpointPolicyDefinitionsClient struct {
 }
 
 // NewServiceEndpointPolicyDefinitionsClient creates a new instance of ServiceEndpointPolicyDefinitionsClient with the specified values.
-func NewServiceEndpointPolicyDefinitionsClient(con *armcore.Connection, subscriptionID string) ServiceEndpointPolicyDefinitionsOperations {
-	return &ServiceEndpointPolicyDefinitionsClient{con: con, subscriptionID: subscriptionID}
+func NewServiceEndpointPolicyDefinitionsClient(con *armcore.Connection, subscriptionID string) ServiceEndpointPolicyDefinitionsClient {
+	return ServiceEndpointPolicyDefinitionsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *ServiceEndpointPolicyDefinitionsClient) Pipeline() azcore.Pipeline {
+func (client ServiceEndpointPolicyDefinitionsClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
-func (client *ServiceEndpointPolicyDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition, options *ServiceEndpointPolicyDefinitionsCreateOrUpdateOptions) (*ServiceEndpointPolicyDefinitionPollerResponse, error) {
+// BeginCreateOrUpdate - Creates or updates a service endpoint policy definition in the specified service endpoint policy.
+func (client ServiceEndpointPolicyDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition, options *ServiceEndpointPolicyDefinitionsCreateOrUpdateOptions) (*ServiceEndpointPolicyDefinitionPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, serviceEndpointPolicyDefinitions, options)
 	if err != nil {
 		return nil, err
@@ -58,7 +43,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) BeginCreateOrUpdate(ctx co
 	result := &ServiceEndpointPolicyDefinitionPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ServiceEndpointPolicyDefinitionsClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
+	pt, err := armcore.NewPoller("ServiceEndpointPolicyDefinitionsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -73,8 +58,10 @@ func (client *ServiceEndpointPolicyDefinitionsClient) BeginCreateOrUpdate(ctx co
 	return result, nil
 }
 
-func (client *ServiceEndpointPolicyDefinitionsClient) ResumeCreateOrUpdate(token string) (ServiceEndpointPolicyDefinitionPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ServiceEndpointPolicyDefinitionsClient.CreateOrUpdate", token, client.CreateOrUpdateHandleError)
+// ResumeCreateOrUpdate creates a new ServiceEndpointPolicyDefinitionPoller from the specified resume token.
+// token - The value must come from a previous call to ServiceEndpointPolicyDefinitionPoller.ResumeToken().
+func (client ServiceEndpointPolicyDefinitionsClient) ResumeCreateOrUpdate(token string) (ServiceEndpointPolicyDefinitionPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("ServiceEndpointPolicyDefinitionsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -85,8 +72,8 @@ func (client *ServiceEndpointPolicyDefinitionsClient) ResumeCreateOrUpdate(token
 }
 
 // CreateOrUpdate - Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-func (client *ServiceEndpointPolicyDefinitionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition, options *ServiceEndpointPolicyDefinitionsCreateOrUpdateOptions) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, serviceEndpointPolicyDefinitions, options)
+func (client ServiceEndpointPolicyDefinitionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition, options *ServiceEndpointPolicyDefinitionsCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, serviceEndpointPolicyDefinitions, options)
 	if err != nil {
 		return nil, err
 	}
@@ -95,13 +82,13 @@ func (client *ServiceEndpointPolicyDefinitionsClient) CreateOrUpdate(ctx context
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
+		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
-// CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServiceEndpointPolicyDefinitionsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition, options *ServiceEndpointPolicyDefinitionsCreateOrUpdateOptions) (*azcore.Request, error) {
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client ServiceEndpointPolicyDefinitionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, serviceEndpointPolicyDefinitions ServiceEndpointPolicyDefinition, options *ServiceEndpointPolicyDefinitionsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceEndpointPolicies/{serviceEndpointPolicyName}/serviceEndpointPolicyDefinitions/{serviceEndpointPolicyDefinitionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{serviceEndpointPolicyName}", url.PathEscape(serviceEndpointPolicyName))
@@ -119,14 +106,14 @@ func (client *ServiceEndpointPolicyDefinitionsClient) CreateOrUpdateCreateReques
 	return req, req.MarshalAsJSON(serviceEndpointPolicyDefinitions)
 }
 
-// CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ServiceEndpointPolicyDefinitionsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyDefinitionResponse, error) {
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client ServiceEndpointPolicyDefinitionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyDefinitionResponse, error) {
 	result := ServiceEndpointPolicyDefinitionResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ServiceEndpointPolicyDefinition)
 }
 
-// CreateOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ServiceEndpointPolicyDefinitionsClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
+// createOrUpdateHandleError handles the CreateOrUpdate error response.
+func (client ServiceEndpointPolicyDefinitionsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -134,7 +121,8 @@ func (client *ServiceEndpointPolicyDefinitionsClient) CreateOrUpdateHandleError(
 	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *ServiceEndpointPolicyDefinitionsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsDeleteOptions) (*HTTPPollerResponse, error) {
+// BeginDelete - Deletes the specified ServiceEndpoint policy definitions.
+func (client ServiceEndpointPolicyDefinitionsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsDeleteOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, options)
 	if err != nil {
 		return nil, err
@@ -142,7 +130,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) BeginDelete(ctx context.Co
 	result := &HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ServiceEndpointPolicyDefinitionsClient.Delete", "location", resp, client.DeleteHandleError)
+	pt, err := armcore.NewPoller("ServiceEndpointPolicyDefinitionsClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -157,8 +145,10 @@ func (client *ServiceEndpointPolicyDefinitionsClient) BeginDelete(ctx context.Co
 	return result, nil
 }
 
-func (client *ServiceEndpointPolicyDefinitionsClient) ResumeDelete(token string) (HTTPPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ServiceEndpointPolicyDefinitionsClient.Delete", token, client.DeleteHandleError)
+// ResumeDelete creates a new HTTPPoller from the specified resume token.
+// token - The value must come from a previous call to HTTPPoller.ResumeToken().
+func (client ServiceEndpointPolicyDefinitionsClient) ResumeDelete(token string) (HTTPPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("ServiceEndpointPolicyDefinitionsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -169,8 +159,8 @@ func (client *ServiceEndpointPolicyDefinitionsClient) ResumeDelete(token string)
 }
 
 // Delete - Deletes the specified ServiceEndpoint policy definitions.
-func (client *ServiceEndpointPolicyDefinitionsClient) Delete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsDeleteOptions) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, options)
+func (client ServiceEndpointPolicyDefinitionsClient) Delete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsDeleteOptions) (*azcore.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -179,13 +169,13 @@ func (client *ServiceEndpointPolicyDefinitionsClient) Delete(ctx context.Context
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
-// DeleteCreateRequest creates the Delete request.
-func (client *ServiceEndpointPolicyDefinitionsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsDeleteOptions) (*azcore.Request, error) {
+// deleteCreateRequest creates the Delete request.
+func (client ServiceEndpointPolicyDefinitionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceEndpointPolicies/{serviceEndpointPolicyName}/serviceEndpointPolicyDefinitions/{serviceEndpointPolicyDefinitionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{serviceEndpointPolicyName}", url.PathEscape(serviceEndpointPolicyName))
@@ -203,8 +193,8 @@ func (client *ServiceEndpointPolicyDefinitionsClient) DeleteCreateRequest(ctx co
 	return req, nil
 }
 
-// DeleteHandleError handles the Delete error response.
-func (client *ServiceEndpointPolicyDefinitionsClient) DeleteHandleError(resp *azcore.Response) error {
+// deleteHandleError handles the Delete error response.
+func (client ServiceEndpointPolicyDefinitionsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -213,8 +203,8 @@ func (client *ServiceEndpointPolicyDefinitionsClient) DeleteHandleError(resp *az
 }
 
 // Get - Get the specified service endpoint policy definitions from service endpoint policy.
-func (client *ServiceEndpointPolicyDefinitionsClient) Get(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsGetOptions) (*ServiceEndpointPolicyDefinitionResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, options)
+func (client ServiceEndpointPolicyDefinitionsClient) Get(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsGetOptions) (*ServiceEndpointPolicyDefinitionResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -223,17 +213,17 @@ func (client *ServiceEndpointPolicyDefinitionsClient) Get(ctx context.Context, r
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *ServiceEndpointPolicyDefinitionsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client ServiceEndpointPolicyDefinitionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceEndpointPolicies/{serviceEndpointPolicyName}/serviceEndpointPolicyDefinitions/{serviceEndpointPolicyDefinitionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{serviceEndpointPolicyName}", url.PathEscape(serviceEndpointPolicyName))
@@ -251,14 +241,14 @@ func (client *ServiceEndpointPolicyDefinitionsClient) GetCreateRequest(ctx conte
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *ServiceEndpointPolicyDefinitionsClient) GetHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyDefinitionResponse, error) {
+// getHandleResponse handles the Get response.
+func (client ServiceEndpointPolicyDefinitionsClient) getHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyDefinitionResponse, error) {
 	result := ServiceEndpointPolicyDefinitionResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ServiceEndpointPolicyDefinition)
 }
 
-// GetHandleError handles the Get error response.
-func (client *ServiceEndpointPolicyDefinitionsClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client ServiceEndpointPolicyDefinitionsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -267,14 +257,14 @@ func (client *ServiceEndpointPolicyDefinitionsClient) GetHandleError(resp *azcor
 }
 
 // ListByResourceGroup - Gets all service endpoint policy definitions in a service end point policy.
-func (client *ServiceEndpointPolicyDefinitionsClient) ListByResourceGroup(resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPolicyDefinitionsListByResourceGroupOptions) ServiceEndpointPolicyDefinitionListResultPager {
+func (client ServiceEndpointPolicyDefinitionsClient) ListByResourceGroup(resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPolicyDefinitionsListByResourceGroupOptions) ServiceEndpointPolicyDefinitionListResultPager {
 	return &serviceEndpointPolicyDefinitionListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListByResourceGroupCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, options)
+			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, serviceEndpointPolicyName, options)
 		},
-		responder: client.ListByResourceGroupHandleResponse,
-		errorer:   client.ListByResourceGroupHandleError,
+		responder: client.listByResourceGroupHandleResponse,
+		errorer:   client.listByResourceGroupHandleError,
 		advancer: func(ctx context.Context, resp *ServiceEndpointPolicyDefinitionListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ServiceEndpointPolicyDefinitionListResult.NextLink)
 		},
@@ -282,8 +272,8 @@ func (client *ServiceEndpointPolicyDefinitionsClient) ListByResourceGroup(resour
 	}
 }
 
-// ListByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ServiceEndpointPolicyDefinitionsClient) ListByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPolicyDefinitionsListByResourceGroupOptions) (*azcore.Request, error) {
+// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
+func (client ServiceEndpointPolicyDefinitionsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPolicyDefinitionsListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceEndpointPolicies/{serviceEndpointPolicyName}/serviceEndpointPolicyDefinitions"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{serviceEndpointPolicyName}", url.PathEscape(serviceEndpointPolicyName))
@@ -300,14 +290,14 @@ func (client *ServiceEndpointPolicyDefinitionsClient) ListByResourceGroupCreateR
 	return req, nil
 }
 
-// ListByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ServiceEndpointPolicyDefinitionsClient) ListByResourceGroupHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyDefinitionListResultResponse, error) {
+// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
+func (client ServiceEndpointPolicyDefinitionsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (*ServiceEndpointPolicyDefinitionListResultResponse, error) {
 	result := ServiceEndpointPolicyDefinitionListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ServiceEndpointPolicyDefinitionListResult)
 }
 
-// ListByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *ServiceEndpointPolicyDefinitionsClient) ListByResourceGroupHandleError(resp *azcore.Response) error {
+// listByResourceGroupHandleError handles the ListByResourceGroup error response.
+func (client ServiceEndpointPolicyDefinitionsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

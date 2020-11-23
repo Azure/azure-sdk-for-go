@@ -17,23 +17,7 @@ import (
 	"time"
 )
 
-// HubVirtualNetworkConnectionsOperations contains the methods for the HubVirtualNetworkConnections group.
-type HubVirtualNetworkConnectionsOperations interface {
-	// BeginCreateOrUpdate - Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection, options *HubVirtualNetworkConnectionsCreateOrUpdateOptions) (*HubVirtualNetworkConnectionPollerResponse, error)
-	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeCreateOrUpdate(token string) (HubVirtualNetworkConnectionPoller, error)
-	// BeginDelete - Deletes a HubVirtualNetworkConnection.
-	BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsDeleteOptions) (*HTTPPollerResponse, error)
-	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeDelete(token string) (HTTPPoller, error)
-	// Get - Retrieves the details of a HubVirtualNetworkConnection.
-	Get(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsGetOptions) (*HubVirtualNetworkConnectionResponse, error)
-	// List - Retrieves the details of all HubVirtualNetworkConnections.
-	List(resourceGroupName string, virtualHubName string, options *HubVirtualNetworkConnectionsListOptions) ListHubVirtualNetworkConnectionsResultPager
-}
-
-// HubVirtualNetworkConnectionsClient implements the HubVirtualNetworkConnectionsOperations interface.
+// HubVirtualNetworkConnectionsClient contains the methods for the HubVirtualNetworkConnections group.
 // Don't use this type directly, use NewHubVirtualNetworkConnectionsClient() instead.
 type HubVirtualNetworkConnectionsClient struct {
 	con            *armcore.Connection
@@ -41,16 +25,17 @@ type HubVirtualNetworkConnectionsClient struct {
 }
 
 // NewHubVirtualNetworkConnectionsClient creates a new instance of HubVirtualNetworkConnectionsClient with the specified values.
-func NewHubVirtualNetworkConnectionsClient(con *armcore.Connection, subscriptionID string) HubVirtualNetworkConnectionsOperations {
-	return &HubVirtualNetworkConnectionsClient{con: con, subscriptionID: subscriptionID}
+func NewHubVirtualNetworkConnectionsClient(con *armcore.Connection, subscriptionID string) HubVirtualNetworkConnectionsClient {
+	return HubVirtualNetworkConnectionsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *HubVirtualNetworkConnectionsClient) Pipeline() azcore.Pipeline {
+func (client HubVirtualNetworkConnectionsClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
-func (client *HubVirtualNetworkConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection, options *HubVirtualNetworkConnectionsCreateOrUpdateOptions) (*HubVirtualNetworkConnectionPollerResponse, error) {
+// BeginCreateOrUpdate - Creates a hub virtual network connection if it doesn't exist else updates the existing one.
+func (client HubVirtualNetworkConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection, options *HubVirtualNetworkConnectionsCreateOrUpdateOptions) (*HubVirtualNetworkConnectionPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, virtualHubName, connectionName, hubVirtualNetworkConnectionParameters, options)
 	if err != nil {
 		return nil, err
@@ -58,7 +43,7 @@ func (client *HubVirtualNetworkConnectionsClient) BeginCreateOrUpdate(ctx contex
 	result := &HubVirtualNetworkConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("HubVirtualNetworkConnectionsClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
+	pt, err := armcore.NewPoller("HubVirtualNetworkConnectionsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -73,8 +58,10 @@ func (client *HubVirtualNetworkConnectionsClient) BeginCreateOrUpdate(ctx contex
 	return result, nil
 }
 
-func (client *HubVirtualNetworkConnectionsClient) ResumeCreateOrUpdate(token string) (HubVirtualNetworkConnectionPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("HubVirtualNetworkConnectionsClient.CreateOrUpdate", token, client.CreateOrUpdateHandleError)
+// ResumeCreateOrUpdate creates a new HubVirtualNetworkConnectionPoller from the specified resume token.
+// token - The value must come from a previous call to HubVirtualNetworkConnectionPoller.ResumeToken().
+func (client HubVirtualNetworkConnectionsClient) ResumeCreateOrUpdate(token string) (HubVirtualNetworkConnectionPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("HubVirtualNetworkConnectionsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -85,8 +72,8 @@ func (client *HubVirtualNetworkConnectionsClient) ResumeCreateOrUpdate(token str
 }
 
 // CreateOrUpdate - Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-func (client *HubVirtualNetworkConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection, options *HubVirtualNetworkConnectionsCreateOrUpdateOptions) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, connectionName, hubVirtualNetworkConnectionParameters, options)
+func (client HubVirtualNetworkConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection, options *HubVirtualNetworkConnectionsCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, connectionName, hubVirtualNetworkConnectionParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -95,13 +82,13 @@ func (client *HubVirtualNetworkConnectionsClient) CreateOrUpdate(ctx context.Con
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
+		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
-// CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *HubVirtualNetworkConnectionsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection, options *HubVirtualNetworkConnectionsCreateOrUpdateOptions) (*azcore.Request, error) {
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client HubVirtualNetworkConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection, options *HubVirtualNetworkConnectionsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubVirtualNetworkConnections/{connectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -119,14 +106,14 @@ func (client *HubVirtualNetworkConnectionsClient) CreateOrUpdateCreateRequest(ct
 	return req, req.MarshalAsJSON(hubVirtualNetworkConnectionParameters)
 }
 
-// CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *HubVirtualNetworkConnectionsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*HubVirtualNetworkConnectionResponse, error) {
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client HubVirtualNetworkConnectionsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*HubVirtualNetworkConnectionResponse, error) {
 	result := HubVirtualNetworkConnectionResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.HubVirtualNetworkConnection)
 }
 
-// CreateOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *HubVirtualNetworkConnectionsClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
+// createOrUpdateHandleError handles the CreateOrUpdate error response.
+func (client HubVirtualNetworkConnectionsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -134,7 +121,8 @@ func (client *HubVirtualNetworkConnectionsClient) CreateOrUpdateHandleError(resp
 	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *HubVirtualNetworkConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsDeleteOptions) (*HTTPPollerResponse, error) {
+// BeginDelete - Deletes a HubVirtualNetworkConnection.
+func (client HubVirtualNetworkConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsDeleteOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, virtualHubName, connectionName, options)
 	if err != nil {
 		return nil, err
@@ -142,7 +130,7 @@ func (client *HubVirtualNetworkConnectionsClient) BeginDelete(ctx context.Contex
 	result := &HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("HubVirtualNetworkConnectionsClient.Delete", "location", resp, client.DeleteHandleError)
+	pt, err := armcore.NewPoller("HubVirtualNetworkConnectionsClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -157,8 +145,10 @@ func (client *HubVirtualNetworkConnectionsClient) BeginDelete(ctx context.Contex
 	return result, nil
 }
 
-func (client *HubVirtualNetworkConnectionsClient) ResumeDelete(token string) (HTTPPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("HubVirtualNetworkConnectionsClient.Delete", token, client.DeleteHandleError)
+// ResumeDelete creates a new HTTPPoller from the specified resume token.
+// token - The value must come from a previous call to HTTPPoller.ResumeToken().
+func (client HubVirtualNetworkConnectionsClient) ResumeDelete(token string) (HTTPPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("HubVirtualNetworkConnectionsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -169,8 +159,8 @@ func (client *HubVirtualNetworkConnectionsClient) ResumeDelete(token string) (HT
 }
 
 // Delete - Deletes a HubVirtualNetworkConnection.
-func (client *HubVirtualNetworkConnectionsClient) Delete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsDeleteOptions) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, virtualHubName, connectionName, options)
+func (client HubVirtualNetworkConnectionsClient) Delete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsDeleteOptions) (*azcore.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, connectionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -179,13 +169,13 @@ func (client *HubVirtualNetworkConnectionsClient) Delete(ctx context.Context, re
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
-// DeleteCreateRequest creates the Delete request.
-func (client *HubVirtualNetworkConnectionsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsDeleteOptions) (*azcore.Request, error) {
+// deleteCreateRequest creates the Delete request.
+func (client HubVirtualNetworkConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubVirtualNetworkConnections/{connectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -203,8 +193,8 @@ func (client *HubVirtualNetworkConnectionsClient) DeleteCreateRequest(ctx contex
 	return req, nil
 }
 
-// DeleteHandleError handles the Delete error response.
-func (client *HubVirtualNetworkConnectionsClient) DeleteHandleError(resp *azcore.Response) error {
+// deleteHandleError handles the Delete error response.
+func (client HubVirtualNetworkConnectionsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -213,8 +203,8 @@ func (client *HubVirtualNetworkConnectionsClient) DeleteHandleError(resp *azcore
 }
 
 // Get - Retrieves the details of a HubVirtualNetworkConnection.
-func (client *HubVirtualNetworkConnectionsClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsGetOptions) (*HubVirtualNetworkConnectionResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, virtualHubName, connectionName, options)
+func (client HubVirtualNetworkConnectionsClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsGetOptions) (*HubVirtualNetworkConnectionResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, connectionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -223,17 +213,17 @@ func (client *HubVirtualNetworkConnectionsClient) Get(ctx context.Context, resou
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *HubVirtualNetworkConnectionsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client HubVirtualNetworkConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubVirtualNetworkConnections/{connectionName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -251,14 +241,14 @@ func (client *HubVirtualNetworkConnectionsClient) GetCreateRequest(ctx context.C
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *HubVirtualNetworkConnectionsClient) GetHandleResponse(resp *azcore.Response) (*HubVirtualNetworkConnectionResponse, error) {
+// getHandleResponse handles the Get response.
+func (client HubVirtualNetworkConnectionsClient) getHandleResponse(resp *azcore.Response) (*HubVirtualNetworkConnectionResponse, error) {
 	result := HubVirtualNetworkConnectionResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.HubVirtualNetworkConnection)
 }
 
-// GetHandleError handles the Get error response.
-func (client *HubVirtualNetworkConnectionsClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client HubVirtualNetworkConnectionsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -267,14 +257,14 @@ func (client *HubVirtualNetworkConnectionsClient) GetHandleError(resp *azcore.Re
 }
 
 // List - Retrieves the details of all HubVirtualNetworkConnections.
-func (client *HubVirtualNetworkConnectionsClient) List(resourceGroupName string, virtualHubName string, options *HubVirtualNetworkConnectionsListOptions) ListHubVirtualNetworkConnectionsResultPager {
+func (client HubVirtualNetworkConnectionsClient) List(resourceGroupName string, virtualHubName string, options *HubVirtualNetworkConnectionsListOptions) ListHubVirtualNetworkConnectionsResultPager {
 	return &listHubVirtualNetworkConnectionsResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, virtualHubName, options)
+			return client.listCreateRequest(ctx, resourceGroupName, virtualHubName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *ListHubVirtualNetworkConnectionsResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListHubVirtualNetworkConnectionsResult.NextLink)
 		},
@@ -282,8 +272,8 @@ func (client *HubVirtualNetworkConnectionsClient) List(resourceGroupName string,
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *HubVirtualNetworkConnectionsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, options *HubVirtualNetworkConnectionsListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client HubVirtualNetworkConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, options *HubVirtualNetworkConnectionsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubVirtualNetworkConnections"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -300,14 +290,14 @@ func (client *HubVirtualNetworkConnectionsClient) ListCreateRequest(ctx context.
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *HubVirtualNetworkConnectionsClient) ListHandleResponse(resp *azcore.Response) (*ListHubVirtualNetworkConnectionsResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client HubVirtualNetworkConnectionsClient) listHandleResponse(resp *azcore.Response) (*ListHubVirtualNetworkConnectionsResultResponse, error) {
 	result := ListHubVirtualNetworkConnectionsResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ListHubVirtualNetworkConnectionsResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *HubVirtualNetworkConnectionsClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client HubVirtualNetworkConnectionsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleVirtualNetworksOperations_BeginCreateOrUpdate() {
+func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -49,7 +49,7 @@ func ExampleVirtualNetworksOperations_BeginCreateOrUpdate() {
 	log.Printf("virtual network ID: %v", *resp.VirtualNetwork.ID)
 }
 
-func ExampleVirtualNetworksOperations_BeginCreateOrUpdate_withSubnets() {
+func ExampleVirtualNetworksClient_BeginCreateOrUpdate_withSubnets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -96,7 +96,7 @@ func ExampleVirtualNetworksOperations_BeginCreateOrUpdate_withSubnets() {
 	log.Printf("virtual network ID: %v", *resp.VirtualNetwork.ID)
 }
 
-func ExampleVirtualNetworksOperations_Get() {
+func ExampleVirtualNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -109,7 +109,7 @@ func ExampleVirtualNetworksOperations_Get() {
 	log.Printf("virtual network ID: %v", *resp.VirtualNetwork.ID)
 }
 
-func ExampleVirtualNetworksOperations_BeginDelete() {
+func ExampleVirtualNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

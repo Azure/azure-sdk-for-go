@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleSubnetsOperations_BeginCreateOrUpdate() {
+func ExampleSubnetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -44,7 +44,7 @@ func ExampleSubnetsOperations_BeginCreateOrUpdate() {
 	log.Printf("subnet ID: %v", *resp.Subnet.ID)
 }
 
-func ExampleSubnetsOperations_BeginCreateOrUpdate_withNetworkSecurityGroup() {
+func ExampleSubnetsClient_BeginCreateOrUpdate_withNetworkSecurityGroup() {
 	// Replace the "nsg" variable with a call to armnetwork.NetworkSecurityGroups.Get to retreive the
 	//network security group instance that will be assigned to the subnet.
 	var nsg *armnetwork.NetworkSecurityGroup
@@ -76,7 +76,7 @@ func ExampleSubnetsOperations_BeginCreateOrUpdate_withNetworkSecurityGroup() {
 	log.Printf("subnet ID: %v", *resp.Subnet.ID)
 }
 
-func ExampleSubnetsOperations_Get() {
+func ExampleSubnetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -89,7 +89,7 @@ func ExampleSubnetsOperations_Get() {
 	log.Printf("subnet ID: %v", *resp.Subnet.ID)
 }
 
-func ExampleSubnetsOperations_BeginDelete() {
+func ExampleSubnetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

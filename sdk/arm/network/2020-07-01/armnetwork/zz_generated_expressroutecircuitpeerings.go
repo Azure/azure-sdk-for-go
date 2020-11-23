@@ -17,23 +17,7 @@ import (
 	"time"
 )
 
-// ExpressRouteCircuitPeeringsOperations contains the methods for the ExpressRouteCircuitPeerings group.
-type ExpressRouteCircuitPeeringsOperations interface {
-	// BeginCreateOrUpdate - Creates or updates a peering in the specified express route circuits.
-	BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering, options *ExpressRouteCircuitPeeringsCreateOrUpdateOptions) (*ExpressRouteCircuitPeeringPollerResponse, error)
-	// ResumeCreateOrUpdate - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeCreateOrUpdate(token string) (ExpressRouteCircuitPeeringPoller, error)
-	// BeginDelete - Deletes the specified peering from the specified express route circuit.
-	BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitPeeringsDeleteOptions) (*HTTPPollerResponse, error)
-	// ResumeDelete - Used to create a new instance of this poller from the resume token of a previous instance of this poller type.
-	ResumeDelete(token string) (HTTPPoller, error)
-	// Get - Gets the specified peering for the express route circuit.
-	Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitPeeringsGetOptions) (*ExpressRouteCircuitPeeringResponse, error)
-	// List - Gets all peerings in a specified express route circuit.
-	List(resourceGroupName string, circuitName string, options *ExpressRouteCircuitPeeringsListOptions) ExpressRouteCircuitPeeringListResultPager
-}
-
-// ExpressRouteCircuitPeeringsClient implements the ExpressRouteCircuitPeeringsOperations interface.
+// ExpressRouteCircuitPeeringsClient contains the methods for the ExpressRouteCircuitPeerings group.
 // Don't use this type directly, use NewExpressRouteCircuitPeeringsClient() instead.
 type ExpressRouteCircuitPeeringsClient struct {
 	con            *armcore.Connection
@@ -41,16 +25,17 @@ type ExpressRouteCircuitPeeringsClient struct {
 }
 
 // NewExpressRouteCircuitPeeringsClient creates a new instance of ExpressRouteCircuitPeeringsClient with the specified values.
-func NewExpressRouteCircuitPeeringsClient(con *armcore.Connection, subscriptionID string) ExpressRouteCircuitPeeringsOperations {
-	return &ExpressRouteCircuitPeeringsClient{con: con, subscriptionID: subscriptionID}
+func NewExpressRouteCircuitPeeringsClient(con *armcore.Connection, subscriptionID string) ExpressRouteCircuitPeeringsClient {
+	return ExpressRouteCircuitPeeringsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *ExpressRouteCircuitPeeringsClient) Pipeline() azcore.Pipeline {
+func (client ExpressRouteCircuitPeeringsClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
-func (client *ExpressRouteCircuitPeeringsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering, options *ExpressRouteCircuitPeeringsCreateOrUpdateOptions) (*ExpressRouteCircuitPeeringPollerResponse, error) {
+// BeginCreateOrUpdate - Creates or updates a peering in the specified express route circuits.
+func (client ExpressRouteCircuitPeeringsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering, options *ExpressRouteCircuitPeeringsCreateOrUpdateOptions) (*ExpressRouteCircuitPeeringPollerResponse, error) {
 	resp, err := client.CreateOrUpdate(ctx, resourceGroupName, circuitName, peeringName, peeringParameters, options)
 	if err != nil {
 		return nil, err
@@ -58,7 +43,7 @@ func (client *ExpressRouteCircuitPeeringsClient) BeginCreateOrUpdate(ctx context
 	result := &ExpressRouteCircuitPeeringPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCircuitPeeringsClient.CreateOrUpdate", "azure-async-operation", resp, client.CreateOrUpdateHandleError)
+	pt, err := armcore.NewPoller("ExpressRouteCircuitPeeringsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -73,8 +58,10 @@ func (client *ExpressRouteCircuitPeeringsClient) BeginCreateOrUpdate(ctx context
 	return result, nil
 }
 
-func (client *ExpressRouteCircuitPeeringsClient) ResumeCreateOrUpdate(token string) (ExpressRouteCircuitPeeringPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCircuitPeeringsClient.CreateOrUpdate", token, client.CreateOrUpdateHandleError)
+// ResumeCreateOrUpdate creates a new ExpressRouteCircuitPeeringPoller from the specified resume token.
+// token - The value must come from a previous call to ExpressRouteCircuitPeeringPoller.ResumeToken().
+func (client ExpressRouteCircuitPeeringsClient) ResumeCreateOrUpdate(token string) (ExpressRouteCircuitPeeringPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCircuitPeeringsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -85,8 +72,8 @@ func (client *ExpressRouteCircuitPeeringsClient) ResumeCreateOrUpdate(token stri
 }
 
 // CreateOrUpdate - Creates or updates a peering in the specified express route circuits.
-func (client *ExpressRouteCircuitPeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering, options *ExpressRouteCircuitPeeringsCreateOrUpdateOptions) (*azcore.Response, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, resourceGroupName, circuitName, peeringName, peeringParameters, options)
+func (client ExpressRouteCircuitPeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering, options *ExpressRouteCircuitPeeringsCreateOrUpdateOptions) (*azcore.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, circuitName, peeringName, peeringParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -95,13 +82,13 @@ func (client *ExpressRouteCircuitPeeringsClient) CreateOrUpdate(ctx context.Cont
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
+		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
-// CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ExpressRouteCircuitPeeringsClient) CreateOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering, options *ExpressRouteCircuitPeeringsCreateOrUpdateOptions) (*azcore.Request, error) {
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client ExpressRouteCircuitPeeringsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, peeringParameters ExpressRouteCircuitPeering, options *ExpressRouteCircuitPeeringsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{circuitName}", url.PathEscape(circuitName))
@@ -119,14 +106,14 @@ func (client *ExpressRouteCircuitPeeringsClient) CreateOrUpdateCreateRequest(ctx
 	return req, req.MarshalAsJSON(peeringParameters)
 }
 
-// CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ExpressRouteCircuitPeeringsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitPeeringResponse, error) {
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client ExpressRouteCircuitPeeringsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitPeeringResponse, error) {
 	result := ExpressRouteCircuitPeeringResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCircuitPeering)
 }
 
-// CreateOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ExpressRouteCircuitPeeringsClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
+// createOrUpdateHandleError handles the CreateOrUpdate error response.
+func (client ExpressRouteCircuitPeeringsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -134,7 +121,8 @@ func (client *ExpressRouteCircuitPeeringsClient) CreateOrUpdateHandleError(resp 
 	return azcore.NewResponseError(&err, resp.Response)
 }
 
-func (client *ExpressRouteCircuitPeeringsClient) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitPeeringsDeleteOptions) (*HTTPPollerResponse, error) {
+// BeginDelete - Deletes the specified peering from the specified express route circuit.
+func (client ExpressRouteCircuitPeeringsClient) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitPeeringsDeleteOptions) (*HTTPPollerResponse, error) {
 	resp, err := client.Delete(ctx, resourceGroupName, circuitName, peeringName, options)
 	if err != nil {
 		return nil, err
@@ -142,7 +130,7 @@ func (client *ExpressRouteCircuitPeeringsClient) BeginDelete(ctx context.Context
 	result := &HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ExpressRouteCircuitPeeringsClient.Delete", "location", resp, client.DeleteHandleError)
+	pt, err := armcore.NewPoller("ExpressRouteCircuitPeeringsClient.Delete", "location", resp, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -157,8 +145,10 @@ func (client *ExpressRouteCircuitPeeringsClient) BeginDelete(ctx context.Context
 	return result, nil
 }
 
-func (client *ExpressRouteCircuitPeeringsClient) ResumeDelete(token string) (HTTPPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCircuitPeeringsClient.Delete", token, client.DeleteHandleError)
+// ResumeDelete creates a new HTTPPoller from the specified resume token.
+// token - The value must come from a previous call to HTTPPoller.ResumeToken().
+func (client ExpressRouteCircuitPeeringsClient) ResumeDelete(token string) (HTTPPoller, error) {
+	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteCircuitPeeringsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -169,8 +159,8 @@ func (client *ExpressRouteCircuitPeeringsClient) ResumeDelete(token string) (HTT
 }
 
 // Delete - Deletes the specified peering from the specified express route circuit.
-func (client *ExpressRouteCircuitPeeringsClient) Delete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitPeeringsDeleteOptions) (*azcore.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, resourceGroupName, circuitName, peeringName, options)
+func (client ExpressRouteCircuitPeeringsClient) Delete(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitPeeringsDeleteOptions) (*azcore.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, circuitName, peeringName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -179,13 +169,13 @@ func (client *ExpressRouteCircuitPeeringsClient) Delete(ctx context.Context, res
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
-// DeleteCreateRequest creates the Delete request.
-func (client *ExpressRouteCircuitPeeringsClient) DeleteCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitPeeringsDeleteOptions) (*azcore.Request, error) {
+// deleteCreateRequest creates the Delete request.
+func (client ExpressRouteCircuitPeeringsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitPeeringsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{circuitName}", url.PathEscape(circuitName))
@@ -203,8 +193,8 @@ func (client *ExpressRouteCircuitPeeringsClient) DeleteCreateRequest(ctx context
 	return req, nil
 }
 
-// DeleteHandleError handles the Delete error response.
-func (client *ExpressRouteCircuitPeeringsClient) DeleteHandleError(resp *azcore.Response) error {
+// deleteHandleError handles the Delete error response.
+func (client ExpressRouteCircuitPeeringsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -213,8 +203,8 @@ func (client *ExpressRouteCircuitPeeringsClient) DeleteHandleError(resp *azcore.
 }
 
 // Get - Gets the specified peering for the express route circuit.
-func (client *ExpressRouteCircuitPeeringsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitPeeringsGetOptions) (*ExpressRouteCircuitPeeringResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceGroupName, circuitName, peeringName, options)
+func (client ExpressRouteCircuitPeeringsClient) Get(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitPeeringsGetOptions) (*ExpressRouteCircuitPeeringResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, circuitName, peeringName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -223,17 +213,17 @@ func (client *ExpressRouteCircuitPeeringsClient) Get(ctx context.Context, resour
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *ExpressRouteCircuitPeeringsClient) GetCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitPeeringsGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client ExpressRouteCircuitPeeringsClient) getCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, peeringName string, options *ExpressRouteCircuitPeeringsGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings/{peeringName}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{circuitName}", url.PathEscape(circuitName))
@@ -251,14 +241,14 @@ func (client *ExpressRouteCircuitPeeringsClient) GetCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *ExpressRouteCircuitPeeringsClient) GetHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitPeeringResponse, error) {
+// getHandleResponse handles the Get response.
+func (client ExpressRouteCircuitPeeringsClient) getHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitPeeringResponse, error) {
 	result := ExpressRouteCircuitPeeringResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCircuitPeering)
 }
 
-// GetHandleError handles the Get error response.
-func (client *ExpressRouteCircuitPeeringsClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client ExpressRouteCircuitPeeringsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -267,14 +257,14 @@ func (client *ExpressRouteCircuitPeeringsClient) GetHandleError(resp *azcore.Res
 }
 
 // List - Gets all peerings in a specified express route circuit.
-func (client *ExpressRouteCircuitPeeringsClient) List(resourceGroupName string, circuitName string, options *ExpressRouteCircuitPeeringsListOptions) ExpressRouteCircuitPeeringListResultPager {
+func (client ExpressRouteCircuitPeeringsClient) List(resourceGroupName string, circuitName string, options *ExpressRouteCircuitPeeringsListOptions) ExpressRouteCircuitPeeringListResultPager {
 	return &expressRouteCircuitPeeringListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, resourceGroupName, circuitName, options)
+			return client.listCreateRequest(ctx, resourceGroupName, circuitName, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *ExpressRouteCircuitPeeringListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ExpressRouteCircuitPeeringListResult.NextLink)
 		},
@@ -282,8 +272,8 @@ func (client *ExpressRouteCircuitPeeringsClient) List(resourceGroupName string, 
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *ExpressRouteCircuitPeeringsClient) ListCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, options *ExpressRouteCircuitPeeringsListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client ExpressRouteCircuitPeeringsClient) listCreateRequest(ctx context.Context, resourceGroupName string, circuitName string, options *ExpressRouteCircuitPeeringsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCircuits/{circuitName}/peerings"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	urlPath = strings.ReplaceAll(urlPath, "{circuitName}", url.PathEscape(circuitName))
@@ -300,14 +290,14 @@ func (client *ExpressRouteCircuitPeeringsClient) ListCreateRequest(ctx context.C
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *ExpressRouteCircuitPeeringsClient) ListHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitPeeringListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client ExpressRouteCircuitPeeringsClient) listHandleResponse(resp *azcore.Response) (*ExpressRouteCircuitPeeringListResultResponse, error) {
 	result := ExpressRouteCircuitPeeringListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ExpressRouteCircuitPeeringListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *ExpressRouteCircuitPeeringsClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client ExpressRouteCircuitPeeringsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

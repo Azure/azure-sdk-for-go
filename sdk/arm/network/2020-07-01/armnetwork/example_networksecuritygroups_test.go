@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleNetworkSecurityGroupsOperations_BeginCreateOrUpdate() {
+func ExampleNetworkSecurityGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -44,7 +44,7 @@ func ExampleNetworkSecurityGroupsOperations_BeginCreateOrUpdate() {
 	log.Printf("network security group ID: %v", *resp.NetworkSecurityGroup.ID)
 }
 
-func ExampleNetworkSecurityGroupsOperations_BeginCreateOrUpdate_withSSHandHTTPSrules() {
+func ExampleNetworkSecurityGroupsClient_BeginCreateOrUpdate_withSSHandHTTPSrules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -102,7 +102,7 @@ func ExampleNetworkSecurityGroupsOperations_BeginCreateOrUpdate_withSSHandHTTPSr
 	log.Printf("network security group ID: %v", *resp.NetworkSecurityGroup.ID)
 }
 
-func ExampleNetworkSecurityGroupsOperations_Get() {
+func ExampleNetworkSecurityGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -115,7 +115,7 @@ func ExampleNetworkSecurityGroupsOperations_Get() {
 	log.Printf("network security group ID: %v", *resp.NetworkSecurityGroup.ID)
 }
 
-func ExampleNetworkSecurityGroupsOperations_BeginDelete() {
+func ExampleNetworkSecurityGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

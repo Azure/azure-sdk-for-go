@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleResourcesOperations_GetByID() {
+func ExampleResourcesClient_GetByID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -27,7 +27,7 @@ func ExampleResourcesOperations_GetByID() {
 	log.Printf("resource ID: %v\n", resp.GenericResource.ID)
 }
 
-func ExampleResourcesOperations_ListByResourceGroup() {
+func ExampleResourcesClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

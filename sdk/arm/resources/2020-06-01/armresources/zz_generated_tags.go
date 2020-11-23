@@ -16,43 +16,7 @@ import (
 	"strings"
 )
 
-// TagsOperations contains the methods for the Tags group.
-type TagsOperations interface {
-	// CreateOrUpdate - This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name can have a maximum of
-	// 512 characters and is case-insensitive. Tag names cannot have the
-	// following prefixes which are reserved for Azure use: 'microsoft', 'azure', 'windows'.
-	CreateOrUpdate(ctx context.Context, tagName string, options *TagsCreateOrUpdateOptions) (*TagDetailsResponse, error)
-	// CreateOrUpdateAtScope - This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The specified entity
-	// can have a maximum of 50 tags.
-	CreateOrUpdateAtScope(ctx context.Context, scope string, parameters TagsResource, options *TagsCreateOrUpdateAtScopeOptions) (*TagsResourceResponse, error)
-	// CreateOrUpdateValue - This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag value can have
-	// a maximum of 256 characters.
-	CreateOrUpdateValue(ctx context.Context, tagName string, tagValue string, options *TagsCreateOrUpdateValueOptions) (*TagValueResponse, error)
-	// Delete - This operation allows deleting a name from the list of predefined tag names for the given subscription. The name being deleted must not be in
-	// use as a tag name for any resource. All predefined values
-	// for the given name must have already been deleted.
-	Delete(ctx context.Context, tagName string, options *TagsDeleteOptions) (*http.Response, error)
-	// DeleteAtScope - Deletes the entire set of tags on a resource or subscription.
-	DeleteAtScope(ctx context.Context, scope string, options *TagsDeleteAtScopeOptions) (*http.Response, error)
-	// DeleteValue - This operation allows deleting a value from the list of predefined values for an existing predefined tag name. The value being deleted
-	// must not be in use as a tag value for the given tag name for any
-	// resource.
-	DeleteValue(ctx context.Context, tagName string, tagValue string, options *TagsDeleteValueOptions) (*http.Response, error)
-	// GetAtScope - Gets the entire set of tags on a resource or subscription.
-	GetAtScope(ctx context.Context, scope string, options *TagsGetAtScopeOptions) (*TagsResourceResponse, error)
-	// List - This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and returns a summary of usage for
-	// each tag name and value under the given subscription.
-	// In case of a large number of tags, this operation may return a previously cached result.
-	List(options *TagsListOptions) TagsListResultPager
-	// UpdateAtScope - This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription. The specified entity
-	// can have a maximum of 50 tags at the end of the operation. The
-	// 'replace' option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the values
-	// of tags with existing names. The 'delete' option
-	// allows selectively deleting tags based on given names or name/value pairs.
-	UpdateAtScope(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsUpdateAtScopeOptions) (*TagsResourceResponse, error)
-}
-
-// TagsClient implements the TagsOperations interface.
+// TagsClient contains the methods for the Tags group.
 // Don't use this type directly, use NewTagsClient() instead.
 type TagsClient struct {
 	con            *armcore.Connection
@@ -60,20 +24,20 @@ type TagsClient struct {
 }
 
 // NewTagsClient creates a new instance of TagsClient with the specified values.
-func NewTagsClient(con *armcore.Connection, subscriptionID string) TagsOperations {
-	return &TagsClient{con: con, subscriptionID: subscriptionID}
+func NewTagsClient(con *armcore.Connection, subscriptionID string) TagsClient {
+	return TagsClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *TagsClient) Pipeline() azcore.Pipeline {
+func (client TagsClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // CreateOrUpdate - This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name can have a maximum of
 // 512 characters and is case-insensitive. Tag names cannot have the
 // following prefixes which are reserved for Azure use: 'microsoft', 'azure', 'windows'.
-func (client *TagsClient) CreateOrUpdate(ctx context.Context, tagName string, options *TagsCreateOrUpdateOptions) (*TagDetailsResponse, error) {
-	req, err := client.CreateOrUpdateCreateRequest(ctx, tagName, options)
+func (client TagsClient) CreateOrUpdate(ctx context.Context, tagName string, options *TagsCreateOrUpdateOptions) (*TagDetailsResponse, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, tagName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -82,17 +46,17 @@ func (client *TagsClient) CreateOrUpdate(ctx context.Context, tagName string, op
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateHandleError(resp)
+		return nil, client.createOrUpdateHandleError(resp)
 	}
-	result, err := client.CreateOrUpdateHandleResponse(resp)
+	result, err := client.createOrUpdateHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// CreateOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TagsClient) CreateOrUpdateCreateRequest(ctx context.Context, tagName string, options *TagsCreateOrUpdateOptions) (*azcore.Request, error) {
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client TagsClient) createOrUpdateCreateRequest(ctx context.Context, tagName string, options *TagsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}"
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -108,14 +72,14 @@ func (client *TagsClient) CreateOrUpdateCreateRequest(ctx context.Context, tagNa
 	return req, nil
 }
 
-// CreateOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *TagsClient) CreateOrUpdateHandleResponse(resp *azcore.Response) (*TagDetailsResponse, error) {
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client TagsClient) createOrUpdateHandleResponse(resp *azcore.Response) (*TagDetailsResponse, error) {
 	result := TagDetailsResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.TagDetails)
 }
 
-// CreateOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *TagsClient) CreateOrUpdateHandleError(resp *azcore.Response) error {
+// createOrUpdateHandleError handles the CreateOrUpdate error response.
+func (client TagsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -125,8 +89,8 @@ func (client *TagsClient) CreateOrUpdateHandleError(resp *azcore.Response) error
 
 // CreateOrUpdateAtScope - This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The specified entity
 // can have a maximum of 50 tags.
-func (client *TagsClient) CreateOrUpdateAtScope(ctx context.Context, scope string, parameters TagsResource, options *TagsCreateOrUpdateAtScopeOptions) (*TagsResourceResponse, error) {
-	req, err := client.CreateOrUpdateAtScopeCreateRequest(ctx, scope, parameters, options)
+func (client TagsClient) CreateOrUpdateAtScope(ctx context.Context, scope string, parameters TagsResource, options *TagsCreateOrUpdateAtScopeOptions) (*TagsResourceResponse, error) {
+	req, err := client.createOrUpdateAtScopeCreateRequest(ctx, scope, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -135,17 +99,17 @@ func (client *TagsClient) CreateOrUpdateAtScope(ctx context.Context, scope strin
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.CreateOrUpdateAtScopeHandleError(resp)
+		return nil, client.createOrUpdateAtScopeHandleError(resp)
 	}
-	result, err := client.CreateOrUpdateAtScopeHandleResponse(resp)
+	result, err := client.createOrUpdateAtScopeHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// CreateOrUpdateAtScopeCreateRequest creates the CreateOrUpdateAtScope request.
-func (client *TagsClient) CreateOrUpdateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsResource, options *TagsCreateOrUpdateAtScopeOptions) (*azcore.Request, error) {
+// createOrUpdateAtScopeCreateRequest creates the CreateOrUpdateAtScope request.
+func (client TagsClient) createOrUpdateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsResource, options *TagsCreateOrUpdateAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -160,14 +124,14 @@ func (client *TagsClient) CreateOrUpdateAtScopeCreateRequest(ctx context.Context
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// CreateOrUpdateAtScopeHandleResponse handles the CreateOrUpdateAtScope response.
-func (client *TagsClient) CreateOrUpdateAtScopeHandleResponse(resp *azcore.Response) (*TagsResourceResponse, error) {
+// createOrUpdateAtScopeHandleResponse handles the CreateOrUpdateAtScope response.
+func (client TagsClient) createOrUpdateAtScopeHandleResponse(resp *azcore.Response) (*TagsResourceResponse, error) {
 	result := TagsResourceResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.TagsResource)
 }
 
-// CreateOrUpdateAtScopeHandleError handles the CreateOrUpdateAtScope error response.
-func (client *TagsClient) CreateOrUpdateAtScopeHandleError(resp *azcore.Response) error {
+// createOrUpdateAtScopeHandleError handles the CreateOrUpdateAtScope error response.
+func (client TagsClient) createOrUpdateAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -177,8 +141,8 @@ func (client *TagsClient) CreateOrUpdateAtScopeHandleError(resp *azcore.Response
 
 // CreateOrUpdateValue - This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag value can have
 // a maximum of 256 characters.
-func (client *TagsClient) CreateOrUpdateValue(ctx context.Context, tagName string, tagValue string, options *TagsCreateOrUpdateValueOptions) (*TagValueResponse, error) {
-	req, err := client.CreateOrUpdateValueCreateRequest(ctx, tagName, tagValue, options)
+func (client TagsClient) CreateOrUpdateValue(ctx context.Context, tagName string, tagValue string, options *TagsCreateOrUpdateValueOptions) (*TagValueResponse, error) {
+	req, err := client.createOrUpdateValueCreateRequest(ctx, tagName, tagValue, options)
 	if err != nil {
 		return nil, err
 	}
@@ -187,17 +151,17 @@ func (client *TagsClient) CreateOrUpdateValue(ctx context.Context, tagName strin
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return nil, client.CreateOrUpdateValueHandleError(resp)
+		return nil, client.createOrUpdateValueHandleError(resp)
 	}
-	result, err := client.CreateOrUpdateValueHandleResponse(resp)
+	result, err := client.createOrUpdateValueHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// CreateOrUpdateValueCreateRequest creates the CreateOrUpdateValue request.
-func (client *TagsClient) CreateOrUpdateValueCreateRequest(ctx context.Context, tagName string, tagValue string, options *TagsCreateOrUpdateValueOptions) (*azcore.Request, error) {
+// createOrUpdateValueCreateRequest creates the CreateOrUpdateValue request.
+func (client TagsClient) createOrUpdateValueCreateRequest(ctx context.Context, tagName string, tagValue string, options *TagsCreateOrUpdateValueOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}"
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
 	urlPath = strings.ReplaceAll(urlPath, "{tagValue}", url.PathEscape(tagValue))
@@ -214,14 +178,14 @@ func (client *TagsClient) CreateOrUpdateValueCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// CreateOrUpdateValueHandleResponse handles the CreateOrUpdateValue response.
-func (client *TagsClient) CreateOrUpdateValueHandleResponse(resp *azcore.Response) (*TagValueResponse, error) {
+// createOrUpdateValueHandleResponse handles the CreateOrUpdateValue response.
+func (client TagsClient) createOrUpdateValueHandleResponse(resp *azcore.Response) (*TagValueResponse, error) {
 	result := TagValueResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.TagValue)
 }
 
-// CreateOrUpdateValueHandleError handles the CreateOrUpdateValue error response.
-func (client *TagsClient) CreateOrUpdateValueHandleError(resp *azcore.Response) error {
+// createOrUpdateValueHandleError handles the CreateOrUpdateValue error response.
+func (client TagsClient) createOrUpdateValueHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -232,8 +196,8 @@ func (client *TagsClient) CreateOrUpdateValueHandleError(resp *azcore.Response) 
 // Delete - This operation allows deleting a name from the list of predefined tag names for the given subscription. The name being deleted must not be in
 // use as a tag name for any resource. All predefined values
 // for the given name must have already been deleted.
-func (client *TagsClient) Delete(ctx context.Context, tagName string, options *TagsDeleteOptions) (*http.Response, error) {
-	req, err := client.DeleteCreateRequest(ctx, tagName, options)
+func (client TagsClient) Delete(ctx context.Context, tagName string, options *TagsDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, tagName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -242,13 +206,13 @@ func (client *TagsClient) Delete(ctx context.Context, tagName string, options *T
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.DeleteHandleError(resp)
+		return nil, client.deleteHandleError(resp)
 	}
 	return resp.Response, nil
 }
 
-// DeleteCreateRequest creates the Delete request.
-func (client *TagsClient) DeleteCreateRequest(ctx context.Context, tagName string, options *TagsDeleteOptions) (*azcore.Request, error) {
+// deleteCreateRequest creates the Delete request.
+func (client TagsClient) deleteCreateRequest(ctx context.Context, tagName string, options *TagsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}"
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -264,8 +228,8 @@ func (client *TagsClient) DeleteCreateRequest(ctx context.Context, tagName strin
 	return req, nil
 }
 
-// DeleteHandleError handles the Delete error response.
-func (client *TagsClient) DeleteHandleError(resp *azcore.Response) error {
+// deleteHandleError handles the Delete error response.
+func (client TagsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -274,8 +238,8 @@ func (client *TagsClient) DeleteHandleError(resp *azcore.Response) error {
 }
 
 // DeleteAtScope - Deletes the entire set of tags on a resource or subscription.
-func (client *TagsClient) DeleteAtScope(ctx context.Context, scope string, options *TagsDeleteAtScopeOptions) (*http.Response, error) {
-	req, err := client.DeleteAtScopeCreateRequest(ctx, scope, options)
+func (client TagsClient) DeleteAtScope(ctx context.Context, scope string, options *TagsDeleteAtScopeOptions) (*http.Response, error) {
+	req, err := client.deleteAtScopeCreateRequest(ctx, scope, options)
 	if err != nil {
 		return nil, err
 	}
@@ -284,13 +248,13 @@ func (client *TagsClient) DeleteAtScope(ctx context.Context, scope string, optio
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.DeleteAtScopeHandleError(resp)
+		return nil, client.deleteAtScopeHandleError(resp)
 	}
 	return resp.Response, nil
 }
 
-// DeleteAtScopeCreateRequest creates the DeleteAtScope request.
-func (client *TagsClient) DeleteAtScopeCreateRequest(ctx context.Context, scope string, options *TagsDeleteAtScopeOptions) (*azcore.Request, error) {
+// deleteAtScopeCreateRequest creates the DeleteAtScope request.
+func (client TagsClient) deleteAtScopeCreateRequest(ctx context.Context, scope string, options *TagsDeleteAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -305,8 +269,8 @@ func (client *TagsClient) DeleteAtScopeCreateRequest(ctx context.Context, scope 
 	return req, nil
 }
 
-// DeleteAtScopeHandleError handles the DeleteAtScope error response.
-func (client *TagsClient) DeleteAtScopeHandleError(resp *azcore.Response) error {
+// deleteAtScopeHandleError handles the DeleteAtScope error response.
+func (client TagsClient) deleteAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -317,8 +281,8 @@ func (client *TagsClient) DeleteAtScopeHandleError(resp *azcore.Response) error 
 // DeleteValue - This operation allows deleting a value from the list of predefined values for an existing predefined tag name. The value being deleted
 // must not be in use as a tag value for the given tag name for any
 // resource.
-func (client *TagsClient) DeleteValue(ctx context.Context, tagName string, tagValue string, options *TagsDeleteValueOptions) (*http.Response, error) {
-	req, err := client.DeleteValueCreateRequest(ctx, tagName, tagValue, options)
+func (client TagsClient) DeleteValue(ctx context.Context, tagName string, tagValue string, options *TagsDeleteValueOptions) (*http.Response, error) {
+	req, err := client.deleteValueCreateRequest(ctx, tagName, tagValue, options)
 	if err != nil {
 		return nil, err
 	}
@@ -327,13 +291,13 @@ func (client *TagsClient) DeleteValue(ctx context.Context, tagName string, tagVa
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.DeleteValueHandleError(resp)
+		return nil, client.deleteValueHandleError(resp)
 	}
 	return resp.Response, nil
 }
 
-// DeleteValueCreateRequest creates the DeleteValue request.
-func (client *TagsClient) DeleteValueCreateRequest(ctx context.Context, tagName string, tagValue string, options *TagsDeleteValueOptions) (*azcore.Request, error) {
+// deleteValueCreateRequest creates the DeleteValue request.
+func (client TagsClient) deleteValueCreateRequest(ctx context.Context, tagName string, tagValue string, options *TagsDeleteValueOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}"
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
 	urlPath = strings.ReplaceAll(urlPath, "{tagValue}", url.PathEscape(tagValue))
@@ -350,8 +314,8 @@ func (client *TagsClient) DeleteValueCreateRequest(ctx context.Context, tagName 
 	return req, nil
 }
 
-// DeleteValueHandleError handles the DeleteValue error response.
-func (client *TagsClient) DeleteValueHandleError(resp *azcore.Response) error {
+// deleteValueHandleError handles the DeleteValue error response.
+func (client TagsClient) deleteValueHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -360,8 +324,8 @@ func (client *TagsClient) DeleteValueHandleError(resp *azcore.Response) error {
 }
 
 // GetAtScope - Gets the entire set of tags on a resource or subscription.
-func (client *TagsClient) GetAtScope(ctx context.Context, scope string, options *TagsGetAtScopeOptions) (*TagsResourceResponse, error) {
-	req, err := client.GetAtScopeCreateRequest(ctx, scope, options)
+func (client TagsClient) GetAtScope(ctx context.Context, scope string, options *TagsGetAtScopeOptions) (*TagsResourceResponse, error) {
+	req, err := client.getAtScopeCreateRequest(ctx, scope, options)
 	if err != nil {
 		return nil, err
 	}
@@ -370,17 +334,17 @@ func (client *TagsClient) GetAtScope(ctx context.Context, scope string, options 
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetAtScopeHandleError(resp)
+		return nil, client.getAtScopeHandleError(resp)
 	}
-	result, err := client.GetAtScopeHandleResponse(resp)
+	result, err := client.getAtScopeHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetAtScopeCreateRequest creates the GetAtScope request.
-func (client *TagsClient) GetAtScopeCreateRequest(ctx context.Context, scope string, options *TagsGetAtScopeOptions) (*azcore.Request, error) {
+// getAtScopeCreateRequest creates the GetAtScope request.
+func (client TagsClient) getAtScopeCreateRequest(ctx context.Context, scope string, options *TagsGetAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -395,14 +359,14 @@ func (client *TagsClient) GetAtScopeCreateRequest(ctx context.Context, scope str
 	return req, nil
 }
 
-// GetAtScopeHandleResponse handles the GetAtScope response.
-func (client *TagsClient) GetAtScopeHandleResponse(resp *azcore.Response) (*TagsResourceResponse, error) {
+// getAtScopeHandleResponse handles the GetAtScope response.
+func (client TagsClient) getAtScopeHandleResponse(resp *azcore.Response) (*TagsResourceResponse, error) {
 	result := TagsResourceResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.TagsResource)
 }
 
-// GetAtScopeHandleError handles the GetAtScope error response.
-func (client *TagsClient) GetAtScopeHandleError(resp *azcore.Response) error {
+// getAtScopeHandleError handles the GetAtScope error response.
+func (client TagsClient) getAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -413,14 +377,14 @@ func (client *TagsClient) GetAtScopeHandleError(resp *azcore.Response) error {
 // List - This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and returns a summary of usage for
 // each tag name and value under the given subscription.
 // In case of a large number of tags, this operation may return a previously cached result.
-func (client *TagsClient) List(options *TagsListOptions) TagsListResultPager {
+func (client TagsClient) List(options *TagsListOptions) TagsListResultPager {
 	return &tagsListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, options)
+			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *TagsListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.TagsListResult.NextLink)
 		},
@@ -428,8 +392,8 @@ func (client *TagsClient) List(options *TagsListOptions) TagsListResultPager {
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *TagsClient) ListCreateRequest(ctx context.Context, options *TagsListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client TagsClient) listCreateRequest(ctx context.Context, options *TagsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -444,14 +408,14 @@ func (client *TagsClient) ListCreateRequest(ctx context.Context, options *TagsLi
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *TagsClient) ListHandleResponse(resp *azcore.Response) (*TagsListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client TagsClient) listHandleResponse(resp *azcore.Response) (*TagsListResultResponse, error) {
 	result := TagsListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.TagsListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *TagsClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client TagsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -464,8 +428,8 @@ func (client *TagsClient) ListHandleError(resp *azcore.Response) error {
 // 'replace' option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the values
 // of tags with existing names. The 'delete' option
 // allows selectively deleting tags based on given names or name/value pairs.
-func (client *TagsClient) UpdateAtScope(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsUpdateAtScopeOptions) (*TagsResourceResponse, error) {
-	req, err := client.UpdateAtScopeCreateRequest(ctx, scope, parameters, options)
+func (client TagsClient) UpdateAtScope(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsUpdateAtScopeOptions) (*TagsResourceResponse, error) {
+	req, err := client.updateAtScopeCreateRequest(ctx, scope, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -474,17 +438,17 @@ func (client *TagsClient) UpdateAtScope(ctx context.Context, scope string, param
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.UpdateAtScopeHandleError(resp)
+		return nil, client.updateAtScopeHandleError(resp)
 	}
-	result, err := client.UpdateAtScopeHandleResponse(resp)
+	result, err := client.updateAtScopeHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// UpdateAtScopeCreateRequest creates the UpdateAtScope request.
-func (client *TagsClient) UpdateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsUpdateAtScopeOptions) (*azcore.Request, error) {
+// updateAtScopeCreateRequest creates the UpdateAtScope request.
+func (client TagsClient) updateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsUpdateAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -499,14 +463,14 @@ func (client *TagsClient) UpdateAtScopeCreateRequest(ctx context.Context, scope 
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// UpdateAtScopeHandleResponse handles the UpdateAtScope response.
-func (client *TagsClient) UpdateAtScopeHandleResponse(resp *azcore.Response) (*TagsResourceResponse, error) {
+// updateAtScopeHandleResponse handles the UpdateAtScope response.
+func (client TagsClient) updateAtScopeHandleResponse(resp *azcore.Response) (*TagsResourceResponse, error) {
 	result := TagsResourceResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.TagsResource)
 }
 
-// UpdateAtScopeHandleError handles the UpdateAtScope error response.
-func (client *TagsClient) UpdateAtScopeHandleError(resp *azcore.Response) error {
+// updateAtScopeHandleError handles the UpdateAtScope error response.
+func (client TagsClient) updateAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

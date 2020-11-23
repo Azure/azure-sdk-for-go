@@ -17,25 +17,7 @@ import (
 	"strings"
 )
 
-// ProvidersOperations contains the methods for the Providers group.
-type ProvidersOperations interface {
-	// Get - Gets the specified resource provider.
-	Get(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetOptions) (*ProviderResponse, error)
-	// GetAtTenantScope - Gets the specified resource provider at the tenant level.
-	GetAtTenantScope(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetAtTenantScopeOptions) (*ProviderResponse, error)
-	// List - Gets all resource providers for a subscription.
-	List(options *ProvidersListOptions) ProviderListResultPager
-	// ListAtTenantScope - Gets all resource providers for the tenant.
-	ListAtTenantScope(options *ProvidersListAtTenantScopeOptions) ProviderListResultPager
-	// Register - Registers a subscription with a resource provider.
-	Register(ctx context.Context, resourceProviderNamespace string, options *ProvidersRegisterOptions) (*ProviderResponse, error)
-	// RegisterAtManagementGroupScope - Registers a management group with a resource provider.
-	RegisterAtManagementGroupScope(ctx context.Context, resourceProviderNamespace string, groupId string, options *ProvidersRegisterAtManagementGroupScopeOptions) (*http.Response, error)
-	// Unregister - Unregisters a subscription from a resource provider.
-	Unregister(ctx context.Context, resourceProviderNamespace string, options *ProvidersUnregisterOptions) (*ProviderResponse, error)
-}
-
-// ProvidersClient implements the ProvidersOperations interface.
+// ProvidersClient contains the methods for the Providers group.
 // Don't use this type directly, use NewProvidersClient() instead.
 type ProvidersClient struct {
 	con            *armcore.Connection
@@ -43,18 +25,18 @@ type ProvidersClient struct {
 }
 
 // NewProvidersClient creates a new instance of ProvidersClient with the specified values.
-func NewProvidersClient(con *armcore.Connection, subscriptionID string) ProvidersOperations {
-	return &ProvidersClient{con: con, subscriptionID: subscriptionID}
+func NewProvidersClient(con *armcore.Connection, subscriptionID string) ProvidersClient {
+	return ProvidersClient{con: con, subscriptionID: subscriptionID}
 }
 
 // Pipeline returns the pipeline associated with this client.
-func (client *ProvidersClient) Pipeline() azcore.Pipeline {
+func (client ProvidersClient) Pipeline() azcore.Pipeline {
 	return client.con.Pipeline()
 }
 
 // Get - Gets the specified resource provider.
-func (client *ProvidersClient) Get(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetOptions) (*ProviderResponse, error) {
-	req, err := client.GetCreateRequest(ctx, resourceProviderNamespace, options)
+func (client ProvidersClient) Get(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetOptions) (*ProviderResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
 		return nil, err
 	}
@@ -63,17 +45,17 @@ func (client *ProvidersClient) Get(ctx context.Context, resourceProviderNamespac
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetHandleError(resp)
+		return nil, client.getHandleError(resp)
 	}
-	result, err := client.GetHandleResponse(resp)
+	result, err := client.getHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetCreateRequest creates the Get request.
-func (client *ProvidersClient) GetCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetOptions) (*azcore.Request, error) {
+// getCreateRequest creates the Get request.
+func (client ProvidersClient) getCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -92,14 +74,14 @@ func (client *ProvidersClient) GetCreateRequest(ctx context.Context, resourcePro
 	return req, nil
 }
 
-// GetHandleResponse handles the Get response.
-func (client *ProvidersClient) GetHandleResponse(resp *azcore.Response) (*ProviderResponse, error) {
+// getHandleResponse handles the Get response.
+func (client ProvidersClient) getHandleResponse(resp *azcore.Response) (*ProviderResponse, error) {
 	result := ProviderResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.Provider)
 }
 
-// GetHandleError handles the Get error response.
-func (client *ProvidersClient) GetHandleError(resp *azcore.Response) error {
+// getHandleError handles the Get error response.
+func (client ProvidersClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -108,8 +90,8 @@ func (client *ProvidersClient) GetHandleError(resp *azcore.Response) error {
 }
 
 // GetAtTenantScope - Gets the specified resource provider at the tenant level.
-func (client *ProvidersClient) GetAtTenantScope(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetAtTenantScopeOptions) (*ProviderResponse, error) {
-	req, err := client.GetAtTenantScopeCreateRequest(ctx, resourceProviderNamespace, options)
+func (client ProvidersClient) GetAtTenantScope(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetAtTenantScopeOptions) (*ProviderResponse, error) {
+	req, err := client.getAtTenantScopeCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
 		return nil, err
 	}
@@ -118,17 +100,17 @@ func (client *ProvidersClient) GetAtTenantScope(ctx context.Context, resourcePro
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.GetAtTenantScopeHandleError(resp)
+		return nil, client.getAtTenantScopeHandleError(resp)
 	}
-	result, err := client.GetAtTenantScopeHandleResponse(resp)
+	result, err := client.getAtTenantScopeHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// GetAtTenantScopeCreateRequest creates the GetAtTenantScope request.
-func (client *ProvidersClient) GetAtTenantScopeCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetAtTenantScopeOptions) (*azcore.Request, error) {
+// getAtTenantScopeCreateRequest creates the GetAtTenantScope request.
+func (client ProvidersClient) getAtTenantScopeCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetAtTenantScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/{resourceProviderNamespace}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -146,14 +128,14 @@ func (client *ProvidersClient) GetAtTenantScopeCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// GetAtTenantScopeHandleResponse handles the GetAtTenantScope response.
-func (client *ProvidersClient) GetAtTenantScopeHandleResponse(resp *azcore.Response) (*ProviderResponse, error) {
+// getAtTenantScopeHandleResponse handles the GetAtTenantScope response.
+func (client ProvidersClient) getAtTenantScopeHandleResponse(resp *azcore.Response) (*ProviderResponse, error) {
 	result := ProviderResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.Provider)
 }
 
-// GetAtTenantScopeHandleError handles the GetAtTenantScope error response.
-func (client *ProvidersClient) GetAtTenantScopeHandleError(resp *azcore.Response) error {
+// getAtTenantScopeHandleError handles the GetAtTenantScope error response.
+func (client ProvidersClient) getAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -162,14 +144,14 @@ func (client *ProvidersClient) GetAtTenantScopeHandleError(resp *azcore.Response
 }
 
 // List - Gets all resource providers for a subscription.
-func (client *ProvidersClient) List(options *ProvidersListOptions) ProviderListResultPager {
+func (client ProvidersClient) List(options *ProvidersListOptions) ProviderListResultPager {
 	return &providerListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListCreateRequest(ctx, options)
+			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.ListHandleResponse,
-		errorer:   client.ListHandleError,
+		responder: client.listHandleResponse,
+		errorer:   client.listHandleError,
 		advancer: func(ctx context.Context, resp *ProviderListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProviderListResult.NextLink)
 		},
@@ -177,8 +159,8 @@ func (client *ProvidersClient) List(options *ProvidersListOptions) ProviderListR
 	}
 }
 
-// ListCreateRequest creates the List request.
-func (client *ProvidersClient) ListCreateRequest(ctx context.Context, options *ProvidersListOptions) (*azcore.Request, error) {
+// listCreateRequest creates the List request.
+func (client ProvidersClient) listCreateRequest(ctx context.Context, options *ProvidersListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -199,14 +181,14 @@ func (client *ProvidersClient) ListCreateRequest(ctx context.Context, options *P
 	return req, nil
 }
 
-// ListHandleResponse handles the List response.
-func (client *ProvidersClient) ListHandleResponse(resp *azcore.Response) (*ProviderListResultResponse, error) {
+// listHandleResponse handles the List response.
+func (client ProvidersClient) listHandleResponse(resp *azcore.Response) (*ProviderListResultResponse, error) {
 	result := ProviderListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ProviderListResult)
 }
 
-// ListHandleError handles the List error response.
-func (client *ProvidersClient) ListHandleError(resp *azcore.Response) error {
+// listHandleError handles the List error response.
+func (client ProvidersClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -215,14 +197,14 @@ func (client *ProvidersClient) ListHandleError(resp *azcore.Response) error {
 }
 
 // ListAtTenantScope - Gets all resource providers for the tenant.
-func (client *ProvidersClient) ListAtTenantScope(options *ProvidersListAtTenantScopeOptions) ProviderListResultPager {
+func (client ProvidersClient) ListAtTenantScope(options *ProvidersListAtTenantScopeOptions) ProviderListResultPager {
 	return &providerListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
-			return client.ListAtTenantScopeCreateRequest(ctx, options)
+			return client.listAtTenantScopeCreateRequest(ctx, options)
 		},
-		responder: client.ListAtTenantScopeHandleResponse,
-		errorer:   client.ListAtTenantScopeHandleError,
+		responder: client.listAtTenantScopeHandleResponse,
+		errorer:   client.listAtTenantScopeHandleError,
 		advancer: func(ctx context.Context, resp *ProviderListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProviderListResult.NextLink)
 		},
@@ -230,8 +212,8 @@ func (client *ProvidersClient) ListAtTenantScope(options *ProvidersListAtTenantS
 	}
 }
 
-// ListAtTenantScopeCreateRequest creates the ListAtTenantScope request.
-func (client *ProvidersClient) ListAtTenantScopeCreateRequest(ctx context.Context, options *ProvidersListAtTenantScopeOptions) (*azcore.Request, error) {
+// listAtTenantScopeCreateRequest creates the ListAtTenantScope request.
+func (client ProvidersClient) listAtTenantScopeCreateRequest(ctx context.Context, options *ProvidersListAtTenantScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -251,14 +233,14 @@ func (client *ProvidersClient) ListAtTenantScopeCreateRequest(ctx context.Contex
 	return req, nil
 }
 
-// ListAtTenantScopeHandleResponse handles the ListAtTenantScope response.
-func (client *ProvidersClient) ListAtTenantScopeHandleResponse(resp *azcore.Response) (*ProviderListResultResponse, error) {
+// listAtTenantScopeHandleResponse handles the ListAtTenantScope response.
+func (client ProvidersClient) listAtTenantScopeHandleResponse(resp *azcore.Response) (*ProviderListResultResponse, error) {
 	result := ProviderListResultResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.ProviderListResult)
 }
 
-// ListAtTenantScopeHandleError handles the ListAtTenantScope error response.
-func (client *ProvidersClient) ListAtTenantScopeHandleError(resp *azcore.Response) error {
+// listAtTenantScopeHandleError handles the ListAtTenantScope error response.
+func (client ProvidersClient) listAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -267,8 +249,8 @@ func (client *ProvidersClient) ListAtTenantScopeHandleError(resp *azcore.Respons
 }
 
 // Register - Registers a subscription with a resource provider.
-func (client *ProvidersClient) Register(ctx context.Context, resourceProviderNamespace string, options *ProvidersRegisterOptions) (*ProviderResponse, error) {
-	req, err := client.RegisterCreateRequest(ctx, resourceProviderNamespace, options)
+func (client ProvidersClient) Register(ctx context.Context, resourceProviderNamespace string, options *ProvidersRegisterOptions) (*ProviderResponse, error) {
+	req, err := client.registerCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
 		return nil, err
 	}
@@ -277,17 +259,17 @@ func (client *ProvidersClient) Register(ctx context.Context, resourceProviderNam
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.RegisterHandleError(resp)
+		return nil, client.registerHandleError(resp)
 	}
-	result, err := client.RegisterHandleResponse(resp)
+	result, err := client.registerHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// RegisterCreateRequest creates the Register request.
-func (client *ProvidersClient) RegisterCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersRegisterOptions) (*azcore.Request, error) {
+// registerCreateRequest creates the Register request.
+func (client ProvidersClient) registerCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersRegisterOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -303,14 +285,14 @@ func (client *ProvidersClient) RegisterCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
-// RegisterHandleResponse handles the Register response.
-func (client *ProvidersClient) RegisterHandleResponse(resp *azcore.Response) (*ProviderResponse, error) {
+// registerHandleResponse handles the Register response.
+func (client ProvidersClient) registerHandleResponse(resp *azcore.Response) (*ProviderResponse, error) {
 	result := ProviderResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.Provider)
 }
 
-// RegisterHandleError handles the Register error response.
-func (client *ProvidersClient) RegisterHandleError(resp *azcore.Response) error {
+// registerHandleError handles the Register error response.
+func (client ProvidersClient) registerHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -319,8 +301,8 @@ func (client *ProvidersClient) RegisterHandleError(resp *azcore.Response) error 
 }
 
 // RegisterAtManagementGroupScope - Registers a management group with a resource provider.
-func (client *ProvidersClient) RegisterAtManagementGroupScope(ctx context.Context, resourceProviderNamespace string, groupId string, options *ProvidersRegisterAtManagementGroupScopeOptions) (*http.Response, error) {
-	req, err := client.RegisterAtManagementGroupScopeCreateRequest(ctx, resourceProviderNamespace, groupId, options)
+func (client ProvidersClient) RegisterAtManagementGroupScope(ctx context.Context, resourceProviderNamespace string, groupId string, options *ProvidersRegisterAtManagementGroupScopeOptions) (*http.Response, error) {
+	req, err := client.registerAtManagementGroupScopeCreateRequest(ctx, resourceProviderNamespace, groupId, options)
 	if err != nil {
 		return nil, err
 	}
@@ -329,13 +311,13 @@ func (client *ProvidersClient) RegisterAtManagementGroupScope(ctx context.Contex
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.RegisterAtManagementGroupScopeHandleError(resp)
+		return nil, client.registerAtManagementGroupScopeHandleError(resp)
 	}
 	return resp.Response, nil
 }
 
-// RegisterAtManagementGroupScopeCreateRequest creates the RegisterAtManagementGroupScope request.
-func (client *ProvidersClient) RegisterAtManagementGroupScopeCreateRequest(ctx context.Context, resourceProviderNamespace string, groupId string, options *ProvidersRegisterAtManagementGroupScopeOptions) (*azcore.Request, error) {
+// registerAtManagementGroupScopeCreateRequest creates the RegisterAtManagementGroupScope request.
+func (client ProvidersClient) registerAtManagementGroupScopeCreateRequest(ctx context.Context, resourceProviderNamespace string, groupId string, options *ProvidersRegisterAtManagementGroupScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/{resourceProviderNamespace}/register"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupId))
@@ -351,8 +333,8 @@ func (client *ProvidersClient) RegisterAtManagementGroupScopeCreateRequest(ctx c
 	return req, nil
 }
 
-// RegisterAtManagementGroupScopeHandleError handles the RegisterAtManagementGroupScope error response.
-func (client *ProvidersClient) RegisterAtManagementGroupScopeHandleError(resp *azcore.Response) error {
+// registerAtManagementGroupScopeHandleError handles the RegisterAtManagementGroupScope error response.
+func (client ProvidersClient) registerAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -361,8 +343,8 @@ func (client *ProvidersClient) RegisterAtManagementGroupScopeHandleError(resp *a
 }
 
 // Unregister - Unregisters a subscription from a resource provider.
-func (client *ProvidersClient) Unregister(ctx context.Context, resourceProviderNamespace string, options *ProvidersUnregisterOptions) (*ProviderResponse, error) {
-	req, err := client.UnregisterCreateRequest(ctx, resourceProviderNamespace, options)
+func (client ProvidersClient) Unregister(ctx context.Context, resourceProviderNamespace string, options *ProvidersUnregisterOptions) (*ProviderResponse, error) {
+	req, err := client.unregisterCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
 		return nil, err
 	}
@@ -371,17 +353,17 @@ func (client *ProvidersClient) Unregister(ctx context.Context, resourceProviderN
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return nil, client.UnregisterHandleError(resp)
+		return nil, client.unregisterHandleError(resp)
 	}
-	result, err := client.UnregisterHandleResponse(resp)
+	result, err := client.unregisterHandleResponse(resp)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-// UnregisterCreateRequest creates the Unregister request.
-func (client *ProvidersClient) UnregisterCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersUnregisterOptions) (*azcore.Request, error) {
+// unregisterCreateRequest creates the Unregister request.
+func (client ProvidersClient) unregisterCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersUnregisterOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/unregister"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
@@ -397,14 +379,14 @@ func (client *ProvidersClient) UnregisterCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// UnregisterHandleResponse handles the Unregister response.
-func (client *ProvidersClient) UnregisterHandleResponse(resp *azcore.Response) (*ProviderResponse, error) {
+// unregisterHandleResponse handles the Unregister response.
+func (client ProvidersClient) unregisterHandleResponse(resp *azcore.Response) (*ProviderResponse, error) {
 	result := ProviderResponse{RawResponse: resp.Response}
 	return &result, resp.UnmarshalAsJSON(&result.Provider)
 }
 
-// UnregisterHandleError handles the Unregister error response.
-func (client *ProvidersClient) UnregisterHandleError(resp *azcore.Response) error {
+// unregisterHandleError handles the Unregister error response.
+func (client ProvidersClient) unregisterHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

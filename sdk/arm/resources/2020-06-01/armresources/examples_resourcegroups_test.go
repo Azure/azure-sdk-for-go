@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleResourceGroupsOperations_CheckExistence() {
+func ExampleResourceGroupsClient_CheckExistence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleResourceGroupsOperations_CheckExistence() {
 	log.Printf("resource group exists: %v\n", resp.Success)
 }
 
-func ExampleResourceGroupsOperations_CreateOrUpdate() {
+func ExampleResourceGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -44,7 +44,7 @@ func ExampleResourceGroupsOperations_CreateOrUpdate() {
 	log.Printf("resource group ID: %s\n", *resp.ResourceGroup.ID)
 }
 
-func ExampleResourceGroupsOperations_Update() {
+func ExampleResourceGroupsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -64,7 +64,7 @@ func ExampleResourceGroupsOperations_Update() {
 	log.Printf("updated resource group: %v", *resp.ResourceGroup.ID)
 }
 
-func ExampleResourceGroupsOperations_List() {
+func ExampleResourceGroupsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -81,7 +81,7 @@ func ExampleResourceGroupsOperations_List() {
 	}
 }
 
-func ExampleResourceGroupsOperations_BeginDelete() {
+func ExampleResourceGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -97,7 +97,7 @@ func ExampleResourceGroupsOperations_BeginDelete() {
 	}
 }
 
-func ExampleResourceGroupsOperations_Get() {
+func ExampleResourceGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -110,7 +110,7 @@ func ExampleResourceGroupsOperations_Get() {
 	log.Printf("resource group name: %s\n", *rg.ResourceGroup.Name)
 }
 
-func ExampleResourceGroupsOperations_ResumeDelete() {
+func ExampleResourceGroupsClient_ResumeDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

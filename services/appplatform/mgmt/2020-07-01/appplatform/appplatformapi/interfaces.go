@@ -47,6 +47,7 @@ type ConfigServersClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serviceName string) (result appplatform.ConfigServerResource, err error)
 	UpdatePatch(ctx context.Context, resourceGroupName string, serviceName string, configServerResource appplatform.ConfigServerResource) (result appplatform.ConfigServersUpdatePatchFuture, err error)
 	UpdatePut(ctx context.Context, resourceGroupName string, serviceName string, configServerResource appplatform.ConfigServerResource) (result appplatform.ConfigServersUpdatePutFuture, err error)
+	Validate(ctx context.Context, resourceGroupName string, serviceName string, configServerSettings appplatform.ConfigServerSettings) (result appplatform.ConfigServersValidateFuture, err error)
 }
 
 var _ ConfigServersClientAPI = (*appplatform.ConfigServersClient)(nil)
@@ -134,6 +135,13 @@ type OperationsClientAPI interface {
 }
 
 var _ OperationsClientAPI = (*appplatform.OperationsClient)(nil)
+
+// RuntimeVersionsClientAPI contains the set of methods on the RuntimeVersionsClient type.
+type RuntimeVersionsClientAPI interface {
+	ListRuntimeVersions(ctx context.Context) (result appplatform.AvailableRuntimeVersions, err error)
+}
+
+var _ RuntimeVersionsClientAPI = (*appplatform.RuntimeVersionsClient)(nil)
 
 // SkusClientAPI contains the set of methods on the SkusClient type.
 type SkusClientAPI interface {

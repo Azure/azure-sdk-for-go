@@ -283,7 +283,8 @@ func (future *AccountsCreateOrUpdateFuture) Result(client AccountsClient) (a Acc
 	return
 }
 
-// AccountsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// AccountsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type AccountsDeleteFuture struct {
 	azure.Future
 }
@@ -829,8 +830,8 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
-// OperationListResult result of the request to list Cloud Volume operations. It contains a list of operations
-// and a URL link to get the next set of results.
+// OperationListResult result of the request to list Cloud Volume operations. It contains a list of
+// operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - List of Storage operations supported by the Storage resource provider.
@@ -1060,7 +1061,8 @@ func (sp SnapshotProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SnapshotsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SnapshotsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SnapshotsCreateFuture struct {
 	azure.Future
 }
@@ -1088,7 +1090,8 @@ func (future *SnapshotsCreateFuture) Result(client SnapshotsClient) (s Snapshot,
 	return
 }
 
-// SnapshotsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// SnapshotsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type SnapshotsDeleteFuture struct {
 	azure.Future
 }
@@ -1413,7 +1416,8 @@ func (future *VolumesCreateOrUpdateFuture) Result(client VolumesClient) (vVar Vo
 	return
 }
 
-// VolumesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
+// VolumesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
 type VolumesDeleteFuture struct {
 	azure.Future
 }

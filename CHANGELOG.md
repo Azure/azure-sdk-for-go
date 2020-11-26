@@ -1,5 +1,595 @@
 # CHANGELOG
 
+## `v49.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/attestation/mgmt/2018-09-01/attestation`
+- `github.com/Azure/azure-sdk-for-go/services/batch/2020-09-01.12.0/batch`
+- `github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2020-05-01/batch`
+- `github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2020-09-01/batch`
+- `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2019-06-15/cdn`
+- `github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.1/computervision`
+- `github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.1/customvision/prediction`
+- `github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2019-10-01/consumption`
+- `github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2020-04-01/databox`
+- `github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2020-11-01/databox`
+- `github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2020-01-01/aad`
+- `github.com/Azure/azure-sdk-for-go/services/migrate/mgmt/2020-01-01/migrate`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-03-01/netapp`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-05-01/netapp`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-08-01/netapp`
+- `github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2020-10-01/operationalinsights`
+- `github.com/Azure/azure-sdk-for-go/services/peering/mgmt/2020-10-01/peering`
+- `github.com/Azure/azure-sdk-for-go/services/personalizer/v1.0/personalizer`
+- `github.com/Azure/azure-sdk-for-go/services/preview/adp/mgmt/2019-07-01-preview/adpapi`
+- `github.com/Azure/azure-sdk-for-go/services/preview/alertsmanagement/mgmt/2019-05-05-preview/alertsmanagement`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2020-07-01-preview/appconfiguration`
+- `github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2020-07-17-preview/avs`
+- `github.com/Azure/azure-sdk-for-go/services/preview/baremetalinfrastructure/mgmt/2020-08-06-preview/baremetalinfrastructure`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0_preview.1/translatortext`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v3.4-preview/customvision/training`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2019-06-01-preview/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2020-11-01-preview/containerregistry`
+- `github.com/Azure/azure-sdk-for-go/services/preview/databoxedge/mgmt/2020-05-01-preview/databoxedge`
+- `github.com/Azure/azure-sdk-for-go/services/preview/delegatednetwork/mgmt/2020-08-08-preview/delegatednetwork`
+- `github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2020-09-21-preview/desktopvirtualization`
+- `github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2020-10-19-preview/desktopvirtualization`
+- `github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2020-11-02-preview/desktopvirtualization`
+- `github.com/Azure/azure-sdk-for-go/services/preview/digitaltwins/2020-05-31-preview/digitaltwins`
+- `github.com/Azure/azure-sdk-for-go/services/preview/hybridnetwork/mgmt/2020-01-01-preview/hybridnetwork`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2019-08-01-preview/operationalinsights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2020-07-01-preview/policyinsights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-11-05-preview/postgresqlflexibleservers`
+- `github.com/Azure/azure-sdk-for-go/services/preview/powerplatform/mgmt/2020-10-30/powerplatform`
+- `github.com/Azure/azure-sdk-for-go/services/preview/qnamaker/cognitiveservices/v5.0-preview.1/qnamaker`
+- `github.com/Azure/azure-sdk-for-go/services/preview/redis/mgmt/2019-07-01-preview/redis`
+- `github.com/Azure/azure-sdk-for-go/services/preview/storagepool/mgmt/2020-03-15-preview/storagepool`
+- `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-11-01/managementgroups`
+- `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-02-01/managementgroups`
+- `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-05-01/managementgroups`
+- `github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-08-01/search`
+- `github.com/Azure/azure-sdk-for-go/services/servicefabric/7.2/servicefabric`
+- `github.com/Azure/azure-sdk-for-go/services/stable/attestation/2018-09-01/attestation`
+- `github.com/Azure/azure-sdk-for-go/services/stable/attestation/2020-10-01/attestation`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| ---: | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/eventgrid/2018-01-01/eventgrid` | https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/eventgrid/2018-01-01/eventgrid |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| ---: | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/adhybridhealthservice/mgmt/2014-01-01/adhybridhealthservice) |
+| `github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2017-03-31/advisor` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/advisor/mgmt/2017-03-31/advisor) |
+| `github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2017-04-19/advisor` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/advisor/mgmt/2017-04-19/advisor) |
+| `github.com/Azure/azure-sdk-for-go/services/advisor/mgmt/2020-01-01/advisor` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/advisor/mgmt/2020-01-01/advisor) |
+| `github.com/Azure/azure-sdk-for-go/services/alertsmanagement/mgmt/2018-05-05/alertsmanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/alertsmanagement/mgmt/2018-05-05/alertsmanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/alertsmanagement/mgmt/2019-03-01/alertsmanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/alertsmanagement/mgmt/2019-03-01/alertsmanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/analysisservices/mgmt/2017-08-01/analysisservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/analysisservices/mgmt/2017-08-01/analysisservices) |
+| `github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2016-07-07/apimanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/apimanagement/mgmt/2016-07-07/apimanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2016-10-10/apimanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/apimanagement/mgmt/2016-10-10/apimanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2017-03-01/apimanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/apimanagement/mgmt/2017-03-01/apimanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2018-01-01/apimanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/apimanagement/mgmt/2018-01-01/apimanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2019-01-01/apimanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/apimanagement/mgmt/2019-01-01/apimanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2019-12-01/apimanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/apimanagement/mgmt/2019-12-01/apimanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/appconfiguration/mgmt/2019-10-01/appconfiguration` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/appconfiguration/mgmt/2019-10-01/appconfiguration) |
+| `github.com/Azure/azure-sdk-for-go/services/appconfiguration/mgmt/2020-06-01/appconfiguration` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/appconfiguration/mgmt/2020-06-01/appconfiguration) |
+| `github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2015-05-01/insights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/appinsights/mgmt/2015-05-01/insights) |
+| `github.com/Azure/azure-sdk-for-go/services/appplatform/mgmt/2020-07-01/appplatform` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/appplatform/mgmt/2020-07-01/appplatform) |
+| `github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/authorization/mgmt/2015-07-01/authorization) |
+| `github.com/Azure/azure-sdk-for-go/services/automation/mgmt/2015-10-31/automation` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/automation/mgmt/2015-10-31/automation) |
+| `github.com/Azure/azure-sdk-for-go/services/avs/mgmt/2020-03-20/avs` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/avs/mgmt/2020-03-20/avs) |
+| `github.com/Azure/azure-sdk-for-go/services/azurestack/mgmt/2017-06-01/azurestack` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/azurestack/mgmt/2017-06-01/azurestack) |
+| `github.com/Azure/azure-sdk-for-go/services/azurestackhci/mgmt/2020-10-01/azurestackhci` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/azurestackhci/mgmt/2020-10-01/azurestackhci) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/2017-05-01.5.0/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/2017-05-01.5.0/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/2018-03-01.6.1/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/2018-03-01.6.1/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/2018-08-01.7.0/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/2018-08-01.7.0/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/2018-12-01.8.0/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/2018-12-01.8.0/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/2019-06-01.9.0/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/2019-06-01.9.0/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/2019-08-01.10.0/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/2019-08-01.10.0/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/2020-03-01.11.0/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/2020-03-01.11.0/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2015-12-01/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/mgmt/2015-12-01/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2017-01-01/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/mgmt/2017-01-01/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2017-05-01/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/mgmt/2017-05-01/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2017-09-01/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/mgmt/2017-09-01/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2018-12-01/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/mgmt/2018-12-01/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2019-04-01/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/mgmt/2019-04-01/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2019-08-01/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/mgmt/2019-08-01/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2020-03-01/batch` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batch/mgmt/2020-03-01/batch) |
+| `github.com/Azure/azure-sdk-for-go/services/batchai/mgmt/2018-03-01/batchai` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batchai/mgmt/2018-03-01/batchai) |
+| `github.com/Azure/azure-sdk-for-go/services/batchai/mgmt/2018-05-01/batchai` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/batchai/mgmt/2018-05-01/batchai) |
+| `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2016-10-02/cdn` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/cdn/mgmt/2016-10-02/cdn) |
+| `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2017-04-02/cdn` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/cdn/mgmt/2017-04-02/cdn) |
+| `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2017-10-12/cdn` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/cdn/mgmt/2017-10-12/cdn) |
+| `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2019-04-15/cdn` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/cdn/mgmt/2019-04-15/cdn) |
+| `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-04-15/cdn` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/cdn/mgmt/2020-04-15/cdn) |
+| `github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/cognitiveservices/mgmt/2017-04-18/cognitiveservices) |
+| `github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v4.0/qnamaker` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/cognitiveservices/v4.0/qnamaker) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2015-06-15/compute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/compute/mgmt/2015-06-15/compute) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2016-03-30/compute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/compute/mgmt/2016-03-30/compute) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-03-30/compute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/compute/mgmt/2017-03-30/compute) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-09-01/skus` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/compute/mgmt/2017-09-01/skus) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-12-01/compute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/compute/mgmt/2017-12-01/compute) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-04-01/compute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/compute/mgmt/2018-04-01/compute) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-06-01/compute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/compute/mgmt/2018-06-01/compute) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2018-10-01/compute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/compute/mgmt/2018-10-01/compute) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-03-01/compute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/compute/mgmt/2019-03-01/compute) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-07-01/compute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/compute/mgmt/2019-07-01/compute) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2019-12-01/compute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/compute/mgmt/2019-12-01/compute) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-06-01/compute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/compute/mgmt/2020-06-01/compute) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-06-30/compute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/compute/mgmt/2020-06-30/compute) |
+| `github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2017-11-30/consumption` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/consumption/mgmt/2017-11-30/consumption) |
+| `github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-01-31/consumption` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/consumption/mgmt/2018-01-31/consumption) |
+| `github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-03-31/consumption` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/consumption/mgmt/2018-03-31/consumption) |
+| `github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-05-31/consumption` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/consumption/mgmt/2018-05-31/consumption) |
+| `github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-06-30/consumption` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/consumption/mgmt/2018-06-30/consumption) |
+| `github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-08-31/consumption` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/consumption/mgmt/2018-08-31/consumption) |
+| `github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2018-10-01/consumption` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/consumption/mgmt/2018-10-01/consumption) |
+| `github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2019-01-01/consumption` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/consumption/mgmt/2019-01-01/consumption) |
+| `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-04-01/containerinstance` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerinstance/mgmt/2018-04-01/containerinstance) |
+| `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-06-01/containerinstance` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerinstance/mgmt/2018-06-01/containerinstance) |
+| `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-09-01/containerinstance` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerinstance/mgmt/2018-09-01/containerinstance) |
+| `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-10-01/containerinstance` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerinstance/mgmt/2018-10-01/containerinstance) |
+| `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2019-12-01/containerinstance` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerinstance/mgmt/2019-12-01/containerinstance) |
+| `github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2017-03-01/containerregistry` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerregistry/mgmt/2017-03-01/containerregistry) |
+| `github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2017-10-01/containerregistry` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerregistry/mgmt/2017-10-01/containerregistry) |
+| `github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2018-09-01/containerregistry` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerregistry/mgmt/2018-09-01/containerregistry) |
+| `github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-04-01/containerregistry` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerregistry/mgmt/2019-04-01/containerregistry) |
+| `github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerregistry/mgmt/2019-05-01/containerregistry) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2016-09-30/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2016-09-30/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2017-01-31/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2017-01-31/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2017-07-01/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2017-07-01/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2017-08-31/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2017-08-31/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2017-09-30/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2017-09-30/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2018-03-31/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2018-03-31/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-04-30/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2019-04-30/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-06-01/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2019-06-01/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-08-01/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2019-08-01/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-10-01/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2019-10-01/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-11-01/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2019-11-01/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-01-01/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2020-01-01/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-02-01/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2020-02-01/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-03-01/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2020-03-01/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-04-01/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2020-04-01/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-06-01/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2020-06-01/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-07-01/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2020-07-01/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-09-01/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2020-09-01/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-11-01/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/containerservice/mgmt/2020-11-01/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2015-04-08/documentdb` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/cosmos-db/mgmt/2015-04-08/documentdb) |
+| `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2019-08-01/documentdb` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/cosmos-db/mgmt/2019-08-01/documentdb) |
+| `github.com/Azure/azure-sdk-for-go/services/costmanagement/mgmt/2018-05-31/costmanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/costmanagement/mgmt/2018-05-31/costmanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/costmanagement/mgmt/2019-01-01/costmanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/costmanagement/mgmt/2019-01-01/costmanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/costmanagement/mgmt/2019-10-01/costmanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/costmanagement/mgmt/2019-10-01/costmanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/customerinsights/mgmt/2017-01-01/customerinsights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/customerinsights/mgmt/2017-01-01/customerinsights) |
+| `github.com/Azure/azure-sdk-for-go/services/customerinsights/mgmt/2017-04-26/customerinsights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/customerinsights/mgmt/2017-04-26/customerinsights) |
+| `github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2018-01-01/databox` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/databox/mgmt/2018-01-01/databox) |
+| `github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2019-09-01/databox` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/databox/mgmt/2019-09-01/databox) |
+| `github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2019-03-01/databoxedge` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/databoxedge/mgmt/2019-03-01/databoxedge) |
+| `github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2019-07-01/databoxedge` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/databoxedge/mgmt/2019-07-01/databoxedge) |
+| `github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2019-08-01/databoxedge` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/databoxedge/mgmt/2019-08-01/databoxedge) |
+| `github.com/Azure/azure-sdk-for-go/services/databricks/mgmt/2018-04-01/databricks` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/databricks/mgmt/2018-04-01/databricks) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/datafactory/mgmt/2018-06-01/datafactory) |
+| `github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2016-11-01-preview/catalog` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/datalake/analytics/2016-11-01-preview/catalog) |
+| `github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2016-11-01/job` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/datalake/analytics/2016-11-01/job) |
+| `github.com/Azure/azure-sdk-for-go/services/datalake/analytics/mgmt/2016-11-01/account` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/datalake/analytics/mgmt/2016-11-01/account) |
+| `github.com/Azure/azure-sdk-for-go/services/datalake/store/mgmt/2016-11-01/account` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/datalake/store/mgmt/2016-11-01/account) |
+| `github.com/Azure/azure-sdk-for-go/services/datamigration/mgmt/2018-04-19/datamigration` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/datamigration/mgmt/2018-04-19/datamigration) |
+| `github.com/Azure/azure-sdk-for-go/services/datashare/mgmt/2019-11-01/datashare` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/datashare/mgmt/2019-11-01/datashare) |
+| `github.com/Azure/azure-sdk-for-go/services/devspaces/mgmt/2019-04-01/devspaces` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/devspaces/mgmt/2019-04-01/devspaces) |
+| `github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2016-05-15/dtl` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/devtestlabs/mgmt/2016-05-15/dtl) |
+| `github.com/Azure/azure-sdk-for-go/services/devtestlabs/mgmt/2018-09-15/dtl` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/devtestlabs/mgmt/2018-09-15/dtl) |
+| `github.com/Azure/azure-sdk-for-go/services/digitaltwins/mgmt/2020-10-31/digitaltwins` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/digitaltwins/mgmt/2020-10-31/digitaltwins) |
+| `github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2016-04-01/dns` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/dns/mgmt/2016-04-01/dns) |
+| `github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2017-09-01/dns` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/dns/mgmt/2017-09-01/dns) |
+| `github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2017-10-01/dns` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/dns/mgmt/2017-10-01/dns) |
+| `github.com/Azure/azure-sdk-for-go/services/dns/mgmt/2018-05-01/dns` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/dns/mgmt/2018-05-01/dns) |
+| `github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2017-01-01/aad` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/domainservices/mgmt/2017-01-01/aad) |
+| `github.com/Azure/azure-sdk-for-go/services/domainservices/mgmt/2017-06-01/aad` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/domainservices/mgmt/2017-06-01/aad) |
+| `github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2019-06-01/eventgrid` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/eventgrid/mgmt/2019-06-01/eventgrid) |
+| `github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2020-06-01/eventgrid` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/eventgrid/mgmt/2020-06-01/eventgrid) |
+| `github.com/Azure/azure-sdk-for-go/services/eventhub/mgmt/2015-08-01/eventhub` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/eventhub/mgmt/2015-08-01/eventhub) |
+| `github.com/Azure/azure-sdk-for-go/services/eventhub/mgmt/2017-04-01/eventhub` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/eventhub/mgmt/2017-04-01/eventhub) |
+| `github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2019-04-01/frontdoor` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/frontdoor/mgmt/2019-04-01/frontdoor) |
+| `github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2019-05-01/frontdoor` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/frontdoor/mgmt/2019-05-01/frontdoor) |
+| `github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2019-10-01/frontdoor` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/frontdoor/mgmt/2019-10-01/frontdoor) |
+| `github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2019-11-01/frontdoor` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/frontdoor/mgmt/2019-11-01/frontdoor) |
+| `github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-01-01/frontdoor` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/frontdoor/mgmt/2020-01-01/frontdoor) |
+| `github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-04-01/frontdoor` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/frontdoor/mgmt/2020-04-01/frontdoor) |
+| `github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-05-01/frontdoor` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/frontdoor/mgmt/2020-05-01/frontdoor) |
+| `github.com/Azure/azure-sdk-for-go/services/graphrbac/1.6/graphrbac` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/graphrbac/1.6/graphrbac) |
+| `github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2018-06-01/hdinsight` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/hdinsight/mgmt/2018-06-01/hdinsight) |
+| `github.com/Azure/azure-sdk-for-go/services/healthcareapis/mgmt/2019-09-16/healthcareapis` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/healthcareapis/mgmt/2019-09-16/healthcareapis) |
+| `github.com/Azure/azure-sdk-for-go/services/healthcareapis/mgmt/2020-03-15/healthcareapis` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/healthcareapis/mgmt/2020-03-15/healthcareapis) |
+| `github.com/Azure/azure-sdk-for-go/services/healthcareapis/mgmt/2020-03-30/healthcareapis` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/healthcareapis/mgmt/2020-03-30/healthcareapis) |
+| `github.com/Azure/azure-sdk-for-go/services/hybridcompute/mgmt/2019-12-12/hybridcompute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/hybridcompute/mgmt/2019-12-12/hybridcompute) |
+| `github.com/Azure/azure-sdk-for-go/services/hybridcompute/mgmt/2020-08-02/hybridcompute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/hybridcompute/mgmt/2020-08-02/hybridcompute) |
+| `github.com/Azure/azure-sdk-for-go/services/hybriddatamanager/mgmt/2016-06-01/hybriddata` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/hybriddatamanager/mgmt/2016-06-01/hybriddata) |
+| `github.com/Azure/azure-sdk-for-go/services/hybriddatamanager/mgmt/2019-06-01/hybriddata` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/hybriddatamanager/mgmt/2019-06-01/hybriddata) |
+| `github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/iotcentral/mgmt/2018-09-01/iotcentral) |
+| `github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2016-02-03/devices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/iothub/mgmt/2016-02-03/devices) |
+| `github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2017-01-19/devices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/iothub/mgmt/2017-01-19/devices) |
+| `github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2017-07-01/devices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/iothub/mgmt/2017-07-01/devices) |
+| `github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2018-01-22/devices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/iothub/mgmt/2018-01-22/devices) |
+| `github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2018-04-01/devices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/iothub/mgmt/2018-04-01/devices) |
+| `github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2020-03-01/devices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/iothub/mgmt/2020-03-01/devices) |
+| `github.com/Azure/azure-sdk-for-go/services/keyvault/2015-06-01/keyvault` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/keyvault/2015-06-01/keyvault) |
+| `github.com/Azure/azure-sdk-for-go/services/keyvault/2016-10-01/keyvault` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/keyvault/2016-10-01/keyvault) |
+| `github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2015-06-01/keyvault` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/keyvault/mgmt/2015-06-01/keyvault) |
+| `github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2016-10-01/keyvault` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/keyvault/mgmt/2016-10-01/keyvault) |
+| `github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2018-02-14/keyvault` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/keyvault/mgmt/2018-02-14/keyvault) |
+| `github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/keyvault/mgmt/2019-09-01/keyvault) |
+| `github.com/Azure/azure-sdk-for-go/services/keyvault/v7.0/keyvault` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/keyvault/v7.0/keyvault) |
+| `github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/keyvault/v7.1/keyvault) |
+| `github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-01-21/kusto` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/kusto/mgmt/2019-01-21/kusto) |
+| `github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-05-15/kusto` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/kusto/mgmt/2019-05-15/kusto) |
+| `github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-09-07/kusto` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/kusto/mgmt/2019-09-07/kusto) |
+| `github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2019-11-09/kusto` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/kusto/mgmt/2019-11-09/kusto) |
+| `github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2020-02-15/kusto` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/kusto/mgmt/2020-02-15/kusto) |
+| `github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2020-06-14/kusto` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/kusto/mgmt/2020-06-14/kusto) |
+| `github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2020-09-18/kusto` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/kusto/mgmt/2020-09-18/kusto) |
+| `github.com/Azure/azure-sdk-for-go/services/labservices/mgmt/2018-10-15/labservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/labservices/mgmt/2018-10-15/labservices) |
+| `github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/logic/mgmt/2016-06-01/logic) |
+| `github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/logic/mgmt/2019-05-01/logic) |
+| `github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2016-04-01/workspaces` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/machinelearning/mgmt/2016-04-01/workspaces) |
+| `github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2017-01-01/webservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/machinelearning/mgmt/2017-01-01/webservices) |
+| `github.com/Azure/azure-sdk-for-go/services/machinelearning/mgmt/2019-10-01/workspaces` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/machinelearning/mgmt/2019-10-01/workspaces) |
+| `github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2018-11-19/machinelearningservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/machinelearningservices/mgmt/2018-11-19/machinelearningservices) |
+| `github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-05-01/machinelearningservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/machinelearningservices/mgmt/2019-05-01/machinelearningservices) |
+| `github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-06-01/machinelearningservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/machinelearningservices/mgmt/2019-06-01/machinelearningservices) |
+| `github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2019-11-01/machinelearningservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/machinelearningservices/mgmt/2019-11-01/machinelearningservices) |
+| `github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2020-01-01/machinelearningservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/machinelearningservices/mgmt/2020-01-01/machinelearningservices) |
+| `github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2020-03-01/machinelearningservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/machinelearningservices/mgmt/2020-03-01/machinelearningservices) |
+| `github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2020-04-01/machinelearningservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/machinelearningservices/mgmt/2020-04-01/machinelearningservices) |
+| `github.com/Azure/azure-sdk-for-go/services/managedservices/mgmt/2019-06-01/managedservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/managedservices/mgmt/2019-06-01/managedservices) |
+| `github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2018-06-01/mariadb` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/mariadb/mgmt/2018-06-01/mariadb) |
+| `github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/mariadb/mgmt/2020-01-01/mariadb) |
+| `github.com/Azure/azure-sdk-for-go/services/marketplaceordering/mgmt/2015-06-01/marketplaceordering` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/marketplaceordering/mgmt/2015-06-01/marketplaceordering) |
+| `github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2018-07-01/media` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/mediaservices/mgmt/2018-07-01/media) |
+| `github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2020-05-01/media` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/mediaservices/mgmt/2020-05-01/media) |
+| `github.com/Azure/azure-sdk-for-go/services/msi/mgmt/2018-11-30/msi` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/msi/mgmt/2018-11-30/msi) |
+| `github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2017-12-01/mysql` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/mysql/mgmt/2017-12-01/mysql) |
+| `github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/mysql/mgmt/2020-01-01/mysql) |
+| `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2019-10-01/netapp` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/netapp/mgmt/2019-10-01/netapp) |
+| `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2019-11-01/netapp` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/netapp/mgmt/2019-11-01/netapp) |
+| `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-02-01/netapp` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/netapp/mgmt/2020-02-01/netapp) |
+| `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-06-01/netapp` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/netapp/mgmt/2020-06-01/netapp) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2015-06-15/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2015-06-15/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2016-03-30/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2016-03-30/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2016-06-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2016-06-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2016-09-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2016-09-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2016-12-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2016-12-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-03-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2017-03-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-06-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2017-06-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-08-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2017-08-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-09-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2017-09-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-10-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2017-10-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2017-11-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2017-11-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-01-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2018-01-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-02-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2018-02-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-04-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2018-04-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-06-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2018-06-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-07-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2018-07-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-08-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2018-08-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-10-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2018-10-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-11-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2018-11-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-12-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2018-12-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-02-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2019-02-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-04-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2019-04-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-06-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2019-06-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-07-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2019-07-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-08-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2019-08-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-09-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2019-09-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-11-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2019-11-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2019-12-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2019-12-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-03-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2020-03-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-04-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2020-04-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-05-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2020-05-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-06-01/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/network/mgmt/2020-06-01/network) |
+| `github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2014-09-01/notificationhubs` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/notificationhubs/mgmt/2014-09-01/notificationhubs) |
+| `github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2016-03-01/notificationhubs` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/notificationhubs/mgmt/2016-03-01/notificationhubs) |
+| `github.com/Azure/azure-sdk-for-go/services/notificationhubs/mgmt/2017-04-01/notificationhubs` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/notificationhubs/mgmt/2017-04-01/notificationhubs) |
+| `github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2015-03-20/operationalinsights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/operationalinsights/mgmt/2015-03-20/operationalinsights) |
+| `github.com/Azure/azure-sdk-for-go/services/operationalinsights/mgmt/2020-08-01/operationalinsights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/operationalinsights/mgmt/2020-08-01/operationalinsights) |
+| `github.com/Azure/azure-sdk-for-go/services/peering/mgmt/2020-04-01/peering` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/peering/mgmt/2020-04-01/peering) |
+| `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2017-12-01/postgresql` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/postgresql/mgmt/2017-12-01/postgresql) |
+| `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/postgresql/mgmt/2020-01-01/postgresql) |
+| `github.com/Azure/azure-sdk-for-go/services/powerbidedicated/mgmt/2017-10-01/powerbidedicated` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/powerbidedicated/mgmt/2017-10-01/powerbidedicated) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/advisor/mgmt/2016-07-12-preview/advisor` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/advisor/mgmt/2016-07-12-preview/advisor) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/alertsmanagement/mgmt/2018-05-05-preview/alertsmanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/alertsmanagement/mgmt/2018-05-05-preview/alertsmanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/alertsmanagement/mgmt/2019-06-01-preview/alertsmanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/alertsmanagement/mgmt/2019-06-01-preview/alertsmanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/ctrl/2017-03-01/apimanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/apimanagement/ctrl/2017-03-01/apimanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2018-06-01-preview/apimanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/apimanagement/mgmt/2018-06-01-preview/apimanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2019-12-01-preview/apimanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/apimanagement/mgmt/2019-12-01-preview/apimanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2019-02-01-preview/appconfiguration` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/appconfiguration/mgmt/2019-02-01-preview/appconfiguration) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2019-11-01-preview/appconfiguration` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/appconfiguration/mgmt/2019-11-01-preview/appconfiguration) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2019-05-01-preview/appplatform` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/appplatform/mgmt/2019-05-01-preview/appplatform) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2017-10-01-preview/authorization` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/authorization/mgmt/2017-10-01-preview/authorization) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2018-01-01-preview/authorization` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/authorization/mgmt/2018-01-01-preview/authorization) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2018-07-01-preview/authorization` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/authorization/mgmt/2018-07-01-preview/authorization) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2018-09-01-preview/authorization` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/authorization/mgmt/2018-09-01-preview/authorization) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/automanage/mgmt/2020-06-30-preview/automanage` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/automanage/mgmt/2020-06-30-preview/automanage) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2017-05-15-preview/automation` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/automation/mgmt/2017-05-15-preview/automation) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2018-01-15-preview/automation` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/automation/mgmt/2018-01-15-preview/automation) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2018-06-30-preview/automation` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/automation/mgmt/2018-06-30-preview/automation) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2019-08-09-preview/avs` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/avs/mgmt/2019-08-09-preview/avs) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/azuredata/mgmt/2017-03-01-preview/azuredata` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/azuredata/mgmt/2017-03-01-preview/azuredata) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/azuredata/mgmt/2019-07-24-preview/azuredata` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/azuredata/mgmt/2019-07-24-preview/azuredata) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/azurestackhci/mgmt/2020-03-01-preview/azurestackhci` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/azurestackhci/mgmt/2020-03-01-preview/azurestackhci) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/batchai/mgmt/2017-09-01-preview/batchai` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/batchai/mgmt/2017-09-01-preview/batchai) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2017-02-27-preview/billing` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/billing/mgmt/2017-02-27-preview/billing) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2017-04-24-preview/billing` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/billing/mgmt/2017-04-24-preview/billing) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-03-01-preview/billing` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/billing/mgmt/2018-03-01-preview/billing) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2018-11-01-preview/billing` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/billing/mgmt/2018-11-01-preview/billing) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/billing/mgmt/2020-05-01-preview/billing` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/billing/mgmt/2020-05-01-preview/billing) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/blockchain/mgmt/2018-06-01-preview/blockchain` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/blockchain/mgmt/2018-06-01-preview/blockchain) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/blueprint/mgmt/2018-11-01-preview/blueprint` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/blueprint/mgmt/2018-11-01-preview/blueprint) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2017-12-01/botservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/botservice/mgmt/2017-12-01/botservice) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2018-07-12/botservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/botservice/mgmt/2018-07-12/botservice) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0/anomalydetector` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/cognitiveservices/v1.0/anomalydetector) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/commerce/mgmt/2015-06-01-preview/commerce` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/commerce/mgmt/2015-06-01-preview/commerce) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/communication/mgmt/2020-08-20-preview/communication` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/communication/mgmt/2020-08-20-preview/communication) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/compute/mgmt/2016-04-30-preview/compute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/compute/mgmt/2016-04-30-preview/compute) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/confluent/mgmt/2020-03-01-preview/confluent` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/confluent/mgmt/2020-03-01-preview/confluent) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/consumption/mgmt/2017-04-24-preview/consumption` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/consumption/mgmt/2017-04-24-preview/consumption) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/consumption/mgmt/2017-12-30-preview/consumption` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/consumption/mgmt/2017-12-30-preview/consumption) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerinstance/mgmt/2017-08-01-preview/containerinstance` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/containerinstance/mgmt/2017-08-01-preview/containerinstance) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerinstance/mgmt/2017-10-01-preview/containerinstance` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/containerinstance/mgmt/2017-10-01-preview/containerinstance) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerinstance/mgmt/2017-12-01-preview/containerinstance` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/containerinstance/mgmt/2017-12-01-preview/containerinstance) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerinstance/mgmt/2018-02-01-preview/containerinstance` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/containerinstance/mgmt/2018-02-01-preview/containerinstance) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2016-06-27-preview/containerregistry` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/containerregistry/mgmt/2016-06-27-preview/containerregistry) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2017-06-01-preview/containerregistry` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/containerregistry/mgmt/2017-06-01-preview/containerregistry) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2018-02-01/containerregistry` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/containerregistry/mgmt/2018-02-01/containerregistry) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2019-12-01-preview/containerregistry` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/containerregistry/mgmt/2019-12-01-preview/containerregistry) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2018-08-01-preview/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/containerservice/mgmt/2018-08-01-preview/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2018-09-30-preview/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/containerservice/mgmt/2018-09-30-preview/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2019-02-01-preview/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/containerservice/mgmt/2019-02-01-preview/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2019-09-30-preview/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/containerservice/mgmt/2019-09-30-preview/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerservice/mgmt/2019-10-27-preview/containerservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/containerservice/mgmt/2019-10-27-preview/containerservice) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2019-08-01-preview/documentdb` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/cosmos-db/mgmt/2019-08-01-preview/documentdb) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2019-12-12-preview/documentdb` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/cosmos-db/mgmt/2019-12-12-preview/documentdb) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-03-01-preview/documentdb` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/cosmos-db/mgmt/2020-03-01-preview/documentdb) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-06-01-preview/documentdb` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/cosmos-db/mgmt/2020-06-01-preview/documentdb) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/costmanagement/mgmt/2018-08-01-preview/costmanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/costmanagement/mgmt/2018-08-01-preview/costmanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/costmanagement/mgmt/2019-03-01/costmanagement` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/costmanagement/mgmt/2019-03-01/costmanagement) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/customerlockbox/mgmt/2018-02-28-preview/customerlockbox` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/customerlockbox/mgmt/2018-02-28-preview/customerlockbox) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/customproviders/mgmt/2018-09-01-preview/customproviders` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/customproviders/mgmt/2018-09-01-preview/customproviders) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datadog/mgmt/2020-02-01-preview/datadog` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/datadog/mgmt/2020-02-01-preview/datadog) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datafactory/mgmt/2017-09-01-preview/datafactory` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/datafactory/mgmt/2017-09-01-preview/datafactory) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2015-10-01-preview/catalog` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/datalake/analytics/2015-10-01-preview/catalog) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2015-11-01-preview/job` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/datalake/analytics/2015-11-01-preview/job) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2016-03-20-preview/job` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/datalake/analytics/2016-03-20-preview/job) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/2017-09-01-preview/job` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/datalake/analytics/2017-09-01-preview/job) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datalake/analytics/mgmt/2015-10-01-preview/account` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/datalake/analytics/mgmt/2015-10-01-preview/account) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datalake/store/mgmt/2015-10-01-preview/account` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/datalake/store/mgmt/2015-10-01-preview/account) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2017-11-15-preview/datamigration` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/datamigration/mgmt/2017-11-15-preview/datamigration) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2018-03-31-preview/datamigration` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/datamigration/mgmt/2018-03-31-preview/datamigration) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datamigration/mgmt/2018-07-15-preview/datamigration` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/datamigration/mgmt/2018-07-15-preview/datamigration) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datashare/mgmt/2018-11-01-preview/datashare` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/datashare/mgmt/2018-11-01-preview/datashare) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2019-01-23-preview/desktopvirtualization` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/desktopvirtualization/mgmt/2019-01-23-preview/desktopvirtualization) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2019-09-24-preview/desktopvirtualization` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/desktopvirtualization/mgmt/2019-09-24-preview/desktopvirtualization) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/desktopvirtualization/mgmt/2019-12-10-preview/desktopvirtualization` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/desktopvirtualization/mgmt/2019-12-10-preview/desktopvirtualization) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/devops/mgmt/2019-07-01-preview/devops` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/devops/mgmt/2019-07-01-preview/devops) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/devtestlabs/mgmt/2015-05-21-preview/dtl` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/devtestlabs/mgmt/2015-05-21-preview/dtl) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/digitaltwins/mgmt/2020-03-01-preview/digitaltwins` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/digitaltwins/mgmt/2020-03-01-preview/digitaltwins) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2015-05-04-preview/dns` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/dns/mgmt/2015-05-04-preview/dns) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/dns/mgmt/2018-03-01-preview/dns` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/dns/mgmt/2018-03-01-preview/dns) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/enterpriseknowledgegraphservice/2018-12-03/enterpriseknowledgegraphservice` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/enterpriseknowledgegraphservice/2018-12-03/enterpriseknowledgegraphservice) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2019-02-01-preview/eventgrid` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/eventgrid/mgmt/2019-02-01-preview/eventgrid) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-01-01-preview/eventgrid` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/eventgrid/mgmt/2020-01-01-preview/eventgrid) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-04-01-preview/eventgrid` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/eventgrid/mgmt/2020-04-01-preview/eventgrid) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/frontdoor/mgmt/2018-08-01-preview/frontdoor` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/frontdoor/mgmt/2018-08-01-preview/frontdoor) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/hanaonazure/mgmt/2017-11-03-preview/hanaonazure) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/hardwaresecuritymodules/mgmt/2018-10-31-preview/hardwaresecuritymodules` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/hardwaresecuritymodules/mgmt/2018-10-31-preview/hardwaresecuritymodules) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/2018-11-01-preview/hdinsight` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/hdinsight/2018-11-01-preview/hdinsight) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/mgmt/2015-03-01-preview/hdinsight` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/hdinsight/mgmt/2015-03-01-preview/hdinsight) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/healthcareapis/mgmt/2018-08-20-preview/healthcareapis` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/healthcareapis/mgmt/2018-08-20-preview/healthcareapis) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/hybridkubernetes/mgmt/2020-01-01-preview/hybridkubernetes` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/hybridkubernetes/mgmt/2020-01-01-preview/hybridkubernetes) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/iothub/mgmt/2018-12-01-preview/devices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/iothub/mgmt/2018-12-01-preview/devices) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/iothub/mgmt/2019-03-22-preview/devices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/iothub/mgmt/2019-03-22-preview/devices) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/iotspaces/mgmt/2017-10-01-preview/iotspaces` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/iotspaces/mgmt/2017-10-01-preview/iotspaces) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/keyvault/v7.2-preview/keyvault` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/keyvault/v7.2-preview/keyvault) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/kubernetesconfiguration/mgmt/2019-11-01-preview/kubernetesconfiguration` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/kubernetesconfiguration/mgmt/2019-11-01-preview/kubernetesconfiguration) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/kusto/mgmt/2018-09-07-preview/kusto` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/kusto/mgmt/2018-09-07-preview/kusto) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-02-01-preview/logic` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/logic/mgmt/2015-02-01-preview/logic) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2015-08-01-preview/logic` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/logic/mgmt/2015-08-01-preview/logic) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2018-07-01-preview/logic` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/logic/mgmt/2018-07-01-preview/logic) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2016-05-01-preview/commitmentplans` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/machinelearning/mgmt/2016-05-01-preview/commitmentplans) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2016-05-01-preview/webservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/machinelearning/mgmt/2016-05-01-preview/webservices) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2017-05-01-preview/experimentation` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/machinelearning/mgmt/2017-05-01-preview/experimentation) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/machinelearning/mgmt/2017-08-01-preview/compute` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/machinelearning/mgmt/2017-08-01-preview/compute) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/machinelearningservices/mgmt/2018-03-01-preview/machinelearningservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/machinelearningservices/mgmt/2018-03-01-preview/machinelearningservices) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/machinelearningservices/mgmt/2020-02-18-preview/machinelearningservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/machinelearningservices/mgmt/2020-02-18-preview/machinelearningservices) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/managednetwork/mgmt/2019-06-01-preview/managednetwork` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/managednetwork/mgmt/2019-06-01-preview/managednetwork) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/managedservices/mgmt/2018-06-01/managedservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/managedservices/mgmt/2018-06-01/managedservices) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/managedservices/mgmt/2019-04-01/managedservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/managedservices/mgmt/2019-04-01/managedservices) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/managementpartner/mgmt/2018-02-01/managementpartner` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/managementpartner/mgmt/2018-02-01/managementpartner) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/maps/mgmt/2020-02-01-preview/maps` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/maps/mgmt/2020-02-01-preview/maps) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/mediaservices/mgmt/2018-03-30-preview/media` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/mediaservices/mgmt/2018-03-30-preview/media) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/mediaservices/mgmt/2018-06-01-preview/media` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/mediaservices/mgmt/2018-06-01-preview/media) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/mediaservices/mgmt/2019-05-01-preview/media` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/mediaservices/mgmt/2019-05-01-preview/media) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/mixedreality/mgmt/2019-02-28/mixedreality` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/mixedreality/mgmt/2019-02-28/mixedreality) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/mixedreality/mgmt/2020-05-01-preview/mixedreality` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/mixedreality/mgmt/2020-05-01-preview/mixedreality) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2017-05-01-preview/insights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/monitor/mgmt/2017-05-01-preview/insights) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-03-01/insights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/monitor/mgmt/2018-03-01/insights) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-09-01/insights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/monitor/mgmt/2018-09-01/insights) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2018-11-01-preview/insights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/monitor/mgmt/2018-11-01-preview/insights) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-03-01/insights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/monitor/mgmt/2019-03-01/insights) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-06-01/insights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/monitor/mgmt/2019-06-01/insights) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/msi/mgmt/2015-08-31-preview/msi` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/msi/mgmt/2015-08-31-preview/msi) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/mysql/mgmt/2017-12-01-preview/mysql` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/mysql/mgmt/2017-12-01-preview/mysql) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/mysql/mgmt/2020-07-01-preview/mysqlflexibleservers` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/mysql/mgmt/2020-07-01-preview/mysqlflexibleservers) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/network/mgmt/2015-05-01-preview/network` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/network/mgmt/2015-05-01-preview/network) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/operationalinsights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/operationalinsights/mgmt/2015-11-01-preview/operationalinsights) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/operationalinsights/mgmt/2015-11-01-preview/servicemap) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/operationalinsights/mgmt/2020-03-01-preview/operationalinsights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/operationalinsights/mgmt/2020-03-01-preview/operationalinsights) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-08-01-preview/peering` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/peering/mgmt/2019-08-01-preview/peering) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2019-09-01-preview/peering` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/peering/mgmt/2019-09-01-preview/peering) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/peering/mgmt/2020-01-01-preview/peering` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/peering/mgmt/2020-01-01-preview/peering) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2018-07-01-preview/policyinsights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/policyinsights/mgmt/2018-07-01-preview/policyinsights) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/policyinsights/mgmt/2019-10-01-preview/policyinsights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/policyinsights/mgmt/2019-10-01-preview/policyinsights) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/portal/mgmt/2015-08-01-preview/portal` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/portal/mgmt/2015-08-01-preview/portal) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/portal/mgmt/2018-10-01-preview/portal` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/portal/mgmt/2018-10-01-preview/portal) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/portal/mgmt/2019-01-01-preview/portal` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/portal/mgmt/2019-01-01-preview/portal) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2017-12-01-preview/postgresql` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/postgresql/mgmt/2017-12-01-preview/postgresql) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/provisioningservices/mgmt/2017-08-21-preview/iothub` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/provisioningservices/mgmt/2017-08-21-preview/iothub) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/redisenterprise/mgmt/2020-10-01-preview/redisenterprise` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/redisenterprise/mgmt/2020-10-01-preview/redisenterprise) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2018-06-01/reservations` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/reservations/mgmt/2018-06-01/reservations) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-04-01/reservations` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/reservations/mgmt/2019-04-01/reservations) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/reservations/mgmt/2019-07-19-preview/reservations` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/reservations/mgmt/2019-07-19-preview/reservations) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/resourcegraph/mgmt/2018-09-01/resourcegraph` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/resourcegraph/mgmt/2018-09-01/resourcegraph) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/resourcemover/mgmt/2019-10-01-preview/resourcemover` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/resourcemover/mgmt/2019-10-01-preview/resourcemover) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2015-10-01-preview/policy` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/resources/mgmt/2015-10-01-preview/policy) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2016-09-01-preview/managedapplications` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/resources/mgmt/2016-09-01-preview/managedapplications) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-06-01-preview/policy` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/resources/mgmt/2017-06-01-preview/policy) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-08-31-preview/managementgroups` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/resources/mgmt/2017-08-31-preview/managementgroups) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2017-11-01-preview/managementgroups` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/resources/mgmt/2017-11-01-preview/managementgroups) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-01-01-preview/managementgroups` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/resources/mgmt/2018-01-01-preview/managementgroups) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2018-03-01-preview/managementgroups` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/resources/mgmt/2018-03-01-preview/managementgroups) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-03-01-preview/policy` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/resources/mgmt/2020-03-01-preview/policy) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/scheduler/mgmt/2014-08-01-preview/scheduler` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/scheduler/mgmt/2014-08-01-preview/scheduler) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v1.0/security` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/security/mgmt/v1.0/security) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v2.0/security` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/security/mgmt/v2.0/security) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/security/mgmt/v3.0/security) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2018-01-01-preview/servicebus` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/servicebus/mgmt/2018-01-01-preview/servicebus) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/servicefabric/mgmt/2017-07-01-preview/servicefabric) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2018-02-01-preview/servicefabric` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/servicefabric/mgmt/2018-02-01-preview/servicefabric) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/servicefabric/mgmt/2019-03-01-preview/servicefabric` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/servicefabric/mgmt/2019-03-01-preview/servicefabric) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/servicefabricmesh/mgmt/2018-07-01-preview/servicefabricmesh` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/servicefabricmesh/mgmt/2018-07-01-preview/servicefabricmesh) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/servicefabricmesh/mgmt/2018-09-01-preview/servicefabricmesh` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/servicefabricmesh/mgmt/2018-09-01-preview/servicefabricmesh) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2018-03-01-preview/signalr` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/signalr/mgmt/2018-03-01-preview/signalr) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2020-07-01-preview/signalr` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/signalr/mgmt/2020-07-01-preview/signalr) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/softwareplan/mgmt/2019-06-01-preview/softwareplan` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/softwareplan/mgmt/2019-06-01-preview/softwareplan) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2015-05-01-preview/sql` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/sql/mgmt/2015-05-01-preview/sql) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-03-01-preview/sql` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/sql/mgmt/2017-03-01-preview/sql) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2017-10-01-preview/sql` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/sql/mgmt/2017-10-01-preview/sql) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2018-06-01-preview/sql` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/sql/mgmt/2018-06-01-preview/sql) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v3.0/sql` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/sql/mgmt/v3.0/sql) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/sqlvirtualmachine/mgmt/2017-03-01-preview/sqlvirtualmachine` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/sqlvirtualmachine/mgmt/2017-03-01-preview/sqlvirtualmachine) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2015-05-01-preview/storage` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/storage/mgmt/2015-05-01-preview/storage) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2020-08-01-preview/storage` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/storage/mgmt/2020-08-01-preview/storage) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/storagecache/mgmt/2019-08-01-preview/storagecache` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/storagecache/mgmt/2019-08-01-preview/storagecache) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/streamanalytics/mgmt/2020-03-01-preview/streamanalytics` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/streamanalytics/mgmt/2020-03-01-preview/streamanalytics) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2017-11-01-preview/subscription` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/subscription/mgmt/2017-11-01-preview/subscription) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2018-03-01-preview/subscription` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/subscription/mgmt/2018-03-01-preview/subscription) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2019-10-01-preview/subscription` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/subscription/mgmt/2019-10-01-preview/subscription) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/support/mgmt/2019-05-01-preview/support` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/support/mgmt/2019-05-01-preview/support) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-06-01-preview/artifacts` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/synapse/2019-06-01-preview/artifacts) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/2019-06-01-preview/managedvirtualnetwork` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/synapse/2019-06-01-preview/managedvirtualnetwork) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/2020-02-01-preview/accesscontrol` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/synapse/2020-02-01-preview/accesscontrol) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/2019-06-01-preview/synapse` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/synapse/mgmt/2019-06-01-preview/synapse) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/timeseriesinsights/mgmt/2017-02-28-preview/timeseriesinsights) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/timeseriesinsights/mgmt/2018-08-15-preview/timeseriesinsights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/timeseriesinsights/mgmt/2018-08-15-preview/timeseriesinsights) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2018-02-01-preview/virtualmachineimagebuilder` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/virtualmachineimagebuilder/mgmt/2018-02-01-preview/virtualmachineimagebuilder) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2019-02-01-preview/virtualmachineimagebuilder` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/virtualmachineimagebuilder/mgmt/2019-02-01-preview/virtualmachineimagebuilder) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/virtualmachineimagebuilder/mgmt/2019-05-01-preview/virtualmachineimagebuilder` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/virtualmachineimagebuilder/mgmt/2019-05-01-preview/virtualmachineimagebuilder) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/web/mgmt/2015-08-01-preview/web` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/web/mgmt/2015-08-01-preview/web) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/windowsesu/2019-09-16-preview/windowsesu` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/windowsesu/2019-09-16-preview/windowsesu) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2018-08-31-preview/workloadmonitor` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/workloadmonitor/mgmt/2018-08-31-preview/workloadmonitor) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/workloadmonitor/mgmt/2020-01-13-preview/workloadmonitor` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/preview/workloadmonitor/mgmt/2020-01-13-preview/workloadmonitor) |
+| `github.com/Azure/azure-sdk-for-go/services/privatedns/mgmt/2018-09-01/privatedns` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/privatedns/mgmt/2018-09-01/privatedns) |
+| `github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2017-11-15/iothub` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/provisioningservices/mgmt/2017-11-15/iothub) |
+| `github.com/Azure/azure-sdk-for-go/services/provisioningservices/mgmt/2018-01-22/iothub` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/provisioningservices/mgmt/2018-01-22/iothub) |
+| `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2016-06-01/backup` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/recoveryservices/mgmt/2016-06-01/backup) |
+| `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2016-06-01/recoveryservices` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/recoveryservices/mgmt/2016-06-01/recoveryservices) |
+| `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2016-08-10/siterecovery` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/recoveryservices/mgmt/2016-08-10/siterecovery) |
+| `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2016-12-01/backup` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/recoveryservices/mgmt/2016-12-01/backup) |
+| `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2017-07-01/backup` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/recoveryservices/mgmt/2017-07-01/backup) |
+| `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2018-01-10/siterecovery` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/recoveryservices/mgmt/2018-01-10/siterecovery) |
+| `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2018-07-10/siterecovery` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/recoveryservices/mgmt/2018-07-10/siterecovery) |
+| `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2019-05-13/backup` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/recoveryservices/mgmt/2019-05-13/backup) |
+| `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2019-06-15/backup` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/recoveryservices/mgmt/2019-06-15/backup) |
+| `github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2020-02-02/backup` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/recoveryservices/mgmt/2020-02-02/backup) |
+| `github.com/Azure/azure-sdk-for-go/services/redhatopenshift/mgmt/2020-04-30/redhatopenshift` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/redhatopenshift/mgmt/2020-04-30/redhatopenshift) |
+| `github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2015-08-01/redis` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/redis/mgmt/2015-08-01/redis) |
+| `github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2016-04-01/redis` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/redis/mgmt/2016-04-01/redis) |
+| `github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2017-02-01/redis` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/redis/mgmt/2017-02-01/redis) |
+| `github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2017-10-01/redis` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/redis/mgmt/2017-10-01/redis) |
+| `github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2018-03-01/redis` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/redis/mgmt/2018-03-01/redis) |
+| `github.com/Azure/azure-sdk-for-go/services/relay/mgmt/2016-07-01/relay` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/relay/mgmt/2016-07-01/relay) |
+| `github.com/Azure/azure-sdk-for-go/services/relay/mgmt/2017-04-01/relay` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/relay/mgmt/2017-04-01/relay) |
+| `github.com/Azure/azure-sdk-for-go/services/reservations/mgmt/2017-11-01/reservations` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/reservations/mgmt/2017-11-01/reservations) |
+| `github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/2015-01-01/resourcehealth` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resourcehealth/mgmt/2015-01-01/resourcehealth) |
+| `github.com/Azure/azure-sdk-for-go/services/resourcehealth/mgmt/2017-07-01/resourcehealth` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resourcehealth/mgmt/2017-07-01/resourcehealth) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-01-01/locks` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2015-01-01/locks) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-11-01/resources` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2015-11-01/resources) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-11-01/subscriptions` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2015-11-01/subscriptions) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2015-12-01/features` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2015-12-01/features) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-02-01/resources` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2016-02-01/resources) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-04-01/policy` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2016-04-01/policy) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-06-01/subscriptions` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2016-06-01/subscriptions) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-07-01/resources` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2016-07-01/resources) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2016-09-01/links) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/locks` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2016-09-01/locks) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/resources` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2016-09-01/resources) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-12-01/policy` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2016-12-01/policy) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-05-10/resources` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2017-05-10/resources) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2017-09-01/managedapplications` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2017-09-01/managedapplications) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-02-01/resources` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2018-02-01/resources) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-03-01/policy` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2018-03-01/policy) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-05-01/policy` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2018-05-01/policy) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-05-01/resources` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2018-05-01/resources) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/managedapplications` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2018-06-01/managedapplications) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2018-06-01/subscriptions` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2018-06-01/subscriptions) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-01-01/policy` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2019-01-01/policy) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-03-01/resources` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2019-03-01/resources) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-05-01/resources` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2019-05-01/resources) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-06-01/policy` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2019-06-01/policy) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-06-01/subscriptions` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2019-06-01/subscriptions) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-07-01/features` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2019-07-01/features) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-07-01/managedapplications` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2019-07-01/managedapplications) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-09-01/policy` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2019-09-01/policy) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-10-01/resources` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2019-10-01/resources) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-11-01/subscriptions` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2019-11-01/subscriptions) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-06-01/resources` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/resources/mgmt/2020-06-01/resources) |
+| `github.com/Azure/azure-sdk-for-go/services/scheduler/mgmt/2016-01-01/scheduler` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/scheduler/mgmt/2016-01-01/scheduler) |
+| `github.com/Azure/azure-sdk-for-go/services/scheduler/mgmt/2016-03-01/scheduler` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/scheduler/mgmt/2016-03-01/scheduler) |
+| `github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-03-13/search` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/search/mgmt/2020-03-13/search) |
+| `github.com/Azure/azure-sdk-for-go/services/securityinsight/mgmt/v1.0/securityinsight` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/securityinsight/mgmt/v1.0/securityinsight) |
+| `github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2015-08-01/servicebus` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/servicebus/mgmt/2015-08-01/servicebus) |
+| `github.com/Azure/azure-sdk-for-go/services/servicebus/mgmt/2017-04-01/servicebus` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/servicebus/mgmt/2017-04-01/servicebus) |
+| `github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2016-09-01/servicefabric` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/servicefabric/mgmt/2016-09-01/servicefabric) |
+| `github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2019-03-01/servicefabric` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/servicefabric/mgmt/2019-03-01/servicefabric) |
+| `github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2018-10-01/signalr` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/signalr/mgmt/2018-10-01/signalr) |
+| `github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2020-05-01/signalr` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/signalr/mgmt/2020-05-01/signalr) |
+| `github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2019-04-01/storage` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storage/mgmt/2019-04-01/storage) |
+| `github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2019-06-01/storage` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storage/mgmt/2019-06-01/storage) |
+| `github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2019-11-01/storagecache` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storagecache/mgmt/2019-11-01/storagecache) |
+| `github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2020-03-01/storagecache` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storagecache/mgmt/2020-03-01/storagecache) |
+| `github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2016-11-01/storageimportexport` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storageimportexport/mgmt/2016-11-01/storageimportexport) |
+| `github.com/Azure/azure-sdk-for-go/services/storageimportexport/mgmt/2020-08-01/storageimportexport` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storageimportexport/mgmt/2020-08-01/storageimportexport) |
+| `github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2018-04-02/storagesync` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storagesync/mgmt/2018-04-02/storagesync) |
+| `github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2018-07-01/storagesync` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storagesync/mgmt/2018-07-01/storagesync) |
+| `github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2018-10-01/storagesync` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storagesync/mgmt/2018-10-01/storagesync) |
+| `github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2019-02-01/storagesync` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storagesync/mgmt/2019-02-01/storagesync) |
+| `github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2019-06-01/storagesync` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storagesync/mgmt/2019-06-01/storagesync) |
+| `github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2019-10-01/storagesync` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storagesync/mgmt/2019-10-01/storagesync) |
+| `github.com/Azure/azure-sdk-for-go/services/storagesync/mgmt/2020-03-01/storagesync` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storagesync/mgmt/2020-03-01/storagesync) |
+| `github.com/Azure/azure-sdk-for-go/services/storsimple1200series/mgmt/2016-10-01/storsimple` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storsimple1200series/mgmt/2016-10-01/storsimple) |
+| `github.com/Azure/azure-sdk-for-go/services/storsimple8000series/mgmt/2017-06-01/storsimple` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/storsimple8000series/mgmt/2017-06-01/storsimple) |
+| `github.com/Azure/azure-sdk-for-go/services/streamanalytics/mgmt/2016-03-01/streamanalytics` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/streamanalytics/mgmt/2016-03-01/streamanalytics) |
+| `github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/subscription/mgmt/2020-09-01/subscription) |
+| `github.com/Azure/azure-sdk-for-go/services/support/mgmt/2020-04-01/support` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/support/mgmt/2020-04-01/support) |
+| `github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2017-11-15/timeseriesinsights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/timeseriesinsights/mgmt/2017-11-15/timeseriesinsights) |
+| `github.com/Azure/azure-sdk-for-go/services/timeseriesinsights/mgmt/2020-05-15/timeseriesinsights` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/timeseriesinsights/mgmt/2020-05-15/timeseriesinsights) |
+| `github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2020-02-01/virtualmachineimagebuilder` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/virtualmachineimagebuilder/mgmt/2020-02-01/virtualmachineimagebuilder) |
+| `github.com/Azure/azure-sdk-for-go/services/vmwarecloudsimple/mgmt/2019-04-01/vmwarecloudsimple` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/vmwarecloudsimple/mgmt/2019-04-01/vmwarecloudsimple) |
+| `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2016-09-01/web` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/web/mgmt/2016-09-01/web) |
+| `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2018-02-01/web` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/web/mgmt/2018-02-01/web) |
+| `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2019-08-01/web` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/web/mgmt/2019-08-01/web) |
+| `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-06-01/web` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/web/mgmt/2020-06-01/web) |
+| `github.com/Azure/azure-sdk-for-go/services/windowsiot/mgmt/2019-06-01/windowsiot` | [detail](https://github.com/Azure/azure-sdk-for-go/tree/v49.0.0/services/windowsiot/mgmt/2019-06-01/windowsiot) |
+
+
 ## `v48.2.0`
 
 ### New Packages
